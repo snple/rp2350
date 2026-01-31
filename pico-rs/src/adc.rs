@@ -327,13 +327,13 @@ impl Adc {
         error_in_fifo: bool,
         byte_shift: bool,
     ) {
-        let mut fcs = self.regs.fcs.read();
+        let mut fcs = self.regs.fcs.read_val();
         fcs = fcs.with_en(enable);
         fcs = fcs.with_dreq_en(dreq_enable);
         fcs = fcs.with_thresh(threshold.min(15) as u32);
         fcs = fcs.with_err(error_in_fifo);
         fcs = fcs.with_shift(byte_shift);
-        self.regs.fcs.write(fcs);
+        self.regs.fcs.write_val(fcs);
     }
 
     /// Check if FIFO is empty

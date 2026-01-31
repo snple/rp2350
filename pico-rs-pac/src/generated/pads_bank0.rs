@@ -1,4 +1,4 @@
-//! PADS_BANK0 - 
+//! PADS_BANK0
 
 #![allow(dead_code)]
 
@@ -13,92 +13,55 @@ pub const BASE: u32 = 0x40038000;
 ///
 /// ## Fields
 ///
-/// - **VOLTAGE_SELECT** [0] (RW): 
+/// - **VOLTAGE_SELECT** `[0]` (RW)
 #[repr(transparent)]
 pub struct VoltageSelect {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for VoltageSelect {}
-unsafe impl Sync for VoltageSelect {}
+impl core::ops::Deref for VoltageSelect {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl VoltageSelect {
     // ======== Field Constants ========
 
-    /// Bits [0:0], mask 0x00000001
+    /// **VOLTAGE_SELECT**
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const VOLTAGE_SELECT_OFFSET: u32 = 0;
     pub const VOLTAGE_SELECT_MASK: u32 = 0x00000001;
     pub const VOLTAGE_SELECT: u32 = 1 << 0;
-    /// 3v3 = 0: Set voltage to 3.3V (DVDD >= 2V5)
+    /// 3v3 = 0
+    /// Set voltage to 3.3V (DVDD >= 2V5)
     pub const VOLTAGE_SELECT_3V3: u32 = 0 << 0;
-    /// 1v8 = 1: Set voltage to 1.8V (DVDD <= 1V8)
+    pub const VOLTAGE_SELECT_3V3_VAL: u32 = 0;
+    /// 1v8 = 1
+    /// Set voltage to 1.8V (DVDD <= 1V8)
     pub const VOLTAGE_SELECT_1V8: u32 = 1 << 0;
-
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
+    pub const VOLTAGE_SELECT_1V8_VAL: u32 = 1;
 
     // ======== Field Accessors ========
 
-    /// **VOLTAGE_SELECT** [0:0]
+    /// **VOLTAGE_SELECT** `[0]` (RW)
     #[inline(always)]
     pub fn voltage_select(&self) -> bool {
-        (self.read_bits() & Self::VOLTAGE_SELECT_MASK) != 0
+        (self.value.read_bits() & Self::VOLTAGE_SELECT_MASK) != 0
     }
 
-    /// Set VOLTAGE_SELECT bit
+    /// Set VOLTAGE_SELECT bit atomically (RW)
     #[inline(always)]
     pub fn set_voltage_select(&self) {
-        self.set_bits(Self::VOLTAGE_SELECT_MASK);
+        self.value.set_bits(Self::VOLTAGE_SELECT_MASK);
     }
 
-    /// Clear VOLTAGE_SELECT bit
+    /// Clear VOLTAGE_SELECT bit atomically (RW)
     #[inline(always)]
     pub fn clr_voltage_select(&self) {
-        self.clr_bits(Self::VOLTAGE_SELECT_MASK);
+        self.value.clr_bits(Self::VOLTAGE_SELECT_MASK);
     }
 
 }
@@ -131,13 +94,13 @@ impl VoltageSelectVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read VOLTAGE_SELECT [0:0]
+    /// Read **VOLTAGE_SELECT** `[0:0]`
     #[inline(always)]
     pub const fn voltage_select(&self) -> bool {
         (self.bits & VoltageSelect::VOLTAGE_SELECT_MASK) != 0
     }
 
-    /// Set VOLTAGE_SELECT [0:0]
+    /// Set **VOLTAGE_SELECT** `[0:0]`
     #[inline(always)]
     pub const fn with_voltage_select(self, value: bool) -> Self {
         Self {
@@ -160,20 +123,20 @@ impl Default for VoltageSelectVal {
 impl VoltageSelect {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> VoltageSelectVal {
-        VoltageSelectVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> VoltageSelectVal {
+        VoltageSelectVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: VoltageSelectVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: VoltageSelectVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(VoltageSelectVal) -> VoltageSelectVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(VoltageSelectVal) -> VoltageSelectVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -185,261 +148,248 @@ impl VoltageSelect {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio0 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio0 {}
-unsafe impl Sync for Gpio0 {}
+impl core::ops::Deref for Gpio0 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio0 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -472,55 +422,64 @@ impl Gpio0Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio0::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio0::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio0::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio0::DRIVE_MASK) >> Gpio0::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio0::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio0::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio0::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio0::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -532,7 +491,8 @@ impl Gpio0Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -544,7 +504,8 @@ impl Gpio0Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -556,7 +517,8 @@ impl Gpio0Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -564,7 +526,8 @@ impl Gpio0Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -576,7 +539,8 @@ impl Gpio0Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -588,7 +552,8 @@ impl Gpio0Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -600,7 +565,8 @@ impl Gpio0Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -623,20 +589,20 @@ impl Default for Gpio0Val {
 impl Gpio0 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio0Val {
-        Gpio0Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio0Val {
+        Gpio0Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio0Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio0Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio0Val) -> Gpio0Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio0Val) -> Gpio0Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -648,261 +614,248 @@ impl Gpio0 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio1 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio1 {}
-unsafe impl Sync for Gpio1 {}
+impl core::ops::Deref for Gpio1 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio1 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -935,55 +888,64 @@ impl Gpio1Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio1::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio1::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio1::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio1::DRIVE_MASK) >> Gpio1::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio1::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio1::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio1::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio1::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -995,7 +957,8 @@ impl Gpio1Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -1007,7 +970,8 @@ impl Gpio1Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -1019,7 +983,8 @@ impl Gpio1Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -1027,7 +992,8 @@ impl Gpio1Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -1039,7 +1005,8 @@ impl Gpio1Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -1051,7 +1018,8 @@ impl Gpio1Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -1063,7 +1031,8 @@ impl Gpio1Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -1086,20 +1055,20 @@ impl Default for Gpio1Val {
 impl Gpio1 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio1Val {
-        Gpio1Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio1Val {
+        Gpio1Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio1Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio1Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio1Val) -> Gpio1Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio1Val) -> Gpio1Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1111,261 +1080,248 @@ impl Gpio1 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio2 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio2 {}
-unsafe impl Sync for Gpio2 {}
+impl core::ops::Deref for Gpio2 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio2 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -1398,55 +1354,64 @@ impl Gpio2Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio2::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio2::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio2::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio2::DRIVE_MASK) >> Gpio2::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio2::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio2::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio2::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio2::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -1458,7 +1423,8 @@ impl Gpio2Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -1470,7 +1436,8 @@ impl Gpio2Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -1482,7 +1449,8 @@ impl Gpio2Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -1490,7 +1458,8 @@ impl Gpio2Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -1502,7 +1471,8 @@ impl Gpio2Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -1514,7 +1484,8 @@ impl Gpio2Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -1526,7 +1497,8 @@ impl Gpio2Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -1549,20 +1521,20 @@ impl Default for Gpio2Val {
 impl Gpio2 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio2Val {
-        Gpio2Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio2Val {
+        Gpio2Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio2Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio2Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio2Val) -> Gpio2Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio2Val) -> Gpio2Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1574,261 +1546,248 @@ impl Gpio2 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio3 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio3 {}
-unsafe impl Sync for Gpio3 {}
+impl core::ops::Deref for Gpio3 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio3 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -1861,55 +1820,64 @@ impl Gpio3Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio3::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio3::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio3::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio3::DRIVE_MASK) >> Gpio3::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio3::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio3::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio3::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio3::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -1921,7 +1889,8 @@ impl Gpio3Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -1933,7 +1902,8 @@ impl Gpio3Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -1945,7 +1915,8 @@ impl Gpio3Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -1953,7 +1924,8 @@ impl Gpio3Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -1965,7 +1937,8 @@ impl Gpio3Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -1977,7 +1950,8 @@ impl Gpio3Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -1989,7 +1963,8 @@ impl Gpio3Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -2012,20 +1987,20 @@ impl Default for Gpio3Val {
 impl Gpio3 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio3Val {
-        Gpio3Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio3Val {
+        Gpio3Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio3Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio3Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio3Val) -> Gpio3Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio3Val) -> Gpio3Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -2037,261 +2012,248 @@ impl Gpio3 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio4 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio4 {}
-unsafe impl Sync for Gpio4 {}
+impl core::ops::Deref for Gpio4 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio4 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -2324,55 +2286,64 @@ impl Gpio4Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio4::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio4::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio4::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio4::DRIVE_MASK) >> Gpio4::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio4::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio4::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio4::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio4::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -2384,7 +2355,8 @@ impl Gpio4Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -2396,7 +2368,8 @@ impl Gpio4Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -2408,7 +2381,8 @@ impl Gpio4Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -2416,7 +2390,8 @@ impl Gpio4Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -2428,7 +2403,8 @@ impl Gpio4Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -2440,7 +2416,8 @@ impl Gpio4Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -2452,7 +2429,8 @@ impl Gpio4Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -2475,20 +2453,20 @@ impl Default for Gpio4Val {
 impl Gpio4 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio4Val {
-        Gpio4Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio4Val {
+        Gpio4Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio4Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio4Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio4Val) -> Gpio4Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio4Val) -> Gpio4Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -2500,261 +2478,248 @@ impl Gpio4 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio5 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio5 {}
-unsafe impl Sync for Gpio5 {}
+impl core::ops::Deref for Gpio5 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio5 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -2787,55 +2752,64 @@ impl Gpio5Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio5::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio5::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio5::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio5::DRIVE_MASK) >> Gpio5::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio5::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio5::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio5::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio5::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -2847,7 +2821,8 @@ impl Gpio5Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -2859,7 +2834,8 @@ impl Gpio5Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -2871,7 +2847,8 @@ impl Gpio5Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -2879,7 +2856,8 @@ impl Gpio5Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -2891,7 +2869,8 @@ impl Gpio5Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -2903,7 +2882,8 @@ impl Gpio5Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -2915,7 +2895,8 @@ impl Gpio5Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -2938,20 +2919,20 @@ impl Default for Gpio5Val {
 impl Gpio5 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio5Val {
-        Gpio5Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio5Val {
+        Gpio5Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio5Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio5Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio5Val) -> Gpio5Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio5Val) -> Gpio5Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -2963,261 +2944,248 @@ impl Gpio5 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio6 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio6 {}
-unsafe impl Sync for Gpio6 {}
+impl core::ops::Deref for Gpio6 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio6 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -3250,55 +3218,64 @@ impl Gpio6Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio6::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio6::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio6::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio6::DRIVE_MASK) >> Gpio6::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio6::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio6::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio6::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio6::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -3310,7 +3287,8 @@ impl Gpio6Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -3322,7 +3300,8 @@ impl Gpio6Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -3334,7 +3313,8 @@ impl Gpio6Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -3342,7 +3322,8 @@ impl Gpio6Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -3354,7 +3335,8 @@ impl Gpio6Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -3366,7 +3348,8 @@ impl Gpio6Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -3378,7 +3361,8 @@ impl Gpio6Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -3401,20 +3385,20 @@ impl Default for Gpio6Val {
 impl Gpio6 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio6Val {
-        Gpio6Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio6Val {
+        Gpio6Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio6Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio6Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio6Val) -> Gpio6Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio6Val) -> Gpio6Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -3426,261 +3410,248 @@ impl Gpio6 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio7 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio7 {}
-unsafe impl Sync for Gpio7 {}
+impl core::ops::Deref for Gpio7 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio7 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -3713,55 +3684,64 @@ impl Gpio7Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio7::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio7::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio7::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio7::DRIVE_MASK) >> Gpio7::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio7::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio7::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio7::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio7::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -3773,7 +3753,8 @@ impl Gpio7Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -3785,7 +3766,8 @@ impl Gpio7Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -3797,7 +3779,8 @@ impl Gpio7Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -3805,7 +3788,8 @@ impl Gpio7Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -3817,7 +3801,8 @@ impl Gpio7Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -3829,7 +3814,8 @@ impl Gpio7Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -3841,7 +3827,8 @@ impl Gpio7Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -3864,20 +3851,20 @@ impl Default for Gpio7Val {
 impl Gpio7 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio7Val {
-        Gpio7Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio7Val {
+        Gpio7Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio7Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio7Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio7Val) -> Gpio7Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio7Val) -> Gpio7Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -3889,261 +3876,248 @@ impl Gpio7 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio8 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio8 {}
-unsafe impl Sync for Gpio8 {}
+impl core::ops::Deref for Gpio8 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio8 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -4176,55 +4150,64 @@ impl Gpio8Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio8::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio8::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio8::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio8::DRIVE_MASK) >> Gpio8::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio8::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio8::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio8::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio8::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -4236,7 +4219,8 @@ impl Gpio8Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -4248,7 +4232,8 @@ impl Gpio8Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -4260,7 +4245,8 @@ impl Gpio8Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -4268,7 +4254,8 @@ impl Gpio8Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -4280,7 +4267,8 @@ impl Gpio8Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -4292,7 +4280,8 @@ impl Gpio8Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -4304,7 +4293,8 @@ impl Gpio8Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -4327,20 +4317,20 @@ impl Default for Gpio8Val {
 impl Gpio8 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio8Val {
-        Gpio8Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio8Val {
+        Gpio8Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio8Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio8Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio8Val) -> Gpio8Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio8Val) -> Gpio8Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -4352,261 +4342,248 @@ impl Gpio8 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio9 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio9 {}
-unsafe impl Sync for Gpio9 {}
+impl core::ops::Deref for Gpio9 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio9 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -4639,55 +4616,64 @@ impl Gpio9Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio9::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio9::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio9::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio9::DRIVE_MASK) >> Gpio9::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio9::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio9::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio9::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio9::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -4699,7 +4685,8 @@ impl Gpio9Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -4711,7 +4698,8 @@ impl Gpio9Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -4723,7 +4711,8 @@ impl Gpio9Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -4731,7 +4720,8 @@ impl Gpio9Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -4743,7 +4733,8 @@ impl Gpio9Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -4755,7 +4746,8 @@ impl Gpio9Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -4767,7 +4759,8 @@ impl Gpio9Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -4790,20 +4783,20 @@ impl Default for Gpio9Val {
 impl Gpio9 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio9Val {
-        Gpio9Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio9Val {
+        Gpio9Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio9Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio9Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio9Val) -> Gpio9Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio9Val) -> Gpio9Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -4815,261 +4808,248 @@ impl Gpio9 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio10 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio10 {}
-unsafe impl Sync for Gpio10 {}
+impl core::ops::Deref for Gpio10 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio10 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -5102,55 +5082,64 @@ impl Gpio10Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio10::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio10::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio10::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio10::DRIVE_MASK) >> Gpio10::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio10::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio10::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio10::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio10::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -5162,7 +5151,8 @@ impl Gpio10Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -5174,7 +5164,8 @@ impl Gpio10Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -5186,7 +5177,8 @@ impl Gpio10Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -5194,7 +5186,8 @@ impl Gpio10Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -5206,7 +5199,8 @@ impl Gpio10Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -5218,7 +5212,8 @@ impl Gpio10Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -5230,7 +5225,8 @@ impl Gpio10Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -5253,20 +5249,20 @@ impl Default for Gpio10Val {
 impl Gpio10 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio10Val {
-        Gpio10Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio10Val {
+        Gpio10Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio10Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio10Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio10Val) -> Gpio10Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio10Val) -> Gpio10Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -5278,261 +5274,248 @@ impl Gpio10 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio11 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio11 {}
-unsafe impl Sync for Gpio11 {}
+impl core::ops::Deref for Gpio11 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio11 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -5565,55 +5548,64 @@ impl Gpio11Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio11::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio11::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio11::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio11::DRIVE_MASK) >> Gpio11::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio11::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio11::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio11::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio11::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -5625,7 +5617,8 @@ impl Gpio11Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -5637,7 +5630,8 @@ impl Gpio11Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -5649,7 +5643,8 @@ impl Gpio11Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -5657,7 +5652,8 @@ impl Gpio11Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -5669,7 +5665,8 @@ impl Gpio11Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -5681,7 +5678,8 @@ impl Gpio11Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -5693,7 +5691,8 @@ impl Gpio11Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -5716,20 +5715,20 @@ impl Default for Gpio11Val {
 impl Gpio11 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio11Val {
-        Gpio11Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio11Val {
+        Gpio11Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio11Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio11Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio11Val) -> Gpio11Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio11Val) -> Gpio11Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -5741,261 +5740,248 @@ impl Gpio11 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio12 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio12 {}
-unsafe impl Sync for Gpio12 {}
+impl core::ops::Deref for Gpio12 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio12 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -6028,55 +6014,64 @@ impl Gpio12Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio12::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio12::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio12::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio12::DRIVE_MASK) >> Gpio12::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio12::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio12::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio12::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio12::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -6088,7 +6083,8 @@ impl Gpio12Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -6100,7 +6096,8 @@ impl Gpio12Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -6112,7 +6109,8 @@ impl Gpio12Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -6120,7 +6118,8 @@ impl Gpio12Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -6132,7 +6131,8 @@ impl Gpio12Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -6144,7 +6144,8 @@ impl Gpio12Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -6156,7 +6157,8 @@ impl Gpio12Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -6179,20 +6181,20 @@ impl Default for Gpio12Val {
 impl Gpio12 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio12Val {
-        Gpio12Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio12Val {
+        Gpio12Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio12Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio12Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio12Val) -> Gpio12Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio12Val) -> Gpio12Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -6204,261 +6206,248 @@ impl Gpio12 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio13 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio13 {}
-unsafe impl Sync for Gpio13 {}
+impl core::ops::Deref for Gpio13 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio13 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -6491,55 +6480,64 @@ impl Gpio13Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio13::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio13::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio13::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio13::DRIVE_MASK) >> Gpio13::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio13::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio13::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio13::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio13::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -6551,7 +6549,8 @@ impl Gpio13Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -6563,7 +6562,8 @@ impl Gpio13Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -6575,7 +6575,8 @@ impl Gpio13Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -6583,7 +6584,8 @@ impl Gpio13Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -6595,7 +6597,8 @@ impl Gpio13Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -6607,7 +6610,8 @@ impl Gpio13Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -6619,7 +6623,8 @@ impl Gpio13Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -6642,20 +6647,20 @@ impl Default for Gpio13Val {
 impl Gpio13 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio13Val {
-        Gpio13Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio13Val {
+        Gpio13Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio13Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio13Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio13Val) -> Gpio13Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio13Val) -> Gpio13Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -6667,261 +6672,248 @@ impl Gpio13 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio14 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio14 {}
-unsafe impl Sync for Gpio14 {}
+impl core::ops::Deref for Gpio14 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio14 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -6954,55 +6946,64 @@ impl Gpio14Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio14::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio14::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio14::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio14::DRIVE_MASK) >> Gpio14::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio14::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio14::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio14::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio14::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -7014,7 +7015,8 @@ impl Gpio14Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -7026,7 +7028,8 @@ impl Gpio14Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -7038,7 +7041,8 @@ impl Gpio14Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -7046,7 +7050,8 @@ impl Gpio14Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -7058,7 +7063,8 @@ impl Gpio14Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -7070,7 +7076,8 @@ impl Gpio14Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -7082,7 +7089,8 @@ impl Gpio14Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -7105,20 +7113,20 @@ impl Default for Gpio14Val {
 impl Gpio14 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio14Val {
-        Gpio14Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio14Val {
+        Gpio14Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio14Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio14Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio14Val) -> Gpio14Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio14Val) -> Gpio14Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -7130,261 +7138,248 @@ impl Gpio14 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio15 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio15 {}
-unsafe impl Sync for Gpio15 {}
+impl core::ops::Deref for Gpio15 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio15 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -7417,55 +7412,64 @@ impl Gpio15Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio15::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio15::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio15::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio15::DRIVE_MASK) >> Gpio15::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio15::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio15::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio15::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio15::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -7477,7 +7481,8 @@ impl Gpio15Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -7489,7 +7494,8 @@ impl Gpio15Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -7501,7 +7507,8 @@ impl Gpio15Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -7509,7 +7516,8 @@ impl Gpio15Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -7521,7 +7529,8 @@ impl Gpio15Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -7533,7 +7542,8 @@ impl Gpio15Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -7545,7 +7555,8 @@ impl Gpio15Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -7568,20 +7579,20 @@ impl Default for Gpio15Val {
 impl Gpio15 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio15Val {
-        Gpio15Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio15Val {
+        Gpio15Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio15Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio15Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio15Val) -> Gpio15Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio15Val) -> Gpio15Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -7593,261 +7604,248 @@ impl Gpio15 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio16 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio16 {}
-unsafe impl Sync for Gpio16 {}
+impl core::ops::Deref for Gpio16 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio16 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -7880,55 +7878,64 @@ impl Gpio16Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio16::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio16::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio16::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio16::DRIVE_MASK) >> Gpio16::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio16::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio16::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio16::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio16::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -7940,7 +7947,8 @@ impl Gpio16Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -7952,7 +7960,8 @@ impl Gpio16Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -7964,7 +7973,8 @@ impl Gpio16Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -7972,7 +7982,8 @@ impl Gpio16Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -7984,7 +7995,8 @@ impl Gpio16Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -7996,7 +8008,8 @@ impl Gpio16Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -8008,7 +8021,8 @@ impl Gpio16Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -8031,20 +8045,20 @@ impl Default for Gpio16Val {
 impl Gpio16 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio16Val {
-        Gpio16Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio16Val {
+        Gpio16Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio16Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio16Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio16Val) -> Gpio16Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio16Val) -> Gpio16Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -8056,261 +8070,248 @@ impl Gpio16 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio17 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio17 {}
-unsafe impl Sync for Gpio17 {}
+impl core::ops::Deref for Gpio17 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio17 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -8343,55 +8344,64 @@ impl Gpio17Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio17::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio17::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio17::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio17::DRIVE_MASK) >> Gpio17::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio17::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio17::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio17::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio17::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -8403,7 +8413,8 @@ impl Gpio17Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -8415,7 +8426,8 @@ impl Gpio17Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -8427,7 +8439,8 @@ impl Gpio17Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -8435,7 +8448,8 @@ impl Gpio17Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -8447,7 +8461,8 @@ impl Gpio17Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -8459,7 +8474,8 @@ impl Gpio17Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -8471,7 +8487,8 @@ impl Gpio17Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -8494,20 +8511,20 @@ impl Default for Gpio17Val {
 impl Gpio17 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio17Val {
-        Gpio17Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio17Val {
+        Gpio17Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio17Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio17Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio17Val) -> Gpio17Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio17Val) -> Gpio17Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -8519,261 +8536,248 @@ impl Gpio17 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio18 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio18 {}
-unsafe impl Sync for Gpio18 {}
+impl core::ops::Deref for Gpio18 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio18 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -8806,55 +8810,64 @@ impl Gpio18Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio18::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio18::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio18::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio18::DRIVE_MASK) >> Gpio18::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio18::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio18::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio18::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio18::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -8866,7 +8879,8 @@ impl Gpio18Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -8878,7 +8892,8 @@ impl Gpio18Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -8890,7 +8905,8 @@ impl Gpio18Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -8898,7 +8914,8 @@ impl Gpio18Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -8910,7 +8927,8 @@ impl Gpio18Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -8922,7 +8940,8 @@ impl Gpio18Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -8934,7 +8953,8 @@ impl Gpio18Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -8957,20 +8977,20 @@ impl Default for Gpio18Val {
 impl Gpio18 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio18Val {
-        Gpio18Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio18Val {
+        Gpio18Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio18Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio18Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio18Val) -> Gpio18Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio18Val) -> Gpio18Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -8982,261 +9002,248 @@ impl Gpio18 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio19 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio19 {}
-unsafe impl Sync for Gpio19 {}
+impl core::ops::Deref for Gpio19 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio19 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -9269,55 +9276,64 @@ impl Gpio19Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio19::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio19::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio19::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio19::DRIVE_MASK) >> Gpio19::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio19::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio19::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio19::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio19::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -9329,7 +9345,8 @@ impl Gpio19Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -9341,7 +9358,8 @@ impl Gpio19Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -9353,7 +9371,8 @@ impl Gpio19Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -9361,7 +9380,8 @@ impl Gpio19Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -9373,7 +9393,8 @@ impl Gpio19Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -9385,7 +9406,8 @@ impl Gpio19Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -9397,7 +9419,8 @@ impl Gpio19Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -9420,20 +9443,20 @@ impl Default for Gpio19Val {
 impl Gpio19 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio19Val {
-        Gpio19Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio19Val {
+        Gpio19Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio19Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio19Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio19Val) -> Gpio19Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio19Val) -> Gpio19Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -9445,261 +9468,248 @@ impl Gpio19 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio20 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio20 {}
-unsafe impl Sync for Gpio20 {}
+impl core::ops::Deref for Gpio20 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio20 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -9732,55 +9742,64 @@ impl Gpio20Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio20::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio20::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio20::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio20::DRIVE_MASK) >> Gpio20::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio20::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio20::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio20::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio20::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -9792,7 +9811,8 @@ impl Gpio20Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -9804,7 +9824,8 @@ impl Gpio20Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -9816,7 +9837,8 @@ impl Gpio20Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -9824,7 +9846,8 @@ impl Gpio20Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -9836,7 +9859,8 @@ impl Gpio20Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -9848,7 +9872,8 @@ impl Gpio20Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -9860,7 +9885,8 @@ impl Gpio20Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -9883,20 +9909,20 @@ impl Default for Gpio20Val {
 impl Gpio20 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio20Val {
-        Gpio20Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio20Val {
+        Gpio20Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio20Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio20Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio20Val) -> Gpio20Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio20Val) -> Gpio20Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -9908,261 +9934,248 @@ impl Gpio20 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio21 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio21 {}
-unsafe impl Sync for Gpio21 {}
+impl core::ops::Deref for Gpio21 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio21 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -10195,55 +10208,64 @@ impl Gpio21Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio21::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio21::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio21::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio21::DRIVE_MASK) >> Gpio21::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio21::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio21::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio21::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio21::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -10255,7 +10277,8 @@ impl Gpio21Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -10267,7 +10290,8 @@ impl Gpio21Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -10279,7 +10303,8 @@ impl Gpio21Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -10287,7 +10312,8 @@ impl Gpio21Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -10299,7 +10325,8 @@ impl Gpio21Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -10311,7 +10338,8 @@ impl Gpio21Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -10323,7 +10351,8 @@ impl Gpio21Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -10346,20 +10375,20 @@ impl Default for Gpio21Val {
 impl Gpio21 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio21Val {
-        Gpio21Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio21Val {
+        Gpio21Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio21Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio21Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio21Val) -> Gpio21Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio21Val) -> Gpio21Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -10371,261 +10400,248 @@ impl Gpio21 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio22 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio22 {}
-unsafe impl Sync for Gpio22 {}
+impl core::ops::Deref for Gpio22 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio22 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -10658,55 +10674,64 @@ impl Gpio22Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio22::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio22::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio22::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio22::DRIVE_MASK) >> Gpio22::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio22::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio22::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio22::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio22::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -10718,7 +10743,8 @@ impl Gpio22Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -10730,7 +10756,8 @@ impl Gpio22Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -10742,7 +10769,8 @@ impl Gpio22Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -10750,7 +10778,8 @@ impl Gpio22Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -10762,7 +10791,8 @@ impl Gpio22Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -10774,7 +10804,8 @@ impl Gpio22Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -10786,7 +10817,8 @@ impl Gpio22Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -10809,20 +10841,20 @@ impl Default for Gpio22Val {
 impl Gpio22 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio22Val {
-        Gpio22Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio22Val {
+        Gpio22Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio22Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio22Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio22Val) -> Gpio22Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio22Val) -> Gpio22Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -10834,261 +10866,248 @@ impl Gpio22 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio23 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio23 {}
-unsafe impl Sync for Gpio23 {}
+impl core::ops::Deref for Gpio23 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio23 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -11121,55 +11140,64 @@ impl Gpio23Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio23::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio23::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio23::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio23::DRIVE_MASK) >> Gpio23::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio23::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio23::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio23::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio23::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -11181,7 +11209,8 @@ impl Gpio23Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -11193,7 +11222,8 @@ impl Gpio23Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -11205,7 +11235,8 @@ impl Gpio23Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -11213,7 +11244,8 @@ impl Gpio23Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -11225,7 +11257,8 @@ impl Gpio23Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -11237,7 +11270,8 @@ impl Gpio23Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -11249,7 +11283,8 @@ impl Gpio23Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -11272,20 +11307,20 @@ impl Default for Gpio23Val {
 impl Gpio23 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio23Val {
-        Gpio23Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio23Val {
+        Gpio23Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio23Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio23Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio23Val) -> Gpio23Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio23Val) -> Gpio23Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -11297,261 +11332,248 @@ impl Gpio23 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio24 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio24 {}
-unsafe impl Sync for Gpio24 {}
+impl core::ops::Deref for Gpio24 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio24 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -11584,55 +11606,64 @@ impl Gpio24Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio24::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio24::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio24::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio24::DRIVE_MASK) >> Gpio24::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio24::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio24::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio24::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio24::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -11644,7 +11675,8 @@ impl Gpio24Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -11656,7 +11688,8 @@ impl Gpio24Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -11668,7 +11701,8 @@ impl Gpio24Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -11676,7 +11710,8 @@ impl Gpio24Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -11688,7 +11723,8 @@ impl Gpio24Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -11700,7 +11736,8 @@ impl Gpio24Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -11712,7 +11749,8 @@ impl Gpio24Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -11735,20 +11773,20 @@ impl Default for Gpio24Val {
 impl Gpio24 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio24Val {
-        Gpio24Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio24Val {
+        Gpio24Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio24Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio24Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio24Val) -> Gpio24Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio24Val) -> Gpio24Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -11760,261 +11798,248 @@ impl Gpio24 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio25 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio25 {}
-unsafe impl Sync for Gpio25 {}
+impl core::ops::Deref for Gpio25 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio25 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -12047,55 +12072,64 @@ impl Gpio25Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio25::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio25::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio25::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio25::DRIVE_MASK) >> Gpio25::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio25::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio25::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio25::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio25::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -12107,7 +12141,8 @@ impl Gpio25Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -12119,7 +12154,8 @@ impl Gpio25Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -12131,7 +12167,8 @@ impl Gpio25Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -12139,7 +12176,8 @@ impl Gpio25Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -12151,7 +12189,8 @@ impl Gpio25Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -12163,7 +12202,8 @@ impl Gpio25Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -12175,7 +12215,8 @@ impl Gpio25Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -12198,20 +12239,20 @@ impl Default for Gpio25Val {
 impl Gpio25 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio25Val {
-        Gpio25Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio25Val {
+        Gpio25Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio25Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio25Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio25Val) -> Gpio25Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio25Val) -> Gpio25Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -12223,261 +12264,248 @@ impl Gpio25 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio26 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio26 {}
-unsafe impl Sync for Gpio26 {}
+impl core::ops::Deref for Gpio26 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio26 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -12510,55 +12538,64 @@ impl Gpio26Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio26::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio26::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio26::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio26::DRIVE_MASK) >> Gpio26::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio26::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio26::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio26::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio26::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -12570,7 +12607,8 @@ impl Gpio26Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -12582,7 +12620,8 @@ impl Gpio26Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -12594,7 +12633,8 @@ impl Gpio26Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -12602,7 +12642,8 @@ impl Gpio26Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -12614,7 +12655,8 @@ impl Gpio26Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -12626,7 +12668,8 @@ impl Gpio26Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -12638,7 +12681,8 @@ impl Gpio26Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -12661,20 +12705,20 @@ impl Default for Gpio26Val {
 impl Gpio26 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio26Val {
-        Gpio26Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio26Val {
+        Gpio26Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio26Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio26Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio26Val) -> Gpio26Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio26Val) -> Gpio26Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -12686,261 +12730,248 @@ impl Gpio26 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio27 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio27 {}
-unsafe impl Sync for Gpio27 {}
+impl core::ops::Deref for Gpio27 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio27 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -12973,55 +13004,64 @@ impl Gpio27Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio27::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio27::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio27::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio27::DRIVE_MASK) >> Gpio27::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio27::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio27::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio27::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio27::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -13033,7 +13073,8 @@ impl Gpio27Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -13045,7 +13086,8 @@ impl Gpio27Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -13057,7 +13099,8 @@ impl Gpio27Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -13065,7 +13108,8 @@ impl Gpio27Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -13077,7 +13121,8 @@ impl Gpio27Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -13089,7 +13134,8 @@ impl Gpio27Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -13101,7 +13147,8 @@ impl Gpio27Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -13124,20 +13171,20 @@ impl Default for Gpio27Val {
 impl Gpio27 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio27Val {
-        Gpio27Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio27Val {
+        Gpio27Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio27Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio27Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio27Val) -> Gpio27Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio27Val) -> Gpio27Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -13149,261 +13196,248 @@ impl Gpio27 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio28 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio28 {}
-unsafe impl Sync for Gpio28 {}
+impl core::ops::Deref for Gpio28 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio28 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -13436,55 +13470,64 @@ impl Gpio28Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio28::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio28::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio28::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio28::DRIVE_MASK) >> Gpio28::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio28::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio28::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio28::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio28::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -13496,7 +13539,8 @@ impl Gpio28Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -13508,7 +13552,8 @@ impl Gpio28Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -13520,7 +13565,8 @@ impl Gpio28Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -13528,7 +13574,8 @@ impl Gpio28Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -13540,7 +13587,8 @@ impl Gpio28Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -13552,7 +13600,8 @@ impl Gpio28Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -13564,7 +13613,8 @@ impl Gpio28Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -13587,20 +13637,20 @@ impl Default for Gpio28Val {
 impl Gpio28 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio28Val {
-        Gpio28Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio28Val {
+        Gpio28Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio28Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio28Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio28Val) -> Gpio28Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio28Val) -> Gpio28Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -13612,261 +13662,248 @@ impl Gpio28 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio29 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio29 {}
-unsafe impl Sync for Gpio29 {}
+impl core::ops::Deref for Gpio29 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio29 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -13899,55 +13936,64 @@ impl Gpio29Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio29::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio29::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio29::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio29::DRIVE_MASK) >> Gpio29::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio29::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio29::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio29::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio29::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -13959,7 +14005,8 @@ impl Gpio29Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -13971,7 +14018,8 @@ impl Gpio29Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -13983,7 +14031,8 @@ impl Gpio29Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -13991,7 +14040,8 @@ impl Gpio29Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -14003,7 +14053,8 @@ impl Gpio29Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -14015,7 +14066,8 @@ impl Gpio29Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -14027,7 +14079,8 @@ impl Gpio29Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -14050,20 +14103,20 @@ impl Default for Gpio29Val {
 impl Gpio29 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio29Val {
-        Gpio29Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio29Val {
+        Gpio29Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio29Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio29Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio29Val) -> Gpio29Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio29Val) -> Gpio29Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -14075,261 +14128,248 @@ impl Gpio29 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio30 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio30 {}
-unsafe impl Sync for Gpio30 {}
+impl core::ops::Deref for Gpio30 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio30 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -14362,55 +14402,64 @@ impl Gpio30Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio30::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio30::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio30::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio30::DRIVE_MASK) >> Gpio30::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio30::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio30::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio30::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio30::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -14422,7 +14471,8 @@ impl Gpio30Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -14434,7 +14484,8 @@ impl Gpio30Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -14446,7 +14497,8 @@ impl Gpio30Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -14454,7 +14506,8 @@ impl Gpio30Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -14466,7 +14519,8 @@ impl Gpio30Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -14478,7 +14532,8 @@ impl Gpio30Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -14490,7 +14545,8 @@ impl Gpio30Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -14513,20 +14569,20 @@ impl Default for Gpio30Val {
 impl Gpio30 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio30Val {
-        Gpio30Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio30Val {
+        Gpio30Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio30Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio30Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio30Val) -> Gpio30Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio30Val) -> Gpio30Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -14538,261 +14594,248 @@ impl Gpio30 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio31 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio31 {}
-unsafe impl Sync for Gpio31 {}
+impl core::ops::Deref for Gpio31 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio31 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -14825,55 +14868,64 @@ impl Gpio31Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio31::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio31::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio31::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio31::DRIVE_MASK) >> Gpio31::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio31::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio31::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio31::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio31::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -14885,7 +14937,8 @@ impl Gpio31Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -14897,7 +14950,8 @@ impl Gpio31Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -14909,7 +14963,8 @@ impl Gpio31Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -14917,7 +14972,8 @@ impl Gpio31Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -14929,7 +14985,8 @@ impl Gpio31Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -14941,7 +14998,8 @@ impl Gpio31Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -14953,7 +15011,8 @@ impl Gpio31Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -14976,20 +15035,20 @@ impl Default for Gpio31Val {
 impl Gpio31 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio31Val {
-        Gpio31Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio31Val {
+        Gpio31Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio31Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio31Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio31Val) -> Gpio31Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio31Val) -> Gpio31Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -15001,261 +15060,248 @@ impl Gpio31 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio32 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio32 {}
-unsafe impl Sync for Gpio32 {}
+impl core::ops::Deref for Gpio32 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio32 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -15288,55 +15334,64 @@ impl Gpio32Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio32::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio32::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio32::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio32::DRIVE_MASK) >> Gpio32::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio32::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio32::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio32::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio32::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -15348,7 +15403,8 @@ impl Gpio32Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -15360,7 +15416,8 @@ impl Gpio32Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -15372,7 +15429,8 @@ impl Gpio32Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -15380,7 +15438,8 @@ impl Gpio32Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -15392,7 +15451,8 @@ impl Gpio32Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -15404,7 +15464,8 @@ impl Gpio32Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -15416,7 +15477,8 @@ impl Gpio32Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -15439,20 +15501,20 @@ impl Default for Gpio32Val {
 impl Gpio32 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio32Val {
-        Gpio32Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio32Val {
+        Gpio32Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio32Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio32Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio32Val) -> Gpio32Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio32Val) -> Gpio32Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -15464,261 +15526,248 @@ impl Gpio32 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio33 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio33 {}
-unsafe impl Sync for Gpio33 {}
+impl core::ops::Deref for Gpio33 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio33 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -15751,55 +15800,64 @@ impl Gpio33Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio33::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio33::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio33::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio33::DRIVE_MASK) >> Gpio33::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio33::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio33::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio33::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio33::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -15811,7 +15869,8 @@ impl Gpio33Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -15823,7 +15882,8 @@ impl Gpio33Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -15835,7 +15895,8 @@ impl Gpio33Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -15843,7 +15904,8 @@ impl Gpio33Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -15855,7 +15917,8 @@ impl Gpio33Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -15867,7 +15930,8 @@ impl Gpio33Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -15879,7 +15943,8 @@ impl Gpio33Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -15902,20 +15967,20 @@ impl Default for Gpio33Val {
 impl Gpio33 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio33Val {
-        Gpio33Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio33Val {
+        Gpio33Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio33Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio33Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio33Val) -> Gpio33Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio33Val) -> Gpio33Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -15927,261 +15992,248 @@ impl Gpio33 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio34 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio34 {}
-unsafe impl Sync for Gpio34 {}
+impl core::ops::Deref for Gpio34 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio34 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -16214,55 +16266,64 @@ impl Gpio34Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio34::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio34::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio34::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio34::DRIVE_MASK) >> Gpio34::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio34::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio34::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio34::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio34::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -16274,7 +16335,8 @@ impl Gpio34Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -16286,7 +16348,8 @@ impl Gpio34Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -16298,7 +16361,8 @@ impl Gpio34Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -16306,7 +16370,8 @@ impl Gpio34Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -16318,7 +16383,8 @@ impl Gpio34Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -16330,7 +16396,8 @@ impl Gpio34Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -16342,7 +16409,8 @@ impl Gpio34Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -16365,20 +16433,20 @@ impl Default for Gpio34Val {
 impl Gpio34 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio34Val {
-        Gpio34Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio34Val {
+        Gpio34Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio34Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio34Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio34Val) -> Gpio34Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio34Val) -> Gpio34Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -16390,261 +16458,248 @@ impl Gpio34 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio35 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio35 {}
-unsafe impl Sync for Gpio35 {}
+impl core::ops::Deref for Gpio35 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio35 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -16677,55 +16732,64 @@ impl Gpio35Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio35::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio35::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio35::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio35::DRIVE_MASK) >> Gpio35::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio35::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio35::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio35::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio35::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -16737,7 +16801,8 @@ impl Gpio35Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -16749,7 +16814,8 @@ impl Gpio35Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -16761,7 +16827,8 @@ impl Gpio35Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -16769,7 +16836,8 @@ impl Gpio35Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -16781,7 +16849,8 @@ impl Gpio35Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -16793,7 +16862,8 @@ impl Gpio35Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -16805,7 +16875,8 @@ impl Gpio35Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -16828,20 +16899,20 @@ impl Default for Gpio35Val {
 impl Gpio35 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio35Val {
-        Gpio35Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio35Val {
+        Gpio35Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio35Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio35Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio35Val) -> Gpio35Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio35Val) -> Gpio35Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -16853,261 +16924,248 @@ impl Gpio35 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio36 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio36 {}
-unsafe impl Sync for Gpio36 {}
+impl core::ops::Deref for Gpio36 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio36 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -17140,55 +17198,64 @@ impl Gpio36Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio36::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio36::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio36::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio36::DRIVE_MASK) >> Gpio36::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio36::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio36::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio36::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio36::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -17200,7 +17267,8 @@ impl Gpio36Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -17212,7 +17280,8 @@ impl Gpio36Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -17224,7 +17293,8 @@ impl Gpio36Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -17232,7 +17302,8 @@ impl Gpio36Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -17244,7 +17315,8 @@ impl Gpio36Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -17256,7 +17328,8 @@ impl Gpio36Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -17268,7 +17341,8 @@ impl Gpio36Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -17291,20 +17365,20 @@ impl Default for Gpio36Val {
 impl Gpio36 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio36Val {
-        Gpio36Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio36Val {
+        Gpio36Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio36Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio36Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio36Val) -> Gpio36Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio36Val) -> Gpio36Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -17316,261 +17390,248 @@ impl Gpio36 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio37 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio37 {}
-unsafe impl Sync for Gpio37 {}
+impl core::ops::Deref for Gpio37 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio37 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -17603,55 +17664,64 @@ impl Gpio37Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio37::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio37::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio37::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio37::DRIVE_MASK) >> Gpio37::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio37::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio37::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio37::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio37::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -17663,7 +17733,8 @@ impl Gpio37Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -17675,7 +17746,8 @@ impl Gpio37Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -17687,7 +17759,8 @@ impl Gpio37Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -17695,7 +17768,8 @@ impl Gpio37Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -17707,7 +17781,8 @@ impl Gpio37Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -17719,7 +17794,8 @@ impl Gpio37Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -17731,7 +17807,8 @@ impl Gpio37Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -17754,20 +17831,20 @@ impl Default for Gpio37Val {
 impl Gpio37 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio37Val {
-        Gpio37Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio37Val {
+        Gpio37Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio37Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio37Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio37Val) -> Gpio37Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio37Val) -> Gpio37Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -17779,261 +17856,248 @@ impl Gpio37 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio38 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio38 {}
-unsafe impl Sync for Gpio38 {}
+impl core::ops::Deref for Gpio38 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio38 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -18066,55 +18130,64 @@ impl Gpio38Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio38::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio38::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio38::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio38::DRIVE_MASK) >> Gpio38::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio38::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio38::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio38::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio38::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -18126,7 +18199,8 @@ impl Gpio38Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -18138,7 +18212,8 @@ impl Gpio38Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -18150,7 +18225,8 @@ impl Gpio38Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -18158,7 +18234,8 @@ impl Gpio38Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -18170,7 +18247,8 @@ impl Gpio38Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -18182,7 +18260,8 @@ impl Gpio38Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -18194,7 +18273,8 @@ impl Gpio38Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -18217,20 +18297,20 @@ impl Default for Gpio38Val {
 impl Gpio38 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio38Val {
-        Gpio38Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio38Val {
+        Gpio38Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio38Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio38Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio38Val) -> Gpio38Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio38Val) -> Gpio38Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -18242,261 +18322,248 @@ impl Gpio38 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio39 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio39 {}
-unsafe impl Sync for Gpio39 {}
+impl core::ops::Deref for Gpio39 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio39 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -18529,55 +18596,64 @@ impl Gpio39Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio39::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio39::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio39::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio39::DRIVE_MASK) >> Gpio39::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio39::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio39::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio39::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio39::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -18589,7 +18665,8 @@ impl Gpio39Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -18601,7 +18678,8 @@ impl Gpio39Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -18613,7 +18691,8 @@ impl Gpio39Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -18621,7 +18700,8 @@ impl Gpio39Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -18633,7 +18713,8 @@ impl Gpio39Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -18645,7 +18726,8 @@ impl Gpio39Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -18657,7 +18739,8 @@ impl Gpio39Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -18680,20 +18763,20 @@ impl Default for Gpio39Val {
 impl Gpio39 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio39Val {
-        Gpio39Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio39Val {
+        Gpio39Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio39Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio39Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio39Val) -> Gpio39Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio39Val) -> Gpio39Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -18705,261 +18788,248 @@ impl Gpio39 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio40 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio40 {}
-unsafe impl Sync for Gpio40 {}
+impl core::ops::Deref for Gpio40 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio40 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -18992,55 +19062,64 @@ impl Gpio40Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio40::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio40::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio40::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio40::DRIVE_MASK) >> Gpio40::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio40::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio40::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio40::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio40::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -19052,7 +19131,8 @@ impl Gpio40Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -19064,7 +19144,8 @@ impl Gpio40Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -19076,7 +19157,8 @@ impl Gpio40Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -19084,7 +19166,8 @@ impl Gpio40Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -19096,7 +19179,8 @@ impl Gpio40Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -19108,7 +19192,8 @@ impl Gpio40Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -19120,7 +19205,8 @@ impl Gpio40Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -19143,20 +19229,20 @@ impl Default for Gpio40Val {
 impl Gpio40 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio40Val {
-        Gpio40Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio40Val {
+        Gpio40Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio40Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio40Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio40Val) -> Gpio40Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio40Val) -> Gpio40Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -19168,261 +19254,248 @@ impl Gpio40 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio41 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio41 {}
-unsafe impl Sync for Gpio41 {}
+impl core::ops::Deref for Gpio41 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio41 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -19455,55 +19528,64 @@ impl Gpio41Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio41::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio41::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio41::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio41::DRIVE_MASK) >> Gpio41::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio41::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio41::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio41::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio41::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -19515,7 +19597,8 @@ impl Gpio41Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -19527,7 +19610,8 @@ impl Gpio41Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -19539,7 +19623,8 @@ impl Gpio41Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -19547,7 +19632,8 @@ impl Gpio41Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -19559,7 +19645,8 @@ impl Gpio41Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -19571,7 +19658,8 @@ impl Gpio41Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -19583,7 +19671,8 @@ impl Gpio41Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -19606,20 +19695,20 @@ impl Default for Gpio41Val {
 impl Gpio41 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio41Val {
-        Gpio41Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio41Val {
+        Gpio41Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio41Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio41Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio41Val) -> Gpio41Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio41Val) -> Gpio41Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -19631,261 +19720,248 @@ impl Gpio41 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio42 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio42 {}
-unsafe impl Sync for Gpio42 {}
+impl core::ops::Deref for Gpio42 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio42 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -19918,55 +19994,64 @@ impl Gpio42Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio42::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio42::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio42::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio42::DRIVE_MASK) >> Gpio42::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio42::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio42::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio42::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio42::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -19978,7 +20063,8 @@ impl Gpio42Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -19990,7 +20076,8 @@ impl Gpio42Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -20002,7 +20089,8 @@ impl Gpio42Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -20010,7 +20098,8 @@ impl Gpio42Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -20022,7 +20111,8 @@ impl Gpio42Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -20034,7 +20124,8 @@ impl Gpio42Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -20046,7 +20137,8 @@ impl Gpio42Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -20069,20 +20161,20 @@ impl Default for Gpio42Val {
 impl Gpio42 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio42Val {
-        Gpio42Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio42Val {
+        Gpio42Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio42Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio42Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio42Val) -> Gpio42Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio42Val) -> Gpio42Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -20094,261 +20186,248 @@ impl Gpio42 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio43 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio43 {}
-unsafe impl Sync for Gpio43 {}
+impl core::ops::Deref for Gpio43 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio43 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -20381,55 +20460,64 @@ impl Gpio43Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio43::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio43::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio43::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio43::DRIVE_MASK) >> Gpio43::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio43::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio43::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio43::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio43::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -20441,7 +20529,8 @@ impl Gpio43Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -20453,7 +20542,8 @@ impl Gpio43Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -20465,7 +20555,8 @@ impl Gpio43Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -20473,7 +20564,8 @@ impl Gpio43Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -20485,7 +20577,8 @@ impl Gpio43Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -20497,7 +20590,8 @@ impl Gpio43Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -20509,7 +20603,8 @@ impl Gpio43Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -20532,20 +20627,20 @@ impl Default for Gpio43Val {
 impl Gpio43 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio43Val {
-        Gpio43Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio43Val {
+        Gpio43Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio43Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio43Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio43Val) -> Gpio43Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio43Val) -> Gpio43Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -20557,261 +20652,248 @@ impl Gpio43 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio44 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio44 {}
-unsafe impl Sync for Gpio44 {}
+impl core::ops::Deref for Gpio44 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio44 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -20844,55 +20926,64 @@ impl Gpio44Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio44::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio44::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio44::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio44::DRIVE_MASK) >> Gpio44::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio44::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio44::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio44::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio44::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -20904,7 +20995,8 @@ impl Gpio44Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -20916,7 +21008,8 @@ impl Gpio44Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -20928,7 +21021,8 @@ impl Gpio44Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -20936,7 +21030,8 @@ impl Gpio44Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -20948,7 +21043,8 @@ impl Gpio44Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -20960,7 +21056,8 @@ impl Gpio44Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -20972,7 +21069,8 @@ impl Gpio44Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -20995,20 +21093,20 @@ impl Default for Gpio44Val {
 impl Gpio44 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio44Val {
-        Gpio44Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio44Val {
+        Gpio44Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio44Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio44Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio44Val) -> Gpio44Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio44Val) -> Gpio44Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -21020,261 +21118,248 @@ impl Gpio44 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio45 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio45 {}
-unsafe impl Sync for Gpio45 {}
+impl core::ops::Deref for Gpio45 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio45 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -21307,55 +21392,64 @@ impl Gpio45Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio45::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio45::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio45::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio45::DRIVE_MASK) >> Gpio45::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio45::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio45::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio45::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio45::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -21367,7 +21461,8 @@ impl Gpio45Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -21379,7 +21474,8 @@ impl Gpio45Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -21391,7 +21487,8 @@ impl Gpio45Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -21399,7 +21496,8 @@ impl Gpio45Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -21411,7 +21509,8 @@ impl Gpio45Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -21423,7 +21522,8 @@ impl Gpio45Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -21435,7 +21535,8 @@ impl Gpio45Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -21458,20 +21559,20 @@ impl Default for Gpio45Val {
 impl Gpio45 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio45Val {
-        Gpio45Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio45Val {
+        Gpio45Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio45Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio45Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio45Val) -> Gpio45Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio45Val) -> Gpio45Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -21483,261 +21584,248 @@ impl Gpio45 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio46 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio46 {}
-unsafe impl Sync for Gpio46 {}
+impl core::ops::Deref for Gpio46 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio46 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -21770,55 +21858,64 @@ impl Gpio46Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio46::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio46::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio46::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio46::DRIVE_MASK) >> Gpio46::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio46::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio46::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio46::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio46::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -21830,7 +21927,8 @@ impl Gpio46Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -21842,7 +21940,8 @@ impl Gpio46Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -21854,7 +21953,8 @@ impl Gpio46Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -21862,7 +21962,8 @@ impl Gpio46Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -21874,7 +21975,8 @@ impl Gpio46Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -21886,7 +21988,8 @@ impl Gpio46Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -21898,7 +22001,8 @@ impl Gpio46Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -21921,20 +22025,20 @@ impl Default for Gpio46Val {
 impl Gpio46 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio46Val {
-        Gpio46Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio46Val {
+        Gpio46Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio46Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio46Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio46Val) -> Gpio46Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio46Val) -> Gpio46Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -21946,261 +22050,248 @@ impl Gpio46 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Gpio47 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Gpio47 {}
-unsafe impl Sync for Gpio47 {}
+impl core::ops::Deref for Gpio47 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Gpio47 {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -22233,55 +22324,64 @@ impl Gpio47Val {
         Self { bits: 0x00000116 }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Gpio47::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Gpio47::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Gpio47::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Gpio47::DRIVE_MASK) >> Gpio47::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Gpio47::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Gpio47::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Gpio47::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Gpio47::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -22293,7 +22393,8 @@ impl Gpio47Val {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -22305,7 +22406,8 @@ impl Gpio47Val {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -22317,7 +22419,8 @@ impl Gpio47Val {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -22325,7 +22428,8 @@ impl Gpio47Val {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -22337,7 +22441,8 @@ impl Gpio47Val {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -22349,7 +22454,8 @@ impl Gpio47Val {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -22361,7 +22467,8 @@ impl Gpio47Val {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -22384,20 +22491,20 @@ impl Default for Gpio47Val {
 impl Gpio47 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Gpio47Val {
-        Gpio47Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Gpio47Val {
+        Gpio47Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Gpio47Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Gpio47Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Gpio47Val) -> Gpio47Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Gpio47Val) -> Gpio47Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -22409,261 +22516,248 @@ impl Gpio47 {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Swclk {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Swclk {}
-unsafe impl Sync for Swclk {}
+impl core::ops::Deref for Swclk {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Swclk {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -22696,55 +22790,64 @@ impl SwclkVal {
         Self { bits: 0x0000005a }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Swclk::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Swclk::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Swclk::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Swclk::DRIVE_MASK) >> Swclk::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Swclk::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Swclk::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Swclk::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Swclk::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -22756,7 +22859,8 @@ impl SwclkVal {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -22768,7 +22872,8 @@ impl SwclkVal {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -22780,7 +22885,8 @@ impl SwclkVal {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -22788,7 +22894,8 @@ impl SwclkVal {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -22800,7 +22907,8 @@ impl SwclkVal {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -22812,7 +22920,8 @@ impl SwclkVal {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -22824,7 +22933,8 @@ impl SwclkVal {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -22847,20 +22957,20 @@ impl Default for SwclkVal {
 impl Swclk {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> SwclkVal {
-        SwclkVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> SwclkVal {
+        SwclkVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: SwclkVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: SwclkVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(SwclkVal) -> SwclkVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(SwclkVal) -> SwclkVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -22872,261 +22982,248 @@ impl Swclk {
 ///
 /// ## Fields
 ///
-/// - **ISO** [8] (RW): Pad isolation control. Remove this once the pad is configured by software.
-/// - **OD** [7] (RW): Output disable. Has priority over output enable from peripherals
-/// - **IE** [6] (RW): Input enable
-/// - **DRIVE** [5:4] (RW): Drive strength.
-/// - **PUE** [3] (RW): Pull up enable
-/// - **PDE** [2] (RW): Pull down enable
-/// - **SCHMITT** [1] (RW): Enable schmitt trigger
-/// - **SLEWFAST** [0] (RW): Slew rate control. 1 = Fast, 0 = Slow
+/// - **ISO** `[8]` (RW)
+///   Pad isolation control. Remove this once the pad is configured by software.
+/// - **OD** `[7]` (RW)
+///   Output disable. Has priority over output enable from peripherals
+/// - **IE** `[6]` (RW)
+///   Input enable
+/// - **DRIVE** `[5:4]` (RW)
+///   Drive strength.
+/// - **PUE** `[3]` (RW)
+///   Pull up enable
+/// - **PDE** `[2]` (RW)
+///   Pull down enable
+/// - **SCHMITT** `[1]` (RW)
+///   Enable schmitt trigger
+/// - **SLEWFAST** `[0]` (RW)
+///   Slew rate control. 1 = Fast, 0 = Slow
 #[repr(transparent)]
 pub struct Swd {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Swd {}
-unsafe impl Sync for Swd {}
+impl core::ops::Deref for Swd {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Swd {
     // ======== Field Constants ========
 
-    /// ISO - Pad isolation control. Remove this once the pad is configured by software.
-    /// Bits [8:8], mask 0x00000100
+    /// **ISO**
+    /// Pad isolation control. Remove this once the pad is configured by software.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const ISO_OFFSET: u32 = 8;
     pub const ISO_MASK: u32 = 0x00000100;
     pub const ISO: u32 = 1 << 8;
 
-    /// OD - Output disable. Has priority over output enable from peripherals
-    /// Bits [7:7], mask 0x00000080
+    /// **OD**
+    /// Output disable. Has priority over output enable from peripherals
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const OD_OFFSET: u32 = 7;
     pub const OD_MASK: u32 = 0x00000080;
     pub const OD: u32 = 1 << 7;
 
-    /// IE - Input enable
-    /// Bits [6:6], mask 0x00000040
+    /// **IE**
+    /// Input enable
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const IE_OFFSET: u32 = 6;
     pub const IE_MASK: u32 = 0x00000040;
     pub const IE: u32 = 1 << 6;
 
-    /// DRIVE - Drive strength.
-    /// Bits [5:4], mask 0x00000030
+    /// **DRIVE**
+    /// Drive strength.
+    /// Bits `[5:4]`, mask `0x00000030`
     pub const DRIVE_OFFSET: u32 = 4;
     pub const DRIVE_MASK: u32 = 0x00000030;
     pub const DRIVE_2M_A: u32 = 0 << 4;
+    pub const DRIVE_2M_A_VAL: u32 = 0;
     pub const DRIVE_4M_A: u32 = 1 << 4;
+    pub const DRIVE_4M_A_VAL: u32 = 1;
     pub const DRIVE_8M_A: u32 = 2 << 4;
+    pub const DRIVE_8M_A_VAL: u32 = 2;
     pub const DRIVE_12M_A: u32 = 3 << 4;
+    pub const DRIVE_12M_A_VAL: u32 = 3;
 
-    /// PUE - Pull up enable
-    /// Bits [3:3], mask 0x00000008
+    /// **PUE**
+    /// Pull up enable
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const PUE_OFFSET: u32 = 3;
     pub const PUE_MASK: u32 = 0x00000008;
     pub const PUE: u32 = 1 << 3;
 
-    /// PDE - Pull down enable
-    /// Bits [2:2], mask 0x00000004
+    /// **PDE**
+    /// Pull down enable
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const PDE_OFFSET: u32 = 2;
     pub const PDE_MASK: u32 = 0x00000004;
     pub const PDE: u32 = 1 << 2;
 
-    /// SCHMITT - Enable schmitt trigger
-    /// Bits [1:1], mask 0x00000002
+    /// **SCHMITT**
+    /// Enable schmitt trigger
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const SCHMITT_OFFSET: u32 = 1;
     pub const SCHMITT_MASK: u32 = 0x00000002;
     pub const SCHMITT: u32 = 1 << 1;
 
-    /// SLEWFAST - Slew rate control. 1 = Fast, 0 = Slow
-    /// Bits [0:0], mask 0x00000001
+    /// **SLEWFAST**
+    /// Slew rate control. 1 = Fast, 0 = Slow
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const SLEWFAST_OFFSET: u32 = 0;
     pub const SLEWFAST_MASK: u32 = 0x00000001;
     pub const SLEWFAST: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ISO** [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// **ISO** `[8]` (RW)
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub fn iso(&self) -> bool {
-        (self.read_bits() & Self::ISO_MASK) != 0
+        (self.value.read_bits() & Self::ISO_MASK) != 0
     }
 
-    /// Set ISO bit
+    /// Set ISO bit atomically (RW)
     #[inline(always)]
     pub fn set_iso(&self) {
-        self.set_bits(Self::ISO_MASK);
+        self.value.set_bits(Self::ISO_MASK);
     }
 
-    /// Clear ISO bit
+    /// Clear ISO bit atomically (RW)
     #[inline(always)]
     pub fn clr_iso(&self) {
-        self.clr_bits(Self::ISO_MASK);
+        self.value.clr_bits(Self::ISO_MASK);
     }
 
-    /// **OD** [7:7]: Output disable. Has priority over output enable from peripherals
+    /// **OD** `[7]` (RW)
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub fn od(&self) -> bool {
-        (self.read_bits() & Self::OD_MASK) != 0
+        (self.value.read_bits() & Self::OD_MASK) != 0
     }
 
-    /// Set OD bit
+    /// Set OD bit atomically (RW)
     #[inline(always)]
     pub fn set_od(&self) {
-        self.set_bits(Self::OD_MASK);
+        self.value.set_bits(Self::OD_MASK);
     }
 
-    /// Clear OD bit
+    /// Clear OD bit atomically (RW)
     #[inline(always)]
     pub fn clr_od(&self) {
-        self.clr_bits(Self::OD_MASK);
+        self.value.clr_bits(Self::OD_MASK);
     }
 
-    /// **IE** [6:6]: Input enable
+    /// **IE** `[6]` (RW)
+    /// Input enable
     #[inline(always)]
     pub fn ie(&self) -> bool {
-        (self.read_bits() & Self::IE_MASK) != 0
+        (self.value.read_bits() & Self::IE_MASK) != 0
     }
 
-    /// Set IE bit
+    /// Set IE bit atomically (RW)
     #[inline(always)]
     pub fn set_ie(&self) {
-        self.set_bits(Self::IE_MASK);
+        self.value.set_bits(Self::IE_MASK);
     }
 
-    /// Clear IE bit
+    /// Clear IE bit atomically (RW)
     #[inline(always)]
     pub fn clr_ie(&self) {
-        self.clr_bits(Self::IE_MASK);
+        self.value.clr_bits(Self::IE_MASK);
     }
 
-    /// **DRIVE** [5:4]: Drive strength.
+    /// **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn drive(&self) -> u32 {
-        (self.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
+        (self.value.read_bits() & Self::DRIVE_MASK) >> Self::DRIVE_OFFSET
     }
 
-    /// Write DRIVE field
+    /// Write **DRIVE** `[5:4]` (RW)
+    /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
     }
 
-    /// **PUE** [3:3]: Pull up enable
+    /// **PUE** `[3]` (RW)
+    /// Pull up enable
     #[inline(always)]
     pub fn pue(&self) -> bool {
-        (self.read_bits() & Self::PUE_MASK) != 0
+        (self.value.read_bits() & Self::PUE_MASK) != 0
     }
 
-    /// Set PUE bit
+    /// Set PUE bit atomically (RW)
     #[inline(always)]
     pub fn set_pue(&self) {
-        self.set_bits(Self::PUE_MASK);
+        self.value.set_bits(Self::PUE_MASK);
     }
 
-    /// Clear PUE bit
+    /// Clear PUE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pue(&self) {
-        self.clr_bits(Self::PUE_MASK);
+        self.value.clr_bits(Self::PUE_MASK);
     }
 
-    /// **PDE** [2:2]: Pull down enable
+    /// **PDE** `[2]` (RW)
+    /// Pull down enable
     #[inline(always)]
     pub fn pde(&self) -> bool {
-        (self.read_bits() & Self::PDE_MASK) != 0
+        (self.value.read_bits() & Self::PDE_MASK) != 0
     }
 
-    /// Set PDE bit
+    /// Set PDE bit atomically (RW)
     #[inline(always)]
     pub fn set_pde(&self) {
-        self.set_bits(Self::PDE_MASK);
+        self.value.set_bits(Self::PDE_MASK);
     }
 
-    /// Clear PDE bit
+    /// Clear PDE bit atomically (RW)
     #[inline(always)]
     pub fn clr_pde(&self) {
-        self.clr_bits(Self::PDE_MASK);
+        self.value.clr_bits(Self::PDE_MASK);
     }
 
-    /// **SCHMITT** [1:1]: Enable schmitt trigger
+    /// **SCHMITT** `[1]` (RW)
+    /// Enable schmitt trigger
     #[inline(always)]
     pub fn schmitt(&self) -> bool {
-        (self.read_bits() & Self::SCHMITT_MASK) != 0
+        (self.value.read_bits() & Self::SCHMITT_MASK) != 0
     }
 
-    /// Set SCHMITT bit
+    /// Set SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn set_schmitt(&self) {
-        self.set_bits(Self::SCHMITT_MASK);
+        self.value.set_bits(Self::SCHMITT_MASK);
     }
 
-    /// Clear SCHMITT bit
+    /// Clear SCHMITT bit atomically (RW)
     #[inline(always)]
     pub fn clr_schmitt(&self) {
-        self.clr_bits(Self::SCHMITT_MASK);
+        self.value.clr_bits(Self::SCHMITT_MASK);
     }
 
-    /// **SLEWFAST** [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// **SLEWFAST** `[0]` (RW)
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub fn slewfast(&self) -> bool {
-        (self.read_bits() & Self::SLEWFAST_MASK) != 0
+        (self.value.read_bits() & Self::SLEWFAST_MASK) != 0
     }
 
-    /// Set SLEWFAST bit
+    /// Set SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn set_slewfast(&self) {
-        self.set_bits(Self::SLEWFAST_MASK);
+        self.value.set_bits(Self::SLEWFAST_MASK);
     }
 
-    /// Clear SLEWFAST bit
+    /// Clear SLEWFAST bit atomically (RW)
     #[inline(always)]
     pub fn clr_slewfast(&self) {
-        self.clr_bits(Self::SLEWFAST_MASK);
+        self.value.clr_bits(Self::SLEWFAST_MASK);
     }
 
 }
@@ -23159,55 +23256,64 @@ impl SwdVal {
         Self { bits: 0x0000005a }
     }
 
-    /// Read ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Read **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn iso(&self) -> bool {
         (self.bits & Swd::ISO_MASK) != 0
     }
 
-    /// Read OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Read **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn od(&self) -> bool {
         (self.bits & Swd::OD_MASK) != 0
     }
 
-    /// Read IE [6:6]: Input enable
+    /// Read **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn ie(&self) -> bool {
         (self.bits & Swd::IE_MASK) != 0
     }
 
-    /// Read DRIVE [5:4]: Drive strength.
+    /// Read **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn drive(&self) -> u32 {
         (self.bits & Swd::DRIVE_MASK) >> Swd::DRIVE_OFFSET
     }
 
-    /// Read PUE [3:3]: Pull up enable
+    /// Read **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn pue(&self) -> bool {
         (self.bits & Swd::PUE_MASK) != 0
     }
 
-    /// Read PDE [2:2]: Pull down enable
+    /// Read **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn pde(&self) -> bool {
         (self.bits & Swd::PDE_MASK) != 0
     }
 
-    /// Read SCHMITT [1:1]: Enable schmitt trigger
+    /// Read **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn schmitt(&self) -> bool {
         (self.bits & Swd::SCHMITT_MASK) != 0
     }
 
-    /// Read SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Read **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn slewfast(&self) -> bool {
         (self.bits & Swd::SLEWFAST_MASK) != 0
     }
 
-    /// Set ISO [8:8]: Pad isolation control. Remove this once the pad is configured by software.
+    /// Set **ISO** `[8:8]`
+    /// Pad isolation control. Remove this once the pad is configured by software.
     #[inline(always)]
     pub const fn with_iso(self, value: bool) -> Self {
         Self {
@@ -23219,7 +23325,8 @@ impl SwdVal {
         }
     }
 
-    /// Set OD [7:7]: Output disable. Has priority over output enable from peripherals
+    /// Set **OD** `[7:7]`
+    /// Output disable. Has priority over output enable from peripherals
     #[inline(always)]
     pub const fn with_od(self, value: bool) -> Self {
         Self {
@@ -23231,7 +23338,8 @@ impl SwdVal {
         }
     }
 
-    /// Set IE [6:6]: Input enable
+    /// Set **IE** `[6:6]`
+    /// Input enable
     #[inline(always)]
     pub const fn with_ie(self, value: bool) -> Self {
         Self {
@@ -23243,7 +23351,8 @@ impl SwdVal {
         }
     }
 
-    /// Set DRIVE [5:4]: Drive strength.
+    /// Set **DRIVE** `[5:4]`
+    /// Drive strength.
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
@@ -23251,7 +23360,8 @@ impl SwdVal {
         }
     }
 
-    /// Set PUE [3:3]: Pull up enable
+    /// Set **PUE** `[3:3]`
+    /// Pull up enable
     #[inline(always)]
     pub const fn with_pue(self, value: bool) -> Self {
         Self {
@@ -23263,7 +23373,8 @@ impl SwdVal {
         }
     }
 
-    /// Set PDE [2:2]: Pull down enable
+    /// Set **PDE** `[2:2]`
+    /// Pull down enable
     #[inline(always)]
     pub const fn with_pde(self, value: bool) -> Self {
         Self {
@@ -23275,7 +23386,8 @@ impl SwdVal {
         }
     }
 
-    /// Set SCHMITT [1:1]: Enable schmitt trigger
+    /// Set **SCHMITT** `[1:1]`
+    /// Enable schmitt trigger
     #[inline(always)]
     pub const fn with_schmitt(self, value: bool) -> Self {
         Self {
@@ -23287,7 +23399,8 @@ impl SwdVal {
         }
     }
 
-    /// Set SLEWFAST [0:0]: Slew rate control. 1 = Fast, 0 = Slow
+    /// Set **SLEWFAST** `[0:0]`
+    /// Slew rate control. 1 = Fast, 0 = Slow
     #[inline(always)]
     pub const fn with_slewfast(self, value: bool) -> Self {
         Self {
@@ -23310,20 +23423,20 @@ impl Default for SwdVal {
 impl Swd {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> SwdVal {
-        SwdVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> SwdVal {
+        SwdVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: SwdVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: SwdVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(SwdVal) -> SwdVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(SwdVal) -> SwdVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -23331,7 +23444,8 @@ impl Swd {
 /// Register block
 #[repr(C)]
 pub struct RegisterBlock {
-    /// 0x0000 - Voltage select. Per bank control
+    /// 0x0000
+    /// Voltage select. Per bank control
     pub voltage_select: VoltageSelect,
     /// 0x0004
     pub gpio0: Gpio0,

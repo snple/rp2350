@@ -1,4 +1,4 @@
-//! PLL_SYS - 
+//! PLL_SYS
 
 #![allow(dead_code)]
 
@@ -6,154 +6,138 @@ pub const BASE: u32 = 0x40050000;
 
 /// CS Register
 ///
-/// Control and Status GENERAL CONSTRAINTS: Reference clock frequency min=5MHz,
-/// max=800MHz Feedback divider min=16, max=320 VCO frequency min=750MHz,
-/// max=1600MHz
+/// Control and Status
+/// GENERAL CONSTRAINTS:
+/// Reference clock frequency min=5MHz, max=800MHz
+/// Feedback divider min=16, max=320
+/// VCO frequency min=750MHz, max=1600MHz
 ///
 /// Address offset: 0x0000
 /// Reset value: 0x00000001
 ///
 /// ## Fields
 ///
-/// - **LOCK** [31] (RO): PLL is locked
-/// - **LOCK_N** [30] (RW): PLL is not locked Ideally this is cleared when PLL lock is seen and this sh...
-/// - **BYPASS** [8] (RW): Passes the reference clock to the output instead of the divided VCO. The VC...
-/// - **REFDIV** [5:0] (RW): Divides the PLL input reference clock. Behaviour is undefined for div=0. PL...
+/// - **LOCK** `[31]` (RO)
+///   PLL is locked
+/// - **LOCK_N** `[30]` (RW)
+///   PLL is not locked
+///   Ideally this is cleared when PLL lock is seen and this should never normally be set
+/// - **BYPASS** `[8]` (RW)
+///   Passes the reference clock to the output instead of the divided VCO. The VCO continues to run so the user can switch between the reference clock and the divided VCO but the output will glitch when doing so.
+/// - **REFDIV** `[5:0]` (RW)
+///   Divides the PLL input reference clock.
+///   Behaviour is undefined for div=0.
+///   PLL output will be unpredictable during refdiv changes, wait for lock=1 before using it.
 #[repr(transparent)]
 pub struct Cs {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Cs {}
-unsafe impl Sync for Cs {}
+impl core::ops::Deref for Cs {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Cs {
     // ======== Field Constants ========
 
-    /// LOCK - PLL is locked
-    /// Bits [31:31], mask 0x80000000
+    /// **LOCK**
+    /// PLL is locked
+    /// Bits `[31:31]`, mask `0x80000000`
     pub const LOCK_OFFSET: u32 = 31;
     pub const LOCK_MASK: u32 = 0x80000000;
     pub const LOCK: u32 = 1 << 31;
 
-    /// LOCK_N - PLL is not locked Ideally this is cleared when PLL lock is seen and this sh...
-    /// Bits [30:30], mask 0x40000000
+    /// **LOCK_N**
+    /// PLL is not locked
+    /// Ideally this is cleared when PLL lock is seen and this should never normally be set
+    /// Bits `[30:30]`, mask `0x40000000`
     pub const LOCK_N_OFFSET: u32 = 30;
     pub const LOCK_N_MASK: u32 = 0x40000000;
     pub const LOCK_N: u32 = 1 << 30;
 
-    /// BYPASS - Passes the reference clock to the output instead of the divided VCO. The VC...
-    /// Bits [8:8], mask 0x00000100
+    /// **BYPASS**
+    /// Passes the reference clock to the output instead of the divided VCO. The VCO continues to run so the user can switch between the reference clock and the divided VCO but the output will glitch when doing so.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const BYPASS_OFFSET: u32 = 8;
     pub const BYPASS_MASK: u32 = 0x00000100;
     pub const BYPASS: u32 = 1 << 8;
 
-    /// REFDIV - Divides the PLL input reference clock. Behaviour is undefined for div=0. PL...
-    /// Bits [5:0], mask 0x0000003f
+    /// **REFDIV**
+    /// Divides the PLL input reference clock.
+    /// Behaviour is undefined for div=0.
+    /// PLL output will be unpredictable during refdiv changes, wait for lock=1 before using it.
+    /// Bits `[5:0]`, mask `0x0000003f`
     pub const REFDIV_OFFSET: u32 = 0;
     pub const REFDIV_MASK: u32 = 0x0000003f;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **LOCK** [31:31]: PLL is locked
+    /// **LOCK** `[31]` (RO)
+    /// PLL is locked
     #[inline(always)]
     pub fn lock(&self) -> bool {
-        (self.read_bits() & Self::LOCK_MASK) != 0
+        (self.value.read_bits() & Self::LOCK_MASK) != 0
     }
 
-    /// **LOCK_N** [30:30]: PLL is not locked Ideally this is cleared when PLL lock is seen and this sh...
+    /// **LOCK_N** `[30]` (RW)
+    /// PLL is not locked
+    /// Ideally this is cleared when PLL lock is seen and this should never normally be set
     #[inline(always)]
     pub fn lock_n(&self) -> bool {
-        (self.read_bits() & Self::LOCK_N_MASK) != 0
+        (self.value.read_bits() & Self::LOCK_N_MASK) != 0
     }
 
-    /// Set LOCK_N bit
+    /// Set LOCK_N bit atomically (RW)
     #[inline(always)]
     pub fn set_lock_n(&self) {
-        self.set_bits(Self::LOCK_N_MASK);
+        self.value.set_bits(Self::LOCK_N_MASK);
     }
 
-    /// Clear LOCK_N bit
+    /// Clear LOCK_N bit atomically (RW)
     #[inline(always)]
     pub fn clr_lock_n(&self) {
-        self.clr_bits(Self::LOCK_N_MASK);
+        self.value.clr_bits(Self::LOCK_N_MASK);
     }
 
-    /// **BYPASS** [8:8]: Passes the reference clock to the output instead of the divided VCO. The VC...
+    /// **BYPASS** `[8]` (RW)
+    /// Passes the reference clock to the output instead of the divided VCO. The VCO continues to run so the user can switch between the reference clock and the divided VCO but the output will glitch when doing so.
     #[inline(always)]
     pub fn bypass(&self) -> bool {
-        (self.read_bits() & Self::BYPASS_MASK) != 0
+        (self.value.read_bits() & Self::BYPASS_MASK) != 0
     }
 
-    /// Set BYPASS bit
+    /// Set BYPASS bit atomically (RW)
     #[inline(always)]
     pub fn set_bypass(&self) {
-        self.set_bits(Self::BYPASS_MASK);
+        self.value.set_bits(Self::BYPASS_MASK);
     }
 
-    /// Clear BYPASS bit
+    /// Clear BYPASS bit atomically (RW)
     #[inline(always)]
     pub fn clr_bypass(&self) {
-        self.clr_bits(Self::BYPASS_MASK);
+        self.value.clr_bits(Self::BYPASS_MASK);
     }
 
-    /// **REFDIV** [5:0]: Divides the PLL input reference clock. Behaviour is undefined for div=0. PL...
+    /// **REFDIV** `[5:0]` (RW)
+    /// Divides the PLL input reference clock.
+    /// Behaviour is undefined for div=0.
+    /// PLL output will be unpredictable during refdiv changes, wait for lock=1 before using it.
     #[inline(always)]
     pub fn refdiv(&self) -> u32 {
-        (self.read_bits() & Self::REFDIV_MASK) >> Self::REFDIV_OFFSET
+        (self.value.read_bits() & Self::REFDIV_MASK) >> Self::REFDIV_OFFSET
     }
 
-    /// Write REFDIV field
+    /// Write **REFDIV** `[5:0]` (RW)
+    /// Divides the PLL input reference clock.
+    /// Behaviour is undefined for div=0.
+    /// PLL output will be unpredictable during refdiv changes, wait for lock=1 before using it.
     #[inline(always)]
     pub fn write_refdiv(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::REFDIV_MASK) | ((value << Self::REFDIV_OFFSET) & Self::REFDIV_MASK));
+        self.value.modify_bits(|r| (r & !Self::REFDIV_MASK) | ((value << Self::REFDIV_OFFSET) & Self::REFDIV_MASK));
     }
 
 }
@@ -186,31 +170,40 @@ impl CsVal {
         Self { bits: 0x00000001 }
     }
 
-    /// Read LOCK [31:31]: PLL is locked
+    /// Read **LOCK** `[31:31]`
+    /// PLL is locked
     #[inline(always)]
     pub const fn lock(&self) -> bool {
         (self.bits & Cs::LOCK_MASK) != 0
     }
 
-    /// Read LOCK_N [30:30]: PLL is not locked Ideally this is cleared when PLL lock is seen and this sh...
+    /// Read **LOCK_N** `[30:30]`
+    /// PLL is not locked
+    /// Ideally this is cleared when PLL lock is seen and this should never normally be set
     #[inline(always)]
     pub const fn lock_n(&self) -> bool {
         (self.bits & Cs::LOCK_N_MASK) != 0
     }
 
-    /// Read BYPASS [8:8]: Passes the reference clock to the output instead of the divided VCO. The VC...
+    /// Read **BYPASS** `[8:8]`
+    /// Passes the reference clock to the output instead of the divided VCO. The VCO continues to run so the user can switch between the reference clock and the divided VCO but the output will glitch when doing so.
     #[inline(always)]
     pub const fn bypass(&self) -> bool {
         (self.bits & Cs::BYPASS_MASK) != 0
     }
 
-    /// Read REFDIV [5:0]: Divides the PLL input reference clock. Behaviour is undefined for div=0. PL...
+    /// Read **REFDIV** `[5:0]`
+    /// Divides the PLL input reference clock.
+    /// Behaviour is undefined for div=0.
+    /// PLL output will be unpredictable during refdiv changes, wait for lock=1 before using it.
     #[inline(always)]
     pub const fn refdiv(&self) -> u32 {
         (self.bits & Cs::REFDIV_MASK) >> Cs::REFDIV_OFFSET
     }
 
-    /// Set LOCK_N [30:30]: PLL is not locked Ideally this is cleared when PLL lock is seen and this sh...
+    /// Set **LOCK_N** `[30:30]`
+    /// PLL is not locked
+    /// Ideally this is cleared when PLL lock is seen and this should never normally be set
     #[inline(always)]
     pub const fn with_lock_n(self, value: bool) -> Self {
         Self {
@@ -222,7 +215,8 @@ impl CsVal {
         }
     }
 
-    /// Set BYPASS [8:8]: Passes the reference clock to the output instead of the divided VCO. The VC...
+    /// Set **BYPASS** `[8:8]`
+    /// Passes the reference clock to the output instead of the divided VCO. The VCO continues to run so the user can switch between the reference clock and the divided VCO but the output will glitch when doing so.
     #[inline(always)]
     pub const fn with_bypass(self, value: bool) -> Self {
         Self {
@@ -234,7 +228,10 @@ impl CsVal {
         }
     }
 
-    /// Set REFDIV [5:0]: Divides the PLL input reference clock. Behaviour is undefined for div=0. PL...
+    /// Set **REFDIV** `[5:0]`
+    /// Divides the PLL input reference clock.
+    /// Behaviour is undefined for div=0.
+    /// PLL output will be unpredictable during refdiv changes, wait for lock=1 before using it.
     #[inline(always)]
     pub const fn with_refdiv(self, value: u32) -> Self {
         Self {
@@ -253,20 +250,20 @@ impl Default for CsVal {
 impl Cs {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> CsVal {
-        CsVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> CsVal {
+        CsVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: CsVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: CsVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(CsVal) -> CsVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(CsVal) -> CsVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -280,164 +277,146 @@ impl Cs {
 ///
 /// ## Fields
 ///
-/// - **VCOPD** [5] (RW): PLL VCO powerdown To save power set high when PLL output not required or by...
-/// - **POSTDIVPD** [3] (RW): PLL post divider powerdown To save power set high when PLL output not requi...
-/// - **DSMPD** [2] (RW): PLL DSM powerdown Nothing is achieved by setting this low.
-/// - **PD** [0] (RW): PLL powerdown To save power set high when PLL output not required.
+/// - **VCOPD** `[5]` (RW)
+///   PLL VCO powerdown
+///   To save power set high when PLL output not required or bypass=1.
+/// - **POSTDIVPD** `[3]` (RW)
+///   PLL post divider powerdown
+///   To save power set high when PLL output not required or bypass=1.
+/// - **DSMPD** `[2]` (RW)
+///   PLL DSM powerdown
+///   Nothing is achieved by setting this low.
+/// - **PD** `[0]` (RW)
+///   PLL powerdown
+///   To save power set high when PLL output not required.
 #[repr(transparent)]
 pub struct Pwr {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Pwr {}
-unsafe impl Sync for Pwr {}
+impl core::ops::Deref for Pwr {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Pwr {
     // ======== Field Constants ========
 
-    /// VCOPD - PLL VCO powerdown To save power set high when PLL output not required or by...
-    /// Bits [5:5], mask 0x00000020
+    /// **VCOPD**
+    /// PLL VCO powerdown
+    /// To save power set high when PLL output not required or bypass=1.
+    /// Bits `[5:5]`, mask `0x00000020`
     pub const VCOPD_OFFSET: u32 = 5;
     pub const VCOPD_MASK: u32 = 0x00000020;
     pub const VCOPD: u32 = 1 << 5;
 
-    /// POSTDIVPD - PLL post divider powerdown To save power set high when PLL output not requi...
-    /// Bits [3:3], mask 0x00000008
+    /// **POSTDIVPD**
+    /// PLL post divider powerdown
+    /// To save power set high when PLL output not required or bypass=1.
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const POSTDIVPD_OFFSET: u32 = 3;
     pub const POSTDIVPD_MASK: u32 = 0x00000008;
     pub const POSTDIVPD: u32 = 1 << 3;
 
-    /// DSMPD - PLL DSM powerdown Nothing is achieved by setting this low.
-    /// Bits [2:2], mask 0x00000004
+    /// **DSMPD**
+    /// PLL DSM powerdown
+    /// Nothing is achieved by setting this low.
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const DSMPD_OFFSET: u32 = 2;
     pub const DSMPD_MASK: u32 = 0x00000004;
     pub const DSMPD: u32 = 1 << 2;
 
-    /// PD - PLL powerdown To save power set high when PLL output not required.
-    /// Bits [0:0], mask 0x00000001
+    /// **PD**
+    /// PLL powerdown
+    /// To save power set high when PLL output not required.
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const PD_OFFSET: u32 = 0;
     pub const PD_MASK: u32 = 0x00000001;
     pub const PD: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **VCOPD** [5:5]: PLL VCO powerdown To save power set high when PLL output not required or by...
+    /// **VCOPD** `[5]` (RW)
+    /// PLL VCO powerdown
+    /// To save power set high when PLL output not required or bypass=1.
     #[inline(always)]
     pub fn vcopd(&self) -> bool {
-        (self.read_bits() & Self::VCOPD_MASK) != 0
+        (self.value.read_bits() & Self::VCOPD_MASK) != 0
     }
 
-    /// Set VCOPD bit
+    /// Set VCOPD bit atomically (RW)
     #[inline(always)]
     pub fn set_vcopd(&self) {
-        self.set_bits(Self::VCOPD_MASK);
+        self.value.set_bits(Self::VCOPD_MASK);
     }
 
-    /// Clear VCOPD bit
+    /// Clear VCOPD bit atomically (RW)
     #[inline(always)]
     pub fn clr_vcopd(&self) {
-        self.clr_bits(Self::VCOPD_MASK);
+        self.value.clr_bits(Self::VCOPD_MASK);
     }
 
-    /// **POSTDIVPD** [3:3]: PLL post divider powerdown To save power set high when PLL output not requi...
+    /// **POSTDIVPD** `[3]` (RW)
+    /// PLL post divider powerdown
+    /// To save power set high when PLL output not required or bypass=1.
     #[inline(always)]
     pub fn postdivpd(&self) -> bool {
-        (self.read_bits() & Self::POSTDIVPD_MASK) != 0
+        (self.value.read_bits() & Self::POSTDIVPD_MASK) != 0
     }
 
-    /// Set POSTDIVPD bit
+    /// Set POSTDIVPD bit atomically (RW)
     #[inline(always)]
     pub fn set_postdivpd(&self) {
-        self.set_bits(Self::POSTDIVPD_MASK);
+        self.value.set_bits(Self::POSTDIVPD_MASK);
     }
 
-    /// Clear POSTDIVPD bit
+    /// Clear POSTDIVPD bit atomically (RW)
     #[inline(always)]
     pub fn clr_postdivpd(&self) {
-        self.clr_bits(Self::POSTDIVPD_MASK);
+        self.value.clr_bits(Self::POSTDIVPD_MASK);
     }
 
-    /// **DSMPD** [2:2]: PLL DSM powerdown Nothing is achieved by setting this low.
+    /// **DSMPD** `[2]` (RW)
+    /// PLL DSM powerdown
+    /// Nothing is achieved by setting this low.
     #[inline(always)]
     pub fn dsmpd(&self) -> bool {
-        (self.read_bits() & Self::DSMPD_MASK) != 0
+        (self.value.read_bits() & Self::DSMPD_MASK) != 0
     }
 
-    /// Set DSMPD bit
+    /// Set DSMPD bit atomically (RW)
     #[inline(always)]
     pub fn set_dsmpd(&self) {
-        self.set_bits(Self::DSMPD_MASK);
+        self.value.set_bits(Self::DSMPD_MASK);
     }
 
-    /// Clear DSMPD bit
+    /// Clear DSMPD bit atomically (RW)
     #[inline(always)]
     pub fn clr_dsmpd(&self) {
-        self.clr_bits(Self::DSMPD_MASK);
+        self.value.clr_bits(Self::DSMPD_MASK);
     }
 
-    /// **PD** [0:0]: PLL powerdown To save power set high when PLL output not required.
+    /// **PD** `[0]` (RW)
+    /// PLL powerdown
+    /// To save power set high when PLL output not required.
     #[inline(always)]
     pub fn pd(&self) -> bool {
-        (self.read_bits() & Self::PD_MASK) != 0
+        (self.value.read_bits() & Self::PD_MASK) != 0
     }
 
-    /// Set PD bit
+    /// Set PD bit atomically (RW)
     #[inline(always)]
     pub fn set_pd(&self) {
-        self.set_bits(Self::PD_MASK);
+        self.value.set_bits(Self::PD_MASK);
     }
 
-    /// Clear PD bit
+    /// Clear PD bit atomically (RW)
     #[inline(always)]
     pub fn clr_pd(&self) {
-        self.clr_bits(Self::PD_MASK);
+        self.value.clr_bits(Self::PD_MASK);
     }
 
 }
@@ -470,31 +449,41 @@ impl PwrVal {
         Self { bits: 0x0000002d }
     }
 
-    /// Read VCOPD [5:5]: PLL VCO powerdown To save power set high when PLL output not required or by...
+    /// Read **VCOPD** `[5:5]`
+    /// PLL VCO powerdown
+    /// To save power set high when PLL output not required or bypass=1.
     #[inline(always)]
     pub const fn vcopd(&self) -> bool {
         (self.bits & Pwr::VCOPD_MASK) != 0
     }
 
-    /// Read POSTDIVPD [3:3]: PLL post divider powerdown To save power set high when PLL output not requi...
+    /// Read **POSTDIVPD** `[3:3]`
+    /// PLL post divider powerdown
+    /// To save power set high when PLL output not required or bypass=1.
     #[inline(always)]
     pub const fn postdivpd(&self) -> bool {
         (self.bits & Pwr::POSTDIVPD_MASK) != 0
     }
 
-    /// Read DSMPD [2:2]: PLL DSM powerdown Nothing is achieved by setting this low.
+    /// Read **DSMPD** `[2:2]`
+    /// PLL DSM powerdown
+    /// Nothing is achieved by setting this low.
     #[inline(always)]
     pub const fn dsmpd(&self) -> bool {
         (self.bits & Pwr::DSMPD_MASK) != 0
     }
 
-    /// Read PD [0:0]: PLL powerdown To save power set high when PLL output not required.
+    /// Read **PD** `[0:0]`
+    /// PLL powerdown
+    /// To save power set high when PLL output not required.
     #[inline(always)]
     pub const fn pd(&self) -> bool {
         (self.bits & Pwr::PD_MASK) != 0
     }
 
-    /// Set VCOPD [5:5]: PLL VCO powerdown To save power set high when PLL output not required or by...
+    /// Set **VCOPD** `[5:5]`
+    /// PLL VCO powerdown
+    /// To save power set high when PLL output not required or bypass=1.
     #[inline(always)]
     pub const fn with_vcopd(self, value: bool) -> Self {
         Self {
@@ -506,7 +495,9 @@ impl PwrVal {
         }
     }
 
-    /// Set POSTDIVPD [3:3]: PLL post divider powerdown To save power set high when PLL output not requi...
+    /// Set **POSTDIVPD** `[3:3]`
+    /// PLL post divider powerdown
+    /// To save power set high when PLL output not required or bypass=1.
     #[inline(always)]
     pub const fn with_postdivpd(self, value: bool) -> Self {
         Self {
@@ -518,7 +509,9 @@ impl PwrVal {
         }
     }
 
-    /// Set DSMPD [2:2]: PLL DSM powerdown Nothing is achieved by setting this low.
+    /// Set **DSMPD** `[2:2]`
+    /// PLL DSM powerdown
+    /// Nothing is achieved by setting this low.
     #[inline(always)]
     pub const fn with_dsmpd(self, value: bool) -> Self {
         Self {
@@ -530,7 +523,9 @@ impl PwrVal {
         }
     }
 
-    /// Set PD [0:0]: PLL powerdown To save power set high when PLL output not required.
+    /// Set **PD** `[0:0]`
+    /// PLL powerdown
+    /// To save power set high when PLL output not required.
     #[inline(always)]
     pub const fn with_pd(self, value: bool) -> Self {
         Self {
@@ -553,109 +548,72 @@ impl Default for PwrVal {
 impl Pwr {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> PwrVal {
-        PwrVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> PwrVal {
+        PwrVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: PwrVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: PwrVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(PwrVal) -> PwrVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(PwrVal) -> PwrVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// FBDIV_INT Register
 ///
-/// Feedback divisor (note: this PLL does not support fractional division)
+/// Feedback divisor
+/// (note: this PLL does not support fractional division)
 ///
 /// Address offset: 0x0008
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **FBDIV_INT** [11:0] (RW): see ctrl reg description for constraints
+/// - **FBDIV_INT** `[11:0]` (RW)
+///   see ctrl reg description for constraints
 #[repr(transparent)]
 pub struct FbdivInt {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for FbdivInt {}
-unsafe impl Sync for FbdivInt {}
+impl core::ops::Deref for FbdivInt {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl FbdivInt {
     // ======== Field Constants ========
 
-    /// FBDIV_INT - see ctrl reg description for constraints
-    /// Bits [11:0], mask 0x00000fff
+    /// **FBDIV_INT**
+    /// see ctrl reg description for constraints
+    /// Bits `[11:0]`, mask `0x00000fff`
     pub const FBDIV_INT_OFFSET: u32 = 0;
     pub const FBDIV_INT_MASK: u32 = 0x00000fff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **FBDIV_INT** [11:0]: see ctrl reg description for constraints
+    /// **FBDIV_INT** `[11:0]` (RW)
+    /// see ctrl reg description for constraints
     #[inline(always)]
     pub fn fbdiv_int(&self) -> u32 {
-        (self.read_bits() & Self::FBDIV_INT_MASK) >> Self::FBDIV_INT_OFFSET
+        (self.value.read_bits() & Self::FBDIV_INT_MASK) >> Self::FBDIV_INT_OFFSET
     }
 
-    /// Write FBDIV_INT field
+    /// Write **FBDIV_INT** `[11:0]` (RW)
+    /// see ctrl reg description for constraints
     #[inline(always)]
     pub fn write_fbdiv_int(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::FBDIV_INT_MASK) | ((value << Self::FBDIV_INT_OFFSET) & Self::FBDIV_INT_MASK));
+        self.value.modify_bits(|r| (r & !Self::FBDIV_INT_MASK) | ((value << Self::FBDIV_INT_OFFSET) & Self::FBDIV_INT_MASK));
     }
 
 }
@@ -688,13 +646,15 @@ impl FbdivIntVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read FBDIV_INT [11:0]: see ctrl reg description for constraints
+    /// Read **FBDIV_INT** `[11:0]`
+    /// see ctrl reg description for constraints
     #[inline(always)]
     pub const fn fbdiv_int(&self) -> u32 {
         (self.bits & FbdivInt::FBDIV_INT_MASK) >> FbdivInt::FBDIV_INT_OFFSET
     }
 
-    /// Set FBDIV_INT [11:0]: see ctrl reg description for constraints
+    /// Set **FBDIV_INT** `[11:0]`
+    /// see ctrl reg description for constraints
     #[inline(always)]
     pub const fn with_fbdiv_int(self, value: u32) -> Self {
         Self {
@@ -713,129 +673,95 @@ impl Default for FbdivIntVal {
 impl FbdivInt {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> FbdivIntVal {
-        FbdivIntVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> FbdivIntVal {
+        FbdivIntVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: FbdivIntVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: FbdivIntVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(FbdivIntVal) -> FbdivIntVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(FbdivIntVal) -> FbdivIntVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// PRIM Register
 ///
-/// Controls the PLL post dividers for the primary output (note: this PLL does
-/// not have a secondary output) the primary output is driven from VCO divided
-/// by postdiv1*postdiv2
+/// Controls the PLL post dividers for the primary output
+/// (note: this PLL does not have a secondary output)
+/// the primary output is driven from VCO divided by postdiv1*postdiv2
 ///
 /// Address offset: 0x000c
 /// Reset value: 0x00077000
 ///
 /// ## Fields
 ///
-/// - **POSTDIV1** [18:16] (RW): divide by 1-7
-/// - **POSTDIV2** [14:12] (RW): divide by 1-7
+/// - **POSTDIV1** `[18:16]` (RW)
+///   divide by 1-7
+/// - **POSTDIV2** `[14:12]` (RW)
+///   divide by 1-7
 #[repr(transparent)]
 pub struct Prim {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Prim {}
-unsafe impl Sync for Prim {}
+impl core::ops::Deref for Prim {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Prim {
     // ======== Field Constants ========
 
-    /// POSTDIV1 - divide by 1-7
-    /// Bits [18:16], mask 0x00070000
+    /// **POSTDIV1**
+    /// divide by 1-7
+    /// Bits `[18:16]`, mask `0x00070000`
     pub const POSTDIV1_OFFSET: u32 = 16;
     pub const POSTDIV1_MASK: u32 = 0x00070000;
 
-    /// POSTDIV2 - divide by 1-7
-    /// Bits [14:12], mask 0x00007000
+    /// **POSTDIV2**
+    /// divide by 1-7
+    /// Bits `[14:12]`, mask `0x00007000`
     pub const POSTDIV2_OFFSET: u32 = 12;
     pub const POSTDIV2_MASK: u32 = 0x00007000;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **POSTDIV1** [18:16]: divide by 1-7
+    /// **POSTDIV1** `[18:16]` (RW)
+    /// divide by 1-7
     #[inline(always)]
     pub fn postdiv1(&self) -> u32 {
-        (self.read_bits() & Self::POSTDIV1_MASK) >> Self::POSTDIV1_OFFSET
+        (self.value.read_bits() & Self::POSTDIV1_MASK) >> Self::POSTDIV1_OFFSET
     }
 
-    /// Write POSTDIV1 field
+    /// Write **POSTDIV1** `[18:16]` (RW)
+    /// divide by 1-7
     #[inline(always)]
     pub fn write_postdiv1(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::POSTDIV1_MASK) | ((value << Self::POSTDIV1_OFFSET) & Self::POSTDIV1_MASK));
+        self.value.modify_bits(|r| (r & !Self::POSTDIV1_MASK) | ((value << Self::POSTDIV1_OFFSET) & Self::POSTDIV1_MASK));
     }
 
-    /// **POSTDIV2** [14:12]: divide by 1-7
+    /// **POSTDIV2** `[14:12]` (RW)
+    /// divide by 1-7
     #[inline(always)]
     pub fn postdiv2(&self) -> u32 {
-        (self.read_bits() & Self::POSTDIV2_MASK) >> Self::POSTDIV2_OFFSET
+        (self.value.read_bits() & Self::POSTDIV2_MASK) >> Self::POSTDIV2_OFFSET
     }
 
-    /// Write POSTDIV2 field
+    /// Write **POSTDIV2** `[14:12]` (RW)
+    /// divide by 1-7
     #[inline(always)]
     pub fn write_postdiv2(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::POSTDIV2_MASK) | ((value << Self::POSTDIV2_OFFSET) & Self::POSTDIV2_MASK));
+        self.value.modify_bits(|r| (r & !Self::POSTDIV2_MASK) | ((value << Self::POSTDIV2_OFFSET) & Self::POSTDIV2_MASK));
     }
 
 }
@@ -868,19 +794,22 @@ impl PrimVal {
         Self { bits: 0x00077000 }
     }
 
-    /// Read POSTDIV1 [18:16]: divide by 1-7
+    /// Read **POSTDIV1** `[18:16]`
+    /// divide by 1-7
     #[inline(always)]
     pub const fn postdiv1(&self) -> u32 {
         (self.bits & Prim::POSTDIV1_MASK) >> Prim::POSTDIV1_OFFSET
     }
 
-    /// Read POSTDIV2 [14:12]: divide by 1-7
+    /// Read **POSTDIV2** `[14:12]`
+    /// divide by 1-7
     #[inline(always)]
     pub const fn postdiv2(&self) -> u32 {
         (self.bits & Prim::POSTDIV2_MASK) >> Prim::POSTDIV2_OFFSET
     }
 
-    /// Set POSTDIV1 [18:16]: divide by 1-7
+    /// Set **POSTDIV1** `[18:16]`
+    /// divide by 1-7
     #[inline(always)]
     pub const fn with_postdiv1(self, value: u32) -> Self {
         Self {
@@ -888,7 +817,8 @@ impl PrimVal {
         }
     }
 
-    /// Set POSTDIV2 [14:12]: divide by 1-7
+    /// Set **POSTDIV2** `[14:12]`
+    /// divide by 1-7
     #[inline(always)]
     pub const fn with_postdiv2(self, value: u32) -> Self {
         Self {
@@ -907,20 +837,20 @@ impl Default for PrimVal {
 impl Prim {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> PrimVal {
-        PrimVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> PrimVal {
+        PrimVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: PrimVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: PrimVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(PrimVal) -> PrimVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(PrimVal) -> PrimVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -934,88 +864,47 @@ impl Prim {
 ///
 /// ## Fields
 ///
-/// - **LOCK_N_STICKY** [0] (RW): 
+/// - **LOCK_N_STICKY** `[0]` (RW)
 #[repr(transparent)]
 pub struct Intr {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Intr {}
-unsafe impl Sync for Intr {}
+impl core::ops::Deref for Intr {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Intr {
     // ======== Field Constants ========
 
-    /// Bits [0:0], mask 0x00000001
+    /// **LOCK_N_STICKY**
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const LOCK_N_STICKY_OFFSET: u32 = 0;
     pub const LOCK_N_STICKY_MASK: u32 = 0x00000001;
     pub const LOCK_N_STICKY: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **LOCK_N_STICKY** [0:0]
+    /// **LOCK_N_STICKY** `[0]` (RW)
     #[inline(always)]
     pub fn lock_n_sticky(&self) -> bool {
-        (self.read_bits() & Self::LOCK_N_STICKY_MASK) != 0
+        (self.value.read_bits() & Self::LOCK_N_STICKY_MASK) != 0
     }
 
-    /// Set LOCK_N_STICKY bit
+    /// Set LOCK_N_STICKY bit atomically (RW)
     #[inline(always)]
     pub fn set_lock_n_sticky(&self) {
-        self.set_bits(Self::LOCK_N_STICKY_MASK);
+        self.value.set_bits(Self::LOCK_N_STICKY_MASK);
     }
 
-    /// Clear LOCK_N_STICKY bit
+    /// Clear LOCK_N_STICKY bit atomically (RW)
     #[inline(always)]
     pub fn clr_lock_n_sticky(&self) {
-        self.clr_bits(Self::LOCK_N_STICKY_MASK);
+        self.value.clr_bits(Self::LOCK_N_STICKY_MASK);
     }
 
 }
@@ -1048,13 +937,13 @@ impl IntrVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read LOCK_N_STICKY [0:0]
+    /// Read **LOCK_N_STICKY** `[0:0]`
     #[inline(always)]
     pub const fn lock_n_sticky(&self) -> bool {
         (self.bits & Intr::LOCK_N_STICKY_MASK) != 0
     }
 
-    /// Set LOCK_N_STICKY [0:0]
+    /// Set **LOCK_N_STICKY** `[0:0]`
     #[inline(always)]
     pub const fn with_lock_n_sticky(self, value: bool) -> Self {
         Self {
@@ -1077,20 +966,20 @@ impl Default for IntrVal {
 impl Intr {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> IntrVal {
-        IntrVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> IntrVal {
+        IntrVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: IntrVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: IntrVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(IntrVal) -> IntrVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(IntrVal) -> IntrVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1104,88 +993,47 @@ impl Intr {
 ///
 /// ## Fields
 ///
-/// - **LOCK_N_STICKY** [0] (RW): 
+/// - **LOCK_N_STICKY** `[0]` (RW)
 #[repr(transparent)]
 pub struct Inte {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Inte {}
-unsafe impl Sync for Inte {}
+impl core::ops::Deref for Inte {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Inte {
     // ======== Field Constants ========
 
-    /// Bits [0:0], mask 0x00000001
+    /// **LOCK_N_STICKY**
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const LOCK_N_STICKY_OFFSET: u32 = 0;
     pub const LOCK_N_STICKY_MASK: u32 = 0x00000001;
     pub const LOCK_N_STICKY: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **LOCK_N_STICKY** [0:0]
+    /// **LOCK_N_STICKY** `[0]` (RW)
     #[inline(always)]
     pub fn lock_n_sticky(&self) -> bool {
-        (self.read_bits() & Self::LOCK_N_STICKY_MASK) != 0
+        (self.value.read_bits() & Self::LOCK_N_STICKY_MASK) != 0
     }
 
-    /// Set LOCK_N_STICKY bit
+    /// Set LOCK_N_STICKY bit atomically (RW)
     #[inline(always)]
     pub fn set_lock_n_sticky(&self) {
-        self.set_bits(Self::LOCK_N_STICKY_MASK);
+        self.value.set_bits(Self::LOCK_N_STICKY_MASK);
     }
 
-    /// Clear LOCK_N_STICKY bit
+    /// Clear LOCK_N_STICKY bit atomically (RW)
     #[inline(always)]
     pub fn clr_lock_n_sticky(&self) {
-        self.clr_bits(Self::LOCK_N_STICKY_MASK);
+        self.value.clr_bits(Self::LOCK_N_STICKY_MASK);
     }
 
 }
@@ -1218,13 +1066,13 @@ impl InteVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read LOCK_N_STICKY [0:0]
+    /// Read **LOCK_N_STICKY** `[0:0]`
     #[inline(always)]
     pub const fn lock_n_sticky(&self) -> bool {
         (self.bits & Inte::LOCK_N_STICKY_MASK) != 0
     }
 
-    /// Set LOCK_N_STICKY [0:0]
+    /// Set **LOCK_N_STICKY** `[0:0]`
     #[inline(always)]
     pub const fn with_lock_n_sticky(self, value: bool) -> Self {
         Self {
@@ -1247,20 +1095,20 @@ impl Default for InteVal {
 impl Inte {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> InteVal {
-        InteVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> InteVal {
+        InteVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: InteVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: InteVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(InteVal) -> InteVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(InteVal) -> InteVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1274,88 +1122,47 @@ impl Inte {
 ///
 /// ## Fields
 ///
-/// - **LOCK_N_STICKY** [0] (RW): 
+/// - **LOCK_N_STICKY** `[0]` (RW)
 #[repr(transparent)]
 pub struct Intf {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Intf {}
-unsafe impl Sync for Intf {}
+impl core::ops::Deref for Intf {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Intf {
     // ======== Field Constants ========
 
-    /// Bits [0:0], mask 0x00000001
+    /// **LOCK_N_STICKY**
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const LOCK_N_STICKY_OFFSET: u32 = 0;
     pub const LOCK_N_STICKY_MASK: u32 = 0x00000001;
     pub const LOCK_N_STICKY: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **LOCK_N_STICKY** [0:0]
+    /// **LOCK_N_STICKY** `[0]` (RW)
     #[inline(always)]
     pub fn lock_n_sticky(&self) -> bool {
-        (self.read_bits() & Self::LOCK_N_STICKY_MASK) != 0
+        (self.value.read_bits() & Self::LOCK_N_STICKY_MASK) != 0
     }
 
-    /// Set LOCK_N_STICKY bit
+    /// Set LOCK_N_STICKY bit atomically (RW)
     #[inline(always)]
     pub fn set_lock_n_sticky(&self) {
-        self.set_bits(Self::LOCK_N_STICKY_MASK);
+        self.value.set_bits(Self::LOCK_N_STICKY_MASK);
     }
 
-    /// Clear LOCK_N_STICKY bit
+    /// Clear LOCK_N_STICKY bit atomically (RW)
     #[inline(always)]
     pub fn clr_lock_n_sticky(&self) {
-        self.clr_bits(Self::LOCK_N_STICKY_MASK);
+        self.value.clr_bits(Self::LOCK_N_STICKY_MASK);
     }
 
 }
@@ -1388,13 +1195,13 @@ impl IntfVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read LOCK_N_STICKY [0:0]
+    /// Read **LOCK_N_STICKY** `[0:0]`
     #[inline(always)]
     pub const fn lock_n_sticky(&self) -> bool {
         (self.bits & Intf::LOCK_N_STICKY_MASK) != 0
     }
 
-    /// Set LOCK_N_STICKY [0:0]
+    /// Set **LOCK_N_STICKY** `[0:0]`
     #[inline(always)]
     pub const fn with_lock_n_sticky(self, value: bool) -> Self {
         Self {
@@ -1417,20 +1224,20 @@ impl Default for IntfVal {
 impl Intf {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> IntfVal {
-        IntfVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> IntfVal {
+        IntfVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: IntfVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: IntfVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(IntfVal) -> IntfVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(IntfVal) -> IntfVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1444,76 +1251,35 @@ impl Intf {
 ///
 /// ## Fields
 ///
-/// - **LOCK_N_STICKY** [0] (RO): 
+/// - **LOCK_N_STICKY** `[0]` (RO)
 #[repr(transparent)]
 pub struct Ints {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Ints {}
-unsafe impl Sync for Ints {}
+impl core::ops::Deref for Ints {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Ints {
     // ======== Field Constants ========
 
-    /// Bits [0:0], mask 0x00000001
+    /// **LOCK_N_STICKY**
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const LOCK_N_STICKY_OFFSET: u32 = 0;
     pub const LOCK_N_STICKY_MASK: u32 = 0x00000001;
     pub const LOCK_N_STICKY: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **LOCK_N_STICKY** [0:0]
+    /// **LOCK_N_STICKY** `[0]` (RO)
     #[inline(always)]
     pub fn lock_n_sticky(&self) -> bool {
-        (self.read_bits() & Self::LOCK_N_STICKY_MASK) != 0
+        (self.value.read_bits() & Self::LOCK_N_STICKY_MASK) != 0
     }
 
 }
@@ -1546,7 +1312,7 @@ impl IntsVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read LOCK_N_STICKY [0:0]
+    /// Read **LOCK_N_STICKY** `[0:0]`
     #[inline(always)]
     pub const fn lock_n_sticky(&self) -> bool {
         (self.bits & Ints::LOCK_N_STICKY_MASK) != 0
@@ -1563,20 +1329,20 @@ impl Default for IntsVal {
 impl Ints {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> IntsVal {
-        IntsVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> IntsVal {
+        IntsVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: IntsVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: IntsVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(IntsVal) -> IntsVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(IntsVal) -> IntsVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1584,21 +1350,36 @@ impl Ints {
 /// Register block
 #[repr(C)]
 pub struct RegisterBlock {
-    /// 0x0000 - Control and Status GENERAL CONSTRAINTS: Reference clock frequency min=5MHz,...
+    /// 0x0000
+    /// Control and Status
+    /// GENERAL CONSTRAINTS:
+    /// Reference clock frequency min=5MHz, max=800MHz
+    /// Feedback divider min=16, max=320
+    /// VCO frequency min=750MHz, max=1600MHz
     pub cs: Cs,
-    /// 0x0004 - Controls the PLL power modes.
+    /// 0x0004
+    /// Controls the PLL power modes.
     pub pwr: Pwr,
-    /// 0x0008 - Feedback divisor (note: this PLL does not support fractional division)
+    /// 0x0008
+    /// Feedback divisor
+    /// (note: this PLL does not support fractional division)
     pub fbdiv_int: FbdivInt,
-    /// 0x000c - Controls the PLL post dividers for the primary output (note: this PLL does ...
+    /// 0x000c
+    /// Controls the PLL post dividers for the primary output
+    /// (note: this PLL does not have a secondary output)
+    /// the primary output is driven from VCO divided by postdiv1*postdiv2
     pub prim: Prim,
-    /// 0x0010 - Raw Interrupts
+    /// 0x0010
+    /// Raw Interrupts
     pub intr: Intr,
-    /// 0x0014 - Interrupt Enable
+    /// 0x0014
+    /// Interrupt Enable
     pub inte: Inte,
-    /// 0x0018 - Interrupt Force
+    /// 0x0018
+    /// Interrupt Force
     pub intf: Intf,
-    /// 0x001c - Interrupt status after masking & forcing
+    /// 0x001c
+    /// Interrupt status after masking & forcing
     pub ints: Ints,
 }
 

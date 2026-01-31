@@ -1,4 +1,5 @@
-//! TRNG - ARM TrustZone RNG register block
+//! TRNG
+//! ARM TrustZone RNG register block
 
 #![allow(dead_code)]
 
@@ -13,176 +14,149 @@ pub const BASE: u32 = 0x400f0000;
 ///
 /// ## Fields
 ///
-/// - **RESERVED** [31:4] (RO): RESERVED
-/// - **VN_ERR_INT_MASK** [3] (RW): 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an exp...
-/// - **CRNGT_ERR_INT_MASK** [2] (RW): 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an exp...
-/// - **AUTOCORR_ERR_INT_MASK** [1] (RW): 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an exp...
-/// - **EHR_VALID_INT_MASK** [0] (RW): 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an exp...
+/// - **RESERVED** `[31:4]` (RO)
+///   RESERVED
+/// - **VN_ERR_INT_MASK** `[3]` (RW)
+///   1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
+/// - **CRNGT_ERR_INT_MASK** `[2]` (RW)
+///   1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
+/// - **AUTOCORR_ERR_INT_MASK** `[1]` (RW)
+///   1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
+/// - **EHR_VALID_INT_MASK** `[0]` (RW)
+///   1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
 #[repr(transparent)]
 pub struct RngImr {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for RngImr {}
-unsafe impl Sync for RngImr {}
+impl core::ops::Deref for RngImr {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl RngImr {
     // ======== Field Constants ========
 
-    /// RESERVED - RESERVED
-    /// Bits [31:4], mask 0xfffffff0
+    /// **RESERVED**
+    /// RESERVED
+    /// Bits `[31:4]`, mask `0xfffffff0`
     pub const RESERVED_OFFSET: u32 = 4;
     pub const RESERVED_MASK: u32 = 0xfffffff0;
 
-    /// VN_ERR_INT_MASK - 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an exp...
-    /// Bits [3:3], mask 0x00000008
+    /// **VN_ERR_INT_MASK**
+    /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const VN_ERR_INT_MASK_OFFSET: u32 = 3;
     pub const VN_ERR_INT_MASK_MASK: u32 = 0x00000008;
     pub const VN_ERR_INT_MASK: u32 = 1 << 3;
 
-    /// CRNGT_ERR_INT_MASK - 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an exp...
-    /// Bits [2:2], mask 0x00000004
+    /// **CRNGT_ERR_INT_MASK**
+    /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const CRNGT_ERR_INT_MASK_OFFSET: u32 = 2;
     pub const CRNGT_ERR_INT_MASK_MASK: u32 = 0x00000004;
     pub const CRNGT_ERR_INT_MASK: u32 = 1 << 2;
 
-    /// AUTOCORR_ERR_INT_MASK - 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an exp...
-    /// Bits [1:1], mask 0x00000002
+    /// **AUTOCORR_ERR_INT_MASK**
+    /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const AUTOCORR_ERR_INT_MASK_OFFSET: u32 = 1;
     pub const AUTOCORR_ERR_INT_MASK_MASK: u32 = 0x00000002;
     pub const AUTOCORR_ERR_INT_MASK: u32 = 1 << 1;
 
-    /// EHR_VALID_INT_MASK - 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an exp...
-    /// Bits [0:0], mask 0x00000001
+    /// **EHR_VALID_INT_MASK**
+    /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const EHR_VALID_INT_MASK_OFFSET: u32 = 0;
     pub const EHR_VALID_INT_MASK_MASK: u32 = 0x00000001;
     pub const EHR_VALID_INT_MASK: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **RESERVED** [31:4]: RESERVED
+    /// **RESERVED** `[31:4]` (RO)
+    /// RESERVED
     #[inline(always)]
     pub fn reserved(&self) -> u32 {
-        (self.read_bits() & Self::RESERVED_MASK) >> Self::RESERVED_OFFSET
+        (self.value.read_bits() & Self::RESERVED_MASK) >> Self::RESERVED_OFFSET
     }
 
-    /// **VN_ERR_INT_MASK** [3:3]: 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an exp...
+    /// **VN_ERR_INT_MASK** `[3]` (RW)
+    /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
     #[inline(always)]
     pub fn vn_err_int_mask(&self) -> bool {
-        (self.read_bits() & Self::VN_ERR_INT_MASK_MASK) != 0
+        (self.value.read_bits() & Self::VN_ERR_INT_MASK_MASK) != 0
     }
 
-    /// Set VN_ERR_INT_MASK bit
+    /// Set VN_ERR_INT_MASK bit atomically (RW)
     #[inline(always)]
     pub fn set_vn_err_int_mask(&self) {
-        self.set_bits(Self::VN_ERR_INT_MASK_MASK);
+        self.value.set_bits(Self::VN_ERR_INT_MASK_MASK);
     }
 
-    /// Clear VN_ERR_INT_MASK bit
+    /// Clear VN_ERR_INT_MASK bit atomically (RW)
     #[inline(always)]
     pub fn clr_vn_err_int_mask(&self) {
-        self.clr_bits(Self::VN_ERR_INT_MASK_MASK);
+        self.value.clr_bits(Self::VN_ERR_INT_MASK_MASK);
     }
 
-    /// **CRNGT_ERR_INT_MASK** [2:2]: 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an exp...
+    /// **CRNGT_ERR_INT_MASK** `[2]` (RW)
+    /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
     #[inline(always)]
     pub fn crngt_err_int_mask(&self) -> bool {
-        (self.read_bits() & Self::CRNGT_ERR_INT_MASK_MASK) != 0
+        (self.value.read_bits() & Self::CRNGT_ERR_INT_MASK_MASK) != 0
     }
 
-    /// Set CRNGT_ERR_INT_MASK bit
+    /// Set CRNGT_ERR_INT_MASK bit atomically (RW)
     #[inline(always)]
     pub fn set_crngt_err_int_mask(&self) {
-        self.set_bits(Self::CRNGT_ERR_INT_MASK_MASK);
+        self.value.set_bits(Self::CRNGT_ERR_INT_MASK_MASK);
     }
 
-    /// Clear CRNGT_ERR_INT_MASK bit
+    /// Clear CRNGT_ERR_INT_MASK bit atomically (RW)
     #[inline(always)]
     pub fn clr_crngt_err_int_mask(&self) {
-        self.clr_bits(Self::CRNGT_ERR_INT_MASK_MASK);
+        self.value.clr_bits(Self::CRNGT_ERR_INT_MASK_MASK);
     }
 
-    /// **AUTOCORR_ERR_INT_MASK** [1:1]: 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an exp...
+    /// **AUTOCORR_ERR_INT_MASK** `[1]` (RW)
+    /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
     #[inline(always)]
     pub fn autocorr_err_int_mask(&self) -> bool {
-        (self.read_bits() & Self::AUTOCORR_ERR_INT_MASK_MASK) != 0
+        (self.value.read_bits() & Self::AUTOCORR_ERR_INT_MASK_MASK) != 0
     }
 
-    /// Set AUTOCORR_ERR_INT_MASK bit
+    /// Set AUTOCORR_ERR_INT_MASK bit atomically (RW)
     #[inline(always)]
     pub fn set_autocorr_err_int_mask(&self) {
-        self.set_bits(Self::AUTOCORR_ERR_INT_MASK_MASK);
+        self.value.set_bits(Self::AUTOCORR_ERR_INT_MASK_MASK);
     }
 
-    /// Clear AUTOCORR_ERR_INT_MASK bit
+    /// Clear AUTOCORR_ERR_INT_MASK bit atomically (RW)
     #[inline(always)]
     pub fn clr_autocorr_err_int_mask(&self) {
-        self.clr_bits(Self::AUTOCORR_ERR_INT_MASK_MASK);
+        self.value.clr_bits(Self::AUTOCORR_ERR_INT_MASK_MASK);
     }
 
-    /// **EHR_VALID_INT_MASK** [0:0]: 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an exp...
+    /// **EHR_VALID_INT_MASK** `[0]` (RW)
+    /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
     #[inline(always)]
     pub fn ehr_valid_int_mask(&self) -> bool {
-        (self.read_bits() & Self::EHR_VALID_INT_MASK_MASK) != 0
+        (self.value.read_bits() & Self::EHR_VALID_INT_MASK_MASK) != 0
     }
 
-    /// Set EHR_VALID_INT_MASK bit
+    /// Set EHR_VALID_INT_MASK bit atomically (RW)
     #[inline(always)]
     pub fn set_ehr_valid_int_mask(&self) {
-        self.set_bits(Self::EHR_VALID_INT_MASK_MASK);
+        self.value.set_bits(Self::EHR_VALID_INT_MASK_MASK);
     }
 
-    /// Clear EHR_VALID_INT_MASK bit
+    /// Clear EHR_VALID_INT_MASK bit atomically (RW)
     #[inline(always)]
     pub fn clr_ehr_valid_int_mask(&self) {
-        self.clr_bits(Self::EHR_VALID_INT_MASK_MASK);
+        self.value.clr_bits(Self::EHR_VALID_INT_MASK_MASK);
     }
 
 }
@@ -215,37 +189,43 @@ impl RngImrVal {
         Self { bits: 0x0000000f }
     }
 
-    /// Read RESERVED [31:4]: RESERVED
+    /// Read **RESERVED** `[31:4]`
+    /// RESERVED
     #[inline(always)]
     pub const fn reserved(&self) -> u32 {
         (self.bits & RngImr::RESERVED_MASK) >> RngImr::RESERVED_OFFSET
     }
 
-    /// Read VN_ERR_INT_MASK [3:3]: 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an exp...
+    /// Read **VN_ERR_INT_MASK** `[3:3]`
+    /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
     #[inline(always)]
     pub const fn vn_err_int_mask(&self) -> bool {
         (self.bits & RngImr::VN_ERR_INT_MASK_MASK) != 0
     }
 
-    /// Read CRNGT_ERR_INT_MASK [2:2]: 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an exp...
+    /// Read **CRNGT_ERR_INT_MASK** `[2:2]`
+    /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
     #[inline(always)]
     pub const fn crngt_err_int_mask(&self) -> bool {
         (self.bits & RngImr::CRNGT_ERR_INT_MASK_MASK) != 0
     }
 
-    /// Read AUTOCORR_ERR_INT_MASK [1:1]: 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an exp...
+    /// Read **AUTOCORR_ERR_INT_MASK** `[1:1]`
+    /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
     #[inline(always)]
     pub const fn autocorr_err_int_mask(&self) -> bool {
         (self.bits & RngImr::AUTOCORR_ERR_INT_MASK_MASK) != 0
     }
 
-    /// Read EHR_VALID_INT_MASK [0:0]: 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an exp...
+    /// Read **EHR_VALID_INT_MASK** `[0:0]`
+    /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
     #[inline(always)]
     pub const fn ehr_valid_int_mask(&self) -> bool {
         (self.bits & RngImr::EHR_VALID_INT_MASK_MASK) != 0
     }
 
-    /// Set VN_ERR_INT_MASK [3:3]: 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an exp...
+    /// Set **VN_ERR_INT_MASK** `[3:3]`
+    /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
     #[inline(always)]
     pub const fn with_vn_err_int_mask(self, value: bool) -> Self {
         Self {
@@ -257,7 +237,8 @@ impl RngImrVal {
         }
     }
 
-    /// Set CRNGT_ERR_INT_MASK [2:2]: 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an exp...
+    /// Set **CRNGT_ERR_INT_MASK** `[2:2]`
+    /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
     #[inline(always)]
     pub const fn with_crngt_err_int_mask(self, value: bool) -> Self {
         Self {
@@ -269,7 +250,8 @@ impl RngImrVal {
         }
     }
 
-    /// Set AUTOCORR_ERR_INT_MASK [1:1]: 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an exp...
+    /// Set **AUTOCORR_ERR_INT_MASK** `[1:1]`
+    /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
     #[inline(always)]
     pub const fn with_autocorr_err_int_mask(self, value: bool) -> Self {
         Self {
@@ -281,7 +263,8 @@ impl RngImrVal {
         }
     }
 
-    /// Set EHR_VALID_INT_MASK [0:0]: 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an exp...
+    /// Set **EHR_VALID_INT_MASK** `[0:0]`
+    /// 1'b1-mask interrupt, no interrupt will be generated. See RNG_ISR for an explanation on this interrupt.
     #[inline(always)]
     pub const fn with_ehr_valid_int_mask(self, value: bool) -> Self {
         Self {
@@ -304,156 +287,128 @@ impl Default for RngImrVal {
 impl RngImr {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> RngImrVal {
-        RngImrVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> RngImrVal {
+        RngImrVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: RngImrVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: RngImrVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(RngImrVal) -> RngImrVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(RngImrVal) -> RngImrVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// RNG_ISR Register
 ///
-/// RNG status register. If corresponding RNG_IMR bit is unmasked, an interrupt
-/// will be generated.
+/// RNG status register. If corresponding RNG_IMR bit is unmasked, an interrupt will be generated.
 ///
 /// Address offset: 0x0104
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **RESERVED** [31:4] (RO): RESERVED
-/// - **VN_ERR** [3] (RO): 1'b1 indicates Von Neuman error. Error in von Neuman occurs if 32 consecuti...
-/// - **CRNGT_ERR** [2] (RO): 1'b1 indicates CRNGT in the RNG test failed. Failure occurs when two consec...
-/// - **AUTOCORR_ERR** [1] (RO): 1'b1 indicates Autocorrelation test failed four times in a row. When set, R...
-/// - **EHR_VALID** [0] (RO): 1'b1 indicates that 192 bits have been collected in the RNG, and are ready ...
+/// - **RESERVED** `[31:4]` (RO)
+///   RESERVED
+/// - **VN_ERR** `[3]` (RO)
+///   1'b1 indicates Von Neuman error. Error in von Neuman occurs if 32 consecutive collected bits are identical, ZERO or ONE.
+/// - **CRNGT_ERR** `[2]` (RO)
+///   1'b1 indicates CRNGT in the RNG test failed. Failure occurs when two consecutive blocks of 16 collected bits are equal.
+/// - **AUTOCORR_ERR** `[1]` (RO)
+///   1'b1 indicates Autocorrelation test failed four times in a row. When set, RNG cease from functioning until next reset.
+/// - **EHR_VALID** `[0]` (RO)
+///   1'b1 indicates that 192 bits have been collected in the RNG, and are ready to be read.
 #[repr(transparent)]
 pub struct RngIsr {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for RngIsr {}
-unsafe impl Sync for RngIsr {}
+impl core::ops::Deref for RngIsr {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl RngIsr {
     // ======== Field Constants ========
 
-    /// RESERVED - RESERVED
-    /// Bits [31:4], mask 0xfffffff0
+    /// **RESERVED**
+    /// RESERVED
+    /// Bits `[31:4]`, mask `0xfffffff0`
     pub const RESERVED_OFFSET: u32 = 4;
     pub const RESERVED_MASK: u32 = 0xfffffff0;
 
-    /// VN_ERR - 1'b1 indicates Von Neuman error. Error in von Neuman occurs if 32 consecuti...
-    /// Bits [3:3], mask 0x00000008
+    /// **VN_ERR**
+    /// 1'b1 indicates Von Neuman error. Error in von Neuman occurs if 32 consecutive collected bits are identical, ZERO or ONE.
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const VN_ERR_OFFSET: u32 = 3;
     pub const VN_ERR_MASK: u32 = 0x00000008;
     pub const VN_ERR: u32 = 1 << 3;
 
-    /// CRNGT_ERR - 1'b1 indicates CRNGT in the RNG test failed. Failure occurs when two consec...
-    /// Bits [2:2], mask 0x00000004
+    /// **CRNGT_ERR**
+    /// 1'b1 indicates CRNGT in the RNG test failed. Failure occurs when two consecutive blocks of 16 collected bits are equal.
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const CRNGT_ERR_OFFSET: u32 = 2;
     pub const CRNGT_ERR_MASK: u32 = 0x00000004;
     pub const CRNGT_ERR: u32 = 1 << 2;
 
-    /// AUTOCORR_ERR - 1'b1 indicates Autocorrelation test failed four times in a row. When set, R...
-    /// Bits [1:1], mask 0x00000002
+    /// **AUTOCORR_ERR**
+    /// 1'b1 indicates Autocorrelation test failed four times in a row. When set, RNG cease from functioning until next reset.
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const AUTOCORR_ERR_OFFSET: u32 = 1;
     pub const AUTOCORR_ERR_MASK: u32 = 0x00000002;
     pub const AUTOCORR_ERR: u32 = 1 << 1;
 
-    /// EHR_VALID - 1'b1 indicates that 192 bits have been collected in the RNG, and are ready ...
-    /// Bits [0:0], mask 0x00000001
+    /// **EHR_VALID**
+    /// 1'b1 indicates that 192 bits have been collected in the RNG, and are ready to be read.
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const EHR_VALID_OFFSET: u32 = 0;
     pub const EHR_VALID_MASK: u32 = 0x00000001;
     pub const EHR_VALID: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **RESERVED** [31:4]: RESERVED
+    /// **RESERVED** `[31:4]` (RO)
+    /// RESERVED
     #[inline(always)]
     pub fn reserved(&self) -> u32 {
-        (self.read_bits() & Self::RESERVED_MASK) >> Self::RESERVED_OFFSET
+        (self.value.read_bits() & Self::RESERVED_MASK) >> Self::RESERVED_OFFSET
     }
 
-    /// **VN_ERR** [3:3]: 1'b1 indicates Von Neuman error. Error in von Neuman occurs if 32 consecuti...
+    /// **VN_ERR** `[3]` (RO)
+    /// 1'b1 indicates Von Neuman error. Error in von Neuman occurs if 32 consecutive collected bits are identical, ZERO or ONE.
     #[inline(always)]
     pub fn vn_err(&self) -> bool {
-        (self.read_bits() & Self::VN_ERR_MASK) != 0
+        (self.value.read_bits() & Self::VN_ERR_MASK) != 0
     }
 
-    /// **CRNGT_ERR** [2:2]: 1'b1 indicates CRNGT in the RNG test failed. Failure occurs when two consec...
+    /// **CRNGT_ERR** `[2]` (RO)
+    /// 1'b1 indicates CRNGT in the RNG test failed. Failure occurs when two consecutive blocks of 16 collected bits are equal.
     #[inline(always)]
     pub fn crngt_err(&self) -> bool {
-        (self.read_bits() & Self::CRNGT_ERR_MASK) != 0
+        (self.value.read_bits() & Self::CRNGT_ERR_MASK) != 0
     }
 
-    /// **AUTOCORR_ERR** [1:1]: 1'b1 indicates Autocorrelation test failed four times in a row. When set, R...
+    /// **AUTOCORR_ERR** `[1]` (RO)
+    /// 1'b1 indicates Autocorrelation test failed four times in a row. When set, RNG cease from functioning until next reset.
     #[inline(always)]
     pub fn autocorr_err(&self) -> bool {
-        (self.read_bits() & Self::AUTOCORR_ERR_MASK) != 0
+        (self.value.read_bits() & Self::AUTOCORR_ERR_MASK) != 0
     }
 
-    /// **EHR_VALID** [0:0]: 1'b1 indicates that 192 bits have been collected in the RNG, and are ready ...
+    /// **EHR_VALID** `[0]` (RO)
+    /// 1'b1 indicates that 192 bits have been collected in the RNG, and are ready to be read.
     #[inline(always)]
     pub fn ehr_valid(&self) -> bool {
-        (self.read_bits() & Self::EHR_VALID_MASK) != 0
+        (self.value.read_bits() & Self::EHR_VALID_MASK) != 0
     }
 
 }
@@ -486,31 +441,36 @@ impl RngIsrVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read RESERVED [31:4]: RESERVED
+    /// Read **RESERVED** `[31:4]`
+    /// RESERVED
     #[inline(always)]
     pub const fn reserved(&self) -> u32 {
         (self.bits & RngIsr::RESERVED_MASK) >> RngIsr::RESERVED_OFFSET
     }
 
-    /// Read VN_ERR [3:3]: 1'b1 indicates Von Neuman error. Error in von Neuman occurs if 32 consecuti...
+    /// Read **VN_ERR** `[3:3]`
+    /// 1'b1 indicates Von Neuman error. Error in von Neuman occurs if 32 consecutive collected bits are identical, ZERO or ONE.
     #[inline(always)]
     pub const fn vn_err(&self) -> bool {
         (self.bits & RngIsr::VN_ERR_MASK) != 0
     }
 
-    /// Read CRNGT_ERR [2:2]: 1'b1 indicates CRNGT in the RNG test failed. Failure occurs when two consec...
+    /// Read **CRNGT_ERR** `[2:2]`
+    /// 1'b1 indicates CRNGT in the RNG test failed. Failure occurs when two consecutive blocks of 16 collected bits are equal.
     #[inline(always)]
     pub const fn crngt_err(&self) -> bool {
         (self.bits & RngIsr::CRNGT_ERR_MASK) != 0
     }
 
-    /// Read AUTOCORR_ERR [1:1]: 1'b1 indicates Autocorrelation test failed four times in a row. When set, R...
+    /// Read **AUTOCORR_ERR** `[1:1]`
+    /// 1'b1 indicates Autocorrelation test failed four times in a row. When set, RNG cease from functioning until next reset.
     #[inline(always)]
     pub const fn autocorr_err(&self) -> bool {
         (self.bits & RngIsr::AUTOCORR_ERR_MASK) != 0
     }
 
-    /// Read EHR_VALID [0:0]: 1'b1 indicates that 192 bits have been collected in the RNG, and are ready ...
+    /// Read **EHR_VALID** `[0:0]`
+    /// 1'b1 indicates that 192 bits have been collected in the RNG, and are ready to be read.
     #[inline(always)]
     pub const fn ehr_valid(&self) -> bool {
         (self.bits & RngIsr::EHR_VALID_MASK) != 0
@@ -527,20 +487,20 @@ impl Default for RngIsrVal {
 impl RngIsr {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> RngIsrVal {
-        RngIsrVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> RngIsrVal {
+        RngIsrVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: RngIsrVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: RngIsrVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(RngIsrVal) -> RngIsrVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(RngIsrVal) -> RngIsrVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -554,176 +514,149 @@ impl RngIsr {
 ///
 /// ## Fields
 ///
-/// - **RESERVED** [31:4] (RO): RESERVED
-/// - **VN_ERR** [3] (RW): Write 1'b1 - clear corresponding bit in RNG_ISR.
-/// - **CRNGT_ERR** [2] (RW): Write 1'b1 - clear corresponding bit in RNG_ISR.
-/// - **AUTOCORR_ERR** [1] (RW): Cannot be cleared by SW! Only RNG reset clears this bit.
-/// - **EHR_VALID** [0] (RW): Write 1'b1 - clear corresponding bit in RNG_ISR.
+/// - **RESERVED** `[31:4]` (RO)
+///   RESERVED
+/// - **VN_ERR** `[3]` (RW)
+///   Write 1'b1 - clear corresponding bit in RNG_ISR.
+/// - **CRNGT_ERR** `[2]` (RW)
+///   Write 1'b1 - clear corresponding bit in RNG_ISR.
+/// - **AUTOCORR_ERR** `[1]` (RW)
+///   Cannot be cleared by SW! Only RNG reset clears this bit.
+/// - **EHR_VALID** `[0]` (RW)
+///   Write 1'b1 - clear corresponding bit in RNG_ISR.
 #[repr(transparent)]
 pub struct RngIcr {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for RngIcr {}
-unsafe impl Sync for RngIcr {}
+impl core::ops::Deref for RngIcr {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl RngIcr {
     // ======== Field Constants ========
 
-    /// RESERVED - RESERVED
-    /// Bits [31:4], mask 0xfffffff0
+    /// **RESERVED**
+    /// RESERVED
+    /// Bits `[31:4]`, mask `0xfffffff0`
     pub const RESERVED_OFFSET: u32 = 4;
     pub const RESERVED_MASK: u32 = 0xfffffff0;
 
-    /// VN_ERR - Write 1'b1 - clear corresponding bit in RNG_ISR.
-    /// Bits [3:3], mask 0x00000008
+    /// **VN_ERR**
+    /// Write 1'b1 - clear corresponding bit in RNG_ISR.
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const VN_ERR_OFFSET: u32 = 3;
     pub const VN_ERR_MASK: u32 = 0x00000008;
     pub const VN_ERR: u32 = 1 << 3;
 
-    /// CRNGT_ERR - Write 1'b1 - clear corresponding bit in RNG_ISR.
-    /// Bits [2:2], mask 0x00000004
+    /// **CRNGT_ERR**
+    /// Write 1'b1 - clear corresponding bit in RNG_ISR.
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const CRNGT_ERR_OFFSET: u32 = 2;
     pub const CRNGT_ERR_MASK: u32 = 0x00000004;
     pub const CRNGT_ERR: u32 = 1 << 2;
 
-    /// AUTOCORR_ERR - Cannot be cleared by SW! Only RNG reset clears this bit.
-    /// Bits [1:1], mask 0x00000002
+    /// **AUTOCORR_ERR**
+    /// Cannot be cleared by SW! Only RNG reset clears this bit.
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const AUTOCORR_ERR_OFFSET: u32 = 1;
     pub const AUTOCORR_ERR_MASK: u32 = 0x00000002;
     pub const AUTOCORR_ERR: u32 = 1 << 1;
 
-    /// EHR_VALID - Write 1'b1 - clear corresponding bit in RNG_ISR.
-    /// Bits [0:0], mask 0x00000001
+    /// **EHR_VALID**
+    /// Write 1'b1 - clear corresponding bit in RNG_ISR.
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const EHR_VALID_OFFSET: u32 = 0;
     pub const EHR_VALID_MASK: u32 = 0x00000001;
     pub const EHR_VALID: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **RESERVED** [31:4]: RESERVED
+    /// **RESERVED** `[31:4]` (RO)
+    /// RESERVED
     #[inline(always)]
     pub fn reserved(&self) -> u32 {
-        (self.read_bits() & Self::RESERVED_MASK) >> Self::RESERVED_OFFSET
+        (self.value.read_bits() & Self::RESERVED_MASK) >> Self::RESERVED_OFFSET
     }
 
-    /// **VN_ERR** [3:3]: Write 1'b1 - clear corresponding bit in RNG_ISR.
+    /// **VN_ERR** `[3]` (RW)
+    /// Write 1'b1 - clear corresponding bit in RNG_ISR.
     #[inline(always)]
     pub fn vn_err(&self) -> bool {
-        (self.read_bits() & Self::VN_ERR_MASK) != 0
+        (self.value.read_bits() & Self::VN_ERR_MASK) != 0
     }
 
-    /// Set VN_ERR bit
+    /// Set VN_ERR bit atomically (RW)
     #[inline(always)]
     pub fn set_vn_err(&self) {
-        self.set_bits(Self::VN_ERR_MASK);
+        self.value.set_bits(Self::VN_ERR_MASK);
     }
 
-    /// Clear VN_ERR bit
+    /// Clear VN_ERR bit atomically (RW)
     #[inline(always)]
     pub fn clr_vn_err(&self) {
-        self.clr_bits(Self::VN_ERR_MASK);
+        self.value.clr_bits(Self::VN_ERR_MASK);
     }
 
-    /// **CRNGT_ERR** [2:2]: Write 1'b1 - clear corresponding bit in RNG_ISR.
+    /// **CRNGT_ERR** `[2]` (RW)
+    /// Write 1'b1 - clear corresponding bit in RNG_ISR.
     #[inline(always)]
     pub fn crngt_err(&self) -> bool {
-        (self.read_bits() & Self::CRNGT_ERR_MASK) != 0
+        (self.value.read_bits() & Self::CRNGT_ERR_MASK) != 0
     }
 
-    /// Set CRNGT_ERR bit
+    /// Set CRNGT_ERR bit atomically (RW)
     #[inline(always)]
     pub fn set_crngt_err(&self) {
-        self.set_bits(Self::CRNGT_ERR_MASK);
+        self.value.set_bits(Self::CRNGT_ERR_MASK);
     }
 
-    /// Clear CRNGT_ERR bit
+    /// Clear CRNGT_ERR bit atomically (RW)
     #[inline(always)]
     pub fn clr_crngt_err(&self) {
-        self.clr_bits(Self::CRNGT_ERR_MASK);
+        self.value.clr_bits(Self::CRNGT_ERR_MASK);
     }
 
-    /// **AUTOCORR_ERR** [1:1]: Cannot be cleared by SW! Only RNG reset clears this bit.
+    /// **AUTOCORR_ERR** `[1]` (RW)
+    /// Cannot be cleared by SW! Only RNG reset clears this bit.
     #[inline(always)]
     pub fn autocorr_err(&self) -> bool {
-        (self.read_bits() & Self::AUTOCORR_ERR_MASK) != 0
+        (self.value.read_bits() & Self::AUTOCORR_ERR_MASK) != 0
     }
 
-    /// Set AUTOCORR_ERR bit
+    /// Set AUTOCORR_ERR bit atomically (RW)
     #[inline(always)]
     pub fn set_autocorr_err(&self) {
-        self.set_bits(Self::AUTOCORR_ERR_MASK);
+        self.value.set_bits(Self::AUTOCORR_ERR_MASK);
     }
 
-    /// Clear AUTOCORR_ERR bit
+    /// Clear AUTOCORR_ERR bit atomically (RW)
     #[inline(always)]
     pub fn clr_autocorr_err(&self) {
-        self.clr_bits(Self::AUTOCORR_ERR_MASK);
+        self.value.clr_bits(Self::AUTOCORR_ERR_MASK);
     }
 
-    /// **EHR_VALID** [0:0]: Write 1'b1 - clear corresponding bit in RNG_ISR.
+    /// **EHR_VALID** `[0]` (RW)
+    /// Write 1'b1 - clear corresponding bit in RNG_ISR.
     #[inline(always)]
     pub fn ehr_valid(&self) -> bool {
-        (self.read_bits() & Self::EHR_VALID_MASK) != 0
+        (self.value.read_bits() & Self::EHR_VALID_MASK) != 0
     }
 
-    /// Set EHR_VALID bit
+    /// Set EHR_VALID bit atomically (RW)
     #[inline(always)]
     pub fn set_ehr_valid(&self) {
-        self.set_bits(Self::EHR_VALID_MASK);
+        self.value.set_bits(Self::EHR_VALID_MASK);
     }
 
-    /// Clear EHR_VALID bit
+    /// Clear EHR_VALID bit atomically (RW)
     #[inline(always)]
     pub fn clr_ehr_valid(&self) {
-        self.clr_bits(Self::EHR_VALID_MASK);
+        self.value.clr_bits(Self::EHR_VALID_MASK);
     }
 
 }
@@ -756,37 +689,43 @@ impl RngIcrVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read RESERVED [31:4]: RESERVED
+    /// Read **RESERVED** `[31:4]`
+    /// RESERVED
     #[inline(always)]
     pub const fn reserved(&self) -> u32 {
         (self.bits & RngIcr::RESERVED_MASK) >> RngIcr::RESERVED_OFFSET
     }
 
-    /// Read VN_ERR [3:3]: Write 1'b1 - clear corresponding bit in RNG_ISR.
+    /// Read **VN_ERR** `[3:3]`
+    /// Write 1'b1 - clear corresponding bit in RNG_ISR.
     #[inline(always)]
     pub const fn vn_err(&self) -> bool {
         (self.bits & RngIcr::VN_ERR_MASK) != 0
     }
 
-    /// Read CRNGT_ERR [2:2]: Write 1'b1 - clear corresponding bit in RNG_ISR.
+    /// Read **CRNGT_ERR** `[2:2]`
+    /// Write 1'b1 - clear corresponding bit in RNG_ISR.
     #[inline(always)]
     pub const fn crngt_err(&self) -> bool {
         (self.bits & RngIcr::CRNGT_ERR_MASK) != 0
     }
 
-    /// Read AUTOCORR_ERR [1:1]: Cannot be cleared by SW! Only RNG reset clears this bit.
+    /// Read **AUTOCORR_ERR** `[1:1]`
+    /// Cannot be cleared by SW! Only RNG reset clears this bit.
     #[inline(always)]
     pub const fn autocorr_err(&self) -> bool {
         (self.bits & RngIcr::AUTOCORR_ERR_MASK) != 0
     }
 
-    /// Read EHR_VALID [0:0]: Write 1'b1 - clear corresponding bit in RNG_ISR.
+    /// Read **EHR_VALID** `[0:0]`
+    /// Write 1'b1 - clear corresponding bit in RNG_ISR.
     #[inline(always)]
     pub const fn ehr_valid(&self) -> bool {
         (self.bits & RngIcr::EHR_VALID_MASK) != 0
     }
 
-    /// Set VN_ERR [3:3]: Write 1'b1 - clear corresponding bit in RNG_ISR.
+    /// Set **VN_ERR** `[3:3]`
+    /// Write 1'b1 - clear corresponding bit in RNG_ISR.
     #[inline(always)]
     pub const fn with_vn_err(self, value: bool) -> Self {
         Self {
@@ -798,7 +737,8 @@ impl RngIcrVal {
         }
     }
 
-    /// Set CRNGT_ERR [2:2]: Write 1'b1 - clear corresponding bit in RNG_ISR.
+    /// Set **CRNGT_ERR** `[2:2]`
+    /// Write 1'b1 - clear corresponding bit in RNG_ISR.
     #[inline(always)]
     pub const fn with_crngt_err(self, value: bool) -> Self {
         Self {
@@ -810,7 +750,8 @@ impl RngIcrVal {
         }
     }
 
-    /// Set AUTOCORR_ERR [1:1]: Cannot be cleared by SW! Only RNG reset clears this bit.
+    /// Set **AUTOCORR_ERR** `[1:1]`
+    /// Cannot be cleared by SW! Only RNG reset clears this bit.
     #[inline(always)]
     pub const fn with_autocorr_err(self, value: bool) -> Self {
         Self {
@@ -822,7 +763,8 @@ impl RngIcrVal {
         }
     }
 
-    /// Set EHR_VALID [0:0]: Write 1'b1 - clear corresponding bit in RNG_ISR.
+    /// Set **EHR_VALID** `[0:0]`
+    /// Write 1'b1 - clear corresponding bit in RNG_ISR.
     #[inline(always)]
     pub const fn with_ehr_valid(self, value: bool) -> Self {
         Self {
@@ -845,20 +787,20 @@ impl Default for RngIcrVal {
 impl RngIcr {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> RngIcrVal {
-        RngIcrVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> RngIcrVal {
+        RngIcrVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: RngIcrVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: RngIcrVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(RngIcrVal) -> RngIcrVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(RngIcrVal) -> RngIcrVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -872,94 +814,59 @@ impl RngIcr {
 ///
 /// ## Fields
 ///
-/// - **RESERVED** [31:2] (RO): RESERVED
-/// - **RND_SRC_SEL** [1:0] (RW): Selects the number of inverters (out of four possible selections) in the ri...
+/// - **RESERVED** `[31:2]` (RO)
+///   RESERVED
+/// - **RND_SRC_SEL** `[1:0]` (RW)
+///   Selects the number of inverters (out of four possible selections) in the ring oscillator (the entropy source).
 #[repr(transparent)]
 pub struct TrngConfig {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for TrngConfig {}
-unsafe impl Sync for TrngConfig {}
+impl core::ops::Deref for TrngConfig {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl TrngConfig {
     // ======== Field Constants ========
 
-    /// RESERVED - RESERVED
-    /// Bits [31:2], mask 0xfffffffc
+    /// **RESERVED**
+    /// RESERVED
+    /// Bits `[31:2]`, mask `0xfffffffc`
     pub const RESERVED_OFFSET: u32 = 2;
     pub const RESERVED_MASK: u32 = 0xfffffffc;
 
-    /// RND_SRC_SEL - Selects the number of inverters (out of four possible selections) in the ri...
-    /// Bits [1:0], mask 0x00000003
+    /// **RND_SRC_SEL**
+    /// Selects the number of inverters (out of four possible selections) in the ring oscillator (the entropy source).
+    /// Bits `[1:0]`, mask `0x00000003`
     pub const RND_SRC_SEL_OFFSET: u32 = 0;
     pub const RND_SRC_SEL_MASK: u32 = 0x00000003;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **RESERVED** [31:2]: RESERVED
+    /// **RESERVED** `[31:2]` (RO)
+    /// RESERVED
     #[inline(always)]
     pub fn reserved(&self) -> u32 {
-        (self.read_bits() & Self::RESERVED_MASK) >> Self::RESERVED_OFFSET
+        (self.value.read_bits() & Self::RESERVED_MASK) >> Self::RESERVED_OFFSET
     }
 
-    /// **RND_SRC_SEL** [1:0]: Selects the number of inverters (out of four possible selections) in the ri...
+    /// **RND_SRC_SEL** `[1:0]` (RW)
+    /// Selects the number of inverters (out of four possible selections) in the ring oscillator (the entropy source).
     #[inline(always)]
     pub fn rnd_src_sel(&self) -> u32 {
-        (self.read_bits() & Self::RND_SRC_SEL_MASK) >> Self::RND_SRC_SEL_OFFSET
+        (self.value.read_bits() & Self::RND_SRC_SEL_MASK) >> Self::RND_SRC_SEL_OFFSET
     }
 
-    /// Write RND_SRC_SEL field
+    /// Write **RND_SRC_SEL** `[1:0]` (RW)
+    /// Selects the number of inverters (out of four possible selections) in the ring oscillator (the entropy source).
     #[inline(always)]
     pub fn write_rnd_src_sel(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::RND_SRC_SEL_MASK) | ((value << Self::RND_SRC_SEL_OFFSET) & Self::RND_SRC_SEL_MASK));
+        self.value.modify_bits(|r| (r & !Self::RND_SRC_SEL_MASK) | ((value << Self::RND_SRC_SEL_OFFSET) & Self::RND_SRC_SEL_MASK));
     }
 
 }
@@ -992,19 +899,22 @@ impl TrngConfigVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read RESERVED [31:2]: RESERVED
+    /// Read **RESERVED** `[31:2]`
+    /// RESERVED
     #[inline(always)]
     pub const fn reserved(&self) -> u32 {
         (self.bits & TrngConfig::RESERVED_MASK) >> TrngConfig::RESERVED_OFFSET
     }
 
-    /// Read RND_SRC_SEL [1:0]: Selects the number of inverters (out of four possible selections) in the ri...
+    /// Read **RND_SRC_SEL** `[1:0]`
+    /// Selects the number of inverters (out of four possible selections) in the ring oscillator (the entropy source).
     #[inline(always)]
     pub const fn rnd_src_sel(&self) -> u32 {
         (self.bits & TrngConfig::RND_SRC_SEL_MASK) >> TrngConfig::RND_SRC_SEL_OFFSET
     }
 
-    /// Set RND_SRC_SEL [1:0]: Selects the number of inverters (out of four possible selections) in the ri...
+    /// Set **RND_SRC_SEL** `[1:0]`
+    /// Selects the number of inverters (out of four possible selections) in the ring oscillator (the entropy source).
     #[inline(always)]
     pub const fn with_rnd_src_sel(self, value: u32) -> Self {
         Self {
@@ -1023,20 +933,20 @@ impl Default for TrngConfigVal {
 impl TrngConfig {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> TrngConfigVal {
-        TrngConfigVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> TrngConfigVal {
+        TrngConfigVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: TrngConfigVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: TrngConfigVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(TrngConfigVal) -> TrngConfigVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(TrngConfigVal) -> TrngConfigVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1050,89 +960,53 @@ impl TrngConfig {
 ///
 /// ## Fields
 ///
-/// - **RESERVED** [31:1] (RO): RESERVED
-/// - **EHR_VALID** [0] (RO): 1'b1 indicates that collection of bits in the RNG is completed, and data ca...
+/// - **RESERVED** `[31:1]` (RO)
+///   RESERVED
+/// - **EHR_VALID** `[0]` (RO)
+///   1'b1 indicates that collection of bits in the RNG is completed, and data can be read from EHR_DATA register.
 #[repr(transparent)]
 pub struct TrngValid {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for TrngValid {}
-unsafe impl Sync for TrngValid {}
+impl core::ops::Deref for TrngValid {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl TrngValid {
     // ======== Field Constants ========
 
-    /// RESERVED - RESERVED
-    /// Bits [31:1], mask 0xfffffffe
+    /// **RESERVED**
+    /// RESERVED
+    /// Bits `[31:1]`, mask `0xfffffffe`
     pub const RESERVED_OFFSET: u32 = 1;
     pub const RESERVED_MASK: u32 = 0xfffffffe;
 
-    /// EHR_VALID - 1'b1 indicates that collection of bits in the RNG is completed, and data ca...
-    /// Bits [0:0], mask 0x00000001
+    /// **EHR_VALID**
+    /// 1'b1 indicates that collection of bits in the RNG is completed, and data can be read from EHR_DATA register.
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const EHR_VALID_OFFSET: u32 = 0;
     pub const EHR_VALID_MASK: u32 = 0x00000001;
     pub const EHR_VALID: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **RESERVED** [31:1]: RESERVED
+    /// **RESERVED** `[31:1]` (RO)
+    /// RESERVED
     #[inline(always)]
     pub fn reserved(&self) -> u32 {
-        (self.read_bits() & Self::RESERVED_MASK) >> Self::RESERVED_OFFSET
+        (self.value.read_bits() & Self::RESERVED_MASK) >> Self::RESERVED_OFFSET
     }
 
-    /// **EHR_VALID** [0:0]: 1'b1 indicates that collection of bits in the RNG is completed, and data ca...
+    /// **EHR_VALID** `[0]` (RO)
+    /// 1'b1 indicates that collection of bits in the RNG is completed, and data can be read from EHR_DATA register.
     #[inline(always)]
     pub fn ehr_valid(&self) -> bool {
-        (self.read_bits() & Self::EHR_VALID_MASK) != 0
+        (self.value.read_bits() & Self::EHR_VALID_MASK) != 0
     }
 
 }
@@ -1165,13 +1039,15 @@ impl TrngValidVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read RESERVED [31:1]: RESERVED
+    /// Read **RESERVED** `[31:1]`
+    /// RESERVED
     #[inline(always)]
     pub const fn reserved(&self) -> u32 {
         (self.bits & TrngValid::RESERVED_MASK) >> TrngValid::RESERVED_OFFSET
     }
 
-    /// Read EHR_VALID [0:0]: 1'b1 indicates that collection of bits in the RNG is completed, and data ca...
+    /// Read **EHR_VALID** `[0:0]`
+    /// 1'b1 indicates that collection of bits in the RNG is completed, and data can be read from EHR_DATA register.
     #[inline(always)]
     pub const fn ehr_valid(&self) -> bool {
         (self.bits & TrngValid::EHR_VALID_MASK) != 0
@@ -1188,20 +1064,20 @@ impl Default for TrngValidVal {
 impl TrngValid {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> TrngValidVal {
-        TrngValidVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> TrngValidVal {
+        TrngValidVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: TrngValidVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: TrngValidVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(TrngValidVal) -> TrngValidVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(TrngValidVal) -> TrngValidVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1215,76 +1091,37 @@ impl TrngValid {
 ///
 /// ## Fields
 ///
-/// - **EHR_DATA0** [31:0] (RO): Bits [31:0] of Entropy Holding Register (EHR) - RNG output register
+/// - **EHR_DATA0** `[31:0]` (RO)
+///   Bits [31:0] of Entropy Holding Register (EHR) - RNG output register
 #[repr(transparent)]
 pub struct EhrData0 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for EhrData0 {}
-unsafe impl Sync for EhrData0 {}
+impl core::ops::Deref for EhrData0 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl EhrData0 {
     // ======== Field Constants ========
 
-    /// EHR_DATA0 - Bits [31:0] of Entropy Holding Register (EHR) - RNG output register
-    /// Bits [31:0], mask 0xffffffff
+    /// **EHR_DATA0**
+    /// Bits [31:0] of Entropy Holding Register (EHR) - RNG output register
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const EHR_DATA0_OFFSET: u32 = 0;
     pub const EHR_DATA0_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **EHR_DATA0** [31:0]: Bits [31:0] of Entropy Holding Register (EHR) - RNG output register
+    /// **EHR_DATA0** `[31:0]` (RO)
+    /// Bits [31:0] of Entropy Holding Register (EHR) - RNG output register
     #[inline(always)]
     pub fn ehr_data0(&self) -> u32 {
-        (self.read_bits() & Self::EHR_DATA0_MASK) >> Self::EHR_DATA0_OFFSET
+        (self.value.read_bits() & Self::EHR_DATA0_MASK) >> Self::EHR_DATA0_OFFSET
     }
 
 }
@@ -1317,7 +1154,8 @@ impl EhrData0Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read EHR_DATA0 [31:0]: Bits [31:0] of Entropy Holding Register (EHR) - RNG output register
+    /// Read **EHR_DATA0** `[31:0]`
+    /// Bits [31:0] of Entropy Holding Register (EHR) - RNG output register
     #[inline(always)]
     pub const fn ehr_data0(&self) -> u32 {
         (self.bits & EhrData0::EHR_DATA0_MASK) >> EhrData0::EHR_DATA0_OFFSET
@@ -1334,20 +1172,20 @@ impl Default for EhrData0Val {
 impl EhrData0 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> EhrData0Val {
-        EhrData0Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> EhrData0Val {
+        EhrData0Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: EhrData0Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: EhrData0Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(EhrData0Val) -> EhrData0Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(EhrData0Val) -> EhrData0Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1361,76 +1199,37 @@ impl EhrData0 {
 ///
 /// ## Fields
 ///
-/// - **EHR_DATA1** [31:0] (RO): Bits [63:32] of Entropy Holding Register (EHR) - RNG output register
+/// - **EHR_DATA1** `[31:0]` (RO)
+///   Bits [63:32] of Entropy Holding Register (EHR) - RNG output register
 #[repr(transparent)]
 pub struct EhrData1 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for EhrData1 {}
-unsafe impl Sync for EhrData1 {}
+impl core::ops::Deref for EhrData1 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl EhrData1 {
     // ======== Field Constants ========
 
-    /// EHR_DATA1 - Bits [63:32] of Entropy Holding Register (EHR) - RNG output register
-    /// Bits [31:0], mask 0xffffffff
+    /// **EHR_DATA1**
+    /// Bits [63:32] of Entropy Holding Register (EHR) - RNG output register
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const EHR_DATA1_OFFSET: u32 = 0;
     pub const EHR_DATA1_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **EHR_DATA1** [31:0]: Bits [63:32] of Entropy Holding Register (EHR) - RNG output register
+    /// **EHR_DATA1** `[31:0]` (RO)
+    /// Bits [63:32] of Entropy Holding Register (EHR) - RNG output register
     #[inline(always)]
     pub fn ehr_data1(&self) -> u32 {
-        (self.read_bits() & Self::EHR_DATA1_MASK) >> Self::EHR_DATA1_OFFSET
+        (self.value.read_bits() & Self::EHR_DATA1_MASK) >> Self::EHR_DATA1_OFFSET
     }
 
 }
@@ -1463,7 +1262,8 @@ impl EhrData1Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read EHR_DATA1 [31:0]: Bits [63:32] of Entropy Holding Register (EHR) - RNG output register
+    /// Read **EHR_DATA1** `[31:0]`
+    /// Bits [63:32] of Entropy Holding Register (EHR) - RNG output register
     #[inline(always)]
     pub const fn ehr_data1(&self) -> u32 {
         (self.bits & EhrData1::EHR_DATA1_MASK) >> EhrData1::EHR_DATA1_OFFSET
@@ -1480,20 +1280,20 @@ impl Default for EhrData1Val {
 impl EhrData1 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> EhrData1Val {
-        EhrData1Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> EhrData1Val {
+        EhrData1Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: EhrData1Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: EhrData1Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(EhrData1Val) -> EhrData1Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(EhrData1Val) -> EhrData1Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1507,76 +1307,37 @@ impl EhrData1 {
 ///
 /// ## Fields
 ///
-/// - **EHR_DATA2** [31:0] (RO): Bits [95:64] of Entropy Holding Register (EHR) - RNG output register
+/// - **EHR_DATA2** `[31:0]` (RO)
+///   Bits [95:64] of Entropy Holding Register (EHR) - RNG output register
 #[repr(transparent)]
 pub struct EhrData2 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for EhrData2 {}
-unsafe impl Sync for EhrData2 {}
+impl core::ops::Deref for EhrData2 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl EhrData2 {
     // ======== Field Constants ========
 
-    /// EHR_DATA2 - Bits [95:64] of Entropy Holding Register (EHR) - RNG output register
-    /// Bits [31:0], mask 0xffffffff
+    /// **EHR_DATA2**
+    /// Bits [95:64] of Entropy Holding Register (EHR) - RNG output register
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const EHR_DATA2_OFFSET: u32 = 0;
     pub const EHR_DATA2_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **EHR_DATA2** [31:0]: Bits [95:64] of Entropy Holding Register (EHR) - RNG output register
+    /// **EHR_DATA2** `[31:0]` (RO)
+    /// Bits [95:64] of Entropy Holding Register (EHR) - RNG output register
     #[inline(always)]
     pub fn ehr_data2(&self) -> u32 {
-        (self.read_bits() & Self::EHR_DATA2_MASK) >> Self::EHR_DATA2_OFFSET
+        (self.value.read_bits() & Self::EHR_DATA2_MASK) >> Self::EHR_DATA2_OFFSET
     }
 
 }
@@ -1609,7 +1370,8 @@ impl EhrData2Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read EHR_DATA2 [31:0]: Bits [95:64] of Entropy Holding Register (EHR) - RNG output register
+    /// Read **EHR_DATA2** `[31:0]`
+    /// Bits [95:64] of Entropy Holding Register (EHR) - RNG output register
     #[inline(always)]
     pub const fn ehr_data2(&self) -> u32 {
         (self.bits & EhrData2::EHR_DATA2_MASK) >> EhrData2::EHR_DATA2_OFFSET
@@ -1626,20 +1388,20 @@ impl Default for EhrData2Val {
 impl EhrData2 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> EhrData2Val {
-        EhrData2Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> EhrData2Val {
+        EhrData2Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: EhrData2Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: EhrData2Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(EhrData2Val) -> EhrData2Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(EhrData2Val) -> EhrData2Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1653,76 +1415,37 @@ impl EhrData2 {
 ///
 /// ## Fields
 ///
-/// - **EHR_DATA3** [31:0] (RO): Bits [127:96] of Entropy Holding Register (EHR) - RNG output register
+/// - **EHR_DATA3** `[31:0]` (RO)
+///   Bits [127:96] of Entropy Holding Register (EHR) - RNG output register
 #[repr(transparent)]
 pub struct EhrData3 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for EhrData3 {}
-unsafe impl Sync for EhrData3 {}
+impl core::ops::Deref for EhrData3 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl EhrData3 {
     // ======== Field Constants ========
 
-    /// EHR_DATA3 - Bits [127:96] of Entropy Holding Register (EHR) - RNG output register
-    /// Bits [31:0], mask 0xffffffff
+    /// **EHR_DATA3**
+    /// Bits [127:96] of Entropy Holding Register (EHR) - RNG output register
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const EHR_DATA3_OFFSET: u32 = 0;
     pub const EHR_DATA3_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **EHR_DATA3** [31:0]: Bits [127:96] of Entropy Holding Register (EHR) - RNG output register
+    /// **EHR_DATA3** `[31:0]` (RO)
+    /// Bits [127:96] of Entropy Holding Register (EHR) - RNG output register
     #[inline(always)]
     pub fn ehr_data3(&self) -> u32 {
-        (self.read_bits() & Self::EHR_DATA3_MASK) >> Self::EHR_DATA3_OFFSET
+        (self.value.read_bits() & Self::EHR_DATA3_MASK) >> Self::EHR_DATA3_OFFSET
     }
 
 }
@@ -1755,7 +1478,8 @@ impl EhrData3Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read EHR_DATA3 [31:0]: Bits [127:96] of Entropy Holding Register (EHR) - RNG output register
+    /// Read **EHR_DATA3** `[31:0]`
+    /// Bits [127:96] of Entropy Holding Register (EHR) - RNG output register
     #[inline(always)]
     pub const fn ehr_data3(&self) -> u32 {
         (self.bits & EhrData3::EHR_DATA3_MASK) >> EhrData3::EHR_DATA3_OFFSET
@@ -1772,20 +1496,20 @@ impl Default for EhrData3Val {
 impl EhrData3 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> EhrData3Val {
-        EhrData3Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> EhrData3Val {
+        EhrData3Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: EhrData3Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: EhrData3Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(EhrData3Val) -> EhrData3Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(EhrData3Val) -> EhrData3Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1799,76 +1523,37 @@ impl EhrData3 {
 ///
 /// ## Fields
 ///
-/// - **EHR_DATA4** [31:0] (RO): Bits [159:128] of Entropy Holding Register (EHR) - RNG output register
+/// - **EHR_DATA4** `[31:0]` (RO)
+///   Bits [159:128] of Entropy Holding Register (EHR) - RNG output register
 #[repr(transparent)]
 pub struct EhrData4 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for EhrData4 {}
-unsafe impl Sync for EhrData4 {}
+impl core::ops::Deref for EhrData4 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl EhrData4 {
     // ======== Field Constants ========
 
-    /// EHR_DATA4 - Bits [159:128] of Entropy Holding Register (EHR) - RNG output register
-    /// Bits [31:0], mask 0xffffffff
+    /// **EHR_DATA4**
+    /// Bits [159:128] of Entropy Holding Register (EHR) - RNG output register
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const EHR_DATA4_OFFSET: u32 = 0;
     pub const EHR_DATA4_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **EHR_DATA4** [31:0]: Bits [159:128] of Entropy Holding Register (EHR) - RNG output register
+    /// **EHR_DATA4** `[31:0]` (RO)
+    /// Bits [159:128] of Entropy Holding Register (EHR) - RNG output register
     #[inline(always)]
     pub fn ehr_data4(&self) -> u32 {
-        (self.read_bits() & Self::EHR_DATA4_MASK) >> Self::EHR_DATA4_OFFSET
+        (self.value.read_bits() & Self::EHR_DATA4_MASK) >> Self::EHR_DATA4_OFFSET
     }
 
 }
@@ -1901,7 +1586,8 @@ impl EhrData4Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read EHR_DATA4 [31:0]: Bits [159:128] of Entropy Holding Register (EHR) - RNG output register
+    /// Read **EHR_DATA4** `[31:0]`
+    /// Bits [159:128] of Entropy Holding Register (EHR) - RNG output register
     #[inline(always)]
     pub const fn ehr_data4(&self) -> u32 {
         (self.bits & EhrData4::EHR_DATA4_MASK) >> EhrData4::EHR_DATA4_OFFSET
@@ -1918,20 +1604,20 @@ impl Default for EhrData4Val {
 impl EhrData4 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> EhrData4Val {
-        EhrData4Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> EhrData4Val {
+        EhrData4Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: EhrData4Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: EhrData4Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(EhrData4Val) -> EhrData4Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(EhrData4Val) -> EhrData4Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1945,76 +1631,37 @@ impl EhrData4 {
 ///
 /// ## Fields
 ///
-/// - **EHR_DATA5** [31:0] (RO): Bits [191:160] of Entropy Holding Register (EHR) - RNG output register
+/// - **EHR_DATA5** `[31:0]` (RO)
+///   Bits [191:160] of Entropy Holding Register (EHR) - RNG output register
 #[repr(transparent)]
 pub struct EhrData5 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for EhrData5 {}
-unsafe impl Sync for EhrData5 {}
+impl core::ops::Deref for EhrData5 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl EhrData5 {
     // ======== Field Constants ========
 
-    /// EHR_DATA5 - Bits [191:160] of Entropy Holding Register (EHR) - RNG output register
-    /// Bits [31:0], mask 0xffffffff
+    /// **EHR_DATA5**
+    /// Bits [191:160] of Entropy Holding Register (EHR) - RNG output register
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const EHR_DATA5_OFFSET: u32 = 0;
     pub const EHR_DATA5_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **EHR_DATA5** [31:0]: Bits [191:160] of Entropy Holding Register (EHR) - RNG output register
+    /// **EHR_DATA5** `[31:0]` (RO)
+    /// Bits [191:160] of Entropy Holding Register (EHR) - RNG output register
     #[inline(always)]
     pub fn ehr_data5(&self) -> u32 {
-        (self.read_bits() & Self::EHR_DATA5_MASK) >> Self::EHR_DATA5_OFFSET
+        (self.value.read_bits() & Self::EHR_DATA5_MASK) >> Self::EHR_DATA5_OFFSET
     }
 
 }
@@ -2047,7 +1694,8 @@ impl EhrData5Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read EHR_DATA5 [31:0]: Bits [191:160] of Entropy Holding Register (EHR) - RNG output register
+    /// Read **EHR_DATA5** `[31:0]`
+    /// Bits [191:160] of Entropy Holding Register (EHR) - RNG output register
     #[inline(always)]
     pub const fn ehr_data5(&self) -> u32 {
         (self.bits & EhrData5::EHR_DATA5_MASK) >> EhrData5::EHR_DATA5_OFFSET
@@ -2064,20 +1712,20 @@ impl Default for EhrData5Val {
 impl EhrData5 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> EhrData5Val {
-        EhrData5Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> EhrData5Val {
+        EhrData5Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: EhrData5Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: EhrData5Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(EhrData5Val) -> EhrData5Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(EhrData5Val) -> EhrData5Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -2091,101 +1739,65 @@ impl EhrData5 {
 ///
 /// ## Fields
 ///
-/// - **RESERVED** [31:1] (RO): RESERVED
-/// - **RND_SRC_EN** [0] (RW): * 1'b1 - entropy source is enabled. *1'b0 - entropy source is disabled
+/// - **RESERVED** `[31:1]` (RO)
+///   RESERVED
+/// - **RND_SRC_EN** `[0]` (RW)
+///   * 1'b1 - entropy source is enabled. *1'b0 - entropy source is disabled
 #[repr(transparent)]
 pub struct RndSourceEnable {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for RndSourceEnable {}
-unsafe impl Sync for RndSourceEnable {}
+impl core::ops::Deref for RndSourceEnable {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl RndSourceEnable {
     // ======== Field Constants ========
 
-    /// RESERVED - RESERVED
-    /// Bits [31:1], mask 0xfffffffe
+    /// **RESERVED**
+    /// RESERVED
+    /// Bits `[31:1]`, mask `0xfffffffe`
     pub const RESERVED_OFFSET: u32 = 1;
     pub const RESERVED_MASK: u32 = 0xfffffffe;
 
-    /// RND_SRC_EN - * 1'b1 - entropy source is enabled. *1'b0 - entropy source is disabled
-    /// Bits [0:0], mask 0x00000001
+    /// **RND_SRC_EN**
+    /// * 1'b1 - entropy source is enabled. *1'b0 - entropy source is disabled
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const RND_SRC_EN_OFFSET: u32 = 0;
     pub const RND_SRC_EN_MASK: u32 = 0x00000001;
     pub const RND_SRC_EN: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **RESERVED** [31:1]: RESERVED
+    /// **RESERVED** `[31:1]` (RO)
+    /// RESERVED
     #[inline(always)]
     pub fn reserved(&self) -> u32 {
-        (self.read_bits() & Self::RESERVED_MASK) >> Self::RESERVED_OFFSET
+        (self.value.read_bits() & Self::RESERVED_MASK) >> Self::RESERVED_OFFSET
     }
 
-    /// **RND_SRC_EN** [0:0]: * 1'b1 - entropy source is enabled. *1'b0 - entropy source is disabled
+    /// **RND_SRC_EN** `[0]` (RW)
+    /// * 1'b1 - entropy source is enabled. *1'b0 - entropy source is disabled
     #[inline(always)]
     pub fn rnd_src_en(&self) -> bool {
-        (self.read_bits() & Self::RND_SRC_EN_MASK) != 0
+        (self.value.read_bits() & Self::RND_SRC_EN_MASK) != 0
     }
 
-    /// Set RND_SRC_EN bit
+    /// Set RND_SRC_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_rnd_src_en(&self) {
-        self.set_bits(Self::RND_SRC_EN_MASK);
+        self.value.set_bits(Self::RND_SRC_EN_MASK);
     }
 
-    /// Clear RND_SRC_EN bit
+    /// Clear RND_SRC_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_rnd_src_en(&self) {
-        self.clr_bits(Self::RND_SRC_EN_MASK);
+        self.value.clr_bits(Self::RND_SRC_EN_MASK);
     }
 
 }
@@ -2218,19 +1830,22 @@ impl RndSourceEnableVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read RESERVED [31:1]: RESERVED
+    /// Read **RESERVED** `[31:1]`
+    /// RESERVED
     #[inline(always)]
     pub const fn reserved(&self) -> u32 {
         (self.bits & RndSourceEnable::RESERVED_MASK) >> RndSourceEnable::RESERVED_OFFSET
     }
 
-    /// Read RND_SRC_EN [0:0]: * 1'b1 - entropy source is enabled. *1'b0 - entropy source is disabled
+    /// Read **RND_SRC_EN** `[0:0]`
+    /// * 1'b1 - entropy source is enabled. *1'b0 - entropy source is disabled
     #[inline(always)]
     pub const fn rnd_src_en(&self) -> bool {
         (self.bits & RndSourceEnable::RND_SRC_EN_MASK) != 0
     }
 
-    /// Set RND_SRC_EN [0:0]: * 1'b1 - entropy source is enabled. *1'b0 - entropy source is disabled
+    /// Set **RND_SRC_EN** `[0:0]`
+    /// * 1'b1 - entropy source is enabled. *1'b0 - entropy source is disabled
     #[inline(always)]
     pub const fn with_rnd_src_en(self, value: bool) -> Self {
         Self {
@@ -2253,20 +1868,20 @@ impl Default for RndSourceEnableVal {
 impl RndSourceEnable {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> RndSourceEnableVal {
-        RndSourceEnableVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> RndSourceEnableVal {
+        RndSourceEnableVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: RndSourceEnableVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: RndSourceEnableVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(RndSourceEnableVal) -> RndSourceEnableVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(RndSourceEnableVal) -> RndSourceEnableVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -2280,82 +1895,44 @@ impl RndSourceEnable {
 ///
 /// ## Fields
 ///
-/// - **SAMPLE_CNTR1** [31:0] (RW): Sets the number of rng_clk cycles between two consecutive ring oscillator s...
+/// - **SAMPLE_CNTR1** `[31:0]` (RW)
+///   Sets the number of rng_clk cycles between two consecutive ring oscillator samples. Note! If the Von-Neuman is bypassed, the minimum value for sample counter must not be less then decimal seventeen
 #[repr(transparent)]
 pub struct SampleCnt1 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for SampleCnt1 {}
-unsafe impl Sync for SampleCnt1 {}
+impl core::ops::Deref for SampleCnt1 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl SampleCnt1 {
     // ======== Field Constants ========
 
-    /// SAMPLE_CNTR1 - Sets the number of rng_clk cycles between two consecutive ring oscillator s...
-    /// Bits [31:0], mask 0xffffffff
+    /// **SAMPLE_CNTR1**
+    /// Sets the number of rng_clk cycles between two consecutive ring oscillator samples. Note! If the Von-Neuman is bypassed, the minimum value for sample counter must not be less then decimal seventeen
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SAMPLE_CNTR1_OFFSET: u32 = 0;
     pub const SAMPLE_CNTR1_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SAMPLE_CNTR1** [31:0]: Sets the number of rng_clk cycles between two consecutive ring oscillator s...
+    /// **SAMPLE_CNTR1** `[31:0]` (RW)
+    /// Sets the number of rng_clk cycles between two consecutive ring oscillator samples. Note! If the Von-Neuman is bypassed, the minimum value for sample counter must not be less then decimal seventeen
     #[inline(always)]
     pub fn sample_cntr1(&self) -> u32 {
-        (self.read_bits() & Self::SAMPLE_CNTR1_MASK) >> Self::SAMPLE_CNTR1_OFFSET
+        (self.value.read_bits() & Self::SAMPLE_CNTR1_MASK) >> Self::SAMPLE_CNTR1_OFFSET
     }
 
-    /// Write SAMPLE_CNTR1 field
+    /// Write **SAMPLE_CNTR1** `[31:0]` (RW)
+    /// Sets the number of rng_clk cycles between two consecutive ring oscillator samples. Note! If the Von-Neuman is bypassed, the minimum value for sample counter must not be less then decimal seventeen
     #[inline(always)]
     pub fn write_sample_cntr1(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SAMPLE_CNTR1_MASK) | ((value << Self::SAMPLE_CNTR1_OFFSET) & Self::SAMPLE_CNTR1_MASK));
+        self.value.modify_bits(|r| (r & !Self::SAMPLE_CNTR1_MASK) | ((value << Self::SAMPLE_CNTR1_OFFSET) & Self::SAMPLE_CNTR1_MASK));
     }
 
 }
@@ -2388,13 +1965,15 @@ impl SampleCnt1Val {
         Self { bits: 0x0000ffff }
     }
 
-    /// Read SAMPLE_CNTR1 [31:0]: Sets the number of rng_clk cycles between two consecutive ring oscillator s...
+    /// Read **SAMPLE_CNTR1** `[31:0]`
+    /// Sets the number of rng_clk cycles between two consecutive ring oscillator samples. Note! If the Von-Neuman is bypassed, the minimum value for sample counter must not be less then decimal seventeen
     #[inline(always)]
     pub const fn sample_cntr1(&self) -> u32 {
         (self.bits & SampleCnt1::SAMPLE_CNTR1_MASK) >> SampleCnt1::SAMPLE_CNTR1_OFFSET
     }
 
-    /// Set SAMPLE_CNTR1 [31:0]: Sets the number of rng_clk cycles between two consecutive ring oscillator s...
+    /// Set **SAMPLE_CNTR1** `[31:0]`
+    /// Sets the number of rng_clk cycles between two consecutive ring oscillator samples. Note! If the Von-Neuman is bypassed, the minimum value for sample counter must not be less then decimal seventeen
     #[inline(always)]
     pub const fn with_sample_cntr1(self, value: u32) -> Self {
         Self {
@@ -2413,20 +1992,20 @@ impl Default for SampleCnt1Val {
 impl SampleCnt1 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> SampleCnt1Val {
-        SampleCnt1Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> SampleCnt1Val {
+        SampleCnt1Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: SampleCnt1Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: SampleCnt1Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(SampleCnt1Val) -> SampleCnt1Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(SampleCnt1Val) -> SampleCnt1Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -2440,112 +2019,81 @@ impl SampleCnt1 {
 ///
 /// ## Fields
 ///
-/// - **RESERVED** [31:22] (RO): RESERVED
-/// - **AUTOCORR_FAILS** [21:14] (RW): Count each time an autocorrelation test fails. Any write to the register re...
-/// - **AUTOCORR_TRYS** [13:0] (RW): Count each time an autocorrelation test starts. Any write to the register r...
+/// - **RESERVED** `[31:22]` (RO)
+///   RESERVED
+/// - **AUTOCORR_FAILS** `[21:14]` (RW)
+///   Count each time an autocorrelation test fails. Any write to the register reset the counter. Stop collecting statistic if one of the counters reached the limit.
+/// - **AUTOCORR_TRYS** `[13:0]` (RW)
+///   Count each time an autocorrelation test starts. Any write to the register reset the counter. Stop collecting statistic if one of the counters reached the limit.
 #[repr(transparent)]
 pub struct AutocorrStatistic {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for AutocorrStatistic {}
-unsafe impl Sync for AutocorrStatistic {}
+impl core::ops::Deref for AutocorrStatistic {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl AutocorrStatistic {
     // ======== Field Constants ========
 
-    /// RESERVED - RESERVED
-    /// Bits [31:22], mask 0xffc00000
+    /// **RESERVED**
+    /// RESERVED
+    /// Bits `[31:22]`, mask `0xffc00000`
     pub const RESERVED_OFFSET: u32 = 22;
     pub const RESERVED_MASK: u32 = 0xffc00000;
 
-    /// AUTOCORR_FAILS - Count each time an autocorrelation test fails. Any write to the register re...
-    /// Bits [21:14], mask 0x003fc000
+    /// **AUTOCORR_FAILS**
+    /// Count each time an autocorrelation test fails. Any write to the register reset the counter. Stop collecting statistic if one of the counters reached the limit.
+    /// Bits `[21:14]`, mask `0x003fc000`
     pub const AUTOCORR_FAILS_OFFSET: u32 = 14;
     pub const AUTOCORR_FAILS_MASK: u32 = 0x003fc000;
 
-    /// AUTOCORR_TRYS - Count each time an autocorrelation test starts. Any write to the register r...
-    /// Bits [13:0], mask 0x00003fff
+    /// **AUTOCORR_TRYS**
+    /// Count each time an autocorrelation test starts. Any write to the register reset the counter. Stop collecting statistic if one of the counters reached the limit.
+    /// Bits `[13:0]`, mask `0x00003fff`
     pub const AUTOCORR_TRYS_OFFSET: u32 = 0;
     pub const AUTOCORR_TRYS_MASK: u32 = 0x00003fff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **RESERVED** [31:22]: RESERVED
+    /// **RESERVED** `[31:22]` (RO)
+    /// RESERVED
     #[inline(always)]
     pub fn reserved(&self) -> u32 {
-        (self.read_bits() & Self::RESERVED_MASK) >> Self::RESERVED_OFFSET
+        (self.value.read_bits() & Self::RESERVED_MASK) >> Self::RESERVED_OFFSET
     }
 
-    /// **AUTOCORR_FAILS** [21:14]: Count each time an autocorrelation test fails. Any write to the register re...
+    /// **AUTOCORR_FAILS** `[21:14]` (RW)
+    /// Count each time an autocorrelation test fails. Any write to the register reset the counter. Stop collecting statistic if one of the counters reached the limit.
     #[inline(always)]
     pub fn autocorr_fails(&self) -> u32 {
-        (self.read_bits() & Self::AUTOCORR_FAILS_MASK) >> Self::AUTOCORR_FAILS_OFFSET
+        (self.value.read_bits() & Self::AUTOCORR_FAILS_MASK) >> Self::AUTOCORR_FAILS_OFFSET
     }
 
-    /// Write AUTOCORR_FAILS field
+    /// Write **AUTOCORR_FAILS** `[21:14]` (RW)
+    /// Count each time an autocorrelation test fails. Any write to the register reset the counter. Stop collecting statistic if one of the counters reached the limit.
     #[inline(always)]
     pub fn write_autocorr_fails(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::AUTOCORR_FAILS_MASK) | ((value << Self::AUTOCORR_FAILS_OFFSET) & Self::AUTOCORR_FAILS_MASK));
+        self.value.modify_bits(|r| (r & !Self::AUTOCORR_FAILS_MASK) | ((value << Self::AUTOCORR_FAILS_OFFSET) & Self::AUTOCORR_FAILS_MASK));
     }
 
-    /// **AUTOCORR_TRYS** [13:0]: Count each time an autocorrelation test starts. Any write to the register r...
+    /// **AUTOCORR_TRYS** `[13:0]` (RW)
+    /// Count each time an autocorrelation test starts. Any write to the register reset the counter. Stop collecting statistic if one of the counters reached the limit.
     #[inline(always)]
     pub fn autocorr_trys(&self) -> u32 {
-        (self.read_bits() & Self::AUTOCORR_TRYS_MASK) >> Self::AUTOCORR_TRYS_OFFSET
+        (self.value.read_bits() & Self::AUTOCORR_TRYS_MASK) >> Self::AUTOCORR_TRYS_OFFSET
     }
 
-    /// Write AUTOCORR_TRYS field
+    /// Write **AUTOCORR_TRYS** `[13:0]` (RW)
+    /// Count each time an autocorrelation test starts. Any write to the register reset the counter. Stop collecting statistic if one of the counters reached the limit.
     #[inline(always)]
     pub fn write_autocorr_trys(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::AUTOCORR_TRYS_MASK) | ((value << Self::AUTOCORR_TRYS_OFFSET) & Self::AUTOCORR_TRYS_MASK));
+        self.value.modify_bits(|r| (r & !Self::AUTOCORR_TRYS_MASK) | ((value << Self::AUTOCORR_TRYS_OFFSET) & Self::AUTOCORR_TRYS_MASK));
     }
 
 }
@@ -2578,25 +2126,29 @@ impl AutocorrStatisticVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read RESERVED [31:22]: RESERVED
+    /// Read **RESERVED** `[31:22]`
+    /// RESERVED
     #[inline(always)]
     pub const fn reserved(&self) -> u32 {
         (self.bits & AutocorrStatistic::RESERVED_MASK) >> AutocorrStatistic::RESERVED_OFFSET
     }
 
-    /// Read AUTOCORR_FAILS [21:14]: Count each time an autocorrelation test fails. Any write to the register re...
+    /// Read **AUTOCORR_FAILS** `[21:14]`
+    /// Count each time an autocorrelation test fails. Any write to the register reset the counter. Stop collecting statistic if one of the counters reached the limit.
     #[inline(always)]
     pub const fn autocorr_fails(&self) -> u32 {
         (self.bits & AutocorrStatistic::AUTOCORR_FAILS_MASK) >> AutocorrStatistic::AUTOCORR_FAILS_OFFSET
     }
 
-    /// Read AUTOCORR_TRYS [13:0]: Count each time an autocorrelation test starts. Any write to the register r...
+    /// Read **AUTOCORR_TRYS** `[13:0]`
+    /// Count each time an autocorrelation test starts. Any write to the register reset the counter. Stop collecting statistic if one of the counters reached the limit.
     #[inline(always)]
     pub const fn autocorr_trys(&self) -> u32 {
         (self.bits & AutocorrStatistic::AUTOCORR_TRYS_MASK) >> AutocorrStatistic::AUTOCORR_TRYS_OFFSET
     }
 
-    /// Set AUTOCORR_FAILS [21:14]: Count each time an autocorrelation test fails. Any write to the register re...
+    /// Set **AUTOCORR_FAILS** `[21:14]`
+    /// Count each time an autocorrelation test fails. Any write to the register reset the counter. Stop collecting statistic if one of the counters reached the limit.
     #[inline(always)]
     pub const fn with_autocorr_fails(self, value: u32) -> Self {
         Self {
@@ -2604,7 +2156,8 @@ impl AutocorrStatisticVal {
         }
     }
 
-    /// Set AUTOCORR_TRYS [13:0]: Count each time an autocorrelation test starts. Any write to the register r...
+    /// Set **AUTOCORR_TRYS** `[13:0]`
+    /// Count each time an autocorrelation test starts. Any write to the register reset the counter. Stop collecting statistic if one of the counters reached the limit.
     #[inline(always)]
     pub const fn with_autocorr_trys(self, value: u32) -> Self {
         Self {
@@ -2623,20 +2176,20 @@ impl Default for AutocorrStatisticVal {
 impl AutocorrStatistic {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> AutocorrStatisticVal {
-        AutocorrStatisticVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> AutocorrStatisticVal {
+        AutocorrStatisticVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: AutocorrStatisticVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: AutocorrStatisticVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(AutocorrStatisticVal) -> AutocorrStatisticVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(AutocorrStatisticVal) -> AutocorrStatisticVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -2650,152 +2203,122 @@ impl AutocorrStatistic {
 ///
 /// ## Fields
 ///
-/// - **AUTO_CORRELATE_BYPASS** [3] (RW): When set, the autocorrelation test in the TRNG module is bypassed.
-/// - **TRNG_CRNGT_BYPASS** [2] (RW): When set, the CRNGT test in the RNG is bypassed.
-/// - **VNC_BYPASS** [1] (RW): When set, the Von-Neuman balancer is bypassed (including the 32 consecutive...
-/// - **RESERVED** [0] (RO): N/A
+/// - **AUTO_CORRELATE_BYPASS** `[3]` (RW)
+///   When set, the autocorrelation test in the TRNG module is bypassed.
+/// - **TRNG_CRNGT_BYPASS** `[2]` (RW)
+///   When set, the CRNGT test in the RNG is bypassed.
+/// - **VNC_BYPASS** `[1]` (RW)
+///   When set, the Von-Neuman balancer is bypassed (including the 32 consecutive bits test).
+/// - **RESERVED** `[0]` (RO)
+///   N/A
 #[repr(transparent)]
 pub struct TrngDebugControl {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for TrngDebugControl {}
-unsafe impl Sync for TrngDebugControl {}
+impl core::ops::Deref for TrngDebugControl {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl TrngDebugControl {
     // ======== Field Constants ========
 
-    /// AUTO_CORRELATE_BYPASS - When set, the autocorrelation test in the TRNG module is bypassed.
-    /// Bits [3:3], mask 0x00000008
+    /// **AUTO_CORRELATE_BYPASS**
+    /// When set, the autocorrelation test in the TRNG module is bypassed.
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const AUTO_CORRELATE_BYPASS_OFFSET: u32 = 3;
     pub const AUTO_CORRELATE_BYPASS_MASK: u32 = 0x00000008;
     pub const AUTO_CORRELATE_BYPASS: u32 = 1 << 3;
 
-    /// TRNG_CRNGT_BYPASS - When set, the CRNGT test in the RNG is bypassed.
-    /// Bits [2:2], mask 0x00000004
+    /// **TRNG_CRNGT_BYPASS**
+    /// When set, the CRNGT test in the RNG is bypassed.
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const TRNG_CRNGT_BYPASS_OFFSET: u32 = 2;
     pub const TRNG_CRNGT_BYPASS_MASK: u32 = 0x00000004;
     pub const TRNG_CRNGT_BYPASS: u32 = 1 << 2;
 
-    /// VNC_BYPASS - When set, the Von-Neuman balancer is bypassed (including the 32 consecutive...
-    /// Bits [1:1], mask 0x00000002
+    /// **VNC_BYPASS**
+    /// When set, the Von-Neuman balancer is bypassed (including the 32 consecutive bits test).
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const VNC_BYPASS_OFFSET: u32 = 1;
     pub const VNC_BYPASS_MASK: u32 = 0x00000002;
     pub const VNC_BYPASS: u32 = 1 << 1;
 
-    /// RESERVED - N/A
-    /// Bits [0:0], mask 0x00000001
+    /// **RESERVED**
+    /// N/A
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const RESERVED_OFFSET: u32 = 0;
     pub const RESERVED_MASK: u32 = 0x00000001;
     pub const RESERVED: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **AUTO_CORRELATE_BYPASS** [3:3]: When set, the autocorrelation test in the TRNG module is bypassed.
+    /// **AUTO_CORRELATE_BYPASS** `[3]` (RW)
+    /// When set, the autocorrelation test in the TRNG module is bypassed.
     #[inline(always)]
     pub fn auto_correlate_bypass(&self) -> bool {
-        (self.read_bits() & Self::AUTO_CORRELATE_BYPASS_MASK) != 0
+        (self.value.read_bits() & Self::AUTO_CORRELATE_BYPASS_MASK) != 0
     }
 
-    /// Set AUTO_CORRELATE_BYPASS bit
+    /// Set AUTO_CORRELATE_BYPASS bit atomically (RW)
     #[inline(always)]
     pub fn set_auto_correlate_bypass(&self) {
-        self.set_bits(Self::AUTO_CORRELATE_BYPASS_MASK);
+        self.value.set_bits(Self::AUTO_CORRELATE_BYPASS_MASK);
     }
 
-    /// Clear AUTO_CORRELATE_BYPASS bit
+    /// Clear AUTO_CORRELATE_BYPASS bit atomically (RW)
     #[inline(always)]
     pub fn clr_auto_correlate_bypass(&self) {
-        self.clr_bits(Self::AUTO_CORRELATE_BYPASS_MASK);
+        self.value.clr_bits(Self::AUTO_CORRELATE_BYPASS_MASK);
     }
 
-    /// **TRNG_CRNGT_BYPASS** [2:2]: When set, the CRNGT test in the RNG is bypassed.
+    /// **TRNG_CRNGT_BYPASS** `[2]` (RW)
+    /// When set, the CRNGT test in the RNG is bypassed.
     #[inline(always)]
     pub fn trng_crngt_bypass(&self) -> bool {
-        (self.read_bits() & Self::TRNG_CRNGT_BYPASS_MASK) != 0
+        (self.value.read_bits() & Self::TRNG_CRNGT_BYPASS_MASK) != 0
     }
 
-    /// Set TRNG_CRNGT_BYPASS bit
+    /// Set TRNG_CRNGT_BYPASS bit atomically (RW)
     #[inline(always)]
     pub fn set_trng_crngt_bypass(&self) {
-        self.set_bits(Self::TRNG_CRNGT_BYPASS_MASK);
+        self.value.set_bits(Self::TRNG_CRNGT_BYPASS_MASK);
     }
 
-    /// Clear TRNG_CRNGT_BYPASS bit
+    /// Clear TRNG_CRNGT_BYPASS bit atomically (RW)
     #[inline(always)]
     pub fn clr_trng_crngt_bypass(&self) {
-        self.clr_bits(Self::TRNG_CRNGT_BYPASS_MASK);
+        self.value.clr_bits(Self::TRNG_CRNGT_BYPASS_MASK);
     }
 
-    /// **VNC_BYPASS** [1:1]: When set, the Von-Neuman balancer is bypassed (including the 32 consecutive...
+    /// **VNC_BYPASS** `[1]` (RW)
+    /// When set, the Von-Neuman balancer is bypassed (including the 32 consecutive bits test).
     #[inline(always)]
     pub fn vnc_bypass(&self) -> bool {
-        (self.read_bits() & Self::VNC_BYPASS_MASK) != 0
+        (self.value.read_bits() & Self::VNC_BYPASS_MASK) != 0
     }
 
-    /// Set VNC_BYPASS bit
+    /// Set VNC_BYPASS bit atomically (RW)
     #[inline(always)]
     pub fn set_vnc_bypass(&self) {
-        self.set_bits(Self::VNC_BYPASS_MASK);
+        self.value.set_bits(Self::VNC_BYPASS_MASK);
     }
 
-    /// Clear VNC_BYPASS bit
+    /// Clear VNC_BYPASS bit atomically (RW)
     #[inline(always)]
     pub fn clr_vnc_bypass(&self) {
-        self.clr_bits(Self::VNC_BYPASS_MASK);
+        self.value.clr_bits(Self::VNC_BYPASS_MASK);
     }
 
-    /// **RESERVED** [0:0]: N/A
+    /// **RESERVED** `[0]` (RO)
+    /// N/A
     #[inline(always)]
     pub fn reserved(&self) -> bool {
-        (self.read_bits() & Self::RESERVED_MASK) != 0
+        (self.value.read_bits() & Self::RESERVED_MASK) != 0
     }
 
 }
@@ -2828,31 +2351,36 @@ impl TrngDebugControlVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read AUTO_CORRELATE_BYPASS [3:3]: When set, the autocorrelation test in the TRNG module is bypassed.
+    /// Read **AUTO_CORRELATE_BYPASS** `[3:3]`
+    /// When set, the autocorrelation test in the TRNG module is bypassed.
     #[inline(always)]
     pub const fn auto_correlate_bypass(&self) -> bool {
         (self.bits & TrngDebugControl::AUTO_CORRELATE_BYPASS_MASK) != 0
     }
 
-    /// Read TRNG_CRNGT_BYPASS [2:2]: When set, the CRNGT test in the RNG is bypassed.
+    /// Read **TRNG_CRNGT_BYPASS** `[2:2]`
+    /// When set, the CRNGT test in the RNG is bypassed.
     #[inline(always)]
     pub const fn trng_crngt_bypass(&self) -> bool {
         (self.bits & TrngDebugControl::TRNG_CRNGT_BYPASS_MASK) != 0
     }
 
-    /// Read VNC_BYPASS [1:1]: When set, the Von-Neuman balancer is bypassed (including the 32 consecutive...
+    /// Read **VNC_BYPASS** `[1:1]`
+    /// When set, the Von-Neuman balancer is bypassed (including the 32 consecutive bits test).
     #[inline(always)]
     pub const fn vnc_bypass(&self) -> bool {
         (self.bits & TrngDebugControl::VNC_BYPASS_MASK) != 0
     }
 
-    /// Read RESERVED [0:0]: N/A
+    /// Read **RESERVED** `[0:0]`
+    /// N/A
     #[inline(always)]
     pub const fn reserved(&self) -> bool {
         (self.bits & TrngDebugControl::RESERVED_MASK) != 0
     }
 
-    /// Set AUTO_CORRELATE_BYPASS [3:3]: When set, the autocorrelation test in the TRNG module is bypassed.
+    /// Set **AUTO_CORRELATE_BYPASS** `[3:3]`
+    /// When set, the autocorrelation test in the TRNG module is bypassed.
     #[inline(always)]
     pub const fn with_auto_correlate_bypass(self, value: bool) -> Self {
         Self {
@@ -2864,7 +2392,8 @@ impl TrngDebugControlVal {
         }
     }
 
-    /// Set TRNG_CRNGT_BYPASS [2:2]: When set, the CRNGT test in the RNG is bypassed.
+    /// Set **TRNG_CRNGT_BYPASS** `[2:2]`
+    /// When set, the CRNGT test in the RNG is bypassed.
     #[inline(always)]
     pub const fn with_trng_crngt_bypass(self, value: bool) -> Self {
         Self {
@@ -2876,7 +2405,8 @@ impl TrngDebugControlVal {
         }
     }
 
-    /// Set VNC_BYPASS [1:1]: When set, the Von-Neuman balancer is bypassed (including the 32 consecutive...
+    /// Set **VNC_BYPASS** `[1:1]`
+    /// When set, the Von-Neuman balancer is bypassed (including the 32 consecutive bits test).
     #[inline(always)]
     pub const fn with_vnc_bypass(self, value: bool) -> Self {
         Self {
@@ -2899,20 +2429,20 @@ impl Default for TrngDebugControlVal {
 impl TrngDebugControl {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> TrngDebugControlVal {
-        TrngDebugControlVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> TrngDebugControlVal {
+        TrngDebugControlVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: TrngDebugControlVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: TrngDebugControlVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(TrngDebugControlVal) -> TrngDebugControlVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(TrngDebugControlVal) -> TrngDebugControlVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -2926,101 +2456,65 @@ impl TrngDebugControl {
 ///
 /// ## Fields
 ///
-/// - **RESERVED** [31:1] (RO): RESERVED
-/// - **TRNG_SW_RESET** [0] (RW): Writing 1'b1 to this register causes an internal RNG reset.
+/// - **RESERVED** `[31:1]` (RO)
+///   RESERVED
+/// - **TRNG_SW_RESET** `[0]` (RW)
+///   Writing 1'b1 to this register causes an internal RNG reset.
 #[repr(transparent)]
 pub struct TrngSwReset {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for TrngSwReset {}
-unsafe impl Sync for TrngSwReset {}
+impl core::ops::Deref for TrngSwReset {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl TrngSwReset {
     // ======== Field Constants ========
 
-    /// RESERVED - RESERVED
-    /// Bits [31:1], mask 0xfffffffe
+    /// **RESERVED**
+    /// RESERVED
+    /// Bits `[31:1]`, mask `0xfffffffe`
     pub const RESERVED_OFFSET: u32 = 1;
     pub const RESERVED_MASK: u32 = 0xfffffffe;
 
-    /// TRNG_SW_RESET - Writing 1'b1 to this register causes an internal RNG reset.
-    /// Bits [0:0], mask 0x00000001
+    /// **TRNG_SW_RESET**
+    /// Writing 1'b1 to this register causes an internal RNG reset.
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const TRNG_SW_RESET_OFFSET: u32 = 0;
     pub const TRNG_SW_RESET_MASK: u32 = 0x00000001;
     pub const TRNG_SW_RESET: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **RESERVED** [31:1]: RESERVED
+    /// **RESERVED** `[31:1]` (RO)
+    /// RESERVED
     #[inline(always)]
     pub fn reserved(&self) -> u32 {
-        (self.read_bits() & Self::RESERVED_MASK) >> Self::RESERVED_OFFSET
+        (self.value.read_bits() & Self::RESERVED_MASK) >> Self::RESERVED_OFFSET
     }
 
-    /// **TRNG_SW_RESET** [0:0]: Writing 1'b1 to this register causes an internal RNG reset.
+    /// **TRNG_SW_RESET** `[0]` (RW)
+    /// Writing 1'b1 to this register causes an internal RNG reset.
     #[inline(always)]
     pub fn trng_sw_reset(&self) -> bool {
-        (self.read_bits() & Self::TRNG_SW_RESET_MASK) != 0
+        (self.value.read_bits() & Self::TRNG_SW_RESET_MASK) != 0
     }
 
-    /// Set TRNG_SW_RESET bit
+    /// Set TRNG_SW_RESET bit atomically (RW)
     #[inline(always)]
     pub fn set_trng_sw_reset(&self) {
-        self.set_bits(Self::TRNG_SW_RESET_MASK);
+        self.value.set_bits(Self::TRNG_SW_RESET_MASK);
     }
 
-    /// Clear TRNG_SW_RESET bit
+    /// Clear TRNG_SW_RESET bit atomically (RW)
     #[inline(always)]
     pub fn clr_trng_sw_reset(&self) {
-        self.clr_bits(Self::TRNG_SW_RESET_MASK);
+        self.value.clr_bits(Self::TRNG_SW_RESET_MASK);
     }
 
 }
@@ -3053,19 +2547,22 @@ impl TrngSwResetVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read RESERVED [31:1]: RESERVED
+    /// Read **RESERVED** `[31:1]`
+    /// RESERVED
     #[inline(always)]
     pub const fn reserved(&self) -> u32 {
         (self.bits & TrngSwReset::RESERVED_MASK) >> TrngSwReset::RESERVED_OFFSET
     }
 
-    /// Read TRNG_SW_RESET [0:0]: Writing 1'b1 to this register causes an internal RNG reset.
+    /// Read **TRNG_SW_RESET** `[0:0]`
+    /// Writing 1'b1 to this register causes an internal RNG reset.
     #[inline(always)]
     pub const fn trng_sw_reset(&self) -> bool {
         (self.bits & TrngSwReset::TRNG_SW_RESET_MASK) != 0
     }
 
-    /// Set TRNG_SW_RESET [0:0]: Writing 1'b1 to this register causes an internal RNG reset.
+    /// Set **TRNG_SW_RESET** `[0:0]`
+    /// Writing 1'b1 to this register causes an internal RNG reset.
     #[inline(always)]
     pub const fn with_trng_sw_reset(self, value: bool) -> Self {
         Self {
@@ -3088,20 +2585,20 @@ impl Default for TrngSwResetVal {
 impl TrngSwReset {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> TrngSwResetVal {
-        TrngSwResetVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> TrngSwResetVal {
+        TrngSwResetVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: TrngSwResetVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: TrngSwResetVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(TrngSwResetVal) -> TrngSwResetVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(TrngSwResetVal) -> TrngSwResetVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -3115,101 +2612,65 @@ impl TrngSwReset {
 ///
 /// ## Fields
 ///
-/// - **RESERVED** [31:1] (RO): RESERVED
-/// - **RNG_DEBUG_EN** [0] (RW): * 1'b1 - debug mode is enabled. *1'b0 - debug mode is disabled
+/// - **RESERVED** `[31:1]` (RO)
+///   RESERVED
+/// - **RNG_DEBUG_EN** `[0]` (RW)
+///   * 1'b1 - debug mode is enabled. *1'b0 - debug mode is disabled
 #[repr(transparent)]
 pub struct RngDebugEnInput {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for RngDebugEnInput {}
-unsafe impl Sync for RngDebugEnInput {}
+impl core::ops::Deref for RngDebugEnInput {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl RngDebugEnInput {
     // ======== Field Constants ========
 
-    /// RESERVED - RESERVED
-    /// Bits [31:1], mask 0xfffffffe
+    /// **RESERVED**
+    /// RESERVED
+    /// Bits `[31:1]`, mask `0xfffffffe`
     pub const RESERVED_OFFSET: u32 = 1;
     pub const RESERVED_MASK: u32 = 0xfffffffe;
 
-    /// RNG_DEBUG_EN - * 1'b1 - debug mode is enabled. *1'b0 - debug mode is disabled
-    /// Bits [0:0], mask 0x00000001
+    /// **RNG_DEBUG_EN**
+    /// * 1'b1 - debug mode is enabled. *1'b0 - debug mode is disabled
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const RNG_DEBUG_EN_OFFSET: u32 = 0;
     pub const RNG_DEBUG_EN_MASK: u32 = 0x00000001;
     pub const RNG_DEBUG_EN: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **RESERVED** [31:1]: RESERVED
+    /// **RESERVED** `[31:1]` (RO)
+    /// RESERVED
     #[inline(always)]
     pub fn reserved(&self) -> u32 {
-        (self.read_bits() & Self::RESERVED_MASK) >> Self::RESERVED_OFFSET
+        (self.value.read_bits() & Self::RESERVED_MASK) >> Self::RESERVED_OFFSET
     }
 
-    /// **RNG_DEBUG_EN** [0:0]: * 1'b1 - debug mode is enabled. *1'b0 - debug mode is disabled
+    /// **RNG_DEBUG_EN** `[0]` (RW)
+    /// * 1'b1 - debug mode is enabled. *1'b0 - debug mode is disabled
     #[inline(always)]
     pub fn rng_debug_en(&self) -> bool {
-        (self.read_bits() & Self::RNG_DEBUG_EN_MASK) != 0
+        (self.value.read_bits() & Self::RNG_DEBUG_EN_MASK) != 0
     }
 
-    /// Set RNG_DEBUG_EN bit
+    /// Set RNG_DEBUG_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_rng_debug_en(&self) {
-        self.set_bits(Self::RNG_DEBUG_EN_MASK);
+        self.value.set_bits(Self::RNG_DEBUG_EN_MASK);
     }
 
-    /// Clear RNG_DEBUG_EN bit
+    /// Clear RNG_DEBUG_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_rng_debug_en(&self) {
-        self.clr_bits(Self::RNG_DEBUG_EN_MASK);
+        self.value.clr_bits(Self::RNG_DEBUG_EN_MASK);
     }
 
 }
@@ -3242,19 +2703,22 @@ impl RngDebugEnInputVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read RESERVED [31:1]: RESERVED
+    /// Read **RESERVED** `[31:1]`
+    /// RESERVED
     #[inline(always)]
     pub const fn reserved(&self) -> u32 {
         (self.bits & RngDebugEnInput::RESERVED_MASK) >> RngDebugEnInput::RESERVED_OFFSET
     }
 
-    /// Read RNG_DEBUG_EN [0:0]: * 1'b1 - debug mode is enabled. *1'b0 - debug mode is disabled
+    /// Read **RNG_DEBUG_EN** `[0:0]`
+    /// * 1'b1 - debug mode is enabled. *1'b0 - debug mode is disabled
     #[inline(always)]
     pub const fn rng_debug_en(&self) -> bool {
         (self.bits & RngDebugEnInput::RNG_DEBUG_EN_MASK) != 0
     }
 
-    /// Set RNG_DEBUG_EN [0:0]: * 1'b1 - debug mode is enabled. *1'b0 - debug mode is disabled
+    /// Set **RNG_DEBUG_EN** `[0:0]`
+    /// * 1'b1 - debug mode is enabled. *1'b0 - debug mode is disabled
     #[inline(always)]
     pub const fn with_rng_debug_en(self, value: bool) -> Self {
         Self {
@@ -3277,20 +2741,20 @@ impl Default for RngDebugEnInputVal {
 impl RngDebugEnInput {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> RngDebugEnInputVal {
-        RngDebugEnInputVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> RngDebugEnInputVal {
+        RngDebugEnInputVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: RngDebugEnInputVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: RngDebugEnInputVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(RngDebugEnInputVal) -> RngDebugEnInputVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(RngDebugEnInputVal) -> RngDebugEnInputVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -3304,89 +2768,53 @@ impl RngDebugEnInput {
 ///
 /// ## Fields
 ///
-/// - **RESERVED** [31:1] (RO): RESERVED
-/// - **TRNG_BUSY** [0] (RO): Reflects rng_busy status.
+/// - **RESERVED** `[31:1]` (RO)
+///   RESERVED
+/// - **TRNG_BUSY** `[0]` (RO)
+///   Reflects rng_busy status.
 #[repr(transparent)]
 pub struct TrngBusy {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for TrngBusy {}
-unsafe impl Sync for TrngBusy {}
+impl core::ops::Deref for TrngBusy {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl TrngBusy {
     // ======== Field Constants ========
 
-    /// RESERVED - RESERVED
-    /// Bits [31:1], mask 0xfffffffe
+    /// **RESERVED**
+    /// RESERVED
+    /// Bits `[31:1]`, mask `0xfffffffe`
     pub const RESERVED_OFFSET: u32 = 1;
     pub const RESERVED_MASK: u32 = 0xfffffffe;
 
-    /// TRNG_BUSY - Reflects rng_busy status.
-    /// Bits [0:0], mask 0x00000001
+    /// **TRNG_BUSY**
+    /// Reflects rng_busy status.
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const TRNG_BUSY_OFFSET: u32 = 0;
     pub const TRNG_BUSY_MASK: u32 = 0x00000001;
     pub const TRNG_BUSY: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **RESERVED** [31:1]: RESERVED
+    /// **RESERVED** `[31:1]` (RO)
+    /// RESERVED
     #[inline(always)]
     pub fn reserved(&self) -> u32 {
-        (self.read_bits() & Self::RESERVED_MASK) >> Self::RESERVED_OFFSET
+        (self.value.read_bits() & Self::RESERVED_MASK) >> Self::RESERVED_OFFSET
     }
 
-    /// **TRNG_BUSY** [0:0]: Reflects rng_busy status.
+    /// **TRNG_BUSY** `[0]` (RO)
+    /// Reflects rng_busy status.
     #[inline(always)]
     pub fn trng_busy(&self) -> bool {
-        (self.read_bits() & Self::TRNG_BUSY_MASK) != 0
+        (self.value.read_bits() & Self::TRNG_BUSY_MASK) != 0
     }
 
 }
@@ -3419,13 +2847,15 @@ impl TrngBusyVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read RESERVED [31:1]: RESERVED
+    /// Read **RESERVED** `[31:1]`
+    /// RESERVED
     #[inline(always)]
     pub const fn reserved(&self) -> u32 {
         (self.bits & TrngBusy::RESERVED_MASK) >> TrngBusy::RESERVED_OFFSET
     }
 
-    /// Read TRNG_BUSY [0:0]: Reflects rng_busy status.
+    /// Read **TRNG_BUSY** `[0:0]`
+    /// Reflects rng_busy status.
     #[inline(always)]
     pub const fn trng_busy(&self) -> bool {
         (self.bits & TrngBusy::TRNG_BUSY_MASK) != 0
@@ -3442,20 +2872,20 @@ impl Default for TrngBusyVal {
 impl TrngBusy {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> TrngBusyVal {
-        TrngBusyVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> TrngBusyVal {
+        TrngBusyVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: TrngBusyVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: TrngBusyVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(TrngBusyVal) -> TrngBusyVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(TrngBusyVal) -> TrngBusyVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -3469,101 +2899,65 @@ impl TrngBusy {
 ///
 /// ## Fields
 ///
-/// - **RESERVED** [31:1] (RO): RESERVED
-/// - **RST_BITS_COUNTER** [0] (RW): Writing any value to this address will reset the bits counter and RNG valid...
+/// - **RESERVED** `[31:1]` (RO)
+///   RESERVED
+/// - **RST_BITS_COUNTER** `[0]` (RW)
+///   Writing any value to this address will reset the bits counter and RNG valid registers. RND_SORCE_ENABLE register must be unset in order for the reset to take place.
 #[repr(transparent)]
 pub struct RstBitsCounter {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for RstBitsCounter {}
-unsafe impl Sync for RstBitsCounter {}
+impl core::ops::Deref for RstBitsCounter {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl RstBitsCounter {
     // ======== Field Constants ========
 
-    /// RESERVED - RESERVED
-    /// Bits [31:1], mask 0xfffffffe
+    /// **RESERVED**
+    /// RESERVED
+    /// Bits `[31:1]`, mask `0xfffffffe`
     pub const RESERVED_OFFSET: u32 = 1;
     pub const RESERVED_MASK: u32 = 0xfffffffe;
 
-    /// RST_BITS_COUNTER - Writing any value to this address will reset the bits counter and RNG valid...
-    /// Bits [0:0], mask 0x00000001
+    /// **RST_BITS_COUNTER**
+    /// Writing any value to this address will reset the bits counter and RNG valid registers. RND_SORCE_ENABLE register must be unset in order for the reset to take place.
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const RST_BITS_COUNTER_OFFSET: u32 = 0;
     pub const RST_BITS_COUNTER_MASK: u32 = 0x00000001;
     pub const RST_BITS_COUNTER: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **RESERVED** [31:1]: RESERVED
+    /// **RESERVED** `[31:1]` (RO)
+    /// RESERVED
     #[inline(always)]
     pub fn reserved(&self) -> u32 {
-        (self.read_bits() & Self::RESERVED_MASK) >> Self::RESERVED_OFFSET
+        (self.value.read_bits() & Self::RESERVED_MASK) >> Self::RESERVED_OFFSET
     }
 
-    /// **RST_BITS_COUNTER** [0:0]: Writing any value to this address will reset the bits counter and RNG valid...
+    /// **RST_BITS_COUNTER** `[0]` (RW)
+    /// Writing any value to this address will reset the bits counter and RNG valid registers. RND_SORCE_ENABLE register must be unset in order for the reset to take place.
     #[inline(always)]
     pub fn rst_bits_counter(&self) -> bool {
-        (self.read_bits() & Self::RST_BITS_COUNTER_MASK) != 0
+        (self.value.read_bits() & Self::RST_BITS_COUNTER_MASK) != 0
     }
 
-    /// Set RST_BITS_COUNTER bit
+    /// Set RST_BITS_COUNTER bit atomically (RW)
     #[inline(always)]
     pub fn set_rst_bits_counter(&self) {
-        self.set_bits(Self::RST_BITS_COUNTER_MASK);
+        self.value.set_bits(Self::RST_BITS_COUNTER_MASK);
     }
 
-    /// Clear RST_BITS_COUNTER bit
+    /// Clear RST_BITS_COUNTER bit atomically (RW)
     #[inline(always)]
     pub fn clr_rst_bits_counter(&self) {
-        self.clr_bits(Self::RST_BITS_COUNTER_MASK);
+        self.value.clr_bits(Self::RST_BITS_COUNTER_MASK);
     }
 
 }
@@ -3596,19 +2990,22 @@ impl RstBitsCounterVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read RESERVED [31:1]: RESERVED
+    /// Read **RESERVED** `[31:1]`
+    /// RESERVED
     #[inline(always)]
     pub const fn reserved(&self) -> u32 {
         (self.bits & RstBitsCounter::RESERVED_MASK) >> RstBitsCounter::RESERVED_OFFSET
     }
 
-    /// Read RST_BITS_COUNTER [0:0]: Writing any value to this address will reset the bits counter and RNG valid...
+    /// Read **RST_BITS_COUNTER** `[0:0]`
+    /// Writing any value to this address will reset the bits counter and RNG valid registers. RND_SORCE_ENABLE register must be unset in order for the reset to take place.
     #[inline(always)]
     pub const fn rst_bits_counter(&self) -> bool {
         (self.bits & RstBitsCounter::RST_BITS_COUNTER_MASK) != 0
     }
 
-    /// Set RST_BITS_COUNTER [0:0]: Writing any value to this address will reset the bits counter and RNG valid...
+    /// Set **RST_BITS_COUNTER** `[0:0]`
+    /// Writing any value to this address will reset the bits counter and RNG valid registers. RND_SORCE_ENABLE register must be unset in order for the reset to take place.
     #[inline(always)]
     pub const fn with_rst_bits_counter(self, value: bool) -> Self {
         Self {
@@ -3631,20 +3028,20 @@ impl Default for RstBitsCounterVal {
 impl RstBitsCounter {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> RstBitsCounterVal {
-        RstBitsCounterVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> RstBitsCounterVal {
+        RstBitsCounterVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: RstBitsCounterVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: RstBitsCounterVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(RstBitsCounterVal) -> RstBitsCounterVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(RstBitsCounterVal) -> RstBitsCounterVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -3658,180 +3055,165 @@ impl RstBitsCounter {
 ///
 /// ## Fields
 ///
-/// - **RESERVED** [31:8] (RO): RESERVED
-/// - **RNG_USE_5_SBOXES** [7] (RO): * 1'b1 - 5 SBOX AES. *1'b0 - 20 SBOX AES
-/// - **RESEEDING_EXISTS** [6] (RO): * 1'b1 - Exists. *1'b0 - Does not exist
-/// - **KAT_EXISTS** [5] (RO): * 1'b1 - Exists. *1'b0 - Does not exist
-/// - **PRNG_EXISTS** [4] (RO): * 1'b1 - Exists. *1'b0 - Does not exist
-/// - **TRNG_TESTS_BYPASS_EN** [3] (RO): * 1'b1 - Exists. *1'b0 - Does not exist
-/// - **AUTOCORR_EXISTS** [2] (RO): * 1'b1 - Exists. *1'b0 - Does not exist
-/// - **CRNGT_EXISTS** [1] (RO): * 1'b1 - Exists. *1'b0 - Does not exist
-/// - **EHR_WIDTH_192** [0] (RO): * 1'b1 - 192-bit EHR. *1'b0 - 128-bit EHR
+/// - **RESERVED** `[31:8]` (RO)
+///   RESERVED
+/// - **RNG_USE_5_SBOXES** `[7]` (RO)
+///   * 1'b1 - 5 SBOX AES. *1'b0 - 20 SBOX AES
+/// - **RESEEDING_EXISTS** `[6]` (RO)
+///   * 1'b1 - Exists. *1'b0 - Does not exist
+/// - **KAT_EXISTS** `[5]` (RO)
+///   * 1'b1 - Exists. *1'b0 - Does not exist
+/// - **PRNG_EXISTS** `[4]` (RO)
+///   * 1'b1 - Exists. *1'b0 - Does not exist
+/// - **TRNG_TESTS_BYPASS_EN** `[3]` (RO)
+///   * 1'b1 - Exists. *1'b0 - Does not exist
+/// - **AUTOCORR_EXISTS** `[2]` (RO)
+///   * 1'b1 - Exists. *1'b0 - Does not exist
+/// - **CRNGT_EXISTS** `[1]` (RO)
+///   * 1'b1 - Exists. *1'b0 - Does not exist
+/// - **EHR_WIDTH_192** `[0]` (RO)
+///   * 1'b1 - 192-bit EHR. *1'b0 - 128-bit EHR
 #[repr(transparent)]
 pub struct RngVersion {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for RngVersion {}
-unsafe impl Sync for RngVersion {}
+impl core::ops::Deref for RngVersion {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl RngVersion {
     // ======== Field Constants ========
 
-    /// RESERVED - RESERVED
-    /// Bits [31:8], mask 0xffffff00
+    /// **RESERVED**
+    /// RESERVED
+    /// Bits `[31:8]`, mask `0xffffff00`
     pub const RESERVED_OFFSET: u32 = 8;
     pub const RESERVED_MASK: u32 = 0xffffff00;
 
-    /// RNG_USE_5_SBOXES - * 1'b1 - 5 SBOX AES. *1'b0 - 20 SBOX AES
-    /// Bits [7:7], mask 0x00000080
+    /// **RNG_USE_5_SBOXES**
+    /// * 1'b1 - 5 SBOX AES. *1'b0 - 20 SBOX AES
+    /// Bits `[7:7]`, mask `0x00000080`
     pub const RNG_USE_5_SBOXES_OFFSET: u32 = 7;
     pub const RNG_USE_5_SBOXES_MASK: u32 = 0x00000080;
     pub const RNG_USE_5_SBOXES: u32 = 1 << 7;
 
-    /// RESEEDING_EXISTS - * 1'b1 - Exists. *1'b0 - Does not exist
-    /// Bits [6:6], mask 0x00000040
+    /// **RESEEDING_EXISTS**
+    /// * 1'b1 - Exists. *1'b0 - Does not exist
+    /// Bits `[6:6]`, mask `0x00000040`
     pub const RESEEDING_EXISTS_OFFSET: u32 = 6;
     pub const RESEEDING_EXISTS_MASK: u32 = 0x00000040;
     pub const RESEEDING_EXISTS: u32 = 1 << 6;
 
-    /// KAT_EXISTS - * 1'b1 - Exists. *1'b0 - Does not exist
-    /// Bits [5:5], mask 0x00000020
+    /// **KAT_EXISTS**
+    /// * 1'b1 - Exists. *1'b0 - Does not exist
+    /// Bits `[5:5]`, mask `0x00000020`
     pub const KAT_EXISTS_OFFSET: u32 = 5;
     pub const KAT_EXISTS_MASK: u32 = 0x00000020;
     pub const KAT_EXISTS: u32 = 1 << 5;
 
-    /// PRNG_EXISTS - * 1'b1 - Exists. *1'b0 - Does not exist
-    /// Bits [4:4], mask 0x00000010
+    /// **PRNG_EXISTS**
+    /// * 1'b1 - Exists. *1'b0 - Does not exist
+    /// Bits `[4:4]`, mask `0x00000010`
     pub const PRNG_EXISTS_OFFSET: u32 = 4;
     pub const PRNG_EXISTS_MASK: u32 = 0x00000010;
     pub const PRNG_EXISTS: u32 = 1 << 4;
 
-    /// TRNG_TESTS_BYPASS_EN - * 1'b1 - Exists. *1'b0 - Does not exist
-    /// Bits [3:3], mask 0x00000008
+    /// **TRNG_TESTS_BYPASS_EN**
+    /// * 1'b1 - Exists. *1'b0 - Does not exist
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const TRNG_TESTS_BYPASS_EN_OFFSET: u32 = 3;
     pub const TRNG_TESTS_BYPASS_EN_MASK: u32 = 0x00000008;
     pub const TRNG_TESTS_BYPASS_EN: u32 = 1 << 3;
 
-    /// AUTOCORR_EXISTS - * 1'b1 - Exists. *1'b0 - Does not exist
-    /// Bits [2:2], mask 0x00000004
+    /// **AUTOCORR_EXISTS**
+    /// * 1'b1 - Exists. *1'b0 - Does not exist
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const AUTOCORR_EXISTS_OFFSET: u32 = 2;
     pub const AUTOCORR_EXISTS_MASK: u32 = 0x00000004;
     pub const AUTOCORR_EXISTS: u32 = 1 << 2;
 
-    /// CRNGT_EXISTS - * 1'b1 - Exists. *1'b0 - Does not exist
-    /// Bits [1:1], mask 0x00000002
+    /// **CRNGT_EXISTS**
+    /// * 1'b1 - Exists. *1'b0 - Does not exist
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const CRNGT_EXISTS_OFFSET: u32 = 1;
     pub const CRNGT_EXISTS_MASK: u32 = 0x00000002;
     pub const CRNGT_EXISTS: u32 = 1 << 1;
 
-    /// EHR_WIDTH_192 - * 1'b1 - 192-bit EHR. *1'b0 - 128-bit EHR
-    /// Bits [0:0], mask 0x00000001
+    /// **EHR_WIDTH_192**
+    /// * 1'b1 - 192-bit EHR. *1'b0 - 128-bit EHR
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const EHR_WIDTH_192_OFFSET: u32 = 0;
     pub const EHR_WIDTH_192_MASK: u32 = 0x00000001;
     pub const EHR_WIDTH_192: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **RESERVED** [31:8]: RESERVED
+    /// **RESERVED** `[31:8]` (RO)
+    /// RESERVED
     #[inline(always)]
     pub fn reserved(&self) -> u32 {
-        (self.read_bits() & Self::RESERVED_MASK) >> Self::RESERVED_OFFSET
+        (self.value.read_bits() & Self::RESERVED_MASK) >> Self::RESERVED_OFFSET
     }
 
-    /// **RNG_USE_5_SBOXES** [7:7]: * 1'b1 - 5 SBOX AES. *1'b0 - 20 SBOX AES
+    /// **RNG_USE_5_SBOXES** `[7]` (RO)
+    /// * 1'b1 - 5 SBOX AES. *1'b0 - 20 SBOX AES
     #[inline(always)]
     pub fn rng_use_5_sboxes(&self) -> bool {
-        (self.read_bits() & Self::RNG_USE_5_SBOXES_MASK) != 0
+        (self.value.read_bits() & Self::RNG_USE_5_SBOXES_MASK) != 0
     }
 
-    /// **RESEEDING_EXISTS** [6:6]: * 1'b1 - Exists. *1'b0 - Does not exist
+    /// **RESEEDING_EXISTS** `[6]` (RO)
+    /// * 1'b1 - Exists. *1'b0 - Does not exist
     #[inline(always)]
     pub fn reseeding_exists(&self) -> bool {
-        (self.read_bits() & Self::RESEEDING_EXISTS_MASK) != 0
+        (self.value.read_bits() & Self::RESEEDING_EXISTS_MASK) != 0
     }
 
-    /// **KAT_EXISTS** [5:5]: * 1'b1 - Exists. *1'b0 - Does not exist
+    /// **KAT_EXISTS** `[5]` (RO)
+    /// * 1'b1 - Exists. *1'b0 - Does not exist
     #[inline(always)]
     pub fn kat_exists(&self) -> bool {
-        (self.read_bits() & Self::KAT_EXISTS_MASK) != 0
+        (self.value.read_bits() & Self::KAT_EXISTS_MASK) != 0
     }
 
-    /// **PRNG_EXISTS** [4:4]: * 1'b1 - Exists. *1'b0 - Does not exist
+    /// **PRNG_EXISTS** `[4]` (RO)
+    /// * 1'b1 - Exists. *1'b0 - Does not exist
     #[inline(always)]
     pub fn prng_exists(&self) -> bool {
-        (self.read_bits() & Self::PRNG_EXISTS_MASK) != 0
+        (self.value.read_bits() & Self::PRNG_EXISTS_MASK) != 0
     }
 
-    /// **TRNG_TESTS_BYPASS_EN** [3:3]: * 1'b1 - Exists. *1'b0 - Does not exist
+    /// **TRNG_TESTS_BYPASS_EN** `[3]` (RO)
+    /// * 1'b1 - Exists. *1'b0 - Does not exist
     #[inline(always)]
     pub fn trng_tests_bypass_en(&self) -> bool {
-        (self.read_bits() & Self::TRNG_TESTS_BYPASS_EN_MASK) != 0
+        (self.value.read_bits() & Self::TRNG_TESTS_BYPASS_EN_MASK) != 0
     }
 
-    /// **AUTOCORR_EXISTS** [2:2]: * 1'b1 - Exists. *1'b0 - Does not exist
+    /// **AUTOCORR_EXISTS** `[2]` (RO)
+    /// * 1'b1 - Exists. *1'b0 - Does not exist
     #[inline(always)]
     pub fn autocorr_exists(&self) -> bool {
-        (self.read_bits() & Self::AUTOCORR_EXISTS_MASK) != 0
+        (self.value.read_bits() & Self::AUTOCORR_EXISTS_MASK) != 0
     }
 
-    /// **CRNGT_EXISTS** [1:1]: * 1'b1 - Exists. *1'b0 - Does not exist
+    /// **CRNGT_EXISTS** `[1]` (RO)
+    /// * 1'b1 - Exists. *1'b0 - Does not exist
     #[inline(always)]
     pub fn crngt_exists(&self) -> bool {
-        (self.read_bits() & Self::CRNGT_EXISTS_MASK) != 0
+        (self.value.read_bits() & Self::CRNGT_EXISTS_MASK) != 0
     }
 
-    /// **EHR_WIDTH_192** [0:0]: * 1'b1 - 192-bit EHR. *1'b0 - 128-bit EHR
+    /// **EHR_WIDTH_192** `[0]` (RO)
+    /// * 1'b1 - 192-bit EHR. *1'b0 - 128-bit EHR
     #[inline(always)]
     pub fn ehr_width_192(&self) -> bool {
-        (self.read_bits() & Self::EHR_WIDTH_192_MASK) != 0
+        (self.value.read_bits() & Self::EHR_WIDTH_192_MASK) != 0
     }
 
 }
@@ -3864,55 +3246,64 @@ impl RngVersionVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read RESERVED [31:8]: RESERVED
+    /// Read **RESERVED** `[31:8]`
+    /// RESERVED
     #[inline(always)]
     pub const fn reserved(&self) -> u32 {
         (self.bits & RngVersion::RESERVED_MASK) >> RngVersion::RESERVED_OFFSET
     }
 
-    /// Read RNG_USE_5_SBOXES [7:7]: * 1'b1 - 5 SBOX AES. *1'b0 - 20 SBOX AES
+    /// Read **RNG_USE_5_SBOXES** `[7:7]`
+    /// * 1'b1 - 5 SBOX AES. *1'b0 - 20 SBOX AES
     #[inline(always)]
     pub const fn rng_use_5_sboxes(&self) -> bool {
         (self.bits & RngVersion::RNG_USE_5_SBOXES_MASK) != 0
     }
 
-    /// Read RESEEDING_EXISTS [6:6]: * 1'b1 - Exists. *1'b0 - Does not exist
+    /// Read **RESEEDING_EXISTS** `[6:6]`
+    /// * 1'b1 - Exists. *1'b0 - Does not exist
     #[inline(always)]
     pub const fn reseeding_exists(&self) -> bool {
         (self.bits & RngVersion::RESEEDING_EXISTS_MASK) != 0
     }
 
-    /// Read KAT_EXISTS [5:5]: * 1'b1 - Exists. *1'b0 - Does not exist
+    /// Read **KAT_EXISTS** `[5:5]`
+    /// * 1'b1 - Exists. *1'b0 - Does not exist
     #[inline(always)]
     pub const fn kat_exists(&self) -> bool {
         (self.bits & RngVersion::KAT_EXISTS_MASK) != 0
     }
 
-    /// Read PRNG_EXISTS [4:4]: * 1'b1 - Exists. *1'b0 - Does not exist
+    /// Read **PRNG_EXISTS** `[4:4]`
+    /// * 1'b1 - Exists. *1'b0 - Does not exist
     #[inline(always)]
     pub const fn prng_exists(&self) -> bool {
         (self.bits & RngVersion::PRNG_EXISTS_MASK) != 0
     }
 
-    /// Read TRNG_TESTS_BYPASS_EN [3:3]: * 1'b1 - Exists. *1'b0 - Does not exist
+    /// Read **TRNG_TESTS_BYPASS_EN** `[3:3]`
+    /// * 1'b1 - Exists. *1'b0 - Does not exist
     #[inline(always)]
     pub const fn trng_tests_bypass_en(&self) -> bool {
         (self.bits & RngVersion::TRNG_TESTS_BYPASS_EN_MASK) != 0
     }
 
-    /// Read AUTOCORR_EXISTS [2:2]: * 1'b1 - Exists. *1'b0 - Does not exist
+    /// Read **AUTOCORR_EXISTS** `[2:2]`
+    /// * 1'b1 - Exists. *1'b0 - Does not exist
     #[inline(always)]
     pub const fn autocorr_exists(&self) -> bool {
         (self.bits & RngVersion::AUTOCORR_EXISTS_MASK) != 0
     }
 
-    /// Read CRNGT_EXISTS [1:1]: * 1'b1 - Exists. *1'b0 - Does not exist
+    /// Read **CRNGT_EXISTS** `[1:1]`
+    /// * 1'b1 - Exists. *1'b0 - Does not exist
     #[inline(always)]
     pub const fn crngt_exists(&self) -> bool {
         (self.bits & RngVersion::CRNGT_EXISTS_MASK) != 0
     }
 
-    /// Read EHR_WIDTH_192 [0:0]: * 1'b1 - 192-bit EHR. *1'b0 - 128-bit EHR
+    /// Read **EHR_WIDTH_192** `[0:0]`
+    /// * 1'b1 - 192-bit EHR. *1'b0 - 128-bit EHR
     #[inline(always)]
     pub const fn ehr_width_192(&self) -> bool {
         (self.bits & RngVersion::EHR_WIDTH_192_MASK) != 0
@@ -3929,20 +3320,20 @@ impl Default for RngVersionVal {
 impl RngVersion {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> RngVersionVal {
-        RngVersionVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> RngVersionVal {
+        RngVersionVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: RngVersionVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: RngVersionVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(RngVersionVal) -> RngVersionVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(RngVersionVal) -> RngVersionVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -3956,88 +3347,52 @@ impl RngVersion {
 ///
 /// ## Fields
 ///
-/// - **RESERVED** [31:22] (RO): RESERVED
-/// - **ROSC_CNTR_VAL** [21:0] (RO): Reflects the results of RNG BIST counter.
+/// - **RESERVED** `[31:22]` (RO)
+///   RESERVED
+/// - **ROSC_CNTR_VAL** `[21:0]` (RO)
+///   Reflects the results of RNG BIST counter.
 #[repr(transparent)]
 pub struct RngBistCntr0 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for RngBistCntr0 {}
-unsafe impl Sync for RngBistCntr0 {}
+impl core::ops::Deref for RngBistCntr0 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl RngBistCntr0 {
     // ======== Field Constants ========
 
-    /// RESERVED - RESERVED
-    /// Bits [31:22], mask 0xffc00000
+    /// **RESERVED**
+    /// RESERVED
+    /// Bits `[31:22]`, mask `0xffc00000`
     pub const RESERVED_OFFSET: u32 = 22;
     pub const RESERVED_MASK: u32 = 0xffc00000;
 
-    /// ROSC_CNTR_VAL - Reflects the results of RNG BIST counter.
-    /// Bits [21:0], mask 0x003fffff
+    /// **ROSC_CNTR_VAL**
+    /// Reflects the results of RNG BIST counter.
+    /// Bits `[21:0]`, mask `0x003fffff`
     pub const ROSC_CNTR_VAL_OFFSET: u32 = 0;
     pub const ROSC_CNTR_VAL_MASK: u32 = 0x003fffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **RESERVED** [31:22]: RESERVED
+    /// **RESERVED** `[31:22]` (RO)
+    /// RESERVED
     #[inline(always)]
     pub fn reserved(&self) -> u32 {
-        (self.read_bits() & Self::RESERVED_MASK) >> Self::RESERVED_OFFSET
+        (self.value.read_bits() & Self::RESERVED_MASK) >> Self::RESERVED_OFFSET
     }
 
-    /// **ROSC_CNTR_VAL** [21:0]: Reflects the results of RNG BIST counter.
+    /// **ROSC_CNTR_VAL** `[21:0]` (RO)
+    /// Reflects the results of RNG BIST counter.
     #[inline(always)]
     pub fn rosc_cntr_val(&self) -> u32 {
-        (self.read_bits() & Self::ROSC_CNTR_VAL_MASK) >> Self::ROSC_CNTR_VAL_OFFSET
+        (self.value.read_bits() & Self::ROSC_CNTR_VAL_MASK) >> Self::ROSC_CNTR_VAL_OFFSET
     }
 
 }
@@ -4070,13 +3425,15 @@ impl RngBistCntr0Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read RESERVED [31:22]: RESERVED
+    /// Read **RESERVED** `[31:22]`
+    /// RESERVED
     #[inline(always)]
     pub const fn reserved(&self) -> u32 {
         (self.bits & RngBistCntr0::RESERVED_MASK) >> RngBistCntr0::RESERVED_OFFSET
     }
 
-    /// Read ROSC_CNTR_VAL [21:0]: Reflects the results of RNG BIST counter.
+    /// Read **ROSC_CNTR_VAL** `[21:0]`
+    /// Reflects the results of RNG BIST counter.
     #[inline(always)]
     pub const fn rosc_cntr_val(&self) -> u32 {
         (self.bits & RngBistCntr0::ROSC_CNTR_VAL_MASK) >> RngBistCntr0::ROSC_CNTR_VAL_OFFSET
@@ -4093,20 +3450,20 @@ impl Default for RngBistCntr0Val {
 impl RngBistCntr0 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> RngBistCntr0Val {
-        RngBistCntr0Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> RngBistCntr0Val {
+        RngBistCntr0Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: RngBistCntr0Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: RngBistCntr0Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(RngBistCntr0Val) -> RngBistCntr0Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(RngBistCntr0Val) -> RngBistCntr0Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -4120,88 +3477,52 @@ impl RngBistCntr0 {
 ///
 /// ## Fields
 ///
-/// - **RESERVED** [31:22] (RO): RESERVED
-/// - **ROSC_CNTR_VAL** [21:0] (RO): Reflects the results of RNG BIST counter.
+/// - **RESERVED** `[31:22]` (RO)
+///   RESERVED
+/// - **ROSC_CNTR_VAL** `[21:0]` (RO)
+///   Reflects the results of RNG BIST counter.
 #[repr(transparent)]
 pub struct RngBistCntr1 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for RngBistCntr1 {}
-unsafe impl Sync for RngBistCntr1 {}
+impl core::ops::Deref for RngBistCntr1 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl RngBistCntr1 {
     // ======== Field Constants ========
 
-    /// RESERVED - RESERVED
-    /// Bits [31:22], mask 0xffc00000
+    /// **RESERVED**
+    /// RESERVED
+    /// Bits `[31:22]`, mask `0xffc00000`
     pub const RESERVED_OFFSET: u32 = 22;
     pub const RESERVED_MASK: u32 = 0xffc00000;
 
-    /// ROSC_CNTR_VAL - Reflects the results of RNG BIST counter.
-    /// Bits [21:0], mask 0x003fffff
+    /// **ROSC_CNTR_VAL**
+    /// Reflects the results of RNG BIST counter.
+    /// Bits `[21:0]`, mask `0x003fffff`
     pub const ROSC_CNTR_VAL_OFFSET: u32 = 0;
     pub const ROSC_CNTR_VAL_MASK: u32 = 0x003fffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **RESERVED** [31:22]: RESERVED
+    /// **RESERVED** `[31:22]` (RO)
+    /// RESERVED
     #[inline(always)]
     pub fn reserved(&self) -> u32 {
-        (self.read_bits() & Self::RESERVED_MASK) >> Self::RESERVED_OFFSET
+        (self.value.read_bits() & Self::RESERVED_MASK) >> Self::RESERVED_OFFSET
     }
 
-    /// **ROSC_CNTR_VAL** [21:0]: Reflects the results of RNG BIST counter.
+    /// **ROSC_CNTR_VAL** `[21:0]` (RO)
+    /// Reflects the results of RNG BIST counter.
     #[inline(always)]
     pub fn rosc_cntr_val(&self) -> u32 {
-        (self.read_bits() & Self::ROSC_CNTR_VAL_MASK) >> Self::ROSC_CNTR_VAL_OFFSET
+        (self.value.read_bits() & Self::ROSC_CNTR_VAL_MASK) >> Self::ROSC_CNTR_VAL_OFFSET
     }
 
 }
@@ -4234,13 +3555,15 @@ impl RngBistCntr1Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read RESERVED [31:22]: RESERVED
+    /// Read **RESERVED** `[31:22]`
+    /// RESERVED
     #[inline(always)]
     pub const fn reserved(&self) -> u32 {
         (self.bits & RngBistCntr1::RESERVED_MASK) >> RngBistCntr1::RESERVED_OFFSET
     }
 
-    /// Read ROSC_CNTR_VAL [21:0]: Reflects the results of RNG BIST counter.
+    /// Read **ROSC_CNTR_VAL** `[21:0]`
+    /// Reflects the results of RNG BIST counter.
     #[inline(always)]
     pub const fn rosc_cntr_val(&self) -> u32 {
         (self.bits & RngBistCntr1::ROSC_CNTR_VAL_MASK) >> RngBistCntr1::ROSC_CNTR_VAL_OFFSET
@@ -4257,20 +3580,20 @@ impl Default for RngBistCntr1Val {
 impl RngBistCntr1 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> RngBistCntr1Val {
-        RngBistCntr1Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> RngBistCntr1Val {
+        RngBistCntr1Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: RngBistCntr1Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: RngBistCntr1Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(RngBistCntr1Val) -> RngBistCntr1Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(RngBistCntr1Val) -> RngBistCntr1Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -4284,88 +3607,52 @@ impl RngBistCntr1 {
 ///
 /// ## Fields
 ///
-/// - **RESERVED** [31:22] (RO): RESERVED
-/// - **ROSC_CNTR_VAL** [21:0] (RO): Reflects the results of RNG BIST counter.
+/// - **RESERVED** `[31:22]` (RO)
+///   RESERVED
+/// - **ROSC_CNTR_VAL** `[21:0]` (RO)
+///   Reflects the results of RNG BIST counter.
 #[repr(transparent)]
 pub struct RngBistCntr2 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for RngBistCntr2 {}
-unsafe impl Sync for RngBistCntr2 {}
+impl core::ops::Deref for RngBistCntr2 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl RngBistCntr2 {
     // ======== Field Constants ========
 
-    /// RESERVED - RESERVED
-    /// Bits [31:22], mask 0xffc00000
+    /// **RESERVED**
+    /// RESERVED
+    /// Bits `[31:22]`, mask `0xffc00000`
     pub const RESERVED_OFFSET: u32 = 22;
     pub const RESERVED_MASK: u32 = 0xffc00000;
 
-    /// ROSC_CNTR_VAL - Reflects the results of RNG BIST counter.
-    /// Bits [21:0], mask 0x003fffff
+    /// **ROSC_CNTR_VAL**
+    /// Reflects the results of RNG BIST counter.
+    /// Bits `[21:0]`, mask `0x003fffff`
     pub const ROSC_CNTR_VAL_OFFSET: u32 = 0;
     pub const ROSC_CNTR_VAL_MASK: u32 = 0x003fffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **RESERVED** [31:22]: RESERVED
+    /// **RESERVED** `[31:22]` (RO)
+    /// RESERVED
     #[inline(always)]
     pub fn reserved(&self) -> u32 {
-        (self.read_bits() & Self::RESERVED_MASK) >> Self::RESERVED_OFFSET
+        (self.value.read_bits() & Self::RESERVED_MASK) >> Self::RESERVED_OFFSET
     }
 
-    /// **ROSC_CNTR_VAL** [21:0]: Reflects the results of RNG BIST counter.
+    /// **ROSC_CNTR_VAL** `[21:0]` (RO)
+    /// Reflects the results of RNG BIST counter.
     #[inline(always)]
     pub fn rosc_cntr_val(&self) -> u32 {
-        (self.read_bits() & Self::ROSC_CNTR_VAL_MASK) >> Self::ROSC_CNTR_VAL_OFFSET
+        (self.value.read_bits() & Self::ROSC_CNTR_VAL_MASK) >> Self::ROSC_CNTR_VAL_OFFSET
     }
 
 }
@@ -4398,13 +3685,15 @@ impl RngBistCntr2Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read RESERVED [31:22]: RESERVED
+    /// Read **RESERVED** `[31:22]`
+    /// RESERVED
     #[inline(always)]
     pub const fn reserved(&self) -> u32 {
         (self.bits & RngBistCntr2::RESERVED_MASK) >> RngBistCntr2::RESERVED_OFFSET
     }
 
-    /// Read ROSC_CNTR_VAL [21:0]: Reflects the results of RNG BIST counter.
+    /// Read **ROSC_CNTR_VAL** `[21:0]`
+    /// Reflects the results of RNG BIST counter.
     #[inline(always)]
     pub const fn rosc_cntr_val(&self) -> u32 {
         (self.bits & RngBistCntr2::ROSC_CNTR_VAL_MASK) >> RngBistCntr2::ROSC_CNTR_VAL_OFFSET
@@ -4421,20 +3710,20 @@ impl Default for RngBistCntr2Val {
 impl RngBistCntr2 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> RngBistCntr2Val {
-        RngBistCntr2Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> RngBistCntr2Val {
+        RngBistCntr2Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: RngBistCntr2Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: RngBistCntr2Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(RngBistCntr2Val) -> RngBistCntr2Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(RngBistCntr2Val) -> RngBistCntr2Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -4443,54 +3732,77 @@ impl RngBistCntr2 {
 #[repr(C)]
 pub struct RegisterBlock {
     _reserved0: [u8; 256],
-    /// 0x0100 - Interrupt masking.
+    /// 0x0100
+    /// Interrupt masking.
     pub rng_imr: RngImr,
-    /// 0x0104 - RNG status register. If corresponding RNG_IMR bit is unmasked, an interrupt...
+    /// 0x0104
+    /// RNG status register. If corresponding RNG_IMR bit is unmasked, an interrupt will be generated.
     pub rng_isr: RngIsr,
-    /// 0x0108 - Interrupt/status bit clear Register.
+    /// 0x0108
+    /// Interrupt/status bit clear Register.
     pub rng_icr: RngIcr,
-    /// 0x010c - Selecting the inverter-chain length.
+    /// 0x010c
+    /// Selecting the inverter-chain length.
     pub trng_config: TrngConfig,
-    /// 0x0110 - 192 bit collection indication.
+    /// 0x0110
+    /// 192 bit collection indication.
     pub trng_valid: TrngValid,
-    /// 0x0114 - RNG collected bits.
+    /// 0x0114
+    /// RNG collected bits.
     pub ehr_data0: EhrData0,
-    /// 0x0118 - RNG collected bits.
+    /// 0x0118
+    /// RNG collected bits.
     pub ehr_data1: EhrData1,
-    /// 0x011c - RNG collected bits.
+    /// 0x011c
+    /// RNG collected bits.
     pub ehr_data2: EhrData2,
-    /// 0x0120 - RNG collected bits.
+    /// 0x0120
+    /// RNG collected bits.
     pub ehr_data3: EhrData3,
-    /// 0x0124 - RNG collected bits.
+    /// 0x0124
+    /// RNG collected bits.
     pub ehr_data4: EhrData4,
-    /// 0x0128 - RNG collected bits.
+    /// 0x0128
+    /// RNG collected bits.
     pub ehr_data5: EhrData5,
-    /// 0x012c - Enable signal for the random source.
+    /// 0x012c
+    /// Enable signal for the random source.
     pub rnd_source_enable: RndSourceEnable,
-    /// 0x0130 - Counts clocks between sampling of random bit.
+    /// 0x0130
+    /// Counts clocks between sampling of random bit.
     pub sample_cnt1: SampleCnt1,
-    /// 0x0134 - Statistic about Autocorrelation test activations.
+    /// 0x0134
+    /// Statistic about Autocorrelation test activations.
     pub autocorr_statistic: AutocorrStatistic,
-    /// 0x0138 - Debug register.
+    /// 0x0138
+    /// Debug register.
     pub trng_debug_control: TrngDebugControl,
     _reserved1: [u8; 4],
-    /// 0x0140 - Generate internal SW reset within the RNG block.
+    /// 0x0140
+    /// Generate internal SW reset within the RNG block.
     pub trng_sw_reset: TrngSwReset,
     _reserved2: [u8; 112],
-    /// 0x01b4 - Enable the RNG debug mode
+    /// 0x01b4
+    /// Enable the RNG debug mode
     pub rng_debug_en_input: RngDebugEnInput,
-    /// 0x01b8 - RNG Busy indication.
+    /// 0x01b8
+    /// RNG Busy indication.
     pub trng_busy: TrngBusy,
-    /// 0x01bc - Reset the counter of collected bits in the RNG.
+    /// 0x01bc
+    /// Reset the counter of collected bits in the RNG.
     pub rst_bits_counter: RstBitsCounter,
-    /// 0x01c0 - Displays the version settings of the TRNG.
+    /// 0x01c0
+    /// Displays the version settings of the TRNG.
     pub rng_version: RngVersion,
     _reserved3: [u8; 28],
-    /// 0x01e0 - Collected BIST results.
+    /// 0x01e0
+    /// Collected BIST results.
     pub rng_bist_cntr_0: RngBistCntr0,
-    /// 0x01e4 - Collected BIST results.
+    /// 0x01e4
+    /// Collected BIST results.
     pub rng_bist_cntr_1: RngBistCntr1,
-    /// 0x01e8 - Collected BIST results.
+    /// 0x01e8
+    /// Collected BIST results.
     pub rng_bist_cntr_2: RngBistCntr2,
 }
 

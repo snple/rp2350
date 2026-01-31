@@ -376,7 +376,83 @@ fn generate_common() -> String {
 
 #![allow(dead_code)]
 
+use core::cell::UnsafeCell;
 use core::ptr::{read_volatile, write_volatile};
+
+/// A volatile cell for memory-mapped register access.
+///
+/// Similar to `vcell::VolatileCell`, this provides volatile read/write access
+/// to a memory location with proper semantics for hardware registers.
+#[repr(transparent)]
+pub struct VolatileCell<T> {
+    value: UnsafeCell<T>,
+}
+
+unsafe impl<T: Send> Send for VolatileCell<T> {}
+unsafe impl<T> Sync for VolatileCell<T> {}
+
+impl<T> VolatileCell<T> {
+    /// Create a new VolatileCell
+    #[inline(always)]
+    pub const fn new(value: T) -> Self {
+        Self {
+            value: UnsafeCell::new(value),
+        }
+    }
+
+    /// Get a raw pointer to the underlying value
+    #[inline(always)]
+    pub const fn as_ptr(&self) -> *mut T {
+        self.value.get()
+    }
+}
+
+impl VolatileCell<u32> {
+    /// Read the value with volatile semantics
+    #[inline(always)]
+    pub fn read_bits(&self) -> u32 {
+        unsafe { read_volatile(self.value.get()) }
+    }
+
+    /// Write the value with volatile semantics
+    #[inline(always)]
+    pub fn write_bits(&self, value: u32) {
+        unsafe { write_volatile(self.value.get(), value) }
+    }
+
+    /// Modify the value using a closure
+    #[inline(always)]
+    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
+        self.write_bits(f(self.read_bits()));
+    }
+
+    /// Atomic SET - sets bits that are 1 (RP2350 hardware alias at +0x2000)
+    #[inline(always)]
+    pub fn set_bits(&self, bits: u32) {
+        unsafe {
+            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
+            write_volatile(addr, bits);
+        }
+    }
+
+    /// Atomic CLR - clears bits that are 1 (RP2350 hardware alias at +0x3000)
+    #[inline(always)]
+    pub fn clr_bits(&self, bits: u32) {
+        unsafe {
+            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
+            write_volatile(addr, bits);
+        }
+    }
+
+    /// Atomic XOR - toggles bits that are 1 (RP2350 hardware alias at +0x1000)
+    #[inline(always)]
+    pub fn xor_bits(&self, bits: u32) {
+        unsafe {
+            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
+            write_volatile(addr, bits);
+        }
+    }
+}
 
 /// Spin until condition is true
 #[inline(always)]
@@ -469,7 +545,7 @@ fn write_register_struct(out: &mut String, reg: &Register) -> Result<()> {
     writeln!(out, "/// {} Register", reg.name)?;
     if !reg.description.is_empty() {
         writeln!(out, "///")?;
-        for line in wrap_text(&reg.description, 76) {
+        for line in clean_desc(&reg.description).lines() {
             writeln!(out, "/// {}", line)?;
         }
     }
@@ -491,30 +567,38 @@ fn write_register_struct(out: &mut String, reg: &Register) -> Result<()> {
                 Access::ReadWrite => "RW",
             };
             let bit_range = if field.lsb == field.msb {
-                format!("[{}]", field.lsb)
+                format!("`[{}]`", field.lsb)
             } else {
-                format!("[{}:{}]", field.msb, field.lsb)
+                format!("`[{}:{}]`", field.msb, field.lsb)
             };
+            // First line: field name, bit range, access type
             writeln!(
                 out,
-                "/// - **{}** {} ({}): {}",
-                field.name,
-                bit_range,
-                access_str,
-                short_desc(&field.description)
+                "/// - **{}** {} ({})",
+                field.name, bit_range, access_str
             )?;
+            // Description lines (preserve original line breaks)
+            if !field.description.is_empty() {
+                for line in clean_desc(&field.description).lines() {
+                    writeln!(out, "///   {}", line)?;
+                }
+            }
         }
     }
 
     writeln!(out, "#[repr(transparent)]")?;
     writeln!(out, "pub struct {} {{", struct_name)?;
-    writeln!(out, "    value: core::cell::UnsafeCell<u32>,")?;
+    writeln!(out, "    value: crate::common::VolatileCell<u32>,")?;
     writeln!(out, "}}")?;
     writeln!(out)?;
 
-    // Implement Send/Sync
-    writeln!(out, "unsafe impl Send for {} {{}}", struct_name)?;
-    writeln!(out, "unsafe impl Sync for {} {{}}", struct_name)?;
+    writeln!(out, "impl core::ops::Deref for {} {{", struct_name)?;
+    writeln!(out, "    type Target = crate::common::VolatileCell<u32>;")?;
+    writeln!(out, "    #[inline(always)]")?;
+    writeln!(out, "    fn deref(&self) -> &Self::Target {{")?;
+    writeln!(out, "        &self.value")?;
+    writeln!(out, "    }}")?;
+    writeln!(out, "}}")?;
     writeln!(out)?;
 
     writeln!(out, "impl {} {{", struct_name)?;
@@ -526,17 +610,18 @@ fn write_register_struct(out: &mut String, reg: &Register) -> Result<()> {
         for field in &reg.fields {
             let field_shouty = field.name.to_shouty_snake_case();
 
+            // Field description (preserve original line breaks)
             if !field.description.is_empty() {
-                writeln!(
-                    out,
-                    "    /// {} - {}",
-                    field.name,
-                    short_desc(&field.description)
-                )?;
+                writeln!(out, "    /// **{}**", field.name)?;
+                for line in clean_desc(&field.description).lines() {
+                    writeln!(out, "    /// {}", line)?;
+                }
+            } else {
+                writeln!(out, "    /// **{}**", field.name)?;
             }
             writeln!(
                 out,
-                "    /// Bits [{}:{}], mask {:#010x}",
+                "    /// Bits `[{}:{}]`, mask `{:#010x}`",
                 field.msb,
                 field.lsb,
                 field.mask()
@@ -562,118 +647,30 @@ fn write_register_struct(out: &mut String, reg: &Register) -> Result<()> {
                 )?;
             }
 
-            // Enum values
+            // Enum values - generate both shifted (for direct register access) and unshifted (for xxxVal)
             for ev in &field.enum_values {
                 let ev_name = ev.name.to_shouty_snake_case();
                 if !ev.description.is_empty() {
-                    writeln!(
-                        out,
-                        "    /// {} = {}: {}",
-                        ev.name,
-                        ev.value,
-                        short_desc(&ev.description)
-                    )?;
+                    writeln!(out, "    /// {} = {}", ev.name, ev.value)?;
+                    for line in clean_desc(&ev.description).lines() {
+                        writeln!(out, "    /// {}", line)?;
+                    }
                 }
+                // Shifted value - for direct register write via Basic Access Methods
                 writeln!(
                     out,
                     "    pub const {}_{}: u32 = {} << {};",
                     field_shouty, ev_name, ev.value, field.lsb
                 )?;
+                // Unshifted value - for use with xxxVal's with_xxx() methods
+                writeln!(
+                    out,
+                    "    pub const {}_{}_VAL: u32 = {};",
+                    field_shouty, ev_name, ev.value
+                )?;
             }
             writeln!(out)?;
         }
-    }
-
-    // Basic read/write methods
-    writeln!(out, "    // ======== Basic Access Methods ========")?;
-    writeln!(out)?;
-
-    // read_bits() - raw u32 access for readable registers
-    if matches!(reg.access, Access::ReadOnly | Access::ReadWrite) {
-        writeln!(out, "    /// Read the raw register value as u32")?;
-        writeln!(out, "    #[inline(always)]")?;
-        writeln!(out, "    pub fn read_bits(&self) -> u32 {{")?;
-        writeln!(
-            out,
-            "        unsafe {{ core::ptr::read_volatile(self.value.get()) }}"
-        )?;
-        writeln!(out, "    }}")?;
-        writeln!(out)?;
-    }
-
-    // write_bits() - raw u32 access for writable registers
-    if matches!(reg.access, Access::WriteOnly | Access::ReadWrite) {
-        writeln!(out, "    /// Write a raw u32 value to the register")?;
-        writeln!(out, "    #[inline(always)]")?;
-        writeln!(out, "    pub fn write_bits(&self, value: u32) {{")?;
-        writeln!(
-            out,
-            "        unsafe {{ core::ptr::write_volatile(self.value.get(), value) }}"
-        )?;
-        writeln!(out, "    }}")?;
-        writeln!(out)?;
-    }
-
-    // modify_bits() - only for read-write registers
-    if matches!(reg.access, Access::ReadWrite) {
-        writeln!(out, "    /// Modify the raw register value")?;
-        writeln!(out, "    #[inline(always)]")?;
-        writeln!(
-            out,
-            "    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {{"
-        )?;
-        writeln!(out, "        self.write_bits(f(self.read_bits()));")?;
-        writeln!(out, "    }}")?;
-        writeln!(out)?;
-
-        // Atomic operations (RP2350 hardware aliases)
-        writeln!(
-            out,
-            "    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)"
-        )?;
-        writeln!(out, "    #[inline(always)]")?;
-        writeln!(out, "    pub fn set_bits(&self, bits: u32) {{")?;
-        writeln!(out, "        unsafe {{")?;
-        writeln!(
-            out,
-            "            let addr = (self.value.get() as usize + 0x2000) as *mut u32;"
-        )?;
-        writeln!(out, "            core::ptr::write_volatile(addr, bits);")?;
-        writeln!(out, "        }}")?;
-        writeln!(out, "    }}")?;
-        writeln!(out)?;
-
-        writeln!(
-            out,
-            "    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)"
-        )?;
-        writeln!(out, "    #[inline(always)]")?;
-        writeln!(out, "    pub fn clr_bits(&self, bits: u32) {{")?;
-        writeln!(out, "        unsafe {{")?;
-        writeln!(
-            out,
-            "            let addr = (self.value.get() as usize + 0x3000) as *mut u32;"
-        )?;
-        writeln!(out, "            core::ptr::write_volatile(addr, bits);")?;
-        writeln!(out, "        }}")?;
-        writeln!(out, "    }}")?;
-        writeln!(out)?;
-
-        writeln!(
-            out,
-            "    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)"
-        )?;
-        writeln!(out, "    #[inline(always)]")?;
-        writeln!(out, "    pub fn xor_bits(&self, bits: u32) {{")?;
-        writeln!(out, "        unsafe {{")?;
-        writeln!(
-            out,
-            "            let addr = (self.value.get() as usize + 0x1000) as *mut u32;"
-        )?;
-        writeln!(out, "            core::ptr::write_volatile(addr, bits);")?;
-        writeln!(out, "        }}")?;
-        writeln!(out, "    }}")?;
-        writeln!(out)?;
     }
 
     // Generate field accessor methods
@@ -687,22 +684,55 @@ fn write_register_struct(out: &mut String, reg: &Register) -> Result<()> {
             let is_readable = matches!(field.access, Access::ReadOnly | Access::ReadWrite);
             let width = field.width();
 
-            // Document the field
-            if !field.description.is_empty() {
-                writeln!(
-                    out,
-                    "    /// **{}** [{}:{}]: {}",
-                    field.name,
-                    field.msb,
-                    field.lsb,
-                    short_desc(&field.description)
-                )?;
+            // Check if we will generate any method for this field
+            let will_generate_read = is_readable;
+            // RW multi-bit field in RW register -> write_xxx method using modify
+            let will_generate_write = matches!(field.access, Access::ReadWrite)
+                && matches!(reg.access, Access::ReadWrite)
+                && width > 1;
+            // RW single-bit field in RW register -> set_xxx/clr_xxx methods
+            let will_generate_set_clr = matches!(field.access, Access::ReadWrite)
+                && matches!(reg.access, Access::ReadWrite)
+                && width == 1;
+            // WriteOnly single-bit field -> trigger_xxx method
+            let will_generate_trigger = matches!(field.access, Access::WriteOnly) && width == 1;
+            // WriteOnly multi-bit field -> write_xxx method
+            let will_generate_write_only = matches!(field.access, Access::WriteOnly) && width > 1;
+
+            // Skip if no methods will be generated
+            if !will_generate_read
+                && !will_generate_write
+                && !will_generate_set_clr
+                && !will_generate_trigger
+                && !will_generate_write_only
+            {
+                continue;
+            }
+
+            // Access string for documentation
+            let access_str = match field.access {
+                Access::ReadOnly => "RO",
+                Access::WriteOnly => "WO",
+                Access::ReadWrite => "RW",
+            };
+
+            // Bit range string
+            let bit_range = if field.lsb == field.msb {
+                format!("`[{}]`", field.lsb)
             } else {
-                writeln!(
-                    out,
-                    "    /// **{}** [{}:{}]",
-                    field.name, field.msb, field.lsb
-                )?;
+                format!("`[{}:{}]`", field.msb, field.lsb)
+            };
+
+            // Document the field (only once, before the first method)
+            writeln!(
+                out,
+                "    /// **{}** {} ({})",
+                field.name, bit_range, access_str
+            )?;
+            if !field.description.is_empty() {
+                for line in clean_desc(&field.description).lines() {
+                    writeln!(out, "    /// {}", line)?;
+                }
             }
 
             // Read accessor (for readable fields)
@@ -713,7 +743,7 @@ fn write_register_struct(out: &mut String, reg: &Register) -> Result<()> {
                     writeln!(out, "    pub fn {}(&self) -> bool {{", field_snake)?;
                     writeln!(
                         out,
-                        "        (self.read_bits() & Self::{}_MASK) != 0",
+                        "        (self.value.read_bits() & Self::{}_MASK) != 0",
                         field_shouty
                     )?;
                     writeln!(out, "    }}")?;
@@ -723,7 +753,7 @@ fn write_register_struct(out: &mut String, reg: &Register) -> Result<()> {
                     writeln!(out, "    pub fn {}(&self) -> u32 {{", field_snake)?;
                     writeln!(
                         out,
-                        "        (self.read_bits() & Self::{}_MASK) >> Self::{}_OFFSET",
+                        "        (self.value.read_bits() & Self::{}_MASK) >> Self::{}_OFFSET",
                         field_shouty, field_shouty
                     )?;
                     writeln!(out, "    }}")?;
@@ -731,81 +761,112 @@ fn write_register_struct(out: &mut String, reg: &Register) -> Result<()> {
                 writeln!(out)?;
             }
 
-            // Write accessor (for RW fields in RW register, but NOT for WriteOnly fields)
-            // WriteOnly fields are handled separately below
-            if matches!(field.access, Access::ReadWrite) && matches!(reg.access, Access::ReadWrite)
+            // Write accessor (for RW single-bit fields in RW register) - use atomic set/clr
+            if matches!(field.access, Access::ReadWrite)
+                && matches!(reg.access, Access::ReadWrite)
+                && width == 1
             {
-                if width == 1 {
-                    // Single bit - set/clear methods
-                    writeln!(out, "    /// Set {} bit", field.name)?;
-                    writeln!(out, "    #[inline(always)]")?;
-                    writeln!(
-                        out,
-                        "    pub fn {}(&self) {{",
-                        prefixed_method_name("set", &field.name)
-                    )?;
-                    writeln!(out, "        self.set_bits(Self::{}_MASK);", field_shouty)?;
-                    writeln!(out, "    }}")?;
-                    writeln!(out)?;
+                writeln!(out, "    /// Set {} bit atomically (RW)", field.name)?;
+                writeln!(out, "    #[inline(always)]")?;
+                writeln!(
+                    out,
+                    "    pub fn {}(&self) {{",
+                    prefixed_method_name("set", &field.name)
+                )?;
+                writeln!(
+                    out,
+                    "        self.value.set_bits(Self::{}_MASK);",
+                    field_shouty
+                )?;
+                writeln!(out, "    }}")?;
+                writeln!(out)?;
 
-                    writeln!(out, "    /// Clear {} bit", field.name)?;
-                    writeln!(out, "    #[inline(always)]")?;
-                    writeln!(
-                        out,
-                        "    pub fn {}(&self) {{",
-                        prefixed_method_name("clr", &field.name)
-                    )?;
-                    writeln!(out, "        self.clr_bits(Self::{}_MASK);", field_shouty)?;
-                    writeln!(out, "    }}")?;
-                    writeln!(out)?;
-                } else {
-                    // Multi-bit - write method
-                    writeln!(out, "    /// Write {} field", field.name)?;
-                    writeln!(out, "    #[inline(always)]")?;
-                    writeln!(
-                        out,
-                        "    pub fn {}(&self, value: u32) {{",
-                        prefixed_method_name("write", &field.name)
-                    )?;
-                    writeln!(
-                        out,
-                        "        self.modify_bits(|r| (r & !Self::{}_MASK) | ((value << Self::{}_OFFSET) & Self::{}_MASK));",
-                        field_shouty, field_shouty, field_shouty
-                    )?;
-                    writeln!(out, "    }}")?;
-                    writeln!(out)?;
-                }
+                writeln!(out, "    /// Clear {} bit atomically (RW)", field.name)?;
+                writeln!(out, "    #[inline(always)]")?;
+                writeln!(
+                    out,
+                    "    pub fn {}(&self) {{",
+                    prefixed_method_name("clr", &field.name)
+                )?;
+                writeln!(
+                    out,
+                    "        self.value.clr_bits(Self::{}_MASK);",
+                    field_shouty
+                )?;
+                writeln!(out, "    }}")?;
+                writeln!(out)?;
             }
 
-            // WriteOnly fields - direct write (exclusive, not in RW section)
-            if matches!(field.access, Access::WriteOnly) {
-                if width == 1 {
-                    writeln!(out, "    /// Trigger {} (write-only)", field.name)?;
-                    writeln!(out, "    #[inline(always)]")?;
-                    writeln!(
-                        out,
-                        "    pub fn {}(&self) {{",
-                        prefixed_method_name("trigger", &field.name)
-                    )?;
-                    writeln!(out, "        self.write_bits(Self::{}_MASK);", field_shouty)?;
-                    writeln!(out, "    }}")?;
-                    writeln!(out)?;
-                } else {
-                    writeln!(out, "    /// Write {} field (write-only)", field.name)?;
-                    writeln!(out, "    #[inline(always)]")?;
-                    writeln!(
-                        out,
-                        "    pub fn {}(&self, value: u32) {{",
-                        prefixed_method_name("write", &field.name)
-                    )?;
-                    writeln!(
-                        out,
-                        "        self.write_bits((value << Self::{}_OFFSET) & Self::{}_MASK);",
-                        field_shouty, field_shouty
-                    )?;
-                    writeln!(out, "    }}")?;
-                    writeln!(out)?;
+            // Write accessor (for RW multi-bit fields in RW register) - use modify
+            if matches!(field.access, Access::ReadWrite)
+                && matches!(reg.access, Access::ReadWrite)
+                && width > 1
+            {
+                writeln!(out, "    /// Write **{}** {} (RW)", field.name, bit_range)?;
+                if !field.description.is_empty() {
+                    for line in clean_desc(&field.description).lines() {
+                        writeln!(out, "    /// {}", line)?;
+                    }
                 }
+                writeln!(out, "    #[inline(always)]")?;
+                writeln!(
+                    out,
+                    "    pub fn {}(&self, value: u32) {{",
+                    prefixed_method_name("write", &field.name)
+                )?;
+                writeln!(
+                    out,
+                    "        self.value.modify_bits(|r| (r & !Self::{}_MASK) | ((value << Self::{}_OFFSET) & Self::{}_MASK));",
+                    field_shouty, field_shouty, field_shouty
+                )?;
+                writeln!(out, "    }}")?;
+                writeln!(out)?;
+            }
+
+            // WriteOnly fields - trigger method (single bit)
+            if matches!(field.access, Access::WriteOnly) && width == 1 {
+                writeln!(out, "    /// Trigger **{}** (WO)", field.name)?;
+                if !field.description.is_empty() {
+                    for line in clean_desc(&field.description).lines() {
+                        writeln!(out, "    /// {}", line)?;
+                    }
+                }
+                writeln!(out, "    #[inline(always)]")?;
+                writeln!(
+                    out,
+                    "    pub fn {}(&self) {{",
+                    prefixed_method_name("trigger", &field.name)
+                )?;
+                writeln!(
+                    out,
+                    "        self.value.write_bits(Self::{}_MASK);",
+                    field_shouty
+                )?;
+                writeln!(out, "    }}")?;
+                writeln!(out)?;
+            }
+
+            // WriteOnly fields - write method (multi-bit)
+            if matches!(field.access, Access::WriteOnly) && width > 1 {
+                writeln!(out, "    /// Write **{}** {} (WO)", field.name, bit_range)?;
+                if !field.description.is_empty() {
+                    for line in clean_desc(&field.description).lines() {
+                        writeln!(out, "    /// {}", line)?;
+                    }
+                }
+                writeln!(out, "    #[inline(always)]")?;
+                writeln!(
+                    out,
+                    "    pub fn {}(&self, value: u32) {{",
+                    prefixed_method_name("write", &field.name)
+                )?;
+                writeln!(
+                    out,
+                    "        self.value.write_bits((value << Self::{}_OFFSET) & Self::{}_MASK);",
+                    field_shouty, field_shouty
+                )?;
+                writeln!(out, "    }}")?;
+                writeln!(out)?;
             }
         }
     }
@@ -890,21 +951,15 @@ fn write_register_value_struct(out: &mut String, reg: &Register) -> Result<()> {
         let width = field.width();
 
         if is_readable {
+            writeln!(
+                out,
+                "    /// Read **{}** `[{}:{}]`",
+                field.name, field.msb, field.lsb
+            )?;
             if !field.description.is_empty() {
-                writeln!(
-                    out,
-                    "    /// Read {} [{}:{}]: {}",
-                    field.name,
-                    field.msb,
-                    field.lsb,
-                    short_desc(&field.description)
-                )?;
-            } else {
-                writeln!(
-                    out,
-                    "    /// Read {} [{}:{}]",
-                    field.name, field.msb, field.lsb
-                )?;
+                for line in clean_desc(&field.description).lines() {
+                    writeln!(out, "    /// {}", line)?;
+                }
             }
             writeln!(out, "    #[inline(always)]")?;
             if width == 1 {
@@ -936,21 +991,15 @@ fn write_register_value_struct(out: &mut String, reg: &Register) -> Result<()> {
         let with_method = prefixed_method_name("with", &field.name);
 
         if is_writable {
+            writeln!(
+                out,
+                "    /// Set **{}** `[{}:{}]`",
+                field.name, field.msb, field.lsb
+            )?;
             if !field.description.is_empty() {
-                writeln!(
-                    out,
-                    "    /// Set {} [{}:{}]: {}",
-                    field.name,
-                    field.msb,
-                    field.lsb,
-                    short_desc(&field.description)
-                )?;
-            } else {
-                writeln!(
-                    out,
-                    "    /// Set {} [{}:{}]",
-                    field.name, field.msb, field.lsb
-                )?;
+                for line in clean_desc(&field.description).lines() {
+                    writeln!(out, "    /// {}", line)?;
+                }
             }
             writeln!(out, "    #[inline(always)]")?;
             if width == 1 {
@@ -1011,14 +1060,18 @@ fn write_register_value_struct(out: &mut String, reg: &Register) -> Result<()> {
     writeln!(out, "}}")?;
     writeln!(out)?;
 
-    // Add read/write/modify methods that use XxxVal to the register struct
+    // Add read_val/write_val/modify_val methods that use XxxVal to the register struct
     writeln!(out, "impl {} {{", struct_name)?;
 
     if matches!(reg.access, Access::ReadOnly | Access::ReadWrite) {
         writeln!(out, "    /// Read the register into a value struct")?;
         writeln!(out, "    #[inline(always)]")?;
-        writeln!(out, "    pub fn read(&self) -> {} {{", val_name)?;
-        writeln!(out, "        {}::from_bits(self.read_bits())", val_name)?;
+        writeln!(out, "    pub fn read_val(&self) -> {} {{", val_name)?;
+        writeln!(
+            out,
+            "        {}::from_bits(self.value.read_bits())",
+            val_name
+        )?;
         writeln!(out, "    }}")?;
         writeln!(out)?;
     }
@@ -1026,8 +1079,8 @@ fn write_register_value_struct(out: &mut String, reg: &Register) -> Result<()> {
     if matches!(reg.access, Access::WriteOnly | Access::ReadWrite) {
         writeln!(out, "    /// Write a value struct to the register")?;
         writeln!(out, "    #[inline(always)]")?;
-        writeln!(out, "    pub fn write(&self, val: {}) {{", val_name)?;
-        writeln!(out, "        self.write_bits(val.bits())")?;
+        writeln!(out, "    pub fn write_val(&self, val: {}) {{", val_name)?;
+        writeln!(out, "        self.value.write_bits(val.bits())")?;
         writeln!(out, "    }}")?;
         writeln!(out)?;
     }
@@ -1037,10 +1090,10 @@ fn write_register_value_struct(out: &mut String, reg: &Register) -> Result<()> {
         writeln!(out, "    #[inline(always)]")?;
         writeln!(
             out,
-            "    pub fn modify<F: FnOnce({}) -> {}>(&self, f: F) {{",
+            "    pub fn modify_val<F: FnOnce({}) -> {}>(&self, f: F) {{",
             val_name, val_name
         )?;
-        writeln!(out, "        self.write(f(self.read()))")?;
+        writeln!(out, "        self.write_val(f(self.read_val()))")?;
         writeln!(out, "    }}")?;
         writeln!(out)?;
     }
@@ -1073,15 +1126,11 @@ fn write_register_block(out: &mut String, periph_name: &str, registers: &[Regist
         let field_name = reg.name.to_snake_case();
         let type_name = reg.name.to_upper_camel_case();
 
+        writeln!(out, "    /// {:#06x}", reg.offset)?;
         if !reg.description.is_empty() {
-            writeln!(
-                out,
-                "    /// {:#06x} - {}",
-                reg.offset,
-                short_desc(&reg.description)
-            )?;
-        } else {
-            writeln!(out, "    /// {:#06x}", reg.offset)?;
+            for line in clean_desc(&reg.description).lines() {
+                writeln!(out, "    /// {}", line)?;
+            }
         }
         writeln!(out, "    pub {}: {},", field_name, type_name)?;
 
@@ -1251,15 +1300,9 @@ fn prefixed_method_name(prefix: &str, field_name: &str) -> String {
 }
 
 fn write_header(out: &mut String, periph: &Peripheral) -> Result<()> {
-    writeln!(
-        out,
-        "//! {} - {}",
-        periph.name,
-        short_desc(&periph.description)
-    )?;
-    if periph.description.len() > 60 {
-        writeln!(out, "//!")?;
-        for line in wrap_text(&periph.description, 76) {
+    writeln!(out, "//! {}", periph.name)?;
+    if !periph.description.is_empty() {
+        for line in clean_desc(&periph.description).lines() {
             writeln!(out, "//! {}", line)?;
         }
     }
@@ -1273,37 +1316,19 @@ fn write_header(out: &mut String, periph: &Peripheral) -> Result<()> {
     Ok(())
 }
 
-fn short_desc(s: &str) -> String {
-    let s = s.trim().replace('\n', " ");
-    let s: String = s.split_whitespace().collect::<Vec<_>>().join(" ");
-    if s.len() > 78 {
-        format!("{}...", &s[..75])
-    } else {
-        s
-    }
+/// Clean up description: normalize whitespace within each line, preserve original line breaks
+fn clean_desc(s: &str) -> String {
+    s.lines()
+        .map(|line| {
+            // Normalize whitespace within each line
+            line.split_whitespace().collect::<Vec<_>>().join(" ")
+        })
+        .filter(|line| !line.is_empty())
+        .collect::<Vec<_>>()
+        .join("\n")
 }
 
-fn wrap_text(s: &str, width: usize) -> Vec<String> {
-    let s = s.replace('\n', " ");
-    let words: Vec<_> = s.split_whitespace().collect();
-    let mut lines = Vec::new();
-    let mut current = String::new();
-
-    for word in words {
-        if current.is_empty() {
-            current = word.to_string();
-        } else if current.len() + 1 + word.len() <= width {
-            current.push(' ');
-            current.push_str(word);
-        } else {
-            lines.push(current);
-            current = word.to_string();
-        }
-    }
-
-    if !current.is_empty() {
-        lines.push(current);
-    }
-
-    lines
+/// Get the first line of description (for short summaries in mod.rs)
+fn short_desc(s: &str) -> String {
+    clean_desc(s).lines().next().unwrap_or("").to_string()
 }

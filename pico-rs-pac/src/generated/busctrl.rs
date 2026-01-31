@@ -1,5 +1,4 @@
-//! BUSCTRL - Register block for busfabric control signals and performance counters
-//!
+//! BUSCTRL
 //! Register block for busfabric control signals and performance counters
 
 #![allow(dead_code)]
@@ -15,164 +14,134 @@ pub const BASE: u32 = 0x40068000;
 ///
 /// ## Fields
 ///
-/// - **DMA_W** [12] (RW): 0 - low priority, 1 - high priority
-/// - **DMA_R** [8] (RW): 0 - low priority, 1 - high priority
-/// - **PROC1** [4] (RW): 0 - low priority, 1 - high priority
-/// - **PROC0** [0] (RW): 0 - low priority, 1 - high priority
+/// - **DMA_W** `[12]` (RW)
+///   0 - low priority, 1 - high priority
+/// - **DMA_R** `[8]` (RW)
+///   0 - low priority, 1 - high priority
+/// - **PROC1** `[4]` (RW)
+///   0 - low priority, 1 - high priority
+/// - **PROC0** `[0]` (RW)
+///   0 - low priority, 1 - high priority
 #[repr(transparent)]
 pub struct BusPriority {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for BusPriority {}
-unsafe impl Sync for BusPriority {}
+impl core::ops::Deref for BusPriority {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl BusPriority {
     // ======== Field Constants ========
 
-    /// DMA_W - 0 - low priority, 1 - high priority
-    /// Bits [12:12], mask 0x00001000
+    /// **DMA_W**
+    /// 0 - low priority, 1 - high priority
+    /// Bits `[12:12]`, mask `0x00001000`
     pub const DMA_W_OFFSET: u32 = 12;
     pub const DMA_W_MASK: u32 = 0x00001000;
     pub const DMA_W: u32 = 1 << 12;
 
-    /// DMA_R - 0 - low priority, 1 - high priority
-    /// Bits [8:8], mask 0x00000100
+    /// **DMA_R**
+    /// 0 - low priority, 1 - high priority
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const DMA_R_OFFSET: u32 = 8;
     pub const DMA_R_MASK: u32 = 0x00000100;
     pub const DMA_R: u32 = 1 << 8;
 
-    /// PROC1 - 0 - low priority, 1 - high priority
-    /// Bits [4:4], mask 0x00000010
+    /// **PROC1**
+    /// 0 - low priority, 1 - high priority
+    /// Bits `[4:4]`, mask `0x00000010`
     pub const PROC1_OFFSET: u32 = 4;
     pub const PROC1_MASK: u32 = 0x00000010;
     pub const PROC1: u32 = 1 << 4;
 
-    /// PROC0 - 0 - low priority, 1 - high priority
-    /// Bits [0:0], mask 0x00000001
+    /// **PROC0**
+    /// 0 - low priority, 1 - high priority
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const PROC0_OFFSET: u32 = 0;
     pub const PROC0_MASK: u32 = 0x00000001;
     pub const PROC0: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **DMA_W** [12:12]: 0 - low priority, 1 - high priority
+    /// **DMA_W** `[12]` (RW)
+    /// 0 - low priority, 1 - high priority
     #[inline(always)]
     pub fn dma_w(&self) -> bool {
-        (self.read_bits() & Self::DMA_W_MASK) != 0
+        (self.value.read_bits() & Self::DMA_W_MASK) != 0
     }
 
-    /// Set DMA_W bit
+    /// Set DMA_W bit atomically (RW)
     #[inline(always)]
     pub fn set_dma_w(&self) {
-        self.set_bits(Self::DMA_W_MASK);
+        self.value.set_bits(Self::DMA_W_MASK);
     }
 
-    /// Clear DMA_W bit
+    /// Clear DMA_W bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma_w(&self) {
-        self.clr_bits(Self::DMA_W_MASK);
+        self.value.clr_bits(Self::DMA_W_MASK);
     }
 
-    /// **DMA_R** [8:8]: 0 - low priority, 1 - high priority
+    /// **DMA_R** `[8]` (RW)
+    /// 0 - low priority, 1 - high priority
     #[inline(always)]
     pub fn dma_r(&self) -> bool {
-        (self.read_bits() & Self::DMA_R_MASK) != 0
+        (self.value.read_bits() & Self::DMA_R_MASK) != 0
     }
 
-    /// Set DMA_R bit
+    /// Set DMA_R bit atomically (RW)
     #[inline(always)]
     pub fn set_dma_r(&self) {
-        self.set_bits(Self::DMA_R_MASK);
+        self.value.set_bits(Self::DMA_R_MASK);
     }
 
-    /// Clear DMA_R bit
+    /// Clear DMA_R bit atomically (RW)
     #[inline(always)]
     pub fn clr_dma_r(&self) {
-        self.clr_bits(Self::DMA_R_MASK);
+        self.value.clr_bits(Self::DMA_R_MASK);
     }
 
-    /// **PROC1** [4:4]: 0 - low priority, 1 - high priority
+    /// **PROC1** `[4]` (RW)
+    /// 0 - low priority, 1 - high priority
     #[inline(always)]
     pub fn proc1(&self) -> bool {
-        (self.read_bits() & Self::PROC1_MASK) != 0
+        (self.value.read_bits() & Self::PROC1_MASK) != 0
     }
 
-    /// Set PROC1 bit
+    /// Set PROC1 bit atomically (RW)
     #[inline(always)]
     pub fn set_proc1(&self) {
-        self.set_bits(Self::PROC1_MASK);
+        self.value.set_bits(Self::PROC1_MASK);
     }
 
-    /// Clear PROC1 bit
+    /// Clear PROC1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_proc1(&self) {
-        self.clr_bits(Self::PROC1_MASK);
+        self.value.clr_bits(Self::PROC1_MASK);
     }
 
-    /// **PROC0** [0:0]: 0 - low priority, 1 - high priority
+    /// **PROC0** `[0]` (RW)
+    /// 0 - low priority, 1 - high priority
     #[inline(always)]
     pub fn proc0(&self) -> bool {
-        (self.read_bits() & Self::PROC0_MASK) != 0
+        (self.value.read_bits() & Self::PROC0_MASK) != 0
     }
 
-    /// Set PROC0 bit
+    /// Set PROC0 bit atomically (RW)
     #[inline(always)]
     pub fn set_proc0(&self) {
-        self.set_bits(Self::PROC0_MASK);
+        self.value.set_bits(Self::PROC0_MASK);
     }
 
-    /// Clear PROC0 bit
+    /// Clear PROC0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_proc0(&self) {
-        self.clr_bits(Self::PROC0_MASK);
+        self.value.clr_bits(Self::PROC0_MASK);
     }
 
 }
@@ -205,31 +174,36 @@ impl BusPriorityVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read DMA_W [12:12]: 0 - low priority, 1 - high priority
+    /// Read **DMA_W** `[12:12]`
+    /// 0 - low priority, 1 - high priority
     #[inline(always)]
     pub const fn dma_w(&self) -> bool {
         (self.bits & BusPriority::DMA_W_MASK) != 0
     }
 
-    /// Read DMA_R [8:8]: 0 - low priority, 1 - high priority
+    /// Read **DMA_R** `[8:8]`
+    /// 0 - low priority, 1 - high priority
     #[inline(always)]
     pub const fn dma_r(&self) -> bool {
         (self.bits & BusPriority::DMA_R_MASK) != 0
     }
 
-    /// Read PROC1 [4:4]: 0 - low priority, 1 - high priority
+    /// Read **PROC1** `[4:4]`
+    /// 0 - low priority, 1 - high priority
     #[inline(always)]
     pub const fn proc1(&self) -> bool {
         (self.bits & BusPriority::PROC1_MASK) != 0
     }
 
-    /// Read PROC0 [0:0]: 0 - low priority, 1 - high priority
+    /// Read **PROC0** `[0:0]`
+    /// 0 - low priority, 1 - high priority
     #[inline(always)]
     pub const fn proc0(&self) -> bool {
         (self.bits & BusPriority::PROC0_MASK) != 0
     }
 
-    /// Set DMA_W [12:12]: 0 - low priority, 1 - high priority
+    /// Set **DMA_W** `[12:12]`
+    /// 0 - low priority, 1 - high priority
     #[inline(always)]
     pub const fn with_dma_w(self, value: bool) -> Self {
         Self {
@@ -241,7 +215,8 @@ impl BusPriorityVal {
         }
     }
 
-    /// Set DMA_R [8:8]: 0 - low priority, 1 - high priority
+    /// Set **DMA_R** `[8:8]`
+    /// 0 - low priority, 1 - high priority
     #[inline(always)]
     pub const fn with_dma_r(self, value: bool) -> Self {
         Self {
@@ -253,7 +228,8 @@ impl BusPriorityVal {
         }
     }
 
-    /// Set PROC1 [4:4]: 0 - low priority, 1 - high priority
+    /// Set **PROC1** `[4:4]`
+    /// 0 - low priority, 1 - high priority
     #[inline(always)]
     pub const fn with_proc1(self, value: bool) -> Self {
         Self {
@@ -265,7 +241,8 @@ impl BusPriorityVal {
         }
     }
 
-    /// Set PROC0 [0:0]: 0 - low priority, 1 - high priority
+    /// Set **PROC0** `[0:0]`
+    /// 0 - low priority, 1 - high priority
     #[inline(always)]
     pub const fn with_proc0(self, value: bool) -> Self {
         Self {
@@ -288,20 +265,20 @@ impl Default for BusPriorityVal {
 impl BusPriority {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> BusPriorityVal {
-        BusPriorityVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> BusPriorityVal {
+        BusPriorityVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: BusPriorityVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: BusPriorityVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(BusPriorityVal) -> BusPriorityVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(BusPriorityVal) -> BusPriorityVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -315,77 +292,44 @@ impl BusPriority {
 ///
 /// ## Fields
 ///
-/// - **BUS_PRIORITY_ACK** [0] (RO): Goes to 1 once all arbiters have registered the new global priority levels....
+/// - **BUS_PRIORITY_ACK** `[0]` (RO)
+///   Goes to 1 once all arbiters have registered the new global priority levels.
+///   Arbiters update their local priority when servicing a new nonsequential access.
+///   In normal circumstances this will happen almost immediately.
 #[repr(transparent)]
 pub struct BusPriorityAck {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for BusPriorityAck {}
-unsafe impl Sync for BusPriorityAck {}
+impl core::ops::Deref for BusPriorityAck {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl BusPriorityAck {
     // ======== Field Constants ========
 
-    /// BUS_PRIORITY_ACK - Goes to 1 once all arbiters have registered the new global priority levels....
-    /// Bits [0:0], mask 0x00000001
+    /// **BUS_PRIORITY_ACK**
+    /// Goes to 1 once all arbiters have registered the new global priority levels.
+    /// Arbiters update their local priority when servicing a new nonsequential access.
+    /// In normal circumstances this will happen almost immediately.
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const BUS_PRIORITY_ACK_OFFSET: u32 = 0;
     pub const BUS_PRIORITY_ACK_MASK: u32 = 0x00000001;
     pub const BUS_PRIORITY_ACK: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **BUS_PRIORITY_ACK** [0:0]: Goes to 1 once all arbiters have registered the new global priority levels....
+    /// **BUS_PRIORITY_ACK** `[0]` (RO)
+    /// Goes to 1 once all arbiters have registered the new global priority levels.
+    /// Arbiters update their local priority when servicing a new nonsequential access.
+    /// In normal circumstances this will happen almost immediately.
     #[inline(always)]
     pub fn bus_priority_ack(&self) -> bool {
-        (self.read_bits() & Self::BUS_PRIORITY_ACK_MASK) != 0
+        (self.value.read_bits() & Self::BUS_PRIORITY_ACK_MASK) != 0
     }
 
 }
@@ -418,7 +362,10 @@ impl BusPriorityAckVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read BUS_PRIORITY_ACK [0:0]: Goes to 1 once all arbiters have registered the new global priority levels....
+    /// Read **BUS_PRIORITY_ACK** `[0:0]`
+    /// Goes to 1 once all arbiters have registered the new global priority levels.
+    /// Arbiters update their local priority when servicing a new nonsequential access.
+    /// In normal circumstances this will happen almost immediately.
     #[inline(always)]
     pub const fn bus_priority_ack(&self) -> bool {
         (self.bits & BusPriorityAck::BUS_PRIORITY_ACK_MASK) != 0
@@ -435,118 +382,75 @@ impl Default for BusPriorityAckVal {
 impl BusPriorityAck {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> BusPriorityAckVal {
-        BusPriorityAckVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> BusPriorityAckVal {
+        BusPriorityAckVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: BusPriorityAckVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: BusPriorityAckVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(BusPriorityAckVal) -> BusPriorityAckVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(BusPriorityAckVal) -> BusPriorityAckVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// PERFCTR_EN Register
 ///
-/// Enable the performance counters. If 0, the performance counters do not
-/// increment. This can be used to precisely start/stop event sampling around
-/// the profiled section of code. The performance counters are initially
-/// disabled, to save energy.
+/// Enable the performance counters. If 0, the performance counters do not increment. This can be used to precisely start/stop event sampling around the profiled section of code.
+/// The performance counters are initially disabled, to save energy.
 ///
 /// Address offset: 0x0008
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **PERFCTR_EN** [0] (RW): 
+/// - **PERFCTR_EN** `[0]` (RW)
 #[repr(transparent)]
 pub struct PerfctrEn {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for PerfctrEn {}
-unsafe impl Sync for PerfctrEn {}
+impl core::ops::Deref for PerfctrEn {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl PerfctrEn {
     // ======== Field Constants ========
 
-    /// Bits [0:0], mask 0x00000001
+    /// **PERFCTR_EN**
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const PERFCTR_EN_OFFSET: u32 = 0;
     pub const PERFCTR_EN_MASK: u32 = 0x00000001;
     pub const PERFCTR_EN: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **PERFCTR_EN** [0:0]
+    /// **PERFCTR_EN** `[0]` (RW)
     #[inline(always)]
     pub fn perfctr_en(&self) -> bool {
-        (self.read_bits() & Self::PERFCTR_EN_MASK) != 0
+        (self.value.read_bits() & Self::PERFCTR_EN_MASK) != 0
     }
 
-    /// Set PERFCTR_EN bit
+    /// Set PERFCTR_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_perfctr_en(&self) {
-        self.set_bits(Self::PERFCTR_EN_MASK);
+        self.value.set_bits(Self::PERFCTR_EN_MASK);
     }
 
-    /// Clear PERFCTR_EN bit
+    /// Clear PERFCTR_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_perfctr_en(&self) {
-        self.clr_bits(Self::PERFCTR_EN_MASK);
+        self.value.clr_bits(Self::PERFCTR_EN_MASK);
     }
 
 }
@@ -579,13 +483,13 @@ impl PerfctrEnVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read PERFCTR_EN [0:0]
+    /// Read **PERFCTR_EN** `[0:0]`
     #[inline(always)]
     pub const fn perfctr_en(&self) -> bool {
         (self.bits & PerfctrEn::PERFCTR_EN_MASK) != 0
     }
 
-    /// Set PERFCTR_EN [0:0]
+    /// Set **PERFCTR_EN** `[0:0]`
     #[inline(always)]
     pub const fn with_perfctr_en(self, value: bool) -> Self {
         Self {
@@ -608,20 +512,20 @@ impl Default for PerfctrEnVal {
 impl PerfctrEn {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> PerfctrEnVal {
-        PerfctrEnVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> PerfctrEnVal {
+        PerfctrEnVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: PerfctrEnVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: PerfctrEnVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(PerfctrEnVal) -> PerfctrEnVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(PerfctrEnVal) -> PerfctrEnVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -635,82 +539,52 @@ impl PerfctrEn {
 ///
 /// ## Fields
 ///
-/// - **PERFCTR0** [23:0] (RW): Busfabric saturating performance counter 0 Count some event signal from the...
+/// - **PERFCTR0** `[23:0]` (RW)
+///   Busfabric saturating performance counter 0
+///   Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
+///   Write any value to clear. Select an event to count using PERFSEL0
 #[repr(transparent)]
 pub struct Perfctr0 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Perfctr0 {}
-unsafe impl Sync for Perfctr0 {}
+impl core::ops::Deref for Perfctr0 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Perfctr0 {
     // ======== Field Constants ========
 
-    /// PERFCTR0 - Busfabric saturating performance counter 0 Count some event signal from the...
-    /// Bits [23:0], mask 0x00ffffff
+    /// **PERFCTR0**
+    /// Busfabric saturating performance counter 0
+    /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
+    /// Write any value to clear. Select an event to count using PERFSEL0
+    /// Bits `[23:0]`, mask `0x00ffffff`
     pub const PERFCTR0_OFFSET: u32 = 0;
     pub const PERFCTR0_MASK: u32 = 0x00ffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **PERFCTR0** [23:0]: Busfabric saturating performance counter 0 Count some event signal from the...
+    /// **PERFCTR0** `[23:0]` (RW)
+    /// Busfabric saturating performance counter 0
+    /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
+    /// Write any value to clear. Select an event to count using PERFSEL0
     #[inline(always)]
     pub fn perfctr0(&self) -> u32 {
-        (self.read_bits() & Self::PERFCTR0_MASK) >> Self::PERFCTR0_OFFSET
+        (self.value.read_bits() & Self::PERFCTR0_MASK) >> Self::PERFCTR0_OFFSET
     }
 
-    /// Write PERFCTR0 field
+    /// Write **PERFCTR0** `[23:0]` (RW)
+    /// Busfabric saturating performance counter 0
+    /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
+    /// Write any value to clear. Select an event to count using PERFSEL0
     #[inline(always)]
     pub fn write_perfctr0(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::PERFCTR0_MASK) | ((value << Self::PERFCTR0_OFFSET) & Self::PERFCTR0_MASK));
+        self.value.modify_bits(|r| (r & !Self::PERFCTR0_MASK) | ((value << Self::PERFCTR0_OFFSET) & Self::PERFCTR0_MASK));
     }
 
 }
@@ -743,13 +617,19 @@ impl Perfctr0Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read PERFCTR0 [23:0]: Busfabric saturating performance counter 0 Count some event signal from the...
+    /// Read **PERFCTR0** `[23:0]`
+    /// Busfabric saturating performance counter 0
+    /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
+    /// Write any value to clear. Select an event to count using PERFSEL0
     #[inline(always)]
     pub const fn perfctr0(&self) -> u32 {
         (self.bits & Perfctr0::PERFCTR0_MASK) >> Perfctr0::PERFCTR0_OFFSET
     }
 
-    /// Set PERFCTR0 [23:0]: Busfabric saturating performance counter 0 Count some event signal from the...
+    /// Set **PERFCTR0** `[23:0]`
+    /// Busfabric saturating performance counter 0
+    /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
+    /// Write any value to clear. Select an event to count using PERFSEL0
     #[inline(always)]
     pub const fn with_perfctr0(self, value: u32) -> Self {
         Self {
@@ -768,20 +648,20 @@ impl Default for Perfctr0Val {
 impl Perfctr0 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Perfctr0Val {
-        Perfctr0Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Perfctr0Val {
+        Perfctr0Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Perfctr0Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Perfctr0Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Perfctr0Val) -> Perfctr0Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Perfctr0Val) -> Perfctr0Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -795,150 +675,180 @@ impl Perfctr0 {
 ///
 /// ## Fields
 ///
-/// - **PERFSEL0** [6:0] (RW): Select an event for PERFCTR0. For each downstream port of the main crossbar...
+/// - **PERFSEL0** `[6:0]` (RW)
+///   Select an event for PERFCTR0. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
 #[repr(transparent)]
 pub struct Perfsel0 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Perfsel0 {}
-unsafe impl Sync for Perfsel0 {}
+impl core::ops::Deref for Perfsel0 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Perfsel0 {
     // ======== Field Constants ========
 
-    /// PERFSEL0 - Select an event for PERFCTR0. For each downstream port of the main crossbar...
-    /// Bits [6:0], mask 0x0000007f
+    /// **PERFSEL0**
+    /// Select an event for PERFCTR0. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
+    /// Bits `[6:0]`, mask `0x0000007f`
     pub const PERFSEL0_OFFSET: u32 = 0;
     pub const PERFSEL0_MASK: u32 = 0x0000007f;
     pub const PERFSEL0_SIOB_PROC1_STALL_UPSTREAM: u32 = 0 << 0;
+    pub const PERFSEL0_SIOB_PROC1_STALL_UPSTREAM_VAL: u32 = 0;
     pub const PERFSEL0_SIOB_PROC1_STALL_DOWNSTREAM: u32 = 1 << 0;
+    pub const PERFSEL0_SIOB_PROC1_STALL_DOWNSTREAM_VAL: u32 = 1;
     pub const PERFSEL0_SIOB_PROC1_ACCESS_CONTESTED: u32 = 2 << 0;
+    pub const PERFSEL0_SIOB_PROC1_ACCESS_CONTESTED_VAL: u32 = 2;
     pub const PERFSEL0_SIOB_PROC1_ACCESS: u32 = 3 << 0;
+    pub const PERFSEL0_SIOB_PROC1_ACCESS_VAL: u32 = 3;
     pub const PERFSEL0_SIOB_PROC0_STALL_UPSTREAM: u32 = 4 << 0;
+    pub const PERFSEL0_SIOB_PROC0_STALL_UPSTREAM_VAL: u32 = 4;
     pub const PERFSEL0_SIOB_PROC0_STALL_DOWNSTREAM: u32 = 5 << 0;
+    pub const PERFSEL0_SIOB_PROC0_STALL_DOWNSTREAM_VAL: u32 = 5;
     pub const PERFSEL0_SIOB_PROC0_ACCESS_CONTESTED: u32 = 6 << 0;
+    pub const PERFSEL0_SIOB_PROC0_ACCESS_CONTESTED_VAL: u32 = 6;
     pub const PERFSEL0_SIOB_PROC0_ACCESS: u32 = 7 << 0;
+    pub const PERFSEL0_SIOB_PROC0_ACCESS_VAL: u32 = 7;
     pub const PERFSEL0_APB_STALL_UPSTREAM: u32 = 8 << 0;
+    pub const PERFSEL0_APB_STALL_UPSTREAM_VAL: u32 = 8;
     pub const PERFSEL0_APB_STALL_DOWNSTREAM: u32 = 9 << 0;
+    pub const PERFSEL0_APB_STALL_DOWNSTREAM_VAL: u32 = 9;
     pub const PERFSEL0_APB_ACCESS_CONTESTED: u32 = 10 << 0;
+    pub const PERFSEL0_APB_ACCESS_CONTESTED_VAL: u32 = 10;
     pub const PERFSEL0_APB_ACCESS: u32 = 11 << 0;
+    pub const PERFSEL0_APB_ACCESS_VAL: u32 = 11;
     pub const PERFSEL0_FASTPERI_STALL_UPSTREAM: u32 = 12 << 0;
+    pub const PERFSEL0_FASTPERI_STALL_UPSTREAM_VAL: u32 = 12;
     pub const PERFSEL0_FASTPERI_STALL_DOWNSTREAM: u32 = 13 << 0;
+    pub const PERFSEL0_FASTPERI_STALL_DOWNSTREAM_VAL: u32 = 13;
     pub const PERFSEL0_FASTPERI_ACCESS_CONTESTED: u32 = 14 << 0;
+    pub const PERFSEL0_FASTPERI_ACCESS_CONTESTED_VAL: u32 = 14;
     pub const PERFSEL0_FASTPERI_ACCESS: u32 = 15 << 0;
+    pub const PERFSEL0_FASTPERI_ACCESS_VAL: u32 = 15;
     pub const PERFSEL0_SRAM9_STALL_UPSTREAM: u32 = 16 << 0;
+    pub const PERFSEL0_SRAM9_STALL_UPSTREAM_VAL: u32 = 16;
     pub const PERFSEL0_SRAM9_STALL_DOWNSTREAM: u32 = 17 << 0;
+    pub const PERFSEL0_SRAM9_STALL_DOWNSTREAM_VAL: u32 = 17;
     pub const PERFSEL0_SRAM9_ACCESS_CONTESTED: u32 = 18 << 0;
+    pub const PERFSEL0_SRAM9_ACCESS_CONTESTED_VAL: u32 = 18;
     pub const PERFSEL0_SRAM9_ACCESS: u32 = 19 << 0;
+    pub const PERFSEL0_SRAM9_ACCESS_VAL: u32 = 19;
     pub const PERFSEL0_SRAM8_STALL_UPSTREAM: u32 = 20 << 0;
+    pub const PERFSEL0_SRAM8_STALL_UPSTREAM_VAL: u32 = 20;
     pub const PERFSEL0_SRAM8_STALL_DOWNSTREAM: u32 = 21 << 0;
+    pub const PERFSEL0_SRAM8_STALL_DOWNSTREAM_VAL: u32 = 21;
     pub const PERFSEL0_SRAM8_ACCESS_CONTESTED: u32 = 22 << 0;
+    pub const PERFSEL0_SRAM8_ACCESS_CONTESTED_VAL: u32 = 22;
     pub const PERFSEL0_SRAM8_ACCESS: u32 = 23 << 0;
+    pub const PERFSEL0_SRAM8_ACCESS_VAL: u32 = 23;
     pub const PERFSEL0_SRAM7_STALL_UPSTREAM: u32 = 24 << 0;
+    pub const PERFSEL0_SRAM7_STALL_UPSTREAM_VAL: u32 = 24;
     pub const PERFSEL0_SRAM7_STALL_DOWNSTREAM: u32 = 25 << 0;
+    pub const PERFSEL0_SRAM7_STALL_DOWNSTREAM_VAL: u32 = 25;
     pub const PERFSEL0_SRAM7_ACCESS_CONTESTED: u32 = 26 << 0;
+    pub const PERFSEL0_SRAM7_ACCESS_CONTESTED_VAL: u32 = 26;
     pub const PERFSEL0_SRAM7_ACCESS: u32 = 27 << 0;
+    pub const PERFSEL0_SRAM7_ACCESS_VAL: u32 = 27;
     pub const PERFSEL0_SRAM6_STALL_UPSTREAM: u32 = 28 << 0;
+    pub const PERFSEL0_SRAM6_STALL_UPSTREAM_VAL: u32 = 28;
     pub const PERFSEL0_SRAM6_STALL_DOWNSTREAM: u32 = 29 << 0;
+    pub const PERFSEL0_SRAM6_STALL_DOWNSTREAM_VAL: u32 = 29;
     pub const PERFSEL0_SRAM6_ACCESS_CONTESTED: u32 = 30 << 0;
+    pub const PERFSEL0_SRAM6_ACCESS_CONTESTED_VAL: u32 = 30;
     pub const PERFSEL0_SRAM6_ACCESS: u32 = 31 << 0;
+    pub const PERFSEL0_SRAM6_ACCESS_VAL: u32 = 31;
     pub const PERFSEL0_SRAM5_STALL_UPSTREAM: u32 = 32 << 0;
+    pub const PERFSEL0_SRAM5_STALL_UPSTREAM_VAL: u32 = 32;
     pub const PERFSEL0_SRAM5_STALL_DOWNSTREAM: u32 = 33 << 0;
+    pub const PERFSEL0_SRAM5_STALL_DOWNSTREAM_VAL: u32 = 33;
     pub const PERFSEL0_SRAM5_ACCESS_CONTESTED: u32 = 34 << 0;
+    pub const PERFSEL0_SRAM5_ACCESS_CONTESTED_VAL: u32 = 34;
     pub const PERFSEL0_SRAM5_ACCESS: u32 = 35 << 0;
+    pub const PERFSEL0_SRAM5_ACCESS_VAL: u32 = 35;
     pub const PERFSEL0_SRAM4_STALL_UPSTREAM: u32 = 36 << 0;
+    pub const PERFSEL0_SRAM4_STALL_UPSTREAM_VAL: u32 = 36;
     pub const PERFSEL0_SRAM4_STALL_DOWNSTREAM: u32 = 37 << 0;
+    pub const PERFSEL0_SRAM4_STALL_DOWNSTREAM_VAL: u32 = 37;
     pub const PERFSEL0_SRAM4_ACCESS_CONTESTED: u32 = 38 << 0;
+    pub const PERFSEL0_SRAM4_ACCESS_CONTESTED_VAL: u32 = 38;
     pub const PERFSEL0_SRAM4_ACCESS: u32 = 39 << 0;
+    pub const PERFSEL0_SRAM4_ACCESS_VAL: u32 = 39;
     pub const PERFSEL0_SRAM3_STALL_UPSTREAM: u32 = 40 << 0;
+    pub const PERFSEL0_SRAM3_STALL_UPSTREAM_VAL: u32 = 40;
     pub const PERFSEL0_SRAM3_STALL_DOWNSTREAM: u32 = 41 << 0;
+    pub const PERFSEL0_SRAM3_STALL_DOWNSTREAM_VAL: u32 = 41;
     pub const PERFSEL0_SRAM3_ACCESS_CONTESTED: u32 = 42 << 0;
+    pub const PERFSEL0_SRAM3_ACCESS_CONTESTED_VAL: u32 = 42;
     pub const PERFSEL0_SRAM3_ACCESS: u32 = 43 << 0;
+    pub const PERFSEL0_SRAM3_ACCESS_VAL: u32 = 43;
     pub const PERFSEL0_SRAM2_STALL_UPSTREAM: u32 = 44 << 0;
+    pub const PERFSEL0_SRAM2_STALL_UPSTREAM_VAL: u32 = 44;
     pub const PERFSEL0_SRAM2_STALL_DOWNSTREAM: u32 = 45 << 0;
+    pub const PERFSEL0_SRAM2_STALL_DOWNSTREAM_VAL: u32 = 45;
     pub const PERFSEL0_SRAM2_ACCESS_CONTESTED: u32 = 46 << 0;
+    pub const PERFSEL0_SRAM2_ACCESS_CONTESTED_VAL: u32 = 46;
     pub const PERFSEL0_SRAM2_ACCESS: u32 = 47 << 0;
+    pub const PERFSEL0_SRAM2_ACCESS_VAL: u32 = 47;
     pub const PERFSEL0_SRAM1_STALL_UPSTREAM: u32 = 48 << 0;
+    pub const PERFSEL0_SRAM1_STALL_UPSTREAM_VAL: u32 = 48;
     pub const PERFSEL0_SRAM1_STALL_DOWNSTREAM: u32 = 49 << 0;
+    pub const PERFSEL0_SRAM1_STALL_DOWNSTREAM_VAL: u32 = 49;
     pub const PERFSEL0_SRAM1_ACCESS_CONTESTED: u32 = 50 << 0;
+    pub const PERFSEL0_SRAM1_ACCESS_CONTESTED_VAL: u32 = 50;
     pub const PERFSEL0_SRAM1_ACCESS: u32 = 51 << 0;
+    pub const PERFSEL0_SRAM1_ACCESS_VAL: u32 = 51;
     pub const PERFSEL0_SRAM0_STALL_UPSTREAM: u32 = 52 << 0;
+    pub const PERFSEL0_SRAM0_STALL_UPSTREAM_VAL: u32 = 52;
     pub const PERFSEL0_SRAM0_STALL_DOWNSTREAM: u32 = 53 << 0;
+    pub const PERFSEL0_SRAM0_STALL_DOWNSTREAM_VAL: u32 = 53;
     pub const PERFSEL0_SRAM0_ACCESS_CONTESTED: u32 = 54 << 0;
+    pub const PERFSEL0_SRAM0_ACCESS_CONTESTED_VAL: u32 = 54;
     pub const PERFSEL0_SRAM0_ACCESS: u32 = 55 << 0;
+    pub const PERFSEL0_SRAM0_ACCESS_VAL: u32 = 55;
     pub const PERFSEL0_XIP_MAIN1_STALL_UPSTREAM: u32 = 56 << 0;
+    pub const PERFSEL0_XIP_MAIN1_STALL_UPSTREAM_VAL: u32 = 56;
     pub const PERFSEL0_XIP_MAIN1_STALL_DOWNSTREAM: u32 = 57 << 0;
+    pub const PERFSEL0_XIP_MAIN1_STALL_DOWNSTREAM_VAL: u32 = 57;
     pub const PERFSEL0_XIP_MAIN1_ACCESS_CONTESTED: u32 = 58 << 0;
+    pub const PERFSEL0_XIP_MAIN1_ACCESS_CONTESTED_VAL: u32 = 58;
     pub const PERFSEL0_XIP_MAIN1_ACCESS: u32 = 59 << 0;
+    pub const PERFSEL0_XIP_MAIN1_ACCESS_VAL: u32 = 59;
     pub const PERFSEL0_XIP_MAIN0_STALL_UPSTREAM: u32 = 60 << 0;
+    pub const PERFSEL0_XIP_MAIN0_STALL_UPSTREAM_VAL: u32 = 60;
     pub const PERFSEL0_XIP_MAIN0_STALL_DOWNSTREAM: u32 = 61 << 0;
+    pub const PERFSEL0_XIP_MAIN0_STALL_DOWNSTREAM_VAL: u32 = 61;
     pub const PERFSEL0_XIP_MAIN0_ACCESS_CONTESTED: u32 = 62 << 0;
+    pub const PERFSEL0_XIP_MAIN0_ACCESS_CONTESTED_VAL: u32 = 62;
     pub const PERFSEL0_XIP_MAIN0_ACCESS: u32 = 63 << 0;
+    pub const PERFSEL0_XIP_MAIN0_ACCESS_VAL: u32 = 63;
     pub const PERFSEL0_ROM_STALL_UPSTREAM: u32 = 64 << 0;
+    pub const PERFSEL0_ROM_STALL_UPSTREAM_VAL: u32 = 64;
     pub const PERFSEL0_ROM_STALL_DOWNSTREAM: u32 = 65 << 0;
+    pub const PERFSEL0_ROM_STALL_DOWNSTREAM_VAL: u32 = 65;
     pub const PERFSEL0_ROM_ACCESS_CONTESTED: u32 = 66 << 0;
+    pub const PERFSEL0_ROM_ACCESS_CONTESTED_VAL: u32 = 66;
     pub const PERFSEL0_ROM_ACCESS: u32 = 67 << 0;
-
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
+    pub const PERFSEL0_ROM_ACCESS_VAL: u32 = 67;
 
     // ======== Field Accessors ========
 
-    /// **PERFSEL0** [6:0]: Select an event for PERFCTR0. For each downstream port of the main crossbar...
+    /// **PERFSEL0** `[6:0]` (RW)
+    /// Select an event for PERFCTR0. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub fn perfsel0(&self) -> u32 {
-        (self.read_bits() & Self::PERFSEL0_MASK) >> Self::PERFSEL0_OFFSET
+        (self.value.read_bits() & Self::PERFSEL0_MASK) >> Self::PERFSEL0_OFFSET
     }
 
-    /// Write PERFSEL0 field
+    /// Write **PERFSEL0** `[6:0]` (RW)
+    /// Select an event for PERFCTR0. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub fn write_perfsel0(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::PERFSEL0_MASK) | ((value << Self::PERFSEL0_OFFSET) & Self::PERFSEL0_MASK));
+        self.value.modify_bits(|r| (r & !Self::PERFSEL0_MASK) | ((value << Self::PERFSEL0_OFFSET) & Self::PERFSEL0_MASK));
     }
 
 }
@@ -971,13 +881,15 @@ impl Perfsel0Val {
         Self { bits: 0x0000001f }
     }
 
-    /// Read PERFSEL0 [6:0]: Select an event for PERFCTR0. For each downstream port of the main crossbar...
+    /// Read **PERFSEL0** `[6:0]`
+    /// Select an event for PERFCTR0. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub const fn perfsel0(&self) -> u32 {
         (self.bits & Perfsel0::PERFSEL0_MASK) >> Perfsel0::PERFSEL0_OFFSET
     }
 
-    /// Set PERFSEL0 [6:0]: Select an event for PERFCTR0. For each downstream port of the main crossbar...
+    /// Set **PERFSEL0** `[6:0]`
+    /// Select an event for PERFCTR0. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub const fn with_perfsel0(self, value: u32) -> Self {
         Self {
@@ -996,20 +908,20 @@ impl Default for Perfsel0Val {
 impl Perfsel0 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Perfsel0Val {
-        Perfsel0Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Perfsel0Val {
+        Perfsel0Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Perfsel0Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Perfsel0Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Perfsel0Val) -> Perfsel0Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Perfsel0Val) -> Perfsel0Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1023,82 +935,52 @@ impl Perfsel0 {
 ///
 /// ## Fields
 ///
-/// - **PERFCTR1** [23:0] (RW): Busfabric saturating performance counter 1 Count some event signal from the...
+/// - **PERFCTR1** `[23:0]` (RW)
+///   Busfabric saturating performance counter 1
+///   Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
+///   Write any value to clear. Select an event to count using PERFSEL1
 #[repr(transparent)]
 pub struct Perfctr1 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Perfctr1 {}
-unsafe impl Sync for Perfctr1 {}
+impl core::ops::Deref for Perfctr1 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Perfctr1 {
     // ======== Field Constants ========
 
-    /// PERFCTR1 - Busfabric saturating performance counter 1 Count some event signal from the...
-    /// Bits [23:0], mask 0x00ffffff
+    /// **PERFCTR1**
+    /// Busfabric saturating performance counter 1
+    /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
+    /// Write any value to clear. Select an event to count using PERFSEL1
+    /// Bits `[23:0]`, mask `0x00ffffff`
     pub const PERFCTR1_OFFSET: u32 = 0;
     pub const PERFCTR1_MASK: u32 = 0x00ffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **PERFCTR1** [23:0]: Busfabric saturating performance counter 1 Count some event signal from the...
+    /// **PERFCTR1** `[23:0]` (RW)
+    /// Busfabric saturating performance counter 1
+    /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
+    /// Write any value to clear. Select an event to count using PERFSEL1
     #[inline(always)]
     pub fn perfctr1(&self) -> u32 {
-        (self.read_bits() & Self::PERFCTR1_MASK) >> Self::PERFCTR1_OFFSET
+        (self.value.read_bits() & Self::PERFCTR1_MASK) >> Self::PERFCTR1_OFFSET
     }
 
-    /// Write PERFCTR1 field
+    /// Write **PERFCTR1** `[23:0]` (RW)
+    /// Busfabric saturating performance counter 1
+    /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
+    /// Write any value to clear. Select an event to count using PERFSEL1
     #[inline(always)]
     pub fn write_perfctr1(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::PERFCTR1_MASK) | ((value << Self::PERFCTR1_OFFSET) & Self::PERFCTR1_MASK));
+        self.value.modify_bits(|r| (r & !Self::PERFCTR1_MASK) | ((value << Self::PERFCTR1_OFFSET) & Self::PERFCTR1_MASK));
     }
 
 }
@@ -1131,13 +1013,19 @@ impl Perfctr1Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read PERFCTR1 [23:0]: Busfabric saturating performance counter 1 Count some event signal from the...
+    /// Read **PERFCTR1** `[23:0]`
+    /// Busfabric saturating performance counter 1
+    /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
+    /// Write any value to clear. Select an event to count using PERFSEL1
     #[inline(always)]
     pub const fn perfctr1(&self) -> u32 {
         (self.bits & Perfctr1::PERFCTR1_MASK) >> Perfctr1::PERFCTR1_OFFSET
     }
 
-    /// Set PERFCTR1 [23:0]: Busfabric saturating performance counter 1 Count some event signal from the...
+    /// Set **PERFCTR1** `[23:0]`
+    /// Busfabric saturating performance counter 1
+    /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
+    /// Write any value to clear. Select an event to count using PERFSEL1
     #[inline(always)]
     pub const fn with_perfctr1(self, value: u32) -> Self {
         Self {
@@ -1156,20 +1044,20 @@ impl Default for Perfctr1Val {
 impl Perfctr1 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Perfctr1Val {
-        Perfctr1Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Perfctr1Val {
+        Perfctr1Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Perfctr1Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Perfctr1Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Perfctr1Val) -> Perfctr1Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Perfctr1Val) -> Perfctr1Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1183,150 +1071,180 @@ impl Perfctr1 {
 ///
 /// ## Fields
 ///
-/// - **PERFSEL1** [6:0] (RW): Select an event for PERFCTR1. For each downstream port of the main crossbar...
+/// - **PERFSEL1** `[6:0]` (RW)
+///   Select an event for PERFCTR1. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
 #[repr(transparent)]
 pub struct Perfsel1 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Perfsel1 {}
-unsafe impl Sync for Perfsel1 {}
+impl core::ops::Deref for Perfsel1 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Perfsel1 {
     // ======== Field Constants ========
 
-    /// PERFSEL1 - Select an event for PERFCTR1. For each downstream port of the main crossbar...
-    /// Bits [6:0], mask 0x0000007f
+    /// **PERFSEL1**
+    /// Select an event for PERFCTR1. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
+    /// Bits `[6:0]`, mask `0x0000007f`
     pub const PERFSEL1_OFFSET: u32 = 0;
     pub const PERFSEL1_MASK: u32 = 0x0000007f;
     pub const PERFSEL1_SIOB_PROC1_STALL_UPSTREAM: u32 = 0 << 0;
+    pub const PERFSEL1_SIOB_PROC1_STALL_UPSTREAM_VAL: u32 = 0;
     pub const PERFSEL1_SIOB_PROC1_STALL_DOWNSTREAM: u32 = 1 << 0;
+    pub const PERFSEL1_SIOB_PROC1_STALL_DOWNSTREAM_VAL: u32 = 1;
     pub const PERFSEL1_SIOB_PROC1_ACCESS_CONTESTED: u32 = 2 << 0;
+    pub const PERFSEL1_SIOB_PROC1_ACCESS_CONTESTED_VAL: u32 = 2;
     pub const PERFSEL1_SIOB_PROC1_ACCESS: u32 = 3 << 0;
+    pub const PERFSEL1_SIOB_PROC1_ACCESS_VAL: u32 = 3;
     pub const PERFSEL1_SIOB_PROC0_STALL_UPSTREAM: u32 = 4 << 0;
+    pub const PERFSEL1_SIOB_PROC0_STALL_UPSTREAM_VAL: u32 = 4;
     pub const PERFSEL1_SIOB_PROC0_STALL_DOWNSTREAM: u32 = 5 << 0;
+    pub const PERFSEL1_SIOB_PROC0_STALL_DOWNSTREAM_VAL: u32 = 5;
     pub const PERFSEL1_SIOB_PROC0_ACCESS_CONTESTED: u32 = 6 << 0;
+    pub const PERFSEL1_SIOB_PROC0_ACCESS_CONTESTED_VAL: u32 = 6;
     pub const PERFSEL1_SIOB_PROC0_ACCESS: u32 = 7 << 0;
+    pub const PERFSEL1_SIOB_PROC0_ACCESS_VAL: u32 = 7;
     pub const PERFSEL1_APB_STALL_UPSTREAM: u32 = 8 << 0;
+    pub const PERFSEL1_APB_STALL_UPSTREAM_VAL: u32 = 8;
     pub const PERFSEL1_APB_STALL_DOWNSTREAM: u32 = 9 << 0;
+    pub const PERFSEL1_APB_STALL_DOWNSTREAM_VAL: u32 = 9;
     pub const PERFSEL1_APB_ACCESS_CONTESTED: u32 = 10 << 0;
+    pub const PERFSEL1_APB_ACCESS_CONTESTED_VAL: u32 = 10;
     pub const PERFSEL1_APB_ACCESS: u32 = 11 << 0;
+    pub const PERFSEL1_APB_ACCESS_VAL: u32 = 11;
     pub const PERFSEL1_FASTPERI_STALL_UPSTREAM: u32 = 12 << 0;
+    pub const PERFSEL1_FASTPERI_STALL_UPSTREAM_VAL: u32 = 12;
     pub const PERFSEL1_FASTPERI_STALL_DOWNSTREAM: u32 = 13 << 0;
+    pub const PERFSEL1_FASTPERI_STALL_DOWNSTREAM_VAL: u32 = 13;
     pub const PERFSEL1_FASTPERI_ACCESS_CONTESTED: u32 = 14 << 0;
+    pub const PERFSEL1_FASTPERI_ACCESS_CONTESTED_VAL: u32 = 14;
     pub const PERFSEL1_FASTPERI_ACCESS: u32 = 15 << 0;
+    pub const PERFSEL1_FASTPERI_ACCESS_VAL: u32 = 15;
     pub const PERFSEL1_SRAM9_STALL_UPSTREAM: u32 = 16 << 0;
+    pub const PERFSEL1_SRAM9_STALL_UPSTREAM_VAL: u32 = 16;
     pub const PERFSEL1_SRAM9_STALL_DOWNSTREAM: u32 = 17 << 0;
+    pub const PERFSEL1_SRAM9_STALL_DOWNSTREAM_VAL: u32 = 17;
     pub const PERFSEL1_SRAM9_ACCESS_CONTESTED: u32 = 18 << 0;
+    pub const PERFSEL1_SRAM9_ACCESS_CONTESTED_VAL: u32 = 18;
     pub const PERFSEL1_SRAM9_ACCESS: u32 = 19 << 0;
+    pub const PERFSEL1_SRAM9_ACCESS_VAL: u32 = 19;
     pub const PERFSEL1_SRAM8_STALL_UPSTREAM: u32 = 20 << 0;
+    pub const PERFSEL1_SRAM8_STALL_UPSTREAM_VAL: u32 = 20;
     pub const PERFSEL1_SRAM8_STALL_DOWNSTREAM: u32 = 21 << 0;
+    pub const PERFSEL1_SRAM8_STALL_DOWNSTREAM_VAL: u32 = 21;
     pub const PERFSEL1_SRAM8_ACCESS_CONTESTED: u32 = 22 << 0;
+    pub const PERFSEL1_SRAM8_ACCESS_CONTESTED_VAL: u32 = 22;
     pub const PERFSEL1_SRAM8_ACCESS: u32 = 23 << 0;
+    pub const PERFSEL1_SRAM8_ACCESS_VAL: u32 = 23;
     pub const PERFSEL1_SRAM7_STALL_UPSTREAM: u32 = 24 << 0;
+    pub const PERFSEL1_SRAM7_STALL_UPSTREAM_VAL: u32 = 24;
     pub const PERFSEL1_SRAM7_STALL_DOWNSTREAM: u32 = 25 << 0;
+    pub const PERFSEL1_SRAM7_STALL_DOWNSTREAM_VAL: u32 = 25;
     pub const PERFSEL1_SRAM7_ACCESS_CONTESTED: u32 = 26 << 0;
+    pub const PERFSEL1_SRAM7_ACCESS_CONTESTED_VAL: u32 = 26;
     pub const PERFSEL1_SRAM7_ACCESS: u32 = 27 << 0;
+    pub const PERFSEL1_SRAM7_ACCESS_VAL: u32 = 27;
     pub const PERFSEL1_SRAM6_STALL_UPSTREAM: u32 = 28 << 0;
+    pub const PERFSEL1_SRAM6_STALL_UPSTREAM_VAL: u32 = 28;
     pub const PERFSEL1_SRAM6_STALL_DOWNSTREAM: u32 = 29 << 0;
+    pub const PERFSEL1_SRAM6_STALL_DOWNSTREAM_VAL: u32 = 29;
     pub const PERFSEL1_SRAM6_ACCESS_CONTESTED: u32 = 30 << 0;
+    pub const PERFSEL1_SRAM6_ACCESS_CONTESTED_VAL: u32 = 30;
     pub const PERFSEL1_SRAM6_ACCESS: u32 = 31 << 0;
+    pub const PERFSEL1_SRAM6_ACCESS_VAL: u32 = 31;
     pub const PERFSEL1_SRAM5_STALL_UPSTREAM: u32 = 32 << 0;
+    pub const PERFSEL1_SRAM5_STALL_UPSTREAM_VAL: u32 = 32;
     pub const PERFSEL1_SRAM5_STALL_DOWNSTREAM: u32 = 33 << 0;
+    pub const PERFSEL1_SRAM5_STALL_DOWNSTREAM_VAL: u32 = 33;
     pub const PERFSEL1_SRAM5_ACCESS_CONTESTED: u32 = 34 << 0;
+    pub const PERFSEL1_SRAM5_ACCESS_CONTESTED_VAL: u32 = 34;
     pub const PERFSEL1_SRAM5_ACCESS: u32 = 35 << 0;
+    pub const PERFSEL1_SRAM5_ACCESS_VAL: u32 = 35;
     pub const PERFSEL1_SRAM4_STALL_UPSTREAM: u32 = 36 << 0;
+    pub const PERFSEL1_SRAM4_STALL_UPSTREAM_VAL: u32 = 36;
     pub const PERFSEL1_SRAM4_STALL_DOWNSTREAM: u32 = 37 << 0;
+    pub const PERFSEL1_SRAM4_STALL_DOWNSTREAM_VAL: u32 = 37;
     pub const PERFSEL1_SRAM4_ACCESS_CONTESTED: u32 = 38 << 0;
+    pub const PERFSEL1_SRAM4_ACCESS_CONTESTED_VAL: u32 = 38;
     pub const PERFSEL1_SRAM4_ACCESS: u32 = 39 << 0;
+    pub const PERFSEL1_SRAM4_ACCESS_VAL: u32 = 39;
     pub const PERFSEL1_SRAM3_STALL_UPSTREAM: u32 = 40 << 0;
+    pub const PERFSEL1_SRAM3_STALL_UPSTREAM_VAL: u32 = 40;
     pub const PERFSEL1_SRAM3_STALL_DOWNSTREAM: u32 = 41 << 0;
+    pub const PERFSEL1_SRAM3_STALL_DOWNSTREAM_VAL: u32 = 41;
     pub const PERFSEL1_SRAM3_ACCESS_CONTESTED: u32 = 42 << 0;
+    pub const PERFSEL1_SRAM3_ACCESS_CONTESTED_VAL: u32 = 42;
     pub const PERFSEL1_SRAM3_ACCESS: u32 = 43 << 0;
+    pub const PERFSEL1_SRAM3_ACCESS_VAL: u32 = 43;
     pub const PERFSEL1_SRAM2_STALL_UPSTREAM: u32 = 44 << 0;
+    pub const PERFSEL1_SRAM2_STALL_UPSTREAM_VAL: u32 = 44;
     pub const PERFSEL1_SRAM2_STALL_DOWNSTREAM: u32 = 45 << 0;
+    pub const PERFSEL1_SRAM2_STALL_DOWNSTREAM_VAL: u32 = 45;
     pub const PERFSEL1_SRAM2_ACCESS_CONTESTED: u32 = 46 << 0;
+    pub const PERFSEL1_SRAM2_ACCESS_CONTESTED_VAL: u32 = 46;
     pub const PERFSEL1_SRAM2_ACCESS: u32 = 47 << 0;
+    pub const PERFSEL1_SRAM2_ACCESS_VAL: u32 = 47;
     pub const PERFSEL1_SRAM1_STALL_UPSTREAM: u32 = 48 << 0;
+    pub const PERFSEL1_SRAM1_STALL_UPSTREAM_VAL: u32 = 48;
     pub const PERFSEL1_SRAM1_STALL_DOWNSTREAM: u32 = 49 << 0;
+    pub const PERFSEL1_SRAM1_STALL_DOWNSTREAM_VAL: u32 = 49;
     pub const PERFSEL1_SRAM1_ACCESS_CONTESTED: u32 = 50 << 0;
+    pub const PERFSEL1_SRAM1_ACCESS_CONTESTED_VAL: u32 = 50;
     pub const PERFSEL1_SRAM1_ACCESS: u32 = 51 << 0;
+    pub const PERFSEL1_SRAM1_ACCESS_VAL: u32 = 51;
     pub const PERFSEL1_SRAM0_STALL_UPSTREAM: u32 = 52 << 0;
+    pub const PERFSEL1_SRAM0_STALL_UPSTREAM_VAL: u32 = 52;
     pub const PERFSEL1_SRAM0_STALL_DOWNSTREAM: u32 = 53 << 0;
+    pub const PERFSEL1_SRAM0_STALL_DOWNSTREAM_VAL: u32 = 53;
     pub const PERFSEL1_SRAM0_ACCESS_CONTESTED: u32 = 54 << 0;
+    pub const PERFSEL1_SRAM0_ACCESS_CONTESTED_VAL: u32 = 54;
     pub const PERFSEL1_SRAM0_ACCESS: u32 = 55 << 0;
+    pub const PERFSEL1_SRAM0_ACCESS_VAL: u32 = 55;
     pub const PERFSEL1_XIP_MAIN1_STALL_UPSTREAM: u32 = 56 << 0;
+    pub const PERFSEL1_XIP_MAIN1_STALL_UPSTREAM_VAL: u32 = 56;
     pub const PERFSEL1_XIP_MAIN1_STALL_DOWNSTREAM: u32 = 57 << 0;
+    pub const PERFSEL1_XIP_MAIN1_STALL_DOWNSTREAM_VAL: u32 = 57;
     pub const PERFSEL1_XIP_MAIN1_ACCESS_CONTESTED: u32 = 58 << 0;
+    pub const PERFSEL1_XIP_MAIN1_ACCESS_CONTESTED_VAL: u32 = 58;
     pub const PERFSEL1_XIP_MAIN1_ACCESS: u32 = 59 << 0;
+    pub const PERFSEL1_XIP_MAIN1_ACCESS_VAL: u32 = 59;
     pub const PERFSEL1_XIP_MAIN0_STALL_UPSTREAM: u32 = 60 << 0;
+    pub const PERFSEL1_XIP_MAIN0_STALL_UPSTREAM_VAL: u32 = 60;
     pub const PERFSEL1_XIP_MAIN0_STALL_DOWNSTREAM: u32 = 61 << 0;
+    pub const PERFSEL1_XIP_MAIN0_STALL_DOWNSTREAM_VAL: u32 = 61;
     pub const PERFSEL1_XIP_MAIN0_ACCESS_CONTESTED: u32 = 62 << 0;
+    pub const PERFSEL1_XIP_MAIN0_ACCESS_CONTESTED_VAL: u32 = 62;
     pub const PERFSEL1_XIP_MAIN0_ACCESS: u32 = 63 << 0;
+    pub const PERFSEL1_XIP_MAIN0_ACCESS_VAL: u32 = 63;
     pub const PERFSEL1_ROM_STALL_UPSTREAM: u32 = 64 << 0;
+    pub const PERFSEL1_ROM_STALL_UPSTREAM_VAL: u32 = 64;
     pub const PERFSEL1_ROM_STALL_DOWNSTREAM: u32 = 65 << 0;
+    pub const PERFSEL1_ROM_STALL_DOWNSTREAM_VAL: u32 = 65;
     pub const PERFSEL1_ROM_ACCESS_CONTESTED: u32 = 66 << 0;
+    pub const PERFSEL1_ROM_ACCESS_CONTESTED_VAL: u32 = 66;
     pub const PERFSEL1_ROM_ACCESS: u32 = 67 << 0;
-
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
+    pub const PERFSEL1_ROM_ACCESS_VAL: u32 = 67;
 
     // ======== Field Accessors ========
 
-    /// **PERFSEL1** [6:0]: Select an event for PERFCTR1. For each downstream port of the main crossbar...
+    /// **PERFSEL1** `[6:0]` (RW)
+    /// Select an event for PERFCTR1. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub fn perfsel1(&self) -> u32 {
-        (self.read_bits() & Self::PERFSEL1_MASK) >> Self::PERFSEL1_OFFSET
+        (self.value.read_bits() & Self::PERFSEL1_MASK) >> Self::PERFSEL1_OFFSET
     }
 
-    /// Write PERFSEL1 field
+    /// Write **PERFSEL1** `[6:0]` (RW)
+    /// Select an event for PERFCTR1. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub fn write_perfsel1(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::PERFSEL1_MASK) | ((value << Self::PERFSEL1_OFFSET) & Self::PERFSEL1_MASK));
+        self.value.modify_bits(|r| (r & !Self::PERFSEL1_MASK) | ((value << Self::PERFSEL1_OFFSET) & Self::PERFSEL1_MASK));
     }
 
 }
@@ -1359,13 +1277,15 @@ impl Perfsel1Val {
         Self { bits: 0x0000001f }
     }
 
-    /// Read PERFSEL1 [6:0]: Select an event for PERFCTR1. For each downstream port of the main crossbar...
+    /// Read **PERFSEL1** `[6:0]`
+    /// Select an event for PERFCTR1. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub const fn perfsel1(&self) -> u32 {
         (self.bits & Perfsel1::PERFSEL1_MASK) >> Perfsel1::PERFSEL1_OFFSET
     }
 
-    /// Set PERFSEL1 [6:0]: Select an event for PERFCTR1. For each downstream port of the main crossbar...
+    /// Set **PERFSEL1** `[6:0]`
+    /// Select an event for PERFCTR1. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub const fn with_perfsel1(self, value: u32) -> Self {
         Self {
@@ -1384,20 +1304,20 @@ impl Default for Perfsel1Val {
 impl Perfsel1 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Perfsel1Val {
-        Perfsel1Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Perfsel1Val {
+        Perfsel1Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Perfsel1Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Perfsel1Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Perfsel1Val) -> Perfsel1Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Perfsel1Val) -> Perfsel1Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1411,82 +1331,52 @@ impl Perfsel1 {
 ///
 /// ## Fields
 ///
-/// - **PERFCTR2** [23:0] (RW): Busfabric saturating performance counter 2 Count some event signal from the...
+/// - **PERFCTR2** `[23:0]` (RW)
+///   Busfabric saturating performance counter 2
+///   Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
+///   Write any value to clear. Select an event to count using PERFSEL2
 #[repr(transparent)]
 pub struct Perfctr2 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Perfctr2 {}
-unsafe impl Sync for Perfctr2 {}
+impl core::ops::Deref for Perfctr2 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Perfctr2 {
     // ======== Field Constants ========
 
-    /// PERFCTR2 - Busfabric saturating performance counter 2 Count some event signal from the...
-    /// Bits [23:0], mask 0x00ffffff
+    /// **PERFCTR2**
+    /// Busfabric saturating performance counter 2
+    /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
+    /// Write any value to clear. Select an event to count using PERFSEL2
+    /// Bits `[23:0]`, mask `0x00ffffff`
     pub const PERFCTR2_OFFSET: u32 = 0;
     pub const PERFCTR2_MASK: u32 = 0x00ffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **PERFCTR2** [23:0]: Busfabric saturating performance counter 2 Count some event signal from the...
+    /// **PERFCTR2** `[23:0]` (RW)
+    /// Busfabric saturating performance counter 2
+    /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
+    /// Write any value to clear. Select an event to count using PERFSEL2
     #[inline(always)]
     pub fn perfctr2(&self) -> u32 {
-        (self.read_bits() & Self::PERFCTR2_MASK) >> Self::PERFCTR2_OFFSET
+        (self.value.read_bits() & Self::PERFCTR2_MASK) >> Self::PERFCTR2_OFFSET
     }
 
-    /// Write PERFCTR2 field
+    /// Write **PERFCTR2** `[23:0]` (RW)
+    /// Busfabric saturating performance counter 2
+    /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
+    /// Write any value to clear. Select an event to count using PERFSEL2
     #[inline(always)]
     pub fn write_perfctr2(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::PERFCTR2_MASK) | ((value << Self::PERFCTR2_OFFSET) & Self::PERFCTR2_MASK));
+        self.value.modify_bits(|r| (r & !Self::PERFCTR2_MASK) | ((value << Self::PERFCTR2_OFFSET) & Self::PERFCTR2_MASK));
     }
 
 }
@@ -1519,13 +1409,19 @@ impl Perfctr2Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read PERFCTR2 [23:0]: Busfabric saturating performance counter 2 Count some event signal from the...
+    /// Read **PERFCTR2** `[23:0]`
+    /// Busfabric saturating performance counter 2
+    /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
+    /// Write any value to clear. Select an event to count using PERFSEL2
     #[inline(always)]
     pub const fn perfctr2(&self) -> u32 {
         (self.bits & Perfctr2::PERFCTR2_MASK) >> Perfctr2::PERFCTR2_OFFSET
     }
 
-    /// Set PERFCTR2 [23:0]: Busfabric saturating performance counter 2 Count some event signal from the...
+    /// Set **PERFCTR2** `[23:0]`
+    /// Busfabric saturating performance counter 2
+    /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
+    /// Write any value to clear. Select an event to count using PERFSEL2
     #[inline(always)]
     pub const fn with_perfctr2(self, value: u32) -> Self {
         Self {
@@ -1544,20 +1440,20 @@ impl Default for Perfctr2Val {
 impl Perfctr2 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Perfctr2Val {
-        Perfctr2Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Perfctr2Val {
+        Perfctr2Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Perfctr2Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Perfctr2Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Perfctr2Val) -> Perfctr2Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Perfctr2Val) -> Perfctr2Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1571,150 +1467,180 @@ impl Perfctr2 {
 ///
 /// ## Fields
 ///
-/// - **PERFSEL2** [6:0] (RW): Select an event for PERFCTR2. For each downstream port of the main crossbar...
+/// - **PERFSEL2** `[6:0]` (RW)
+///   Select an event for PERFCTR2. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
 #[repr(transparent)]
 pub struct Perfsel2 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Perfsel2 {}
-unsafe impl Sync for Perfsel2 {}
+impl core::ops::Deref for Perfsel2 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Perfsel2 {
     // ======== Field Constants ========
 
-    /// PERFSEL2 - Select an event for PERFCTR2. For each downstream port of the main crossbar...
-    /// Bits [6:0], mask 0x0000007f
+    /// **PERFSEL2**
+    /// Select an event for PERFCTR2. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
+    /// Bits `[6:0]`, mask `0x0000007f`
     pub const PERFSEL2_OFFSET: u32 = 0;
     pub const PERFSEL2_MASK: u32 = 0x0000007f;
     pub const PERFSEL2_SIOB_PROC1_STALL_UPSTREAM: u32 = 0 << 0;
+    pub const PERFSEL2_SIOB_PROC1_STALL_UPSTREAM_VAL: u32 = 0;
     pub const PERFSEL2_SIOB_PROC1_STALL_DOWNSTREAM: u32 = 1 << 0;
+    pub const PERFSEL2_SIOB_PROC1_STALL_DOWNSTREAM_VAL: u32 = 1;
     pub const PERFSEL2_SIOB_PROC1_ACCESS_CONTESTED: u32 = 2 << 0;
+    pub const PERFSEL2_SIOB_PROC1_ACCESS_CONTESTED_VAL: u32 = 2;
     pub const PERFSEL2_SIOB_PROC1_ACCESS: u32 = 3 << 0;
+    pub const PERFSEL2_SIOB_PROC1_ACCESS_VAL: u32 = 3;
     pub const PERFSEL2_SIOB_PROC0_STALL_UPSTREAM: u32 = 4 << 0;
+    pub const PERFSEL2_SIOB_PROC0_STALL_UPSTREAM_VAL: u32 = 4;
     pub const PERFSEL2_SIOB_PROC0_STALL_DOWNSTREAM: u32 = 5 << 0;
+    pub const PERFSEL2_SIOB_PROC0_STALL_DOWNSTREAM_VAL: u32 = 5;
     pub const PERFSEL2_SIOB_PROC0_ACCESS_CONTESTED: u32 = 6 << 0;
+    pub const PERFSEL2_SIOB_PROC0_ACCESS_CONTESTED_VAL: u32 = 6;
     pub const PERFSEL2_SIOB_PROC0_ACCESS: u32 = 7 << 0;
+    pub const PERFSEL2_SIOB_PROC0_ACCESS_VAL: u32 = 7;
     pub const PERFSEL2_APB_STALL_UPSTREAM: u32 = 8 << 0;
+    pub const PERFSEL2_APB_STALL_UPSTREAM_VAL: u32 = 8;
     pub const PERFSEL2_APB_STALL_DOWNSTREAM: u32 = 9 << 0;
+    pub const PERFSEL2_APB_STALL_DOWNSTREAM_VAL: u32 = 9;
     pub const PERFSEL2_APB_ACCESS_CONTESTED: u32 = 10 << 0;
+    pub const PERFSEL2_APB_ACCESS_CONTESTED_VAL: u32 = 10;
     pub const PERFSEL2_APB_ACCESS: u32 = 11 << 0;
+    pub const PERFSEL2_APB_ACCESS_VAL: u32 = 11;
     pub const PERFSEL2_FASTPERI_STALL_UPSTREAM: u32 = 12 << 0;
+    pub const PERFSEL2_FASTPERI_STALL_UPSTREAM_VAL: u32 = 12;
     pub const PERFSEL2_FASTPERI_STALL_DOWNSTREAM: u32 = 13 << 0;
+    pub const PERFSEL2_FASTPERI_STALL_DOWNSTREAM_VAL: u32 = 13;
     pub const PERFSEL2_FASTPERI_ACCESS_CONTESTED: u32 = 14 << 0;
+    pub const PERFSEL2_FASTPERI_ACCESS_CONTESTED_VAL: u32 = 14;
     pub const PERFSEL2_FASTPERI_ACCESS: u32 = 15 << 0;
+    pub const PERFSEL2_FASTPERI_ACCESS_VAL: u32 = 15;
     pub const PERFSEL2_SRAM9_STALL_UPSTREAM: u32 = 16 << 0;
+    pub const PERFSEL2_SRAM9_STALL_UPSTREAM_VAL: u32 = 16;
     pub const PERFSEL2_SRAM9_STALL_DOWNSTREAM: u32 = 17 << 0;
+    pub const PERFSEL2_SRAM9_STALL_DOWNSTREAM_VAL: u32 = 17;
     pub const PERFSEL2_SRAM9_ACCESS_CONTESTED: u32 = 18 << 0;
+    pub const PERFSEL2_SRAM9_ACCESS_CONTESTED_VAL: u32 = 18;
     pub const PERFSEL2_SRAM9_ACCESS: u32 = 19 << 0;
+    pub const PERFSEL2_SRAM9_ACCESS_VAL: u32 = 19;
     pub const PERFSEL2_SRAM8_STALL_UPSTREAM: u32 = 20 << 0;
+    pub const PERFSEL2_SRAM8_STALL_UPSTREAM_VAL: u32 = 20;
     pub const PERFSEL2_SRAM8_STALL_DOWNSTREAM: u32 = 21 << 0;
+    pub const PERFSEL2_SRAM8_STALL_DOWNSTREAM_VAL: u32 = 21;
     pub const PERFSEL2_SRAM8_ACCESS_CONTESTED: u32 = 22 << 0;
+    pub const PERFSEL2_SRAM8_ACCESS_CONTESTED_VAL: u32 = 22;
     pub const PERFSEL2_SRAM8_ACCESS: u32 = 23 << 0;
+    pub const PERFSEL2_SRAM8_ACCESS_VAL: u32 = 23;
     pub const PERFSEL2_SRAM7_STALL_UPSTREAM: u32 = 24 << 0;
+    pub const PERFSEL2_SRAM7_STALL_UPSTREAM_VAL: u32 = 24;
     pub const PERFSEL2_SRAM7_STALL_DOWNSTREAM: u32 = 25 << 0;
+    pub const PERFSEL2_SRAM7_STALL_DOWNSTREAM_VAL: u32 = 25;
     pub const PERFSEL2_SRAM7_ACCESS_CONTESTED: u32 = 26 << 0;
+    pub const PERFSEL2_SRAM7_ACCESS_CONTESTED_VAL: u32 = 26;
     pub const PERFSEL2_SRAM7_ACCESS: u32 = 27 << 0;
+    pub const PERFSEL2_SRAM7_ACCESS_VAL: u32 = 27;
     pub const PERFSEL2_SRAM6_STALL_UPSTREAM: u32 = 28 << 0;
+    pub const PERFSEL2_SRAM6_STALL_UPSTREAM_VAL: u32 = 28;
     pub const PERFSEL2_SRAM6_STALL_DOWNSTREAM: u32 = 29 << 0;
+    pub const PERFSEL2_SRAM6_STALL_DOWNSTREAM_VAL: u32 = 29;
     pub const PERFSEL2_SRAM6_ACCESS_CONTESTED: u32 = 30 << 0;
+    pub const PERFSEL2_SRAM6_ACCESS_CONTESTED_VAL: u32 = 30;
     pub const PERFSEL2_SRAM6_ACCESS: u32 = 31 << 0;
+    pub const PERFSEL2_SRAM6_ACCESS_VAL: u32 = 31;
     pub const PERFSEL2_SRAM5_STALL_UPSTREAM: u32 = 32 << 0;
+    pub const PERFSEL2_SRAM5_STALL_UPSTREAM_VAL: u32 = 32;
     pub const PERFSEL2_SRAM5_STALL_DOWNSTREAM: u32 = 33 << 0;
+    pub const PERFSEL2_SRAM5_STALL_DOWNSTREAM_VAL: u32 = 33;
     pub const PERFSEL2_SRAM5_ACCESS_CONTESTED: u32 = 34 << 0;
+    pub const PERFSEL2_SRAM5_ACCESS_CONTESTED_VAL: u32 = 34;
     pub const PERFSEL2_SRAM5_ACCESS: u32 = 35 << 0;
+    pub const PERFSEL2_SRAM5_ACCESS_VAL: u32 = 35;
     pub const PERFSEL2_SRAM4_STALL_UPSTREAM: u32 = 36 << 0;
+    pub const PERFSEL2_SRAM4_STALL_UPSTREAM_VAL: u32 = 36;
     pub const PERFSEL2_SRAM4_STALL_DOWNSTREAM: u32 = 37 << 0;
+    pub const PERFSEL2_SRAM4_STALL_DOWNSTREAM_VAL: u32 = 37;
     pub const PERFSEL2_SRAM4_ACCESS_CONTESTED: u32 = 38 << 0;
+    pub const PERFSEL2_SRAM4_ACCESS_CONTESTED_VAL: u32 = 38;
     pub const PERFSEL2_SRAM4_ACCESS: u32 = 39 << 0;
+    pub const PERFSEL2_SRAM4_ACCESS_VAL: u32 = 39;
     pub const PERFSEL2_SRAM3_STALL_UPSTREAM: u32 = 40 << 0;
+    pub const PERFSEL2_SRAM3_STALL_UPSTREAM_VAL: u32 = 40;
     pub const PERFSEL2_SRAM3_STALL_DOWNSTREAM: u32 = 41 << 0;
+    pub const PERFSEL2_SRAM3_STALL_DOWNSTREAM_VAL: u32 = 41;
     pub const PERFSEL2_SRAM3_ACCESS_CONTESTED: u32 = 42 << 0;
+    pub const PERFSEL2_SRAM3_ACCESS_CONTESTED_VAL: u32 = 42;
     pub const PERFSEL2_SRAM3_ACCESS: u32 = 43 << 0;
+    pub const PERFSEL2_SRAM3_ACCESS_VAL: u32 = 43;
     pub const PERFSEL2_SRAM2_STALL_UPSTREAM: u32 = 44 << 0;
+    pub const PERFSEL2_SRAM2_STALL_UPSTREAM_VAL: u32 = 44;
     pub const PERFSEL2_SRAM2_STALL_DOWNSTREAM: u32 = 45 << 0;
+    pub const PERFSEL2_SRAM2_STALL_DOWNSTREAM_VAL: u32 = 45;
     pub const PERFSEL2_SRAM2_ACCESS_CONTESTED: u32 = 46 << 0;
+    pub const PERFSEL2_SRAM2_ACCESS_CONTESTED_VAL: u32 = 46;
     pub const PERFSEL2_SRAM2_ACCESS: u32 = 47 << 0;
+    pub const PERFSEL2_SRAM2_ACCESS_VAL: u32 = 47;
     pub const PERFSEL2_SRAM1_STALL_UPSTREAM: u32 = 48 << 0;
+    pub const PERFSEL2_SRAM1_STALL_UPSTREAM_VAL: u32 = 48;
     pub const PERFSEL2_SRAM1_STALL_DOWNSTREAM: u32 = 49 << 0;
+    pub const PERFSEL2_SRAM1_STALL_DOWNSTREAM_VAL: u32 = 49;
     pub const PERFSEL2_SRAM1_ACCESS_CONTESTED: u32 = 50 << 0;
+    pub const PERFSEL2_SRAM1_ACCESS_CONTESTED_VAL: u32 = 50;
     pub const PERFSEL2_SRAM1_ACCESS: u32 = 51 << 0;
+    pub const PERFSEL2_SRAM1_ACCESS_VAL: u32 = 51;
     pub const PERFSEL2_SRAM0_STALL_UPSTREAM: u32 = 52 << 0;
+    pub const PERFSEL2_SRAM0_STALL_UPSTREAM_VAL: u32 = 52;
     pub const PERFSEL2_SRAM0_STALL_DOWNSTREAM: u32 = 53 << 0;
+    pub const PERFSEL2_SRAM0_STALL_DOWNSTREAM_VAL: u32 = 53;
     pub const PERFSEL2_SRAM0_ACCESS_CONTESTED: u32 = 54 << 0;
+    pub const PERFSEL2_SRAM0_ACCESS_CONTESTED_VAL: u32 = 54;
     pub const PERFSEL2_SRAM0_ACCESS: u32 = 55 << 0;
+    pub const PERFSEL2_SRAM0_ACCESS_VAL: u32 = 55;
     pub const PERFSEL2_XIP_MAIN1_STALL_UPSTREAM: u32 = 56 << 0;
+    pub const PERFSEL2_XIP_MAIN1_STALL_UPSTREAM_VAL: u32 = 56;
     pub const PERFSEL2_XIP_MAIN1_STALL_DOWNSTREAM: u32 = 57 << 0;
+    pub const PERFSEL2_XIP_MAIN1_STALL_DOWNSTREAM_VAL: u32 = 57;
     pub const PERFSEL2_XIP_MAIN1_ACCESS_CONTESTED: u32 = 58 << 0;
+    pub const PERFSEL2_XIP_MAIN1_ACCESS_CONTESTED_VAL: u32 = 58;
     pub const PERFSEL2_XIP_MAIN1_ACCESS: u32 = 59 << 0;
+    pub const PERFSEL2_XIP_MAIN1_ACCESS_VAL: u32 = 59;
     pub const PERFSEL2_XIP_MAIN0_STALL_UPSTREAM: u32 = 60 << 0;
+    pub const PERFSEL2_XIP_MAIN0_STALL_UPSTREAM_VAL: u32 = 60;
     pub const PERFSEL2_XIP_MAIN0_STALL_DOWNSTREAM: u32 = 61 << 0;
+    pub const PERFSEL2_XIP_MAIN0_STALL_DOWNSTREAM_VAL: u32 = 61;
     pub const PERFSEL2_XIP_MAIN0_ACCESS_CONTESTED: u32 = 62 << 0;
+    pub const PERFSEL2_XIP_MAIN0_ACCESS_CONTESTED_VAL: u32 = 62;
     pub const PERFSEL2_XIP_MAIN0_ACCESS: u32 = 63 << 0;
+    pub const PERFSEL2_XIP_MAIN0_ACCESS_VAL: u32 = 63;
     pub const PERFSEL2_ROM_STALL_UPSTREAM: u32 = 64 << 0;
+    pub const PERFSEL2_ROM_STALL_UPSTREAM_VAL: u32 = 64;
     pub const PERFSEL2_ROM_STALL_DOWNSTREAM: u32 = 65 << 0;
+    pub const PERFSEL2_ROM_STALL_DOWNSTREAM_VAL: u32 = 65;
     pub const PERFSEL2_ROM_ACCESS_CONTESTED: u32 = 66 << 0;
+    pub const PERFSEL2_ROM_ACCESS_CONTESTED_VAL: u32 = 66;
     pub const PERFSEL2_ROM_ACCESS: u32 = 67 << 0;
-
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
+    pub const PERFSEL2_ROM_ACCESS_VAL: u32 = 67;
 
     // ======== Field Accessors ========
 
-    /// **PERFSEL2** [6:0]: Select an event for PERFCTR2. For each downstream port of the main crossbar...
+    /// **PERFSEL2** `[6:0]` (RW)
+    /// Select an event for PERFCTR2. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub fn perfsel2(&self) -> u32 {
-        (self.read_bits() & Self::PERFSEL2_MASK) >> Self::PERFSEL2_OFFSET
+        (self.value.read_bits() & Self::PERFSEL2_MASK) >> Self::PERFSEL2_OFFSET
     }
 
-    /// Write PERFSEL2 field
+    /// Write **PERFSEL2** `[6:0]` (RW)
+    /// Select an event for PERFCTR2. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub fn write_perfsel2(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::PERFSEL2_MASK) | ((value << Self::PERFSEL2_OFFSET) & Self::PERFSEL2_MASK));
+        self.value.modify_bits(|r| (r & !Self::PERFSEL2_MASK) | ((value << Self::PERFSEL2_OFFSET) & Self::PERFSEL2_MASK));
     }
 
 }
@@ -1747,13 +1673,15 @@ impl Perfsel2Val {
         Self { bits: 0x0000001f }
     }
 
-    /// Read PERFSEL2 [6:0]: Select an event for PERFCTR2. For each downstream port of the main crossbar...
+    /// Read **PERFSEL2** `[6:0]`
+    /// Select an event for PERFCTR2. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub const fn perfsel2(&self) -> u32 {
         (self.bits & Perfsel2::PERFSEL2_MASK) >> Perfsel2::PERFSEL2_OFFSET
     }
 
-    /// Set PERFSEL2 [6:0]: Select an event for PERFCTR2. For each downstream port of the main crossbar...
+    /// Set **PERFSEL2** `[6:0]`
+    /// Select an event for PERFCTR2. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub const fn with_perfsel2(self, value: u32) -> Self {
         Self {
@@ -1772,20 +1700,20 @@ impl Default for Perfsel2Val {
 impl Perfsel2 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Perfsel2Val {
-        Perfsel2Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Perfsel2Val {
+        Perfsel2Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Perfsel2Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Perfsel2Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Perfsel2Val) -> Perfsel2Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Perfsel2Val) -> Perfsel2Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1799,82 +1727,52 @@ impl Perfsel2 {
 ///
 /// ## Fields
 ///
-/// - **PERFCTR3** [23:0] (RW): Busfabric saturating performance counter 3 Count some event signal from the...
+/// - **PERFCTR3** `[23:0]` (RW)
+///   Busfabric saturating performance counter 3
+///   Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
+///   Write any value to clear. Select an event to count using PERFSEL3
 #[repr(transparent)]
 pub struct Perfctr3 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Perfctr3 {}
-unsafe impl Sync for Perfctr3 {}
+impl core::ops::Deref for Perfctr3 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Perfctr3 {
     // ======== Field Constants ========
 
-    /// PERFCTR3 - Busfabric saturating performance counter 3 Count some event signal from the...
-    /// Bits [23:0], mask 0x00ffffff
+    /// **PERFCTR3**
+    /// Busfabric saturating performance counter 3
+    /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
+    /// Write any value to clear. Select an event to count using PERFSEL3
+    /// Bits `[23:0]`, mask `0x00ffffff`
     pub const PERFCTR3_OFFSET: u32 = 0;
     pub const PERFCTR3_MASK: u32 = 0x00ffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **PERFCTR3** [23:0]: Busfabric saturating performance counter 3 Count some event signal from the...
+    /// **PERFCTR3** `[23:0]` (RW)
+    /// Busfabric saturating performance counter 3
+    /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
+    /// Write any value to clear. Select an event to count using PERFSEL3
     #[inline(always)]
     pub fn perfctr3(&self) -> u32 {
-        (self.read_bits() & Self::PERFCTR3_MASK) >> Self::PERFCTR3_OFFSET
+        (self.value.read_bits() & Self::PERFCTR3_MASK) >> Self::PERFCTR3_OFFSET
     }
 
-    /// Write PERFCTR3 field
+    /// Write **PERFCTR3** `[23:0]` (RW)
+    /// Busfabric saturating performance counter 3
+    /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
+    /// Write any value to clear. Select an event to count using PERFSEL3
     #[inline(always)]
     pub fn write_perfctr3(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::PERFCTR3_MASK) | ((value << Self::PERFCTR3_OFFSET) & Self::PERFCTR3_MASK));
+        self.value.modify_bits(|r| (r & !Self::PERFCTR3_MASK) | ((value << Self::PERFCTR3_OFFSET) & Self::PERFCTR3_MASK));
     }
 
 }
@@ -1907,13 +1805,19 @@ impl Perfctr3Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read PERFCTR3 [23:0]: Busfabric saturating performance counter 3 Count some event signal from the...
+    /// Read **PERFCTR3** `[23:0]`
+    /// Busfabric saturating performance counter 3
+    /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
+    /// Write any value to clear. Select an event to count using PERFSEL3
     #[inline(always)]
     pub const fn perfctr3(&self) -> u32 {
         (self.bits & Perfctr3::PERFCTR3_MASK) >> Perfctr3::PERFCTR3_OFFSET
     }
 
-    /// Set PERFCTR3 [23:0]: Busfabric saturating performance counter 3 Count some event signal from the...
+    /// Set **PERFCTR3** `[23:0]`
+    /// Busfabric saturating performance counter 3
+    /// Count some event signal from the busfabric arbiters, if PERFCTR_EN is set.
+    /// Write any value to clear. Select an event to count using PERFSEL3
     #[inline(always)]
     pub const fn with_perfctr3(self, value: u32) -> Self {
         Self {
@@ -1932,20 +1836,20 @@ impl Default for Perfctr3Val {
 impl Perfctr3 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Perfctr3Val {
-        Perfctr3Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Perfctr3Val {
+        Perfctr3Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Perfctr3Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Perfctr3Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Perfctr3Val) -> Perfctr3Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Perfctr3Val) -> Perfctr3Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1959,150 +1863,180 @@ impl Perfctr3 {
 ///
 /// ## Fields
 ///
-/// - **PERFSEL3** [6:0] (RW): Select an event for PERFCTR3. For each downstream port of the main crossbar...
+/// - **PERFSEL3** `[6:0]` (RW)
+///   Select an event for PERFCTR3. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
 #[repr(transparent)]
 pub struct Perfsel3 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Perfsel3 {}
-unsafe impl Sync for Perfsel3 {}
+impl core::ops::Deref for Perfsel3 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Perfsel3 {
     // ======== Field Constants ========
 
-    /// PERFSEL3 - Select an event for PERFCTR3. For each downstream port of the main crossbar...
-    /// Bits [6:0], mask 0x0000007f
+    /// **PERFSEL3**
+    /// Select an event for PERFCTR3. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
+    /// Bits `[6:0]`, mask `0x0000007f`
     pub const PERFSEL3_OFFSET: u32 = 0;
     pub const PERFSEL3_MASK: u32 = 0x0000007f;
     pub const PERFSEL3_SIOB_PROC1_STALL_UPSTREAM: u32 = 0 << 0;
+    pub const PERFSEL3_SIOB_PROC1_STALL_UPSTREAM_VAL: u32 = 0;
     pub const PERFSEL3_SIOB_PROC1_STALL_DOWNSTREAM: u32 = 1 << 0;
+    pub const PERFSEL3_SIOB_PROC1_STALL_DOWNSTREAM_VAL: u32 = 1;
     pub const PERFSEL3_SIOB_PROC1_ACCESS_CONTESTED: u32 = 2 << 0;
+    pub const PERFSEL3_SIOB_PROC1_ACCESS_CONTESTED_VAL: u32 = 2;
     pub const PERFSEL3_SIOB_PROC1_ACCESS: u32 = 3 << 0;
+    pub const PERFSEL3_SIOB_PROC1_ACCESS_VAL: u32 = 3;
     pub const PERFSEL3_SIOB_PROC0_STALL_UPSTREAM: u32 = 4 << 0;
+    pub const PERFSEL3_SIOB_PROC0_STALL_UPSTREAM_VAL: u32 = 4;
     pub const PERFSEL3_SIOB_PROC0_STALL_DOWNSTREAM: u32 = 5 << 0;
+    pub const PERFSEL3_SIOB_PROC0_STALL_DOWNSTREAM_VAL: u32 = 5;
     pub const PERFSEL3_SIOB_PROC0_ACCESS_CONTESTED: u32 = 6 << 0;
+    pub const PERFSEL3_SIOB_PROC0_ACCESS_CONTESTED_VAL: u32 = 6;
     pub const PERFSEL3_SIOB_PROC0_ACCESS: u32 = 7 << 0;
+    pub const PERFSEL3_SIOB_PROC0_ACCESS_VAL: u32 = 7;
     pub const PERFSEL3_APB_STALL_UPSTREAM: u32 = 8 << 0;
+    pub const PERFSEL3_APB_STALL_UPSTREAM_VAL: u32 = 8;
     pub const PERFSEL3_APB_STALL_DOWNSTREAM: u32 = 9 << 0;
+    pub const PERFSEL3_APB_STALL_DOWNSTREAM_VAL: u32 = 9;
     pub const PERFSEL3_APB_ACCESS_CONTESTED: u32 = 10 << 0;
+    pub const PERFSEL3_APB_ACCESS_CONTESTED_VAL: u32 = 10;
     pub const PERFSEL3_APB_ACCESS: u32 = 11 << 0;
+    pub const PERFSEL3_APB_ACCESS_VAL: u32 = 11;
     pub const PERFSEL3_FASTPERI_STALL_UPSTREAM: u32 = 12 << 0;
+    pub const PERFSEL3_FASTPERI_STALL_UPSTREAM_VAL: u32 = 12;
     pub const PERFSEL3_FASTPERI_STALL_DOWNSTREAM: u32 = 13 << 0;
+    pub const PERFSEL3_FASTPERI_STALL_DOWNSTREAM_VAL: u32 = 13;
     pub const PERFSEL3_FASTPERI_ACCESS_CONTESTED: u32 = 14 << 0;
+    pub const PERFSEL3_FASTPERI_ACCESS_CONTESTED_VAL: u32 = 14;
     pub const PERFSEL3_FASTPERI_ACCESS: u32 = 15 << 0;
+    pub const PERFSEL3_FASTPERI_ACCESS_VAL: u32 = 15;
     pub const PERFSEL3_SRAM9_STALL_UPSTREAM: u32 = 16 << 0;
+    pub const PERFSEL3_SRAM9_STALL_UPSTREAM_VAL: u32 = 16;
     pub const PERFSEL3_SRAM9_STALL_DOWNSTREAM: u32 = 17 << 0;
+    pub const PERFSEL3_SRAM9_STALL_DOWNSTREAM_VAL: u32 = 17;
     pub const PERFSEL3_SRAM9_ACCESS_CONTESTED: u32 = 18 << 0;
+    pub const PERFSEL3_SRAM9_ACCESS_CONTESTED_VAL: u32 = 18;
     pub const PERFSEL3_SRAM9_ACCESS: u32 = 19 << 0;
+    pub const PERFSEL3_SRAM9_ACCESS_VAL: u32 = 19;
     pub const PERFSEL3_SRAM8_STALL_UPSTREAM: u32 = 20 << 0;
+    pub const PERFSEL3_SRAM8_STALL_UPSTREAM_VAL: u32 = 20;
     pub const PERFSEL3_SRAM8_STALL_DOWNSTREAM: u32 = 21 << 0;
+    pub const PERFSEL3_SRAM8_STALL_DOWNSTREAM_VAL: u32 = 21;
     pub const PERFSEL3_SRAM8_ACCESS_CONTESTED: u32 = 22 << 0;
+    pub const PERFSEL3_SRAM8_ACCESS_CONTESTED_VAL: u32 = 22;
     pub const PERFSEL3_SRAM8_ACCESS: u32 = 23 << 0;
+    pub const PERFSEL3_SRAM8_ACCESS_VAL: u32 = 23;
     pub const PERFSEL3_SRAM7_STALL_UPSTREAM: u32 = 24 << 0;
+    pub const PERFSEL3_SRAM7_STALL_UPSTREAM_VAL: u32 = 24;
     pub const PERFSEL3_SRAM7_STALL_DOWNSTREAM: u32 = 25 << 0;
+    pub const PERFSEL3_SRAM7_STALL_DOWNSTREAM_VAL: u32 = 25;
     pub const PERFSEL3_SRAM7_ACCESS_CONTESTED: u32 = 26 << 0;
+    pub const PERFSEL3_SRAM7_ACCESS_CONTESTED_VAL: u32 = 26;
     pub const PERFSEL3_SRAM7_ACCESS: u32 = 27 << 0;
+    pub const PERFSEL3_SRAM7_ACCESS_VAL: u32 = 27;
     pub const PERFSEL3_SRAM6_STALL_UPSTREAM: u32 = 28 << 0;
+    pub const PERFSEL3_SRAM6_STALL_UPSTREAM_VAL: u32 = 28;
     pub const PERFSEL3_SRAM6_STALL_DOWNSTREAM: u32 = 29 << 0;
+    pub const PERFSEL3_SRAM6_STALL_DOWNSTREAM_VAL: u32 = 29;
     pub const PERFSEL3_SRAM6_ACCESS_CONTESTED: u32 = 30 << 0;
+    pub const PERFSEL3_SRAM6_ACCESS_CONTESTED_VAL: u32 = 30;
     pub const PERFSEL3_SRAM6_ACCESS: u32 = 31 << 0;
+    pub const PERFSEL3_SRAM6_ACCESS_VAL: u32 = 31;
     pub const PERFSEL3_SRAM5_STALL_UPSTREAM: u32 = 32 << 0;
+    pub const PERFSEL3_SRAM5_STALL_UPSTREAM_VAL: u32 = 32;
     pub const PERFSEL3_SRAM5_STALL_DOWNSTREAM: u32 = 33 << 0;
+    pub const PERFSEL3_SRAM5_STALL_DOWNSTREAM_VAL: u32 = 33;
     pub const PERFSEL3_SRAM5_ACCESS_CONTESTED: u32 = 34 << 0;
+    pub const PERFSEL3_SRAM5_ACCESS_CONTESTED_VAL: u32 = 34;
     pub const PERFSEL3_SRAM5_ACCESS: u32 = 35 << 0;
+    pub const PERFSEL3_SRAM5_ACCESS_VAL: u32 = 35;
     pub const PERFSEL3_SRAM4_STALL_UPSTREAM: u32 = 36 << 0;
+    pub const PERFSEL3_SRAM4_STALL_UPSTREAM_VAL: u32 = 36;
     pub const PERFSEL3_SRAM4_STALL_DOWNSTREAM: u32 = 37 << 0;
+    pub const PERFSEL3_SRAM4_STALL_DOWNSTREAM_VAL: u32 = 37;
     pub const PERFSEL3_SRAM4_ACCESS_CONTESTED: u32 = 38 << 0;
+    pub const PERFSEL3_SRAM4_ACCESS_CONTESTED_VAL: u32 = 38;
     pub const PERFSEL3_SRAM4_ACCESS: u32 = 39 << 0;
+    pub const PERFSEL3_SRAM4_ACCESS_VAL: u32 = 39;
     pub const PERFSEL3_SRAM3_STALL_UPSTREAM: u32 = 40 << 0;
+    pub const PERFSEL3_SRAM3_STALL_UPSTREAM_VAL: u32 = 40;
     pub const PERFSEL3_SRAM3_STALL_DOWNSTREAM: u32 = 41 << 0;
+    pub const PERFSEL3_SRAM3_STALL_DOWNSTREAM_VAL: u32 = 41;
     pub const PERFSEL3_SRAM3_ACCESS_CONTESTED: u32 = 42 << 0;
+    pub const PERFSEL3_SRAM3_ACCESS_CONTESTED_VAL: u32 = 42;
     pub const PERFSEL3_SRAM3_ACCESS: u32 = 43 << 0;
+    pub const PERFSEL3_SRAM3_ACCESS_VAL: u32 = 43;
     pub const PERFSEL3_SRAM2_STALL_UPSTREAM: u32 = 44 << 0;
+    pub const PERFSEL3_SRAM2_STALL_UPSTREAM_VAL: u32 = 44;
     pub const PERFSEL3_SRAM2_STALL_DOWNSTREAM: u32 = 45 << 0;
+    pub const PERFSEL3_SRAM2_STALL_DOWNSTREAM_VAL: u32 = 45;
     pub const PERFSEL3_SRAM2_ACCESS_CONTESTED: u32 = 46 << 0;
+    pub const PERFSEL3_SRAM2_ACCESS_CONTESTED_VAL: u32 = 46;
     pub const PERFSEL3_SRAM2_ACCESS: u32 = 47 << 0;
+    pub const PERFSEL3_SRAM2_ACCESS_VAL: u32 = 47;
     pub const PERFSEL3_SRAM1_STALL_UPSTREAM: u32 = 48 << 0;
+    pub const PERFSEL3_SRAM1_STALL_UPSTREAM_VAL: u32 = 48;
     pub const PERFSEL3_SRAM1_STALL_DOWNSTREAM: u32 = 49 << 0;
+    pub const PERFSEL3_SRAM1_STALL_DOWNSTREAM_VAL: u32 = 49;
     pub const PERFSEL3_SRAM1_ACCESS_CONTESTED: u32 = 50 << 0;
+    pub const PERFSEL3_SRAM1_ACCESS_CONTESTED_VAL: u32 = 50;
     pub const PERFSEL3_SRAM1_ACCESS: u32 = 51 << 0;
+    pub const PERFSEL3_SRAM1_ACCESS_VAL: u32 = 51;
     pub const PERFSEL3_SRAM0_STALL_UPSTREAM: u32 = 52 << 0;
+    pub const PERFSEL3_SRAM0_STALL_UPSTREAM_VAL: u32 = 52;
     pub const PERFSEL3_SRAM0_STALL_DOWNSTREAM: u32 = 53 << 0;
+    pub const PERFSEL3_SRAM0_STALL_DOWNSTREAM_VAL: u32 = 53;
     pub const PERFSEL3_SRAM0_ACCESS_CONTESTED: u32 = 54 << 0;
+    pub const PERFSEL3_SRAM0_ACCESS_CONTESTED_VAL: u32 = 54;
     pub const PERFSEL3_SRAM0_ACCESS: u32 = 55 << 0;
+    pub const PERFSEL3_SRAM0_ACCESS_VAL: u32 = 55;
     pub const PERFSEL3_XIP_MAIN1_STALL_UPSTREAM: u32 = 56 << 0;
+    pub const PERFSEL3_XIP_MAIN1_STALL_UPSTREAM_VAL: u32 = 56;
     pub const PERFSEL3_XIP_MAIN1_STALL_DOWNSTREAM: u32 = 57 << 0;
+    pub const PERFSEL3_XIP_MAIN1_STALL_DOWNSTREAM_VAL: u32 = 57;
     pub const PERFSEL3_XIP_MAIN1_ACCESS_CONTESTED: u32 = 58 << 0;
+    pub const PERFSEL3_XIP_MAIN1_ACCESS_CONTESTED_VAL: u32 = 58;
     pub const PERFSEL3_XIP_MAIN1_ACCESS: u32 = 59 << 0;
+    pub const PERFSEL3_XIP_MAIN1_ACCESS_VAL: u32 = 59;
     pub const PERFSEL3_XIP_MAIN0_STALL_UPSTREAM: u32 = 60 << 0;
+    pub const PERFSEL3_XIP_MAIN0_STALL_UPSTREAM_VAL: u32 = 60;
     pub const PERFSEL3_XIP_MAIN0_STALL_DOWNSTREAM: u32 = 61 << 0;
+    pub const PERFSEL3_XIP_MAIN0_STALL_DOWNSTREAM_VAL: u32 = 61;
     pub const PERFSEL3_XIP_MAIN0_ACCESS_CONTESTED: u32 = 62 << 0;
+    pub const PERFSEL3_XIP_MAIN0_ACCESS_CONTESTED_VAL: u32 = 62;
     pub const PERFSEL3_XIP_MAIN0_ACCESS: u32 = 63 << 0;
+    pub const PERFSEL3_XIP_MAIN0_ACCESS_VAL: u32 = 63;
     pub const PERFSEL3_ROM_STALL_UPSTREAM: u32 = 64 << 0;
+    pub const PERFSEL3_ROM_STALL_UPSTREAM_VAL: u32 = 64;
     pub const PERFSEL3_ROM_STALL_DOWNSTREAM: u32 = 65 << 0;
+    pub const PERFSEL3_ROM_STALL_DOWNSTREAM_VAL: u32 = 65;
     pub const PERFSEL3_ROM_ACCESS_CONTESTED: u32 = 66 << 0;
+    pub const PERFSEL3_ROM_ACCESS_CONTESTED_VAL: u32 = 66;
     pub const PERFSEL3_ROM_ACCESS: u32 = 67 << 0;
-
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
+    pub const PERFSEL3_ROM_ACCESS_VAL: u32 = 67;
 
     // ======== Field Accessors ========
 
-    /// **PERFSEL3** [6:0]: Select an event for PERFCTR3. For each downstream port of the main crossbar...
+    /// **PERFSEL3** `[6:0]` (RW)
+    /// Select an event for PERFCTR3. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub fn perfsel3(&self) -> u32 {
-        (self.read_bits() & Self::PERFSEL3_MASK) >> Self::PERFSEL3_OFFSET
+        (self.value.read_bits() & Self::PERFSEL3_MASK) >> Self::PERFSEL3_OFFSET
     }
 
-    /// Write PERFSEL3 field
+    /// Write **PERFSEL3** `[6:0]` (RW)
+    /// Select an event for PERFCTR3. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub fn write_perfsel3(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::PERFSEL3_MASK) | ((value << Self::PERFSEL3_OFFSET) & Self::PERFSEL3_MASK));
+        self.value.modify_bits(|r| (r & !Self::PERFSEL3_MASK) | ((value << Self::PERFSEL3_OFFSET) & Self::PERFSEL3_MASK));
     }
 
 }
@@ -2135,13 +2069,15 @@ impl Perfsel3Val {
         Self { bits: 0x0000001f }
     }
 
-    /// Read PERFSEL3 [6:0]: Select an event for PERFCTR3. For each downstream port of the main crossbar...
+    /// Read **PERFSEL3** `[6:0]`
+    /// Select an event for PERFCTR3. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub const fn perfsel3(&self) -> u32 {
         (self.bits & Perfsel3::PERFSEL3_MASK) >> Perfsel3::PERFSEL3_OFFSET
     }
 
-    /// Set PERFSEL3 [6:0]: Select an event for PERFCTR3. For each downstream port of the main crossbar...
+    /// Set **PERFSEL3** `[6:0]`
+    /// Select an event for PERFCTR3. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub const fn with_perfsel3(self, value: u32) -> Self {
         Self {
@@ -2160,20 +2096,20 @@ impl Default for Perfsel3Val {
 impl Perfsel3 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Perfsel3Val {
-        Perfsel3Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Perfsel3Val {
+        Perfsel3Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Perfsel3Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Perfsel3Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Perfsel3Val) -> Perfsel3Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Perfsel3Val) -> Perfsel3Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -2181,27 +2117,39 @@ impl Perfsel3 {
 /// Register block
 #[repr(C)]
 pub struct RegisterBlock {
-    /// 0x0000 - Set the priority of each master for bus arbitration.
+    /// 0x0000
+    /// Set the priority of each master for bus arbitration.
     pub bus_priority: BusPriority,
-    /// 0x0004 - Bus priority acknowledge
+    /// 0x0004
+    /// Bus priority acknowledge
     pub bus_priority_ack: BusPriorityAck,
-    /// 0x0008 - Enable the performance counters. If 0, the performance counters do not incr...
+    /// 0x0008
+    /// Enable the performance counters. If 0, the performance counters do not increment. This can be used to precisely start/stop event sampling around the profiled section of code.
+    /// The performance counters are initially disabled, to save energy.
     pub perfctr_en: PerfctrEn,
-    /// 0x000c - Bus fabric performance counter 0
+    /// 0x000c
+    /// Bus fabric performance counter 0
     pub perfctr0: Perfctr0,
-    /// 0x0010 - Bus fabric performance event select for PERFCTR0
+    /// 0x0010
+    /// Bus fabric performance event select for PERFCTR0
     pub perfsel0: Perfsel0,
-    /// 0x0014 - Bus fabric performance counter 1
+    /// 0x0014
+    /// Bus fabric performance counter 1
     pub perfctr1: Perfctr1,
-    /// 0x0018 - Bus fabric performance event select for PERFCTR1
+    /// 0x0018
+    /// Bus fabric performance event select for PERFCTR1
     pub perfsel1: Perfsel1,
-    /// 0x001c - Bus fabric performance counter 2
+    /// 0x001c
+    /// Bus fabric performance counter 2
     pub perfctr2: Perfctr2,
-    /// 0x0020 - Bus fabric performance event select for PERFCTR2
+    /// 0x0020
+    /// Bus fabric performance event select for PERFCTR2
     pub perfsel2: Perfsel2,
-    /// 0x0024 - Bus fabric performance counter 3
+    /// 0x0024
+    /// Bus fabric performance counter 3
     pub perfctr3: Perfctr3,
-    /// 0x0028 - Bus fabric performance event select for PERFCTR3
+    /// 0x0028
+    /// Bus fabric performance event select for PERFCTR3
     pub perfsel3: Perfsel3,
 }
 

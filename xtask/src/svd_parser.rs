@@ -235,13 +235,11 @@ fn parse_number(s: &str) -> Option<u32> {
 }
 
 fn clean_description(s: &str) -> String {
-    // Clean up multi-line descriptions, remove excessive whitespace
+    // Clean up descriptions: trim each line but preserve original line breaks
     s.lines()
         .map(|line| line.trim())
-        .filter(|line| !line.is_empty())
         .collect::<Vec<_>>()
-        .join(" ")
-        .replace("  ", " ")
+        .join("\n")
 }
 
 #[cfg(test)]
@@ -258,6 +256,9 @@ mod tests {
     #[test]
     fn test_clean_description() {
         let input = "  This is a\n    multi-line\n  description  ";
-        assert_eq!(clean_description(input), "This is a multi-line description");
+        assert_eq!(
+            clean_description(input),
+            "This is a\nmulti-line\ndescription"
+        );
     }
 }

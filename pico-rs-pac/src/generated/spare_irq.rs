@@ -1,4 +1,4 @@
-//! SPARE_IRQ - 
+//! SPARE_IRQ
 
 #![allow(dead_code)]
 

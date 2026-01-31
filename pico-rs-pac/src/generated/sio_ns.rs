@@ -1,4 +1,4 @@
-//! SIO_NS - 
+//! SIO_NS
 
 #![allow(dead_code)]
 
@@ -12,76 +12,37 @@ pub const BASE: u32 = 0xd0020000;
 ///
 /// ## Fields
 ///
-/// - **CPUID** [31:0] (RO): Value is 0 when read from processor core 0, and 1 when read from processor ...
+/// - **CPUID** `[31:0]` (RO)
+///   Value is 0 when read from processor core 0, and 1 when read from processor core 1.
 #[repr(transparent)]
 pub struct Cpuid {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Cpuid {}
-unsafe impl Sync for Cpuid {}
+impl core::ops::Deref for Cpuid {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Cpuid {
     // ======== Field Constants ========
 
-    /// CPUID - Value is 0 when read from processor core 0, and 1 when read from processor ...
-    /// Bits [31:0], mask 0xffffffff
+    /// **CPUID**
+    /// Value is 0 when read from processor core 0, and 1 when read from processor core 1.
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const CPUID_OFFSET: u32 = 0;
     pub const CPUID_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **CPUID** [31:0]: Value is 0 when read from processor core 0, and 1 when read from processor ...
+    /// **CPUID** `[31:0]` (RO)
+    /// Value is 0 when read from processor core 0, and 1 when read from processor core 1.
     #[inline(always)]
     pub fn cpuid(&self) -> u32 {
-        (self.read_bits() & Self::CPUID_MASK) >> Self::CPUID_OFFSET
+        (self.value.read_bits() & Self::CPUID_MASK) >> Self::CPUID_OFFSET
     }
 
 }
@@ -108,7 +69,8 @@ impl CpuidVal {
         self.bits
     }
 
-    /// Read CPUID [31:0]: Value is 0 when read from processor core 0, and 1 when read from processor ...
+    /// Read **CPUID** `[31:0]`
+    /// Value is 0 when read from processor core 0, and 1 when read from processor core 1.
     #[inline(always)]
     pub const fn cpuid(&self) -> u32 {
         (self.bits & Cpuid::CPUID_MASK) >> Cpuid::CPUID_OFFSET
@@ -125,103 +87,62 @@ impl Default for CpuidVal {
 impl Cpuid {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> CpuidVal {
-        CpuidVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> CpuidVal {
+        CpuidVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: CpuidVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: CpuidVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(CpuidVal) -> CpuidVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(CpuidVal) -> CpuidVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// GPIO_IN Register
 ///
-/// Input value for GPIO0...31. In the Non-secure SIO, Secure-only GPIOs (as per
-/// ACCESSCTRL) appear as zero.
+/// Input value for GPIO0...31.
+/// In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) appear as zero.
 ///
 /// Address offset: 0x0004
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **GPIO_IN** [31:0] (RO): 
+/// - **GPIO_IN** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct GpioIn {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for GpioIn {}
-unsafe impl Sync for GpioIn {}
+impl core::ops::Deref for GpioIn {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl GpioIn {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **GPIO_IN**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const GPIO_IN_OFFSET: u32 = 0;
     pub const GPIO_IN_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **GPIO_IN** [31:0]
+    /// **GPIO_IN** `[31:0]` (RO)
     #[inline(always)]
     pub fn gpio_in(&self) -> u32 {
-        (self.read_bits() & Self::GPIO_IN_MASK) >> Self::GPIO_IN_OFFSET
+        (self.value.read_bits() & Self::GPIO_IN_MASK) >> Self::GPIO_IN_OFFSET
     }
 
 }
@@ -254,7 +175,7 @@ impl GpioInVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read GPIO_IN [31:0]
+    /// Read **GPIO_IN** `[31:0]`
     #[inline(always)]
     pub const fn gpio_in(&self) -> u32 {
         (self.bits & GpioIn::GPIO_IN_MASK) >> GpioIn::GPIO_IN_OFFSET
@@ -271,168 +192,144 @@ impl Default for GpioInVal {
 impl GpioIn {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> GpioInVal {
-        GpioInVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> GpioInVal {
+        GpioInVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: GpioInVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: GpioInVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(GpioInVal) -> GpioInVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(GpioInVal) -> GpioInVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// GPIO_HI_IN Register
 ///
-/// Input value on GPIO32...47, QSPI IOs and USB pins In the Non-secure SIO,
-/// Secure-only GPIOs (as per ACCESSCTRL) appear as zero.
+/// Input value on GPIO32...47, QSPI IOs and USB pins
+/// In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) appear as zero.
 ///
 /// Address offset: 0x0008
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **QSPI_SD** [31:28] (RO): Input value on QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
-/// - **QSPI_CSN** [27] (RO): Input value on QSPI CSn pin
-/// - **QSPI_SCK** [26] (RO): Input value on QSPI SCK pin
-/// - **USB_DM** [25] (RO): Input value on USB D- pin
-/// - **USB_DP** [24] (RO): Input value on USB D+ pin
-/// - **GPIO** [15:0] (RO): Input value on GPIO32...47
+/// - **QSPI_SD** `[31:28]` (RO)
+///   Input value on QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
+/// - **QSPI_CSN** `[27]` (RO)
+///   Input value on QSPI CSn pin
+/// - **QSPI_SCK** `[26]` (RO)
+///   Input value on QSPI SCK pin
+/// - **USB_DM** `[25]` (RO)
+///   Input value on USB D- pin
+/// - **USB_DP** `[24]` (RO)
+///   Input value on USB D+ pin
+/// - **GPIO** `[15:0]` (RO)
+///   Input value on GPIO32...47
 #[repr(transparent)]
 pub struct GpioHiIn {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for GpioHiIn {}
-unsafe impl Sync for GpioHiIn {}
+impl core::ops::Deref for GpioHiIn {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl GpioHiIn {
     // ======== Field Constants ========
 
-    /// QSPI_SD - Input value on QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
-    /// Bits [31:28], mask 0xf0000000
+    /// **QSPI_SD**
+    /// Input value on QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
+    /// Bits `[31:28]`, mask `0xf0000000`
     pub const QSPI_SD_OFFSET: u32 = 28;
     pub const QSPI_SD_MASK: u32 = 0xf0000000;
 
-    /// QSPI_CSN - Input value on QSPI CSn pin
-    /// Bits [27:27], mask 0x08000000
+    /// **QSPI_CSN**
+    /// Input value on QSPI CSn pin
+    /// Bits `[27:27]`, mask `0x08000000`
     pub const QSPI_CSN_OFFSET: u32 = 27;
     pub const QSPI_CSN_MASK: u32 = 0x08000000;
     pub const QSPI_CSN: u32 = 1 << 27;
 
-    /// QSPI_SCK - Input value on QSPI SCK pin
-    /// Bits [26:26], mask 0x04000000
+    /// **QSPI_SCK**
+    /// Input value on QSPI SCK pin
+    /// Bits `[26:26]`, mask `0x04000000`
     pub const QSPI_SCK_OFFSET: u32 = 26;
     pub const QSPI_SCK_MASK: u32 = 0x04000000;
     pub const QSPI_SCK: u32 = 1 << 26;
 
-    /// USB_DM - Input value on USB D- pin
-    /// Bits [25:25], mask 0x02000000
+    /// **USB_DM**
+    /// Input value on USB D- pin
+    /// Bits `[25:25]`, mask `0x02000000`
     pub const USB_DM_OFFSET: u32 = 25;
     pub const USB_DM_MASK: u32 = 0x02000000;
     pub const USB_DM: u32 = 1 << 25;
 
-    /// USB_DP - Input value on USB D+ pin
-    /// Bits [24:24], mask 0x01000000
+    /// **USB_DP**
+    /// Input value on USB D+ pin
+    /// Bits `[24:24]`, mask `0x01000000`
     pub const USB_DP_OFFSET: u32 = 24;
     pub const USB_DP_MASK: u32 = 0x01000000;
     pub const USB_DP: u32 = 1 << 24;
 
-    /// GPIO - Input value on GPIO32...47
-    /// Bits [15:0], mask 0x0000ffff
+    /// **GPIO**
+    /// Input value on GPIO32...47
+    /// Bits `[15:0]`, mask `0x0000ffff`
     pub const GPIO_OFFSET: u32 = 0;
     pub const GPIO_MASK: u32 = 0x0000ffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **QSPI_SD** [31:28]: Input value on QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
+    /// **QSPI_SD** `[31:28]` (RO)
+    /// Input value on QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
     #[inline(always)]
     pub fn qspi_sd(&self) -> u32 {
-        (self.read_bits() & Self::QSPI_SD_MASK) >> Self::QSPI_SD_OFFSET
+        (self.value.read_bits() & Self::QSPI_SD_MASK) >> Self::QSPI_SD_OFFSET
     }
 
-    /// **QSPI_CSN** [27:27]: Input value on QSPI CSn pin
+    /// **QSPI_CSN** `[27]` (RO)
+    /// Input value on QSPI CSn pin
     #[inline(always)]
     pub fn qspi_csn(&self) -> bool {
-        (self.read_bits() & Self::QSPI_CSN_MASK) != 0
+        (self.value.read_bits() & Self::QSPI_CSN_MASK) != 0
     }
 
-    /// **QSPI_SCK** [26:26]: Input value on QSPI SCK pin
+    /// **QSPI_SCK** `[26]` (RO)
+    /// Input value on QSPI SCK pin
     #[inline(always)]
     pub fn qspi_sck(&self) -> bool {
-        (self.read_bits() & Self::QSPI_SCK_MASK) != 0
+        (self.value.read_bits() & Self::QSPI_SCK_MASK) != 0
     }
 
-    /// **USB_DM** [25:25]: Input value on USB D- pin
+    /// **USB_DM** `[25]` (RO)
+    /// Input value on USB D- pin
     #[inline(always)]
     pub fn usb_dm(&self) -> bool {
-        (self.read_bits() & Self::USB_DM_MASK) != 0
+        (self.value.read_bits() & Self::USB_DM_MASK) != 0
     }
 
-    /// **USB_DP** [24:24]: Input value on USB D+ pin
+    /// **USB_DP** `[24]` (RO)
+    /// Input value on USB D+ pin
     #[inline(always)]
     pub fn usb_dp(&self) -> bool {
-        (self.read_bits() & Self::USB_DP_MASK) != 0
+        (self.value.read_bits() & Self::USB_DP_MASK) != 0
     }
 
-    /// **GPIO** [15:0]: Input value on GPIO32...47
+    /// **GPIO** `[15:0]` (RO)
+    /// Input value on GPIO32...47
     #[inline(always)]
     pub fn gpio(&self) -> u32 {
-        (self.read_bits() & Self::GPIO_MASK) >> Self::GPIO_OFFSET
+        (self.value.read_bits() & Self::GPIO_MASK) >> Self::GPIO_OFFSET
     }
 
 }
@@ -465,37 +362,43 @@ impl GpioHiInVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read QSPI_SD [31:28]: Input value on QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
+    /// Read **QSPI_SD** `[31:28]`
+    /// Input value on QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
     #[inline(always)]
     pub const fn qspi_sd(&self) -> u32 {
         (self.bits & GpioHiIn::QSPI_SD_MASK) >> GpioHiIn::QSPI_SD_OFFSET
     }
 
-    /// Read QSPI_CSN [27:27]: Input value on QSPI CSn pin
+    /// Read **QSPI_CSN** `[27:27]`
+    /// Input value on QSPI CSn pin
     #[inline(always)]
     pub const fn qspi_csn(&self) -> bool {
         (self.bits & GpioHiIn::QSPI_CSN_MASK) != 0
     }
 
-    /// Read QSPI_SCK [26:26]: Input value on QSPI SCK pin
+    /// Read **QSPI_SCK** `[26:26]`
+    /// Input value on QSPI SCK pin
     #[inline(always)]
     pub const fn qspi_sck(&self) -> bool {
         (self.bits & GpioHiIn::QSPI_SCK_MASK) != 0
     }
 
-    /// Read USB_DM [25:25]: Input value on USB D- pin
+    /// Read **USB_DM** `[25:25]`
+    /// Input value on USB D- pin
     #[inline(always)]
     pub const fn usb_dm(&self) -> bool {
         (self.bits & GpioHiIn::USB_DM_MASK) != 0
     }
 
-    /// Read USB_DP [24:24]: Input value on USB D+ pin
+    /// Read **USB_DP** `[24:24]`
+    /// Input value on USB D+ pin
     #[inline(always)]
     pub const fn usb_dp(&self) -> bool {
         (self.bits & GpioHiIn::USB_DP_MASK) != 0
     }
 
-    /// Read GPIO [15:0]: Input value on GPIO32...47
+    /// Read **GPIO** `[15:0]`
+    /// Input value on GPIO32...47
     #[inline(always)]
     pub const fn gpio(&self) -> u32 {
         (self.bits & GpioHiIn::GPIO_MASK) >> GpioHiIn::GPIO_OFFSET
@@ -512,20 +415,20 @@ impl Default for GpioHiInVal {
 impl GpioHiIn {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> GpioHiInVal {
-        GpioHiInVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> GpioHiInVal {
+        GpioHiInVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: GpioHiInVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: GpioHiInVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(GpioHiInVal) -> GpioHiInVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(GpioHiInVal) -> GpioHiInVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -539,82 +442,52 @@ impl GpioHiIn {
 ///
 /// ## Fields
 ///
-/// - **GPIO_OUT** [31:0] (RW): Set output level (1/0 -> high/low) for GPIO0...31. Reading back gives the l...
+/// - **GPIO_OUT** `[31:0]` (RW)
+///   Set output level (1/0 -> high/low) for GPIO0...31. Reading back gives the last value written, NOT the input value from the pins.
+///   If core 0 and core 1 both write to GPIO_OUT simultaneously (or to a SET/CLR/XOR alias), the result is as though the write from core 0 took place first, and the write from core 1 was then applied to that intermediate result.
+///   In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) ignore writes, and their output status reads back as zero. This is also true for SET/CLR/XOR aliases of this register.
 #[repr(transparent)]
 pub struct GpioOut {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for GpioOut {}
-unsafe impl Sync for GpioOut {}
+impl core::ops::Deref for GpioOut {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl GpioOut {
     // ======== Field Constants ========
 
-    /// GPIO_OUT - Set output level (1/0 -> high/low) for GPIO0...31. Reading back gives the l...
-    /// Bits [31:0], mask 0xffffffff
+    /// **GPIO_OUT**
+    /// Set output level (1/0 -> high/low) for GPIO0...31. Reading back gives the last value written, NOT the input value from the pins.
+    /// If core 0 and core 1 both write to GPIO_OUT simultaneously (or to a SET/CLR/XOR alias), the result is as though the write from core 0 took place first, and the write from core 1 was then applied to that intermediate result.
+    /// In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) ignore writes, and their output status reads back as zero. This is also true for SET/CLR/XOR aliases of this register.
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const GPIO_OUT_OFFSET: u32 = 0;
     pub const GPIO_OUT_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **GPIO_OUT** [31:0]: Set output level (1/0 -> high/low) for GPIO0...31. Reading back gives the l...
+    /// **GPIO_OUT** `[31:0]` (RW)
+    /// Set output level (1/0 -> high/low) for GPIO0...31. Reading back gives the last value written, NOT the input value from the pins.
+    /// If core 0 and core 1 both write to GPIO_OUT simultaneously (or to a SET/CLR/XOR alias), the result is as though the write from core 0 took place first, and the write from core 1 was then applied to that intermediate result.
+    /// In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) ignore writes, and their output status reads back as zero. This is also true for SET/CLR/XOR aliases of this register.
     #[inline(always)]
     pub fn gpio_out(&self) -> u32 {
-        (self.read_bits() & Self::GPIO_OUT_MASK) >> Self::GPIO_OUT_OFFSET
+        (self.value.read_bits() & Self::GPIO_OUT_MASK) >> Self::GPIO_OUT_OFFSET
     }
 
-    /// Write GPIO_OUT field
+    /// Write **GPIO_OUT** `[31:0]` (RW)
+    /// Set output level (1/0 -> high/low) for GPIO0...31. Reading back gives the last value written, NOT the input value from the pins.
+    /// If core 0 and core 1 both write to GPIO_OUT simultaneously (or to a SET/CLR/XOR alias), the result is as though the write from core 0 took place first, and the write from core 1 was then applied to that intermediate result.
+    /// In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) ignore writes, and their output status reads back as zero. This is also true for SET/CLR/XOR aliases of this register.
     #[inline(always)]
     pub fn write_gpio_out(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::GPIO_OUT_MASK) | ((value << Self::GPIO_OUT_OFFSET) & Self::GPIO_OUT_MASK));
+        self.value.modify_bits(|r| (r & !Self::GPIO_OUT_MASK) | ((value << Self::GPIO_OUT_OFFSET) & Self::GPIO_OUT_MASK));
     }
 
 }
@@ -647,13 +520,19 @@ impl GpioOutVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read GPIO_OUT [31:0]: Set output level (1/0 -> high/low) for GPIO0...31. Reading back gives the l...
+    /// Read **GPIO_OUT** `[31:0]`
+    /// Set output level (1/0 -> high/low) for GPIO0...31. Reading back gives the last value written, NOT the input value from the pins.
+    /// If core 0 and core 1 both write to GPIO_OUT simultaneously (or to a SET/CLR/XOR alias), the result is as though the write from core 0 took place first, and the write from core 1 was then applied to that intermediate result.
+    /// In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) ignore writes, and their output status reads back as zero. This is also true for SET/CLR/XOR aliases of this register.
     #[inline(always)]
     pub const fn gpio_out(&self) -> u32 {
         (self.bits & GpioOut::GPIO_OUT_MASK) >> GpioOut::GPIO_OUT_OFFSET
     }
 
-    /// Set GPIO_OUT [31:0]: Set output level (1/0 -> high/low) for GPIO0...31. Reading back gives the l...
+    /// Set **GPIO_OUT** `[31:0]`
+    /// Set output level (1/0 -> high/low) for GPIO0...31. Reading back gives the last value written, NOT the input value from the pins.
+    /// If core 0 and core 1 both write to GPIO_OUT simultaneously (or to a SET/CLR/XOR alias), the result is as though the write from core 0 took place first, and the write from core 1 was then applied to that intermediate result.
+    /// In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) ignore writes, and their output status reads back as zero. This is also true for SET/CLR/XOR aliases of this register.
     #[inline(always)]
     pub const fn with_gpio_out(self, value: u32) -> Self {
         Self {
@@ -672,234 +551,207 @@ impl Default for GpioOutVal {
 impl GpioOut {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> GpioOutVal {
-        GpioOutVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> GpioOutVal {
+        GpioOutVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: GpioOutVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: GpioOutVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(GpioOutVal) -> GpioOutVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(GpioOutVal) -> GpioOutVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// GPIO_HI_OUT Register
 ///
-/// Output value for GPIO32...47, QSPI IOs and USB pins. Write to set output
-/// level (1/0 -> high/low). Reading back gives the last value written, NOT the
-/// input value from the pins. If core 0 and core 1 both write to GPIO_HI_OUT
-/// simultaneously (or to a SET/CLR/XOR alias), the result is as though the
-/// write from core 0 took place first, and the write from core 1 was then
-/// applied to that intermediate result. In the Non-secure SIO, Secure-only
-/// GPIOs (as per ACCESSCTRL) ignore writes, and their output status reads back
-/// as zero. This is also true for SET/CLR/XOR aliases of this register.
+/// Output value for GPIO32...47, QSPI IOs and USB pins.
+/// Write to set output level (1/0 -> high/low). Reading back gives the last value written, NOT the input value from the pins. If core 0 and core 1 both write to GPIO_HI_OUT simultaneously (or to a SET/CLR/XOR alias), the result is as though the write from core 0 took place first, and the write from core 1 was then applied to that intermediate result.
+/// In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) ignore writes, and their output status reads back as zero. This is also true for SET/CLR/XOR aliases of this register.
 ///
 /// Address offset: 0x0014
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **QSPI_SD** [31:28] (RW): Output value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
-/// - **QSPI_CSN** [27] (RW): Output value for QSPI CSn pin
-/// - **QSPI_SCK** [26] (RW): Output value for QSPI SCK pin
-/// - **USB_DM** [25] (RW): Output value for USB D- pin
-/// - **USB_DP** [24] (RW): Output value for USB D+ pin
-/// - **GPIO** [15:0] (RW): Output value for GPIO32...47
+/// - **QSPI_SD** `[31:28]` (RW)
+///   Output value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
+/// - **QSPI_CSN** `[27]` (RW)
+///   Output value for QSPI CSn pin
+/// - **QSPI_SCK** `[26]` (RW)
+///   Output value for QSPI SCK pin
+/// - **USB_DM** `[25]` (RW)
+///   Output value for USB D- pin
+/// - **USB_DP** `[24]` (RW)
+///   Output value for USB D+ pin
+/// - **GPIO** `[15:0]` (RW)
+///   Output value for GPIO32...47
 #[repr(transparent)]
 pub struct GpioHiOut {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for GpioHiOut {}
-unsafe impl Sync for GpioHiOut {}
+impl core::ops::Deref for GpioHiOut {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl GpioHiOut {
     // ======== Field Constants ========
 
-    /// QSPI_SD - Output value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
-    /// Bits [31:28], mask 0xf0000000
+    /// **QSPI_SD**
+    /// Output value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
+    /// Bits `[31:28]`, mask `0xf0000000`
     pub const QSPI_SD_OFFSET: u32 = 28;
     pub const QSPI_SD_MASK: u32 = 0xf0000000;
 
-    /// QSPI_CSN - Output value for QSPI CSn pin
-    /// Bits [27:27], mask 0x08000000
+    /// **QSPI_CSN**
+    /// Output value for QSPI CSn pin
+    /// Bits `[27:27]`, mask `0x08000000`
     pub const QSPI_CSN_OFFSET: u32 = 27;
     pub const QSPI_CSN_MASK: u32 = 0x08000000;
     pub const QSPI_CSN: u32 = 1 << 27;
 
-    /// QSPI_SCK - Output value for QSPI SCK pin
-    /// Bits [26:26], mask 0x04000000
+    /// **QSPI_SCK**
+    /// Output value for QSPI SCK pin
+    /// Bits `[26:26]`, mask `0x04000000`
     pub const QSPI_SCK_OFFSET: u32 = 26;
     pub const QSPI_SCK_MASK: u32 = 0x04000000;
     pub const QSPI_SCK: u32 = 1 << 26;
 
-    /// USB_DM - Output value for USB D- pin
-    /// Bits [25:25], mask 0x02000000
+    /// **USB_DM**
+    /// Output value for USB D- pin
+    /// Bits `[25:25]`, mask `0x02000000`
     pub const USB_DM_OFFSET: u32 = 25;
     pub const USB_DM_MASK: u32 = 0x02000000;
     pub const USB_DM: u32 = 1 << 25;
 
-    /// USB_DP - Output value for USB D+ pin
-    /// Bits [24:24], mask 0x01000000
+    /// **USB_DP**
+    /// Output value for USB D+ pin
+    /// Bits `[24:24]`, mask `0x01000000`
     pub const USB_DP_OFFSET: u32 = 24;
     pub const USB_DP_MASK: u32 = 0x01000000;
     pub const USB_DP: u32 = 1 << 24;
 
-    /// GPIO - Output value for GPIO32...47
-    /// Bits [15:0], mask 0x0000ffff
+    /// **GPIO**
+    /// Output value for GPIO32...47
+    /// Bits `[15:0]`, mask `0x0000ffff`
     pub const GPIO_OFFSET: u32 = 0;
     pub const GPIO_MASK: u32 = 0x0000ffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **QSPI_SD** [31:28]: Output value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
+    /// **QSPI_SD** `[31:28]` (RW)
+    /// Output value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
     #[inline(always)]
     pub fn qspi_sd(&self) -> u32 {
-        (self.read_bits() & Self::QSPI_SD_MASK) >> Self::QSPI_SD_OFFSET
+        (self.value.read_bits() & Self::QSPI_SD_MASK) >> Self::QSPI_SD_OFFSET
     }
 
-    /// Write QSPI_SD field
+    /// Write **QSPI_SD** `[31:28]` (RW)
+    /// Output value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
     #[inline(always)]
     pub fn write_qspi_sd(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::QSPI_SD_MASK) | ((value << Self::QSPI_SD_OFFSET) & Self::QSPI_SD_MASK));
+        self.value.modify_bits(|r| (r & !Self::QSPI_SD_MASK) | ((value << Self::QSPI_SD_OFFSET) & Self::QSPI_SD_MASK));
     }
 
-    /// **QSPI_CSN** [27:27]: Output value for QSPI CSn pin
+    /// **QSPI_CSN** `[27]` (RW)
+    /// Output value for QSPI CSn pin
     #[inline(always)]
     pub fn qspi_csn(&self) -> bool {
-        (self.read_bits() & Self::QSPI_CSN_MASK) != 0
+        (self.value.read_bits() & Self::QSPI_CSN_MASK) != 0
     }
 
-    /// Set QSPI_CSN bit
+    /// Set QSPI_CSN bit atomically (RW)
     #[inline(always)]
     pub fn set_qspi_csn(&self) {
-        self.set_bits(Self::QSPI_CSN_MASK);
+        self.value.set_bits(Self::QSPI_CSN_MASK);
     }
 
-    /// Clear QSPI_CSN bit
+    /// Clear QSPI_CSN bit atomically (RW)
     #[inline(always)]
     pub fn clr_qspi_csn(&self) {
-        self.clr_bits(Self::QSPI_CSN_MASK);
+        self.value.clr_bits(Self::QSPI_CSN_MASK);
     }
 
-    /// **QSPI_SCK** [26:26]: Output value for QSPI SCK pin
+    /// **QSPI_SCK** `[26]` (RW)
+    /// Output value for QSPI SCK pin
     #[inline(always)]
     pub fn qspi_sck(&self) -> bool {
-        (self.read_bits() & Self::QSPI_SCK_MASK) != 0
+        (self.value.read_bits() & Self::QSPI_SCK_MASK) != 0
     }
 
-    /// Set QSPI_SCK bit
+    /// Set QSPI_SCK bit atomically (RW)
     #[inline(always)]
     pub fn set_qspi_sck(&self) {
-        self.set_bits(Self::QSPI_SCK_MASK);
+        self.value.set_bits(Self::QSPI_SCK_MASK);
     }
 
-    /// Clear QSPI_SCK bit
+    /// Clear QSPI_SCK bit atomically (RW)
     #[inline(always)]
     pub fn clr_qspi_sck(&self) {
-        self.clr_bits(Self::QSPI_SCK_MASK);
+        self.value.clr_bits(Self::QSPI_SCK_MASK);
     }
 
-    /// **USB_DM** [25:25]: Output value for USB D- pin
+    /// **USB_DM** `[25]` (RW)
+    /// Output value for USB D- pin
     #[inline(always)]
     pub fn usb_dm(&self) -> bool {
-        (self.read_bits() & Self::USB_DM_MASK) != 0
+        (self.value.read_bits() & Self::USB_DM_MASK) != 0
     }
 
-    /// Set USB_DM bit
+    /// Set USB_DM bit atomically (RW)
     #[inline(always)]
     pub fn set_usb_dm(&self) {
-        self.set_bits(Self::USB_DM_MASK);
+        self.value.set_bits(Self::USB_DM_MASK);
     }
 
-    /// Clear USB_DM bit
+    /// Clear USB_DM bit atomically (RW)
     #[inline(always)]
     pub fn clr_usb_dm(&self) {
-        self.clr_bits(Self::USB_DM_MASK);
+        self.value.clr_bits(Self::USB_DM_MASK);
     }
 
-    /// **USB_DP** [24:24]: Output value for USB D+ pin
+    /// **USB_DP** `[24]` (RW)
+    /// Output value for USB D+ pin
     #[inline(always)]
     pub fn usb_dp(&self) -> bool {
-        (self.read_bits() & Self::USB_DP_MASK) != 0
+        (self.value.read_bits() & Self::USB_DP_MASK) != 0
     }
 
-    /// Set USB_DP bit
+    /// Set USB_DP bit atomically (RW)
     #[inline(always)]
     pub fn set_usb_dp(&self) {
-        self.set_bits(Self::USB_DP_MASK);
+        self.value.set_bits(Self::USB_DP_MASK);
     }
 
-    /// Clear USB_DP bit
+    /// Clear USB_DP bit atomically (RW)
     #[inline(always)]
     pub fn clr_usb_dp(&self) {
-        self.clr_bits(Self::USB_DP_MASK);
+        self.value.clr_bits(Self::USB_DP_MASK);
     }
 
-    /// **GPIO** [15:0]: Output value for GPIO32...47
+    /// **GPIO** `[15:0]` (RW)
+    /// Output value for GPIO32...47
     #[inline(always)]
     pub fn gpio(&self) -> u32 {
-        (self.read_bits() & Self::GPIO_MASK) >> Self::GPIO_OFFSET
+        (self.value.read_bits() & Self::GPIO_MASK) >> Self::GPIO_OFFSET
     }
 
-    /// Write GPIO field
+    /// Write **GPIO** `[15:0]` (RW)
+    /// Output value for GPIO32...47
     #[inline(always)]
     pub fn write_gpio(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::GPIO_MASK) | ((value << Self::GPIO_OFFSET) & Self::GPIO_MASK));
+        self.value.modify_bits(|r| (r & !Self::GPIO_MASK) | ((value << Self::GPIO_OFFSET) & Self::GPIO_MASK));
     }
 
 }
@@ -932,43 +784,50 @@ impl GpioHiOutVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read QSPI_SD [31:28]: Output value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
+    /// Read **QSPI_SD** `[31:28]`
+    /// Output value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
     #[inline(always)]
     pub const fn qspi_sd(&self) -> u32 {
         (self.bits & GpioHiOut::QSPI_SD_MASK) >> GpioHiOut::QSPI_SD_OFFSET
     }
 
-    /// Read QSPI_CSN [27:27]: Output value for QSPI CSn pin
+    /// Read **QSPI_CSN** `[27:27]`
+    /// Output value for QSPI CSn pin
     #[inline(always)]
     pub const fn qspi_csn(&self) -> bool {
         (self.bits & GpioHiOut::QSPI_CSN_MASK) != 0
     }
 
-    /// Read QSPI_SCK [26:26]: Output value for QSPI SCK pin
+    /// Read **QSPI_SCK** `[26:26]`
+    /// Output value for QSPI SCK pin
     #[inline(always)]
     pub const fn qspi_sck(&self) -> bool {
         (self.bits & GpioHiOut::QSPI_SCK_MASK) != 0
     }
 
-    /// Read USB_DM [25:25]: Output value for USB D- pin
+    /// Read **USB_DM** `[25:25]`
+    /// Output value for USB D- pin
     #[inline(always)]
     pub const fn usb_dm(&self) -> bool {
         (self.bits & GpioHiOut::USB_DM_MASK) != 0
     }
 
-    /// Read USB_DP [24:24]: Output value for USB D+ pin
+    /// Read **USB_DP** `[24:24]`
+    /// Output value for USB D+ pin
     #[inline(always)]
     pub const fn usb_dp(&self) -> bool {
         (self.bits & GpioHiOut::USB_DP_MASK) != 0
     }
 
-    /// Read GPIO [15:0]: Output value for GPIO32...47
+    /// Read **GPIO** `[15:0]`
+    /// Output value for GPIO32...47
     #[inline(always)]
     pub const fn gpio(&self) -> u32 {
         (self.bits & GpioHiOut::GPIO_MASK) >> GpioHiOut::GPIO_OFFSET
     }
 
-    /// Set QSPI_SD [31:28]: Output value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
+    /// Set **QSPI_SD** `[31:28]`
+    /// Output value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
     #[inline(always)]
     pub const fn with_qspi_sd(self, value: u32) -> Self {
         Self {
@@ -976,7 +835,8 @@ impl GpioHiOutVal {
         }
     }
 
-    /// Set QSPI_CSN [27:27]: Output value for QSPI CSn pin
+    /// Set **QSPI_CSN** `[27:27]`
+    /// Output value for QSPI CSn pin
     #[inline(always)]
     pub const fn with_qspi_csn(self, value: bool) -> Self {
         Self {
@@ -988,7 +848,8 @@ impl GpioHiOutVal {
         }
     }
 
-    /// Set QSPI_SCK [26:26]: Output value for QSPI SCK pin
+    /// Set **QSPI_SCK** `[26:26]`
+    /// Output value for QSPI SCK pin
     #[inline(always)]
     pub const fn with_qspi_sck(self, value: bool) -> Self {
         Self {
@@ -1000,7 +861,8 @@ impl GpioHiOutVal {
         }
     }
 
-    /// Set USB_DM [25:25]: Output value for USB D- pin
+    /// Set **USB_DM** `[25:25]`
+    /// Output value for USB D- pin
     #[inline(always)]
     pub const fn with_usb_dm(self, value: bool) -> Self {
         Self {
@@ -1012,7 +874,8 @@ impl GpioHiOutVal {
         }
     }
 
-    /// Set USB_DP [24:24]: Output value for USB D+ pin
+    /// Set **USB_DP** `[24:24]`
+    /// Output value for USB D+ pin
     #[inline(always)]
     pub const fn with_usb_dp(self, value: bool) -> Self {
         Self {
@@ -1024,7 +887,8 @@ impl GpioHiOutVal {
         }
     }
 
-    /// Set GPIO [15:0]: Output value for GPIO32...47
+    /// Set **GPIO** `[15:0]`
+    /// Output value for GPIO32...47
     #[inline(always)]
     pub const fn with_gpio(self, value: u32) -> Self {
         Self {
@@ -1043,20 +907,20 @@ impl Default for GpioHiOutVal {
 impl GpioHiOut {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> GpioHiOutVal {
-        GpioHiOutVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> GpioHiOutVal {
+        GpioHiOutVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: GpioHiOutVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: GpioHiOutVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(GpioHiOutVal) -> GpioHiOutVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(GpioHiOutVal) -> GpioHiOutVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1070,77 +934,39 @@ impl GpioHiOut {
 ///
 /// ## Fields
 ///
-/// - **GPIO_OUT_SET** [31:0] (WO): Perform an atomic bit-set on GPIO_OUT, i.e. `GPIO_OUT |= wdata`
+/// - **GPIO_OUT_SET** `[31:0]` (WO)
+///   Perform an atomic bit-set on GPIO_OUT, i.e. `GPIO_OUT |= wdata`
 #[repr(transparent)]
 pub struct GpioOutSet {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for GpioOutSet {}
-unsafe impl Sync for GpioOutSet {}
+impl core::ops::Deref for GpioOutSet {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl GpioOutSet {
     // ======== Field Constants ========
 
-    /// GPIO_OUT_SET - Perform an atomic bit-set on GPIO_OUT, i.e. `GPIO_OUT |= wdata`
-    /// Bits [31:0], mask 0xffffffff
+    /// **GPIO_OUT_SET**
+    /// Perform an atomic bit-set on GPIO_OUT, i.e. `GPIO_OUT |= wdata`
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const GPIO_OUT_SET_OFFSET: u32 = 0;
     pub const GPIO_OUT_SET_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **GPIO_OUT_SET** [31:0]: Perform an atomic bit-set on GPIO_OUT, i.e. `GPIO_OUT |= wdata`
-    /// Write GPIO_OUT_SET field (write-only)
+    /// **GPIO_OUT_SET** `[31:0]` (WO)
+    /// Perform an atomic bit-set on GPIO_OUT, i.e. `GPIO_OUT |= wdata`
+    /// Write **GPIO_OUT_SET** `[31:0]` (WO)
+    /// Perform an atomic bit-set on GPIO_OUT, i.e. `GPIO_OUT |= wdata`
     #[inline(always)]
     pub fn write_gpio_out_set(&self, value: u32) {
-        self.write_bits((value << Self::GPIO_OUT_SET_OFFSET) & Self::GPIO_OUT_SET_MASK);
+        self.value.write_bits((value << Self::GPIO_OUT_SET_OFFSET) & Self::GPIO_OUT_SET_MASK);
     }
 
 }
@@ -1173,7 +999,8 @@ impl GpioOutSetVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Set GPIO_OUT_SET [31:0]: Perform an atomic bit-set on GPIO_OUT, i.e. `GPIO_OUT |= wdata`
+    /// Set **GPIO_OUT_SET** `[31:0]`
+    /// Perform an atomic bit-set on GPIO_OUT, i.e. `GPIO_OUT |= wdata`
     #[inline(always)]
     pub const fn with_gpio_out_set(self, value: u32) -> Self {
         Self {
@@ -1192,168 +1019,132 @@ impl Default for GpioOutSetVal {
 impl GpioOutSet {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> GpioOutSetVal {
-        GpioOutSetVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> GpioOutSetVal {
+        GpioOutSetVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: GpioOutSetVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: GpioOutSetVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(GpioOutSetVal) -> GpioOutSetVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(GpioOutSetVal) -> GpioOutSetVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// GPIO_HI_OUT_SET Register
 ///
-/// Output value set for GPIO32..47, QSPI IOs and USB pins. Perform an atomic
-/// bit-set on GPIO_HI_OUT, i.e. `GPIO_HI_OUT |= wdata`
+/// Output value set for GPIO32..47, QSPI IOs and USB pins.
+/// Perform an atomic bit-set on GPIO_HI_OUT, i.e. `GPIO_HI_OUT |= wdata`
 ///
 /// Address offset: 0x001c
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **QSPI_SD** [31:28] (WO): 
-/// - **QSPI_CSN** [27] (WO): 
-/// - **QSPI_SCK** [26] (WO): 
-/// - **USB_DM** [25] (WO): 
-/// - **USB_DP** [24] (WO): 
-/// - **GPIO** [15:0] (WO): 
+/// - **QSPI_SD** `[31:28]` (WO)
+/// - **QSPI_CSN** `[27]` (WO)
+/// - **QSPI_SCK** `[26]` (WO)
+/// - **USB_DM** `[25]` (WO)
+/// - **USB_DP** `[24]` (WO)
+/// - **GPIO** `[15:0]` (WO)
 #[repr(transparent)]
 pub struct GpioHiOutSet {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for GpioHiOutSet {}
-unsafe impl Sync for GpioHiOutSet {}
+impl core::ops::Deref for GpioHiOutSet {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl GpioHiOutSet {
     // ======== Field Constants ========
 
-    /// Bits [31:28], mask 0xf0000000
+    /// **QSPI_SD**
+    /// Bits `[31:28]`, mask `0xf0000000`
     pub const QSPI_SD_OFFSET: u32 = 28;
     pub const QSPI_SD_MASK: u32 = 0xf0000000;
 
-    /// Bits [27:27], mask 0x08000000
+    /// **QSPI_CSN**
+    /// Bits `[27:27]`, mask `0x08000000`
     pub const QSPI_CSN_OFFSET: u32 = 27;
     pub const QSPI_CSN_MASK: u32 = 0x08000000;
     pub const QSPI_CSN: u32 = 1 << 27;
 
-    /// Bits [26:26], mask 0x04000000
+    /// **QSPI_SCK**
+    /// Bits `[26:26]`, mask `0x04000000`
     pub const QSPI_SCK_OFFSET: u32 = 26;
     pub const QSPI_SCK_MASK: u32 = 0x04000000;
     pub const QSPI_SCK: u32 = 1 << 26;
 
-    /// Bits [25:25], mask 0x02000000
+    /// **USB_DM**
+    /// Bits `[25:25]`, mask `0x02000000`
     pub const USB_DM_OFFSET: u32 = 25;
     pub const USB_DM_MASK: u32 = 0x02000000;
     pub const USB_DM: u32 = 1 << 25;
 
-    /// Bits [24:24], mask 0x01000000
+    /// **USB_DP**
+    /// Bits `[24:24]`, mask `0x01000000`
     pub const USB_DP_OFFSET: u32 = 24;
     pub const USB_DP_MASK: u32 = 0x01000000;
     pub const USB_DP: u32 = 1 << 24;
 
-    /// Bits [15:0], mask 0x0000ffff
+    /// **GPIO**
+    /// Bits `[15:0]`, mask `0x0000ffff`
     pub const GPIO_OFFSET: u32 = 0;
     pub const GPIO_MASK: u32 = 0x0000ffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **QSPI_SD** [31:28]
-    /// Write QSPI_SD field (write-only)
+    /// **QSPI_SD** `[31:28]` (WO)
+    /// Write **QSPI_SD** `[31:28]` (WO)
     #[inline(always)]
     pub fn write_qspi_sd(&self, value: u32) {
-        self.write_bits((value << Self::QSPI_SD_OFFSET) & Self::QSPI_SD_MASK);
+        self.value.write_bits((value << Self::QSPI_SD_OFFSET) & Self::QSPI_SD_MASK);
     }
 
-    /// **QSPI_CSN** [27:27]
-    /// Trigger QSPI_CSN (write-only)
+    /// **QSPI_CSN** `[27]` (WO)
+    /// Trigger **QSPI_CSN** (WO)
     #[inline(always)]
     pub fn trigger_qspi_csn(&self) {
-        self.write_bits(Self::QSPI_CSN_MASK);
+        self.value.write_bits(Self::QSPI_CSN_MASK);
     }
 
-    /// **QSPI_SCK** [26:26]
-    /// Trigger QSPI_SCK (write-only)
+    /// **QSPI_SCK** `[26]` (WO)
+    /// Trigger **QSPI_SCK** (WO)
     #[inline(always)]
     pub fn trigger_qspi_sck(&self) {
-        self.write_bits(Self::QSPI_SCK_MASK);
+        self.value.write_bits(Self::QSPI_SCK_MASK);
     }
 
-    /// **USB_DM** [25:25]
-    /// Trigger USB_DM (write-only)
+    /// **USB_DM** `[25]` (WO)
+    /// Trigger **USB_DM** (WO)
     #[inline(always)]
     pub fn trigger_usb_dm(&self) {
-        self.write_bits(Self::USB_DM_MASK);
+        self.value.write_bits(Self::USB_DM_MASK);
     }
 
-    /// **USB_DP** [24:24]
-    /// Trigger USB_DP (write-only)
+    /// **USB_DP** `[24]` (WO)
+    /// Trigger **USB_DP** (WO)
     #[inline(always)]
     pub fn trigger_usb_dp(&self) {
-        self.write_bits(Self::USB_DP_MASK);
+        self.value.write_bits(Self::USB_DP_MASK);
     }
 
-    /// **GPIO** [15:0]
-    /// Write GPIO field (write-only)
+    /// **GPIO** `[15:0]` (WO)
+    /// Write **GPIO** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_gpio(&self, value: u32) {
-        self.write_bits((value << Self::GPIO_OFFSET) & Self::GPIO_MASK);
+        self.value.write_bits((value << Self::GPIO_OFFSET) & Self::GPIO_MASK);
     }
 
 }
@@ -1386,7 +1177,7 @@ impl GpioHiOutSetVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Set QSPI_SD [31:28]
+    /// Set **QSPI_SD** `[31:28]`
     #[inline(always)]
     pub const fn with_qspi_sd(self, value: u32) -> Self {
         Self {
@@ -1394,7 +1185,7 @@ impl GpioHiOutSetVal {
         }
     }
 
-    /// Set QSPI_CSN [27:27]
+    /// Set **QSPI_CSN** `[27:27]`
     #[inline(always)]
     pub const fn with_qspi_csn(self, value: bool) -> Self {
         Self {
@@ -1406,7 +1197,7 @@ impl GpioHiOutSetVal {
         }
     }
 
-    /// Set QSPI_SCK [26:26]
+    /// Set **QSPI_SCK** `[26:26]`
     #[inline(always)]
     pub const fn with_qspi_sck(self, value: bool) -> Self {
         Self {
@@ -1418,7 +1209,7 @@ impl GpioHiOutSetVal {
         }
     }
 
-    /// Set USB_DM [25:25]
+    /// Set **USB_DM** `[25:25]`
     #[inline(always)]
     pub const fn with_usb_dm(self, value: bool) -> Self {
         Self {
@@ -1430,7 +1221,7 @@ impl GpioHiOutSetVal {
         }
     }
 
-    /// Set USB_DP [24:24]
+    /// Set **USB_DP** `[24:24]`
     #[inline(always)]
     pub const fn with_usb_dp(self, value: bool) -> Self {
         Self {
@@ -1442,7 +1233,7 @@ impl GpioHiOutSetVal {
         }
     }
 
-    /// Set GPIO [15:0]
+    /// Set **GPIO** `[15:0]`
     #[inline(always)]
     pub const fn with_gpio(self, value: u32) -> Self {
         Self {
@@ -1461,20 +1252,20 @@ impl Default for GpioHiOutSetVal {
 impl GpioHiOutSet {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> GpioHiOutSetVal {
-        GpioHiOutSetVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> GpioHiOutSetVal {
+        GpioHiOutSetVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: GpioHiOutSetVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: GpioHiOutSetVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(GpioHiOutSetVal) -> GpioHiOutSetVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(GpioHiOutSetVal) -> GpioHiOutSetVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1488,77 +1279,39 @@ impl GpioHiOutSet {
 ///
 /// ## Fields
 ///
-/// - **GPIO_OUT_CLR** [31:0] (WO): Perform an atomic bit-clear on GPIO_OUT, i.e. `GPIO_OUT &= ~wdata`
+/// - **GPIO_OUT_CLR** `[31:0]` (WO)
+///   Perform an atomic bit-clear on GPIO_OUT, i.e. `GPIO_OUT &= ~wdata`
 #[repr(transparent)]
 pub struct GpioOutClr {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for GpioOutClr {}
-unsafe impl Sync for GpioOutClr {}
+impl core::ops::Deref for GpioOutClr {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl GpioOutClr {
     // ======== Field Constants ========
 
-    /// GPIO_OUT_CLR - Perform an atomic bit-clear on GPIO_OUT, i.e. `GPIO_OUT &= ~wdata`
-    /// Bits [31:0], mask 0xffffffff
+    /// **GPIO_OUT_CLR**
+    /// Perform an atomic bit-clear on GPIO_OUT, i.e. `GPIO_OUT &= ~wdata`
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const GPIO_OUT_CLR_OFFSET: u32 = 0;
     pub const GPIO_OUT_CLR_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **GPIO_OUT_CLR** [31:0]: Perform an atomic bit-clear on GPIO_OUT, i.e. `GPIO_OUT &= ~wdata`
-    /// Write GPIO_OUT_CLR field (write-only)
+    /// **GPIO_OUT_CLR** `[31:0]` (WO)
+    /// Perform an atomic bit-clear on GPIO_OUT, i.e. `GPIO_OUT &= ~wdata`
+    /// Write **GPIO_OUT_CLR** `[31:0]` (WO)
+    /// Perform an atomic bit-clear on GPIO_OUT, i.e. `GPIO_OUT &= ~wdata`
     #[inline(always)]
     pub fn write_gpio_out_clr(&self, value: u32) {
-        self.write_bits((value << Self::GPIO_OUT_CLR_OFFSET) & Self::GPIO_OUT_CLR_MASK);
+        self.value.write_bits((value << Self::GPIO_OUT_CLR_OFFSET) & Self::GPIO_OUT_CLR_MASK);
     }
 
 }
@@ -1591,7 +1344,8 @@ impl GpioOutClrVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Set GPIO_OUT_CLR [31:0]: Perform an atomic bit-clear on GPIO_OUT, i.e. `GPIO_OUT &= ~wdata`
+    /// Set **GPIO_OUT_CLR** `[31:0]`
+    /// Perform an atomic bit-clear on GPIO_OUT, i.e. `GPIO_OUT &= ~wdata`
     #[inline(always)]
     pub const fn with_gpio_out_clr(self, value: u32) -> Self {
         Self {
@@ -1610,168 +1364,132 @@ impl Default for GpioOutClrVal {
 impl GpioOutClr {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> GpioOutClrVal {
-        GpioOutClrVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> GpioOutClrVal {
+        GpioOutClrVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: GpioOutClrVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: GpioOutClrVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(GpioOutClrVal) -> GpioOutClrVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(GpioOutClrVal) -> GpioOutClrVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// GPIO_HI_OUT_CLR Register
 ///
-/// Output value clear for GPIO32..47, QSPI IOs and USB pins. Perform an atomic
-/// bit-clear on GPIO_HI_OUT, i.e. `GPIO_HI_OUT &= ~wdata`
+/// Output value clear for GPIO32..47, QSPI IOs and USB pins.
+/// Perform an atomic bit-clear on GPIO_HI_OUT, i.e. `GPIO_HI_OUT &= ~wdata`
 ///
 /// Address offset: 0x0024
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **QSPI_SD** [31:28] (WO): 
-/// - **QSPI_CSN** [27] (WO): 
-/// - **QSPI_SCK** [26] (WO): 
-/// - **USB_DM** [25] (WO): 
-/// - **USB_DP** [24] (WO): 
-/// - **GPIO** [15:0] (WO): 
+/// - **QSPI_SD** `[31:28]` (WO)
+/// - **QSPI_CSN** `[27]` (WO)
+/// - **QSPI_SCK** `[26]` (WO)
+/// - **USB_DM** `[25]` (WO)
+/// - **USB_DP** `[24]` (WO)
+/// - **GPIO** `[15:0]` (WO)
 #[repr(transparent)]
 pub struct GpioHiOutClr {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for GpioHiOutClr {}
-unsafe impl Sync for GpioHiOutClr {}
+impl core::ops::Deref for GpioHiOutClr {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl GpioHiOutClr {
     // ======== Field Constants ========
 
-    /// Bits [31:28], mask 0xf0000000
+    /// **QSPI_SD**
+    /// Bits `[31:28]`, mask `0xf0000000`
     pub const QSPI_SD_OFFSET: u32 = 28;
     pub const QSPI_SD_MASK: u32 = 0xf0000000;
 
-    /// Bits [27:27], mask 0x08000000
+    /// **QSPI_CSN**
+    /// Bits `[27:27]`, mask `0x08000000`
     pub const QSPI_CSN_OFFSET: u32 = 27;
     pub const QSPI_CSN_MASK: u32 = 0x08000000;
     pub const QSPI_CSN: u32 = 1 << 27;
 
-    /// Bits [26:26], mask 0x04000000
+    /// **QSPI_SCK**
+    /// Bits `[26:26]`, mask `0x04000000`
     pub const QSPI_SCK_OFFSET: u32 = 26;
     pub const QSPI_SCK_MASK: u32 = 0x04000000;
     pub const QSPI_SCK: u32 = 1 << 26;
 
-    /// Bits [25:25], mask 0x02000000
+    /// **USB_DM**
+    /// Bits `[25:25]`, mask `0x02000000`
     pub const USB_DM_OFFSET: u32 = 25;
     pub const USB_DM_MASK: u32 = 0x02000000;
     pub const USB_DM: u32 = 1 << 25;
 
-    /// Bits [24:24], mask 0x01000000
+    /// **USB_DP**
+    /// Bits `[24:24]`, mask `0x01000000`
     pub const USB_DP_OFFSET: u32 = 24;
     pub const USB_DP_MASK: u32 = 0x01000000;
     pub const USB_DP: u32 = 1 << 24;
 
-    /// Bits [15:0], mask 0x0000ffff
+    /// **GPIO**
+    /// Bits `[15:0]`, mask `0x0000ffff`
     pub const GPIO_OFFSET: u32 = 0;
     pub const GPIO_MASK: u32 = 0x0000ffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **QSPI_SD** [31:28]
-    /// Write QSPI_SD field (write-only)
+    /// **QSPI_SD** `[31:28]` (WO)
+    /// Write **QSPI_SD** `[31:28]` (WO)
     #[inline(always)]
     pub fn write_qspi_sd(&self, value: u32) {
-        self.write_bits((value << Self::QSPI_SD_OFFSET) & Self::QSPI_SD_MASK);
+        self.value.write_bits((value << Self::QSPI_SD_OFFSET) & Self::QSPI_SD_MASK);
     }
 
-    /// **QSPI_CSN** [27:27]
-    /// Trigger QSPI_CSN (write-only)
+    /// **QSPI_CSN** `[27]` (WO)
+    /// Trigger **QSPI_CSN** (WO)
     #[inline(always)]
     pub fn trigger_qspi_csn(&self) {
-        self.write_bits(Self::QSPI_CSN_MASK);
+        self.value.write_bits(Self::QSPI_CSN_MASK);
     }
 
-    /// **QSPI_SCK** [26:26]
-    /// Trigger QSPI_SCK (write-only)
+    /// **QSPI_SCK** `[26]` (WO)
+    /// Trigger **QSPI_SCK** (WO)
     #[inline(always)]
     pub fn trigger_qspi_sck(&self) {
-        self.write_bits(Self::QSPI_SCK_MASK);
+        self.value.write_bits(Self::QSPI_SCK_MASK);
     }
 
-    /// **USB_DM** [25:25]
-    /// Trigger USB_DM (write-only)
+    /// **USB_DM** `[25]` (WO)
+    /// Trigger **USB_DM** (WO)
     #[inline(always)]
     pub fn trigger_usb_dm(&self) {
-        self.write_bits(Self::USB_DM_MASK);
+        self.value.write_bits(Self::USB_DM_MASK);
     }
 
-    /// **USB_DP** [24:24]
-    /// Trigger USB_DP (write-only)
+    /// **USB_DP** `[24]` (WO)
+    /// Trigger **USB_DP** (WO)
     #[inline(always)]
     pub fn trigger_usb_dp(&self) {
-        self.write_bits(Self::USB_DP_MASK);
+        self.value.write_bits(Self::USB_DP_MASK);
     }
 
-    /// **GPIO** [15:0]
-    /// Write GPIO field (write-only)
+    /// **GPIO** `[15:0]` (WO)
+    /// Write **GPIO** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_gpio(&self, value: u32) {
-        self.write_bits((value << Self::GPIO_OFFSET) & Self::GPIO_MASK);
+        self.value.write_bits((value << Self::GPIO_OFFSET) & Self::GPIO_MASK);
     }
 
 }
@@ -1804,7 +1522,7 @@ impl GpioHiOutClrVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Set QSPI_SD [31:28]
+    /// Set **QSPI_SD** `[31:28]`
     #[inline(always)]
     pub const fn with_qspi_sd(self, value: u32) -> Self {
         Self {
@@ -1812,7 +1530,7 @@ impl GpioHiOutClrVal {
         }
     }
 
-    /// Set QSPI_CSN [27:27]
+    /// Set **QSPI_CSN** `[27:27]`
     #[inline(always)]
     pub const fn with_qspi_csn(self, value: bool) -> Self {
         Self {
@@ -1824,7 +1542,7 @@ impl GpioHiOutClrVal {
         }
     }
 
-    /// Set QSPI_SCK [26:26]
+    /// Set **QSPI_SCK** `[26:26]`
     #[inline(always)]
     pub const fn with_qspi_sck(self, value: bool) -> Self {
         Self {
@@ -1836,7 +1554,7 @@ impl GpioHiOutClrVal {
         }
     }
 
-    /// Set USB_DM [25:25]
+    /// Set **USB_DM** `[25:25]`
     #[inline(always)]
     pub const fn with_usb_dm(self, value: bool) -> Self {
         Self {
@@ -1848,7 +1566,7 @@ impl GpioHiOutClrVal {
         }
     }
 
-    /// Set USB_DP [24:24]
+    /// Set **USB_DP** `[24:24]`
     #[inline(always)]
     pub const fn with_usb_dp(self, value: bool) -> Self {
         Self {
@@ -1860,7 +1578,7 @@ impl GpioHiOutClrVal {
         }
     }
 
-    /// Set GPIO [15:0]
+    /// Set **GPIO** `[15:0]`
     #[inline(always)]
     pub const fn with_gpio(self, value: u32) -> Self {
         Self {
@@ -1879,20 +1597,20 @@ impl Default for GpioHiOutClrVal {
 impl GpioHiOutClr {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> GpioHiOutClrVal {
-        GpioHiOutClrVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> GpioHiOutClrVal {
+        GpioHiOutClrVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: GpioHiOutClrVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: GpioHiOutClrVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(GpioHiOutClrVal) -> GpioHiOutClrVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(GpioHiOutClrVal) -> GpioHiOutClrVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1906,77 +1624,39 @@ impl GpioHiOutClr {
 ///
 /// ## Fields
 ///
-/// - **GPIO_OUT_XOR** [31:0] (WO): Perform an atomic bitwise XOR on GPIO_OUT, i.e. `GPIO_OUT ^= wdata`
+/// - **GPIO_OUT_XOR** `[31:0]` (WO)
+///   Perform an atomic bitwise XOR on GPIO_OUT, i.e. `GPIO_OUT ^= wdata`
 #[repr(transparent)]
 pub struct GpioOutXor {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for GpioOutXor {}
-unsafe impl Sync for GpioOutXor {}
+impl core::ops::Deref for GpioOutXor {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl GpioOutXor {
     // ======== Field Constants ========
 
-    /// GPIO_OUT_XOR - Perform an atomic bitwise XOR on GPIO_OUT, i.e. `GPIO_OUT ^= wdata`
-    /// Bits [31:0], mask 0xffffffff
+    /// **GPIO_OUT_XOR**
+    /// Perform an atomic bitwise XOR on GPIO_OUT, i.e. `GPIO_OUT ^= wdata`
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const GPIO_OUT_XOR_OFFSET: u32 = 0;
     pub const GPIO_OUT_XOR_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **GPIO_OUT_XOR** [31:0]: Perform an atomic bitwise XOR on GPIO_OUT, i.e. `GPIO_OUT ^= wdata`
-    /// Write GPIO_OUT_XOR field (write-only)
+    /// **GPIO_OUT_XOR** `[31:0]` (WO)
+    /// Perform an atomic bitwise XOR on GPIO_OUT, i.e. `GPIO_OUT ^= wdata`
+    /// Write **GPIO_OUT_XOR** `[31:0]` (WO)
+    /// Perform an atomic bitwise XOR on GPIO_OUT, i.e. `GPIO_OUT ^= wdata`
     #[inline(always)]
     pub fn write_gpio_out_xor(&self, value: u32) {
-        self.write_bits((value << Self::GPIO_OUT_XOR_OFFSET) & Self::GPIO_OUT_XOR_MASK);
+        self.value.write_bits((value << Self::GPIO_OUT_XOR_OFFSET) & Self::GPIO_OUT_XOR_MASK);
     }
 
 }
@@ -2009,7 +1689,8 @@ impl GpioOutXorVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Set GPIO_OUT_XOR [31:0]: Perform an atomic bitwise XOR on GPIO_OUT, i.e. `GPIO_OUT ^= wdata`
+    /// Set **GPIO_OUT_XOR** `[31:0]`
+    /// Perform an atomic bitwise XOR on GPIO_OUT, i.e. `GPIO_OUT ^= wdata`
     #[inline(always)]
     pub const fn with_gpio_out_xor(self, value: u32) -> Self {
         Self {
@@ -2028,168 +1709,132 @@ impl Default for GpioOutXorVal {
 impl GpioOutXor {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> GpioOutXorVal {
-        GpioOutXorVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> GpioOutXorVal {
+        GpioOutXorVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: GpioOutXorVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: GpioOutXorVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(GpioOutXorVal) -> GpioOutXorVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(GpioOutXorVal) -> GpioOutXorVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// GPIO_HI_OUT_XOR Register
 ///
-/// Output value XOR for GPIO32..47, QSPI IOs and USB pins. Perform an atomic
-/// bitwise XOR on GPIO_HI_OUT, i.e. `GPIO_HI_OUT ^= wdata`
+/// Output value XOR for GPIO32..47, QSPI IOs and USB pins.
+/// Perform an atomic bitwise XOR on GPIO_HI_OUT, i.e. `GPIO_HI_OUT ^= wdata`
 ///
 /// Address offset: 0x002c
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **QSPI_SD** [31:28] (WO): 
-/// - **QSPI_CSN** [27] (WO): 
-/// - **QSPI_SCK** [26] (WO): 
-/// - **USB_DM** [25] (WO): 
-/// - **USB_DP** [24] (WO): 
-/// - **GPIO** [15:0] (WO): 
+/// - **QSPI_SD** `[31:28]` (WO)
+/// - **QSPI_CSN** `[27]` (WO)
+/// - **QSPI_SCK** `[26]` (WO)
+/// - **USB_DM** `[25]` (WO)
+/// - **USB_DP** `[24]` (WO)
+/// - **GPIO** `[15:0]` (WO)
 #[repr(transparent)]
 pub struct GpioHiOutXor {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for GpioHiOutXor {}
-unsafe impl Sync for GpioHiOutXor {}
+impl core::ops::Deref for GpioHiOutXor {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl GpioHiOutXor {
     // ======== Field Constants ========
 
-    /// Bits [31:28], mask 0xf0000000
+    /// **QSPI_SD**
+    /// Bits `[31:28]`, mask `0xf0000000`
     pub const QSPI_SD_OFFSET: u32 = 28;
     pub const QSPI_SD_MASK: u32 = 0xf0000000;
 
-    /// Bits [27:27], mask 0x08000000
+    /// **QSPI_CSN**
+    /// Bits `[27:27]`, mask `0x08000000`
     pub const QSPI_CSN_OFFSET: u32 = 27;
     pub const QSPI_CSN_MASK: u32 = 0x08000000;
     pub const QSPI_CSN: u32 = 1 << 27;
 
-    /// Bits [26:26], mask 0x04000000
+    /// **QSPI_SCK**
+    /// Bits `[26:26]`, mask `0x04000000`
     pub const QSPI_SCK_OFFSET: u32 = 26;
     pub const QSPI_SCK_MASK: u32 = 0x04000000;
     pub const QSPI_SCK: u32 = 1 << 26;
 
-    /// Bits [25:25], mask 0x02000000
+    /// **USB_DM**
+    /// Bits `[25:25]`, mask `0x02000000`
     pub const USB_DM_OFFSET: u32 = 25;
     pub const USB_DM_MASK: u32 = 0x02000000;
     pub const USB_DM: u32 = 1 << 25;
 
-    /// Bits [24:24], mask 0x01000000
+    /// **USB_DP**
+    /// Bits `[24:24]`, mask `0x01000000`
     pub const USB_DP_OFFSET: u32 = 24;
     pub const USB_DP_MASK: u32 = 0x01000000;
     pub const USB_DP: u32 = 1 << 24;
 
-    /// Bits [15:0], mask 0x0000ffff
+    /// **GPIO**
+    /// Bits `[15:0]`, mask `0x0000ffff`
     pub const GPIO_OFFSET: u32 = 0;
     pub const GPIO_MASK: u32 = 0x0000ffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **QSPI_SD** [31:28]
-    /// Write QSPI_SD field (write-only)
+    /// **QSPI_SD** `[31:28]` (WO)
+    /// Write **QSPI_SD** `[31:28]` (WO)
     #[inline(always)]
     pub fn write_qspi_sd(&self, value: u32) {
-        self.write_bits((value << Self::QSPI_SD_OFFSET) & Self::QSPI_SD_MASK);
+        self.value.write_bits((value << Self::QSPI_SD_OFFSET) & Self::QSPI_SD_MASK);
     }
 
-    /// **QSPI_CSN** [27:27]
-    /// Trigger QSPI_CSN (write-only)
+    /// **QSPI_CSN** `[27]` (WO)
+    /// Trigger **QSPI_CSN** (WO)
     #[inline(always)]
     pub fn trigger_qspi_csn(&self) {
-        self.write_bits(Self::QSPI_CSN_MASK);
+        self.value.write_bits(Self::QSPI_CSN_MASK);
     }
 
-    /// **QSPI_SCK** [26:26]
-    /// Trigger QSPI_SCK (write-only)
+    /// **QSPI_SCK** `[26]` (WO)
+    /// Trigger **QSPI_SCK** (WO)
     #[inline(always)]
     pub fn trigger_qspi_sck(&self) {
-        self.write_bits(Self::QSPI_SCK_MASK);
+        self.value.write_bits(Self::QSPI_SCK_MASK);
     }
 
-    /// **USB_DM** [25:25]
-    /// Trigger USB_DM (write-only)
+    /// **USB_DM** `[25]` (WO)
+    /// Trigger **USB_DM** (WO)
     #[inline(always)]
     pub fn trigger_usb_dm(&self) {
-        self.write_bits(Self::USB_DM_MASK);
+        self.value.write_bits(Self::USB_DM_MASK);
     }
 
-    /// **USB_DP** [24:24]
-    /// Trigger USB_DP (write-only)
+    /// **USB_DP** `[24]` (WO)
+    /// Trigger **USB_DP** (WO)
     #[inline(always)]
     pub fn trigger_usb_dp(&self) {
-        self.write_bits(Self::USB_DP_MASK);
+        self.value.write_bits(Self::USB_DP_MASK);
     }
 
-    /// **GPIO** [15:0]
-    /// Write GPIO field (write-only)
+    /// **GPIO** `[15:0]` (WO)
+    /// Write **GPIO** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_gpio(&self, value: u32) {
-        self.write_bits((value << Self::GPIO_OFFSET) & Self::GPIO_MASK);
+        self.value.write_bits((value << Self::GPIO_OFFSET) & Self::GPIO_MASK);
     }
 
 }
@@ -2222,7 +1867,7 @@ impl GpioHiOutXorVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Set QSPI_SD [31:28]
+    /// Set **QSPI_SD** `[31:28]`
     #[inline(always)]
     pub const fn with_qspi_sd(self, value: u32) -> Self {
         Self {
@@ -2230,7 +1875,7 @@ impl GpioHiOutXorVal {
         }
     }
 
-    /// Set QSPI_CSN [27:27]
+    /// Set **QSPI_CSN** `[27:27]`
     #[inline(always)]
     pub const fn with_qspi_csn(self, value: bool) -> Self {
         Self {
@@ -2242,7 +1887,7 @@ impl GpioHiOutXorVal {
         }
     }
 
-    /// Set QSPI_SCK [26:26]
+    /// Set **QSPI_SCK** `[26:26]`
     #[inline(always)]
     pub const fn with_qspi_sck(self, value: bool) -> Self {
         Self {
@@ -2254,7 +1899,7 @@ impl GpioHiOutXorVal {
         }
     }
 
-    /// Set USB_DM [25:25]
+    /// Set **USB_DM** `[25:25]`
     #[inline(always)]
     pub const fn with_usb_dm(self, value: bool) -> Self {
         Self {
@@ -2266,7 +1911,7 @@ impl GpioHiOutXorVal {
         }
     }
 
-    /// Set USB_DP [24:24]
+    /// Set **USB_DP** `[24:24]`
     #[inline(always)]
     pub const fn with_usb_dp(self, value: bool) -> Self {
         Self {
@@ -2278,7 +1923,7 @@ impl GpioHiOutXorVal {
         }
     }
 
-    /// Set GPIO [15:0]
+    /// Set **GPIO** `[15:0]`
     #[inline(always)]
     pub const fn with_gpio(self, value: u32) -> Self {
         Self {
@@ -2297,20 +1942,20 @@ impl Default for GpioHiOutXorVal {
 impl GpioHiOutXor {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> GpioHiOutXorVal {
-        GpioHiOutXorVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> GpioHiOutXorVal {
+        GpioHiOutXorVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: GpioHiOutXorVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: GpioHiOutXorVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(GpioHiOutXorVal) -> GpioHiOutXorVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(GpioHiOutXorVal) -> GpioHiOutXorVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -2324,82 +1969,52 @@ impl GpioHiOutXor {
 ///
 /// ## Fields
 ///
-/// - **GPIO_OE** [31:0] (RW): Set output enable (1/0 -> output/input) for GPIO0...31. Reading back gives ...
+/// - **GPIO_OE** `[31:0]` (RW)
+///   Set output enable (1/0 -> output/input) for GPIO0...31. Reading back gives the last value written.
+///   If core 0 and core 1 both write to GPIO_OE simultaneously (or to a SET/CLR/XOR alias), the result is as though the write from core 0 took place first, and the write from core 1 was then applied to that intermediate result.
+///   In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) ignore writes, and their output status reads back as zero. This is also true for SET/CLR/XOR aliases of this register.
 #[repr(transparent)]
 pub struct GpioOe {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for GpioOe {}
-unsafe impl Sync for GpioOe {}
+impl core::ops::Deref for GpioOe {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl GpioOe {
     // ======== Field Constants ========
 
-    /// GPIO_OE - Set output enable (1/0 -> output/input) for GPIO0...31. Reading back gives ...
-    /// Bits [31:0], mask 0xffffffff
+    /// **GPIO_OE**
+    /// Set output enable (1/0 -> output/input) for GPIO0...31. Reading back gives the last value written.
+    /// If core 0 and core 1 both write to GPIO_OE simultaneously (or to a SET/CLR/XOR alias), the result is as though the write from core 0 took place first, and the write from core 1 was then applied to that intermediate result.
+    /// In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) ignore writes, and their output status reads back as zero. This is also true for SET/CLR/XOR aliases of this register.
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const GPIO_OE_OFFSET: u32 = 0;
     pub const GPIO_OE_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **GPIO_OE** [31:0]: Set output enable (1/0 -> output/input) for GPIO0...31. Reading back gives ...
+    /// **GPIO_OE** `[31:0]` (RW)
+    /// Set output enable (1/0 -> output/input) for GPIO0...31. Reading back gives the last value written.
+    /// If core 0 and core 1 both write to GPIO_OE simultaneously (or to a SET/CLR/XOR alias), the result is as though the write from core 0 took place first, and the write from core 1 was then applied to that intermediate result.
+    /// In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) ignore writes, and their output status reads back as zero. This is also true for SET/CLR/XOR aliases of this register.
     #[inline(always)]
     pub fn gpio_oe(&self) -> u32 {
-        (self.read_bits() & Self::GPIO_OE_MASK) >> Self::GPIO_OE_OFFSET
+        (self.value.read_bits() & Self::GPIO_OE_MASK) >> Self::GPIO_OE_OFFSET
     }
 
-    /// Write GPIO_OE field
+    /// Write **GPIO_OE** `[31:0]` (RW)
+    /// Set output enable (1/0 -> output/input) for GPIO0...31. Reading back gives the last value written.
+    /// If core 0 and core 1 both write to GPIO_OE simultaneously (or to a SET/CLR/XOR alias), the result is as though the write from core 0 took place first, and the write from core 1 was then applied to that intermediate result.
+    /// In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) ignore writes, and their output status reads back as zero. This is also true for SET/CLR/XOR aliases of this register.
     #[inline(always)]
     pub fn write_gpio_oe(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::GPIO_OE_MASK) | ((value << Self::GPIO_OE_OFFSET) & Self::GPIO_OE_MASK));
+        self.value.modify_bits(|r| (r & !Self::GPIO_OE_MASK) | ((value << Self::GPIO_OE_OFFSET) & Self::GPIO_OE_MASK));
     }
 
 }
@@ -2432,13 +2047,19 @@ impl GpioOeVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read GPIO_OE [31:0]: Set output enable (1/0 -> output/input) for GPIO0...31. Reading back gives ...
+    /// Read **GPIO_OE** `[31:0]`
+    /// Set output enable (1/0 -> output/input) for GPIO0...31. Reading back gives the last value written.
+    /// If core 0 and core 1 both write to GPIO_OE simultaneously (or to a SET/CLR/XOR alias), the result is as though the write from core 0 took place first, and the write from core 1 was then applied to that intermediate result.
+    /// In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) ignore writes, and their output status reads back as zero. This is also true for SET/CLR/XOR aliases of this register.
     #[inline(always)]
     pub const fn gpio_oe(&self) -> u32 {
         (self.bits & GpioOe::GPIO_OE_MASK) >> GpioOe::GPIO_OE_OFFSET
     }
 
-    /// Set GPIO_OE [31:0]: Set output enable (1/0 -> output/input) for GPIO0...31. Reading back gives ...
+    /// Set **GPIO_OE** `[31:0]`
+    /// Set output enable (1/0 -> output/input) for GPIO0...31. Reading back gives the last value written.
+    /// If core 0 and core 1 both write to GPIO_OE simultaneously (or to a SET/CLR/XOR alias), the result is as though the write from core 0 took place first, and the write from core 1 was then applied to that intermediate result.
+    /// In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) ignore writes, and their output status reads back as zero. This is also true for SET/CLR/XOR aliases of this register.
     #[inline(always)]
     pub const fn with_gpio_oe(self, value: u32) -> Self {
         Self {
@@ -2457,234 +2078,207 @@ impl Default for GpioOeVal {
 impl GpioOe {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> GpioOeVal {
-        GpioOeVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> GpioOeVal {
+        GpioOeVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: GpioOeVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: GpioOeVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(GpioOeVal) -> GpioOeVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(GpioOeVal) -> GpioOeVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// GPIO_HI_OE Register
 ///
-/// Output enable value for GPIO32...47, QSPI IOs and USB pins. Write output
-/// enable (1/0 -> output/input). Reading back gives the last value written. If
-/// core 0 and core 1 both write to GPIO_HI_OE simultaneously (or to a
-/// SET/CLR/XOR alias), the result is as though the write from core 0 took place
-/// first, and the write from core 1 was then applied to that intermediate
-/// result. In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) ignore
-/// writes, and their output status reads back as zero. This is also true for
-/// SET/CLR/XOR aliases of this register.
+/// Output enable value for GPIO32...47, QSPI IOs and USB pins.
+/// Write output enable (1/0 -> output/input). Reading back gives the last value written. If core 0 and core 1 both write to GPIO_HI_OE simultaneously (or to a SET/CLR/XOR alias), the result is as though the write from core 0 took place first, and the write from core 1 was then applied to that intermediate result.
+/// In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) ignore writes, and their output status reads back as zero. This is also true for SET/CLR/XOR aliases of this register.
 ///
 /// Address offset: 0x0034
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **QSPI_SD** [31:28] (RW): Output enable value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
-/// - **QSPI_CSN** [27] (RW): Output enable value for QSPI CSn pin
-/// - **QSPI_SCK** [26] (RW): Output enable value for QSPI SCK pin
-/// - **USB_DM** [25] (RW): Output enable value for USB D- pin
-/// - **USB_DP** [24] (RW): Output enable value for USB D+ pin
-/// - **GPIO** [15:0] (RW): Output enable value for GPIO32...47
+/// - **QSPI_SD** `[31:28]` (RW)
+///   Output enable value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
+/// - **QSPI_CSN** `[27]` (RW)
+///   Output enable value for QSPI CSn pin
+/// - **QSPI_SCK** `[26]` (RW)
+///   Output enable value for QSPI SCK pin
+/// - **USB_DM** `[25]` (RW)
+///   Output enable value for USB D- pin
+/// - **USB_DP** `[24]` (RW)
+///   Output enable value for USB D+ pin
+/// - **GPIO** `[15:0]` (RW)
+///   Output enable value for GPIO32...47
 #[repr(transparent)]
 pub struct GpioHiOe {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for GpioHiOe {}
-unsafe impl Sync for GpioHiOe {}
+impl core::ops::Deref for GpioHiOe {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl GpioHiOe {
     // ======== Field Constants ========
 
-    /// QSPI_SD - Output enable value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
-    /// Bits [31:28], mask 0xf0000000
+    /// **QSPI_SD**
+    /// Output enable value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
+    /// Bits `[31:28]`, mask `0xf0000000`
     pub const QSPI_SD_OFFSET: u32 = 28;
     pub const QSPI_SD_MASK: u32 = 0xf0000000;
 
-    /// QSPI_CSN - Output enable value for QSPI CSn pin
-    /// Bits [27:27], mask 0x08000000
+    /// **QSPI_CSN**
+    /// Output enable value for QSPI CSn pin
+    /// Bits `[27:27]`, mask `0x08000000`
     pub const QSPI_CSN_OFFSET: u32 = 27;
     pub const QSPI_CSN_MASK: u32 = 0x08000000;
     pub const QSPI_CSN: u32 = 1 << 27;
 
-    /// QSPI_SCK - Output enable value for QSPI SCK pin
-    /// Bits [26:26], mask 0x04000000
+    /// **QSPI_SCK**
+    /// Output enable value for QSPI SCK pin
+    /// Bits `[26:26]`, mask `0x04000000`
     pub const QSPI_SCK_OFFSET: u32 = 26;
     pub const QSPI_SCK_MASK: u32 = 0x04000000;
     pub const QSPI_SCK: u32 = 1 << 26;
 
-    /// USB_DM - Output enable value for USB D- pin
-    /// Bits [25:25], mask 0x02000000
+    /// **USB_DM**
+    /// Output enable value for USB D- pin
+    /// Bits `[25:25]`, mask `0x02000000`
     pub const USB_DM_OFFSET: u32 = 25;
     pub const USB_DM_MASK: u32 = 0x02000000;
     pub const USB_DM: u32 = 1 << 25;
 
-    /// USB_DP - Output enable value for USB D+ pin
-    /// Bits [24:24], mask 0x01000000
+    /// **USB_DP**
+    /// Output enable value for USB D+ pin
+    /// Bits `[24:24]`, mask `0x01000000`
     pub const USB_DP_OFFSET: u32 = 24;
     pub const USB_DP_MASK: u32 = 0x01000000;
     pub const USB_DP: u32 = 1 << 24;
 
-    /// GPIO - Output enable value for GPIO32...47
-    /// Bits [15:0], mask 0x0000ffff
+    /// **GPIO**
+    /// Output enable value for GPIO32...47
+    /// Bits `[15:0]`, mask `0x0000ffff`
     pub const GPIO_OFFSET: u32 = 0;
     pub const GPIO_MASK: u32 = 0x0000ffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **QSPI_SD** [31:28]: Output enable value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
+    /// **QSPI_SD** `[31:28]` (RW)
+    /// Output enable value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
     #[inline(always)]
     pub fn qspi_sd(&self) -> u32 {
-        (self.read_bits() & Self::QSPI_SD_MASK) >> Self::QSPI_SD_OFFSET
+        (self.value.read_bits() & Self::QSPI_SD_MASK) >> Self::QSPI_SD_OFFSET
     }
 
-    /// Write QSPI_SD field
+    /// Write **QSPI_SD** `[31:28]` (RW)
+    /// Output enable value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
     #[inline(always)]
     pub fn write_qspi_sd(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::QSPI_SD_MASK) | ((value << Self::QSPI_SD_OFFSET) & Self::QSPI_SD_MASK));
+        self.value.modify_bits(|r| (r & !Self::QSPI_SD_MASK) | ((value << Self::QSPI_SD_OFFSET) & Self::QSPI_SD_MASK));
     }
 
-    /// **QSPI_CSN** [27:27]: Output enable value for QSPI CSn pin
+    /// **QSPI_CSN** `[27]` (RW)
+    /// Output enable value for QSPI CSn pin
     #[inline(always)]
     pub fn qspi_csn(&self) -> bool {
-        (self.read_bits() & Self::QSPI_CSN_MASK) != 0
+        (self.value.read_bits() & Self::QSPI_CSN_MASK) != 0
     }
 
-    /// Set QSPI_CSN bit
+    /// Set QSPI_CSN bit atomically (RW)
     #[inline(always)]
     pub fn set_qspi_csn(&self) {
-        self.set_bits(Self::QSPI_CSN_MASK);
+        self.value.set_bits(Self::QSPI_CSN_MASK);
     }
 
-    /// Clear QSPI_CSN bit
+    /// Clear QSPI_CSN bit atomically (RW)
     #[inline(always)]
     pub fn clr_qspi_csn(&self) {
-        self.clr_bits(Self::QSPI_CSN_MASK);
+        self.value.clr_bits(Self::QSPI_CSN_MASK);
     }
 
-    /// **QSPI_SCK** [26:26]: Output enable value for QSPI SCK pin
+    /// **QSPI_SCK** `[26]` (RW)
+    /// Output enable value for QSPI SCK pin
     #[inline(always)]
     pub fn qspi_sck(&self) -> bool {
-        (self.read_bits() & Self::QSPI_SCK_MASK) != 0
+        (self.value.read_bits() & Self::QSPI_SCK_MASK) != 0
     }
 
-    /// Set QSPI_SCK bit
+    /// Set QSPI_SCK bit atomically (RW)
     #[inline(always)]
     pub fn set_qspi_sck(&self) {
-        self.set_bits(Self::QSPI_SCK_MASK);
+        self.value.set_bits(Self::QSPI_SCK_MASK);
     }
 
-    /// Clear QSPI_SCK bit
+    /// Clear QSPI_SCK bit atomically (RW)
     #[inline(always)]
     pub fn clr_qspi_sck(&self) {
-        self.clr_bits(Self::QSPI_SCK_MASK);
+        self.value.clr_bits(Self::QSPI_SCK_MASK);
     }
 
-    /// **USB_DM** [25:25]: Output enable value for USB D- pin
+    /// **USB_DM** `[25]` (RW)
+    /// Output enable value for USB D- pin
     #[inline(always)]
     pub fn usb_dm(&self) -> bool {
-        (self.read_bits() & Self::USB_DM_MASK) != 0
+        (self.value.read_bits() & Self::USB_DM_MASK) != 0
     }
 
-    /// Set USB_DM bit
+    /// Set USB_DM bit atomically (RW)
     #[inline(always)]
     pub fn set_usb_dm(&self) {
-        self.set_bits(Self::USB_DM_MASK);
+        self.value.set_bits(Self::USB_DM_MASK);
     }
 
-    /// Clear USB_DM bit
+    /// Clear USB_DM bit atomically (RW)
     #[inline(always)]
     pub fn clr_usb_dm(&self) {
-        self.clr_bits(Self::USB_DM_MASK);
+        self.value.clr_bits(Self::USB_DM_MASK);
     }
 
-    /// **USB_DP** [24:24]: Output enable value for USB D+ pin
+    /// **USB_DP** `[24]` (RW)
+    /// Output enable value for USB D+ pin
     #[inline(always)]
     pub fn usb_dp(&self) -> bool {
-        (self.read_bits() & Self::USB_DP_MASK) != 0
+        (self.value.read_bits() & Self::USB_DP_MASK) != 0
     }
 
-    /// Set USB_DP bit
+    /// Set USB_DP bit atomically (RW)
     #[inline(always)]
     pub fn set_usb_dp(&self) {
-        self.set_bits(Self::USB_DP_MASK);
+        self.value.set_bits(Self::USB_DP_MASK);
     }
 
-    /// Clear USB_DP bit
+    /// Clear USB_DP bit atomically (RW)
     #[inline(always)]
     pub fn clr_usb_dp(&self) {
-        self.clr_bits(Self::USB_DP_MASK);
+        self.value.clr_bits(Self::USB_DP_MASK);
     }
 
-    /// **GPIO** [15:0]: Output enable value for GPIO32...47
+    /// **GPIO** `[15:0]` (RW)
+    /// Output enable value for GPIO32...47
     #[inline(always)]
     pub fn gpio(&self) -> u32 {
-        (self.read_bits() & Self::GPIO_MASK) >> Self::GPIO_OFFSET
+        (self.value.read_bits() & Self::GPIO_MASK) >> Self::GPIO_OFFSET
     }
 
-    /// Write GPIO field
+    /// Write **GPIO** `[15:0]` (RW)
+    /// Output enable value for GPIO32...47
     #[inline(always)]
     pub fn write_gpio(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::GPIO_MASK) | ((value << Self::GPIO_OFFSET) & Self::GPIO_MASK));
+        self.value.modify_bits(|r| (r & !Self::GPIO_MASK) | ((value << Self::GPIO_OFFSET) & Self::GPIO_MASK));
     }
 
 }
@@ -2717,43 +2311,50 @@ impl GpioHiOeVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read QSPI_SD [31:28]: Output enable value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
+    /// Read **QSPI_SD** `[31:28]`
+    /// Output enable value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
     #[inline(always)]
     pub const fn qspi_sd(&self) -> u32 {
         (self.bits & GpioHiOe::QSPI_SD_MASK) >> GpioHiOe::QSPI_SD_OFFSET
     }
 
-    /// Read QSPI_CSN [27:27]: Output enable value for QSPI CSn pin
+    /// Read **QSPI_CSN** `[27:27]`
+    /// Output enable value for QSPI CSn pin
     #[inline(always)]
     pub const fn qspi_csn(&self) -> bool {
         (self.bits & GpioHiOe::QSPI_CSN_MASK) != 0
     }
 
-    /// Read QSPI_SCK [26:26]: Output enable value for QSPI SCK pin
+    /// Read **QSPI_SCK** `[26:26]`
+    /// Output enable value for QSPI SCK pin
     #[inline(always)]
     pub const fn qspi_sck(&self) -> bool {
         (self.bits & GpioHiOe::QSPI_SCK_MASK) != 0
     }
 
-    /// Read USB_DM [25:25]: Output enable value for USB D- pin
+    /// Read **USB_DM** `[25:25]`
+    /// Output enable value for USB D- pin
     #[inline(always)]
     pub const fn usb_dm(&self) -> bool {
         (self.bits & GpioHiOe::USB_DM_MASK) != 0
     }
 
-    /// Read USB_DP [24:24]: Output enable value for USB D+ pin
+    /// Read **USB_DP** `[24:24]`
+    /// Output enable value for USB D+ pin
     #[inline(always)]
     pub const fn usb_dp(&self) -> bool {
         (self.bits & GpioHiOe::USB_DP_MASK) != 0
     }
 
-    /// Read GPIO [15:0]: Output enable value for GPIO32...47
+    /// Read **GPIO** `[15:0]`
+    /// Output enable value for GPIO32...47
     #[inline(always)]
     pub const fn gpio(&self) -> u32 {
         (self.bits & GpioHiOe::GPIO_MASK) >> GpioHiOe::GPIO_OFFSET
     }
 
-    /// Set QSPI_SD [31:28]: Output enable value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
+    /// Set **QSPI_SD** `[31:28]`
+    /// Output enable value for QSPI SD0 (MOSI), SD1 (MISO), SD2 and SD3 pins
     #[inline(always)]
     pub const fn with_qspi_sd(self, value: u32) -> Self {
         Self {
@@ -2761,7 +2362,8 @@ impl GpioHiOeVal {
         }
     }
 
-    /// Set QSPI_CSN [27:27]: Output enable value for QSPI CSn pin
+    /// Set **QSPI_CSN** `[27:27]`
+    /// Output enable value for QSPI CSn pin
     #[inline(always)]
     pub const fn with_qspi_csn(self, value: bool) -> Self {
         Self {
@@ -2773,7 +2375,8 @@ impl GpioHiOeVal {
         }
     }
 
-    /// Set QSPI_SCK [26:26]: Output enable value for QSPI SCK pin
+    /// Set **QSPI_SCK** `[26:26]`
+    /// Output enable value for QSPI SCK pin
     #[inline(always)]
     pub const fn with_qspi_sck(self, value: bool) -> Self {
         Self {
@@ -2785,7 +2388,8 @@ impl GpioHiOeVal {
         }
     }
 
-    /// Set USB_DM [25:25]: Output enable value for USB D- pin
+    /// Set **USB_DM** `[25:25]`
+    /// Output enable value for USB D- pin
     #[inline(always)]
     pub const fn with_usb_dm(self, value: bool) -> Self {
         Self {
@@ -2797,7 +2401,8 @@ impl GpioHiOeVal {
         }
     }
 
-    /// Set USB_DP [24:24]: Output enable value for USB D+ pin
+    /// Set **USB_DP** `[24:24]`
+    /// Output enable value for USB D+ pin
     #[inline(always)]
     pub const fn with_usb_dp(self, value: bool) -> Self {
         Self {
@@ -2809,7 +2414,8 @@ impl GpioHiOeVal {
         }
     }
 
-    /// Set GPIO [15:0]: Output enable value for GPIO32...47
+    /// Set **GPIO** `[15:0]`
+    /// Output enable value for GPIO32...47
     #[inline(always)]
     pub const fn with_gpio(self, value: u32) -> Self {
         Self {
@@ -2828,20 +2434,20 @@ impl Default for GpioHiOeVal {
 impl GpioHiOe {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> GpioHiOeVal {
-        GpioHiOeVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> GpioHiOeVal {
+        GpioHiOeVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: GpioHiOeVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: GpioHiOeVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(GpioHiOeVal) -> GpioHiOeVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(GpioHiOeVal) -> GpioHiOeVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -2855,77 +2461,39 @@ impl GpioHiOe {
 ///
 /// ## Fields
 ///
-/// - **GPIO_OE_SET** [31:0] (WO): Perform an atomic bit-set on GPIO_OE, i.e. `GPIO_OE |= wdata`
+/// - **GPIO_OE_SET** `[31:0]` (WO)
+///   Perform an atomic bit-set on GPIO_OE, i.e. `GPIO_OE |= wdata`
 #[repr(transparent)]
 pub struct GpioOeSet {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for GpioOeSet {}
-unsafe impl Sync for GpioOeSet {}
+impl core::ops::Deref for GpioOeSet {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl GpioOeSet {
     // ======== Field Constants ========
 
-    /// GPIO_OE_SET - Perform an atomic bit-set on GPIO_OE, i.e. `GPIO_OE |= wdata`
-    /// Bits [31:0], mask 0xffffffff
+    /// **GPIO_OE_SET**
+    /// Perform an atomic bit-set on GPIO_OE, i.e. `GPIO_OE |= wdata`
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const GPIO_OE_SET_OFFSET: u32 = 0;
     pub const GPIO_OE_SET_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **GPIO_OE_SET** [31:0]: Perform an atomic bit-set on GPIO_OE, i.e. `GPIO_OE |= wdata`
-    /// Write GPIO_OE_SET field (write-only)
+    /// **GPIO_OE_SET** `[31:0]` (WO)
+    /// Perform an atomic bit-set on GPIO_OE, i.e. `GPIO_OE |= wdata`
+    /// Write **GPIO_OE_SET** `[31:0]` (WO)
+    /// Perform an atomic bit-set on GPIO_OE, i.e. `GPIO_OE |= wdata`
     #[inline(always)]
     pub fn write_gpio_oe_set(&self, value: u32) {
-        self.write_bits((value << Self::GPIO_OE_SET_OFFSET) & Self::GPIO_OE_SET_MASK);
+        self.value.write_bits((value << Self::GPIO_OE_SET_OFFSET) & Self::GPIO_OE_SET_MASK);
     }
 
 }
@@ -2958,7 +2526,8 @@ impl GpioOeSetVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Set GPIO_OE_SET [31:0]: Perform an atomic bit-set on GPIO_OE, i.e. `GPIO_OE |= wdata`
+    /// Set **GPIO_OE_SET** `[31:0]`
+    /// Perform an atomic bit-set on GPIO_OE, i.e. `GPIO_OE |= wdata`
     #[inline(always)]
     pub const fn with_gpio_oe_set(self, value: u32) -> Self {
         Self {
@@ -2977,168 +2546,132 @@ impl Default for GpioOeSetVal {
 impl GpioOeSet {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> GpioOeSetVal {
-        GpioOeSetVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> GpioOeSetVal {
+        GpioOeSetVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: GpioOeSetVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: GpioOeSetVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(GpioOeSetVal) -> GpioOeSetVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(GpioOeSetVal) -> GpioOeSetVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// GPIO_HI_OE_SET Register
 ///
-/// Output enable set for GPIO32...47, QSPI IOs and USB pins. Perform an atomic
-/// bit-set on GPIO_HI_OE, i.e. `GPIO_HI_OE |= wdata`
+/// Output enable set for GPIO32...47, QSPI IOs and USB pins.
+/// Perform an atomic bit-set on GPIO_HI_OE, i.e. `GPIO_HI_OE |= wdata`
 ///
 /// Address offset: 0x003c
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **QSPI_SD** [31:28] (WO): 
-/// - **QSPI_CSN** [27] (WO): 
-/// - **QSPI_SCK** [26] (WO): 
-/// - **USB_DM** [25] (WO): 
-/// - **USB_DP** [24] (WO): 
-/// - **GPIO** [15:0] (WO): 
+/// - **QSPI_SD** `[31:28]` (WO)
+/// - **QSPI_CSN** `[27]` (WO)
+/// - **QSPI_SCK** `[26]` (WO)
+/// - **USB_DM** `[25]` (WO)
+/// - **USB_DP** `[24]` (WO)
+/// - **GPIO** `[15:0]` (WO)
 #[repr(transparent)]
 pub struct GpioHiOeSet {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for GpioHiOeSet {}
-unsafe impl Sync for GpioHiOeSet {}
+impl core::ops::Deref for GpioHiOeSet {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl GpioHiOeSet {
     // ======== Field Constants ========
 
-    /// Bits [31:28], mask 0xf0000000
+    /// **QSPI_SD**
+    /// Bits `[31:28]`, mask `0xf0000000`
     pub const QSPI_SD_OFFSET: u32 = 28;
     pub const QSPI_SD_MASK: u32 = 0xf0000000;
 
-    /// Bits [27:27], mask 0x08000000
+    /// **QSPI_CSN**
+    /// Bits `[27:27]`, mask `0x08000000`
     pub const QSPI_CSN_OFFSET: u32 = 27;
     pub const QSPI_CSN_MASK: u32 = 0x08000000;
     pub const QSPI_CSN: u32 = 1 << 27;
 
-    /// Bits [26:26], mask 0x04000000
+    /// **QSPI_SCK**
+    /// Bits `[26:26]`, mask `0x04000000`
     pub const QSPI_SCK_OFFSET: u32 = 26;
     pub const QSPI_SCK_MASK: u32 = 0x04000000;
     pub const QSPI_SCK: u32 = 1 << 26;
 
-    /// Bits [25:25], mask 0x02000000
+    /// **USB_DM**
+    /// Bits `[25:25]`, mask `0x02000000`
     pub const USB_DM_OFFSET: u32 = 25;
     pub const USB_DM_MASK: u32 = 0x02000000;
     pub const USB_DM: u32 = 1 << 25;
 
-    /// Bits [24:24], mask 0x01000000
+    /// **USB_DP**
+    /// Bits `[24:24]`, mask `0x01000000`
     pub const USB_DP_OFFSET: u32 = 24;
     pub const USB_DP_MASK: u32 = 0x01000000;
     pub const USB_DP: u32 = 1 << 24;
 
-    /// Bits [15:0], mask 0x0000ffff
+    /// **GPIO**
+    /// Bits `[15:0]`, mask `0x0000ffff`
     pub const GPIO_OFFSET: u32 = 0;
     pub const GPIO_MASK: u32 = 0x0000ffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **QSPI_SD** [31:28]
-    /// Write QSPI_SD field (write-only)
+    /// **QSPI_SD** `[31:28]` (WO)
+    /// Write **QSPI_SD** `[31:28]` (WO)
     #[inline(always)]
     pub fn write_qspi_sd(&self, value: u32) {
-        self.write_bits((value << Self::QSPI_SD_OFFSET) & Self::QSPI_SD_MASK);
+        self.value.write_bits((value << Self::QSPI_SD_OFFSET) & Self::QSPI_SD_MASK);
     }
 
-    /// **QSPI_CSN** [27:27]
-    /// Trigger QSPI_CSN (write-only)
+    /// **QSPI_CSN** `[27]` (WO)
+    /// Trigger **QSPI_CSN** (WO)
     #[inline(always)]
     pub fn trigger_qspi_csn(&self) {
-        self.write_bits(Self::QSPI_CSN_MASK);
+        self.value.write_bits(Self::QSPI_CSN_MASK);
     }
 
-    /// **QSPI_SCK** [26:26]
-    /// Trigger QSPI_SCK (write-only)
+    /// **QSPI_SCK** `[26]` (WO)
+    /// Trigger **QSPI_SCK** (WO)
     #[inline(always)]
     pub fn trigger_qspi_sck(&self) {
-        self.write_bits(Self::QSPI_SCK_MASK);
+        self.value.write_bits(Self::QSPI_SCK_MASK);
     }
 
-    /// **USB_DM** [25:25]
-    /// Trigger USB_DM (write-only)
+    /// **USB_DM** `[25]` (WO)
+    /// Trigger **USB_DM** (WO)
     #[inline(always)]
     pub fn trigger_usb_dm(&self) {
-        self.write_bits(Self::USB_DM_MASK);
+        self.value.write_bits(Self::USB_DM_MASK);
     }
 
-    /// **USB_DP** [24:24]
-    /// Trigger USB_DP (write-only)
+    /// **USB_DP** `[24]` (WO)
+    /// Trigger **USB_DP** (WO)
     #[inline(always)]
     pub fn trigger_usb_dp(&self) {
-        self.write_bits(Self::USB_DP_MASK);
+        self.value.write_bits(Self::USB_DP_MASK);
     }
 
-    /// **GPIO** [15:0]
-    /// Write GPIO field (write-only)
+    /// **GPIO** `[15:0]` (WO)
+    /// Write **GPIO** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_gpio(&self, value: u32) {
-        self.write_bits((value << Self::GPIO_OFFSET) & Self::GPIO_MASK);
+        self.value.write_bits((value << Self::GPIO_OFFSET) & Self::GPIO_MASK);
     }
 
 }
@@ -3171,7 +2704,7 @@ impl GpioHiOeSetVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Set QSPI_SD [31:28]
+    /// Set **QSPI_SD** `[31:28]`
     #[inline(always)]
     pub const fn with_qspi_sd(self, value: u32) -> Self {
         Self {
@@ -3179,7 +2712,7 @@ impl GpioHiOeSetVal {
         }
     }
 
-    /// Set QSPI_CSN [27:27]
+    /// Set **QSPI_CSN** `[27:27]`
     #[inline(always)]
     pub const fn with_qspi_csn(self, value: bool) -> Self {
         Self {
@@ -3191,7 +2724,7 @@ impl GpioHiOeSetVal {
         }
     }
 
-    /// Set QSPI_SCK [26:26]
+    /// Set **QSPI_SCK** `[26:26]`
     #[inline(always)]
     pub const fn with_qspi_sck(self, value: bool) -> Self {
         Self {
@@ -3203,7 +2736,7 @@ impl GpioHiOeSetVal {
         }
     }
 
-    /// Set USB_DM [25:25]
+    /// Set **USB_DM** `[25:25]`
     #[inline(always)]
     pub const fn with_usb_dm(self, value: bool) -> Self {
         Self {
@@ -3215,7 +2748,7 @@ impl GpioHiOeSetVal {
         }
     }
 
-    /// Set USB_DP [24:24]
+    /// Set **USB_DP** `[24:24]`
     #[inline(always)]
     pub const fn with_usb_dp(self, value: bool) -> Self {
         Self {
@@ -3227,7 +2760,7 @@ impl GpioHiOeSetVal {
         }
     }
 
-    /// Set GPIO [15:0]
+    /// Set **GPIO** `[15:0]`
     #[inline(always)]
     pub const fn with_gpio(self, value: u32) -> Self {
         Self {
@@ -3246,20 +2779,20 @@ impl Default for GpioHiOeSetVal {
 impl GpioHiOeSet {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> GpioHiOeSetVal {
-        GpioHiOeSetVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> GpioHiOeSetVal {
+        GpioHiOeSetVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: GpioHiOeSetVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: GpioHiOeSetVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(GpioHiOeSetVal) -> GpioHiOeSetVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(GpioHiOeSetVal) -> GpioHiOeSetVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -3273,77 +2806,39 @@ impl GpioHiOeSet {
 ///
 /// ## Fields
 ///
-/// - **GPIO_OE_CLR** [31:0] (WO): Perform an atomic bit-clear on GPIO_OE, i.e. `GPIO_OE &= ~wdata`
+/// - **GPIO_OE_CLR** `[31:0]` (WO)
+///   Perform an atomic bit-clear on GPIO_OE, i.e. `GPIO_OE &= ~wdata`
 #[repr(transparent)]
 pub struct GpioOeClr {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for GpioOeClr {}
-unsafe impl Sync for GpioOeClr {}
+impl core::ops::Deref for GpioOeClr {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl GpioOeClr {
     // ======== Field Constants ========
 
-    /// GPIO_OE_CLR - Perform an atomic bit-clear on GPIO_OE, i.e. `GPIO_OE &= ~wdata`
-    /// Bits [31:0], mask 0xffffffff
+    /// **GPIO_OE_CLR**
+    /// Perform an atomic bit-clear on GPIO_OE, i.e. `GPIO_OE &= ~wdata`
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const GPIO_OE_CLR_OFFSET: u32 = 0;
     pub const GPIO_OE_CLR_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **GPIO_OE_CLR** [31:0]: Perform an atomic bit-clear on GPIO_OE, i.e. `GPIO_OE &= ~wdata`
-    /// Write GPIO_OE_CLR field (write-only)
+    /// **GPIO_OE_CLR** `[31:0]` (WO)
+    /// Perform an atomic bit-clear on GPIO_OE, i.e. `GPIO_OE &= ~wdata`
+    /// Write **GPIO_OE_CLR** `[31:0]` (WO)
+    /// Perform an atomic bit-clear on GPIO_OE, i.e. `GPIO_OE &= ~wdata`
     #[inline(always)]
     pub fn write_gpio_oe_clr(&self, value: u32) {
-        self.write_bits((value << Self::GPIO_OE_CLR_OFFSET) & Self::GPIO_OE_CLR_MASK);
+        self.value.write_bits((value << Self::GPIO_OE_CLR_OFFSET) & Self::GPIO_OE_CLR_MASK);
     }
 
 }
@@ -3376,7 +2871,8 @@ impl GpioOeClrVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Set GPIO_OE_CLR [31:0]: Perform an atomic bit-clear on GPIO_OE, i.e. `GPIO_OE &= ~wdata`
+    /// Set **GPIO_OE_CLR** `[31:0]`
+    /// Perform an atomic bit-clear on GPIO_OE, i.e. `GPIO_OE &= ~wdata`
     #[inline(always)]
     pub const fn with_gpio_oe_clr(self, value: u32) -> Self {
         Self {
@@ -3395,168 +2891,132 @@ impl Default for GpioOeClrVal {
 impl GpioOeClr {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> GpioOeClrVal {
-        GpioOeClrVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> GpioOeClrVal {
+        GpioOeClrVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: GpioOeClrVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: GpioOeClrVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(GpioOeClrVal) -> GpioOeClrVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(GpioOeClrVal) -> GpioOeClrVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// GPIO_HI_OE_CLR Register
 ///
-/// Output enable clear for GPIO32...47, QSPI IOs and USB pins. Perform an
-/// atomic bit-clear on GPIO_HI_OE, i.e. `GPIO_HI_OE &= ~wdata`
+/// Output enable clear for GPIO32...47, QSPI IOs and USB pins.
+/// Perform an atomic bit-clear on GPIO_HI_OE, i.e. `GPIO_HI_OE &= ~wdata`
 ///
 /// Address offset: 0x0044
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **QSPI_SD** [31:28] (WO): 
-/// - **QSPI_CSN** [27] (WO): 
-/// - **QSPI_SCK** [26] (WO): 
-/// - **USB_DM** [25] (WO): 
-/// - **USB_DP** [24] (WO): 
-/// - **GPIO** [15:0] (WO): 
+/// - **QSPI_SD** `[31:28]` (WO)
+/// - **QSPI_CSN** `[27]` (WO)
+/// - **QSPI_SCK** `[26]` (WO)
+/// - **USB_DM** `[25]` (WO)
+/// - **USB_DP** `[24]` (WO)
+/// - **GPIO** `[15:0]` (WO)
 #[repr(transparent)]
 pub struct GpioHiOeClr {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for GpioHiOeClr {}
-unsafe impl Sync for GpioHiOeClr {}
+impl core::ops::Deref for GpioHiOeClr {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl GpioHiOeClr {
     // ======== Field Constants ========
 
-    /// Bits [31:28], mask 0xf0000000
+    /// **QSPI_SD**
+    /// Bits `[31:28]`, mask `0xf0000000`
     pub const QSPI_SD_OFFSET: u32 = 28;
     pub const QSPI_SD_MASK: u32 = 0xf0000000;
 
-    /// Bits [27:27], mask 0x08000000
+    /// **QSPI_CSN**
+    /// Bits `[27:27]`, mask `0x08000000`
     pub const QSPI_CSN_OFFSET: u32 = 27;
     pub const QSPI_CSN_MASK: u32 = 0x08000000;
     pub const QSPI_CSN: u32 = 1 << 27;
 
-    /// Bits [26:26], mask 0x04000000
+    /// **QSPI_SCK**
+    /// Bits `[26:26]`, mask `0x04000000`
     pub const QSPI_SCK_OFFSET: u32 = 26;
     pub const QSPI_SCK_MASK: u32 = 0x04000000;
     pub const QSPI_SCK: u32 = 1 << 26;
 
-    /// Bits [25:25], mask 0x02000000
+    /// **USB_DM**
+    /// Bits `[25:25]`, mask `0x02000000`
     pub const USB_DM_OFFSET: u32 = 25;
     pub const USB_DM_MASK: u32 = 0x02000000;
     pub const USB_DM: u32 = 1 << 25;
 
-    /// Bits [24:24], mask 0x01000000
+    /// **USB_DP**
+    /// Bits `[24:24]`, mask `0x01000000`
     pub const USB_DP_OFFSET: u32 = 24;
     pub const USB_DP_MASK: u32 = 0x01000000;
     pub const USB_DP: u32 = 1 << 24;
 
-    /// Bits [15:0], mask 0x0000ffff
+    /// **GPIO**
+    /// Bits `[15:0]`, mask `0x0000ffff`
     pub const GPIO_OFFSET: u32 = 0;
     pub const GPIO_MASK: u32 = 0x0000ffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **QSPI_SD** [31:28]
-    /// Write QSPI_SD field (write-only)
+    /// **QSPI_SD** `[31:28]` (WO)
+    /// Write **QSPI_SD** `[31:28]` (WO)
     #[inline(always)]
     pub fn write_qspi_sd(&self, value: u32) {
-        self.write_bits((value << Self::QSPI_SD_OFFSET) & Self::QSPI_SD_MASK);
+        self.value.write_bits((value << Self::QSPI_SD_OFFSET) & Self::QSPI_SD_MASK);
     }
 
-    /// **QSPI_CSN** [27:27]
-    /// Trigger QSPI_CSN (write-only)
+    /// **QSPI_CSN** `[27]` (WO)
+    /// Trigger **QSPI_CSN** (WO)
     #[inline(always)]
     pub fn trigger_qspi_csn(&self) {
-        self.write_bits(Self::QSPI_CSN_MASK);
+        self.value.write_bits(Self::QSPI_CSN_MASK);
     }
 
-    /// **QSPI_SCK** [26:26]
-    /// Trigger QSPI_SCK (write-only)
+    /// **QSPI_SCK** `[26]` (WO)
+    /// Trigger **QSPI_SCK** (WO)
     #[inline(always)]
     pub fn trigger_qspi_sck(&self) {
-        self.write_bits(Self::QSPI_SCK_MASK);
+        self.value.write_bits(Self::QSPI_SCK_MASK);
     }
 
-    /// **USB_DM** [25:25]
-    /// Trigger USB_DM (write-only)
+    /// **USB_DM** `[25]` (WO)
+    /// Trigger **USB_DM** (WO)
     #[inline(always)]
     pub fn trigger_usb_dm(&self) {
-        self.write_bits(Self::USB_DM_MASK);
+        self.value.write_bits(Self::USB_DM_MASK);
     }
 
-    /// **USB_DP** [24:24]
-    /// Trigger USB_DP (write-only)
+    /// **USB_DP** `[24]` (WO)
+    /// Trigger **USB_DP** (WO)
     #[inline(always)]
     pub fn trigger_usb_dp(&self) {
-        self.write_bits(Self::USB_DP_MASK);
+        self.value.write_bits(Self::USB_DP_MASK);
     }
 
-    /// **GPIO** [15:0]
-    /// Write GPIO field (write-only)
+    /// **GPIO** `[15:0]` (WO)
+    /// Write **GPIO** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_gpio(&self, value: u32) {
-        self.write_bits((value << Self::GPIO_OFFSET) & Self::GPIO_MASK);
+        self.value.write_bits((value << Self::GPIO_OFFSET) & Self::GPIO_MASK);
     }
 
 }
@@ -3589,7 +3049,7 @@ impl GpioHiOeClrVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Set QSPI_SD [31:28]
+    /// Set **QSPI_SD** `[31:28]`
     #[inline(always)]
     pub const fn with_qspi_sd(self, value: u32) -> Self {
         Self {
@@ -3597,7 +3057,7 @@ impl GpioHiOeClrVal {
         }
     }
 
-    /// Set QSPI_CSN [27:27]
+    /// Set **QSPI_CSN** `[27:27]`
     #[inline(always)]
     pub const fn with_qspi_csn(self, value: bool) -> Self {
         Self {
@@ -3609,7 +3069,7 @@ impl GpioHiOeClrVal {
         }
     }
 
-    /// Set QSPI_SCK [26:26]
+    /// Set **QSPI_SCK** `[26:26]`
     #[inline(always)]
     pub const fn with_qspi_sck(self, value: bool) -> Self {
         Self {
@@ -3621,7 +3081,7 @@ impl GpioHiOeClrVal {
         }
     }
 
-    /// Set USB_DM [25:25]
+    /// Set **USB_DM** `[25:25]`
     #[inline(always)]
     pub const fn with_usb_dm(self, value: bool) -> Self {
         Self {
@@ -3633,7 +3093,7 @@ impl GpioHiOeClrVal {
         }
     }
 
-    /// Set USB_DP [24:24]
+    /// Set **USB_DP** `[24:24]`
     #[inline(always)]
     pub const fn with_usb_dp(self, value: bool) -> Self {
         Self {
@@ -3645,7 +3105,7 @@ impl GpioHiOeClrVal {
         }
     }
 
-    /// Set GPIO [15:0]
+    /// Set **GPIO** `[15:0]`
     #[inline(always)]
     pub const fn with_gpio(self, value: u32) -> Self {
         Self {
@@ -3664,20 +3124,20 @@ impl Default for GpioHiOeClrVal {
 impl GpioHiOeClr {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> GpioHiOeClrVal {
-        GpioHiOeClrVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> GpioHiOeClrVal {
+        GpioHiOeClrVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: GpioHiOeClrVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: GpioHiOeClrVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(GpioHiOeClrVal) -> GpioHiOeClrVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(GpioHiOeClrVal) -> GpioHiOeClrVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -3691,77 +3151,39 @@ impl GpioHiOeClr {
 ///
 /// ## Fields
 ///
-/// - **GPIO_OE_XOR** [31:0] (WO): Perform an atomic bitwise XOR on GPIO_OE, i.e. `GPIO_OE ^= wdata`
+/// - **GPIO_OE_XOR** `[31:0]` (WO)
+///   Perform an atomic bitwise XOR on GPIO_OE, i.e. `GPIO_OE ^= wdata`
 #[repr(transparent)]
 pub struct GpioOeXor {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for GpioOeXor {}
-unsafe impl Sync for GpioOeXor {}
+impl core::ops::Deref for GpioOeXor {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl GpioOeXor {
     // ======== Field Constants ========
 
-    /// GPIO_OE_XOR - Perform an atomic bitwise XOR on GPIO_OE, i.e. `GPIO_OE ^= wdata`
-    /// Bits [31:0], mask 0xffffffff
+    /// **GPIO_OE_XOR**
+    /// Perform an atomic bitwise XOR on GPIO_OE, i.e. `GPIO_OE ^= wdata`
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const GPIO_OE_XOR_OFFSET: u32 = 0;
     pub const GPIO_OE_XOR_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **GPIO_OE_XOR** [31:0]: Perform an atomic bitwise XOR on GPIO_OE, i.e. `GPIO_OE ^= wdata`
-    /// Write GPIO_OE_XOR field (write-only)
+    /// **GPIO_OE_XOR** `[31:0]` (WO)
+    /// Perform an atomic bitwise XOR on GPIO_OE, i.e. `GPIO_OE ^= wdata`
+    /// Write **GPIO_OE_XOR** `[31:0]` (WO)
+    /// Perform an atomic bitwise XOR on GPIO_OE, i.e. `GPIO_OE ^= wdata`
     #[inline(always)]
     pub fn write_gpio_oe_xor(&self, value: u32) {
-        self.write_bits((value << Self::GPIO_OE_XOR_OFFSET) & Self::GPIO_OE_XOR_MASK);
+        self.value.write_bits((value << Self::GPIO_OE_XOR_OFFSET) & Self::GPIO_OE_XOR_MASK);
     }
 
 }
@@ -3794,7 +3216,8 @@ impl GpioOeXorVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Set GPIO_OE_XOR [31:0]: Perform an atomic bitwise XOR on GPIO_OE, i.e. `GPIO_OE ^= wdata`
+    /// Set **GPIO_OE_XOR** `[31:0]`
+    /// Perform an atomic bitwise XOR on GPIO_OE, i.e. `GPIO_OE ^= wdata`
     #[inline(always)]
     pub const fn with_gpio_oe_xor(self, value: u32) -> Self {
         Self {
@@ -3813,168 +3236,132 @@ impl Default for GpioOeXorVal {
 impl GpioOeXor {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> GpioOeXorVal {
-        GpioOeXorVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> GpioOeXorVal {
+        GpioOeXorVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: GpioOeXorVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: GpioOeXorVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(GpioOeXorVal) -> GpioOeXorVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(GpioOeXorVal) -> GpioOeXorVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// GPIO_HI_OE_XOR Register
 ///
-/// Output enable XOR for GPIO32...47, QSPI IOs and USB pins. Perform an atomic
-/// bitwise XOR on GPIO_HI_OE, i.e. `GPIO_HI_OE ^= wdata`
+/// Output enable XOR for GPIO32...47, QSPI IOs and USB pins.
+/// Perform an atomic bitwise XOR on GPIO_HI_OE, i.e. `GPIO_HI_OE ^= wdata`
 ///
 /// Address offset: 0x004c
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **QSPI_SD** [31:28] (WO): 
-/// - **QSPI_CSN** [27] (WO): 
-/// - **QSPI_SCK** [26] (WO): 
-/// - **USB_DM** [25] (WO): 
-/// - **USB_DP** [24] (WO): 
-/// - **GPIO** [15:0] (WO): 
+/// - **QSPI_SD** `[31:28]` (WO)
+/// - **QSPI_CSN** `[27]` (WO)
+/// - **QSPI_SCK** `[26]` (WO)
+/// - **USB_DM** `[25]` (WO)
+/// - **USB_DP** `[24]` (WO)
+/// - **GPIO** `[15:0]` (WO)
 #[repr(transparent)]
 pub struct GpioHiOeXor {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for GpioHiOeXor {}
-unsafe impl Sync for GpioHiOeXor {}
+impl core::ops::Deref for GpioHiOeXor {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl GpioHiOeXor {
     // ======== Field Constants ========
 
-    /// Bits [31:28], mask 0xf0000000
+    /// **QSPI_SD**
+    /// Bits `[31:28]`, mask `0xf0000000`
     pub const QSPI_SD_OFFSET: u32 = 28;
     pub const QSPI_SD_MASK: u32 = 0xf0000000;
 
-    /// Bits [27:27], mask 0x08000000
+    /// **QSPI_CSN**
+    /// Bits `[27:27]`, mask `0x08000000`
     pub const QSPI_CSN_OFFSET: u32 = 27;
     pub const QSPI_CSN_MASK: u32 = 0x08000000;
     pub const QSPI_CSN: u32 = 1 << 27;
 
-    /// Bits [26:26], mask 0x04000000
+    /// **QSPI_SCK**
+    /// Bits `[26:26]`, mask `0x04000000`
     pub const QSPI_SCK_OFFSET: u32 = 26;
     pub const QSPI_SCK_MASK: u32 = 0x04000000;
     pub const QSPI_SCK: u32 = 1 << 26;
 
-    /// Bits [25:25], mask 0x02000000
+    /// **USB_DM**
+    /// Bits `[25:25]`, mask `0x02000000`
     pub const USB_DM_OFFSET: u32 = 25;
     pub const USB_DM_MASK: u32 = 0x02000000;
     pub const USB_DM: u32 = 1 << 25;
 
-    /// Bits [24:24], mask 0x01000000
+    /// **USB_DP**
+    /// Bits `[24:24]`, mask `0x01000000`
     pub const USB_DP_OFFSET: u32 = 24;
     pub const USB_DP_MASK: u32 = 0x01000000;
     pub const USB_DP: u32 = 1 << 24;
 
-    /// Bits [15:0], mask 0x0000ffff
+    /// **GPIO**
+    /// Bits `[15:0]`, mask `0x0000ffff`
     pub const GPIO_OFFSET: u32 = 0;
     pub const GPIO_MASK: u32 = 0x0000ffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **QSPI_SD** [31:28]
-    /// Write QSPI_SD field (write-only)
+    /// **QSPI_SD** `[31:28]` (WO)
+    /// Write **QSPI_SD** `[31:28]` (WO)
     #[inline(always)]
     pub fn write_qspi_sd(&self, value: u32) {
-        self.write_bits((value << Self::QSPI_SD_OFFSET) & Self::QSPI_SD_MASK);
+        self.value.write_bits((value << Self::QSPI_SD_OFFSET) & Self::QSPI_SD_MASK);
     }
 
-    /// **QSPI_CSN** [27:27]
-    /// Trigger QSPI_CSN (write-only)
+    /// **QSPI_CSN** `[27]` (WO)
+    /// Trigger **QSPI_CSN** (WO)
     #[inline(always)]
     pub fn trigger_qspi_csn(&self) {
-        self.write_bits(Self::QSPI_CSN_MASK);
+        self.value.write_bits(Self::QSPI_CSN_MASK);
     }
 
-    /// **QSPI_SCK** [26:26]
-    /// Trigger QSPI_SCK (write-only)
+    /// **QSPI_SCK** `[26]` (WO)
+    /// Trigger **QSPI_SCK** (WO)
     #[inline(always)]
     pub fn trigger_qspi_sck(&self) {
-        self.write_bits(Self::QSPI_SCK_MASK);
+        self.value.write_bits(Self::QSPI_SCK_MASK);
     }
 
-    /// **USB_DM** [25:25]
-    /// Trigger USB_DM (write-only)
+    /// **USB_DM** `[25]` (WO)
+    /// Trigger **USB_DM** (WO)
     #[inline(always)]
     pub fn trigger_usb_dm(&self) {
-        self.write_bits(Self::USB_DM_MASK);
+        self.value.write_bits(Self::USB_DM_MASK);
     }
 
-    /// **USB_DP** [24:24]
-    /// Trigger USB_DP (write-only)
+    /// **USB_DP** `[24]` (WO)
+    /// Trigger **USB_DP** (WO)
     #[inline(always)]
     pub fn trigger_usb_dp(&self) {
-        self.write_bits(Self::USB_DP_MASK);
+        self.value.write_bits(Self::USB_DP_MASK);
     }
 
-    /// **GPIO** [15:0]
-    /// Write GPIO field (write-only)
+    /// **GPIO** `[15:0]` (WO)
+    /// Write **GPIO** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_gpio(&self, value: u32) {
-        self.write_bits((value << Self::GPIO_OFFSET) & Self::GPIO_MASK);
+        self.value.write_bits((value << Self::GPIO_OFFSET) & Self::GPIO_MASK);
     }
 
 }
@@ -4007,7 +3394,7 @@ impl GpioHiOeXorVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Set QSPI_SD [31:28]
+    /// Set **QSPI_SD** `[31:28]`
     #[inline(always)]
     pub const fn with_qspi_sd(self, value: u32) -> Self {
         Self {
@@ -4015,7 +3402,7 @@ impl GpioHiOeXorVal {
         }
     }
 
-    /// Set QSPI_CSN [27:27]
+    /// Set **QSPI_CSN** `[27:27]`
     #[inline(always)]
     pub const fn with_qspi_csn(self, value: bool) -> Self {
         Self {
@@ -4027,7 +3414,7 @@ impl GpioHiOeXorVal {
         }
     }
 
-    /// Set QSPI_SCK [26:26]
+    /// Set **QSPI_SCK** `[26:26]`
     #[inline(always)]
     pub const fn with_qspi_sck(self, value: bool) -> Self {
         Self {
@@ -4039,7 +3426,7 @@ impl GpioHiOeXorVal {
         }
     }
 
-    /// Set USB_DM [25:25]
+    /// Set **USB_DM** `[25:25]`
     #[inline(always)]
     pub const fn with_usb_dm(self, value: bool) -> Self {
         Self {
@@ -4051,7 +3438,7 @@ impl GpioHiOeXorVal {
         }
     }
 
-    /// Set USB_DP [24:24]
+    /// Set **USB_DP** `[24:24]`
     #[inline(always)]
     pub const fn with_usb_dp(self, value: bool) -> Self {
         Self {
@@ -4063,7 +3450,7 @@ impl GpioHiOeXorVal {
         }
     }
 
-    /// Set GPIO [15:0]
+    /// Set **GPIO** `[15:0]`
     #[inline(always)]
     pub const fn with_gpio(self, value: u32) -> Self {
         Self {
@@ -4082,172 +3469,141 @@ impl Default for GpioHiOeXorVal {
 impl GpioHiOeXor {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> GpioHiOeXorVal {
-        GpioHiOeXorVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> GpioHiOeXorVal {
+        GpioHiOeXorVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: GpioHiOeXorVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: GpioHiOeXorVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(GpioHiOeXorVal) -> GpioHiOeXorVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(GpioHiOeXorVal) -> GpioHiOeXorVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// FIFO_ST Register
 ///
-/// Status register for inter-core FIFOs (mailboxes). There is one FIFO in the
-/// core 0 -> core 1 direction, and one core 1 -> core 0. Both are 32 bits wide
-/// and 8 words deep. Core 0 can see the read side of the 1->0 FIFO (RX), and
-/// the write side of 0->1 FIFO (TX). Core 1 can see the read side of the 0->1
-/// FIFO (RX), and the write side of 1->0 FIFO (TX). The SIO IRQ for each core
-/// is the logical OR of the VLD, WOF and ROE fields of its FIFO_ST register.
+/// Status register for inter-core FIFOs (mailboxes).
+/// There is one FIFO in the core 0 -> core 1 direction, and one core 1 -> core 0. Both are 32 bits wide and 8 words deep.
+/// Core 0 can see the read side of the 1->0 FIFO (RX), and the write side of 0->1 FIFO (TX).
+/// Core 1 can see the read side of the 0->1 FIFO (RX), and the write side of 1->0 FIFO (TX).
+/// The SIO IRQ for each core is the logical OR of the VLD, WOF and ROE fields of its FIFO_ST register.
 ///
 /// Address offset: 0x0050
 /// Reset value: 0x00000002
 ///
 /// ## Fields
 ///
-/// - **ROE** [3] (RW): Sticky flag indicating the RX FIFO was read when empty. This read was ignor...
-/// - **WOF** [2] (RW): Sticky flag indicating the TX FIFO was written when full. This write was ig...
-/// - **RDY** [1] (RO): Value is 1 if this core's TX FIFO is not full (i.e. if FIFO_WR is ready for...
-/// - **VLD** [0] (RO): Value is 1 if this core's RX FIFO is not empty (i.e. if FIFO_RD is valid)
+/// - **ROE** `[3]` (RW)
+///   Sticky flag indicating the RX FIFO was read when empty. This read was ignored by the FIFO.
+/// - **WOF** `[2]` (RW)
+///   Sticky flag indicating the TX FIFO was written when full. This write was ignored by the FIFO.
+/// - **RDY** `[1]` (RO)
+///   Value is 1 if this core's TX FIFO is not full (i.e. if FIFO_WR is ready for more data)
+/// - **VLD** `[0]` (RO)
+///   Value is 1 if this core's RX FIFO is not empty (i.e. if FIFO_RD is valid)
 #[repr(transparent)]
 pub struct FifoSt {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for FifoSt {}
-unsafe impl Sync for FifoSt {}
+impl core::ops::Deref for FifoSt {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl FifoSt {
     // ======== Field Constants ========
 
-    /// ROE - Sticky flag indicating the RX FIFO was read when empty. This read was ignor...
-    /// Bits [3:3], mask 0x00000008
+    /// **ROE**
+    /// Sticky flag indicating the RX FIFO was read when empty. This read was ignored by the FIFO.
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const ROE_OFFSET: u32 = 3;
     pub const ROE_MASK: u32 = 0x00000008;
     pub const ROE: u32 = 1 << 3;
 
-    /// WOF - Sticky flag indicating the TX FIFO was written when full. This write was ig...
-    /// Bits [2:2], mask 0x00000004
+    /// **WOF**
+    /// Sticky flag indicating the TX FIFO was written when full. This write was ignored by the FIFO.
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const WOF_OFFSET: u32 = 2;
     pub const WOF_MASK: u32 = 0x00000004;
     pub const WOF: u32 = 1 << 2;
 
-    /// RDY - Value is 1 if this core's TX FIFO is not full (i.e. if FIFO_WR is ready for...
-    /// Bits [1:1], mask 0x00000002
+    /// **RDY**
+    /// Value is 1 if this core's TX FIFO is not full (i.e. if FIFO_WR is ready for more data)
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const RDY_OFFSET: u32 = 1;
     pub const RDY_MASK: u32 = 0x00000002;
     pub const RDY: u32 = 1 << 1;
 
-    /// VLD - Value is 1 if this core's RX FIFO is not empty (i.e. if FIFO_RD is valid)
-    /// Bits [0:0], mask 0x00000001
+    /// **VLD**
+    /// Value is 1 if this core's RX FIFO is not empty (i.e. if FIFO_RD is valid)
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const VLD_OFFSET: u32 = 0;
     pub const VLD_MASK: u32 = 0x00000001;
     pub const VLD: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ROE** [3:3]: Sticky flag indicating the RX FIFO was read when empty. This read was ignor...
+    /// **ROE** `[3]` (RW)
+    /// Sticky flag indicating the RX FIFO was read when empty. This read was ignored by the FIFO.
     #[inline(always)]
     pub fn roe(&self) -> bool {
-        (self.read_bits() & Self::ROE_MASK) != 0
+        (self.value.read_bits() & Self::ROE_MASK) != 0
     }
 
-    /// Set ROE bit
+    /// Set ROE bit atomically (RW)
     #[inline(always)]
     pub fn set_roe(&self) {
-        self.set_bits(Self::ROE_MASK);
+        self.value.set_bits(Self::ROE_MASK);
     }
 
-    /// Clear ROE bit
+    /// Clear ROE bit atomically (RW)
     #[inline(always)]
     pub fn clr_roe(&self) {
-        self.clr_bits(Self::ROE_MASK);
+        self.value.clr_bits(Self::ROE_MASK);
     }
 
-    /// **WOF** [2:2]: Sticky flag indicating the TX FIFO was written when full. This write was ig...
+    /// **WOF** `[2]` (RW)
+    /// Sticky flag indicating the TX FIFO was written when full. This write was ignored by the FIFO.
     #[inline(always)]
     pub fn wof(&self) -> bool {
-        (self.read_bits() & Self::WOF_MASK) != 0
+        (self.value.read_bits() & Self::WOF_MASK) != 0
     }
 
-    /// Set WOF bit
+    /// Set WOF bit atomically (RW)
     #[inline(always)]
     pub fn set_wof(&self) {
-        self.set_bits(Self::WOF_MASK);
+        self.value.set_bits(Self::WOF_MASK);
     }
 
-    /// Clear WOF bit
+    /// Clear WOF bit atomically (RW)
     #[inline(always)]
     pub fn clr_wof(&self) {
-        self.clr_bits(Self::WOF_MASK);
+        self.value.clr_bits(Self::WOF_MASK);
     }
 
-    /// **RDY** [1:1]: Value is 1 if this core's TX FIFO is not full (i.e. if FIFO_WR is ready for...
+    /// **RDY** `[1]` (RO)
+    /// Value is 1 if this core's TX FIFO is not full (i.e. if FIFO_WR is ready for more data)
     #[inline(always)]
     pub fn rdy(&self) -> bool {
-        (self.read_bits() & Self::RDY_MASK) != 0
+        (self.value.read_bits() & Self::RDY_MASK) != 0
     }
 
-    /// **VLD** [0:0]: Value is 1 if this core's RX FIFO is not empty (i.e. if FIFO_RD is valid)
+    /// **VLD** `[0]` (RO)
+    /// Value is 1 if this core's RX FIFO is not empty (i.e. if FIFO_RD is valid)
     #[inline(always)]
     pub fn vld(&self) -> bool {
-        (self.read_bits() & Self::VLD_MASK) != 0
+        (self.value.read_bits() & Self::VLD_MASK) != 0
     }
 
 }
@@ -4280,31 +3636,36 @@ impl FifoStVal {
         Self { bits: 0x00000002 }
     }
 
-    /// Read ROE [3:3]: Sticky flag indicating the RX FIFO was read when empty. This read was ignor...
+    /// Read **ROE** `[3:3]`
+    /// Sticky flag indicating the RX FIFO was read when empty. This read was ignored by the FIFO.
     #[inline(always)]
     pub const fn roe(&self) -> bool {
         (self.bits & FifoSt::ROE_MASK) != 0
     }
 
-    /// Read WOF [2:2]: Sticky flag indicating the TX FIFO was written when full. This write was ig...
+    /// Read **WOF** `[2:2]`
+    /// Sticky flag indicating the TX FIFO was written when full. This write was ignored by the FIFO.
     #[inline(always)]
     pub const fn wof(&self) -> bool {
         (self.bits & FifoSt::WOF_MASK) != 0
     }
 
-    /// Read RDY [1:1]: Value is 1 if this core's TX FIFO is not full (i.e. if FIFO_WR is ready for...
+    /// Read **RDY** `[1:1]`
+    /// Value is 1 if this core's TX FIFO is not full (i.e. if FIFO_WR is ready for more data)
     #[inline(always)]
     pub const fn rdy(&self) -> bool {
         (self.bits & FifoSt::RDY_MASK) != 0
     }
 
-    /// Read VLD [0:0]: Value is 1 if this core's RX FIFO is not empty (i.e. if FIFO_RD is valid)
+    /// Read **VLD** `[0:0]`
+    /// Value is 1 if this core's RX FIFO is not empty (i.e. if FIFO_RD is valid)
     #[inline(always)]
     pub const fn vld(&self) -> bool {
         (self.bits & FifoSt::VLD_MASK) != 0
     }
 
-    /// Set ROE [3:3]: Sticky flag indicating the RX FIFO was read when empty. This read was ignor...
+    /// Set **ROE** `[3:3]`
+    /// Sticky flag indicating the RX FIFO was read when empty. This read was ignored by the FIFO.
     #[inline(always)]
     pub const fn with_roe(self, value: bool) -> Self {
         Self {
@@ -4316,7 +3677,8 @@ impl FifoStVal {
         }
     }
 
-    /// Set WOF [2:2]: Sticky flag indicating the TX FIFO was written when full. This write was ig...
+    /// Set **WOF** `[2:2]`
+    /// Sticky flag indicating the TX FIFO was written when full. This write was ignored by the FIFO.
     #[inline(always)]
     pub const fn with_wof(self, value: bool) -> Self {
         Self {
@@ -4339,20 +3701,20 @@ impl Default for FifoStVal {
 impl FifoSt {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> FifoStVal {
-        FifoStVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> FifoStVal {
+        FifoStVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: FifoStVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: FifoStVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(FifoStVal) -> FifoStVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(FifoStVal) -> FifoStVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -4366,76 +3728,35 @@ impl FifoSt {
 ///
 /// ## Fields
 ///
-/// - **FIFO_WR** [31:0] (WO): 
+/// - **FIFO_WR** `[31:0]` (WO)
 #[repr(transparent)]
 pub struct FifoWr {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for FifoWr {}
-unsafe impl Sync for FifoWr {}
+impl core::ops::Deref for FifoWr {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl FifoWr {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **FIFO_WR**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const FIFO_WR_OFFSET: u32 = 0;
     pub const FIFO_WR_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **FIFO_WR** [31:0]
-    /// Write FIFO_WR field (write-only)
+    /// **FIFO_WR** `[31:0]` (WO)
+    /// Write **FIFO_WR** `[31:0]` (WO)
     #[inline(always)]
     pub fn write_fifo_wr(&self, value: u32) {
-        self.write_bits((value << Self::FIFO_WR_OFFSET) & Self::FIFO_WR_MASK);
+        self.value.write_bits((value << Self::FIFO_WR_OFFSET) & Self::FIFO_WR_MASK);
     }
 
 }
@@ -4468,7 +3789,7 @@ impl FifoWrVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Set FIFO_WR [31:0]
+    /// Set **FIFO_WR** `[31:0]`
     #[inline(always)]
     pub const fn with_fifo_wr(self, value: u32) -> Self {
         Self {
@@ -4487,20 +3808,20 @@ impl Default for FifoWrVal {
 impl FifoWr {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> FifoWrVal {
-        FifoWrVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> FifoWrVal {
+        FifoWrVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: FifoWrVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: FifoWrVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(FifoWrVal) -> FifoWrVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(FifoWrVal) -> FifoWrVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -4513,75 +3834,34 @@ impl FifoWr {
 ///
 /// ## Fields
 ///
-/// - **FIFO_RD** [31:0] (RO): 
+/// - **FIFO_RD** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct FifoRd {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for FifoRd {}
-unsafe impl Sync for FifoRd {}
+impl core::ops::Deref for FifoRd {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl FifoRd {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **FIFO_RD**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const FIFO_RD_OFFSET: u32 = 0;
     pub const FIFO_RD_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **FIFO_RD** [31:0]
+    /// **FIFO_RD** `[31:0]` (RO)
     #[inline(always)]
     pub fn fifo_rd(&self) -> u32 {
-        (self.read_bits() & Self::FIFO_RD_MASK) >> Self::FIFO_RD_OFFSET
+        (self.value.read_bits() & Self::FIFO_RD_MASK) >> Self::FIFO_RD_OFFSET
     }
 
 }
@@ -4608,7 +3888,7 @@ impl FifoRdVal {
         self.bits
     }
 
-    /// Read FIFO_RD [31:0]
+    /// Read **FIFO_RD** `[31:0]`
     #[inline(always)]
     pub const fn fifo_rd(&self) -> u32 {
         (self.bits & FifoRd::FIFO_RD_MASK) >> FifoRd::FIFO_RD_OFFSET
@@ -4625,27 +3905,28 @@ impl Default for FifoRdVal {
 impl FifoRd {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> FifoRdVal {
-        FifoRdVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> FifoRdVal {
+        FifoRdVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: FifoRdVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: FifoRdVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(FifoRdVal) -> FifoRdVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(FifoRdVal) -> FifoRdVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK_ST Register
 ///
-/// Spinlock state A bitmap containing the state of all 32 spinlocks (1=locked).
+/// Spinlock state
+/// A bitmap containing the state of all 32 spinlocks (1=locked).
 /// Mainly intended for debugging.
 ///
 /// Address offset: 0x005c
@@ -4653,75 +3934,34 @@ impl FifoRd {
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK_ST** [31:0] (RO): 
+/// - **SPINLOCK_ST** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct SpinlockSt {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for SpinlockSt {}
-unsafe impl Sync for SpinlockSt {}
+impl core::ops::Deref for SpinlockSt {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl SpinlockSt {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK_ST**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK_ST_OFFSET: u32 = 0;
     pub const SPINLOCK_ST_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK_ST** [31:0]
+    /// **SPINLOCK_ST** `[31:0]` (RO)
     #[inline(always)]
     pub fn spinlock_st(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK_ST_MASK) >> Self::SPINLOCK_ST_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK_ST_MASK) >> Self::SPINLOCK_ST_OFFSET
     }
 
 }
@@ -4754,7 +3994,7 @@ impl SpinlockStVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK_ST [31:0]
+    /// Read **SPINLOCK_ST** `[31:0]`
     #[inline(always)]
     pub const fn spinlock_st(&self) -> u32 {
         (self.bits & SpinlockSt::SPINLOCK_ST_MASK) >> SpinlockSt::SPINLOCK_ST_OFFSET
@@ -4771,20 +4011,20 @@ impl Default for SpinlockStVal {
 impl SpinlockSt {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> SpinlockStVal {
-        SpinlockStVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> SpinlockStVal {
+        SpinlockStVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: SpinlockStVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: SpinlockStVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(SpinlockStVal) -> SpinlockStVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(SpinlockStVal) -> SpinlockStVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -4798,81 +4038,40 @@ impl SpinlockSt {
 ///
 /// ## Fields
 ///
-/// - **INTERP0_ACCUM0** [31:0] (RW): 
+/// - **INTERP0_ACCUM0** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Interp0Accum0 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp0Accum0 {}
-unsafe impl Sync for Interp0Accum0 {}
+impl core::ops::Deref for Interp0Accum0 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp0Accum0 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **INTERP0_ACCUM0**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const INTERP0_ACCUM0_OFFSET: u32 = 0;
     pub const INTERP0_ACCUM0_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **INTERP0_ACCUM0** [31:0]
+    /// **INTERP0_ACCUM0** `[31:0]` (RW)
     #[inline(always)]
     pub fn interp0_accum0(&self) -> u32 {
-        (self.read_bits() & Self::INTERP0_ACCUM0_MASK) >> Self::INTERP0_ACCUM0_OFFSET
+        (self.value.read_bits() & Self::INTERP0_ACCUM0_MASK) >> Self::INTERP0_ACCUM0_OFFSET
     }
 
-    /// Write INTERP0_ACCUM0 field
+    /// Write **INTERP0_ACCUM0** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_interp0_accum0(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::INTERP0_ACCUM0_MASK) | ((value << Self::INTERP0_ACCUM0_OFFSET) & Self::INTERP0_ACCUM0_MASK));
+        self.value.modify_bits(|r| (r & !Self::INTERP0_ACCUM0_MASK) | ((value << Self::INTERP0_ACCUM0_OFFSET) & Self::INTERP0_ACCUM0_MASK));
     }
 
 }
@@ -4905,13 +4104,13 @@ impl Interp0Accum0Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read INTERP0_ACCUM0 [31:0]
+    /// Read **INTERP0_ACCUM0** `[31:0]`
     #[inline(always)]
     pub const fn interp0_accum0(&self) -> u32 {
         (self.bits & Interp0Accum0::INTERP0_ACCUM0_MASK) >> Interp0Accum0::INTERP0_ACCUM0_OFFSET
     }
 
-    /// Set INTERP0_ACCUM0 [31:0]
+    /// Set **INTERP0_ACCUM0** `[31:0]`
     #[inline(always)]
     pub const fn with_interp0_accum0(self, value: u32) -> Self {
         Self {
@@ -4930,20 +4129,20 @@ impl Default for Interp0Accum0Val {
 impl Interp0Accum0 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp0Accum0Val {
-        Interp0Accum0Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp0Accum0Val {
+        Interp0Accum0Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp0Accum0Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp0Accum0Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp0Accum0Val) -> Interp0Accum0Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp0Accum0Val) -> Interp0Accum0Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -4957,81 +4156,40 @@ impl Interp0Accum0 {
 ///
 /// ## Fields
 ///
-/// - **INTERP0_ACCUM1** [31:0] (RW): 
+/// - **INTERP0_ACCUM1** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Interp0Accum1 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp0Accum1 {}
-unsafe impl Sync for Interp0Accum1 {}
+impl core::ops::Deref for Interp0Accum1 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp0Accum1 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **INTERP0_ACCUM1**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const INTERP0_ACCUM1_OFFSET: u32 = 0;
     pub const INTERP0_ACCUM1_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **INTERP0_ACCUM1** [31:0]
+    /// **INTERP0_ACCUM1** `[31:0]` (RW)
     #[inline(always)]
     pub fn interp0_accum1(&self) -> u32 {
-        (self.read_bits() & Self::INTERP0_ACCUM1_MASK) >> Self::INTERP0_ACCUM1_OFFSET
+        (self.value.read_bits() & Self::INTERP0_ACCUM1_MASK) >> Self::INTERP0_ACCUM1_OFFSET
     }
 
-    /// Write INTERP0_ACCUM1 field
+    /// Write **INTERP0_ACCUM1** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_interp0_accum1(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::INTERP0_ACCUM1_MASK) | ((value << Self::INTERP0_ACCUM1_OFFSET) & Self::INTERP0_ACCUM1_MASK));
+        self.value.modify_bits(|r| (r & !Self::INTERP0_ACCUM1_MASK) | ((value << Self::INTERP0_ACCUM1_OFFSET) & Self::INTERP0_ACCUM1_MASK));
     }
 
 }
@@ -5064,13 +4222,13 @@ impl Interp0Accum1Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read INTERP0_ACCUM1 [31:0]
+    /// Read **INTERP0_ACCUM1** `[31:0]`
     #[inline(always)]
     pub const fn interp0_accum1(&self) -> u32 {
         (self.bits & Interp0Accum1::INTERP0_ACCUM1_MASK) >> Interp0Accum1::INTERP0_ACCUM1_OFFSET
     }
 
-    /// Set INTERP0_ACCUM1 [31:0]
+    /// Set **INTERP0_ACCUM1** `[31:0]`
     #[inline(always)]
     pub const fn with_interp0_accum1(self, value: u32) -> Self {
         Self {
@@ -5089,20 +4247,20 @@ impl Default for Interp0Accum1Val {
 impl Interp0Accum1 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp0Accum1Val {
-        Interp0Accum1Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp0Accum1Val {
+        Interp0Accum1Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp0Accum1Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp0Accum1Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp0Accum1Val) -> Interp0Accum1Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp0Accum1Val) -> Interp0Accum1Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -5116,81 +4274,40 @@ impl Interp0Accum1 {
 ///
 /// ## Fields
 ///
-/// - **INTERP0_BASE0** [31:0] (RW): 
+/// - **INTERP0_BASE0** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Interp0Base0 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp0Base0 {}
-unsafe impl Sync for Interp0Base0 {}
+impl core::ops::Deref for Interp0Base0 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp0Base0 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **INTERP0_BASE0**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const INTERP0_BASE0_OFFSET: u32 = 0;
     pub const INTERP0_BASE0_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **INTERP0_BASE0** [31:0]
+    /// **INTERP0_BASE0** `[31:0]` (RW)
     #[inline(always)]
     pub fn interp0_base0(&self) -> u32 {
-        (self.read_bits() & Self::INTERP0_BASE0_MASK) >> Self::INTERP0_BASE0_OFFSET
+        (self.value.read_bits() & Self::INTERP0_BASE0_MASK) >> Self::INTERP0_BASE0_OFFSET
     }
 
-    /// Write INTERP0_BASE0 field
+    /// Write **INTERP0_BASE0** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_interp0_base0(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::INTERP0_BASE0_MASK) | ((value << Self::INTERP0_BASE0_OFFSET) & Self::INTERP0_BASE0_MASK));
+        self.value.modify_bits(|r| (r & !Self::INTERP0_BASE0_MASK) | ((value << Self::INTERP0_BASE0_OFFSET) & Self::INTERP0_BASE0_MASK));
     }
 
 }
@@ -5223,13 +4340,13 @@ impl Interp0Base0Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read INTERP0_BASE0 [31:0]
+    /// Read **INTERP0_BASE0** `[31:0]`
     #[inline(always)]
     pub const fn interp0_base0(&self) -> u32 {
         (self.bits & Interp0Base0::INTERP0_BASE0_MASK) >> Interp0Base0::INTERP0_BASE0_OFFSET
     }
 
-    /// Set INTERP0_BASE0 [31:0]
+    /// Set **INTERP0_BASE0** `[31:0]`
     #[inline(always)]
     pub const fn with_interp0_base0(self, value: u32) -> Self {
         Self {
@@ -5248,20 +4365,20 @@ impl Default for Interp0Base0Val {
 impl Interp0Base0 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp0Base0Val {
-        Interp0Base0Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp0Base0Val {
+        Interp0Base0Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp0Base0Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp0Base0Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp0Base0Val) -> Interp0Base0Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp0Base0Val) -> Interp0Base0Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -5275,81 +4392,40 @@ impl Interp0Base0 {
 ///
 /// ## Fields
 ///
-/// - **INTERP0_BASE1** [31:0] (RW): 
+/// - **INTERP0_BASE1** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Interp0Base1 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp0Base1 {}
-unsafe impl Sync for Interp0Base1 {}
+impl core::ops::Deref for Interp0Base1 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp0Base1 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **INTERP0_BASE1**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const INTERP0_BASE1_OFFSET: u32 = 0;
     pub const INTERP0_BASE1_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **INTERP0_BASE1** [31:0]
+    /// **INTERP0_BASE1** `[31:0]` (RW)
     #[inline(always)]
     pub fn interp0_base1(&self) -> u32 {
-        (self.read_bits() & Self::INTERP0_BASE1_MASK) >> Self::INTERP0_BASE1_OFFSET
+        (self.value.read_bits() & Self::INTERP0_BASE1_MASK) >> Self::INTERP0_BASE1_OFFSET
     }
 
-    /// Write INTERP0_BASE1 field
+    /// Write **INTERP0_BASE1** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_interp0_base1(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::INTERP0_BASE1_MASK) | ((value << Self::INTERP0_BASE1_OFFSET) & Self::INTERP0_BASE1_MASK));
+        self.value.modify_bits(|r| (r & !Self::INTERP0_BASE1_MASK) | ((value << Self::INTERP0_BASE1_OFFSET) & Self::INTERP0_BASE1_MASK));
     }
 
 }
@@ -5382,13 +4458,13 @@ impl Interp0Base1Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read INTERP0_BASE1 [31:0]
+    /// Read **INTERP0_BASE1** `[31:0]`
     #[inline(always)]
     pub const fn interp0_base1(&self) -> u32 {
         (self.bits & Interp0Base1::INTERP0_BASE1_MASK) >> Interp0Base1::INTERP0_BASE1_OFFSET
     }
 
-    /// Set INTERP0_BASE1 [31:0]
+    /// Set **INTERP0_BASE1** `[31:0]`
     #[inline(always)]
     pub const fn with_interp0_base1(self, value: u32) -> Self {
         Self {
@@ -5407,20 +4483,20 @@ impl Default for Interp0Base1Val {
 impl Interp0Base1 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp0Base1Val {
-        Interp0Base1Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp0Base1Val {
+        Interp0Base1Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp0Base1Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp0Base1Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp0Base1Val) -> Interp0Base1Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp0Base1Val) -> Interp0Base1Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -5434,81 +4510,40 @@ impl Interp0Base1 {
 ///
 /// ## Fields
 ///
-/// - **INTERP0_BASE2** [31:0] (RW): 
+/// - **INTERP0_BASE2** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Interp0Base2 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp0Base2 {}
-unsafe impl Sync for Interp0Base2 {}
+impl core::ops::Deref for Interp0Base2 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp0Base2 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **INTERP0_BASE2**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const INTERP0_BASE2_OFFSET: u32 = 0;
     pub const INTERP0_BASE2_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **INTERP0_BASE2** [31:0]
+    /// **INTERP0_BASE2** `[31:0]` (RW)
     #[inline(always)]
     pub fn interp0_base2(&self) -> u32 {
-        (self.read_bits() & Self::INTERP0_BASE2_MASK) >> Self::INTERP0_BASE2_OFFSET
+        (self.value.read_bits() & Self::INTERP0_BASE2_MASK) >> Self::INTERP0_BASE2_OFFSET
     }
 
-    /// Write INTERP0_BASE2 field
+    /// Write **INTERP0_BASE2** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_interp0_base2(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::INTERP0_BASE2_MASK) | ((value << Self::INTERP0_BASE2_OFFSET) & Self::INTERP0_BASE2_MASK));
+        self.value.modify_bits(|r| (r & !Self::INTERP0_BASE2_MASK) | ((value << Self::INTERP0_BASE2_OFFSET) & Self::INTERP0_BASE2_MASK));
     }
 
 }
@@ -5541,13 +4576,13 @@ impl Interp0Base2Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read INTERP0_BASE2 [31:0]
+    /// Read **INTERP0_BASE2** `[31:0]`
     #[inline(always)]
     pub const fn interp0_base2(&self) -> u32 {
         (self.bits & Interp0Base2::INTERP0_BASE2_MASK) >> Interp0Base2::INTERP0_BASE2_OFFSET
     }
 
-    /// Set INTERP0_BASE2 [31:0]
+    /// Set **INTERP0_BASE2** `[31:0]`
     #[inline(always)]
     pub const fn with_interp0_base2(self, value: u32) -> Self {
         Self {
@@ -5566,103 +4601,61 @@ impl Default for Interp0Base2Val {
 impl Interp0Base2 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp0Base2Val {
-        Interp0Base2Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp0Base2Val {
+        Interp0Base2Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp0Base2Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp0Base2Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp0Base2Val) -> Interp0Base2Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp0Base2Val) -> Interp0Base2Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// INTERP0_POP_LANE0 Register
 ///
-/// Read LANE0 result, and simultaneously write lane results to both
-/// accumulators (POP).
+/// Read LANE0 result, and simultaneously write lane results to both accumulators (POP).
 ///
 /// Address offset: 0x0094
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **INTERP0_POP_LANE0** [31:0] (RO): 
+/// - **INTERP0_POP_LANE0** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Interp0PopLane0 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp0PopLane0 {}
-unsafe impl Sync for Interp0PopLane0 {}
+impl core::ops::Deref for Interp0PopLane0 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp0PopLane0 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **INTERP0_POP_LANE0**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const INTERP0_POP_LANE0_OFFSET: u32 = 0;
     pub const INTERP0_POP_LANE0_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **INTERP0_POP_LANE0** [31:0]
+    /// **INTERP0_POP_LANE0** `[31:0]` (RO)
     #[inline(always)]
     pub fn interp0_pop_lane0(&self) -> u32 {
-        (self.read_bits() & Self::INTERP0_POP_LANE0_MASK) >> Self::INTERP0_POP_LANE0_OFFSET
+        (self.value.read_bits() & Self::INTERP0_POP_LANE0_MASK) >> Self::INTERP0_POP_LANE0_OFFSET
     }
 
 }
@@ -5695,7 +4688,7 @@ impl Interp0PopLane0Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read INTERP0_POP_LANE0 [31:0]
+    /// Read **INTERP0_POP_LANE0** `[31:0]`
     #[inline(always)]
     pub const fn interp0_pop_lane0(&self) -> u32 {
         (self.bits & Interp0PopLane0::INTERP0_POP_LANE0_MASK) >> Interp0PopLane0::INTERP0_POP_LANE0_OFFSET
@@ -5712,103 +4705,61 @@ impl Default for Interp0PopLane0Val {
 impl Interp0PopLane0 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp0PopLane0Val {
-        Interp0PopLane0Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp0PopLane0Val {
+        Interp0PopLane0Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp0PopLane0Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp0PopLane0Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp0PopLane0Val) -> Interp0PopLane0Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp0PopLane0Val) -> Interp0PopLane0Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// INTERP0_POP_LANE1 Register
 ///
-/// Read LANE1 result, and simultaneously write lane results to both
-/// accumulators (POP).
+/// Read LANE1 result, and simultaneously write lane results to both accumulators (POP).
 ///
 /// Address offset: 0x0098
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **INTERP0_POP_LANE1** [31:0] (RO): 
+/// - **INTERP0_POP_LANE1** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Interp0PopLane1 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp0PopLane1 {}
-unsafe impl Sync for Interp0PopLane1 {}
+impl core::ops::Deref for Interp0PopLane1 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp0PopLane1 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **INTERP0_POP_LANE1**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const INTERP0_POP_LANE1_OFFSET: u32 = 0;
     pub const INTERP0_POP_LANE1_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **INTERP0_POP_LANE1** [31:0]
+    /// **INTERP0_POP_LANE1** `[31:0]` (RO)
     #[inline(always)]
     pub fn interp0_pop_lane1(&self) -> u32 {
-        (self.read_bits() & Self::INTERP0_POP_LANE1_MASK) >> Self::INTERP0_POP_LANE1_OFFSET
+        (self.value.read_bits() & Self::INTERP0_POP_LANE1_MASK) >> Self::INTERP0_POP_LANE1_OFFSET
     }
 
 }
@@ -5841,7 +4792,7 @@ impl Interp0PopLane1Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read INTERP0_POP_LANE1 [31:0]
+    /// Read **INTERP0_POP_LANE1** `[31:0]`
     #[inline(always)]
     pub const fn interp0_pop_lane1(&self) -> u32 {
         (self.bits & Interp0PopLane1::INTERP0_POP_LANE1_MASK) >> Interp0PopLane1::INTERP0_POP_LANE1_OFFSET
@@ -5858,103 +4809,61 @@ impl Default for Interp0PopLane1Val {
 impl Interp0PopLane1 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp0PopLane1Val {
-        Interp0PopLane1Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp0PopLane1Val {
+        Interp0PopLane1Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp0PopLane1Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp0PopLane1Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp0PopLane1Val) -> Interp0PopLane1Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp0PopLane1Val) -> Interp0PopLane1Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// INTERP0_POP_FULL Register
 ///
-/// Read FULL result, and simultaneously write lane results to both accumulators
-/// (POP).
+/// Read FULL result, and simultaneously write lane results to both accumulators (POP).
 ///
 /// Address offset: 0x009c
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **INTERP0_POP_FULL** [31:0] (RO): 
+/// - **INTERP0_POP_FULL** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Interp0PopFull {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp0PopFull {}
-unsafe impl Sync for Interp0PopFull {}
+impl core::ops::Deref for Interp0PopFull {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp0PopFull {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **INTERP0_POP_FULL**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const INTERP0_POP_FULL_OFFSET: u32 = 0;
     pub const INTERP0_POP_FULL_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **INTERP0_POP_FULL** [31:0]
+    /// **INTERP0_POP_FULL** `[31:0]` (RO)
     #[inline(always)]
     pub fn interp0_pop_full(&self) -> u32 {
-        (self.read_bits() & Self::INTERP0_POP_FULL_MASK) >> Self::INTERP0_POP_FULL_OFFSET
+        (self.value.read_bits() & Self::INTERP0_POP_FULL_MASK) >> Self::INTERP0_POP_FULL_OFFSET
     }
 
 }
@@ -5987,7 +4896,7 @@ impl Interp0PopFullVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read INTERP0_POP_FULL [31:0]
+    /// Read **INTERP0_POP_FULL** `[31:0]`
     #[inline(always)]
     pub const fn interp0_pop_full(&self) -> u32 {
         (self.bits & Interp0PopFull::INTERP0_POP_FULL_MASK) >> Interp0PopFull::INTERP0_POP_FULL_OFFSET
@@ -6004,20 +4913,20 @@ impl Default for Interp0PopFullVal {
 impl Interp0PopFull {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp0PopFullVal {
-        Interp0PopFullVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp0PopFullVal {
+        Interp0PopFullVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp0PopFullVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp0PopFullVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp0PopFullVal) -> Interp0PopFullVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp0PopFullVal) -> Interp0PopFullVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -6031,75 +4940,34 @@ impl Interp0PopFull {
 ///
 /// ## Fields
 ///
-/// - **INTERP0_PEEK_LANE0** [31:0] (RO): 
+/// - **INTERP0_PEEK_LANE0** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Interp0PeekLane0 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp0PeekLane0 {}
-unsafe impl Sync for Interp0PeekLane0 {}
+impl core::ops::Deref for Interp0PeekLane0 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp0PeekLane0 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **INTERP0_PEEK_LANE0**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const INTERP0_PEEK_LANE0_OFFSET: u32 = 0;
     pub const INTERP0_PEEK_LANE0_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **INTERP0_PEEK_LANE0** [31:0]
+    /// **INTERP0_PEEK_LANE0** `[31:0]` (RO)
     #[inline(always)]
     pub fn interp0_peek_lane0(&self) -> u32 {
-        (self.read_bits() & Self::INTERP0_PEEK_LANE0_MASK) >> Self::INTERP0_PEEK_LANE0_OFFSET
+        (self.value.read_bits() & Self::INTERP0_PEEK_LANE0_MASK) >> Self::INTERP0_PEEK_LANE0_OFFSET
     }
 
 }
@@ -6132,7 +5000,7 @@ impl Interp0PeekLane0Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read INTERP0_PEEK_LANE0 [31:0]
+    /// Read **INTERP0_PEEK_LANE0** `[31:0]`
     #[inline(always)]
     pub const fn interp0_peek_lane0(&self) -> u32 {
         (self.bits & Interp0PeekLane0::INTERP0_PEEK_LANE0_MASK) >> Interp0PeekLane0::INTERP0_PEEK_LANE0_OFFSET
@@ -6149,20 +5017,20 @@ impl Default for Interp0PeekLane0Val {
 impl Interp0PeekLane0 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp0PeekLane0Val {
-        Interp0PeekLane0Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp0PeekLane0Val {
+        Interp0PeekLane0Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp0PeekLane0Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp0PeekLane0Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp0PeekLane0Val) -> Interp0PeekLane0Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp0PeekLane0Val) -> Interp0PeekLane0Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -6176,75 +5044,34 @@ impl Interp0PeekLane0 {
 ///
 /// ## Fields
 ///
-/// - **INTERP0_PEEK_LANE1** [31:0] (RO): 
+/// - **INTERP0_PEEK_LANE1** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Interp0PeekLane1 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp0PeekLane1 {}
-unsafe impl Sync for Interp0PeekLane1 {}
+impl core::ops::Deref for Interp0PeekLane1 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp0PeekLane1 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **INTERP0_PEEK_LANE1**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const INTERP0_PEEK_LANE1_OFFSET: u32 = 0;
     pub const INTERP0_PEEK_LANE1_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **INTERP0_PEEK_LANE1** [31:0]
+    /// **INTERP0_PEEK_LANE1** `[31:0]` (RO)
     #[inline(always)]
     pub fn interp0_peek_lane1(&self) -> u32 {
-        (self.read_bits() & Self::INTERP0_PEEK_LANE1_MASK) >> Self::INTERP0_PEEK_LANE1_OFFSET
+        (self.value.read_bits() & Self::INTERP0_PEEK_LANE1_MASK) >> Self::INTERP0_PEEK_LANE1_OFFSET
     }
 
 }
@@ -6277,7 +5104,7 @@ impl Interp0PeekLane1Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read INTERP0_PEEK_LANE1 [31:0]
+    /// Read **INTERP0_PEEK_LANE1** `[31:0]`
     #[inline(always)]
     pub const fn interp0_peek_lane1(&self) -> u32 {
         (self.bits & Interp0PeekLane1::INTERP0_PEEK_LANE1_MASK) >> Interp0PeekLane1::INTERP0_PEEK_LANE1_OFFSET
@@ -6294,20 +5121,20 @@ impl Default for Interp0PeekLane1Val {
 impl Interp0PeekLane1 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp0PeekLane1Val {
-        Interp0PeekLane1Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp0PeekLane1Val {
+        Interp0PeekLane1Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp0PeekLane1Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp0PeekLane1Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp0PeekLane1Val) -> Interp0PeekLane1Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp0PeekLane1Val) -> Interp0PeekLane1Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -6321,75 +5148,34 @@ impl Interp0PeekLane1 {
 ///
 /// ## Fields
 ///
-/// - **INTERP0_PEEK_FULL** [31:0] (RO): 
+/// - **INTERP0_PEEK_FULL** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Interp0PeekFull {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp0PeekFull {}
-unsafe impl Sync for Interp0PeekFull {}
+impl core::ops::Deref for Interp0PeekFull {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp0PeekFull {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **INTERP0_PEEK_FULL**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const INTERP0_PEEK_FULL_OFFSET: u32 = 0;
     pub const INTERP0_PEEK_FULL_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **INTERP0_PEEK_FULL** [31:0]
+    /// **INTERP0_PEEK_FULL** `[31:0]` (RO)
     #[inline(always)]
     pub fn interp0_peek_full(&self) -> u32 {
-        (self.read_bits() & Self::INTERP0_PEEK_FULL_MASK) >> Self::INTERP0_PEEK_FULL_OFFSET
+        (self.value.read_bits() & Self::INTERP0_PEEK_FULL_MASK) >> Self::INTERP0_PEEK_FULL_OFFSET
     }
 
 }
@@ -6422,7 +5208,7 @@ impl Interp0PeekFullVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read INTERP0_PEEK_FULL [31:0]
+    /// Read **INTERP0_PEEK_FULL** `[31:0]`
     #[inline(always)]
     pub const fn interp0_peek_full(&self) -> u32 {
         (self.bits & Interp0PeekFull::INTERP0_PEEK_FULL_MASK) >> Interp0PeekFull::INTERP0_PEEK_FULL_OFFSET
@@ -6439,20 +5225,20 @@ impl Default for Interp0PeekFullVal {
 impl Interp0PeekFull {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp0PeekFullVal {
-        Interp0PeekFullVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp0PeekFullVal {
+        Interp0PeekFullVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp0PeekFullVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp0PeekFullVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp0PeekFullVal) -> Interp0PeekFullVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp0PeekFullVal) -> Interp0PeekFullVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -6466,300 +5252,334 @@ impl Interp0PeekFull {
 ///
 /// ## Fields
 ///
-/// - **OVERF** [25] (RO): Set if either OVERF0 or OVERF1 is set.
-/// - **OVERF1** [24] (RO): Indicates if any masked-off MSBs in ACCUM1 are set.
-/// - **OVERF0** [23] (RO): Indicates if any masked-off MSBs in ACCUM0 are set.
-/// - **BLEND** [21] (RW): Only present on INTERP0 on each core. If BLEND mode is enabled: - LANE1 res...
-/// - **FORCE_MSB** [20:19] (RW): ORed into bits 29:28 of the lane result presented to the processor on the b...
-/// - **ADD_RAW** [18] (RW): If 1, mask + shift is bypassed for LANE0 result. This does not affect FULL ...
-/// - **CROSS_RESULT** [17] (RW): If 1, feed the opposite lane's result into this lane's accumulator on POP.
-/// - **CROSS_INPUT** [16] (RW): If 1, feed the opposite lane's accumulator into this lane's shift + mask ha...
-/// - **SIGNED** [15] (RW): If SIGNED is set, the shifted and masked accumulator value is sign-extended...
-/// - **MASK_MSB** [14:10] (RW): The most-significant bit allowed to pass by the mask (inclusive) Setting MS...
-/// - **MASK_LSB** [9:5] (RW): The least-significant bit allowed to pass by the mask (inclusive)
-/// - **SHIFT** [4:0] (RW): Right-rotate applied to accumulator before masking. By appropriately config...
+/// - **OVERF** `[25]` (RO)
+///   Set if either OVERF0 or OVERF1 is set.
+/// - **OVERF1** `[24]` (RO)
+///   Indicates if any masked-off MSBs in ACCUM1 are set.
+/// - **OVERF0** `[23]` (RO)
+///   Indicates if any masked-off MSBs in ACCUM0 are set.
+/// - **BLEND** `[21]` (RW)
+///   Only present on INTERP0 on each core. If BLEND mode is enabled:
+///   - LANE1 result is a linear interpolation between BASE0 and BASE1, controlled
+///   by the 8 LSBs of lane 1 shift and mask value (a fractional number between
+///   0 and 255/256ths)
+///   - LANE0 result does not have BASE0 added (yields only the 8 LSBs of lane 1 shift+mask value)
+///   - FULL result does not have lane 1 shift+mask value added (BASE2 + lane 0 shift+mask)
+///   LANE1 SIGNED flag controls whether the interpolation is signed or unsigned.
+/// - **FORCE_MSB** `[20:19]` (RW)
+///   ORed into bits 29:28 of the lane result presented to the processor on the bus.
+///   No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
+///   of pointers into flash or SRAM.
+/// - **ADD_RAW** `[18]` (RW)
+///   If 1, mask + shift is bypassed for LANE0 result. This does not affect FULL result.
+/// - **CROSS_RESULT** `[17]` (RW)
+///   If 1, feed the opposite lane's result into this lane's accumulator on POP.
+/// - **CROSS_INPUT** `[16]` (RW)
+///   If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
+///   Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
+/// - **SIGNED** `[15]` (RW)
+///   If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
+///   before adding to BASE0, and LANE0 PEEK/POP appear extended to 32 bits when read by processor.
+/// - **MASK_MSB** `[14:10]` (RW)
+///   The most-significant bit allowed to pass by the mask (inclusive)
+///   Setting MSB < LSB may cause chip to turn inside-out
+/// - **MASK_LSB** `[9:5]` (RW)
+///   The least-significant bit allowed to pass by the mask (inclusive)
+/// - **SHIFT** `[4:0]` (RW)
+///   Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
 #[repr(transparent)]
 pub struct Interp0CtrlLane0 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp0CtrlLane0 {}
-unsafe impl Sync for Interp0CtrlLane0 {}
+impl core::ops::Deref for Interp0CtrlLane0 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp0CtrlLane0 {
     // ======== Field Constants ========
 
-    /// OVERF - Set if either OVERF0 or OVERF1 is set.
-    /// Bits [25:25], mask 0x02000000
+    /// **OVERF**
+    /// Set if either OVERF0 or OVERF1 is set.
+    /// Bits `[25:25]`, mask `0x02000000`
     pub const OVERF_OFFSET: u32 = 25;
     pub const OVERF_MASK: u32 = 0x02000000;
     pub const OVERF: u32 = 1 << 25;
 
-    /// OVERF1 - Indicates if any masked-off MSBs in ACCUM1 are set.
-    /// Bits [24:24], mask 0x01000000
+    /// **OVERF1**
+    /// Indicates if any masked-off MSBs in ACCUM1 are set.
+    /// Bits `[24:24]`, mask `0x01000000`
     pub const OVERF1_OFFSET: u32 = 24;
     pub const OVERF1_MASK: u32 = 0x01000000;
     pub const OVERF1: u32 = 1 << 24;
 
-    /// OVERF0 - Indicates if any masked-off MSBs in ACCUM0 are set.
-    /// Bits [23:23], mask 0x00800000
+    /// **OVERF0**
+    /// Indicates if any masked-off MSBs in ACCUM0 are set.
+    /// Bits `[23:23]`, mask `0x00800000`
     pub const OVERF0_OFFSET: u32 = 23;
     pub const OVERF0_MASK: u32 = 0x00800000;
     pub const OVERF0: u32 = 1 << 23;
 
-    /// BLEND - Only present on INTERP0 on each core. If BLEND mode is enabled: - LANE1 res...
-    /// Bits [21:21], mask 0x00200000
+    /// **BLEND**
+    /// Only present on INTERP0 on each core. If BLEND mode is enabled:
+    /// - LANE1 result is a linear interpolation between BASE0 and BASE1, controlled
+    /// by the 8 LSBs of lane 1 shift and mask value (a fractional number between
+    /// 0 and 255/256ths)
+    /// - LANE0 result does not have BASE0 added (yields only the 8 LSBs of lane 1 shift+mask value)
+    /// - FULL result does not have lane 1 shift+mask value added (BASE2 + lane 0 shift+mask)
+    /// LANE1 SIGNED flag controls whether the interpolation is signed or unsigned.
+    /// Bits `[21:21]`, mask `0x00200000`
     pub const BLEND_OFFSET: u32 = 21;
     pub const BLEND_MASK: u32 = 0x00200000;
     pub const BLEND: u32 = 1 << 21;
 
-    /// FORCE_MSB - ORed into bits 29:28 of the lane result presented to the processor on the b...
-    /// Bits [20:19], mask 0x00180000
+    /// **FORCE_MSB**
+    /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
+    /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
+    /// of pointers into flash or SRAM.
+    /// Bits `[20:19]`, mask `0x00180000`
     pub const FORCE_MSB_OFFSET: u32 = 19;
     pub const FORCE_MSB_MASK: u32 = 0x00180000;
 
-    /// ADD_RAW - If 1, mask + shift is bypassed for LANE0 result. This does not affect FULL ...
-    /// Bits [18:18], mask 0x00040000
+    /// **ADD_RAW**
+    /// If 1, mask + shift is bypassed for LANE0 result. This does not affect FULL result.
+    /// Bits `[18:18]`, mask `0x00040000`
     pub const ADD_RAW_OFFSET: u32 = 18;
     pub const ADD_RAW_MASK: u32 = 0x00040000;
     pub const ADD_RAW: u32 = 1 << 18;
 
-    /// CROSS_RESULT - If 1, feed the opposite lane's result into this lane's accumulator on POP.
-    /// Bits [17:17], mask 0x00020000
+    /// **CROSS_RESULT**
+    /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
+    /// Bits `[17:17]`, mask `0x00020000`
     pub const CROSS_RESULT_OFFSET: u32 = 17;
     pub const CROSS_RESULT_MASK: u32 = 0x00020000;
     pub const CROSS_RESULT: u32 = 1 << 17;
 
-    /// CROSS_INPUT - If 1, feed the opposite lane's accumulator into this lane's shift + mask ha...
-    /// Bits [16:16], mask 0x00010000
+    /// **CROSS_INPUT**
+    /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
+    /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
+    /// Bits `[16:16]`, mask `0x00010000`
     pub const CROSS_INPUT_OFFSET: u32 = 16;
     pub const CROSS_INPUT_MASK: u32 = 0x00010000;
     pub const CROSS_INPUT: u32 = 1 << 16;
 
-    /// SIGNED - If SIGNED is set, the shifted and masked accumulator value is sign-extended...
-    /// Bits [15:15], mask 0x00008000
+    /// **SIGNED**
+    /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
+    /// before adding to BASE0, and LANE0 PEEK/POP appear extended to 32 bits when read by processor.
+    /// Bits `[15:15]`, mask `0x00008000`
     pub const SIGNED_OFFSET: u32 = 15;
     pub const SIGNED_MASK: u32 = 0x00008000;
     pub const SIGNED: u32 = 1 << 15;
 
-    /// MASK_MSB - The most-significant bit allowed to pass by the mask (inclusive) Setting MS...
-    /// Bits [14:10], mask 0x00007c00
+    /// **MASK_MSB**
+    /// The most-significant bit allowed to pass by the mask (inclusive)
+    /// Setting MSB < LSB may cause chip to turn inside-out
+    /// Bits `[14:10]`, mask `0x00007c00`
     pub const MASK_MSB_OFFSET: u32 = 10;
     pub const MASK_MSB_MASK: u32 = 0x00007c00;
 
-    /// MASK_LSB - The least-significant bit allowed to pass by the mask (inclusive)
-    /// Bits [9:5], mask 0x000003e0
+    /// **MASK_LSB**
+    /// The least-significant bit allowed to pass by the mask (inclusive)
+    /// Bits `[9:5]`, mask `0x000003e0`
     pub const MASK_LSB_OFFSET: u32 = 5;
     pub const MASK_LSB_MASK: u32 = 0x000003e0;
 
-    /// SHIFT - Right-rotate applied to accumulator before masking. By appropriately config...
-    /// Bits [4:0], mask 0x0000001f
+    /// **SHIFT**
+    /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
+    /// Bits `[4:0]`, mask `0x0000001f`
     pub const SHIFT_OFFSET: u32 = 0;
     pub const SHIFT_MASK: u32 = 0x0000001f;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **OVERF** [25:25]: Set if either OVERF0 or OVERF1 is set.
+    /// **OVERF** `[25]` (RO)
+    /// Set if either OVERF0 or OVERF1 is set.
     #[inline(always)]
     pub fn overf(&self) -> bool {
-        (self.read_bits() & Self::OVERF_MASK) != 0
+        (self.value.read_bits() & Self::OVERF_MASK) != 0
     }
 
-    /// **OVERF1** [24:24]: Indicates if any masked-off MSBs in ACCUM1 are set.
+    /// **OVERF1** `[24]` (RO)
+    /// Indicates if any masked-off MSBs in ACCUM1 are set.
     #[inline(always)]
     pub fn overf1(&self) -> bool {
-        (self.read_bits() & Self::OVERF1_MASK) != 0
+        (self.value.read_bits() & Self::OVERF1_MASK) != 0
     }
 
-    /// **OVERF0** [23:23]: Indicates if any masked-off MSBs in ACCUM0 are set.
+    /// **OVERF0** `[23]` (RO)
+    /// Indicates if any masked-off MSBs in ACCUM0 are set.
     #[inline(always)]
     pub fn overf0(&self) -> bool {
-        (self.read_bits() & Self::OVERF0_MASK) != 0
+        (self.value.read_bits() & Self::OVERF0_MASK) != 0
     }
 
-    /// **BLEND** [21:21]: Only present on INTERP0 on each core. If BLEND mode is enabled: - LANE1 res...
+    /// **BLEND** `[21]` (RW)
+    /// Only present on INTERP0 on each core. If BLEND mode is enabled:
+    /// - LANE1 result is a linear interpolation between BASE0 and BASE1, controlled
+    /// by the 8 LSBs of lane 1 shift and mask value (a fractional number between
+    /// 0 and 255/256ths)
+    /// - LANE0 result does not have BASE0 added (yields only the 8 LSBs of lane 1 shift+mask value)
+    /// - FULL result does not have lane 1 shift+mask value added (BASE2 + lane 0 shift+mask)
+    /// LANE1 SIGNED flag controls whether the interpolation is signed or unsigned.
     #[inline(always)]
     pub fn blend(&self) -> bool {
-        (self.read_bits() & Self::BLEND_MASK) != 0
+        (self.value.read_bits() & Self::BLEND_MASK) != 0
     }
 
-    /// Set BLEND bit
+    /// Set BLEND bit atomically (RW)
     #[inline(always)]
     pub fn set_blend(&self) {
-        self.set_bits(Self::BLEND_MASK);
+        self.value.set_bits(Self::BLEND_MASK);
     }
 
-    /// Clear BLEND bit
+    /// Clear BLEND bit atomically (RW)
     #[inline(always)]
     pub fn clr_blend(&self) {
-        self.clr_bits(Self::BLEND_MASK);
+        self.value.clr_bits(Self::BLEND_MASK);
     }
 
-    /// **FORCE_MSB** [20:19]: ORed into bits 29:28 of the lane result presented to the processor on the b...
+    /// **FORCE_MSB** `[20:19]` (RW)
+    /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
+    /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
+    /// of pointers into flash or SRAM.
     #[inline(always)]
     pub fn force_msb(&self) -> u32 {
-        (self.read_bits() & Self::FORCE_MSB_MASK) >> Self::FORCE_MSB_OFFSET
+        (self.value.read_bits() & Self::FORCE_MSB_MASK) >> Self::FORCE_MSB_OFFSET
     }
 
-    /// Write FORCE_MSB field
+    /// Write **FORCE_MSB** `[20:19]` (RW)
+    /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
+    /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
+    /// of pointers into flash or SRAM.
     #[inline(always)]
     pub fn write_force_msb(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::FORCE_MSB_MASK) | ((value << Self::FORCE_MSB_OFFSET) & Self::FORCE_MSB_MASK));
+        self.value.modify_bits(|r| (r & !Self::FORCE_MSB_MASK) | ((value << Self::FORCE_MSB_OFFSET) & Self::FORCE_MSB_MASK));
     }
 
-    /// **ADD_RAW** [18:18]: If 1, mask + shift is bypassed for LANE0 result. This does not affect FULL ...
+    /// **ADD_RAW** `[18]` (RW)
+    /// If 1, mask + shift is bypassed for LANE0 result. This does not affect FULL result.
     #[inline(always)]
     pub fn add_raw(&self) -> bool {
-        (self.read_bits() & Self::ADD_RAW_MASK) != 0
+        (self.value.read_bits() & Self::ADD_RAW_MASK) != 0
     }
 
-    /// Set ADD_RAW bit
+    /// Set ADD_RAW bit atomically (RW)
     #[inline(always)]
     pub fn set_add_raw(&self) {
-        self.set_bits(Self::ADD_RAW_MASK);
+        self.value.set_bits(Self::ADD_RAW_MASK);
     }
 
-    /// Clear ADD_RAW bit
+    /// Clear ADD_RAW bit atomically (RW)
     #[inline(always)]
     pub fn clr_add_raw(&self) {
-        self.clr_bits(Self::ADD_RAW_MASK);
+        self.value.clr_bits(Self::ADD_RAW_MASK);
     }
 
-    /// **CROSS_RESULT** [17:17]: If 1, feed the opposite lane's result into this lane's accumulator on POP.
+    /// **CROSS_RESULT** `[17]` (RW)
+    /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
     #[inline(always)]
     pub fn cross_result(&self) -> bool {
-        (self.read_bits() & Self::CROSS_RESULT_MASK) != 0
+        (self.value.read_bits() & Self::CROSS_RESULT_MASK) != 0
     }
 
-    /// Set CROSS_RESULT bit
+    /// Set CROSS_RESULT bit atomically (RW)
     #[inline(always)]
     pub fn set_cross_result(&self) {
-        self.set_bits(Self::CROSS_RESULT_MASK);
+        self.value.set_bits(Self::CROSS_RESULT_MASK);
     }
 
-    /// Clear CROSS_RESULT bit
+    /// Clear CROSS_RESULT bit atomically (RW)
     #[inline(always)]
     pub fn clr_cross_result(&self) {
-        self.clr_bits(Self::CROSS_RESULT_MASK);
+        self.value.clr_bits(Self::CROSS_RESULT_MASK);
     }
 
-    /// **CROSS_INPUT** [16:16]: If 1, feed the opposite lane's accumulator into this lane's shift + mask ha...
+    /// **CROSS_INPUT** `[16]` (RW)
+    /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
+    /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
     #[inline(always)]
     pub fn cross_input(&self) -> bool {
-        (self.read_bits() & Self::CROSS_INPUT_MASK) != 0
+        (self.value.read_bits() & Self::CROSS_INPUT_MASK) != 0
     }
 
-    /// Set CROSS_INPUT bit
+    /// Set CROSS_INPUT bit atomically (RW)
     #[inline(always)]
     pub fn set_cross_input(&self) {
-        self.set_bits(Self::CROSS_INPUT_MASK);
+        self.value.set_bits(Self::CROSS_INPUT_MASK);
     }
 
-    /// Clear CROSS_INPUT bit
+    /// Clear CROSS_INPUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_cross_input(&self) {
-        self.clr_bits(Self::CROSS_INPUT_MASK);
+        self.value.clr_bits(Self::CROSS_INPUT_MASK);
     }
 
-    /// **SIGNED** [15:15]: If SIGNED is set, the shifted and masked accumulator value is sign-extended...
+    /// **SIGNED** `[15]` (RW)
+    /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
+    /// before adding to BASE0, and LANE0 PEEK/POP appear extended to 32 bits when read by processor.
     #[inline(always)]
     pub fn signed(&self) -> bool {
-        (self.read_bits() & Self::SIGNED_MASK) != 0
+        (self.value.read_bits() & Self::SIGNED_MASK) != 0
     }
 
-    /// Set SIGNED bit
+    /// Set SIGNED bit atomically (RW)
     #[inline(always)]
     pub fn set_signed(&self) {
-        self.set_bits(Self::SIGNED_MASK);
+        self.value.set_bits(Self::SIGNED_MASK);
     }
 
-    /// Clear SIGNED bit
+    /// Clear SIGNED bit atomically (RW)
     #[inline(always)]
     pub fn clr_signed(&self) {
-        self.clr_bits(Self::SIGNED_MASK);
+        self.value.clr_bits(Self::SIGNED_MASK);
     }
 
-    /// **MASK_MSB** [14:10]: The most-significant bit allowed to pass by the mask (inclusive) Setting MS...
+    /// **MASK_MSB** `[14:10]` (RW)
+    /// The most-significant bit allowed to pass by the mask (inclusive)
+    /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
     pub fn mask_msb(&self) -> u32 {
-        (self.read_bits() & Self::MASK_MSB_MASK) >> Self::MASK_MSB_OFFSET
+        (self.value.read_bits() & Self::MASK_MSB_MASK) >> Self::MASK_MSB_OFFSET
     }
 
-    /// Write MASK_MSB field
+    /// Write **MASK_MSB** `[14:10]` (RW)
+    /// The most-significant bit allowed to pass by the mask (inclusive)
+    /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
     pub fn write_mask_msb(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::MASK_MSB_MASK) | ((value << Self::MASK_MSB_OFFSET) & Self::MASK_MSB_MASK));
+        self.value.modify_bits(|r| (r & !Self::MASK_MSB_MASK) | ((value << Self::MASK_MSB_OFFSET) & Self::MASK_MSB_MASK));
     }
 
-    /// **MASK_LSB** [9:5]: The least-significant bit allowed to pass by the mask (inclusive)
+    /// **MASK_LSB** `[9:5]` (RW)
+    /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub fn mask_lsb(&self) -> u32 {
-        (self.read_bits() & Self::MASK_LSB_MASK) >> Self::MASK_LSB_OFFSET
+        (self.value.read_bits() & Self::MASK_LSB_MASK) >> Self::MASK_LSB_OFFSET
     }
 
-    /// Write MASK_LSB field
+    /// Write **MASK_LSB** `[9:5]` (RW)
+    /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub fn write_mask_lsb(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::MASK_LSB_MASK) | ((value << Self::MASK_LSB_OFFSET) & Self::MASK_LSB_MASK));
+        self.value.modify_bits(|r| (r & !Self::MASK_LSB_MASK) | ((value << Self::MASK_LSB_OFFSET) & Self::MASK_LSB_MASK));
     }
 
-    /// **SHIFT** [4:0]: Right-rotate applied to accumulator before masking. By appropriately config...
+    /// **SHIFT** `[4:0]` (RW)
+    /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub fn shift(&self) -> u32 {
-        (self.read_bits() & Self::SHIFT_MASK) >> Self::SHIFT_OFFSET
+        (self.value.read_bits() & Self::SHIFT_MASK) >> Self::SHIFT_OFFSET
     }
 
-    /// Write SHIFT field
+    /// Write **SHIFT** `[4:0]` (RW)
+    /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub fn write_shift(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SHIFT_MASK) | ((value << Self::SHIFT_OFFSET) & Self::SHIFT_MASK));
+        self.value.modify_bits(|r| (r & !Self::SHIFT_MASK) | ((value << Self::SHIFT_OFFSET) & Self::SHIFT_MASK));
     }
 
 }
@@ -6792,79 +5612,109 @@ impl Interp0CtrlLane0Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read OVERF [25:25]: Set if either OVERF0 or OVERF1 is set.
+    /// Read **OVERF** `[25:25]`
+    /// Set if either OVERF0 or OVERF1 is set.
     #[inline(always)]
     pub const fn overf(&self) -> bool {
         (self.bits & Interp0CtrlLane0::OVERF_MASK) != 0
     }
 
-    /// Read OVERF1 [24:24]: Indicates if any masked-off MSBs in ACCUM1 are set.
+    /// Read **OVERF1** `[24:24]`
+    /// Indicates if any masked-off MSBs in ACCUM1 are set.
     #[inline(always)]
     pub const fn overf1(&self) -> bool {
         (self.bits & Interp0CtrlLane0::OVERF1_MASK) != 0
     }
 
-    /// Read OVERF0 [23:23]: Indicates if any masked-off MSBs in ACCUM0 are set.
+    /// Read **OVERF0** `[23:23]`
+    /// Indicates if any masked-off MSBs in ACCUM0 are set.
     #[inline(always)]
     pub const fn overf0(&self) -> bool {
         (self.bits & Interp0CtrlLane0::OVERF0_MASK) != 0
     }
 
-    /// Read BLEND [21:21]: Only present on INTERP0 on each core. If BLEND mode is enabled: - LANE1 res...
+    /// Read **BLEND** `[21:21]`
+    /// Only present on INTERP0 on each core. If BLEND mode is enabled:
+    /// - LANE1 result is a linear interpolation between BASE0 and BASE1, controlled
+    /// by the 8 LSBs of lane 1 shift and mask value (a fractional number between
+    /// 0 and 255/256ths)
+    /// - LANE0 result does not have BASE0 added (yields only the 8 LSBs of lane 1 shift+mask value)
+    /// - FULL result does not have lane 1 shift+mask value added (BASE2 + lane 0 shift+mask)
+    /// LANE1 SIGNED flag controls whether the interpolation is signed or unsigned.
     #[inline(always)]
     pub const fn blend(&self) -> bool {
         (self.bits & Interp0CtrlLane0::BLEND_MASK) != 0
     }
 
-    /// Read FORCE_MSB [20:19]: ORed into bits 29:28 of the lane result presented to the processor on the b...
+    /// Read **FORCE_MSB** `[20:19]`
+    /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
+    /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
+    /// of pointers into flash or SRAM.
     #[inline(always)]
     pub const fn force_msb(&self) -> u32 {
         (self.bits & Interp0CtrlLane0::FORCE_MSB_MASK) >> Interp0CtrlLane0::FORCE_MSB_OFFSET
     }
 
-    /// Read ADD_RAW [18:18]: If 1, mask + shift is bypassed for LANE0 result. This does not affect FULL ...
+    /// Read **ADD_RAW** `[18:18]`
+    /// If 1, mask + shift is bypassed for LANE0 result. This does not affect FULL result.
     #[inline(always)]
     pub const fn add_raw(&self) -> bool {
         (self.bits & Interp0CtrlLane0::ADD_RAW_MASK) != 0
     }
 
-    /// Read CROSS_RESULT [17:17]: If 1, feed the opposite lane's result into this lane's accumulator on POP.
+    /// Read **CROSS_RESULT** `[17:17]`
+    /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
     #[inline(always)]
     pub const fn cross_result(&self) -> bool {
         (self.bits & Interp0CtrlLane0::CROSS_RESULT_MASK) != 0
     }
 
-    /// Read CROSS_INPUT [16:16]: If 1, feed the opposite lane's accumulator into this lane's shift + mask ha...
+    /// Read **CROSS_INPUT** `[16:16]`
+    /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
+    /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
     #[inline(always)]
     pub const fn cross_input(&self) -> bool {
         (self.bits & Interp0CtrlLane0::CROSS_INPUT_MASK) != 0
     }
 
-    /// Read SIGNED [15:15]: If SIGNED is set, the shifted and masked accumulator value is sign-extended...
+    /// Read **SIGNED** `[15:15]`
+    /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
+    /// before adding to BASE0, and LANE0 PEEK/POP appear extended to 32 bits when read by processor.
     #[inline(always)]
     pub const fn signed(&self) -> bool {
         (self.bits & Interp0CtrlLane0::SIGNED_MASK) != 0
     }
 
-    /// Read MASK_MSB [14:10]: The most-significant bit allowed to pass by the mask (inclusive) Setting MS...
+    /// Read **MASK_MSB** `[14:10]`
+    /// The most-significant bit allowed to pass by the mask (inclusive)
+    /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
     pub const fn mask_msb(&self) -> u32 {
         (self.bits & Interp0CtrlLane0::MASK_MSB_MASK) >> Interp0CtrlLane0::MASK_MSB_OFFSET
     }
 
-    /// Read MASK_LSB [9:5]: The least-significant bit allowed to pass by the mask (inclusive)
+    /// Read **MASK_LSB** `[9:5]`
+    /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub const fn mask_lsb(&self) -> u32 {
         (self.bits & Interp0CtrlLane0::MASK_LSB_MASK) >> Interp0CtrlLane0::MASK_LSB_OFFSET
     }
 
-    /// Read SHIFT [4:0]: Right-rotate applied to accumulator before masking. By appropriately config...
+    /// Read **SHIFT** `[4:0]`
+    /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub const fn shift(&self) -> u32 {
         (self.bits & Interp0CtrlLane0::SHIFT_MASK) >> Interp0CtrlLane0::SHIFT_OFFSET
     }
 
-    /// Set BLEND [21:21]: Only present on INTERP0 on each core. If BLEND mode is enabled: - LANE1 res...
+    /// Set **BLEND** `[21:21]`
+    /// Only present on INTERP0 on each core. If BLEND mode is enabled:
+    /// - LANE1 result is a linear interpolation between BASE0 and BASE1, controlled
+    /// by the 8 LSBs of lane 1 shift and mask value (a fractional number between
+    /// 0 and 255/256ths)
+    /// - LANE0 result does not have BASE0 added (yields only the 8 LSBs of lane 1 shift+mask value)
+    /// - FULL result does not have lane 1 shift+mask value added (BASE2 + lane 0 shift+mask)
+    /// LANE1 SIGNED flag controls whether the interpolation is signed or unsigned.
     #[inline(always)]
     pub const fn with_blend(self, value: bool) -> Self {
         Self {
@@ -6876,7 +5726,10 @@ impl Interp0CtrlLane0Val {
         }
     }
 
-    /// Set FORCE_MSB [20:19]: ORed into bits 29:28 of the lane result presented to the processor on the b...
+    /// Set **FORCE_MSB** `[20:19]`
+    /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
+    /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
+    /// of pointers into flash or SRAM.
     #[inline(always)]
     pub const fn with_force_msb(self, value: u32) -> Self {
         Self {
@@ -6884,7 +5737,8 @@ impl Interp0CtrlLane0Val {
         }
     }
 
-    /// Set ADD_RAW [18:18]: If 1, mask + shift is bypassed for LANE0 result. This does not affect FULL ...
+    /// Set **ADD_RAW** `[18:18]`
+    /// If 1, mask + shift is bypassed for LANE0 result. This does not affect FULL result.
     #[inline(always)]
     pub const fn with_add_raw(self, value: bool) -> Self {
         Self {
@@ -6896,7 +5750,8 @@ impl Interp0CtrlLane0Val {
         }
     }
 
-    /// Set CROSS_RESULT [17:17]: If 1, feed the opposite lane's result into this lane's accumulator on POP.
+    /// Set **CROSS_RESULT** `[17:17]`
+    /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
     #[inline(always)]
     pub const fn with_cross_result(self, value: bool) -> Self {
         Self {
@@ -6908,7 +5763,9 @@ impl Interp0CtrlLane0Val {
         }
     }
 
-    /// Set CROSS_INPUT [16:16]: If 1, feed the opposite lane's accumulator into this lane's shift + mask ha...
+    /// Set **CROSS_INPUT** `[16:16]`
+    /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
+    /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
     #[inline(always)]
     pub const fn with_cross_input(self, value: bool) -> Self {
         Self {
@@ -6920,7 +5777,9 @@ impl Interp0CtrlLane0Val {
         }
     }
 
-    /// Set SIGNED [15:15]: If SIGNED is set, the shifted and masked accumulator value is sign-extended...
+    /// Set **SIGNED** `[15:15]`
+    /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
+    /// before adding to BASE0, and LANE0 PEEK/POP appear extended to 32 bits when read by processor.
     #[inline(always)]
     pub const fn with_signed(self, value: bool) -> Self {
         Self {
@@ -6932,7 +5791,9 @@ impl Interp0CtrlLane0Val {
         }
     }
 
-    /// Set MASK_MSB [14:10]: The most-significant bit allowed to pass by the mask (inclusive) Setting MS...
+    /// Set **MASK_MSB** `[14:10]`
+    /// The most-significant bit allowed to pass by the mask (inclusive)
+    /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
     pub const fn with_mask_msb(self, value: u32) -> Self {
         Self {
@@ -6940,7 +5801,8 @@ impl Interp0CtrlLane0Val {
         }
     }
 
-    /// Set MASK_LSB [9:5]: The least-significant bit allowed to pass by the mask (inclusive)
+    /// Set **MASK_LSB** `[9:5]`
+    /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub const fn with_mask_lsb(self, value: u32) -> Self {
         Self {
@@ -6948,7 +5810,8 @@ impl Interp0CtrlLane0Val {
         }
     }
 
-    /// Set SHIFT [4:0]: Right-rotate applied to accumulator before masking. By appropriately config...
+    /// Set **SHIFT** `[4:0]`
+    /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub const fn with_shift(self, value: u32) -> Self {
         Self {
@@ -6967,20 +5830,20 @@ impl Default for Interp0CtrlLane0Val {
 impl Interp0CtrlLane0 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp0CtrlLane0Val {
-        Interp0CtrlLane0Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp0CtrlLane0Val {
+        Interp0CtrlLane0Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp0CtrlLane0Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp0CtrlLane0Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp0CtrlLane0Val) -> Interp0CtrlLane0Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp0CtrlLane0Val) -> Interp0CtrlLane0Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -6994,236 +5857,240 @@ impl Interp0CtrlLane0 {
 ///
 /// ## Fields
 ///
-/// - **FORCE_MSB** [20:19] (RW): ORed into bits 29:28 of the lane result presented to the processor on the b...
-/// - **ADD_RAW** [18] (RW): If 1, mask + shift is bypassed for LANE1 result. This does not affect FULL ...
-/// - **CROSS_RESULT** [17] (RW): If 1, feed the opposite lane's result into this lane's accumulator on POP.
-/// - **CROSS_INPUT** [16] (RW): If 1, feed the opposite lane's accumulator into this lane's shift + mask ha...
-/// - **SIGNED** [15] (RW): If SIGNED is set, the shifted and masked accumulator value is sign-extended...
-/// - **MASK_MSB** [14:10] (RW): The most-significant bit allowed to pass by the mask (inclusive) Setting MS...
-/// - **MASK_LSB** [9:5] (RW): The least-significant bit allowed to pass by the mask (inclusive)
-/// - **SHIFT** [4:0] (RW): Right-rotate applied to accumulator before masking. By appropriately config...
+/// - **FORCE_MSB** `[20:19]` (RW)
+///   ORed into bits 29:28 of the lane result presented to the processor on the bus.
+///   No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
+///   of pointers into flash or SRAM.
+/// - **ADD_RAW** `[18]` (RW)
+///   If 1, mask + shift is bypassed for LANE1 result. This does not affect FULL result.
+/// - **CROSS_RESULT** `[17]` (RW)
+///   If 1, feed the opposite lane's result into this lane's accumulator on POP.
+/// - **CROSS_INPUT** `[16]` (RW)
+///   If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
+///   Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
+/// - **SIGNED** `[15]` (RW)
+///   If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
+///   before adding to BASE1, and LANE1 PEEK/POP appear extended to 32 bits when read by processor.
+/// - **MASK_MSB** `[14:10]` (RW)
+///   The most-significant bit allowed to pass by the mask (inclusive)
+///   Setting MSB < LSB may cause chip to turn inside-out
+/// - **MASK_LSB** `[9:5]` (RW)
+///   The least-significant bit allowed to pass by the mask (inclusive)
+/// - **SHIFT** `[4:0]` (RW)
+///   Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
 #[repr(transparent)]
 pub struct Interp0CtrlLane1 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp0CtrlLane1 {}
-unsafe impl Sync for Interp0CtrlLane1 {}
+impl core::ops::Deref for Interp0CtrlLane1 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp0CtrlLane1 {
     // ======== Field Constants ========
 
-    /// FORCE_MSB - ORed into bits 29:28 of the lane result presented to the processor on the b...
-    /// Bits [20:19], mask 0x00180000
+    /// **FORCE_MSB**
+    /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
+    /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
+    /// of pointers into flash or SRAM.
+    /// Bits `[20:19]`, mask `0x00180000`
     pub const FORCE_MSB_OFFSET: u32 = 19;
     pub const FORCE_MSB_MASK: u32 = 0x00180000;
 
-    /// ADD_RAW - If 1, mask + shift is bypassed for LANE1 result. This does not affect FULL ...
-    /// Bits [18:18], mask 0x00040000
+    /// **ADD_RAW**
+    /// If 1, mask + shift is bypassed for LANE1 result. This does not affect FULL result.
+    /// Bits `[18:18]`, mask `0x00040000`
     pub const ADD_RAW_OFFSET: u32 = 18;
     pub const ADD_RAW_MASK: u32 = 0x00040000;
     pub const ADD_RAW: u32 = 1 << 18;
 
-    /// CROSS_RESULT - If 1, feed the opposite lane's result into this lane's accumulator on POP.
-    /// Bits [17:17], mask 0x00020000
+    /// **CROSS_RESULT**
+    /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
+    /// Bits `[17:17]`, mask `0x00020000`
     pub const CROSS_RESULT_OFFSET: u32 = 17;
     pub const CROSS_RESULT_MASK: u32 = 0x00020000;
     pub const CROSS_RESULT: u32 = 1 << 17;
 
-    /// CROSS_INPUT - If 1, feed the opposite lane's accumulator into this lane's shift + mask ha...
-    /// Bits [16:16], mask 0x00010000
+    /// **CROSS_INPUT**
+    /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
+    /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
+    /// Bits `[16:16]`, mask `0x00010000`
     pub const CROSS_INPUT_OFFSET: u32 = 16;
     pub const CROSS_INPUT_MASK: u32 = 0x00010000;
     pub const CROSS_INPUT: u32 = 1 << 16;
 
-    /// SIGNED - If SIGNED is set, the shifted and masked accumulator value is sign-extended...
-    /// Bits [15:15], mask 0x00008000
+    /// **SIGNED**
+    /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
+    /// before adding to BASE1, and LANE1 PEEK/POP appear extended to 32 bits when read by processor.
+    /// Bits `[15:15]`, mask `0x00008000`
     pub const SIGNED_OFFSET: u32 = 15;
     pub const SIGNED_MASK: u32 = 0x00008000;
     pub const SIGNED: u32 = 1 << 15;
 
-    /// MASK_MSB - The most-significant bit allowed to pass by the mask (inclusive) Setting MS...
-    /// Bits [14:10], mask 0x00007c00
+    /// **MASK_MSB**
+    /// The most-significant bit allowed to pass by the mask (inclusive)
+    /// Setting MSB < LSB may cause chip to turn inside-out
+    /// Bits `[14:10]`, mask `0x00007c00`
     pub const MASK_MSB_OFFSET: u32 = 10;
     pub const MASK_MSB_MASK: u32 = 0x00007c00;
 
-    /// MASK_LSB - The least-significant bit allowed to pass by the mask (inclusive)
-    /// Bits [9:5], mask 0x000003e0
+    /// **MASK_LSB**
+    /// The least-significant bit allowed to pass by the mask (inclusive)
+    /// Bits `[9:5]`, mask `0x000003e0`
     pub const MASK_LSB_OFFSET: u32 = 5;
     pub const MASK_LSB_MASK: u32 = 0x000003e0;
 
-    /// SHIFT - Right-rotate applied to accumulator before masking. By appropriately config...
-    /// Bits [4:0], mask 0x0000001f
+    /// **SHIFT**
+    /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
+    /// Bits `[4:0]`, mask `0x0000001f`
     pub const SHIFT_OFFSET: u32 = 0;
     pub const SHIFT_MASK: u32 = 0x0000001f;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **FORCE_MSB** [20:19]: ORed into bits 29:28 of the lane result presented to the processor on the b...
+    /// **FORCE_MSB** `[20:19]` (RW)
+    /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
+    /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
+    /// of pointers into flash or SRAM.
     #[inline(always)]
     pub fn force_msb(&self) -> u32 {
-        (self.read_bits() & Self::FORCE_MSB_MASK) >> Self::FORCE_MSB_OFFSET
+        (self.value.read_bits() & Self::FORCE_MSB_MASK) >> Self::FORCE_MSB_OFFSET
     }
 
-    /// Write FORCE_MSB field
+    /// Write **FORCE_MSB** `[20:19]` (RW)
+    /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
+    /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
+    /// of pointers into flash or SRAM.
     #[inline(always)]
     pub fn write_force_msb(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::FORCE_MSB_MASK) | ((value << Self::FORCE_MSB_OFFSET) & Self::FORCE_MSB_MASK));
+        self.value.modify_bits(|r| (r & !Self::FORCE_MSB_MASK) | ((value << Self::FORCE_MSB_OFFSET) & Self::FORCE_MSB_MASK));
     }
 
-    /// **ADD_RAW** [18:18]: If 1, mask + shift is bypassed for LANE1 result. This does not affect FULL ...
+    /// **ADD_RAW** `[18]` (RW)
+    /// If 1, mask + shift is bypassed for LANE1 result. This does not affect FULL result.
     #[inline(always)]
     pub fn add_raw(&self) -> bool {
-        (self.read_bits() & Self::ADD_RAW_MASK) != 0
+        (self.value.read_bits() & Self::ADD_RAW_MASK) != 0
     }
 
-    /// Set ADD_RAW bit
+    /// Set ADD_RAW bit atomically (RW)
     #[inline(always)]
     pub fn set_add_raw(&self) {
-        self.set_bits(Self::ADD_RAW_MASK);
+        self.value.set_bits(Self::ADD_RAW_MASK);
     }
 
-    /// Clear ADD_RAW bit
+    /// Clear ADD_RAW bit atomically (RW)
     #[inline(always)]
     pub fn clr_add_raw(&self) {
-        self.clr_bits(Self::ADD_RAW_MASK);
+        self.value.clr_bits(Self::ADD_RAW_MASK);
     }
 
-    /// **CROSS_RESULT** [17:17]: If 1, feed the opposite lane's result into this lane's accumulator on POP.
+    /// **CROSS_RESULT** `[17]` (RW)
+    /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
     #[inline(always)]
     pub fn cross_result(&self) -> bool {
-        (self.read_bits() & Self::CROSS_RESULT_MASK) != 0
+        (self.value.read_bits() & Self::CROSS_RESULT_MASK) != 0
     }
 
-    /// Set CROSS_RESULT bit
+    /// Set CROSS_RESULT bit atomically (RW)
     #[inline(always)]
     pub fn set_cross_result(&self) {
-        self.set_bits(Self::CROSS_RESULT_MASK);
+        self.value.set_bits(Self::CROSS_RESULT_MASK);
     }
 
-    /// Clear CROSS_RESULT bit
+    /// Clear CROSS_RESULT bit atomically (RW)
     #[inline(always)]
     pub fn clr_cross_result(&self) {
-        self.clr_bits(Self::CROSS_RESULT_MASK);
+        self.value.clr_bits(Self::CROSS_RESULT_MASK);
     }
 
-    /// **CROSS_INPUT** [16:16]: If 1, feed the opposite lane's accumulator into this lane's shift + mask ha...
+    /// **CROSS_INPUT** `[16]` (RW)
+    /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
+    /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
     #[inline(always)]
     pub fn cross_input(&self) -> bool {
-        (self.read_bits() & Self::CROSS_INPUT_MASK) != 0
+        (self.value.read_bits() & Self::CROSS_INPUT_MASK) != 0
     }
 
-    /// Set CROSS_INPUT bit
+    /// Set CROSS_INPUT bit atomically (RW)
     #[inline(always)]
     pub fn set_cross_input(&self) {
-        self.set_bits(Self::CROSS_INPUT_MASK);
+        self.value.set_bits(Self::CROSS_INPUT_MASK);
     }
 
-    /// Clear CROSS_INPUT bit
+    /// Clear CROSS_INPUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_cross_input(&self) {
-        self.clr_bits(Self::CROSS_INPUT_MASK);
+        self.value.clr_bits(Self::CROSS_INPUT_MASK);
     }
 
-    /// **SIGNED** [15:15]: If SIGNED is set, the shifted and masked accumulator value is sign-extended...
+    /// **SIGNED** `[15]` (RW)
+    /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
+    /// before adding to BASE1, and LANE1 PEEK/POP appear extended to 32 bits when read by processor.
     #[inline(always)]
     pub fn signed(&self) -> bool {
-        (self.read_bits() & Self::SIGNED_MASK) != 0
+        (self.value.read_bits() & Self::SIGNED_MASK) != 0
     }
 
-    /// Set SIGNED bit
+    /// Set SIGNED bit atomically (RW)
     #[inline(always)]
     pub fn set_signed(&self) {
-        self.set_bits(Self::SIGNED_MASK);
+        self.value.set_bits(Self::SIGNED_MASK);
     }
 
-    /// Clear SIGNED bit
+    /// Clear SIGNED bit atomically (RW)
     #[inline(always)]
     pub fn clr_signed(&self) {
-        self.clr_bits(Self::SIGNED_MASK);
+        self.value.clr_bits(Self::SIGNED_MASK);
     }
 
-    /// **MASK_MSB** [14:10]: The most-significant bit allowed to pass by the mask (inclusive) Setting MS...
+    /// **MASK_MSB** `[14:10]` (RW)
+    /// The most-significant bit allowed to pass by the mask (inclusive)
+    /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
     pub fn mask_msb(&self) -> u32 {
-        (self.read_bits() & Self::MASK_MSB_MASK) >> Self::MASK_MSB_OFFSET
+        (self.value.read_bits() & Self::MASK_MSB_MASK) >> Self::MASK_MSB_OFFSET
     }
 
-    /// Write MASK_MSB field
+    /// Write **MASK_MSB** `[14:10]` (RW)
+    /// The most-significant bit allowed to pass by the mask (inclusive)
+    /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
     pub fn write_mask_msb(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::MASK_MSB_MASK) | ((value << Self::MASK_MSB_OFFSET) & Self::MASK_MSB_MASK));
+        self.value.modify_bits(|r| (r & !Self::MASK_MSB_MASK) | ((value << Self::MASK_MSB_OFFSET) & Self::MASK_MSB_MASK));
     }
 
-    /// **MASK_LSB** [9:5]: The least-significant bit allowed to pass by the mask (inclusive)
+    /// **MASK_LSB** `[9:5]` (RW)
+    /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub fn mask_lsb(&self) -> u32 {
-        (self.read_bits() & Self::MASK_LSB_MASK) >> Self::MASK_LSB_OFFSET
+        (self.value.read_bits() & Self::MASK_LSB_MASK) >> Self::MASK_LSB_OFFSET
     }
 
-    /// Write MASK_LSB field
+    /// Write **MASK_LSB** `[9:5]` (RW)
+    /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub fn write_mask_lsb(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::MASK_LSB_MASK) | ((value << Self::MASK_LSB_OFFSET) & Self::MASK_LSB_MASK));
+        self.value.modify_bits(|r| (r & !Self::MASK_LSB_MASK) | ((value << Self::MASK_LSB_OFFSET) & Self::MASK_LSB_MASK));
     }
 
-    /// **SHIFT** [4:0]: Right-rotate applied to accumulator before masking. By appropriately config...
+    /// **SHIFT** `[4:0]` (RW)
+    /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub fn shift(&self) -> u32 {
-        (self.read_bits() & Self::SHIFT_MASK) >> Self::SHIFT_OFFSET
+        (self.value.read_bits() & Self::SHIFT_MASK) >> Self::SHIFT_OFFSET
     }
 
-    /// Write SHIFT field
+    /// Write **SHIFT** `[4:0]` (RW)
+    /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub fn write_shift(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SHIFT_MASK) | ((value << Self::SHIFT_OFFSET) & Self::SHIFT_MASK));
+        self.value.modify_bits(|r| (r & !Self::SHIFT_MASK) | ((value << Self::SHIFT_OFFSET) & Self::SHIFT_MASK));
     }
 
 }
@@ -7256,55 +6123,71 @@ impl Interp0CtrlLane1Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read FORCE_MSB [20:19]: ORed into bits 29:28 of the lane result presented to the processor on the b...
+    /// Read **FORCE_MSB** `[20:19]`
+    /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
+    /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
+    /// of pointers into flash or SRAM.
     #[inline(always)]
     pub const fn force_msb(&self) -> u32 {
         (self.bits & Interp0CtrlLane1::FORCE_MSB_MASK) >> Interp0CtrlLane1::FORCE_MSB_OFFSET
     }
 
-    /// Read ADD_RAW [18:18]: If 1, mask + shift is bypassed for LANE1 result. This does not affect FULL ...
+    /// Read **ADD_RAW** `[18:18]`
+    /// If 1, mask + shift is bypassed for LANE1 result. This does not affect FULL result.
     #[inline(always)]
     pub const fn add_raw(&self) -> bool {
         (self.bits & Interp0CtrlLane1::ADD_RAW_MASK) != 0
     }
 
-    /// Read CROSS_RESULT [17:17]: If 1, feed the opposite lane's result into this lane's accumulator on POP.
+    /// Read **CROSS_RESULT** `[17:17]`
+    /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
     #[inline(always)]
     pub const fn cross_result(&self) -> bool {
         (self.bits & Interp0CtrlLane1::CROSS_RESULT_MASK) != 0
     }
 
-    /// Read CROSS_INPUT [16:16]: If 1, feed the opposite lane's accumulator into this lane's shift + mask ha...
+    /// Read **CROSS_INPUT** `[16:16]`
+    /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
+    /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
     #[inline(always)]
     pub const fn cross_input(&self) -> bool {
         (self.bits & Interp0CtrlLane1::CROSS_INPUT_MASK) != 0
     }
 
-    /// Read SIGNED [15:15]: If SIGNED is set, the shifted and masked accumulator value is sign-extended...
+    /// Read **SIGNED** `[15:15]`
+    /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
+    /// before adding to BASE1, and LANE1 PEEK/POP appear extended to 32 bits when read by processor.
     #[inline(always)]
     pub const fn signed(&self) -> bool {
         (self.bits & Interp0CtrlLane1::SIGNED_MASK) != 0
     }
 
-    /// Read MASK_MSB [14:10]: The most-significant bit allowed to pass by the mask (inclusive) Setting MS...
+    /// Read **MASK_MSB** `[14:10]`
+    /// The most-significant bit allowed to pass by the mask (inclusive)
+    /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
     pub const fn mask_msb(&self) -> u32 {
         (self.bits & Interp0CtrlLane1::MASK_MSB_MASK) >> Interp0CtrlLane1::MASK_MSB_OFFSET
     }
 
-    /// Read MASK_LSB [9:5]: The least-significant bit allowed to pass by the mask (inclusive)
+    /// Read **MASK_LSB** `[9:5]`
+    /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub const fn mask_lsb(&self) -> u32 {
         (self.bits & Interp0CtrlLane1::MASK_LSB_MASK) >> Interp0CtrlLane1::MASK_LSB_OFFSET
     }
 
-    /// Read SHIFT [4:0]: Right-rotate applied to accumulator before masking. By appropriately config...
+    /// Read **SHIFT** `[4:0]`
+    /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub const fn shift(&self) -> u32 {
         (self.bits & Interp0CtrlLane1::SHIFT_MASK) >> Interp0CtrlLane1::SHIFT_OFFSET
     }
 
-    /// Set FORCE_MSB [20:19]: ORed into bits 29:28 of the lane result presented to the processor on the b...
+    /// Set **FORCE_MSB** `[20:19]`
+    /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
+    /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
+    /// of pointers into flash or SRAM.
     #[inline(always)]
     pub const fn with_force_msb(self, value: u32) -> Self {
         Self {
@@ -7312,7 +6195,8 @@ impl Interp0CtrlLane1Val {
         }
     }
 
-    /// Set ADD_RAW [18:18]: If 1, mask + shift is bypassed for LANE1 result. This does not affect FULL ...
+    /// Set **ADD_RAW** `[18:18]`
+    /// If 1, mask + shift is bypassed for LANE1 result. This does not affect FULL result.
     #[inline(always)]
     pub const fn with_add_raw(self, value: bool) -> Self {
         Self {
@@ -7324,7 +6208,8 @@ impl Interp0CtrlLane1Val {
         }
     }
 
-    /// Set CROSS_RESULT [17:17]: If 1, feed the opposite lane's result into this lane's accumulator on POP.
+    /// Set **CROSS_RESULT** `[17:17]`
+    /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
     #[inline(always)]
     pub const fn with_cross_result(self, value: bool) -> Self {
         Self {
@@ -7336,7 +6221,9 @@ impl Interp0CtrlLane1Val {
         }
     }
 
-    /// Set CROSS_INPUT [16:16]: If 1, feed the opposite lane's accumulator into this lane's shift + mask ha...
+    /// Set **CROSS_INPUT** `[16:16]`
+    /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
+    /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
     #[inline(always)]
     pub const fn with_cross_input(self, value: bool) -> Self {
         Self {
@@ -7348,7 +6235,9 @@ impl Interp0CtrlLane1Val {
         }
     }
 
-    /// Set SIGNED [15:15]: If SIGNED is set, the shifted and masked accumulator value is sign-extended...
+    /// Set **SIGNED** `[15:15]`
+    /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
+    /// before adding to BASE1, and LANE1 PEEK/POP appear extended to 32 bits when read by processor.
     #[inline(always)]
     pub const fn with_signed(self, value: bool) -> Self {
         Self {
@@ -7360,7 +6249,9 @@ impl Interp0CtrlLane1Val {
         }
     }
 
-    /// Set MASK_MSB [14:10]: The most-significant bit allowed to pass by the mask (inclusive) Setting MS...
+    /// Set **MASK_MSB** `[14:10]`
+    /// The most-significant bit allowed to pass by the mask (inclusive)
+    /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
     pub const fn with_mask_msb(self, value: u32) -> Self {
         Self {
@@ -7368,7 +6259,8 @@ impl Interp0CtrlLane1Val {
         }
     }
 
-    /// Set MASK_LSB [9:5]: The least-significant bit allowed to pass by the mask (inclusive)
+    /// Set **MASK_LSB** `[9:5]`
+    /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub const fn with_mask_lsb(self, value: u32) -> Self {
         Self {
@@ -7376,7 +6268,8 @@ impl Interp0CtrlLane1Val {
         }
     }
 
-    /// Set SHIFT [4:0]: Right-rotate applied to accumulator before masking. By appropriately config...
+    /// Set **SHIFT** `[4:0]`
+    /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub const fn with_shift(self, value: u32) -> Self {
         Self {
@@ -7395,109 +6288,68 @@ impl Default for Interp0CtrlLane1Val {
 impl Interp0CtrlLane1 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp0CtrlLane1Val {
-        Interp0CtrlLane1Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp0CtrlLane1Val {
+        Interp0CtrlLane1Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp0CtrlLane1Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp0CtrlLane1Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp0CtrlLane1Val) -> Interp0CtrlLane1Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp0CtrlLane1Val) -> Interp0CtrlLane1Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// INTERP0_ACCUM0_ADD Register
 ///
-/// Values written here are atomically added to ACCUM0 Reading yields lane 0's
-/// raw shift and mask value (BASE0 not added).
+/// Values written here are atomically added to ACCUM0
+/// Reading yields lane 0's raw shift and mask value (BASE0 not added).
 ///
 /// Address offset: 0x00b4
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **INTERP0_ACCUM0_ADD** [23:0] (RW): 
+/// - **INTERP0_ACCUM0_ADD** `[23:0]` (RW)
 #[repr(transparent)]
 pub struct Interp0Accum0Add {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp0Accum0Add {}
-unsafe impl Sync for Interp0Accum0Add {}
+impl core::ops::Deref for Interp0Accum0Add {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp0Accum0Add {
     // ======== Field Constants ========
 
-    /// Bits [23:0], mask 0x00ffffff
+    /// **INTERP0_ACCUM0_ADD**
+    /// Bits `[23:0]`, mask `0x00ffffff`
     pub const INTERP0_ACCUM0_ADD_OFFSET: u32 = 0;
     pub const INTERP0_ACCUM0_ADD_MASK: u32 = 0x00ffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **INTERP0_ACCUM0_ADD** [23:0]
+    /// **INTERP0_ACCUM0_ADD** `[23:0]` (RW)
     #[inline(always)]
     pub fn interp0_accum0_add(&self) -> u32 {
-        (self.read_bits() & Self::INTERP0_ACCUM0_ADD_MASK) >> Self::INTERP0_ACCUM0_ADD_OFFSET
+        (self.value.read_bits() & Self::INTERP0_ACCUM0_ADD_MASK) >> Self::INTERP0_ACCUM0_ADD_OFFSET
     }
 
-    /// Write INTERP0_ACCUM0_ADD field
+    /// Write **INTERP0_ACCUM0_ADD** `[23:0]` (RW)
     #[inline(always)]
     pub fn write_interp0_accum0_add(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::INTERP0_ACCUM0_ADD_MASK) | ((value << Self::INTERP0_ACCUM0_ADD_OFFSET) & Self::INTERP0_ACCUM0_ADD_MASK));
+        self.value.modify_bits(|r| (r & !Self::INTERP0_ACCUM0_ADD_MASK) | ((value << Self::INTERP0_ACCUM0_ADD_OFFSET) & Self::INTERP0_ACCUM0_ADD_MASK));
     }
 
 }
@@ -7530,13 +6382,13 @@ impl Interp0Accum0AddVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read INTERP0_ACCUM0_ADD [23:0]
+    /// Read **INTERP0_ACCUM0_ADD** `[23:0]`
     #[inline(always)]
     pub const fn interp0_accum0_add(&self) -> u32 {
         (self.bits & Interp0Accum0Add::INTERP0_ACCUM0_ADD_MASK) >> Interp0Accum0Add::INTERP0_ACCUM0_ADD_OFFSET
     }
 
-    /// Set INTERP0_ACCUM0_ADD [23:0]
+    /// Set **INTERP0_ACCUM0_ADD** `[23:0]`
     #[inline(always)]
     pub const fn with_interp0_accum0_add(self, value: u32) -> Self {
         Self {
@@ -7555,109 +6407,68 @@ impl Default for Interp0Accum0AddVal {
 impl Interp0Accum0Add {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp0Accum0AddVal {
-        Interp0Accum0AddVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp0Accum0AddVal {
+        Interp0Accum0AddVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp0Accum0AddVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp0Accum0AddVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp0Accum0AddVal) -> Interp0Accum0AddVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp0Accum0AddVal) -> Interp0Accum0AddVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// INTERP0_ACCUM1_ADD Register
 ///
-/// Values written here are atomically added to ACCUM1 Reading yields lane 1's
-/// raw shift and mask value (BASE1 not added).
+/// Values written here are atomically added to ACCUM1
+/// Reading yields lane 1's raw shift and mask value (BASE1 not added).
 ///
 /// Address offset: 0x00b8
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **INTERP0_ACCUM1_ADD** [23:0] (RW): 
+/// - **INTERP0_ACCUM1_ADD** `[23:0]` (RW)
 #[repr(transparent)]
 pub struct Interp0Accum1Add {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp0Accum1Add {}
-unsafe impl Sync for Interp0Accum1Add {}
+impl core::ops::Deref for Interp0Accum1Add {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp0Accum1Add {
     // ======== Field Constants ========
 
-    /// Bits [23:0], mask 0x00ffffff
+    /// **INTERP0_ACCUM1_ADD**
+    /// Bits `[23:0]`, mask `0x00ffffff`
     pub const INTERP0_ACCUM1_ADD_OFFSET: u32 = 0;
     pub const INTERP0_ACCUM1_ADD_MASK: u32 = 0x00ffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **INTERP0_ACCUM1_ADD** [23:0]
+    /// **INTERP0_ACCUM1_ADD** `[23:0]` (RW)
     #[inline(always)]
     pub fn interp0_accum1_add(&self) -> u32 {
-        (self.read_bits() & Self::INTERP0_ACCUM1_ADD_MASK) >> Self::INTERP0_ACCUM1_ADD_OFFSET
+        (self.value.read_bits() & Self::INTERP0_ACCUM1_ADD_MASK) >> Self::INTERP0_ACCUM1_ADD_OFFSET
     }
 
-    /// Write INTERP0_ACCUM1_ADD field
+    /// Write **INTERP0_ACCUM1_ADD** `[23:0]` (RW)
     #[inline(always)]
     pub fn write_interp0_accum1_add(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::INTERP0_ACCUM1_ADD_MASK) | ((value << Self::INTERP0_ACCUM1_ADD_OFFSET) & Self::INTERP0_ACCUM1_ADD_MASK));
+        self.value.modify_bits(|r| (r & !Self::INTERP0_ACCUM1_ADD_MASK) | ((value << Self::INTERP0_ACCUM1_ADD_OFFSET) & Self::INTERP0_ACCUM1_ADD_MASK));
     }
 
 }
@@ -7690,13 +6501,13 @@ impl Interp0Accum1AddVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read INTERP0_ACCUM1_ADD [23:0]
+    /// Read **INTERP0_ACCUM1_ADD** `[23:0]`
     #[inline(always)]
     pub const fn interp0_accum1_add(&self) -> u32 {
         (self.bits & Interp0Accum1Add::INTERP0_ACCUM1_ADD_MASK) >> Interp0Accum1Add::INTERP0_ACCUM1_ADD_OFFSET
     }
 
-    /// Set INTERP0_ACCUM1_ADD [23:0]
+    /// Set **INTERP0_ACCUM1_ADD** `[23:0]`
     #[inline(always)]
     pub const fn with_interp0_accum1_add(self, value: u32) -> Self {
         Self {
@@ -7715,20 +6526,20 @@ impl Default for Interp0Accum1AddVal {
 impl Interp0Accum1Add {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp0Accum1AddVal {
-        Interp0Accum1AddVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp0Accum1AddVal {
+        Interp0Accum1AddVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp0Accum1AddVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp0Accum1AddVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp0Accum1AddVal) -> Interp0Accum1AddVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp0Accum1AddVal) -> Interp0Accum1AddVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -7743,76 +6554,35 @@ impl Interp0Accum1Add {
 ///
 /// ## Fields
 ///
-/// - **INTERP0_BASE_1AND0** [31:0] (WO): 
+/// - **INTERP0_BASE_1AND0** `[31:0]` (WO)
 #[repr(transparent)]
 pub struct Interp0Base1and0 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp0Base1and0 {}
-unsafe impl Sync for Interp0Base1and0 {}
+impl core::ops::Deref for Interp0Base1and0 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp0Base1and0 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **INTERP0_BASE_1AND0**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const INTERP0_BASE_1AND0_OFFSET: u32 = 0;
     pub const INTERP0_BASE_1AND0_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **INTERP0_BASE_1AND0** [31:0]
-    /// Write INTERP0_BASE_1AND0 field (write-only)
+    /// **INTERP0_BASE_1AND0** `[31:0]` (WO)
+    /// Write **INTERP0_BASE_1AND0** `[31:0]` (WO)
     #[inline(always)]
     pub fn write_interp0_base_1and0(&self, value: u32) {
-        self.write_bits((value << Self::INTERP0_BASE_1AND0_OFFSET) & Self::INTERP0_BASE_1AND0_MASK);
+        self.value.write_bits((value << Self::INTERP0_BASE_1AND0_OFFSET) & Self::INTERP0_BASE_1AND0_MASK);
     }
 
 }
@@ -7845,7 +6615,7 @@ impl Interp0Base1and0Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Set INTERP0_BASE_1AND0 [31:0]
+    /// Set **INTERP0_BASE_1AND0** `[31:0]`
     #[inline(always)]
     pub const fn with_interp0_base_1and0(self, value: u32) -> Self {
         Self {
@@ -7864,20 +6634,20 @@ impl Default for Interp0Base1and0Val {
 impl Interp0Base1and0 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp0Base1and0Val {
-        Interp0Base1and0Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp0Base1and0Val {
+        Interp0Base1and0Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp0Base1and0Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp0Base1and0Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp0Base1and0Val) -> Interp0Base1and0Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp0Base1and0Val) -> Interp0Base1and0Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -7891,81 +6661,40 @@ impl Interp0Base1and0 {
 ///
 /// ## Fields
 ///
-/// - **INTERP1_ACCUM0** [31:0] (RW): 
+/// - **INTERP1_ACCUM0** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Interp1Accum0 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp1Accum0 {}
-unsafe impl Sync for Interp1Accum0 {}
+impl core::ops::Deref for Interp1Accum0 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp1Accum0 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **INTERP1_ACCUM0**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const INTERP1_ACCUM0_OFFSET: u32 = 0;
     pub const INTERP1_ACCUM0_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **INTERP1_ACCUM0** [31:0]
+    /// **INTERP1_ACCUM0** `[31:0]` (RW)
     #[inline(always)]
     pub fn interp1_accum0(&self) -> u32 {
-        (self.read_bits() & Self::INTERP1_ACCUM0_MASK) >> Self::INTERP1_ACCUM0_OFFSET
+        (self.value.read_bits() & Self::INTERP1_ACCUM0_MASK) >> Self::INTERP1_ACCUM0_OFFSET
     }
 
-    /// Write INTERP1_ACCUM0 field
+    /// Write **INTERP1_ACCUM0** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_interp1_accum0(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::INTERP1_ACCUM0_MASK) | ((value << Self::INTERP1_ACCUM0_OFFSET) & Self::INTERP1_ACCUM0_MASK));
+        self.value.modify_bits(|r| (r & !Self::INTERP1_ACCUM0_MASK) | ((value << Self::INTERP1_ACCUM0_OFFSET) & Self::INTERP1_ACCUM0_MASK));
     }
 
 }
@@ -7998,13 +6727,13 @@ impl Interp1Accum0Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read INTERP1_ACCUM0 [31:0]
+    /// Read **INTERP1_ACCUM0** `[31:0]`
     #[inline(always)]
     pub const fn interp1_accum0(&self) -> u32 {
         (self.bits & Interp1Accum0::INTERP1_ACCUM0_MASK) >> Interp1Accum0::INTERP1_ACCUM0_OFFSET
     }
 
-    /// Set INTERP1_ACCUM0 [31:0]
+    /// Set **INTERP1_ACCUM0** `[31:0]`
     #[inline(always)]
     pub const fn with_interp1_accum0(self, value: u32) -> Self {
         Self {
@@ -8023,20 +6752,20 @@ impl Default for Interp1Accum0Val {
 impl Interp1Accum0 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp1Accum0Val {
-        Interp1Accum0Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp1Accum0Val {
+        Interp1Accum0Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp1Accum0Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp1Accum0Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp1Accum0Val) -> Interp1Accum0Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp1Accum0Val) -> Interp1Accum0Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -8050,81 +6779,40 @@ impl Interp1Accum0 {
 ///
 /// ## Fields
 ///
-/// - **INTERP1_ACCUM1** [31:0] (RW): 
+/// - **INTERP1_ACCUM1** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Interp1Accum1 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp1Accum1 {}
-unsafe impl Sync for Interp1Accum1 {}
+impl core::ops::Deref for Interp1Accum1 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp1Accum1 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **INTERP1_ACCUM1**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const INTERP1_ACCUM1_OFFSET: u32 = 0;
     pub const INTERP1_ACCUM1_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **INTERP1_ACCUM1** [31:0]
+    /// **INTERP1_ACCUM1** `[31:0]` (RW)
     #[inline(always)]
     pub fn interp1_accum1(&self) -> u32 {
-        (self.read_bits() & Self::INTERP1_ACCUM1_MASK) >> Self::INTERP1_ACCUM1_OFFSET
+        (self.value.read_bits() & Self::INTERP1_ACCUM1_MASK) >> Self::INTERP1_ACCUM1_OFFSET
     }
 
-    /// Write INTERP1_ACCUM1 field
+    /// Write **INTERP1_ACCUM1** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_interp1_accum1(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::INTERP1_ACCUM1_MASK) | ((value << Self::INTERP1_ACCUM1_OFFSET) & Self::INTERP1_ACCUM1_MASK));
+        self.value.modify_bits(|r| (r & !Self::INTERP1_ACCUM1_MASK) | ((value << Self::INTERP1_ACCUM1_OFFSET) & Self::INTERP1_ACCUM1_MASK));
     }
 
 }
@@ -8157,13 +6845,13 @@ impl Interp1Accum1Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read INTERP1_ACCUM1 [31:0]
+    /// Read **INTERP1_ACCUM1** `[31:0]`
     #[inline(always)]
     pub const fn interp1_accum1(&self) -> u32 {
         (self.bits & Interp1Accum1::INTERP1_ACCUM1_MASK) >> Interp1Accum1::INTERP1_ACCUM1_OFFSET
     }
 
-    /// Set INTERP1_ACCUM1 [31:0]
+    /// Set **INTERP1_ACCUM1** `[31:0]`
     #[inline(always)]
     pub const fn with_interp1_accum1(self, value: u32) -> Self {
         Self {
@@ -8182,20 +6870,20 @@ impl Default for Interp1Accum1Val {
 impl Interp1Accum1 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp1Accum1Val {
-        Interp1Accum1Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp1Accum1Val {
+        Interp1Accum1Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp1Accum1Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp1Accum1Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp1Accum1Val) -> Interp1Accum1Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp1Accum1Val) -> Interp1Accum1Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -8209,81 +6897,40 @@ impl Interp1Accum1 {
 ///
 /// ## Fields
 ///
-/// - **INTERP1_BASE0** [31:0] (RW): 
+/// - **INTERP1_BASE0** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Interp1Base0 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp1Base0 {}
-unsafe impl Sync for Interp1Base0 {}
+impl core::ops::Deref for Interp1Base0 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp1Base0 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **INTERP1_BASE0**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const INTERP1_BASE0_OFFSET: u32 = 0;
     pub const INTERP1_BASE0_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **INTERP1_BASE0** [31:0]
+    /// **INTERP1_BASE0** `[31:0]` (RW)
     #[inline(always)]
     pub fn interp1_base0(&self) -> u32 {
-        (self.read_bits() & Self::INTERP1_BASE0_MASK) >> Self::INTERP1_BASE0_OFFSET
+        (self.value.read_bits() & Self::INTERP1_BASE0_MASK) >> Self::INTERP1_BASE0_OFFSET
     }
 
-    /// Write INTERP1_BASE0 field
+    /// Write **INTERP1_BASE0** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_interp1_base0(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::INTERP1_BASE0_MASK) | ((value << Self::INTERP1_BASE0_OFFSET) & Self::INTERP1_BASE0_MASK));
+        self.value.modify_bits(|r| (r & !Self::INTERP1_BASE0_MASK) | ((value << Self::INTERP1_BASE0_OFFSET) & Self::INTERP1_BASE0_MASK));
     }
 
 }
@@ -8316,13 +6963,13 @@ impl Interp1Base0Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read INTERP1_BASE0 [31:0]
+    /// Read **INTERP1_BASE0** `[31:0]`
     #[inline(always)]
     pub const fn interp1_base0(&self) -> u32 {
         (self.bits & Interp1Base0::INTERP1_BASE0_MASK) >> Interp1Base0::INTERP1_BASE0_OFFSET
     }
 
-    /// Set INTERP1_BASE0 [31:0]
+    /// Set **INTERP1_BASE0** `[31:0]`
     #[inline(always)]
     pub const fn with_interp1_base0(self, value: u32) -> Self {
         Self {
@@ -8341,20 +6988,20 @@ impl Default for Interp1Base0Val {
 impl Interp1Base0 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp1Base0Val {
-        Interp1Base0Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp1Base0Val {
+        Interp1Base0Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp1Base0Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp1Base0Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp1Base0Val) -> Interp1Base0Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp1Base0Val) -> Interp1Base0Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -8368,81 +7015,40 @@ impl Interp1Base0 {
 ///
 /// ## Fields
 ///
-/// - **INTERP1_BASE1** [31:0] (RW): 
+/// - **INTERP1_BASE1** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Interp1Base1 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp1Base1 {}
-unsafe impl Sync for Interp1Base1 {}
+impl core::ops::Deref for Interp1Base1 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp1Base1 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **INTERP1_BASE1**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const INTERP1_BASE1_OFFSET: u32 = 0;
     pub const INTERP1_BASE1_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **INTERP1_BASE1** [31:0]
+    /// **INTERP1_BASE1** `[31:0]` (RW)
     #[inline(always)]
     pub fn interp1_base1(&self) -> u32 {
-        (self.read_bits() & Self::INTERP1_BASE1_MASK) >> Self::INTERP1_BASE1_OFFSET
+        (self.value.read_bits() & Self::INTERP1_BASE1_MASK) >> Self::INTERP1_BASE1_OFFSET
     }
 
-    /// Write INTERP1_BASE1 field
+    /// Write **INTERP1_BASE1** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_interp1_base1(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::INTERP1_BASE1_MASK) | ((value << Self::INTERP1_BASE1_OFFSET) & Self::INTERP1_BASE1_MASK));
+        self.value.modify_bits(|r| (r & !Self::INTERP1_BASE1_MASK) | ((value << Self::INTERP1_BASE1_OFFSET) & Self::INTERP1_BASE1_MASK));
     }
 
 }
@@ -8475,13 +7081,13 @@ impl Interp1Base1Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read INTERP1_BASE1 [31:0]
+    /// Read **INTERP1_BASE1** `[31:0]`
     #[inline(always)]
     pub const fn interp1_base1(&self) -> u32 {
         (self.bits & Interp1Base1::INTERP1_BASE1_MASK) >> Interp1Base1::INTERP1_BASE1_OFFSET
     }
 
-    /// Set INTERP1_BASE1 [31:0]
+    /// Set **INTERP1_BASE1** `[31:0]`
     #[inline(always)]
     pub const fn with_interp1_base1(self, value: u32) -> Self {
         Self {
@@ -8500,20 +7106,20 @@ impl Default for Interp1Base1Val {
 impl Interp1Base1 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp1Base1Val {
-        Interp1Base1Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp1Base1Val {
+        Interp1Base1Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp1Base1Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp1Base1Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp1Base1Val) -> Interp1Base1Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp1Base1Val) -> Interp1Base1Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -8527,81 +7133,40 @@ impl Interp1Base1 {
 ///
 /// ## Fields
 ///
-/// - **INTERP1_BASE2** [31:0] (RW): 
+/// - **INTERP1_BASE2** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Interp1Base2 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp1Base2 {}
-unsafe impl Sync for Interp1Base2 {}
+impl core::ops::Deref for Interp1Base2 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp1Base2 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **INTERP1_BASE2**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const INTERP1_BASE2_OFFSET: u32 = 0;
     pub const INTERP1_BASE2_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **INTERP1_BASE2** [31:0]
+    /// **INTERP1_BASE2** `[31:0]` (RW)
     #[inline(always)]
     pub fn interp1_base2(&self) -> u32 {
-        (self.read_bits() & Self::INTERP1_BASE2_MASK) >> Self::INTERP1_BASE2_OFFSET
+        (self.value.read_bits() & Self::INTERP1_BASE2_MASK) >> Self::INTERP1_BASE2_OFFSET
     }
 
-    /// Write INTERP1_BASE2 field
+    /// Write **INTERP1_BASE2** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_interp1_base2(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::INTERP1_BASE2_MASK) | ((value << Self::INTERP1_BASE2_OFFSET) & Self::INTERP1_BASE2_MASK));
+        self.value.modify_bits(|r| (r & !Self::INTERP1_BASE2_MASK) | ((value << Self::INTERP1_BASE2_OFFSET) & Self::INTERP1_BASE2_MASK));
     }
 
 }
@@ -8634,13 +7199,13 @@ impl Interp1Base2Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read INTERP1_BASE2 [31:0]
+    /// Read **INTERP1_BASE2** `[31:0]`
     #[inline(always)]
     pub const fn interp1_base2(&self) -> u32 {
         (self.bits & Interp1Base2::INTERP1_BASE2_MASK) >> Interp1Base2::INTERP1_BASE2_OFFSET
     }
 
-    /// Set INTERP1_BASE2 [31:0]
+    /// Set **INTERP1_BASE2** `[31:0]`
     #[inline(always)]
     pub const fn with_interp1_base2(self, value: u32) -> Self {
         Self {
@@ -8659,103 +7224,61 @@ impl Default for Interp1Base2Val {
 impl Interp1Base2 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp1Base2Val {
-        Interp1Base2Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp1Base2Val {
+        Interp1Base2Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp1Base2Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp1Base2Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp1Base2Val) -> Interp1Base2Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp1Base2Val) -> Interp1Base2Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// INTERP1_POP_LANE0 Register
 ///
-/// Read LANE0 result, and simultaneously write lane results to both
-/// accumulators (POP).
+/// Read LANE0 result, and simultaneously write lane results to both accumulators (POP).
 ///
 /// Address offset: 0x00d4
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **INTERP1_POP_LANE0** [31:0] (RO): 
+/// - **INTERP1_POP_LANE0** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Interp1PopLane0 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp1PopLane0 {}
-unsafe impl Sync for Interp1PopLane0 {}
+impl core::ops::Deref for Interp1PopLane0 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp1PopLane0 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **INTERP1_POP_LANE0**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const INTERP1_POP_LANE0_OFFSET: u32 = 0;
     pub const INTERP1_POP_LANE0_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **INTERP1_POP_LANE0** [31:0]
+    /// **INTERP1_POP_LANE0** `[31:0]` (RO)
     #[inline(always)]
     pub fn interp1_pop_lane0(&self) -> u32 {
-        (self.read_bits() & Self::INTERP1_POP_LANE0_MASK) >> Self::INTERP1_POP_LANE0_OFFSET
+        (self.value.read_bits() & Self::INTERP1_POP_LANE0_MASK) >> Self::INTERP1_POP_LANE0_OFFSET
     }
 
 }
@@ -8788,7 +7311,7 @@ impl Interp1PopLane0Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read INTERP1_POP_LANE0 [31:0]
+    /// Read **INTERP1_POP_LANE0** `[31:0]`
     #[inline(always)]
     pub const fn interp1_pop_lane0(&self) -> u32 {
         (self.bits & Interp1PopLane0::INTERP1_POP_LANE0_MASK) >> Interp1PopLane0::INTERP1_POP_LANE0_OFFSET
@@ -8805,103 +7328,61 @@ impl Default for Interp1PopLane0Val {
 impl Interp1PopLane0 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp1PopLane0Val {
-        Interp1PopLane0Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp1PopLane0Val {
+        Interp1PopLane0Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp1PopLane0Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp1PopLane0Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp1PopLane0Val) -> Interp1PopLane0Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp1PopLane0Val) -> Interp1PopLane0Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// INTERP1_POP_LANE1 Register
 ///
-/// Read LANE1 result, and simultaneously write lane results to both
-/// accumulators (POP).
+/// Read LANE1 result, and simultaneously write lane results to both accumulators (POP).
 ///
 /// Address offset: 0x00d8
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **INTERP1_POP_LANE1** [31:0] (RO): 
+/// - **INTERP1_POP_LANE1** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Interp1PopLane1 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp1PopLane1 {}
-unsafe impl Sync for Interp1PopLane1 {}
+impl core::ops::Deref for Interp1PopLane1 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp1PopLane1 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **INTERP1_POP_LANE1**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const INTERP1_POP_LANE1_OFFSET: u32 = 0;
     pub const INTERP1_POP_LANE1_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **INTERP1_POP_LANE1** [31:0]
+    /// **INTERP1_POP_LANE1** `[31:0]` (RO)
     #[inline(always)]
     pub fn interp1_pop_lane1(&self) -> u32 {
-        (self.read_bits() & Self::INTERP1_POP_LANE1_MASK) >> Self::INTERP1_POP_LANE1_OFFSET
+        (self.value.read_bits() & Self::INTERP1_POP_LANE1_MASK) >> Self::INTERP1_POP_LANE1_OFFSET
     }
 
 }
@@ -8934,7 +7415,7 @@ impl Interp1PopLane1Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read INTERP1_POP_LANE1 [31:0]
+    /// Read **INTERP1_POP_LANE1** `[31:0]`
     #[inline(always)]
     pub const fn interp1_pop_lane1(&self) -> u32 {
         (self.bits & Interp1PopLane1::INTERP1_POP_LANE1_MASK) >> Interp1PopLane1::INTERP1_POP_LANE1_OFFSET
@@ -8951,103 +7432,61 @@ impl Default for Interp1PopLane1Val {
 impl Interp1PopLane1 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp1PopLane1Val {
-        Interp1PopLane1Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp1PopLane1Val {
+        Interp1PopLane1Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp1PopLane1Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp1PopLane1Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp1PopLane1Val) -> Interp1PopLane1Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp1PopLane1Val) -> Interp1PopLane1Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// INTERP1_POP_FULL Register
 ///
-/// Read FULL result, and simultaneously write lane results to both accumulators
-/// (POP).
+/// Read FULL result, and simultaneously write lane results to both accumulators (POP).
 ///
 /// Address offset: 0x00dc
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **INTERP1_POP_FULL** [31:0] (RO): 
+/// - **INTERP1_POP_FULL** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Interp1PopFull {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp1PopFull {}
-unsafe impl Sync for Interp1PopFull {}
+impl core::ops::Deref for Interp1PopFull {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp1PopFull {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **INTERP1_POP_FULL**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const INTERP1_POP_FULL_OFFSET: u32 = 0;
     pub const INTERP1_POP_FULL_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **INTERP1_POP_FULL** [31:0]
+    /// **INTERP1_POP_FULL** `[31:0]` (RO)
     #[inline(always)]
     pub fn interp1_pop_full(&self) -> u32 {
-        (self.read_bits() & Self::INTERP1_POP_FULL_MASK) >> Self::INTERP1_POP_FULL_OFFSET
+        (self.value.read_bits() & Self::INTERP1_POP_FULL_MASK) >> Self::INTERP1_POP_FULL_OFFSET
     }
 
 }
@@ -9080,7 +7519,7 @@ impl Interp1PopFullVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read INTERP1_POP_FULL [31:0]
+    /// Read **INTERP1_POP_FULL** `[31:0]`
     #[inline(always)]
     pub const fn interp1_pop_full(&self) -> u32 {
         (self.bits & Interp1PopFull::INTERP1_POP_FULL_MASK) >> Interp1PopFull::INTERP1_POP_FULL_OFFSET
@@ -9097,20 +7536,20 @@ impl Default for Interp1PopFullVal {
 impl Interp1PopFull {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp1PopFullVal {
-        Interp1PopFullVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp1PopFullVal {
+        Interp1PopFullVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp1PopFullVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp1PopFullVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp1PopFullVal) -> Interp1PopFullVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp1PopFullVal) -> Interp1PopFullVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -9124,75 +7563,34 @@ impl Interp1PopFull {
 ///
 /// ## Fields
 ///
-/// - **INTERP1_PEEK_LANE0** [31:0] (RO): 
+/// - **INTERP1_PEEK_LANE0** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Interp1PeekLane0 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp1PeekLane0 {}
-unsafe impl Sync for Interp1PeekLane0 {}
+impl core::ops::Deref for Interp1PeekLane0 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp1PeekLane0 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **INTERP1_PEEK_LANE0**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const INTERP1_PEEK_LANE0_OFFSET: u32 = 0;
     pub const INTERP1_PEEK_LANE0_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **INTERP1_PEEK_LANE0** [31:0]
+    /// **INTERP1_PEEK_LANE0** `[31:0]` (RO)
     #[inline(always)]
     pub fn interp1_peek_lane0(&self) -> u32 {
-        (self.read_bits() & Self::INTERP1_PEEK_LANE0_MASK) >> Self::INTERP1_PEEK_LANE0_OFFSET
+        (self.value.read_bits() & Self::INTERP1_PEEK_LANE0_MASK) >> Self::INTERP1_PEEK_LANE0_OFFSET
     }
 
 }
@@ -9225,7 +7623,7 @@ impl Interp1PeekLane0Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read INTERP1_PEEK_LANE0 [31:0]
+    /// Read **INTERP1_PEEK_LANE0** `[31:0]`
     #[inline(always)]
     pub const fn interp1_peek_lane0(&self) -> u32 {
         (self.bits & Interp1PeekLane0::INTERP1_PEEK_LANE0_MASK) >> Interp1PeekLane0::INTERP1_PEEK_LANE0_OFFSET
@@ -9242,20 +7640,20 @@ impl Default for Interp1PeekLane0Val {
 impl Interp1PeekLane0 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp1PeekLane0Val {
-        Interp1PeekLane0Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp1PeekLane0Val {
+        Interp1PeekLane0Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp1PeekLane0Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp1PeekLane0Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp1PeekLane0Val) -> Interp1PeekLane0Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp1PeekLane0Val) -> Interp1PeekLane0Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -9269,75 +7667,34 @@ impl Interp1PeekLane0 {
 ///
 /// ## Fields
 ///
-/// - **INTERP1_PEEK_LANE1** [31:0] (RO): 
+/// - **INTERP1_PEEK_LANE1** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Interp1PeekLane1 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp1PeekLane1 {}
-unsafe impl Sync for Interp1PeekLane1 {}
+impl core::ops::Deref for Interp1PeekLane1 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp1PeekLane1 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **INTERP1_PEEK_LANE1**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const INTERP1_PEEK_LANE1_OFFSET: u32 = 0;
     pub const INTERP1_PEEK_LANE1_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **INTERP1_PEEK_LANE1** [31:0]
+    /// **INTERP1_PEEK_LANE1** `[31:0]` (RO)
     #[inline(always)]
     pub fn interp1_peek_lane1(&self) -> u32 {
-        (self.read_bits() & Self::INTERP1_PEEK_LANE1_MASK) >> Self::INTERP1_PEEK_LANE1_OFFSET
+        (self.value.read_bits() & Self::INTERP1_PEEK_LANE1_MASK) >> Self::INTERP1_PEEK_LANE1_OFFSET
     }
 
 }
@@ -9370,7 +7727,7 @@ impl Interp1PeekLane1Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read INTERP1_PEEK_LANE1 [31:0]
+    /// Read **INTERP1_PEEK_LANE1** `[31:0]`
     #[inline(always)]
     pub const fn interp1_peek_lane1(&self) -> u32 {
         (self.bits & Interp1PeekLane1::INTERP1_PEEK_LANE1_MASK) >> Interp1PeekLane1::INTERP1_PEEK_LANE1_OFFSET
@@ -9387,20 +7744,20 @@ impl Default for Interp1PeekLane1Val {
 impl Interp1PeekLane1 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp1PeekLane1Val {
-        Interp1PeekLane1Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp1PeekLane1Val {
+        Interp1PeekLane1Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp1PeekLane1Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp1PeekLane1Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp1PeekLane1Val) -> Interp1PeekLane1Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp1PeekLane1Val) -> Interp1PeekLane1Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -9414,75 +7771,34 @@ impl Interp1PeekLane1 {
 ///
 /// ## Fields
 ///
-/// - **INTERP1_PEEK_FULL** [31:0] (RO): 
+/// - **INTERP1_PEEK_FULL** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Interp1PeekFull {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp1PeekFull {}
-unsafe impl Sync for Interp1PeekFull {}
+impl core::ops::Deref for Interp1PeekFull {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp1PeekFull {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **INTERP1_PEEK_FULL**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const INTERP1_PEEK_FULL_OFFSET: u32 = 0;
     pub const INTERP1_PEEK_FULL_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **INTERP1_PEEK_FULL** [31:0]
+    /// **INTERP1_PEEK_FULL** `[31:0]` (RO)
     #[inline(always)]
     pub fn interp1_peek_full(&self) -> u32 {
-        (self.read_bits() & Self::INTERP1_PEEK_FULL_MASK) >> Self::INTERP1_PEEK_FULL_OFFSET
+        (self.value.read_bits() & Self::INTERP1_PEEK_FULL_MASK) >> Self::INTERP1_PEEK_FULL_OFFSET
     }
 
 }
@@ -9515,7 +7831,7 @@ impl Interp1PeekFullVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read INTERP1_PEEK_FULL [31:0]
+    /// Read **INTERP1_PEEK_FULL** `[31:0]`
     #[inline(always)]
     pub const fn interp1_peek_full(&self) -> u32 {
         (self.bits & Interp1PeekFull::INTERP1_PEEK_FULL_MASK) >> Interp1PeekFull::INTERP1_PEEK_FULL_OFFSET
@@ -9532,20 +7848,20 @@ impl Default for Interp1PeekFullVal {
 impl Interp1PeekFull {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp1PeekFullVal {
-        Interp1PeekFullVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp1PeekFullVal {
+        Interp1PeekFullVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp1PeekFullVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp1PeekFullVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp1PeekFullVal) -> Interp1PeekFullVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp1PeekFullVal) -> Interp1PeekFullVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -9559,300 +7875,325 @@ impl Interp1PeekFull {
 ///
 /// ## Fields
 ///
-/// - **OVERF** [25] (RO): Set if either OVERF0 or OVERF1 is set.
-/// - **OVERF1** [24] (RO): Indicates if any masked-off MSBs in ACCUM1 are set.
-/// - **OVERF0** [23] (RO): Indicates if any masked-off MSBs in ACCUM0 are set.
-/// - **CLAMP** [22] (RW): Only present on INTERP1 on each core. If CLAMP mode is enabled: - LANE0 res...
-/// - **FORCE_MSB** [20:19] (RW): ORed into bits 29:28 of the lane result presented to the processor on the b...
-/// - **ADD_RAW** [18] (RW): If 1, mask + shift is bypassed for LANE0 result. This does not affect FULL ...
-/// - **CROSS_RESULT** [17] (RW): If 1, feed the opposite lane's result into this lane's accumulator on POP.
-/// - **CROSS_INPUT** [16] (RW): If 1, feed the opposite lane's accumulator into this lane's shift + mask ha...
-/// - **SIGNED** [15] (RW): If SIGNED is set, the shifted and masked accumulator value is sign-extended...
-/// - **MASK_MSB** [14:10] (RW): The most-significant bit allowed to pass by the mask (inclusive) Setting MS...
-/// - **MASK_LSB** [9:5] (RW): The least-significant bit allowed to pass by the mask (inclusive)
-/// - **SHIFT** [4:0] (RW): Right-rotate applied to accumulator before masking. By appropriately config...
+/// - **OVERF** `[25]` (RO)
+///   Set if either OVERF0 or OVERF1 is set.
+/// - **OVERF1** `[24]` (RO)
+///   Indicates if any masked-off MSBs in ACCUM1 are set.
+/// - **OVERF0** `[23]` (RO)
+///   Indicates if any masked-off MSBs in ACCUM0 are set.
+/// - **CLAMP** `[22]` (RW)
+///   Only present on INTERP1 on each core. If CLAMP mode is enabled:
+///   - LANE0 result is shifted and masked ACCUM0, clamped by a lower bound of
+///   BASE0 and an upper bound of BASE1.
+///   - Signedness of these comparisons is determined by LANE0_CTRL_SIGNED
+/// - **FORCE_MSB** `[20:19]` (RW)
+///   ORed into bits 29:28 of the lane result presented to the processor on the bus.
+///   No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
+///   of pointers into flash or SRAM.
+/// - **ADD_RAW** `[18]` (RW)
+///   If 1, mask + shift is bypassed for LANE0 result. This does not affect FULL result.
+/// - **CROSS_RESULT** `[17]` (RW)
+///   If 1, feed the opposite lane's result into this lane's accumulator on POP.
+/// - **CROSS_INPUT** `[16]` (RW)
+///   If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
+///   Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
+/// - **SIGNED** `[15]` (RW)
+///   If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
+///   before adding to BASE0, and LANE0 PEEK/POP appear extended to 32 bits when read by processor.
+/// - **MASK_MSB** `[14:10]` (RW)
+///   The most-significant bit allowed to pass by the mask (inclusive)
+///   Setting MSB < LSB may cause chip to turn inside-out
+/// - **MASK_LSB** `[9:5]` (RW)
+///   The least-significant bit allowed to pass by the mask (inclusive)
+/// - **SHIFT** `[4:0]` (RW)
+///   Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
 #[repr(transparent)]
 pub struct Interp1CtrlLane0 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp1CtrlLane0 {}
-unsafe impl Sync for Interp1CtrlLane0 {}
+impl core::ops::Deref for Interp1CtrlLane0 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp1CtrlLane0 {
     // ======== Field Constants ========
 
-    /// OVERF - Set if either OVERF0 or OVERF1 is set.
-    /// Bits [25:25], mask 0x02000000
+    /// **OVERF**
+    /// Set if either OVERF0 or OVERF1 is set.
+    /// Bits `[25:25]`, mask `0x02000000`
     pub const OVERF_OFFSET: u32 = 25;
     pub const OVERF_MASK: u32 = 0x02000000;
     pub const OVERF: u32 = 1 << 25;
 
-    /// OVERF1 - Indicates if any masked-off MSBs in ACCUM1 are set.
-    /// Bits [24:24], mask 0x01000000
+    /// **OVERF1**
+    /// Indicates if any masked-off MSBs in ACCUM1 are set.
+    /// Bits `[24:24]`, mask `0x01000000`
     pub const OVERF1_OFFSET: u32 = 24;
     pub const OVERF1_MASK: u32 = 0x01000000;
     pub const OVERF1: u32 = 1 << 24;
 
-    /// OVERF0 - Indicates if any masked-off MSBs in ACCUM0 are set.
-    /// Bits [23:23], mask 0x00800000
+    /// **OVERF0**
+    /// Indicates if any masked-off MSBs in ACCUM0 are set.
+    /// Bits `[23:23]`, mask `0x00800000`
     pub const OVERF0_OFFSET: u32 = 23;
     pub const OVERF0_MASK: u32 = 0x00800000;
     pub const OVERF0: u32 = 1 << 23;
 
-    /// CLAMP - Only present on INTERP1 on each core. If CLAMP mode is enabled: - LANE0 res...
-    /// Bits [22:22], mask 0x00400000
+    /// **CLAMP**
+    /// Only present on INTERP1 on each core. If CLAMP mode is enabled:
+    /// - LANE0 result is shifted and masked ACCUM0, clamped by a lower bound of
+    /// BASE0 and an upper bound of BASE1.
+    /// - Signedness of these comparisons is determined by LANE0_CTRL_SIGNED
+    /// Bits `[22:22]`, mask `0x00400000`
     pub const CLAMP_OFFSET: u32 = 22;
     pub const CLAMP_MASK: u32 = 0x00400000;
     pub const CLAMP: u32 = 1 << 22;
 
-    /// FORCE_MSB - ORed into bits 29:28 of the lane result presented to the processor on the b...
-    /// Bits [20:19], mask 0x00180000
+    /// **FORCE_MSB**
+    /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
+    /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
+    /// of pointers into flash or SRAM.
+    /// Bits `[20:19]`, mask `0x00180000`
     pub const FORCE_MSB_OFFSET: u32 = 19;
     pub const FORCE_MSB_MASK: u32 = 0x00180000;
 
-    /// ADD_RAW - If 1, mask + shift is bypassed for LANE0 result. This does not affect FULL ...
-    /// Bits [18:18], mask 0x00040000
+    /// **ADD_RAW**
+    /// If 1, mask + shift is bypassed for LANE0 result. This does not affect FULL result.
+    /// Bits `[18:18]`, mask `0x00040000`
     pub const ADD_RAW_OFFSET: u32 = 18;
     pub const ADD_RAW_MASK: u32 = 0x00040000;
     pub const ADD_RAW: u32 = 1 << 18;
 
-    /// CROSS_RESULT - If 1, feed the opposite lane's result into this lane's accumulator on POP.
-    /// Bits [17:17], mask 0x00020000
+    /// **CROSS_RESULT**
+    /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
+    /// Bits `[17:17]`, mask `0x00020000`
     pub const CROSS_RESULT_OFFSET: u32 = 17;
     pub const CROSS_RESULT_MASK: u32 = 0x00020000;
     pub const CROSS_RESULT: u32 = 1 << 17;
 
-    /// CROSS_INPUT - If 1, feed the opposite lane's accumulator into this lane's shift + mask ha...
-    /// Bits [16:16], mask 0x00010000
+    /// **CROSS_INPUT**
+    /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
+    /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
+    /// Bits `[16:16]`, mask `0x00010000`
     pub const CROSS_INPUT_OFFSET: u32 = 16;
     pub const CROSS_INPUT_MASK: u32 = 0x00010000;
     pub const CROSS_INPUT: u32 = 1 << 16;
 
-    /// SIGNED - If SIGNED is set, the shifted and masked accumulator value is sign-extended...
-    /// Bits [15:15], mask 0x00008000
+    /// **SIGNED**
+    /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
+    /// before adding to BASE0, and LANE0 PEEK/POP appear extended to 32 bits when read by processor.
+    /// Bits `[15:15]`, mask `0x00008000`
     pub const SIGNED_OFFSET: u32 = 15;
     pub const SIGNED_MASK: u32 = 0x00008000;
     pub const SIGNED: u32 = 1 << 15;
 
-    /// MASK_MSB - The most-significant bit allowed to pass by the mask (inclusive) Setting MS...
-    /// Bits [14:10], mask 0x00007c00
+    /// **MASK_MSB**
+    /// The most-significant bit allowed to pass by the mask (inclusive)
+    /// Setting MSB < LSB may cause chip to turn inside-out
+    /// Bits `[14:10]`, mask `0x00007c00`
     pub const MASK_MSB_OFFSET: u32 = 10;
     pub const MASK_MSB_MASK: u32 = 0x00007c00;
 
-    /// MASK_LSB - The least-significant bit allowed to pass by the mask (inclusive)
-    /// Bits [9:5], mask 0x000003e0
+    /// **MASK_LSB**
+    /// The least-significant bit allowed to pass by the mask (inclusive)
+    /// Bits `[9:5]`, mask `0x000003e0`
     pub const MASK_LSB_OFFSET: u32 = 5;
     pub const MASK_LSB_MASK: u32 = 0x000003e0;
 
-    /// SHIFT - Right-rotate applied to accumulator before masking. By appropriately config...
-    /// Bits [4:0], mask 0x0000001f
+    /// **SHIFT**
+    /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
+    /// Bits `[4:0]`, mask `0x0000001f`
     pub const SHIFT_OFFSET: u32 = 0;
     pub const SHIFT_MASK: u32 = 0x0000001f;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **OVERF** [25:25]: Set if either OVERF0 or OVERF1 is set.
+    /// **OVERF** `[25]` (RO)
+    /// Set if either OVERF0 or OVERF1 is set.
     #[inline(always)]
     pub fn overf(&self) -> bool {
-        (self.read_bits() & Self::OVERF_MASK) != 0
+        (self.value.read_bits() & Self::OVERF_MASK) != 0
     }
 
-    /// **OVERF1** [24:24]: Indicates if any masked-off MSBs in ACCUM1 are set.
+    /// **OVERF1** `[24]` (RO)
+    /// Indicates if any masked-off MSBs in ACCUM1 are set.
     #[inline(always)]
     pub fn overf1(&self) -> bool {
-        (self.read_bits() & Self::OVERF1_MASK) != 0
+        (self.value.read_bits() & Self::OVERF1_MASK) != 0
     }
 
-    /// **OVERF0** [23:23]: Indicates if any masked-off MSBs in ACCUM0 are set.
+    /// **OVERF0** `[23]` (RO)
+    /// Indicates if any masked-off MSBs in ACCUM0 are set.
     #[inline(always)]
     pub fn overf0(&self) -> bool {
-        (self.read_bits() & Self::OVERF0_MASK) != 0
+        (self.value.read_bits() & Self::OVERF0_MASK) != 0
     }
 
-    /// **CLAMP** [22:22]: Only present on INTERP1 on each core. If CLAMP mode is enabled: - LANE0 res...
+    /// **CLAMP** `[22]` (RW)
+    /// Only present on INTERP1 on each core. If CLAMP mode is enabled:
+    /// - LANE0 result is shifted and masked ACCUM0, clamped by a lower bound of
+    /// BASE0 and an upper bound of BASE1.
+    /// - Signedness of these comparisons is determined by LANE0_CTRL_SIGNED
     #[inline(always)]
     pub fn clamp(&self) -> bool {
-        (self.read_bits() & Self::CLAMP_MASK) != 0
+        (self.value.read_bits() & Self::CLAMP_MASK) != 0
     }
 
-    /// Set CLAMP bit
+    /// Set CLAMP bit atomically (RW)
     #[inline(always)]
     pub fn set_clamp(&self) {
-        self.set_bits(Self::CLAMP_MASK);
+        self.value.set_bits(Self::CLAMP_MASK);
     }
 
-    /// Clear CLAMP bit
+    /// Clear CLAMP bit atomically (RW)
     #[inline(always)]
     pub fn clr_clamp(&self) {
-        self.clr_bits(Self::CLAMP_MASK);
+        self.value.clr_bits(Self::CLAMP_MASK);
     }
 
-    /// **FORCE_MSB** [20:19]: ORed into bits 29:28 of the lane result presented to the processor on the b...
+    /// **FORCE_MSB** `[20:19]` (RW)
+    /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
+    /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
+    /// of pointers into flash or SRAM.
     #[inline(always)]
     pub fn force_msb(&self) -> u32 {
-        (self.read_bits() & Self::FORCE_MSB_MASK) >> Self::FORCE_MSB_OFFSET
+        (self.value.read_bits() & Self::FORCE_MSB_MASK) >> Self::FORCE_MSB_OFFSET
     }
 
-    /// Write FORCE_MSB field
+    /// Write **FORCE_MSB** `[20:19]` (RW)
+    /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
+    /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
+    /// of pointers into flash or SRAM.
     #[inline(always)]
     pub fn write_force_msb(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::FORCE_MSB_MASK) | ((value << Self::FORCE_MSB_OFFSET) & Self::FORCE_MSB_MASK));
+        self.value.modify_bits(|r| (r & !Self::FORCE_MSB_MASK) | ((value << Self::FORCE_MSB_OFFSET) & Self::FORCE_MSB_MASK));
     }
 
-    /// **ADD_RAW** [18:18]: If 1, mask + shift is bypassed for LANE0 result. This does not affect FULL ...
+    /// **ADD_RAW** `[18]` (RW)
+    /// If 1, mask + shift is bypassed for LANE0 result. This does not affect FULL result.
     #[inline(always)]
     pub fn add_raw(&self) -> bool {
-        (self.read_bits() & Self::ADD_RAW_MASK) != 0
+        (self.value.read_bits() & Self::ADD_RAW_MASK) != 0
     }
 
-    /// Set ADD_RAW bit
+    /// Set ADD_RAW bit atomically (RW)
     #[inline(always)]
     pub fn set_add_raw(&self) {
-        self.set_bits(Self::ADD_RAW_MASK);
+        self.value.set_bits(Self::ADD_RAW_MASK);
     }
 
-    /// Clear ADD_RAW bit
+    /// Clear ADD_RAW bit atomically (RW)
     #[inline(always)]
     pub fn clr_add_raw(&self) {
-        self.clr_bits(Self::ADD_RAW_MASK);
+        self.value.clr_bits(Self::ADD_RAW_MASK);
     }
 
-    /// **CROSS_RESULT** [17:17]: If 1, feed the opposite lane's result into this lane's accumulator on POP.
+    /// **CROSS_RESULT** `[17]` (RW)
+    /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
     #[inline(always)]
     pub fn cross_result(&self) -> bool {
-        (self.read_bits() & Self::CROSS_RESULT_MASK) != 0
+        (self.value.read_bits() & Self::CROSS_RESULT_MASK) != 0
     }
 
-    /// Set CROSS_RESULT bit
+    /// Set CROSS_RESULT bit atomically (RW)
     #[inline(always)]
     pub fn set_cross_result(&self) {
-        self.set_bits(Self::CROSS_RESULT_MASK);
+        self.value.set_bits(Self::CROSS_RESULT_MASK);
     }
 
-    /// Clear CROSS_RESULT bit
+    /// Clear CROSS_RESULT bit atomically (RW)
     #[inline(always)]
     pub fn clr_cross_result(&self) {
-        self.clr_bits(Self::CROSS_RESULT_MASK);
+        self.value.clr_bits(Self::CROSS_RESULT_MASK);
     }
 
-    /// **CROSS_INPUT** [16:16]: If 1, feed the opposite lane's accumulator into this lane's shift + mask ha...
+    /// **CROSS_INPUT** `[16]` (RW)
+    /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
+    /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
     #[inline(always)]
     pub fn cross_input(&self) -> bool {
-        (self.read_bits() & Self::CROSS_INPUT_MASK) != 0
+        (self.value.read_bits() & Self::CROSS_INPUT_MASK) != 0
     }
 
-    /// Set CROSS_INPUT bit
+    /// Set CROSS_INPUT bit atomically (RW)
     #[inline(always)]
     pub fn set_cross_input(&self) {
-        self.set_bits(Self::CROSS_INPUT_MASK);
+        self.value.set_bits(Self::CROSS_INPUT_MASK);
     }
 
-    /// Clear CROSS_INPUT bit
+    /// Clear CROSS_INPUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_cross_input(&self) {
-        self.clr_bits(Self::CROSS_INPUT_MASK);
+        self.value.clr_bits(Self::CROSS_INPUT_MASK);
     }
 
-    /// **SIGNED** [15:15]: If SIGNED is set, the shifted and masked accumulator value is sign-extended...
+    /// **SIGNED** `[15]` (RW)
+    /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
+    /// before adding to BASE0, and LANE0 PEEK/POP appear extended to 32 bits when read by processor.
     #[inline(always)]
     pub fn signed(&self) -> bool {
-        (self.read_bits() & Self::SIGNED_MASK) != 0
+        (self.value.read_bits() & Self::SIGNED_MASK) != 0
     }
 
-    /// Set SIGNED bit
+    /// Set SIGNED bit atomically (RW)
     #[inline(always)]
     pub fn set_signed(&self) {
-        self.set_bits(Self::SIGNED_MASK);
+        self.value.set_bits(Self::SIGNED_MASK);
     }
 
-    /// Clear SIGNED bit
+    /// Clear SIGNED bit atomically (RW)
     #[inline(always)]
     pub fn clr_signed(&self) {
-        self.clr_bits(Self::SIGNED_MASK);
+        self.value.clr_bits(Self::SIGNED_MASK);
     }
 
-    /// **MASK_MSB** [14:10]: The most-significant bit allowed to pass by the mask (inclusive) Setting MS...
+    /// **MASK_MSB** `[14:10]` (RW)
+    /// The most-significant bit allowed to pass by the mask (inclusive)
+    /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
     pub fn mask_msb(&self) -> u32 {
-        (self.read_bits() & Self::MASK_MSB_MASK) >> Self::MASK_MSB_OFFSET
+        (self.value.read_bits() & Self::MASK_MSB_MASK) >> Self::MASK_MSB_OFFSET
     }
 
-    /// Write MASK_MSB field
+    /// Write **MASK_MSB** `[14:10]` (RW)
+    /// The most-significant bit allowed to pass by the mask (inclusive)
+    /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
     pub fn write_mask_msb(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::MASK_MSB_MASK) | ((value << Self::MASK_MSB_OFFSET) & Self::MASK_MSB_MASK));
+        self.value.modify_bits(|r| (r & !Self::MASK_MSB_MASK) | ((value << Self::MASK_MSB_OFFSET) & Self::MASK_MSB_MASK));
     }
 
-    /// **MASK_LSB** [9:5]: The least-significant bit allowed to pass by the mask (inclusive)
+    /// **MASK_LSB** `[9:5]` (RW)
+    /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub fn mask_lsb(&self) -> u32 {
-        (self.read_bits() & Self::MASK_LSB_MASK) >> Self::MASK_LSB_OFFSET
+        (self.value.read_bits() & Self::MASK_LSB_MASK) >> Self::MASK_LSB_OFFSET
     }
 
-    /// Write MASK_LSB field
+    /// Write **MASK_LSB** `[9:5]` (RW)
+    /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub fn write_mask_lsb(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::MASK_LSB_MASK) | ((value << Self::MASK_LSB_OFFSET) & Self::MASK_LSB_MASK));
+        self.value.modify_bits(|r| (r & !Self::MASK_LSB_MASK) | ((value << Self::MASK_LSB_OFFSET) & Self::MASK_LSB_MASK));
     }
 
-    /// **SHIFT** [4:0]: Right-rotate applied to accumulator before masking. By appropriately config...
+    /// **SHIFT** `[4:0]` (RW)
+    /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub fn shift(&self) -> u32 {
-        (self.read_bits() & Self::SHIFT_MASK) >> Self::SHIFT_OFFSET
+        (self.value.read_bits() & Self::SHIFT_MASK) >> Self::SHIFT_OFFSET
     }
 
-    /// Write SHIFT field
+    /// Write **SHIFT** `[4:0]` (RW)
+    /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub fn write_shift(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SHIFT_MASK) | ((value << Self::SHIFT_OFFSET) & Self::SHIFT_MASK));
+        self.value.modify_bits(|r| (r & !Self::SHIFT_MASK) | ((value << Self::SHIFT_OFFSET) & Self::SHIFT_MASK));
     }
 
 }
@@ -9885,79 +8226,103 @@ impl Interp1CtrlLane0Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read OVERF [25:25]: Set if either OVERF0 or OVERF1 is set.
+    /// Read **OVERF** `[25:25]`
+    /// Set if either OVERF0 or OVERF1 is set.
     #[inline(always)]
     pub const fn overf(&self) -> bool {
         (self.bits & Interp1CtrlLane0::OVERF_MASK) != 0
     }
 
-    /// Read OVERF1 [24:24]: Indicates if any masked-off MSBs in ACCUM1 are set.
+    /// Read **OVERF1** `[24:24]`
+    /// Indicates if any masked-off MSBs in ACCUM1 are set.
     #[inline(always)]
     pub const fn overf1(&self) -> bool {
         (self.bits & Interp1CtrlLane0::OVERF1_MASK) != 0
     }
 
-    /// Read OVERF0 [23:23]: Indicates if any masked-off MSBs in ACCUM0 are set.
+    /// Read **OVERF0** `[23:23]`
+    /// Indicates if any masked-off MSBs in ACCUM0 are set.
     #[inline(always)]
     pub const fn overf0(&self) -> bool {
         (self.bits & Interp1CtrlLane0::OVERF0_MASK) != 0
     }
 
-    /// Read CLAMP [22:22]: Only present on INTERP1 on each core. If CLAMP mode is enabled: - LANE0 res...
+    /// Read **CLAMP** `[22:22]`
+    /// Only present on INTERP1 on each core. If CLAMP mode is enabled:
+    /// - LANE0 result is shifted and masked ACCUM0, clamped by a lower bound of
+    /// BASE0 and an upper bound of BASE1.
+    /// - Signedness of these comparisons is determined by LANE0_CTRL_SIGNED
     #[inline(always)]
     pub const fn clamp(&self) -> bool {
         (self.bits & Interp1CtrlLane0::CLAMP_MASK) != 0
     }
 
-    /// Read FORCE_MSB [20:19]: ORed into bits 29:28 of the lane result presented to the processor on the b...
+    /// Read **FORCE_MSB** `[20:19]`
+    /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
+    /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
+    /// of pointers into flash or SRAM.
     #[inline(always)]
     pub const fn force_msb(&self) -> u32 {
         (self.bits & Interp1CtrlLane0::FORCE_MSB_MASK) >> Interp1CtrlLane0::FORCE_MSB_OFFSET
     }
 
-    /// Read ADD_RAW [18:18]: If 1, mask + shift is bypassed for LANE0 result. This does not affect FULL ...
+    /// Read **ADD_RAW** `[18:18]`
+    /// If 1, mask + shift is bypassed for LANE0 result. This does not affect FULL result.
     #[inline(always)]
     pub const fn add_raw(&self) -> bool {
         (self.bits & Interp1CtrlLane0::ADD_RAW_MASK) != 0
     }
 
-    /// Read CROSS_RESULT [17:17]: If 1, feed the opposite lane's result into this lane's accumulator on POP.
+    /// Read **CROSS_RESULT** `[17:17]`
+    /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
     #[inline(always)]
     pub const fn cross_result(&self) -> bool {
         (self.bits & Interp1CtrlLane0::CROSS_RESULT_MASK) != 0
     }
 
-    /// Read CROSS_INPUT [16:16]: If 1, feed the opposite lane's accumulator into this lane's shift + mask ha...
+    /// Read **CROSS_INPUT** `[16:16]`
+    /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
+    /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
     #[inline(always)]
     pub const fn cross_input(&self) -> bool {
         (self.bits & Interp1CtrlLane0::CROSS_INPUT_MASK) != 0
     }
 
-    /// Read SIGNED [15:15]: If SIGNED is set, the shifted and masked accumulator value is sign-extended...
+    /// Read **SIGNED** `[15:15]`
+    /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
+    /// before adding to BASE0, and LANE0 PEEK/POP appear extended to 32 bits when read by processor.
     #[inline(always)]
     pub const fn signed(&self) -> bool {
         (self.bits & Interp1CtrlLane0::SIGNED_MASK) != 0
     }
 
-    /// Read MASK_MSB [14:10]: The most-significant bit allowed to pass by the mask (inclusive) Setting MS...
+    /// Read **MASK_MSB** `[14:10]`
+    /// The most-significant bit allowed to pass by the mask (inclusive)
+    /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
     pub const fn mask_msb(&self) -> u32 {
         (self.bits & Interp1CtrlLane0::MASK_MSB_MASK) >> Interp1CtrlLane0::MASK_MSB_OFFSET
     }
 
-    /// Read MASK_LSB [9:5]: The least-significant bit allowed to pass by the mask (inclusive)
+    /// Read **MASK_LSB** `[9:5]`
+    /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub const fn mask_lsb(&self) -> u32 {
         (self.bits & Interp1CtrlLane0::MASK_LSB_MASK) >> Interp1CtrlLane0::MASK_LSB_OFFSET
     }
 
-    /// Read SHIFT [4:0]: Right-rotate applied to accumulator before masking. By appropriately config...
+    /// Read **SHIFT** `[4:0]`
+    /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub const fn shift(&self) -> u32 {
         (self.bits & Interp1CtrlLane0::SHIFT_MASK) >> Interp1CtrlLane0::SHIFT_OFFSET
     }
 
-    /// Set CLAMP [22:22]: Only present on INTERP1 on each core. If CLAMP mode is enabled: - LANE0 res...
+    /// Set **CLAMP** `[22:22]`
+    /// Only present on INTERP1 on each core. If CLAMP mode is enabled:
+    /// - LANE0 result is shifted and masked ACCUM0, clamped by a lower bound of
+    /// BASE0 and an upper bound of BASE1.
+    /// - Signedness of these comparisons is determined by LANE0_CTRL_SIGNED
     #[inline(always)]
     pub const fn with_clamp(self, value: bool) -> Self {
         Self {
@@ -9969,7 +8334,10 @@ impl Interp1CtrlLane0Val {
         }
     }
 
-    /// Set FORCE_MSB [20:19]: ORed into bits 29:28 of the lane result presented to the processor on the b...
+    /// Set **FORCE_MSB** `[20:19]`
+    /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
+    /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
+    /// of pointers into flash or SRAM.
     #[inline(always)]
     pub const fn with_force_msb(self, value: u32) -> Self {
         Self {
@@ -9977,7 +8345,8 @@ impl Interp1CtrlLane0Val {
         }
     }
 
-    /// Set ADD_RAW [18:18]: If 1, mask + shift is bypassed for LANE0 result. This does not affect FULL ...
+    /// Set **ADD_RAW** `[18:18]`
+    /// If 1, mask + shift is bypassed for LANE0 result. This does not affect FULL result.
     #[inline(always)]
     pub const fn with_add_raw(self, value: bool) -> Self {
         Self {
@@ -9989,7 +8358,8 @@ impl Interp1CtrlLane0Val {
         }
     }
 
-    /// Set CROSS_RESULT [17:17]: If 1, feed the opposite lane's result into this lane's accumulator on POP.
+    /// Set **CROSS_RESULT** `[17:17]`
+    /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
     #[inline(always)]
     pub const fn with_cross_result(self, value: bool) -> Self {
         Self {
@@ -10001,7 +8371,9 @@ impl Interp1CtrlLane0Val {
         }
     }
 
-    /// Set CROSS_INPUT [16:16]: If 1, feed the opposite lane's accumulator into this lane's shift + mask ha...
+    /// Set **CROSS_INPUT** `[16:16]`
+    /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
+    /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
     #[inline(always)]
     pub const fn with_cross_input(self, value: bool) -> Self {
         Self {
@@ -10013,7 +8385,9 @@ impl Interp1CtrlLane0Val {
         }
     }
 
-    /// Set SIGNED [15:15]: If SIGNED is set, the shifted and masked accumulator value is sign-extended...
+    /// Set **SIGNED** `[15:15]`
+    /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
+    /// before adding to BASE0, and LANE0 PEEK/POP appear extended to 32 bits when read by processor.
     #[inline(always)]
     pub const fn with_signed(self, value: bool) -> Self {
         Self {
@@ -10025,7 +8399,9 @@ impl Interp1CtrlLane0Val {
         }
     }
 
-    /// Set MASK_MSB [14:10]: The most-significant bit allowed to pass by the mask (inclusive) Setting MS...
+    /// Set **MASK_MSB** `[14:10]`
+    /// The most-significant bit allowed to pass by the mask (inclusive)
+    /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
     pub const fn with_mask_msb(self, value: u32) -> Self {
         Self {
@@ -10033,7 +8409,8 @@ impl Interp1CtrlLane0Val {
         }
     }
 
-    /// Set MASK_LSB [9:5]: The least-significant bit allowed to pass by the mask (inclusive)
+    /// Set **MASK_LSB** `[9:5]`
+    /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub const fn with_mask_lsb(self, value: u32) -> Self {
         Self {
@@ -10041,7 +8418,8 @@ impl Interp1CtrlLane0Val {
         }
     }
 
-    /// Set SHIFT [4:0]: Right-rotate applied to accumulator before masking. By appropriately config...
+    /// Set **SHIFT** `[4:0]`
+    /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub const fn with_shift(self, value: u32) -> Self {
         Self {
@@ -10060,20 +8438,20 @@ impl Default for Interp1CtrlLane0Val {
 impl Interp1CtrlLane0 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp1CtrlLane0Val {
-        Interp1CtrlLane0Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp1CtrlLane0Val {
+        Interp1CtrlLane0Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp1CtrlLane0Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp1CtrlLane0Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp1CtrlLane0Val) -> Interp1CtrlLane0Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp1CtrlLane0Val) -> Interp1CtrlLane0Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -10087,236 +8465,240 @@ impl Interp1CtrlLane0 {
 ///
 /// ## Fields
 ///
-/// - **FORCE_MSB** [20:19] (RW): ORed into bits 29:28 of the lane result presented to the processor on the b...
-/// - **ADD_RAW** [18] (RW): If 1, mask + shift is bypassed for LANE1 result. This does not affect FULL ...
-/// - **CROSS_RESULT** [17] (RW): If 1, feed the opposite lane's result into this lane's accumulator on POP.
-/// - **CROSS_INPUT** [16] (RW): If 1, feed the opposite lane's accumulator into this lane's shift + mask ha...
-/// - **SIGNED** [15] (RW): If SIGNED is set, the shifted and masked accumulator value is sign-extended...
-/// - **MASK_MSB** [14:10] (RW): The most-significant bit allowed to pass by the mask (inclusive) Setting MS...
-/// - **MASK_LSB** [9:5] (RW): The least-significant bit allowed to pass by the mask (inclusive)
-/// - **SHIFT** [4:0] (RW): Right-rotate applied to accumulator before masking. By appropriately config...
+/// - **FORCE_MSB** `[20:19]` (RW)
+///   ORed into bits 29:28 of the lane result presented to the processor on the bus.
+///   No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
+///   of pointers into flash or SRAM.
+/// - **ADD_RAW** `[18]` (RW)
+///   If 1, mask + shift is bypassed for LANE1 result. This does not affect FULL result.
+/// - **CROSS_RESULT** `[17]` (RW)
+///   If 1, feed the opposite lane's result into this lane's accumulator on POP.
+/// - **CROSS_INPUT** `[16]` (RW)
+///   If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
+///   Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
+/// - **SIGNED** `[15]` (RW)
+///   If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
+///   before adding to BASE1, and LANE1 PEEK/POP appear extended to 32 bits when read by processor.
+/// - **MASK_MSB** `[14:10]` (RW)
+///   The most-significant bit allowed to pass by the mask (inclusive)
+///   Setting MSB < LSB may cause chip to turn inside-out
+/// - **MASK_LSB** `[9:5]` (RW)
+///   The least-significant bit allowed to pass by the mask (inclusive)
+/// - **SHIFT** `[4:0]` (RW)
+///   Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
 #[repr(transparent)]
 pub struct Interp1CtrlLane1 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp1CtrlLane1 {}
-unsafe impl Sync for Interp1CtrlLane1 {}
+impl core::ops::Deref for Interp1CtrlLane1 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp1CtrlLane1 {
     // ======== Field Constants ========
 
-    /// FORCE_MSB - ORed into bits 29:28 of the lane result presented to the processor on the b...
-    /// Bits [20:19], mask 0x00180000
+    /// **FORCE_MSB**
+    /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
+    /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
+    /// of pointers into flash or SRAM.
+    /// Bits `[20:19]`, mask `0x00180000`
     pub const FORCE_MSB_OFFSET: u32 = 19;
     pub const FORCE_MSB_MASK: u32 = 0x00180000;
 
-    /// ADD_RAW - If 1, mask + shift is bypassed for LANE1 result. This does not affect FULL ...
-    /// Bits [18:18], mask 0x00040000
+    /// **ADD_RAW**
+    /// If 1, mask + shift is bypassed for LANE1 result. This does not affect FULL result.
+    /// Bits `[18:18]`, mask `0x00040000`
     pub const ADD_RAW_OFFSET: u32 = 18;
     pub const ADD_RAW_MASK: u32 = 0x00040000;
     pub const ADD_RAW: u32 = 1 << 18;
 
-    /// CROSS_RESULT - If 1, feed the opposite lane's result into this lane's accumulator on POP.
-    /// Bits [17:17], mask 0x00020000
+    /// **CROSS_RESULT**
+    /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
+    /// Bits `[17:17]`, mask `0x00020000`
     pub const CROSS_RESULT_OFFSET: u32 = 17;
     pub const CROSS_RESULT_MASK: u32 = 0x00020000;
     pub const CROSS_RESULT: u32 = 1 << 17;
 
-    /// CROSS_INPUT - If 1, feed the opposite lane's accumulator into this lane's shift + mask ha...
-    /// Bits [16:16], mask 0x00010000
+    /// **CROSS_INPUT**
+    /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
+    /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
+    /// Bits `[16:16]`, mask `0x00010000`
     pub const CROSS_INPUT_OFFSET: u32 = 16;
     pub const CROSS_INPUT_MASK: u32 = 0x00010000;
     pub const CROSS_INPUT: u32 = 1 << 16;
 
-    /// SIGNED - If SIGNED is set, the shifted and masked accumulator value is sign-extended...
-    /// Bits [15:15], mask 0x00008000
+    /// **SIGNED**
+    /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
+    /// before adding to BASE1, and LANE1 PEEK/POP appear extended to 32 bits when read by processor.
+    /// Bits `[15:15]`, mask `0x00008000`
     pub const SIGNED_OFFSET: u32 = 15;
     pub const SIGNED_MASK: u32 = 0x00008000;
     pub const SIGNED: u32 = 1 << 15;
 
-    /// MASK_MSB - The most-significant bit allowed to pass by the mask (inclusive) Setting MS...
-    /// Bits [14:10], mask 0x00007c00
+    /// **MASK_MSB**
+    /// The most-significant bit allowed to pass by the mask (inclusive)
+    /// Setting MSB < LSB may cause chip to turn inside-out
+    /// Bits `[14:10]`, mask `0x00007c00`
     pub const MASK_MSB_OFFSET: u32 = 10;
     pub const MASK_MSB_MASK: u32 = 0x00007c00;
 
-    /// MASK_LSB - The least-significant bit allowed to pass by the mask (inclusive)
-    /// Bits [9:5], mask 0x000003e0
+    /// **MASK_LSB**
+    /// The least-significant bit allowed to pass by the mask (inclusive)
+    /// Bits `[9:5]`, mask `0x000003e0`
     pub const MASK_LSB_OFFSET: u32 = 5;
     pub const MASK_LSB_MASK: u32 = 0x000003e0;
 
-    /// SHIFT - Right-rotate applied to accumulator before masking. By appropriately config...
-    /// Bits [4:0], mask 0x0000001f
+    /// **SHIFT**
+    /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
+    /// Bits `[4:0]`, mask `0x0000001f`
     pub const SHIFT_OFFSET: u32 = 0;
     pub const SHIFT_MASK: u32 = 0x0000001f;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **FORCE_MSB** [20:19]: ORed into bits 29:28 of the lane result presented to the processor on the b...
+    /// **FORCE_MSB** `[20:19]` (RW)
+    /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
+    /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
+    /// of pointers into flash or SRAM.
     #[inline(always)]
     pub fn force_msb(&self) -> u32 {
-        (self.read_bits() & Self::FORCE_MSB_MASK) >> Self::FORCE_MSB_OFFSET
+        (self.value.read_bits() & Self::FORCE_MSB_MASK) >> Self::FORCE_MSB_OFFSET
     }
 
-    /// Write FORCE_MSB field
+    /// Write **FORCE_MSB** `[20:19]` (RW)
+    /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
+    /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
+    /// of pointers into flash or SRAM.
     #[inline(always)]
     pub fn write_force_msb(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::FORCE_MSB_MASK) | ((value << Self::FORCE_MSB_OFFSET) & Self::FORCE_MSB_MASK));
+        self.value.modify_bits(|r| (r & !Self::FORCE_MSB_MASK) | ((value << Self::FORCE_MSB_OFFSET) & Self::FORCE_MSB_MASK));
     }
 
-    /// **ADD_RAW** [18:18]: If 1, mask + shift is bypassed for LANE1 result. This does not affect FULL ...
+    /// **ADD_RAW** `[18]` (RW)
+    /// If 1, mask + shift is bypassed for LANE1 result. This does not affect FULL result.
     #[inline(always)]
     pub fn add_raw(&self) -> bool {
-        (self.read_bits() & Self::ADD_RAW_MASK) != 0
+        (self.value.read_bits() & Self::ADD_RAW_MASK) != 0
     }
 
-    /// Set ADD_RAW bit
+    /// Set ADD_RAW bit atomically (RW)
     #[inline(always)]
     pub fn set_add_raw(&self) {
-        self.set_bits(Self::ADD_RAW_MASK);
+        self.value.set_bits(Self::ADD_RAW_MASK);
     }
 
-    /// Clear ADD_RAW bit
+    /// Clear ADD_RAW bit atomically (RW)
     #[inline(always)]
     pub fn clr_add_raw(&self) {
-        self.clr_bits(Self::ADD_RAW_MASK);
+        self.value.clr_bits(Self::ADD_RAW_MASK);
     }
 
-    /// **CROSS_RESULT** [17:17]: If 1, feed the opposite lane's result into this lane's accumulator on POP.
+    /// **CROSS_RESULT** `[17]` (RW)
+    /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
     #[inline(always)]
     pub fn cross_result(&self) -> bool {
-        (self.read_bits() & Self::CROSS_RESULT_MASK) != 0
+        (self.value.read_bits() & Self::CROSS_RESULT_MASK) != 0
     }
 
-    /// Set CROSS_RESULT bit
+    /// Set CROSS_RESULT bit atomically (RW)
     #[inline(always)]
     pub fn set_cross_result(&self) {
-        self.set_bits(Self::CROSS_RESULT_MASK);
+        self.value.set_bits(Self::CROSS_RESULT_MASK);
     }
 
-    /// Clear CROSS_RESULT bit
+    /// Clear CROSS_RESULT bit atomically (RW)
     #[inline(always)]
     pub fn clr_cross_result(&self) {
-        self.clr_bits(Self::CROSS_RESULT_MASK);
+        self.value.clr_bits(Self::CROSS_RESULT_MASK);
     }
 
-    /// **CROSS_INPUT** [16:16]: If 1, feed the opposite lane's accumulator into this lane's shift + mask ha...
+    /// **CROSS_INPUT** `[16]` (RW)
+    /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
+    /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
     #[inline(always)]
     pub fn cross_input(&self) -> bool {
-        (self.read_bits() & Self::CROSS_INPUT_MASK) != 0
+        (self.value.read_bits() & Self::CROSS_INPUT_MASK) != 0
     }
 
-    /// Set CROSS_INPUT bit
+    /// Set CROSS_INPUT bit atomically (RW)
     #[inline(always)]
     pub fn set_cross_input(&self) {
-        self.set_bits(Self::CROSS_INPUT_MASK);
+        self.value.set_bits(Self::CROSS_INPUT_MASK);
     }
 
-    /// Clear CROSS_INPUT bit
+    /// Clear CROSS_INPUT bit atomically (RW)
     #[inline(always)]
     pub fn clr_cross_input(&self) {
-        self.clr_bits(Self::CROSS_INPUT_MASK);
+        self.value.clr_bits(Self::CROSS_INPUT_MASK);
     }
 
-    /// **SIGNED** [15:15]: If SIGNED is set, the shifted and masked accumulator value is sign-extended...
+    /// **SIGNED** `[15]` (RW)
+    /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
+    /// before adding to BASE1, and LANE1 PEEK/POP appear extended to 32 bits when read by processor.
     #[inline(always)]
     pub fn signed(&self) -> bool {
-        (self.read_bits() & Self::SIGNED_MASK) != 0
+        (self.value.read_bits() & Self::SIGNED_MASK) != 0
     }
 
-    /// Set SIGNED bit
+    /// Set SIGNED bit atomically (RW)
     #[inline(always)]
     pub fn set_signed(&self) {
-        self.set_bits(Self::SIGNED_MASK);
+        self.value.set_bits(Self::SIGNED_MASK);
     }
 
-    /// Clear SIGNED bit
+    /// Clear SIGNED bit atomically (RW)
     #[inline(always)]
     pub fn clr_signed(&self) {
-        self.clr_bits(Self::SIGNED_MASK);
+        self.value.clr_bits(Self::SIGNED_MASK);
     }
 
-    /// **MASK_MSB** [14:10]: The most-significant bit allowed to pass by the mask (inclusive) Setting MS...
+    /// **MASK_MSB** `[14:10]` (RW)
+    /// The most-significant bit allowed to pass by the mask (inclusive)
+    /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
     pub fn mask_msb(&self) -> u32 {
-        (self.read_bits() & Self::MASK_MSB_MASK) >> Self::MASK_MSB_OFFSET
+        (self.value.read_bits() & Self::MASK_MSB_MASK) >> Self::MASK_MSB_OFFSET
     }
 
-    /// Write MASK_MSB field
+    /// Write **MASK_MSB** `[14:10]` (RW)
+    /// The most-significant bit allowed to pass by the mask (inclusive)
+    /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
     pub fn write_mask_msb(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::MASK_MSB_MASK) | ((value << Self::MASK_MSB_OFFSET) & Self::MASK_MSB_MASK));
+        self.value.modify_bits(|r| (r & !Self::MASK_MSB_MASK) | ((value << Self::MASK_MSB_OFFSET) & Self::MASK_MSB_MASK));
     }
 
-    /// **MASK_LSB** [9:5]: The least-significant bit allowed to pass by the mask (inclusive)
+    /// **MASK_LSB** `[9:5]` (RW)
+    /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub fn mask_lsb(&self) -> u32 {
-        (self.read_bits() & Self::MASK_LSB_MASK) >> Self::MASK_LSB_OFFSET
+        (self.value.read_bits() & Self::MASK_LSB_MASK) >> Self::MASK_LSB_OFFSET
     }
 
-    /// Write MASK_LSB field
+    /// Write **MASK_LSB** `[9:5]` (RW)
+    /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub fn write_mask_lsb(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::MASK_LSB_MASK) | ((value << Self::MASK_LSB_OFFSET) & Self::MASK_LSB_MASK));
+        self.value.modify_bits(|r| (r & !Self::MASK_LSB_MASK) | ((value << Self::MASK_LSB_OFFSET) & Self::MASK_LSB_MASK));
     }
 
-    /// **SHIFT** [4:0]: Right-rotate applied to accumulator before masking. By appropriately config...
+    /// **SHIFT** `[4:0]` (RW)
+    /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub fn shift(&self) -> u32 {
-        (self.read_bits() & Self::SHIFT_MASK) >> Self::SHIFT_OFFSET
+        (self.value.read_bits() & Self::SHIFT_MASK) >> Self::SHIFT_OFFSET
     }
 
-    /// Write SHIFT field
+    /// Write **SHIFT** `[4:0]` (RW)
+    /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub fn write_shift(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SHIFT_MASK) | ((value << Self::SHIFT_OFFSET) & Self::SHIFT_MASK));
+        self.value.modify_bits(|r| (r & !Self::SHIFT_MASK) | ((value << Self::SHIFT_OFFSET) & Self::SHIFT_MASK));
     }
 
 }
@@ -10349,55 +8731,71 @@ impl Interp1CtrlLane1Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read FORCE_MSB [20:19]: ORed into bits 29:28 of the lane result presented to the processor on the b...
+    /// Read **FORCE_MSB** `[20:19]`
+    /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
+    /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
+    /// of pointers into flash or SRAM.
     #[inline(always)]
     pub const fn force_msb(&self) -> u32 {
         (self.bits & Interp1CtrlLane1::FORCE_MSB_MASK) >> Interp1CtrlLane1::FORCE_MSB_OFFSET
     }
 
-    /// Read ADD_RAW [18:18]: If 1, mask + shift is bypassed for LANE1 result. This does not affect FULL ...
+    /// Read **ADD_RAW** `[18:18]`
+    /// If 1, mask + shift is bypassed for LANE1 result. This does not affect FULL result.
     #[inline(always)]
     pub const fn add_raw(&self) -> bool {
         (self.bits & Interp1CtrlLane1::ADD_RAW_MASK) != 0
     }
 
-    /// Read CROSS_RESULT [17:17]: If 1, feed the opposite lane's result into this lane's accumulator on POP.
+    /// Read **CROSS_RESULT** `[17:17]`
+    /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
     #[inline(always)]
     pub const fn cross_result(&self) -> bool {
         (self.bits & Interp1CtrlLane1::CROSS_RESULT_MASK) != 0
     }
 
-    /// Read CROSS_INPUT [16:16]: If 1, feed the opposite lane's accumulator into this lane's shift + mask ha...
+    /// Read **CROSS_INPUT** `[16:16]`
+    /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
+    /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
     #[inline(always)]
     pub const fn cross_input(&self) -> bool {
         (self.bits & Interp1CtrlLane1::CROSS_INPUT_MASK) != 0
     }
 
-    /// Read SIGNED [15:15]: If SIGNED is set, the shifted and masked accumulator value is sign-extended...
+    /// Read **SIGNED** `[15:15]`
+    /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
+    /// before adding to BASE1, and LANE1 PEEK/POP appear extended to 32 bits when read by processor.
     #[inline(always)]
     pub const fn signed(&self) -> bool {
         (self.bits & Interp1CtrlLane1::SIGNED_MASK) != 0
     }
 
-    /// Read MASK_MSB [14:10]: The most-significant bit allowed to pass by the mask (inclusive) Setting MS...
+    /// Read **MASK_MSB** `[14:10]`
+    /// The most-significant bit allowed to pass by the mask (inclusive)
+    /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
     pub const fn mask_msb(&self) -> u32 {
         (self.bits & Interp1CtrlLane1::MASK_MSB_MASK) >> Interp1CtrlLane1::MASK_MSB_OFFSET
     }
 
-    /// Read MASK_LSB [9:5]: The least-significant bit allowed to pass by the mask (inclusive)
+    /// Read **MASK_LSB** `[9:5]`
+    /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub const fn mask_lsb(&self) -> u32 {
         (self.bits & Interp1CtrlLane1::MASK_LSB_MASK) >> Interp1CtrlLane1::MASK_LSB_OFFSET
     }
 
-    /// Read SHIFT [4:0]: Right-rotate applied to accumulator before masking. By appropriately config...
+    /// Read **SHIFT** `[4:0]`
+    /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub const fn shift(&self) -> u32 {
         (self.bits & Interp1CtrlLane1::SHIFT_MASK) >> Interp1CtrlLane1::SHIFT_OFFSET
     }
 
-    /// Set FORCE_MSB [20:19]: ORed into bits 29:28 of the lane result presented to the processor on the b...
+    /// Set **FORCE_MSB** `[20:19]`
+    /// ORed into bits 29:28 of the lane result presented to the processor on the bus.
+    /// No effect on the internal 32-bit datapath. Handy for using a lane to generate sequence
+    /// of pointers into flash or SRAM.
     #[inline(always)]
     pub const fn with_force_msb(self, value: u32) -> Self {
         Self {
@@ -10405,7 +8803,8 @@ impl Interp1CtrlLane1Val {
         }
     }
 
-    /// Set ADD_RAW [18:18]: If 1, mask + shift is bypassed for LANE1 result. This does not affect FULL ...
+    /// Set **ADD_RAW** `[18:18]`
+    /// If 1, mask + shift is bypassed for LANE1 result. This does not affect FULL result.
     #[inline(always)]
     pub const fn with_add_raw(self, value: bool) -> Self {
         Self {
@@ -10417,7 +8816,8 @@ impl Interp1CtrlLane1Val {
         }
     }
 
-    /// Set CROSS_RESULT [17:17]: If 1, feed the opposite lane's result into this lane's accumulator on POP.
+    /// Set **CROSS_RESULT** `[17:17]`
+    /// If 1, feed the opposite lane's result into this lane's accumulator on POP.
     #[inline(always)]
     pub const fn with_cross_result(self, value: bool) -> Self {
         Self {
@@ -10429,7 +8829,9 @@ impl Interp1CtrlLane1Val {
         }
     }
 
-    /// Set CROSS_INPUT [16:16]: If 1, feed the opposite lane's accumulator into this lane's shift + mask ha...
+    /// Set **CROSS_INPUT** `[16:16]`
+    /// If 1, feed the opposite lane's accumulator into this lane's shift + mask hardware.
+    /// Takes effect even if ADD_RAW is set (the CROSS_INPUT mux is before the shift+mask bypass)
     #[inline(always)]
     pub const fn with_cross_input(self, value: bool) -> Self {
         Self {
@@ -10441,7 +8843,9 @@ impl Interp1CtrlLane1Val {
         }
     }
 
-    /// Set SIGNED [15:15]: If SIGNED is set, the shifted and masked accumulator value is sign-extended...
+    /// Set **SIGNED** `[15:15]`
+    /// If SIGNED is set, the shifted and masked accumulator value is sign-extended to 32 bits
+    /// before adding to BASE1, and LANE1 PEEK/POP appear extended to 32 bits when read by processor.
     #[inline(always)]
     pub const fn with_signed(self, value: bool) -> Self {
         Self {
@@ -10453,7 +8857,9 @@ impl Interp1CtrlLane1Val {
         }
     }
 
-    /// Set MASK_MSB [14:10]: The most-significant bit allowed to pass by the mask (inclusive) Setting MS...
+    /// Set **MASK_MSB** `[14:10]`
+    /// The most-significant bit allowed to pass by the mask (inclusive)
+    /// Setting MSB < LSB may cause chip to turn inside-out
     #[inline(always)]
     pub const fn with_mask_msb(self, value: u32) -> Self {
         Self {
@@ -10461,7 +8867,8 @@ impl Interp1CtrlLane1Val {
         }
     }
 
-    /// Set MASK_LSB [9:5]: The least-significant bit allowed to pass by the mask (inclusive)
+    /// Set **MASK_LSB** `[9:5]`
+    /// The least-significant bit allowed to pass by the mask (inclusive)
     #[inline(always)]
     pub const fn with_mask_lsb(self, value: u32) -> Self {
         Self {
@@ -10469,7 +8876,8 @@ impl Interp1CtrlLane1Val {
         }
     }
 
-    /// Set SHIFT [4:0]: Right-rotate applied to accumulator before masking. By appropriately config...
+    /// Set **SHIFT** `[4:0]`
+    /// Right-rotate applied to accumulator before masking. By appropriately configuring the masks, left and right shifts can be synthesised.
     #[inline(always)]
     pub const fn with_shift(self, value: u32) -> Self {
         Self {
@@ -10488,109 +8896,68 @@ impl Default for Interp1CtrlLane1Val {
 impl Interp1CtrlLane1 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp1CtrlLane1Val {
-        Interp1CtrlLane1Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp1CtrlLane1Val {
+        Interp1CtrlLane1Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp1CtrlLane1Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp1CtrlLane1Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp1CtrlLane1Val) -> Interp1CtrlLane1Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp1CtrlLane1Val) -> Interp1CtrlLane1Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// INTERP1_ACCUM0_ADD Register
 ///
-/// Values written here are atomically added to ACCUM0 Reading yields lane 0's
-/// raw shift and mask value (BASE0 not added).
+/// Values written here are atomically added to ACCUM0
+/// Reading yields lane 0's raw shift and mask value (BASE0 not added).
 ///
 /// Address offset: 0x00f4
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **INTERP1_ACCUM0_ADD** [23:0] (RW): 
+/// - **INTERP1_ACCUM0_ADD** `[23:0]` (RW)
 #[repr(transparent)]
 pub struct Interp1Accum0Add {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp1Accum0Add {}
-unsafe impl Sync for Interp1Accum0Add {}
+impl core::ops::Deref for Interp1Accum0Add {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp1Accum0Add {
     // ======== Field Constants ========
 
-    /// Bits [23:0], mask 0x00ffffff
+    /// **INTERP1_ACCUM0_ADD**
+    /// Bits `[23:0]`, mask `0x00ffffff`
     pub const INTERP1_ACCUM0_ADD_OFFSET: u32 = 0;
     pub const INTERP1_ACCUM0_ADD_MASK: u32 = 0x00ffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **INTERP1_ACCUM0_ADD** [23:0]
+    /// **INTERP1_ACCUM0_ADD** `[23:0]` (RW)
     #[inline(always)]
     pub fn interp1_accum0_add(&self) -> u32 {
-        (self.read_bits() & Self::INTERP1_ACCUM0_ADD_MASK) >> Self::INTERP1_ACCUM0_ADD_OFFSET
+        (self.value.read_bits() & Self::INTERP1_ACCUM0_ADD_MASK) >> Self::INTERP1_ACCUM0_ADD_OFFSET
     }
 
-    /// Write INTERP1_ACCUM0_ADD field
+    /// Write **INTERP1_ACCUM0_ADD** `[23:0]` (RW)
     #[inline(always)]
     pub fn write_interp1_accum0_add(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::INTERP1_ACCUM0_ADD_MASK) | ((value << Self::INTERP1_ACCUM0_ADD_OFFSET) & Self::INTERP1_ACCUM0_ADD_MASK));
+        self.value.modify_bits(|r| (r & !Self::INTERP1_ACCUM0_ADD_MASK) | ((value << Self::INTERP1_ACCUM0_ADD_OFFSET) & Self::INTERP1_ACCUM0_ADD_MASK));
     }
 
 }
@@ -10623,13 +8990,13 @@ impl Interp1Accum0AddVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read INTERP1_ACCUM0_ADD [23:0]
+    /// Read **INTERP1_ACCUM0_ADD** `[23:0]`
     #[inline(always)]
     pub const fn interp1_accum0_add(&self) -> u32 {
         (self.bits & Interp1Accum0Add::INTERP1_ACCUM0_ADD_MASK) >> Interp1Accum0Add::INTERP1_ACCUM0_ADD_OFFSET
     }
 
-    /// Set INTERP1_ACCUM0_ADD [23:0]
+    /// Set **INTERP1_ACCUM0_ADD** `[23:0]`
     #[inline(always)]
     pub const fn with_interp1_accum0_add(self, value: u32) -> Self {
         Self {
@@ -10648,109 +9015,68 @@ impl Default for Interp1Accum0AddVal {
 impl Interp1Accum0Add {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp1Accum0AddVal {
-        Interp1Accum0AddVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp1Accum0AddVal {
+        Interp1Accum0AddVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp1Accum0AddVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp1Accum0AddVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp1Accum0AddVal) -> Interp1Accum0AddVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp1Accum0AddVal) -> Interp1Accum0AddVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// INTERP1_ACCUM1_ADD Register
 ///
-/// Values written here are atomically added to ACCUM1 Reading yields lane 1's
-/// raw shift and mask value (BASE1 not added).
+/// Values written here are atomically added to ACCUM1
+/// Reading yields lane 1's raw shift and mask value (BASE1 not added).
 ///
 /// Address offset: 0x00f8
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **INTERP1_ACCUM1_ADD** [23:0] (RW): 
+/// - **INTERP1_ACCUM1_ADD** `[23:0]` (RW)
 #[repr(transparent)]
 pub struct Interp1Accum1Add {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp1Accum1Add {}
-unsafe impl Sync for Interp1Accum1Add {}
+impl core::ops::Deref for Interp1Accum1Add {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp1Accum1Add {
     // ======== Field Constants ========
 
-    /// Bits [23:0], mask 0x00ffffff
+    /// **INTERP1_ACCUM1_ADD**
+    /// Bits `[23:0]`, mask `0x00ffffff`
     pub const INTERP1_ACCUM1_ADD_OFFSET: u32 = 0;
     pub const INTERP1_ACCUM1_ADD_MASK: u32 = 0x00ffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **INTERP1_ACCUM1_ADD** [23:0]
+    /// **INTERP1_ACCUM1_ADD** `[23:0]` (RW)
     #[inline(always)]
     pub fn interp1_accum1_add(&self) -> u32 {
-        (self.read_bits() & Self::INTERP1_ACCUM1_ADD_MASK) >> Self::INTERP1_ACCUM1_ADD_OFFSET
+        (self.value.read_bits() & Self::INTERP1_ACCUM1_ADD_MASK) >> Self::INTERP1_ACCUM1_ADD_OFFSET
     }
 
-    /// Write INTERP1_ACCUM1_ADD field
+    /// Write **INTERP1_ACCUM1_ADD** `[23:0]` (RW)
     #[inline(always)]
     pub fn write_interp1_accum1_add(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::INTERP1_ACCUM1_ADD_MASK) | ((value << Self::INTERP1_ACCUM1_ADD_OFFSET) & Self::INTERP1_ACCUM1_ADD_MASK));
+        self.value.modify_bits(|r| (r & !Self::INTERP1_ACCUM1_ADD_MASK) | ((value << Self::INTERP1_ACCUM1_ADD_OFFSET) & Self::INTERP1_ACCUM1_ADD_MASK));
     }
 
 }
@@ -10783,13 +9109,13 @@ impl Interp1Accum1AddVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read INTERP1_ACCUM1_ADD [23:0]
+    /// Read **INTERP1_ACCUM1_ADD** `[23:0]`
     #[inline(always)]
     pub const fn interp1_accum1_add(&self) -> u32 {
         (self.bits & Interp1Accum1Add::INTERP1_ACCUM1_ADD_MASK) >> Interp1Accum1Add::INTERP1_ACCUM1_ADD_OFFSET
     }
 
-    /// Set INTERP1_ACCUM1_ADD [23:0]
+    /// Set **INTERP1_ACCUM1_ADD** `[23:0]`
     #[inline(always)]
     pub const fn with_interp1_accum1_add(self, value: u32) -> Self {
         Self {
@@ -10808,20 +9134,20 @@ impl Default for Interp1Accum1AddVal {
 impl Interp1Accum1Add {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp1Accum1AddVal {
-        Interp1Accum1AddVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp1Accum1AddVal {
+        Interp1Accum1AddVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp1Accum1AddVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp1Accum1AddVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp1Accum1AddVal) -> Interp1Accum1AddVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp1Accum1AddVal) -> Interp1Accum1AddVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -10836,76 +9162,35 @@ impl Interp1Accum1Add {
 ///
 /// ## Fields
 ///
-/// - **INTERP1_BASE_1AND0** [31:0] (WO): 
+/// - **INTERP1_BASE_1AND0** `[31:0]` (WO)
 #[repr(transparent)]
 pub struct Interp1Base1and0 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Interp1Base1and0 {}
-unsafe impl Sync for Interp1Base1and0 {}
+impl core::ops::Deref for Interp1Base1and0 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Interp1Base1and0 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **INTERP1_BASE_1AND0**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const INTERP1_BASE_1AND0_OFFSET: u32 = 0;
     pub const INTERP1_BASE_1AND0_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **INTERP1_BASE_1AND0** [31:0]
-    /// Write INTERP1_BASE_1AND0 field (write-only)
+    /// **INTERP1_BASE_1AND0** `[31:0]` (WO)
+    /// Write **INTERP1_BASE_1AND0** `[31:0]` (WO)
     #[inline(always)]
     pub fn write_interp1_base_1and0(&self, value: u32) {
-        self.write_bits((value << Self::INTERP1_BASE_1AND0_OFFSET) & Self::INTERP1_BASE_1AND0_MASK);
+        self.value.write_bits((value << Self::INTERP1_BASE_1AND0_OFFSET) & Self::INTERP1_BASE_1AND0_MASK);
     }
 
 }
@@ -10938,7 +9223,7 @@ impl Interp1Base1and0Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Set INTERP1_BASE_1AND0 [31:0]
+    /// Set **INTERP1_BASE_1AND0** `[31:0]`
     #[inline(always)]
     pub const fn with_interp1_base_1and0(self, value: u32) -> Self {
         Self {
@@ -10957,112 +9242,72 @@ impl Default for Interp1Base1and0Val {
 impl Interp1Base1and0 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Interp1Base1and0Val {
-        Interp1Base1and0Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Interp1Base1and0Val {
+        Interp1Base1and0Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Interp1Base1and0Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Interp1Base1and0Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Interp1Base1and0Val) -> Interp1Base1and0Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Interp1Base1and0Val) -> Interp1Base1and0Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK0 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x0100
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK0** [31:0] (RW): 
+/// - **SPINLOCK0** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock0 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock0 {}
-unsafe impl Sync for Spinlock0 {}
+impl core::ops::Deref for Spinlock0 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock0 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK0**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK0_OFFSET: u32 = 0;
     pub const SPINLOCK0_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK0** [31:0]
+    /// **SPINLOCK0** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock0(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK0_MASK) >> Self::SPINLOCK0_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK0_MASK) >> Self::SPINLOCK0_OFFSET
     }
 
-    /// Write SPINLOCK0 field
+    /// Write **SPINLOCK0** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock0(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK0_MASK) | ((value << Self::SPINLOCK0_OFFSET) & Self::SPINLOCK0_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK0_MASK) | ((value << Self::SPINLOCK0_OFFSET) & Self::SPINLOCK0_MASK));
     }
 
 }
@@ -11095,13 +9340,13 @@ impl Spinlock0Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK0 [31:0]
+    /// Read **SPINLOCK0** `[31:0]`
     #[inline(always)]
     pub const fn spinlock0(&self) -> u32 {
         (self.bits & Spinlock0::SPINLOCK0_MASK) >> Spinlock0::SPINLOCK0_OFFSET
     }
 
-    /// Set SPINLOCK0 [31:0]
+    /// Set **SPINLOCK0** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock0(self, value: u32) -> Self {
         Self {
@@ -11120,112 +9365,72 @@ impl Default for Spinlock0Val {
 impl Spinlock0 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock0Val {
-        Spinlock0Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock0Val {
+        Spinlock0Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock0Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock0Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock0Val) -> Spinlock0Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock0Val) -> Spinlock0Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK1 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x0104
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK1** [31:0] (RW): 
+/// - **SPINLOCK1** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock1 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock1 {}
-unsafe impl Sync for Spinlock1 {}
+impl core::ops::Deref for Spinlock1 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock1 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK1**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK1_OFFSET: u32 = 0;
     pub const SPINLOCK1_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK1** [31:0]
+    /// **SPINLOCK1** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock1(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK1_MASK) >> Self::SPINLOCK1_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK1_MASK) >> Self::SPINLOCK1_OFFSET
     }
 
-    /// Write SPINLOCK1 field
+    /// Write **SPINLOCK1** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock1(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK1_MASK) | ((value << Self::SPINLOCK1_OFFSET) & Self::SPINLOCK1_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK1_MASK) | ((value << Self::SPINLOCK1_OFFSET) & Self::SPINLOCK1_MASK));
     }
 
 }
@@ -11258,13 +9463,13 @@ impl Spinlock1Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK1 [31:0]
+    /// Read **SPINLOCK1** `[31:0]`
     #[inline(always)]
     pub const fn spinlock1(&self) -> u32 {
         (self.bits & Spinlock1::SPINLOCK1_MASK) >> Spinlock1::SPINLOCK1_OFFSET
     }
 
-    /// Set SPINLOCK1 [31:0]
+    /// Set **SPINLOCK1** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock1(self, value: u32) -> Self {
         Self {
@@ -11283,112 +9488,72 @@ impl Default for Spinlock1Val {
 impl Spinlock1 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock1Val {
-        Spinlock1Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock1Val {
+        Spinlock1Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock1Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock1Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock1Val) -> Spinlock1Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock1Val) -> Spinlock1Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK2 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x0108
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK2** [31:0] (RW): 
+/// - **SPINLOCK2** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock2 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock2 {}
-unsafe impl Sync for Spinlock2 {}
+impl core::ops::Deref for Spinlock2 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock2 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK2**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK2_OFFSET: u32 = 0;
     pub const SPINLOCK2_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK2** [31:0]
+    /// **SPINLOCK2** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock2(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK2_MASK) >> Self::SPINLOCK2_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK2_MASK) >> Self::SPINLOCK2_OFFSET
     }
 
-    /// Write SPINLOCK2 field
+    /// Write **SPINLOCK2** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock2(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK2_MASK) | ((value << Self::SPINLOCK2_OFFSET) & Self::SPINLOCK2_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK2_MASK) | ((value << Self::SPINLOCK2_OFFSET) & Self::SPINLOCK2_MASK));
     }
 
 }
@@ -11421,13 +9586,13 @@ impl Spinlock2Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK2 [31:0]
+    /// Read **SPINLOCK2** `[31:0]`
     #[inline(always)]
     pub const fn spinlock2(&self) -> u32 {
         (self.bits & Spinlock2::SPINLOCK2_MASK) >> Spinlock2::SPINLOCK2_OFFSET
     }
 
-    /// Set SPINLOCK2 [31:0]
+    /// Set **SPINLOCK2** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock2(self, value: u32) -> Self {
         Self {
@@ -11446,112 +9611,72 @@ impl Default for Spinlock2Val {
 impl Spinlock2 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock2Val {
-        Spinlock2Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock2Val {
+        Spinlock2Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock2Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock2Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock2Val) -> Spinlock2Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock2Val) -> Spinlock2Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK3 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x010c
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK3** [31:0] (RW): 
+/// - **SPINLOCK3** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock3 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock3 {}
-unsafe impl Sync for Spinlock3 {}
+impl core::ops::Deref for Spinlock3 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock3 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK3**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK3_OFFSET: u32 = 0;
     pub const SPINLOCK3_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK3** [31:0]
+    /// **SPINLOCK3** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock3(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK3_MASK) >> Self::SPINLOCK3_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK3_MASK) >> Self::SPINLOCK3_OFFSET
     }
 
-    /// Write SPINLOCK3 field
+    /// Write **SPINLOCK3** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock3(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK3_MASK) | ((value << Self::SPINLOCK3_OFFSET) & Self::SPINLOCK3_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK3_MASK) | ((value << Self::SPINLOCK3_OFFSET) & Self::SPINLOCK3_MASK));
     }
 
 }
@@ -11584,13 +9709,13 @@ impl Spinlock3Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK3 [31:0]
+    /// Read **SPINLOCK3** `[31:0]`
     #[inline(always)]
     pub const fn spinlock3(&self) -> u32 {
         (self.bits & Spinlock3::SPINLOCK3_MASK) >> Spinlock3::SPINLOCK3_OFFSET
     }
 
-    /// Set SPINLOCK3 [31:0]
+    /// Set **SPINLOCK3** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock3(self, value: u32) -> Self {
         Self {
@@ -11609,112 +9734,72 @@ impl Default for Spinlock3Val {
 impl Spinlock3 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock3Val {
-        Spinlock3Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock3Val {
+        Spinlock3Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock3Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock3Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock3Val) -> Spinlock3Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock3Val) -> Spinlock3Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK4 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x0110
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK4** [31:0] (RW): 
+/// - **SPINLOCK4** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock4 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock4 {}
-unsafe impl Sync for Spinlock4 {}
+impl core::ops::Deref for Spinlock4 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock4 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK4**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK4_OFFSET: u32 = 0;
     pub const SPINLOCK4_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK4** [31:0]
+    /// **SPINLOCK4** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock4(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK4_MASK) >> Self::SPINLOCK4_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK4_MASK) >> Self::SPINLOCK4_OFFSET
     }
 
-    /// Write SPINLOCK4 field
+    /// Write **SPINLOCK4** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock4(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK4_MASK) | ((value << Self::SPINLOCK4_OFFSET) & Self::SPINLOCK4_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK4_MASK) | ((value << Self::SPINLOCK4_OFFSET) & Self::SPINLOCK4_MASK));
     }
 
 }
@@ -11747,13 +9832,13 @@ impl Spinlock4Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK4 [31:0]
+    /// Read **SPINLOCK4** `[31:0]`
     #[inline(always)]
     pub const fn spinlock4(&self) -> u32 {
         (self.bits & Spinlock4::SPINLOCK4_MASK) >> Spinlock4::SPINLOCK4_OFFSET
     }
 
-    /// Set SPINLOCK4 [31:0]
+    /// Set **SPINLOCK4** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock4(self, value: u32) -> Self {
         Self {
@@ -11772,112 +9857,72 @@ impl Default for Spinlock4Val {
 impl Spinlock4 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock4Val {
-        Spinlock4Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock4Val {
+        Spinlock4Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock4Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock4Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock4Val) -> Spinlock4Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock4Val) -> Spinlock4Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK5 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x0114
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK5** [31:0] (RW): 
+/// - **SPINLOCK5** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock5 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock5 {}
-unsafe impl Sync for Spinlock5 {}
+impl core::ops::Deref for Spinlock5 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock5 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK5**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK5_OFFSET: u32 = 0;
     pub const SPINLOCK5_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK5** [31:0]
+    /// **SPINLOCK5** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock5(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK5_MASK) >> Self::SPINLOCK5_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK5_MASK) >> Self::SPINLOCK5_OFFSET
     }
 
-    /// Write SPINLOCK5 field
+    /// Write **SPINLOCK5** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock5(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK5_MASK) | ((value << Self::SPINLOCK5_OFFSET) & Self::SPINLOCK5_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK5_MASK) | ((value << Self::SPINLOCK5_OFFSET) & Self::SPINLOCK5_MASK));
     }
 
 }
@@ -11910,13 +9955,13 @@ impl Spinlock5Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK5 [31:0]
+    /// Read **SPINLOCK5** `[31:0]`
     #[inline(always)]
     pub const fn spinlock5(&self) -> u32 {
         (self.bits & Spinlock5::SPINLOCK5_MASK) >> Spinlock5::SPINLOCK5_OFFSET
     }
 
-    /// Set SPINLOCK5 [31:0]
+    /// Set **SPINLOCK5** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock5(self, value: u32) -> Self {
         Self {
@@ -11935,112 +9980,72 @@ impl Default for Spinlock5Val {
 impl Spinlock5 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock5Val {
-        Spinlock5Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock5Val {
+        Spinlock5Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock5Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock5Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock5Val) -> Spinlock5Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock5Val) -> Spinlock5Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK6 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x0118
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK6** [31:0] (RW): 
+/// - **SPINLOCK6** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock6 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock6 {}
-unsafe impl Sync for Spinlock6 {}
+impl core::ops::Deref for Spinlock6 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock6 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK6**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK6_OFFSET: u32 = 0;
     pub const SPINLOCK6_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK6** [31:0]
+    /// **SPINLOCK6** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock6(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK6_MASK) >> Self::SPINLOCK6_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK6_MASK) >> Self::SPINLOCK6_OFFSET
     }
 
-    /// Write SPINLOCK6 field
+    /// Write **SPINLOCK6** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock6(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK6_MASK) | ((value << Self::SPINLOCK6_OFFSET) & Self::SPINLOCK6_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK6_MASK) | ((value << Self::SPINLOCK6_OFFSET) & Self::SPINLOCK6_MASK));
     }
 
 }
@@ -12073,13 +10078,13 @@ impl Spinlock6Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK6 [31:0]
+    /// Read **SPINLOCK6** `[31:0]`
     #[inline(always)]
     pub const fn spinlock6(&self) -> u32 {
         (self.bits & Spinlock6::SPINLOCK6_MASK) >> Spinlock6::SPINLOCK6_OFFSET
     }
 
-    /// Set SPINLOCK6 [31:0]
+    /// Set **SPINLOCK6** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock6(self, value: u32) -> Self {
         Self {
@@ -12098,112 +10103,72 @@ impl Default for Spinlock6Val {
 impl Spinlock6 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock6Val {
-        Spinlock6Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock6Val {
+        Spinlock6Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock6Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock6Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock6Val) -> Spinlock6Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock6Val) -> Spinlock6Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK7 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x011c
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK7** [31:0] (RW): 
+/// - **SPINLOCK7** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock7 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock7 {}
-unsafe impl Sync for Spinlock7 {}
+impl core::ops::Deref for Spinlock7 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock7 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK7**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK7_OFFSET: u32 = 0;
     pub const SPINLOCK7_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK7** [31:0]
+    /// **SPINLOCK7** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock7(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK7_MASK) >> Self::SPINLOCK7_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK7_MASK) >> Self::SPINLOCK7_OFFSET
     }
 
-    /// Write SPINLOCK7 field
+    /// Write **SPINLOCK7** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock7(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK7_MASK) | ((value << Self::SPINLOCK7_OFFSET) & Self::SPINLOCK7_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK7_MASK) | ((value << Self::SPINLOCK7_OFFSET) & Self::SPINLOCK7_MASK));
     }
 
 }
@@ -12236,13 +10201,13 @@ impl Spinlock7Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK7 [31:0]
+    /// Read **SPINLOCK7** `[31:0]`
     #[inline(always)]
     pub const fn spinlock7(&self) -> u32 {
         (self.bits & Spinlock7::SPINLOCK7_MASK) >> Spinlock7::SPINLOCK7_OFFSET
     }
 
-    /// Set SPINLOCK7 [31:0]
+    /// Set **SPINLOCK7** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock7(self, value: u32) -> Self {
         Self {
@@ -12261,112 +10226,72 @@ impl Default for Spinlock7Val {
 impl Spinlock7 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock7Val {
-        Spinlock7Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock7Val {
+        Spinlock7Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock7Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock7Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock7Val) -> Spinlock7Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock7Val) -> Spinlock7Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK8 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x0120
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK8** [31:0] (RW): 
+/// - **SPINLOCK8** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock8 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock8 {}
-unsafe impl Sync for Spinlock8 {}
+impl core::ops::Deref for Spinlock8 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock8 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK8**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK8_OFFSET: u32 = 0;
     pub const SPINLOCK8_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK8** [31:0]
+    /// **SPINLOCK8** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock8(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK8_MASK) >> Self::SPINLOCK8_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK8_MASK) >> Self::SPINLOCK8_OFFSET
     }
 
-    /// Write SPINLOCK8 field
+    /// Write **SPINLOCK8** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock8(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK8_MASK) | ((value << Self::SPINLOCK8_OFFSET) & Self::SPINLOCK8_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK8_MASK) | ((value << Self::SPINLOCK8_OFFSET) & Self::SPINLOCK8_MASK));
     }
 
 }
@@ -12399,13 +10324,13 @@ impl Spinlock8Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK8 [31:0]
+    /// Read **SPINLOCK8** `[31:0]`
     #[inline(always)]
     pub const fn spinlock8(&self) -> u32 {
         (self.bits & Spinlock8::SPINLOCK8_MASK) >> Spinlock8::SPINLOCK8_OFFSET
     }
 
-    /// Set SPINLOCK8 [31:0]
+    /// Set **SPINLOCK8** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock8(self, value: u32) -> Self {
         Self {
@@ -12424,112 +10349,72 @@ impl Default for Spinlock8Val {
 impl Spinlock8 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock8Val {
-        Spinlock8Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock8Val {
+        Spinlock8Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock8Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock8Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock8Val) -> Spinlock8Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock8Val) -> Spinlock8Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK9 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x0124
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK9** [31:0] (RW): 
+/// - **SPINLOCK9** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock9 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock9 {}
-unsafe impl Sync for Spinlock9 {}
+impl core::ops::Deref for Spinlock9 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock9 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK9**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK9_OFFSET: u32 = 0;
     pub const SPINLOCK9_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK9** [31:0]
+    /// **SPINLOCK9** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock9(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK9_MASK) >> Self::SPINLOCK9_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK9_MASK) >> Self::SPINLOCK9_OFFSET
     }
 
-    /// Write SPINLOCK9 field
+    /// Write **SPINLOCK9** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock9(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK9_MASK) | ((value << Self::SPINLOCK9_OFFSET) & Self::SPINLOCK9_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK9_MASK) | ((value << Self::SPINLOCK9_OFFSET) & Self::SPINLOCK9_MASK));
     }
 
 }
@@ -12562,13 +10447,13 @@ impl Spinlock9Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK9 [31:0]
+    /// Read **SPINLOCK9** `[31:0]`
     #[inline(always)]
     pub const fn spinlock9(&self) -> u32 {
         (self.bits & Spinlock9::SPINLOCK9_MASK) >> Spinlock9::SPINLOCK9_OFFSET
     }
 
-    /// Set SPINLOCK9 [31:0]
+    /// Set **SPINLOCK9** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock9(self, value: u32) -> Self {
         Self {
@@ -12587,112 +10472,72 @@ impl Default for Spinlock9Val {
 impl Spinlock9 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock9Val {
-        Spinlock9Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock9Val {
+        Spinlock9Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock9Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock9Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock9Val) -> Spinlock9Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock9Val) -> Spinlock9Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK10 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x0128
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK10** [31:0] (RW): 
+/// - **SPINLOCK10** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock10 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock10 {}
-unsafe impl Sync for Spinlock10 {}
+impl core::ops::Deref for Spinlock10 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock10 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK10**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK10_OFFSET: u32 = 0;
     pub const SPINLOCK10_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK10** [31:0]
+    /// **SPINLOCK10** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock10(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK10_MASK) >> Self::SPINLOCK10_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK10_MASK) >> Self::SPINLOCK10_OFFSET
     }
 
-    /// Write SPINLOCK10 field
+    /// Write **SPINLOCK10** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock10(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK10_MASK) | ((value << Self::SPINLOCK10_OFFSET) & Self::SPINLOCK10_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK10_MASK) | ((value << Self::SPINLOCK10_OFFSET) & Self::SPINLOCK10_MASK));
     }
 
 }
@@ -12725,13 +10570,13 @@ impl Spinlock10Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK10 [31:0]
+    /// Read **SPINLOCK10** `[31:0]`
     #[inline(always)]
     pub const fn spinlock10(&self) -> u32 {
         (self.bits & Spinlock10::SPINLOCK10_MASK) >> Spinlock10::SPINLOCK10_OFFSET
     }
 
-    /// Set SPINLOCK10 [31:0]
+    /// Set **SPINLOCK10** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock10(self, value: u32) -> Self {
         Self {
@@ -12750,112 +10595,72 @@ impl Default for Spinlock10Val {
 impl Spinlock10 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock10Val {
-        Spinlock10Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock10Val {
+        Spinlock10Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock10Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock10Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock10Val) -> Spinlock10Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock10Val) -> Spinlock10Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK11 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x012c
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK11** [31:0] (RW): 
+/// - **SPINLOCK11** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock11 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock11 {}
-unsafe impl Sync for Spinlock11 {}
+impl core::ops::Deref for Spinlock11 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock11 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK11**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK11_OFFSET: u32 = 0;
     pub const SPINLOCK11_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK11** [31:0]
+    /// **SPINLOCK11** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock11(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK11_MASK) >> Self::SPINLOCK11_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK11_MASK) >> Self::SPINLOCK11_OFFSET
     }
 
-    /// Write SPINLOCK11 field
+    /// Write **SPINLOCK11** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock11(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK11_MASK) | ((value << Self::SPINLOCK11_OFFSET) & Self::SPINLOCK11_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK11_MASK) | ((value << Self::SPINLOCK11_OFFSET) & Self::SPINLOCK11_MASK));
     }
 
 }
@@ -12888,13 +10693,13 @@ impl Spinlock11Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK11 [31:0]
+    /// Read **SPINLOCK11** `[31:0]`
     #[inline(always)]
     pub const fn spinlock11(&self) -> u32 {
         (self.bits & Spinlock11::SPINLOCK11_MASK) >> Spinlock11::SPINLOCK11_OFFSET
     }
 
-    /// Set SPINLOCK11 [31:0]
+    /// Set **SPINLOCK11** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock11(self, value: u32) -> Self {
         Self {
@@ -12913,112 +10718,72 @@ impl Default for Spinlock11Val {
 impl Spinlock11 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock11Val {
-        Spinlock11Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock11Val {
+        Spinlock11Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock11Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock11Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock11Val) -> Spinlock11Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock11Val) -> Spinlock11Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK12 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x0130
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK12** [31:0] (RW): 
+/// - **SPINLOCK12** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock12 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock12 {}
-unsafe impl Sync for Spinlock12 {}
+impl core::ops::Deref for Spinlock12 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock12 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK12**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK12_OFFSET: u32 = 0;
     pub const SPINLOCK12_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK12** [31:0]
+    /// **SPINLOCK12** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock12(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK12_MASK) >> Self::SPINLOCK12_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK12_MASK) >> Self::SPINLOCK12_OFFSET
     }
 
-    /// Write SPINLOCK12 field
+    /// Write **SPINLOCK12** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock12(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK12_MASK) | ((value << Self::SPINLOCK12_OFFSET) & Self::SPINLOCK12_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK12_MASK) | ((value << Self::SPINLOCK12_OFFSET) & Self::SPINLOCK12_MASK));
     }
 
 }
@@ -13051,13 +10816,13 @@ impl Spinlock12Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK12 [31:0]
+    /// Read **SPINLOCK12** `[31:0]`
     #[inline(always)]
     pub const fn spinlock12(&self) -> u32 {
         (self.bits & Spinlock12::SPINLOCK12_MASK) >> Spinlock12::SPINLOCK12_OFFSET
     }
 
-    /// Set SPINLOCK12 [31:0]
+    /// Set **SPINLOCK12** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock12(self, value: u32) -> Self {
         Self {
@@ -13076,112 +10841,72 @@ impl Default for Spinlock12Val {
 impl Spinlock12 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock12Val {
-        Spinlock12Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock12Val {
+        Spinlock12Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock12Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock12Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock12Val) -> Spinlock12Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock12Val) -> Spinlock12Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK13 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x0134
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK13** [31:0] (RW): 
+/// - **SPINLOCK13** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock13 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock13 {}
-unsafe impl Sync for Spinlock13 {}
+impl core::ops::Deref for Spinlock13 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock13 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK13**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK13_OFFSET: u32 = 0;
     pub const SPINLOCK13_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK13** [31:0]
+    /// **SPINLOCK13** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock13(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK13_MASK) >> Self::SPINLOCK13_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK13_MASK) >> Self::SPINLOCK13_OFFSET
     }
 
-    /// Write SPINLOCK13 field
+    /// Write **SPINLOCK13** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock13(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK13_MASK) | ((value << Self::SPINLOCK13_OFFSET) & Self::SPINLOCK13_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK13_MASK) | ((value << Self::SPINLOCK13_OFFSET) & Self::SPINLOCK13_MASK));
     }
 
 }
@@ -13214,13 +10939,13 @@ impl Spinlock13Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK13 [31:0]
+    /// Read **SPINLOCK13** `[31:0]`
     #[inline(always)]
     pub const fn spinlock13(&self) -> u32 {
         (self.bits & Spinlock13::SPINLOCK13_MASK) >> Spinlock13::SPINLOCK13_OFFSET
     }
 
-    /// Set SPINLOCK13 [31:0]
+    /// Set **SPINLOCK13** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock13(self, value: u32) -> Self {
         Self {
@@ -13239,112 +10964,72 @@ impl Default for Spinlock13Val {
 impl Spinlock13 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock13Val {
-        Spinlock13Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock13Val {
+        Spinlock13Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock13Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock13Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock13Val) -> Spinlock13Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock13Val) -> Spinlock13Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK14 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x0138
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK14** [31:0] (RW): 
+/// - **SPINLOCK14** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock14 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock14 {}
-unsafe impl Sync for Spinlock14 {}
+impl core::ops::Deref for Spinlock14 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock14 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK14**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK14_OFFSET: u32 = 0;
     pub const SPINLOCK14_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK14** [31:0]
+    /// **SPINLOCK14** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock14(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK14_MASK) >> Self::SPINLOCK14_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK14_MASK) >> Self::SPINLOCK14_OFFSET
     }
 
-    /// Write SPINLOCK14 field
+    /// Write **SPINLOCK14** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock14(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK14_MASK) | ((value << Self::SPINLOCK14_OFFSET) & Self::SPINLOCK14_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK14_MASK) | ((value << Self::SPINLOCK14_OFFSET) & Self::SPINLOCK14_MASK));
     }
 
 }
@@ -13377,13 +11062,13 @@ impl Spinlock14Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK14 [31:0]
+    /// Read **SPINLOCK14** `[31:0]`
     #[inline(always)]
     pub const fn spinlock14(&self) -> u32 {
         (self.bits & Spinlock14::SPINLOCK14_MASK) >> Spinlock14::SPINLOCK14_OFFSET
     }
 
-    /// Set SPINLOCK14 [31:0]
+    /// Set **SPINLOCK14** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock14(self, value: u32) -> Self {
         Self {
@@ -13402,112 +11087,72 @@ impl Default for Spinlock14Val {
 impl Spinlock14 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock14Val {
-        Spinlock14Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock14Val {
+        Spinlock14Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock14Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock14Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock14Val) -> Spinlock14Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock14Val) -> Spinlock14Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK15 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x013c
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK15** [31:0] (RW): 
+/// - **SPINLOCK15** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock15 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock15 {}
-unsafe impl Sync for Spinlock15 {}
+impl core::ops::Deref for Spinlock15 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock15 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK15**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK15_OFFSET: u32 = 0;
     pub const SPINLOCK15_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK15** [31:0]
+    /// **SPINLOCK15** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock15(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK15_MASK) >> Self::SPINLOCK15_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK15_MASK) >> Self::SPINLOCK15_OFFSET
     }
 
-    /// Write SPINLOCK15 field
+    /// Write **SPINLOCK15** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock15(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK15_MASK) | ((value << Self::SPINLOCK15_OFFSET) & Self::SPINLOCK15_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK15_MASK) | ((value << Self::SPINLOCK15_OFFSET) & Self::SPINLOCK15_MASK));
     }
 
 }
@@ -13540,13 +11185,13 @@ impl Spinlock15Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK15 [31:0]
+    /// Read **SPINLOCK15** `[31:0]`
     #[inline(always)]
     pub const fn spinlock15(&self) -> u32 {
         (self.bits & Spinlock15::SPINLOCK15_MASK) >> Spinlock15::SPINLOCK15_OFFSET
     }
 
-    /// Set SPINLOCK15 [31:0]
+    /// Set **SPINLOCK15** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock15(self, value: u32) -> Self {
         Self {
@@ -13565,112 +11210,72 @@ impl Default for Spinlock15Val {
 impl Spinlock15 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock15Val {
-        Spinlock15Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock15Val {
+        Spinlock15Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock15Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock15Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock15Val) -> Spinlock15Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock15Val) -> Spinlock15Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK16 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x0140
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK16** [31:0] (RW): 
+/// - **SPINLOCK16** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock16 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock16 {}
-unsafe impl Sync for Spinlock16 {}
+impl core::ops::Deref for Spinlock16 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock16 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK16**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK16_OFFSET: u32 = 0;
     pub const SPINLOCK16_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK16** [31:0]
+    /// **SPINLOCK16** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock16(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK16_MASK) >> Self::SPINLOCK16_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK16_MASK) >> Self::SPINLOCK16_OFFSET
     }
 
-    /// Write SPINLOCK16 field
+    /// Write **SPINLOCK16** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock16(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK16_MASK) | ((value << Self::SPINLOCK16_OFFSET) & Self::SPINLOCK16_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK16_MASK) | ((value << Self::SPINLOCK16_OFFSET) & Self::SPINLOCK16_MASK));
     }
 
 }
@@ -13703,13 +11308,13 @@ impl Spinlock16Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK16 [31:0]
+    /// Read **SPINLOCK16** `[31:0]`
     #[inline(always)]
     pub const fn spinlock16(&self) -> u32 {
         (self.bits & Spinlock16::SPINLOCK16_MASK) >> Spinlock16::SPINLOCK16_OFFSET
     }
 
-    /// Set SPINLOCK16 [31:0]
+    /// Set **SPINLOCK16** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock16(self, value: u32) -> Self {
         Self {
@@ -13728,112 +11333,72 @@ impl Default for Spinlock16Val {
 impl Spinlock16 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock16Val {
-        Spinlock16Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock16Val {
+        Spinlock16Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock16Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock16Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock16Val) -> Spinlock16Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock16Val) -> Spinlock16Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK17 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x0144
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK17** [31:0] (RW): 
+/// - **SPINLOCK17** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock17 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock17 {}
-unsafe impl Sync for Spinlock17 {}
+impl core::ops::Deref for Spinlock17 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock17 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK17**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK17_OFFSET: u32 = 0;
     pub const SPINLOCK17_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK17** [31:0]
+    /// **SPINLOCK17** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock17(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK17_MASK) >> Self::SPINLOCK17_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK17_MASK) >> Self::SPINLOCK17_OFFSET
     }
 
-    /// Write SPINLOCK17 field
+    /// Write **SPINLOCK17** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock17(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK17_MASK) | ((value << Self::SPINLOCK17_OFFSET) & Self::SPINLOCK17_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK17_MASK) | ((value << Self::SPINLOCK17_OFFSET) & Self::SPINLOCK17_MASK));
     }
 
 }
@@ -13866,13 +11431,13 @@ impl Spinlock17Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK17 [31:0]
+    /// Read **SPINLOCK17** `[31:0]`
     #[inline(always)]
     pub const fn spinlock17(&self) -> u32 {
         (self.bits & Spinlock17::SPINLOCK17_MASK) >> Spinlock17::SPINLOCK17_OFFSET
     }
 
-    /// Set SPINLOCK17 [31:0]
+    /// Set **SPINLOCK17** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock17(self, value: u32) -> Self {
         Self {
@@ -13891,112 +11456,72 @@ impl Default for Spinlock17Val {
 impl Spinlock17 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock17Val {
-        Spinlock17Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock17Val {
+        Spinlock17Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock17Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock17Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock17Val) -> Spinlock17Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock17Val) -> Spinlock17Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK18 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x0148
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK18** [31:0] (RW): 
+/// - **SPINLOCK18** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock18 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock18 {}
-unsafe impl Sync for Spinlock18 {}
+impl core::ops::Deref for Spinlock18 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock18 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK18**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK18_OFFSET: u32 = 0;
     pub const SPINLOCK18_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK18** [31:0]
+    /// **SPINLOCK18** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock18(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK18_MASK) >> Self::SPINLOCK18_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK18_MASK) >> Self::SPINLOCK18_OFFSET
     }
 
-    /// Write SPINLOCK18 field
+    /// Write **SPINLOCK18** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock18(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK18_MASK) | ((value << Self::SPINLOCK18_OFFSET) & Self::SPINLOCK18_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK18_MASK) | ((value << Self::SPINLOCK18_OFFSET) & Self::SPINLOCK18_MASK));
     }
 
 }
@@ -14029,13 +11554,13 @@ impl Spinlock18Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK18 [31:0]
+    /// Read **SPINLOCK18** `[31:0]`
     #[inline(always)]
     pub const fn spinlock18(&self) -> u32 {
         (self.bits & Spinlock18::SPINLOCK18_MASK) >> Spinlock18::SPINLOCK18_OFFSET
     }
 
-    /// Set SPINLOCK18 [31:0]
+    /// Set **SPINLOCK18** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock18(self, value: u32) -> Self {
         Self {
@@ -14054,112 +11579,72 @@ impl Default for Spinlock18Val {
 impl Spinlock18 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock18Val {
-        Spinlock18Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock18Val {
+        Spinlock18Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock18Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock18Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock18Val) -> Spinlock18Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock18Val) -> Spinlock18Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK19 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x014c
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK19** [31:0] (RW): 
+/// - **SPINLOCK19** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock19 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock19 {}
-unsafe impl Sync for Spinlock19 {}
+impl core::ops::Deref for Spinlock19 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock19 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK19**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK19_OFFSET: u32 = 0;
     pub const SPINLOCK19_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK19** [31:0]
+    /// **SPINLOCK19** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock19(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK19_MASK) >> Self::SPINLOCK19_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK19_MASK) >> Self::SPINLOCK19_OFFSET
     }
 
-    /// Write SPINLOCK19 field
+    /// Write **SPINLOCK19** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock19(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK19_MASK) | ((value << Self::SPINLOCK19_OFFSET) & Self::SPINLOCK19_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK19_MASK) | ((value << Self::SPINLOCK19_OFFSET) & Self::SPINLOCK19_MASK));
     }
 
 }
@@ -14192,13 +11677,13 @@ impl Spinlock19Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK19 [31:0]
+    /// Read **SPINLOCK19** `[31:0]`
     #[inline(always)]
     pub const fn spinlock19(&self) -> u32 {
         (self.bits & Spinlock19::SPINLOCK19_MASK) >> Spinlock19::SPINLOCK19_OFFSET
     }
 
-    /// Set SPINLOCK19 [31:0]
+    /// Set **SPINLOCK19** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock19(self, value: u32) -> Self {
         Self {
@@ -14217,112 +11702,72 @@ impl Default for Spinlock19Val {
 impl Spinlock19 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock19Val {
-        Spinlock19Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock19Val {
+        Spinlock19Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock19Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock19Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock19Val) -> Spinlock19Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock19Val) -> Spinlock19Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK20 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x0150
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK20** [31:0] (RW): 
+/// - **SPINLOCK20** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock20 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock20 {}
-unsafe impl Sync for Spinlock20 {}
+impl core::ops::Deref for Spinlock20 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock20 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK20**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK20_OFFSET: u32 = 0;
     pub const SPINLOCK20_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK20** [31:0]
+    /// **SPINLOCK20** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock20(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK20_MASK) >> Self::SPINLOCK20_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK20_MASK) >> Self::SPINLOCK20_OFFSET
     }
 
-    /// Write SPINLOCK20 field
+    /// Write **SPINLOCK20** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock20(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK20_MASK) | ((value << Self::SPINLOCK20_OFFSET) & Self::SPINLOCK20_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK20_MASK) | ((value << Self::SPINLOCK20_OFFSET) & Self::SPINLOCK20_MASK));
     }
 
 }
@@ -14355,13 +11800,13 @@ impl Spinlock20Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK20 [31:0]
+    /// Read **SPINLOCK20** `[31:0]`
     #[inline(always)]
     pub const fn spinlock20(&self) -> u32 {
         (self.bits & Spinlock20::SPINLOCK20_MASK) >> Spinlock20::SPINLOCK20_OFFSET
     }
 
-    /// Set SPINLOCK20 [31:0]
+    /// Set **SPINLOCK20** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock20(self, value: u32) -> Self {
         Self {
@@ -14380,112 +11825,72 @@ impl Default for Spinlock20Val {
 impl Spinlock20 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock20Val {
-        Spinlock20Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock20Val {
+        Spinlock20Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock20Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock20Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock20Val) -> Spinlock20Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock20Val) -> Spinlock20Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK21 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x0154
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK21** [31:0] (RW): 
+/// - **SPINLOCK21** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock21 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock21 {}
-unsafe impl Sync for Spinlock21 {}
+impl core::ops::Deref for Spinlock21 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock21 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK21**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK21_OFFSET: u32 = 0;
     pub const SPINLOCK21_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK21** [31:0]
+    /// **SPINLOCK21** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock21(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK21_MASK) >> Self::SPINLOCK21_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK21_MASK) >> Self::SPINLOCK21_OFFSET
     }
 
-    /// Write SPINLOCK21 field
+    /// Write **SPINLOCK21** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock21(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK21_MASK) | ((value << Self::SPINLOCK21_OFFSET) & Self::SPINLOCK21_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK21_MASK) | ((value << Self::SPINLOCK21_OFFSET) & Self::SPINLOCK21_MASK));
     }
 
 }
@@ -14518,13 +11923,13 @@ impl Spinlock21Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK21 [31:0]
+    /// Read **SPINLOCK21** `[31:0]`
     #[inline(always)]
     pub const fn spinlock21(&self) -> u32 {
         (self.bits & Spinlock21::SPINLOCK21_MASK) >> Spinlock21::SPINLOCK21_OFFSET
     }
 
-    /// Set SPINLOCK21 [31:0]
+    /// Set **SPINLOCK21** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock21(self, value: u32) -> Self {
         Self {
@@ -14543,112 +11948,72 @@ impl Default for Spinlock21Val {
 impl Spinlock21 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock21Val {
-        Spinlock21Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock21Val {
+        Spinlock21Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock21Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock21Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock21Val) -> Spinlock21Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock21Val) -> Spinlock21Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK22 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x0158
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK22** [31:0] (RW): 
+/// - **SPINLOCK22** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock22 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock22 {}
-unsafe impl Sync for Spinlock22 {}
+impl core::ops::Deref for Spinlock22 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock22 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK22**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK22_OFFSET: u32 = 0;
     pub const SPINLOCK22_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK22** [31:0]
+    /// **SPINLOCK22** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock22(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK22_MASK) >> Self::SPINLOCK22_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK22_MASK) >> Self::SPINLOCK22_OFFSET
     }
 
-    /// Write SPINLOCK22 field
+    /// Write **SPINLOCK22** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock22(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK22_MASK) | ((value << Self::SPINLOCK22_OFFSET) & Self::SPINLOCK22_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK22_MASK) | ((value << Self::SPINLOCK22_OFFSET) & Self::SPINLOCK22_MASK));
     }
 
 }
@@ -14681,13 +12046,13 @@ impl Spinlock22Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK22 [31:0]
+    /// Read **SPINLOCK22** `[31:0]`
     #[inline(always)]
     pub const fn spinlock22(&self) -> u32 {
         (self.bits & Spinlock22::SPINLOCK22_MASK) >> Spinlock22::SPINLOCK22_OFFSET
     }
 
-    /// Set SPINLOCK22 [31:0]
+    /// Set **SPINLOCK22** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock22(self, value: u32) -> Self {
         Self {
@@ -14706,112 +12071,72 @@ impl Default for Spinlock22Val {
 impl Spinlock22 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock22Val {
-        Spinlock22Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock22Val {
+        Spinlock22Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock22Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock22Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock22Val) -> Spinlock22Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock22Val) -> Spinlock22Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK23 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x015c
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK23** [31:0] (RW): 
+/// - **SPINLOCK23** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock23 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock23 {}
-unsafe impl Sync for Spinlock23 {}
+impl core::ops::Deref for Spinlock23 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock23 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK23**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK23_OFFSET: u32 = 0;
     pub const SPINLOCK23_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK23** [31:0]
+    /// **SPINLOCK23** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock23(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK23_MASK) >> Self::SPINLOCK23_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK23_MASK) >> Self::SPINLOCK23_OFFSET
     }
 
-    /// Write SPINLOCK23 field
+    /// Write **SPINLOCK23** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock23(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK23_MASK) | ((value << Self::SPINLOCK23_OFFSET) & Self::SPINLOCK23_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK23_MASK) | ((value << Self::SPINLOCK23_OFFSET) & Self::SPINLOCK23_MASK));
     }
 
 }
@@ -14844,13 +12169,13 @@ impl Spinlock23Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK23 [31:0]
+    /// Read **SPINLOCK23** `[31:0]`
     #[inline(always)]
     pub const fn spinlock23(&self) -> u32 {
         (self.bits & Spinlock23::SPINLOCK23_MASK) >> Spinlock23::SPINLOCK23_OFFSET
     }
 
-    /// Set SPINLOCK23 [31:0]
+    /// Set **SPINLOCK23** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock23(self, value: u32) -> Self {
         Self {
@@ -14869,112 +12194,72 @@ impl Default for Spinlock23Val {
 impl Spinlock23 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock23Val {
-        Spinlock23Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock23Val {
+        Spinlock23Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock23Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock23Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock23Val) -> Spinlock23Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock23Val) -> Spinlock23Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK24 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x0160
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK24** [31:0] (RW): 
+/// - **SPINLOCK24** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock24 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock24 {}
-unsafe impl Sync for Spinlock24 {}
+impl core::ops::Deref for Spinlock24 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock24 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK24**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK24_OFFSET: u32 = 0;
     pub const SPINLOCK24_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK24** [31:0]
+    /// **SPINLOCK24** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock24(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK24_MASK) >> Self::SPINLOCK24_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK24_MASK) >> Self::SPINLOCK24_OFFSET
     }
 
-    /// Write SPINLOCK24 field
+    /// Write **SPINLOCK24** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock24(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK24_MASK) | ((value << Self::SPINLOCK24_OFFSET) & Self::SPINLOCK24_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK24_MASK) | ((value << Self::SPINLOCK24_OFFSET) & Self::SPINLOCK24_MASK));
     }
 
 }
@@ -15007,13 +12292,13 @@ impl Spinlock24Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK24 [31:0]
+    /// Read **SPINLOCK24** `[31:0]`
     #[inline(always)]
     pub const fn spinlock24(&self) -> u32 {
         (self.bits & Spinlock24::SPINLOCK24_MASK) >> Spinlock24::SPINLOCK24_OFFSET
     }
 
-    /// Set SPINLOCK24 [31:0]
+    /// Set **SPINLOCK24** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock24(self, value: u32) -> Self {
         Self {
@@ -15032,112 +12317,72 @@ impl Default for Spinlock24Val {
 impl Spinlock24 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock24Val {
-        Spinlock24Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock24Val {
+        Spinlock24Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock24Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock24Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock24Val) -> Spinlock24Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock24Val) -> Spinlock24Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK25 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x0164
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK25** [31:0] (RW): 
+/// - **SPINLOCK25** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock25 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock25 {}
-unsafe impl Sync for Spinlock25 {}
+impl core::ops::Deref for Spinlock25 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock25 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK25**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK25_OFFSET: u32 = 0;
     pub const SPINLOCK25_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK25** [31:0]
+    /// **SPINLOCK25** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock25(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK25_MASK) >> Self::SPINLOCK25_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK25_MASK) >> Self::SPINLOCK25_OFFSET
     }
 
-    /// Write SPINLOCK25 field
+    /// Write **SPINLOCK25** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock25(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK25_MASK) | ((value << Self::SPINLOCK25_OFFSET) & Self::SPINLOCK25_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK25_MASK) | ((value << Self::SPINLOCK25_OFFSET) & Self::SPINLOCK25_MASK));
     }
 
 }
@@ -15170,13 +12415,13 @@ impl Spinlock25Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK25 [31:0]
+    /// Read **SPINLOCK25** `[31:0]`
     #[inline(always)]
     pub const fn spinlock25(&self) -> u32 {
         (self.bits & Spinlock25::SPINLOCK25_MASK) >> Spinlock25::SPINLOCK25_OFFSET
     }
 
-    /// Set SPINLOCK25 [31:0]
+    /// Set **SPINLOCK25** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock25(self, value: u32) -> Self {
         Self {
@@ -15195,112 +12440,72 @@ impl Default for Spinlock25Val {
 impl Spinlock25 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock25Val {
-        Spinlock25Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock25Val {
+        Spinlock25Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock25Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock25Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock25Val) -> Spinlock25Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock25Val) -> Spinlock25Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK26 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x0168
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK26** [31:0] (RW): 
+/// - **SPINLOCK26** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock26 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock26 {}
-unsafe impl Sync for Spinlock26 {}
+impl core::ops::Deref for Spinlock26 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock26 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK26**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK26_OFFSET: u32 = 0;
     pub const SPINLOCK26_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK26** [31:0]
+    /// **SPINLOCK26** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock26(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK26_MASK) >> Self::SPINLOCK26_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK26_MASK) >> Self::SPINLOCK26_OFFSET
     }
 
-    /// Write SPINLOCK26 field
+    /// Write **SPINLOCK26** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock26(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK26_MASK) | ((value << Self::SPINLOCK26_OFFSET) & Self::SPINLOCK26_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK26_MASK) | ((value << Self::SPINLOCK26_OFFSET) & Self::SPINLOCK26_MASK));
     }
 
 }
@@ -15333,13 +12538,13 @@ impl Spinlock26Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK26 [31:0]
+    /// Read **SPINLOCK26** `[31:0]`
     #[inline(always)]
     pub const fn spinlock26(&self) -> u32 {
         (self.bits & Spinlock26::SPINLOCK26_MASK) >> Spinlock26::SPINLOCK26_OFFSET
     }
 
-    /// Set SPINLOCK26 [31:0]
+    /// Set **SPINLOCK26** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock26(self, value: u32) -> Self {
         Self {
@@ -15358,112 +12563,72 @@ impl Default for Spinlock26Val {
 impl Spinlock26 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock26Val {
-        Spinlock26Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock26Val {
+        Spinlock26Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock26Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock26Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock26Val) -> Spinlock26Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock26Val) -> Spinlock26Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK27 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x016c
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK27** [31:0] (RW): 
+/// - **SPINLOCK27** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock27 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock27 {}
-unsafe impl Sync for Spinlock27 {}
+impl core::ops::Deref for Spinlock27 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock27 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK27**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK27_OFFSET: u32 = 0;
     pub const SPINLOCK27_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK27** [31:0]
+    /// **SPINLOCK27** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock27(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK27_MASK) >> Self::SPINLOCK27_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK27_MASK) >> Self::SPINLOCK27_OFFSET
     }
 
-    /// Write SPINLOCK27 field
+    /// Write **SPINLOCK27** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock27(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK27_MASK) | ((value << Self::SPINLOCK27_OFFSET) & Self::SPINLOCK27_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK27_MASK) | ((value << Self::SPINLOCK27_OFFSET) & Self::SPINLOCK27_MASK));
     }
 
 }
@@ -15496,13 +12661,13 @@ impl Spinlock27Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK27 [31:0]
+    /// Read **SPINLOCK27** `[31:0]`
     #[inline(always)]
     pub const fn spinlock27(&self) -> u32 {
         (self.bits & Spinlock27::SPINLOCK27_MASK) >> Spinlock27::SPINLOCK27_OFFSET
     }
 
-    /// Set SPINLOCK27 [31:0]
+    /// Set **SPINLOCK27** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock27(self, value: u32) -> Self {
         Self {
@@ -15521,112 +12686,72 @@ impl Default for Spinlock27Val {
 impl Spinlock27 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock27Val {
-        Spinlock27Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock27Val {
+        Spinlock27Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock27Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock27Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock27Val) -> Spinlock27Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock27Val) -> Spinlock27Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK28 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x0170
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK28** [31:0] (RW): 
+/// - **SPINLOCK28** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock28 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock28 {}
-unsafe impl Sync for Spinlock28 {}
+impl core::ops::Deref for Spinlock28 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock28 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK28**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK28_OFFSET: u32 = 0;
     pub const SPINLOCK28_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK28** [31:0]
+    /// **SPINLOCK28** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock28(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK28_MASK) >> Self::SPINLOCK28_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK28_MASK) >> Self::SPINLOCK28_OFFSET
     }
 
-    /// Write SPINLOCK28 field
+    /// Write **SPINLOCK28** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock28(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK28_MASK) | ((value << Self::SPINLOCK28_OFFSET) & Self::SPINLOCK28_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK28_MASK) | ((value << Self::SPINLOCK28_OFFSET) & Self::SPINLOCK28_MASK));
     }
 
 }
@@ -15659,13 +12784,13 @@ impl Spinlock28Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK28 [31:0]
+    /// Read **SPINLOCK28** `[31:0]`
     #[inline(always)]
     pub const fn spinlock28(&self) -> u32 {
         (self.bits & Spinlock28::SPINLOCK28_MASK) >> Spinlock28::SPINLOCK28_OFFSET
     }
 
-    /// Set SPINLOCK28 [31:0]
+    /// Set **SPINLOCK28** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock28(self, value: u32) -> Self {
         Self {
@@ -15684,112 +12809,72 @@ impl Default for Spinlock28Val {
 impl Spinlock28 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock28Val {
-        Spinlock28Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock28Val {
+        Spinlock28Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock28Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock28Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock28Val) -> Spinlock28Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock28Val) -> Spinlock28Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK29 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x0174
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK29** [31:0] (RW): 
+/// - **SPINLOCK29** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock29 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock29 {}
-unsafe impl Sync for Spinlock29 {}
+impl core::ops::Deref for Spinlock29 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock29 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK29**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK29_OFFSET: u32 = 0;
     pub const SPINLOCK29_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK29** [31:0]
+    /// **SPINLOCK29** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock29(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK29_MASK) >> Self::SPINLOCK29_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK29_MASK) >> Self::SPINLOCK29_OFFSET
     }
 
-    /// Write SPINLOCK29 field
+    /// Write **SPINLOCK29** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock29(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK29_MASK) | ((value << Self::SPINLOCK29_OFFSET) & Self::SPINLOCK29_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK29_MASK) | ((value << Self::SPINLOCK29_OFFSET) & Self::SPINLOCK29_MASK));
     }
 
 }
@@ -15822,13 +12907,13 @@ impl Spinlock29Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK29 [31:0]
+    /// Read **SPINLOCK29** `[31:0]`
     #[inline(always)]
     pub const fn spinlock29(&self) -> u32 {
         (self.bits & Spinlock29::SPINLOCK29_MASK) >> Spinlock29::SPINLOCK29_OFFSET
     }
 
-    /// Set SPINLOCK29 [31:0]
+    /// Set **SPINLOCK29** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock29(self, value: u32) -> Self {
         Self {
@@ -15847,112 +12932,72 @@ impl Default for Spinlock29Val {
 impl Spinlock29 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock29Val {
-        Spinlock29Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock29Val {
+        Spinlock29Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock29Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock29Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock29Val) -> Spinlock29Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock29Val) -> Spinlock29Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK30 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x0178
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK30** [31:0] (RW): 
+/// - **SPINLOCK30** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock30 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock30 {}
-unsafe impl Sync for Spinlock30 {}
+impl core::ops::Deref for Spinlock30 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock30 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK30**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK30_OFFSET: u32 = 0;
     pub const SPINLOCK30_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK30** [31:0]
+    /// **SPINLOCK30** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock30(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK30_MASK) >> Self::SPINLOCK30_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK30_MASK) >> Self::SPINLOCK30_OFFSET
     }
 
-    /// Write SPINLOCK30 field
+    /// Write **SPINLOCK30** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock30(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK30_MASK) | ((value << Self::SPINLOCK30_OFFSET) & Self::SPINLOCK30_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK30_MASK) | ((value << Self::SPINLOCK30_OFFSET) & Self::SPINLOCK30_MASK));
     }
 
 }
@@ -15985,13 +13030,13 @@ impl Spinlock30Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK30 [31:0]
+    /// Read **SPINLOCK30** `[31:0]`
     #[inline(always)]
     pub const fn spinlock30(&self) -> u32 {
         (self.bits & Spinlock30::SPINLOCK30_MASK) >> Spinlock30::SPINLOCK30_OFFSET
     }
 
-    /// Set SPINLOCK30 [31:0]
+    /// Set **SPINLOCK30** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock30(self, value: u32) -> Self {
         Self {
@@ -16010,112 +13055,72 @@ impl Default for Spinlock30Val {
 impl Spinlock30 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock30Val {
-        Spinlock30Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock30Val {
+        Spinlock30Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock30Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock30Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock30Val) -> Spinlock30Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock30Val) -> Spinlock30Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// SPINLOCK31 Register
 ///
-/// Reading from a spinlock address will: - Return 0 if lock is already locked -
-/// Otherwise return nonzero, and simultaneously claim the lock Writing (any
-/// value) releases the lock. If core 0 and core 1 attempt to claim the same
-/// lock simultaneously, core 0 wins. The value returned on success is 0x1 <<
-/// lock number.
+/// Reading from a spinlock address will:
+/// - Return 0 if lock is already locked
+/// - Otherwise return nonzero, and simultaneously claim the lock
+/// Writing (any value) releases the lock.
+/// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+/// The value returned on success is 0x1 << lock number.
 ///
 /// Address offset: 0x017c
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **SPINLOCK31** [31:0] (RW): 
+/// - **SPINLOCK31** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Spinlock31 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Spinlock31 {}
-unsafe impl Sync for Spinlock31 {}
+impl core::ops::Deref for Spinlock31 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Spinlock31 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SPINLOCK31**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SPINLOCK31_OFFSET: u32 = 0;
     pub const SPINLOCK31_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SPINLOCK31** [31:0]
+    /// **SPINLOCK31** `[31:0]` (RW)
     #[inline(always)]
     pub fn spinlock31(&self) -> u32 {
-        (self.read_bits() & Self::SPINLOCK31_MASK) >> Self::SPINLOCK31_OFFSET
+        (self.value.read_bits() & Self::SPINLOCK31_MASK) >> Self::SPINLOCK31_OFFSET
     }
 
-    /// Write SPINLOCK31 field
+    /// Write **SPINLOCK31** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_spinlock31(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SPINLOCK31_MASK) | ((value << Self::SPINLOCK31_OFFSET) & Self::SPINLOCK31_MASK));
+        self.value.modify_bits(|r| (r & !Self::SPINLOCK31_MASK) | ((value << Self::SPINLOCK31_OFFSET) & Self::SPINLOCK31_MASK));
     }
 
 }
@@ -16148,13 +13153,13 @@ impl Spinlock31Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SPINLOCK31 [31:0]
+    /// Read **SPINLOCK31** `[31:0]`
     #[inline(always)]
     pub const fn spinlock31(&self) -> u32 {
         (self.bits & Spinlock31::SPINLOCK31_MASK) >> Spinlock31::SPINLOCK31_OFFSET
     }
 
-    /// Set SPINLOCK31 [31:0]
+    /// Set **SPINLOCK31** `[31:0]`
     #[inline(always)]
     pub const fn with_spinlock31(self, value: u32) -> Self {
         Self {
@@ -16173,112 +13178,69 @@ impl Default for Spinlock31Val {
 impl Spinlock31 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Spinlock31Val {
-        Spinlock31Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Spinlock31Val {
+        Spinlock31Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Spinlock31Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Spinlock31Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Spinlock31Val) -> Spinlock31Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Spinlock31Val) -> Spinlock31Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// DOORBELL_OUT_SET Register
 ///
-/// Trigger a doorbell interrupt on the opposite core. Write 1 to a bit to set
-/// the corresponding bit in DOORBELL_IN on the opposite core. This raises the
-/// opposite core's doorbell interrupt. Read to get the status of the doorbells
-/// currently asserted on the opposite core. This is equivalent to that core
-/// reading its own DOORBELL_IN status.
+/// Trigger a doorbell interrupt on the opposite core.
+/// Write 1 to a bit to set the corresponding bit in DOORBELL_IN on the opposite core. This raises the opposite core's doorbell interrupt.
+/// Read to get the status of the doorbells currently asserted on the opposite core. This is equivalent to that core reading its own DOORBELL_IN status.
 ///
 /// Address offset: 0x0180
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **DOORBELL_OUT_SET** [7:0] (RW): 
+/// - **DOORBELL_OUT_SET** `[7:0]` (RW)
 #[repr(transparent)]
 pub struct DoorbellOutSet {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for DoorbellOutSet {}
-unsafe impl Sync for DoorbellOutSet {}
+impl core::ops::Deref for DoorbellOutSet {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl DoorbellOutSet {
     // ======== Field Constants ========
 
-    /// Bits [7:0], mask 0x000000ff
+    /// **DOORBELL_OUT_SET**
+    /// Bits `[7:0]`, mask `0x000000ff`
     pub const DOORBELL_OUT_SET_OFFSET: u32 = 0;
     pub const DOORBELL_OUT_SET_MASK: u32 = 0x000000ff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **DOORBELL_OUT_SET** [7:0]
+    /// **DOORBELL_OUT_SET** `[7:0]` (RW)
     #[inline(always)]
     pub fn doorbell_out_set(&self) -> u32 {
-        (self.read_bits() & Self::DOORBELL_OUT_SET_MASK) >> Self::DOORBELL_OUT_SET_OFFSET
+        (self.value.read_bits() & Self::DOORBELL_OUT_SET_MASK) >> Self::DOORBELL_OUT_SET_OFFSET
     }
 
-    /// Write DOORBELL_OUT_SET field
+    /// Write **DOORBELL_OUT_SET** `[7:0]` (RW)
     #[inline(always)]
     pub fn write_doorbell_out_set(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DOORBELL_OUT_SET_MASK) | ((value << Self::DOORBELL_OUT_SET_OFFSET) & Self::DOORBELL_OUT_SET_MASK));
+        self.value.modify_bits(|r| (r & !Self::DOORBELL_OUT_SET_MASK) | ((value << Self::DOORBELL_OUT_SET_OFFSET) & Self::DOORBELL_OUT_SET_MASK));
     }
 
 }
@@ -16311,13 +13273,13 @@ impl DoorbellOutSetVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read DOORBELL_OUT_SET [7:0]
+    /// Read **DOORBELL_OUT_SET** `[7:0]`
     #[inline(always)]
     pub const fn doorbell_out_set(&self) -> u32 {
         (self.bits & DoorbellOutSet::DOORBELL_OUT_SET_MASK) >> DoorbellOutSet::DOORBELL_OUT_SET_OFFSET
     }
 
-    /// Set DOORBELL_OUT_SET [7:0]
+    /// Set **DOORBELL_OUT_SET** `[7:0]`
     #[inline(always)]
     pub const fn with_doorbell_out_set(self, value: u32) -> Self {
         Self {
@@ -16336,117 +13298,69 @@ impl Default for DoorbellOutSetVal {
 impl DoorbellOutSet {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> DoorbellOutSetVal {
-        DoorbellOutSetVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> DoorbellOutSetVal {
+        DoorbellOutSetVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: DoorbellOutSetVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: DoorbellOutSetVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(DoorbellOutSetVal) -> DoorbellOutSetVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(DoorbellOutSetVal) -> DoorbellOutSetVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// DOORBELL_OUT_CLR Register
 ///
-/// Clear doorbells which have been posted to the opposite core. This register
-/// is intended for debugging and initialisation purposes. Writing 1 to a bit in
-/// DOORBELL_OUT_CLR clears the corresponding bit in DOORBELL_IN on the opposite
-/// core. Clearing all bits will cause that core's doorbell interrupt to
-/// deassert. Since the usual order of events is for software to send events
-/// using DOORBELL_OUT_SET, and acknowledge incoming events by writing to
-/// DOORBELL_IN_CLR, this register should be used with caution to avoid race
-/// conditions. Reading returns the status of the doorbells currently asserted
-/// on the other core, i.e. is equivalent to that core reading its own
-/// DOORBELL_IN status.
+/// Clear doorbells which have been posted to the opposite core. This register is intended for debugging and initialisation purposes.
+/// Writing 1 to a bit in DOORBELL_OUT_CLR clears the corresponding bit in DOORBELL_IN on the opposite core. Clearing all bits will cause that core's doorbell interrupt to deassert. Since the usual order of events is for software to send events using DOORBELL_OUT_SET, and acknowledge incoming events by writing to DOORBELL_IN_CLR, this register should be used with caution to avoid race conditions.
+/// Reading returns the status of the doorbells currently asserted on the other core, i.e. is equivalent to that core reading its own DOORBELL_IN status.
 ///
 /// Address offset: 0x0184
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **DOORBELL_OUT_CLR** [7:0] (RW): 
+/// - **DOORBELL_OUT_CLR** `[7:0]` (RW)
 #[repr(transparent)]
 pub struct DoorbellOutClr {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for DoorbellOutClr {}
-unsafe impl Sync for DoorbellOutClr {}
+impl core::ops::Deref for DoorbellOutClr {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl DoorbellOutClr {
     // ======== Field Constants ========
 
-    /// Bits [7:0], mask 0x000000ff
+    /// **DOORBELL_OUT_CLR**
+    /// Bits `[7:0]`, mask `0x000000ff`
     pub const DOORBELL_OUT_CLR_OFFSET: u32 = 0;
     pub const DOORBELL_OUT_CLR_MASK: u32 = 0x000000ff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **DOORBELL_OUT_CLR** [7:0]
+    /// **DOORBELL_OUT_CLR** `[7:0]` (RW)
     #[inline(always)]
     pub fn doorbell_out_clr(&self) -> u32 {
-        (self.read_bits() & Self::DOORBELL_OUT_CLR_MASK) >> Self::DOORBELL_OUT_CLR_OFFSET
+        (self.value.read_bits() & Self::DOORBELL_OUT_CLR_MASK) >> Self::DOORBELL_OUT_CLR_OFFSET
     }
 
-    /// Write DOORBELL_OUT_CLR field
+    /// Write **DOORBELL_OUT_CLR** `[7:0]` (RW)
     #[inline(always)]
     pub fn write_doorbell_out_clr(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DOORBELL_OUT_CLR_MASK) | ((value << Self::DOORBELL_OUT_CLR_OFFSET) & Self::DOORBELL_OUT_CLR_MASK));
+        self.value.modify_bits(|r| (r & !Self::DOORBELL_OUT_CLR_MASK) | ((value << Self::DOORBELL_OUT_CLR_OFFSET) & Self::DOORBELL_OUT_CLR_MASK));
     }
 
 }
@@ -16479,13 +13393,13 @@ impl DoorbellOutClrVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read DOORBELL_OUT_CLR [7:0]
+    /// Read **DOORBELL_OUT_CLR** `[7:0]`
     #[inline(always)]
     pub const fn doorbell_out_clr(&self) -> u32 {
         (self.bits & DoorbellOutClr::DOORBELL_OUT_CLR_MASK) >> DoorbellOutClr::DOORBELL_OUT_CLR_OFFSET
     }
 
-    /// Set DOORBELL_OUT_CLR [7:0]
+    /// Set **DOORBELL_OUT_CLR** `[7:0]`
     #[inline(always)]
     pub const fn with_doorbell_out_clr(self, value: u32) -> Self {
         Self {
@@ -16504,109 +13418,67 @@ impl Default for DoorbellOutClrVal {
 impl DoorbellOutClr {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> DoorbellOutClrVal {
-        DoorbellOutClrVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> DoorbellOutClrVal {
+        DoorbellOutClrVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: DoorbellOutClrVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: DoorbellOutClrVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(DoorbellOutClrVal) -> DoorbellOutClrVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(DoorbellOutClrVal) -> DoorbellOutClrVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// DOORBELL_IN_SET Register
 ///
-/// Write 1s to trigger doorbell interrupts on this core. Read to get status of
-/// doorbells currently asserted on this core.
+/// Write 1s to trigger doorbell interrupts on this core. Read to get status of doorbells currently asserted on this core.
 ///
 /// Address offset: 0x0188
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **DOORBELL_IN_SET** [7:0] (RW): 
+/// - **DOORBELL_IN_SET** `[7:0]` (RW)
 #[repr(transparent)]
 pub struct DoorbellInSet {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for DoorbellInSet {}
-unsafe impl Sync for DoorbellInSet {}
+impl core::ops::Deref for DoorbellInSet {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl DoorbellInSet {
     // ======== Field Constants ========
 
-    /// Bits [7:0], mask 0x000000ff
+    /// **DOORBELL_IN_SET**
+    /// Bits `[7:0]`, mask `0x000000ff`
     pub const DOORBELL_IN_SET_OFFSET: u32 = 0;
     pub const DOORBELL_IN_SET_MASK: u32 = 0x000000ff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **DOORBELL_IN_SET** [7:0]
+    /// **DOORBELL_IN_SET** `[7:0]` (RW)
     #[inline(always)]
     pub fn doorbell_in_set(&self) -> u32 {
-        (self.read_bits() & Self::DOORBELL_IN_SET_MASK) >> Self::DOORBELL_IN_SET_OFFSET
+        (self.value.read_bits() & Self::DOORBELL_IN_SET_MASK) >> Self::DOORBELL_IN_SET_OFFSET
     }
 
-    /// Write DOORBELL_IN_SET field
+    /// Write **DOORBELL_IN_SET** `[7:0]` (RW)
     #[inline(always)]
     pub fn write_doorbell_in_set(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DOORBELL_IN_SET_MASK) | ((value << Self::DOORBELL_IN_SET_OFFSET) & Self::DOORBELL_IN_SET_MASK));
+        self.value.modify_bits(|r| (r & !Self::DOORBELL_IN_SET_MASK) | ((value << Self::DOORBELL_IN_SET_OFFSET) & Self::DOORBELL_IN_SET_MASK));
     }
 
 }
@@ -16639,13 +13511,13 @@ impl DoorbellInSetVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read DOORBELL_IN_SET [7:0]
+    /// Read **DOORBELL_IN_SET** `[7:0]`
     #[inline(always)]
     pub const fn doorbell_in_set(&self) -> u32 {
         (self.bits & DoorbellInSet::DOORBELL_IN_SET_MASK) >> DoorbellInSet::DOORBELL_IN_SET_OFFSET
     }
 
-    /// Set DOORBELL_IN_SET [7:0]
+    /// Set **DOORBELL_IN_SET** `[7:0]`
     #[inline(always)]
     pub const fn with_doorbell_in_set(self, value: u32) -> Self {
         Self {
@@ -16664,111 +13536,68 @@ impl Default for DoorbellInSetVal {
 impl DoorbellInSet {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> DoorbellInSetVal {
-        DoorbellInSetVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> DoorbellInSetVal {
+        DoorbellInSetVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: DoorbellInSetVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: DoorbellInSetVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(DoorbellInSetVal) -> DoorbellInSetVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(DoorbellInSetVal) -> DoorbellInSetVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// DOORBELL_IN_CLR Register
 ///
-/// Check and acknowledge doorbells posted to this core. This core's doorbell
-/// interrupt is asserted when any bit in this register is 1. Write 1 to each
-/// bit to clear that bit. The doorbell interrupt deasserts once all bits are
-/// cleared. Read to get status of doorbells currently asserted on this core.
+/// Check and acknowledge doorbells posted to this core. This core's doorbell interrupt is asserted when any bit in this register is 1.
+/// Write 1 to each bit to clear that bit. The doorbell interrupt deasserts once all bits are cleared. Read to get status of doorbells currently asserted on this core.
 ///
 /// Address offset: 0x018c
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **DOORBELL_IN_CLR** [7:0] (RW): 
+/// - **DOORBELL_IN_CLR** `[7:0]` (RW)
 #[repr(transparent)]
 pub struct DoorbellInClr {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for DoorbellInClr {}
-unsafe impl Sync for DoorbellInClr {}
+impl core::ops::Deref for DoorbellInClr {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl DoorbellInClr {
     // ======== Field Constants ========
 
-    /// Bits [7:0], mask 0x000000ff
+    /// **DOORBELL_IN_CLR**
+    /// Bits `[7:0]`, mask `0x000000ff`
     pub const DOORBELL_IN_CLR_OFFSET: u32 = 0;
     pub const DOORBELL_IN_CLR_MASK: u32 = 0x000000ff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **DOORBELL_IN_CLR** [7:0]
+    /// **DOORBELL_IN_CLR** `[7:0]` (RW)
     #[inline(always)]
     pub fn doorbell_in_clr(&self) -> u32 {
-        (self.read_bits() & Self::DOORBELL_IN_CLR_MASK) >> Self::DOORBELL_IN_CLR_OFFSET
+        (self.value.read_bits() & Self::DOORBELL_IN_CLR_MASK) >> Self::DOORBELL_IN_CLR_OFFSET
     }
 
-    /// Write DOORBELL_IN_CLR field
+    /// Write **DOORBELL_IN_CLR** `[7:0]` (RW)
     #[inline(always)]
     pub fn write_doorbell_in_clr(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DOORBELL_IN_CLR_MASK) | ((value << Self::DOORBELL_IN_CLR_OFFSET) & Self::DOORBELL_IN_CLR_MASK));
+        self.value.modify_bits(|r| (r & !Self::DOORBELL_IN_CLR_MASK) | ((value << Self::DOORBELL_IN_CLR_OFFSET) & Self::DOORBELL_IN_CLR_MASK));
     }
 
 }
@@ -16801,13 +13630,13 @@ impl DoorbellInClrVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read DOORBELL_IN_CLR [7:0]
+    /// Read **DOORBELL_IN_CLR** `[7:0]`
     #[inline(always)]
     pub const fn doorbell_in_clr(&self) -> u32 {
         (self.bits & DoorbellInClr::DOORBELL_IN_CLR_MASK) >> DoorbellInClr::DOORBELL_IN_CLR_OFFSET
     }
 
-    /// Set DOORBELL_IN_CLR [7:0]
+    /// Set **DOORBELL_IN_CLR** `[7:0]`
     #[inline(always)]
     pub const fn with_doorbell_in_clr(self, value: u32) -> Self {
         Self {
@@ -16826,172 +13655,135 @@ impl Default for DoorbellInClrVal {
 impl DoorbellInClr {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> DoorbellInClrVal {
-        DoorbellInClrVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> DoorbellInClrVal {
+        DoorbellInClrVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: DoorbellInClrVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: DoorbellInClrVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(DoorbellInClrVal) -> DoorbellInClrVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(DoorbellInClrVal) -> DoorbellInClrVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// PERI_NONSEC Register
 ///
-/// Detach certain core-local peripherals from Secure SIO, and attach them to
-/// Non-secure SIO, so that Non-secure software can use them. Attempting to
-/// access one of these peripherals from the Secure SIO when it is attached to
-/// the Non-secure SIO, or vice versa, will generate a bus error. This register
-/// is per-core, and is only present on the Secure SIO. Most SIO hardware is
-/// duplicated across the Secure and Non-secure SIO, so is not listed in this
-/// register.
+/// Detach certain core-local peripherals from Secure SIO, and attach them to Non-secure SIO, so that Non-secure software can use them. Attempting to access one of these peripherals from the Secure SIO when it is attached to the Non-secure SIO, or vice versa, will generate a bus error.
+/// This register is per-core, and is only present on the Secure SIO.
+/// Most SIO hardware is duplicated across the Secure and Non-secure SIO, so is not listed in this register.
 ///
 /// Address offset: 0x0190
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **TMDS** [5] (RW): IF 1, detach TMDS encoder (of this core) from the Secure SIO, and attach to...
-/// - **INTERP1** [1] (RW): If 1, detach interpolator 1 (of this core) from the Secure SIO, and attach ...
-/// - **INTERP0** [0] (RW): If 1, detach interpolator 0 (of this core) from the Secure SIO, and attach ...
+/// - **TMDS** `[5]` (RW)
+///   IF 1, detach TMDS encoder (of this core) from the Secure SIO, and attach to the Non-secure SIO.
+/// - **INTERP1** `[1]` (RW)
+///   If 1, detach interpolator 1 (of this core) from the Secure SIO, and attach to the Non-secure SIO.
+/// - **INTERP0** `[0]` (RW)
+///   If 1, detach interpolator 0 (of this core) from the Secure SIO, and attach to the Non-secure SIO.
 #[repr(transparent)]
 pub struct PeriNonsec {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for PeriNonsec {}
-unsafe impl Sync for PeriNonsec {}
+impl core::ops::Deref for PeriNonsec {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl PeriNonsec {
     // ======== Field Constants ========
 
-    /// TMDS - IF 1, detach TMDS encoder (of this core) from the Secure SIO, and attach to...
-    /// Bits [5:5], mask 0x00000020
+    /// **TMDS**
+    /// IF 1, detach TMDS encoder (of this core) from the Secure SIO, and attach to the Non-secure SIO.
+    /// Bits `[5:5]`, mask `0x00000020`
     pub const TMDS_OFFSET: u32 = 5;
     pub const TMDS_MASK: u32 = 0x00000020;
     pub const TMDS: u32 = 1 << 5;
 
-    /// INTERP1 - If 1, detach interpolator 1 (of this core) from the Secure SIO, and attach ...
-    /// Bits [1:1], mask 0x00000002
+    /// **INTERP1**
+    /// If 1, detach interpolator 1 (of this core) from the Secure SIO, and attach to the Non-secure SIO.
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const INTERP1_OFFSET: u32 = 1;
     pub const INTERP1_MASK: u32 = 0x00000002;
     pub const INTERP1: u32 = 1 << 1;
 
-    /// INTERP0 - If 1, detach interpolator 0 (of this core) from the Secure SIO, and attach ...
-    /// Bits [0:0], mask 0x00000001
+    /// **INTERP0**
+    /// If 1, detach interpolator 0 (of this core) from the Secure SIO, and attach to the Non-secure SIO.
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const INTERP0_OFFSET: u32 = 0;
     pub const INTERP0_MASK: u32 = 0x00000001;
     pub const INTERP0: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **TMDS** [5:5]: IF 1, detach TMDS encoder (of this core) from the Secure SIO, and attach to...
+    /// **TMDS** `[5]` (RW)
+    /// IF 1, detach TMDS encoder (of this core) from the Secure SIO, and attach to the Non-secure SIO.
     #[inline(always)]
     pub fn tmds(&self) -> bool {
-        (self.read_bits() & Self::TMDS_MASK) != 0
+        (self.value.read_bits() & Self::TMDS_MASK) != 0
     }
 
-    /// Set TMDS bit
+    /// Set TMDS bit atomically (RW)
     #[inline(always)]
     pub fn set_tmds(&self) {
-        self.set_bits(Self::TMDS_MASK);
+        self.value.set_bits(Self::TMDS_MASK);
     }
 
-    /// Clear TMDS bit
+    /// Clear TMDS bit atomically (RW)
     #[inline(always)]
     pub fn clr_tmds(&self) {
-        self.clr_bits(Self::TMDS_MASK);
+        self.value.clr_bits(Self::TMDS_MASK);
     }
 
-    /// **INTERP1** [1:1]: If 1, detach interpolator 1 (of this core) from the Secure SIO, and attach ...
+    /// **INTERP1** `[1]` (RW)
+    /// If 1, detach interpolator 1 (of this core) from the Secure SIO, and attach to the Non-secure SIO.
     #[inline(always)]
     pub fn interp1(&self) -> bool {
-        (self.read_bits() & Self::INTERP1_MASK) != 0
+        (self.value.read_bits() & Self::INTERP1_MASK) != 0
     }
 
-    /// Set INTERP1 bit
+    /// Set INTERP1 bit atomically (RW)
     #[inline(always)]
     pub fn set_interp1(&self) {
-        self.set_bits(Self::INTERP1_MASK);
+        self.value.set_bits(Self::INTERP1_MASK);
     }
 
-    /// Clear INTERP1 bit
+    /// Clear INTERP1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_interp1(&self) {
-        self.clr_bits(Self::INTERP1_MASK);
+        self.value.clr_bits(Self::INTERP1_MASK);
     }
 
-    /// **INTERP0** [0:0]: If 1, detach interpolator 0 (of this core) from the Secure SIO, and attach ...
+    /// **INTERP0** `[0]` (RW)
+    /// If 1, detach interpolator 0 (of this core) from the Secure SIO, and attach to the Non-secure SIO.
     #[inline(always)]
     pub fn interp0(&self) -> bool {
-        (self.read_bits() & Self::INTERP0_MASK) != 0
+        (self.value.read_bits() & Self::INTERP0_MASK) != 0
     }
 
-    /// Set INTERP0 bit
+    /// Set INTERP0 bit atomically (RW)
     #[inline(always)]
     pub fn set_interp0(&self) {
-        self.set_bits(Self::INTERP0_MASK);
+        self.value.set_bits(Self::INTERP0_MASK);
     }
 
-    /// Clear INTERP0 bit
+    /// Clear INTERP0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_interp0(&self) {
-        self.clr_bits(Self::INTERP0_MASK);
+        self.value.clr_bits(Self::INTERP0_MASK);
     }
 
 }
@@ -17024,25 +13816,29 @@ impl PeriNonsecVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read TMDS [5:5]: IF 1, detach TMDS encoder (of this core) from the Secure SIO, and attach to...
+    /// Read **TMDS** `[5:5]`
+    /// IF 1, detach TMDS encoder (of this core) from the Secure SIO, and attach to the Non-secure SIO.
     #[inline(always)]
     pub const fn tmds(&self) -> bool {
         (self.bits & PeriNonsec::TMDS_MASK) != 0
     }
 
-    /// Read INTERP1 [1:1]: If 1, detach interpolator 1 (of this core) from the Secure SIO, and attach ...
+    /// Read **INTERP1** `[1:1]`
+    /// If 1, detach interpolator 1 (of this core) from the Secure SIO, and attach to the Non-secure SIO.
     #[inline(always)]
     pub const fn interp1(&self) -> bool {
         (self.bits & PeriNonsec::INTERP1_MASK) != 0
     }
 
-    /// Read INTERP0 [0:0]: If 1, detach interpolator 0 (of this core) from the Secure SIO, and attach ...
+    /// Read **INTERP0** `[0:0]`
+    /// If 1, detach interpolator 0 (of this core) from the Secure SIO, and attach to the Non-secure SIO.
     #[inline(always)]
     pub const fn interp0(&self) -> bool {
         (self.bits & PeriNonsec::INTERP0_MASK) != 0
     }
 
-    /// Set TMDS [5:5]: IF 1, detach TMDS encoder (of this core) from the Secure SIO, and attach to...
+    /// Set **TMDS** `[5:5]`
+    /// IF 1, detach TMDS encoder (of this core) from the Secure SIO, and attach to the Non-secure SIO.
     #[inline(always)]
     pub const fn with_tmds(self, value: bool) -> Self {
         Self {
@@ -17054,7 +13850,8 @@ impl PeriNonsecVal {
         }
     }
 
-    /// Set INTERP1 [1:1]: If 1, detach interpolator 1 (of this core) from the Secure SIO, and attach ...
+    /// Set **INTERP1** `[1:1]`
+    /// If 1, detach interpolator 1 (of this core) from the Secure SIO, and attach to the Non-secure SIO.
     #[inline(always)]
     pub const fn with_interp1(self, value: bool) -> Self {
         Self {
@@ -17066,7 +13863,8 @@ impl PeriNonsecVal {
         }
     }
 
-    /// Set INTERP0 [0:0]: If 1, detach interpolator 0 (of this core) from the Secure SIO, and attach ...
+    /// Set **INTERP0** `[0:0]`
+    /// If 1, detach interpolator 0 (of this core) from the Secure SIO, and attach to the Non-secure SIO.
     #[inline(always)]
     pub const fn with_interp0(self, value: bool) -> Self {
         Self {
@@ -17089,196 +13887,163 @@ impl Default for PeriNonsecVal {
 impl PeriNonsec {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> PeriNonsecVal {
-        PeriNonsecVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> PeriNonsecVal {
+        PeriNonsecVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: PeriNonsecVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: PeriNonsecVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(PeriNonsecVal) -> PeriNonsecVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(PeriNonsecVal) -> PeriNonsecVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// RISCV_SOFTIRQ Register
 ///
-/// Control the assertion of the standard software interrupt (MIP.MSIP) on the
-/// RISC-V cores. Unlike the RISC-V timer, this interrupt is not routed to a
-/// normal system-level interrupt line, so can not be used by the Arm cores. It
-/// is safe for both cores to write to this register on the same cycle. The
-/// set/clear effect is accumulated across both cores, and then applied. If a
-/// flag is both set and cleared on the same cycle, only the set takes effect.
+/// Control the assertion of the standard software interrupt (MIP.MSIP) on the RISC-V cores.
+/// Unlike the RISC-V timer, this interrupt is not routed to a normal system-level interrupt line, so can not be used by the Arm cores.
+/// It is safe for both cores to write to this register on the same cycle. The set/clear effect is accumulated across both cores, and then applied. If a flag is both set and cleared on the same cycle, only the set takes effect.
 ///
 /// Address offset: 0x01a0
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **CORE1_CLR** [9] (RW): Write 1 to atomically clear the core 1 software interrupt flag. Read to get...
-/// - **CORE0_CLR** [8] (RW): Write 1 to atomically clear the core 0 software interrupt flag. Read to get...
-/// - **CORE1_SET** [1] (RW): Write 1 to atomically set the core 1 software interrupt flag. Read to get t...
-/// - **CORE0_SET** [0] (RW): Write 1 to atomically set the core 0 software interrupt flag. Read to get t...
+/// - **CORE1_CLR** `[9]` (RW)
+///   Write 1 to atomically clear the core 1 software interrupt flag. Read to get the status of this flag.
+/// - **CORE0_CLR** `[8]` (RW)
+///   Write 1 to atomically clear the core 0 software interrupt flag. Read to get the status of this flag.
+/// - **CORE1_SET** `[1]` (RW)
+///   Write 1 to atomically set the core 1 software interrupt flag. Read to get the status of this flag.
+/// - **CORE0_SET** `[0]` (RW)
+///   Write 1 to atomically set the core 0 software interrupt flag. Read to get the status of this flag.
 #[repr(transparent)]
 pub struct RiscvSoftirq {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for RiscvSoftirq {}
-unsafe impl Sync for RiscvSoftirq {}
+impl core::ops::Deref for RiscvSoftirq {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl RiscvSoftirq {
     // ======== Field Constants ========
 
-    /// CORE1_CLR - Write 1 to atomically clear the core 1 software interrupt flag. Read to get...
-    /// Bits [9:9], mask 0x00000200
+    /// **CORE1_CLR**
+    /// Write 1 to atomically clear the core 1 software interrupt flag. Read to get the status of this flag.
+    /// Bits `[9:9]`, mask `0x00000200`
     pub const CORE1_CLR_OFFSET: u32 = 9;
     pub const CORE1_CLR_MASK: u32 = 0x00000200;
     pub const CORE1_CLR: u32 = 1 << 9;
 
-    /// CORE0_CLR - Write 1 to atomically clear the core 0 software interrupt flag. Read to get...
-    /// Bits [8:8], mask 0x00000100
+    /// **CORE0_CLR**
+    /// Write 1 to atomically clear the core 0 software interrupt flag. Read to get the status of this flag.
+    /// Bits `[8:8]`, mask `0x00000100`
     pub const CORE0_CLR_OFFSET: u32 = 8;
     pub const CORE0_CLR_MASK: u32 = 0x00000100;
     pub const CORE0_CLR: u32 = 1 << 8;
 
-    /// CORE1_SET - Write 1 to atomically set the core 1 software interrupt flag. Read to get t...
-    /// Bits [1:1], mask 0x00000002
+    /// **CORE1_SET**
+    /// Write 1 to atomically set the core 1 software interrupt flag. Read to get the status of this flag.
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const CORE1_SET_OFFSET: u32 = 1;
     pub const CORE1_SET_MASK: u32 = 0x00000002;
     pub const CORE1_SET: u32 = 1 << 1;
 
-    /// CORE0_SET - Write 1 to atomically set the core 0 software interrupt flag. Read to get t...
-    /// Bits [0:0], mask 0x00000001
+    /// **CORE0_SET**
+    /// Write 1 to atomically set the core 0 software interrupt flag. Read to get the status of this flag.
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const CORE0_SET_OFFSET: u32 = 0;
     pub const CORE0_SET_MASK: u32 = 0x00000001;
     pub const CORE0_SET: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **CORE1_CLR** [9:9]: Write 1 to atomically clear the core 1 software interrupt flag. Read to get...
+    /// **CORE1_CLR** `[9]` (RW)
+    /// Write 1 to atomically clear the core 1 software interrupt flag. Read to get the status of this flag.
     #[inline(always)]
     pub fn core1_clr(&self) -> bool {
-        (self.read_bits() & Self::CORE1_CLR_MASK) != 0
+        (self.value.read_bits() & Self::CORE1_CLR_MASK) != 0
     }
 
-    /// Set CORE1_CLR bit
+    /// Set CORE1_CLR bit atomically (RW)
     #[inline(always)]
     pub fn set_core1_clr(&self) {
-        self.set_bits(Self::CORE1_CLR_MASK);
+        self.value.set_bits(Self::CORE1_CLR_MASK);
     }
 
-    /// Clear CORE1_CLR bit
+    /// Clear CORE1_CLR bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1_clr(&self) {
-        self.clr_bits(Self::CORE1_CLR_MASK);
+        self.value.clr_bits(Self::CORE1_CLR_MASK);
     }
 
-    /// **CORE0_CLR** [8:8]: Write 1 to atomically clear the core 0 software interrupt flag. Read to get...
+    /// **CORE0_CLR** `[8]` (RW)
+    /// Write 1 to atomically clear the core 0 software interrupt flag. Read to get the status of this flag.
     #[inline(always)]
     pub fn core0_clr(&self) -> bool {
-        (self.read_bits() & Self::CORE0_CLR_MASK) != 0
+        (self.value.read_bits() & Self::CORE0_CLR_MASK) != 0
     }
 
-    /// Set CORE0_CLR bit
+    /// Set CORE0_CLR bit atomically (RW)
     #[inline(always)]
     pub fn set_core0_clr(&self) {
-        self.set_bits(Self::CORE0_CLR_MASK);
+        self.value.set_bits(Self::CORE0_CLR_MASK);
     }
 
-    /// Clear CORE0_CLR bit
+    /// Clear CORE0_CLR bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0_clr(&self) {
-        self.clr_bits(Self::CORE0_CLR_MASK);
+        self.value.clr_bits(Self::CORE0_CLR_MASK);
     }
 
-    /// **CORE1_SET** [1:1]: Write 1 to atomically set the core 1 software interrupt flag. Read to get t...
+    /// **CORE1_SET** `[1]` (RW)
+    /// Write 1 to atomically set the core 1 software interrupt flag. Read to get the status of this flag.
     #[inline(always)]
     pub fn core1_set(&self) -> bool {
-        (self.read_bits() & Self::CORE1_SET_MASK) != 0
+        (self.value.read_bits() & Self::CORE1_SET_MASK) != 0
     }
 
-    /// Set CORE1_SET bit
+    /// Set CORE1_SET bit atomically (RW)
     #[inline(always)]
     pub fn set_core1_set(&self) {
-        self.set_bits(Self::CORE1_SET_MASK);
+        self.value.set_bits(Self::CORE1_SET_MASK);
     }
 
-    /// Clear CORE1_SET bit
+    /// Clear CORE1_SET bit atomically (RW)
     #[inline(always)]
     pub fn clr_core1_set(&self) {
-        self.clr_bits(Self::CORE1_SET_MASK);
+        self.value.clr_bits(Self::CORE1_SET_MASK);
     }
 
-    /// **CORE0_SET** [0:0]: Write 1 to atomically set the core 0 software interrupt flag. Read to get t...
+    /// **CORE0_SET** `[0]` (RW)
+    /// Write 1 to atomically set the core 0 software interrupt flag. Read to get the status of this flag.
     #[inline(always)]
     pub fn core0_set(&self) -> bool {
-        (self.read_bits() & Self::CORE0_SET_MASK) != 0
+        (self.value.read_bits() & Self::CORE0_SET_MASK) != 0
     }
 
-    /// Set CORE0_SET bit
+    /// Set CORE0_SET bit atomically (RW)
     #[inline(always)]
     pub fn set_core0_set(&self) {
-        self.set_bits(Self::CORE0_SET_MASK);
+        self.value.set_bits(Self::CORE0_SET_MASK);
     }
 
-    /// Clear CORE0_SET bit
+    /// Clear CORE0_SET bit atomically (RW)
     #[inline(always)]
     pub fn clr_core0_set(&self) {
-        self.clr_bits(Self::CORE0_SET_MASK);
+        self.value.clr_bits(Self::CORE0_SET_MASK);
     }
 
 }
@@ -17311,31 +14076,36 @@ impl RiscvSoftirqVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read CORE1_CLR [9:9]: Write 1 to atomically clear the core 1 software interrupt flag. Read to get...
+    /// Read **CORE1_CLR** `[9:9]`
+    /// Write 1 to atomically clear the core 1 software interrupt flag. Read to get the status of this flag.
     #[inline(always)]
     pub const fn core1_clr(&self) -> bool {
         (self.bits & RiscvSoftirq::CORE1_CLR_MASK) != 0
     }
 
-    /// Read CORE0_CLR [8:8]: Write 1 to atomically clear the core 0 software interrupt flag. Read to get...
+    /// Read **CORE0_CLR** `[8:8]`
+    /// Write 1 to atomically clear the core 0 software interrupt flag. Read to get the status of this flag.
     #[inline(always)]
     pub const fn core0_clr(&self) -> bool {
         (self.bits & RiscvSoftirq::CORE0_CLR_MASK) != 0
     }
 
-    /// Read CORE1_SET [1:1]: Write 1 to atomically set the core 1 software interrupt flag. Read to get t...
+    /// Read **CORE1_SET** `[1:1]`
+    /// Write 1 to atomically set the core 1 software interrupt flag. Read to get the status of this flag.
     #[inline(always)]
     pub const fn core1_set(&self) -> bool {
         (self.bits & RiscvSoftirq::CORE1_SET_MASK) != 0
     }
 
-    /// Read CORE0_SET [0:0]: Write 1 to atomically set the core 0 software interrupt flag. Read to get t...
+    /// Read **CORE0_SET** `[0:0]`
+    /// Write 1 to atomically set the core 0 software interrupt flag. Read to get the status of this flag.
     #[inline(always)]
     pub const fn core0_set(&self) -> bool {
         (self.bits & RiscvSoftirq::CORE0_SET_MASK) != 0
     }
 
-    /// Set CORE1_CLR [9:9]: Write 1 to atomically clear the core 1 software interrupt flag. Read to get...
+    /// Set **CORE1_CLR** `[9:9]`
+    /// Write 1 to atomically clear the core 1 software interrupt flag. Read to get the status of this flag.
     #[inline(always)]
     pub const fn with_core1_clr(self, value: bool) -> Self {
         Self {
@@ -17347,7 +14117,8 @@ impl RiscvSoftirqVal {
         }
     }
 
-    /// Set CORE0_CLR [8:8]: Write 1 to atomically clear the core 0 software interrupt flag. Read to get...
+    /// Set **CORE0_CLR** `[8:8]`
+    /// Write 1 to atomically clear the core 0 software interrupt flag. Read to get the status of this flag.
     #[inline(always)]
     pub const fn with_core0_clr(self, value: bool) -> Self {
         Self {
@@ -17359,7 +14130,8 @@ impl RiscvSoftirqVal {
         }
     }
 
-    /// Set CORE1_SET [1:1]: Write 1 to atomically set the core 1 software interrupt flag. Read to get t...
+    /// Set **CORE1_SET** `[1:1]`
+    /// Write 1 to atomically set the core 1 software interrupt flag. Read to get the status of this flag.
     #[inline(always)]
     pub const fn with_core1_set(self, value: bool) -> Self {
         Self {
@@ -17371,7 +14143,8 @@ impl RiscvSoftirqVal {
         }
     }
 
-    /// Set CORE0_SET [0:0]: Write 1 to atomically set the core 0 software interrupt flag. Read to get t...
+    /// Set **CORE0_SET** `[0:0]`
+    /// Write 1 to atomically set the core 0 software interrupt flag. Read to get the status of this flag.
     #[inline(always)]
     pub const fn with_core0_set(self, value: bool) -> Self {
         Self {
@@ -17394,196 +14167,162 @@ impl Default for RiscvSoftirqVal {
 impl RiscvSoftirq {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> RiscvSoftirqVal {
-        RiscvSoftirqVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> RiscvSoftirqVal {
+        RiscvSoftirqVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: RiscvSoftirqVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: RiscvSoftirqVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(RiscvSoftirqVal) -> RiscvSoftirqVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(RiscvSoftirqVal) -> RiscvSoftirqVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// MTIME_CTRL Register
 ///
-/// Control register for the RISC-V 64-bit Machine-mode timer. This timer is
-/// only present in the Secure SIO, so is only accessible to an Arm core in
-/// Secure mode or a RISC-V core in Machine mode. Note whilst this timer follows
-/// the RISC-V privileged specification, it is equally usable by the Arm cores.
-/// The interrupts are routed to normal system-level interrupt lines as well as
-/// to the MIP.MTIP inputs on the RISC-V cores.
+/// Control register for the RISC-V 64-bit Machine-mode timer. This timer is only present in the Secure SIO, so is only accessible to an Arm core in Secure mode or a RISC-V core in Machine mode.
+/// Note whilst this timer follows the RISC-V privileged specification, it is equally usable by the Arm cores. The interrupts are routed to normal system-level interrupt lines as well as to the MIP.MTIP inputs on the RISC-V cores.
 ///
 /// Address offset: 0x01a4
 /// Reset value: 0x0000000d
 ///
 /// ## Fields
 ///
-/// - **DBGPAUSE_CORE1** [3] (RW): If 1, the timer pauses when core 1 is in the debug halt state.
-/// - **DBGPAUSE_CORE0** [2] (RW): If 1, the timer pauses when core 0 is in the debug halt state.
-/// - **FULLSPEED** [1] (RW): If 1, increment the timer every cycle (i.e. run directly from the system cl...
-/// - **EN** [0] (RW): Timer enable bit. When 0, the timer will not increment automatically.
+/// - **DBGPAUSE_CORE1** `[3]` (RW)
+///   If 1, the timer pauses when core 1 is in the debug halt state.
+/// - **DBGPAUSE_CORE0** `[2]` (RW)
+///   If 1, the timer pauses when core 0 is in the debug halt state.
+/// - **FULLSPEED** `[1]` (RW)
+///   If 1, increment the timer every cycle (i.e. run directly from the system clock), rather than incrementing on the system-level timer tick input.
+/// - **EN** `[0]` (RW)
+///   Timer enable bit. When 0, the timer will not increment automatically.
 #[repr(transparent)]
 pub struct MtimeCtrl {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for MtimeCtrl {}
-unsafe impl Sync for MtimeCtrl {}
+impl core::ops::Deref for MtimeCtrl {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl MtimeCtrl {
     // ======== Field Constants ========
 
-    /// DBGPAUSE_CORE1 - If 1, the timer pauses when core 1 is in the debug halt state.
-    /// Bits [3:3], mask 0x00000008
+    /// **DBGPAUSE_CORE1**
+    /// If 1, the timer pauses when core 1 is in the debug halt state.
+    /// Bits `[3:3]`, mask `0x00000008`
     pub const DBGPAUSE_CORE1_OFFSET: u32 = 3;
     pub const DBGPAUSE_CORE1_MASK: u32 = 0x00000008;
     pub const DBGPAUSE_CORE1: u32 = 1 << 3;
 
-    /// DBGPAUSE_CORE0 - If 1, the timer pauses when core 0 is in the debug halt state.
-    /// Bits [2:2], mask 0x00000004
+    /// **DBGPAUSE_CORE0**
+    /// If 1, the timer pauses when core 0 is in the debug halt state.
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const DBGPAUSE_CORE0_OFFSET: u32 = 2;
     pub const DBGPAUSE_CORE0_MASK: u32 = 0x00000004;
     pub const DBGPAUSE_CORE0: u32 = 1 << 2;
 
-    /// FULLSPEED - If 1, increment the timer every cycle (i.e. run directly from the system cl...
-    /// Bits [1:1], mask 0x00000002
+    /// **FULLSPEED**
+    /// If 1, increment the timer every cycle (i.e. run directly from the system clock), rather than incrementing on the system-level timer tick input.
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const FULLSPEED_OFFSET: u32 = 1;
     pub const FULLSPEED_MASK: u32 = 0x00000002;
     pub const FULLSPEED: u32 = 1 << 1;
 
-    /// EN - Timer enable bit. When 0, the timer will not increment automatically.
-    /// Bits [0:0], mask 0x00000001
+    /// **EN**
+    /// Timer enable bit. When 0, the timer will not increment automatically.
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const EN_OFFSET: u32 = 0;
     pub const EN_MASK: u32 = 0x00000001;
     pub const EN: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **DBGPAUSE_CORE1** [3:3]: If 1, the timer pauses when core 1 is in the debug halt state.
+    /// **DBGPAUSE_CORE1** `[3]` (RW)
+    /// If 1, the timer pauses when core 1 is in the debug halt state.
     #[inline(always)]
     pub fn dbgpause_core1(&self) -> bool {
-        (self.read_bits() & Self::DBGPAUSE_CORE1_MASK) != 0
+        (self.value.read_bits() & Self::DBGPAUSE_CORE1_MASK) != 0
     }
 
-    /// Set DBGPAUSE_CORE1 bit
+    /// Set DBGPAUSE_CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn set_dbgpause_core1(&self) {
-        self.set_bits(Self::DBGPAUSE_CORE1_MASK);
+        self.value.set_bits(Self::DBGPAUSE_CORE1_MASK);
     }
 
-    /// Clear DBGPAUSE_CORE1 bit
+    /// Clear DBGPAUSE_CORE1 bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbgpause_core1(&self) {
-        self.clr_bits(Self::DBGPAUSE_CORE1_MASK);
+        self.value.clr_bits(Self::DBGPAUSE_CORE1_MASK);
     }
 
-    /// **DBGPAUSE_CORE0** [2:2]: If 1, the timer pauses when core 0 is in the debug halt state.
+    /// **DBGPAUSE_CORE0** `[2]` (RW)
+    /// If 1, the timer pauses when core 0 is in the debug halt state.
     #[inline(always)]
     pub fn dbgpause_core0(&self) -> bool {
-        (self.read_bits() & Self::DBGPAUSE_CORE0_MASK) != 0
+        (self.value.read_bits() & Self::DBGPAUSE_CORE0_MASK) != 0
     }
 
-    /// Set DBGPAUSE_CORE0 bit
+    /// Set DBGPAUSE_CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn set_dbgpause_core0(&self) {
-        self.set_bits(Self::DBGPAUSE_CORE0_MASK);
+        self.value.set_bits(Self::DBGPAUSE_CORE0_MASK);
     }
 
-    /// Clear DBGPAUSE_CORE0 bit
+    /// Clear DBGPAUSE_CORE0 bit atomically (RW)
     #[inline(always)]
     pub fn clr_dbgpause_core0(&self) {
-        self.clr_bits(Self::DBGPAUSE_CORE0_MASK);
+        self.value.clr_bits(Self::DBGPAUSE_CORE0_MASK);
     }
 
-    /// **FULLSPEED** [1:1]: If 1, increment the timer every cycle (i.e. run directly from the system cl...
+    /// **FULLSPEED** `[1]` (RW)
+    /// If 1, increment the timer every cycle (i.e. run directly from the system clock), rather than incrementing on the system-level timer tick input.
     #[inline(always)]
     pub fn fullspeed(&self) -> bool {
-        (self.read_bits() & Self::FULLSPEED_MASK) != 0
+        (self.value.read_bits() & Self::FULLSPEED_MASK) != 0
     }
 
-    /// Set FULLSPEED bit
+    /// Set FULLSPEED bit atomically (RW)
     #[inline(always)]
     pub fn set_fullspeed(&self) {
-        self.set_bits(Self::FULLSPEED_MASK);
+        self.value.set_bits(Self::FULLSPEED_MASK);
     }
 
-    /// Clear FULLSPEED bit
+    /// Clear FULLSPEED bit atomically (RW)
     #[inline(always)]
     pub fn clr_fullspeed(&self) {
-        self.clr_bits(Self::FULLSPEED_MASK);
+        self.value.clr_bits(Self::FULLSPEED_MASK);
     }
 
-    /// **EN** [0:0]: Timer enable bit. When 0, the timer will not increment automatically.
+    /// **EN** `[0]` (RW)
+    /// Timer enable bit. When 0, the timer will not increment automatically.
     #[inline(always)]
     pub fn en(&self) -> bool {
-        (self.read_bits() & Self::EN_MASK) != 0
+        (self.value.read_bits() & Self::EN_MASK) != 0
     }
 
-    /// Set EN bit
+    /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.set_bits(Self::EN_MASK);
+        self.value.set_bits(Self::EN_MASK);
     }
 
-    /// Clear EN bit
+    /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.clr_bits(Self::EN_MASK);
+        self.value.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -17616,31 +14355,36 @@ impl MtimeCtrlVal {
         Self { bits: 0x0000000d }
     }
 
-    /// Read DBGPAUSE_CORE1 [3:3]: If 1, the timer pauses when core 1 is in the debug halt state.
+    /// Read **DBGPAUSE_CORE1** `[3:3]`
+    /// If 1, the timer pauses when core 1 is in the debug halt state.
     #[inline(always)]
     pub const fn dbgpause_core1(&self) -> bool {
         (self.bits & MtimeCtrl::DBGPAUSE_CORE1_MASK) != 0
     }
 
-    /// Read DBGPAUSE_CORE0 [2:2]: If 1, the timer pauses when core 0 is in the debug halt state.
+    /// Read **DBGPAUSE_CORE0** `[2:2]`
+    /// If 1, the timer pauses when core 0 is in the debug halt state.
     #[inline(always)]
     pub const fn dbgpause_core0(&self) -> bool {
         (self.bits & MtimeCtrl::DBGPAUSE_CORE0_MASK) != 0
     }
 
-    /// Read FULLSPEED [1:1]: If 1, increment the timer every cycle (i.e. run directly from the system cl...
+    /// Read **FULLSPEED** `[1:1]`
+    /// If 1, increment the timer every cycle (i.e. run directly from the system clock), rather than incrementing on the system-level timer tick input.
     #[inline(always)]
     pub const fn fullspeed(&self) -> bool {
         (self.bits & MtimeCtrl::FULLSPEED_MASK) != 0
     }
 
-    /// Read EN [0:0]: Timer enable bit. When 0, the timer will not increment automatically.
+    /// Read **EN** `[0:0]`
+    /// Timer enable bit. When 0, the timer will not increment automatically.
     #[inline(always)]
     pub const fn en(&self) -> bool {
         (self.bits & MtimeCtrl::EN_MASK) != 0
     }
 
-    /// Set DBGPAUSE_CORE1 [3:3]: If 1, the timer pauses when core 1 is in the debug halt state.
+    /// Set **DBGPAUSE_CORE1** `[3:3]`
+    /// If 1, the timer pauses when core 1 is in the debug halt state.
     #[inline(always)]
     pub const fn with_dbgpause_core1(self, value: bool) -> Self {
         Self {
@@ -17652,7 +14396,8 @@ impl MtimeCtrlVal {
         }
     }
 
-    /// Set DBGPAUSE_CORE0 [2:2]: If 1, the timer pauses when core 0 is in the debug halt state.
+    /// Set **DBGPAUSE_CORE0** `[2:2]`
+    /// If 1, the timer pauses when core 0 is in the debug halt state.
     #[inline(always)]
     pub const fn with_dbgpause_core0(self, value: bool) -> Self {
         Self {
@@ -17664,7 +14409,8 @@ impl MtimeCtrlVal {
         }
     }
 
-    /// Set FULLSPEED [1:1]: If 1, increment the timer every cycle (i.e. run directly from the system cl...
+    /// Set **FULLSPEED** `[1:1]`
+    /// If 1, increment the timer every cycle (i.e. run directly from the system clock), rather than incrementing on the system-level timer tick input.
     #[inline(always)]
     pub const fn with_fullspeed(self, value: bool) -> Self {
         Self {
@@ -17676,7 +14422,8 @@ impl MtimeCtrlVal {
         }
     }
 
-    /// Set EN [0:0]: Timer enable bit. When 0, the timer will not increment automatically.
+    /// Set **EN** `[0:0]`
+    /// Timer enable bit. When 0, the timer will not increment automatically.
     #[inline(always)]
     pub const fn with_en(self, value: bool) -> Self {
         Self {
@@ -17699,110 +14446,67 @@ impl Default for MtimeCtrlVal {
 impl MtimeCtrl {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> MtimeCtrlVal {
-        MtimeCtrlVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> MtimeCtrlVal {
+        MtimeCtrlVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: MtimeCtrlVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: MtimeCtrlVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(MtimeCtrlVal) -> MtimeCtrlVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(MtimeCtrlVal) -> MtimeCtrlVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// MTIME Register
 ///
-/// Read/write access to the high half of RISC-V Machine-mode timer. This
-/// register is shared between both cores. If both cores write on the same
-/// cycle, core 1 takes precedence.
+/// Read/write access to the high half of RISC-V Machine-mode timer. This register is shared between both cores. If both cores write on the same cycle, core 1 takes precedence.
 ///
 /// Address offset: 0x01b0
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **MTIME** [31:0] (RW): 
+/// - **MTIME** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Mtime {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Mtime {}
-unsafe impl Sync for Mtime {}
+impl core::ops::Deref for Mtime {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Mtime {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **MTIME**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const MTIME_OFFSET: u32 = 0;
     pub const MTIME_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **MTIME** [31:0]
+    /// **MTIME** `[31:0]` (RW)
     #[inline(always)]
     pub fn mtime(&self) -> u32 {
-        (self.read_bits() & Self::MTIME_MASK) >> Self::MTIME_OFFSET
+        (self.value.read_bits() & Self::MTIME_MASK) >> Self::MTIME_OFFSET
     }
 
-    /// Write MTIME field
+    /// Write **MTIME** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_mtime(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::MTIME_MASK) | ((value << Self::MTIME_OFFSET) & Self::MTIME_MASK));
+        self.value.modify_bits(|r| (r & !Self::MTIME_MASK) | ((value << Self::MTIME_OFFSET) & Self::MTIME_MASK));
     }
 
 }
@@ -17835,13 +14539,13 @@ impl MtimeVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read MTIME [31:0]
+    /// Read **MTIME** `[31:0]`
     #[inline(always)]
     pub const fn mtime(&self) -> u32 {
         (self.bits & Mtime::MTIME_MASK) >> Mtime::MTIME_OFFSET
     }
 
-    /// Set MTIME [31:0]
+    /// Set **MTIME** `[31:0]`
     #[inline(always)]
     pub const fn with_mtime(self, value: u32) -> Self {
         Self {
@@ -17860,110 +14564,67 @@ impl Default for MtimeVal {
 impl Mtime {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> MtimeVal {
-        MtimeVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> MtimeVal {
+        MtimeVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: MtimeVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: MtimeVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(MtimeVal) -> MtimeVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(MtimeVal) -> MtimeVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// MTIMEH Register
 ///
-/// Read/write access to the high half of RISC-V Machine-mode timer. This
-/// register is shared between both cores. If both cores write on the same
-/// cycle, core 1 takes precedence.
+/// Read/write access to the high half of RISC-V Machine-mode timer. This register is shared between both cores. If both cores write on the same cycle, core 1 takes precedence.
 ///
 /// Address offset: 0x01b4
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **MTIMEH** [31:0] (RW): 
+/// - **MTIMEH** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Mtimeh {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Mtimeh {}
-unsafe impl Sync for Mtimeh {}
+impl core::ops::Deref for Mtimeh {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Mtimeh {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **MTIMEH**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const MTIMEH_OFFSET: u32 = 0;
     pub const MTIMEH_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **MTIMEH** [31:0]
+    /// **MTIMEH** `[31:0]` (RW)
     #[inline(always)]
     pub fn mtimeh(&self) -> u32 {
-        (self.read_bits() & Self::MTIMEH_MASK) >> Self::MTIMEH_OFFSET
+        (self.value.read_bits() & Self::MTIMEH_MASK) >> Self::MTIMEH_OFFSET
     }
 
-    /// Write MTIMEH field
+    /// Write **MTIMEH** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_mtimeh(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::MTIMEH_MASK) | ((value << Self::MTIMEH_OFFSET) & Self::MTIMEH_MASK));
+        self.value.modify_bits(|r| (r & !Self::MTIMEH_MASK) | ((value << Self::MTIMEH_OFFSET) & Self::MTIMEH_MASK));
     }
 
 }
@@ -17996,13 +14657,13 @@ impl MtimehVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read MTIMEH [31:0]
+    /// Read **MTIMEH** `[31:0]`
     #[inline(always)]
     pub const fn mtimeh(&self) -> u32 {
         (self.bits & Mtimeh::MTIMEH_MASK) >> Mtimeh::MTIMEH_OFFSET
     }
 
-    /// Set MTIMEH [31:0]
+    /// Set **MTIMEH** `[31:0]`
     #[inline(always)]
     pub const fn with_mtimeh(self, value: u32) -> Self {
         Self {
@@ -18021,112 +14682,68 @@ impl Default for MtimehVal {
 impl Mtimeh {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> MtimehVal {
-        MtimehVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> MtimehVal {
+        MtimehVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: MtimehVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: MtimehVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(MtimehVal) -> MtimehVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(MtimehVal) -> MtimehVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// MTIMECMP Register
 ///
-/// Low half of RISC-V Machine-mode timer comparator. This register is
-/// core-local, i.e., each core gets a copy of this register, with the
-/// comparison result routed to its own interrupt line. The timer interrupt is
-/// asserted whenever MTIME is greater than or equal to MTIMECMP. This
-/// comparison is unsigned, and performed on the full 64-bit values.
+/// Low half of RISC-V Machine-mode timer comparator. This register is core-local, i.e., each core gets a copy of this register, with the comparison result routed to its own interrupt line.
+/// The timer interrupt is asserted whenever MTIME is greater than or equal to MTIMECMP. This comparison is unsigned, and performed on the full 64-bit values.
 ///
 /// Address offset: 0x01b8
 /// Reset value: 0xffffffff
 ///
 /// ## Fields
 ///
-/// - **MTIMECMP** [31:0] (RW): 
+/// - **MTIMECMP** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Mtimecmp {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Mtimecmp {}
-unsafe impl Sync for Mtimecmp {}
+impl core::ops::Deref for Mtimecmp {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Mtimecmp {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **MTIMECMP**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const MTIMECMP_OFFSET: u32 = 0;
     pub const MTIMECMP_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **MTIMECMP** [31:0]
+    /// **MTIMECMP** `[31:0]` (RW)
     #[inline(always)]
     pub fn mtimecmp(&self) -> u32 {
-        (self.read_bits() & Self::MTIMECMP_MASK) >> Self::MTIMECMP_OFFSET
+        (self.value.read_bits() & Self::MTIMECMP_MASK) >> Self::MTIMECMP_OFFSET
     }
 
-    /// Write MTIMECMP field
+    /// Write **MTIMECMP** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_mtimecmp(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::MTIMECMP_MASK) | ((value << Self::MTIMECMP_OFFSET) & Self::MTIMECMP_MASK));
+        self.value.modify_bits(|r| (r & !Self::MTIMECMP_MASK) | ((value << Self::MTIMECMP_OFFSET) & Self::MTIMECMP_MASK));
     }
 
 }
@@ -18159,13 +14776,13 @@ impl MtimecmpVal {
         Self { bits: 0xffffffff }
     }
 
-    /// Read MTIMECMP [31:0]
+    /// Read **MTIMECMP** `[31:0]`
     #[inline(always)]
     pub const fn mtimecmp(&self) -> u32 {
         (self.bits & Mtimecmp::MTIMECMP_MASK) >> Mtimecmp::MTIMECMP_OFFSET
     }
 
-    /// Set MTIMECMP [31:0]
+    /// Set **MTIMECMP** `[31:0]`
     #[inline(always)]
     pub const fn with_mtimecmp(self, value: u32) -> Self {
         Self {
@@ -18184,111 +14801,68 @@ impl Default for MtimecmpVal {
 impl Mtimecmp {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> MtimecmpVal {
-        MtimecmpVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> MtimecmpVal {
+        MtimecmpVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: MtimecmpVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: MtimecmpVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(MtimecmpVal) -> MtimecmpVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(MtimecmpVal) -> MtimecmpVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// MTIMECMPH Register
 ///
-/// High half of RISC-V Machine-mode timer comparator. This register is
-/// core-local. The timer interrupt is asserted whenever MTIME is greater than
-/// or equal to MTIMECMP. This comparison is unsigned, and performed on the full
-/// 64-bit values.
+/// High half of RISC-V Machine-mode timer comparator. This register is core-local.
+/// The timer interrupt is asserted whenever MTIME is greater than or equal to MTIMECMP. This comparison is unsigned, and performed on the full 64-bit values.
 ///
 /// Address offset: 0x01bc
 /// Reset value: 0xffffffff
 ///
 /// ## Fields
 ///
-/// - **MTIMECMPH** [31:0] (RW): 
+/// - **MTIMECMPH** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Mtimecmph {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Mtimecmph {}
-unsafe impl Sync for Mtimecmph {}
+impl core::ops::Deref for Mtimecmph {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Mtimecmph {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **MTIMECMPH**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const MTIMECMPH_OFFSET: u32 = 0;
     pub const MTIMECMPH_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **MTIMECMPH** [31:0]
+    /// **MTIMECMPH** `[31:0]` (RW)
     #[inline(always)]
     pub fn mtimecmph(&self) -> u32 {
-        (self.read_bits() & Self::MTIMECMPH_MASK) >> Self::MTIMECMPH_OFFSET
+        (self.value.read_bits() & Self::MTIMECMPH_MASK) >> Self::MTIMECMPH_OFFSET
     }
 
-    /// Write MTIMECMPH field
+    /// Write **MTIMECMPH** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_mtimecmph(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::MTIMECMPH_MASK) | ((value << Self::MTIMECMPH_OFFSET) & Self::MTIMECMPH_MASK));
+        self.value.modify_bits(|r| (r & !Self::MTIMECMPH_MASK) | ((value << Self::MTIMECMPH_OFFSET) & Self::MTIMECMPH_MASK));
     }
 
 }
@@ -18321,13 +14895,13 @@ impl MtimecmphVal {
         Self { bits: 0xffffffff }
     }
 
-    /// Read MTIMECMPH [31:0]
+    /// Read **MTIMECMPH** `[31:0]`
     #[inline(always)]
     pub const fn mtimecmph(&self) -> u32 {
         (self.bits & Mtimecmph::MTIMECMPH_MASK) >> Mtimecmph::MTIMECMPH_OFFSET
     }
 
-    /// Set MTIMECMPH [31:0]
+    /// Set **MTIMECMPH** `[31:0]`
     #[inline(always)]
     pub const fn with_mtimecmph(self, value: u32) -> Self {
         Self {
@@ -18346,20 +14920,20 @@ impl Default for MtimecmphVal {
 impl Mtimecmph {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> MtimecmphVal {
-        MtimecmphVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> MtimecmphVal {
+        MtimecmphVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: MtimecmphVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: MtimecmphVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(MtimecmphVal) -> MtimecmphVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(MtimecmphVal) -> MtimecmphVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -18373,266 +14947,303 @@ impl Mtimecmph {
 ///
 /// ## Fields
 ///
-/// - **CLEAR_BALANCE** [28] (WO): Clear the running DC balance state of the TMDS encoders. This bit should be...
-/// - **PIX2_NOSHIFT** [27] (RW): When encoding two pixels's worth of symbols in one cycle (a read of a PEEK/...
-/// - **PIX_SHIFT** [26:24] (RW): Shift applied to the colour data register with each read of a POP alias reg...
-/// - **INTERLEAVE** [23] (RW): Enable lane interleaving for reads of PEEK_SINGLE/POP_SINGLE. When interlea...
-/// - **L2_NBITS** [20:18] (RW): Number of valid colour MSBs for lane 2 (1-8 bits, encoded as 0 through 7). ...
-/// - **L1_NBITS** [17:15] (RW): Number of valid colour MSBs for lane 1 (1-8 bits, encoded as 0 through 7). ...
-/// - **L0_NBITS** [14:12] (RW): Number of valid colour MSBs for lane 0 (1-8 bits, encoded as 0 through 7). ...
-/// - **L2_ROT** [11:8] (RW): Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order t...
-/// - **L1_ROT** [7:4] (RW): Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order t...
-/// - **L0_ROT** [3:0] (RW): Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order t...
+/// - **CLEAR_BALANCE** `[28]` (WO)
+///   Clear the running DC balance state of the TMDS encoders. This bit should be written once at the beginning of each scanline.
+/// - **PIX2_NOSHIFT** `[27]` (RW)
+///   When encoding two pixels's worth of symbols in one cycle (a read of a PEEK/POP_DOUBLE register), the second encoder sees a shifted version of the colour data register.
+///   This control disables that shift, so that both encoder layers see the same pixel data. This is used for pixel doubling.
+/// - **PIX_SHIFT** `[26:24]` (RW)
+///   Shift applied to the colour data register with each read of a POP alias register.
+///   Reading from the POP_SINGLE register, or reading from the POP_DOUBLE register with PIX2_NOSHIFT set (for pixel doubling), shifts by the indicated amount.
+///   Reading from a POP_DOUBLE register when PIX2_NOSHIFT is clear will shift by double the indicated amount. (Shift by 32 means no shift.)
+/// - **INTERLEAVE** `[23]` (RW)
+///   Enable lane interleaving for reads of PEEK_SINGLE/POP_SINGLE.
+///   When interleaving is disabled, each of the 3 symbols appears as a contiguous 10-bit field, with lane 0 being the least-significant and starting at bit 0 of the register.
+///   When interleaving is enabled, the symbols are packed into 5 chunks of 3 lanes times 2 bits (30 bits total). Each chunk contains two bits of a TMDS symbol per lane, with lane 0 being the least significant.
+/// - **L2_NBITS** `[20:18]` (RW)
+///   Number of valid colour MSBs for lane 2 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
+/// - **L1_NBITS** `[17:15]` (RW)
+///   Number of valid colour MSBs for lane 1 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
+/// - **L0_NBITS** `[14:12]` (RW)
+///   Number of valid colour MSBs for lane 0 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
+/// - **L2_ROT** `[11:8]` (RW)
+///   Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 2 (red) colour data aligned with the MSB of the 8-bit encoder input.
+///   For example, for RGB565 (red most significant), red is bits 15:11, so should be right-rotated by 8 bits to align with bits 7:3 of the encoder input.
+/// - **L1_ROT** `[7:4]` (RW)
+///   Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 1 (green) colour data aligned with the MSB of the 8-bit encoder input.
+///   For example, for RGB565, green is bits 10:5, so should be right-rotated by 3 bits to align with bits 7:2 of the encoder input.
+/// - **L0_ROT** `[3:0]` (RW)
+///   Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 0 (blue) colour data aligned with the MSB of the 8-bit encoder input.
+///   For example, for RGB565 (red most significant), blue is bits 4:0, so should be right-rotated by 13 to align with bits 7:3 of the encoder input.
 #[repr(transparent)]
 pub struct TmdsCtrl {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for TmdsCtrl {}
-unsafe impl Sync for TmdsCtrl {}
+impl core::ops::Deref for TmdsCtrl {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl TmdsCtrl {
     // ======== Field Constants ========
 
-    /// CLEAR_BALANCE - Clear the running DC balance state of the TMDS encoders. This bit should be...
-    /// Bits [28:28], mask 0x10000000
+    /// **CLEAR_BALANCE**
+    /// Clear the running DC balance state of the TMDS encoders. This bit should be written once at the beginning of each scanline.
+    /// Bits `[28:28]`, mask `0x10000000`
     pub const CLEAR_BALANCE_OFFSET: u32 = 28;
     pub const CLEAR_BALANCE_MASK: u32 = 0x10000000;
     pub const CLEAR_BALANCE: u32 = 1 << 28;
 
-    /// PIX2_NOSHIFT - When encoding two pixels's worth of symbols in one cycle (a read of a PEEK/...
-    /// Bits [27:27], mask 0x08000000
+    /// **PIX2_NOSHIFT**
+    /// When encoding two pixels's worth of symbols in one cycle (a read of a PEEK/POP_DOUBLE register), the second encoder sees a shifted version of the colour data register.
+    /// This control disables that shift, so that both encoder layers see the same pixel data. This is used for pixel doubling.
+    /// Bits `[27:27]`, mask `0x08000000`
     pub const PIX2_NOSHIFT_OFFSET: u32 = 27;
     pub const PIX2_NOSHIFT_MASK: u32 = 0x08000000;
     pub const PIX2_NOSHIFT: u32 = 1 << 27;
 
-    /// PIX_SHIFT - Shift applied to the colour data register with each read of a POP alias reg...
-    /// Bits [26:24], mask 0x07000000
+    /// **PIX_SHIFT**
+    /// Shift applied to the colour data register with each read of a POP alias register.
+    /// Reading from the POP_SINGLE register, or reading from the POP_DOUBLE register with PIX2_NOSHIFT set (for pixel doubling), shifts by the indicated amount.
+    /// Reading from a POP_DOUBLE register when PIX2_NOSHIFT is clear will shift by double the indicated amount. (Shift by 32 means no shift.)
+    /// Bits `[26:24]`, mask `0x07000000`
     pub const PIX_SHIFT_OFFSET: u32 = 24;
     pub const PIX_SHIFT_MASK: u32 = 0x07000000;
-    /// 0 = 0: Do not shift the colour data register.
+    /// 0 = 0
+    /// Do not shift the colour data register.
     pub const PIX_SHIFT_0: u32 = 0 << 24;
-    /// 1 = 1: Shift the colour data register by 1 bit
+    pub const PIX_SHIFT_0_VAL: u32 = 0;
+    /// 1 = 1
+    /// Shift the colour data register by 1 bit
     pub const PIX_SHIFT_1: u32 = 1 << 24;
-    /// 2 = 2: Shift the colour data register by 2 bits
+    pub const PIX_SHIFT_1_VAL: u32 = 1;
+    /// 2 = 2
+    /// Shift the colour data register by 2 bits
     pub const PIX_SHIFT_2: u32 = 2 << 24;
-    /// 4 = 3: Shift the colour data register by 4 bits
+    pub const PIX_SHIFT_2_VAL: u32 = 2;
+    /// 4 = 3
+    /// Shift the colour data register by 4 bits
     pub const PIX_SHIFT_4: u32 = 3 << 24;
-    /// 8 = 4: Shift the colour data register by 8 bits
+    pub const PIX_SHIFT_4_VAL: u32 = 3;
+    /// 8 = 4
+    /// Shift the colour data register by 8 bits
     pub const PIX_SHIFT_8: u32 = 4 << 24;
-    /// 16 = 5: Shift the colour data register by 16 bits
+    pub const PIX_SHIFT_8_VAL: u32 = 4;
+    /// 16 = 5
+    /// Shift the colour data register by 16 bits
     pub const PIX_SHIFT_16: u32 = 5 << 24;
+    pub const PIX_SHIFT_16_VAL: u32 = 5;
 
-    /// INTERLEAVE - Enable lane interleaving for reads of PEEK_SINGLE/POP_SINGLE. When interlea...
-    /// Bits [23:23], mask 0x00800000
+    /// **INTERLEAVE**
+    /// Enable lane interleaving for reads of PEEK_SINGLE/POP_SINGLE.
+    /// When interleaving is disabled, each of the 3 symbols appears as a contiguous 10-bit field, with lane 0 being the least-significant and starting at bit 0 of the register.
+    /// When interleaving is enabled, the symbols are packed into 5 chunks of 3 lanes times 2 bits (30 bits total). Each chunk contains two bits of a TMDS symbol per lane, with lane 0 being the least significant.
+    /// Bits `[23:23]`, mask `0x00800000`
     pub const INTERLEAVE_OFFSET: u32 = 23;
     pub const INTERLEAVE_MASK: u32 = 0x00800000;
     pub const INTERLEAVE: u32 = 1 << 23;
 
-    /// L2_NBITS - Number of valid colour MSBs for lane 2 (1-8 bits, encoded as 0 through 7). ...
-    /// Bits [20:18], mask 0x001c0000
+    /// **L2_NBITS**
+    /// Number of valid colour MSBs for lane 2 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
+    /// Bits `[20:18]`, mask `0x001c0000`
     pub const L2_NBITS_OFFSET: u32 = 18;
     pub const L2_NBITS_MASK: u32 = 0x001c0000;
 
-    /// L1_NBITS - Number of valid colour MSBs for lane 1 (1-8 bits, encoded as 0 through 7). ...
-    /// Bits [17:15], mask 0x00038000
+    /// **L1_NBITS**
+    /// Number of valid colour MSBs for lane 1 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
+    /// Bits `[17:15]`, mask `0x00038000`
     pub const L1_NBITS_OFFSET: u32 = 15;
     pub const L1_NBITS_MASK: u32 = 0x00038000;
 
-    /// L0_NBITS - Number of valid colour MSBs for lane 0 (1-8 bits, encoded as 0 through 7). ...
-    /// Bits [14:12], mask 0x00007000
+    /// **L0_NBITS**
+    /// Number of valid colour MSBs for lane 0 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
+    /// Bits `[14:12]`, mask `0x00007000`
     pub const L0_NBITS_OFFSET: u32 = 12;
     pub const L0_NBITS_MASK: u32 = 0x00007000;
 
-    /// L2_ROT - Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order t...
-    /// Bits [11:8], mask 0x00000f00
+    /// **L2_ROT**
+    /// Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 2 (red) colour data aligned with the MSB of the 8-bit encoder input.
+    /// For example, for RGB565 (red most significant), red is bits 15:11, so should be right-rotated by 8 bits to align with bits 7:3 of the encoder input.
+    /// Bits `[11:8]`, mask `0x00000f00`
     pub const L2_ROT_OFFSET: u32 = 8;
     pub const L2_ROT_MASK: u32 = 0x00000f00;
 
-    /// L1_ROT - Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order t...
-    /// Bits [7:4], mask 0x000000f0
+    /// **L1_ROT**
+    /// Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 1 (green) colour data aligned with the MSB of the 8-bit encoder input.
+    /// For example, for RGB565, green is bits 10:5, so should be right-rotated by 3 bits to align with bits 7:2 of the encoder input.
+    /// Bits `[7:4]`, mask `0x000000f0`
     pub const L1_ROT_OFFSET: u32 = 4;
     pub const L1_ROT_MASK: u32 = 0x000000f0;
 
-    /// L0_ROT - Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order t...
-    /// Bits [3:0], mask 0x0000000f
+    /// **L0_ROT**
+    /// Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 0 (blue) colour data aligned with the MSB of the 8-bit encoder input.
+    /// For example, for RGB565 (red most significant), blue is bits 4:0, so should be right-rotated by 13 to align with bits 7:3 of the encoder input.
+    /// Bits `[3:0]`, mask `0x0000000f`
     pub const L0_ROT_OFFSET: u32 = 0;
     pub const L0_ROT_MASK: u32 = 0x0000000f;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **CLEAR_BALANCE** [28:28]: Clear the running DC balance state of the TMDS encoders. This bit should be...
-    /// Trigger CLEAR_BALANCE (write-only)
+    /// **CLEAR_BALANCE** `[28]` (WO)
+    /// Clear the running DC balance state of the TMDS encoders. This bit should be written once at the beginning of each scanline.
+    /// Trigger **CLEAR_BALANCE** (WO)
+    /// Clear the running DC balance state of the TMDS encoders. This bit should be written once at the beginning of each scanline.
     #[inline(always)]
     pub fn trigger_clear_balance(&self) {
-        self.write_bits(Self::CLEAR_BALANCE_MASK);
+        self.value.write_bits(Self::CLEAR_BALANCE_MASK);
     }
 
-    /// **PIX2_NOSHIFT** [27:27]: When encoding two pixels's worth of symbols in one cycle (a read of a PEEK/...
+    /// **PIX2_NOSHIFT** `[27]` (RW)
+    /// When encoding two pixels's worth of symbols in one cycle (a read of a PEEK/POP_DOUBLE register), the second encoder sees a shifted version of the colour data register.
+    /// This control disables that shift, so that both encoder layers see the same pixel data. This is used for pixel doubling.
     #[inline(always)]
     pub fn pix2_noshift(&self) -> bool {
-        (self.read_bits() & Self::PIX2_NOSHIFT_MASK) != 0
+        (self.value.read_bits() & Self::PIX2_NOSHIFT_MASK) != 0
     }
 
-    /// Set PIX2_NOSHIFT bit
+    /// Set PIX2_NOSHIFT bit atomically (RW)
     #[inline(always)]
     pub fn set_pix2_noshift(&self) {
-        self.set_bits(Self::PIX2_NOSHIFT_MASK);
+        self.value.set_bits(Self::PIX2_NOSHIFT_MASK);
     }
 
-    /// Clear PIX2_NOSHIFT bit
+    /// Clear PIX2_NOSHIFT bit atomically (RW)
     #[inline(always)]
     pub fn clr_pix2_noshift(&self) {
-        self.clr_bits(Self::PIX2_NOSHIFT_MASK);
+        self.value.clr_bits(Self::PIX2_NOSHIFT_MASK);
     }
 
-    /// **PIX_SHIFT** [26:24]: Shift applied to the colour data register with each read of a POP alias reg...
+    /// **PIX_SHIFT** `[26:24]` (RW)
+    /// Shift applied to the colour data register with each read of a POP alias register.
+    /// Reading from the POP_SINGLE register, or reading from the POP_DOUBLE register with PIX2_NOSHIFT set (for pixel doubling), shifts by the indicated amount.
+    /// Reading from a POP_DOUBLE register when PIX2_NOSHIFT is clear will shift by double the indicated amount. (Shift by 32 means no shift.)
     #[inline(always)]
     pub fn pix_shift(&self) -> u32 {
-        (self.read_bits() & Self::PIX_SHIFT_MASK) >> Self::PIX_SHIFT_OFFSET
+        (self.value.read_bits() & Self::PIX_SHIFT_MASK) >> Self::PIX_SHIFT_OFFSET
     }
 
-    /// Write PIX_SHIFT field
+    /// Write **PIX_SHIFT** `[26:24]` (RW)
+    /// Shift applied to the colour data register with each read of a POP alias register.
+    /// Reading from the POP_SINGLE register, or reading from the POP_DOUBLE register with PIX2_NOSHIFT set (for pixel doubling), shifts by the indicated amount.
+    /// Reading from a POP_DOUBLE register when PIX2_NOSHIFT is clear will shift by double the indicated amount. (Shift by 32 means no shift.)
     #[inline(always)]
     pub fn write_pix_shift(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::PIX_SHIFT_MASK) | ((value << Self::PIX_SHIFT_OFFSET) & Self::PIX_SHIFT_MASK));
+        self.value.modify_bits(|r| (r & !Self::PIX_SHIFT_MASK) | ((value << Self::PIX_SHIFT_OFFSET) & Self::PIX_SHIFT_MASK));
     }
 
-    /// **INTERLEAVE** [23:23]: Enable lane interleaving for reads of PEEK_SINGLE/POP_SINGLE. When interlea...
+    /// **INTERLEAVE** `[23]` (RW)
+    /// Enable lane interleaving for reads of PEEK_SINGLE/POP_SINGLE.
+    /// When interleaving is disabled, each of the 3 symbols appears as a contiguous 10-bit field, with lane 0 being the least-significant and starting at bit 0 of the register.
+    /// When interleaving is enabled, the symbols are packed into 5 chunks of 3 lanes times 2 bits (30 bits total). Each chunk contains two bits of a TMDS symbol per lane, with lane 0 being the least significant.
     #[inline(always)]
     pub fn interleave(&self) -> bool {
-        (self.read_bits() & Self::INTERLEAVE_MASK) != 0
+        (self.value.read_bits() & Self::INTERLEAVE_MASK) != 0
     }
 
-    /// Set INTERLEAVE bit
+    /// Set INTERLEAVE bit atomically (RW)
     #[inline(always)]
     pub fn set_interleave(&self) {
-        self.set_bits(Self::INTERLEAVE_MASK);
+        self.value.set_bits(Self::INTERLEAVE_MASK);
     }
 
-    /// Clear INTERLEAVE bit
+    /// Clear INTERLEAVE bit atomically (RW)
     #[inline(always)]
     pub fn clr_interleave(&self) {
-        self.clr_bits(Self::INTERLEAVE_MASK);
+        self.value.clr_bits(Self::INTERLEAVE_MASK);
     }
 
-    /// **L2_NBITS** [20:18]: Number of valid colour MSBs for lane 2 (1-8 bits, encoded as 0 through 7). ...
+    /// **L2_NBITS** `[20:18]` (RW)
+    /// Number of valid colour MSBs for lane 2 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
     #[inline(always)]
     pub fn l2_nbits(&self) -> u32 {
-        (self.read_bits() & Self::L2_NBITS_MASK) >> Self::L2_NBITS_OFFSET
+        (self.value.read_bits() & Self::L2_NBITS_MASK) >> Self::L2_NBITS_OFFSET
     }
 
-    /// Write L2_NBITS field
+    /// Write **L2_NBITS** `[20:18]` (RW)
+    /// Number of valid colour MSBs for lane 2 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
     #[inline(always)]
     pub fn write_l2_nbits(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::L2_NBITS_MASK) | ((value << Self::L2_NBITS_OFFSET) & Self::L2_NBITS_MASK));
+        self.value.modify_bits(|r| (r & !Self::L2_NBITS_MASK) | ((value << Self::L2_NBITS_OFFSET) & Self::L2_NBITS_MASK));
     }
 
-    /// **L1_NBITS** [17:15]: Number of valid colour MSBs for lane 1 (1-8 bits, encoded as 0 through 7). ...
+    /// **L1_NBITS** `[17:15]` (RW)
+    /// Number of valid colour MSBs for lane 1 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
     #[inline(always)]
     pub fn l1_nbits(&self) -> u32 {
-        (self.read_bits() & Self::L1_NBITS_MASK) >> Self::L1_NBITS_OFFSET
+        (self.value.read_bits() & Self::L1_NBITS_MASK) >> Self::L1_NBITS_OFFSET
     }
 
-    /// Write L1_NBITS field
+    /// Write **L1_NBITS** `[17:15]` (RW)
+    /// Number of valid colour MSBs for lane 1 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
     #[inline(always)]
     pub fn write_l1_nbits(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::L1_NBITS_MASK) | ((value << Self::L1_NBITS_OFFSET) & Self::L1_NBITS_MASK));
+        self.value.modify_bits(|r| (r & !Self::L1_NBITS_MASK) | ((value << Self::L1_NBITS_OFFSET) & Self::L1_NBITS_MASK));
     }
 
-    /// **L0_NBITS** [14:12]: Number of valid colour MSBs for lane 0 (1-8 bits, encoded as 0 through 7). ...
+    /// **L0_NBITS** `[14:12]` (RW)
+    /// Number of valid colour MSBs for lane 0 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
     #[inline(always)]
     pub fn l0_nbits(&self) -> u32 {
-        (self.read_bits() & Self::L0_NBITS_MASK) >> Self::L0_NBITS_OFFSET
+        (self.value.read_bits() & Self::L0_NBITS_MASK) >> Self::L0_NBITS_OFFSET
     }
 
-    /// Write L0_NBITS field
+    /// Write **L0_NBITS** `[14:12]` (RW)
+    /// Number of valid colour MSBs for lane 0 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
     #[inline(always)]
     pub fn write_l0_nbits(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::L0_NBITS_MASK) | ((value << Self::L0_NBITS_OFFSET) & Self::L0_NBITS_MASK));
+        self.value.modify_bits(|r| (r & !Self::L0_NBITS_MASK) | ((value << Self::L0_NBITS_OFFSET) & Self::L0_NBITS_MASK));
     }
 
-    /// **L2_ROT** [11:8]: Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order t...
+    /// **L2_ROT** `[11:8]` (RW)
+    /// Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 2 (red) colour data aligned with the MSB of the 8-bit encoder input.
+    /// For example, for RGB565 (red most significant), red is bits 15:11, so should be right-rotated by 8 bits to align with bits 7:3 of the encoder input.
     #[inline(always)]
     pub fn l2_rot(&self) -> u32 {
-        (self.read_bits() & Self::L2_ROT_MASK) >> Self::L2_ROT_OFFSET
+        (self.value.read_bits() & Self::L2_ROT_MASK) >> Self::L2_ROT_OFFSET
     }
 
-    /// Write L2_ROT field
+    /// Write **L2_ROT** `[11:8]` (RW)
+    /// Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 2 (red) colour data aligned with the MSB of the 8-bit encoder input.
+    /// For example, for RGB565 (red most significant), red is bits 15:11, so should be right-rotated by 8 bits to align with bits 7:3 of the encoder input.
     #[inline(always)]
     pub fn write_l2_rot(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::L2_ROT_MASK) | ((value << Self::L2_ROT_OFFSET) & Self::L2_ROT_MASK));
+        self.value.modify_bits(|r| (r & !Self::L2_ROT_MASK) | ((value << Self::L2_ROT_OFFSET) & Self::L2_ROT_MASK));
     }
 
-    /// **L1_ROT** [7:4]: Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order t...
+    /// **L1_ROT** `[7:4]` (RW)
+    /// Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 1 (green) colour data aligned with the MSB of the 8-bit encoder input.
+    /// For example, for RGB565, green is bits 10:5, so should be right-rotated by 3 bits to align with bits 7:2 of the encoder input.
     #[inline(always)]
     pub fn l1_rot(&self) -> u32 {
-        (self.read_bits() & Self::L1_ROT_MASK) >> Self::L1_ROT_OFFSET
+        (self.value.read_bits() & Self::L1_ROT_MASK) >> Self::L1_ROT_OFFSET
     }
 
-    /// Write L1_ROT field
+    /// Write **L1_ROT** `[7:4]` (RW)
+    /// Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 1 (green) colour data aligned with the MSB of the 8-bit encoder input.
+    /// For example, for RGB565, green is bits 10:5, so should be right-rotated by 3 bits to align with bits 7:2 of the encoder input.
     #[inline(always)]
     pub fn write_l1_rot(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::L1_ROT_MASK) | ((value << Self::L1_ROT_OFFSET) & Self::L1_ROT_MASK));
+        self.value.modify_bits(|r| (r & !Self::L1_ROT_MASK) | ((value << Self::L1_ROT_OFFSET) & Self::L1_ROT_MASK));
     }
 
-    /// **L0_ROT** [3:0]: Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order t...
+    /// **L0_ROT** `[3:0]` (RW)
+    /// Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 0 (blue) colour data aligned with the MSB of the 8-bit encoder input.
+    /// For example, for RGB565 (red most significant), blue is bits 4:0, so should be right-rotated by 13 to align with bits 7:3 of the encoder input.
     #[inline(always)]
     pub fn l0_rot(&self) -> u32 {
-        (self.read_bits() & Self::L0_ROT_MASK) >> Self::L0_ROT_OFFSET
+        (self.value.read_bits() & Self::L0_ROT_MASK) >> Self::L0_ROT_OFFSET
     }
 
-    /// Write L0_ROT field
+    /// Write **L0_ROT** `[3:0]` (RW)
+    /// Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 0 (blue) colour data aligned with the MSB of the 8-bit encoder input.
+    /// For example, for RGB565 (red most significant), blue is bits 4:0, so should be right-rotated by 13 to align with bits 7:3 of the encoder input.
     #[inline(always)]
     pub fn write_l0_rot(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::L0_ROT_MASK) | ((value << Self::L0_ROT_OFFSET) & Self::L0_ROT_MASK));
+        self.value.modify_bits(|r| (r & !Self::L0_ROT_MASK) | ((value << Self::L0_ROT_OFFSET) & Self::L0_ROT_MASK));
     }
 
 }
@@ -18665,61 +15276,79 @@ impl TmdsCtrlVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read PIX2_NOSHIFT [27:27]: When encoding two pixels's worth of symbols in one cycle (a read of a PEEK/...
+    /// Read **PIX2_NOSHIFT** `[27:27]`
+    /// When encoding two pixels's worth of symbols in one cycle (a read of a PEEK/POP_DOUBLE register), the second encoder sees a shifted version of the colour data register.
+    /// This control disables that shift, so that both encoder layers see the same pixel data. This is used for pixel doubling.
     #[inline(always)]
     pub const fn pix2_noshift(&self) -> bool {
         (self.bits & TmdsCtrl::PIX2_NOSHIFT_MASK) != 0
     }
 
-    /// Read PIX_SHIFT [26:24]: Shift applied to the colour data register with each read of a POP alias reg...
+    /// Read **PIX_SHIFT** `[26:24]`
+    /// Shift applied to the colour data register with each read of a POP alias register.
+    /// Reading from the POP_SINGLE register, or reading from the POP_DOUBLE register with PIX2_NOSHIFT set (for pixel doubling), shifts by the indicated amount.
+    /// Reading from a POP_DOUBLE register when PIX2_NOSHIFT is clear will shift by double the indicated amount. (Shift by 32 means no shift.)
     #[inline(always)]
     pub const fn pix_shift(&self) -> u32 {
         (self.bits & TmdsCtrl::PIX_SHIFT_MASK) >> TmdsCtrl::PIX_SHIFT_OFFSET
     }
 
-    /// Read INTERLEAVE [23:23]: Enable lane interleaving for reads of PEEK_SINGLE/POP_SINGLE. When interlea...
+    /// Read **INTERLEAVE** `[23:23]`
+    /// Enable lane interleaving for reads of PEEK_SINGLE/POP_SINGLE.
+    /// When interleaving is disabled, each of the 3 symbols appears as a contiguous 10-bit field, with lane 0 being the least-significant and starting at bit 0 of the register.
+    /// When interleaving is enabled, the symbols are packed into 5 chunks of 3 lanes times 2 bits (30 bits total). Each chunk contains two bits of a TMDS symbol per lane, with lane 0 being the least significant.
     #[inline(always)]
     pub const fn interleave(&self) -> bool {
         (self.bits & TmdsCtrl::INTERLEAVE_MASK) != 0
     }
 
-    /// Read L2_NBITS [20:18]: Number of valid colour MSBs for lane 2 (1-8 bits, encoded as 0 through 7). ...
+    /// Read **L2_NBITS** `[20:18]`
+    /// Number of valid colour MSBs for lane 2 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
     #[inline(always)]
     pub const fn l2_nbits(&self) -> u32 {
         (self.bits & TmdsCtrl::L2_NBITS_MASK) >> TmdsCtrl::L2_NBITS_OFFSET
     }
 
-    /// Read L1_NBITS [17:15]: Number of valid colour MSBs for lane 1 (1-8 bits, encoded as 0 through 7). ...
+    /// Read **L1_NBITS** `[17:15]`
+    /// Number of valid colour MSBs for lane 1 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
     #[inline(always)]
     pub const fn l1_nbits(&self) -> u32 {
         (self.bits & TmdsCtrl::L1_NBITS_MASK) >> TmdsCtrl::L1_NBITS_OFFSET
     }
 
-    /// Read L0_NBITS [14:12]: Number of valid colour MSBs for lane 0 (1-8 bits, encoded as 0 through 7). ...
+    /// Read **L0_NBITS** `[14:12]`
+    /// Number of valid colour MSBs for lane 0 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
     #[inline(always)]
     pub const fn l0_nbits(&self) -> u32 {
         (self.bits & TmdsCtrl::L0_NBITS_MASK) >> TmdsCtrl::L0_NBITS_OFFSET
     }
 
-    /// Read L2_ROT [11:8]: Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order t...
+    /// Read **L2_ROT** `[11:8]`
+    /// Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 2 (red) colour data aligned with the MSB of the 8-bit encoder input.
+    /// For example, for RGB565 (red most significant), red is bits 15:11, so should be right-rotated by 8 bits to align with bits 7:3 of the encoder input.
     #[inline(always)]
     pub const fn l2_rot(&self) -> u32 {
         (self.bits & TmdsCtrl::L2_ROT_MASK) >> TmdsCtrl::L2_ROT_OFFSET
     }
 
-    /// Read L1_ROT [7:4]: Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order t...
+    /// Read **L1_ROT** `[7:4]`
+    /// Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 1 (green) colour data aligned with the MSB of the 8-bit encoder input.
+    /// For example, for RGB565, green is bits 10:5, so should be right-rotated by 3 bits to align with bits 7:2 of the encoder input.
     #[inline(always)]
     pub const fn l1_rot(&self) -> u32 {
         (self.bits & TmdsCtrl::L1_ROT_MASK) >> TmdsCtrl::L1_ROT_OFFSET
     }
 
-    /// Read L0_ROT [3:0]: Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order t...
+    /// Read **L0_ROT** `[3:0]`
+    /// Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 0 (blue) colour data aligned with the MSB of the 8-bit encoder input.
+    /// For example, for RGB565 (red most significant), blue is bits 4:0, so should be right-rotated by 13 to align with bits 7:3 of the encoder input.
     #[inline(always)]
     pub const fn l0_rot(&self) -> u32 {
         (self.bits & TmdsCtrl::L0_ROT_MASK) >> TmdsCtrl::L0_ROT_OFFSET
     }
 
-    /// Set CLEAR_BALANCE [28:28]: Clear the running DC balance state of the TMDS encoders. This bit should be...
+    /// Set **CLEAR_BALANCE** `[28:28]`
+    /// Clear the running DC balance state of the TMDS encoders. This bit should be written once at the beginning of each scanline.
     #[inline(always)]
     pub const fn with_clear_balance(self, value: bool) -> Self {
         Self {
@@ -18731,7 +15360,9 @@ impl TmdsCtrlVal {
         }
     }
 
-    /// Set PIX2_NOSHIFT [27:27]: When encoding two pixels's worth of symbols in one cycle (a read of a PEEK/...
+    /// Set **PIX2_NOSHIFT** `[27:27]`
+    /// When encoding two pixels's worth of symbols in one cycle (a read of a PEEK/POP_DOUBLE register), the second encoder sees a shifted version of the colour data register.
+    /// This control disables that shift, so that both encoder layers see the same pixel data. This is used for pixel doubling.
     #[inline(always)]
     pub const fn with_pix2_noshift(self, value: bool) -> Self {
         Self {
@@ -18743,7 +15374,10 @@ impl TmdsCtrlVal {
         }
     }
 
-    /// Set PIX_SHIFT [26:24]: Shift applied to the colour data register with each read of a POP alias reg...
+    /// Set **PIX_SHIFT** `[26:24]`
+    /// Shift applied to the colour data register with each read of a POP alias register.
+    /// Reading from the POP_SINGLE register, or reading from the POP_DOUBLE register with PIX2_NOSHIFT set (for pixel doubling), shifts by the indicated amount.
+    /// Reading from a POP_DOUBLE register when PIX2_NOSHIFT is clear will shift by double the indicated amount. (Shift by 32 means no shift.)
     #[inline(always)]
     pub const fn with_pix_shift(self, value: u32) -> Self {
         Self {
@@ -18751,7 +15385,10 @@ impl TmdsCtrlVal {
         }
     }
 
-    /// Set INTERLEAVE [23:23]: Enable lane interleaving for reads of PEEK_SINGLE/POP_SINGLE. When interlea...
+    /// Set **INTERLEAVE** `[23:23]`
+    /// Enable lane interleaving for reads of PEEK_SINGLE/POP_SINGLE.
+    /// When interleaving is disabled, each of the 3 symbols appears as a contiguous 10-bit field, with lane 0 being the least-significant and starting at bit 0 of the register.
+    /// When interleaving is enabled, the symbols are packed into 5 chunks of 3 lanes times 2 bits (30 bits total). Each chunk contains two bits of a TMDS symbol per lane, with lane 0 being the least significant.
     #[inline(always)]
     pub const fn with_interleave(self, value: bool) -> Self {
         Self {
@@ -18763,7 +15400,8 @@ impl TmdsCtrlVal {
         }
     }
 
-    /// Set L2_NBITS [20:18]: Number of valid colour MSBs for lane 2 (1-8 bits, encoded as 0 through 7). ...
+    /// Set **L2_NBITS** `[20:18]`
+    /// Number of valid colour MSBs for lane 2 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
     #[inline(always)]
     pub const fn with_l2_nbits(self, value: u32) -> Self {
         Self {
@@ -18771,7 +15409,8 @@ impl TmdsCtrlVal {
         }
     }
 
-    /// Set L1_NBITS [17:15]: Number of valid colour MSBs for lane 1 (1-8 bits, encoded as 0 through 7). ...
+    /// Set **L1_NBITS** `[17:15]`
+    /// Number of valid colour MSBs for lane 1 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
     #[inline(always)]
     pub const fn with_l1_nbits(self, value: u32) -> Self {
         Self {
@@ -18779,7 +15418,8 @@ impl TmdsCtrlVal {
         }
     }
 
-    /// Set L0_NBITS [14:12]: Number of valid colour MSBs for lane 0 (1-8 bits, encoded as 0 through 7). ...
+    /// Set **L0_NBITS** `[14:12]`
+    /// Number of valid colour MSBs for lane 0 (1-8 bits, encoded as 0 through 7). Remaining LSBs are masked to 0 after the rotate.
     #[inline(always)]
     pub const fn with_l0_nbits(self, value: u32) -> Self {
         Self {
@@ -18787,7 +15427,9 @@ impl TmdsCtrlVal {
         }
     }
 
-    /// Set L2_ROT [11:8]: Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order t...
+    /// Set **L2_ROT** `[11:8]`
+    /// Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 2 (red) colour data aligned with the MSB of the 8-bit encoder input.
+    /// For example, for RGB565 (red most significant), red is bits 15:11, so should be right-rotated by 8 bits to align with bits 7:3 of the encoder input.
     #[inline(always)]
     pub const fn with_l2_rot(self, value: u32) -> Self {
         Self {
@@ -18795,7 +15437,9 @@ impl TmdsCtrlVal {
         }
     }
 
-    /// Set L1_ROT [7:4]: Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order t...
+    /// Set **L1_ROT** `[7:4]`
+    /// Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 1 (green) colour data aligned with the MSB of the 8-bit encoder input.
+    /// For example, for RGB565, green is bits 10:5, so should be right-rotated by 3 bits to align with bits 7:2 of the encoder input.
     #[inline(always)]
     pub const fn with_l1_rot(self, value: u32) -> Self {
         Self {
@@ -18803,7 +15447,9 @@ impl TmdsCtrlVal {
         }
     }
 
-    /// Set L0_ROT [3:0]: Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order t...
+    /// Set **L0_ROT** `[3:0]`
+    /// Right-rotate the 16 LSBs of the colour accumulator by 0-15 bits, in order to get the MSB of the lane 0 (blue) colour data aligned with the MSB of the 8-bit encoder input.
+    /// For example, for RGB565 (red most significant), blue is bits 4:0, so should be right-rotated by 13 to align with bits 7:3 of the encoder input.
     #[inline(always)]
     pub const fn with_l0_rot(self, value: u32) -> Self {
         Self {
@@ -18822,20 +15468,20 @@ impl Default for TmdsCtrlVal {
 impl TmdsCtrl {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> TmdsCtrlVal {
-        TmdsCtrlVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> TmdsCtrlVal {
+        TmdsCtrlVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: TmdsCtrlVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: TmdsCtrlVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(TmdsCtrlVal) -> TmdsCtrlVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(TmdsCtrlVal) -> TmdsCtrlVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -18849,76 +15495,35 @@ impl TmdsCtrl {
 ///
 /// ## Fields
 ///
-/// - **TMDS_WDATA** [31:0] (WO): 
+/// - **TMDS_WDATA** `[31:0]` (WO)
 #[repr(transparent)]
 pub struct TmdsWdata {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for TmdsWdata {}
-unsafe impl Sync for TmdsWdata {}
+impl core::ops::Deref for TmdsWdata {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl TmdsWdata {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **TMDS_WDATA**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const TMDS_WDATA_OFFSET: u32 = 0;
     pub const TMDS_WDATA_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **TMDS_WDATA** [31:0]
-    /// Write TMDS_WDATA field (write-only)
+    /// **TMDS_WDATA** `[31:0]` (WO)
+    /// Write **TMDS_WDATA** `[31:0]` (WO)
     #[inline(always)]
     pub fn write_tmds_wdata(&self, value: u32) {
-        self.write_bits((value << Self::TMDS_WDATA_OFFSET) & Self::TMDS_WDATA_MASK);
+        self.value.write_bits((value << Self::TMDS_WDATA_OFFSET) & Self::TMDS_WDATA_MASK);
     }
 
 }
@@ -18951,7 +15556,7 @@ impl TmdsWdataVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Set TMDS_WDATA [31:0]
+    /// Set **TMDS_WDATA** `[31:0]`
     #[inline(always)]
     pub const fn with_tmds_wdata(self, value: u32) -> Self {
         Self {
@@ -18970,105 +15575,62 @@ impl Default for TmdsWdataVal {
 impl TmdsWdata {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> TmdsWdataVal {
-        TmdsWdataVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> TmdsWdataVal {
+        TmdsWdataVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: TmdsWdataVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: TmdsWdataVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(TmdsWdataVal) -> TmdsWdataVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(TmdsWdataVal) -> TmdsWdataVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// TMDS_PEEK_SINGLE Register
 ///
-/// Get the encoding of one pixel's worth of colour data, packed into a 32-bit
-/// value (3x10-bit symbols). The PEEK alias does not shift the colour register
-/// when read, but still advances the running DC balance state of each encoder.
-/// This is useful for pixel doubling.
+/// Get the encoding of one pixel's worth of colour data, packed into a 32-bit value (3x10-bit symbols).
+/// The PEEK alias does not shift the colour register when read, but still advances the running DC balance state of each encoder. This is useful for pixel doubling.
 ///
 /// Address offset: 0x01c8
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **TMDS_PEEK_SINGLE** [31:0] (RO): 
+/// - **TMDS_PEEK_SINGLE** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct TmdsPeekSingle {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for TmdsPeekSingle {}
-unsafe impl Sync for TmdsPeekSingle {}
+impl core::ops::Deref for TmdsPeekSingle {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl TmdsPeekSingle {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **TMDS_PEEK_SINGLE**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const TMDS_PEEK_SINGLE_OFFSET: u32 = 0;
     pub const TMDS_PEEK_SINGLE_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **TMDS_PEEK_SINGLE** [31:0]
+    /// **TMDS_PEEK_SINGLE** `[31:0]` (RO)
     #[inline(always)]
     pub fn tmds_peek_single(&self) -> u32 {
-        (self.read_bits() & Self::TMDS_PEEK_SINGLE_MASK) >> Self::TMDS_PEEK_SINGLE_OFFSET
+        (self.value.read_bits() & Self::TMDS_PEEK_SINGLE_MASK) >> Self::TMDS_PEEK_SINGLE_OFFSET
     }
 
 }
@@ -19101,7 +15663,7 @@ impl TmdsPeekSingleVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read TMDS_PEEK_SINGLE [31:0]
+    /// Read **TMDS_PEEK_SINGLE** `[31:0]`
     #[inline(always)]
     pub const fn tmds_peek_single(&self) -> u32 {
         (self.bits & TmdsPeekSingle::TMDS_PEEK_SINGLE_MASK) >> TmdsPeekSingle::TMDS_PEEK_SINGLE_OFFSET
@@ -19118,107 +15680,62 @@ impl Default for TmdsPeekSingleVal {
 impl TmdsPeekSingle {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> TmdsPeekSingleVal {
-        TmdsPeekSingleVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> TmdsPeekSingleVal {
+        TmdsPeekSingleVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: TmdsPeekSingleVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: TmdsPeekSingleVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(TmdsPeekSingleVal) -> TmdsPeekSingleVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(TmdsPeekSingleVal) -> TmdsPeekSingleVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// TMDS_POP_SINGLE Register
 ///
-/// Get the encoding of one pixel's worth of colour data, packed into a 32-bit
-/// value. The packing is 5 chunks of 3 lanes times 2 bits (30 bits total). Each
-/// chunk contains two bits of a TMDS symbol per lane. This format is intended
-/// for shifting out with the HSTX peripheral on RP2350. The POP alias shifts
-/// the colour register when read, as well as advancing the running DC balance
-/// state of each encoder.
+/// Get the encoding of one pixel's worth of colour data, packed into a 32-bit value. The packing is 5 chunks of 3 lanes times 2 bits (30 bits total). Each chunk contains two bits of a TMDS symbol per lane. This format is intended for shifting out with the HSTX peripheral on RP2350.
+/// The POP alias shifts the colour register when read, as well as advancing the running DC balance state of each encoder.
 ///
 /// Address offset: 0x01cc
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **TMDS_POP_SINGLE** [31:0] (RO): 
+/// - **TMDS_POP_SINGLE** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct TmdsPopSingle {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for TmdsPopSingle {}
-unsafe impl Sync for TmdsPopSingle {}
+impl core::ops::Deref for TmdsPopSingle {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl TmdsPopSingle {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **TMDS_POP_SINGLE**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const TMDS_POP_SINGLE_OFFSET: u32 = 0;
     pub const TMDS_POP_SINGLE_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **TMDS_POP_SINGLE** [31:0]
+    /// **TMDS_POP_SINGLE** `[31:0]` (RO)
     #[inline(always)]
     pub fn tmds_pop_single(&self) -> u32 {
-        (self.read_bits() & Self::TMDS_POP_SINGLE_MASK) >> Self::TMDS_POP_SINGLE_OFFSET
+        (self.value.read_bits() & Self::TMDS_POP_SINGLE_MASK) >> Self::TMDS_POP_SINGLE_OFFSET
     }
 
 }
@@ -19251,7 +15768,7 @@ impl TmdsPopSingleVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read TMDS_POP_SINGLE [31:0]
+    /// Read **TMDS_POP_SINGLE** `[31:0]`
     #[inline(always)]
     pub const fn tmds_pop_single(&self) -> u32 {
         (self.bits & TmdsPopSingle::TMDS_POP_SINGLE_MASK) >> TmdsPopSingle::TMDS_POP_SINGLE_OFFSET
@@ -19268,107 +15785,62 @@ impl Default for TmdsPopSingleVal {
 impl TmdsPopSingle {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> TmdsPopSingleVal {
-        TmdsPopSingleVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> TmdsPopSingleVal {
+        TmdsPopSingleVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: TmdsPopSingleVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: TmdsPopSingleVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(TmdsPopSingleVal) -> TmdsPopSingleVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(TmdsPopSingleVal) -> TmdsPopSingleVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// TMDS_PEEK_DOUBLE_L0 Register
 ///
-/// Get lane 0 of the encoding of two pixels' worth of colour data. Two 10-bit
-/// TMDS symbols are packed at the bottom of a 32-bit word. The PEEK alias does
-/// not shift the colour register when read, but still advances the lane 0 DC
-/// balance state. This is useful if all 3 lanes' worth of encode are to be read
-/// at once, rather than processing the entire scanline for one lane before
-/// moving to the next lane.
+/// Get lane 0 of the encoding of two pixels' worth of colour data. Two 10-bit TMDS symbols are packed at the bottom of a 32-bit word.
+/// The PEEK alias does not shift the colour register when read, but still advances the lane 0 DC balance state. This is useful if all 3 lanes' worth of encode are to be read at once, rather than processing the entire scanline for one lane before moving to the next lane.
 ///
 /// Address offset: 0x01d0
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **TMDS_PEEK_DOUBLE_L0** [31:0] (RO): 
+/// - **TMDS_PEEK_DOUBLE_L0** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct TmdsPeekDoubleL0 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for TmdsPeekDoubleL0 {}
-unsafe impl Sync for TmdsPeekDoubleL0 {}
+impl core::ops::Deref for TmdsPeekDoubleL0 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl TmdsPeekDoubleL0 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **TMDS_PEEK_DOUBLE_L0**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const TMDS_PEEK_DOUBLE_L0_OFFSET: u32 = 0;
     pub const TMDS_PEEK_DOUBLE_L0_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **TMDS_PEEK_DOUBLE_L0** [31:0]
+    /// **TMDS_PEEK_DOUBLE_L0** `[31:0]` (RO)
     #[inline(always)]
     pub fn tmds_peek_double_l0(&self) -> u32 {
-        (self.read_bits() & Self::TMDS_PEEK_DOUBLE_L0_MASK) >> Self::TMDS_PEEK_DOUBLE_L0_OFFSET
+        (self.value.read_bits() & Self::TMDS_PEEK_DOUBLE_L0_MASK) >> Self::TMDS_PEEK_DOUBLE_L0_OFFSET
     }
 
 }
@@ -19401,7 +15873,7 @@ impl TmdsPeekDoubleL0Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read TMDS_PEEK_DOUBLE_L0 [31:0]
+    /// Read **TMDS_PEEK_DOUBLE_L0** `[31:0]`
     #[inline(always)]
     pub const fn tmds_peek_double_l0(&self) -> u32 {
         (self.bits & TmdsPeekDoubleL0::TMDS_PEEK_DOUBLE_L0_MASK) >> TmdsPeekDoubleL0::TMDS_PEEK_DOUBLE_L0_OFFSET
@@ -19418,105 +15890,62 @@ impl Default for TmdsPeekDoubleL0Val {
 impl TmdsPeekDoubleL0 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> TmdsPeekDoubleL0Val {
-        TmdsPeekDoubleL0Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> TmdsPeekDoubleL0Val {
+        TmdsPeekDoubleL0Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: TmdsPeekDoubleL0Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: TmdsPeekDoubleL0Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(TmdsPeekDoubleL0Val) -> TmdsPeekDoubleL0Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(TmdsPeekDoubleL0Val) -> TmdsPeekDoubleL0Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// TMDS_POP_DOUBLE_L0 Register
 ///
-/// Get lane 0 of the encoding of two pixels' worth of colour data. Two 10-bit
-/// TMDS symbols are packed at the bottom of a 32-bit word. The POP alias shifts
-/// the colour register when read, according to the values of PIX_SHIFT and
-/// PIX2_NOSHIFT.
+/// Get lane 0 of the encoding of two pixels' worth of colour data. Two 10-bit TMDS symbols are packed at the bottom of a 32-bit word.
+/// The POP alias shifts the colour register when read, according to the values of PIX_SHIFT and PIX2_NOSHIFT.
 ///
 /// Address offset: 0x01d4
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **TMDS_POP_DOUBLE_L0** [31:0] (RO): 
+/// - **TMDS_POP_DOUBLE_L0** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct TmdsPopDoubleL0 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for TmdsPopDoubleL0 {}
-unsafe impl Sync for TmdsPopDoubleL0 {}
+impl core::ops::Deref for TmdsPopDoubleL0 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl TmdsPopDoubleL0 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **TMDS_POP_DOUBLE_L0**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const TMDS_POP_DOUBLE_L0_OFFSET: u32 = 0;
     pub const TMDS_POP_DOUBLE_L0_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **TMDS_POP_DOUBLE_L0** [31:0]
+    /// **TMDS_POP_DOUBLE_L0** `[31:0]` (RO)
     #[inline(always)]
     pub fn tmds_pop_double_l0(&self) -> u32 {
-        (self.read_bits() & Self::TMDS_POP_DOUBLE_L0_MASK) >> Self::TMDS_POP_DOUBLE_L0_OFFSET
+        (self.value.read_bits() & Self::TMDS_POP_DOUBLE_L0_MASK) >> Self::TMDS_POP_DOUBLE_L0_OFFSET
     }
 
 }
@@ -19549,7 +15978,7 @@ impl TmdsPopDoubleL0Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read TMDS_POP_DOUBLE_L0 [31:0]
+    /// Read **TMDS_POP_DOUBLE_L0** `[31:0]`
     #[inline(always)]
     pub const fn tmds_pop_double_l0(&self) -> u32 {
         (self.bits & TmdsPopDoubleL0::TMDS_POP_DOUBLE_L0_MASK) >> TmdsPopDoubleL0::TMDS_POP_DOUBLE_L0_OFFSET
@@ -19566,107 +15995,62 @@ impl Default for TmdsPopDoubleL0Val {
 impl TmdsPopDoubleL0 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> TmdsPopDoubleL0Val {
-        TmdsPopDoubleL0Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> TmdsPopDoubleL0Val {
+        TmdsPopDoubleL0Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: TmdsPopDoubleL0Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: TmdsPopDoubleL0Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(TmdsPopDoubleL0Val) -> TmdsPopDoubleL0Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(TmdsPopDoubleL0Val) -> TmdsPopDoubleL0Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// TMDS_PEEK_DOUBLE_L1 Register
 ///
-/// Get lane 1 of the encoding of two pixels' worth of colour data. Two 10-bit
-/// TMDS symbols are packed at the bottom of a 32-bit word. The PEEK alias does
-/// not shift the colour register when read, but still advances the lane 1 DC
-/// balance state. This is useful if all 3 lanes' worth of encode are to be read
-/// at once, rather than processing the entire scanline for one lane before
-/// moving to the next lane.
+/// Get lane 1 of the encoding of two pixels' worth of colour data. Two 10-bit TMDS symbols are packed at the bottom of a 32-bit word.
+/// The PEEK alias does not shift the colour register when read, but still advances the lane 1 DC balance state. This is useful if all 3 lanes' worth of encode are to be read at once, rather than processing the entire scanline for one lane before moving to the next lane.
 ///
 /// Address offset: 0x01d8
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **TMDS_PEEK_DOUBLE_L1** [31:0] (RO): 
+/// - **TMDS_PEEK_DOUBLE_L1** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct TmdsPeekDoubleL1 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for TmdsPeekDoubleL1 {}
-unsafe impl Sync for TmdsPeekDoubleL1 {}
+impl core::ops::Deref for TmdsPeekDoubleL1 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl TmdsPeekDoubleL1 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **TMDS_PEEK_DOUBLE_L1**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const TMDS_PEEK_DOUBLE_L1_OFFSET: u32 = 0;
     pub const TMDS_PEEK_DOUBLE_L1_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **TMDS_PEEK_DOUBLE_L1** [31:0]
+    /// **TMDS_PEEK_DOUBLE_L1** `[31:0]` (RO)
     #[inline(always)]
     pub fn tmds_peek_double_l1(&self) -> u32 {
-        (self.read_bits() & Self::TMDS_PEEK_DOUBLE_L1_MASK) >> Self::TMDS_PEEK_DOUBLE_L1_OFFSET
+        (self.value.read_bits() & Self::TMDS_PEEK_DOUBLE_L1_MASK) >> Self::TMDS_PEEK_DOUBLE_L1_OFFSET
     }
 
 }
@@ -19699,7 +16083,7 @@ impl TmdsPeekDoubleL1Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read TMDS_PEEK_DOUBLE_L1 [31:0]
+    /// Read **TMDS_PEEK_DOUBLE_L1** `[31:0]`
     #[inline(always)]
     pub const fn tmds_peek_double_l1(&self) -> u32 {
         (self.bits & TmdsPeekDoubleL1::TMDS_PEEK_DOUBLE_L1_MASK) >> TmdsPeekDoubleL1::TMDS_PEEK_DOUBLE_L1_OFFSET
@@ -19716,105 +16100,62 @@ impl Default for TmdsPeekDoubleL1Val {
 impl TmdsPeekDoubleL1 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> TmdsPeekDoubleL1Val {
-        TmdsPeekDoubleL1Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> TmdsPeekDoubleL1Val {
+        TmdsPeekDoubleL1Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: TmdsPeekDoubleL1Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: TmdsPeekDoubleL1Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(TmdsPeekDoubleL1Val) -> TmdsPeekDoubleL1Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(TmdsPeekDoubleL1Val) -> TmdsPeekDoubleL1Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// TMDS_POP_DOUBLE_L1 Register
 ///
-/// Get lane 1 of the encoding of two pixels' worth of colour data. Two 10-bit
-/// TMDS symbols are packed at the bottom of a 32-bit word. The POP alias shifts
-/// the colour register when read, according to the values of PIX_SHIFT and
-/// PIX2_NOSHIFT.
+/// Get lane 1 of the encoding of two pixels' worth of colour data. Two 10-bit TMDS symbols are packed at the bottom of a 32-bit word.
+/// The POP alias shifts the colour register when read, according to the values of PIX_SHIFT and PIX2_NOSHIFT.
 ///
 /// Address offset: 0x01dc
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **TMDS_POP_DOUBLE_L1** [31:0] (RO): 
+/// - **TMDS_POP_DOUBLE_L1** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct TmdsPopDoubleL1 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for TmdsPopDoubleL1 {}
-unsafe impl Sync for TmdsPopDoubleL1 {}
+impl core::ops::Deref for TmdsPopDoubleL1 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl TmdsPopDoubleL1 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **TMDS_POP_DOUBLE_L1**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const TMDS_POP_DOUBLE_L1_OFFSET: u32 = 0;
     pub const TMDS_POP_DOUBLE_L1_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **TMDS_POP_DOUBLE_L1** [31:0]
+    /// **TMDS_POP_DOUBLE_L1** `[31:0]` (RO)
     #[inline(always)]
     pub fn tmds_pop_double_l1(&self) -> u32 {
-        (self.read_bits() & Self::TMDS_POP_DOUBLE_L1_MASK) >> Self::TMDS_POP_DOUBLE_L1_OFFSET
+        (self.value.read_bits() & Self::TMDS_POP_DOUBLE_L1_MASK) >> Self::TMDS_POP_DOUBLE_L1_OFFSET
     }
 
 }
@@ -19847,7 +16188,7 @@ impl TmdsPopDoubleL1Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read TMDS_POP_DOUBLE_L1 [31:0]
+    /// Read **TMDS_POP_DOUBLE_L1** `[31:0]`
     #[inline(always)]
     pub const fn tmds_pop_double_l1(&self) -> u32 {
         (self.bits & TmdsPopDoubleL1::TMDS_POP_DOUBLE_L1_MASK) >> TmdsPopDoubleL1::TMDS_POP_DOUBLE_L1_OFFSET
@@ -19864,107 +16205,62 @@ impl Default for TmdsPopDoubleL1Val {
 impl TmdsPopDoubleL1 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> TmdsPopDoubleL1Val {
-        TmdsPopDoubleL1Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> TmdsPopDoubleL1Val {
+        TmdsPopDoubleL1Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: TmdsPopDoubleL1Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: TmdsPopDoubleL1Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(TmdsPopDoubleL1Val) -> TmdsPopDoubleL1Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(TmdsPopDoubleL1Val) -> TmdsPopDoubleL1Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// TMDS_PEEK_DOUBLE_L2 Register
 ///
-/// Get lane 2 of the encoding of two pixels' worth of colour data. Two 10-bit
-/// TMDS symbols are packed at the bottom of a 32-bit word. The PEEK alias does
-/// not shift the colour register when read, but still advances the lane 2 DC
-/// balance state. This is useful if all 3 lanes' worth of encode are to be read
-/// at once, rather than processing the entire scanline for one lane before
-/// moving to the next lane.
+/// Get lane 2 of the encoding of two pixels' worth of colour data. Two 10-bit TMDS symbols are packed at the bottom of a 32-bit word.
+/// The PEEK alias does not shift the colour register when read, but still advances the lane 2 DC balance state. This is useful if all 3 lanes' worth of encode are to be read at once, rather than processing the entire scanline for one lane before moving to the next lane.
 ///
 /// Address offset: 0x01e0
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **TMDS_PEEK_DOUBLE_L2** [31:0] (RO): 
+/// - **TMDS_PEEK_DOUBLE_L2** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct TmdsPeekDoubleL2 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for TmdsPeekDoubleL2 {}
-unsafe impl Sync for TmdsPeekDoubleL2 {}
+impl core::ops::Deref for TmdsPeekDoubleL2 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl TmdsPeekDoubleL2 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **TMDS_PEEK_DOUBLE_L2**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const TMDS_PEEK_DOUBLE_L2_OFFSET: u32 = 0;
     pub const TMDS_PEEK_DOUBLE_L2_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **TMDS_PEEK_DOUBLE_L2** [31:0]
+    /// **TMDS_PEEK_DOUBLE_L2** `[31:0]` (RO)
     #[inline(always)]
     pub fn tmds_peek_double_l2(&self) -> u32 {
-        (self.read_bits() & Self::TMDS_PEEK_DOUBLE_L2_MASK) >> Self::TMDS_PEEK_DOUBLE_L2_OFFSET
+        (self.value.read_bits() & Self::TMDS_PEEK_DOUBLE_L2_MASK) >> Self::TMDS_PEEK_DOUBLE_L2_OFFSET
     }
 
 }
@@ -19997,7 +16293,7 @@ impl TmdsPeekDoubleL2Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read TMDS_PEEK_DOUBLE_L2 [31:0]
+    /// Read **TMDS_PEEK_DOUBLE_L2** `[31:0]`
     #[inline(always)]
     pub const fn tmds_peek_double_l2(&self) -> u32 {
         (self.bits & TmdsPeekDoubleL2::TMDS_PEEK_DOUBLE_L2_MASK) >> TmdsPeekDoubleL2::TMDS_PEEK_DOUBLE_L2_OFFSET
@@ -20014,105 +16310,62 @@ impl Default for TmdsPeekDoubleL2Val {
 impl TmdsPeekDoubleL2 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> TmdsPeekDoubleL2Val {
-        TmdsPeekDoubleL2Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> TmdsPeekDoubleL2Val {
+        TmdsPeekDoubleL2Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: TmdsPeekDoubleL2Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: TmdsPeekDoubleL2Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(TmdsPeekDoubleL2Val) -> TmdsPeekDoubleL2Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(TmdsPeekDoubleL2Val) -> TmdsPeekDoubleL2Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// TMDS_POP_DOUBLE_L2 Register
 ///
-/// Get lane 2 of the encoding of two pixels' worth of colour data. Two 10-bit
-/// TMDS symbols are packed at the bottom of a 32-bit word. The POP alias shifts
-/// the colour register when read, according to the values of PIX_SHIFT and
-/// PIX2_NOSHIFT.
+/// Get lane 2 of the encoding of two pixels' worth of colour data. Two 10-bit TMDS symbols are packed at the bottom of a 32-bit word.
+/// The POP alias shifts the colour register when read, according to the values of PIX_SHIFT and PIX2_NOSHIFT.
 ///
 /// Address offset: 0x01e4
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **TMDS_POP_DOUBLE_L2** [31:0] (RO): 
+/// - **TMDS_POP_DOUBLE_L2** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct TmdsPopDoubleL2 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for TmdsPopDoubleL2 {}
-unsafe impl Sync for TmdsPopDoubleL2 {}
+impl core::ops::Deref for TmdsPopDoubleL2 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl TmdsPopDoubleL2 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **TMDS_POP_DOUBLE_L2**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const TMDS_POP_DOUBLE_L2_OFFSET: u32 = 0;
     pub const TMDS_POP_DOUBLE_L2_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **TMDS_POP_DOUBLE_L2** [31:0]
+    /// **TMDS_POP_DOUBLE_L2** `[31:0]` (RO)
     #[inline(always)]
     pub fn tmds_pop_double_l2(&self) -> u32 {
-        (self.read_bits() & Self::TMDS_POP_DOUBLE_L2_MASK) >> Self::TMDS_POP_DOUBLE_L2_OFFSET
+        (self.value.read_bits() & Self::TMDS_POP_DOUBLE_L2_MASK) >> Self::TMDS_POP_DOUBLE_L2_OFFSET
     }
 
 }
@@ -20145,7 +16398,7 @@ impl TmdsPopDoubleL2Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read TMDS_POP_DOUBLE_L2 [31:0]
+    /// Read **TMDS_POP_DOUBLE_L2** `[31:0]`
     #[inline(always)]
     pub const fn tmds_pop_double_l2(&self) -> u32 {
         (self.bits & TmdsPopDoubleL2::TMDS_POP_DOUBLE_L2_MASK) >> TmdsPopDoubleL2::TMDS_POP_DOUBLE_L2_OFFSET
@@ -20162,20 +16415,20 @@ impl Default for TmdsPopDoubleL2Val {
 impl TmdsPopDoubleL2 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> TmdsPopDoubleL2Val {
-        TmdsPopDoubleL2Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> TmdsPopDoubleL2Val {
+        TmdsPopDoubleL2Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: TmdsPopDoubleL2Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: TmdsPopDoubleL2Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(TmdsPopDoubleL2Val) -> TmdsPopDoubleL2Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(TmdsPopDoubleL2Val) -> TmdsPopDoubleL2Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -20183,225 +16436,537 @@ impl TmdsPopDoubleL2 {
 /// Register block
 #[repr(C)]
 pub struct RegisterBlock {
-    /// 0x0000 - Processor core identifier
+    /// 0x0000
+    /// Processor core identifier
     pub cpuid: Cpuid,
-    /// 0x0004 - Input value for GPIO0...31. In the Non-secure SIO, Secure-only GPIOs (as pe...
+    /// 0x0004
+    /// Input value for GPIO0...31.
+    /// In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) appear as zero.
     pub gpio_in: GpioIn,
-    /// 0x0008 - Input value on GPIO32...47, QSPI IOs and USB pins In the Non-secure SIO, Se...
+    /// 0x0008
+    /// Input value on GPIO32...47, QSPI IOs and USB pins
+    /// In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) appear as zero.
     pub gpio_hi_in: GpioHiIn,
     _reserved0: [u8; 4],
-    /// 0x0010 - GPIO0...31 output value
+    /// 0x0010
+    /// GPIO0...31 output value
     pub gpio_out: GpioOut,
-    /// 0x0014 - Output value for GPIO32...47, QSPI IOs and USB pins. Write to set output le...
+    /// 0x0014
+    /// Output value for GPIO32...47, QSPI IOs and USB pins.
+    /// Write to set output level (1/0 -> high/low). Reading back gives the last value written, NOT the input value from the pins. If core 0 and core 1 both write to GPIO_HI_OUT simultaneously (or to a SET/CLR/XOR alias), the result is as though the write from core 0 took place first, and the write from core 1 was then applied to that intermediate result.
+    /// In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) ignore writes, and their output status reads back as zero. This is also true for SET/CLR/XOR aliases of this register.
     pub gpio_hi_out: GpioHiOut,
-    /// 0x0018 - GPIO0...31 output value set
+    /// 0x0018
+    /// GPIO0...31 output value set
     pub gpio_out_set: GpioOutSet,
-    /// 0x001c - Output value set for GPIO32..47, QSPI IOs and USB pins. Perform an atomic b...
+    /// 0x001c
+    /// Output value set for GPIO32..47, QSPI IOs and USB pins.
+    /// Perform an atomic bit-set on GPIO_HI_OUT, i.e. `GPIO_HI_OUT |= wdata`
     pub gpio_hi_out_set: GpioHiOutSet,
-    /// 0x0020 - GPIO0...31 output value clear
+    /// 0x0020
+    /// GPIO0...31 output value clear
     pub gpio_out_clr: GpioOutClr,
-    /// 0x0024 - Output value clear for GPIO32..47, QSPI IOs and USB pins. Perform an atomic...
+    /// 0x0024
+    /// Output value clear for GPIO32..47, QSPI IOs and USB pins.
+    /// Perform an atomic bit-clear on GPIO_HI_OUT, i.e. `GPIO_HI_OUT &= ~wdata`
     pub gpio_hi_out_clr: GpioHiOutClr,
-    /// 0x0028 - GPIO0...31 output value XOR
+    /// 0x0028
+    /// GPIO0...31 output value XOR
     pub gpio_out_xor: GpioOutXor,
-    /// 0x002c - Output value XOR for GPIO32..47, QSPI IOs and USB pins. Perform an atomic b...
+    /// 0x002c
+    /// Output value XOR for GPIO32..47, QSPI IOs and USB pins.
+    /// Perform an atomic bitwise XOR on GPIO_HI_OUT, i.e. `GPIO_HI_OUT ^= wdata`
     pub gpio_hi_out_xor: GpioHiOutXor,
-    /// 0x0030 - GPIO0...31 output enable
+    /// 0x0030
+    /// GPIO0...31 output enable
     pub gpio_oe: GpioOe,
-    /// 0x0034 - Output enable value for GPIO32...47, QSPI IOs and USB pins. Write output en...
+    /// 0x0034
+    /// Output enable value for GPIO32...47, QSPI IOs and USB pins.
+    /// Write output enable (1/0 -> output/input). Reading back gives the last value written. If core 0 and core 1 both write to GPIO_HI_OE simultaneously (or to a SET/CLR/XOR alias), the result is as though the write from core 0 took place first, and the write from core 1 was then applied to that intermediate result.
+    /// In the Non-secure SIO, Secure-only GPIOs (as per ACCESSCTRL) ignore writes, and their output status reads back as zero. This is also true for SET/CLR/XOR aliases of this register.
     pub gpio_hi_oe: GpioHiOe,
-    /// 0x0038 - GPIO0...31 output enable set
+    /// 0x0038
+    /// GPIO0...31 output enable set
     pub gpio_oe_set: GpioOeSet,
-    /// 0x003c - Output enable set for GPIO32...47, QSPI IOs and USB pins. Perform an atomic...
+    /// 0x003c
+    /// Output enable set for GPIO32...47, QSPI IOs and USB pins.
+    /// Perform an atomic bit-set on GPIO_HI_OE, i.e. `GPIO_HI_OE |= wdata`
     pub gpio_hi_oe_set: GpioHiOeSet,
-    /// 0x0040 - GPIO0...31 output enable clear
+    /// 0x0040
+    /// GPIO0...31 output enable clear
     pub gpio_oe_clr: GpioOeClr,
-    /// 0x0044 - Output enable clear for GPIO32...47, QSPI IOs and USB pins. Perform an atom...
+    /// 0x0044
+    /// Output enable clear for GPIO32...47, QSPI IOs and USB pins.
+    /// Perform an atomic bit-clear on GPIO_HI_OE, i.e. `GPIO_HI_OE &= ~wdata`
     pub gpio_hi_oe_clr: GpioHiOeClr,
-    /// 0x0048 - GPIO0...31 output enable XOR
+    /// 0x0048
+    /// GPIO0...31 output enable XOR
     pub gpio_oe_xor: GpioOeXor,
-    /// 0x004c - Output enable XOR for GPIO32...47, QSPI IOs and USB pins. Perform an atomic...
+    /// 0x004c
+    /// Output enable XOR for GPIO32...47, QSPI IOs and USB pins.
+    /// Perform an atomic bitwise XOR on GPIO_HI_OE, i.e. `GPIO_HI_OE ^= wdata`
     pub gpio_hi_oe_xor: GpioHiOeXor,
-    /// 0x0050 - Status register for inter-core FIFOs (mailboxes). There is one FIFO in the ...
+    /// 0x0050
+    /// Status register for inter-core FIFOs (mailboxes).
+    /// There is one FIFO in the core 0 -> core 1 direction, and one core 1 -> core 0. Both are 32 bits wide and 8 words deep.
+    /// Core 0 can see the read side of the 1->0 FIFO (RX), and the write side of 0->1 FIFO (TX).
+    /// Core 1 can see the read side of the 0->1 FIFO (RX), and the write side of 1->0 FIFO (TX).
+    /// The SIO IRQ for each core is the logical OR of the VLD, WOF and ROE fields of its FIFO_ST register.
     pub fifo_st: FifoSt,
-    /// 0x0054 - Write access to this core's TX FIFO
+    /// 0x0054
+    /// Write access to this core's TX FIFO
     pub fifo_wr: FifoWr,
-    /// 0x0058 - Read access to this core's RX FIFO
+    /// 0x0058
+    /// Read access to this core's RX FIFO
     pub fifo_rd: FifoRd,
-    /// 0x005c - Spinlock state A bitmap containing the state of all 32 spinlocks (1=locked)...
+    /// 0x005c
+    /// Spinlock state
+    /// A bitmap containing the state of all 32 spinlocks (1=locked).
+    /// Mainly intended for debugging.
     pub spinlock_st: SpinlockSt,
     _reserved1: [u8; 32],
-    /// 0x0080 - Read/write access to accumulator 0
+    /// 0x0080
+    /// Read/write access to accumulator 0
     pub interp0_accum0: Interp0Accum0,
-    /// 0x0084 - Read/write access to accumulator 1
+    /// 0x0084
+    /// Read/write access to accumulator 1
     pub interp0_accum1: Interp0Accum1,
-    /// 0x0088 - Read/write access to BASE0 register.
+    /// 0x0088
+    /// Read/write access to BASE0 register.
     pub interp0_base0: Interp0Base0,
-    /// 0x008c - Read/write access to BASE1 register.
+    /// 0x008c
+    /// Read/write access to BASE1 register.
     pub interp0_base1: Interp0Base1,
-    /// 0x0090 - Read/write access to BASE2 register.
+    /// 0x0090
+    /// Read/write access to BASE2 register.
     pub interp0_base2: Interp0Base2,
-    /// 0x0094 - Read LANE0 result, and simultaneously write lane results to both accumulato...
+    /// 0x0094
+    /// Read LANE0 result, and simultaneously write lane results to both accumulators (POP).
     pub interp0_pop_lane0: Interp0PopLane0,
-    /// 0x0098 - Read LANE1 result, and simultaneously write lane results to both accumulato...
+    /// 0x0098
+    /// Read LANE1 result, and simultaneously write lane results to both accumulators (POP).
     pub interp0_pop_lane1: Interp0PopLane1,
-    /// 0x009c - Read FULL result, and simultaneously write lane results to both accumulator...
+    /// 0x009c
+    /// Read FULL result, and simultaneously write lane results to both accumulators (POP).
     pub interp0_pop_full: Interp0PopFull,
-    /// 0x00a0 - Read LANE0 result, without altering any internal state (PEEK).
+    /// 0x00a0
+    /// Read LANE0 result, without altering any internal state (PEEK).
     pub interp0_peek_lane0: Interp0PeekLane0,
-    /// 0x00a4 - Read LANE1 result, without altering any internal state (PEEK).
+    /// 0x00a4
+    /// Read LANE1 result, without altering any internal state (PEEK).
     pub interp0_peek_lane1: Interp0PeekLane1,
-    /// 0x00a8 - Read FULL result, without altering any internal state (PEEK).
+    /// 0x00a8
+    /// Read FULL result, without altering any internal state (PEEK).
     pub interp0_peek_full: Interp0PeekFull,
-    /// 0x00ac - Control register for lane 0
+    /// 0x00ac
+    /// Control register for lane 0
     pub interp0_ctrl_lane0: Interp0CtrlLane0,
-    /// 0x00b0 - Control register for lane 1
+    /// 0x00b0
+    /// Control register for lane 1
     pub interp0_ctrl_lane1: Interp0CtrlLane1,
-    /// 0x00b4 - Values written here are atomically added to ACCUM0 Reading yields lane 0's ...
+    /// 0x00b4
+    /// Values written here are atomically added to ACCUM0
+    /// Reading yields lane 0's raw shift and mask value (BASE0 not added).
     pub interp0_accum0_add: Interp0Accum0Add,
-    /// 0x00b8 - Values written here are atomically added to ACCUM1 Reading yields lane 1's ...
+    /// 0x00b8
+    /// Values written here are atomically added to ACCUM1
+    /// Reading yields lane 1's raw shift and mask value (BASE1 not added).
     pub interp0_accum1_add: Interp0Accum1Add,
-    /// 0x00bc - On write, the lower 16 bits go to BASE0, upper bits to BASE1 simultaneously...
+    /// 0x00bc
+    /// On write, the lower 16 bits go to BASE0, upper bits to BASE1 simultaneously.
+    /// Each half is sign-extended to 32 bits if that lane's SIGNED flag is set.
     pub interp0_base_1and0: Interp0Base1and0,
-    /// 0x00c0 - Read/write access to accumulator 0
+    /// 0x00c0
+    /// Read/write access to accumulator 0
     pub interp1_accum0: Interp1Accum0,
-    /// 0x00c4 - Read/write access to accumulator 1
+    /// 0x00c4
+    /// Read/write access to accumulator 1
     pub interp1_accum1: Interp1Accum1,
-    /// 0x00c8 - Read/write access to BASE0 register.
+    /// 0x00c8
+    /// Read/write access to BASE0 register.
     pub interp1_base0: Interp1Base0,
-    /// 0x00cc - Read/write access to BASE1 register.
+    /// 0x00cc
+    /// Read/write access to BASE1 register.
     pub interp1_base1: Interp1Base1,
-    /// 0x00d0 - Read/write access to BASE2 register.
+    /// 0x00d0
+    /// Read/write access to BASE2 register.
     pub interp1_base2: Interp1Base2,
-    /// 0x00d4 - Read LANE0 result, and simultaneously write lane results to both accumulato...
+    /// 0x00d4
+    /// Read LANE0 result, and simultaneously write lane results to both accumulators (POP).
     pub interp1_pop_lane0: Interp1PopLane0,
-    /// 0x00d8 - Read LANE1 result, and simultaneously write lane results to both accumulato...
+    /// 0x00d8
+    /// Read LANE1 result, and simultaneously write lane results to both accumulators (POP).
     pub interp1_pop_lane1: Interp1PopLane1,
-    /// 0x00dc - Read FULL result, and simultaneously write lane results to both accumulator...
+    /// 0x00dc
+    /// Read FULL result, and simultaneously write lane results to both accumulators (POP).
     pub interp1_pop_full: Interp1PopFull,
-    /// 0x00e0 - Read LANE0 result, without altering any internal state (PEEK).
+    /// 0x00e0
+    /// Read LANE0 result, without altering any internal state (PEEK).
     pub interp1_peek_lane0: Interp1PeekLane0,
-    /// 0x00e4 - Read LANE1 result, without altering any internal state (PEEK).
+    /// 0x00e4
+    /// Read LANE1 result, without altering any internal state (PEEK).
     pub interp1_peek_lane1: Interp1PeekLane1,
-    /// 0x00e8 - Read FULL result, without altering any internal state (PEEK).
+    /// 0x00e8
+    /// Read FULL result, without altering any internal state (PEEK).
     pub interp1_peek_full: Interp1PeekFull,
-    /// 0x00ec - Control register for lane 0
+    /// 0x00ec
+    /// Control register for lane 0
     pub interp1_ctrl_lane0: Interp1CtrlLane0,
-    /// 0x00f0 - Control register for lane 1
+    /// 0x00f0
+    /// Control register for lane 1
     pub interp1_ctrl_lane1: Interp1CtrlLane1,
-    /// 0x00f4 - Values written here are atomically added to ACCUM0 Reading yields lane 0's ...
+    /// 0x00f4
+    /// Values written here are atomically added to ACCUM0
+    /// Reading yields lane 0's raw shift and mask value (BASE0 not added).
     pub interp1_accum0_add: Interp1Accum0Add,
-    /// 0x00f8 - Values written here are atomically added to ACCUM1 Reading yields lane 1's ...
+    /// 0x00f8
+    /// Values written here are atomically added to ACCUM1
+    /// Reading yields lane 1's raw shift and mask value (BASE1 not added).
     pub interp1_accum1_add: Interp1Accum1Add,
-    /// 0x00fc - On write, the lower 16 bits go to BASE0, upper bits to BASE1 simultaneously...
+    /// 0x00fc
+    /// On write, the lower 16 bits go to BASE0, upper bits to BASE1 simultaneously.
+    /// Each half is sign-extended to 32 bits if that lane's SIGNED flag is set.
     pub interp1_base_1and0: Interp1Base1and0,
-    /// 0x0100 - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x0100
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock0: Spinlock0,
-    /// 0x0104 - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x0104
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock1: Spinlock1,
-    /// 0x0108 - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x0108
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock2: Spinlock2,
-    /// 0x010c - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x010c
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock3: Spinlock3,
-    /// 0x0110 - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x0110
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock4: Spinlock4,
-    /// 0x0114 - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x0114
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock5: Spinlock5,
-    /// 0x0118 - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x0118
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock6: Spinlock6,
-    /// 0x011c - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x011c
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock7: Spinlock7,
-    /// 0x0120 - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x0120
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock8: Spinlock8,
-    /// 0x0124 - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x0124
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock9: Spinlock9,
-    /// 0x0128 - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x0128
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock10: Spinlock10,
-    /// 0x012c - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x012c
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock11: Spinlock11,
-    /// 0x0130 - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x0130
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock12: Spinlock12,
-    /// 0x0134 - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x0134
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock13: Spinlock13,
-    /// 0x0138 - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x0138
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock14: Spinlock14,
-    /// 0x013c - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x013c
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock15: Spinlock15,
-    /// 0x0140 - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x0140
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock16: Spinlock16,
-    /// 0x0144 - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x0144
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock17: Spinlock17,
-    /// 0x0148 - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x0148
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock18: Spinlock18,
-    /// 0x014c - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x014c
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock19: Spinlock19,
-    /// 0x0150 - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x0150
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock20: Spinlock20,
-    /// 0x0154 - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x0154
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock21: Spinlock21,
-    /// 0x0158 - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x0158
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock22: Spinlock22,
-    /// 0x015c - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x015c
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock23: Spinlock23,
-    /// 0x0160 - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x0160
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock24: Spinlock24,
-    /// 0x0164 - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x0164
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock25: Spinlock25,
-    /// 0x0168 - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x0168
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock26: Spinlock26,
-    /// 0x016c - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x016c
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock27: Spinlock27,
-    /// 0x0170 - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x0170
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock28: Spinlock28,
-    /// 0x0174 - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x0174
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock29: Spinlock29,
-    /// 0x0178 - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x0178
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock30: Spinlock30,
-    /// 0x017c - Reading from a spinlock address will: - Return 0 if lock is already locked ...
+    /// 0x017c
+    /// Reading from a spinlock address will:
+    /// - Return 0 if lock is already locked
+    /// - Otherwise return nonzero, and simultaneously claim the lock
+    /// Writing (any value) releases the lock.
+    /// If core 0 and core 1 attempt to claim the same lock simultaneously, core 0 wins.
+    /// The value returned on success is 0x1 << lock number.
     pub spinlock31: Spinlock31,
-    /// 0x0180 - Trigger a doorbell interrupt on the opposite core. Write 1 to a bit to set ...
+    /// 0x0180
+    /// Trigger a doorbell interrupt on the opposite core.
+    /// Write 1 to a bit to set the corresponding bit in DOORBELL_IN on the opposite core. This raises the opposite core's doorbell interrupt.
+    /// Read to get the status of the doorbells currently asserted on the opposite core. This is equivalent to that core reading its own DOORBELL_IN status.
     pub doorbell_out_set: DoorbellOutSet,
-    /// 0x0184 - Clear doorbells which have been posted to the opposite core. This register ...
+    /// 0x0184
+    /// Clear doorbells which have been posted to the opposite core. This register is intended for debugging and initialisation purposes.
+    /// Writing 1 to a bit in DOORBELL_OUT_CLR clears the corresponding bit in DOORBELL_IN on the opposite core. Clearing all bits will cause that core's doorbell interrupt to deassert. Since the usual order of events is for software to send events using DOORBELL_OUT_SET, and acknowledge incoming events by writing to DOORBELL_IN_CLR, this register should be used with caution to avoid race conditions.
+    /// Reading returns the status of the doorbells currently asserted on the other core, i.e. is equivalent to that core reading its own DOORBELL_IN status.
     pub doorbell_out_clr: DoorbellOutClr,
-    /// 0x0188 - Write 1s to trigger doorbell interrupts on this core. Read to get status of...
+    /// 0x0188
+    /// Write 1s to trigger doorbell interrupts on this core. Read to get status of doorbells currently asserted on this core.
     pub doorbell_in_set: DoorbellInSet,
-    /// 0x018c - Check and acknowledge doorbells posted to this core. This core's doorbell i...
+    /// 0x018c
+    /// Check and acknowledge doorbells posted to this core. This core's doorbell interrupt is asserted when any bit in this register is 1.
+    /// Write 1 to each bit to clear that bit. The doorbell interrupt deasserts once all bits are cleared. Read to get status of doorbells currently asserted on this core.
     pub doorbell_in_clr: DoorbellInClr,
-    /// 0x0190 - Detach certain core-local peripherals from Secure SIO, and attach them to N...
+    /// 0x0190
+    /// Detach certain core-local peripherals from Secure SIO, and attach them to Non-secure SIO, so that Non-secure software can use them. Attempting to access one of these peripherals from the Secure SIO when it is attached to the Non-secure SIO, or vice versa, will generate a bus error.
+    /// This register is per-core, and is only present on the Secure SIO.
+    /// Most SIO hardware is duplicated across the Secure and Non-secure SIO, so is not listed in this register.
     pub peri_nonsec: PeriNonsec,
     _reserved2: [u8; 12],
-    /// 0x01a0 - Control the assertion of the standard software interrupt (MIP.MSIP) on the ...
+    /// 0x01a0
+    /// Control the assertion of the standard software interrupt (MIP.MSIP) on the RISC-V cores.
+    /// Unlike the RISC-V timer, this interrupt is not routed to a normal system-level interrupt line, so can not be used by the Arm cores.
+    /// It is safe for both cores to write to this register on the same cycle. The set/clear effect is accumulated across both cores, and then applied. If a flag is both set and cleared on the same cycle, only the set takes effect.
     pub riscv_softirq: RiscvSoftirq,
-    /// 0x01a4 - Control register for the RISC-V 64-bit Machine-mode timer. This timer is on...
+    /// 0x01a4
+    /// Control register for the RISC-V 64-bit Machine-mode timer. This timer is only present in the Secure SIO, so is only accessible to an Arm core in Secure mode or a RISC-V core in Machine mode.
+    /// Note whilst this timer follows the RISC-V privileged specification, it is equally usable by the Arm cores. The interrupts are routed to normal system-level interrupt lines as well as to the MIP.MTIP inputs on the RISC-V cores.
     pub mtime_ctrl: MtimeCtrl,
     _reserved3: [u8; 8],
-    /// 0x01b0 - Read/write access to the high half of RISC-V Machine-mode timer. This regis...
+    /// 0x01b0
+    /// Read/write access to the high half of RISC-V Machine-mode timer. This register is shared between both cores. If both cores write on the same cycle, core 1 takes precedence.
     pub mtime: Mtime,
-    /// 0x01b4 - Read/write access to the high half of RISC-V Machine-mode timer. This regis...
+    /// 0x01b4
+    /// Read/write access to the high half of RISC-V Machine-mode timer. This register is shared between both cores. If both cores write on the same cycle, core 1 takes precedence.
     pub mtimeh: Mtimeh,
-    /// 0x01b8 - Low half of RISC-V Machine-mode timer comparator. This register is core-loc...
+    /// 0x01b8
+    /// Low half of RISC-V Machine-mode timer comparator. This register is core-local, i.e., each core gets a copy of this register, with the comparison result routed to its own interrupt line.
+    /// The timer interrupt is asserted whenever MTIME is greater than or equal to MTIMECMP. This comparison is unsigned, and performed on the full 64-bit values.
     pub mtimecmp: Mtimecmp,
-    /// 0x01bc - High half of RISC-V Machine-mode timer comparator. This register is core-lo...
+    /// 0x01bc
+    /// High half of RISC-V Machine-mode timer comparator. This register is core-local.
+    /// The timer interrupt is asserted whenever MTIME is greater than or equal to MTIMECMP. This comparison is unsigned, and performed on the full 64-bit values.
     pub mtimecmph: Mtimecmph,
-    /// 0x01c0 - Control register for TMDS encoder.
+    /// 0x01c0
+    /// Control register for TMDS encoder.
     pub tmds_ctrl: TmdsCtrl,
-    /// 0x01c4 - Write-only access to the TMDS colour data register.
+    /// 0x01c4
+    /// Write-only access to the TMDS colour data register.
     pub tmds_wdata: TmdsWdata,
-    /// 0x01c8 - Get the encoding of one pixel's worth of colour data, packed into a 32-bit ...
+    /// 0x01c8
+    /// Get the encoding of one pixel's worth of colour data, packed into a 32-bit value (3x10-bit symbols).
+    /// The PEEK alias does not shift the colour register when read, but still advances the running DC balance state of each encoder. This is useful for pixel doubling.
     pub tmds_peek_single: TmdsPeekSingle,
-    /// 0x01cc - Get the encoding of one pixel's worth of colour data, packed into a 32-bit ...
+    /// 0x01cc
+    /// Get the encoding of one pixel's worth of colour data, packed into a 32-bit value. The packing is 5 chunks of 3 lanes times 2 bits (30 bits total). Each chunk contains two bits of a TMDS symbol per lane. This format is intended for shifting out with the HSTX peripheral on RP2350.
+    /// The POP alias shifts the colour register when read, as well as advancing the running DC balance state of each encoder.
     pub tmds_pop_single: TmdsPopSingle,
-    /// 0x01d0 - Get lane 0 of the encoding of two pixels' worth of colour data. Two 10-bit ...
+    /// 0x01d0
+    /// Get lane 0 of the encoding of two pixels' worth of colour data. Two 10-bit TMDS symbols are packed at the bottom of a 32-bit word.
+    /// The PEEK alias does not shift the colour register when read, but still advances the lane 0 DC balance state. This is useful if all 3 lanes' worth of encode are to be read at once, rather than processing the entire scanline for one lane before moving to the next lane.
     pub tmds_peek_double_l0: TmdsPeekDoubleL0,
-    /// 0x01d4 - Get lane 0 of the encoding of two pixels' worth of colour data. Two 10-bit ...
+    /// 0x01d4
+    /// Get lane 0 of the encoding of two pixels' worth of colour data. Two 10-bit TMDS symbols are packed at the bottom of a 32-bit word.
+    /// The POP alias shifts the colour register when read, according to the values of PIX_SHIFT and PIX2_NOSHIFT.
     pub tmds_pop_double_l0: TmdsPopDoubleL0,
-    /// 0x01d8 - Get lane 1 of the encoding of two pixels' worth of colour data. Two 10-bit ...
+    /// 0x01d8
+    /// Get lane 1 of the encoding of two pixels' worth of colour data. Two 10-bit TMDS symbols are packed at the bottom of a 32-bit word.
+    /// The PEEK alias does not shift the colour register when read, but still advances the lane 1 DC balance state. This is useful if all 3 lanes' worth of encode are to be read at once, rather than processing the entire scanline for one lane before moving to the next lane.
     pub tmds_peek_double_l1: TmdsPeekDoubleL1,
-    /// 0x01dc - Get lane 1 of the encoding of two pixels' worth of colour data. Two 10-bit ...
+    /// 0x01dc
+    /// Get lane 1 of the encoding of two pixels' worth of colour data. Two 10-bit TMDS symbols are packed at the bottom of a 32-bit word.
+    /// The POP alias shifts the colour register when read, according to the values of PIX_SHIFT and PIX2_NOSHIFT.
     pub tmds_pop_double_l1: TmdsPopDoubleL1,
-    /// 0x01e0 - Get lane 2 of the encoding of two pixels' worth of colour data. Two 10-bit ...
+    /// 0x01e0
+    /// Get lane 2 of the encoding of two pixels' worth of colour data. Two 10-bit TMDS symbols are packed at the bottom of a 32-bit word.
+    /// The PEEK alias does not shift the colour register when read, but still advances the lane 2 DC balance state. This is useful if all 3 lanes' worth of encode are to be read at once, rather than processing the entire scanline for one lane before moving to the next lane.
     pub tmds_peek_double_l2: TmdsPeekDoubleL2,
-    /// 0x01e4 - Get lane 2 of the encoding of two pixels' worth of colour data. Two 10-bit ...
+    /// 0x01e4
+    /// Get lane 2 of the encoding of two pixels' worth of colour data. Two 10-bit TMDS symbols are packed at the bottom of a 32-bit word.
+    /// The POP alias shifts the colour register when read, according to the values of PIX_SHIFT and PIX2_NOSHIFT.
     pub tmds_pop_double_l2: TmdsPopDoubleL2,
 }
 

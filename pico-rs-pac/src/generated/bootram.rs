@@ -1,5 +1,4 @@
-//! BOOTRAM - Additional registers mapped adjacent to the bootram, for use by the bootrom.
-//!
+//! BOOTRAM
 //! Additional registers mapped adjacent to the bootram, for use by the bootrom.
 
 #![allow(dead_code)]
@@ -8,89 +7,47 @@ pub const BASE: u32 = 0x400e0000;
 
 /// WRITE_ONCE0 Register
 ///
-/// This registers always ORs writes into its current contents. Once a bit is
-/// set, it can only be cleared by a reset.
+/// This registers always ORs writes into its current contents. Once a bit is set, it can only be cleared by a reset.
 ///
 /// Address offset: 0x0800
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **WRITE_ONCE0** [31:0] (RW): 
+/// - **WRITE_ONCE0** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct WriteOnce0 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for WriteOnce0 {}
-unsafe impl Sync for WriteOnce0 {}
+impl core::ops::Deref for WriteOnce0 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl WriteOnce0 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **WRITE_ONCE0**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const WRITE_ONCE0_OFFSET: u32 = 0;
     pub const WRITE_ONCE0_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **WRITE_ONCE0** [31:0]
+    /// **WRITE_ONCE0** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_once0(&self) -> u32 {
-        (self.read_bits() & Self::WRITE_ONCE0_MASK) >> Self::WRITE_ONCE0_OFFSET
+        (self.value.read_bits() & Self::WRITE_ONCE0_MASK) >> Self::WRITE_ONCE0_OFFSET
     }
 
-    /// Write WRITE_ONCE0 field
+    /// Write **WRITE_ONCE0** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_write_once0(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::WRITE_ONCE0_MASK) | ((value << Self::WRITE_ONCE0_OFFSET) & Self::WRITE_ONCE0_MASK));
+        self.value.modify_bits(|r| (r & !Self::WRITE_ONCE0_MASK) | ((value << Self::WRITE_ONCE0_OFFSET) & Self::WRITE_ONCE0_MASK));
     }
 
 }
@@ -123,13 +80,13 @@ impl WriteOnce0Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read WRITE_ONCE0 [31:0]
+    /// Read **WRITE_ONCE0** `[31:0]`
     #[inline(always)]
     pub const fn write_once0(&self) -> u32 {
         (self.bits & WriteOnce0::WRITE_ONCE0_MASK) >> WriteOnce0::WRITE_ONCE0_OFFSET
     }
 
-    /// Set WRITE_ONCE0 [31:0]
+    /// Set **WRITE_ONCE0** `[31:0]`
     #[inline(always)]
     pub const fn with_write_once0(self, value: u32) -> Self {
         Self {
@@ -148,109 +105,67 @@ impl Default for WriteOnce0Val {
 impl WriteOnce0 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> WriteOnce0Val {
-        WriteOnce0Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> WriteOnce0Val {
+        WriteOnce0Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: WriteOnce0Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: WriteOnce0Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(WriteOnce0Val) -> WriteOnce0Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(WriteOnce0Val) -> WriteOnce0Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// WRITE_ONCE1 Register
 ///
-/// This registers always ORs writes into its current contents. Once a bit is
-/// set, it can only be cleared by a reset.
+/// This registers always ORs writes into its current contents. Once a bit is set, it can only be cleared by a reset.
 ///
 /// Address offset: 0x0804
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **WRITE_ONCE1** [31:0] (RW): 
+/// - **WRITE_ONCE1** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct WriteOnce1 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for WriteOnce1 {}
-unsafe impl Sync for WriteOnce1 {}
+impl core::ops::Deref for WriteOnce1 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl WriteOnce1 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **WRITE_ONCE1**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const WRITE_ONCE1_OFFSET: u32 = 0;
     pub const WRITE_ONCE1_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **WRITE_ONCE1** [31:0]
+    /// **WRITE_ONCE1** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_once1(&self) -> u32 {
-        (self.read_bits() & Self::WRITE_ONCE1_MASK) >> Self::WRITE_ONCE1_OFFSET
+        (self.value.read_bits() & Self::WRITE_ONCE1_MASK) >> Self::WRITE_ONCE1_OFFSET
     }
 
-    /// Write WRITE_ONCE1 field
+    /// Write **WRITE_ONCE1** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_write_once1(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::WRITE_ONCE1_MASK) | ((value << Self::WRITE_ONCE1_OFFSET) & Self::WRITE_ONCE1_MASK));
+        self.value.modify_bits(|r| (r & !Self::WRITE_ONCE1_MASK) | ((value << Self::WRITE_ONCE1_OFFSET) & Self::WRITE_ONCE1_MASK));
     }
 
 }
@@ -283,13 +198,13 @@ impl WriteOnce1Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read WRITE_ONCE1 [31:0]
+    /// Read **WRITE_ONCE1** `[31:0]`
     #[inline(always)]
     pub const fn write_once1(&self) -> u32 {
         (self.bits & WriteOnce1::WRITE_ONCE1_MASK) >> WriteOnce1::WRITE_ONCE1_OFFSET
     }
 
-    /// Set WRITE_ONCE1 [31:0]
+    /// Set **WRITE_ONCE1** `[31:0]`
     #[inline(always)]
     pub const fn with_write_once1(self, value: u32) -> Self {
         Self {
@@ -308,109 +223,67 @@ impl Default for WriteOnce1Val {
 impl WriteOnce1 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> WriteOnce1Val {
-        WriteOnce1Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> WriteOnce1Val {
+        WriteOnce1Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: WriteOnce1Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: WriteOnce1Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(WriteOnce1Val) -> WriteOnce1Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(WriteOnce1Val) -> WriteOnce1Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// BOOTLOCK_STAT Register
 ///
-/// Bootlock status register. 1=unclaimed, 0=claimed. These locks function
-/// identically to the SIO spinlocks, but are reserved for bootrom use.
+/// Bootlock status register. 1=unclaimed, 0=claimed. These locks function identically to the SIO spinlocks, but are reserved for bootrom use.
 ///
 /// Address offset: 0x0808
 /// Reset value: 0x000000ff
 ///
 /// ## Fields
 ///
-/// - **BOOTLOCK_STAT** [7:0] (RW): 
+/// - **BOOTLOCK_STAT** `[7:0]` (RW)
 #[repr(transparent)]
 pub struct BootlockStat {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for BootlockStat {}
-unsafe impl Sync for BootlockStat {}
+impl core::ops::Deref for BootlockStat {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl BootlockStat {
     // ======== Field Constants ========
 
-    /// Bits [7:0], mask 0x000000ff
+    /// **BOOTLOCK_STAT**
+    /// Bits `[7:0]`, mask `0x000000ff`
     pub const BOOTLOCK_STAT_OFFSET: u32 = 0;
     pub const BOOTLOCK_STAT_MASK: u32 = 0x000000ff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **BOOTLOCK_STAT** [7:0]
+    /// **BOOTLOCK_STAT** `[7:0]` (RW)
     #[inline(always)]
     pub fn bootlock_stat(&self) -> u32 {
-        (self.read_bits() & Self::BOOTLOCK_STAT_MASK) >> Self::BOOTLOCK_STAT_OFFSET
+        (self.value.read_bits() & Self::BOOTLOCK_STAT_MASK) >> Self::BOOTLOCK_STAT_OFFSET
     }
 
-    /// Write BOOTLOCK_STAT field
+    /// Write **BOOTLOCK_STAT** `[7:0]` (RW)
     #[inline(always)]
     pub fn write_bootlock_stat(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::BOOTLOCK_STAT_MASK) | ((value << Self::BOOTLOCK_STAT_OFFSET) & Self::BOOTLOCK_STAT_MASK));
+        self.value.modify_bits(|r| (r & !Self::BOOTLOCK_STAT_MASK) | ((value << Self::BOOTLOCK_STAT_OFFSET) & Self::BOOTLOCK_STAT_MASK));
     }
 
 }
@@ -443,13 +316,13 @@ impl BootlockStatVal {
         Self { bits: 0x000000ff }
     }
 
-    /// Read BOOTLOCK_STAT [7:0]
+    /// Read **BOOTLOCK_STAT** `[7:0]`
     #[inline(always)]
     pub const fn bootlock_stat(&self) -> u32 {
         (self.bits & BootlockStat::BOOTLOCK_STAT_MASK) >> BootlockStat::BOOTLOCK_STAT_OFFSET
     }
 
-    /// Set BOOTLOCK_STAT [7:0]
+    /// Set **BOOTLOCK_STAT** `[7:0]`
     #[inline(always)]
     pub const fn with_bootlock_stat(self, value: u32) -> Self {
         Self {
@@ -468,109 +341,67 @@ impl Default for BootlockStatVal {
 impl BootlockStat {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> BootlockStatVal {
-        BootlockStatVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> BootlockStatVal {
+        BootlockStatVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: BootlockStatVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: BootlockStatVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(BootlockStatVal) -> BootlockStatVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(BootlockStatVal) -> BootlockStatVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// BOOTLOCK0 Register
 ///
-/// Read to claim and check. Write to unclaim. The value returned on successful
-/// claim is 1 << n, and on failed claim is zero.
+/// Read to claim and check. Write to unclaim. The value returned on successful claim is 1 << n, and on failed claim is zero.
 ///
 /// Address offset: 0x080c
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **BOOTLOCK0** [31:0] (RW): 
+/// - **BOOTLOCK0** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Bootlock0 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Bootlock0 {}
-unsafe impl Sync for Bootlock0 {}
+impl core::ops::Deref for Bootlock0 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Bootlock0 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **BOOTLOCK0**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const BOOTLOCK0_OFFSET: u32 = 0;
     pub const BOOTLOCK0_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **BOOTLOCK0** [31:0]
+    /// **BOOTLOCK0** `[31:0]` (RW)
     #[inline(always)]
     pub fn bootlock0(&self) -> u32 {
-        (self.read_bits() & Self::BOOTLOCK0_MASK) >> Self::BOOTLOCK0_OFFSET
+        (self.value.read_bits() & Self::BOOTLOCK0_MASK) >> Self::BOOTLOCK0_OFFSET
     }
 
-    /// Write BOOTLOCK0 field
+    /// Write **BOOTLOCK0** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_bootlock0(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::BOOTLOCK0_MASK) | ((value << Self::BOOTLOCK0_OFFSET) & Self::BOOTLOCK0_MASK));
+        self.value.modify_bits(|r| (r & !Self::BOOTLOCK0_MASK) | ((value << Self::BOOTLOCK0_OFFSET) & Self::BOOTLOCK0_MASK));
     }
 
 }
@@ -603,13 +434,13 @@ impl Bootlock0Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read BOOTLOCK0 [31:0]
+    /// Read **BOOTLOCK0** `[31:0]`
     #[inline(always)]
     pub const fn bootlock0(&self) -> u32 {
         (self.bits & Bootlock0::BOOTLOCK0_MASK) >> Bootlock0::BOOTLOCK0_OFFSET
     }
 
-    /// Set BOOTLOCK0 [31:0]
+    /// Set **BOOTLOCK0** `[31:0]`
     #[inline(always)]
     pub const fn with_bootlock0(self, value: u32) -> Self {
         Self {
@@ -628,109 +459,67 @@ impl Default for Bootlock0Val {
 impl Bootlock0 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Bootlock0Val {
-        Bootlock0Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Bootlock0Val {
+        Bootlock0Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Bootlock0Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Bootlock0Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Bootlock0Val) -> Bootlock0Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Bootlock0Val) -> Bootlock0Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// BOOTLOCK1 Register
 ///
-/// Read to claim and check. Write to unclaim. The value returned on successful
-/// claim is 1 << n, and on failed claim is zero.
+/// Read to claim and check. Write to unclaim. The value returned on successful claim is 1 << n, and on failed claim is zero.
 ///
 /// Address offset: 0x0810
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **BOOTLOCK1** [31:0] (RW): 
+/// - **BOOTLOCK1** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Bootlock1 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Bootlock1 {}
-unsafe impl Sync for Bootlock1 {}
+impl core::ops::Deref for Bootlock1 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Bootlock1 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **BOOTLOCK1**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const BOOTLOCK1_OFFSET: u32 = 0;
     pub const BOOTLOCK1_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **BOOTLOCK1** [31:0]
+    /// **BOOTLOCK1** `[31:0]` (RW)
     #[inline(always)]
     pub fn bootlock1(&self) -> u32 {
-        (self.read_bits() & Self::BOOTLOCK1_MASK) >> Self::BOOTLOCK1_OFFSET
+        (self.value.read_bits() & Self::BOOTLOCK1_MASK) >> Self::BOOTLOCK1_OFFSET
     }
 
-    /// Write BOOTLOCK1 field
+    /// Write **BOOTLOCK1** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_bootlock1(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::BOOTLOCK1_MASK) | ((value << Self::BOOTLOCK1_OFFSET) & Self::BOOTLOCK1_MASK));
+        self.value.modify_bits(|r| (r & !Self::BOOTLOCK1_MASK) | ((value << Self::BOOTLOCK1_OFFSET) & Self::BOOTLOCK1_MASK));
     }
 
 }
@@ -763,13 +552,13 @@ impl Bootlock1Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read BOOTLOCK1 [31:0]
+    /// Read **BOOTLOCK1** `[31:0]`
     #[inline(always)]
     pub const fn bootlock1(&self) -> u32 {
         (self.bits & Bootlock1::BOOTLOCK1_MASK) >> Bootlock1::BOOTLOCK1_OFFSET
     }
 
-    /// Set BOOTLOCK1 [31:0]
+    /// Set **BOOTLOCK1** `[31:0]`
     #[inline(always)]
     pub const fn with_bootlock1(self, value: u32) -> Self {
         Self {
@@ -788,109 +577,67 @@ impl Default for Bootlock1Val {
 impl Bootlock1 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Bootlock1Val {
-        Bootlock1Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Bootlock1Val {
+        Bootlock1Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Bootlock1Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Bootlock1Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Bootlock1Val) -> Bootlock1Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Bootlock1Val) -> Bootlock1Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// BOOTLOCK2 Register
 ///
-/// Read to claim and check. Write to unclaim. The value returned on successful
-/// claim is 1 << n, and on failed claim is zero.
+/// Read to claim and check. Write to unclaim. The value returned on successful claim is 1 << n, and on failed claim is zero.
 ///
 /// Address offset: 0x0814
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **BOOTLOCK2** [31:0] (RW): 
+/// - **BOOTLOCK2** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Bootlock2 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Bootlock2 {}
-unsafe impl Sync for Bootlock2 {}
+impl core::ops::Deref for Bootlock2 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Bootlock2 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **BOOTLOCK2**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const BOOTLOCK2_OFFSET: u32 = 0;
     pub const BOOTLOCK2_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **BOOTLOCK2** [31:0]
+    /// **BOOTLOCK2** `[31:0]` (RW)
     #[inline(always)]
     pub fn bootlock2(&self) -> u32 {
-        (self.read_bits() & Self::BOOTLOCK2_MASK) >> Self::BOOTLOCK2_OFFSET
+        (self.value.read_bits() & Self::BOOTLOCK2_MASK) >> Self::BOOTLOCK2_OFFSET
     }
 
-    /// Write BOOTLOCK2 field
+    /// Write **BOOTLOCK2** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_bootlock2(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::BOOTLOCK2_MASK) | ((value << Self::BOOTLOCK2_OFFSET) & Self::BOOTLOCK2_MASK));
+        self.value.modify_bits(|r| (r & !Self::BOOTLOCK2_MASK) | ((value << Self::BOOTLOCK2_OFFSET) & Self::BOOTLOCK2_MASK));
     }
 
 }
@@ -923,13 +670,13 @@ impl Bootlock2Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read BOOTLOCK2 [31:0]
+    /// Read **BOOTLOCK2** `[31:0]`
     #[inline(always)]
     pub const fn bootlock2(&self) -> u32 {
         (self.bits & Bootlock2::BOOTLOCK2_MASK) >> Bootlock2::BOOTLOCK2_OFFSET
     }
 
-    /// Set BOOTLOCK2 [31:0]
+    /// Set **BOOTLOCK2** `[31:0]`
     #[inline(always)]
     pub const fn with_bootlock2(self, value: u32) -> Self {
         Self {
@@ -948,109 +695,67 @@ impl Default for Bootlock2Val {
 impl Bootlock2 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Bootlock2Val {
-        Bootlock2Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Bootlock2Val {
+        Bootlock2Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Bootlock2Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Bootlock2Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Bootlock2Val) -> Bootlock2Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Bootlock2Val) -> Bootlock2Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// BOOTLOCK3 Register
 ///
-/// Read to claim and check. Write to unclaim. The value returned on successful
-/// claim is 1 << n, and on failed claim is zero.
+/// Read to claim and check. Write to unclaim. The value returned on successful claim is 1 << n, and on failed claim is zero.
 ///
 /// Address offset: 0x0818
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **BOOTLOCK3** [31:0] (RW): 
+/// - **BOOTLOCK3** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Bootlock3 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Bootlock3 {}
-unsafe impl Sync for Bootlock3 {}
+impl core::ops::Deref for Bootlock3 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Bootlock3 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **BOOTLOCK3**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const BOOTLOCK3_OFFSET: u32 = 0;
     pub const BOOTLOCK3_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **BOOTLOCK3** [31:0]
+    /// **BOOTLOCK3** `[31:0]` (RW)
     #[inline(always)]
     pub fn bootlock3(&self) -> u32 {
-        (self.read_bits() & Self::BOOTLOCK3_MASK) >> Self::BOOTLOCK3_OFFSET
+        (self.value.read_bits() & Self::BOOTLOCK3_MASK) >> Self::BOOTLOCK3_OFFSET
     }
 
-    /// Write BOOTLOCK3 field
+    /// Write **BOOTLOCK3** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_bootlock3(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::BOOTLOCK3_MASK) | ((value << Self::BOOTLOCK3_OFFSET) & Self::BOOTLOCK3_MASK));
+        self.value.modify_bits(|r| (r & !Self::BOOTLOCK3_MASK) | ((value << Self::BOOTLOCK3_OFFSET) & Self::BOOTLOCK3_MASK));
     }
 
 }
@@ -1083,13 +788,13 @@ impl Bootlock3Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read BOOTLOCK3 [31:0]
+    /// Read **BOOTLOCK3** `[31:0]`
     #[inline(always)]
     pub const fn bootlock3(&self) -> u32 {
         (self.bits & Bootlock3::BOOTLOCK3_MASK) >> Bootlock3::BOOTLOCK3_OFFSET
     }
 
-    /// Set BOOTLOCK3 [31:0]
+    /// Set **BOOTLOCK3** `[31:0]`
     #[inline(always)]
     pub const fn with_bootlock3(self, value: u32) -> Self {
         Self {
@@ -1108,109 +813,67 @@ impl Default for Bootlock3Val {
 impl Bootlock3 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Bootlock3Val {
-        Bootlock3Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Bootlock3Val {
+        Bootlock3Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Bootlock3Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Bootlock3Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Bootlock3Val) -> Bootlock3Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Bootlock3Val) -> Bootlock3Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// BOOTLOCK4 Register
 ///
-/// Read to claim and check. Write to unclaim. The value returned on successful
-/// claim is 1 << n, and on failed claim is zero.
+/// Read to claim and check. Write to unclaim. The value returned on successful claim is 1 << n, and on failed claim is zero.
 ///
 /// Address offset: 0x081c
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **BOOTLOCK4** [31:0] (RW): 
+/// - **BOOTLOCK4** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Bootlock4 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Bootlock4 {}
-unsafe impl Sync for Bootlock4 {}
+impl core::ops::Deref for Bootlock4 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Bootlock4 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **BOOTLOCK4**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const BOOTLOCK4_OFFSET: u32 = 0;
     pub const BOOTLOCK4_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **BOOTLOCK4** [31:0]
+    /// **BOOTLOCK4** `[31:0]` (RW)
     #[inline(always)]
     pub fn bootlock4(&self) -> u32 {
-        (self.read_bits() & Self::BOOTLOCK4_MASK) >> Self::BOOTLOCK4_OFFSET
+        (self.value.read_bits() & Self::BOOTLOCK4_MASK) >> Self::BOOTLOCK4_OFFSET
     }
 
-    /// Write BOOTLOCK4 field
+    /// Write **BOOTLOCK4** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_bootlock4(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::BOOTLOCK4_MASK) | ((value << Self::BOOTLOCK4_OFFSET) & Self::BOOTLOCK4_MASK));
+        self.value.modify_bits(|r| (r & !Self::BOOTLOCK4_MASK) | ((value << Self::BOOTLOCK4_OFFSET) & Self::BOOTLOCK4_MASK));
     }
 
 }
@@ -1243,13 +906,13 @@ impl Bootlock4Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read BOOTLOCK4 [31:0]
+    /// Read **BOOTLOCK4** `[31:0]`
     #[inline(always)]
     pub const fn bootlock4(&self) -> u32 {
         (self.bits & Bootlock4::BOOTLOCK4_MASK) >> Bootlock4::BOOTLOCK4_OFFSET
     }
 
-    /// Set BOOTLOCK4 [31:0]
+    /// Set **BOOTLOCK4** `[31:0]`
     #[inline(always)]
     pub const fn with_bootlock4(self, value: u32) -> Self {
         Self {
@@ -1268,109 +931,67 @@ impl Default for Bootlock4Val {
 impl Bootlock4 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Bootlock4Val {
-        Bootlock4Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Bootlock4Val {
+        Bootlock4Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Bootlock4Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Bootlock4Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Bootlock4Val) -> Bootlock4Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Bootlock4Val) -> Bootlock4Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// BOOTLOCK5 Register
 ///
-/// Read to claim and check. Write to unclaim. The value returned on successful
-/// claim is 1 << n, and on failed claim is zero.
+/// Read to claim and check. Write to unclaim. The value returned on successful claim is 1 << n, and on failed claim is zero.
 ///
 /// Address offset: 0x0820
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **BOOTLOCK5** [31:0] (RW): 
+/// - **BOOTLOCK5** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Bootlock5 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Bootlock5 {}
-unsafe impl Sync for Bootlock5 {}
+impl core::ops::Deref for Bootlock5 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Bootlock5 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **BOOTLOCK5**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const BOOTLOCK5_OFFSET: u32 = 0;
     pub const BOOTLOCK5_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **BOOTLOCK5** [31:0]
+    /// **BOOTLOCK5** `[31:0]` (RW)
     #[inline(always)]
     pub fn bootlock5(&self) -> u32 {
-        (self.read_bits() & Self::BOOTLOCK5_MASK) >> Self::BOOTLOCK5_OFFSET
+        (self.value.read_bits() & Self::BOOTLOCK5_MASK) >> Self::BOOTLOCK5_OFFSET
     }
 
-    /// Write BOOTLOCK5 field
+    /// Write **BOOTLOCK5** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_bootlock5(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::BOOTLOCK5_MASK) | ((value << Self::BOOTLOCK5_OFFSET) & Self::BOOTLOCK5_MASK));
+        self.value.modify_bits(|r| (r & !Self::BOOTLOCK5_MASK) | ((value << Self::BOOTLOCK5_OFFSET) & Self::BOOTLOCK5_MASK));
     }
 
 }
@@ -1403,13 +1024,13 @@ impl Bootlock5Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read BOOTLOCK5 [31:0]
+    /// Read **BOOTLOCK5** `[31:0]`
     #[inline(always)]
     pub const fn bootlock5(&self) -> u32 {
         (self.bits & Bootlock5::BOOTLOCK5_MASK) >> Bootlock5::BOOTLOCK5_OFFSET
     }
 
-    /// Set BOOTLOCK5 [31:0]
+    /// Set **BOOTLOCK5** `[31:0]`
     #[inline(always)]
     pub const fn with_bootlock5(self, value: u32) -> Self {
         Self {
@@ -1428,109 +1049,67 @@ impl Default for Bootlock5Val {
 impl Bootlock5 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Bootlock5Val {
-        Bootlock5Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Bootlock5Val {
+        Bootlock5Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Bootlock5Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Bootlock5Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Bootlock5Val) -> Bootlock5Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Bootlock5Val) -> Bootlock5Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// BOOTLOCK6 Register
 ///
-/// Read to claim and check. Write to unclaim. The value returned on successful
-/// claim is 1 << n, and on failed claim is zero.
+/// Read to claim and check. Write to unclaim. The value returned on successful claim is 1 << n, and on failed claim is zero.
 ///
 /// Address offset: 0x0824
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **BOOTLOCK6** [31:0] (RW): 
+/// - **BOOTLOCK6** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Bootlock6 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Bootlock6 {}
-unsafe impl Sync for Bootlock6 {}
+impl core::ops::Deref for Bootlock6 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Bootlock6 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **BOOTLOCK6**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const BOOTLOCK6_OFFSET: u32 = 0;
     pub const BOOTLOCK6_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **BOOTLOCK6** [31:0]
+    /// **BOOTLOCK6** `[31:0]` (RW)
     #[inline(always)]
     pub fn bootlock6(&self) -> u32 {
-        (self.read_bits() & Self::BOOTLOCK6_MASK) >> Self::BOOTLOCK6_OFFSET
+        (self.value.read_bits() & Self::BOOTLOCK6_MASK) >> Self::BOOTLOCK6_OFFSET
     }
 
-    /// Write BOOTLOCK6 field
+    /// Write **BOOTLOCK6** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_bootlock6(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::BOOTLOCK6_MASK) | ((value << Self::BOOTLOCK6_OFFSET) & Self::BOOTLOCK6_MASK));
+        self.value.modify_bits(|r| (r & !Self::BOOTLOCK6_MASK) | ((value << Self::BOOTLOCK6_OFFSET) & Self::BOOTLOCK6_MASK));
     }
 
 }
@@ -1563,13 +1142,13 @@ impl Bootlock6Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read BOOTLOCK6 [31:0]
+    /// Read **BOOTLOCK6** `[31:0]`
     #[inline(always)]
     pub const fn bootlock6(&self) -> u32 {
         (self.bits & Bootlock6::BOOTLOCK6_MASK) >> Bootlock6::BOOTLOCK6_OFFSET
     }
 
-    /// Set BOOTLOCK6 [31:0]
+    /// Set **BOOTLOCK6** `[31:0]`
     #[inline(always)]
     pub const fn with_bootlock6(self, value: u32) -> Self {
         Self {
@@ -1588,109 +1167,67 @@ impl Default for Bootlock6Val {
 impl Bootlock6 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Bootlock6Val {
-        Bootlock6Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Bootlock6Val {
+        Bootlock6Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Bootlock6Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Bootlock6Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Bootlock6Val) -> Bootlock6Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Bootlock6Val) -> Bootlock6Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
 
 /// BOOTLOCK7 Register
 ///
-/// Read to claim and check. Write to unclaim. The value returned on successful
-/// claim is 1 << n, and on failed claim is zero.
+/// Read to claim and check. Write to unclaim. The value returned on successful claim is 1 << n, and on failed claim is zero.
 ///
 /// Address offset: 0x0828
 /// Reset value: 0x00000000
 ///
 /// ## Fields
 ///
-/// - **BOOTLOCK7** [31:0] (RW): 
+/// - **BOOTLOCK7** `[31:0]` (RW)
 #[repr(transparent)]
 pub struct Bootlock7 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Bootlock7 {}
-unsafe impl Sync for Bootlock7 {}
+impl core::ops::Deref for Bootlock7 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Bootlock7 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **BOOTLOCK7**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const BOOTLOCK7_OFFSET: u32 = 0;
     pub const BOOTLOCK7_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **BOOTLOCK7** [31:0]
+    /// **BOOTLOCK7** `[31:0]` (RW)
     #[inline(always)]
     pub fn bootlock7(&self) -> u32 {
-        (self.read_bits() & Self::BOOTLOCK7_MASK) >> Self::BOOTLOCK7_OFFSET
+        (self.value.read_bits() & Self::BOOTLOCK7_MASK) >> Self::BOOTLOCK7_OFFSET
     }
 
-    /// Write BOOTLOCK7 field
+    /// Write **BOOTLOCK7** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_bootlock7(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::BOOTLOCK7_MASK) | ((value << Self::BOOTLOCK7_OFFSET) & Self::BOOTLOCK7_MASK));
+        self.value.modify_bits(|r| (r & !Self::BOOTLOCK7_MASK) | ((value << Self::BOOTLOCK7_OFFSET) & Self::BOOTLOCK7_MASK));
     }
 
 }
@@ -1723,13 +1260,13 @@ impl Bootlock7Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read BOOTLOCK7 [31:0]
+    /// Read **BOOTLOCK7** `[31:0]`
     #[inline(always)]
     pub const fn bootlock7(&self) -> u32 {
         (self.bits & Bootlock7::BOOTLOCK7_MASK) >> Bootlock7::BOOTLOCK7_OFFSET
     }
 
-    /// Set BOOTLOCK7 [31:0]
+    /// Set **BOOTLOCK7** `[31:0]`
     #[inline(always)]
     pub const fn with_bootlock7(self, value: u32) -> Self {
         Self {
@@ -1748,20 +1285,20 @@ impl Default for Bootlock7Val {
 impl Bootlock7 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Bootlock7Val {
-        Bootlock7Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Bootlock7Val {
+        Bootlock7Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Bootlock7Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Bootlock7Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Bootlock7Val) -> Bootlock7Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Bootlock7Val) -> Bootlock7Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1770,27 +1307,38 @@ impl Bootlock7 {
 #[repr(C)]
 pub struct RegisterBlock {
     _reserved0: [u8; 2048],
-    /// 0x0800 - This registers always ORs writes into its current contents. Once a bit is s...
+    /// 0x0800
+    /// This registers always ORs writes into its current contents. Once a bit is set, it can only be cleared by a reset.
     pub write_once0: WriteOnce0,
-    /// 0x0804 - This registers always ORs writes into its current contents. Once a bit is s...
+    /// 0x0804
+    /// This registers always ORs writes into its current contents. Once a bit is set, it can only be cleared by a reset.
     pub write_once1: WriteOnce1,
-    /// 0x0808 - Bootlock status register. 1=unclaimed, 0=claimed. These locks function iden...
+    /// 0x0808
+    /// Bootlock status register. 1=unclaimed, 0=claimed. These locks function identically to the SIO spinlocks, but are reserved for bootrom use.
     pub bootlock_stat: BootlockStat,
-    /// 0x080c - Read to claim and check. Write to unclaim. The value returned on successful...
+    /// 0x080c
+    /// Read to claim and check. Write to unclaim. The value returned on successful claim is 1 << n, and on failed claim is zero.
     pub bootlock0: Bootlock0,
-    /// 0x0810 - Read to claim and check. Write to unclaim. The value returned on successful...
+    /// 0x0810
+    /// Read to claim and check. Write to unclaim. The value returned on successful claim is 1 << n, and on failed claim is zero.
     pub bootlock1: Bootlock1,
-    /// 0x0814 - Read to claim and check. Write to unclaim. The value returned on successful...
+    /// 0x0814
+    /// Read to claim and check. Write to unclaim. The value returned on successful claim is 1 << n, and on failed claim is zero.
     pub bootlock2: Bootlock2,
-    /// 0x0818 - Read to claim and check. Write to unclaim. The value returned on successful...
+    /// 0x0818
+    /// Read to claim and check. Write to unclaim. The value returned on successful claim is 1 << n, and on failed claim is zero.
     pub bootlock3: Bootlock3,
-    /// 0x081c - Read to claim and check. Write to unclaim. The value returned on successful...
+    /// 0x081c
+    /// Read to claim and check. Write to unclaim. The value returned on successful claim is 1 << n, and on failed claim is zero.
     pub bootlock4: Bootlock4,
-    /// 0x0820 - Read to claim and check. Write to unclaim. The value returned on successful...
+    /// 0x0820
+    /// Read to claim and check. Write to unclaim. The value returned on successful claim is 1 << n, and on failed claim is zero.
     pub bootlock5: Bootlock5,
-    /// 0x0824 - Read to claim and check. Write to unclaim. The value returned on successful...
+    /// 0x0824
+    /// Read to claim and check. Write to unclaim. The value returned on successful claim is 1 << n, and on failed claim is zero.
     pub bootlock6: Bootlock6,
-    /// 0x0828 - Read to claim and check. Write to unclaim. The value returned on successful...
+    /// 0x0828
+    /// Read to claim and check. Write to unclaim. The value returned on successful claim is 1 << n, and on failed claim is zero.
     pub bootlock7: Bootlock7,
 }
 

@@ -772,7 +772,7 @@ impl core::fmt::Debug for HSTX_FIFO {
 /// FIFO status and write access for HSTX
 pub mod hstx_fifo;
 
-/// Control interface to HSTX. For FIFO write access and status, see the HSTX_F...
+/// Control interface to HSTX. For FIFO write access and status, see the HSTX_FIFO register block.
 pub struct HSTX_CTRL {
     _marker: PhantomData<*const ()>,
 }
@@ -816,7 +816,7 @@ impl core::fmt::Debug for HSTX_CTRL {
     }
 }
 
-/// Control interface to HSTX. For FIFO write access and status, see the HSTX_F...
+/// Control interface to HSTX. For FIFO write access and status, see the HSTX_FIFO register block.
 pub mod hstx_ctrl;
 
 /// Cortex-M33 EPPB vendor register block for RP2350
@@ -960,7 +960,7 @@ impl core::fmt::Debug for PPB_NS {
 /// PPB_NS register module
 pub mod ppb_ns;
 
-/// QSPI Memory Interface. Provides a memory-mapped interface to up to two SPI/...
+/// QSPI Memory Interface.
 pub struct QMI {
     _marker: PhantomData<*const ()>,
 }
@@ -1004,7 +1004,7 @@ impl core::fmt::Debug for QMI {
     }
 }
 
-/// QSPI Memory Interface. Provides a memory-mapped interface to up to two SPI/...
+/// QSPI Memory Interface.
 pub mod qmi;
 
 /// QSPI flash execute-in-place block
@@ -1477,7 +1477,7 @@ impl core::fmt::Debug for ROSC {
 /// ROSC register module
 pub mod rosc;
 
-/// Controls vreg, bor, lposc, chip resets & xosc startup, powman and provides ...
+/// Controls vreg, bor, lposc, chip resets & xosc startup, powman and provides scratch register for general use and for bootcode use
 pub struct POWMAN {
     _marker: PhantomData<*const ()>,
 }
@@ -1521,7 +1521,7 @@ impl core::fmt::Debug for POWMAN {
     }
 }
 
-/// Controls vreg, bor, lposc, chip resets & xosc startup, powman and provides ...
+/// Controls vreg, bor, lposc, chip resets & xosc startup, powman and provides scratch register for general use and for bootcode use
 pub mod powman;
 
 /// WATCHDOG peripheral
@@ -1618,7 +1618,7 @@ impl core::fmt::Debug for DMA {
 /// DMA with separate read and write masters
 pub mod dma;
 
-/// Controls time and alarms time is a 64 bit value indicating the time since p...
+/// Controls time and alarms
 pub struct TIMER0 {
     _marker: PhantomData<*const ()>,
 }
@@ -1662,7 +1662,7 @@ impl core::fmt::Debug for TIMER0 {
     }
 }
 
-/// Controls time and alarms time is a 64 bit value indicating the time since p...
+/// Controls time and alarms
 pub mod timer0;
 
 /// TIMER1 peripheral
@@ -1806,7 +1806,7 @@ impl core::fmt::Debug for ADC {
 /// Control and data interface to SAR ADC
 pub mod adc;
 
-/// DW_apb_i2c address block List of configuration constants for the Synopsys I...
+/// DW_apb_i2c address block
 pub struct I2C0 {
     _marker: PhantomData<*const ()>,
 }
@@ -1850,7 +1850,7 @@ impl core::fmt::Debug for I2C0 {
     }
 }
 
-/// DW_apb_i2c address block List of configuration constants for the Synopsys I...
+/// DW_apb_i2c address block
 pub mod i2c0;
 
 /// I2C1 peripheral
@@ -2182,7 +2182,7 @@ impl core::fmt::Debug for BUSCTRL {
 /// Register block for busfabric control signals and performance counters
 pub mod busctrl;
 
-/// Single-cycle IO block Provides core-local and inter-core hardware for the t...
+/// Single-cycle IO block
 pub struct SIO {
     _marker: PhantomData<*const ()>,
 }
@@ -2226,7 +2226,7 @@ impl core::fmt::Debug for SIO {
     }
 }
 
-/// Single-cycle IO block Provides core-local and inter-core hardware for the t...
+/// Single-cycle IO block
 pub mod sio;
 
 /// SIO_NS peripheral
@@ -2825,7 +2825,7 @@ pub struct Peripherals {
     pub SHA256: SHA256,
     /// FIFO status and write access for HSTX
     pub HSTX_FIFO: HSTX_FIFO,
-    /// Control interface to HSTX. For FIFO write access and status, see the HSTX_F...
+    /// Control interface to HSTX. For FIFO write access and status, see the HSTX_FIFO register block.
     pub HSTX_CTRL: HSTX_CTRL,
     /// Cortex-M33 EPPB vendor register block for RP2350
     pub EPPB: EPPB,
@@ -2833,7 +2833,7 @@ pub struct Peripherals {
     pub PPB: PPB,
     /// PPB_NS peripheral
     pub PPB_NS: PPB_NS,
-    /// QSPI Memory Interface. Provides a memory-mapped interface to up to two SPI/...
+    /// QSPI Memory Interface.
     pub QMI: QMI,
     /// QSPI flash execute-in-place block
     pub XIP_CTRL: XIP_CTRL,
@@ -2855,13 +2855,13 @@ pub struct Peripherals {
     pub UART1: UART1,
     /// ROSC peripheral
     pub ROSC: ROSC,
-    /// Controls vreg, bor, lposc, chip resets & xosc startup, powman and provides ...
+    /// Controls vreg, bor, lposc, chip resets & xosc startup, powman and provides scratch register for general use and for bootcode use
     pub POWMAN: POWMAN,
     /// WATCHDOG peripheral
     pub WATCHDOG: WATCHDOG,
     /// DMA with separate read and write masters
     pub DMA: DMA,
-    /// Controls time and alarms time is a 64 bit value indicating the time since p...
+    /// Controls time and alarms
     pub TIMER0: TIMER0,
     /// TIMER1 peripheral
     pub TIMER1: TIMER1,
@@ -2869,7 +2869,7 @@ pub struct Peripherals {
     pub PWM: PWM,
     /// Control and data interface to SAR ADC
     pub ADC: ADC,
-    /// DW_apb_i2c address block List of configuration constants for the Synopsys I...
+    /// DW_apb_i2c address block
     pub I2C0: I2C0,
     /// I2C1 peripheral
     pub I2C1: I2C1,
@@ -2885,7 +2885,7 @@ pub struct Peripherals {
     pub PIO2: PIO2,
     /// Register block for busfabric control signals and performance counters
     pub BUSCTRL: BUSCTRL,
-    /// Single-cycle IO block Provides core-local and inter-core hardware for the t...
+    /// Single-cycle IO block
     pub SIO: SIO,
     /// SIO_NS peripheral
     pub SIO_NS: SIO_NS,

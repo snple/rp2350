@@ -1,4 +1,5 @@
-//! SHA256 - SHA-256 hash function implementation
+//! SHA256
+//! SHA-256 hash function implementation
 
 #![allow(dead_code)]
 
@@ -13,175 +14,183 @@ pub const BASE: u32 = 0x400f8000;
 ///
 /// ## Fields
 ///
-/// - **BSWAP** [12] (RW): Enable byte swapping of 32-bit values at the point they are committed to th...
-/// - **DMA_SIZE** [9:8] (RW): Configure DREQ logic for the correct DMA data size. Must be configured befo...
-/// - **ERR_WDATA_NOT_RDY** [4] (RW): Set when a write occurs whilst the SHA-256 core is not ready for data (WDAT...
-/// - **SUM_VLD** [2] (RO): If 1, the SHA-256 checksum presented in registers SUM0 through SUM7 is curr...
-/// - **WDATA_RDY** [1] (RO): If 1, the SHA-256 core is ready to accept more data through the WDATA regis...
-/// - **START** [0] (WO): Write 1 to prepare the SHA-256 core for a new checksum. The SUMx registers ...
+/// - **BSWAP** `[12]` (RW)
+///   Enable byte swapping of 32-bit values at the point they are committed to the SHA message scheduler.
+///   This block's bus interface assembles byte/halfword data into message words in little-endian order, so that DMAing the same buffer with different transfer sizes always gives the same result on a little-endian system like RP2350.
+///   However, when marshalling bytes into blocks, SHA expects that the first byte is the *most significant* in each message word. To resolve this, once the bus interface has accumulated 32 bits of data (either a word write, two halfword writes in little-endian order, or four byte writes in little-endian order) the final value can be byte-swapped before passing to the actual SHA core.
+///   This feature is enabled by default because using the SHA core to checksum byte buffers is expected to be more common than having preformatted SHA message words lying around.
+/// - **DMA_SIZE** `[9:8]` (RW)
+///   Configure DREQ logic for the correct DMA data size. Must be configured before the DMA channel is triggered.
+///   The SHA-256 core's DREQ logic requests one entire block of data at once, since there is no FIFO, and data goes straight into the core's message schedule and digest hardware. Therefore, when transferring data with DMA, CSR_DMA_SIZE must be configured in advance so that the correct number of transfers can be requested per block.
+/// - **ERR_WDATA_NOT_RDY** `[4]` (RW)
+///   Set when a write occurs whilst the SHA-256 core is not ready for data (WDATA_RDY is low). Write one to clear.
+/// - **SUM_VLD** `[2]` (RO)
+///   If 1, the SHA-256 checksum presented in registers SUM0 through SUM7 is currently valid.
+///   Goes low when WDATA is first written, then returns high once 16 words have been written and the digest of the current 512-bit block has subsequently completed.
+/// - **WDATA_RDY** `[1]` (RO)
+///   If 1, the SHA-256 core is ready to accept more data through the WDATA register.
+///   After writing 16 words, this flag will go low for 57 cycles whilst the core completes its digest.
+/// - **START** `[0]` (WO)
+///   Write 1 to prepare the SHA-256 core for a new checksum.
+///   The SUMx registers are initialised to the proper values (fractional bits of square roots of first 8 primes) and internal counters are cleared. This immediately forces WDATA_RDY and SUM_VLD high.
+///   START must be written before initiating a DMA transfer to the SHA-256 core, because the core will always request 16 transfers at a time (1 512-bit block). Additionally, the DMA channel should be configured for a multiple of 16 32-bit transfers.
 #[repr(transparent)]
 pub struct Csr {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Csr {}
-unsafe impl Sync for Csr {}
+impl core::ops::Deref for Csr {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Csr {
     // ======== Field Constants ========
 
-    /// BSWAP - Enable byte swapping of 32-bit values at the point they are committed to th...
-    /// Bits [12:12], mask 0x00001000
+    /// **BSWAP**
+    /// Enable byte swapping of 32-bit values at the point they are committed to the SHA message scheduler.
+    /// This block's bus interface assembles byte/halfword data into message words in little-endian order, so that DMAing the same buffer with different transfer sizes always gives the same result on a little-endian system like RP2350.
+    /// However, when marshalling bytes into blocks, SHA expects that the first byte is the *most significant* in each message word. To resolve this, once the bus interface has accumulated 32 bits of data (either a word write, two halfword writes in little-endian order, or four byte writes in little-endian order) the final value can be byte-swapped before passing to the actual SHA core.
+    /// This feature is enabled by default because using the SHA core to checksum byte buffers is expected to be more common than having preformatted SHA message words lying around.
+    /// Bits `[12:12]`, mask `0x00001000`
     pub const BSWAP_OFFSET: u32 = 12;
     pub const BSWAP_MASK: u32 = 0x00001000;
     pub const BSWAP: u32 = 1 << 12;
 
-    /// DMA_SIZE - Configure DREQ logic for the correct DMA data size. Must be configured befo...
-    /// Bits [9:8], mask 0x00000300
+    /// **DMA_SIZE**
+    /// Configure DREQ logic for the correct DMA data size. Must be configured before the DMA channel is triggered.
+    /// The SHA-256 core's DREQ logic requests one entire block of data at once, since there is no FIFO, and data goes straight into the core's message schedule and digest hardware. Therefore, when transferring data with DMA, CSR_DMA_SIZE must be configured in advance so that the correct number of transfers can be requested per block.
+    /// Bits `[9:8]`, mask `0x00000300`
     pub const DMA_SIZE_OFFSET: u32 = 8;
     pub const DMA_SIZE_MASK: u32 = 0x00000300;
     pub const DMA_SIZE_8BIT: u32 = 0 << 8;
+    pub const DMA_SIZE_8BIT_VAL: u32 = 0;
     pub const DMA_SIZE_16BIT: u32 = 1 << 8;
+    pub const DMA_SIZE_16BIT_VAL: u32 = 1;
     pub const DMA_SIZE_32BIT: u32 = 2 << 8;
+    pub const DMA_SIZE_32BIT_VAL: u32 = 2;
 
-    /// ERR_WDATA_NOT_RDY - Set when a write occurs whilst the SHA-256 core is not ready for data (WDAT...
-    /// Bits [4:4], mask 0x00000010
+    /// **ERR_WDATA_NOT_RDY**
+    /// Set when a write occurs whilst the SHA-256 core is not ready for data (WDATA_RDY is low). Write one to clear.
+    /// Bits `[4:4]`, mask `0x00000010`
     pub const ERR_WDATA_NOT_RDY_OFFSET: u32 = 4;
     pub const ERR_WDATA_NOT_RDY_MASK: u32 = 0x00000010;
     pub const ERR_WDATA_NOT_RDY: u32 = 1 << 4;
 
-    /// SUM_VLD - If 1, the SHA-256 checksum presented in registers SUM0 through SUM7 is curr...
-    /// Bits [2:2], mask 0x00000004
+    /// **SUM_VLD**
+    /// If 1, the SHA-256 checksum presented in registers SUM0 through SUM7 is currently valid.
+    /// Goes low when WDATA is first written, then returns high once 16 words have been written and the digest of the current 512-bit block has subsequently completed.
+    /// Bits `[2:2]`, mask `0x00000004`
     pub const SUM_VLD_OFFSET: u32 = 2;
     pub const SUM_VLD_MASK: u32 = 0x00000004;
     pub const SUM_VLD: u32 = 1 << 2;
 
-    /// WDATA_RDY - If 1, the SHA-256 core is ready to accept more data through the WDATA regis...
-    /// Bits [1:1], mask 0x00000002
+    /// **WDATA_RDY**
+    /// If 1, the SHA-256 core is ready to accept more data through the WDATA register.
+    /// After writing 16 words, this flag will go low for 57 cycles whilst the core completes its digest.
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const WDATA_RDY_OFFSET: u32 = 1;
     pub const WDATA_RDY_MASK: u32 = 0x00000002;
     pub const WDATA_RDY: u32 = 1 << 1;
 
-    /// START - Write 1 to prepare the SHA-256 core for a new checksum. The SUMx registers ...
-    /// Bits [0:0], mask 0x00000001
+    /// **START**
+    /// Write 1 to prepare the SHA-256 core for a new checksum.
+    /// The SUMx registers are initialised to the proper values (fractional bits of square roots of first 8 primes) and internal counters are cleared. This immediately forces WDATA_RDY and SUM_VLD high.
+    /// START must be written before initiating a DMA transfer to the SHA-256 core, because the core will always request 16 transfers at a time (1 512-bit block). Additionally, the DMA channel should be configured for a multiple of 16 32-bit transfers.
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const START_OFFSET: u32 = 0;
     pub const START_MASK: u32 = 0x00000001;
     pub const START: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **BSWAP** [12:12]: Enable byte swapping of 32-bit values at the point they are committed to th...
+    /// **BSWAP** `[12]` (RW)
+    /// Enable byte swapping of 32-bit values at the point they are committed to the SHA message scheduler.
+    /// This block's bus interface assembles byte/halfword data into message words in little-endian order, so that DMAing the same buffer with different transfer sizes always gives the same result on a little-endian system like RP2350.
+    /// However, when marshalling bytes into blocks, SHA expects that the first byte is the *most significant* in each message word. To resolve this, once the bus interface has accumulated 32 bits of data (either a word write, two halfword writes in little-endian order, or four byte writes in little-endian order) the final value can be byte-swapped before passing to the actual SHA core.
+    /// This feature is enabled by default because using the SHA core to checksum byte buffers is expected to be more common than having preformatted SHA message words lying around.
     #[inline(always)]
     pub fn bswap(&self) -> bool {
-        (self.read_bits() & Self::BSWAP_MASK) != 0
+        (self.value.read_bits() & Self::BSWAP_MASK) != 0
     }
 
-    /// Set BSWAP bit
+    /// Set BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn set_bswap(&self) {
-        self.set_bits(Self::BSWAP_MASK);
+        self.value.set_bits(Self::BSWAP_MASK);
     }
 
-    /// Clear BSWAP bit
+    /// Clear BSWAP bit atomically (RW)
     #[inline(always)]
     pub fn clr_bswap(&self) {
-        self.clr_bits(Self::BSWAP_MASK);
+        self.value.clr_bits(Self::BSWAP_MASK);
     }
 
-    /// **DMA_SIZE** [9:8]: Configure DREQ logic for the correct DMA data size. Must be configured befo...
+    /// **DMA_SIZE** `[9:8]` (RW)
+    /// Configure DREQ logic for the correct DMA data size. Must be configured before the DMA channel is triggered.
+    /// The SHA-256 core's DREQ logic requests one entire block of data at once, since there is no FIFO, and data goes straight into the core's message schedule and digest hardware. Therefore, when transferring data with DMA, CSR_DMA_SIZE must be configured in advance so that the correct number of transfers can be requested per block.
     #[inline(always)]
     pub fn dma_size(&self) -> u32 {
-        (self.read_bits() & Self::DMA_SIZE_MASK) >> Self::DMA_SIZE_OFFSET
+        (self.value.read_bits() & Self::DMA_SIZE_MASK) >> Self::DMA_SIZE_OFFSET
     }
 
-    /// Write DMA_SIZE field
+    /// Write **DMA_SIZE** `[9:8]` (RW)
+    /// Configure DREQ logic for the correct DMA data size. Must be configured before the DMA channel is triggered.
+    /// The SHA-256 core's DREQ logic requests one entire block of data at once, since there is no FIFO, and data goes straight into the core's message schedule and digest hardware. Therefore, when transferring data with DMA, CSR_DMA_SIZE must be configured in advance so that the correct number of transfers can be requested per block.
     #[inline(always)]
     pub fn write_dma_size(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::DMA_SIZE_MASK) | ((value << Self::DMA_SIZE_OFFSET) & Self::DMA_SIZE_MASK));
+        self.value.modify_bits(|r| (r & !Self::DMA_SIZE_MASK) | ((value << Self::DMA_SIZE_OFFSET) & Self::DMA_SIZE_MASK));
     }
 
-    /// **ERR_WDATA_NOT_RDY** [4:4]: Set when a write occurs whilst the SHA-256 core is not ready for data (WDAT...
+    /// **ERR_WDATA_NOT_RDY** `[4]` (RW)
+    /// Set when a write occurs whilst the SHA-256 core is not ready for data (WDATA_RDY is low). Write one to clear.
     #[inline(always)]
     pub fn err_wdata_not_rdy(&self) -> bool {
-        (self.read_bits() & Self::ERR_WDATA_NOT_RDY_MASK) != 0
+        (self.value.read_bits() & Self::ERR_WDATA_NOT_RDY_MASK) != 0
     }
 
-    /// Set ERR_WDATA_NOT_RDY bit
+    /// Set ERR_WDATA_NOT_RDY bit atomically (RW)
     #[inline(always)]
     pub fn set_err_wdata_not_rdy(&self) {
-        self.set_bits(Self::ERR_WDATA_NOT_RDY_MASK);
+        self.value.set_bits(Self::ERR_WDATA_NOT_RDY_MASK);
     }
 
-    /// Clear ERR_WDATA_NOT_RDY bit
+    /// Clear ERR_WDATA_NOT_RDY bit atomically (RW)
     #[inline(always)]
     pub fn clr_err_wdata_not_rdy(&self) {
-        self.clr_bits(Self::ERR_WDATA_NOT_RDY_MASK);
+        self.value.clr_bits(Self::ERR_WDATA_NOT_RDY_MASK);
     }
 
-    /// **SUM_VLD** [2:2]: If 1, the SHA-256 checksum presented in registers SUM0 through SUM7 is curr...
+    /// **SUM_VLD** `[2]` (RO)
+    /// If 1, the SHA-256 checksum presented in registers SUM0 through SUM7 is currently valid.
+    /// Goes low when WDATA is first written, then returns high once 16 words have been written and the digest of the current 512-bit block has subsequently completed.
     #[inline(always)]
     pub fn sum_vld(&self) -> bool {
-        (self.read_bits() & Self::SUM_VLD_MASK) != 0
+        (self.value.read_bits() & Self::SUM_VLD_MASK) != 0
     }
 
-    /// **WDATA_RDY** [1:1]: If 1, the SHA-256 core is ready to accept more data through the WDATA regis...
+    /// **WDATA_RDY** `[1]` (RO)
+    /// If 1, the SHA-256 core is ready to accept more data through the WDATA register.
+    /// After writing 16 words, this flag will go low for 57 cycles whilst the core completes its digest.
     #[inline(always)]
     pub fn wdata_rdy(&self) -> bool {
-        (self.read_bits() & Self::WDATA_RDY_MASK) != 0
+        (self.value.read_bits() & Self::WDATA_RDY_MASK) != 0
     }
 
-    /// **START** [0:0]: Write 1 to prepare the SHA-256 core for a new checksum. The SUMx registers ...
-    /// Trigger START (write-only)
+    /// **START** `[0]` (WO)
+    /// Write 1 to prepare the SHA-256 core for a new checksum.
+    /// The SUMx registers are initialised to the proper values (fractional bits of square roots of first 8 primes) and internal counters are cleared. This immediately forces WDATA_RDY and SUM_VLD high.
+    /// START must be written before initiating a DMA transfer to the SHA-256 core, because the core will always request 16 transfers at a time (1 512-bit block). Additionally, the DMA channel should be configured for a multiple of 16 32-bit transfers.
+    /// Trigger **START** (WO)
+    /// Write 1 to prepare the SHA-256 core for a new checksum.
+    /// The SUMx registers are initialised to the proper values (fractional bits of square roots of first 8 primes) and internal counters are cleared. This immediately forces WDATA_RDY and SUM_VLD high.
+    /// START must be written before initiating a DMA transfer to the SHA-256 core, because the core will always request 16 transfers at a time (1 512-bit block). Additionally, the DMA channel should be configured for a multiple of 16 32-bit transfers.
     #[inline(always)]
     pub fn trigger_start(&self) {
-        self.write_bits(Self::START_MASK);
+        self.value.write_bits(Self::START_MASK);
     }
 
 }
@@ -214,37 +223,52 @@ impl CsrVal {
         Self { bits: 0x00001206 }
     }
 
-    /// Read BSWAP [12:12]: Enable byte swapping of 32-bit values at the point they are committed to th...
+    /// Read **BSWAP** `[12:12]`
+    /// Enable byte swapping of 32-bit values at the point they are committed to the SHA message scheduler.
+    /// This block's bus interface assembles byte/halfword data into message words in little-endian order, so that DMAing the same buffer with different transfer sizes always gives the same result on a little-endian system like RP2350.
+    /// However, when marshalling bytes into blocks, SHA expects that the first byte is the *most significant* in each message word. To resolve this, once the bus interface has accumulated 32 bits of data (either a word write, two halfword writes in little-endian order, or four byte writes in little-endian order) the final value can be byte-swapped before passing to the actual SHA core.
+    /// This feature is enabled by default because using the SHA core to checksum byte buffers is expected to be more common than having preformatted SHA message words lying around.
     #[inline(always)]
     pub const fn bswap(&self) -> bool {
         (self.bits & Csr::BSWAP_MASK) != 0
     }
 
-    /// Read DMA_SIZE [9:8]: Configure DREQ logic for the correct DMA data size. Must be configured befo...
+    /// Read **DMA_SIZE** `[9:8]`
+    /// Configure DREQ logic for the correct DMA data size. Must be configured before the DMA channel is triggered.
+    /// The SHA-256 core's DREQ logic requests one entire block of data at once, since there is no FIFO, and data goes straight into the core's message schedule and digest hardware. Therefore, when transferring data with DMA, CSR_DMA_SIZE must be configured in advance so that the correct number of transfers can be requested per block.
     #[inline(always)]
     pub const fn dma_size(&self) -> u32 {
         (self.bits & Csr::DMA_SIZE_MASK) >> Csr::DMA_SIZE_OFFSET
     }
 
-    /// Read ERR_WDATA_NOT_RDY [4:4]: Set when a write occurs whilst the SHA-256 core is not ready for data (WDAT...
+    /// Read **ERR_WDATA_NOT_RDY** `[4:4]`
+    /// Set when a write occurs whilst the SHA-256 core is not ready for data (WDATA_RDY is low). Write one to clear.
     #[inline(always)]
     pub const fn err_wdata_not_rdy(&self) -> bool {
         (self.bits & Csr::ERR_WDATA_NOT_RDY_MASK) != 0
     }
 
-    /// Read SUM_VLD [2:2]: If 1, the SHA-256 checksum presented in registers SUM0 through SUM7 is curr...
+    /// Read **SUM_VLD** `[2:2]`
+    /// If 1, the SHA-256 checksum presented in registers SUM0 through SUM7 is currently valid.
+    /// Goes low when WDATA is first written, then returns high once 16 words have been written and the digest of the current 512-bit block has subsequently completed.
     #[inline(always)]
     pub const fn sum_vld(&self) -> bool {
         (self.bits & Csr::SUM_VLD_MASK) != 0
     }
 
-    /// Read WDATA_RDY [1:1]: If 1, the SHA-256 core is ready to accept more data through the WDATA regis...
+    /// Read **WDATA_RDY** `[1:1]`
+    /// If 1, the SHA-256 core is ready to accept more data through the WDATA register.
+    /// After writing 16 words, this flag will go low for 57 cycles whilst the core completes its digest.
     #[inline(always)]
     pub const fn wdata_rdy(&self) -> bool {
         (self.bits & Csr::WDATA_RDY_MASK) != 0
     }
 
-    /// Set BSWAP [12:12]: Enable byte swapping of 32-bit values at the point they are committed to th...
+    /// Set **BSWAP** `[12:12]`
+    /// Enable byte swapping of 32-bit values at the point they are committed to the SHA message scheduler.
+    /// This block's bus interface assembles byte/halfword data into message words in little-endian order, so that DMAing the same buffer with different transfer sizes always gives the same result on a little-endian system like RP2350.
+    /// However, when marshalling bytes into blocks, SHA expects that the first byte is the *most significant* in each message word. To resolve this, once the bus interface has accumulated 32 bits of data (either a word write, two halfword writes in little-endian order, or four byte writes in little-endian order) the final value can be byte-swapped before passing to the actual SHA core.
+    /// This feature is enabled by default because using the SHA core to checksum byte buffers is expected to be more common than having preformatted SHA message words lying around.
     #[inline(always)]
     pub const fn with_bswap(self, value: bool) -> Self {
         Self {
@@ -256,7 +280,9 @@ impl CsrVal {
         }
     }
 
-    /// Set DMA_SIZE [9:8]: Configure DREQ logic for the correct DMA data size. Must be configured befo...
+    /// Set **DMA_SIZE** `[9:8]`
+    /// Configure DREQ logic for the correct DMA data size. Must be configured before the DMA channel is triggered.
+    /// The SHA-256 core's DREQ logic requests one entire block of data at once, since there is no FIFO, and data goes straight into the core's message schedule and digest hardware. Therefore, when transferring data with DMA, CSR_DMA_SIZE must be configured in advance so that the correct number of transfers can be requested per block.
     #[inline(always)]
     pub const fn with_dma_size(self, value: u32) -> Self {
         Self {
@@ -264,7 +290,8 @@ impl CsrVal {
         }
     }
 
-    /// Set ERR_WDATA_NOT_RDY [4:4]: Set when a write occurs whilst the SHA-256 core is not ready for data (WDAT...
+    /// Set **ERR_WDATA_NOT_RDY** `[4:4]`
+    /// Set when a write occurs whilst the SHA-256 core is not ready for data (WDATA_RDY is low). Write one to clear.
     #[inline(always)]
     pub const fn with_err_wdata_not_rdy(self, value: bool) -> Self {
         Self {
@@ -276,7 +303,10 @@ impl CsrVal {
         }
     }
 
-    /// Set START [0:0]: Write 1 to prepare the SHA-256 core for a new checksum. The SUMx registers ...
+    /// Set **START** `[0:0]`
+    /// Write 1 to prepare the SHA-256 core for a new checksum.
+    /// The SUMx registers are initialised to the proper values (fractional bits of square roots of first 8 primes) and internal counters are cleared. This immediately forces WDATA_RDY and SUM_VLD high.
+    /// START must be written before initiating a DMA transfer to the SHA-256 core, because the core will always request 16 transfers at a time (1 512-bit block). Additionally, the DMA channel should be configured for a multiple of 16 32-bit transfers.
     #[inline(always)]
     pub const fn with_start(self, value: bool) -> Self {
         Self {
@@ -299,20 +329,20 @@ impl Default for CsrVal {
 impl Csr {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> CsrVal {
-        CsrVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> CsrVal {
+        CsrVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: CsrVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: CsrVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(CsrVal) -> CsrVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(CsrVal) -> CsrVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -326,77 +356,51 @@ impl Csr {
 ///
 /// ## Fields
 ///
-/// - **WDATA** [31:0] (WO): After pulsing START and writing 16 words of data to this register, WDATA_RD...
+/// - **WDATA** `[31:0]` (WO)
+///   After pulsing START and writing 16 words of data to this register, WDATA_RDY will go low and the SHA-256 core will complete the digest of the current 512-bit block.
+///   Software is responsible for ensuring the data is correctly padded and terminated to a whole number of 512-bit blocks.
+///   After this, WDATA_RDY will return high, and more data can be written (if any).
+///   This register supports word, halfword and byte writes, so that DMA from non-word-aligned buffers can be supported. The total amount of data per block remains the same (16 words, 32 halfwords or 64 bytes) and byte/halfword transfers must not be mixed within a block.
 #[repr(transparent)]
 pub struct Wdata {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Wdata {}
-unsafe impl Sync for Wdata {}
+impl core::ops::Deref for Wdata {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Wdata {
     // ======== Field Constants ========
 
-    /// WDATA - After pulsing START and writing 16 words of data to this register, WDATA_RD...
-    /// Bits [31:0], mask 0xffffffff
+    /// **WDATA**
+    /// After pulsing START and writing 16 words of data to this register, WDATA_RDY will go low and the SHA-256 core will complete the digest of the current 512-bit block.
+    /// Software is responsible for ensuring the data is correctly padded and terminated to a whole number of 512-bit blocks.
+    /// After this, WDATA_RDY will return high, and more data can be written (if any).
+    /// This register supports word, halfword and byte writes, so that DMA from non-word-aligned buffers can be supported. The total amount of data per block remains the same (16 words, 32 halfwords or 64 bytes) and byte/halfword transfers must not be mixed within a block.
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const WDATA_OFFSET: u32 = 0;
     pub const WDATA_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **WDATA** [31:0]: After pulsing START and writing 16 words of data to this register, WDATA_RD...
-    /// Write WDATA field (write-only)
+    /// **WDATA** `[31:0]` (WO)
+    /// After pulsing START and writing 16 words of data to this register, WDATA_RDY will go low and the SHA-256 core will complete the digest of the current 512-bit block.
+    /// Software is responsible for ensuring the data is correctly padded and terminated to a whole number of 512-bit blocks.
+    /// After this, WDATA_RDY will return high, and more data can be written (if any).
+    /// This register supports word, halfword and byte writes, so that DMA from non-word-aligned buffers can be supported. The total amount of data per block remains the same (16 words, 32 halfwords or 64 bytes) and byte/halfword transfers must not be mixed within a block.
+    /// Write **WDATA** `[31:0]` (WO)
+    /// After pulsing START and writing 16 words of data to this register, WDATA_RDY will go low and the SHA-256 core will complete the digest of the current 512-bit block.
+    /// Software is responsible for ensuring the data is correctly padded and terminated to a whole number of 512-bit blocks.
+    /// After this, WDATA_RDY will return high, and more data can be written (if any).
+    /// This register supports word, halfword and byte writes, so that DMA from non-word-aligned buffers can be supported. The total amount of data per block remains the same (16 words, 32 halfwords or 64 bytes) and byte/halfword transfers must not be mixed within a block.
     #[inline(always)]
     pub fn write_wdata(&self, value: u32) {
-        self.write_bits((value << Self::WDATA_OFFSET) & Self::WDATA_MASK);
+        self.value.write_bits((value << Self::WDATA_OFFSET) & Self::WDATA_MASK);
     }
 
 }
@@ -429,7 +433,11 @@ impl WdataVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Set WDATA [31:0]: After pulsing START and writing 16 words of data to this register, WDATA_RD...
+    /// Set **WDATA** `[31:0]`
+    /// After pulsing START and writing 16 words of data to this register, WDATA_RDY will go low and the SHA-256 core will complete the digest of the current 512-bit block.
+    /// Software is responsible for ensuring the data is correctly padded and terminated to a whole number of 512-bit blocks.
+    /// After this, WDATA_RDY will return high, and more data can be written (if any).
+    /// This register supports word, halfword and byte writes, so that DMA from non-word-aligned buffers can be supported. The total amount of data per block remains the same (16 words, 32 halfwords or 64 bytes) and byte/halfword transfers must not be mixed within a block.
     #[inline(always)]
     pub const fn with_wdata(self, value: u32) -> Self {
         Self {
@@ -448,20 +456,20 @@ impl Default for WdataVal {
 impl Wdata {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> WdataVal {
-        WdataVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> WdataVal {
+        WdataVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: WdataVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: WdataVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(WdataVal) -> WdataVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(WdataVal) -> WdataVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -475,75 +483,34 @@ impl Wdata {
 ///
 /// ## Fields
 ///
-/// - **SUM0** [31:0] (RO): 
+/// - **SUM0** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Sum0 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Sum0 {}
-unsafe impl Sync for Sum0 {}
+impl core::ops::Deref for Sum0 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Sum0 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SUM0**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SUM0_OFFSET: u32 = 0;
     pub const SUM0_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SUM0** [31:0]
+    /// **SUM0** `[31:0]` (RO)
     #[inline(always)]
     pub fn sum0(&self) -> u32 {
-        (self.read_bits() & Self::SUM0_MASK) >> Self::SUM0_OFFSET
+        (self.value.read_bits() & Self::SUM0_MASK) >> Self::SUM0_OFFSET
     }
 
 }
@@ -576,7 +543,7 @@ impl Sum0Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SUM0 [31:0]
+    /// Read **SUM0** `[31:0]`
     #[inline(always)]
     pub const fn sum0(&self) -> u32 {
         (self.bits & Sum0::SUM0_MASK) >> Sum0::SUM0_OFFSET
@@ -593,20 +560,20 @@ impl Default for Sum0Val {
 impl Sum0 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Sum0Val {
-        Sum0Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Sum0Val {
+        Sum0Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Sum0Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Sum0Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Sum0Val) -> Sum0Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Sum0Val) -> Sum0Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -620,75 +587,34 @@ impl Sum0 {
 ///
 /// ## Fields
 ///
-/// - **SUM1** [31:0] (RO): 
+/// - **SUM1** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Sum1 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Sum1 {}
-unsafe impl Sync for Sum1 {}
+impl core::ops::Deref for Sum1 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Sum1 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SUM1**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SUM1_OFFSET: u32 = 0;
     pub const SUM1_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SUM1** [31:0]
+    /// **SUM1** `[31:0]` (RO)
     #[inline(always)]
     pub fn sum1(&self) -> u32 {
-        (self.read_bits() & Self::SUM1_MASK) >> Self::SUM1_OFFSET
+        (self.value.read_bits() & Self::SUM1_MASK) >> Self::SUM1_OFFSET
     }
 
 }
@@ -721,7 +647,7 @@ impl Sum1Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SUM1 [31:0]
+    /// Read **SUM1** `[31:0]`
     #[inline(always)]
     pub const fn sum1(&self) -> u32 {
         (self.bits & Sum1::SUM1_MASK) >> Sum1::SUM1_OFFSET
@@ -738,20 +664,20 @@ impl Default for Sum1Val {
 impl Sum1 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Sum1Val {
-        Sum1Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Sum1Val {
+        Sum1Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Sum1Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Sum1Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Sum1Val) -> Sum1Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Sum1Val) -> Sum1Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -765,75 +691,34 @@ impl Sum1 {
 ///
 /// ## Fields
 ///
-/// - **SUM2** [31:0] (RO): 
+/// - **SUM2** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Sum2 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Sum2 {}
-unsafe impl Sync for Sum2 {}
+impl core::ops::Deref for Sum2 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Sum2 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SUM2**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SUM2_OFFSET: u32 = 0;
     pub const SUM2_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SUM2** [31:0]
+    /// **SUM2** `[31:0]` (RO)
     #[inline(always)]
     pub fn sum2(&self) -> u32 {
-        (self.read_bits() & Self::SUM2_MASK) >> Self::SUM2_OFFSET
+        (self.value.read_bits() & Self::SUM2_MASK) >> Self::SUM2_OFFSET
     }
 
 }
@@ -866,7 +751,7 @@ impl Sum2Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SUM2 [31:0]
+    /// Read **SUM2** `[31:0]`
     #[inline(always)]
     pub const fn sum2(&self) -> u32 {
         (self.bits & Sum2::SUM2_MASK) >> Sum2::SUM2_OFFSET
@@ -883,20 +768,20 @@ impl Default for Sum2Val {
 impl Sum2 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Sum2Val {
-        Sum2Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Sum2Val {
+        Sum2Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Sum2Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Sum2Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Sum2Val) -> Sum2Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Sum2Val) -> Sum2Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -910,75 +795,34 @@ impl Sum2 {
 ///
 /// ## Fields
 ///
-/// - **SUM3** [31:0] (RO): 
+/// - **SUM3** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Sum3 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Sum3 {}
-unsafe impl Sync for Sum3 {}
+impl core::ops::Deref for Sum3 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Sum3 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SUM3**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SUM3_OFFSET: u32 = 0;
     pub const SUM3_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SUM3** [31:0]
+    /// **SUM3** `[31:0]` (RO)
     #[inline(always)]
     pub fn sum3(&self) -> u32 {
-        (self.read_bits() & Self::SUM3_MASK) >> Self::SUM3_OFFSET
+        (self.value.read_bits() & Self::SUM3_MASK) >> Self::SUM3_OFFSET
     }
 
 }
@@ -1011,7 +855,7 @@ impl Sum3Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SUM3 [31:0]
+    /// Read **SUM3** `[31:0]`
     #[inline(always)]
     pub const fn sum3(&self) -> u32 {
         (self.bits & Sum3::SUM3_MASK) >> Sum3::SUM3_OFFSET
@@ -1028,20 +872,20 @@ impl Default for Sum3Val {
 impl Sum3 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Sum3Val {
-        Sum3Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Sum3Val {
+        Sum3Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Sum3Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Sum3Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Sum3Val) -> Sum3Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Sum3Val) -> Sum3Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1055,75 +899,34 @@ impl Sum3 {
 ///
 /// ## Fields
 ///
-/// - **SUM4** [31:0] (RO): 
+/// - **SUM4** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Sum4 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Sum4 {}
-unsafe impl Sync for Sum4 {}
+impl core::ops::Deref for Sum4 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Sum4 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SUM4**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SUM4_OFFSET: u32 = 0;
     pub const SUM4_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SUM4** [31:0]
+    /// **SUM4** `[31:0]` (RO)
     #[inline(always)]
     pub fn sum4(&self) -> u32 {
-        (self.read_bits() & Self::SUM4_MASK) >> Self::SUM4_OFFSET
+        (self.value.read_bits() & Self::SUM4_MASK) >> Self::SUM4_OFFSET
     }
 
 }
@@ -1156,7 +959,7 @@ impl Sum4Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SUM4 [31:0]
+    /// Read **SUM4** `[31:0]`
     #[inline(always)]
     pub const fn sum4(&self) -> u32 {
         (self.bits & Sum4::SUM4_MASK) >> Sum4::SUM4_OFFSET
@@ -1173,20 +976,20 @@ impl Default for Sum4Val {
 impl Sum4 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Sum4Val {
-        Sum4Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Sum4Val {
+        Sum4Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Sum4Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Sum4Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Sum4Val) -> Sum4Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Sum4Val) -> Sum4Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1200,75 +1003,34 @@ impl Sum4 {
 ///
 /// ## Fields
 ///
-/// - **SUM5** [31:0] (RO): 
+/// - **SUM5** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Sum5 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Sum5 {}
-unsafe impl Sync for Sum5 {}
+impl core::ops::Deref for Sum5 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Sum5 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SUM5**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SUM5_OFFSET: u32 = 0;
     pub const SUM5_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SUM5** [31:0]
+    /// **SUM5** `[31:0]` (RO)
     #[inline(always)]
     pub fn sum5(&self) -> u32 {
-        (self.read_bits() & Self::SUM5_MASK) >> Self::SUM5_OFFSET
+        (self.value.read_bits() & Self::SUM5_MASK) >> Self::SUM5_OFFSET
     }
 
 }
@@ -1301,7 +1063,7 @@ impl Sum5Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SUM5 [31:0]
+    /// Read **SUM5** `[31:0]`
     #[inline(always)]
     pub const fn sum5(&self) -> u32 {
         (self.bits & Sum5::SUM5_MASK) >> Sum5::SUM5_OFFSET
@@ -1318,20 +1080,20 @@ impl Default for Sum5Val {
 impl Sum5 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Sum5Val {
-        Sum5Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Sum5Val {
+        Sum5Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Sum5Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Sum5Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Sum5Val) -> Sum5Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Sum5Val) -> Sum5Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1345,75 +1107,34 @@ impl Sum5 {
 ///
 /// ## Fields
 ///
-/// - **SUM6** [31:0] (RO): 
+/// - **SUM6** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Sum6 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Sum6 {}
-unsafe impl Sync for Sum6 {}
+impl core::ops::Deref for Sum6 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Sum6 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SUM6**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SUM6_OFFSET: u32 = 0;
     pub const SUM6_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SUM6** [31:0]
+    /// **SUM6** `[31:0]` (RO)
     #[inline(always)]
     pub fn sum6(&self) -> u32 {
-        (self.read_bits() & Self::SUM6_MASK) >> Self::SUM6_OFFSET
+        (self.value.read_bits() & Self::SUM6_MASK) >> Self::SUM6_OFFSET
     }
 
 }
@@ -1446,7 +1167,7 @@ impl Sum6Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SUM6 [31:0]
+    /// Read **SUM6** `[31:0]`
     #[inline(always)]
     pub const fn sum6(&self) -> u32 {
         (self.bits & Sum6::SUM6_MASK) >> Sum6::SUM6_OFFSET
@@ -1463,20 +1184,20 @@ impl Default for Sum6Val {
 impl Sum6 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Sum6Val {
-        Sum6Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Sum6Val {
+        Sum6Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Sum6Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Sum6Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Sum6Val) -> Sum6Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Sum6Val) -> Sum6Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1490,75 +1211,34 @@ impl Sum6 {
 ///
 /// ## Fields
 ///
-/// - **SUM7** [31:0] (RO): 
+/// - **SUM7** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Sum7 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Sum7 {}
-unsafe impl Sync for Sum7 {}
+impl core::ops::Deref for Sum7 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Sum7 {
     // ======== Field Constants ========
 
-    /// Bits [31:0], mask 0xffffffff
+    /// **SUM7**
+    /// Bits `[31:0]`, mask `0xffffffff`
     pub const SUM7_OFFSET: u32 = 0;
     pub const SUM7_MASK: u32 = 0xffffffff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **SUM7** [31:0]
+    /// **SUM7** `[31:0]` (RO)
     #[inline(always)]
     pub fn sum7(&self) -> u32 {
-        (self.read_bits() & Self::SUM7_MASK) >> Self::SUM7_OFFSET
+        (self.value.read_bits() & Self::SUM7_MASK) >> Self::SUM7_OFFSET
     }
 
 }
@@ -1591,7 +1271,7 @@ impl Sum7Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read SUM7 [31:0]
+    /// Read **SUM7** `[31:0]`
     #[inline(always)]
     pub const fn sum7(&self) -> u32 {
         (self.bits & Sum7::SUM7_MASK) >> Sum7::SUM7_OFFSET
@@ -1608,20 +1288,20 @@ impl Default for Sum7Val {
 impl Sum7 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Sum7Val {
-        Sum7Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Sum7Val {
+        Sum7Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Sum7Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Sum7Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Sum7Val) -> Sum7Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Sum7Val) -> Sum7Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1629,25 +1309,35 @@ impl Sum7 {
 /// Register block
 #[repr(C)]
 pub struct RegisterBlock {
-    /// 0x0000 - Control and status register
+    /// 0x0000
+    /// Control and status register
     pub csr: Csr,
-    /// 0x0004 - Write data register
+    /// 0x0004
+    /// Write data register
     pub wdata: Wdata,
-    /// 0x0008 - 256-bit checksum result. Contents are undefined when CSR_SUM_VLD is 0.
+    /// 0x0008
+    /// 256-bit checksum result. Contents are undefined when CSR_SUM_VLD is 0.
     pub sum0: Sum0,
-    /// 0x000c - 256-bit checksum result. Contents are undefined when CSR_SUM_VLD is 0.
+    /// 0x000c
+    /// 256-bit checksum result. Contents are undefined when CSR_SUM_VLD is 0.
     pub sum1: Sum1,
-    /// 0x0010 - 256-bit checksum result. Contents are undefined when CSR_SUM_VLD is 0.
+    /// 0x0010
+    /// 256-bit checksum result. Contents are undefined when CSR_SUM_VLD is 0.
     pub sum2: Sum2,
-    /// 0x0014 - 256-bit checksum result. Contents are undefined when CSR_SUM_VLD is 0.
+    /// 0x0014
+    /// 256-bit checksum result. Contents are undefined when CSR_SUM_VLD is 0.
     pub sum3: Sum3,
-    /// 0x0018 - 256-bit checksum result. Contents are undefined when CSR_SUM_VLD is 0.
+    /// 0x0018
+    /// 256-bit checksum result. Contents are undefined when CSR_SUM_VLD is 0.
     pub sum4: Sum4,
-    /// 0x001c - 256-bit checksum result. Contents are undefined when CSR_SUM_VLD is 0.
+    /// 0x001c
+    /// 256-bit checksum result. Contents are undefined when CSR_SUM_VLD is 0.
     pub sum5: Sum5,
-    /// 0x0020 - 256-bit checksum result. Contents are undefined when CSR_SUM_VLD is 0.
+    /// 0x0020
+    /// 256-bit checksum result. Contents are undefined when CSR_SUM_VLD is 0.
     pub sum6: Sum6,
-    /// 0x0024 - 256-bit checksum result. Contents are undefined when CSR_SUM_VLD is 0.
+    /// 0x0024
+    /// 256-bit checksum result. Contents are undefined when CSR_SUM_VLD is 0.
     pub sum7: Sum7,
 }
 

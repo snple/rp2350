@@ -1,4 +1,4 @@
-//! TICKS - 
+//! TICKS
 
 #![allow(dead_code)]
 
@@ -13,102 +13,66 @@ pub const BASE: u32 = 0x40108000;
 ///
 /// ## Fields
 ///
-/// - **RUNNING** [1] (RO): Is the tick generator running?
-/// - **ENABLE** [0] (RW): start / stop tick generation
+/// - **RUNNING** `[1]` (RO)
+///   Is the tick generator running?
+/// - **ENABLE** `[0]` (RW)
+///   start / stop tick generation
 #[repr(transparent)]
 pub struct Proc0Ctrl {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Proc0Ctrl {}
-unsafe impl Sync for Proc0Ctrl {}
+impl core::ops::Deref for Proc0Ctrl {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Proc0Ctrl {
     // ======== Field Constants ========
 
-    /// RUNNING - Is the tick generator running?
-    /// Bits [1:1], mask 0x00000002
+    /// **RUNNING**
+    /// Is the tick generator running?
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const RUNNING_OFFSET: u32 = 1;
     pub const RUNNING_MASK: u32 = 0x00000002;
     pub const RUNNING: u32 = 1 << 1;
 
-    /// ENABLE - start / stop tick generation
-    /// Bits [0:0], mask 0x00000001
+    /// **ENABLE**
+    /// start / stop tick generation
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const ENABLE_OFFSET: u32 = 0;
     pub const ENABLE_MASK: u32 = 0x00000001;
     pub const ENABLE: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **RUNNING** [1:1]: Is the tick generator running?
+    /// **RUNNING** `[1]` (RO)
+    /// Is the tick generator running?
     #[inline(always)]
     pub fn running(&self) -> bool {
-        (self.read_bits() & Self::RUNNING_MASK) != 0
+        (self.value.read_bits() & Self::RUNNING_MASK) != 0
     }
 
-    /// **ENABLE** [0:0]: start / stop tick generation
+    /// **ENABLE** `[0]` (RW)
+    /// start / stop tick generation
     #[inline(always)]
     pub fn enable(&self) -> bool {
-        (self.read_bits() & Self::ENABLE_MASK) != 0
+        (self.value.read_bits() & Self::ENABLE_MASK) != 0
     }
 
-    /// Set ENABLE bit
+    /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.set_bits(Self::ENABLE_MASK);
+        self.value.set_bits(Self::ENABLE_MASK);
     }
 
-    /// Clear ENABLE bit
+    /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.clr_bits(Self::ENABLE_MASK);
+        self.value.clr_bits(Self::ENABLE_MASK);
     }
 
 }
@@ -141,19 +105,22 @@ impl Proc0CtrlVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read RUNNING [1:1]: Is the tick generator running?
+    /// Read **RUNNING** `[1:1]`
+    /// Is the tick generator running?
     #[inline(always)]
     pub const fn running(&self) -> bool {
         (self.bits & Proc0Ctrl::RUNNING_MASK) != 0
     }
 
-    /// Read ENABLE [0:0]: start / stop tick generation
+    /// Read **ENABLE** `[0:0]`
+    /// start / stop tick generation
     #[inline(always)]
     pub const fn enable(&self) -> bool {
         (self.bits & Proc0Ctrl::ENABLE_MASK) != 0
     }
 
-    /// Set ENABLE [0:0]: start / stop tick generation
+    /// Set **ENABLE** `[0:0]`
+    /// start / stop tick generation
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
         Self {
@@ -176,20 +143,20 @@ impl Default for Proc0CtrlVal {
 impl Proc0Ctrl {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Proc0CtrlVal {
-        Proc0CtrlVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Proc0CtrlVal {
+        Proc0CtrlVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Proc0CtrlVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Proc0CtrlVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Proc0CtrlVal) -> Proc0CtrlVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Proc0CtrlVal) -> Proc0CtrlVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -201,82 +168,44 @@ impl Proc0Ctrl {
 ///
 /// ## Fields
 ///
-/// - **PROC0_CYCLES** [8:0] (RW): Total number of clk_tick cycles before the next tick.
+/// - **PROC0_CYCLES** `[8:0]` (RW)
+///   Total number of clk_tick cycles before the next tick.
 #[repr(transparent)]
 pub struct Proc0Cycles {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Proc0Cycles {}
-unsafe impl Sync for Proc0Cycles {}
+impl core::ops::Deref for Proc0Cycles {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Proc0Cycles {
     // ======== Field Constants ========
 
-    /// PROC0_CYCLES - Total number of clk_tick cycles before the next tick.
-    /// Bits [8:0], mask 0x000001ff
+    /// **PROC0_CYCLES**
+    /// Total number of clk_tick cycles before the next tick.
+    /// Bits `[8:0]`, mask `0x000001ff`
     pub const PROC0_CYCLES_OFFSET: u32 = 0;
     pub const PROC0_CYCLES_MASK: u32 = 0x000001ff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **PROC0_CYCLES** [8:0]: Total number of clk_tick cycles before the next tick.
+    /// **PROC0_CYCLES** `[8:0]` (RW)
+    /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub fn proc0_cycles(&self) -> u32 {
-        (self.read_bits() & Self::PROC0_CYCLES_MASK) >> Self::PROC0_CYCLES_OFFSET
+        (self.value.read_bits() & Self::PROC0_CYCLES_MASK) >> Self::PROC0_CYCLES_OFFSET
     }
 
-    /// Write PROC0_CYCLES field
+    /// Write **PROC0_CYCLES** `[8:0]` (RW)
+    /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub fn write_proc0_cycles(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::PROC0_CYCLES_MASK) | ((value << Self::PROC0_CYCLES_OFFSET) & Self::PROC0_CYCLES_MASK));
+        self.value.modify_bits(|r| (r & !Self::PROC0_CYCLES_MASK) | ((value << Self::PROC0_CYCLES_OFFSET) & Self::PROC0_CYCLES_MASK));
     }
 
 }
@@ -309,13 +238,15 @@ impl Proc0CyclesVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read PROC0_CYCLES [8:0]: Total number of clk_tick cycles before the next tick.
+    /// Read **PROC0_CYCLES** `[8:0]`
+    /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub const fn proc0_cycles(&self) -> u32 {
         (self.bits & Proc0Cycles::PROC0_CYCLES_MASK) >> Proc0Cycles::PROC0_CYCLES_OFFSET
     }
 
-    /// Set PROC0_CYCLES [8:0]: Total number of clk_tick cycles before the next tick.
+    /// Set **PROC0_CYCLES** `[8:0]`
+    /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub const fn with_proc0_cycles(self, value: u32) -> Self {
         Self {
@@ -334,20 +265,20 @@ impl Default for Proc0CyclesVal {
 impl Proc0Cycles {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Proc0CyclesVal {
-        Proc0CyclesVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Proc0CyclesVal {
+        Proc0CyclesVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Proc0CyclesVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Proc0CyclesVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Proc0CyclesVal) -> Proc0CyclesVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Proc0CyclesVal) -> Proc0CyclesVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -358,76 +289,37 @@ impl Proc0Cycles {
 ///
 /// ## Fields
 ///
-/// - **PROC0_COUNT** [8:0] (RO): Count down timer: the remaining number clk_tick cycles before the next tick...
+/// - **PROC0_COUNT** `[8:0]` (RO)
+///   Count down timer: the remaining number clk_tick cycles before the next tick is generated.
 #[repr(transparent)]
 pub struct Proc0Count {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Proc0Count {}
-unsafe impl Sync for Proc0Count {}
+impl core::ops::Deref for Proc0Count {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Proc0Count {
     // ======== Field Constants ========
 
-    /// PROC0_COUNT - Count down timer: the remaining number clk_tick cycles before the next tick...
-    /// Bits [8:0], mask 0x000001ff
+    /// **PROC0_COUNT**
+    /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
+    /// Bits `[8:0]`, mask `0x000001ff`
     pub const PROC0_COUNT_OFFSET: u32 = 0;
     pub const PROC0_COUNT_MASK: u32 = 0x000001ff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **PROC0_COUNT** [8:0]: Count down timer: the remaining number clk_tick cycles before the next tick...
+    /// **PROC0_COUNT** `[8:0]` (RO)
+    /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
     #[inline(always)]
     pub fn proc0_count(&self) -> u32 {
-        (self.read_bits() & Self::PROC0_COUNT_MASK) >> Self::PROC0_COUNT_OFFSET
+        (self.value.read_bits() & Self::PROC0_COUNT_MASK) >> Self::PROC0_COUNT_OFFSET
     }
 
 }
@@ -454,7 +346,8 @@ impl Proc0CountVal {
         self.bits
     }
 
-    /// Read PROC0_COUNT [8:0]: Count down timer: the remaining number clk_tick cycles before the next tick...
+    /// Read **PROC0_COUNT** `[8:0]`
+    /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
     #[inline(always)]
     pub const fn proc0_count(&self) -> u32 {
         (self.bits & Proc0Count::PROC0_COUNT_MASK) >> Proc0Count::PROC0_COUNT_OFFSET
@@ -471,20 +364,20 @@ impl Default for Proc0CountVal {
 impl Proc0Count {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Proc0CountVal {
-        Proc0CountVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Proc0CountVal {
+        Proc0CountVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Proc0CountVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Proc0CountVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Proc0CountVal) -> Proc0CountVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Proc0CountVal) -> Proc0CountVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -498,102 +391,66 @@ impl Proc0Count {
 ///
 /// ## Fields
 ///
-/// - **RUNNING** [1] (RO): Is the tick generator running?
-/// - **ENABLE** [0] (RW): start / stop tick generation
+/// - **RUNNING** `[1]` (RO)
+///   Is the tick generator running?
+/// - **ENABLE** `[0]` (RW)
+///   start / stop tick generation
 #[repr(transparent)]
 pub struct Proc1Ctrl {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Proc1Ctrl {}
-unsafe impl Sync for Proc1Ctrl {}
+impl core::ops::Deref for Proc1Ctrl {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Proc1Ctrl {
     // ======== Field Constants ========
 
-    /// RUNNING - Is the tick generator running?
-    /// Bits [1:1], mask 0x00000002
+    /// **RUNNING**
+    /// Is the tick generator running?
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const RUNNING_OFFSET: u32 = 1;
     pub const RUNNING_MASK: u32 = 0x00000002;
     pub const RUNNING: u32 = 1 << 1;
 
-    /// ENABLE - start / stop tick generation
-    /// Bits [0:0], mask 0x00000001
+    /// **ENABLE**
+    /// start / stop tick generation
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const ENABLE_OFFSET: u32 = 0;
     pub const ENABLE_MASK: u32 = 0x00000001;
     pub const ENABLE: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **RUNNING** [1:1]: Is the tick generator running?
+    /// **RUNNING** `[1]` (RO)
+    /// Is the tick generator running?
     #[inline(always)]
     pub fn running(&self) -> bool {
-        (self.read_bits() & Self::RUNNING_MASK) != 0
+        (self.value.read_bits() & Self::RUNNING_MASK) != 0
     }
 
-    /// **ENABLE** [0:0]: start / stop tick generation
+    /// **ENABLE** `[0]` (RW)
+    /// start / stop tick generation
     #[inline(always)]
     pub fn enable(&self) -> bool {
-        (self.read_bits() & Self::ENABLE_MASK) != 0
+        (self.value.read_bits() & Self::ENABLE_MASK) != 0
     }
 
-    /// Set ENABLE bit
+    /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.set_bits(Self::ENABLE_MASK);
+        self.value.set_bits(Self::ENABLE_MASK);
     }
 
-    /// Clear ENABLE bit
+    /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.clr_bits(Self::ENABLE_MASK);
+        self.value.clr_bits(Self::ENABLE_MASK);
     }
 
 }
@@ -626,19 +483,22 @@ impl Proc1CtrlVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read RUNNING [1:1]: Is the tick generator running?
+    /// Read **RUNNING** `[1:1]`
+    /// Is the tick generator running?
     #[inline(always)]
     pub const fn running(&self) -> bool {
         (self.bits & Proc1Ctrl::RUNNING_MASK) != 0
     }
 
-    /// Read ENABLE [0:0]: start / stop tick generation
+    /// Read **ENABLE** `[0:0]`
+    /// start / stop tick generation
     #[inline(always)]
     pub const fn enable(&self) -> bool {
         (self.bits & Proc1Ctrl::ENABLE_MASK) != 0
     }
 
-    /// Set ENABLE [0:0]: start / stop tick generation
+    /// Set **ENABLE** `[0:0]`
+    /// start / stop tick generation
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
         Self {
@@ -661,20 +521,20 @@ impl Default for Proc1CtrlVal {
 impl Proc1Ctrl {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Proc1CtrlVal {
-        Proc1CtrlVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Proc1CtrlVal {
+        Proc1CtrlVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Proc1CtrlVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Proc1CtrlVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Proc1CtrlVal) -> Proc1CtrlVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Proc1CtrlVal) -> Proc1CtrlVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -686,82 +546,44 @@ impl Proc1Ctrl {
 ///
 /// ## Fields
 ///
-/// - **PROC1_CYCLES** [8:0] (RW): Total number of clk_tick cycles before the next tick.
+/// - **PROC1_CYCLES** `[8:0]` (RW)
+///   Total number of clk_tick cycles before the next tick.
 #[repr(transparent)]
 pub struct Proc1Cycles {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Proc1Cycles {}
-unsafe impl Sync for Proc1Cycles {}
+impl core::ops::Deref for Proc1Cycles {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Proc1Cycles {
     // ======== Field Constants ========
 
-    /// PROC1_CYCLES - Total number of clk_tick cycles before the next tick.
-    /// Bits [8:0], mask 0x000001ff
+    /// **PROC1_CYCLES**
+    /// Total number of clk_tick cycles before the next tick.
+    /// Bits `[8:0]`, mask `0x000001ff`
     pub const PROC1_CYCLES_OFFSET: u32 = 0;
     pub const PROC1_CYCLES_MASK: u32 = 0x000001ff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **PROC1_CYCLES** [8:0]: Total number of clk_tick cycles before the next tick.
+    /// **PROC1_CYCLES** `[8:0]` (RW)
+    /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub fn proc1_cycles(&self) -> u32 {
-        (self.read_bits() & Self::PROC1_CYCLES_MASK) >> Self::PROC1_CYCLES_OFFSET
+        (self.value.read_bits() & Self::PROC1_CYCLES_MASK) >> Self::PROC1_CYCLES_OFFSET
     }
 
-    /// Write PROC1_CYCLES field
+    /// Write **PROC1_CYCLES** `[8:0]` (RW)
+    /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub fn write_proc1_cycles(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::PROC1_CYCLES_MASK) | ((value << Self::PROC1_CYCLES_OFFSET) & Self::PROC1_CYCLES_MASK));
+        self.value.modify_bits(|r| (r & !Self::PROC1_CYCLES_MASK) | ((value << Self::PROC1_CYCLES_OFFSET) & Self::PROC1_CYCLES_MASK));
     }
 
 }
@@ -794,13 +616,15 @@ impl Proc1CyclesVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read PROC1_CYCLES [8:0]: Total number of clk_tick cycles before the next tick.
+    /// Read **PROC1_CYCLES** `[8:0]`
+    /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub const fn proc1_cycles(&self) -> u32 {
         (self.bits & Proc1Cycles::PROC1_CYCLES_MASK) >> Proc1Cycles::PROC1_CYCLES_OFFSET
     }
 
-    /// Set PROC1_CYCLES [8:0]: Total number of clk_tick cycles before the next tick.
+    /// Set **PROC1_CYCLES** `[8:0]`
+    /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub const fn with_proc1_cycles(self, value: u32) -> Self {
         Self {
@@ -819,20 +643,20 @@ impl Default for Proc1CyclesVal {
 impl Proc1Cycles {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Proc1CyclesVal {
-        Proc1CyclesVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Proc1CyclesVal {
+        Proc1CyclesVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Proc1CyclesVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Proc1CyclesVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Proc1CyclesVal) -> Proc1CyclesVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Proc1CyclesVal) -> Proc1CyclesVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -843,76 +667,37 @@ impl Proc1Cycles {
 ///
 /// ## Fields
 ///
-/// - **PROC1_COUNT** [8:0] (RO): Count down timer: the remaining number clk_tick cycles before the next tick...
+/// - **PROC1_COUNT** `[8:0]` (RO)
+///   Count down timer: the remaining number clk_tick cycles before the next tick is generated.
 #[repr(transparent)]
 pub struct Proc1Count {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Proc1Count {}
-unsafe impl Sync for Proc1Count {}
+impl core::ops::Deref for Proc1Count {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Proc1Count {
     // ======== Field Constants ========
 
-    /// PROC1_COUNT - Count down timer: the remaining number clk_tick cycles before the next tick...
-    /// Bits [8:0], mask 0x000001ff
+    /// **PROC1_COUNT**
+    /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
+    /// Bits `[8:0]`, mask `0x000001ff`
     pub const PROC1_COUNT_OFFSET: u32 = 0;
     pub const PROC1_COUNT_MASK: u32 = 0x000001ff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **PROC1_COUNT** [8:0]: Count down timer: the remaining number clk_tick cycles before the next tick...
+    /// **PROC1_COUNT** `[8:0]` (RO)
+    /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
     #[inline(always)]
     pub fn proc1_count(&self) -> u32 {
-        (self.read_bits() & Self::PROC1_COUNT_MASK) >> Self::PROC1_COUNT_OFFSET
+        (self.value.read_bits() & Self::PROC1_COUNT_MASK) >> Self::PROC1_COUNT_OFFSET
     }
 
 }
@@ -939,7 +724,8 @@ impl Proc1CountVal {
         self.bits
     }
 
-    /// Read PROC1_COUNT [8:0]: Count down timer: the remaining number clk_tick cycles before the next tick...
+    /// Read **PROC1_COUNT** `[8:0]`
+    /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
     #[inline(always)]
     pub const fn proc1_count(&self) -> u32 {
         (self.bits & Proc1Count::PROC1_COUNT_MASK) >> Proc1Count::PROC1_COUNT_OFFSET
@@ -956,20 +742,20 @@ impl Default for Proc1CountVal {
 impl Proc1Count {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Proc1CountVal {
-        Proc1CountVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Proc1CountVal {
+        Proc1CountVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Proc1CountVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Proc1CountVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Proc1CountVal) -> Proc1CountVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Proc1CountVal) -> Proc1CountVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -983,102 +769,66 @@ impl Proc1Count {
 ///
 /// ## Fields
 ///
-/// - **RUNNING** [1] (RO): Is the tick generator running?
-/// - **ENABLE** [0] (RW): start / stop tick generation
+/// - **RUNNING** `[1]` (RO)
+///   Is the tick generator running?
+/// - **ENABLE** `[0]` (RW)
+///   start / stop tick generation
 #[repr(transparent)]
 pub struct Timer0Ctrl {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Timer0Ctrl {}
-unsafe impl Sync for Timer0Ctrl {}
+impl core::ops::Deref for Timer0Ctrl {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Timer0Ctrl {
     // ======== Field Constants ========
 
-    /// RUNNING - Is the tick generator running?
-    /// Bits [1:1], mask 0x00000002
+    /// **RUNNING**
+    /// Is the tick generator running?
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const RUNNING_OFFSET: u32 = 1;
     pub const RUNNING_MASK: u32 = 0x00000002;
     pub const RUNNING: u32 = 1 << 1;
 
-    /// ENABLE - start / stop tick generation
-    /// Bits [0:0], mask 0x00000001
+    /// **ENABLE**
+    /// start / stop tick generation
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const ENABLE_OFFSET: u32 = 0;
     pub const ENABLE_MASK: u32 = 0x00000001;
     pub const ENABLE: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **RUNNING** [1:1]: Is the tick generator running?
+    /// **RUNNING** `[1]` (RO)
+    /// Is the tick generator running?
     #[inline(always)]
     pub fn running(&self) -> bool {
-        (self.read_bits() & Self::RUNNING_MASK) != 0
+        (self.value.read_bits() & Self::RUNNING_MASK) != 0
     }
 
-    /// **ENABLE** [0:0]: start / stop tick generation
+    /// **ENABLE** `[0]` (RW)
+    /// start / stop tick generation
     #[inline(always)]
     pub fn enable(&self) -> bool {
-        (self.read_bits() & Self::ENABLE_MASK) != 0
+        (self.value.read_bits() & Self::ENABLE_MASK) != 0
     }
 
-    /// Set ENABLE bit
+    /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.set_bits(Self::ENABLE_MASK);
+        self.value.set_bits(Self::ENABLE_MASK);
     }
 
-    /// Clear ENABLE bit
+    /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.clr_bits(Self::ENABLE_MASK);
+        self.value.clr_bits(Self::ENABLE_MASK);
     }
 
 }
@@ -1111,19 +861,22 @@ impl Timer0CtrlVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read RUNNING [1:1]: Is the tick generator running?
+    /// Read **RUNNING** `[1:1]`
+    /// Is the tick generator running?
     #[inline(always)]
     pub const fn running(&self) -> bool {
         (self.bits & Timer0Ctrl::RUNNING_MASK) != 0
     }
 
-    /// Read ENABLE [0:0]: start / stop tick generation
+    /// Read **ENABLE** `[0:0]`
+    /// start / stop tick generation
     #[inline(always)]
     pub const fn enable(&self) -> bool {
         (self.bits & Timer0Ctrl::ENABLE_MASK) != 0
     }
 
-    /// Set ENABLE [0:0]: start / stop tick generation
+    /// Set **ENABLE** `[0:0]`
+    /// start / stop tick generation
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
         Self {
@@ -1146,20 +899,20 @@ impl Default for Timer0CtrlVal {
 impl Timer0Ctrl {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Timer0CtrlVal {
-        Timer0CtrlVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Timer0CtrlVal {
+        Timer0CtrlVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Timer0CtrlVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Timer0CtrlVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Timer0CtrlVal) -> Timer0CtrlVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Timer0CtrlVal) -> Timer0CtrlVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1171,82 +924,44 @@ impl Timer0Ctrl {
 ///
 /// ## Fields
 ///
-/// - **TIMER0_CYCLES** [8:0] (RW): Total number of clk_tick cycles before the next tick.
+/// - **TIMER0_CYCLES** `[8:0]` (RW)
+///   Total number of clk_tick cycles before the next tick.
 #[repr(transparent)]
 pub struct Timer0Cycles {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Timer0Cycles {}
-unsafe impl Sync for Timer0Cycles {}
+impl core::ops::Deref for Timer0Cycles {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Timer0Cycles {
     // ======== Field Constants ========
 
-    /// TIMER0_CYCLES - Total number of clk_tick cycles before the next tick.
-    /// Bits [8:0], mask 0x000001ff
+    /// **TIMER0_CYCLES**
+    /// Total number of clk_tick cycles before the next tick.
+    /// Bits `[8:0]`, mask `0x000001ff`
     pub const TIMER0_CYCLES_OFFSET: u32 = 0;
     pub const TIMER0_CYCLES_MASK: u32 = 0x000001ff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **TIMER0_CYCLES** [8:0]: Total number of clk_tick cycles before the next tick.
+    /// **TIMER0_CYCLES** `[8:0]` (RW)
+    /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub fn timer0_cycles(&self) -> u32 {
-        (self.read_bits() & Self::TIMER0_CYCLES_MASK) >> Self::TIMER0_CYCLES_OFFSET
+        (self.value.read_bits() & Self::TIMER0_CYCLES_MASK) >> Self::TIMER0_CYCLES_OFFSET
     }
 
-    /// Write TIMER0_CYCLES field
+    /// Write **TIMER0_CYCLES** `[8:0]` (RW)
+    /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub fn write_timer0_cycles(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::TIMER0_CYCLES_MASK) | ((value << Self::TIMER0_CYCLES_OFFSET) & Self::TIMER0_CYCLES_MASK));
+        self.value.modify_bits(|r| (r & !Self::TIMER0_CYCLES_MASK) | ((value << Self::TIMER0_CYCLES_OFFSET) & Self::TIMER0_CYCLES_MASK));
     }
 
 }
@@ -1279,13 +994,15 @@ impl Timer0CyclesVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read TIMER0_CYCLES [8:0]: Total number of clk_tick cycles before the next tick.
+    /// Read **TIMER0_CYCLES** `[8:0]`
+    /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub const fn timer0_cycles(&self) -> u32 {
         (self.bits & Timer0Cycles::TIMER0_CYCLES_MASK) >> Timer0Cycles::TIMER0_CYCLES_OFFSET
     }
 
-    /// Set TIMER0_CYCLES [8:0]: Total number of clk_tick cycles before the next tick.
+    /// Set **TIMER0_CYCLES** `[8:0]`
+    /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub const fn with_timer0_cycles(self, value: u32) -> Self {
         Self {
@@ -1304,20 +1021,20 @@ impl Default for Timer0CyclesVal {
 impl Timer0Cycles {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Timer0CyclesVal {
-        Timer0CyclesVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Timer0CyclesVal {
+        Timer0CyclesVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Timer0CyclesVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Timer0CyclesVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Timer0CyclesVal) -> Timer0CyclesVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Timer0CyclesVal) -> Timer0CyclesVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1328,76 +1045,37 @@ impl Timer0Cycles {
 ///
 /// ## Fields
 ///
-/// - **TIMER0_COUNT** [8:0] (RO): Count down timer: the remaining number clk_tick cycles before the next tick...
+/// - **TIMER0_COUNT** `[8:0]` (RO)
+///   Count down timer: the remaining number clk_tick cycles before the next tick is generated.
 #[repr(transparent)]
 pub struct Timer0Count {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Timer0Count {}
-unsafe impl Sync for Timer0Count {}
+impl core::ops::Deref for Timer0Count {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Timer0Count {
     // ======== Field Constants ========
 
-    /// TIMER0_COUNT - Count down timer: the remaining number clk_tick cycles before the next tick...
-    /// Bits [8:0], mask 0x000001ff
+    /// **TIMER0_COUNT**
+    /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
+    /// Bits `[8:0]`, mask `0x000001ff`
     pub const TIMER0_COUNT_OFFSET: u32 = 0;
     pub const TIMER0_COUNT_MASK: u32 = 0x000001ff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **TIMER0_COUNT** [8:0]: Count down timer: the remaining number clk_tick cycles before the next tick...
+    /// **TIMER0_COUNT** `[8:0]` (RO)
+    /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
     #[inline(always)]
     pub fn timer0_count(&self) -> u32 {
-        (self.read_bits() & Self::TIMER0_COUNT_MASK) >> Self::TIMER0_COUNT_OFFSET
+        (self.value.read_bits() & Self::TIMER0_COUNT_MASK) >> Self::TIMER0_COUNT_OFFSET
     }
 
 }
@@ -1424,7 +1102,8 @@ impl Timer0CountVal {
         self.bits
     }
 
-    /// Read TIMER0_COUNT [8:0]: Count down timer: the remaining number clk_tick cycles before the next tick...
+    /// Read **TIMER0_COUNT** `[8:0]`
+    /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
     #[inline(always)]
     pub const fn timer0_count(&self) -> u32 {
         (self.bits & Timer0Count::TIMER0_COUNT_MASK) >> Timer0Count::TIMER0_COUNT_OFFSET
@@ -1441,20 +1120,20 @@ impl Default for Timer0CountVal {
 impl Timer0Count {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Timer0CountVal {
-        Timer0CountVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Timer0CountVal {
+        Timer0CountVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Timer0CountVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Timer0CountVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Timer0CountVal) -> Timer0CountVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Timer0CountVal) -> Timer0CountVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1468,102 +1147,66 @@ impl Timer0Count {
 ///
 /// ## Fields
 ///
-/// - **RUNNING** [1] (RO): Is the tick generator running?
-/// - **ENABLE** [0] (RW): start / stop tick generation
+/// - **RUNNING** `[1]` (RO)
+///   Is the tick generator running?
+/// - **ENABLE** `[0]` (RW)
+///   start / stop tick generation
 #[repr(transparent)]
 pub struct Timer1Ctrl {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Timer1Ctrl {}
-unsafe impl Sync for Timer1Ctrl {}
+impl core::ops::Deref for Timer1Ctrl {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Timer1Ctrl {
     // ======== Field Constants ========
 
-    /// RUNNING - Is the tick generator running?
-    /// Bits [1:1], mask 0x00000002
+    /// **RUNNING**
+    /// Is the tick generator running?
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const RUNNING_OFFSET: u32 = 1;
     pub const RUNNING_MASK: u32 = 0x00000002;
     pub const RUNNING: u32 = 1 << 1;
 
-    /// ENABLE - start / stop tick generation
-    /// Bits [0:0], mask 0x00000001
+    /// **ENABLE**
+    /// start / stop tick generation
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const ENABLE_OFFSET: u32 = 0;
     pub const ENABLE_MASK: u32 = 0x00000001;
     pub const ENABLE: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **RUNNING** [1:1]: Is the tick generator running?
+    /// **RUNNING** `[1]` (RO)
+    /// Is the tick generator running?
     #[inline(always)]
     pub fn running(&self) -> bool {
-        (self.read_bits() & Self::RUNNING_MASK) != 0
+        (self.value.read_bits() & Self::RUNNING_MASK) != 0
     }
 
-    /// **ENABLE** [0:0]: start / stop tick generation
+    /// **ENABLE** `[0]` (RW)
+    /// start / stop tick generation
     #[inline(always)]
     pub fn enable(&self) -> bool {
-        (self.read_bits() & Self::ENABLE_MASK) != 0
+        (self.value.read_bits() & Self::ENABLE_MASK) != 0
     }
 
-    /// Set ENABLE bit
+    /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.set_bits(Self::ENABLE_MASK);
+        self.value.set_bits(Self::ENABLE_MASK);
     }
 
-    /// Clear ENABLE bit
+    /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.clr_bits(Self::ENABLE_MASK);
+        self.value.clr_bits(Self::ENABLE_MASK);
     }
 
 }
@@ -1596,19 +1239,22 @@ impl Timer1CtrlVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read RUNNING [1:1]: Is the tick generator running?
+    /// Read **RUNNING** `[1:1]`
+    /// Is the tick generator running?
     #[inline(always)]
     pub const fn running(&self) -> bool {
         (self.bits & Timer1Ctrl::RUNNING_MASK) != 0
     }
 
-    /// Read ENABLE [0:0]: start / stop tick generation
+    /// Read **ENABLE** `[0:0]`
+    /// start / stop tick generation
     #[inline(always)]
     pub const fn enable(&self) -> bool {
         (self.bits & Timer1Ctrl::ENABLE_MASK) != 0
     }
 
-    /// Set ENABLE [0:0]: start / stop tick generation
+    /// Set **ENABLE** `[0:0]`
+    /// start / stop tick generation
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
         Self {
@@ -1631,20 +1277,20 @@ impl Default for Timer1CtrlVal {
 impl Timer1Ctrl {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Timer1CtrlVal {
-        Timer1CtrlVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Timer1CtrlVal {
+        Timer1CtrlVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Timer1CtrlVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Timer1CtrlVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Timer1CtrlVal) -> Timer1CtrlVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Timer1CtrlVal) -> Timer1CtrlVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1656,82 +1302,44 @@ impl Timer1Ctrl {
 ///
 /// ## Fields
 ///
-/// - **TIMER1_CYCLES** [8:0] (RW): Total number of clk_tick cycles before the next tick.
+/// - **TIMER1_CYCLES** `[8:0]` (RW)
+///   Total number of clk_tick cycles before the next tick.
 #[repr(transparent)]
 pub struct Timer1Cycles {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Timer1Cycles {}
-unsafe impl Sync for Timer1Cycles {}
+impl core::ops::Deref for Timer1Cycles {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Timer1Cycles {
     // ======== Field Constants ========
 
-    /// TIMER1_CYCLES - Total number of clk_tick cycles before the next tick.
-    /// Bits [8:0], mask 0x000001ff
+    /// **TIMER1_CYCLES**
+    /// Total number of clk_tick cycles before the next tick.
+    /// Bits `[8:0]`, mask `0x000001ff`
     pub const TIMER1_CYCLES_OFFSET: u32 = 0;
     pub const TIMER1_CYCLES_MASK: u32 = 0x000001ff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **TIMER1_CYCLES** [8:0]: Total number of clk_tick cycles before the next tick.
+    /// **TIMER1_CYCLES** `[8:0]` (RW)
+    /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub fn timer1_cycles(&self) -> u32 {
-        (self.read_bits() & Self::TIMER1_CYCLES_MASK) >> Self::TIMER1_CYCLES_OFFSET
+        (self.value.read_bits() & Self::TIMER1_CYCLES_MASK) >> Self::TIMER1_CYCLES_OFFSET
     }
 
-    /// Write TIMER1_CYCLES field
+    /// Write **TIMER1_CYCLES** `[8:0]` (RW)
+    /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub fn write_timer1_cycles(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::TIMER1_CYCLES_MASK) | ((value << Self::TIMER1_CYCLES_OFFSET) & Self::TIMER1_CYCLES_MASK));
+        self.value.modify_bits(|r| (r & !Self::TIMER1_CYCLES_MASK) | ((value << Self::TIMER1_CYCLES_OFFSET) & Self::TIMER1_CYCLES_MASK));
     }
 
 }
@@ -1764,13 +1372,15 @@ impl Timer1CyclesVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read TIMER1_CYCLES [8:0]: Total number of clk_tick cycles before the next tick.
+    /// Read **TIMER1_CYCLES** `[8:0]`
+    /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub const fn timer1_cycles(&self) -> u32 {
         (self.bits & Timer1Cycles::TIMER1_CYCLES_MASK) >> Timer1Cycles::TIMER1_CYCLES_OFFSET
     }
 
-    /// Set TIMER1_CYCLES [8:0]: Total number of clk_tick cycles before the next tick.
+    /// Set **TIMER1_CYCLES** `[8:0]`
+    /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub const fn with_timer1_cycles(self, value: u32) -> Self {
         Self {
@@ -1789,20 +1399,20 @@ impl Default for Timer1CyclesVal {
 impl Timer1Cycles {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Timer1CyclesVal {
-        Timer1CyclesVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Timer1CyclesVal {
+        Timer1CyclesVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Timer1CyclesVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Timer1CyclesVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Timer1CyclesVal) -> Timer1CyclesVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Timer1CyclesVal) -> Timer1CyclesVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1813,76 +1423,37 @@ impl Timer1Cycles {
 ///
 /// ## Fields
 ///
-/// - **TIMER1_COUNT** [8:0] (RO): Count down timer: the remaining number clk_tick cycles before the next tick...
+/// - **TIMER1_COUNT** `[8:0]` (RO)
+///   Count down timer: the remaining number clk_tick cycles before the next tick is generated.
 #[repr(transparent)]
 pub struct Timer1Count {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Timer1Count {}
-unsafe impl Sync for Timer1Count {}
+impl core::ops::Deref for Timer1Count {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Timer1Count {
     // ======== Field Constants ========
 
-    /// TIMER1_COUNT - Count down timer: the remaining number clk_tick cycles before the next tick...
-    /// Bits [8:0], mask 0x000001ff
+    /// **TIMER1_COUNT**
+    /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
+    /// Bits `[8:0]`, mask `0x000001ff`
     pub const TIMER1_COUNT_OFFSET: u32 = 0;
     pub const TIMER1_COUNT_MASK: u32 = 0x000001ff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **TIMER1_COUNT** [8:0]: Count down timer: the remaining number clk_tick cycles before the next tick...
+    /// **TIMER1_COUNT** `[8:0]` (RO)
+    /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
     #[inline(always)]
     pub fn timer1_count(&self) -> u32 {
-        (self.read_bits() & Self::TIMER1_COUNT_MASK) >> Self::TIMER1_COUNT_OFFSET
+        (self.value.read_bits() & Self::TIMER1_COUNT_MASK) >> Self::TIMER1_COUNT_OFFSET
     }
 
 }
@@ -1909,7 +1480,8 @@ impl Timer1CountVal {
         self.bits
     }
 
-    /// Read TIMER1_COUNT [8:0]: Count down timer: the remaining number clk_tick cycles before the next tick...
+    /// Read **TIMER1_COUNT** `[8:0]`
+    /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
     #[inline(always)]
     pub const fn timer1_count(&self) -> u32 {
         (self.bits & Timer1Count::TIMER1_COUNT_MASK) >> Timer1Count::TIMER1_COUNT_OFFSET
@@ -1926,20 +1498,20 @@ impl Default for Timer1CountVal {
 impl Timer1Count {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Timer1CountVal {
-        Timer1CountVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Timer1CountVal {
+        Timer1CountVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Timer1CountVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Timer1CountVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Timer1CountVal) -> Timer1CountVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Timer1CountVal) -> Timer1CountVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1953,102 +1525,66 @@ impl Timer1Count {
 ///
 /// ## Fields
 ///
-/// - **RUNNING** [1] (RO): Is the tick generator running?
-/// - **ENABLE** [0] (RW): start / stop tick generation
+/// - **RUNNING** `[1]` (RO)
+///   Is the tick generator running?
+/// - **ENABLE** `[0]` (RW)
+///   start / stop tick generation
 #[repr(transparent)]
 pub struct WatchdogCtrl {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for WatchdogCtrl {}
-unsafe impl Sync for WatchdogCtrl {}
+impl core::ops::Deref for WatchdogCtrl {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl WatchdogCtrl {
     // ======== Field Constants ========
 
-    /// RUNNING - Is the tick generator running?
-    /// Bits [1:1], mask 0x00000002
+    /// **RUNNING**
+    /// Is the tick generator running?
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const RUNNING_OFFSET: u32 = 1;
     pub const RUNNING_MASK: u32 = 0x00000002;
     pub const RUNNING: u32 = 1 << 1;
 
-    /// ENABLE - start / stop tick generation
-    /// Bits [0:0], mask 0x00000001
+    /// **ENABLE**
+    /// start / stop tick generation
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const ENABLE_OFFSET: u32 = 0;
     pub const ENABLE_MASK: u32 = 0x00000001;
     pub const ENABLE: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **RUNNING** [1:1]: Is the tick generator running?
+    /// **RUNNING** `[1]` (RO)
+    /// Is the tick generator running?
     #[inline(always)]
     pub fn running(&self) -> bool {
-        (self.read_bits() & Self::RUNNING_MASK) != 0
+        (self.value.read_bits() & Self::RUNNING_MASK) != 0
     }
 
-    /// **ENABLE** [0:0]: start / stop tick generation
+    /// **ENABLE** `[0]` (RW)
+    /// start / stop tick generation
     #[inline(always)]
     pub fn enable(&self) -> bool {
-        (self.read_bits() & Self::ENABLE_MASK) != 0
+        (self.value.read_bits() & Self::ENABLE_MASK) != 0
     }
 
-    /// Set ENABLE bit
+    /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.set_bits(Self::ENABLE_MASK);
+        self.value.set_bits(Self::ENABLE_MASK);
     }
 
-    /// Clear ENABLE bit
+    /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.clr_bits(Self::ENABLE_MASK);
+        self.value.clr_bits(Self::ENABLE_MASK);
     }
 
 }
@@ -2081,19 +1617,22 @@ impl WatchdogCtrlVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read RUNNING [1:1]: Is the tick generator running?
+    /// Read **RUNNING** `[1:1]`
+    /// Is the tick generator running?
     #[inline(always)]
     pub const fn running(&self) -> bool {
         (self.bits & WatchdogCtrl::RUNNING_MASK) != 0
     }
 
-    /// Read ENABLE [0:0]: start / stop tick generation
+    /// Read **ENABLE** `[0:0]`
+    /// start / stop tick generation
     #[inline(always)]
     pub const fn enable(&self) -> bool {
         (self.bits & WatchdogCtrl::ENABLE_MASK) != 0
     }
 
-    /// Set ENABLE [0:0]: start / stop tick generation
+    /// Set **ENABLE** `[0:0]`
+    /// start / stop tick generation
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
         Self {
@@ -2116,20 +1655,20 @@ impl Default for WatchdogCtrlVal {
 impl WatchdogCtrl {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> WatchdogCtrlVal {
-        WatchdogCtrlVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> WatchdogCtrlVal {
+        WatchdogCtrlVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: WatchdogCtrlVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: WatchdogCtrlVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(WatchdogCtrlVal) -> WatchdogCtrlVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(WatchdogCtrlVal) -> WatchdogCtrlVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -2141,82 +1680,44 @@ impl WatchdogCtrl {
 ///
 /// ## Fields
 ///
-/// - **WATCHDOG_CYCLES** [8:0] (RW): Total number of clk_tick cycles before the next tick.
+/// - **WATCHDOG_CYCLES** `[8:0]` (RW)
+///   Total number of clk_tick cycles before the next tick.
 #[repr(transparent)]
 pub struct WatchdogCycles {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for WatchdogCycles {}
-unsafe impl Sync for WatchdogCycles {}
+impl core::ops::Deref for WatchdogCycles {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl WatchdogCycles {
     // ======== Field Constants ========
 
-    /// WATCHDOG_CYCLES - Total number of clk_tick cycles before the next tick.
-    /// Bits [8:0], mask 0x000001ff
+    /// **WATCHDOG_CYCLES**
+    /// Total number of clk_tick cycles before the next tick.
+    /// Bits `[8:0]`, mask `0x000001ff`
     pub const WATCHDOG_CYCLES_OFFSET: u32 = 0;
     pub const WATCHDOG_CYCLES_MASK: u32 = 0x000001ff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **WATCHDOG_CYCLES** [8:0]: Total number of clk_tick cycles before the next tick.
+    /// **WATCHDOG_CYCLES** `[8:0]` (RW)
+    /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub fn watchdog_cycles(&self) -> u32 {
-        (self.read_bits() & Self::WATCHDOG_CYCLES_MASK) >> Self::WATCHDOG_CYCLES_OFFSET
+        (self.value.read_bits() & Self::WATCHDOG_CYCLES_MASK) >> Self::WATCHDOG_CYCLES_OFFSET
     }
 
-    /// Write WATCHDOG_CYCLES field
+    /// Write **WATCHDOG_CYCLES** `[8:0]` (RW)
+    /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub fn write_watchdog_cycles(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::WATCHDOG_CYCLES_MASK) | ((value << Self::WATCHDOG_CYCLES_OFFSET) & Self::WATCHDOG_CYCLES_MASK));
+        self.value.modify_bits(|r| (r & !Self::WATCHDOG_CYCLES_MASK) | ((value << Self::WATCHDOG_CYCLES_OFFSET) & Self::WATCHDOG_CYCLES_MASK));
     }
 
 }
@@ -2249,13 +1750,15 @@ impl WatchdogCyclesVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read WATCHDOG_CYCLES [8:0]: Total number of clk_tick cycles before the next tick.
+    /// Read **WATCHDOG_CYCLES** `[8:0]`
+    /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub const fn watchdog_cycles(&self) -> u32 {
         (self.bits & WatchdogCycles::WATCHDOG_CYCLES_MASK) >> WatchdogCycles::WATCHDOG_CYCLES_OFFSET
     }
 
-    /// Set WATCHDOG_CYCLES [8:0]: Total number of clk_tick cycles before the next tick.
+    /// Set **WATCHDOG_CYCLES** `[8:0]`
+    /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub const fn with_watchdog_cycles(self, value: u32) -> Self {
         Self {
@@ -2274,20 +1777,20 @@ impl Default for WatchdogCyclesVal {
 impl WatchdogCycles {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> WatchdogCyclesVal {
-        WatchdogCyclesVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> WatchdogCyclesVal {
+        WatchdogCyclesVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: WatchdogCyclesVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: WatchdogCyclesVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(WatchdogCyclesVal) -> WatchdogCyclesVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(WatchdogCyclesVal) -> WatchdogCyclesVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -2298,76 +1801,37 @@ impl WatchdogCycles {
 ///
 /// ## Fields
 ///
-/// - **WATCHDOG_COUNT** [8:0] (RO): Count down timer: the remaining number clk_tick cycles before the next tick...
+/// - **WATCHDOG_COUNT** `[8:0]` (RO)
+///   Count down timer: the remaining number clk_tick cycles before the next tick is generated.
 #[repr(transparent)]
 pub struct WatchdogCount {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for WatchdogCount {}
-unsafe impl Sync for WatchdogCount {}
+impl core::ops::Deref for WatchdogCount {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl WatchdogCount {
     // ======== Field Constants ========
 
-    /// WATCHDOG_COUNT - Count down timer: the remaining number clk_tick cycles before the next tick...
-    /// Bits [8:0], mask 0x000001ff
+    /// **WATCHDOG_COUNT**
+    /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
+    /// Bits `[8:0]`, mask `0x000001ff`
     pub const WATCHDOG_COUNT_OFFSET: u32 = 0;
     pub const WATCHDOG_COUNT_MASK: u32 = 0x000001ff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **WATCHDOG_COUNT** [8:0]: Count down timer: the remaining number clk_tick cycles before the next tick...
+    /// **WATCHDOG_COUNT** `[8:0]` (RO)
+    /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
     #[inline(always)]
     pub fn watchdog_count(&self) -> u32 {
-        (self.read_bits() & Self::WATCHDOG_COUNT_MASK) >> Self::WATCHDOG_COUNT_OFFSET
+        (self.value.read_bits() & Self::WATCHDOG_COUNT_MASK) >> Self::WATCHDOG_COUNT_OFFSET
     }
 
 }
@@ -2394,7 +1858,8 @@ impl WatchdogCountVal {
         self.bits
     }
 
-    /// Read WATCHDOG_COUNT [8:0]: Count down timer: the remaining number clk_tick cycles before the next tick...
+    /// Read **WATCHDOG_COUNT** `[8:0]`
+    /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
     #[inline(always)]
     pub const fn watchdog_count(&self) -> u32 {
         (self.bits & WatchdogCount::WATCHDOG_COUNT_MASK) >> WatchdogCount::WATCHDOG_COUNT_OFFSET
@@ -2411,20 +1876,20 @@ impl Default for WatchdogCountVal {
 impl WatchdogCount {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> WatchdogCountVal {
-        WatchdogCountVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> WatchdogCountVal {
+        WatchdogCountVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: WatchdogCountVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: WatchdogCountVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(WatchdogCountVal) -> WatchdogCountVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(WatchdogCountVal) -> WatchdogCountVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -2438,102 +1903,66 @@ impl WatchdogCount {
 ///
 /// ## Fields
 ///
-/// - **RUNNING** [1] (RO): Is the tick generator running?
-/// - **ENABLE** [0] (RW): start / stop tick generation
+/// - **RUNNING** `[1]` (RO)
+///   Is the tick generator running?
+/// - **ENABLE** `[0]` (RW)
+///   start / stop tick generation
 #[repr(transparent)]
 pub struct RiscvCtrl {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for RiscvCtrl {}
-unsafe impl Sync for RiscvCtrl {}
+impl core::ops::Deref for RiscvCtrl {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl RiscvCtrl {
     // ======== Field Constants ========
 
-    /// RUNNING - Is the tick generator running?
-    /// Bits [1:1], mask 0x00000002
+    /// **RUNNING**
+    /// Is the tick generator running?
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const RUNNING_OFFSET: u32 = 1;
     pub const RUNNING_MASK: u32 = 0x00000002;
     pub const RUNNING: u32 = 1 << 1;
 
-    /// ENABLE - start / stop tick generation
-    /// Bits [0:0], mask 0x00000001
+    /// **ENABLE**
+    /// start / stop tick generation
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const ENABLE_OFFSET: u32 = 0;
     pub const ENABLE_MASK: u32 = 0x00000001;
     pub const ENABLE: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **RUNNING** [1:1]: Is the tick generator running?
+    /// **RUNNING** `[1]` (RO)
+    /// Is the tick generator running?
     #[inline(always)]
     pub fn running(&self) -> bool {
-        (self.read_bits() & Self::RUNNING_MASK) != 0
+        (self.value.read_bits() & Self::RUNNING_MASK) != 0
     }
 
-    /// **ENABLE** [0:0]: start / stop tick generation
+    /// **ENABLE** `[0]` (RW)
+    /// start / stop tick generation
     #[inline(always)]
     pub fn enable(&self) -> bool {
-        (self.read_bits() & Self::ENABLE_MASK) != 0
+        (self.value.read_bits() & Self::ENABLE_MASK) != 0
     }
 
-    /// Set ENABLE bit
+    /// Set ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn set_enable(&self) {
-        self.set_bits(Self::ENABLE_MASK);
+        self.value.set_bits(Self::ENABLE_MASK);
     }
 
-    /// Clear ENABLE bit
+    /// Clear ENABLE bit atomically (RW)
     #[inline(always)]
     pub fn clr_enable(&self) {
-        self.clr_bits(Self::ENABLE_MASK);
+        self.value.clr_bits(Self::ENABLE_MASK);
     }
 
 }
@@ -2566,19 +1995,22 @@ impl RiscvCtrlVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read RUNNING [1:1]: Is the tick generator running?
+    /// Read **RUNNING** `[1:1]`
+    /// Is the tick generator running?
     #[inline(always)]
     pub const fn running(&self) -> bool {
         (self.bits & RiscvCtrl::RUNNING_MASK) != 0
     }
 
-    /// Read ENABLE [0:0]: start / stop tick generation
+    /// Read **ENABLE** `[0:0]`
+    /// start / stop tick generation
     #[inline(always)]
     pub const fn enable(&self) -> bool {
         (self.bits & RiscvCtrl::ENABLE_MASK) != 0
     }
 
-    /// Set ENABLE [0:0]: start / stop tick generation
+    /// Set **ENABLE** `[0:0]`
+    /// start / stop tick generation
     #[inline(always)]
     pub const fn with_enable(self, value: bool) -> Self {
         Self {
@@ -2601,20 +2033,20 @@ impl Default for RiscvCtrlVal {
 impl RiscvCtrl {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> RiscvCtrlVal {
-        RiscvCtrlVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> RiscvCtrlVal {
+        RiscvCtrlVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: RiscvCtrlVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: RiscvCtrlVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(RiscvCtrlVal) -> RiscvCtrlVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(RiscvCtrlVal) -> RiscvCtrlVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -2626,82 +2058,44 @@ impl RiscvCtrl {
 ///
 /// ## Fields
 ///
-/// - **RISCV_CYCLES** [8:0] (RW): Total number of clk_tick cycles before the next tick.
+/// - **RISCV_CYCLES** `[8:0]` (RW)
+///   Total number of clk_tick cycles before the next tick.
 #[repr(transparent)]
 pub struct RiscvCycles {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for RiscvCycles {}
-unsafe impl Sync for RiscvCycles {}
+impl core::ops::Deref for RiscvCycles {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl RiscvCycles {
     // ======== Field Constants ========
 
-    /// RISCV_CYCLES - Total number of clk_tick cycles before the next tick.
-    /// Bits [8:0], mask 0x000001ff
+    /// **RISCV_CYCLES**
+    /// Total number of clk_tick cycles before the next tick.
+    /// Bits `[8:0]`, mask `0x000001ff`
     pub const RISCV_CYCLES_OFFSET: u32 = 0;
     pub const RISCV_CYCLES_MASK: u32 = 0x000001ff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **RISCV_CYCLES** [8:0]: Total number of clk_tick cycles before the next tick.
+    /// **RISCV_CYCLES** `[8:0]` (RW)
+    /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub fn riscv_cycles(&self) -> u32 {
-        (self.read_bits() & Self::RISCV_CYCLES_MASK) >> Self::RISCV_CYCLES_OFFSET
+        (self.value.read_bits() & Self::RISCV_CYCLES_MASK) >> Self::RISCV_CYCLES_OFFSET
     }
 
-    /// Write RISCV_CYCLES field
+    /// Write **RISCV_CYCLES** `[8:0]` (RW)
+    /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub fn write_riscv_cycles(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::RISCV_CYCLES_MASK) | ((value << Self::RISCV_CYCLES_OFFSET) & Self::RISCV_CYCLES_MASK));
+        self.value.modify_bits(|r| (r & !Self::RISCV_CYCLES_MASK) | ((value << Self::RISCV_CYCLES_OFFSET) & Self::RISCV_CYCLES_MASK));
     }
 
 }
@@ -2734,13 +2128,15 @@ impl RiscvCyclesVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read RISCV_CYCLES [8:0]: Total number of clk_tick cycles before the next tick.
+    /// Read **RISCV_CYCLES** `[8:0]`
+    /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub const fn riscv_cycles(&self) -> u32 {
         (self.bits & RiscvCycles::RISCV_CYCLES_MASK) >> RiscvCycles::RISCV_CYCLES_OFFSET
     }
 
-    /// Set RISCV_CYCLES [8:0]: Total number of clk_tick cycles before the next tick.
+    /// Set **RISCV_CYCLES** `[8:0]`
+    /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub const fn with_riscv_cycles(self, value: u32) -> Self {
         Self {
@@ -2759,20 +2155,20 @@ impl Default for RiscvCyclesVal {
 impl RiscvCycles {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> RiscvCyclesVal {
-        RiscvCyclesVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> RiscvCyclesVal {
+        RiscvCyclesVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: RiscvCyclesVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: RiscvCyclesVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(RiscvCyclesVal) -> RiscvCyclesVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(RiscvCyclesVal) -> RiscvCyclesVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -2783,76 +2179,37 @@ impl RiscvCycles {
 ///
 /// ## Fields
 ///
-/// - **RISCV_COUNT** [8:0] (RO): Count down timer: the remaining number clk_tick cycles before the next tick...
+/// - **RISCV_COUNT** `[8:0]` (RO)
+///   Count down timer: the remaining number clk_tick cycles before the next tick is generated.
 #[repr(transparent)]
 pub struct RiscvCount {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for RiscvCount {}
-unsafe impl Sync for RiscvCount {}
+impl core::ops::Deref for RiscvCount {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl RiscvCount {
     // ======== Field Constants ========
 
-    /// RISCV_COUNT - Count down timer: the remaining number clk_tick cycles before the next tick...
-    /// Bits [8:0], mask 0x000001ff
+    /// **RISCV_COUNT**
+    /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
+    /// Bits `[8:0]`, mask `0x000001ff`
     pub const RISCV_COUNT_OFFSET: u32 = 0;
     pub const RISCV_COUNT_MASK: u32 = 0x000001ff;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **RISCV_COUNT** [8:0]: Count down timer: the remaining number clk_tick cycles before the next tick...
+    /// **RISCV_COUNT** `[8:0]` (RO)
+    /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
     #[inline(always)]
     pub fn riscv_count(&self) -> u32 {
-        (self.read_bits() & Self::RISCV_COUNT_MASK) >> Self::RISCV_COUNT_OFFSET
+        (self.value.read_bits() & Self::RISCV_COUNT_MASK) >> Self::RISCV_COUNT_OFFSET
     }
 
 }
@@ -2879,7 +2236,8 @@ impl RiscvCountVal {
         self.bits
     }
 
-    /// Read RISCV_COUNT [8:0]: Count down timer: the remaining number clk_tick cycles before the next tick...
+    /// Read **RISCV_COUNT** `[8:0]`
+    /// Count down timer: the remaining number clk_tick cycles before the next tick is generated.
     #[inline(always)]
     pub const fn riscv_count(&self) -> u32 {
         (self.bits & RiscvCount::RISCV_COUNT_MASK) >> RiscvCount::RISCV_COUNT_OFFSET
@@ -2896,20 +2254,20 @@ impl Default for RiscvCountVal {
 impl RiscvCount {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> RiscvCountVal {
-        RiscvCountVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> RiscvCountVal {
+        RiscvCountVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: RiscvCountVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: RiscvCountVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(RiscvCountVal) -> RiscvCountVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(RiscvCountVal) -> RiscvCountVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -2917,37 +2275,43 @@ impl RiscvCount {
 /// Register block
 #[repr(C)]
 pub struct RegisterBlock {
-    /// 0x0000 - Controls the tick generator
+    /// 0x0000
+    /// Controls the tick generator
     pub proc0_ctrl: Proc0Ctrl,
     /// 0x0004
     pub proc0_cycles: Proc0Cycles,
     /// 0x0008
     pub proc0_count: Proc0Count,
-    /// 0x000c - Controls the tick generator
+    /// 0x000c
+    /// Controls the tick generator
     pub proc1_ctrl: Proc1Ctrl,
     /// 0x0010
     pub proc1_cycles: Proc1Cycles,
     /// 0x0014
     pub proc1_count: Proc1Count,
-    /// 0x0018 - Controls the tick generator
+    /// 0x0018
+    /// Controls the tick generator
     pub timer0_ctrl: Timer0Ctrl,
     /// 0x001c
     pub timer0_cycles: Timer0Cycles,
     /// 0x0020
     pub timer0_count: Timer0Count,
-    /// 0x0024 - Controls the tick generator
+    /// 0x0024
+    /// Controls the tick generator
     pub timer1_ctrl: Timer1Ctrl,
     /// 0x0028
     pub timer1_cycles: Timer1Cycles,
     /// 0x002c
     pub timer1_count: Timer1Count,
-    /// 0x0030 - Controls the tick generator
+    /// 0x0030
+    /// Controls the tick generator
     pub watchdog_ctrl: WatchdogCtrl,
     /// 0x0034
     pub watchdog_cycles: WatchdogCycles,
     /// 0x0038
     pub watchdog_count: WatchdogCount,
-    /// 0x003c - Controls the tick generator
+    /// 0x003c
+    /// Controls the tick generator
     pub riscv_ctrl: RiscvCtrl,
     /// 0x0040
     pub riscv_cycles: RiscvCycles,

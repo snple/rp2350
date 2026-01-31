@@ -44,7 +44,11 @@ fn main() -> Result<()> {
     let cli = Cli::parse();
 
     match cli.command {
-        Commands::GenPac { svd, output, no_check } => gen_pac(svd, output, no_check),
+        Commands::GenPac {
+            svd,
+            output,
+            no_check,
+        } => gen_pac(svd, output, no_check),
     }
 }
 
@@ -76,11 +80,9 @@ fn gen_pac(svd: Option<PathBuf>, output: Option<PathBuf>, no_check: bool) -> Res
     }
 
     // Parse SVD and generate code
-    let device = svd_parser::parse_svd(&svd_path)
-        .context("Failed to parse SVD file")?;
+    let device = svd_parser::parse_svd(&svd_path).context("Failed to parse SVD file")?;
 
-    generator::generate_all(&device, &output_path)
-        .context("Failed to generate PAC code")?;
+    generator::generate_all(&device, &output_path).context("Failed to generate PAC code")?;
 
     println!("\n✓ PAC generated successfully!");
 

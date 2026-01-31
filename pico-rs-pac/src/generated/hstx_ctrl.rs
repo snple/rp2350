@@ -1,7 +1,5 @@
-//! HSTX_CTRL - Control interface to HSTX. For FIFO write access and status, see the HSTX_F...
-//!
-//! Control interface to HSTX. For FIFO write access and status, see the
-//! HSTX_FIFO register block.
+//! HSTX_CTRL
+//! Control interface to HSTX. For FIFO write access and status, see the HSTX_FIFO register block.
 
 #![allow(dead_code)]
 
@@ -14,229 +12,278 @@ pub const BASE: u32 = 0x400c0000;
 ///
 /// ## Fields
 ///
-/// - **CLKDIV** [31:28] (RW): Clock period of the generated clock, measured in HSTX clock cycles. Can be ...
-/// - **CLKPHASE** [27:24] (RW): Set the initial phase of the generated clock. A CLKPHASE of 0 means the clo...
-/// - **N_SHIFTS** [20:16] (RW): Number of times to shift the shift register before refilling it from the FI...
-/// - **SHIFT** [12:8] (RW): How many bits to right-rotate the shift register by each cycle. The use of ...
-/// - **COUPLED_SEL** [6:5] (RW): Select which PIO to use for coupled mode operation.
-/// - **COUPLED_MODE** [4] (RW): Enable the PIO-to-HSTX 1:1 connection. The HSTX must be clocked *directly* ...
-/// - **EXPAND_EN** [1] (RW): Enable the command expander. When 0, raw FIFO data is passed directly to th...
-/// - **EN** [0] (RW): When EN is 1, the HSTX will shift out data as it appears in the FIFO. As lo...
+/// - **CLKDIV** `[31:28]` (RW)
+///   Clock period of the generated clock, measured in HSTX clock cycles. Can be odd or even. The generated clock advances only on cycles where the shift register shifts.
+///   For example, a clkdiv of 5 would generate a complete output clock period for every 5 HSTX clocks (or every 10 half-clocks).
+///   A CLKDIV value of 0 is mapped to a period of 16 HSTX clock cycles.
+/// - **CLKPHASE** `[27:24]` (RW)
+///   Set the initial phase of the generated clock.
+///   A CLKPHASE of 0 means the clock is initially low, and the first rising edge occurs after one half period of the generated clock (i.e. CLKDIV/2 cycles of clk_hstx). Incrementing CLKPHASE by 1 will advance the initial clock phase by one half clk_hstx period. For example, if CLKDIV=2 and CLKPHASE=1:
+///   * The clock will be initially low
+///   * The first rising edge will be 0.5 clk_hstx cycles after asserting first data
+///   * The first falling edge will be 1.5 clk_hstx cycles after asserting first data
+///   This configuration would be suitable for serialising at a bit rate of clk_hstx with a centre-aligned DDR clock.
+///   When the HSTX is halted by clearing CSR_EN, the clock generator will return to its initial phase as configured by the CLKPHASE field.
+///   Note CLKPHASE must be strictly less than double the value of CLKDIV (one full period), else its operation is undefined.
+/// - **N_SHIFTS** `[20:16]` (RW)
+///   Number of times to shift the shift register before refilling it from the FIFO. (A count of how many times it has been shifted, *not* the total shift distance.)
+///   A register value of 0 means shift 32 times.
+/// - **SHIFT** `[12:8]` (RW)
+///   How many bits to right-rotate the shift register by each cycle.
+///   The use of a rotate rather than a shift allows left shifts to be emulated, by subtracting the left-shift amount from 32. It also allows data to be repeated, when the product of SHIFT and N_SHIFTS is greater than 32.
+/// - **COUPLED_SEL** `[6:5]` (RW)
+///   Select which PIO to use for coupled mode operation.
+/// - **COUPLED_MODE** `[4]` (RW)
+///   Enable the PIO-to-HSTX 1:1 connection. The HSTX must be clocked *directly* from the system clock (not just from some other clock source of the same frequency) for this synchronous interface to function correctly.
+///   When COUPLED_MODE is set, BITx_SEL_P and SEL_N indices 24 through 31 will select bits from the 8-bit PIO-to-HSTX path, rather than shifter bits. Indices of 0 through 23 will still index the shift register as normal.
+///   The PIO outputs connected to the PIO-to-HSTX bus are those same outputs that would appear on the HSTX-capable pins if those pins' FUNCSELs were set to PIO instead of HSTX.
+///   For example, if HSTX is on GPIOs 12 through 19, then PIO outputs 12 through 19 are connected to the HSTX when coupled mode is engaged.
+/// - **EXPAND_EN** `[1]` (RW)
+///   Enable the command expander. When 0, raw FIFO data is passed directly to the output shift register. When 1, the command expander can perform simple operations such as run length decoding on data between the FIFO and the shift register.
+///   Do not change CXPD_EN whilst EN is set. It's safe to set CXPD_EN simultaneously with setting EN.
+/// - **EN** `[0]` (RW)
+///   When EN is 1, the HSTX will shift out data as it appears in the FIFO. As long as there is data, the HSTX shift register will shift once per clock cycle, and the frequency of popping from the FIFO is determined by the ratio of SHIFT and SHIFT_THRESH.
+///   When EN is 0, the FIFO is not popped. The shift counter and clock generator are also reset to their initial state for as long as EN is low. Note the initial phase of the clock generator can be configured by the CLKPHASE field.
+///   Once the HSTX is enabled again, and data is pushed to the FIFO, the generated clock's first rising edge will be one half-period after the first data is launched.
 #[repr(transparent)]
 pub struct Csr {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Csr {}
-unsafe impl Sync for Csr {}
+impl core::ops::Deref for Csr {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Csr {
     // ======== Field Constants ========
 
-    /// CLKDIV - Clock period of the generated clock, measured in HSTX clock cycles. Can be ...
-    /// Bits [31:28], mask 0xf0000000
+    /// **CLKDIV**
+    /// Clock period of the generated clock, measured in HSTX clock cycles. Can be odd or even. The generated clock advances only on cycles where the shift register shifts.
+    /// For example, a clkdiv of 5 would generate a complete output clock period for every 5 HSTX clocks (or every 10 half-clocks).
+    /// A CLKDIV value of 0 is mapped to a period of 16 HSTX clock cycles.
+    /// Bits `[31:28]`, mask `0xf0000000`
     pub const CLKDIV_OFFSET: u32 = 28;
     pub const CLKDIV_MASK: u32 = 0xf0000000;
 
-    /// CLKPHASE - Set the initial phase of the generated clock. A CLKPHASE of 0 means the clo...
-    /// Bits [27:24], mask 0x0f000000
+    /// **CLKPHASE**
+    /// Set the initial phase of the generated clock.
+    /// A CLKPHASE of 0 means the clock is initially low, and the first rising edge occurs after one half period of the generated clock (i.e. CLKDIV/2 cycles of clk_hstx). Incrementing CLKPHASE by 1 will advance the initial clock phase by one half clk_hstx period. For example, if CLKDIV=2 and CLKPHASE=1:
+    /// * The clock will be initially low
+    /// * The first rising edge will be 0.5 clk_hstx cycles after asserting first data
+    /// * The first falling edge will be 1.5 clk_hstx cycles after asserting first data
+    /// This configuration would be suitable for serialising at a bit rate of clk_hstx with a centre-aligned DDR clock.
+    /// When the HSTX is halted by clearing CSR_EN, the clock generator will return to its initial phase as configured by the CLKPHASE field.
+    /// Note CLKPHASE must be strictly less than double the value of CLKDIV (one full period), else its operation is undefined.
+    /// Bits `[27:24]`, mask `0x0f000000`
     pub const CLKPHASE_OFFSET: u32 = 24;
     pub const CLKPHASE_MASK: u32 = 0x0f000000;
 
-    /// N_SHIFTS - Number of times to shift the shift register before refilling it from the FI...
-    /// Bits [20:16], mask 0x001f0000
+    /// **N_SHIFTS**
+    /// Number of times to shift the shift register before refilling it from the FIFO. (A count of how many times it has been shifted, *not* the total shift distance.)
+    /// A register value of 0 means shift 32 times.
+    /// Bits `[20:16]`, mask `0x001f0000`
     pub const N_SHIFTS_OFFSET: u32 = 16;
     pub const N_SHIFTS_MASK: u32 = 0x001f0000;
 
-    /// SHIFT - How many bits to right-rotate the shift register by each cycle. The use of ...
-    /// Bits [12:8], mask 0x00001f00
+    /// **SHIFT**
+    /// How many bits to right-rotate the shift register by each cycle.
+    /// The use of a rotate rather than a shift allows left shifts to be emulated, by subtracting the left-shift amount from 32. It also allows data to be repeated, when the product of SHIFT and N_SHIFTS is greater than 32.
+    /// Bits `[12:8]`, mask `0x00001f00`
     pub const SHIFT_OFFSET: u32 = 8;
     pub const SHIFT_MASK: u32 = 0x00001f00;
 
-    /// COUPLED_SEL - Select which PIO to use for coupled mode operation.
-    /// Bits [6:5], mask 0x00000060
+    /// **COUPLED_SEL**
+    /// Select which PIO to use for coupled mode operation.
+    /// Bits `[6:5]`, mask `0x00000060`
     pub const COUPLED_SEL_OFFSET: u32 = 5;
     pub const COUPLED_SEL_MASK: u32 = 0x00000060;
 
-    /// COUPLED_MODE - Enable the PIO-to-HSTX 1:1 connection. The HSTX must be clocked *directly* ...
-    /// Bits [4:4], mask 0x00000010
+    /// **COUPLED_MODE**
+    /// Enable the PIO-to-HSTX 1:1 connection. The HSTX must be clocked *directly* from the system clock (not just from some other clock source of the same frequency) for this synchronous interface to function correctly.
+    /// When COUPLED_MODE is set, BITx_SEL_P and SEL_N indices 24 through 31 will select bits from the 8-bit PIO-to-HSTX path, rather than shifter bits. Indices of 0 through 23 will still index the shift register as normal.
+    /// The PIO outputs connected to the PIO-to-HSTX bus are those same outputs that would appear on the HSTX-capable pins if those pins' FUNCSELs were set to PIO instead of HSTX.
+    /// For example, if HSTX is on GPIOs 12 through 19, then PIO outputs 12 through 19 are connected to the HSTX when coupled mode is engaged.
+    /// Bits `[4:4]`, mask `0x00000010`
     pub const COUPLED_MODE_OFFSET: u32 = 4;
     pub const COUPLED_MODE_MASK: u32 = 0x00000010;
     pub const COUPLED_MODE: u32 = 1 << 4;
 
-    /// EXPAND_EN - Enable the command expander. When 0, raw FIFO data is passed directly to th...
-    /// Bits [1:1], mask 0x00000002
+    /// **EXPAND_EN**
+    /// Enable the command expander. When 0, raw FIFO data is passed directly to the output shift register. When 1, the command expander can perform simple operations such as run length decoding on data between the FIFO and the shift register.
+    /// Do not change CXPD_EN whilst EN is set. It's safe to set CXPD_EN simultaneously with setting EN.
+    /// Bits `[1:1]`, mask `0x00000002`
     pub const EXPAND_EN_OFFSET: u32 = 1;
     pub const EXPAND_EN_MASK: u32 = 0x00000002;
     pub const EXPAND_EN: u32 = 1 << 1;
 
-    /// EN - When EN is 1, the HSTX will shift out data as it appears in the FIFO. As lo...
-    /// Bits [0:0], mask 0x00000001
+    /// **EN**
+    /// When EN is 1, the HSTX will shift out data as it appears in the FIFO. As long as there is data, the HSTX shift register will shift once per clock cycle, and the frequency of popping from the FIFO is determined by the ratio of SHIFT and SHIFT_THRESH.
+    /// When EN is 0, the FIFO is not popped. The shift counter and clock generator are also reset to their initial state for as long as EN is low. Note the initial phase of the clock generator can be configured by the CLKPHASE field.
+    /// Once the HSTX is enabled again, and data is pushed to the FIFO, the generated clock's first rising edge will be one half-period after the first data is launched.
+    /// Bits `[0:0]`, mask `0x00000001`
     pub const EN_OFFSET: u32 = 0;
     pub const EN_MASK: u32 = 0x00000001;
     pub const EN: u32 = 1 << 0;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **CLKDIV** [31:28]: Clock period of the generated clock, measured in HSTX clock cycles. Can be ...
+    /// **CLKDIV** `[31:28]` (RW)
+    /// Clock period of the generated clock, measured in HSTX clock cycles. Can be odd or even. The generated clock advances only on cycles where the shift register shifts.
+    /// For example, a clkdiv of 5 would generate a complete output clock period for every 5 HSTX clocks (or every 10 half-clocks).
+    /// A CLKDIV value of 0 is mapped to a period of 16 HSTX clock cycles.
     #[inline(always)]
     pub fn clkdiv(&self) -> u32 {
-        (self.read_bits() & Self::CLKDIV_MASK) >> Self::CLKDIV_OFFSET
+        (self.value.read_bits() & Self::CLKDIV_MASK) >> Self::CLKDIV_OFFSET
     }
 
-    /// Write CLKDIV field
+    /// Write **CLKDIV** `[31:28]` (RW)
+    /// Clock period of the generated clock, measured in HSTX clock cycles. Can be odd or even. The generated clock advances only on cycles where the shift register shifts.
+    /// For example, a clkdiv of 5 would generate a complete output clock period for every 5 HSTX clocks (or every 10 half-clocks).
+    /// A CLKDIV value of 0 is mapped to a period of 16 HSTX clock cycles.
     #[inline(always)]
     pub fn write_clkdiv(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::CLKDIV_MASK) | ((value << Self::CLKDIV_OFFSET) & Self::CLKDIV_MASK));
+        self.value.modify_bits(|r| (r & !Self::CLKDIV_MASK) | ((value << Self::CLKDIV_OFFSET) & Self::CLKDIV_MASK));
     }
 
-    /// **CLKPHASE** [27:24]: Set the initial phase of the generated clock. A CLKPHASE of 0 means the clo...
+    /// **CLKPHASE** `[27:24]` (RW)
+    /// Set the initial phase of the generated clock.
+    /// A CLKPHASE of 0 means the clock is initially low, and the first rising edge occurs after one half period of the generated clock (i.e. CLKDIV/2 cycles of clk_hstx). Incrementing CLKPHASE by 1 will advance the initial clock phase by one half clk_hstx period. For example, if CLKDIV=2 and CLKPHASE=1:
+    /// * The clock will be initially low
+    /// * The first rising edge will be 0.5 clk_hstx cycles after asserting first data
+    /// * The first falling edge will be 1.5 clk_hstx cycles after asserting first data
+    /// This configuration would be suitable for serialising at a bit rate of clk_hstx with a centre-aligned DDR clock.
+    /// When the HSTX is halted by clearing CSR_EN, the clock generator will return to its initial phase as configured by the CLKPHASE field.
+    /// Note CLKPHASE must be strictly less than double the value of CLKDIV (one full period), else its operation is undefined.
     #[inline(always)]
     pub fn clkphase(&self) -> u32 {
-        (self.read_bits() & Self::CLKPHASE_MASK) >> Self::CLKPHASE_OFFSET
+        (self.value.read_bits() & Self::CLKPHASE_MASK) >> Self::CLKPHASE_OFFSET
     }
 
-    /// Write CLKPHASE field
+    /// Write **CLKPHASE** `[27:24]` (RW)
+    /// Set the initial phase of the generated clock.
+    /// A CLKPHASE of 0 means the clock is initially low, and the first rising edge occurs after one half period of the generated clock (i.e. CLKDIV/2 cycles of clk_hstx). Incrementing CLKPHASE by 1 will advance the initial clock phase by one half clk_hstx period. For example, if CLKDIV=2 and CLKPHASE=1:
+    /// * The clock will be initially low
+    /// * The first rising edge will be 0.5 clk_hstx cycles after asserting first data
+    /// * The first falling edge will be 1.5 clk_hstx cycles after asserting first data
+    /// This configuration would be suitable for serialising at a bit rate of clk_hstx with a centre-aligned DDR clock.
+    /// When the HSTX is halted by clearing CSR_EN, the clock generator will return to its initial phase as configured by the CLKPHASE field.
+    /// Note CLKPHASE must be strictly less than double the value of CLKDIV (one full period), else its operation is undefined.
     #[inline(always)]
     pub fn write_clkphase(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::CLKPHASE_MASK) | ((value << Self::CLKPHASE_OFFSET) & Self::CLKPHASE_MASK));
+        self.value.modify_bits(|r| (r & !Self::CLKPHASE_MASK) | ((value << Self::CLKPHASE_OFFSET) & Self::CLKPHASE_MASK));
     }
 
-    /// **N_SHIFTS** [20:16]: Number of times to shift the shift register before refilling it from the FI...
+    /// **N_SHIFTS** `[20:16]` (RW)
+    /// Number of times to shift the shift register before refilling it from the FIFO. (A count of how many times it has been shifted, *not* the total shift distance.)
+    /// A register value of 0 means shift 32 times.
     #[inline(always)]
     pub fn n_shifts(&self) -> u32 {
-        (self.read_bits() & Self::N_SHIFTS_MASK) >> Self::N_SHIFTS_OFFSET
+        (self.value.read_bits() & Self::N_SHIFTS_MASK) >> Self::N_SHIFTS_OFFSET
     }
 
-    /// Write N_SHIFTS field
+    /// Write **N_SHIFTS** `[20:16]` (RW)
+    /// Number of times to shift the shift register before refilling it from the FIFO. (A count of how many times it has been shifted, *not* the total shift distance.)
+    /// A register value of 0 means shift 32 times.
     #[inline(always)]
     pub fn write_n_shifts(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::N_SHIFTS_MASK) | ((value << Self::N_SHIFTS_OFFSET) & Self::N_SHIFTS_MASK));
+        self.value.modify_bits(|r| (r & !Self::N_SHIFTS_MASK) | ((value << Self::N_SHIFTS_OFFSET) & Self::N_SHIFTS_MASK));
     }
 
-    /// **SHIFT** [12:8]: How many bits to right-rotate the shift register by each cycle. The use of ...
+    /// **SHIFT** `[12:8]` (RW)
+    /// How many bits to right-rotate the shift register by each cycle.
+    /// The use of a rotate rather than a shift allows left shifts to be emulated, by subtracting the left-shift amount from 32. It also allows data to be repeated, when the product of SHIFT and N_SHIFTS is greater than 32.
     #[inline(always)]
     pub fn shift(&self) -> u32 {
-        (self.read_bits() & Self::SHIFT_MASK) >> Self::SHIFT_OFFSET
+        (self.value.read_bits() & Self::SHIFT_MASK) >> Self::SHIFT_OFFSET
     }
 
-    /// Write SHIFT field
+    /// Write **SHIFT** `[12:8]` (RW)
+    /// How many bits to right-rotate the shift register by each cycle.
+    /// The use of a rotate rather than a shift allows left shifts to be emulated, by subtracting the left-shift amount from 32. It also allows data to be repeated, when the product of SHIFT and N_SHIFTS is greater than 32.
     #[inline(always)]
     pub fn write_shift(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SHIFT_MASK) | ((value << Self::SHIFT_OFFSET) & Self::SHIFT_MASK));
+        self.value.modify_bits(|r| (r & !Self::SHIFT_MASK) | ((value << Self::SHIFT_OFFSET) & Self::SHIFT_MASK));
     }
 
-    /// **COUPLED_SEL** [6:5]: Select which PIO to use for coupled mode operation.
+    /// **COUPLED_SEL** `[6:5]` (RW)
+    /// Select which PIO to use for coupled mode operation.
     #[inline(always)]
     pub fn coupled_sel(&self) -> u32 {
-        (self.read_bits() & Self::COUPLED_SEL_MASK) >> Self::COUPLED_SEL_OFFSET
+        (self.value.read_bits() & Self::COUPLED_SEL_MASK) >> Self::COUPLED_SEL_OFFSET
     }
 
-    /// Write COUPLED_SEL field
+    /// Write **COUPLED_SEL** `[6:5]` (RW)
+    /// Select which PIO to use for coupled mode operation.
     #[inline(always)]
     pub fn write_coupled_sel(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::COUPLED_SEL_MASK) | ((value << Self::COUPLED_SEL_OFFSET) & Self::COUPLED_SEL_MASK));
+        self.value.modify_bits(|r| (r & !Self::COUPLED_SEL_MASK) | ((value << Self::COUPLED_SEL_OFFSET) & Self::COUPLED_SEL_MASK));
     }
 
-    /// **COUPLED_MODE** [4:4]: Enable the PIO-to-HSTX 1:1 connection. The HSTX must be clocked *directly* ...
+    /// **COUPLED_MODE** `[4]` (RW)
+    /// Enable the PIO-to-HSTX 1:1 connection. The HSTX must be clocked *directly* from the system clock (not just from some other clock source of the same frequency) for this synchronous interface to function correctly.
+    /// When COUPLED_MODE is set, BITx_SEL_P and SEL_N indices 24 through 31 will select bits from the 8-bit PIO-to-HSTX path, rather than shifter bits. Indices of 0 through 23 will still index the shift register as normal.
+    /// The PIO outputs connected to the PIO-to-HSTX bus are those same outputs that would appear on the HSTX-capable pins if those pins' FUNCSELs were set to PIO instead of HSTX.
+    /// For example, if HSTX is on GPIOs 12 through 19, then PIO outputs 12 through 19 are connected to the HSTX when coupled mode is engaged.
     #[inline(always)]
     pub fn coupled_mode(&self) -> bool {
-        (self.read_bits() & Self::COUPLED_MODE_MASK) != 0
+        (self.value.read_bits() & Self::COUPLED_MODE_MASK) != 0
     }
 
-    /// Set COUPLED_MODE bit
+    /// Set COUPLED_MODE bit atomically (RW)
     #[inline(always)]
     pub fn set_coupled_mode(&self) {
-        self.set_bits(Self::COUPLED_MODE_MASK);
+        self.value.set_bits(Self::COUPLED_MODE_MASK);
     }
 
-    /// Clear COUPLED_MODE bit
+    /// Clear COUPLED_MODE bit atomically (RW)
     #[inline(always)]
     pub fn clr_coupled_mode(&self) {
-        self.clr_bits(Self::COUPLED_MODE_MASK);
+        self.value.clr_bits(Self::COUPLED_MODE_MASK);
     }
 
-    /// **EXPAND_EN** [1:1]: Enable the command expander. When 0, raw FIFO data is passed directly to th...
+    /// **EXPAND_EN** `[1]` (RW)
+    /// Enable the command expander. When 0, raw FIFO data is passed directly to the output shift register. When 1, the command expander can perform simple operations such as run length decoding on data between the FIFO and the shift register.
+    /// Do not change CXPD_EN whilst EN is set. It's safe to set CXPD_EN simultaneously with setting EN.
     #[inline(always)]
     pub fn expand_en(&self) -> bool {
-        (self.read_bits() & Self::EXPAND_EN_MASK) != 0
+        (self.value.read_bits() & Self::EXPAND_EN_MASK) != 0
     }
 
-    /// Set EXPAND_EN bit
+    /// Set EXPAND_EN bit atomically (RW)
     #[inline(always)]
     pub fn set_expand_en(&self) {
-        self.set_bits(Self::EXPAND_EN_MASK);
+        self.value.set_bits(Self::EXPAND_EN_MASK);
     }
 
-    /// Clear EXPAND_EN bit
+    /// Clear EXPAND_EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_expand_en(&self) {
-        self.clr_bits(Self::EXPAND_EN_MASK);
+        self.value.clr_bits(Self::EXPAND_EN_MASK);
     }
 
-    /// **EN** [0:0]: When EN is 1, the HSTX will shift out data as it appears in the FIFO. As lo...
+    /// **EN** `[0]` (RW)
+    /// When EN is 1, the HSTX will shift out data as it appears in the FIFO. As long as there is data, the HSTX shift register will shift once per clock cycle, and the frequency of popping from the FIFO is determined by the ratio of SHIFT and SHIFT_THRESH.
+    /// When EN is 0, the FIFO is not popped. The shift counter and clock generator are also reset to their initial state for as long as EN is low. Note the initial phase of the clock generator can be configured by the CLKPHASE field.
+    /// Once the HSTX is enabled again, and data is pushed to the FIFO, the generated clock's first rising edge will be one half-period after the first data is launched.
     #[inline(always)]
     pub fn en(&self) -> bool {
-        (self.read_bits() & Self::EN_MASK) != 0
+        (self.value.read_bits() & Self::EN_MASK) != 0
     }
 
-    /// Set EN bit
+    /// Set EN bit atomically (RW)
     #[inline(always)]
     pub fn set_en(&self) {
-        self.set_bits(Self::EN_MASK);
+        self.value.set_bits(Self::EN_MASK);
     }
 
-    /// Clear EN bit
+    /// Clear EN bit atomically (RW)
     #[inline(always)]
     pub fn clr_en(&self) {
-        self.clr_bits(Self::EN_MASK);
+        self.value.clr_bits(Self::EN_MASK);
     }
 
 }
@@ -269,55 +316,83 @@ impl CsrVal {
         Self { bits: 0x10050600 }
     }
 
-    /// Read CLKDIV [31:28]: Clock period of the generated clock, measured in HSTX clock cycles. Can be ...
+    /// Read **CLKDIV** `[31:28]`
+    /// Clock period of the generated clock, measured in HSTX clock cycles. Can be odd or even. The generated clock advances only on cycles where the shift register shifts.
+    /// For example, a clkdiv of 5 would generate a complete output clock period for every 5 HSTX clocks (or every 10 half-clocks).
+    /// A CLKDIV value of 0 is mapped to a period of 16 HSTX clock cycles.
     #[inline(always)]
     pub const fn clkdiv(&self) -> u32 {
         (self.bits & Csr::CLKDIV_MASK) >> Csr::CLKDIV_OFFSET
     }
 
-    /// Read CLKPHASE [27:24]: Set the initial phase of the generated clock. A CLKPHASE of 0 means the clo...
+    /// Read **CLKPHASE** `[27:24]`
+    /// Set the initial phase of the generated clock.
+    /// A CLKPHASE of 0 means the clock is initially low, and the first rising edge occurs after one half period of the generated clock (i.e. CLKDIV/2 cycles of clk_hstx). Incrementing CLKPHASE by 1 will advance the initial clock phase by one half clk_hstx period. For example, if CLKDIV=2 and CLKPHASE=1:
+    /// * The clock will be initially low
+    /// * The first rising edge will be 0.5 clk_hstx cycles after asserting first data
+    /// * The first falling edge will be 1.5 clk_hstx cycles after asserting first data
+    /// This configuration would be suitable for serialising at a bit rate of clk_hstx with a centre-aligned DDR clock.
+    /// When the HSTX is halted by clearing CSR_EN, the clock generator will return to its initial phase as configured by the CLKPHASE field.
+    /// Note CLKPHASE must be strictly less than double the value of CLKDIV (one full period), else its operation is undefined.
     #[inline(always)]
     pub const fn clkphase(&self) -> u32 {
         (self.bits & Csr::CLKPHASE_MASK) >> Csr::CLKPHASE_OFFSET
     }
 
-    /// Read N_SHIFTS [20:16]: Number of times to shift the shift register before refilling it from the FI...
+    /// Read **N_SHIFTS** `[20:16]`
+    /// Number of times to shift the shift register before refilling it from the FIFO. (A count of how many times it has been shifted, *not* the total shift distance.)
+    /// A register value of 0 means shift 32 times.
     #[inline(always)]
     pub const fn n_shifts(&self) -> u32 {
         (self.bits & Csr::N_SHIFTS_MASK) >> Csr::N_SHIFTS_OFFSET
     }
 
-    /// Read SHIFT [12:8]: How many bits to right-rotate the shift register by each cycle. The use of ...
+    /// Read **SHIFT** `[12:8]`
+    /// How many bits to right-rotate the shift register by each cycle.
+    /// The use of a rotate rather than a shift allows left shifts to be emulated, by subtracting the left-shift amount from 32. It also allows data to be repeated, when the product of SHIFT and N_SHIFTS is greater than 32.
     #[inline(always)]
     pub const fn shift(&self) -> u32 {
         (self.bits & Csr::SHIFT_MASK) >> Csr::SHIFT_OFFSET
     }
 
-    /// Read COUPLED_SEL [6:5]: Select which PIO to use for coupled mode operation.
+    /// Read **COUPLED_SEL** `[6:5]`
+    /// Select which PIO to use for coupled mode operation.
     #[inline(always)]
     pub const fn coupled_sel(&self) -> u32 {
         (self.bits & Csr::COUPLED_SEL_MASK) >> Csr::COUPLED_SEL_OFFSET
     }
 
-    /// Read COUPLED_MODE [4:4]: Enable the PIO-to-HSTX 1:1 connection. The HSTX must be clocked *directly* ...
+    /// Read **COUPLED_MODE** `[4:4]`
+    /// Enable the PIO-to-HSTX 1:1 connection. The HSTX must be clocked *directly* from the system clock (not just from some other clock source of the same frequency) for this synchronous interface to function correctly.
+    /// When COUPLED_MODE is set, BITx_SEL_P and SEL_N indices 24 through 31 will select bits from the 8-bit PIO-to-HSTX path, rather than shifter bits. Indices of 0 through 23 will still index the shift register as normal.
+    /// The PIO outputs connected to the PIO-to-HSTX bus are those same outputs that would appear on the HSTX-capable pins if those pins' FUNCSELs were set to PIO instead of HSTX.
+    /// For example, if HSTX is on GPIOs 12 through 19, then PIO outputs 12 through 19 are connected to the HSTX when coupled mode is engaged.
     #[inline(always)]
     pub const fn coupled_mode(&self) -> bool {
         (self.bits & Csr::COUPLED_MODE_MASK) != 0
     }
 
-    /// Read EXPAND_EN [1:1]: Enable the command expander. When 0, raw FIFO data is passed directly to th...
+    /// Read **EXPAND_EN** `[1:1]`
+    /// Enable the command expander. When 0, raw FIFO data is passed directly to the output shift register. When 1, the command expander can perform simple operations such as run length decoding on data between the FIFO and the shift register.
+    /// Do not change CXPD_EN whilst EN is set. It's safe to set CXPD_EN simultaneously with setting EN.
     #[inline(always)]
     pub const fn expand_en(&self) -> bool {
         (self.bits & Csr::EXPAND_EN_MASK) != 0
     }
 
-    /// Read EN [0:0]: When EN is 1, the HSTX will shift out data as it appears in the FIFO. As lo...
+    /// Read **EN** `[0:0]`
+    /// When EN is 1, the HSTX will shift out data as it appears in the FIFO. As long as there is data, the HSTX shift register will shift once per clock cycle, and the frequency of popping from the FIFO is determined by the ratio of SHIFT and SHIFT_THRESH.
+    /// When EN is 0, the FIFO is not popped. The shift counter and clock generator are also reset to their initial state for as long as EN is low. Note the initial phase of the clock generator can be configured by the CLKPHASE field.
+    /// Once the HSTX is enabled again, and data is pushed to the FIFO, the generated clock's first rising edge will be one half-period after the first data is launched.
     #[inline(always)]
     pub const fn en(&self) -> bool {
         (self.bits & Csr::EN_MASK) != 0
     }
 
-    /// Set CLKDIV [31:28]: Clock period of the generated clock, measured in HSTX clock cycles. Can be ...
+    /// Set **CLKDIV** `[31:28]`
+    /// Clock period of the generated clock, measured in HSTX clock cycles. Can be odd or even. The generated clock advances only on cycles where the shift register shifts.
+    /// For example, a clkdiv of 5 would generate a complete output clock period for every 5 HSTX clocks (or every 10 half-clocks).
+    /// A CLKDIV value of 0 is mapped to a period of 16 HSTX clock cycles.
     #[inline(always)]
     pub const fn with_clkdiv(self, value: u32) -> Self {
         Self {
@@ -325,7 +400,15 @@ impl CsrVal {
         }
     }
 
-    /// Set CLKPHASE [27:24]: Set the initial phase of the generated clock. A CLKPHASE of 0 means the clo...
+    /// Set **CLKPHASE** `[27:24]`
+    /// Set the initial phase of the generated clock.
+    /// A CLKPHASE of 0 means the clock is initially low, and the first rising edge occurs after one half period of the generated clock (i.e. CLKDIV/2 cycles of clk_hstx). Incrementing CLKPHASE by 1 will advance the initial clock phase by one half clk_hstx period. For example, if CLKDIV=2 and CLKPHASE=1:
+    /// * The clock will be initially low
+    /// * The first rising edge will be 0.5 clk_hstx cycles after asserting first data
+    /// * The first falling edge will be 1.5 clk_hstx cycles after asserting first data
+    /// This configuration would be suitable for serialising at a bit rate of clk_hstx with a centre-aligned DDR clock.
+    /// When the HSTX is halted by clearing CSR_EN, the clock generator will return to its initial phase as configured by the CLKPHASE field.
+    /// Note CLKPHASE must be strictly less than double the value of CLKDIV (one full period), else its operation is undefined.
     #[inline(always)]
     pub const fn with_clkphase(self, value: u32) -> Self {
         Self {
@@ -333,7 +416,9 @@ impl CsrVal {
         }
     }
 
-    /// Set N_SHIFTS [20:16]: Number of times to shift the shift register before refilling it from the FI...
+    /// Set **N_SHIFTS** `[20:16]`
+    /// Number of times to shift the shift register before refilling it from the FIFO. (A count of how many times it has been shifted, *not* the total shift distance.)
+    /// A register value of 0 means shift 32 times.
     #[inline(always)]
     pub const fn with_n_shifts(self, value: u32) -> Self {
         Self {
@@ -341,7 +426,9 @@ impl CsrVal {
         }
     }
 
-    /// Set SHIFT [12:8]: How many bits to right-rotate the shift register by each cycle. The use of ...
+    /// Set **SHIFT** `[12:8]`
+    /// How many bits to right-rotate the shift register by each cycle.
+    /// The use of a rotate rather than a shift allows left shifts to be emulated, by subtracting the left-shift amount from 32. It also allows data to be repeated, when the product of SHIFT and N_SHIFTS is greater than 32.
     #[inline(always)]
     pub const fn with_shift(self, value: u32) -> Self {
         Self {
@@ -349,7 +436,8 @@ impl CsrVal {
         }
     }
 
-    /// Set COUPLED_SEL [6:5]: Select which PIO to use for coupled mode operation.
+    /// Set **COUPLED_SEL** `[6:5]`
+    /// Select which PIO to use for coupled mode operation.
     #[inline(always)]
     pub const fn with_coupled_sel(self, value: u32) -> Self {
         Self {
@@ -357,7 +445,11 @@ impl CsrVal {
         }
     }
 
-    /// Set COUPLED_MODE [4:4]: Enable the PIO-to-HSTX 1:1 connection. The HSTX must be clocked *directly* ...
+    /// Set **COUPLED_MODE** `[4:4]`
+    /// Enable the PIO-to-HSTX 1:1 connection. The HSTX must be clocked *directly* from the system clock (not just from some other clock source of the same frequency) for this synchronous interface to function correctly.
+    /// When COUPLED_MODE is set, BITx_SEL_P and SEL_N indices 24 through 31 will select bits from the 8-bit PIO-to-HSTX path, rather than shifter bits. Indices of 0 through 23 will still index the shift register as normal.
+    /// The PIO outputs connected to the PIO-to-HSTX bus are those same outputs that would appear on the HSTX-capable pins if those pins' FUNCSELs were set to PIO instead of HSTX.
+    /// For example, if HSTX is on GPIOs 12 through 19, then PIO outputs 12 through 19 are connected to the HSTX when coupled mode is engaged.
     #[inline(always)]
     pub const fn with_coupled_mode(self, value: bool) -> Self {
         Self {
@@ -369,7 +461,9 @@ impl CsrVal {
         }
     }
 
-    /// Set EXPAND_EN [1:1]: Enable the command expander. When 0, raw FIFO data is passed directly to th...
+    /// Set **EXPAND_EN** `[1:1]`
+    /// Enable the command expander. When 0, raw FIFO data is passed directly to the output shift register. When 1, the command expander can perform simple operations such as run length decoding on data between the FIFO and the shift register.
+    /// Do not change CXPD_EN whilst EN is set. It's safe to set CXPD_EN simultaneously with setting EN.
     #[inline(always)]
     pub const fn with_expand_en(self, value: bool) -> Self {
         Self {
@@ -381,7 +475,10 @@ impl CsrVal {
         }
     }
 
-    /// Set EN [0:0]: When EN is 1, the HSTX will shift out data as it appears in the FIFO. As lo...
+    /// Set **EN** `[0:0]`
+    /// When EN is 1, the HSTX will shift out data as it appears in the FIFO. As long as there is data, the HSTX shift register will shift once per clock cycle, and the frequency of popping from the FIFO is determined by the ratio of SHIFT and SHIFT_THRESH.
+    /// When EN is 0, the FIFO is not popped. The shift counter and clock generator are also reset to their initial state for as long as EN is low. Note the initial phase of the clock generator can be configured by the CLKPHASE field.
+    /// Once the HSTX is enabled again, and data is pushed to the FIFO, the generated clock's first rising edge will be one half-period after the first data is launched.
     #[inline(always)]
     pub const fn with_en(self, value: bool) -> Self {
         Self {
@@ -404,20 +501,20 @@ impl Default for CsrVal {
 impl Csr {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> CsrVal {
-        CsrVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> CsrVal {
+        CsrVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: CsrVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: CsrVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(CsrVal) -> CsrVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(CsrVal) -> CsrVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -431,150 +528,122 @@ impl Csr {
 ///
 /// ## Fields
 ///
-/// - **CLK** [17] (RW): Connect this output to the generated clock, rather than the data shift regi...
-/// - **INV** [16] (RW): Invert this data output (logical NOT)
-/// - **SEL_N** [12:8] (RW): Shift register data bit select for the second half of the HSTX clock cycle
-/// - **SEL_P** [4:0] (RW): Shift register data bit select for the first half of the HSTX clock cycle
+/// - **CLK** `[17]` (RW)
+///   Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
+/// - **INV** `[16]` (RW)
+///   Invert this data output (logical NOT)
+/// - **SEL_N** `[12:8]` (RW)
+///   Shift register data bit select for the second half of the HSTX clock cycle
+/// - **SEL_P** `[4:0]` (RW)
+///   Shift register data bit select for the first half of the HSTX clock cycle
 #[repr(transparent)]
 pub struct Bit0 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Bit0 {}
-unsafe impl Sync for Bit0 {}
+impl core::ops::Deref for Bit0 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Bit0 {
     // ======== Field Constants ========
 
-    /// CLK - Connect this output to the generated clock, rather than the data shift regi...
-    /// Bits [17:17], mask 0x00020000
+    /// **CLK**
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
+    /// Bits `[17:17]`, mask `0x00020000`
     pub const CLK_OFFSET: u32 = 17;
     pub const CLK_MASK: u32 = 0x00020000;
     pub const CLK: u32 = 1 << 17;
 
-    /// INV - Invert this data output (logical NOT)
-    /// Bits [16:16], mask 0x00010000
+    /// **INV**
+    /// Invert this data output (logical NOT)
+    /// Bits `[16:16]`, mask `0x00010000`
     pub const INV_OFFSET: u32 = 16;
     pub const INV_MASK: u32 = 0x00010000;
     pub const INV: u32 = 1 << 16;
 
-    /// SEL_N - Shift register data bit select for the second half of the HSTX clock cycle
-    /// Bits [12:8], mask 0x00001f00
+    /// **SEL_N**
+    /// Shift register data bit select for the second half of the HSTX clock cycle
+    /// Bits `[12:8]`, mask `0x00001f00`
     pub const SEL_N_OFFSET: u32 = 8;
     pub const SEL_N_MASK: u32 = 0x00001f00;
 
-    /// SEL_P - Shift register data bit select for the first half of the HSTX clock cycle
-    /// Bits [4:0], mask 0x0000001f
+    /// **SEL_P**
+    /// Shift register data bit select for the first half of the HSTX clock cycle
+    /// Bits `[4:0]`, mask `0x0000001f`
     pub const SEL_P_OFFSET: u32 = 0;
     pub const SEL_P_MASK: u32 = 0x0000001f;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **CLK** [17:17]: Connect this output to the generated clock, rather than the data shift regi...
+    /// **CLK** `[17]` (RW)
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
     #[inline(always)]
     pub fn clk(&self) -> bool {
-        (self.read_bits() & Self::CLK_MASK) != 0
+        (self.value.read_bits() & Self::CLK_MASK) != 0
     }
 
-    /// Set CLK bit
+    /// Set CLK bit atomically (RW)
     #[inline(always)]
     pub fn set_clk(&self) {
-        self.set_bits(Self::CLK_MASK);
+        self.value.set_bits(Self::CLK_MASK);
     }
 
-    /// Clear CLK bit
+    /// Clear CLK bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk(&self) {
-        self.clr_bits(Self::CLK_MASK);
+        self.value.clr_bits(Self::CLK_MASK);
     }
 
-    /// **INV** [16:16]: Invert this data output (logical NOT)
+    /// **INV** `[16]` (RW)
+    /// Invert this data output (logical NOT)
     #[inline(always)]
     pub fn inv(&self) -> bool {
-        (self.read_bits() & Self::INV_MASK) != 0
+        (self.value.read_bits() & Self::INV_MASK) != 0
     }
 
-    /// Set INV bit
+    /// Set INV bit atomically (RW)
     #[inline(always)]
     pub fn set_inv(&self) {
-        self.set_bits(Self::INV_MASK);
+        self.value.set_bits(Self::INV_MASK);
     }
 
-    /// Clear INV bit
+    /// Clear INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_inv(&self) {
-        self.clr_bits(Self::INV_MASK);
+        self.value.clr_bits(Self::INV_MASK);
     }
 
-    /// **SEL_N** [12:8]: Shift register data bit select for the second half of the HSTX clock cycle
+    /// **SEL_N** `[12:8]` (RW)
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub fn sel_n(&self) -> u32 {
-        (self.read_bits() & Self::SEL_N_MASK) >> Self::SEL_N_OFFSET
+        (self.value.read_bits() & Self::SEL_N_MASK) >> Self::SEL_N_OFFSET
     }
 
-    /// Write SEL_N field
+    /// Write **SEL_N** `[12:8]` (RW)
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_n(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK));
+        self.value.modify_bits(|r| (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK));
     }
 
-    /// **SEL_P** [4:0]: Shift register data bit select for the first half of the HSTX clock cycle
+    /// **SEL_P** `[4:0]` (RW)
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub fn sel_p(&self) -> u32 {
-        (self.read_bits() & Self::SEL_P_MASK) >> Self::SEL_P_OFFSET
+        (self.value.read_bits() & Self::SEL_P_MASK) >> Self::SEL_P_OFFSET
     }
 
-    /// Write SEL_P field
+    /// Write **SEL_P** `[4:0]` (RW)
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_p(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK));
+        self.value.modify_bits(|r| (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK));
     }
 
 }
@@ -607,31 +676,36 @@ impl Bit0Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read CLK [17:17]: Connect this output to the generated clock, rather than the data shift regi...
+    /// Read **CLK** `[17:17]`
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
     #[inline(always)]
     pub const fn clk(&self) -> bool {
         (self.bits & Bit0::CLK_MASK) != 0
     }
 
-    /// Read INV [16:16]: Invert this data output (logical NOT)
+    /// Read **INV** `[16:16]`
+    /// Invert this data output (logical NOT)
     #[inline(always)]
     pub const fn inv(&self) -> bool {
         (self.bits & Bit0::INV_MASK) != 0
     }
 
-    /// Read SEL_N [12:8]: Shift register data bit select for the second half of the HSTX clock cycle
+    /// Read **SEL_N** `[12:8]`
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub const fn sel_n(&self) -> u32 {
         (self.bits & Bit0::SEL_N_MASK) >> Bit0::SEL_N_OFFSET
     }
 
-    /// Read SEL_P [4:0]: Shift register data bit select for the first half of the HSTX clock cycle
+    /// Read **SEL_P** `[4:0]`
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub const fn sel_p(&self) -> u32 {
         (self.bits & Bit0::SEL_P_MASK) >> Bit0::SEL_P_OFFSET
     }
 
-    /// Set CLK [17:17]: Connect this output to the generated clock, rather than the data shift regi...
+    /// Set **CLK** `[17:17]`
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
     #[inline(always)]
     pub const fn with_clk(self, value: bool) -> Self {
         Self {
@@ -643,7 +717,8 @@ impl Bit0Val {
         }
     }
 
-    /// Set INV [16:16]: Invert this data output (logical NOT)
+    /// Set **INV** `[16:16]`
+    /// Invert this data output (logical NOT)
     #[inline(always)]
     pub const fn with_inv(self, value: bool) -> Self {
         Self {
@@ -655,7 +730,8 @@ impl Bit0Val {
         }
     }
 
-    /// Set SEL_N [12:8]: Shift register data bit select for the second half of the HSTX clock cycle
+    /// Set **SEL_N** `[12:8]`
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub const fn with_sel_n(self, value: u32) -> Self {
         Self {
@@ -663,7 +739,8 @@ impl Bit0Val {
         }
     }
 
-    /// Set SEL_P [4:0]: Shift register data bit select for the first half of the HSTX clock cycle
+    /// Set **SEL_P** `[4:0]`
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub const fn with_sel_p(self, value: u32) -> Self {
         Self {
@@ -682,20 +759,20 @@ impl Default for Bit0Val {
 impl Bit0 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Bit0Val {
-        Bit0Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Bit0Val {
+        Bit0Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Bit0Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Bit0Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Bit0Val) -> Bit0Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Bit0Val) -> Bit0Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -709,150 +786,122 @@ impl Bit0 {
 ///
 /// ## Fields
 ///
-/// - **CLK** [17] (RW): Connect this output to the generated clock, rather than the data shift regi...
-/// - **INV** [16] (RW): Invert this data output (logical NOT)
-/// - **SEL_N** [12:8] (RW): Shift register data bit select for the second half of the HSTX clock cycle
-/// - **SEL_P** [4:0] (RW): Shift register data bit select for the first half of the HSTX clock cycle
+/// - **CLK** `[17]` (RW)
+///   Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
+/// - **INV** `[16]` (RW)
+///   Invert this data output (logical NOT)
+/// - **SEL_N** `[12:8]` (RW)
+///   Shift register data bit select for the second half of the HSTX clock cycle
+/// - **SEL_P** `[4:0]` (RW)
+///   Shift register data bit select for the first half of the HSTX clock cycle
 #[repr(transparent)]
 pub struct Bit1 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Bit1 {}
-unsafe impl Sync for Bit1 {}
+impl core::ops::Deref for Bit1 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Bit1 {
     // ======== Field Constants ========
 
-    /// CLK - Connect this output to the generated clock, rather than the data shift regi...
-    /// Bits [17:17], mask 0x00020000
+    /// **CLK**
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
+    /// Bits `[17:17]`, mask `0x00020000`
     pub const CLK_OFFSET: u32 = 17;
     pub const CLK_MASK: u32 = 0x00020000;
     pub const CLK: u32 = 1 << 17;
 
-    /// INV - Invert this data output (logical NOT)
-    /// Bits [16:16], mask 0x00010000
+    /// **INV**
+    /// Invert this data output (logical NOT)
+    /// Bits `[16:16]`, mask `0x00010000`
     pub const INV_OFFSET: u32 = 16;
     pub const INV_MASK: u32 = 0x00010000;
     pub const INV: u32 = 1 << 16;
 
-    /// SEL_N - Shift register data bit select for the second half of the HSTX clock cycle
-    /// Bits [12:8], mask 0x00001f00
+    /// **SEL_N**
+    /// Shift register data bit select for the second half of the HSTX clock cycle
+    /// Bits `[12:8]`, mask `0x00001f00`
     pub const SEL_N_OFFSET: u32 = 8;
     pub const SEL_N_MASK: u32 = 0x00001f00;
 
-    /// SEL_P - Shift register data bit select for the first half of the HSTX clock cycle
-    /// Bits [4:0], mask 0x0000001f
+    /// **SEL_P**
+    /// Shift register data bit select for the first half of the HSTX clock cycle
+    /// Bits `[4:0]`, mask `0x0000001f`
     pub const SEL_P_OFFSET: u32 = 0;
     pub const SEL_P_MASK: u32 = 0x0000001f;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **CLK** [17:17]: Connect this output to the generated clock, rather than the data shift regi...
+    /// **CLK** `[17]` (RW)
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
     #[inline(always)]
     pub fn clk(&self) -> bool {
-        (self.read_bits() & Self::CLK_MASK) != 0
+        (self.value.read_bits() & Self::CLK_MASK) != 0
     }
 
-    /// Set CLK bit
+    /// Set CLK bit atomically (RW)
     #[inline(always)]
     pub fn set_clk(&self) {
-        self.set_bits(Self::CLK_MASK);
+        self.value.set_bits(Self::CLK_MASK);
     }
 
-    /// Clear CLK bit
+    /// Clear CLK bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk(&self) {
-        self.clr_bits(Self::CLK_MASK);
+        self.value.clr_bits(Self::CLK_MASK);
     }
 
-    /// **INV** [16:16]: Invert this data output (logical NOT)
+    /// **INV** `[16]` (RW)
+    /// Invert this data output (logical NOT)
     #[inline(always)]
     pub fn inv(&self) -> bool {
-        (self.read_bits() & Self::INV_MASK) != 0
+        (self.value.read_bits() & Self::INV_MASK) != 0
     }
 
-    /// Set INV bit
+    /// Set INV bit atomically (RW)
     #[inline(always)]
     pub fn set_inv(&self) {
-        self.set_bits(Self::INV_MASK);
+        self.value.set_bits(Self::INV_MASK);
     }
 
-    /// Clear INV bit
+    /// Clear INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_inv(&self) {
-        self.clr_bits(Self::INV_MASK);
+        self.value.clr_bits(Self::INV_MASK);
     }
 
-    /// **SEL_N** [12:8]: Shift register data bit select for the second half of the HSTX clock cycle
+    /// **SEL_N** `[12:8]` (RW)
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub fn sel_n(&self) -> u32 {
-        (self.read_bits() & Self::SEL_N_MASK) >> Self::SEL_N_OFFSET
+        (self.value.read_bits() & Self::SEL_N_MASK) >> Self::SEL_N_OFFSET
     }
 
-    /// Write SEL_N field
+    /// Write **SEL_N** `[12:8]` (RW)
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_n(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK));
+        self.value.modify_bits(|r| (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK));
     }
 
-    /// **SEL_P** [4:0]: Shift register data bit select for the first half of the HSTX clock cycle
+    /// **SEL_P** `[4:0]` (RW)
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub fn sel_p(&self) -> u32 {
-        (self.read_bits() & Self::SEL_P_MASK) >> Self::SEL_P_OFFSET
+        (self.value.read_bits() & Self::SEL_P_MASK) >> Self::SEL_P_OFFSET
     }
 
-    /// Write SEL_P field
+    /// Write **SEL_P** `[4:0]` (RW)
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_p(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK));
+        self.value.modify_bits(|r| (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK));
     }
 
 }
@@ -885,31 +934,36 @@ impl Bit1Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read CLK [17:17]: Connect this output to the generated clock, rather than the data shift regi...
+    /// Read **CLK** `[17:17]`
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
     #[inline(always)]
     pub const fn clk(&self) -> bool {
         (self.bits & Bit1::CLK_MASK) != 0
     }
 
-    /// Read INV [16:16]: Invert this data output (logical NOT)
+    /// Read **INV** `[16:16]`
+    /// Invert this data output (logical NOT)
     #[inline(always)]
     pub const fn inv(&self) -> bool {
         (self.bits & Bit1::INV_MASK) != 0
     }
 
-    /// Read SEL_N [12:8]: Shift register data bit select for the second half of the HSTX clock cycle
+    /// Read **SEL_N** `[12:8]`
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub const fn sel_n(&self) -> u32 {
         (self.bits & Bit1::SEL_N_MASK) >> Bit1::SEL_N_OFFSET
     }
 
-    /// Read SEL_P [4:0]: Shift register data bit select for the first half of the HSTX clock cycle
+    /// Read **SEL_P** `[4:0]`
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub const fn sel_p(&self) -> u32 {
         (self.bits & Bit1::SEL_P_MASK) >> Bit1::SEL_P_OFFSET
     }
 
-    /// Set CLK [17:17]: Connect this output to the generated clock, rather than the data shift regi...
+    /// Set **CLK** `[17:17]`
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
     #[inline(always)]
     pub const fn with_clk(self, value: bool) -> Self {
         Self {
@@ -921,7 +975,8 @@ impl Bit1Val {
         }
     }
 
-    /// Set INV [16:16]: Invert this data output (logical NOT)
+    /// Set **INV** `[16:16]`
+    /// Invert this data output (logical NOT)
     #[inline(always)]
     pub const fn with_inv(self, value: bool) -> Self {
         Self {
@@ -933,7 +988,8 @@ impl Bit1Val {
         }
     }
 
-    /// Set SEL_N [12:8]: Shift register data bit select for the second half of the HSTX clock cycle
+    /// Set **SEL_N** `[12:8]`
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub const fn with_sel_n(self, value: u32) -> Self {
         Self {
@@ -941,7 +997,8 @@ impl Bit1Val {
         }
     }
 
-    /// Set SEL_P [4:0]: Shift register data bit select for the first half of the HSTX clock cycle
+    /// Set **SEL_P** `[4:0]`
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub const fn with_sel_p(self, value: u32) -> Self {
         Self {
@@ -960,20 +1017,20 @@ impl Default for Bit1Val {
 impl Bit1 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Bit1Val {
-        Bit1Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Bit1Val {
+        Bit1Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Bit1Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Bit1Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Bit1Val) -> Bit1Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Bit1Val) -> Bit1Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -987,150 +1044,122 @@ impl Bit1 {
 ///
 /// ## Fields
 ///
-/// - **CLK** [17] (RW): Connect this output to the generated clock, rather than the data shift regi...
-/// - **INV** [16] (RW): Invert this data output (logical NOT)
-/// - **SEL_N** [12:8] (RW): Shift register data bit select for the second half of the HSTX clock cycle
-/// - **SEL_P** [4:0] (RW): Shift register data bit select for the first half of the HSTX clock cycle
+/// - **CLK** `[17]` (RW)
+///   Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
+/// - **INV** `[16]` (RW)
+///   Invert this data output (logical NOT)
+/// - **SEL_N** `[12:8]` (RW)
+///   Shift register data bit select for the second half of the HSTX clock cycle
+/// - **SEL_P** `[4:0]` (RW)
+///   Shift register data bit select for the first half of the HSTX clock cycle
 #[repr(transparent)]
 pub struct Bit2 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Bit2 {}
-unsafe impl Sync for Bit2 {}
+impl core::ops::Deref for Bit2 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Bit2 {
     // ======== Field Constants ========
 
-    /// CLK - Connect this output to the generated clock, rather than the data shift regi...
-    /// Bits [17:17], mask 0x00020000
+    /// **CLK**
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
+    /// Bits `[17:17]`, mask `0x00020000`
     pub const CLK_OFFSET: u32 = 17;
     pub const CLK_MASK: u32 = 0x00020000;
     pub const CLK: u32 = 1 << 17;
 
-    /// INV - Invert this data output (logical NOT)
-    /// Bits [16:16], mask 0x00010000
+    /// **INV**
+    /// Invert this data output (logical NOT)
+    /// Bits `[16:16]`, mask `0x00010000`
     pub const INV_OFFSET: u32 = 16;
     pub const INV_MASK: u32 = 0x00010000;
     pub const INV: u32 = 1 << 16;
 
-    /// SEL_N - Shift register data bit select for the second half of the HSTX clock cycle
-    /// Bits [12:8], mask 0x00001f00
+    /// **SEL_N**
+    /// Shift register data bit select for the second half of the HSTX clock cycle
+    /// Bits `[12:8]`, mask `0x00001f00`
     pub const SEL_N_OFFSET: u32 = 8;
     pub const SEL_N_MASK: u32 = 0x00001f00;
 
-    /// SEL_P - Shift register data bit select for the first half of the HSTX clock cycle
-    /// Bits [4:0], mask 0x0000001f
+    /// **SEL_P**
+    /// Shift register data bit select for the first half of the HSTX clock cycle
+    /// Bits `[4:0]`, mask `0x0000001f`
     pub const SEL_P_OFFSET: u32 = 0;
     pub const SEL_P_MASK: u32 = 0x0000001f;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **CLK** [17:17]: Connect this output to the generated clock, rather than the data shift regi...
+    /// **CLK** `[17]` (RW)
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
     #[inline(always)]
     pub fn clk(&self) -> bool {
-        (self.read_bits() & Self::CLK_MASK) != 0
+        (self.value.read_bits() & Self::CLK_MASK) != 0
     }
 
-    /// Set CLK bit
+    /// Set CLK bit atomically (RW)
     #[inline(always)]
     pub fn set_clk(&self) {
-        self.set_bits(Self::CLK_MASK);
+        self.value.set_bits(Self::CLK_MASK);
     }
 
-    /// Clear CLK bit
+    /// Clear CLK bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk(&self) {
-        self.clr_bits(Self::CLK_MASK);
+        self.value.clr_bits(Self::CLK_MASK);
     }
 
-    /// **INV** [16:16]: Invert this data output (logical NOT)
+    /// **INV** `[16]` (RW)
+    /// Invert this data output (logical NOT)
     #[inline(always)]
     pub fn inv(&self) -> bool {
-        (self.read_bits() & Self::INV_MASK) != 0
+        (self.value.read_bits() & Self::INV_MASK) != 0
     }
 
-    /// Set INV bit
+    /// Set INV bit atomically (RW)
     #[inline(always)]
     pub fn set_inv(&self) {
-        self.set_bits(Self::INV_MASK);
+        self.value.set_bits(Self::INV_MASK);
     }
 
-    /// Clear INV bit
+    /// Clear INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_inv(&self) {
-        self.clr_bits(Self::INV_MASK);
+        self.value.clr_bits(Self::INV_MASK);
     }
 
-    /// **SEL_N** [12:8]: Shift register data bit select for the second half of the HSTX clock cycle
+    /// **SEL_N** `[12:8]` (RW)
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub fn sel_n(&self) -> u32 {
-        (self.read_bits() & Self::SEL_N_MASK) >> Self::SEL_N_OFFSET
+        (self.value.read_bits() & Self::SEL_N_MASK) >> Self::SEL_N_OFFSET
     }
 
-    /// Write SEL_N field
+    /// Write **SEL_N** `[12:8]` (RW)
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_n(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK));
+        self.value.modify_bits(|r| (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK));
     }
 
-    /// **SEL_P** [4:0]: Shift register data bit select for the first half of the HSTX clock cycle
+    /// **SEL_P** `[4:0]` (RW)
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub fn sel_p(&self) -> u32 {
-        (self.read_bits() & Self::SEL_P_MASK) >> Self::SEL_P_OFFSET
+        (self.value.read_bits() & Self::SEL_P_MASK) >> Self::SEL_P_OFFSET
     }
 
-    /// Write SEL_P field
+    /// Write **SEL_P** `[4:0]` (RW)
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_p(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK));
+        self.value.modify_bits(|r| (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK));
     }
 
 }
@@ -1163,31 +1192,36 @@ impl Bit2Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read CLK [17:17]: Connect this output to the generated clock, rather than the data shift regi...
+    /// Read **CLK** `[17:17]`
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
     #[inline(always)]
     pub const fn clk(&self) -> bool {
         (self.bits & Bit2::CLK_MASK) != 0
     }
 
-    /// Read INV [16:16]: Invert this data output (logical NOT)
+    /// Read **INV** `[16:16]`
+    /// Invert this data output (logical NOT)
     #[inline(always)]
     pub const fn inv(&self) -> bool {
         (self.bits & Bit2::INV_MASK) != 0
     }
 
-    /// Read SEL_N [12:8]: Shift register data bit select for the second half of the HSTX clock cycle
+    /// Read **SEL_N** `[12:8]`
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub const fn sel_n(&self) -> u32 {
         (self.bits & Bit2::SEL_N_MASK) >> Bit2::SEL_N_OFFSET
     }
 
-    /// Read SEL_P [4:0]: Shift register data bit select for the first half of the HSTX clock cycle
+    /// Read **SEL_P** `[4:0]`
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub const fn sel_p(&self) -> u32 {
         (self.bits & Bit2::SEL_P_MASK) >> Bit2::SEL_P_OFFSET
     }
 
-    /// Set CLK [17:17]: Connect this output to the generated clock, rather than the data shift regi...
+    /// Set **CLK** `[17:17]`
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
     #[inline(always)]
     pub const fn with_clk(self, value: bool) -> Self {
         Self {
@@ -1199,7 +1233,8 @@ impl Bit2Val {
         }
     }
 
-    /// Set INV [16:16]: Invert this data output (logical NOT)
+    /// Set **INV** `[16:16]`
+    /// Invert this data output (logical NOT)
     #[inline(always)]
     pub const fn with_inv(self, value: bool) -> Self {
         Self {
@@ -1211,7 +1246,8 @@ impl Bit2Val {
         }
     }
 
-    /// Set SEL_N [12:8]: Shift register data bit select for the second half of the HSTX clock cycle
+    /// Set **SEL_N** `[12:8]`
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub const fn with_sel_n(self, value: u32) -> Self {
         Self {
@@ -1219,7 +1255,8 @@ impl Bit2Val {
         }
     }
 
-    /// Set SEL_P [4:0]: Shift register data bit select for the first half of the HSTX clock cycle
+    /// Set **SEL_P** `[4:0]`
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub const fn with_sel_p(self, value: u32) -> Self {
         Self {
@@ -1238,20 +1275,20 @@ impl Default for Bit2Val {
 impl Bit2 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Bit2Val {
-        Bit2Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Bit2Val {
+        Bit2Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Bit2Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Bit2Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Bit2Val) -> Bit2Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Bit2Val) -> Bit2Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1265,150 +1302,122 @@ impl Bit2 {
 ///
 /// ## Fields
 ///
-/// - **CLK** [17] (RW): Connect this output to the generated clock, rather than the data shift regi...
-/// - **INV** [16] (RW): Invert this data output (logical NOT)
-/// - **SEL_N** [12:8] (RW): Shift register data bit select for the second half of the HSTX clock cycle
-/// - **SEL_P** [4:0] (RW): Shift register data bit select for the first half of the HSTX clock cycle
+/// - **CLK** `[17]` (RW)
+///   Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
+/// - **INV** `[16]` (RW)
+///   Invert this data output (logical NOT)
+/// - **SEL_N** `[12:8]` (RW)
+///   Shift register data bit select for the second half of the HSTX clock cycle
+/// - **SEL_P** `[4:0]` (RW)
+///   Shift register data bit select for the first half of the HSTX clock cycle
 #[repr(transparent)]
 pub struct Bit3 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Bit3 {}
-unsafe impl Sync for Bit3 {}
+impl core::ops::Deref for Bit3 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Bit3 {
     // ======== Field Constants ========
 
-    /// CLK - Connect this output to the generated clock, rather than the data shift regi...
-    /// Bits [17:17], mask 0x00020000
+    /// **CLK**
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
+    /// Bits `[17:17]`, mask `0x00020000`
     pub const CLK_OFFSET: u32 = 17;
     pub const CLK_MASK: u32 = 0x00020000;
     pub const CLK: u32 = 1 << 17;
 
-    /// INV - Invert this data output (logical NOT)
-    /// Bits [16:16], mask 0x00010000
+    /// **INV**
+    /// Invert this data output (logical NOT)
+    /// Bits `[16:16]`, mask `0x00010000`
     pub const INV_OFFSET: u32 = 16;
     pub const INV_MASK: u32 = 0x00010000;
     pub const INV: u32 = 1 << 16;
 
-    /// SEL_N - Shift register data bit select for the second half of the HSTX clock cycle
-    /// Bits [12:8], mask 0x00001f00
+    /// **SEL_N**
+    /// Shift register data bit select for the second half of the HSTX clock cycle
+    /// Bits `[12:8]`, mask `0x00001f00`
     pub const SEL_N_OFFSET: u32 = 8;
     pub const SEL_N_MASK: u32 = 0x00001f00;
 
-    /// SEL_P - Shift register data bit select for the first half of the HSTX clock cycle
-    /// Bits [4:0], mask 0x0000001f
+    /// **SEL_P**
+    /// Shift register data bit select for the first half of the HSTX clock cycle
+    /// Bits `[4:0]`, mask `0x0000001f`
     pub const SEL_P_OFFSET: u32 = 0;
     pub const SEL_P_MASK: u32 = 0x0000001f;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **CLK** [17:17]: Connect this output to the generated clock, rather than the data shift regi...
+    /// **CLK** `[17]` (RW)
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
     #[inline(always)]
     pub fn clk(&self) -> bool {
-        (self.read_bits() & Self::CLK_MASK) != 0
+        (self.value.read_bits() & Self::CLK_MASK) != 0
     }
 
-    /// Set CLK bit
+    /// Set CLK bit atomically (RW)
     #[inline(always)]
     pub fn set_clk(&self) {
-        self.set_bits(Self::CLK_MASK);
+        self.value.set_bits(Self::CLK_MASK);
     }
 
-    /// Clear CLK bit
+    /// Clear CLK bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk(&self) {
-        self.clr_bits(Self::CLK_MASK);
+        self.value.clr_bits(Self::CLK_MASK);
     }
 
-    /// **INV** [16:16]: Invert this data output (logical NOT)
+    /// **INV** `[16]` (RW)
+    /// Invert this data output (logical NOT)
     #[inline(always)]
     pub fn inv(&self) -> bool {
-        (self.read_bits() & Self::INV_MASK) != 0
+        (self.value.read_bits() & Self::INV_MASK) != 0
     }
 
-    /// Set INV bit
+    /// Set INV bit atomically (RW)
     #[inline(always)]
     pub fn set_inv(&self) {
-        self.set_bits(Self::INV_MASK);
+        self.value.set_bits(Self::INV_MASK);
     }
 
-    /// Clear INV bit
+    /// Clear INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_inv(&self) {
-        self.clr_bits(Self::INV_MASK);
+        self.value.clr_bits(Self::INV_MASK);
     }
 
-    /// **SEL_N** [12:8]: Shift register data bit select for the second half of the HSTX clock cycle
+    /// **SEL_N** `[12:8]` (RW)
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub fn sel_n(&self) -> u32 {
-        (self.read_bits() & Self::SEL_N_MASK) >> Self::SEL_N_OFFSET
+        (self.value.read_bits() & Self::SEL_N_MASK) >> Self::SEL_N_OFFSET
     }
 
-    /// Write SEL_N field
+    /// Write **SEL_N** `[12:8]` (RW)
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_n(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK));
+        self.value.modify_bits(|r| (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK));
     }
 
-    /// **SEL_P** [4:0]: Shift register data bit select for the first half of the HSTX clock cycle
+    /// **SEL_P** `[4:0]` (RW)
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub fn sel_p(&self) -> u32 {
-        (self.read_bits() & Self::SEL_P_MASK) >> Self::SEL_P_OFFSET
+        (self.value.read_bits() & Self::SEL_P_MASK) >> Self::SEL_P_OFFSET
     }
 
-    /// Write SEL_P field
+    /// Write **SEL_P** `[4:0]` (RW)
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_p(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK));
+        self.value.modify_bits(|r| (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK));
     }
 
 }
@@ -1441,31 +1450,36 @@ impl Bit3Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read CLK [17:17]: Connect this output to the generated clock, rather than the data shift regi...
+    /// Read **CLK** `[17:17]`
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
     #[inline(always)]
     pub const fn clk(&self) -> bool {
         (self.bits & Bit3::CLK_MASK) != 0
     }
 
-    /// Read INV [16:16]: Invert this data output (logical NOT)
+    /// Read **INV** `[16:16]`
+    /// Invert this data output (logical NOT)
     #[inline(always)]
     pub const fn inv(&self) -> bool {
         (self.bits & Bit3::INV_MASK) != 0
     }
 
-    /// Read SEL_N [12:8]: Shift register data bit select for the second half of the HSTX clock cycle
+    /// Read **SEL_N** `[12:8]`
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub const fn sel_n(&self) -> u32 {
         (self.bits & Bit3::SEL_N_MASK) >> Bit3::SEL_N_OFFSET
     }
 
-    /// Read SEL_P [4:0]: Shift register data bit select for the first half of the HSTX clock cycle
+    /// Read **SEL_P** `[4:0]`
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub const fn sel_p(&self) -> u32 {
         (self.bits & Bit3::SEL_P_MASK) >> Bit3::SEL_P_OFFSET
     }
 
-    /// Set CLK [17:17]: Connect this output to the generated clock, rather than the data shift regi...
+    /// Set **CLK** `[17:17]`
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
     #[inline(always)]
     pub const fn with_clk(self, value: bool) -> Self {
         Self {
@@ -1477,7 +1491,8 @@ impl Bit3Val {
         }
     }
 
-    /// Set INV [16:16]: Invert this data output (logical NOT)
+    /// Set **INV** `[16:16]`
+    /// Invert this data output (logical NOT)
     #[inline(always)]
     pub const fn with_inv(self, value: bool) -> Self {
         Self {
@@ -1489,7 +1504,8 @@ impl Bit3Val {
         }
     }
 
-    /// Set SEL_N [12:8]: Shift register data bit select for the second half of the HSTX clock cycle
+    /// Set **SEL_N** `[12:8]`
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub const fn with_sel_n(self, value: u32) -> Self {
         Self {
@@ -1497,7 +1513,8 @@ impl Bit3Val {
         }
     }
 
-    /// Set SEL_P [4:0]: Shift register data bit select for the first half of the HSTX clock cycle
+    /// Set **SEL_P** `[4:0]`
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub const fn with_sel_p(self, value: u32) -> Self {
         Self {
@@ -1516,20 +1533,20 @@ impl Default for Bit3Val {
 impl Bit3 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Bit3Val {
-        Bit3Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Bit3Val {
+        Bit3Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Bit3Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Bit3Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Bit3Val) -> Bit3Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Bit3Val) -> Bit3Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1543,150 +1560,122 @@ impl Bit3 {
 ///
 /// ## Fields
 ///
-/// - **CLK** [17] (RW): Connect this output to the generated clock, rather than the data shift regi...
-/// - **INV** [16] (RW): Invert this data output (logical NOT)
-/// - **SEL_N** [12:8] (RW): Shift register data bit select for the second half of the HSTX clock cycle
-/// - **SEL_P** [4:0] (RW): Shift register data bit select for the first half of the HSTX clock cycle
+/// - **CLK** `[17]` (RW)
+///   Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
+/// - **INV** `[16]` (RW)
+///   Invert this data output (logical NOT)
+/// - **SEL_N** `[12:8]` (RW)
+///   Shift register data bit select for the second half of the HSTX clock cycle
+/// - **SEL_P** `[4:0]` (RW)
+///   Shift register data bit select for the first half of the HSTX clock cycle
 #[repr(transparent)]
 pub struct Bit4 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Bit4 {}
-unsafe impl Sync for Bit4 {}
+impl core::ops::Deref for Bit4 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Bit4 {
     // ======== Field Constants ========
 
-    /// CLK - Connect this output to the generated clock, rather than the data shift regi...
-    /// Bits [17:17], mask 0x00020000
+    /// **CLK**
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
+    /// Bits `[17:17]`, mask `0x00020000`
     pub const CLK_OFFSET: u32 = 17;
     pub const CLK_MASK: u32 = 0x00020000;
     pub const CLK: u32 = 1 << 17;
 
-    /// INV - Invert this data output (logical NOT)
-    /// Bits [16:16], mask 0x00010000
+    /// **INV**
+    /// Invert this data output (logical NOT)
+    /// Bits `[16:16]`, mask `0x00010000`
     pub const INV_OFFSET: u32 = 16;
     pub const INV_MASK: u32 = 0x00010000;
     pub const INV: u32 = 1 << 16;
 
-    /// SEL_N - Shift register data bit select for the second half of the HSTX clock cycle
-    /// Bits [12:8], mask 0x00001f00
+    /// **SEL_N**
+    /// Shift register data bit select for the second half of the HSTX clock cycle
+    /// Bits `[12:8]`, mask `0x00001f00`
     pub const SEL_N_OFFSET: u32 = 8;
     pub const SEL_N_MASK: u32 = 0x00001f00;
 
-    /// SEL_P - Shift register data bit select for the first half of the HSTX clock cycle
-    /// Bits [4:0], mask 0x0000001f
+    /// **SEL_P**
+    /// Shift register data bit select for the first half of the HSTX clock cycle
+    /// Bits `[4:0]`, mask `0x0000001f`
     pub const SEL_P_OFFSET: u32 = 0;
     pub const SEL_P_MASK: u32 = 0x0000001f;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **CLK** [17:17]: Connect this output to the generated clock, rather than the data shift regi...
+    /// **CLK** `[17]` (RW)
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
     #[inline(always)]
     pub fn clk(&self) -> bool {
-        (self.read_bits() & Self::CLK_MASK) != 0
+        (self.value.read_bits() & Self::CLK_MASK) != 0
     }
 
-    /// Set CLK bit
+    /// Set CLK bit atomically (RW)
     #[inline(always)]
     pub fn set_clk(&self) {
-        self.set_bits(Self::CLK_MASK);
+        self.value.set_bits(Self::CLK_MASK);
     }
 
-    /// Clear CLK bit
+    /// Clear CLK bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk(&self) {
-        self.clr_bits(Self::CLK_MASK);
+        self.value.clr_bits(Self::CLK_MASK);
     }
 
-    /// **INV** [16:16]: Invert this data output (logical NOT)
+    /// **INV** `[16]` (RW)
+    /// Invert this data output (logical NOT)
     #[inline(always)]
     pub fn inv(&self) -> bool {
-        (self.read_bits() & Self::INV_MASK) != 0
+        (self.value.read_bits() & Self::INV_MASK) != 0
     }
 
-    /// Set INV bit
+    /// Set INV bit atomically (RW)
     #[inline(always)]
     pub fn set_inv(&self) {
-        self.set_bits(Self::INV_MASK);
+        self.value.set_bits(Self::INV_MASK);
     }
 
-    /// Clear INV bit
+    /// Clear INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_inv(&self) {
-        self.clr_bits(Self::INV_MASK);
+        self.value.clr_bits(Self::INV_MASK);
     }
 
-    /// **SEL_N** [12:8]: Shift register data bit select for the second half of the HSTX clock cycle
+    /// **SEL_N** `[12:8]` (RW)
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub fn sel_n(&self) -> u32 {
-        (self.read_bits() & Self::SEL_N_MASK) >> Self::SEL_N_OFFSET
+        (self.value.read_bits() & Self::SEL_N_MASK) >> Self::SEL_N_OFFSET
     }
 
-    /// Write SEL_N field
+    /// Write **SEL_N** `[12:8]` (RW)
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_n(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK));
+        self.value.modify_bits(|r| (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK));
     }
 
-    /// **SEL_P** [4:0]: Shift register data bit select for the first half of the HSTX clock cycle
+    /// **SEL_P** `[4:0]` (RW)
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub fn sel_p(&self) -> u32 {
-        (self.read_bits() & Self::SEL_P_MASK) >> Self::SEL_P_OFFSET
+        (self.value.read_bits() & Self::SEL_P_MASK) >> Self::SEL_P_OFFSET
     }
 
-    /// Write SEL_P field
+    /// Write **SEL_P** `[4:0]` (RW)
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_p(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK));
+        self.value.modify_bits(|r| (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK));
     }
 
 }
@@ -1719,31 +1708,36 @@ impl Bit4Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read CLK [17:17]: Connect this output to the generated clock, rather than the data shift regi...
+    /// Read **CLK** `[17:17]`
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
     #[inline(always)]
     pub const fn clk(&self) -> bool {
         (self.bits & Bit4::CLK_MASK) != 0
     }
 
-    /// Read INV [16:16]: Invert this data output (logical NOT)
+    /// Read **INV** `[16:16]`
+    /// Invert this data output (logical NOT)
     #[inline(always)]
     pub const fn inv(&self) -> bool {
         (self.bits & Bit4::INV_MASK) != 0
     }
 
-    /// Read SEL_N [12:8]: Shift register data bit select for the second half of the HSTX clock cycle
+    /// Read **SEL_N** `[12:8]`
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub const fn sel_n(&self) -> u32 {
         (self.bits & Bit4::SEL_N_MASK) >> Bit4::SEL_N_OFFSET
     }
 
-    /// Read SEL_P [4:0]: Shift register data bit select for the first half of the HSTX clock cycle
+    /// Read **SEL_P** `[4:0]`
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub const fn sel_p(&self) -> u32 {
         (self.bits & Bit4::SEL_P_MASK) >> Bit4::SEL_P_OFFSET
     }
 
-    /// Set CLK [17:17]: Connect this output to the generated clock, rather than the data shift regi...
+    /// Set **CLK** `[17:17]`
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
     #[inline(always)]
     pub const fn with_clk(self, value: bool) -> Self {
         Self {
@@ -1755,7 +1749,8 @@ impl Bit4Val {
         }
     }
 
-    /// Set INV [16:16]: Invert this data output (logical NOT)
+    /// Set **INV** `[16:16]`
+    /// Invert this data output (logical NOT)
     #[inline(always)]
     pub const fn with_inv(self, value: bool) -> Self {
         Self {
@@ -1767,7 +1762,8 @@ impl Bit4Val {
         }
     }
 
-    /// Set SEL_N [12:8]: Shift register data bit select for the second half of the HSTX clock cycle
+    /// Set **SEL_N** `[12:8]`
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub const fn with_sel_n(self, value: u32) -> Self {
         Self {
@@ -1775,7 +1771,8 @@ impl Bit4Val {
         }
     }
 
-    /// Set SEL_P [4:0]: Shift register data bit select for the first half of the HSTX clock cycle
+    /// Set **SEL_P** `[4:0]`
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub const fn with_sel_p(self, value: u32) -> Self {
         Self {
@@ -1794,20 +1791,20 @@ impl Default for Bit4Val {
 impl Bit4 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Bit4Val {
-        Bit4Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Bit4Val {
+        Bit4Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Bit4Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Bit4Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Bit4Val) -> Bit4Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Bit4Val) -> Bit4Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -1821,150 +1818,122 @@ impl Bit4 {
 ///
 /// ## Fields
 ///
-/// - **CLK** [17] (RW): Connect this output to the generated clock, rather than the data shift regi...
-/// - **INV** [16] (RW): Invert this data output (logical NOT)
-/// - **SEL_N** [12:8] (RW): Shift register data bit select for the second half of the HSTX clock cycle
-/// - **SEL_P** [4:0] (RW): Shift register data bit select for the first half of the HSTX clock cycle
+/// - **CLK** `[17]` (RW)
+///   Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
+/// - **INV** `[16]` (RW)
+///   Invert this data output (logical NOT)
+/// - **SEL_N** `[12:8]` (RW)
+///   Shift register data bit select for the second half of the HSTX clock cycle
+/// - **SEL_P** `[4:0]` (RW)
+///   Shift register data bit select for the first half of the HSTX clock cycle
 #[repr(transparent)]
 pub struct Bit5 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Bit5 {}
-unsafe impl Sync for Bit5 {}
+impl core::ops::Deref for Bit5 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Bit5 {
     // ======== Field Constants ========
 
-    /// CLK - Connect this output to the generated clock, rather than the data shift regi...
-    /// Bits [17:17], mask 0x00020000
+    /// **CLK**
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
+    /// Bits `[17:17]`, mask `0x00020000`
     pub const CLK_OFFSET: u32 = 17;
     pub const CLK_MASK: u32 = 0x00020000;
     pub const CLK: u32 = 1 << 17;
 
-    /// INV - Invert this data output (logical NOT)
-    /// Bits [16:16], mask 0x00010000
+    /// **INV**
+    /// Invert this data output (logical NOT)
+    /// Bits `[16:16]`, mask `0x00010000`
     pub const INV_OFFSET: u32 = 16;
     pub const INV_MASK: u32 = 0x00010000;
     pub const INV: u32 = 1 << 16;
 
-    /// SEL_N - Shift register data bit select for the second half of the HSTX clock cycle
-    /// Bits [12:8], mask 0x00001f00
+    /// **SEL_N**
+    /// Shift register data bit select for the second half of the HSTX clock cycle
+    /// Bits `[12:8]`, mask `0x00001f00`
     pub const SEL_N_OFFSET: u32 = 8;
     pub const SEL_N_MASK: u32 = 0x00001f00;
 
-    /// SEL_P - Shift register data bit select for the first half of the HSTX clock cycle
-    /// Bits [4:0], mask 0x0000001f
+    /// **SEL_P**
+    /// Shift register data bit select for the first half of the HSTX clock cycle
+    /// Bits `[4:0]`, mask `0x0000001f`
     pub const SEL_P_OFFSET: u32 = 0;
     pub const SEL_P_MASK: u32 = 0x0000001f;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **CLK** [17:17]: Connect this output to the generated clock, rather than the data shift regi...
+    /// **CLK** `[17]` (RW)
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
     #[inline(always)]
     pub fn clk(&self) -> bool {
-        (self.read_bits() & Self::CLK_MASK) != 0
+        (self.value.read_bits() & Self::CLK_MASK) != 0
     }
 
-    /// Set CLK bit
+    /// Set CLK bit atomically (RW)
     #[inline(always)]
     pub fn set_clk(&self) {
-        self.set_bits(Self::CLK_MASK);
+        self.value.set_bits(Self::CLK_MASK);
     }
 
-    /// Clear CLK bit
+    /// Clear CLK bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk(&self) {
-        self.clr_bits(Self::CLK_MASK);
+        self.value.clr_bits(Self::CLK_MASK);
     }
 
-    /// **INV** [16:16]: Invert this data output (logical NOT)
+    /// **INV** `[16]` (RW)
+    /// Invert this data output (logical NOT)
     #[inline(always)]
     pub fn inv(&self) -> bool {
-        (self.read_bits() & Self::INV_MASK) != 0
+        (self.value.read_bits() & Self::INV_MASK) != 0
     }
 
-    /// Set INV bit
+    /// Set INV bit atomically (RW)
     #[inline(always)]
     pub fn set_inv(&self) {
-        self.set_bits(Self::INV_MASK);
+        self.value.set_bits(Self::INV_MASK);
     }
 
-    /// Clear INV bit
+    /// Clear INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_inv(&self) {
-        self.clr_bits(Self::INV_MASK);
+        self.value.clr_bits(Self::INV_MASK);
     }
 
-    /// **SEL_N** [12:8]: Shift register data bit select for the second half of the HSTX clock cycle
+    /// **SEL_N** `[12:8]` (RW)
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub fn sel_n(&self) -> u32 {
-        (self.read_bits() & Self::SEL_N_MASK) >> Self::SEL_N_OFFSET
+        (self.value.read_bits() & Self::SEL_N_MASK) >> Self::SEL_N_OFFSET
     }
 
-    /// Write SEL_N field
+    /// Write **SEL_N** `[12:8]` (RW)
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_n(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK));
+        self.value.modify_bits(|r| (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK));
     }
 
-    /// **SEL_P** [4:0]: Shift register data bit select for the first half of the HSTX clock cycle
+    /// **SEL_P** `[4:0]` (RW)
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub fn sel_p(&self) -> u32 {
-        (self.read_bits() & Self::SEL_P_MASK) >> Self::SEL_P_OFFSET
+        (self.value.read_bits() & Self::SEL_P_MASK) >> Self::SEL_P_OFFSET
     }
 
-    /// Write SEL_P field
+    /// Write **SEL_P** `[4:0]` (RW)
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_p(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK));
+        self.value.modify_bits(|r| (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK));
     }
 
 }
@@ -1997,31 +1966,36 @@ impl Bit5Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read CLK [17:17]: Connect this output to the generated clock, rather than the data shift regi...
+    /// Read **CLK** `[17:17]`
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
     #[inline(always)]
     pub const fn clk(&self) -> bool {
         (self.bits & Bit5::CLK_MASK) != 0
     }
 
-    /// Read INV [16:16]: Invert this data output (logical NOT)
+    /// Read **INV** `[16:16]`
+    /// Invert this data output (logical NOT)
     #[inline(always)]
     pub const fn inv(&self) -> bool {
         (self.bits & Bit5::INV_MASK) != 0
     }
 
-    /// Read SEL_N [12:8]: Shift register data bit select for the second half of the HSTX clock cycle
+    /// Read **SEL_N** `[12:8]`
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub const fn sel_n(&self) -> u32 {
         (self.bits & Bit5::SEL_N_MASK) >> Bit5::SEL_N_OFFSET
     }
 
-    /// Read SEL_P [4:0]: Shift register data bit select for the first half of the HSTX clock cycle
+    /// Read **SEL_P** `[4:0]`
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub const fn sel_p(&self) -> u32 {
         (self.bits & Bit5::SEL_P_MASK) >> Bit5::SEL_P_OFFSET
     }
 
-    /// Set CLK [17:17]: Connect this output to the generated clock, rather than the data shift regi...
+    /// Set **CLK** `[17:17]`
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
     #[inline(always)]
     pub const fn with_clk(self, value: bool) -> Self {
         Self {
@@ -2033,7 +2007,8 @@ impl Bit5Val {
         }
     }
 
-    /// Set INV [16:16]: Invert this data output (logical NOT)
+    /// Set **INV** `[16:16]`
+    /// Invert this data output (logical NOT)
     #[inline(always)]
     pub const fn with_inv(self, value: bool) -> Self {
         Self {
@@ -2045,7 +2020,8 @@ impl Bit5Val {
         }
     }
 
-    /// Set SEL_N [12:8]: Shift register data bit select for the second half of the HSTX clock cycle
+    /// Set **SEL_N** `[12:8]`
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub const fn with_sel_n(self, value: u32) -> Self {
         Self {
@@ -2053,7 +2029,8 @@ impl Bit5Val {
         }
     }
 
-    /// Set SEL_P [4:0]: Shift register data bit select for the first half of the HSTX clock cycle
+    /// Set **SEL_P** `[4:0]`
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub const fn with_sel_p(self, value: u32) -> Self {
         Self {
@@ -2072,20 +2049,20 @@ impl Default for Bit5Val {
 impl Bit5 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Bit5Val {
-        Bit5Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Bit5Val {
+        Bit5Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Bit5Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Bit5Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Bit5Val) -> Bit5Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Bit5Val) -> Bit5Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -2099,150 +2076,122 @@ impl Bit5 {
 ///
 /// ## Fields
 ///
-/// - **CLK** [17] (RW): Connect this output to the generated clock, rather than the data shift regi...
-/// - **INV** [16] (RW): Invert this data output (logical NOT)
-/// - **SEL_N** [12:8] (RW): Shift register data bit select for the second half of the HSTX clock cycle
-/// - **SEL_P** [4:0] (RW): Shift register data bit select for the first half of the HSTX clock cycle
+/// - **CLK** `[17]` (RW)
+///   Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
+/// - **INV** `[16]` (RW)
+///   Invert this data output (logical NOT)
+/// - **SEL_N** `[12:8]` (RW)
+///   Shift register data bit select for the second half of the HSTX clock cycle
+/// - **SEL_P** `[4:0]` (RW)
+///   Shift register data bit select for the first half of the HSTX clock cycle
 #[repr(transparent)]
 pub struct Bit6 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Bit6 {}
-unsafe impl Sync for Bit6 {}
+impl core::ops::Deref for Bit6 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Bit6 {
     // ======== Field Constants ========
 
-    /// CLK - Connect this output to the generated clock, rather than the data shift regi...
-    /// Bits [17:17], mask 0x00020000
+    /// **CLK**
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
+    /// Bits `[17:17]`, mask `0x00020000`
     pub const CLK_OFFSET: u32 = 17;
     pub const CLK_MASK: u32 = 0x00020000;
     pub const CLK: u32 = 1 << 17;
 
-    /// INV - Invert this data output (logical NOT)
-    /// Bits [16:16], mask 0x00010000
+    /// **INV**
+    /// Invert this data output (logical NOT)
+    /// Bits `[16:16]`, mask `0x00010000`
     pub const INV_OFFSET: u32 = 16;
     pub const INV_MASK: u32 = 0x00010000;
     pub const INV: u32 = 1 << 16;
 
-    /// SEL_N - Shift register data bit select for the second half of the HSTX clock cycle
-    /// Bits [12:8], mask 0x00001f00
+    /// **SEL_N**
+    /// Shift register data bit select for the second half of the HSTX clock cycle
+    /// Bits `[12:8]`, mask `0x00001f00`
     pub const SEL_N_OFFSET: u32 = 8;
     pub const SEL_N_MASK: u32 = 0x00001f00;
 
-    /// SEL_P - Shift register data bit select for the first half of the HSTX clock cycle
-    /// Bits [4:0], mask 0x0000001f
+    /// **SEL_P**
+    /// Shift register data bit select for the first half of the HSTX clock cycle
+    /// Bits `[4:0]`, mask `0x0000001f`
     pub const SEL_P_OFFSET: u32 = 0;
     pub const SEL_P_MASK: u32 = 0x0000001f;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **CLK** [17:17]: Connect this output to the generated clock, rather than the data shift regi...
+    /// **CLK** `[17]` (RW)
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
     #[inline(always)]
     pub fn clk(&self) -> bool {
-        (self.read_bits() & Self::CLK_MASK) != 0
+        (self.value.read_bits() & Self::CLK_MASK) != 0
     }
 
-    /// Set CLK bit
+    /// Set CLK bit atomically (RW)
     #[inline(always)]
     pub fn set_clk(&self) {
-        self.set_bits(Self::CLK_MASK);
+        self.value.set_bits(Self::CLK_MASK);
     }
 
-    /// Clear CLK bit
+    /// Clear CLK bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk(&self) {
-        self.clr_bits(Self::CLK_MASK);
+        self.value.clr_bits(Self::CLK_MASK);
     }
 
-    /// **INV** [16:16]: Invert this data output (logical NOT)
+    /// **INV** `[16]` (RW)
+    /// Invert this data output (logical NOT)
     #[inline(always)]
     pub fn inv(&self) -> bool {
-        (self.read_bits() & Self::INV_MASK) != 0
+        (self.value.read_bits() & Self::INV_MASK) != 0
     }
 
-    /// Set INV bit
+    /// Set INV bit atomically (RW)
     #[inline(always)]
     pub fn set_inv(&self) {
-        self.set_bits(Self::INV_MASK);
+        self.value.set_bits(Self::INV_MASK);
     }
 
-    /// Clear INV bit
+    /// Clear INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_inv(&self) {
-        self.clr_bits(Self::INV_MASK);
+        self.value.clr_bits(Self::INV_MASK);
     }
 
-    /// **SEL_N** [12:8]: Shift register data bit select for the second half of the HSTX clock cycle
+    /// **SEL_N** `[12:8]` (RW)
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub fn sel_n(&self) -> u32 {
-        (self.read_bits() & Self::SEL_N_MASK) >> Self::SEL_N_OFFSET
+        (self.value.read_bits() & Self::SEL_N_MASK) >> Self::SEL_N_OFFSET
     }
 
-    /// Write SEL_N field
+    /// Write **SEL_N** `[12:8]` (RW)
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_n(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK));
+        self.value.modify_bits(|r| (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK));
     }
 
-    /// **SEL_P** [4:0]: Shift register data bit select for the first half of the HSTX clock cycle
+    /// **SEL_P** `[4:0]` (RW)
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub fn sel_p(&self) -> u32 {
-        (self.read_bits() & Self::SEL_P_MASK) >> Self::SEL_P_OFFSET
+        (self.value.read_bits() & Self::SEL_P_MASK) >> Self::SEL_P_OFFSET
     }
 
-    /// Write SEL_P field
+    /// Write **SEL_P** `[4:0]` (RW)
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_p(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK));
+        self.value.modify_bits(|r| (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK));
     }
 
 }
@@ -2275,31 +2224,36 @@ impl Bit6Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read CLK [17:17]: Connect this output to the generated clock, rather than the data shift regi...
+    /// Read **CLK** `[17:17]`
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
     #[inline(always)]
     pub const fn clk(&self) -> bool {
         (self.bits & Bit6::CLK_MASK) != 0
     }
 
-    /// Read INV [16:16]: Invert this data output (logical NOT)
+    /// Read **INV** `[16:16]`
+    /// Invert this data output (logical NOT)
     #[inline(always)]
     pub const fn inv(&self) -> bool {
         (self.bits & Bit6::INV_MASK) != 0
     }
 
-    /// Read SEL_N [12:8]: Shift register data bit select for the second half of the HSTX clock cycle
+    /// Read **SEL_N** `[12:8]`
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub const fn sel_n(&self) -> u32 {
         (self.bits & Bit6::SEL_N_MASK) >> Bit6::SEL_N_OFFSET
     }
 
-    /// Read SEL_P [4:0]: Shift register data bit select for the first half of the HSTX clock cycle
+    /// Read **SEL_P** `[4:0]`
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub const fn sel_p(&self) -> u32 {
         (self.bits & Bit6::SEL_P_MASK) >> Bit6::SEL_P_OFFSET
     }
 
-    /// Set CLK [17:17]: Connect this output to the generated clock, rather than the data shift regi...
+    /// Set **CLK** `[17:17]`
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
     #[inline(always)]
     pub const fn with_clk(self, value: bool) -> Self {
         Self {
@@ -2311,7 +2265,8 @@ impl Bit6Val {
         }
     }
 
-    /// Set INV [16:16]: Invert this data output (logical NOT)
+    /// Set **INV** `[16:16]`
+    /// Invert this data output (logical NOT)
     #[inline(always)]
     pub const fn with_inv(self, value: bool) -> Self {
         Self {
@@ -2323,7 +2278,8 @@ impl Bit6Val {
         }
     }
 
-    /// Set SEL_N [12:8]: Shift register data bit select for the second half of the HSTX clock cycle
+    /// Set **SEL_N** `[12:8]`
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub const fn with_sel_n(self, value: u32) -> Self {
         Self {
@@ -2331,7 +2287,8 @@ impl Bit6Val {
         }
     }
 
-    /// Set SEL_P [4:0]: Shift register data bit select for the first half of the HSTX clock cycle
+    /// Set **SEL_P** `[4:0]`
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub const fn with_sel_p(self, value: u32) -> Self {
         Self {
@@ -2350,20 +2307,20 @@ impl Default for Bit6Val {
 impl Bit6 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Bit6Val {
-        Bit6Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Bit6Val {
+        Bit6Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Bit6Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Bit6Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Bit6Val) -> Bit6Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Bit6Val) -> Bit6Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -2377,150 +2334,122 @@ impl Bit6 {
 ///
 /// ## Fields
 ///
-/// - **CLK** [17] (RW): Connect this output to the generated clock, rather than the data shift regi...
-/// - **INV** [16] (RW): Invert this data output (logical NOT)
-/// - **SEL_N** [12:8] (RW): Shift register data bit select for the second half of the HSTX clock cycle
-/// - **SEL_P** [4:0] (RW): Shift register data bit select for the first half of the HSTX clock cycle
+/// - **CLK** `[17]` (RW)
+///   Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
+/// - **INV** `[16]` (RW)
+///   Invert this data output (logical NOT)
+/// - **SEL_N** `[12:8]` (RW)
+///   Shift register data bit select for the second half of the HSTX clock cycle
+/// - **SEL_P** `[4:0]` (RW)
+///   Shift register data bit select for the first half of the HSTX clock cycle
 #[repr(transparent)]
 pub struct Bit7 {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for Bit7 {}
-unsafe impl Sync for Bit7 {}
+impl core::ops::Deref for Bit7 {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl Bit7 {
     // ======== Field Constants ========
 
-    /// CLK - Connect this output to the generated clock, rather than the data shift regi...
-    /// Bits [17:17], mask 0x00020000
+    /// **CLK**
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
+    /// Bits `[17:17]`, mask `0x00020000`
     pub const CLK_OFFSET: u32 = 17;
     pub const CLK_MASK: u32 = 0x00020000;
     pub const CLK: u32 = 1 << 17;
 
-    /// INV - Invert this data output (logical NOT)
-    /// Bits [16:16], mask 0x00010000
+    /// **INV**
+    /// Invert this data output (logical NOT)
+    /// Bits `[16:16]`, mask `0x00010000`
     pub const INV_OFFSET: u32 = 16;
     pub const INV_MASK: u32 = 0x00010000;
     pub const INV: u32 = 1 << 16;
 
-    /// SEL_N - Shift register data bit select for the second half of the HSTX clock cycle
-    /// Bits [12:8], mask 0x00001f00
+    /// **SEL_N**
+    /// Shift register data bit select for the second half of the HSTX clock cycle
+    /// Bits `[12:8]`, mask `0x00001f00`
     pub const SEL_N_OFFSET: u32 = 8;
     pub const SEL_N_MASK: u32 = 0x00001f00;
 
-    /// SEL_P - Shift register data bit select for the first half of the HSTX clock cycle
-    /// Bits [4:0], mask 0x0000001f
+    /// **SEL_P**
+    /// Shift register data bit select for the first half of the HSTX clock cycle
+    /// Bits `[4:0]`, mask `0x0000001f`
     pub const SEL_P_OFFSET: u32 = 0;
     pub const SEL_P_MASK: u32 = 0x0000001f;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **CLK** [17:17]: Connect this output to the generated clock, rather than the data shift regi...
+    /// **CLK** `[17]` (RW)
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
     #[inline(always)]
     pub fn clk(&self) -> bool {
-        (self.read_bits() & Self::CLK_MASK) != 0
+        (self.value.read_bits() & Self::CLK_MASK) != 0
     }
 
-    /// Set CLK bit
+    /// Set CLK bit atomically (RW)
     #[inline(always)]
     pub fn set_clk(&self) {
-        self.set_bits(Self::CLK_MASK);
+        self.value.set_bits(Self::CLK_MASK);
     }
 
-    /// Clear CLK bit
+    /// Clear CLK bit atomically (RW)
     #[inline(always)]
     pub fn clr_clk(&self) {
-        self.clr_bits(Self::CLK_MASK);
+        self.value.clr_bits(Self::CLK_MASK);
     }
 
-    /// **INV** [16:16]: Invert this data output (logical NOT)
+    /// **INV** `[16]` (RW)
+    /// Invert this data output (logical NOT)
     #[inline(always)]
     pub fn inv(&self) -> bool {
-        (self.read_bits() & Self::INV_MASK) != 0
+        (self.value.read_bits() & Self::INV_MASK) != 0
     }
 
-    /// Set INV bit
+    /// Set INV bit atomically (RW)
     #[inline(always)]
     pub fn set_inv(&self) {
-        self.set_bits(Self::INV_MASK);
+        self.value.set_bits(Self::INV_MASK);
     }
 
-    /// Clear INV bit
+    /// Clear INV bit atomically (RW)
     #[inline(always)]
     pub fn clr_inv(&self) {
-        self.clr_bits(Self::INV_MASK);
+        self.value.clr_bits(Self::INV_MASK);
     }
 
-    /// **SEL_N** [12:8]: Shift register data bit select for the second half of the HSTX clock cycle
+    /// **SEL_N** `[12:8]` (RW)
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub fn sel_n(&self) -> u32 {
-        (self.read_bits() & Self::SEL_N_MASK) >> Self::SEL_N_OFFSET
+        (self.value.read_bits() & Self::SEL_N_MASK) >> Self::SEL_N_OFFSET
     }
 
-    /// Write SEL_N field
+    /// Write **SEL_N** `[12:8]` (RW)
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_n(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK));
+        self.value.modify_bits(|r| (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK));
     }
 
-    /// **SEL_P** [4:0]: Shift register data bit select for the first half of the HSTX clock cycle
+    /// **SEL_P** `[4:0]` (RW)
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub fn sel_p(&self) -> u32 {
-        (self.read_bits() & Self::SEL_P_MASK) >> Self::SEL_P_OFFSET
+        (self.value.read_bits() & Self::SEL_P_MASK) >> Self::SEL_P_OFFSET
     }
 
-    /// Write SEL_P field
+    /// Write **SEL_P** `[4:0]` (RW)
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_p(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK));
+        self.value.modify_bits(|r| (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK));
     }
 
 }
@@ -2553,31 +2482,36 @@ impl Bit7Val {
         Self { bits: 0x00000000 }
     }
 
-    /// Read CLK [17:17]: Connect this output to the generated clock, rather than the data shift regi...
+    /// Read **CLK** `[17:17]`
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
     #[inline(always)]
     pub const fn clk(&self) -> bool {
         (self.bits & Bit7::CLK_MASK) != 0
     }
 
-    /// Read INV [16:16]: Invert this data output (logical NOT)
+    /// Read **INV** `[16:16]`
+    /// Invert this data output (logical NOT)
     #[inline(always)]
     pub const fn inv(&self) -> bool {
         (self.bits & Bit7::INV_MASK) != 0
     }
 
-    /// Read SEL_N [12:8]: Shift register data bit select for the second half of the HSTX clock cycle
+    /// Read **SEL_N** `[12:8]`
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub const fn sel_n(&self) -> u32 {
         (self.bits & Bit7::SEL_N_MASK) >> Bit7::SEL_N_OFFSET
     }
 
-    /// Read SEL_P [4:0]: Shift register data bit select for the first half of the HSTX clock cycle
+    /// Read **SEL_P** `[4:0]`
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub const fn sel_p(&self) -> u32 {
         (self.bits & Bit7::SEL_P_MASK) >> Bit7::SEL_P_OFFSET
     }
 
-    /// Set CLK [17:17]: Connect this output to the generated clock, rather than the data shift regi...
+    /// Set **CLK** `[17:17]`
+    /// Connect this output to the generated clock, rather than the data shift register. SEL_P and SEL_N are ignored if this bit is set, but INV can still be set to generate an antiphase clock.
     #[inline(always)]
     pub const fn with_clk(self, value: bool) -> Self {
         Self {
@@ -2589,7 +2523,8 @@ impl Bit7Val {
         }
     }
 
-    /// Set INV [16:16]: Invert this data output (logical NOT)
+    /// Set **INV** `[16:16]`
+    /// Invert this data output (logical NOT)
     #[inline(always)]
     pub const fn with_inv(self, value: bool) -> Self {
         Self {
@@ -2601,7 +2536,8 @@ impl Bit7Val {
         }
     }
 
-    /// Set SEL_N [12:8]: Shift register data bit select for the second half of the HSTX clock cycle
+    /// Set **SEL_N** `[12:8]`
+    /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub const fn with_sel_n(self, value: u32) -> Self {
         Self {
@@ -2609,7 +2545,8 @@ impl Bit7Val {
         }
     }
 
-    /// Set SEL_P [4:0]: Shift register data bit select for the first half of the HSTX clock cycle
+    /// Set **SEL_P** `[4:0]`
+    /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub const fn with_sel_p(self, value: u32) -> Self {
         Self {
@@ -2628,20 +2565,20 @@ impl Default for Bit7Val {
 impl Bit7 {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> Bit7Val {
-        Bit7Val::from_bits(self.read_bits())
+    pub fn read_val(&self) -> Bit7Val {
+        Bit7Val::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: Bit7Val) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: Bit7Val) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(Bit7Val) -> Bit7Val>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(Bit7Val) -> Bit7Val>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -2655,136 +2592,110 @@ impl Bit7 {
 ///
 /// ## Fields
 ///
-/// - **ENC_N_SHIFTS** [28:24] (RW): Number of times to consume from the shift register before refilling it from...
-/// - **ENC_SHIFT** [20:16] (RW): How many bits to right-rotate the shift register by each time data is pushe...
-/// - **RAW_N_SHIFTS** [12:8] (RW): Number of times to consume from the shift register before refilling it from...
-/// - **RAW_SHIFT** [4:0] (RW): How many bits to right-rotate the shift register by each time data is pushe...
+/// - **ENC_N_SHIFTS** `[28:24]` (RW)
+///   Number of times to consume from the shift register before refilling it from the FIFO, when the current command is an encoded data command (e.g. TMDS). A register value of 0 means shift 32 times.
+/// - **ENC_SHIFT** `[20:16]` (RW)
+///   How many bits to right-rotate the shift register by each time data is pushed to the output shifter, when the current command is an encoded data command (e.g. TMDS).
+/// - **RAW_N_SHIFTS** `[12:8]` (RW)
+///   Number of times to consume from the shift register before refilling it from the FIFO, when the current command is a raw data command. A register value of 0 means shift 32 times.
+/// - **RAW_SHIFT** `[4:0]` (RW)
+///   How many bits to right-rotate the shift register by each time data is pushed to the output shifter, when the current command is a raw data command.
 #[repr(transparent)]
 pub struct ExpandShift {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for ExpandShift {}
-unsafe impl Sync for ExpandShift {}
+impl core::ops::Deref for ExpandShift {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl ExpandShift {
     // ======== Field Constants ========
 
-    /// ENC_N_SHIFTS - Number of times to consume from the shift register before refilling it from...
-    /// Bits [28:24], mask 0x1f000000
+    /// **ENC_N_SHIFTS**
+    /// Number of times to consume from the shift register before refilling it from the FIFO, when the current command is an encoded data command (e.g. TMDS). A register value of 0 means shift 32 times.
+    /// Bits `[28:24]`, mask `0x1f000000`
     pub const ENC_N_SHIFTS_OFFSET: u32 = 24;
     pub const ENC_N_SHIFTS_MASK: u32 = 0x1f000000;
 
-    /// ENC_SHIFT - How many bits to right-rotate the shift register by each time data is pushe...
-    /// Bits [20:16], mask 0x001f0000
+    /// **ENC_SHIFT**
+    /// How many bits to right-rotate the shift register by each time data is pushed to the output shifter, when the current command is an encoded data command (e.g. TMDS).
+    /// Bits `[20:16]`, mask `0x001f0000`
     pub const ENC_SHIFT_OFFSET: u32 = 16;
     pub const ENC_SHIFT_MASK: u32 = 0x001f0000;
 
-    /// RAW_N_SHIFTS - Number of times to consume from the shift register before refilling it from...
-    /// Bits [12:8], mask 0x00001f00
+    /// **RAW_N_SHIFTS**
+    /// Number of times to consume from the shift register before refilling it from the FIFO, when the current command is a raw data command. A register value of 0 means shift 32 times.
+    /// Bits `[12:8]`, mask `0x00001f00`
     pub const RAW_N_SHIFTS_OFFSET: u32 = 8;
     pub const RAW_N_SHIFTS_MASK: u32 = 0x00001f00;
 
-    /// RAW_SHIFT - How many bits to right-rotate the shift register by each time data is pushe...
-    /// Bits [4:0], mask 0x0000001f
+    /// **RAW_SHIFT**
+    /// How many bits to right-rotate the shift register by each time data is pushed to the output shifter, when the current command is a raw data command.
+    /// Bits `[4:0]`, mask `0x0000001f`
     pub const RAW_SHIFT_OFFSET: u32 = 0;
     pub const RAW_SHIFT_MASK: u32 = 0x0000001f;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **ENC_N_SHIFTS** [28:24]: Number of times to consume from the shift register before refilling it from...
+    /// **ENC_N_SHIFTS** `[28:24]` (RW)
+    /// Number of times to consume from the shift register before refilling it from the FIFO, when the current command is an encoded data command (e.g. TMDS). A register value of 0 means shift 32 times.
     #[inline(always)]
     pub fn enc_n_shifts(&self) -> u32 {
-        (self.read_bits() & Self::ENC_N_SHIFTS_MASK) >> Self::ENC_N_SHIFTS_OFFSET
+        (self.value.read_bits() & Self::ENC_N_SHIFTS_MASK) >> Self::ENC_N_SHIFTS_OFFSET
     }
 
-    /// Write ENC_N_SHIFTS field
+    /// Write **ENC_N_SHIFTS** `[28:24]` (RW)
+    /// Number of times to consume from the shift register before refilling it from the FIFO, when the current command is an encoded data command (e.g. TMDS). A register value of 0 means shift 32 times.
     #[inline(always)]
     pub fn write_enc_n_shifts(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::ENC_N_SHIFTS_MASK) | ((value << Self::ENC_N_SHIFTS_OFFSET) & Self::ENC_N_SHIFTS_MASK));
+        self.value.modify_bits(|r| (r & !Self::ENC_N_SHIFTS_MASK) | ((value << Self::ENC_N_SHIFTS_OFFSET) & Self::ENC_N_SHIFTS_MASK));
     }
 
-    /// **ENC_SHIFT** [20:16]: How many bits to right-rotate the shift register by each time data is pushe...
+    /// **ENC_SHIFT** `[20:16]` (RW)
+    /// How many bits to right-rotate the shift register by each time data is pushed to the output shifter, when the current command is an encoded data command (e.g. TMDS).
     #[inline(always)]
     pub fn enc_shift(&self) -> u32 {
-        (self.read_bits() & Self::ENC_SHIFT_MASK) >> Self::ENC_SHIFT_OFFSET
+        (self.value.read_bits() & Self::ENC_SHIFT_MASK) >> Self::ENC_SHIFT_OFFSET
     }
 
-    /// Write ENC_SHIFT field
+    /// Write **ENC_SHIFT** `[20:16]` (RW)
+    /// How many bits to right-rotate the shift register by each time data is pushed to the output shifter, when the current command is an encoded data command (e.g. TMDS).
     #[inline(always)]
     pub fn write_enc_shift(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::ENC_SHIFT_MASK) | ((value << Self::ENC_SHIFT_OFFSET) & Self::ENC_SHIFT_MASK));
+        self.value.modify_bits(|r| (r & !Self::ENC_SHIFT_MASK) | ((value << Self::ENC_SHIFT_OFFSET) & Self::ENC_SHIFT_MASK));
     }
 
-    /// **RAW_N_SHIFTS** [12:8]: Number of times to consume from the shift register before refilling it from...
+    /// **RAW_N_SHIFTS** `[12:8]` (RW)
+    /// Number of times to consume from the shift register before refilling it from the FIFO, when the current command is a raw data command. A register value of 0 means shift 32 times.
     #[inline(always)]
     pub fn raw_n_shifts(&self) -> u32 {
-        (self.read_bits() & Self::RAW_N_SHIFTS_MASK) >> Self::RAW_N_SHIFTS_OFFSET
+        (self.value.read_bits() & Self::RAW_N_SHIFTS_MASK) >> Self::RAW_N_SHIFTS_OFFSET
     }
 
-    /// Write RAW_N_SHIFTS field
+    /// Write **RAW_N_SHIFTS** `[12:8]` (RW)
+    /// Number of times to consume from the shift register before refilling it from the FIFO, when the current command is a raw data command. A register value of 0 means shift 32 times.
     #[inline(always)]
     pub fn write_raw_n_shifts(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::RAW_N_SHIFTS_MASK) | ((value << Self::RAW_N_SHIFTS_OFFSET) & Self::RAW_N_SHIFTS_MASK));
+        self.value.modify_bits(|r| (r & !Self::RAW_N_SHIFTS_MASK) | ((value << Self::RAW_N_SHIFTS_OFFSET) & Self::RAW_N_SHIFTS_MASK));
     }
 
-    /// **RAW_SHIFT** [4:0]: How many bits to right-rotate the shift register by each time data is pushe...
+    /// **RAW_SHIFT** `[4:0]` (RW)
+    /// How many bits to right-rotate the shift register by each time data is pushed to the output shifter, when the current command is a raw data command.
     #[inline(always)]
     pub fn raw_shift(&self) -> u32 {
-        (self.read_bits() & Self::RAW_SHIFT_MASK) >> Self::RAW_SHIFT_OFFSET
+        (self.value.read_bits() & Self::RAW_SHIFT_MASK) >> Self::RAW_SHIFT_OFFSET
     }
 
-    /// Write RAW_SHIFT field
+    /// Write **RAW_SHIFT** `[4:0]` (RW)
+    /// How many bits to right-rotate the shift register by each time data is pushed to the output shifter, when the current command is a raw data command.
     #[inline(always)]
     pub fn write_raw_shift(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::RAW_SHIFT_MASK) | ((value << Self::RAW_SHIFT_OFFSET) & Self::RAW_SHIFT_MASK));
+        self.value.modify_bits(|r| (r & !Self::RAW_SHIFT_MASK) | ((value << Self::RAW_SHIFT_OFFSET) & Self::RAW_SHIFT_MASK));
     }
 
 }
@@ -2817,31 +2728,36 @@ impl ExpandShiftVal {
         Self { bits: 0x01000100 }
     }
 
-    /// Read ENC_N_SHIFTS [28:24]: Number of times to consume from the shift register before refilling it from...
+    /// Read **ENC_N_SHIFTS** `[28:24]`
+    /// Number of times to consume from the shift register before refilling it from the FIFO, when the current command is an encoded data command (e.g. TMDS). A register value of 0 means shift 32 times.
     #[inline(always)]
     pub const fn enc_n_shifts(&self) -> u32 {
         (self.bits & ExpandShift::ENC_N_SHIFTS_MASK) >> ExpandShift::ENC_N_SHIFTS_OFFSET
     }
 
-    /// Read ENC_SHIFT [20:16]: How many bits to right-rotate the shift register by each time data is pushe...
+    /// Read **ENC_SHIFT** `[20:16]`
+    /// How many bits to right-rotate the shift register by each time data is pushed to the output shifter, when the current command is an encoded data command (e.g. TMDS).
     #[inline(always)]
     pub const fn enc_shift(&self) -> u32 {
         (self.bits & ExpandShift::ENC_SHIFT_MASK) >> ExpandShift::ENC_SHIFT_OFFSET
     }
 
-    /// Read RAW_N_SHIFTS [12:8]: Number of times to consume from the shift register before refilling it from...
+    /// Read **RAW_N_SHIFTS** `[12:8]`
+    /// Number of times to consume from the shift register before refilling it from the FIFO, when the current command is a raw data command. A register value of 0 means shift 32 times.
     #[inline(always)]
     pub const fn raw_n_shifts(&self) -> u32 {
         (self.bits & ExpandShift::RAW_N_SHIFTS_MASK) >> ExpandShift::RAW_N_SHIFTS_OFFSET
     }
 
-    /// Read RAW_SHIFT [4:0]: How many bits to right-rotate the shift register by each time data is pushe...
+    /// Read **RAW_SHIFT** `[4:0]`
+    /// How many bits to right-rotate the shift register by each time data is pushed to the output shifter, when the current command is a raw data command.
     #[inline(always)]
     pub const fn raw_shift(&self) -> u32 {
         (self.bits & ExpandShift::RAW_SHIFT_MASK) >> ExpandShift::RAW_SHIFT_OFFSET
     }
 
-    /// Set ENC_N_SHIFTS [28:24]: Number of times to consume from the shift register before refilling it from...
+    /// Set **ENC_N_SHIFTS** `[28:24]`
+    /// Number of times to consume from the shift register before refilling it from the FIFO, when the current command is an encoded data command (e.g. TMDS). A register value of 0 means shift 32 times.
     #[inline(always)]
     pub const fn with_enc_n_shifts(self, value: u32) -> Self {
         Self {
@@ -2849,7 +2765,8 @@ impl ExpandShiftVal {
         }
     }
 
-    /// Set ENC_SHIFT [20:16]: How many bits to right-rotate the shift register by each time data is pushe...
+    /// Set **ENC_SHIFT** `[20:16]`
+    /// How many bits to right-rotate the shift register by each time data is pushed to the output shifter, when the current command is an encoded data command (e.g. TMDS).
     #[inline(always)]
     pub const fn with_enc_shift(self, value: u32) -> Self {
         Self {
@@ -2857,7 +2774,8 @@ impl ExpandShiftVal {
         }
     }
 
-    /// Set RAW_N_SHIFTS [12:8]: Number of times to consume from the shift register before refilling it from...
+    /// Set **RAW_N_SHIFTS** `[12:8]`
+    /// Number of times to consume from the shift register before refilling it from the FIFO, when the current command is a raw data command. A register value of 0 means shift 32 times.
     #[inline(always)]
     pub const fn with_raw_n_shifts(self, value: u32) -> Self {
         Self {
@@ -2865,7 +2783,8 @@ impl ExpandShiftVal {
         }
     }
 
-    /// Set RAW_SHIFT [4:0]: How many bits to right-rotate the shift register by each time data is pushe...
+    /// Set **RAW_SHIFT** `[4:0]`
+    /// How many bits to right-rotate the shift register by each time data is pushed to the output shifter, when the current command is a raw data command.
     #[inline(always)]
     pub const fn with_raw_shift(self, value: u32) -> Self {
         Self {
@@ -2884,20 +2803,20 @@ impl Default for ExpandShiftVal {
 impl ExpandShift {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> ExpandShiftVal {
-        ExpandShiftVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> ExpandShiftVal {
+        ExpandShiftVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: ExpandShiftVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: ExpandShiftVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(ExpandShiftVal) -> ExpandShiftVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(ExpandShiftVal) -> ExpandShiftVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -2911,172 +2830,154 @@ impl ExpandShift {
 ///
 /// ## Fields
 ///
-/// - **L2_NBITS** [23:21] (RW): Number of valid data bits for the lane 2 TMDS encoder, starting from bit 7 ...
-/// - **L2_ROT** [20:16] (RW): Right-rotate applied to the current shifter data before the lane 2 TMDS enc...
-/// - **L1_NBITS** [15:13] (RW): Number of valid data bits for the lane 1 TMDS encoder, starting from bit 7 ...
-/// - **L1_ROT** [12:8] (RW): Right-rotate applied to the current shifter data before the lane 1 TMDS enc...
-/// - **L0_NBITS** [7:5] (RW): Number of valid data bits for the lane 0 TMDS encoder, starting from bit 7 ...
-/// - **L0_ROT** [4:0] (RW): Right-rotate applied to the current shifter data before the lane 0 TMDS enc...
+/// - **L2_NBITS** `[23:21]` (RW)
+///   Number of valid data bits for the lane 2 TMDS encoder, starting from bit 7 of the rotated data. Field values of 0 -> 7 encode counts of 1 -> 8 bits.
+/// - **L2_ROT** `[20:16]` (RW)
+///   Right-rotate applied to the current shifter data before the lane 2 TMDS encoder.
+/// - **L1_NBITS** `[15:13]` (RW)
+///   Number of valid data bits for the lane 1 TMDS encoder, starting from bit 7 of the rotated data. Field values of 0 -> 7 encode counts of 1 -> 8 bits.
+/// - **L1_ROT** `[12:8]` (RW)
+///   Right-rotate applied to the current shifter data before the lane 1 TMDS encoder.
+/// - **L0_NBITS** `[7:5]` (RW)
+///   Number of valid data bits for the lane 0 TMDS encoder, starting from bit 7 of the rotated data. Field values of 0 -> 7 encode counts of 1 -> 8 bits.
+/// - **L0_ROT** `[4:0]` (RW)
+///   Right-rotate applied to the current shifter data before the lane 0 TMDS encoder.
 #[repr(transparent)]
 pub struct ExpandTmds {
-    value: core::cell::UnsafeCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
-unsafe impl Send for ExpandTmds {}
-unsafe impl Sync for ExpandTmds {}
+impl core::ops::Deref for ExpandTmds {
+    type Target = crate::common::VolatileCell<u32>;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.value
+    }
+}
 
 impl ExpandTmds {
     // ======== Field Constants ========
 
-    /// L2_NBITS - Number of valid data bits for the lane 2 TMDS encoder, starting from bit 7 ...
-    /// Bits [23:21], mask 0x00e00000
+    /// **L2_NBITS**
+    /// Number of valid data bits for the lane 2 TMDS encoder, starting from bit 7 of the rotated data. Field values of 0 -> 7 encode counts of 1 -> 8 bits.
+    /// Bits `[23:21]`, mask `0x00e00000`
     pub const L2_NBITS_OFFSET: u32 = 21;
     pub const L2_NBITS_MASK: u32 = 0x00e00000;
 
-    /// L2_ROT - Right-rotate applied to the current shifter data before the lane 2 TMDS enc...
-    /// Bits [20:16], mask 0x001f0000
+    /// **L2_ROT**
+    /// Right-rotate applied to the current shifter data before the lane 2 TMDS encoder.
+    /// Bits `[20:16]`, mask `0x001f0000`
     pub const L2_ROT_OFFSET: u32 = 16;
     pub const L2_ROT_MASK: u32 = 0x001f0000;
 
-    /// L1_NBITS - Number of valid data bits for the lane 1 TMDS encoder, starting from bit 7 ...
-    /// Bits [15:13], mask 0x0000e000
+    /// **L1_NBITS**
+    /// Number of valid data bits for the lane 1 TMDS encoder, starting from bit 7 of the rotated data. Field values of 0 -> 7 encode counts of 1 -> 8 bits.
+    /// Bits `[15:13]`, mask `0x0000e000`
     pub const L1_NBITS_OFFSET: u32 = 13;
     pub const L1_NBITS_MASK: u32 = 0x0000e000;
 
-    /// L1_ROT - Right-rotate applied to the current shifter data before the lane 1 TMDS enc...
-    /// Bits [12:8], mask 0x00001f00
+    /// **L1_ROT**
+    /// Right-rotate applied to the current shifter data before the lane 1 TMDS encoder.
+    /// Bits `[12:8]`, mask `0x00001f00`
     pub const L1_ROT_OFFSET: u32 = 8;
     pub const L1_ROT_MASK: u32 = 0x00001f00;
 
-    /// L0_NBITS - Number of valid data bits for the lane 0 TMDS encoder, starting from bit 7 ...
-    /// Bits [7:5], mask 0x000000e0
+    /// **L0_NBITS**
+    /// Number of valid data bits for the lane 0 TMDS encoder, starting from bit 7 of the rotated data. Field values of 0 -> 7 encode counts of 1 -> 8 bits.
+    /// Bits `[7:5]`, mask `0x000000e0`
     pub const L0_NBITS_OFFSET: u32 = 5;
     pub const L0_NBITS_MASK: u32 = 0x000000e0;
 
-    /// L0_ROT - Right-rotate applied to the current shifter data before the lane 0 TMDS enc...
-    /// Bits [4:0], mask 0x0000001f
+    /// **L0_ROT**
+    /// Right-rotate applied to the current shifter data before the lane 0 TMDS encoder.
+    /// Bits `[4:0]`, mask `0x0000001f`
     pub const L0_ROT_OFFSET: u32 = 0;
     pub const L0_ROT_MASK: u32 = 0x0000001f;
 
-    // ======== Basic Access Methods ========
-
-    /// Read the raw register value as u32
-    #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write a raw u32 value to the register
-    #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
-    }
-
-    /// Modify the raw register value
-    #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
-        self.write_bits(f(self.read_bits()));
-    }
-
-    /// Atomic SET - sets bits that are 1 (hardware alias at +0x2000)
-    #[inline(always)]
-    pub fn set_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x2000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic CLR - clears bits that are 1 (hardware alias at +0x3000)
-    #[inline(always)]
-    pub fn clr_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x3000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
-    /// Atomic XOR - toggles bits that are 1 (hardware alias at +0x1000)
-    #[inline(always)]
-    pub fn xor_bits(&self, bits: u32) {
-        unsafe {
-            let addr = (self.value.get() as usize + 0x1000) as *mut u32;
-            core::ptr::write_volatile(addr, bits);
-        }
-    }
-
     // ======== Field Accessors ========
 
-    /// **L2_NBITS** [23:21]: Number of valid data bits for the lane 2 TMDS encoder, starting from bit 7 ...
+    /// **L2_NBITS** `[23:21]` (RW)
+    /// Number of valid data bits for the lane 2 TMDS encoder, starting from bit 7 of the rotated data. Field values of 0 -> 7 encode counts of 1 -> 8 bits.
     #[inline(always)]
     pub fn l2_nbits(&self) -> u32 {
-        (self.read_bits() & Self::L2_NBITS_MASK) >> Self::L2_NBITS_OFFSET
+        (self.value.read_bits() & Self::L2_NBITS_MASK) >> Self::L2_NBITS_OFFSET
     }
 
-    /// Write L2_NBITS field
+    /// Write **L2_NBITS** `[23:21]` (RW)
+    /// Number of valid data bits for the lane 2 TMDS encoder, starting from bit 7 of the rotated data. Field values of 0 -> 7 encode counts of 1 -> 8 bits.
     #[inline(always)]
     pub fn write_l2_nbits(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::L2_NBITS_MASK) | ((value << Self::L2_NBITS_OFFSET) & Self::L2_NBITS_MASK));
+        self.value.modify_bits(|r| (r & !Self::L2_NBITS_MASK) | ((value << Self::L2_NBITS_OFFSET) & Self::L2_NBITS_MASK));
     }
 
-    /// **L2_ROT** [20:16]: Right-rotate applied to the current shifter data before the lane 2 TMDS enc...
+    /// **L2_ROT** `[20:16]` (RW)
+    /// Right-rotate applied to the current shifter data before the lane 2 TMDS encoder.
     #[inline(always)]
     pub fn l2_rot(&self) -> u32 {
-        (self.read_bits() & Self::L2_ROT_MASK) >> Self::L2_ROT_OFFSET
+        (self.value.read_bits() & Self::L2_ROT_MASK) >> Self::L2_ROT_OFFSET
     }
 
-    /// Write L2_ROT field
+    /// Write **L2_ROT** `[20:16]` (RW)
+    /// Right-rotate applied to the current shifter data before the lane 2 TMDS encoder.
     #[inline(always)]
     pub fn write_l2_rot(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::L2_ROT_MASK) | ((value << Self::L2_ROT_OFFSET) & Self::L2_ROT_MASK));
+        self.value.modify_bits(|r| (r & !Self::L2_ROT_MASK) | ((value << Self::L2_ROT_OFFSET) & Self::L2_ROT_MASK));
     }
 
-    /// **L1_NBITS** [15:13]: Number of valid data bits for the lane 1 TMDS encoder, starting from bit 7 ...
+    /// **L1_NBITS** `[15:13]` (RW)
+    /// Number of valid data bits for the lane 1 TMDS encoder, starting from bit 7 of the rotated data. Field values of 0 -> 7 encode counts of 1 -> 8 bits.
     #[inline(always)]
     pub fn l1_nbits(&self) -> u32 {
-        (self.read_bits() & Self::L1_NBITS_MASK) >> Self::L1_NBITS_OFFSET
+        (self.value.read_bits() & Self::L1_NBITS_MASK) >> Self::L1_NBITS_OFFSET
     }
 
-    /// Write L1_NBITS field
+    /// Write **L1_NBITS** `[15:13]` (RW)
+    /// Number of valid data bits for the lane 1 TMDS encoder, starting from bit 7 of the rotated data. Field values of 0 -> 7 encode counts of 1 -> 8 bits.
     #[inline(always)]
     pub fn write_l1_nbits(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::L1_NBITS_MASK) | ((value << Self::L1_NBITS_OFFSET) & Self::L1_NBITS_MASK));
+        self.value.modify_bits(|r| (r & !Self::L1_NBITS_MASK) | ((value << Self::L1_NBITS_OFFSET) & Self::L1_NBITS_MASK));
     }
 
-    /// **L1_ROT** [12:8]: Right-rotate applied to the current shifter data before the lane 1 TMDS enc...
+    /// **L1_ROT** `[12:8]` (RW)
+    /// Right-rotate applied to the current shifter data before the lane 1 TMDS encoder.
     #[inline(always)]
     pub fn l1_rot(&self) -> u32 {
-        (self.read_bits() & Self::L1_ROT_MASK) >> Self::L1_ROT_OFFSET
+        (self.value.read_bits() & Self::L1_ROT_MASK) >> Self::L1_ROT_OFFSET
     }
 
-    /// Write L1_ROT field
+    /// Write **L1_ROT** `[12:8]` (RW)
+    /// Right-rotate applied to the current shifter data before the lane 1 TMDS encoder.
     #[inline(always)]
     pub fn write_l1_rot(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::L1_ROT_MASK) | ((value << Self::L1_ROT_OFFSET) & Self::L1_ROT_MASK));
+        self.value.modify_bits(|r| (r & !Self::L1_ROT_MASK) | ((value << Self::L1_ROT_OFFSET) & Self::L1_ROT_MASK));
     }
 
-    /// **L0_NBITS** [7:5]: Number of valid data bits for the lane 0 TMDS encoder, starting from bit 7 ...
+    /// **L0_NBITS** `[7:5]` (RW)
+    /// Number of valid data bits for the lane 0 TMDS encoder, starting from bit 7 of the rotated data. Field values of 0 -> 7 encode counts of 1 -> 8 bits.
     #[inline(always)]
     pub fn l0_nbits(&self) -> u32 {
-        (self.read_bits() & Self::L0_NBITS_MASK) >> Self::L0_NBITS_OFFSET
+        (self.value.read_bits() & Self::L0_NBITS_MASK) >> Self::L0_NBITS_OFFSET
     }
 
-    /// Write L0_NBITS field
+    /// Write **L0_NBITS** `[7:5]` (RW)
+    /// Number of valid data bits for the lane 0 TMDS encoder, starting from bit 7 of the rotated data. Field values of 0 -> 7 encode counts of 1 -> 8 bits.
     #[inline(always)]
     pub fn write_l0_nbits(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::L0_NBITS_MASK) | ((value << Self::L0_NBITS_OFFSET) & Self::L0_NBITS_MASK));
+        self.value.modify_bits(|r| (r & !Self::L0_NBITS_MASK) | ((value << Self::L0_NBITS_OFFSET) & Self::L0_NBITS_MASK));
     }
 
-    /// **L0_ROT** [4:0]: Right-rotate applied to the current shifter data before the lane 0 TMDS enc...
+    /// **L0_ROT** `[4:0]` (RW)
+    /// Right-rotate applied to the current shifter data before the lane 0 TMDS encoder.
     #[inline(always)]
     pub fn l0_rot(&self) -> u32 {
-        (self.read_bits() & Self::L0_ROT_MASK) >> Self::L0_ROT_OFFSET
+        (self.value.read_bits() & Self::L0_ROT_MASK) >> Self::L0_ROT_OFFSET
     }
 
-    /// Write L0_ROT field
+    /// Write **L0_ROT** `[4:0]` (RW)
+    /// Right-rotate applied to the current shifter data before the lane 0 TMDS encoder.
     #[inline(always)]
     pub fn write_l0_rot(&self, value: u32) {
-        self.modify_bits(|r| (r & !Self::L0_ROT_MASK) | ((value << Self::L0_ROT_OFFSET) & Self::L0_ROT_MASK));
+        self.value.modify_bits(|r| (r & !Self::L0_ROT_MASK) | ((value << Self::L0_ROT_OFFSET) & Self::L0_ROT_MASK));
     }
 
 }
@@ -3109,43 +3010,50 @@ impl ExpandTmdsVal {
         Self { bits: 0x00000000 }
     }
 
-    /// Read L2_NBITS [23:21]: Number of valid data bits for the lane 2 TMDS encoder, starting from bit 7 ...
+    /// Read **L2_NBITS** `[23:21]`
+    /// Number of valid data bits for the lane 2 TMDS encoder, starting from bit 7 of the rotated data. Field values of 0 -> 7 encode counts of 1 -> 8 bits.
     #[inline(always)]
     pub const fn l2_nbits(&self) -> u32 {
         (self.bits & ExpandTmds::L2_NBITS_MASK) >> ExpandTmds::L2_NBITS_OFFSET
     }
 
-    /// Read L2_ROT [20:16]: Right-rotate applied to the current shifter data before the lane 2 TMDS enc...
+    /// Read **L2_ROT** `[20:16]`
+    /// Right-rotate applied to the current shifter data before the lane 2 TMDS encoder.
     #[inline(always)]
     pub const fn l2_rot(&self) -> u32 {
         (self.bits & ExpandTmds::L2_ROT_MASK) >> ExpandTmds::L2_ROT_OFFSET
     }
 
-    /// Read L1_NBITS [15:13]: Number of valid data bits for the lane 1 TMDS encoder, starting from bit 7 ...
+    /// Read **L1_NBITS** `[15:13]`
+    /// Number of valid data bits for the lane 1 TMDS encoder, starting from bit 7 of the rotated data. Field values of 0 -> 7 encode counts of 1 -> 8 bits.
     #[inline(always)]
     pub const fn l1_nbits(&self) -> u32 {
         (self.bits & ExpandTmds::L1_NBITS_MASK) >> ExpandTmds::L1_NBITS_OFFSET
     }
 
-    /// Read L1_ROT [12:8]: Right-rotate applied to the current shifter data before the lane 1 TMDS enc...
+    /// Read **L1_ROT** `[12:8]`
+    /// Right-rotate applied to the current shifter data before the lane 1 TMDS encoder.
     #[inline(always)]
     pub const fn l1_rot(&self) -> u32 {
         (self.bits & ExpandTmds::L1_ROT_MASK) >> ExpandTmds::L1_ROT_OFFSET
     }
 
-    /// Read L0_NBITS [7:5]: Number of valid data bits for the lane 0 TMDS encoder, starting from bit 7 ...
+    /// Read **L0_NBITS** `[7:5]`
+    /// Number of valid data bits for the lane 0 TMDS encoder, starting from bit 7 of the rotated data. Field values of 0 -> 7 encode counts of 1 -> 8 bits.
     #[inline(always)]
     pub const fn l0_nbits(&self) -> u32 {
         (self.bits & ExpandTmds::L0_NBITS_MASK) >> ExpandTmds::L0_NBITS_OFFSET
     }
 
-    /// Read L0_ROT [4:0]: Right-rotate applied to the current shifter data before the lane 0 TMDS enc...
+    /// Read **L0_ROT** `[4:0]`
+    /// Right-rotate applied to the current shifter data before the lane 0 TMDS encoder.
     #[inline(always)]
     pub const fn l0_rot(&self) -> u32 {
         (self.bits & ExpandTmds::L0_ROT_MASK) >> ExpandTmds::L0_ROT_OFFSET
     }
 
-    /// Set L2_NBITS [23:21]: Number of valid data bits for the lane 2 TMDS encoder, starting from bit 7 ...
+    /// Set **L2_NBITS** `[23:21]`
+    /// Number of valid data bits for the lane 2 TMDS encoder, starting from bit 7 of the rotated data. Field values of 0 -> 7 encode counts of 1 -> 8 bits.
     #[inline(always)]
     pub const fn with_l2_nbits(self, value: u32) -> Self {
         Self {
@@ -3153,7 +3061,8 @@ impl ExpandTmdsVal {
         }
     }
 
-    /// Set L2_ROT [20:16]: Right-rotate applied to the current shifter data before the lane 2 TMDS enc...
+    /// Set **L2_ROT** `[20:16]`
+    /// Right-rotate applied to the current shifter data before the lane 2 TMDS encoder.
     #[inline(always)]
     pub const fn with_l2_rot(self, value: u32) -> Self {
         Self {
@@ -3161,7 +3070,8 @@ impl ExpandTmdsVal {
         }
     }
 
-    /// Set L1_NBITS [15:13]: Number of valid data bits for the lane 1 TMDS encoder, starting from bit 7 ...
+    /// Set **L1_NBITS** `[15:13]`
+    /// Number of valid data bits for the lane 1 TMDS encoder, starting from bit 7 of the rotated data. Field values of 0 -> 7 encode counts of 1 -> 8 bits.
     #[inline(always)]
     pub const fn with_l1_nbits(self, value: u32) -> Self {
         Self {
@@ -3169,7 +3079,8 @@ impl ExpandTmdsVal {
         }
     }
 
-    /// Set L1_ROT [12:8]: Right-rotate applied to the current shifter data before the lane 1 TMDS enc...
+    /// Set **L1_ROT** `[12:8]`
+    /// Right-rotate applied to the current shifter data before the lane 1 TMDS encoder.
     #[inline(always)]
     pub const fn with_l1_rot(self, value: u32) -> Self {
         Self {
@@ -3177,7 +3088,8 @@ impl ExpandTmdsVal {
         }
     }
 
-    /// Set L0_NBITS [7:5]: Number of valid data bits for the lane 0 TMDS encoder, starting from bit 7 ...
+    /// Set **L0_NBITS** `[7:5]`
+    /// Number of valid data bits for the lane 0 TMDS encoder, starting from bit 7 of the rotated data. Field values of 0 -> 7 encode counts of 1 -> 8 bits.
     #[inline(always)]
     pub const fn with_l0_nbits(self, value: u32) -> Self {
         Self {
@@ -3185,7 +3097,8 @@ impl ExpandTmdsVal {
         }
     }
 
-    /// Set L0_ROT [4:0]: Right-rotate applied to the current shifter data before the lane 0 TMDS enc...
+    /// Set **L0_ROT** `[4:0]`
+    /// Right-rotate applied to the current shifter data before the lane 0 TMDS encoder.
     #[inline(always)]
     pub const fn with_l0_rot(self, value: u32) -> Self {
         Self {
@@ -3204,20 +3117,20 @@ impl Default for ExpandTmdsVal {
 impl ExpandTmds {
     /// Read the register into a value struct
     #[inline(always)]
-    pub fn read(&self) -> ExpandTmdsVal {
-        ExpandTmdsVal::from_bits(self.read_bits())
+    pub fn read_val(&self) -> ExpandTmdsVal {
+        ExpandTmdsVal::from_bits(self.value.read_bits())
     }
 
     /// Write a value struct to the register
     #[inline(always)]
-    pub fn write(&self, val: ExpandTmdsVal) {
-        self.write_bits(val.bits())
+    pub fn write_val(&self, val: ExpandTmdsVal) {
+        self.value.write_bits(val.bits())
     }
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify<F: FnOnce(ExpandTmdsVal) -> ExpandTmdsVal>(&self, f: F) {
-        self.write(f(self.read()))
+    pub fn modify_val<F: FnOnce(ExpandTmdsVal) -> ExpandTmdsVal>(&self, f: F) {
+        self.write_val(f(self.read_val()))
     }
 
 }
@@ -3227,25 +3140,35 @@ impl ExpandTmds {
 pub struct RegisterBlock {
     /// 0x0000
     pub csr: Csr,
-    /// 0x0004 - Data control register for output bit 0
+    /// 0x0004
+    /// Data control register for output bit 0
     pub bit0: Bit0,
-    /// 0x0008 - Data control register for output bit 1
+    /// 0x0008
+    /// Data control register for output bit 1
     pub bit1: Bit1,
-    /// 0x000c - Data control register for output bit 2
+    /// 0x000c
+    /// Data control register for output bit 2
     pub bit2: Bit2,
-    /// 0x0010 - Data control register for output bit 3
+    /// 0x0010
+    /// Data control register for output bit 3
     pub bit3: Bit3,
-    /// 0x0014 - Data control register for output bit 4
+    /// 0x0014
+    /// Data control register for output bit 4
     pub bit4: Bit4,
-    /// 0x0018 - Data control register for output bit 5
+    /// 0x0018
+    /// Data control register for output bit 5
     pub bit5: Bit5,
-    /// 0x001c - Data control register for output bit 6
+    /// 0x001c
+    /// Data control register for output bit 6
     pub bit6: Bit6,
-    /// 0x0020 - Data control register for output bit 7
+    /// 0x0020
+    /// Data control register for output bit 7
     pub bit7: Bit7,
-    /// 0x0024 - Configure the optional shifter inside the command expander
+    /// 0x0024
+    /// Configure the optional shifter inside the command expander
     pub expand_shift: ExpandShift,
-    /// 0x0028 - Configure the optional TMDS encoder inside the command expander
+    /// 0x0028
+    /// Configure the optional TMDS encoder inside the command expander
     pub expand_tmds: ExpandTmds,
 }
 
