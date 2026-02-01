@@ -32,13 +32,13 @@ use defmt::*;
 use defmt_rtt as _;
 use panic_probe as _;
 
+use cortex_m_rt::exception;
 use pico_rs::block::ImageDef;
 use pico_rs::clocks::{ClkPeriAuxSrc, ClkRefSrc, ClkSysAuxSrc, ClkUsbAuxSrc, Clocks};
 use pico_rs::entry;
 use pico_rs::interrupt::{self, Interrupt};
 use pico_rs::pll::{PllConfig, PllSys, PllUsb};
 use pico_rs::reset::{self, Peripheral};
-use pico_rs::systick::Delay;
 use pico_rs::task::{Event, EventQueue};
 use pico_rs::xosc::Xosc;
 
@@ -119,37 +119,47 @@ fn USBCTRL_IRQ() {
             // Poll USB - this handles all USB protocol stuff
             dev.poll(&mut [cdc]);
 
+            let mut buf = [0u8; 64];
+            if let Ok(count) = cdc.read(&mut buf) {
+                if count > 0 {
+                    defmt::debug!("USB RX: {} bytes", count);
+                    cdc.write(&buf[..count]).ok();
+                }
+            }
+
             // Check for port open/close transitions
             // Note: Some hosts (Linux cdc-acm) may not send SET_CONTROL_LINE_STATE,
             // so we also use is_configured() to detect when the port is usable.
-            let port_open = cdc.port_open() || cdc.is_configured();
-            let was_open = *PORT_WAS_OPEN.borrow(cs).borrow();
+            // let port_open = cdc.port_open() || cdc.is_configured();
+            // let was_open = *PORT_WAS_OPEN.borrow(cs).borrow();
 
-            if port_open && !was_open {
-                EVENTS.push(Event::new(EVT_USB_CONNECTED, 0));
-                *PORT_WAS_OPEN.borrow(cs).borrow_mut() = true;
-            } else if !port_open && was_open {
-                EVENTS.push(Event::new(EVT_USB_DISCONNECTED, 0));
-                *PORT_WAS_OPEN.borrow(cs).borrow_mut() = false;
-            }
+            // if port_open && !was_open {
+            //     EVENTS.push(Event::new(EVT_USB_CONNECTED, 0));
+            //     *PORT_WAS_OPEN.borrow(cs).borrow_mut() = true;
+            // } else if !port_open && was_open {
+            //     EVENTS.push(Event::new(EVT_USB_DISCONNECTED, 0));
+            //     *PORT_WAS_OPEN.borrow(cs).borrow_mut() = false;
+            // }
 
             // Check for received data if device is configured
             // (don't wait for DTR, as some hosts don't send SET_CONTROL_LINE_STATE)
-            if cdc.is_configured() {
-                let mut rx_buf = RX_BUFFER.borrow(cs).borrow_mut();
-                let mut rx_len = RX_LEN.borrow(cs).borrow_mut();
+            // if cdc.is_configured() {
 
-                // Only read if buffer is empty (main loop consumed previous data)
-                if *rx_len == 0 {
-                    if let Ok(count) = cdc.read(&mut rx_buf[..64]) {
-                        if count > 0 {
-                            *rx_len = count;
-                            EVENTS.push(Event::new(EVT_USB_RX, count as u16));
-                        }
-                    }
-                }
-            }
+            // Store received data in global buffer
+            // let mut rx_buf = RX_BUFFER.borrow(cs).borrow_mut();
+            // let mut rx_len = RX_LEN.borrow(cs).borrow_mut();
+
+            // // Only read if buffer is empty (main loop consumed previous data)
+            // if *rx_len == 0 {
+            //     if let Ok(count) = cdc.read(&mut rx_buf[..64]) {
+            //         if count > 0 {
+            //             *rx_len = count;
+            //             EVENTS.push(Event::new(EVT_USB_RX, count as u16));
+            //         }
+            //     }
+            // }
         }
+        // }
     });
 }
 
@@ -225,25 +235,27 @@ fn init_clocks() -> Clocks {
 // ============================================================================
 
 fn setup_systick(reload_value: u32) {
+    // Access SysTick using raw pointer
     let syst = unsafe { &*cortex_m::peripheral::SYST::PTR };
 
     // Configure SysTick
     unsafe {
         // Disable first
         syst.csr.write(0);
-        // Set reload value
-        syst.rvr.write(reload_value);
+        // Set reload value (24-bit max)
+        syst.rvr.write(reload_value & 0x00FF_FFFF);
         // Clear current value
         syst.cvr.write(0);
-        // Enable with processor clock, with interrupt
-        syst.csr.write(0b111); // ENABLE | TICKINT | CLKSOURCE
+        // Enable with processor clock source and interrupt
+        // Bit 0: ENABLE, Bit 1: TICKINT, Bit 2: CLKSOURCE
+        syst.csr.write(0b111);
     }
 }
 
-/// SysTick interrupt handler
-#[allow(non_snake_case)]
-#[unsafe(no_mangle)]
+/// SysTick exception handler
+#[exception]
 fn SysTick() {
+    defmt::debug!("SysTick");
     EVENTS.push(Event::new(EVT_TIMER_TICK, 0));
 }
 
@@ -317,8 +329,6 @@ fn main() -> ! {
     let mut connected = false;
 
     info!("Entering main loop...");
-
-    let mut delay = Delay::new(SYS_CLK_HZ);
 
     loop {
         // Process events from queue

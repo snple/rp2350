@@ -271,6 +271,13 @@ impl<'a> UsbDevice<'a> {
     pub fn poll<C: UsbClass>(&mut self, classes: &mut [&mut C]) -> bool {
         let mut handled = false;
 
+        // CRITICAL: Clear all IN complete bits at the start of poll.
+        // This prevents interrupt storms when IN transfers complete but we don't
+        // immediately queue another packet. The hardware sets these bits when
+        // an IN transfer completes, and the interrupt keeps firing until cleared.
+        // This matches rp235x-hal behavior.
+        self.bus.clear_all_in_complete();
+
         // Check for bus reset
         if self.bus.poll_reset() {
             self.handle_reset(classes);
@@ -381,6 +388,14 @@ impl<'a> UsbDevice<'a> {
                     self.bus.ep0_expect_out_data(expected_len);
                     #[cfg(feature = "defmt")]
                     defmt::debug!("USB: Prepared EP0 OUT for {} bytes data", expected_len);
+                } else if ctrl_state == ControlState::DataIn {
+                    // Class handled DataIn request (sent data directly)
+                    // Prepare EP0 OUT for status stage ZLP
+                    self.bus.ep0_expect_out(0);
+                    // Mark control state as StatusIn to handle the ZLP
+                    self.control.set_status_in();
+                    #[cfg(feature = "defmt")]
+                    defmt::debug!("USB: Class sent DataIn, prepared for status ZLP");
                 }
                 return;
             }

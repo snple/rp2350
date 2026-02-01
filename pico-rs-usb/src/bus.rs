@@ -99,8 +99,6 @@ impl UsbBus {
     ///
     /// This does not initialize the hardware. Call `init()` to initialize.
     pub const fn new() -> Self {
-        const NONE_BUFFER: Option<EndpointBuffer> = None;
-        const FALSE_TOGGLE: AtomicBool = AtomicBool::new(false);
         Self {
             usb: unsafe { &*(USB::PTR as *const _) },
             dpram: unsafe { &*(USB_DPRAM::PTR as *const _) },
@@ -114,8 +112,8 @@ impl UsbBus {
                 CONTROL_MAX_PACKET_SIZE,
             )),
             ep0_in_data_toggle: AtomicBool::new(true), // Start with DATA1 after SETUP
-            ep_buffers: UnsafeCell::new([NONE_BUFFER; 30]),
-            ep_data_toggles: [FALSE_TOGGLE; 30],
+            ep_buffers: UnsafeCell::new([None; 30]),
+            ep_data_toggles: [const { AtomicBool::new(false) }; 30],
         }
     }
 
@@ -344,6 +342,26 @@ impl UsbBus {
     pub fn clear_buffer_status(&self, ep_addr: EndpointAddress) {
         let bit = 1u32 << (ep_addr.number() * 2 + if ep_addr.direction().is_in() { 0 } else { 1 });
         self.usb.buff_status.write_bits(bit);
+    }
+
+    /// Clear all IN complete bits from buffer status
+    ///
+    /// This should be called at the start of poll() to prevent interrupt storms.
+    /// IN complete events are typically handled implicitly when the next write happens.
+    /// Writing 1s to buff_status clears the corresponding bits.
+    ///
+    /// IMPORTANT: This clears EP1-EP15 IN bits only, preserving EP0 IN (bit 0)
+    /// because EP0 IN complete is needed for control transfer state machine.
+    pub fn clear_all_in_complete(&self) {
+        // 0x5555_5554 = all even bits except bit 0 (EP1-EP15 IN, not EP0 IN)
+        // Bit 0 = EP0 IN (preserve for control transfers)
+        // Bit 2 = EP1 IN, Bit 4 = EP2 IN, etc.
+        self.usb.buff_status.write_bits(0x5555_5554);
+    }
+
+    /// Clear all buffer status bits
+    pub fn clear_all_buffer_status(&self) {
+        self.usb.buff_status.write_bits(0xFFFF_FFFF);
     }
 
     /// Get the index for endpoint buffer/toggle arrays

@@ -297,6 +297,12 @@ impl ControlPipe {
         self.setup = None;
     }
 
+    /// Set state to StatusIn (waiting for ZLP OUT from host)
+    /// Used when class directly sends DataIn response
+    pub fn set_status_in(&mut self) {
+        self.state = ControlState::StatusIn;
+    }
+
     /// Set error state
     pub fn set_error(&mut self) {
         self.state = ControlState::Error;

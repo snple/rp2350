@@ -1490,15 +1490,26 @@ impl<'a> HidClass<'a> {
 
         match request {
             HidRequest::GetReport => {
-                // Will be handled in control_in
+                // Send current input report
+                let len = core::cmp::min(self.config.in_report_size, setup.w_length as usize);
+                self.bus
+                    .ep0_write_and_start(&self.in_report_buf[..len], true);
+                #[cfg(feature = "defmt")]
+                defmt::debug!("HID: GET_REPORT sent {} bytes", len);
                 true
             }
             HidRequest::GetIdle => {
-                // Will be handled in control_in
+                // Send idle rate (1 byte)
+                self.bus.ep0_write_and_start(&[self.idle_rate], true);
+                #[cfg(feature = "defmt")]
+                defmt::debug!("HID: GET_IDLE = {}", self.idle_rate);
                 true
             }
             HidRequest::GetProtocol => {
-                // Will be handled in control_in
+                // Send protocol (1 byte)
+                self.bus.ep0_write_and_start(&[self.protocol], true);
+                #[cfg(feature = "defmt")]
+                defmt::debug!("HID: GET_PROTOCOL = {}", self.protocol);
                 true
             }
             HidRequest::SetReport => {
@@ -1554,10 +1565,33 @@ impl<'a> UsbClass for HidClass<'a> {
                 match desc_type {
                     hid_descriptor_type::HID => {
                         // Return HID descriptor
+                        let hid_desc = self.build_hid_descriptor();
+                        let len = core::cmp::min(hid_desc.len(), setup.w_length as usize);
+                        self.bus.ep0_write_and_start(&hid_desc[..len], true);
+                        #[cfg(feature = "defmt")]
+                        defmt::debug!("HID: Sent HID descriptor, len={}", len);
                         return true;
                     }
                     hid_descriptor_type::REPORT => {
                         // Return report descriptor
+                        // Need to handle multi-packet transfer for large descriptors
+                        let report_desc = self.config.report_descriptor;
+                        let total_len = report_desc.len();
+                        let requested_len = setup.w_length as usize;
+                        let send_len = core::cmp::min(total_len, requested_len);
+
+                        // For now, send up to 64 bytes (max packet size for control EP)
+                        // Larger descriptors will need multi-packet support
+                        let chunk_len = core::cmp::min(send_len, 64);
+                        let is_last = chunk_len >= send_len;
+                        self.bus
+                            .ep0_write_and_start(&report_desc[..chunk_len], is_last);
+                        #[cfg(feature = "defmt")]
+                        defmt::debug!(
+                            "HID: Sent Report descriptor, len={}/{}",
+                            chunk_len,
+                            total_len
+                        );
                         return true;
                     }
                     _ => {}
@@ -1646,9 +1680,34 @@ impl<'a> UsbClass for HidClass<'a> {
     }
 
     fn configure(&mut self) {
+        // Configure the HID endpoints in hardware
+        // Interrupt IN endpoint
+        if let Err(e) = self.bus.configure_ep(
+            self.int_in_ep,
+            EndpointType::Interrupt,
+            self.config.in_report_size as u16,
+        ) {
+            #[cfg(feature = "defmt")]
+            defmt::error!("HID: Failed to configure interrupt IN EP: {:?}", e);
+            return;
+        }
+
+        // Optional Interrupt OUT endpoint
+        if let Some(out_ep) = self.int_out_ep
+            && let Err(e) = self.bus.configure_ep(
+                out_ep,
+                EndpointType::Interrupt,
+                self.config.out_report_size as u16,
+            )
+        {
+            #[cfg(feature = "defmt")]
+            defmt::error!("HID: Failed to configure interrupt OUT EP: {:?}", e);
+            return;
+        }
+
         self.configured = true;
         #[cfg(feature = "defmt")]
-        defmt::info!("HID: Configured");
+        defmt::info!("HID: Configured - endpoints initialized");
     }
 
     fn reset(&mut self) {

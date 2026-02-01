@@ -858,26 +858,218 @@ impl Default for Clocks {
 }
 
 // ============================================================================
-// Convenience Functions
+// Convenience Functions and Builders
 // ============================================================================
 
-/// Initialize clocks to a typical configuration with 150 MHz system clock
-///
-/// This assumes:
-/// - 12 MHz crystal oscillator
-/// - PLL_SYS configured for 150 MHz
-/// - PLL_USB configured for 48 MHz
-///
-/// # Arguments
-/// * `xosc` - Reference to an initialized XOSC
-///
-/// # Returns
-/// A configured Clocks instance with typical frequencies
-pub fn init_default(xosc_freq: u32) -> Clocks {
-    let mut clocks = Clocks::new();
+use crate::pll::{PllConfig, PllSys, PllUsb};
+use crate::reset::{self, Peripheral};
+use crate::xosc::Xosc;
 
-    // Configure reference clock from XOSC
-    clocks.configure_ref_src(ClkRefSrc::Xosc, xosc_freq);
+/// Pre-defined clock configuration profiles
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+pub enum ClockProfile {
+    /// 125 MHz system clock, 48 MHz USB clock
+    Standard125MHz,
+    /// 133 MHz system clock, 48 MHz USB clock
+    Standard133MHz,
+    /// 150 MHz system clock, 48 MHz USB clock (default for most applications)
+    Standard150MHz,
+    /// Low power: 48 MHz system clock (from PLL_USB)
+    LowPower48MHz,
+}
 
-    clocks
+impl ClockProfile {
+    /// Get PLL_SYS configuration for this profile
+    pub const fn pll_sys_config(&self) -> PllConfig {
+        match self {
+            ClockProfile::Standard125MHz => PllConfig::sys_125mhz(),
+            ClockProfile::Standard133MHz => PllConfig::sys_133mhz(),
+            ClockProfile::Standard150MHz => PllConfig::sys_150mhz(),
+            ClockProfile::LowPower48MHz => PllConfig::usb_48mhz(), // Not used, but provide default
+        }
+    }
+
+    /// Get system clock frequency in Hz
+    pub const fn sys_freq_hz(&self) -> u32 {
+        match self {
+            ClockProfile::Standard125MHz => 125_000_000,
+            ClockProfile::Standard133MHz => 133_000_000,
+            ClockProfile::Standard150MHz => 150_000_000,
+            ClockProfile::LowPower48MHz => 48_000_000,
+        }
+    }
+
+    /// Check if this profile uses PLL_SYS
+    pub const fn uses_pll_sys(&self) -> bool {
+        !matches!(self, ClockProfile::LowPower48MHz)
+    }
+}
+
+/// Configured clock system with frequency information
+#[derive(Clone, Copy)]
+pub struct ConfiguredClocks {
+    /// System clock frequency in Hz
+    pub sys_freq: u32,
+    /// USB clock frequency in Hz (always 48 MHz when configured)
+    pub usb_freq: u32,
+    /// Peripheral clock frequency in Hz
+    pub peri_freq: u32,
+    /// Reference clock frequency in Hz
+    pub ref_freq: u32,
+}
+
+impl ConfiguredClocks {
+    /// Get system clock frequency
+    #[inline]
+    pub const fn sys_freq(&self) -> u32 {
+        self.sys_freq
+    }
+
+    /// Get USB clock frequency
+    #[inline]
+    pub const fn usb_freq(&self) -> u32 {
+        self.usb_freq
+    }
+
+    /// Get peripheral clock frequency
+    #[inline]
+    pub const fn peri_freq(&self) -> u32 {
+        self.peri_freq
+    }
+}
+
+impl Clocks {
+    /// Initialize clocks with a predefined profile
+    ///
+    /// This is the easiest way to set up the clock system. It handles:
+    /// - XOSC initialization
+    /// - PLL configuration
+    /// - Clock mux switching
+    /// - USB clock setup (48 MHz)
+    ///
+    /// # Arguments
+    /// * `profile` - The clock profile to use
+    ///
+    /// # Returns
+    /// A `ConfiguredClocks` struct with the actual frequencies
+    ///
+    /// # Example
+    /// ```ignore
+    /// use pico_rs::clocks::{Clocks, ClockProfile};
+    ///
+    /// let clocks = Clocks::init_with_profile(ClockProfile::Standard150MHz);
+    /// // System clock is now 150 MHz, USB clock is 48 MHz
+    /// ```
+    pub fn init_with_profile(profile: ClockProfile) -> ConfiguredClocks {
+        Self::init_with_xosc_freq(profile, 12_000_000)
+    }
+
+    /// Initialize clocks with a predefined profile and custom XOSC frequency
+    ///
+    /// # Arguments
+    /// * `profile` - The clock profile to use
+    /// * `xosc_freq` - The crystal oscillator frequency in Hz
+    pub fn init_with_xosc_freq(profile: ClockProfile, xosc_freq: u32) -> ConfiguredClocks {
+        // Initialize XOSC
+        let xosc = Xosc::init(xosc_freq);
+        xosc.wait_stable();
+
+        let mut clocks = Clocks::new();
+
+        // Configure reference clock from XOSC
+        clocks.configure_ref_src(ClkRefSrc::Xosc, xosc_freq);
+
+        // Switch system clock to reference clock temporarily
+        clocks.configure_sys_from_ref();
+
+        let sys_freq = if profile.uses_pll_sys() {
+            // Configure PLL_SYS
+            reset::reset_block(Peripheral::PLL_SYS);
+            reset::unreset_block_wait(Peripheral::PLL_SYS);
+
+            let pll_sys = PllSys::new();
+            let sys_config = profile.pll_sys_config();
+            pll_sys.configure(
+                sys_config.refdiv,
+                sys_config.fbdiv,
+                sys_config.postdiv1,
+                sys_config.postdiv2,
+            );
+            pll_sys.wait_lock();
+
+            let freq = profile.sys_freq_hz();
+
+            // Switch system clock to PLL_SYS
+            clocks.configure_sys_aux(ClkSysAuxSrc::PllSys, freq, freq);
+
+            freq
+        } else {
+            // Low power mode: use PLL_USB for system clock
+            48_000_000
+        };
+
+        // Configure PLL_USB for 48 MHz
+        reset::reset_block(Peripheral::PLL_USB);
+        reset::unreset_block_wait(Peripheral::PLL_USB);
+
+        let pll_usb = PllUsb::new();
+        let usb_config = PllConfig::usb_48mhz();
+        pll_usb.configure(
+            usb_config.refdiv,
+            usb_config.fbdiv,
+            usb_config.postdiv1,
+            usb_config.postdiv2,
+        );
+        pll_usb.wait_lock();
+
+        // For low power mode, use PLL_USB for system clock
+        let sys_freq = if !profile.uses_pll_sys() {
+            clocks.configure_sys_aux(ClkSysAuxSrc::PllUsb, 48_000_000, 48_000_000);
+            48_000_000
+        } else {
+            sys_freq
+        };
+
+        // Configure peripheral clock from system clock
+        clocks.configure_peri(ClkPeriAuxSrc::ClkSys, sys_freq);
+
+        // Configure USB clock from PLL_USB (48 MHz)
+        clocks.configure_usb(ClkUsbAuxSrc::PllUsb, 48_000_000);
+
+        ConfiguredClocks {
+            sys_freq,
+            usb_freq: 48_000_000,
+            peri_freq: sys_freq,
+            ref_freq: xosc_freq,
+        }
+    }
+
+    /// Initialize clocks for USB applications (150 MHz sys, 48 MHz USB)
+    ///
+    /// This is a shorthand for the most common USB configuration.
+    ///
+    /// # Example
+    /// ```ignore
+    /// let clocks = Clocks::init_usb();
+    /// // Ready for USB!
+    /// ```
+    #[inline]
+    pub fn init_usb() -> ConfiguredClocks {
+        Self::init_with_profile(ClockProfile::Standard150MHz)
+    }
+
+    /// Initialize clocks with default 150 MHz configuration
+    ///
+    /// Alias for `init_usb()`.
+    #[inline]
+    pub fn init_default_clocks() -> ConfiguredClocks {
+        Self::init_with_profile(ClockProfile::Standard150MHz)
+    }
+
+    /// Initialize clocks for low power operation (48 MHz)
+    #[inline]
+    pub fn init_low_power() -> ConfiguredClocks {
+        Self::init_with_profile(ClockProfile::LowPower48MHz)
+    }
 }

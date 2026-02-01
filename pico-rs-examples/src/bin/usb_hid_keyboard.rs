@@ -24,6 +24,7 @@ use panic_probe as _;
 
 use pico_rs::Delay;
 use pico_rs::block::ImageDef;
+use pico_rs::clocks::Clocks;
 use pico_rs::entry;
 use pico_rs::gpio::GpioBank;
 
@@ -35,9 +36,6 @@ use pico_rs_usb::device::UsbDeviceBuilder;
 #[unsafe(link_section = ".start_block")]
 #[used]
 pub static IMAGE_DEF: ImageDef = ImageDef::secure_exe();
-
-/// RP2350 default boot clock frequency
-const CLOCK_FREQ_HZ: u32 = 12_000_000;
 
 /// Type a string by sending individual key reports
 fn type_string(hid: &mut HidClass, text: &str, delay: &mut Delay) {
@@ -78,6 +76,14 @@ fn char_to_keycode(ch: char) -> (u8, bool) {
 fn main() -> ! {
     info!("USB HID Keyboard Example starting...");
 
+    // Initialize clocks using the convenient API (150 MHz sys, 48 MHz USB)
+    let clocks = Clocks::init_usb();
+    info!(
+        "Clock system initialized: sys={} Hz, usb={} Hz",
+        clocks.sys_freq(),
+        clocks.usb_freq()
+    );
+
     // Initialize GPIO
     let gpio = GpioBank::init();
 
@@ -115,7 +121,7 @@ fn main() -> ! {
     usb_bus.connect();
     info!("USB connected, waiting for enumeration...");
 
-    let mut delay = Delay::new(CLOCK_FREQ_HZ);
+    let mut delay = Delay::new(clocks.sys_freq());
     let mut button_prev = true; // Pull-up, so high when not pressed
     let mut configured = false;
 
