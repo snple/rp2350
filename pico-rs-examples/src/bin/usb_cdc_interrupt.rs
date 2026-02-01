@@ -38,6 +38,7 @@ use pico_rs::entry;
 use pico_rs::interrupt::{self, Interrupt};
 use pico_rs::pll::{PllConfig, PllSys, PllUsb};
 use pico_rs::reset::{self, Peripheral};
+use pico_rs::systick::Delay;
 use pico_rs::task::{Event, EventQueue};
 use pico_rs::xosc::Xosc;
 
@@ -119,7 +120,9 @@ fn USBCTRL_IRQ() {
             dev.poll(&mut [cdc]);
 
             // Check for port open/close transitions
-            let port_open = cdc.port_open();
+            // Note: Some hosts (Linux cdc-acm) may not send SET_CONTROL_LINE_STATE,
+            // so we also use is_configured() to detect when the port is usable.
+            let port_open = cdc.port_open() || cdc.is_configured();
             let was_open = *PORT_WAS_OPEN.borrow(cs).borrow();
 
             if port_open && !was_open {
@@ -130,8 +133,9 @@ fn USBCTRL_IRQ() {
                 *PORT_WAS_OPEN.borrow(cs).borrow_mut() = false;
             }
 
-            // If port is open, check for received data
-            if port_open {
+            // Check for received data if device is configured
+            // (don't wait for DTR, as some hosts don't send SET_CONTROL_LINE_STATE)
+            if cdc.is_configured() {
                 let mut rx_buf = RX_BUFFER.borrow(cs).borrow_mut();
                 let mut rx_len = RX_LEN.borrow(cs).borrow_mut();
 
@@ -314,6 +318,8 @@ fn main() -> ! {
 
     info!("Entering main loop...");
 
+    let mut delay = Delay::new(SYS_CLK_HZ);
+
     loop {
         // Process events from queue
         while let Some(event) = EVENTS.pop() {
@@ -396,6 +402,7 @@ fn main() -> ! {
 
         // Wait for interrupt (low power)
         cortex_m::asm::wfi();
+        // delay.delay_us(10);
     }
 }
 

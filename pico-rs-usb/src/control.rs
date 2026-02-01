@@ -215,6 +215,16 @@ impl ControlPipe {
         self.state
     }
 
+    /// Get the expected data length
+    pub fn expected_len(&self) -> usize {
+        self.expected_len
+    }
+
+    /// Get the current buffer length
+    pub fn buffer_len(&self) -> usize {
+        self.buffer_len
+    }
+
     /// Set response data for IN transfers
     pub fn set_response(&mut self, data: &[u8]) -> UsbResult<()> {
         if data.len() > self.buffer.len() {

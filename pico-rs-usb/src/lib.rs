@@ -62,7 +62,9 @@ pub mod class;
 pub mod control;
 pub mod descriptor;
 pub mod device;
+pub mod dpram;
 pub mod endpoint;
+pub mod ep_regs;
 pub mod error;
 pub mod types;
 

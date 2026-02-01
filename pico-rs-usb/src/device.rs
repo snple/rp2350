@@ -301,7 +301,7 @@ impl<'a> UsbDevice<'a> {
         // Handle control transfer data stages (but not immediately after setup)
         // This avoids sending the next packet before the first one completes
         if !setup_handled {
-            self.handle_control();
+            self.handle_control(classes);
         }
 
         // Poll classes
@@ -360,6 +360,7 @@ impl<'a> UsbDevice<'a> {
 
         // Copy setup for later use to avoid borrow issues
         let setup_copy = *setup;
+        let ctrl_state = self.control.state();
 
         #[cfg(feature = "defmt")]
         defmt::debug!(
@@ -374,6 +375,13 @@ impl<'a> UsbDevice<'a> {
         // Try class handlers first
         for class in classes.iter_mut() {
             if class.control_setup(&setup_copy) {
+                // If this is a DataOut request, prepare EP0 OUT to receive data
+                if ctrl_state == ControlState::DataOut {
+                    let expected_len = setup_copy.w_length as usize;
+                    self.bus.ep0_expect_out_data(expected_len);
+                    #[cfg(feature = "defmt")]
+                    defmt::debug!("USB: Prepared EP0 OUT for {} bytes data", expected_len);
+                }
                 return;
             }
         }
@@ -665,24 +673,34 @@ impl<'a> UsbDevice<'a> {
 
         let state_before = self.control.state();
 
-        if let Some(chunk) = self
+        // Get next chunk - this may change state to StatusIn
+        let chunk_info = self
             .control
             .get_next_chunk(CONTROL_MAX_PACKET_SIZE as usize)
-        {
-            let len = chunk.len();
-            let is_last = len < CONTROL_MAX_PACKET_SIZE as usize;
+            .map(|chunk| {
+                // Copy chunk data since we need to release the borrow
+                let len = chunk.len();
+                let mut buf = [0u8; 64];
+                buf[..len].copy_from_slice(chunk);
+                (buf, len)
+            });
 
+        // Now we can check the state after get_next_chunk
+        let state_after_chunk = self.control.state();
+        let is_last = state_after_chunk == ControlState::StatusIn;
+
+        if let Some((buf, len)) = chunk_info {
             #[cfg(feature = "defmt")]
             defmt::debug!("USB: Sending {} bytes on EP0 IN, is_last={}", len, is_last);
 
             // Write data to EP0 buffer and start the IN transfer
-            self.bus.ep0_write_and_start(chunk, is_last);
+            self.bus.ep0_write_and_start(&buf[..len], is_last);
 
-            // Mark transfer as pending if more data to follow
+            // Check if control state is still DataIn (more data to send)
             if !is_last {
                 self.ep0_in_pending = true;
                 #[cfg(feature = "defmt")]
-                defmt::debug!("USB: ep0_in_pending set to TRUE");
+                defmt::debug!("USB: ep0_in_pending set to TRUE (more data pending)");
             }
         }
 
@@ -704,7 +722,7 @@ impl<'a> UsbDevice<'a> {
     }
 
     /// Handle ongoing control transfers
-    fn handle_control(&mut self) {
+    fn handle_control<C: UsbClass>(&mut self, classes: &mut [&mut C]) {
         let status = self.bus.buffer_status();
         let ctrl_state = self.control.state();
 
@@ -727,6 +745,40 @@ impl<'a> UsbDevice<'a> {
 
                     // Send more data or move to status stage
                     self.send_control_data();
+                }
+            }
+            ControlState::DataOut => {
+                // Check if data was received on EP0 OUT
+                if status & 2 != 0 {
+                    self.bus.clear_buffer_status(EndpointAddress::out(0));
+                    #[cfg(feature = "defmt")]
+                    defmt::trace!("USB: EP0 OUT data received, state=DataOut");
+
+                    // Read the received data
+                    let mut buf = [0u8; 64];
+                    if let Ok(len) = self.bus.ep0_read(&mut buf) {
+                        // Accept the data into control pipe
+                        let _ = self.control.accept_out_data(&buf[..len]);
+                        #[cfg(feature = "defmt")]
+                        defmt::debug!("USB: Received {} bytes control OUT data", len);
+                    }
+
+                    // If all data received, state moves to StatusOut
+                    if self.control.state() == ControlState::StatusOut {
+                        // Call class control_out with received data
+                        let out_data = self.control.out_data();
+                        for class in classes.iter_mut() {
+                            let _ = class.control_out(out_data);
+                        }
+                        // Send status ZLP
+                        self.bus.ep0_send_zlp();
+                        #[cfg(feature = "defmt")]
+                        defmt::debug!("USB: Sending status ZLP for OUT transfer");
+                    } else {
+                        // More data expected, re-arm EP0 OUT
+                        let remaining = self.control.expected_len() - self.control.buffer_len();
+                        self.bus.ep0_expect_out_data(remaining);
+                    }
                 }
             }
             ControlState::StatusIn => {
