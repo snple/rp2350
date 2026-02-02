@@ -243,8 +243,8 @@ pub enum Interrupt {
     SPARE_IRQ_5 = 51,
 }
 
-#[cfg(feature = "cortex-m")]
-unsafe impl cortex_m::interrupt::InterruptNumber for Interrupt {
+#[cfg(feature = "rt")]
+unsafe impl pico_rs_rt::peripheral::nvic::InterruptNumber for Interrupt {
     #[inline(always)]
     fn number(self) -> u16 {
         self as u16
@@ -2797,8 +2797,10 @@ pub mod spare_irq;
 // Peripherals - All device peripherals
 // ============================================================================
 
-#[unsafe(no_mangle)]
-static mut DEVICE_PERIPHERALS: bool = false;
+use core::sync::atomic::{AtomicBool, Ordering};
+
+/// Guard to ensure peripherals are taken only once
+static TAKEN: AtomicBool = AtomicBool::new(false);
 
 /// All the peripherals.
 #[allow(non_snake_case)]
@@ -2915,15 +2917,14 @@ pub struct Peripherals {
 
 impl Peripherals {
     /// Returns all the peripherals *once*.
-    #[cfg(feature = "critical-section")]
+    #[cfg(feature = "rt")]
     #[inline]
     pub fn take() -> Option<Self> {
-        critical_section::with(|_| {
-            if unsafe { DEVICE_PERIPHERALS } {
-                return None;
-            }
-            Some(unsafe { Peripherals::steal() })
-        })
+        if TAKEN.swap(true, Ordering::AcqRel) {
+            None
+        } else {
+            Some(unsafe { Self::steal() })
+        }
     }
 
     /// Unchecked version of `Peripherals::take`.
@@ -2934,7 +2935,6 @@ impl Peripherals {
     #[inline]
     pub unsafe fn steal() -> Self {
         unsafe {
-            DEVICE_PERIPHERALS = true;
             Peripherals {
                 RESETS: RESETS::steal(),
                 PSM: PSM::steal(),
@@ -2992,5 +2992,13 @@ impl Peripherals {
                 SPARE_IRQ: SPARE_IRQ::steal(),
             }
         }
+    }
+
+    /// Release the peripherals back to the pool
+    ///
+    /// After calling this, `take()` will succeed again.
+    #[inline]
+    pub fn release(self) {
+        TAKEN.store(false, Ordering::Release);
     }
 }

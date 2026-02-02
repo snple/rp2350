@@ -185,10 +185,10 @@ fn generate_mod_rs(peripherals: &[&Peripheral]) -> String {
         writeln!(out, "}}").unwrap();
         writeln!(out).unwrap();
 
-        writeln!(out, "#[cfg(feature = \"cortex-m\")]").unwrap();
+        writeln!(out, "#[cfg(feature = \"rt\")]").unwrap();
         writeln!(
             out,
-            "unsafe impl cortex_m::interrupt::InterruptNumber for Interrupt {{"
+            "unsafe impl pico_rs_rt::peripheral::nvic::InterruptNumber for Interrupt {{"
         )
         .unwrap();
         writeln!(out, "    #[inline(always)]").unwrap();
@@ -307,8 +307,10 @@ fn generate_mod_rs(peripherals: &[&Peripheral]) -> String {
     .unwrap();
     writeln!(out).unwrap();
 
-    writeln!(out, "#[unsafe(no_mangle)]").unwrap();
-    writeln!(out, "static mut DEVICE_PERIPHERALS: bool = false;").unwrap();
+    writeln!(out, "use core::sync::atomic::{{AtomicBool, Ordering}};").unwrap();
+    writeln!(out).unwrap();
+    writeln!(out, "/// Guard to ensure peripherals are taken only once").unwrap();
+    writeln!(out, "static TAKEN: AtomicBool = AtomicBool::new(false);").unwrap();
     writeln!(out).unwrap();
 
     writeln!(out, "/// All the peripherals.").unwrap();
@@ -328,15 +330,14 @@ fn generate_mod_rs(peripherals: &[&Peripheral]) -> String {
 
     writeln!(out, "impl Peripherals {{").unwrap();
     writeln!(out, "    /// Returns all the peripherals *once*.").unwrap();
-    writeln!(out, "    #[cfg(feature = \"critical-section\")]").unwrap();
+    writeln!(out, "    #[cfg(feature = \"rt\")]").unwrap();
     writeln!(out, "    #[inline]").unwrap();
     writeln!(out, "    pub fn take() -> Option<Self> {{").unwrap();
-    writeln!(out, "        critical_section::with(|_| {{").unwrap();
-    writeln!(out, "            if unsafe {{ DEVICE_PERIPHERALS }} {{").unwrap();
-    writeln!(out, "                return None;").unwrap();
-    writeln!(out, "            }}").unwrap();
-    writeln!(out, "            Some(unsafe {{ Peripherals::steal() }})").unwrap();
-    writeln!(out, "        }})").unwrap();
+    writeln!(out, "        if TAKEN.swap(true, Ordering::AcqRel) {{").unwrap();
+    writeln!(out, "            None").unwrap();
+    writeln!(out, "        }} else {{").unwrap();
+    writeln!(out, "            Some(unsafe {{ Self::steal() }})").unwrap();
+    writeln!(out, "        }}").unwrap();
     writeln!(out, "    }}").unwrap();
     writeln!(out).unwrap();
 
@@ -352,7 +353,6 @@ fn generate_mod_rs(peripherals: &[&Peripheral]) -> String {
     writeln!(out, "    #[inline]").unwrap();
     writeln!(out, "    pub unsafe fn steal() -> Self {{").unwrap();
     writeln!(out, "        unsafe {{").unwrap();
-    writeln!(out, "            DEVICE_PERIPHERALS = true;").unwrap();
     writeln!(out, "            Peripherals {{").unwrap();
     for periph in peripherals {
         let struct_name = periph.name.to_shouty_snake_case();
@@ -365,6 +365,19 @@ fn generate_mod_rs(peripherals: &[&Peripheral]) -> String {
     }
     writeln!(out, "            }}").unwrap();
     writeln!(out, "        }}").unwrap();
+    writeln!(out, "    }}").unwrap();
+    writeln!(out).unwrap();
+
+    writeln!(out, "    /// Release the peripherals back to the pool").unwrap();
+    writeln!(out, "    ///").unwrap();
+    writeln!(
+        out,
+        "    /// After calling this, `take()` will succeed again."
+    )
+    .unwrap();
+    writeln!(out, "    #[inline]").unwrap();
+    writeln!(out, "    pub fn release(self) {{").unwrap();
+    writeln!(out, "        TAKEN.store(false, Ordering::Release);").unwrap();
     writeln!(out, "    }}").unwrap();
     writeln!(out, "}}").unwrap();
 

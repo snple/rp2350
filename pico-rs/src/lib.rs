@@ -4,8 +4,7 @@
 //!
 //! ## Features
 //!
-//! - `rt` - Runtime support (cortex-m-rt)
-//! - `critical-section` - Critical section implementation
+//! - `rt` - Runtime support (pico-rs-rt)
 //! - `atomics` - Portable atomic operations
 //! - `defmt` - Defmt logging support
 //!
@@ -124,12 +123,8 @@ pub use xip_aux::XipAux;
 pub use xip_ctrl::XipCtrl;
 pub use xosc::Xosc;
 
-// Re-export cortex-m for convenience
-pub use cortex_m;
-pub use cortex_m_rt;
-
-#[cfg(feature = "critical-section")]
-pub use critical_section;
+// Re-export pico-rs-rt for convenience
+pub use pico_rs_rt;
 
 #[cfg(feature = "defmt")]
 pub use defmt;

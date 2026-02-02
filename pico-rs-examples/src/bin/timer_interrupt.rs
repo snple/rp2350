@@ -13,10 +13,10 @@
 use core::cell::RefCell;
 use core::sync::atomic::{AtomicBool, Ordering};
 
-use cortex_m::interrupt::Mutex;
 use defmt::*;
 use defmt_rtt as _;
 use panic_probe as _;
+use pico_rs_rt::interrupt::{self as rt_interrupt, Mutex};
 
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
@@ -57,7 +57,7 @@ fn main() -> ! {
     timer.enable_alarm_interrupt(0);
 
     // Store timer in global variable for interrupt handler
-    cortex_m::interrupt::free(|cs| {
+    rt_interrupt::free(|cs| {
         TIMER.borrow(cs).replace(Some(timer));
     });
 
@@ -73,7 +73,7 @@ fn main() -> ! {
     // Main loop - the LED toggling happens in the interrupt
     loop {
         // Could do other work here
-        cortex_m::asm::wfi(); // Wait for interrupt
+        pico_rs_rt::asm::wfi(); // Wait for interrupt
     }
 }
 
@@ -84,7 +84,7 @@ fn main() -> ! {
 #[allow(non_snake_case)]
 fn TIMER0_IRQ_0() {
     // Access the timer and GPIO in a critical section
-    cortex_m::interrupt::free(|cs| {
+    rt_interrupt::free(|cs| {
         if let Some(ref timer) = *TIMER.borrow(cs).borrow() {
             // Clear the interrupt
             timer.clear_alarm_interrupt(0);

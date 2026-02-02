@@ -12,7 +12,8 @@ fn main() {
     let out = PathBuf::from(std::env::var_os("OUT_DIR").unwrap());
     println!("cargo:rustc-link-search={}", out.display());
 
-    // The file `device.x` is required by cortex-m-rt when using the "device" feature
+    // The file `device.x` is required by pico-rs-rt when using the "rt" feature
+    // It provides the interrupt vector table definitions for the RP2350
     let device_x = include_bytes!("device.x");
     let mut f = File::create(out.join("device.x")).unwrap();
     f.write_all(device_x).unwrap();

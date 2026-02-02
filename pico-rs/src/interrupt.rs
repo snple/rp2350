@@ -1,7 +1,7 @@
 //! Interrupt Management HAL for RP2350
 //!
 //! This module provides safe and ergonomic interrupt management for the RP2350
-//! microcontroller. It wraps the Cortex-M NVIC (Nested Vectored Interrupt Controller)
+//! microcontroller. It wraps the Cortex-M33 NVIC (Nested Vectored Interrupt Controller)
 //! and provides additional utilities for RP2350-specific interrupt handling.
 //!
 //! ## Features
@@ -39,27 +39,22 @@
 //! }
 //! ```
 
-use cortex_m::peripheral::NVIC;
+use pico_rs_rt::peripheral::NVIC;
 
 // Re-export the interrupt enum from PAC for convenience
 pub use crate::pac::Interrupt;
 
-/// Token type that proves we are in a critical section
-#[derive(Clone, Copy)]
-pub struct CriticalSection {
-    _private: (),
-}
-
-impl CriticalSection {
-    /// Create a new critical section token
-    ///
-    /// # Safety
-    /// This should only be called when interrupts are actually disabled
-    #[inline]
-    pub(crate) unsafe fn new() -> Self {
-        Self { _private: () }
-    }
-}
+// Re-export core interrupt primitives from pico-rs-rt
+pub use pico_rs_rt::interrupt::{
+    CriticalSection,
+    Mutex,
+    free,
+    // Priority-based masking
+    free_basepri,
+    is_enabled as are_enabled,
+    priority_threshold,
+    set_priority_threshold,
+};
 
 // ============================================================================
 // NVIC Operations
@@ -84,9 +79,8 @@ impl CriticalSection {
 /// ```
 #[inline]
 pub unsafe fn enable(interrupt: Interrupt) {
-    // Safety: We're just enabling an interrupt in the NVIC
     unsafe {
-        NVIC::unmask(interrupt);
+        NVIC::enable(interrupt as u16);
     }
 }
 
@@ -104,19 +98,19 @@ pub unsafe fn enable(interrupt: Interrupt) {
 /// ```
 #[inline]
 pub fn disable(interrupt: Interrupt) {
-    NVIC::mask(interrupt);
+    NVIC::disable(interrupt as u16);
 }
 
 /// Check if an interrupt is enabled in the NVIC
 #[inline]
 pub fn is_enabled(interrupt: Interrupt) -> bool {
-    NVIC::is_enabled(interrupt)
+    NVIC::is_enabled(interrupt as u16)
 }
 
 /// Check if an interrupt is pending
 #[inline]
 pub fn is_pending(interrupt: Interrupt) -> bool {
-    NVIC::is_pending(interrupt)
+    NVIC::is_pending(interrupt as u16)
 }
 
 /// Set an interrupt as pending
@@ -125,13 +119,13 @@ pub fn is_pending(interrupt: Interrupt) -> bool {
 /// is enabled and has higher priority than the current execution.
 #[inline]
 pub fn pend(interrupt: Interrupt) {
-    NVIC::pend(interrupt);
+    NVIC::pend(interrupt as u16);
 }
 
 /// Clear a pending interrupt
 #[inline]
 pub fn unpend(interrupt: Interrupt) {
-    NVIC::unpend(interrupt);
+    NVIC::unpend(interrupt as u16);
 }
 
 /// Set the priority of an interrupt
@@ -153,24 +147,22 @@ pub fn unpend(interrupt: Interrupt) {
 /// ```
 #[inline]
 pub fn set_priority(interrupt: Interrupt, priority: u8) {
-    // Safety: We're just setting the priority in the NVIC
     unsafe {
-        let mut nvic = cortex_m::Peripherals::steal().NVIC;
-        nvic.set_priority(interrupt, priority);
+        NVIC::set_priority(interrupt as u16, priority);
     }
 }
 
 /// Get the priority of an interrupt
 #[inline]
 pub fn get_priority(interrupt: Interrupt) -> u8 {
-    // Safety: We're just reading the priority
-    NVIC::get_priority(interrupt)
+    NVIC::get_priority(interrupt as u16)
 }
 
 // ============================================================================
-// Critical Sections
+// Additional Utilities
 // ============================================================================
 
+<<<<<<< HEAD
 /// Execute a closure in a critical section (interrupts disabled)
 ///
 /// All interrupts are disabled while the closure executes. This is useful
@@ -208,6 +200,8 @@ where
     result
 }
 
+=======
+>>>>>>> c466689 (impl pico-rs-rt)
 /// Check if we are currently in an interrupt handler
 #[inline]
 pub fn in_interrupt() -> bool {
@@ -215,16 +209,9 @@ pub fn in_interrupt() -> bool {
     // If non-zero, we're in an exception/interrupt handler
     let ipsr: u32;
     unsafe {
-        #![allow(asm_sub_register)]
         core::arch::asm!("mrs {0}, IPSR", out(reg) ipsr, options(nomem, nostack, preserves_flags));
     }
     (ipsr & 0x1FF) != 0
-}
-
-/// Check if interrupts are currently enabled
-#[inline]
-pub fn are_enabled() -> bool {
-    cortex_m::register::primask::read().is_active()
 }
 
 // ============================================================================
@@ -530,7 +517,7 @@ pub mod spare {
 /// ```
 pub fn disable_all() -> InterruptGuard {
     let was_enabled = are_enabled();
-    cortex_m::interrupt::disable();
+    pico_rs_rt::interrupt::disable();
     InterruptGuard { was_enabled }
 }
 
@@ -542,7 +529,7 @@ pub struct InterruptGuard {
 impl Drop for InterruptGuard {
     fn drop(&mut self) {
         if self.was_enabled {
-            unsafe { cortex_m::interrupt::enable() };
+            unsafe { pico_rs_rt::interrupt::enable() };
         }
     }
 }

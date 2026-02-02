@@ -11,9 +11,13 @@ rp2350b = ["pico-rs/rp2350b"]
 
 [dependencies]
 pico-rs.workspace = true
+<<<<<<< HEAD
 pico-rs-usb.workspace = true
 cortex-m.workspace = true
 cortex-m-rt.workspace = true
+=======
+pico-rs-rt.workspace = true
+>>>>>>> c466689 (impl pico-rs-rt)
 defmt.workspace = true
 defmt-rtt.workspace = true
 panic-probe.workspace = true

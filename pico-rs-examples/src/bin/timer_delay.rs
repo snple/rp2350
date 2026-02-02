@@ -61,14 +61,10 @@ fn main() -> ! {
         blink_count += 1;
 
         // Every 5 blinks, report timing accuracy
-        if blink_count % 5 == 0 {
+        if blink_count.is_multiple_of(5) {
             let elapsed = timer.get_time_us() - test_start;
             let expected = blink_count as u64 * 1_000_000; // 1 second per blink
-            let drift_us = if elapsed > expected {
-                elapsed - expected
-            } else {
-                expected - elapsed
-            };
+            let drift_us = elapsed.abs_diff(expected);
 
             info!(
                 "Blink #{}: elapsed={} us, expected={} us, drift={} us",

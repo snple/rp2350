@@ -144,26 +144,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "cortex-m-rt"
-version = "0.7.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "801d4dec46b34c299ccf6b036717ae0fce602faa4f4fe816d9013b9a7c9f5ba6"
-dependencies = [
- "cortex-m-rt-macros",
-]
-
-[[package]]
-name = "cortex-m-rt-macros"
-version = "0.7.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e37549a379a9e0e6e576fd208ee60394ccb8be963889eebba3ffe0980364f472"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
-]
-
-[[package]]
 name = "critical-section"
 version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -295,14 +275,12 @@ name = "pico-rs"
 version = "0.1.0"
 dependencies = [
  "cfg-if",
- "cortex-m",
- "cortex-m-rt",
- "critical-section",
  "defmt",
  "enumflags2",
  "paste",
  "pico-rs-macro",
  "pico-rs-pac",
+ "pico-rs-rt",
  "portable-atomic",
 ]
 
@@ -310,13 +288,15 @@ dependencies = [
 name = "pico-rs-examples"
 version = "0.1.0"
 dependencies = [
- "cortex-m",
- "cortex-m-rt",
  "defmt",
  "defmt-rtt",
  "panic-probe",
  "pico-rs",
+<<<<<<< HEAD
  "pico-rs-usb",
+=======
+ "pico-rs-rt",
+>>>>>>> c466689 (impl pico-rs-rt)
 ]
 
 [[package]]
@@ -332,13 +312,12 @@ dependencies = [
 name = "pico-rs-pac"
 version = "0.1.0"
 dependencies = [
- "cortex-m",
- "cortex-m-rt",
- "critical-section",
  "enumflags2",
+ "pico-rs-rt",
 ]
 
 [[package]]
+<<<<<<< HEAD
 name = "pico-rs-usb"
 version = "0.1.0"
 dependencies = [
@@ -349,6 +328,10 @@ dependencies = [
  "pico-rs-pac",
  "portable-atomic",
 ]
+=======
+name = "pico-rs-rt"
+version = "0.1.0"
+>>>>>>> c466689 (impl pico-rs-rt)
 
 [[package]]
 name = "portable-atomic"

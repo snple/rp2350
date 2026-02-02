@@ -306,7 +306,7 @@ macro_rules! impl_pll {
 
                 // Wait for VCO to lock
                 while !self.is_locked() {
-                    cortex_m::asm::nop();
+                    pico_rs_rt::asm::nop();
                 }
 
                 // Configure post dividers
@@ -323,7 +323,7 @@ macro_rules! impl_pll {
             #[inline]
             pub fn wait_lock(&self) {
                 while !self.is_locked() {
-                    cortex_m::asm::nop();
+                    pico_rs_rt::asm::nop();
                 }
             }
 

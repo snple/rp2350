@@ -9,13 +9,18 @@
 use proc_macro::TokenStream;
 use proc_macro2::Span;
 use quote::quote;
+<<<<<<< HEAD
 use syn::{Expr, Item, ItemFn, Lit, Stmt, Token, parse, parse_macro_input, punctuated::Punctuated};
+=======
+use syn::{ItemFn, ReturnType, Type, parse, parse_macro_input};
+>>>>>>> c466689 (impl pico-rs-rt)
 
 mod pio_asm;
 
 /// Attribute to declare the entry point of the program
 ///
-/// This macro wraps `cortex_m_rt::entry` and adds RP2350-specific initialization:
+/// This macro generates the `main` entry point that the runtime calls after
+/// initialization, adding RP2350-specific initialization code.
 ///
 /// ## Initialization performed:
 ///
@@ -49,11 +54,9 @@ mod pio_asm;
 /// ## Note
 ///
 /// The entry function must have the signature `fn() -> !` (never returns).
-/// Static variables declared at the top of main will still be processed
-/// correctly by cortex-m-rt.
 #[proc_macro_attribute]
 pub fn entry(args: TokenStream, input: TokenStream) -> TokenStream {
-    let mut f = parse_macro_input!(input as ItemFn);
+    let f = parse_macro_input!(input as ItemFn);
 
     if !args.is_empty() {
         return parse::Error::new(Span::call_site(), "This attribute accepts no arguments")
@@ -61,22 +64,31 @@ pub fn entry(args: TokenStream, input: TokenStream) -> TokenStream {
             .into();
     }
 
-    // RP2350 ARM-specific initialization code
-    let init_code: TokenStream = quote!(unsafe {
-        // ============================================================
-        // RP2350 Hardware Initialization
-        // ============================================================
+    // Check that the function has no arguments
+    if !f.sig.inputs.is_empty() {
+        return parse::Error::new(
+            Span::call_site(),
+            "#[entry] function must have signature fn() -> !",
+        )
+        .to_compile_error()
+        .into();
+    }
 
-        // 1. Clear all spinlocks to prevent deadlocks after reset
-        // Spinlocks are NOT automatically cleared on software reset, only on
-        // power-on reset. This can cause deadlocks when using a debugger.
-        const SIO_BASE: u32 = 0xd000_0000;
-        const SPINLOCK0_PTR: *mut u32 = (SIO_BASE + 0x100) as *mut u32;
-        const SPINLOCK_COUNT: usize = 32;
-        for i in 0..SPINLOCK_COUNT {
-            // Writing any value releases the spinlock
-            SPINLOCK0_PTR.wrapping_add(i).write_volatile(1);
+    // Check that the return type is `!` (never)
+    match &f.sig.output {
+        ReturnType::Type(_, ty) => {
+            if let Type::Never(_) = **ty {
+                // OK
+            } else {
+                return parse::Error::new(
+                    Span::call_site(),
+                    "#[entry] function must have return type `!`",
+                )
+                .to_compile_error()
+                .into();
+            }
         }
+<<<<<<< HEAD
 
         // 2. Enable co-processors in the Coprocessor Access Control Register (CPACR)
         // This must be done early, before any code attempts to use these features.
@@ -129,11 +141,68 @@ fn insert_after_static(stmts: impl IntoIterator<Item = Stmt>, insert: Stmt) -> V
                 result.push(stmt);
                 break;
             }
+=======
+        ReturnType::Default => {
+            return parse::Error::new(
+                Span::call_site(),
+                "#[entry] function must have return type `!`",
+            )
+            .to_compile_error()
+            .into();
+>>>>>>> c466689 (impl pico-rs-rt)
         }
     }
-    result.extend(istmts);
 
-    result
+    let attrs = &f.attrs;
+    let stmts = &f.block.stmts;
+    let ident = &f.sig.ident;
+
+    // Generate the main function that the runtime calls
+    quote!(
+        #[unsafe(export_name = "main")]
+        #(#attrs)*
+        pub unsafe fn #ident() -> ! {
+            // ============================================================
+            // RP2350 Hardware Initialization
+            // ============================================================
+
+            // 1. Clear all spinlocks to prevent deadlocks after reset
+            // Spinlocks are NOT automatically cleared on software reset, only on
+            // power-on reset. This can cause deadlocks when using a debugger.
+            const SIO_BASE: u32 = 0xd000_0000;
+            const SPINLOCK0_PTR: *mut u32 = (SIO_BASE + 0x100) as *mut u32;
+            const SPINLOCK_COUNT: usize = 32;
+            for i in 0..SPINLOCK_COUNT {
+                // Writing any value releases the spinlock
+                unsafe { SPINLOCK0_PTR.wrapping_add(i).write_volatile(1) };
+            }
+
+            // 2. Enable co-processors in the Coprocessor Access Control Register (CPACR)
+            // This must be done early, before any code attempts to use these features.
+            const SCB_CPACR_PTR: *mut u32 = 0xE000_ED88 as *mut u32;
+            const CPACR_FULL_ACCESS: u32 = 0b11;
+
+            // Read current CPACR (FPU is already enabled by the runtime)
+            let mut cpacr = unsafe { SCB_CPACR_PTR.read_volatile() };
+
+            // Enable co-processors:
+            // - CP0 (bits 1:0): GPIO Co-Processor
+            // - CP4 (bits 9:8): DCP (Double Co-Processor) for accelerated math
+            // Note: CP10/CP11 (FPU) are already enabled by the runtime
+            cpacr |= CPACR_FULL_ACCESS << (0 * 2);  // CP0 - GPIO Co-Pro
+            cpacr |= CPACR_FULL_ACCESS << (4 * 2);  // CP4 - DCP
+
+            unsafe { SCB_CPACR_PTR.write_volatile(cpacr) };
+
+            // 3. Memory barrier to ensure all initialization is complete
+            // Prevents any accelerated code from being reordered before this point
+            core::sync::atomic::compiler_fence(core::sync::atomic::Ordering::SeqCst);
+
+            // User code
+            #(#stmts)*
+        }
+    )
+    .into()
 }
 
 /// Compile PIO assembly code into machine code

@@ -79,7 +79,7 @@ fn main() -> ! {
         }
 
         // Could do other work here or enter low power mode
-        cortex_m::asm::wfi();
+        pico_rs_rt::asm::wfi();
     }
 }
 

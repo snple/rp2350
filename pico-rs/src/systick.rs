@@ -1,7 +1,7 @@
 //! SysTick timer driver for Cortex-M33
 //!
 //! The SysTick timer is a 24-bit down counter built into all Cortex-M processors.
-//! This module provides a safe interface using the cortex-m crate's SYST peripheral.
+//! This module provides a safe interface using the pico-rs-rt SYST peripheral.
 //!
 //! # Example
 //!
@@ -22,18 +22,17 @@
 
 use crate::time::Duration;
 use core::sync::atomic::{AtomicU32, Ordering};
-use cortex_m::peripheral::SYST;
-use cortex_m::peripheral::syst::SystClkSource;
+use pico_rs_rt::peripheral::syst::{self, SystClkSource, SYST};
 
 /// Maximum reload value (24-bit counter)
-const SYSTICK_MAX_RELOAD: u32 = 0x00FF_FFFF;
+const SYSTICK_MAX_RELOAD: u32 = syst::MAX_RELOAD;
 
 /// Global tick counter for overflow tracking (used with interrupt mode)
 static TICK_COUNT: AtomicU32 = AtomicU32::new(0);
 
 /// SysTick timer driver
 ///
-/// This driver takes ownership of the cortex-m SYST peripheral and provides
+/// This driver takes ownership of the pico-rs-rt SYST peripheral and provides
 /// convenient delay functions.
 pub struct SysTick {
     /// The underlying SYST peripheral (ownership or borrowed)
@@ -48,12 +47,12 @@ impl SysTick {
     /// Create a new SysTick timer with the given clock frequency
     ///
     /// # Arguments
-    /// * `syst` - The SYST peripheral from cortex-m
+    /// * `syst` - The SYST peripheral from pico-rs-rt
     /// * `freq_hz` - The clock frequency in Hz (typically the CPU clock)
     ///
     /// # Example
     /// ```ignore
-    /// use cortex_m::Peripherals;
+    /// use pico_rs_rt::Peripherals;
     /// use pico_rs::systick::SysTick;
     ///
     /// let cp = Peripherals::take().unwrap();
@@ -85,12 +84,12 @@ impl SysTick {
     /// # Arguments
     /// * `freq_hz` - The clock frequency in Hz (typically the CPU clock)
     pub unsafe fn new_unchecked(freq_hz: u32) -> Self {
-        let syst_ptr = SYST::PTR;
         let ticks_per_us = freq_hz / 1_000_000;
 
         // Configure SysTick using raw pointer access
         // SAFETY: Caller guarantees exclusive access to SysTick
         unsafe {
+            let syst_ptr = SYST::PTR;
             (*syst_ptr).csr.write(0); // Disable
             (*syst_ptr).cvr.write(0); // Clear current
             (*syst_ptr).rvr.write(SYSTICK_MAX_RELOAD);
@@ -131,7 +130,7 @@ impl SysTick {
 
     /// Check if the counter has reached zero since last check
     #[inline]
-    pub fn has_wrapped(&self) -> bool {
+    pub fn has_wrapped(&mut self) -> bool {
         // Read CSR - the COUNTFLAG bit is cleared by reading it
         let syst = unsafe { &*SYST::PTR };
         (syst.csr.read() & (1 << 16)) != 0
@@ -140,26 +139,21 @@ impl SysTick {
     /// Get the calibration value (if available)
     #[inline]
     pub fn calibration(&self) -> Option<u32> {
-        let calib = SYST::get_ticks_per_10ms();
-        if calib == 0 { None } else { Some(calib) }
+        SYST::get_ticks_per_10ms()
     }
 
     /// Enable the SysTick counter
     #[inline]
     pub fn enable(&mut self) {
         let syst = unsafe { &*SYST::PTR };
-        unsafe {
-            syst.csr.modify(|v| v | 1); // Set ENABLE bit
-        }
+        syst.csr.modify(|v| v | 1); // Set ENABLE bit
     }
 
     /// Disable the SysTick counter
     #[inline]
     pub fn disable(&mut self) {
         let syst = unsafe { &*SYST::PTR };
-        unsafe {
-            syst.csr.modify(|v| v & !1); // Clear ENABLE bit
-        }
+        syst.csr.modify(|v| v & !1); // Clear ENABLE bit
     }
 
     /// Check if the counter is enabled
@@ -173,18 +167,14 @@ impl SysTick {
     #[inline]
     pub fn enable_interrupt(&mut self) {
         let syst = unsafe { &*SYST::PTR };
-        unsafe {
-            syst.csr.modify(|v| v | (1 << 1)); // Set TICKINT bit
-        }
+        syst.csr.modify(|v| v | (1 << 1)); // Set TICKINT bit
     }
 
     /// Disable the SysTick interrupt
     #[inline]
     pub fn disable_interrupt(&mut self) {
         let syst = unsafe { &*SYST::PTR };
-        unsafe {
-            syst.csr.modify(|v| v & !(1 << 1)); // Clear TICKINT bit
-        }
+        syst.csr.modify(|v| v & !(1 << 1)); // Clear TICKINT bit
     }
 
     /// Check if the interrupt is enabled
@@ -198,11 +188,9 @@ impl SysTick {
     #[inline]
     pub fn set_clock_source(&mut self, source: SystClkSource) {
         let syst = unsafe { &*SYST::PTR };
-        unsafe {
-            match source {
-                SystClkSource::Core => syst.csr.modify(|v| v | (1 << 2)),
-                SystClkSource::External => syst.csr.modify(|v| v & !(1 << 2)),
-            }
+        match source {
+            SystClkSource::Core => syst.csr.modify(|v| v | (1 << 2)),
+            SystClkSource::External => syst.csr.modify(|v| v & !(1 << 2)),
         }
     }
 
@@ -210,9 +198,7 @@ impl SysTick {
     #[inline]
     pub fn set_reload(&mut self, value: u32) {
         let syst = unsafe { &*SYST::PTR };
-        unsafe {
-            syst.rvr.write(value.min(SYSTICK_MAX_RELOAD));
-        }
+        syst.rvr.write(value.min(SYSTICK_MAX_RELOAD));
     }
 
     /// Delay for a duration
@@ -286,7 +272,7 @@ impl SysTick {
             }
 
             // Small yield to prevent tight spinning
-            cortex_m::asm::nop();
+            pico_rs_rt::asm::nop();
         }
     }
 
@@ -340,7 +326,7 @@ impl Delay {
     /// of the SysTick peripheral.
     ///
     /// # Arguments
-    /// * `syst` - The SYST peripheral from cortex-m
+    /// * `syst` - The SYST peripheral from pico-rs-rt
     /// * `freq_hz` - The clock frequency in Hz
     pub fn from_syst(syst: SYST, freq_hz: u32) -> Self {
         Self {
@@ -431,7 +417,7 @@ pub fn reset_tick_count() {
 #[inline]
 pub fn delay_cycles(cycles: u32) {
     for _ in 0..cycles {
-        cortex_m::asm::nop();
+        pico_rs_rt::asm::nop();
     }
 }
 

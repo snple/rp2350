@@ -19,7 +19,7 @@
 //! fn core1_main() -> ! {
 //!     // Core 1 code runs here
 //!     loop {
-//!         cortex_m::asm::wfe();
+//!         pico_rs_rt::asm::wfe();
 //!     }
 //! }
 //!
@@ -215,7 +215,7 @@ impl Fifo {
         if self.is_write_ready() {
             self.sio.fifo_wr.write_bits(value);
             // Ensure the write is visible to the other core
-            cortex_m::asm::sev();
+            pico_rs_rt::asm::sev();
             Ok(())
         } else {
             Err(value)
@@ -244,10 +244,10 @@ impl Fifo {
     #[inline]
     pub fn write(&self, value: u32) {
         while !self.is_write_ready() {
-            cortex_m::asm::wfe();
+            pico_rs_rt::asm::wfe();
         }
         self.sio.fifo_wr.write_bits(value);
-        cortex_m::asm::sev();
+        pico_rs_rt::asm::sev();
     }
 
     /// Read a value from the FIFO (blocking)
@@ -256,7 +256,7 @@ impl Fifo {
     #[inline]
     pub fn read(&self) -> u32 {
         while !self.is_read_ready() {
-            cortex_m::asm::wfe();
+            pico_rs_rt::asm::wfe();
         }
         self.sio.fifo_rd.read_bits()
     }
@@ -357,7 +357,7 @@ impl Doorbell {
     #[inline]
     pub fn wait(&self) {
         while !self.is_pending(0) {
-            cortex_m::asm::wfe();
+            pico_rs_rt::asm::wfe();
         }
         self.clear_local(1);
     }
@@ -417,7 +417,7 @@ impl Multicore {
     ///
     /// fn core1_entry() -> ! {
     ///     loop {
-    ///         cortex_m::asm::wfe();
+    ///         pico_rs_rt::asm::wfe();
     ///     }
     /// }
     ///
@@ -474,7 +474,7 @@ impl Multicore {
             if cmd == 0 {
                 fifo.drain();
                 // Execute a SEV as core 1 may be waiting for FIFO space via WFE
-                cortex_m::asm::sev();
+                pico_rs_rt::asm::sev();
             }
 
             // Send the command (blocking)
@@ -513,7 +513,7 @@ impl Multicore {
 
         // Wait for Core 1 to be in reset (done bit goes low)
         while self.psm.done.proc1() {
-            cortex_m::asm::nop();
+            pico_rs_rt::asm::nop();
         }
 
         // Clear the force-off to bring Core 1 out of reset

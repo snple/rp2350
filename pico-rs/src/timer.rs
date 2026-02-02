@@ -337,7 +337,7 @@ macro_rules! impl_timer {
             pub fn delay_us(&self, us: u64) {
                 let target = self.get_time_us().wrapping_add(us);
                 while self.get_time_us() < target {
-                    cortex_m::asm::nop();
+                    pico_rs_rt::asm::nop();
                 }
             }
 
@@ -359,7 +359,7 @@ macro_rules! impl_timer {
             #[inline]
             pub fn delay_until(&self, target_us: u64) {
                 while self.get_time_us() < target_us {
-                    cortex_m::asm::nop();
+                    pico_rs_rt::asm::nop();
                 }
             }
         }

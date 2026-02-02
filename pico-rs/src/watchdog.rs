@@ -484,7 +484,7 @@ pub fn reboot(delay_ms: u32) -> ! {
 
     // Wait for watchdog to trigger reset
     loop {
-        cortex_m::asm::wfi();
+        pico_rs_rt::asm::wfi();
     }
 }
 
@@ -535,7 +535,7 @@ pub fn reboot_to_address(pc: u32, sp: u32, delay_ms: u32) -> ! {
 
     // Wait for watchdog to trigger reset
     loop {
-        cortex_m::asm::wfi();
+        pico_rs_rt::asm::wfi();
     }
 }
 

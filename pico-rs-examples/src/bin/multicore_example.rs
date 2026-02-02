@@ -66,7 +66,7 @@ fn core1_main() -> ! {
         // Check for stop signal
         if value == 0xFFFF_FFFF {
             loop {
-                cortex_m::asm::wfe();
+                pico_rs_rt::asm::wfe();
             }
         }
 
@@ -135,7 +135,7 @@ fn main() -> ! {
             HANDSHAKE_MAGIC, response
         );
         loop {
-            cortex_m::asm::wfi();
+            pico_rs_rt::asm::wfi();
         }
     }
 
@@ -187,6 +187,6 @@ fn main() -> ! {
     info!("[Core 0] Done! Entering idle loop.");
 
     loop {
-        cortex_m::asm::wfe();
+        pico_rs_rt::asm::wfe();
     }
 }

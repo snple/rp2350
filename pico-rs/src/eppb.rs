@@ -181,7 +181,7 @@ impl Eppb {
     #[inline]
     pub fn wait_wicenack(&self) {
         while !self.is_wicenack() {
-            cortex_m::asm::nop();
+            pico_rs_rt::asm::nop();
         }
     }
 

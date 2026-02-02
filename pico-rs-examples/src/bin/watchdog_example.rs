@@ -140,7 +140,7 @@ fn main() -> ! {
 
                 led.set_high();
                 loop {
-                    cortex_m::asm::wfe();
+                    pico_rs_rt::asm::wfe();
                 }
             } else {
                 info!("");
