@@ -100,7 +100,6 @@ fn generate_mod_rs(peripherals: &[&Peripheral]) -> String {
         .unwrap();
         writeln!(out).unwrap();
 
-        writeln!(out, "#[cfg(feature = \"rt\")]").unwrap();
         writeln!(out, "unsafe extern \"C\" {{").unwrap();
         for (int, _) in &all_interrupts {
             writeln!(out, "    fn {}();", int.name.to_shouty_snake_case()).unwrap();
@@ -128,7 +127,6 @@ fn generate_mod_rs(peripherals: &[&Peripheral]) -> String {
             max_irq + 1
         )
         .unwrap();
-        writeln!(out, "#[cfg(feature = \"rt\")]").unwrap();
         writeln!(out, "#[doc(hidden)]").unwrap();
         writeln!(
             out,
@@ -185,7 +183,6 @@ fn generate_mod_rs(peripherals: &[&Peripheral]) -> String {
         writeln!(out, "}}").unwrap();
         writeln!(out).unwrap();
 
-        writeln!(out, "#[cfg(feature = \"rt\")]").unwrap();
         writeln!(
             out,
             "unsafe impl pico_rs_rt::peripheral::nvic::InterruptNumber for Interrupt {{"
@@ -330,7 +327,6 @@ fn generate_mod_rs(peripherals: &[&Peripheral]) -> String {
 
     writeln!(out, "impl Peripherals {{").unwrap();
     writeln!(out, "    /// Returns all the peripherals *once*.").unwrap();
-    writeln!(out, "    #[cfg(feature = \"rt\")]").unwrap();
     writeln!(out, "    #[inline]").unwrap();
     writeln!(out, "    pub fn take() -> Option<Self> {{").unwrap();
     writeln!(out, "        if TAKEN.swap(true, Ordering::AcqRel) {{").unwrap();

@@ -15,7 +15,6 @@ pub mod common;
 // Interrupt Handlers
 // ============================================================================
 
-#[cfg(feature = "rt")]
 unsafe extern "C" {
     fn TIMER0_IRQ_0();
     fn TIMER0_IRQ_1();
@@ -78,7 +77,6 @@ pub union Vector {
 }
 
 /// RP2350 interrupt vector table (52 interrupts)
-#[cfg(feature = "rt")]
 #[doc(hidden)]
 #[unsafe(link_section = ".vector_table.interrupts")]
 #[unsafe(no_mangle)]
@@ -243,7 +241,6 @@ pub enum Interrupt {
     SPARE_IRQ_5 = 51,
 }
 
-#[cfg(feature = "rt")]
 unsafe impl pico_rs_rt::peripheral::nvic::InterruptNumber for Interrupt {
     #[inline(always)]
     fn number(self) -> u16 {
@@ -2917,7 +2914,6 @@ pub struct Peripherals {
 
 impl Peripherals {
     /// Returns all the peripherals *once*.
-    #[cfg(feature = "rt")]
     #[inline]
     pub fn take() -> Option<Self> {
         if TAKEN.swap(true, Ordering::AcqRel) {

@@ -42,7 +42,7 @@ fn unreset_usb() {
 
     // Wait for reset to complete
     while resets.reset_done.read_bits() & USBCTRL_RESET_BIT == 0 {
-        cortex_m::asm::nop();
+        pico_rs_rt::asm::nop();
     }
 }
 
@@ -252,7 +252,7 @@ impl UsbBus {
                 .ep0_out_buffer_control
                 .write_bits(pico_rs_pac::usb_dpram::Ep0OutBufferControl::PID_0);
             // Apply errata delay before setting AVAILABLE
-            cortex_m::asm::delay(12);
+            pico_rs_rt::asm::delay(12);
             // Arm EP0 OUT to receive the first SETUP packet
             self.dpram
                 .ep0_out_buffer_control

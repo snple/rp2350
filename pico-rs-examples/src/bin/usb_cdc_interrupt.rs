@@ -27,20 +27,18 @@
 
 use core::cell::RefCell;
 
-use cortex_m::interrupt::Mutex;
 use defmt::*;
 use defmt_rtt as _;
 use panic_probe as _;
 
-use cortex_m_rt::exception;
 use pico_rs::block::ImageDef;
 use pico_rs::clocks::{ClkPeriAuxSrc, ClkRefSrc, ClkSysAuxSrc, ClkUsbAuxSrc, Clocks};
-use pico_rs::entry;
-use pico_rs::interrupt::{self, Interrupt};
+use pico_rs::interrupt::{self, Interrupt, Mutex};
 use pico_rs::pll::{PllConfig, PllSys, PllUsb};
 use pico_rs::reset::{self, Peripheral};
 use pico_rs::task::{Event, EventQueue};
 use pico_rs::xosc::Xosc;
+use pico_rs::{entry, exception};
 
 use pico_rs_usb::bus::UsbBus;
 use pico_rs_usb::class::cdc::CdcAcm;
@@ -110,7 +108,7 @@ static PORT_WAS_OPEN: Mutex<RefCell<bool>> = Mutex::new(RefCell::new(false));
 #[allow(non_snake_case)]
 #[unsafe(no_mangle)]
 fn USBCTRL_IRQ() {
-    cortex_m::interrupt::free(|cs| {
+    interrupt::free(|cs| {
         // Get mutable references to USB device and class
         let mut dev_ref = USB_DEV.borrow(cs).borrow_mut();
         let mut cdc_ref = USB_CDC.borrow(cs).borrow_mut();
@@ -236,20 +234,19 @@ fn init_clocks() -> Clocks {
 
 fn setup_systick(reload_value: u32) {
     // Access SysTick using raw pointer
-    let syst = unsafe { &*cortex_m::peripheral::SYST::PTR };
+    let syst = unsafe { &*pico_rs::pico_rs_rt::peripheral::SYST::PTR };
 
     // Configure SysTick
-    unsafe {
-        // Disable first
-        syst.csr.write(0);
-        // Set reload value (24-bit max)
-        syst.rvr.write(reload_value & 0x00FF_FFFF);
-        // Clear current value
-        syst.cvr.write(0);
-        // Enable with processor clock source and interrupt
-        // Bit 0: ENABLE, Bit 1: TICKINT, Bit 2: CLKSOURCE
-        syst.csr.write(0b111);
-    }
+
+    // Disable first
+    syst.csr.write(0);
+    // Set reload value (24-bit max)
+    syst.rvr.write(reload_value & 0x00FF_FFFF);
+    // Clear current value
+    syst.cvr.write(0);
+    // Enable with processor clock source and interrupt
+    // Bit 0: ENABLE, Bit 1: TICKINT, Bit 2: CLKSOURCE
+    syst.csr.write(0b111);
 }
 
 /// SysTick exception handler
@@ -272,7 +269,7 @@ fn main() -> ! {
     info!("Clock system initialized");
 
     // Initialize USB in a critical section to set up globals
-    cortex_m::interrupt::free(|cs| {
+    interrupt::free(|cs| {
         // Create USB bus
         let usb_bus = UsbBus::new();
         let _ = usb_bus.init();
@@ -340,7 +337,7 @@ fn main() -> ! {
                     info!("RX event: {} bytes", count);
 
                     // Read data from shared buffer and echo back
-                    cortex_m::interrupt::free(|cs| {
+                    interrupt::free(|cs| {
                         let rx_buf = RX_BUFFER.borrow(cs).borrow();
                         let mut rx_len = RX_LEN.borrow(cs).borrow_mut();
                         let len = *rx_len;
@@ -365,7 +362,7 @@ fn main() -> ! {
                     connected = true;
 
                     // Send welcome message
-                    cortex_m::interrupt::free(|cs| {
+                    interrupt::free(|cs| {
                         if let Some(cdc) = USB_CDC.borrow(cs).borrow_mut().as_mut() {
                             let _ =
                                 cdc.write_all(b"\r\n=== Pico-RS USB CDC (Interrupt Mode) ===\r\n");
@@ -390,7 +387,7 @@ fn main() -> ! {
                         if connected {
                             message_count += 1;
 
-                            cortex_m::interrupt::free(|cs| {
+                            interrupt::free(|cs| {
                                 if let Some(cdc) = USB_CDC.borrow(cs).borrow_mut().as_mut() {
                                     // Format message with counter
                                     let mut buf = [0u8; 64];
@@ -411,7 +408,7 @@ fn main() -> ! {
         }
 
         // Wait for interrupt (low power)
-        cortex_m::asm::wfi();
+        pico_rs::pico_rs_rt::asm::wfi();
         // delay.delay_us(10);
     }
 }

@@ -104,7 +104,5 @@
 
 mod event;
 
-pub use event::{DEFAULT_QUEUE_SIZE, Event, EventQueue, GenericQueue};
-
-#[cfg(feature = "critical-section")]
 pub use event::MpscQueue;
+pub use event::{DEFAULT_QUEUE_SIZE, Event, EventQueue, GenericQueue};

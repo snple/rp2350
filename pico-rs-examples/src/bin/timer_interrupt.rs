@@ -16,12 +16,10 @@ use core::sync::atomic::{AtomicBool, Ordering};
 use defmt::*;
 use defmt_rtt as _;
 use panic_probe as _;
-use pico_rs_rt::interrupt::{self as rt_interrupt, Mutex};
-
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
 use pico_rs::gpio::GpioBank;
-use pico_rs::interrupt as irq;
+use pico_rs::interrupt::{self, Mutex};
 use pico_rs::pac::Interrupt;
 use pico_rs::timer::Timer0;
 
@@ -57,13 +55,13 @@ fn main() -> ! {
     timer.enable_alarm_interrupt(0);
 
     // Store timer in global variable for interrupt handler
-    rt_interrupt::free(|cs| {
+    interrupt::free(|cs| {
         TIMER.borrow(cs).replace(Some(timer));
     });
 
     // Enable TIMER0_IRQ_0 in NVIC
     unsafe {
-        irq::enable(Interrupt::TIMER0_IRQ_0);
+        interrupt::enable(Interrupt::TIMER0_IRQ_0);
     }
     info!(
         "Timer interrupt enabled, blinking at {}ms interval",
@@ -84,7 +82,7 @@ fn main() -> ! {
 #[allow(non_snake_case)]
 fn TIMER0_IRQ_0() {
     // Access the timer and GPIO in a critical section
-    rt_interrupt::free(|cs| {
+    interrupt::free(|cs| {
         if let Some(ref timer) = *TIMER.borrow(cs).borrow() {
             // Clear the interrupt
             timer.clear_alarm_interrupt(0);

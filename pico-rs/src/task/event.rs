@@ -61,6 +61,8 @@ use core::cell::UnsafeCell;
 use core::mem::MaybeUninit;
 use core::sync::atomic::{AtomicUsize, Ordering};
 
+use crate::interrupt;
+
 // ============================================================================
 // 简单事件 (u32)
 // ============================================================================
@@ -367,10 +369,8 @@ macro_rules! define_events {
 }
 
 // ============================================================================
-// 多生产者支持（需要 critical-section）
+// 多生产者支持
 // ============================================================================
-
-#[cfg(feature = "critical-section")]
 mod mpsc {
     use super::*;
 
@@ -392,7 +392,7 @@ mod mpsc {
         /// 推入事件（中断安全）
         #[inline]
         pub fn push(&self, event: Event) -> bool {
-            critical_section::with(|_| self.inner.push(event))
+            interrupt::free(|_| self.inner.push(event))
         }
 
         /// 弹出事件
@@ -416,7 +416,7 @@ mod mpsc {
         /// 清空队列
         #[inline]
         pub fn clear(&self) {
-            critical_section::with(|_| self.inner.clear())
+            interrupt::free(|_| self.inner.clear())
         }
     }
 
@@ -430,5 +430,4 @@ mod mpsc {
     unsafe impl<const N: usize> Sync for MpscQueue<N> {}
 }
 
-#[cfg(feature = "critical-section")]
 pub use mpsc::MpscQueue;

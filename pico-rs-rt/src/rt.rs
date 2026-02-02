@@ -3,6 +3,52 @@
 //! This module provides the reset handler and exception vectors.
 //! The actual startup sequence is implemented in assembly for reliability.
 
+/// Registers stacked (pushed into the stack) during an exception.
+///
+/// This structure is used by the `HardFault` exception handler when using
+/// the trampoline mode. The hardware automatically pushes these registers
+/// onto the stack when an exception occurs.
+#[derive(Clone, Copy, Debug)]
+#[repr(C)]
+pub struct ExceptionFrame {
+    /// R0 register
+    pub r0: u32,
+    /// R1 register
+    pub r1: u32,
+    /// R2 register
+    pub r2: u32,
+    /// R3 register
+    pub r3: u32,
+    /// R12 register
+    pub r12: u32,
+    /// Link Register (R14) - contains the return address
+    pub lr: u32,
+    /// Program Counter (R15) - the address of the instruction that caused the exception
+    pub pc: u32,
+    /// Program Status Register - contains flags and execution state
+    pub xpsr: u32,
+}
+
+impl ExceptionFrame {
+    /// Returns the value of the program counter when the exception occurred.
+    #[inline]
+    pub fn pc(&self) -> u32 {
+        self.pc
+    }
+
+    /// Returns the value of the link register when the exception occurred.
+    #[inline]
+    pub fn lr(&self) -> u32 {
+        self.lr
+    }
+
+    /// Returns the value of the program status register when the exception occurred.
+    #[inline]
+    pub fn xpsr(&self) -> u32 {
+        self.xpsr
+    }
+}
+
 /// Default pre-init function (does nothing)
 #[doc(hidden)]
 #[unsafe(no_mangle)]
@@ -29,13 +75,13 @@ pub unsafe extern "C" fn HardFault_() {
 // External symbols from linker script
 unsafe extern "C" {
     // Data section
-    static __sidata: u32;  // LMA of .data
-    static mut __sdata: u32;  // Start of .data in RAM
-    static mut __edata: u32;  // End of .data in RAM
+    static __sidata: u32; // LMA of .data
+    static mut __sdata: u32; // Start of .data in RAM
+    static mut __edata: u32; // End of .data in RAM
 
     // BSS section
-    static mut __sbss: u32;   // Start of .bss
-    static mut __ebss: u32;   // End of .bss
+    static mut __sbss: u32; // Start of .bss
+    static mut __ebss: u32; // End of .bss
 
     // Stack
     static _stack_start: u32;
@@ -80,7 +126,6 @@ pub unsafe extern "C" fn Reset() -> ! {
     }
 
     // Set MSPLIM for stack overflow detection (ARMv8-M feature)
-    #[cfg(feature = "rt")]
     unsafe {
         let stack_end = &raw const _stack_end as u32;
         core::arch::asm!(
@@ -127,17 +172,25 @@ pub union Vector {
 #[unsafe(no_mangle)]
 pub static __EXCEPTIONS: [Vector; 14] = [
     // 2: NMI
-    Vector { handler: NonMaskableInt },
+    Vector {
+        handler: NonMaskableInt,
+    },
     // 3: HardFault
     Vector { handler: HardFault },
     // 4: MemManage
-    Vector { handler: MemoryManagement },
+    Vector {
+        handler: MemoryManagement,
+    },
     // 5: BusFault
     Vector { handler: BusFault },
     // 6: UsageFault
-    Vector { handler: UsageFault },
+    Vector {
+        handler: UsageFault,
+    },
     // 7: SecureFault (ARMv8-M)
-    Vector { handler: SecureFault },
+    Vector {
+        handler: SecureFault,
+    },
     // 8-10: Reserved
     Vector { reserved: 0 },
     Vector { reserved: 0 },
@@ -145,7 +198,9 @@ pub static __EXCEPTIONS: [Vector; 14] = [
     // 11: SVCall
     Vector { handler: SVCall },
     // 12: DebugMonitor
-    Vector { handler: DebugMonitor },
+    Vector {
+        handler: DebugMonitor,
+    },
     // 13: Reserved
     Vector { reserved: 0 },
     // 14: PendSV

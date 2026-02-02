@@ -119,6 +119,6 @@ fn main() -> ! {
         }
 
         // 短暂延迟
-        cortex_m::asm::nop();
+        pico_rs::pico_rs_rt::asm::nop();
     }
 }

@@ -39,22 +39,14 @@
 //! }
 //! ```
 
+use core::cell::UnsafeCell;
+use core::sync::atomic::{AtomicU8, Ordering};
 use pico_rs_rt::peripheral::NVIC;
 
 // Re-export the interrupt enum from PAC for convenience
 pub use crate::pac::Interrupt;
 
-// Re-export core interrupt primitives from pico-rs-rt
-pub use pico_rs_rt::interrupt::{
-    CriticalSection,
-    Mutex,
-    free,
-    // Priority-based masking
-    free_basepri,
-    is_enabled as are_enabled,
-    priority_threshold,
-    set_priority_threshold,
-};
+use pico_rs_rt::register::primask;
 
 // ============================================================================
 // NVIC Operations
@@ -162,52 +154,13 @@ pub fn get_priority(interrupt: Interrupt) -> u8 {
 // Additional Utilities
 // ============================================================================
 
-<<<<<<< HEAD
-/// Execute a closure in a critical section (interrupts disabled)
-///
-/// All interrupts are disabled while the closure executes. This is useful
-/// for protecting shared data from race conditions.
-///
-/// # Example
-/// ```ignore
-/// use pico_rs::interrupt;
-///
-/// static mut COUNTER: u32 = 0;
-///
-/// interrupt::free(|_cs| {
-///     // Safe to access COUNTER here - no interrupts can preempt
-///     unsafe { COUNTER += 1; }
-/// });
-/// ```
-#[inline]
-pub fn free<F, R>(f: F) -> R
-where
-    F: FnOnce(CriticalSection) -> R,
-{
-    // Disable interrupts
-    let restore_state = crate::cortex_m33::register::primask::read_raw();
-    cortex_m::interrupt::disable();
-
-    // Create critical section token
-    let cs = unsafe { CriticalSection::new() };
-
-    // Execute the closure
-    let result = f(cs);
-
-    // Restore interrupt state
-    unsafe { crate::cortex_m33::register::primask::write_raw(restore_state) };
-
-    result
-}
-
-=======
->>>>>>> c466689 (impl pico-rs-rt)
 /// Check if we are currently in an interrupt handler
 #[inline]
 pub fn in_interrupt() -> bool {
     // Read the IPSR (Interrupt Program Status Register)
     // If non-zero, we're in an exception/interrupt handler
     let ipsr: u32;
+    #[allow(asm_sub_register)]
     unsafe {
         core::arch::asm!("mrs {0}, IPSR", out(reg) ipsr, options(nomem, nostack, preserves_flags));
     }
@@ -516,7 +469,7 @@ pub mod spare {
 /// } // Interrupts automatically restored here
 /// ```
 pub fn disable_all() -> InterruptGuard {
-    let was_enabled = are_enabled();
+    let was_enabled = pico_rs_rt::interrupt::is_enabled();
     pico_rs_rt::interrupt::disable();
     InterruptGuard { was_enabled }
 }
@@ -550,4 +503,188 @@ pub fn current_core() -> u32 {
         let sio = &*crate::pac::SIO::PTR;
         sio.cpuid.cpuid()
     }
+}
+
+/// Token proving code is running in a critical section (interrupts disabled)
+#[derive(Clone, Copy)]
+pub struct CriticalSection {
+    _private: (),
+}
+
+impl CriticalSection {
+    /// Create a new critical section token
+    ///
+    /// # Safety
+    ///
+    /// Must only be called when interrupts are actually disabled.
+    #[inline(always)]
+    pub(crate) unsafe fn new() -> Self {
+        Self { _private: () }
+    }
+}
+
+/// A mutual exclusion primitive for protecting shared data in interrupt handlers
+///
+/// This is similar to `std::sync::Mutex` but designed for use in interrupt
+/// handlers on single-core systems. Data can only be accessed within a
+/// critical section (with interrupts disabled).
+///
+/// # Example
+///
+/// ```ignore
+/// use core::cell::RefCell;
+/// use pico_rs_rt::interrupt::{self, Mutex};
+///
+/// static COUNTER: Mutex<RefCell<u32>> = Mutex::new(RefCell::new(0));
+///
+/// fn main() {
+///     interrupt::free(|cs| {
+///         *COUNTER.borrow(cs).borrow_mut() += 1;
+///     });
+/// }
+/// ```
+pub struct Mutex<T> {
+    data: UnsafeCell<T>,
+}
+
+// Safety: We only allow access through a CriticalSection token,
+// which proves interrupts are disabled. On a single-core system,
+// this prevents any data races.
+unsafe impl<T> Sync for Mutex<T> where T: Send {}
+
+impl<T> Mutex<T> {
+    /// Create a new Mutex containing the given value
+    #[inline(always)]
+    pub const fn new(value: T) -> Self {
+        Self {
+            data: UnsafeCell::new(value),
+        }
+    }
+
+    /// Borrow the data inside the mutex
+    ///
+    /// This requires a `CriticalSection` token proving that interrupts
+    /// are disabled.
+    #[inline(always)]
+    pub fn borrow(&self, _cs: CriticalSection) -> &T {
+        // Safety: We have a CriticalSection token, proving interrupts are
+        // disabled. On a single-core system, this means no other code can
+        // be accessing this data.
+        unsafe { &*self.data.get() }
+    }
+
+    /// Get a raw pointer to the contained data
+    ///
+    /// This is useful when you need to pass the data to C code or
+    /// perform other low-level operations.
+    #[inline(always)]
+    pub fn as_ptr(&self) -> *mut T {
+        self.data.get()
+    }
+}
+
+/// critical-section 专用的 Spinlock 编号
+///
+/// 使用 Spinlock 31，这是最高编号的 spinlock，
+/// 用户代码应使用 0-30 号 spinlock。
+#[allow(dead_code)]
+const CRITICAL_SECTION_SPINLOCK: u8 = 31;
+
+/// 每个核的嵌套计数器
+///
+/// 使用 2 元素数组，索引为核 ID (0 或 1)
+static NESTING: [AtomicU8; 2] = [AtomicU8::new(0), AtomicU8::new(0)];
+
+/// 获取当前核 ID (0 或 1)
+#[inline]
+fn core_id() -> usize {
+    // SIO CPUID 寄存器返回当前核的 ID
+    let sio = unsafe { &*pico_rs_pac::SIO::PTR };
+    sio.cpuid.read_bits() as usize
+}
+
+/// 尝试获取 spinlock（非阻塞）
+#[inline]
+fn try_acquire_spinlock() -> bool {
+    let sio = unsafe { &*pico_rs_pac::SIO::PTR };
+    // 读取 spinlock 寄存器：返回非零表示获取成功
+    sio.spinlock31.read_bits() != 0
+}
+
+/// 获取 spinlock（阻塞）
+#[inline]
+fn acquire_spinlock() {
+    while !try_acquire_spinlock() {
+        core::hint::spin_loop();
+    }
+}
+
+/// 释放 spinlock
+#[inline]
+fn release_spinlock() {
+    let sio = unsafe { &*pico_rs_pac::SIO::PTR };
+    // 写入任意值释放 spinlock
+    sio.spinlock31.write_bits(1);
+}
+
+/// Execute a closure with interrupts disabled
+///
+/// This is a critical section - the closure runs atomically with respect
+/// to all configurable interrupts. After the closure returns, the previous
+/// interrupt state is restored.
+///
+/// # Example
+///
+/// ```ignore
+/// use pico_rs_rt::interrupt;
+///
+/// static mut COUNTER: u32 = 0;
+///
+/// let value = interrupt::free(|_cs| {
+///     // Safe to access COUNTER - interrupts are disabled
+///     unsafe {
+///         COUNTER += 1;
+///         COUNTER
+///     }
+/// });
+/// ```
+#[inline]
+pub fn free<F, R>(f: F) -> R
+where
+    F: FnOnce(CriticalSection) -> R,
+{
+    // 1. Save current PRIMASK state
+    let primask = primask::read_raw();
+
+    // 2. Disable interrupts
+    pico_rs_rt::interrupt::disable();
+
+    // 3. Get current core ID
+    let core = core_id();
+
+    // 4. Check if already in critical section (nesting)
+    let nesting = NESTING[core].fetch_add(1, Ordering::Acquire);
+
+    // 5. Only acquire spinlock on first entry
+    if nesting == 0 {
+        acquire_spinlock();
+    }
+
+    // 6. Execute the closure
+    let result = f(unsafe { CriticalSection::new() });
+
+    // 7. Decrease nesting count
+    let nesting = NESTING[core].fetch_sub(1, Ordering::Release);
+
+    // 8. Only release spinlock on outermost exit
+    if nesting == 1 {
+        release_spinlock();
+    }
+
+    // 9. Restore previous interrupt state
+    unsafe {
+        primask::write_raw(primask);
+    }
+
+    result
 }

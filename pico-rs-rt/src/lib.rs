@@ -36,20 +36,18 @@
 #![no_std]
 #![deny(missing_docs)]
 #![allow(asm_sub_register)]
+#![allow(binary_asm_labels)]
 #![allow(clippy::pointers_in_nomem_asm_block)]
 
 pub mod asm;
 pub mod interrupt;
 pub mod peripheral;
 pub mod register;
-
-#[cfg(feature = "rt")]
 mod rt;
 
-#[cfg(feature = "rt")]
 pub use rt::Vector;
+pub use rt::ExceptionFrame;
 
 // Re-export commonly used items
-pub use interrupt::{CriticalSection, Mutex};
 pub use peripheral::Peripherals;
 pub use peripheral::nvic::InterruptNumber;

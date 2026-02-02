@@ -22,87 +22,8 @@
 //! ```
 
 use core::arch::asm;
-use core::cell::UnsafeCell;
 
 use crate::register::primask;
-
-/// Token proving code is running in a critical section (interrupts disabled)
-#[derive(Clone, Copy)]
-pub struct CriticalSection {
-    _private: (),
-}
-
-impl CriticalSection {
-    /// Create a new critical section token
-    ///
-    /// # Safety
-    ///
-    /// Must only be called when interrupts are actually disabled.
-    #[inline(always)]
-    pub(crate) unsafe fn new() -> Self {
-        Self { _private: () }
-    }
-}
-
-/// A mutual exclusion primitive for protecting shared data in interrupt handlers
-///
-/// This is similar to `std::sync::Mutex` but designed for use in interrupt
-/// handlers on single-core systems. Data can only be accessed within a
-/// critical section (with interrupts disabled).
-///
-/// # Example
-///
-/// ```ignore
-/// use core::cell::RefCell;
-/// use pico_rs_rt::interrupt::{self, Mutex};
-///
-/// static COUNTER: Mutex<RefCell<u32>> = Mutex::new(RefCell::new(0));
-///
-/// fn main() {
-///     interrupt::free(|cs| {
-///         *COUNTER.borrow(cs).borrow_mut() += 1;
-///     });
-/// }
-/// ```
-pub struct Mutex<T> {
-    data: UnsafeCell<T>,
-}
-
-// Safety: We only allow access through a CriticalSection token,
-// which proves interrupts are disabled. On a single-core system,
-// this prevents any data races.
-unsafe impl<T> Sync for Mutex<T> where T: Send {}
-
-impl<T> Mutex<T> {
-    /// Create a new Mutex containing the given value
-    #[inline(always)]
-    pub const fn new(value: T) -> Self {
-        Self {
-            data: UnsafeCell::new(value),
-        }
-    }
-
-    /// Borrow the data inside the mutex
-    ///
-    /// This requires a `CriticalSection` token proving that interrupts
-    /// are disabled.
-    #[inline(always)]
-    pub fn borrow(&self, _cs: CriticalSection) -> &T {
-        // Safety: We have a CriticalSection token, proving interrupts are
-        // disabled. On a single-core system, this means no other code can
-        // be accessing this data.
-        unsafe { &*self.data.get() }
-    }
-
-    /// Get a raw pointer to the contained data
-    ///
-    /// This is useful when you need to pass the data to C code or
-    /// perform other low-level operations.
-    #[inline(always)]
-    pub fn as_ptr(&self) -> *mut T {
-        self.data.get()
-    }
-}
 
 /// Disable all configurable interrupts
 ///
@@ -129,49 +50,6 @@ pub unsafe fn enable() {
     unsafe {
         asm!("cpsie i", options(nomem, nostack, preserves_flags));
     }
-}
-
-/// Execute a closure with interrupts disabled
-///
-/// This is a critical section - the closure runs atomically with respect
-/// to all configurable interrupts. After the closure returns, the previous
-/// interrupt state is restored.
-///
-/// # Example
-///
-/// ```ignore
-/// use pico_rs_rt::interrupt;
-///
-/// static mut COUNTER: u32 = 0;
-///
-/// let value = interrupt::free(|_cs| {
-///     // Safe to access COUNTER - interrupts are disabled
-///     unsafe {
-///         COUNTER += 1;
-///         COUNTER
-///     }
-/// });
-/// ```
-#[inline]
-pub fn free<F, R>(f: F) -> R
-where
-    F: FnOnce(CriticalSection) -> R,
-{
-    // Save current PRIMASK state
-    let primask = primask::read_raw();
-
-    // Disable interrupts
-    disable();
-
-    // Execute the closure
-    let result = f(unsafe { CriticalSection::new() });
-
-    // Restore previous interrupt state
-    unsafe {
-        primask::write_raw(primask);
-    }
-
-    result
 }
 
 /// Check if interrupts are currently enabled

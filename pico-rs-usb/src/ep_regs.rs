@@ -112,17 +112,17 @@ pub trait BufferControlRegister {
         self.write_raw(val & !Self::AVAILABLE_0);
 
         // Step 2: Memory barrier to ensure write is complete
-        cortex_m::asm::dsb();
+        pico_rs_rt::asm::dsb();
 
         // Step 3: Wait for buffer control to settle (RP2350 errata)
-        cortex_m::asm::delay(BUFFER_CONTROL_DELAY_CYCLES);
+        pico_rs_rt::asm::delay(BUFFER_CONTROL_DELAY_CYCLES);
 
         // Step 4: Set only AVAILABLE bit via read-modify-write
         // This preserves all other bits we just wrote
         self.modify_raw(|v| v | Self::AVAILABLE_0);
 
         // Final barrier to ensure AVAILABLE write is visible
-        cortex_m::asm::dsb();
+        pico_rs_rt::asm::dsb();
     }
 
     /// Check if stalled

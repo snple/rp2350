@@ -175,7 +175,7 @@ impl Dpram {
         self.mem.write_bytes(offset as usize, data);
 
         // Ensure all writes complete before returning
-        cortex_m::asm::dsb();
+        pico_rs_rt::asm::dsb();
     }
 
     /// Copy data from DPRAM buffer to destination

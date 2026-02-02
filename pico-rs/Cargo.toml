@@ -16,8 +16,7 @@ pico-rs-pac.workspace = true
 enumflags2 = "0.7"
 
 [features]
-default = ["rt", "atomics", "defmt", "rp2350a"]
-rt = ["pico-rs-rt/rt", "pico-rs-pac/rt"]
+default = ["atomics", "defmt", "rp2350a"]
 atomics = ["dep:portable-atomic"]
 defmt = ["dep:defmt"]
 # RP2350 chip variant selection (mutually exclusive)
@@ -25,5 +24,5 @@ rp2350a = []  # RP2350A: 30 GPIO pins (0-29), default
 rp2350b = []  # RP2350B: 48 GPIO pins (0-47)
 
 [package.metadata.docs.rs]
-features = ["rt", "defmt"]
+features = ["defmt"]
 targets = ["thumbv8m.main-none-eabihf"]
