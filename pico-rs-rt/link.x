@@ -13,6 +13,9 @@
 /* Include the memory layout (provided by application or BSP) */
 INCLUDE memory.x
 
+/* Include device-specific interrupt handlers (provided by PAC) */
+INCLUDE device.x
+
 /* Entry point */
 ENTRY(Reset);
 

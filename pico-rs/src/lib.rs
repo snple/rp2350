@@ -66,6 +66,8 @@ pub mod xosc;
 
 pub mod task;
 
+mod critical_section_impl;
+
 // Re-export pico-rs-pac
 pub use pico_rs_pac as pac;
 pub use pico_rs_pac::__INTERRUPTS;

@@ -275,6 +275,7 @@ name = "pico-rs"
 version = "0.1.0"
 dependencies = [
  "cfg-if",
+ "critical-section",
  "defmt",
  "enumflags2",
  "paste",
