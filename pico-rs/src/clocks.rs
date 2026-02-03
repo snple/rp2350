@@ -4,216 +4,415 @@
 //! The clock system provides clocks for various peripherals from different sources
 //! including crystal oscillators, PLLs, and internal oscillators.
 //!
-//! ## Clock Architecture
+//! # Clock Tree Architecture
 //!
-//! The RP2350 has several configurable clocks:
-//! - `clk_ref`: Reference clock (typically XOSC)
-//! - `clk_sys`: System clock (CPU and most peripherals)
-//! - `clk_peri`: Peripheral clock
-//! - `clk_usb`: USB clock (must be 48 MHz for USB)
-//! - `clk_adc`: ADC clock
-//! - `clk_hstx`: High-speed TX clock
-//! - `clk_gpout0..3`: General purpose clock outputs
+//! The RP2350 clock tree has a hierarchical structure with clock sources at the top,
+//! feeding into configurable clock generators that supply various peripherals.
 //!
-//! ## Example
+//! ```text
+//! ╔═══════════════════════════════════════════════════════════════════════════════╗
+//! ║                         CLOCK SOURCES (Layer 0)                               ║
+//! ╠═══════════════════════════════════════════════════════════════════════════════╣
+//! ║  ┌────────┐  ┌────────┐  ┌────────┐  ┌─────────┐  ┌─────────┐  ┌──────────┐  ║
+//! ║  │  XOSC  │  │  ROSC  │  │ LPOSC  │  │ PLL_SYS │  │ PLL_USB │  │ GPIN0/1  │  ║
+//! ║  │ 12 MHz │  │ ~6 MHz │  │ 32 kHz │  │ 125-150 │  │  48 MHz │  │ External │  ║
+//! ║  └───┬────┘  └───┬────┘  └───┬────┘  └────┬────┘  └────┬────┘  └────┬─────┘  ║
+//! ║      │           │           │            │            │            │        ║
+//! ╠══════╪═══════════╪═══════════╪════════════╪════════════╪════════════╪════════╣
+//! ║      │           │           │            │            │            │        ║
+//! ║      ▼           ▼           ▼            │            ▼            │        ║
+//! ║  ┌─────────────────────────────────┐      │     ┌──────────────┐    │        ║
+//! ║  │         CLK_REF MUX             │◄─────┼─────│   (auxsrc)   │◄───┤        ║
+//! ║  │  src: XOSC|ROSC|LPOSC|AUX       │      │     └──────────────┘    │        ║
+//! ║  └───────────────┬─────────────────┘      │                         │        ║
+//! ║                  │ ÷DIV (1-255)           │                         │        ║
+//! ║                  ▼                        │                         │        ║
+//! ║           ┌──────────┐                    │                         │        ║
+//! ║           │  clk_ref │ ─────────────────────────────────────────────────►    ║
+//! ║           │ (stable) │                    │                         │        ║
+//! ║           └────┬─────┘                    │                         │        ║
+//! ║                │                          │                         │        ║
+//! ╠════════════════╪══════════════════════════╪═════════════════════════╪════════╣
+//! ║    SYSTEM      │                          │                         │        ║
+//! ║    CLOCK       ▼                          ▼                         ▼        ║
+//! ║  (Layer 1)  ┌─────────────────────────────────────────────────────────┐      ║
+//! ║             │                   CLK_SYS MUX                           │      ║
+//! ║             │  src: CLK_REF (glitchless) | AUX                        │      ║
+//! ║             │  auxsrc: PLL_SYS|PLL_USB|ROSC|XOSC|GPIN0|GPIN1          │      ║
+//! ║             └───────────────────────┬─────────────────────────────────┘      ║
+//! ║                                     │ ÷DIV (16.16 fixed-point)               ║
+//! ║                                     ▼                                        ║
+//! ║                              ┌──────────────┐                                ║
+//! ║                              │   clk_sys    │ ──────► CPU, Cortex-M33        ║
+//! ║                              │  (up to 150  │ ──────► AHB Bus                ║
+//! ║                              │     MHz)     │ ──────► APB Bus                ║
+//! ║                              └──────┬───────┘                                ║
+//! ║                                     │                                        ║
+//! ╠═════════════════════════════════════╪════════════════════════════════════════╣
+//! ║    PERIPHERAL CLOCKS (Layer 2)      │                                        ║
+//! ║                                     ▼                                        ║
+//! ║  ┌──────────────────────────────────────────────────────────────────────┐    ║
+//! ║  │                                                                      │    ║
+//! ║  │  ┌─────────────┐   ┌─────────────┐   ┌─────────────┐   ┌──────────┐  │    ║
+//! ║  │  │  CLK_PERI   │   │  CLK_USB    │   │  CLK_ADC    │   │ CLK_HSTX │  │    ║
+//! ║  │  │  MUX        │   │  MUX        │   │  MUX        │   │ MUX      │  │    ║
+//! ║  │  │ ────────    │   │ ────────    │   │ ────────    │   │ ──────── │  │    ║
+//! ║  │  │ clk_sys     │   │ PLL_USB ◄── │   │ PLL_USB ◄── │   │ clk_sys  │  │    ║
+//! ║  │  │ PLL_SYS     │   │ PLL_SYS     │   │ PLL_SYS     │   │ PLL_SYS  │  │    ║
+//! ║  │  │ PLL_USB     │   │ ROSC/XOSC   │   │ ROSC/XOSC   │   │ PLL_USB  │  │    ║
+//! ║  │  │ ROSC/XOSC   │   │ GPIN0/1     │   │ GPIN0/1     │   │ GPIN0/1  │  │    ║
+//! ║  │  │ GPIN0/1     │   └──────┬──────┘   └──────┬──────┘   └────┬─────┘  │    ║
+//! ║  │  └──────┬──────┘          │                 │               │        │    ║
+//! ║  │         │                 │ ÷DIV            │ ÷DIV          │ ÷DIV   │    ║
+//! ║  │         ▼                 ▼                 ▼               ▼        │    ║
+//! ║  │    ┌─────────┐      ┌──────────┐      ┌──────────┐    ┌──────────┐   │    ║
+//! ║  │    │clk_peri │      │ clk_usb  │      │ clk_adc  │    │ clk_hstx │   │    ║
+//! ║  │    │         │      │ (48 MHz) │      │ (48 MHz) │    │          │   │    ║
+//! ║  │    └────┬────┘      └────┬─────┘      └────┬─────┘    └────┬─────┘   │    ║
+//! ║  │         │                │                 │               │         │    ║
+//! ║  │         ▼                ▼                 ▼               ▼         │    ║
+//! ║  │    UART, SPI,       USB Device/       ADC Module       DVI/HSTX     │    ║
+//! ║  │    I2C, etc.        Host                                            │    ║
+//! ║  └──────────────────────────────────────────────────────────────────────┘    ║
+//! ║                                                                              ║
+//! ╠══════════════════════════════════════════════════════════════════════════════╣
+//! ║    GPIO CLOCK OUTPUTS (Optional)                                             ║
+//! ║  ┌──────────────────────────────────────────────────────────────────────┐    ║
+//! ║  │  CLK_GPOUT0-3: Can output any internal clock to GPIO pins            │    ║
+//! ║  │  Sources: All clocks + PLL outputs + oscillators                     │    ║
+//! ║  │  Features: 16.16 fractional divider for precise frequencies          │    ║
+//! ║  └──────────────────────────────────────────────────────────────────────┘    ║
+//! ╚══════════════════════════════════════════════════════════════════════════════╝
+//! ```
+//!
+//! # Clock Configuration Flow
+//!
+//! The recommended initialization sequence:
+//!
+//! ```text
+//! ┌─────────────────────────────────────────────────────────────────┐
+//! │ 1. Boot: ROSC running (~6 MHz)                                  │
+//! │         ↓                                                       │
+//! │ 2. Start XOSC (12 MHz external crystal)                         │
+//! │         ↓ wait for stable                                       │
+//! │ 3. Switch clk_ref to XOSC                                       │
+//! │         ↓                                                       │
+//! │ 4. Switch clk_sys to clk_ref (safe intermediate state)          │
+//! │         ↓                                                       │
+//! │ 5. Configure PLL_SYS (e.g., 150 MHz) and PLL_USB (48 MHz)       │
+//! │         ↓ wait for lock                                         │
+//! │ 6. Switch clk_sys to PLL_SYS                                    │
+//! │         ↓                                                       │
+//! │ 7. Configure peripheral clocks (clk_peri, clk_usb, clk_adc...)  │
+//! └─────────────────────────────────────────────────────────────────┘
+//! ```
+//!
+//! # Important Constraints
+//!
+//! | Clock     | Requirement                  | Typical Source |
+//! |-----------|------------------------------|----------------|
+//! | clk_usb   | Must be exactly 48 MHz       | PLL_USB        |
+//! | clk_adc   | Must be exactly 48 MHz       | PLL_USB        |
+//! | clk_ref   | Should be stable (use XOSC)  | XOSC           |
+//! | clk_sys   | Max 150 MHz                  | PLL_SYS        |
+//!
+//! # Example
 //!
 //! ```ignore
-//! use pico_rs::clocks::{Clocks, ClockId, ClkSysAuxSrc};
+//! use pico_rs::clocks::{Clocks, ClockProfile};
 //!
-//! // Get clocks instance
-//! let clocks = Clocks::new();
+//! // Easy: Use a predefined profile (recommended)
+//! let configured = Clocks::init_with_profile(ClockProfile::Standard150MHz);
+//! // clk_sys = 150 MHz, clk_usb = 48 MHz, clk_peri = 150 MHz
 //!
-//! // Configure sys clock from PLL_SYS at 150 MHz
-//! clocks.configure_sys_clock(ClkSysAuxSrc::PllSys, 150_000_000, 150_000_000);
-//!
-//! // Get current system clock frequency
-//! let sys_freq = clocks.get_sys_freq();
+//! // Or manual configuration:
+//! let mut clocks = Clocks::new();
+//! clocks.configure_ref_src(ClkRefSrc::Xosc, 12_000_000);
+//! clocks.configure_sys_aux(ClkSysAuxSrc::PllSys, 150_000_000, 150_000_000);
 //! ```
 
 #![allow(clippy::identity_op)]
 
 use pico_rs_pac::CLOCKS;
 
-/// Number of configurable clocks
+// ============================================================================
+// Clock Tree Layer 0: Clock Sources
+// ============================================================================
+// These are the fundamental clock sources in the system:
+// - XOSC: External crystal oscillator (typically 12 MHz, high stability)
+// - ROSC: Internal ring oscillator (~6 MHz, low power, variable)
+// - LPOSC: Low-power oscillator (~32 kHz, for sleep modes)
+// - PLL_SYS: System PLL (generates high-speed clocks up to 150 MHz)
+// - PLL_USB: USB PLL (generates 48 MHz for USB)
+// - GPIN0/1: External clock inputs via GPIO
+// ============================================================================
+
+/// Number of configurable clocks in the system
 pub const CLK_COUNT: usize = 10;
 
-/// Clock identifiers
+/// Clock identifiers for all configurable clocks in the system
+///
+/// The clocks are organized by their position in the clock tree:
+/// - Layer 0: Clock sources (XOSC, ROSC, PLLs) - not in this enum
+/// - Layer 1: Reference and System clocks ([`ClockId::Ref`], [`ClockId::Sys`])
+/// - Layer 2: Peripheral clocks ([`ClockId::Peri`], [`ClockId::Usb`], [`ClockId::Adc`], [`ClockId::Hstx`])
+/// - Output: GPIO clock outputs ([`ClockId::GpOut0`] - [`ClockId::GpOut3`])
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[repr(usize)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum ClockId {
-    /// General purpose clock output 0
+    // === GPIO Clock Outputs (optional, directly from any source) ===
+    /// General purpose clock output 0 (directly from any source)
     GpOut0 = 0,
-    /// General purpose clock output 1
+    /// General purpose clock output 1 (directly from any source)
     GpOut1 = 1,
-    /// General purpose clock output 2
+    /// General purpose clock output 2 (directly from any source)
     GpOut2 = 2,
-    /// General purpose clock output 3
+    /// General purpose clock output 3 (directly from any source)
     GpOut3 = 3,
-    /// Reference clock
+
+    // === Layer 1: Core System Clocks ===
+    /// Reference clock - stable clock for system clock mux and watchdog
+    /// Typical source: XOSC (12 MHz)
     Ref = 4,
-    /// System clock
+    /// System clock - main clock for CPU and most peripherals
+    /// Typical source: PLL_SYS (125-150 MHz)
     Sys = 5,
-    /// Peripheral clock
+
+    // === Layer 2: Peripheral Clocks ===
+    /// Peripheral clock - for UART, SPI, I2C, etc.
+    /// Typical source: clk_sys or PLL_SYS
     Peri = 6,
-    /// High-speed TX clock
+    /// High-speed TX clock - for DVI/HSTX peripheral
+    /// Typical source: PLL_SYS
     Hstx = 7,
-    /// USB clock
+    /// USB clock - MUST be exactly 48 MHz for USB operation
+    /// Typical source: PLL_USB
     Usb = 8,
-    /// ADC clock
+    /// ADC clock - MUST be exactly 48 MHz for correct ADC operation
+    /// Typical source: PLL_USB
     Adc = 9,
 }
 
-/// Reference clock source selection
+// ============================================================================
+// Clock Tree Layer 1: Reference Clock (CLK_REF) Sources
+// ============================================================================
+// CLK_REF is the first configurable clock in the tree. It provides a stable
+// reference for the system clock mux and watchdog timer.
+//
+//  XOSC ────┐
+//  ROSC ────┼──► [CLK_REF MUX] ──► ÷DIV ──► clk_ref
+//  LPOSC ───┤         ▲
+//  AUX ─────┘         │
+//                     └── PLL_USB, GPIN0/1
+// ============================================================================
+
+/// Reference clock (CLK_REF) primary source selection
+///
+/// These are the glitchless source options for the reference clock.
+/// For auxiliary sources (PLL_USB, GPIN), use [`ClkRefAuxSrc`] with [`ClkRefSrc::Aux`].
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[repr(u32)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum ClkRefSrc {
-    /// Ring oscillator (ROSC)
+    /// Ring oscillator (ROSC) - ~6 MHz, variable frequency
     Rosc = 0,
-    /// Auxiliary source (use with ClkRefAuxSrc)
+    /// Auxiliary source - see [`ClkRefAuxSrc`] for options
     Aux = 1,
-    /// Crystal oscillator (XOSC)
+    /// Crystal oscillator (XOSC) - 12 MHz, high stability (recommended)
     Xosc = 2,
-    /// Low-power oscillator (LPOSC)
+    /// Low-power oscillator (LPOSC) - ~32 kHz
     Lposc = 3,
 }
 
-/// Reference clock auxiliary source selection
+/// Reference clock (CLK_REF) auxiliary source selection
+///
+/// Used when [`ClkRefSrc::Aux`] is selected as the primary source.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[repr(u32)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum ClkRefAuxSrc {
-    /// PLL USB
+    /// PLL USB output (48 MHz)
     PllUsb = 0,
-    /// GPIO input 0
+    /// External clock input via GPIO (GPIN0)
     GpIn0 = 1,
-    /// GPIO input 1
+    /// External clock input via GPIO (GPIN1)
     GpIn1 = 2,
-    /// PLL USB primary reference OPCG
+    /// PLL USB primary reference (OPCG)
     PllUsbPrimaryRefOpcg = 3,
 }
 
-/// System clock source selection
+// ============================================================================
+// Clock Tree Layer 1: System Clock (CLK_SYS) Sources
+// ============================================================================
+// CLK_SYS is the main clock for the CPU and most peripherals. It can be
+// sourced from clk_ref (glitchless) or from auxiliary sources via a mux.
+//
+//  clk_ref ─────┐
+//               ├──► [CLK_SYS MUX] ──► ÷DIV ──► clk_sys ──► CPU, AHB, APB
+//  AUX ─────────┘         ▲
+//                         │
+//                         └── PLL_SYS, PLL_USB, ROSC, XOSC, GPIN0/1
+// ============================================================================
+
+/// System clock (CLK_SYS) primary source selection
+///
+/// The system clock has glitchless switching between clk_ref and auxiliary sources.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[repr(u32)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum ClkSysSrc {
-    /// Reference clock
+    /// Reference clock (clk_ref) - safe fallback, glitchless switching
     ClkRef = 0,
-    /// Auxiliary source (use with ClkSysAuxSrc)
+    /// Auxiliary source - see [`ClkSysAuxSrc`] for options
     Aux = 1,
 }
 
-/// System clock auxiliary source selection
+/// System clock (CLK_SYS) auxiliary source selection
+///
+/// Used when [`ClkSysSrc::Aux`] is selected. PLL_SYS is recommended for
+/// high-performance operation.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[repr(u32)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum ClkSysAuxSrc {
-    /// PLL System
+    /// PLL System output (125-150 MHz) - recommended for high performance
     PllSys = 0,
-    /// PLL USB
+    /// PLL USB output (48 MHz) - for low power operation
     PllUsb = 1,
-    /// Ring oscillator (ROSC)
+    /// Ring oscillator (ROSC) - ~6 MHz, variable
     Rosc = 2,
-    /// Crystal oscillator (XOSC)
+    /// Crystal oscillator (XOSC) - 12 MHz, stable
     Xosc = 3,
-    /// GPIO input 0
+    /// External clock input via GPIO (GPIN0)
     GpIn0 = 4,
-    /// GPIO input 1
+    /// External clock input via GPIO (GPIN1)
     GpIn1 = 5,
 }
 
-/// Peripheral clock auxiliary source selection
+// ============================================================================
+// Clock Tree Layer 2: Peripheral Clocks
+// ============================================================================
+// These clocks derive from Layer 1 clocks or directly from PLLs/oscillators.
+// Each has specific requirements:
+//   - CLK_PERI: Flexible, typically clk_sys for simplicity
+//   - CLK_USB:  MUST be 48 MHz for USB operation
+//   - CLK_ADC:  MUST be 48 MHz for correct ADC sampling
+//   - CLK_HSTX: High-speed clock for DVI/HSTX
+// ============================================================================
+
+/// Peripheral clock (CLK_PERI) auxiliary source selection
+///
+/// CLK_PERI supplies UART, SPI, I2C and other peripherals.
+/// Using clk_sys is simplest; using a fixed source like PLL_USB ensures
+/// peripheral timing doesn't change when adjusting clk_sys.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[repr(u32)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum ClkPeriAuxSrc {
-    /// System clock
+    /// System clock (clk_sys) - simplest, but baud rates change with clk_sys
     ClkSys = 0,
-    /// PLL System
+    /// PLL System output - independent of clk_sys changes
     PllSys = 1,
-    /// PLL USB
+    /// PLL USB output (48 MHz) - stable reference
     PllUsb = 2,
     /// Ring oscillator (ROSC)
     Rosc = 3,
     /// Crystal oscillator (XOSC)
     Xosc = 4,
-    /// GPIO input 0
+    /// External clock input via GPIO (GPIN0)
     GpIn0 = 5,
-    /// GPIO input 1
+    /// External clock input via GPIO (GPIN1)
     GpIn1 = 6,
 }
 
-/// USB clock auxiliary source selection
+/// USB clock (CLK_USB) auxiliary source selection
+///
+/// **Important**: USB requires exactly 48 MHz. Use PLL_USB or ensure your
+/// source provides exactly 48 MHz (or an integer multiple with appropriate divider).
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[repr(u32)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum ClkUsbAuxSrc {
-    /// PLL USB
+    /// PLL USB output (48 MHz) - recommended
     PllUsb = 0,
-    /// PLL System
+    /// PLL System output - requires division to 48 MHz
     PllSys = 1,
-    /// Ring oscillator (ROSC)
+    /// Ring oscillator (ROSC) - NOT recommended for USB
     Rosc = 2,
-    /// Crystal oscillator (XOSC)
+    /// Crystal oscillator (XOSC) - NOT recommended unless 48 MHz crystal
     Xosc = 3,
-    /// GPIO input 0
+    /// External clock input via GPIO (GPIN0)
     GpIn0 = 4,
-    /// GPIO input 1
+    /// External clock input via GPIO (GPIN1)
     GpIn1 = 5,
 }
 
-/// ADC clock auxiliary source selection
+/// ADC clock (CLK_ADC) auxiliary source selection
+///
+/// **Important**: ADC requires exactly 48 MHz for correct operation.
+/// Use PLL_USB for best results.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[repr(u32)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum ClkAdcAuxSrc {
-    /// PLL USB
+    /// PLL USB output (48 MHz) - recommended
     PllUsb = 0,
-    /// PLL System
+    /// PLL System output - requires division to 48 MHz
     PllSys = 1,
-    /// Ring oscillator (ROSC)
+    /// Ring oscillator (ROSC) - NOT recommended
     Rosc = 2,
     /// Crystal oscillator (XOSC)
     Xosc = 3,
-    /// GPIO input 0
+    /// External clock input via GPIO (GPIN0)
     GpIn0 = 4,
-    /// GPIO input 1
+    /// External clock input via GPIO (GPIN1)
     GpIn1 = 5,
 }
 
-/// HSTX clock auxiliary source selection
+/// HSTX clock (CLK_HSTX) auxiliary source selection
+///
+/// High-speed TX clock for DVI and other high-speed interfaces.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[repr(u32)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum ClkHstxAuxSrc {
-    /// System clock
+    /// System clock (clk_sys)
     ClkSys = 0,
-    /// PLL System
+    /// PLL System output - recommended for high-speed operation
     PllSys = 1,
-    /// PLL USB
+    /// PLL USB output (48 MHz)
     PllUsb = 2,
-    /// GPIO input 0
+    /// External clock input via GPIO (GPIN0)
     GpIn0 = 3,
-    /// GPIO input 1
+    /// External clock input via GPIO (GPIN1)
     GpIn1 = 4,
 }
 
-/// GPOUT clock auxiliary source selection
+// ============================================================================
+// GPIO Clock Outputs (CLK_GPOUT0-3)
+// ============================================================================
+// GPOUT clocks can output any internal clock to GPIO pins for external use
+// or debugging. They have 16.16 fractional dividers for precise frequencies.
+// ============================================================================
+
+/// GPOUT clock (CLK_GPOUT0-3) auxiliary source selection
+///
+/// GPOUT clocks can output almost any internal clock to GPIO pins.
+/// Useful for debugging or providing a clock to external devices.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[repr(u32)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum ClkGpOutAuxSrc {
-    /// PLL System
+    /// PLL System output
     PllSys = 0,
-    /// GPIO input 0
+    /// External clock input via GPIO (GPIN0)
     GpIn0 = 1,
-    /// GPIO input 1
+    /// External clock input via GPIO (GPIN1)
     GpIn1 = 2,
-    /// PLL USB
+    /// PLL USB output
     PllUsb = 3,
-    /// PLL USB primary reference OPCG
+    /// PLL USB primary reference (OPCG)
     PllUsbPrimaryRefOpcg = 4,
     /// Ring oscillator (ROSC)
     Rosc = 5,
@@ -221,62 +420,113 @@ pub enum ClkGpOutAuxSrc {
     Xosc = 6,
     /// Low-power oscillator (LPOSC)
     Lposc = 7,
-    /// System clock
+    /// System clock (clk_sys)
     ClkSys = 8,
-    /// USB clock
+    /// USB clock (clk_usb)
     ClkUsb = 9,
-    /// ADC clock
+    /// ADC clock (clk_adc)
     ClkAdc = 10,
-    /// Reference clock
+    /// Reference clock (clk_ref)
     ClkRef = 11,
-    /// Peripheral clock
+    /// Peripheral clock (clk_peri)
     ClkPeri = 12,
-    /// HSTX clock
+    /// HSTX clock (clk_hstx)
     ClkHstx = 13,
-    /// OTP clock to FC
+    /// OTP clock
     OtpClk2Fc = 14,
 }
 
-/// Frequency counter source
+// ============================================================================
+// Frequency Counter Sources
+// ============================================================================
+
+/// Frequency counter source for clock measurement
+///
+/// The frequency counter can measure the frequency of various internal clocks.
+/// Useful for verifying clock configuration and debugging.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[repr(u32)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum FcSrc {
+    /// No source (counter disabled)
     Null = 0,
+    /// PLL System primary output
     PllSysPrimary = 1,
+    /// PLL USB primary output
     PllUsbPrimary = 2,
+    /// ROSC clock source
     RoscClkSrc = 3,
+    /// ROSC clock source (phase shifted)
     RoscClkSrcPh = 4,
+    /// XOSC clock source
     XoscClkSrc = 5,
+    /// External clock input GPIN0
     ClkSrcGpIn0 = 6,
+    /// External clock input GPIN1
     ClkSrcGpIn1 = 7,
+    /// Reference clock (clk_ref)
     ClkRef = 8,
+    /// System clock (clk_sys)
     ClkSys = 9,
+    /// Peripheral clock (clk_peri)
     ClkPeri = 10,
+    /// USB clock (clk_usb)
     ClkUsb = 11,
+    /// ADC clock (clk_adc)
     ClkAdc = 12,
+    /// HSTX clock (clk_hstx)
     ClkHstx = 13,
+    /// LPOSC clock source
     LposcClkSrc = 14,
+    /// OTP clock
     OtpClk2Fc = 15,
+    /// PLL USB primary reference (OPCG)
     PllUsbPrimaryRefOpcg = 16,
 }
 
-/// Clock configuration state
+// ============================================================================
+// Clock Frequency Tracking
+// ============================================================================
+
+/// Internal storage for tracking configured clock frequencies
+///
+/// This is used by the [`Clocks`] struct to track the current frequency
+/// of each clock after configuration.
 #[derive(Clone, Copy, Default)]
 struct ClockFrequencies {
+    // GPIO outputs
     gpout0: u32,
     gpout1: u32,
     gpout2: u32,
     gpout3: u32,
+    // Layer 1: Core clocks
     ref_clk: u32,
     sys_clk: u32,
+    // Layer 2: Peripheral clocks
     peri_clk: u32,
     hstx_clk: u32,
     usb_clk: u32,
     adc_clk: u32,
 }
 
+// ============================================================================
+// Main Clock Controller
+// ============================================================================
+
 /// Clock management peripheral wrapper
+///
+/// This struct provides methods to configure all clocks in the RP2350 clock tree.
+/// Methods are organized by clock tree layer:
+///
+/// 1. **Reference Clock (CLK_REF)**: [`configure_ref_src`](Self::configure_ref_src), [`configure_ref_aux`](Self::configure_ref_aux)
+/// 2. **System Clock (CLK_SYS)**: [`configure_sys_from_ref`](Self::configure_sys_from_ref), [`configure_sys_aux`](Self::configure_sys_aux)
+/// 3. **Peripheral Clocks**: [`configure_peri`](Self::configure_peri), [`configure_usb`](Self::configure_usb), [`configure_adc`](Self::configure_adc), [`configure_hstx`](Self::configure_hstx)
+/// 4. **GPIO Outputs**: [`configure_gpout`](Self::configure_gpout)
+///
+/// For easy setup, use the static initializers:
+/// - [`Clocks::init_with_profile`] - Use a predefined configuration
+/// - [`Clocks::init_default_clocks`] - 150 MHz sys, 48 MHz USB
+/// - [`Clocks::init_low_power`] - 48 MHz sys for low power
 pub struct Clocks {
     clocks: &'static pico_rs_pac::clocks::RegisterBlock,
     frequencies: ClockFrequencies,
@@ -297,7 +547,19 @@ impl Clocks {
     }
 
     // ========================================================================
-    // Reference Clock (CLK_REF) Configuration
+    // ██████╗ ██╗      █████╗ ██╗   ██╗███████╗██████╗      ██╗
+    // ██╔══██╗██║     ██╔══██╗╚██╗ ██╔╝██╔════╝██╔══██╗    ███║
+    // ██████╔╝██║     ███████║ ╚████╔╝ █████╗  ██████╔╝    ╚██║
+    // ██╔═══╝ ██║     ██╔══██║  ╚██╔╝  ██╔══╝  ██╔══██╗     ██║
+    // ██║     ███████╗██║  ██║   ██║   ███████╗██║  ██║     ██║
+    // ╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝     ╚═╝
+    // Reference Clock (CLK_REF) - Stable reference for system clock
+    // ========================================================================
+    //
+    // CLK_REF provides a stable clock source for the system clock mux and
+    // watchdog timer. It should be configured first during initialization.
+    //
+    // Recommended: Use XOSC (12 MHz) for stability
     // ========================================================================
 
     /// Configure the reference clock source
@@ -365,7 +627,25 @@ impl Clocks {
     }
 
     // ========================================================================
-    // System Clock (CLK_SYS) Configuration
+    // ██████╗ ██╗      █████╗ ██╗   ██╗███████╗██████╗      ██╗
+    // ██╔══██╗██║     ██╔══██╗╚██╗ ██╔╝██╔════╝██╔══██╗    ███║
+    // ██████╔╝██║     ███████║ ╚████╔╝ █████╗  ██████╔╝    ╚██║
+    // ██╔═══╝ ██║     ██╔══██║  ╚██╔╝  ██╔══╝  ██╔══██╗     ██║
+    // ██║     ███████╗██║  ██║   ██║   ███████╗██║  ██║     ██║
+    // ╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝     ╚═╝
+    // System Clock (CLK_SYS) - Main clock for CPU and peripherals
+    // ========================================================================
+    //
+    // CLK_SYS is the main clock driving the CPU (Cortex-M33), AHB bus, and
+    // APB bus. It supports glitchless switching between clk_ref and aux sources.
+    //
+    // Configuration sequence for switching to a new source:
+    // 1. Switch to clk_ref (safe intermediate state)
+    // 2. Configure the new aux source (e.g., PLL_SYS)
+    // 3. Set divider if source > target frequency
+    // 4. Switch to aux source
+    //
+    // Maximum frequency: 150 MHz
     // ========================================================================
 
     /// Configure the system clock from reference clock
@@ -449,8 +729,26 @@ impl Clocks {
     }
 
     // ========================================================================
-    // Peripheral Clock (CLK_PERI) Configuration
+    // ██████╗ ██╗      █████╗ ██╗   ██╗███████╗██████╗     ██████╗
+    // ██╔══██╗██║     ██╔══██╗╚██╗ ██╔╝██╔════╝██╔══██╗    ╚════██╗
+    // ██████╔╝██║     ███████║ ╚████╔╝ █████╗  ██████╔╝     █████╔╝
+    // ██╔═══╝ ██║     ██╔══██║  ╚██╔╝  ██╔══╝  ██╔══██╗    ██╔═══╝
+    // ██║     ███████╗██║  ██║   ██║   ███████╗██║  ██║    ███████╗
+    // ╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝    ╚══════╝
+    // Peripheral Clocks - Clocks for specific hardware blocks
     // ========================================================================
+    //
+    // Layer 2 clocks derive from Layer 1 (clk_sys, clk_ref) or directly from
+    // PLLs and oscillators. Each peripheral clock has specific requirements.
+    // ========================================================================
+
+    // ------------------------------------------------------------------------
+    // CLK_PERI - Peripheral Clock (UART, SPI, I2C, etc.)
+    // ------------------------------------------------------------------------
+    // CLK_PERI supplies the clock for serial peripherals. Using clk_sys is
+    // simplest, but baud rates will change if clk_sys frequency changes.
+    // For stable baud rates independent of clk_sys, use PLL_USB (48 MHz).
+    // ------------------------------------------------------------------------
 
     /// Configure the peripheral clock
     ///
@@ -481,9 +779,13 @@ impl Clocks {
         self.frequencies.peri_clk
     }
 
-    // ========================================================================
-    // USB Clock (CLK_USB) Configuration
-    // ========================================================================
+    // ------------------------------------------------------------------------
+    // CLK_USB - USB Clock (MUST be 48 MHz)
+    // ------------------------------------------------------------------------
+    // USB 1.1/2.0 requires exactly 48 MHz. The hardware will automatically
+    // calculate the divider if the source frequency is higher.
+    // Recommended source: PLL_USB (already configured to 48 MHz)
+    // ------------------------------------------------------------------------
 
     /// Configure the USB clock
     ///
@@ -525,9 +827,13 @@ impl Clocks {
         self.frequencies.usb_clk
     }
 
-    // ========================================================================
-    // ADC Clock (CLK_ADC) Configuration
-    // ========================================================================
+    // ------------------------------------------------------------------------
+    // CLK_ADC - ADC Clock (MUST be 48 MHz)
+    // ------------------------------------------------------------------------
+    // The ADC requires exactly 48 MHz for correct sampling. The sample rate
+    // is derived from this clock (500 ksps max at 48 MHz).
+    // Recommended source: PLL_USB (already configured to 48 MHz)
+    // ------------------------------------------------------------------------
 
     /// Configure the ADC clock
     ///
@@ -568,9 +874,12 @@ impl Clocks {
         self.frequencies.adc_clk
     }
 
-    // ========================================================================
-    // HSTX Clock (CLK_HSTX) Configuration
-    // ========================================================================
+    // ------------------------------------------------------------------------
+    // CLK_HSTX - High-Speed TX Clock (for DVI/HSTX peripheral)
+    // ------------------------------------------------------------------------
+    // HSTX provides high-speed serialized output for DVI and other interfaces.
+    // Typically sourced from PLL_SYS for maximum speed.
+    // ------------------------------------------------------------------------
 
     /// Configure the HSTX clock
     ///
@@ -605,7 +914,20 @@ impl Clocks {
     }
 
     // ========================================================================
-    // GPOUT Clock Configuration
+    //  ██████╗ ██████╗  ██████╗ ██╗   ██╗████████╗
+    // ██╔════╝ ██╔══██╗██╔═══██╗██║   ██║╚══██╔══╝
+    // ██║  ███╗██████╔╝██║   ██║██║   ██║   ██║
+    // ██║   ██║██╔═══╝ ██║   ██║██║   ██║   ██║
+    // ╚██████╔╝██║     ╚██████╔╝╚██████╔╝   ██║
+    //  ╚═════╝ ╚═╝      ╚═════╝  ╚═════╝    ╚═╝
+    // GPIO Clock Outputs - Export clocks to GPIO pins
+    // ========================================================================
+    //
+    // GPOUT clocks can output almost any internal clock to GPIO pins.
+    // Useful for:
+    // - Debugging clock configuration
+    // - Providing clock to external devices
+    // - Precise frequency generation with 16.16 fractional divider
     // ========================================================================
 
     /// Configure a GPOUT clock output
@@ -681,7 +1003,7 @@ impl Clocks {
     }
 
     // ========================================================================
-    // Clock Stopping
+    // Clock Control Operations
     // ========================================================================
 
     /// Stop a clock generator
@@ -728,7 +1050,11 @@ impl Clocks {
     }
 
     // ========================================================================
-    // Frequency Counter
+    // Frequency Measurement (FC0)
+    // ========================================================================
+    //
+    // The frequency counter can measure any clock source against clk_ref.
+    // Useful for verifying clock configuration and debugging.
     // ========================================================================
 
     /// Measure a clock frequency using the frequency counter
@@ -769,7 +1095,12 @@ impl Clocks {
     }
 
     // ========================================================================
-    // Resus (System Clock Recovery)
+    // System Clock Recovery (RESUS)
+    // ========================================================================
+    //
+    // RESUS automatically switches clk_sys back to clk_ref if clk_sys stops.
+    // This is a safety feature to prevent the system from hanging if the
+    // clock source fails (e.g., PLL loses lock).
     // ========================================================================
 
     /// Enable system clock resuscitation
@@ -804,7 +1135,7 @@ impl Clocks {
     }
 
     // ========================================================================
-    // Utility Functions
+    // Frequency Query and Tracking
     // ========================================================================
 
     /// Get the frequency of a specific clock
@@ -858,24 +1189,493 @@ impl Default for Clocks {
 }
 
 // ============================================================================
-// Convenience Functions and Builders
+// ███████╗ █████╗ ███████╗██╗   ██╗    ██╗███╗   ██╗██╗████████╗
+// ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝    ██║████╗  ██║██║╚══██╔══╝
+// █████╗  ███████║███████╗ ╚████╔╝     ██║██╔██╗ ██║██║   ██║
+// ██╔══╝  ██╔══██║╚════██║  ╚██╔╝      ██║██║╚██╗██║██║   ██║
+// ███████╗██║  ██║███████║   ██║       ██║██║ ╚████║██║   ██║
+// ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝       ╚═╝╚═╝  ╚═══╝╚═╝   ╚═╝
+// Convenience Functions and Predefined Profiles
+// ============================================================================
+//
+// These functions provide easy, one-call initialization of the entire clock
+// tree for common use cases. The initialization sequence follows the clock
+// tree hierarchy:
+//
+//   1. Start XOSC and wait for stable
+//   2. Configure CLK_REF from XOSC
+//   3. Configure CLK_SYS from CLK_REF (safe intermediate)
+//   4. Configure PLLs (PLL_SYS, PLL_USB)
+//   5. Switch CLK_SYS to PLL_SYS
+//   6. Configure peripheral clocks (CLK_PERI, CLK_USB, CLK_ADC)
+//
 // ============================================================================
 
 use crate::pll::{PllConfig, PllSys, PllUsb};
 use crate::reset::{self, Peripheral};
 use crate::xosc::Xosc;
 
+// ============================================================================
+// Clock Builder - Flexible Clock Configuration with Sensible Defaults
+// ============================================================================
+//
+// The ClockBuilder provides a fluent API for configuring the clock tree.
+// It follows the builder pattern with sensible defaults:
+//
+//   Default configuration:
+//   - XOSC: 12 MHz (standard Pico crystal)
+//   - CLK_SYS: 150 MHz (from PLL_SYS)
+//   - CLK_USB: 48 MHz (from PLL_USB)
+//   - CLK_PERI: Same as CLK_SYS
+//   - CLK_ADC: 48 MHz (from PLL_USB)
+//
+// ============================================================================
+
+/// Builder for configuring the RP2350 clock system
+///
+/// Provides a fluent API with sensible defaults for easy clock configuration.
+/// All settings have reasonable defaults, so you only need to customize what
+/// you want to change.
+///
+/// # Default Configuration
+///
+/// | Clock     | Default Value | Source   |
+/// |-----------|---------------|----------|
+/// | XOSC      | 12 MHz        | Crystal  |
+/// | clk_sys   | 150 MHz       | PLL_SYS  |
+/// | clk_usb   | 48 MHz        | PLL_USB  |
+/// | clk_peri  | 150 MHz       | clk_sys  |
+/// | clk_adc   | 48 MHz        | PLL_USB  |
+/// | clk_hstx  | (disabled)    | -        |
+///
+/// # Example
+///
+/// ```ignore
+/// use pico_rs::clocks::ClockBuilder;
+///
+/// // Use all defaults (150 MHz sys, 48 MHz USB)
+/// let clocks = ClockBuilder::new().build();
+///
+/// // Customize system frequency
+/// let clocks = ClockBuilder::new()
+///     .sys_freq_mhz(125)
+///     .build();
+///
+/// // Full customization
+/// let clocks = ClockBuilder::new()
+///     .xosc_freq(12_000_000)
+///     .sys_freq_mhz(133)
+///     .peri_src(ClkPeriAuxSrc::PllUsb)  // Fixed 48 MHz for stable baud rates
+///     .enable_adc()
+///     .build();
+/// ```
+#[derive(Clone)]
+pub struct ClockBuilder {
+    /// Crystal oscillator frequency (default: 12 MHz)
+    xosc_freq: u32,
+    /// Target system clock frequency (default: 150 MHz)
+    sys_freq: u32,
+    /// Peripheral clock source (default: ClkSys)
+    peri_src: ClkPeriAuxSrc,
+    /// Peripheral clock frequency (only used if peri_src != ClkSys)
+    peri_freq: Option<u32>,
+    /// Enable USB clock (default: true)
+    enable_usb: bool,
+    /// Enable ADC clock (default: false)
+    enable_adc: bool,
+    /// HSTX clock configuration (default: None = disabled)
+    hstx_config: Option<(ClkHstxAuxSrc, u32)>,
+}
+
+impl Default for ClockBuilder {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+impl ClockBuilder {
+    /// Create a new ClockBuilder with default configuration
+    ///
+    /// Default: 12 MHz XOSC, 150 MHz sys clock, 48 MHz USB clock
+    pub const fn new() -> Self {
+        Self {
+            xosc_freq: 12_000_000,
+            sys_freq: 150_000_000,
+            peri_src: ClkPeriAuxSrc::ClkSys,
+            peri_freq: None,
+            enable_usb: true,
+            enable_adc: false,
+            hstx_config: None,
+        }
+    }
+
+    // ========================================================================
+    // Preset Profiles
+    // ========================================================================
+
+    /// Configure for low power operation (48 MHz system clock)
+    ///
+    /// Uses PLL_USB for system clock, PLL_SYS remains off for power savings.
+    ///
+    /// # Example
+    /// ```ignore
+    /// let clocks = ClockBuilder::low_power().build();
+    /// ```
+    pub const fn low_power() -> Self {
+        Self {
+            xosc_freq: 12_000_000,
+            sys_freq: 48_000_000,
+            peri_src: ClkPeriAuxSrc::ClkSys,
+            peri_freq: None,
+            enable_usb: true,
+            enable_adc: false,
+            hstx_config: None,
+        }
+    }
+
+    /// Configure from a predefined profile
+    pub const fn from_profile(profile: ClockProfile) -> Self {
+        Self {
+            xosc_freq: 12_000_000,
+            sys_freq: profile.sys_freq_hz(),
+            peri_src: ClkPeriAuxSrc::ClkSys,
+            peri_freq: None,
+            enable_usb: true,
+            enable_adc: false,
+            hstx_config: None,
+        }
+    }
+
+    // ========================================================================
+    // Clock Source Configuration
+    // ========================================================================
+
+    /// Set the crystal oscillator frequency
+    ///
+    /// Default: 12 MHz (standard for Raspberry Pi Pico boards)
+    ///
+    /// # Arguments
+    /// * `freq` - XOSC frequency in Hz
+    ///
+    /// # Note
+    /// PLL configurations assume 12 MHz XOSC. Other frequencies may require
+    /// custom PLL settings for correct output frequencies.
+    pub const fn xosc_freq(mut self, freq: u32) -> Self {
+        self.xosc_freq = freq;
+        self
+    }
+
+    /// Set the crystal oscillator frequency in MHz
+    ///
+    /// Convenience method for [`xosc_freq`](Self::xosc_freq).
+    pub const fn xosc_freq_mhz(mut self, mhz: u32) -> Self {
+        self.xosc_freq = mhz * 1_000_000;
+        self
+    }
+
+    // ========================================================================
+    // System Clock Configuration
+    // ========================================================================
+
+    /// Set the target system clock frequency
+    ///
+    /// Default: 150 MHz
+    ///
+    /// # Supported Frequencies
+    /// - 48 MHz (uses PLL_USB, low power)
+    /// - 125 MHz (uses PLL_SYS)
+    /// - 133 MHz (uses PLL_SYS)
+    /// - 150 MHz (uses PLL_SYS, maximum)
+    ///
+    /// # Arguments
+    /// * `freq` - Target frequency in Hz
+    pub const fn sys_freq(mut self, freq: u32) -> Self {
+        self.sys_freq = freq;
+        self
+    }
+
+    /// Set the target system clock frequency in MHz
+    ///
+    /// Convenience method for [`sys_freq`](Self::sys_freq).
+    ///
+    /// # Example
+    /// ```ignore
+    /// let clocks = ClockBuilder::new()
+    ///     .sys_freq_mhz(125)
+    ///     .build();
+    /// ```
+    pub const fn sys_freq_mhz(mut self, mhz: u32) -> Self {
+        self.sys_freq = mhz * 1_000_000;
+        self
+    }
+
+    // ========================================================================
+    // Peripheral Clock Configuration
+    // ========================================================================
+
+    /// Set the peripheral clock source
+    ///
+    /// Default: `ClkPeriAuxSrc::ClkSys` (follows system clock)
+    ///
+    /// # Tradeoffs
+    /// - `ClkSys`: Simplest, but baud rates change if sys clock changes
+    /// - `PllUsb` (48 MHz): Stable baud rates, independent of sys clock
+    /// - `PllSys`: Direct from PLL, independent of sys clock divider
+    pub const fn peri_src(mut self, src: ClkPeriAuxSrc) -> Self {
+        self.peri_src = src;
+        self
+    }
+
+    /// Set a fixed peripheral clock frequency
+    ///
+    /// Use when `peri_src` is not `ClkSys` to specify the source frequency.
+    /// Required for correct baud rate calculation.
+    pub const fn peri_freq(mut self, freq: u32) -> Self {
+        self.peri_freq = Some(freq);
+        self
+    }
+
+    /// Configure peripheral clock for stable baud rates (48 MHz from PLL_USB)
+    ///
+    /// This is useful when you want UART/SPI/I2C baud rates to remain
+    /// constant even if the system clock frequency changes.
+    pub const fn peri_stable_48mhz(mut self) -> Self {
+        self.peri_src = ClkPeriAuxSrc::PllUsb;
+        self.peri_freq = Some(48_000_000);
+        self
+    }
+
+    // ========================================================================
+    // USB/ADC Clock Configuration
+    // ========================================================================
+
+    /// Enable USB clock (48 MHz from PLL_USB)
+    ///
+    /// Default: enabled
+    pub const fn enable_usb(mut self) -> Self {
+        self.enable_usb = true;
+        self
+    }
+
+    /// Disable USB clock
+    ///
+    /// Use this if USB is not needed to save a small amount of power.
+    pub const fn disable_usb(mut self) -> Self {
+        self.enable_usb = false;
+        self
+    }
+
+    /// Enable ADC clock (48 MHz from PLL_USB)
+    ///
+    /// Default: disabled (enable when using ADC)
+    pub const fn enable_adc(mut self) -> Self {
+        self.enable_adc = true;
+        self
+    }
+
+    /// Disable ADC clock
+    pub const fn disable_adc(mut self) -> Self {
+        self.enable_adc = false;
+        self
+    }
+
+    // ========================================================================
+    // HSTX Clock Configuration
+    // ========================================================================
+
+    /// Enable HSTX clock with specified source and frequency
+    ///
+    /// Default: disabled
+    ///
+    /// # Arguments
+    /// * `src` - HSTX clock source
+    /// * `freq` - Source frequency in Hz
+    pub const fn enable_hstx(mut self, src: ClkHstxAuxSrc, freq: u32) -> Self {
+        self.hstx_config = Some((src, freq));
+        self
+    }
+
+    /// Enable HSTX clock from system clock
+    ///
+    /// Convenient shorthand when HSTX should run at sys clock frequency.
+    pub const fn enable_hstx_from_sys(mut self) -> Self {
+        // Will be resolved to actual sys_freq during build
+        self.hstx_config = Some((ClkHstxAuxSrc::ClkSys, 0)); // 0 = use sys_freq
+        self
+    }
+
+    // ========================================================================
+    // Build
+    // ========================================================================
+
+    /// Build and apply the clock configuration
+    ///
+    /// This executes the full clock initialization sequence:
+    ///
+    /// 1. Start XOSC and wait for stable
+    /// 2. Configure CLK_REF from XOSC
+    /// 3. Switch CLK_SYS to CLK_REF (safe intermediate)
+    /// 4. Configure PLL_SYS (if sys_freq > 48 MHz)
+    /// 5. Configure PLL_USB (for USB/ADC at 48 MHz)
+    /// 6. Switch CLK_SYS to final source
+    /// 7. Configure peripheral clocks
+    ///
+    /// # Returns
+    /// A [`ConfiguredClocks`] struct with the actual configured frequencies
+    ///
+    /// # Panics
+    /// Panics if an unsupported system frequency is requested.
+    pub fn build(self) -> ConfiguredClocks {
+        // ====================================================================
+        // Step 1: Initialize XOSC (Clock Tree Layer 0)
+        // ====================================================================
+        let xosc = Xosc::init(self.xosc_freq);
+        xosc.wait_stable();
+
+        let mut clocks = Clocks::new();
+
+        // ====================================================================
+        // Step 2: Configure CLK_REF from XOSC (Clock Tree Layer 1)
+        // ====================================================================
+        clocks.configure_ref_src(ClkRefSrc::Xosc, self.xosc_freq);
+
+        // ====================================================================
+        // Step 3: Switch CLK_SYS to CLK_REF (safe intermediate state)
+        // ====================================================================
+        clocks.configure_sys_from_ref();
+
+        // ====================================================================
+        // Step 4: Configure PLLs based on requested frequencies
+        // ====================================================================
+        let use_pll_sys = self.sys_freq > 48_000_000;
+
+        if use_pll_sys {
+            // Configure PLL_SYS for requested frequency
+            reset::reset_block(Peripheral::PLL_SYS);
+            reset::unreset_block_wait(Peripheral::PLL_SYS);
+
+            let pll_sys = PllSys::new();
+            let sys_config = Self::get_pll_config_for_freq(self.sys_freq);
+            pll_sys.configure(
+                sys_config.refdiv,
+                sys_config.fbdiv,
+                sys_config.postdiv1,
+                sys_config.postdiv2,
+            );
+            pll_sys.wait_lock();
+        }
+
+        // ====================================================================
+        // Step 5: Configure PLL_USB (48 MHz for USB/ADC)
+        // ====================================================================
+        // Always configure PLL_USB - needed for USB, ADC, or low-power sys clock
+        reset::reset_block(Peripheral::PLL_USB);
+        reset::unreset_block_wait(Peripheral::PLL_USB);
+
+        let pll_usb = PllUsb::new();
+        let usb_config = PllConfig::usb_48mhz();
+        pll_usb.configure(
+            usb_config.refdiv,
+            usb_config.fbdiv,
+            usb_config.postdiv1,
+            usb_config.postdiv2,
+        );
+        pll_usb.wait_lock();
+
+        // ====================================================================
+        // Step 6: Switch CLK_SYS to final source
+        // ====================================================================
+        let actual_sys_freq = if use_pll_sys {
+            clocks.configure_sys_aux(ClkSysAuxSrc::PllSys, self.sys_freq, self.sys_freq);
+            self.sys_freq
+        } else {
+            // Low power: use PLL_USB
+            clocks.configure_sys_aux(ClkSysAuxSrc::PllUsb, 48_000_000, 48_000_000);
+            48_000_000
+        };
+
+        // ====================================================================
+        // Step 7: Configure peripheral clocks (Clock Tree Layer 2)
+        // ====================================================================
+
+        // CLK_PERI
+        let peri_freq = match self.peri_src {
+            ClkPeriAuxSrc::ClkSys => actual_sys_freq,
+            ClkPeriAuxSrc::PllUsb => 48_000_000,
+            _ => self.peri_freq.unwrap_or(actual_sys_freq),
+        };
+        clocks.configure_peri(self.peri_src, peri_freq);
+
+        // CLK_USB
+        if self.enable_usb {
+            clocks.configure_usb(ClkUsbAuxSrc::PllUsb, 48_000_000);
+        }
+
+        // CLK_ADC
+        if self.enable_adc {
+            clocks.configure_adc(ClkAdcAuxSrc::PllUsb, 48_000_000);
+        }
+
+        // CLK_HSTX
+        if let Some((src, freq)) = self.hstx_config {
+            let actual_freq = if freq == 0 { actual_sys_freq } else { freq };
+            clocks.configure_hstx(src, actual_freq);
+        }
+
+        ConfiguredClocks {
+            sys_freq: actual_sys_freq,
+            usb_freq: if self.enable_usb { 48_000_000 } else { 0 },
+            peri_freq,
+            ref_freq: self.xosc_freq,
+        }
+    }
+
+    /// Get PLL configuration for a target frequency
+    fn get_pll_config_for_freq(freq: u32) -> PllConfig {
+        match freq {
+            125_000_000 => PllConfig::sys_125mhz(),
+            133_000_000 => PllConfig::sys_133mhz(),
+            150_000_000 => PllConfig::sys_150mhz(),
+            f if f <= 48_000_000 => PllConfig::usb_48mhz(), // Will use PLL_USB
+            _ => panic!(
+                "Unsupported system frequency: {} Hz. Use 48, 125, 133, or 150 MHz.",
+                freq
+            ),
+        }
+    }
+}
+
+// ============================================================================
+// Pre-defined Clock Profiles (for backward compatibility)
+// ============================================================================
+
 /// Pre-defined clock configuration profiles
+///
+/// These profiles provide tested, commonly-used clock configurations.
+/// Can be used with [`ClockBuilder::from_profile`] or [`Clocks::init_with_profile`].
+///
+/// # Available Profiles
+///
+/// | Profile             | clk_sys   | clk_usb | clk_peri  | Use Case                    |
+/// |---------------------|-----------|---------|-----------|------------------------------|
+/// | `Standard125MHz`    | 125 MHz   | 48 MHz  | 125 MHz   | General purpose              |
+/// | `Standard133MHz`    | 133 MHz   | 48 MHz  | 133 MHz   | Slightly higher performance  |
+/// | `Standard150MHz`    | 150 MHz   | 48 MHz  | 150 MHz   | Maximum performance (default)|
+/// | `LowPower48MHz`     | 48 MHz    | 48 MHz  | 48 MHz    | Low power applications       |
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum ClockProfile {
     /// 125 MHz system clock, 48 MHz USB clock
+    /// Good balance of performance and compatibility
     Standard125MHz,
     /// 133 MHz system clock, 48 MHz USB clock
+    /// Common frequency for compatibility with RP2040
     Standard133MHz,
-    /// 150 MHz system clock, 48 MHz USB clock (default for most applications)
+    /// 150 MHz system clock, 48 MHz USB clock
+    /// Maximum performance (recommended for most applications)
     Standard150MHz,
     /// Low power: 48 MHz system clock (from PLL_USB)
+    /// Uses only PLL_USB, PLL_SYS remains off for power savings
     LowPower48MHz,
 }
 
@@ -907,15 +1707,25 @@ impl ClockProfile {
 }
 
 /// Configured clock system with frequency information
+///
+/// Returned by the clock initialization functions to provide information
+/// about the configured clock frequencies. All frequencies are in Hz.
+///
+/// # Example
+/// ```ignore
+/// let clocks = Clocks::init_with_profile(ClockProfile::Standard150MHz);
+/// assert_eq!(clocks.sys_freq(), 150_000_000);
+/// assert_eq!(clocks.usb_freq(), 48_000_000);
+/// ```
 #[derive(Clone, Copy)]
 pub struct ConfiguredClocks {
-    /// System clock frequency in Hz
+    /// System clock frequency in Hz (clk_sys → CPU, AHB, APB)
     pub sys_freq: u32,
-    /// USB clock frequency in Hz (always 48 MHz when configured)
+    /// USB clock frequency in Hz (clk_usb → USB peripheral, always 48 MHz)
     pub usb_freq: u32,
-    /// Peripheral clock frequency in Hz
+    /// Peripheral clock frequency in Hz (clk_peri → UART, SPI, I2C)
     pub peri_freq: u32,
-    /// Reference clock frequency in Hz
+    /// Reference clock frequency in Hz (clk_ref → watchdog, system clock mux)
     pub ref_freq: u32,
 }
 
@@ -942,27 +1752,23 @@ impl ConfiguredClocks {
 impl Clocks {
     /// Initialize clocks with a predefined profile
     ///
-    /// This is the easiest way to set up the clock system. It handles:
-    /// - XOSC initialization
-    /// - PLL configuration
-    /// - Clock mux switching
-    /// - USB clock setup (48 MHz)
+    /// This is a convenient wrapper around [`ClockBuilder`]. For more
+    /// customization options, use `ClockBuilder` directly.
     ///
     /// # Arguments
-    /// * `profile` - The clock profile to use
+    /// * `profile` - The clock profile to use (see [`ClockProfile`])
     ///
     /// # Returns
-    /// A `ConfiguredClocks` struct with the actual frequencies
+    /// A [`ConfiguredClocks`] struct with the actual frequencies
     ///
     /// # Example
     /// ```ignore
     /// use pico_rs::clocks::{Clocks, ClockProfile};
     ///
     /// let clocks = Clocks::init_with_profile(ClockProfile::Standard150MHz);
-    /// // System clock is now 150 MHz, USB clock is 48 MHz
     /// ```
     pub fn init_with_profile(profile: ClockProfile) -> ConfiguredClocks {
-        Self::init_with_xosc_freq(profile, 12_000_000)
+        ClockBuilder::from_profile(profile).build()
     }
 
     /// Initialize clocks with a predefined profile and custom XOSC frequency
@@ -971,105 +1777,37 @@ impl Clocks {
     /// * `profile` - The clock profile to use
     /// * `xosc_freq` - The crystal oscillator frequency in Hz
     pub fn init_with_xosc_freq(profile: ClockProfile, xosc_freq: u32) -> ConfiguredClocks {
-        // Initialize XOSC
-        let xosc = Xosc::init(xosc_freq);
-        xosc.wait_stable();
-
-        let mut clocks = Clocks::new();
-
-        // Configure reference clock from XOSC
-        clocks.configure_ref_src(ClkRefSrc::Xosc, xosc_freq);
-
-        // Switch system clock to reference clock temporarily
-        clocks.configure_sys_from_ref();
-
-        let sys_freq = if profile.uses_pll_sys() {
-            // Configure PLL_SYS
-            reset::reset_block(Peripheral::PLL_SYS);
-            reset::unreset_block_wait(Peripheral::PLL_SYS);
-
-            let pll_sys = PllSys::new();
-            let sys_config = profile.pll_sys_config();
-            pll_sys.configure(
-                sys_config.refdiv,
-                sys_config.fbdiv,
-                sys_config.postdiv1,
-                sys_config.postdiv2,
-            );
-            pll_sys.wait_lock();
-
-            let freq = profile.sys_freq_hz();
-
-            // Switch system clock to PLL_SYS
-            clocks.configure_sys_aux(ClkSysAuxSrc::PllSys, freq, freq);
-
-            freq
-        } else {
-            // Low power mode: use PLL_USB for system clock
-            48_000_000
-        };
-
-        // Configure PLL_USB for 48 MHz
-        reset::reset_block(Peripheral::PLL_USB);
-        reset::unreset_block_wait(Peripheral::PLL_USB);
-
-        let pll_usb = PllUsb::new();
-        let usb_config = PllConfig::usb_48mhz();
-        pll_usb.configure(
-            usb_config.refdiv,
-            usb_config.fbdiv,
-            usb_config.postdiv1,
-            usb_config.postdiv2,
-        );
-        pll_usb.wait_lock();
-
-        // For low power mode, use PLL_USB for system clock
-        let sys_freq = if !profile.uses_pll_sys() {
-            clocks.configure_sys_aux(ClkSysAuxSrc::PllUsb, 48_000_000, 48_000_000);
-            48_000_000
-        } else {
-            sys_freq
-        };
-
-        // Configure peripheral clock from system clock
-        clocks.configure_peri(ClkPeriAuxSrc::ClkSys, sys_freq);
-
-        // Configure USB clock from PLL_USB (48 MHz)
-        clocks.configure_usb(ClkUsbAuxSrc::PllUsb, 48_000_000);
-
-        ConfiguredClocks {
-            sys_freq,
-            usb_freq: 48_000_000,
-            peri_freq: sys_freq,
-            ref_freq: xosc_freq,
-        }
+        ClockBuilder::from_profile(profile)
+            .xosc_freq(xosc_freq)
+            .build()
     }
 
     /// Initialize clocks for USB applications (150 MHz sys, 48 MHz USB)
     ///
-    /// This is a shorthand for the most common USB configuration.
+    /// Equivalent to `ClockBuilder::new().build()`.
     ///
     /// # Example
     /// ```ignore
     /// let clocks = Clocks::init_usb();
-    /// // Ready for USB!
     /// ```
     #[inline]
     pub fn init_usb() -> ConfiguredClocks {
-        Self::init_with_profile(ClockProfile::Standard150MHz)
+        ClockBuilder::new().build()
     }
 
     /// Initialize clocks with default 150 MHz configuration
     ///
-    /// Alias for `init_usb()`.
+    /// Alias for [`init_usb()`](Self::init_usb).
     #[inline]
     pub fn init_default_clocks() -> ConfiguredClocks {
-        Self::init_with_profile(ClockProfile::Standard150MHz)
+        ClockBuilder::new().build()
     }
 
     /// Initialize clocks for low power operation (48 MHz)
+    ///
+    /// Equivalent to `ClockBuilder::low_power().build()`.
     #[inline]
     pub fn init_low_power() -> ConfiguredClocks {
-        Self::init_with_profile(ClockProfile::LowPower48MHz)
+        ClockBuilder::low_power().build()
     }
 }

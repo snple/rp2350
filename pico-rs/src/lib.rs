@@ -35,7 +35,6 @@ pub mod binary_info;
 pub mod block;
 pub mod busctrl;
 pub mod clocks;
-pub mod cortex_m33;
 pub mod dma;
 pub mod eppb;
 pub mod gpio;
