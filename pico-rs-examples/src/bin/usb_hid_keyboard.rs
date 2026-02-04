@@ -24,7 +24,7 @@ use panic_probe as _;
 
 use pico_rs::Delay;
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::Clocks;
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
 use pico_rs::gpio::GpioBank;
 
@@ -77,7 +77,7 @@ fn main() -> ! {
     info!("USB HID Keyboard Example starting...");
 
     // Initialize clocks using the convenient API (150 MHz sys, 48 MHz USB)
-    let clocks = Clocks::init_usb();
+    let clocks = ClockBuilder::new().enable_usb().build();
     info!(
         "Clock system initialized: sys={} Hz, usb={} Hz",
         clocks.sys_freq(),

@@ -5,7 +5,10 @@ USB Device Stack for RP2350 microcontrollers (Raspberry Pi Pico 2).
 ## Features
 
 - 🚀 Simple, builder-pattern API for device configuration
-- 📦 Support for USB device classes (CDC ACM for serial communication)
+- 📦 Support for USB device classes:
+  - **CDC ACM**: Virtual serial port
+  - **CDC-ECM**: Ethernet over USB
+  - **HID**: Human Interface Device (keyboard, mouse, etc.)
 - ⚡ Efficient interrupt-driven operation
 - 📝 defmt logging support
 - 🔧 Zero external dependencies beyond pico-rs-pac
@@ -91,6 +94,44 @@ if serial.port_open() {
 let coding = serial.line_coding();
 println!("Baud rate: {}", coding.baud_rate());
 ```
+
+### CDC-ECM (Ethernet over USB)
+
+The CDC-ECM class provides a virtual Ethernet adapter over USB:
+
+```rust
+use pico_rs_usb::class::cdc_ecm::CdcEcm;
+
+// MAC address (locally administered)
+let mac = [0x02, 0x00, 0x00, 0x00, 0x00, 0x01];
+let mut ecm = CdcEcm::new(&usb_bus, mac);
+
+// Check if device is ready (alternate setting 1 selected)
+if ecm.is_ready() {
+    // Receive Ethernet frame
+    let mut buf = [0u8; 1514];
+    if let Ok(len) = ecm.receive(&mut buf) {
+        // Process received frame
+    }
+
+    // Transmit Ethernet frame
+    let frame = build_ethernet_frame();
+    ecm.transmit(&frame)?;
+}
+
+// Set network state (triggers notification to host)
+ecm.set_network_state(true); // Connected
+
+// Get MAC address
+let mac = ecm.mac_address();
+```
+
+**CDC-ECM Features:**
+- Standard Ethernet frame transmission (up to 1514 bytes)
+- MAC address configuration
+- Link state notification
+- Connection speed notification
+- Packet filter settings
 
 ## API Overview
 

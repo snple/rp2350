@@ -32,16 +32,13 @@ use defmt_rtt as _;
 use panic_probe as _;
 
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClkPeriAuxSrc, ClkRefSrc, ClkSysAuxSrc, ClkUsbAuxSrc, Clocks};
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::interrupt::{self, Interrupt, Mutex};
-use pico_rs::pll::{PllConfig, PllSys, PllUsb};
-use pico_rs::reset::{self, Peripheral};
 use pico_rs::task::{Event, EventQueue};
-use pico_rs::xosc::Xosc;
 use pico_rs::{entry, exception};
 
 use pico_rs_usb::bus::UsbBus;
-use pico_rs_usb::class::cdc::CdcAcm;
+use pico_rs_usb::class::cdc_acm::CdcAcm;
 use pico_rs_usb::device::{UsbDevice, UsbDeviceBuilder};
 
 /// RP2350 Boot Block
@@ -53,14 +50,8 @@ pub static IMAGE_DEF: ImageDef = ImageDef::secure_exe();
 // Constants
 // ============================================================================
 
-/// XOSC frequency (Pico 2 uses 12 MHz crystal)
-const XOSC_HZ: u32 = 12_000_000;
-
 /// Target system clock frequency (150 MHz)
 const SYS_CLK_HZ: u32 = 150_000_000;
-
-/// USB clock frequency (must be 48 MHz)
-const USB_CLK_HZ: u32 = 48_000_000;
 
 // ============================================================================
 // Event Definitions
@@ -162,73 +153,6 @@ fn USBCTRL_IRQ() {
 }
 
 // ============================================================================
-// Clock Initialization
-// ============================================================================
-
-/// Initialize clock system: XOSC -> PLL_SYS (150MHz) + PLL_USB (48MHz)
-fn init_clocks() -> Clocks {
-    info!("Initializing XOSC...");
-
-    let xosc = Xosc::init(XOSC_HZ);
-    xosc.wait_stable();
-    info!("XOSC stable");
-
-    let mut clocks = Clocks::new();
-
-    // Configure ref clock from XOSC
-    clocks.configure_ref_src(ClkRefSrc::Xosc, XOSC_HZ);
-    info!("Ref clock: {} Hz", clocks.get_ref_freq());
-
-    // Switch sys clock to ref clock temporarily
-    clocks.configure_sys_from_ref();
-
-    // Configure PLL_SYS for 150 MHz
-    info!("Configuring PLL_SYS for 150 MHz...");
-    reset::reset_block(Peripheral::PLL_SYS);
-    reset::unreset_block_wait(Peripheral::PLL_SYS);
-
-    let pll_sys = PllSys::new();
-    let sys_config = PllConfig::sys_150mhz();
-    pll_sys.configure(
-        sys_config.refdiv,
-        sys_config.fbdiv,
-        sys_config.postdiv1,
-        sys_config.postdiv2,
-    );
-    pll_sys.wait_lock();
-    info!("PLL_SYS locked");
-
-    // Configure PLL_USB for 48 MHz
-    info!("Configuring PLL_USB for 48 MHz...");
-    reset::reset_block(Peripheral::PLL_USB);
-    reset::unreset_block_wait(Peripheral::PLL_USB);
-
-    let pll_usb = PllUsb::new();
-    let usb_config = PllConfig::usb_48mhz();
-    pll_usb.configure(
-        usb_config.refdiv,
-        usb_config.fbdiv,
-        usb_config.postdiv1,
-        usb_config.postdiv2,
-    );
-    pll_usb.wait_lock();
-    info!("PLL_USB locked");
-
-    // Switch system clock to PLL_SYS
-    clocks.configure_sys_aux(ClkSysAuxSrc::PllSys, SYS_CLK_HZ, SYS_CLK_HZ);
-    info!("System clock: {} Hz", clocks.get_sys_freq());
-
-    // Configure peripheral clock
-    clocks.configure_peri(ClkPeriAuxSrc::ClkSys, SYS_CLK_HZ);
-
-    // Configure USB clock from PLL_USB (48 MHz required for USB!)
-    clocks.configure_usb(ClkUsbAuxSrc::PllUsb, USB_CLK_HZ);
-    info!("USB clock: {} Hz", clocks.get_usb_freq());
-
-    clocks
-}
-
-// ============================================================================
 // Timer setup (using SysTick for periodic events)
 // ============================================================================
 
@@ -264,9 +188,13 @@ fn SysTick() {
 fn main() -> ! {
     info!("USB CDC Interrupt Example starting...");
 
-    // Initialize clock system first (USB requires 48MHz clock!)
-    let _clocks = init_clocks();
-    info!("Clock system initialized");
+    // Initialize clock system (150 MHz sys, 48 MHz USB)
+    let clocks = ClockBuilder::new().enable_usb().build();
+    info!(
+        "Clock system initialized: sys={} Hz, usb={} Hz",
+        clocks.sys_freq(),
+        clocks.usb_freq()
+    );
 
     // Initialize USB in a critical section to set up globals
     interrupt::free(|cs| {

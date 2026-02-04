@@ -477,6 +477,10 @@ pub mod class_code {
 pub mod cdc_subclass {
     /// Abstract Control Model
     pub const ACM: u8 = 0x02;
+    /// Ethernet Control Model
+    pub const ECM: u8 = 0x06;
+    /// Network Control Model
+    pub const NCM: u8 = 0x0D;
 }
 
 /// CDC protocol codes
@@ -497,4 +501,8 @@ pub mod cdc_descriptor {
     pub const ACM: u8 = 0x02;
     /// Union Functional Descriptor
     pub const UNION: u8 = 0x06;
+    /// Ethernet Networking Functional Descriptor
+    pub const ETHERNET_NETWORKING: u8 = 0x0F;
+    /// NCM Functional Descriptor
+    pub const NCM: u8 = 0x1A;
 }
