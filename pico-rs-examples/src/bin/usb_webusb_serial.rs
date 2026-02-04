@@ -69,7 +69,7 @@ fn main() -> ! {
     info!("WebUSB CDC Serial Example starting...");
 
     // Initialize clock system (150 MHz sys, 48 MHz USB)
-    let clocks = ClockBuilder::new().build();
+    let clocks = ClockBuilder::new().enable_usb().build();
     info!(
         "Clock system initialized: sys={} Hz, usb={} Hz",
         clocks.sys_freq(),
@@ -83,7 +83,10 @@ fn main() -> ! {
 
     // Create WebUSB class with landing page
     let mut webusb = WebUsb::new(LANDING_PAGE_URL);
-    info!("WebUSB class created with URL: https://{}", LANDING_PAGE_URL);
+    info!(
+        "WebUSB class created with URL: https://{}",
+        LANDING_PAGE_URL
+    );
 
     // Create CDC ACM class
     let mut cdc = CdcAcm::new(&usb_bus);
