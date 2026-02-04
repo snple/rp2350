@@ -82,8 +82,20 @@ name = "bind_example"
 path = "src/bin/bind_example.rs"
 
 [[bin]]
-name = "usb_cdc"
-path = "src/bin/usb_cdc.rs"
+name = "usb_cdc_acm"
+path = "src/bin/usb_cdc_acm.rs"
+
+[[bin]]
+name = "usb_cdc_acm_interrupt"
+path = "src/bin/usb_cdc_acm_interrupt.rs"
+
+[[bin]]
+name = "usb_cdc_ecm"
+path = "src/bin/usb_cdc_ecm.rs"
+
+[[bin]]
+name = "usb_webusb"
+path = "src/bin/usb_webusb.rs"
 
 [[bin]]
 name = "usb_hid_keyboard"

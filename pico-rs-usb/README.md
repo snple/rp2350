@@ -9,6 +9,7 @@ USB Device Stack for RP2350 microcontrollers (Raspberry Pi Pico 2).
   - **CDC ACM**: Virtual serial port
   - **CDC-ECM**: Ethernet over USB
   - **HID**: Human Interface Device (keyboard, mouse, etc.)
+  - **WebUSB**: Browser-accessible USB devices
 - ⚡ Efficient interrupt-driven operation
 - 📝 defmt logging support
 - 🔧 Zero external dependencies beyond pico-rs-pac
@@ -132,6 +133,58 @@ let mac = ecm.mac_address();
 - Link state notification
 - Connection speed notification
 - Packet filter settings
+
+### WebUSB
+
+The WebUSB class enables direct browser access to USB devices:
+
+```rust
+use pico_rs_usb::class::webusb::WebUsb;
+
+// Create WebUSB with landing page URL
+let mut webusb = WebUsb::new("example.com/pico");
+
+// Or enable MS OS 2.0 descriptors for automatic Windows driver binding
+let mut webusb = WebUsb::new("example.com/pico")
+    .enable_ms_os_20();
+
+// Use with CDC ACM for a serial device accessible from browser
+let mut serial = CdcAcm::new(&usb_bus);
+
+// Include both classes in USB device
+let mut usb_dev = UsbDevice::builder(&usb_bus)
+    .vendor_id(0x1209)
+    .product_id(0x0001)
+    .manufacturer("My Company")
+    .product("WebUSB Serial")
+    .build();
+
+// Poll both classes
+usb_dev.poll(&mut [&mut webusb, &mut serial]);
+```
+
+**WebUSB Features:**
+- Landing page URL descriptor for browser discovery
+- BOS (Binary Object Store) descriptor support
+- MS OS 2.0 descriptor support for Windows WINUSB driver
+- Compatible with Chrome/Edge WebUSB API
+
+**Browser Usage (JavaScript):**
+```javascript
+// Request device access
+const device = await navigator.usb.requestDevice({
+  filters: [{ vendorId: 0x1209 }]
+});
+
+// Open device
+await device.open();
+await device.selectConfiguration(1);
+await device.claimInterface(0);
+
+// Transfer data
+await device.transferOut(endpointOut, data);
+const result = await device.transferIn(endpointIn, 64);
+```
 
 ## API Overview
 
