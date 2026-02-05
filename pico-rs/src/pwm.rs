@@ -10,37 +10,130 @@
 //! - Fractional clock divider (8.4 format)
 //! - Phase-correct or edge-aligned modes
 //! - Individual A and B outputs per slice
+//! - **Input mode support** for frequency/duty cycle measurement
 //!
 //! ## GPIO Mapping
 //!
-//! Each GPIO can be mapped to a PWM output:
-//! - GPIO 0, 16, 32 → PWM0 A
-//! - GPIO 1, 17, 33 → PWM0 B
-//! - GPIO 2, 18, 34 → PWM1 A
-//! - etc.
+//! Each GPIO can be mapped to a PWM output/input:
+//!
+//! ```text
+//! ┌─────────┬─────────┬─────────┬─────────┐
+//! │  Slice  │ Channel │  GPIO   │  GPIO   │
+//! │         │         │ (0-29)  │ (32-47) │
+//! ├─────────┼─────────┼─────────┼─────────┤
+//! │    0    │    A    │  0, 16  │   32    │
+//! │    0    │    B    │  1, 17  │   33    │
+//! │    1    │    A    │  2, 18  │   34    │
+//! │    1    │    B    │  3, 19  │   35    │
+//! │    2    │    A    │  4, 20  │   36    │
+//! │    2    │    B    │  5, 21  │   37    │
+//! │   ...   │   ...   │   ...   │   ...   │
+//! │   11    │    A    │ 22, 28  │   44    │
+//! │   11    │    B    │ 23, 29  │   45    │
+//! └─────────┴─────────┴─────────┴─────────┘
 //!
 //! PWM slice = (gpio_num / 2) % 12
 //! PWM channel = gpio_num % 2 (0 = A, 1 = B)
+//! ```
 //!
-//! ## Example
+//! ## Output Mode Example
 //!
 //! ```ignore
-//! use pico_rs::pwm::{Pwm, PwmSlice, DivMode};
-//! use pico_rs::gpio::GpioBank;
+//! use pico_rs::pwm::Pwm;
 //!
-//! // Initialize PWM slice 4 (for GPIO 25 - LED on Pico 2)
-//! let mut pwm = Pwm::init();
-//! let slice = pwm.slice(4);
+//! let pwm = Pwm::init();
+//! let slice = pwm.slice(4); // For GPIO 8/9
 //!
 //! // Configure for 1 kHz at 150 MHz sys clock
 //! slice.set_wrap(65535);
 //! slice.set_div_int(2);
-//!
-//! // Set duty cycle (50%)
-//! slice.set_channel_a(32768);
-//!
-//! // Enable the slice
+//! slice.set_channel_a(32768); // 50% duty cycle
 //! slice.enable();
+//! ```
+//!
+//! # Input Mode
+//!
+//! The PWM can measure external signals using the B channel as input.
+//! Three input modes are available via the `DIVMODE` register field:
+//!
+//! ```text
+//! ┌────────────────┬──────────────────────────────────────────────────────┐
+//! │     Mode       │                    Description                       │
+//! ├────────────────┼──────────────────────────────────────────────────────┤
+//! │  GatedByB      │ Counter runs at divider rate ONLY when B pin is HIGH │
+//! │                │ → Use for: Duty cycle measurement, pulse width       │
+//! ├────────────────┼──────────────────────────────────────────────────────┤
+//! │  RisingEdgeB   │ Counter increments on each RISING edge of B pin      │
+//! │                │ → Use for: Frequency measurement, pulse counting     │
+//! ├────────────────┼──────────────────────────────────────────────────────┤
+//! │  FallingEdgeB  │ Counter increments on each FALLING edge of B pin     │
+//! │                │ → Use for: Frequency measurement, pulse counting     │
+//! └────────────────┴──────────────────────────────────────────────────────┘
+//! ```
+//!
+//! ## Input Mode: Frequency Measurement
+//!
+//! Count edges over a known time period to measure frequency:
+//!
+//! ```ignore
+//! use pico_rs::pwm::{Pwm, DivMode};
+//!
+//! let pwm = Pwm::init();
+//! let slice = pwm.slice(0); // GPIO 1 is PWM0 B input
+//!
+//! // Configure for rising edge counting
+//! slice.set_div_mode(DivMode::RisingEdgeB);
+//! slice.set_wrap(0xFFFF);  // Max wrap to avoid overflow
+//! slice.set_counter(0);
+//! slice.enable();
+//!
+//! // Measure: count edges over 100ms
+//! let start_count = slice.get_counter();
+//! timer.delay_ms(100);
+//! let end_count = slice.get_counter();
+//!
+//! let edges = end_count.wrapping_sub(start_count);
+//! let frequency_hz = edges as u32 * 10; // edges per 100ms → Hz
+//! ```
+//!
+//! ## Input Mode: Duty Cycle Measurement
+//!
+//! Use gated counting to measure how long the signal is HIGH:
+//!
+//! ```ignore
+//! use pico_rs::pwm::{Pwm, DivMode};
+//!
+//! let pwm = Pwm::init();
+//! let slice = pwm.slice(0);
+//!
+//! // Configure: counter runs only when B input is HIGH
+//! slice.set_div_mode(DivMode::GatedByB);
+//! slice.set_div(1, 0);     // Fastest counting (sys_clk rate)
+//! slice.set_wrap(0xFFFF);
+//! slice.set_counter(0);
+//! slice.enable();
+//!
+//! // Measure over a known period
+//! timer.delay_us(1000); // 1ms measurement window
+//! let high_count = slice.get_counter();
+//!
+//! // At 150MHz with div=1, 1ms = 150,000 total counts
+//! // duty_cycle = high_count / 150_000
+//! ```
+//!
+//! ## Input Mode: Pulse Counting
+//!
+//! Simply count pulses without time reference:
+//!
+//! ```ignore
+//! slice.set_div_mode(DivMode::RisingEdgeB);
+//! slice.set_wrap(0xFFFF);
+//! slice.set_counter(0);
+//! slice.enable();
+//!
+//! // ... later ...
+//! let pulse_count = slice.get_counter();
+//! // Check for overflow: slice.did_wrap()
 //! ```
 
 use crate::reset::{self, Peripheral};
@@ -62,6 +155,23 @@ pub enum DivMode {
     RisingEdgeB = 2,
     /// Counter advances with each falling edge of the PWM B pin
     FallingEdgeB = 3,
+}
+
+impl DivMode {
+    /// Check if this mode uses the B pin as input
+    #[inline]
+    pub const fn is_input_mode(self) -> bool {
+        matches!(
+            self,
+            DivMode::GatedByB | DivMode::RisingEdgeB | DivMode::FallingEdgeB
+        )
+    }
+
+    /// Check if this mode counts edges
+    #[inline]
+    pub const fn is_edge_counting(self) -> bool {
+        matches!(self, DivMode::RisingEdgeB | DivMode::FallingEdgeB)
+    }
 }
 
 /// PWM peripheral wrapper
@@ -466,6 +576,90 @@ impl<'a> PwmSlice<'a> {
     #[inline]
     pub fn retard_phase(&self) {
         self.csr_set_bits(1 << 6);
+    }
+
+    // ========================================================================
+    // Input Mode Support
+    // ========================================================================
+    //
+    // The PWM can measure external signals using the B channel as input.
+    // Three input modes are available:
+    //
+    //   DivMode::GatedByB    - Counter runs only when B is HIGH
+    //                          Use for: duty cycle measurement, pulse width
+    //
+    //   DivMode::RisingEdgeB - Counter increments on rising edge
+    //                          Use for: frequency measurement, pulse counting
+    //
+    //   DivMode::FallingEdgeB - Counter increments on falling edge
+    //                           Use for: frequency measurement, pulse counting
+    //
+    // Basic usage:
+    //   1. Configure GPIO for PWM function
+    //   2. Set div_mode to an input mode
+    //   3. Set wrap to 0xFFFF (max) to avoid overflow
+    //   4. Optionally set divider (for gated mode timing)
+    //   5. Reset counter with set_counter(0)
+    //   6. Enable slice
+    //   7. Read counter after measurement period
+    //
+    // ========================================================================
+
+    /// Get the current divider mode
+    #[inline]
+    pub fn get_div_mode(&self) -> DivMode {
+        let csr = self.csr_read();
+        let mode = (csr >> 4) & 0x3;
+        match mode {
+            0 => DivMode::FreeRunning,
+            1 => DivMode::GatedByB,
+            2 => DivMode::RisingEdgeB,
+            3 => DivMode::FallingEdgeB,
+            _ => unreachable!(),
+        }
+    }
+
+    /// Check if this slice is configured for input mode
+    ///
+    /// Returns true if `div_mode` is `GatedByB`, `RisingEdgeB`, or `FallingEdgeB`.
+    #[inline]
+    pub fn is_input_mode(&self) -> bool {
+        self.get_div_mode().is_input_mode()
+    }
+
+    /// Check if a counter wrap occurred (useful for overflow detection)
+    ///
+    /// In input mode, a wrap indicates the counter overflowed during measurement.
+    /// The wrap flag is set when the counter reaches the TOP value.
+    ///
+    /// # Example
+    /// ```ignore
+    /// slice.set_counter(0);
+    /// slice.enable();
+    /// // ... measure ...
+    /// if slice.did_wrap() {
+    ///     // Overflow occurred - use larger divider or shorter gate time
+    /// }
+    /// ```
+    #[inline]
+    pub fn did_wrap(&self) -> bool {
+        self.is_interrupt_raw()
+    }
+
+    /// Get the primary B input GPIO number for this slice
+    ///
+    /// Returns the lowest-numbered GPIO that maps to this slice's B channel.
+    ///
+    /// | Slice | B GPIO |
+    /// |-------|--------|
+    /// |   0   |   1    |
+    /// |   1   |   3    |
+    /// |   2   |   5    |
+    /// |  ...  |  ...   |
+    /// |  11   |  23    |
+    #[inline]
+    pub const fn b_input_gpio(&self) -> u8 {
+        self.slice * 2 + 1
     }
 
     // ========================================================================
