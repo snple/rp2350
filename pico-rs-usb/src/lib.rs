@@ -66,7 +66,6 @@ pub mod dpram;
 pub mod endpoint;
 pub mod ep_regs;
 pub mod error;
-pub mod net;
 pub mod types;
 
 // Re-exports for convenience
