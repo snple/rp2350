@@ -20,7 +20,7 @@ use panic_probe as _;
 
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
-use pico_rs::gpio::{EdgeLevel, GpioBank};
+use pico_rs::gpio::{self, EdgeLevel, Pin15, Pin25};
 use pico_rs::interrupt as irq;
 use pico_rs::pac::Interrupt;
 
@@ -39,15 +39,15 @@ fn main() -> ! {
     info!("GPIO Interrupt Example");
 
     // Initialize GPIO
-    let gpio = GpioBank::init();
+    gpio::init_gpio();
 
     // Configure LED as output
-    let led = gpio.pin25();
+    let led = Pin25::new();
     led.into_output();
     led.set_low();
 
     // Configure button as input with pull-up
-    let button = gpio.pin15();
+    let button = Pin15::new();
     button.into_input_pullup();
 
     // Enable falling edge interrupt on button (button press = falling edge with pull-up)
@@ -68,7 +68,7 @@ fn main() -> ! {
             let new_state = !LED_STATE.load(Ordering::Relaxed);
             LED_STATE.store(new_state, Ordering::Relaxed);
 
-            let led = gpio.pin25();
+            let led = Pin25::new();
             if new_state {
                 led.set_high();
                 info!("LED ON");
@@ -90,17 +90,14 @@ fn main() -> ! {
 #[unsafe(no_mangle)]
 extern "C" fn IO_IRQ_BANK0() {
     // Access GPIO to check and clear interrupt
-    unsafe {
-        let gpio = GpioBank::new_unchecked();
-        let button = gpio.pin15();
+    let button = Pin15::new();
 
-        // Check if this is our button's falling edge interrupt
-        if button.interrupt_status(EdgeLevel::EdgeLow) {
-            // Clear the interrupt
-            button.clear_interrupt(EdgeLevel::EdgeLow);
+    // Check if this is our button's falling edge interrupt
+    if button.interrupt_status(EdgeLevel::EdgeLow) {
+        // Clear the interrupt
+        button.clear_interrupt(EdgeLevel::EdgeLow);
 
-            // Signal to main loop that button was pressed
-            BUTTON_PRESSED.store(true, Ordering::Relaxed);
-        }
+        // Signal to main loop that button was pressed
+        BUTTON_PRESSED.store(true, Ordering::Relaxed);
     }
 }

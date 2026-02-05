@@ -7,18 +7,18 @@
 //! ## Example
 //!
 //! ```ignore
-//! use pico_rs::gpio::{GpioBank, PinFunction};
-//! use pico_rs::gpio::pins::{Uart0Tx, Uart0Rx, I2c0Sda, I2c0Scl};
+//! use pico_rs::gpio::{self, Pin0, Pin4, Pin5};
+//! use pico_rs::gpio::pins::{Uart0TxPin, I2c0SdaPin, I2c0SclPin};
 //!
-//! let gpio = GpioBank::init();
+//! gpio::init_gpio();
 //!
 //! // Configure UART0 TX on pin 0
-//! let tx = gpio.pin0();
+//! let tx = Pin0::new();
 //! tx.into_uart0_tx();
 //!
 //! // Configure I2C0 on pins 4, 5
-//! let sda = gpio.pin4();
-//! let scl = gpio.pin5();
+//! let sda = Pin4::new();
+//! let scl = Pin5::new();
 //! sda.into_i2c0_sda();
 //! scl.into_i2c0_scl();
 //! ```
@@ -185,7 +185,7 @@ macro_rules! impl_uart_pin {
     // UART0 TX
     (uart0_tx: $($pin:ident),+ $(,)?) => {
         $(
-            impl<'a> Uart0TxPin for super::$pin<'a> {
+            impl Uart0TxPin for super::$pin {
                 #[inline]
                 fn configure_uart0_tx(&self) {
                     self.init_pad();
@@ -193,7 +193,7 @@ macro_rules! impl_uart_pin {
                 }
             }
 
-            impl<'a> super::$pin<'a> {
+            impl super::$pin {
                 /// Configure this pin as UART0 TX
                 #[inline]
                 pub fn into_uart0_tx(&self) -> &Self {
@@ -206,7 +206,7 @@ macro_rules! impl_uart_pin {
     // UART0 RX
     (uart0_rx: $($pin:ident),+ $(,)?) => {
         $(
-            impl<'a> Uart0RxPin for super::$pin<'a> {
+            impl Uart0RxPin for super::$pin {
                 #[inline]
                 fn configure_uart0_rx(&self) {
                     self.init_pad();
@@ -214,7 +214,7 @@ macro_rules! impl_uart_pin {
                 }
             }
 
-            impl<'a> super::$pin<'a> {
+            impl super::$pin {
                 /// Configure this pin as UART0 RX
                 #[inline]
                 pub fn into_uart0_rx(&self) -> &Self {
@@ -227,7 +227,7 @@ macro_rules! impl_uart_pin {
     // UART0 CTS
     (uart0_cts: $($pin:ident),+ $(,)?) => {
         $(
-            impl<'a> Uart0CtsPin for super::$pin<'a> {
+            impl Uart0CtsPin for super::$pin {
                 #[inline]
                 fn configure_uart0_cts(&self) {
                     self.init_pad();
@@ -235,7 +235,7 @@ macro_rules! impl_uart_pin {
                 }
             }
 
-            impl<'a> super::$pin<'a> {
+            impl super::$pin {
                 /// Configure this pin as UART0 CTS
                 #[inline]
                 pub fn into_uart0_cts(&self) -> &Self {
@@ -248,7 +248,7 @@ macro_rules! impl_uart_pin {
     // UART0 RTS
     (uart0_rts: $($pin:ident),+ $(,)?) => {
         $(
-            impl<'a> Uart0RtsPin for super::$pin<'a> {
+            impl Uart0RtsPin for super::$pin {
                 #[inline]
                 fn configure_uart0_rts(&self) {
                     self.init_pad();
@@ -256,7 +256,7 @@ macro_rules! impl_uart_pin {
                 }
             }
 
-            impl<'a> super::$pin<'a> {
+            impl super::$pin {
                 /// Configure this pin as UART0 RTS
                 #[inline]
                 pub fn into_uart0_rts(&self) -> &Self {
@@ -269,7 +269,7 @@ macro_rules! impl_uart_pin {
     // UART1 TX
     (uart1_tx: $($pin:ident),+ $(,)?) => {
         $(
-            impl<'a> Uart1TxPin for super::$pin<'a> {
+            impl Uart1TxPin for super::$pin {
                 #[inline]
                 fn configure_uart1_tx(&self) {
                     self.init_pad();
@@ -277,7 +277,7 @@ macro_rules! impl_uart_pin {
                 }
             }
 
-            impl<'a> super::$pin<'a> {
+            impl super::$pin {
                 /// Configure this pin as UART1 TX
                 #[inline]
                 pub fn into_uart1_tx(&self) -> &Self {
@@ -290,7 +290,7 @@ macro_rules! impl_uart_pin {
     // UART1 RX
     (uart1_rx: $($pin:ident),+ $(,)?) => {
         $(
-            impl<'a> Uart1RxPin for super::$pin<'a> {
+            impl Uart1RxPin for super::$pin {
                 #[inline]
                 fn configure_uart1_rx(&self) {
                     self.init_pad();
@@ -298,7 +298,7 @@ macro_rules! impl_uart_pin {
                 }
             }
 
-            impl<'a> super::$pin<'a> {
+            impl super::$pin {
                 /// Configure this pin as UART1 RX
                 #[inline]
                 pub fn into_uart1_rx(&self) -> &Self {
@@ -311,7 +311,7 @@ macro_rules! impl_uart_pin {
     // UART1 CTS
     (uart1_cts: $($pin:ident),+ $(,)?) => {
         $(
-            impl<'a> Uart1CtsPin for super::$pin<'a> {
+            impl Uart1CtsPin for super::$pin {
                 #[inline]
                 fn configure_uart1_cts(&self) {
                     self.init_pad();
@@ -319,7 +319,7 @@ macro_rules! impl_uart_pin {
                 }
             }
 
-            impl<'a> super::$pin<'a> {
+            impl super::$pin {
                 /// Configure this pin as UART1 CTS
                 #[inline]
                 pub fn into_uart1_cts(&self) -> &Self {
@@ -332,7 +332,7 @@ macro_rules! impl_uart_pin {
     // UART1 RTS
     (uart1_rts: $($pin:ident),+ $(,)?) => {
         $(
-            impl<'a> Uart1RtsPin for super::$pin<'a> {
+            impl Uart1RtsPin for super::$pin {
                 #[inline]
                 fn configure_uart1_rts(&self) {
                     self.init_pad();
@@ -340,7 +340,7 @@ macro_rules! impl_uart_pin {
                 }
             }
 
-            impl<'a> super::$pin<'a> {
+            impl super::$pin {
                 /// Configure this pin as UART1 RTS
                 #[inline]
                 pub fn into_uart1_rts(&self) -> &Self {
@@ -356,7 +356,7 @@ macro_rules! impl_i2c_pin {
     // I2C0 SDA
     (i2c0_sda: $($pin:ident),+ $(,)?) => {
         $(
-            impl<'a> I2c0SdaPin for super::$pin<'a> {
+            impl I2c0SdaPin for super::$pin {
                 #[inline]
                 fn configure_i2c0_sda(&self) {
                     self.init_pad();
@@ -365,7 +365,7 @@ macro_rules! impl_i2c_pin {
                 }
             }
 
-            impl<'a> super::$pin<'a> {
+            impl super::$pin {
                 /// Configure this pin as I2C0 SDA (with pull-up)
                 #[inline]
                 pub fn into_i2c0_sda(&self) -> &Self {
@@ -378,7 +378,7 @@ macro_rules! impl_i2c_pin {
     // I2C0 SCL
     (i2c0_scl: $($pin:ident),+ $(,)?) => {
         $(
-            impl<'a> I2c0SclPin for super::$pin<'a> {
+            impl I2c0SclPin for super::$pin {
                 #[inline]
                 fn configure_i2c0_scl(&self) {
                     self.init_pad();
@@ -387,7 +387,7 @@ macro_rules! impl_i2c_pin {
                 }
             }
 
-            impl<'a> super::$pin<'a> {
+            impl super::$pin {
                 /// Configure this pin as I2C0 SCL (with pull-up)
                 #[inline]
                 pub fn into_i2c0_scl(&self) -> &Self {
@@ -400,7 +400,7 @@ macro_rules! impl_i2c_pin {
     // I2C1 SDA
     (i2c1_sda: $($pin:ident),+ $(,)?) => {
         $(
-            impl<'a> I2c1SdaPin for super::$pin<'a> {
+            impl I2c1SdaPin for super::$pin {
                 #[inline]
                 fn configure_i2c1_sda(&self) {
                     self.init_pad();
@@ -409,7 +409,7 @@ macro_rules! impl_i2c_pin {
                 }
             }
 
-            impl<'a> super::$pin<'a> {
+            impl super::$pin {
                 /// Configure this pin as I2C1 SDA (with pull-up)
                 #[inline]
                 pub fn into_i2c1_sda(&self) -> &Self {
@@ -422,7 +422,7 @@ macro_rules! impl_i2c_pin {
     // I2C1 SCL
     (i2c1_scl: $($pin:ident),+ $(,)?) => {
         $(
-            impl<'a> I2c1SclPin for super::$pin<'a> {
+            impl I2c1SclPin for super::$pin {
                 #[inline]
                 fn configure_i2c1_scl(&self) {
                     self.init_pad();
@@ -431,7 +431,7 @@ macro_rules! impl_i2c_pin {
                 }
             }
 
-            impl<'a> super::$pin<'a> {
+            impl super::$pin {
                 /// Configure this pin as I2C1 SCL (with pull-up)
                 #[inline]
                 pub fn into_i2c1_scl(&self) -> &Self {
@@ -447,7 +447,7 @@ macro_rules! impl_spi_pin {
     // SPI0 RX
     (spi0_rx: $($pin:ident),+ $(,)?) => {
         $(
-            impl<'a> Spi0RxPin for super::$pin<'a> {
+            impl Spi0RxPin for super::$pin {
                 #[inline]
                 fn configure_spi0_rx(&self) {
                     self.init_pad();
@@ -455,7 +455,7 @@ macro_rules! impl_spi_pin {
                 }
             }
 
-            impl<'a> super::$pin<'a> {
+            impl super::$pin {
                 /// Configure this pin as SPI0 RX (MISO)
                 #[inline]
                 pub fn into_spi0_rx(&self) -> &Self {
@@ -468,7 +468,7 @@ macro_rules! impl_spi_pin {
     // SPI0 CSN
     (spi0_csn: $($pin:ident),+ $(,)?) => {
         $(
-            impl<'a> Spi0CsnPin for super::$pin<'a> {
+            impl Spi0CsnPin for super::$pin {
                 #[inline]
                 fn configure_spi0_csn(&self) {
                     self.init_pad();
@@ -476,7 +476,7 @@ macro_rules! impl_spi_pin {
                 }
             }
 
-            impl<'a> super::$pin<'a> {
+            impl super::$pin {
                 /// Configure this pin as SPI0 CSN (Chip Select)
                 #[inline]
                 pub fn into_spi0_csn(&self) -> &Self {
@@ -489,7 +489,7 @@ macro_rules! impl_spi_pin {
     // SPI0 SCK
     (spi0_sck: $($pin:ident),+ $(,)?) => {
         $(
-            impl<'a> Spi0SckPin for super::$pin<'a> {
+            impl Spi0SckPin for super::$pin {
                 #[inline]
                 fn configure_spi0_sck(&self) {
                     self.init_pad();
@@ -497,7 +497,7 @@ macro_rules! impl_spi_pin {
                 }
             }
 
-            impl<'a> super::$pin<'a> {
+            impl super::$pin {
                 /// Configure this pin as SPI0 SCK (Clock)
                 #[inline]
                 pub fn into_spi0_sck(&self) -> &Self {
@@ -510,7 +510,7 @@ macro_rules! impl_spi_pin {
     // SPI0 TX
     (spi0_tx: $($pin:ident),+ $(,)?) => {
         $(
-            impl<'a> Spi0TxPin for super::$pin<'a> {
+            impl Spi0TxPin for super::$pin {
                 #[inline]
                 fn configure_spi0_tx(&self) {
                     self.init_pad();
@@ -518,7 +518,7 @@ macro_rules! impl_spi_pin {
                 }
             }
 
-            impl<'a> super::$pin<'a> {
+            impl super::$pin {
                 /// Configure this pin as SPI0 TX (MOSI)
                 #[inline]
                 pub fn into_spi0_tx(&self) -> &Self {
@@ -531,7 +531,7 @@ macro_rules! impl_spi_pin {
     // SPI1 RX
     (spi1_rx: $($pin:ident),+ $(,)?) => {
         $(
-            impl<'a> Spi1RxPin for super::$pin<'a> {
+            impl Spi1RxPin for super::$pin {
                 #[inline]
                 fn configure_spi1_rx(&self) {
                     self.init_pad();
@@ -539,7 +539,7 @@ macro_rules! impl_spi_pin {
                 }
             }
 
-            impl<'a> super::$pin<'a> {
+            impl super::$pin {
                 /// Configure this pin as SPI1 RX (MISO)
                 #[inline]
                 pub fn into_spi1_rx(&self) -> &Self {
@@ -552,7 +552,7 @@ macro_rules! impl_spi_pin {
     // SPI1 CSN
     (spi1_csn: $($pin:ident),+ $(,)?) => {
         $(
-            impl<'a> Spi1CsnPin for super::$pin<'a> {
+            impl Spi1CsnPin for super::$pin {
                 #[inline]
                 fn configure_spi1_csn(&self) {
                     self.init_pad();
@@ -560,7 +560,7 @@ macro_rules! impl_spi_pin {
                 }
             }
 
-            impl<'a> super::$pin<'a> {
+            impl super::$pin {
                 /// Configure this pin as SPI1 CSN (Chip Select)
                 #[inline]
                 pub fn into_spi1_csn(&self) -> &Self {
@@ -573,7 +573,7 @@ macro_rules! impl_spi_pin {
     // SPI1 SCK
     (spi1_sck: $($pin:ident),+ $(,)?) => {
         $(
-            impl<'a> Spi1SckPin for super::$pin<'a> {
+            impl Spi1SckPin for super::$pin {
                 #[inline]
                 fn configure_spi1_sck(&self) {
                     self.init_pad();
@@ -581,7 +581,7 @@ macro_rules! impl_spi_pin {
                 }
             }
 
-            impl<'a> super::$pin<'a> {
+            impl super::$pin {
                 /// Configure this pin as SPI1 SCK (Clock)
                 #[inline]
                 pub fn into_spi1_sck(&self) -> &Self {
@@ -594,7 +594,7 @@ macro_rules! impl_spi_pin {
     // SPI1 TX
     (spi1_tx: $($pin:ident),+ $(,)?) => {
         $(
-            impl<'a> Spi1TxPin for super::$pin<'a> {
+            impl Spi1TxPin for super::$pin {
                 #[inline]
                 fn configure_spi1_tx(&self) {
                     self.init_pad();
@@ -602,7 +602,7 @@ macro_rules! impl_spi_pin {
                 }
             }
 
-            impl<'a> super::$pin<'a> {
+            impl super::$pin {
                 /// Configure this pin as SPI1 TX (MOSI)
                 #[inline]
                 pub fn into_spi1_tx(&self) -> &Self {
@@ -618,7 +618,7 @@ macro_rules! impl_pwm_pin {
     // PWM Channel A
     (pwm_a: $slice:expr, $($pin:ident),+ $(,)?) => {
         $(
-            impl<'a> PwmAPin for super::$pin<'a> {
+            impl PwmAPin for super::$pin {
                 const PWM_SLICE: u8 = $slice;
 
                 #[inline]
@@ -628,7 +628,7 @@ macro_rules! impl_pwm_pin {
                 }
             }
 
-            impl<'a> super::$pin<'a> {
+            impl super::$pin {
                 #[doc = concat!("Configure this pin as PWM slice ", $slice, " channel A")]
                 #[inline]
                 pub fn into_pwm_a(&self) -> &Self {
@@ -641,7 +641,7 @@ macro_rules! impl_pwm_pin {
     // PWM Channel B
     (pwm_b: $slice:expr, $($pin:ident),+ $(,)?) => {
         $(
-            impl<'a> PwmBPin for super::$pin<'a> {
+            impl PwmBPin for super::$pin {
                 const PWM_SLICE: u8 = $slice;
 
                 #[inline]
@@ -651,7 +651,7 @@ macro_rules! impl_pwm_pin {
                 }
             }
 
-            impl<'a> super::$pin<'a> {
+            impl super::$pin {
                 #[doc = concat!("Configure this pin as PWM slice ", $slice, " channel B")]
                 #[inline]
                 pub fn into_pwm_b(&self) -> &Self {

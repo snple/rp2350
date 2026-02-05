@@ -20,7 +20,7 @@ use panic_probe as _;
 use pico_rs::block::ImageDef;
 use pico_rs::clocks::{ClkRefSrc, ClkSysAuxSrc, Clocks};
 use pico_rs::entry;
-use pico_rs::gpio::GpioBank;
+use pico_rs::gpio::{self, Pin25};
 use pico_rs::pll::{PllConfig, PllSys, PllUsb};
 use pico_rs::reset::{self, Peripheral};
 use pico_rs::systick::Delay;
@@ -89,8 +89,8 @@ fn main() -> ! {
     info!("PLL_USB configured for 48 MHz");
 
     // Initialize GPIO
-    let gpio = GpioBank::init();
-    let led = gpio.pin25();
+    gpio::init_gpio();
+    let led = Pin25::new();
     led.into_output();
 
     // Cycle through different clock speeds

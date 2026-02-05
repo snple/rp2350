@@ -24,7 +24,7 @@ use panic_probe as _;
 
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
-use pico_rs::gpio::GpioBank;
+use pico_rs::gpio::{self, Pin1, Pin25};
 use pico_rs::pwm::{DivMode, Pwm};
 use pico_rs::timer::Timer0;
 
@@ -41,15 +41,15 @@ fn main() -> ! {
     let timer = Timer0::init();
 
     // Initialize GPIO
-    let gpio = GpioBank::init();
+    gpio::init_gpio();
 
     // Configure GPIO 1 as PWM function - this will be our input pin
     // GPIO 1 maps to PWM0 B channel
-    let input_pin = gpio.pin1();
+    let input_pin = Pin1::new();
     input_pin.set_function(pico_rs::gpio::Function::Pwm);
 
     // Also configure LED for visual feedback
-    let led = gpio.pin25();
+    let led = Pin25::new();
     led.into_output();
 
     // Initialize PWM

@@ -15,7 +15,7 @@ use panic_probe as _;
 
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
-use pico_rs::gpio::GpioBank;
+use pico_rs::gpio::{self, Pin25};
 use pico_rs::timer::Timer0;
 
 /// RP2350 Boot Block
@@ -36,8 +36,8 @@ fn main() -> ! {
     info!("Initial timer value: {} us", start_time);
 
     // Initialize GPIO for LED
-    let gpio = GpioBank::init();
-    let led = gpio.pin25();
+    gpio::init_gpio();
+    let led = Pin25::new();
     led.into_output();
     info!("LED configured on GPIO 25");
 

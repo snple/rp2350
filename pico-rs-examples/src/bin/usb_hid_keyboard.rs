@@ -26,7 +26,7 @@ use pico_rs::Delay;
 use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
-use pico_rs::gpio::GpioBank;
+use pico_rs::gpio::{self, Pin15, Pin25};
 
 use pico_rs_usb::bus::UsbBus;
 use pico_rs_usb::class::hid::{HidClass, KeyboardReport, keycode, modifier};
@@ -85,15 +85,15 @@ fn main() -> ! {
     );
 
     // Initialize GPIO
-    let gpio = GpioBank::init();
+    gpio::init_gpio();
 
     // LED on GPIO 25
-    let led = gpio.pin25();
+    let led = Pin25::new();
     led.into_output();
     led.set_low();
 
     // Button on GPIO 15 with pull-up
-    let button = gpio.pin15();
+    let button = Pin15::new();
     button.into_input_pullup();
 
     // Initialize USB bus

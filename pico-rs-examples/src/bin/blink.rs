@@ -13,7 +13,7 @@ use panic_probe as _;
 use pico_rs::Delay;
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
-use pico_rs::gpio::GpioBank;
+use pico_rs::gpio::{self, Pin25};
 
 /// RP2350 Boot Block - tells the Boot ROM this is a valid ARM executable
 #[unsafe(link_section = ".start_block")]
@@ -30,10 +30,10 @@ fn main() -> ! {
     info!("Blink example with GPIO LED control...");
 
     // Initialize GPIO subsystem (unresets IO_BANK0 and PADS_BANK0)
-    let gpio = GpioBank::init();
+    gpio::init_gpio();
 
     // Configure GPIO 25 (LED) as output
-    let led = gpio.pin25();
+    let led = Pin25::new();
     led.into_output();
 
     info!("GPIO 25 configured as output");

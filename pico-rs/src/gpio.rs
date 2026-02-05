@@ -1,53 +1,263 @@
-//! GPIO and Pad Control HAL for RP2350
+//! GPIO (General Purpose Input/Output) HAL for RP2350
 //!
-//! This module provides a type-safe interface for GPIO operations using the
-//! `paste` crate to generate dedicated types for each GPIO pin.
+//! This module provides a type-safe interface for configuring and using GPIO pins.
+//! Each pin can be configured for various functions including SIO, PIO, UART, SPI, I2C, and PWM.
 //!
-//! ## Chip Variants
+//! # GPIO Architecture
 //!
-//! - **RP2350A** (default): 30 GPIO pins (0-29) - Use feature `rp2350a`
-//! - **RP2350B**: 48 GPIO pins (0-47) - Use feature `rp2350b`
+//! The RP2350 GPIO system consists of three main components:
 //!
-//! ## Example
+//! ```text
+//! ╔══════════════════════════════════════════════════════════════════════════════════╗
+//! ║                              GPIO PIN ARCHITECTURE                               ║
+//! ╠══════════════════════════════════════════════════════════════════════════════════╣
+//! ║                                                                                  ║
+//! ║  ┌────────────────────────────────────────────────────────────────────────────┐  ║
+//! ║  │                           IO_BANK0 (Control)                               │  ║
+//! ║  │  ┌──────────────────────────────────────────────────────────────────────┐  │  ║
+//! ║  │  │  Function Selection (funcsel)                                        │  │  ║
+//! ║  │  │    0: JTAG   1: SPI     2: UART    3: I2C     4: PWM                  │  │  ║
+//! ║  │  │    5: SIO    6: PIO0    7: PIO1    8: PIO2    9: USB                  │  │  ║
+//! ║  │  │   31: NULL (disable)                                                  │  │  ║
+//! ║  │  └──────────────────────────────────────────────────────────────────────┘  │  ║
+//! ║  │  ┌──────────────────────────────────────────────────────────────────────┐  │  ║
+//! ║  │  │  Override Controls                                                   │  │  ║
+//! ║  │  │    OUTOVER: Output override (normal, invert, low, high)              │  │  ║
+//! ║  │  │    OEOVER:  Output enable override                                   │  │  ║
+//! ║  │  │    INOVER:  Input override (normal, invert, low, high)               │  │  ║
+//! ║  │  │    IRQOVER: Interrupt override                                       │  │  ║
+//! ║  │  └──────────────────────────────────────────────────────────────────────┘  │  ║
+//! ║  │  ┌──────────────────────────────────────────────────────────────────────┐  │  ║
+//! ║  │  │  Interrupts                                                          │  │  ║
+//! ║  │  │    INTR:  Raw interrupt status (write to clear edge)                 │  │  ║
+//! ║  │  │    INTE:  Interrupt enable per CPU                                   │  │  ║
+//! ║  │  │    INTF:  Interrupt force                                            │  │  ║
+//! ║  │  │    INTS:  Masked interrupt status                                    │  │  ║
+//! ║  │  └──────────────────────────────────────────────────────────────────────┘  │  ║
+//! ║  └────────────────────────────────────────────────────────────────────────────┘  ║
+//! ║                                                                                  ║
+//! ║  ┌────────────────────────────────────────────────────────────────────────────┐  ║
+//! ║  │                        PADS_BANK0 (Electrical)                             │  ║
+//! ║  │  ┌──────────────────────────────────────────────────────────────────────┐  │  ║
+//! ║  │  │  Pad Configuration                                                   │  │  ║
+//! ║  │  │    OD:       Output disable (1 = disable output driver)              │  │  ║
+//! ║  │  │    IE:       Input enable  (1 = enable input receiver)               │  │  ║
+//! ║  │  │    DRIVE:    Drive strength (2/4/8/12 mA)                            │  │  ║
+//! ║  │  │    PUE:      Pull-up enable                                          │  │  ║
+//! ║  │  │    PDE:      Pull-down enable                                        │  │  ║
+//! ║  │  │    SCHMITT:  Schmitt trigger enable                                  │  │  ║
+//! ║  │  │    SLEWFAST: Slew rate (0 = slow, 1 = fast)                          │  │  ║
+//! ║  │  │    ISO:      Isolation (for pad retention during sleep)              │  │  ║
+//! ║  │  └──────────────────────────────────────────────────────────────────────┘  │  ║
+//! ║  └────────────────────────────────────────────────────────────────────────────┘  ║
+//! ║                                                                                  ║
+//! ║  ┌────────────────────────────────────────────────────────────────────────────┐  ║
+//! ║  │                         SIO (Single-cycle I/O)                             │  ║
+//! ║  │  ┌──────────────────────────────────────────────────────────────────────┐  │  ║
+//! ║  │  │  GPIO Registers (when funcsel = SIO)                                 │  │  ║
+//! ║  │  │    GPIO_IN:     Read input values                                    │  │  ║
+//! ║  │  │    GPIO_OUT:    Output level                                         │  │  ║
+//! ║  │  │    GPIO_OE:     Output enable (direction)                            │  │  ║
+//! ║  │  │    *_SET/CLR/XOR: Atomic set/clear/toggle registers                  │  │  ║
+//! ║  │  │    GPIO_HI_*:   Registers for pins 32-47 (RP2350B only)              │  │  ║
+//! ║  │  └──────────────────────────────────────────────────────────────────────┘  │  ║
+//! ║  └────────────────────────────────────────────────────────────────────────────┘  ║
+//! ║                                                                                  ║
+//! ╚══════════════════════════════════════════════════════════════════════════════════╝
+//! ```
+//!
+//! # Pin Count by Variant
+//!
+//! | Variant  | GPIO Pins | Notes                        |
+//! |----------|-----------|------------------------------|
+//! | RP2350A  | 30 (0-29) | Pico 2 board                 |
+//! | RP2350B  | 48 (0-47) | QFN-80 package               |
+//!
+//! # GPIO Function Mapping
+//!
+//! Each GPIO pin can be assigned to one of several peripheral functions:
+//!
+//! ```text
+//! ┌───────┬────────────────────────────────────────────────────────────────┐
+//! │ GPIO  │  F1(SPI)   F2(UART)  F3(I2C)  F4(PWM)   F5(SIO)  F6/7/8(PIO)  │
+//! ├───────┼────────────────────────────────────────────────────────────────┤
+//! │  0    │  SPI0 RX   UART0 TX  I2C0 SDA  PWM0 A    SIO      PIO          │
+//! │  1    │  SPI0 CSn  UART0 RX  I2C0 SCL  PWM0 B    SIO      PIO          │
+//! │  2    │  SPI0 SCK  UART0 CTS I2C1 SDA  PWM1 A    SIO      PIO          │
+//! │  3    │  SPI0 TX   UART0 RTS I2C1 SCL  PWM1 B    SIO      PIO          │
+//! │  4    │  SPI0 RX   UART1 TX  I2C0 SDA  PWM2 A    SIO      PIO          │
+//! │  5    │  SPI0 CSn  UART1 RX  I2C0 SCL  PWM2 B    SIO      PIO          │
+//! │  6    │  SPI0 SCK  UART1 CTS I2C1 SDA  PWM3 A    SIO      PIO          │
+//! │  7    │  SPI0 TX   UART1 RTS I2C1 SCL  PWM3 B    SIO      PIO          │
+//! │  8    │  SPI1 RX   UART1 TX  I2C0 SDA  PWM4 A    SIO      PIO          │
+//! │  9    │  SPI1 CSn  UART1 RX  I2C0 SCL  PWM4 B    SIO      PIO          │
+//! │  10   │  SPI1 SCK  UART1 CTS I2C1 SDA  PWM5 A    SIO      PIO          │
+//! │  11   │  SPI1 TX   UART1 RTS I2C1 SCL  PWM5 B    SIO      PIO          │
+//! │  12   │  SPI1 RX   UART0 TX  I2C0 SDA  PWM6 A    SIO      PIO          │
+//! │  13   │  SPI1 CSn  UART0 RX  I2C0 SCL  PWM6 B    SIO      PIO          │
+//! │  14   │  SPI1 SCK  UART0 CTS I2C1 SDA  PWM7 A    SIO      PIO          │
+//! │  15   │  SPI1 TX   UART0 RTS I2C1 SCL  PWM7 B    SIO      PIO          │
+//! │  ...  │  (pattern repeats with variations)                             │
+//! │  25   │                                PWM4 B    SIO(LED) PIO          │
+//! │  26   │  ADC0                          PWM5 A    SIO      PIO          │
+//! │  27   │  ADC1                          PWM5 B    SIO      PIO          │
+//! │  28   │  ADC2                          PWM6 A    SIO      PIO          │
+//! │  29   │  ADC3                          PWM6 B    SIO      PIO          │
+//! └───────┴────────────────────────────────────────────────────────────────┘
+//! ```
+//!
+//! # Initialization Requirements
+//!
+//! **Important**: Before using GPIO pins, you must bring the `IO_BANK0` and `PADS_BANK0`
+//! peripherals out of reset. Use the [`init_gpio()`] function:
 //!
 //! ```ignore
-//! use pico_rs::gpio::{GpioBank, Pin25};
-//! use pico_rs::gpio::pins::{Uart0TxPin, I2c0SdaPin};
+//! use pico_rs::gpio;
 //!
-//! // Initialize GPIO subsystem
-//! let gpio = GpioBank::init();
+//! // Initialize GPIO subsystem (unresets IO_BANK0 and PADS_BANK0)
+//! gpio::init_gpio();
 //!
-//! // Get a specific pin
-//! let led = gpio.pin25();
+//! // Now you can use pins
+//! let led = gpio::Pin25::new();
+//! led.into_output();
+//! led.set_high();
+//! ```
 //!
-//! // Configure as SIO output
+//! If you skip this step, GPIO operations may have no effect or behave unexpectedly.
+//!
+//! # Usage Examples
+//!
+//! ## Basic Output (LED Blink)
+//!
+//! ```ignore
+//! use pico_rs::gpio;
+//!
+//! gpio::init_gpio();
+//! let led = gpio::Pin25::new();
 //! led.into_output();
 //!
-//! // Toggle LED
-//! led.set_high();
-//! led.set_low();
-//! led.toggle();
-//!
-//! // Configure pin 0 as UART0 TX (type-safe, compile-time verified)
-//! let tx = gpio.pin0();
-//! tx.into_uart0_tx();
-//!
-//! // Configure I2C0 on pins 4, 5 (with automatic pull-up)
-//! let sda = gpio.pin4();
-//! let scl = gpio.pin5();
-//! sda.into_i2c0_sda();
-//! scl.into_i2c0_scl();
-//!
-//! // Configure PWM on pin 0
-//! let pwm_pin = gpio.pin0();
-//! pwm_pin.into_pwm_a();  // PWM slice 0 channel A
+//! loop {
+//!     led.toggle();
+//!     // delay...
+//! }
 //! ```
+//!
+//! ## Basic Input (Button)
+//!
+//! ```ignore
+//! use pico_rs::gpio;
+//!
+//! gpio::init_gpio();
+//! let button = gpio::Pin14::new();
+//! button.into_input_pullup();
+//!
+//! if !button.read() {  // Active low
+//!     // Button pressed
+//! }
+//! ```
+//!
+//! ## Using PinBuilder for Complex Configuration
+//!
+//! ```ignore
+//! use pico_rs::gpio::{self, DriveStrength, SlewRate};
+//!
+//! gpio::init_gpio();
+//!
+//! // Configure a pin with specific electrical characteristics
+//! let pin = gpio::Pin25::new();
+//! pin.builder()
+//!     .output()
+//!     .drive_strength(DriveStrength::Ma8)
+//!     .slew_rate(SlewRate::Fast)
+//!     .build();
+//!
+//! pin.set_high();
+//! ```
+//!
+//! ## Configuring for Peripheral Functions
+//!
+//! ```ignore
+//! use pico_rs::gpio;
+//!
+//! gpio::init_gpio();
+//!
+//! // Configure for UART
+//! let tx_pin = gpio::Pin0::new();
+//! tx_pin.init_pad();
+//! tx_pin.set_function(gpio::Function::Uart);
+//!
+//! // Configure for PWM
+//! let pwm_pin = gpio::Pin16::new();
+//! pwm_pin.into_pwm();
+//! ```
+//!
+//! ## Edge Interrupt
+//!
+//! ```ignore
+//! use pico_rs::gpio::{self, EdgeLevel};
+//!
+//! gpio::init_gpio();
+//! let button = gpio::Pin14::new();
+//! button.into_input_pullup();
+//! button.enable_interrupt(EdgeLevel::EdgeLow);
+//!
+//! // In interrupt handler:
+//! // button.clear_interrupt(EdgeLevel::EdgeLow);
+//! ```
+//!
+//! # Safety Considerations
+//!
+//! - [`init_gpio()`] should be called once before using any GPIO pins
+//! - Multiple instances of the same pin type can exist (no ownership enforcement)
+//! - The user is responsible for avoiding conflicting configurations
 
 #![allow(clippy::identity_op)]
 
 use paste::paste;
+use pico_rs_pac::{IO_BANK0, PADS_BANK0, SIO};
 
 use crate::reset::{self, Peripheral};
+
+// ============================================================================
+// GPIO Subsystem Initialization
+// ============================================================================
+
+/// Initialize the GPIO subsystem by bringing IO_BANK0 and PADS_BANK0 out of reset.
+///
+/// This function must be called before using any GPIO pins. It performs
+/// a reset cycle on both peripherals to ensure they start in a known state.
+///
+/// # What this does
+///
+/// 1. Resets `IO_BANK0` (GPIO control registers)
+/// 2. Resets `PADS_BANK0` (GPIO electrical configuration)
+/// 3. Waits for both peripherals to complete their reset cycle
+///
+/// # Example
+///
+/// ```ignore
+/// use pico_rs::gpio;
+///
+/// // Call once at startup
+/// gpio::init_gpio();
+///
+/// // Now GPIO pins can be used
+/// let led = gpio::Pin25::new();
+/// led.into_output();
+/// ```
+///
+/// # Note
+///
+/// This function is idempotent - calling it multiple times is safe but
+/// will reset all GPIO configurations each time.
+#[inline]
+pub fn init_gpio() {
+    // Reset both peripherals
+    let mask = Peripheral::IO_BANK0.mask() | Peripheral::PADS_BANK0.mask();
+    reset::reset_block_mask(mask);
+    reset::unreset_block_mask(mask);
+    reset::unreset_wait_mask(mask);
+}
 
 // ============================================================================
 // Function Select Values (from RP2350 datasheet)
@@ -202,14 +412,29 @@ pub enum EdgeLevel {
 macro_rules! impl_gpio_pin {
     ($PinName:ident, $pin_num:expr, $inte_reg:ident, $intr_reg:ident, $ints_reg:ident) => {
         paste! {
-            /// GPIO Pin $pin_num
-            pub struct $PinName<'a> {
-                io_bank: &'a pico_rs_pac::io_bank0::RegisterBlock,
-                pads_bank: &'a pico_rs_pac::pads_bank0::RegisterBlock,
-                sio: &'a pico_rs_pac::sio::RegisterBlock,
+            #[doc = concat!("GPIO Pin ", stringify!($pin_num))]
+            ///
+            /// This type provides access to a specific GPIO pin with type-safe configuration
+            /// methods. Create an instance using [`new()`](Self::new) after calling [`init_gpio()`].
+            ///
+            /// # Example
+            ///
+            /// ```ignore
+            #[doc = concat!("use pico_rs::gpio::{self, ", stringify!($PinName), "};")]
+            ///
+            /// gpio::init_gpio();
+            #[doc = concat!("let pin = ", stringify!($PinName), "::new();")]
+            /// pin.into_output();
+            /// pin.set_high();
+            /// ```
+            #[derive(Clone, Copy)]
+            pub struct $PinName {
+                io_bank: &'static pico_rs_pac::io_bank0::RegisterBlock,
+                pads_bank: &'static pico_rs_pac::pads_bank0::RegisterBlock,
+                sio: &'static pico_rs_pac::sio::RegisterBlock,
             }
 
-            impl<'a> $PinName<'a> {
+            impl $PinName {
                 /// Pin number
                 pub const PIN: u8 = $pin_num;
 
@@ -218,6 +443,53 @@ macro_rules! impl_gpio_pin {
 
                 /// Whether this is a high GPIO (32-47)
                 pub const IS_HIGH: bool = $pin_num >= 32;
+
+                /// Create a new pin instance.
+                ///
+                /// # Prerequisites
+                ///
+                /// You must call [`init_gpio()`] before creating pin instances to ensure
+                /// the GPIO peripherals (IO_BANK0 and PADS_BANK0) are out of reset.
+                ///
+                /// # Example
+                ///
+                /// ```ignore
+                /// use pico_rs::gpio;
+                ///
+                /// gpio::init_gpio();
+                #[doc = concat!("let pin = gpio::", stringify!($PinName), "::new();")]
+                /// pin.into_output();
+                /// ```
+                #[inline]
+                pub fn new() -> Self {
+                    unsafe {
+                        Self {
+                            io_bank: &*IO_BANK0::PTR,
+                            pads_bank: &*PADS_BANK0::PTR,
+                            sio: &*SIO::PTR,
+                        }
+                    }
+                }
+
+                /// Create a builder for fluent configuration of this pin.
+                ///
+                /// # Example
+                ///
+                /// ```ignore
+                /// use pico_rs::gpio::{self, DriveStrength, SlewRate};
+                ///
+                /// gpio::init_gpio();
+                #[doc = concat!("let pin = gpio::", stringify!($PinName), "::new();")]
+                /// pin.builder()
+                ///     .output()
+                ///     .drive_strength(DriveStrength::_8mA)
+                ///     .slew_rate(SlewRate::Fast)
+                ///     .build();
+                /// ```
+                #[inline]
+                pub fn builder(&self) -> [<$PinName Builder>] {
+                    [<$PinName Builder>]::new(*self)
+                }
 
                 // ================================================================
                 // Function Selection
@@ -694,76 +966,213 @@ macro_rules! impl_gpio_pin {
                     self.set_function_pio2();
                     self
                 }
+
+                /// Initialize as PWM pin
+                #[inline]
+                pub fn into_pwm(&self) -> &Self {
+                    self.init_pad();
+                    self.set_function(Function::Pwm);
+                    self
+                }
+            }
+
+            // ================================================================
+            // Default trait implementation
+            // ================================================================
+
+            impl Default for $PinName {
+                fn default() -> Self {
+                    Self::new()
+                }
+            }
+
+            // ================================================================
+            // Debug trait implementation
+            // ================================================================
+
+            impl core::fmt::Debug for $PinName {
+                fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                    f.debug_struct(stringify!($PinName))
+                        .field("pin", &Self::PIN)
+                        .field("function", &self.function())
+                        .field("is_output", &self.is_output())
+                        .finish()
+                }
+            }
+
+            // ================================================================
+            // PinBuilder for fluent configuration
+            // ================================================================
+
+            #[doc = concat!("Builder for configuring ", stringify!($PinName))]
+            ///
+            /// Provides a fluent interface for configuring pin parameters.
+            /// Call [`build()`](Self::build) to apply the configuration.
+            ///
+            /// # Example
+            ///
+            /// ```ignore
+            /// use pico_rs::gpio::{self, DriveStrength, SlewRate};
+            ///
+            /// gpio::init_gpio();
+            #[doc = concat!("let pin = gpio::", stringify!($PinName), "::new();")]
+            /// pin.builder()
+            ///     .output()
+            ///     .drive_strength(DriveStrength::_8mA)
+            ///     .slew_rate(SlewRate::Fast)
+            ///     .pull(Pull::None)
+            ///     .build();
+            /// ```
+            pub struct [<$PinName Builder>] {
+                pin: $PinName,
+                function: Option<Function>,
+                direction_out: Option<bool>,
+                pull: Option<Pull>,
+                drive_strength: Option<DriveStrength>,
+                slew_rate: Option<SlewRate>,
+                schmitt_trigger: Option<bool>,
+            }
+
+            impl [<$PinName Builder>] {
+                /// Create a new builder for the given pin
+                #[inline]
+                fn new(pin: $PinName) -> Self {
+                    Self {
+                        pin,
+                        function: None,
+                        direction_out: None,
+                        pull: None,
+                        drive_strength: None,
+                        slew_rate: None,
+                        schmitt_trigger: None,
+                    }
+                }
+
+                /// Set the pin function
+                #[inline]
+                pub fn function(mut self, func: Function) -> Self {
+                    self.function = Some(func);
+                    self
+                }
+
+                /// Configure as SIO output
+                #[inline]
+                pub fn output(mut self) -> Self {
+                    self.function = Some(Function::Sio);
+                    self.direction_out = Some(true);
+                    self
+                }
+
+                /// Configure as SIO input
+                #[inline]
+                pub fn input(mut self) -> Self {
+                    self.function = Some(Function::Sio);
+                    self.direction_out = Some(false);
+                    self
+                }
+
+                /// Set pull resistor configuration
+                #[inline]
+                pub fn pull(mut self, pull: Pull) -> Self {
+                    self.pull = Some(pull);
+                    self
+                }
+
+                /// Enable pull-up resistor
+                #[inline]
+                pub fn pull_up(self) -> Self {
+                    self.pull(Pull::Up)
+                }
+
+                /// Enable pull-down resistor
+                #[inline]
+                pub fn pull_down(self) -> Self {
+                    self.pull(Pull::Down)
+                }
+
+                /// Set drive strength
+                #[inline]
+                pub fn drive_strength(mut self, strength: DriveStrength) -> Self {
+                    self.drive_strength = Some(strength);
+                    self
+                }
+
+                /// Set slew rate
+                #[inline]
+                pub fn slew_rate(mut self, rate: SlewRate) -> Self {
+                    self.slew_rate = Some(rate);
+                    self
+                }
+
+                /// Enable or disable Schmitt trigger
+                #[inline]
+                pub fn schmitt_trigger(mut self, enable: bool) -> Self {
+                    self.schmitt_trigger = Some(enable);
+                    self
+                }
+
+                /// Apply the configuration and return the pin
+                #[inline]
+                pub fn build(self) -> $PinName {
+                    // Initialize pad first
+                    self.pin.init_pad();
+
+                    // Apply function if set
+                    if let Some(func) = self.function {
+                        self.pin.set_function(func);
+                    }
+
+                    // Apply direction if set (only for SIO)
+                    if let Some(is_output) = self.direction_out {
+                        if is_output {
+                            self.pin.set_direction_out();
+                        } else {
+                            self.pin.set_direction_in();
+                        }
+                    }
+
+                    // Apply pull if set
+                    if let Some(pull) = self.pull {
+                        self.pin.set_pull(pull);
+                    }
+
+                    // Apply drive strength if set
+                    if let Some(strength) = self.drive_strength {
+                        self.pin.set_drive_strength(strength);
+                    }
+
+                    // Apply slew rate if set
+                    if let Some(rate) = self.slew_rate {
+                        self.pin.set_slew_rate(rate);
+                    }
+
+                    // Apply Schmitt trigger if set
+                    if let Some(enable) = self.schmitt_trigger {
+                        if enable {
+                            self.pin.set_schmitt(true);
+                        } else {
+                            self.pin.set_schmitt(false);
+                        }
+                    }
+
+                    self.pin
+                }
             }
         }
     };
 }
 
 // ============================================================================
-// Macro for generating GpioBank with all pins
+// Macro for generating all pins
 // ============================================================================
 
-macro_rules! impl_gpio_bank {
-    ($($pin_num:literal => $PinName:ident => $getter:ident => [$inte_reg:ident, $intr_reg:ident, $ints_reg:ident]),+ $(,)?) => {
+macro_rules! impl_gpio_pins {
+    ($($pin_num:literal => $PinName:ident => [$inte_reg:ident, $intr_reg:ident, $ints_reg:ident]),+ $(,)?) => {
         paste! {
             // Generate all pin types
             $(
                 impl_gpio_pin!($PinName, $pin_num, $inte_reg, $intr_reg, $ints_reg);
             )+
-
-            /// GPIO Bank - provides access to all GPIO pins
-            ///
-            /// This struct holds references to the IO_BANK0, PADS_BANK0, and SIO
-            /// peripherals and provides methods to access individual pins.
-            pub struct GpioBank {
-                io_bank: &'static pico_rs_pac::io_bank0::RegisterBlock,
-                pads_bank: &'static pico_rs_pac::pads_bank0::RegisterBlock,
-                sio: &'static pico_rs_pac::sio::RegisterBlock,
-            }
-
-            impl GpioBank {
-                /// Initialize the GPIO bank
-                ///
-                /// This unresets IO_BANK0 and PADS_BANK0 peripherals.
-                pub fn init() -> Self {
-                    // Unreset IO_BANK0 and PADS_BANK0
-                    reset::unreset_block_wait(Peripheral::IO_BANK0);
-                    reset::unreset_block_wait(Peripheral::PADS_BANK0);
-
-                    Self {
-                        io_bank: unsafe { &*pico_rs_pac::IO_BANK0::PTR },
-                        pads_bank: unsafe { &*pico_rs_pac::PADS_BANK0::PTR },
-                        sio: unsafe { &*pico_rs_pac::SIO::PTR },
-                    }
-                }
-
-                /// Create a new GpioBank without initializing peripherals
-                ///
-                /// # Safety
-                /// The caller must ensure that IO_BANK0 and PADS_BANK0 have been unreset.
-                pub unsafe fn new_unchecked() -> Self {
-                    unsafe {
-                        Self {
-                            io_bank: &*pico_rs_pac::IO_BANK0::PTR,
-                            pads_bank: &*pico_rs_pac::PADS_BANK0::PTR,
-                            sio: &*pico_rs_pac::SIO::PTR,
-                        }
-                    }
-                }
-
-                // Generate getter methods for each pin
-                $(
-                    #[doc = concat!("Get GPIO pin ", stringify!($pin_num))]
-                    #[inline]
-                    pub fn $getter(&self) -> $PinName<'_> {
-                        $PinName {
-                            io_bank: self.io_bank,
-                            pads_bank: self.pads_bank,
-                            sio: self.sio,
-                        }
-                    }
-                )+
-            }
         }
     };
 }
@@ -774,90 +1183,90 @@ macro_rules! impl_gpio_bank {
 
 // RP2350A: 30 GPIO pins (0-29)
 #[cfg(feature = "rp2350a")]
-impl_gpio_bank!(
-    0 => Pin0 => pin0 => [proc0_inte0, intr0, proc0_ints0],
-    1 => Pin1 => pin1 => [proc0_inte0, intr0, proc0_ints0],
-    2 => Pin2 => pin2 => [proc0_inte0, intr0, proc0_ints0],
-    3 => Pin3 => pin3 => [proc0_inte0, intr0, proc0_ints0],
-    4 => Pin4 => pin4 => [proc0_inte0, intr0, proc0_ints0],
-    5 => Pin5 => pin5 => [proc0_inte0, intr0, proc0_ints0],
-    6 => Pin6 => pin6 => [proc0_inte0, intr0, proc0_ints0],
-    7 => Pin7 => pin7 => [proc0_inte0, intr0, proc0_ints0],
-    8 => Pin8 => pin8 => [proc0_inte1, intr1, proc0_ints1],
-    9 => Pin9 => pin9 => [proc0_inte1, intr1, proc0_ints1],
-    10 => Pin10 => pin10 => [proc0_inte1, intr1, proc0_ints1],
-    11 => Pin11 => pin11 => [proc0_inte1, intr1, proc0_ints1],
-    12 => Pin12 => pin12 => [proc0_inte1, intr1, proc0_ints1],
-    13 => Pin13 => pin13 => [proc0_inte1, intr1, proc0_ints1],
-    14 => Pin14 => pin14 => [proc0_inte1, intr1, proc0_ints1],
-    15 => Pin15 => pin15 => [proc0_inte1, intr1, proc0_ints1],
-    16 => Pin16 => pin16 => [proc0_inte2, intr2, proc0_ints2],
-    17 => Pin17 => pin17 => [proc0_inte2, intr2, proc0_ints2],
-    18 => Pin18 => pin18 => [proc0_inte2, intr2, proc0_ints2],
-    19 => Pin19 => pin19 => [proc0_inte2, intr2, proc0_ints2],
-    20 => Pin20 => pin20 => [proc0_inte2, intr2, proc0_ints2],
-    21 => Pin21 => pin21 => [proc0_inte2, intr2, proc0_ints2],
-    22 => Pin22 => pin22 => [proc0_inte2, intr2, proc0_ints2],
-    23 => Pin23 => pin23 => [proc0_inte2, intr2, proc0_ints2],
-    24 => Pin24 => pin24 => [proc0_inte3, intr3, proc0_ints3],
-    25 => Pin25 => pin25 => [proc0_inte3, intr3, proc0_ints3],
-    26 => Pin26 => pin26 => [proc0_inte3, intr3, proc0_ints3],
-    27 => Pin27 => pin27 => [proc0_inte3, intr3, proc0_ints3],
-    28 => Pin28 => pin28 => [proc0_inte3, intr3, proc0_ints3],
-    29 => Pin29 => pin29 => [proc0_inte3, intr3, proc0_ints3],
+impl_gpio_pins!(
+    0 => Pin0 => [proc0_inte0, intr0, proc0_ints0],
+    1 => Pin1 => [proc0_inte0, intr0, proc0_ints0],
+    2 => Pin2 => [proc0_inte0, intr0, proc0_ints0],
+    3 => Pin3 => [proc0_inte0, intr0, proc0_ints0],
+    4 => Pin4 => [proc0_inte0, intr0, proc0_ints0],
+    5 => Pin5 => [proc0_inte0, intr0, proc0_ints0],
+    6 => Pin6 => [proc0_inte0, intr0, proc0_ints0],
+    7 => Pin7 => [proc0_inte0, intr0, proc0_ints0],
+    8 => Pin8 => [proc0_inte1, intr1, proc0_ints1],
+    9 => Pin9 => [proc0_inte1, intr1, proc0_ints1],
+    10 => Pin10 => [proc0_inte1, intr1, proc0_ints1],
+    11 => Pin11 => [proc0_inte1, intr1, proc0_ints1],
+    12 => Pin12 => [proc0_inte1, intr1, proc0_ints1],
+    13 => Pin13 => [proc0_inte1, intr1, proc0_ints1],
+    14 => Pin14 => [proc0_inte1, intr1, proc0_ints1],
+    15 => Pin15 => [proc0_inte1, intr1, proc0_ints1],
+    16 => Pin16 => [proc0_inte2, intr2, proc0_ints2],
+    17 => Pin17 => [proc0_inte2, intr2, proc0_ints2],
+    18 => Pin18 => [proc0_inte2, intr2, proc0_ints2],
+    19 => Pin19 => [proc0_inte2, intr2, proc0_ints2],
+    20 => Pin20 => [proc0_inte2, intr2, proc0_ints2],
+    21 => Pin21 => [proc0_inte2, intr2, proc0_ints2],
+    22 => Pin22 => [proc0_inte2, intr2, proc0_ints2],
+    23 => Pin23 => [proc0_inte2, intr2, proc0_ints2],
+    24 => Pin24 => [proc0_inte3, intr3, proc0_ints3],
+    25 => Pin25 => [proc0_inte3, intr3, proc0_ints3],
+    26 => Pin26 => [proc0_inte3, intr3, proc0_ints3],
+    27 => Pin27 => [proc0_inte3, intr3, proc0_ints3],
+    28 => Pin28 => [proc0_inte3, intr3, proc0_ints3],
+    29 => Pin29 => [proc0_inte3, intr3, proc0_ints3],
 );
 
 // RP2350B: 48 GPIO pins (0-47)
 #[cfg(feature = "rp2350b")]
-impl_gpio_bank!(
-    0 => Pin0 => pin0 => [proc0_inte0, intr0, proc0_ints0],
-    1 => Pin1 => pin1 => [proc0_inte0, intr0, proc0_ints0],
-    2 => Pin2 => pin2 => [proc0_inte0, intr0, proc0_ints0],
-    3 => Pin3 => pin3 => [proc0_inte0, intr0, proc0_ints0],
-    4 => Pin4 => pin4 => [proc0_inte0, intr0, proc0_ints0],
-    5 => Pin5 => pin5 => [proc0_inte0, intr0, proc0_ints0],
-    6 => Pin6 => pin6 => [proc0_inte0, intr0, proc0_ints0],
-    7 => Pin7 => pin7 => [proc0_inte0, intr0, proc0_ints0],
-    8 => Pin8 => pin8 => [proc0_inte1, intr1, proc0_ints1],
-    9 => Pin9 => pin9 => [proc0_inte1, intr1, proc0_ints1],
-    10 => Pin10 => pin10 => [proc0_inte1, intr1, proc0_ints1],
-    11 => Pin11 => pin11 => [proc0_inte1, intr1, proc0_ints1],
-    12 => Pin12 => pin12 => [proc0_inte1, intr1, proc0_ints1],
-    13 => Pin13 => pin13 => [proc0_inte1, intr1, proc0_ints1],
-    14 => Pin14 => pin14 => [proc0_inte1, intr1, proc0_ints1],
-    15 => Pin15 => pin15 => [proc0_inte1, intr1, proc0_ints1],
-    16 => Pin16 => pin16 => [proc0_inte2, intr2, proc0_ints2],
-    17 => Pin17 => pin17 => [proc0_inte2, intr2, proc0_ints2],
-    18 => Pin18 => pin18 => [proc0_inte2, intr2, proc0_ints2],
-    19 => Pin19 => pin19 => [proc0_inte2, intr2, proc0_ints2],
-    20 => Pin20 => pin20 => [proc0_inte2, intr2, proc0_ints2],
-    21 => Pin21 => pin21 => [proc0_inte2, intr2, proc0_ints2],
-    22 => Pin22 => pin22 => [proc0_inte2, intr2, proc0_ints2],
-    23 => Pin23 => pin23 => [proc0_inte2, intr2, proc0_ints2],
-    24 => Pin24 => pin24 => [proc0_inte3, intr3, proc0_ints3],
-    25 => Pin25 => pin25 => [proc0_inte3, intr3, proc0_ints3],
-    26 => Pin26 => pin26 => [proc0_inte3, intr3, proc0_ints3],
-    27 => Pin27 => pin27 => [proc0_inte3, intr3, proc0_ints3],
-    28 => Pin28 => pin28 => [proc0_inte3, intr3, proc0_ints3],
-    29 => Pin29 => pin29 => [proc0_inte3, intr3, proc0_ints3],
-    30 => Pin30 => pin30 => [proc0_inte3, intr3, proc0_ints3],
-    31 => Pin31 => pin31 => [proc0_inte3, intr3, proc0_ints3],
-    32 => Pin32 => pin32 => [proc0_inte4, intr4, proc0_ints4],
-    33 => Pin33 => pin33 => [proc0_inte4, intr4, proc0_ints4],
-    34 => Pin34 => pin34 => [proc0_inte4, intr4, proc0_ints4],
-    35 => Pin35 => pin35 => [proc0_inte4, intr4, proc0_ints4],
-    36 => Pin36 => pin36 => [proc0_inte4, intr4, proc0_ints4],
-    37 => Pin37 => pin37 => [proc0_inte4, intr4, proc0_ints4],
-    38 => Pin38 => pin38 => [proc0_inte4, intr4, proc0_ints4],
-    39 => Pin39 => pin39 => [proc0_inte4, intr4, proc0_ints4],
-    40 => Pin40 => pin40 => [proc0_inte5, intr5, proc0_ints5],
-    41 => Pin41 => pin41 => [proc0_inte5, intr5, proc0_ints5],
-    42 => Pin42 => pin42 => [proc0_inte5, intr5, proc0_ints5],
-    43 => Pin43 => pin43 => [proc0_inte5, intr5, proc0_ints5],
-    44 => Pin44 => pin44 => [proc0_inte5, intr5, proc0_ints5],
-    45 => Pin45 => pin45 => [proc0_inte5, intr5, proc0_ints5],
-    46 => Pin46 => pin46 => [proc0_inte5, intr5, proc0_ints5],
-    47 => Pin47 => pin47 => [proc0_inte5, intr5, proc0_ints5],
+impl_gpio_pins!(
+    0 => Pin0 => [proc0_inte0, intr0, proc0_ints0],
+    1 => Pin1 => [proc0_inte0, intr0, proc0_ints0],
+    2 => Pin2 => [proc0_inte0, intr0, proc0_ints0],
+    3 => Pin3 => [proc0_inte0, intr0, proc0_ints0],
+    4 => Pin4 => [proc0_inte0, intr0, proc0_ints0],
+    5 => Pin5 => [proc0_inte0, intr0, proc0_ints0],
+    6 => Pin6 => [proc0_inte0, intr0, proc0_ints0],
+    7 => Pin7 => [proc0_inte0, intr0, proc0_ints0],
+    8 => Pin8 => [proc0_inte1, intr1, proc0_ints1],
+    9 => Pin9 => [proc0_inte1, intr1, proc0_ints1],
+    10 => Pin10 => [proc0_inte1, intr1, proc0_ints1],
+    11 => Pin11 => [proc0_inte1, intr1, proc0_ints1],
+    12 => Pin12 => [proc0_inte1, intr1, proc0_ints1],
+    13 => Pin13 => [proc0_inte1, intr1, proc0_ints1],
+    14 => Pin14 => [proc0_inte1, intr1, proc0_ints1],
+    15 => Pin15 => [proc0_inte1, intr1, proc0_ints1],
+    16 => Pin16 => [proc0_inte2, intr2, proc0_ints2],
+    17 => Pin17 => [proc0_inte2, intr2, proc0_ints2],
+    18 => Pin18 => [proc0_inte2, intr2, proc0_ints2],
+    19 => Pin19 => [proc0_inte2, intr2, proc0_ints2],
+    20 => Pin20 => [proc0_inte2, intr2, proc0_ints2],
+    21 => Pin21 => [proc0_inte2, intr2, proc0_ints2],
+    22 => Pin22 => [proc0_inte2, intr2, proc0_ints2],
+    23 => Pin23 => [proc0_inte2, intr2, proc0_ints2],
+    24 => Pin24 => [proc0_inte3, intr3, proc0_ints3],
+    25 => Pin25 => [proc0_inte3, intr3, proc0_ints3],
+    26 => Pin26 => [proc0_inte3, intr3, proc0_ints3],
+    27 => Pin27 => [proc0_inte3, intr3, proc0_ints3],
+    28 => Pin28 => [proc0_inte3, intr3, proc0_ints3],
+    29 => Pin29 => [proc0_inte3, intr3, proc0_ints3],
+    30 => Pin30 => [proc0_inte3, intr3, proc0_ints3],
+    31 => Pin31 => [proc0_inte3, intr3, proc0_ints3],
+    32 => Pin32 => [proc0_inte4, intr4, proc0_ints4],
+    33 => Pin33 => [proc0_inte4, intr4, proc0_ints4],
+    34 => Pin34 => [proc0_inte4, intr4, proc0_ints4],
+    35 => Pin35 => [proc0_inte4, intr4, proc0_ints4],
+    36 => Pin36 => [proc0_inte4, intr4, proc0_ints4],
+    37 => Pin37 => [proc0_inte4, intr4, proc0_ints4],
+    38 => Pin38 => [proc0_inte4, intr4, proc0_ints4],
+    39 => Pin39 => [proc0_inte4, intr4, proc0_ints4],
+    40 => Pin40 => [proc0_inte5, intr5, proc0_ints5],
+    41 => Pin41 => [proc0_inte5, intr5, proc0_ints5],
+    42 => Pin42 => [proc0_inte5, intr5, proc0_ints5],
+    43 => Pin43 => [proc0_inte5, intr5, proc0_ints5],
+    44 => Pin44 => [proc0_inte5, intr5, proc0_ints5],
+    45 => Pin45 => [proc0_inte5, intr5, proc0_ints5],
+    46 => Pin46 => [proc0_inte5, intr5, proc0_ints5],
+    47 => Pin47 => [proc0_inte5, intr5, proc0_ints5],
 );
 
 // ============================================================================
@@ -887,7 +1296,6 @@ pub use pins::{
     Spi1TxPin,
     // UART traits
     Uart0CtsPin,
-    Uart0RtsPin,
     Uart0RxPin,
     Uart0TxPin,
     Uart1CtsPin,

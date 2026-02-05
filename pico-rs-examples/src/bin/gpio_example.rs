@@ -3,13 +3,12 @@
 //! This example demonstrates the new type-safe GPIO API with dedicated pin types.
 //!
 //! Features demonstrated:
-//! - GpioBank initialization
+//! - gpio::init_gpio() initialization
 //! - Pin0-Pin47 dedicated types
 //! - SIO function (direct CPU control)
 //! - Output/Input configuration
 //! - Pull resistor configuration
 //! - Drive strength and slew rate
-//! - Legacy API compatibility
 //!
 //! Run with: cargo run --release --bin gpio_example
 
@@ -21,7 +20,7 @@ use defmt_rtt as _;
 use panic_probe as _;
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
-use pico_rs::gpio::{DriveStrength, GpioBank, Pull, SlewRate};
+use pico_rs::gpio::{self, DriveStrength, Pin0, Pin1, Pin2, Pin3, Pin4, Pin25, Pull, SlewRate};
 use pico_rs::sio::Sio;
 use pico_rs::systick::Delay;
 
@@ -35,14 +34,14 @@ fn main() -> ! {
     info!("=== GPIO HAL Example ===");
 
     // Initialize GPIO bank (unresets IO_BANK0 and PADS_BANK0)
-    let gpio = GpioBank::init();
+    gpio::init_gpio();
     info!("GPIO bank initialized");
 
     // Get individual pins
-    let led = gpio.pin25();
-    let pin0 = gpio.pin0();
-    let pin1 = gpio.pin1();
-    let pin2 = gpio.pin2();
+    let led = Pin25::new();
+    let pin0 = Pin0::new();
+    let pin1 = Pin1::new();
+    let pin2 = Pin2::new();
 
     // Initialize delay (12MHz)
     let mut delay = Delay::new(12_000_000);
@@ -126,17 +125,16 @@ fn main() -> ! {
     // ========================================================================
     info!("--- Example 4: Pin Constants ---");
 
-    use pico_rs::gpio::Pin25;
-    info!("Pin25 number: {}", Pin25::<'_>::PIN);
-    info!("Pin25 mask: {:#010X}", Pin25::<'_>::MASK);
-    info!("Pin25 is high bank: {}", Pin25::<'_>::IS_HIGH);
+    info!("Pin25 number: {}", Pin25::PIN);
+    info!("Pin25 mask: {:#010X}", Pin25::MASK);
+    info!("Pin25 is high bank: {}", Pin25::IS_HIGH);
 
     #[cfg(feature = "rp2350b")]
     {
         use pico_rs::gpio::Pin32;
-        info!("Pin32 number: {}", Pin32::<'_>::PIN);
-        info!("Pin32 mask: {:#010X}", Pin32::<'_>::MASK);
-        info!("Pin32 is high bank: {}", Pin32::<'_>::IS_HIGH);
+        info!("Pin32 number: {}", Pin32::PIN);
+        info!("Pin32 mask: {:#010X}", Pin32::MASK);
+        info!("Pin32 is high bank: {}", Pin32::IS_HIGH);
     }
 
     // ========================================================================
@@ -144,13 +142,13 @@ fn main() -> ! {
     // ========================================================================
     info!("--- Example 5: PIO Function Select ---");
 
-    let pin3 = gpio.pin3();
+    let pin3 = Pin3::new();
     pin3.init_pad();
     pin3.set_function_pio0();
     info!("Pin3 configured for PIO0");
     info!("Pin3 function: {}", pin3.function());
 
-    let pin4 = gpio.pin4();
+    let pin4 = Pin4::new();
     pin4.into_pio1();
     info!("Pin4 configured for PIO1");
     info!("Pin4 function: {}", pin4.function());

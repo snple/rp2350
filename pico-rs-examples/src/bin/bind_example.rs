@@ -14,7 +14,7 @@ use panic_probe as _;
 use pico_rs::bind;
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
-use pico_rs::gpio::GpioBank;
+use pico_rs::gpio::{self, Pin25};
 use pico_rs::interrupt::{self, spare};
 use pico_rs::task::{Event, EventQueue};
 
@@ -69,10 +69,10 @@ fn main() -> ! {
     info!("Bind macro example starting...");
 
     // 初始化 GPIO
-    let gpio = GpioBank::init();
+    gpio::init_gpio();
 
     // 获取 LED 引脚 (GPIO 25)
-    let led = gpio.pin25();
+    let led = Pin25::new();
 
     // 配置为输出
     led.into_output();

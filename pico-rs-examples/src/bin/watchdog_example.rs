@@ -25,7 +25,7 @@ use panic_probe as _;
 use pico_rs::Delay;
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
-use pico_rs::gpio::GpioBank;
+use pico_rs::gpio::{self, Pin25};
 use pico_rs::watchdog::{self, Watchdog};
 
 // Binary info declarations
@@ -55,8 +55,8 @@ fn main() -> ! {
     info!("====================================");
 
     // Initialize GPIO and LED
-    let gpio = GpioBank::init();
-    let led = gpio.pin25();
+    gpio::init_gpio();
+    let led = Pin25::new();
     led.into_output();
 
     // Initialize delay

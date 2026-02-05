@@ -18,7 +18,7 @@ use defmt_rtt as _;
 use panic_probe as _;
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
-use pico_rs::gpio::GpioBank;
+use pico_rs::gpio::{self, Pin25};
 use pico_rs::interrupt::{self, Mutex};
 use pico_rs::pac::Interrupt;
 use pico_rs::timer::Timer0;
@@ -40,8 +40,8 @@ fn main() -> ! {
     info!("Timer Interrupt Example");
 
     // Initialize GPIO
-    let gpio = GpioBank::init();
-    let led = gpio.pin25();
+    gpio::init_gpio();
+    let led = Pin25::new();
     led.into_output();
     led.set_low();
     info!("LED configured on GPIO25");
@@ -92,16 +92,13 @@ fn TIMER0_IRQ_0() {
             LED_STATE.store(new_state, Ordering::Relaxed);
 
             // Toggle the actual LED
-            // Note: We access GPIO through unsafe static since we know
+            // Note: We access GPIO through Pin type since we know
             // only this interrupt handler modifies the LED
-            unsafe {
-                let gpio = GpioBank::new_unchecked();
-                let led = gpio.pin25();
-                if new_state {
-                    led.set_high();
-                } else {
-                    led.set_low();
-                }
+            let led = Pin25::new();
+            if new_state {
+                led.set_high();
+            } else {
+                led.set_low();
             }
 
             // Schedule next alarm

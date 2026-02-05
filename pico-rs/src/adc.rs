@@ -16,7 +16,10 @@
 //!
 //! ```ignore
 //! use pico_rs::adc::Adc;
-//! use pico_rs::gpio::GpioBank;
+//! use pico_rs::gpio;
+//!
+//! // Initialize GPIO (required before using ADC pins)
+//! gpio::init_gpio();
 //!
 //! // Initialize ADC
 //! let adc = Adc::init();

@@ -23,7 +23,9 @@ use panic_probe as _;
 use pico_rs::adc::{ADC_BASE_PIN, Adc};
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
-use pico_rs::gpio::{Function, GpioBank, Pull};
+#[cfg(feature = "rp2350b")]
+use pico_rs::gpio::Pin40;
+use pico_rs::gpio::{self, Function, Pin26, Pull};
 use pico_rs::systick::Delay;
 
 /// RP2350 Boot Block
@@ -39,7 +41,7 @@ fn main() -> ! {
     info!("=== RP2350 ADC Example ===");
 
     // Initialize GPIO for ADC pins
-    let gpio = GpioBank::init();
+    gpio::init_gpio();
 
     // Configure ADC pin for channel 0
     // For RP2350A: GPIO 26, for RP2350B: GPIO 40
@@ -50,13 +52,13 @@ fn main() -> ! {
     // For RP2350B, enable the rp2350b feature and this will use GPIO 40.
     #[cfg(not(feature = "rp2350b"))]
     {
-        let adc_pin = gpio.pin26();
+        let adc_pin = Pin26::new();
         adc_pin.set_function(Function::Null);
         adc_pin.set_pull(Pull::None);
     }
     #[cfg(feature = "rp2350b")]
     {
-        let adc_pin = gpio.pin40();
+        let adc_pin = Pin40::new();
         adc_pin.set_function(Function::Null);
         adc_pin.set_pull(Pull::None);
     }

@@ -97,7 +97,7 @@ pub use busctrl::Busctrl;
 pub use clocks::Clocks;
 pub use dma::Dma;
 pub use eppb::Eppb;
-pub use gpio::GpioBank;
+pub use gpio::init_gpio;
 pub use i2c::{I2c0, I2c1};
 pub use multicore::{Fifo, Multicore, Stack};
 pub use pll::{PllConfig, PllSys, PllUsb};

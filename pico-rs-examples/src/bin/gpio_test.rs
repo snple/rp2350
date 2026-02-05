@@ -20,7 +20,7 @@ use panic_probe as _;
 use pico_rs::Delay;
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
-use pico_rs::gpio::GpioBank;
+use pico_rs::gpio::{self, Pin0, Pin1, Pin4, Pin5, Pin8, Pin9, Pin10, Pin11, Pin12, Pin13, Pin16, Pin17, Pin18, Pin19, Pin25};
 
 #[unsafe(link_section = ".start_block")]
 #[used]
@@ -33,7 +33,7 @@ fn main() -> ! {
     info!("GPIO Pin Function Example");
     info!("==========================");
 
-    let gpio = GpioBank::init();
+    gpio::init_gpio();
     let mut delay = Delay::new(CLOCK_FREQ_HZ);
 
     // ========================================================================
@@ -43,8 +43,8 @@ fn main() -> ! {
     info!("--- UART Pin Configuration ---");
 
     // UART0: TX on GPIO0, RX on GPIO1 (valid functions based on hardware)
-    let uart0_tx = gpio.pin0();
-    let uart0_rx = gpio.pin1();
+    let uart0_tx = Pin0::new();
+    let uart0_rx = Pin1::new();
 
     // Convert pins to UART function using type-safe methods
     // These methods only exist on pins that support the specific function
@@ -53,8 +53,8 @@ fn main() -> ! {
     info!("UART0: TX=GPIO0, RX=GPIO1 configured");
 
     // UART1: TX on GPIO4, RX on GPIO5
-    let uart1_tx = gpio.pin4();
-    let uart1_rx = gpio.pin5();
+    let uart1_tx = Pin4::new();
+    let uart1_rx = Pin5::new();
     let _uart1_tx_pin = uart1_tx.into_uart1_tx();
     let _uart1_rx_pin = uart1_rx.into_uart1_rx();
     info!("UART1: TX=GPIO4, RX=GPIO5 configured");
@@ -66,15 +66,15 @@ fn main() -> ! {
     info!("--- I2C Pin Configuration ---");
 
     // I2C0: SDA on GPIO8, SCL on GPIO9
-    let i2c0_sda = gpio.pin8();
-    let i2c0_scl = gpio.pin9();
+    let i2c0_sda = Pin8::new();
+    let i2c0_scl = Pin9::new();
     let _i2c0_sda_pin = i2c0_sda.into_i2c0_sda();
     let _i2c0_scl_pin = i2c0_scl.into_i2c0_scl();
     info!("I2C0: SDA=GPIO8, SCL=GPIO9 configured");
 
     // I2C1: SDA on GPIO10, SCL on GPIO11
-    let i2c1_sda = gpio.pin10();
-    let i2c1_scl = gpio.pin11();
+    let i2c1_sda = Pin10::new();
+    let i2c1_scl = Pin11::new();
     let _i2c1_sda_pin = i2c1_sda.into_i2c1_sda();
     let _i2c1_scl_pin = i2c1_scl.into_i2c1_scl();
     info!("I2C1: SDA=GPIO10, SCL=GPIO11 configured");
@@ -86,10 +86,10 @@ fn main() -> ! {
     info!("--- SPI Pin Configuration ---");
 
     // SPI0: RX=GPIO16, CSn=GPIO17, SCK=GPIO18, TX=GPIO19
-    let spi0_rx = gpio.pin16();
-    let spi0_csn = gpio.pin17();
-    let spi0_sck = gpio.pin18();
-    let spi0_tx = gpio.pin19();
+    let spi0_rx = Pin16::new();
+    let spi0_csn = Pin17::new();
+    let spi0_sck = Pin18::new();
+    let spi0_tx = Pin19::new();
 
     let _spi0_rx_pin = spi0_rx.into_spi0_rx();
     let _spi0_csn_pin = spi0_csn.into_spi0_csn();
@@ -113,13 +113,13 @@ fn main() -> ! {
     // - GPIO25 -> PWM4B (25/2 = 12, 12 % 8 = 4, odd = channel B)
 
     // We'll use GPIO25 (LED) for PWM demonstration
-    let led = gpio.pin25();
+    let led = Pin25::new();
     let _pwm_led = led.into_pwm_b();
     info!("GPIO25 (LED) configured as PWM channel B");
 
     // Additional PWM pins
-    let pwm_pin0 = gpio.pin12();
-    let pwm_pin1 = gpio.pin13();
+    let pwm_pin0 = Pin12::new();
+    let pwm_pin1 = Pin13::new();
     let _pwm0a = pwm_pin0.into_pwm_a();
     let _pwm0b = pwm_pin1.into_pwm_b();
     info!("GPIO12 -> PWM A, GPIO13 -> PWM B configured");
