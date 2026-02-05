@@ -59,8 +59,6 @@ pub mod timer;
 pub mod trng;
 pub mod uart;
 pub mod watchdog;
-pub mod xip_aux;
-pub mod xip_ctrl;
 pub mod xosc;
 
 pub mod task;
@@ -117,8 +115,6 @@ pub use timer::{Timer0, Timer1};
 pub use trng::Trng;
 pub use uart::{Uart0, Uart1};
 pub use watchdog::Watchdog;
-pub use xip_aux::XipAux;
-pub use xip_ctrl::XipCtrl;
 pub use xosc::Xosc;
 
 // Re-export pico-rs-rt for convenience
