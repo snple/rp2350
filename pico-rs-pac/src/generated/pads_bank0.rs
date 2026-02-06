@@ -26351,19 +26351,3 @@ pub struct RegisterBlock {
     pub swd: Swd,
 }
 
-impl RegisterBlock {
-    /// Get pad control register by GPIO pin number (0-47)
-    ///
-    /// # Safety
-    /// Pin number must be < 48
-    #[inline(always)]
-    pub unsafe fn gpio(&self, pin: u8) -> &Gpio0 {
-        debug_assert!(pin < 48);
-        // Pad registers are at offset 0x04 + (pin * 4)
-        unsafe {
-            let ptr = (self as *const Self as *const u8).add(0x04 + (pin as usize) * 4);
-            &*(ptr as *const Gpio0)
-        }
-    }
-}
-

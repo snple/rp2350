@@ -14,9 +14,13 @@
 //!
 //! ```ignore
 //! use pico_rs::timer::Timer0;
+//! use pico_rs_pac::TIMER0;
+//!
+//! // Get TIMER0 peripheral
+//! let timer0_pac = unsafe { TIMER0::steal() };
 //!
 //! // Initialize timer 0
-//! let timer = Timer0::init();
+//! let timer = Timer0::init(timer0_pac);
 //!
 //! // Read current time
 //! let now = timer.get_time_us();
@@ -36,25 +40,45 @@ macro_rules! impl_timer {
     ($TimerName:ident, $timer_mod:ident, $TIMER:ident, $reset_peripheral:expr) => {
         /// Timer peripheral wrapper
         pub struct $TimerName {
-            regs: &'static pico_rs_pac::$timer_mod::RegisterBlock,
+            timer: pico_rs_pac::$TIMER,
         }
 
         impl $TimerName {
             /// Create a new Timer instance without initialization
+            ///
+            /// # Arguments
+            /// * `timer` - The Timer peripheral from PAC
             #[inline]
-            pub fn new() -> Self {
-                Self {
-                    regs: unsafe { &*pico_rs_pac::$TIMER::PTR },
-                }
+            pub fn new(timer: pico_rs_pac::$TIMER) -> Self {
+                Self { timer }
+            }
+
+            /// Get reference to the underlying register block
+            ///
+            /// # Safety
+            /// Direct register access can bypass the HAL's safety guarantees.
+            /// The caller must ensure operations do not conflict with the HAL state.
+            #[inline]
+            pub unsafe fn regs(&self) -> &pico_rs_pac::$timer_mod::RegisterBlock {
+                &self.timer
             }
 
             /// Initialize the timer peripheral
             ///
             /// This brings the timer out of reset and enables it.
-            pub fn init() -> Self {
+            ///
+            /// # Arguments
+            /// * `timer` - The Timer peripheral from PAC
+            pub fn init(timer: pico_rs_pac::$TIMER) -> Self {
                 // Bring timer out of reset
                 reset::unreset_block_wait($reset_peripheral);
-                Self::new()
+                Self::new(timer)
+            }
+
+            /// Release the Timer peripheral
+            #[inline]
+            pub fn release(self) -> pico_rs_pac::$TIMER {
+                self.timer
             }
 
             // ========================================================================
@@ -67,8 +91,8 @@ macro_rules! impl_timer {
             #[inline]
             pub fn get_time_us(&self) -> u64 {
                 // Read low first, which latches high
-                let lo = self.regs.timelr.timelr();
-                let hi = self.regs.timehr.timehr();
+                let lo = self.timer.timelr.timelr();
+                let hi = self.timer.timehr.timehr();
                 ((hi as u64) << 32) | (lo as u64)
             }
 
@@ -77,7 +101,7 @@ macro_rules! impl_timer {
             /// This is faster but wraps every ~71 minutes.
             #[inline]
             pub fn get_time_us_32(&self) -> u32 {
-                self.regs.timerawl.timerawl()
+                self.timer.timerawl.timerawl()
             }
 
             /// Get raw time without side effects
@@ -85,8 +109,8 @@ macro_rules! impl_timer {
             /// Unlike `get_time_us()`, this doesn't latch the high word.
             #[inline]
             pub fn get_time_raw(&self) -> (u32, u32) {
-                let lo = self.regs.timerawl.timerawl();
-                let hi = self.regs.timerawh.timerawh();
+                let lo = self.timer.timerawl.timerawl();
+                let hi = self.timer.timerawh.timerawh();
                 (lo, hi)
             }
 
@@ -102,8 +126,8 @@ macro_rules! impl_timer {
                 let lo = time as u32;
                 let hi = (time >> 32) as u32;
                 // Write low first, then high (latches on high write)
-                self.regs.timelw.write_timelw(lo);
-                self.regs.timehw.write_timehw(hi);
+                self.timer.timelw.write_timelw(lo);
+                self.timer.timehw.write_timehw(hi);
             }
 
             // ========================================================================
@@ -121,10 +145,10 @@ macro_rules! impl_timer {
             pub fn set_alarm(&self, alarm: u8, time: u32) {
                 assert!(alarm < 4, "Alarm must be 0-3");
                 match alarm {
-                    0 => self.regs.alarm0.write_alarm0(time),
-                    1 => self.regs.alarm1.write_alarm1(time),
-                    2 => self.regs.alarm2.write_alarm2(time),
-                    3 => self.regs.alarm3.write_alarm3(time),
+                    0 => self.timer.alarm0.write_alarm0(time),
+                    1 => self.timer.alarm1.write_alarm1(time),
+                    2 => self.timer.alarm2.write_alarm2(time),
+                    3 => self.timer.alarm3.write_alarm3(time),
                     _ => unreachable!(),
                 }
             }
@@ -133,7 +157,7 @@ macro_rules! impl_timer {
             #[inline]
             pub fn is_alarm_armed(&self, alarm: u8) -> bool {
                 assert!(alarm < 4, "Alarm must be 0-3");
-                (self.regs.armed.armed() & (1 << alarm)) != 0
+                (self.timer.armed.armed() & (1 << alarm)) != 0
             }
 
             /// Disarm an alarm (cancel it before it fires)
@@ -142,19 +166,19 @@ macro_rules! impl_timer {
             #[inline]
             pub fn disarm_alarm(&self, alarm: u8) {
                 assert!(alarm < 4, "Alarm must be 0-3");
-                self.regs.armed.write_armed(1 << alarm);
+                self.timer.armed.write_armed(1 << alarm);
             }
 
             /// Disarm all alarms
             #[inline]
             pub fn disarm_all_alarms(&self) {
-                self.regs.armed.write_armed(0xf);
+                self.timer.armed.write_armed(0xf);
             }
 
             /// Get armed status of all alarms
             #[inline]
             pub fn armed_status(&self) -> u8 {
-                (self.regs.armed.armed() & 0xf) as u8
+                (self.timer.armed.armed() & 0xf) as u8
             }
 
             // ========================================================================
@@ -166,10 +190,10 @@ macro_rules! impl_timer {
             pub fn enable_alarm_interrupt(&self, alarm: u8) {
                 assert!(alarm < 4, "Alarm must be 0-3");
                 match alarm {
-                    0 => self.regs.inte.set_alarm_0(),
-                    1 => self.regs.inte.set_alarm_1(),
-                    2 => self.regs.inte.set_alarm_2(),
-                    3 => self.regs.inte.set_alarm_3(),
+                    0 => self.timer.inte.set_alarm_0(),
+                    1 => self.timer.inte.set_alarm_1(),
+                    2 => self.timer.inte.set_alarm_2(),
+                    3 => self.timer.inte.set_alarm_3(),
                     _ => unreachable!(),
                 }
             }
@@ -179,10 +203,10 @@ macro_rules! impl_timer {
             pub fn disable_alarm_interrupt(&self, alarm: u8) {
                 assert!(alarm < 4, "Alarm must be 0-3");
                 match alarm {
-                    0 => self.regs.inte.clr_alarm_0(),
-                    1 => self.regs.inte.clr_alarm_1(),
-                    2 => self.regs.inte.clr_alarm_2(),
-                    3 => self.regs.inte.clr_alarm_3(),
+                    0 => self.timer.inte.clr_alarm_0(),
+                    1 => self.timer.inte.clr_alarm_1(),
+                    2 => self.timer.inte.clr_alarm_2(),
+                    3 => self.timer.inte.clr_alarm_3(),
                     _ => unreachable!(),
                 }
             }
@@ -190,19 +214,19 @@ macro_rules! impl_timer {
             /// Enable all alarm interrupts
             #[inline]
             pub fn enable_all_alarm_interrupts(&self) {
-                self.regs.inte.set_alarm_0();
-                self.regs.inte.set_alarm_1();
-                self.regs.inte.set_alarm_2();
-                self.regs.inte.set_alarm_3();
+                self.timer.inte.set_alarm_0();
+                self.timer.inte.set_alarm_1();
+                self.timer.inte.set_alarm_2();
+                self.timer.inte.set_alarm_3();
             }
 
             /// Disable all alarm interrupts
             #[inline]
             pub fn disable_all_alarm_interrupts(&self) {
-                self.regs.inte.clr_alarm_0();
-                self.regs.inte.clr_alarm_1();
-                self.regs.inte.clr_alarm_2();
-                self.regs.inte.clr_alarm_3();
+                self.timer.inte.clr_alarm_0();
+                self.timer.inte.clr_alarm_1();
+                self.timer.inte.clr_alarm_2();
+                self.timer.inte.clr_alarm_3();
             }
 
             /// Check if an alarm interrupt is enabled
@@ -210,10 +234,10 @@ macro_rules! impl_timer {
             pub fn is_alarm_interrupt_enabled(&self, alarm: u8) -> bool {
                 assert!(alarm < 4, "Alarm must be 0-3");
                 match alarm {
-                    0 => self.regs.inte.alarm_0(),
-                    1 => self.regs.inte.alarm_1(),
-                    2 => self.regs.inte.alarm_2(),
-                    3 => self.regs.inte.alarm_3(),
+                    0 => self.timer.inte.alarm_0(),
+                    1 => self.timer.inte.alarm_1(),
+                    2 => self.timer.inte.alarm_2(),
+                    3 => self.timer.inte.alarm_3(),
                     _ => unreachable!(),
                 }
             }
@@ -223,10 +247,10 @@ macro_rules! impl_timer {
             pub fn alarm_interrupt_raw(&self, alarm: u8) -> bool {
                 assert!(alarm < 4, "Alarm must be 0-3");
                 match alarm {
-                    0 => self.regs.intr.alarm_0(),
-                    1 => self.regs.intr.alarm_1(),
-                    2 => self.regs.intr.alarm_2(),
-                    3 => self.regs.intr.alarm_3(),
+                    0 => self.timer.intr.alarm_0(),
+                    1 => self.timer.intr.alarm_1(),
+                    2 => self.timer.intr.alarm_2(),
+                    3 => self.timer.intr.alarm_3(),
                     _ => unreachable!(),
                 }
             }
@@ -236,10 +260,10 @@ macro_rules! impl_timer {
             pub fn alarm_interrupt_status(&self, alarm: u8) -> bool {
                 assert!(alarm < 4, "Alarm must be 0-3");
                 match alarm {
-                    0 => self.regs.ints.alarm_0(),
-                    1 => self.regs.ints.alarm_1(),
-                    2 => self.regs.ints.alarm_2(),
-                    3 => self.regs.ints.alarm_3(),
+                    0 => self.timer.ints.alarm_0(),
+                    1 => self.timer.ints.alarm_1(),
+                    2 => self.timer.ints.alarm_2(),
+                    3 => self.timer.ints.alarm_3(),
                     _ => unreachable!(),
                 }
             }
@@ -253,14 +277,14 @@ macro_rules! impl_timer {
                 assert!(alarm < 4, "Alarm must be 0-3");
                 // Write 1 to the specific alarm bit to clear the interrupt
                 // This is a W1C register, so we write directly
-                self.regs.intr.write_bits(1 << alarm);
+                self.timer.intr.write_bits(1 << alarm);
             }
 
             /// Clear all alarm interrupts
             #[inline]
             pub fn clear_all_alarm_interrupts(&self) {
                 // Write 0xF to clear all 4 alarm bits
-                self.regs.intr.write_bits(0xF);
+                self.timer.intr.write_bits(0xF);
             }
 
             /// Force an alarm interrupt (for testing)
@@ -268,10 +292,10 @@ macro_rules! impl_timer {
             pub fn force_alarm_interrupt(&self, alarm: u8) {
                 assert!(alarm < 4, "Alarm must be 0-3");
                 match alarm {
-                    0 => self.regs.intf.set_alarm_0(),
-                    1 => self.regs.intf.set_alarm_1(),
-                    2 => self.regs.intf.set_alarm_2(),
-                    3 => self.regs.intf.set_alarm_3(),
+                    0 => self.timer.intf.set_alarm_0(),
+                    1 => self.timer.intf.set_alarm_1(),
+                    2 => self.timer.intf.set_alarm_2(),
+                    3 => self.timer.intf.set_alarm_3(),
                     _ => unreachable!(),
                 }
             }
@@ -281,10 +305,10 @@ macro_rules! impl_timer {
             pub fn clear_forced_alarm_interrupt(&self, alarm: u8) {
                 assert!(alarm < 4, "Alarm must be 0-3");
                 match alarm {
-                    0 => self.regs.intf.clr_alarm_0(),
-                    1 => self.regs.intf.clr_alarm_1(),
-                    2 => self.regs.intf.clr_alarm_2(),
-                    3 => self.regs.intf.clr_alarm_3(),
+                    0 => self.timer.intf.clr_alarm_0(),
+                    1 => self.timer.intf.clr_alarm_1(),
+                    2 => self.timer.intf.clr_alarm_2(),
+                    3 => self.timer.intf.clr_alarm_3(),
                     _ => unreachable!(),
                 }
             }
@@ -296,19 +320,19 @@ macro_rules! impl_timer {
             /// Pause the timer
             #[inline]
             pub fn pause(&self) {
-                self.regs.pause.set_pause();
+                self.timer.pause.set_pause();
             }
 
             /// Resume the timer
             #[inline]
             pub fn resume(&self) {
-                self.regs.pause.clr_pause();
+                self.timer.pause.clr_pause();
             }
 
             /// Check if the timer is paused
             #[inline]
             pub fn is_paused(&self) -> bool {
-                self.regs.pause.pause()
+                self.timer.pause.pause()
             }
 
             /// Lock the timer (disable write access)
@@ -316,13 +340,13 @@ macro_rules! impl_timer {
             /// Once locked, the timer cannot be unlocked until reset.
             #[inline]
             pub fn lock(&self) {
-                self.regs.locked.set_locked();
+                self.timer.locked.set_locked();
             }
 
             /// Check if the timer is locked
             #[inline]
             pub fn is_locked(&self) -> bool {
-                self.regs.locked.locked()
+                self.timer.locked.locked()
             }
 
             // ========================================================================
@@ -361,12 +385,6 @@ macro_rules! impl_timer {
                 while self.get_time_us() < target_us {
                     pico_rs_rt::asm::nop();
                 }
-            }
-        }
-
-        impl Default for $TimerName {
-            fn default() -> Self {
-                Self::new()
             }
         }
     };

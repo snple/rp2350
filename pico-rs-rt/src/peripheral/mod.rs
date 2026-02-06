@@ -88,12 +88,12 @@ impl Peripherals {
     #[inline]
     pub unsafe fn steal() -> Self {
         Self {
-            NVIC: NVIC::new(),
-            SCB: SCB::new(),
-            SYST: SYST::new(),
-            MPU: MPU::new(),
-            FPU: FPU::new(),
-            SAU: SAU::new(),
+            NVIC: unsafe { NVIC::steal() },
+            SCB: unsafe { SCB::steal() },
+            SYST: unsafe { SYST::steal() },
+            MPU: unsafe { MPU::steal() },
+            FPU: unsafe { FPU::steal() },
+            SAU: unsafe { SAU::steal() },
         }
     }
 
@@ -145,11 +145,16 @@ macro_rules! peripheral {
             /// Pointer to the peripheral's register block
             pub const PTR: *const $reg = $base as *const $reg;
 
-            /// Create a new instance (internal use only)
-            #[inline(always)]
-            pub(crate) const fn new() -> Self {
+            /// Steal an instance of this peripheral
+            ///
+            /// # Safety
+            ///
+            /// Ensure that the new instance of the peripheral cannot be used in a way
+            /// that may race with any existing instances.
+            #[inline]
+            pub unsafe fn steal() -> Self {
                 Self {
-                    _marker: core::marker::PhantomData,
+                    _marker: PhantomData,
                 }
             }
 
@@ -166,6 +171,12 @@ macro_rules! peripheral {
             #[inline(always)]
             fn deref(&self) -> &Self::Target {
                 unsafe { &*Self::PTR }
+            }
+        }
+
+        impl core::fmt::Debug for $name {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct(stringify!($name)).finish()
             }
         }
     };

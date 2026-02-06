@@ -107126,33 +107126,3 @@ pub struct RegisterBlock {
     pub dormant_wake_ints5: DormantWakeInts5,
 }
 
-impl RegisterBlock {
-    /// Get GPIO control register by pin number (0-47)
-    ///
-    /// # Safety
-    /// Pin number must be < 48
-    #[inline(always)]
-    pub unsafe fn gpio_ctrl(&self, pin: u8) -> &Gpio0Ctrl {
-        debug_assert!(pin < 48);
-        // GPIO ctrl registers are at offset 0x04 + (pin * 8)
-        unsafe {
-            let ptr = (self as *const Self as *const u8).add(0x04 + (pin as usize) * 8);
-            &*(ptr as *const Gpio0Ctrl)
-        }
-    }
-
-    /// Get GPIO status register by pin number (0-47)
-    ///
-    /// # Safety
-    /// Pin number must be < 48
-    #[inline(always)]
-    pub unsafe fn gpio_status(&self, pin: u8) -> &Gpio0Status {
-        debug_assert!(pin < 48);
-        // GPIO status registers are at offset 0x00 + (pin * 8)
-        unsafe {
-            let ptr = (self as *const Self as *const u8).add((pin as usize) * 8);
-            &*(ptr as *const Gpio0Status)
-        }
-    }
-}
-

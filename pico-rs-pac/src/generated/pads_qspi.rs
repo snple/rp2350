@@ -3295,18 +3295,3 @@ pub struct RegisterBlock {
     pub gpio_qspi_ss: GpioQspiSs,
 }
 
-impl RegisterBlock {
-    /// Get QSPI pad control register by index (0=SCLK, 1=SD0, 2=SD1, 3=SD2, 4=SD3, 5=SS)
-    ///
-    /// # Safety
-    /// Index must be < 6
-    #[inline(always)]
-    pub unsafe fn pad(&self, index: u8) -> &GpioQspiSclk {
-        debug_assert!(index < 6);
-        unsafe {
-            let ptr = (self as *const Self as *const u8).add(0x04 + (index as usize) * 4);
-            &*(ptr as *const GpioQspiSclk)
-        }
-    }
-}
-

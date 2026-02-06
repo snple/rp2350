@@ -6,11 +6,15 @@
 //! # Example
 //!
 //! ```ignore
+//! use pico_rs_rt::Peripherals;
 //! use pico_rs::systick::SysTick;
 //! use pico_rs::time::Duration;
 //!
+//! // Take the SYST peripheral
+//! let cp = Peripherals::take().unwrap();
+//!
 //! // Initialize SysTick with 150 MHz clock (default RP2350 system clock)
-//! let mut systick = SysTick::new(150_000_000);
+//! let mut systick = SysTick::new(cp.SYST, 150_000_000);
 //!
 //! // Delay for 500ms
 //! systick.delay(Duration::from_millis(500));
@@ -21,22 +25,18 @@
 //! ```
 
 use crate::time::Duration;
-use core::sync::atomic::{AtomicU32, Ordering};
-use pico_rs_rt::peripheral::syst::{self, SystClkSource, SYST};
+use pico_rs_rt::peripheral::syst::{self, SYST, SystClkSource};
 
 /// Maximum reload value (24-bit counter)
 const SYSTICK_MAX_RELOAD: u32 = syst::MAX_RELOAD;
-
-/// Global tick counter for overflow tracking (used with interrupt mode)
-static TICK_COUNT: AtomicU32 = AtomicU32::new(0);
 
 /// SysTick timer driver
 ///
 /// This driver takes ownership of the pico-rs-rt SYST peripheral and provides
 /// convenient delay functions.
 pub struct SysTick {
-    /// The underlying SYST peripheral (ownership or borrowed)
-    _syst: Option<SYST>,
+    /// The underlying SYST peripheral
+    syst: SYST,
     /// Clock frequency in Hz
     freq_hz: u32,
     /// Ticks per microsecond
@@ -70,35 +70,7 @@ impl SysTick {
         syst.enable_counter();
 
         Self {
-            _syst: Some(syst),
-            freq_hz,
-            ticks_per_us,
-        }
-    }
-
-    /// Create a new SysTick timer using raw pointer access
-    ///
-    /// # Safety
-    /// The caller must ensure no other code is using the SysTick peripheral.
-    ///
-    /// # Arguments
-    /// * `freq_hz` - The clock frequency in Hz (typically the CPU clock)
-    pub unsafe fn new_unchecked(freq_hz: u32) -> Self {
-        let ticks_per_us = freq_hz / 1_000_000;
-
-        // Configure SysTick using raw pointer access
-        // SAFETY: Caller guarantees exclusive access to SysTick
-        unsafe {
-            let syst_ptr = SYST::PTR;
-            (*syst_ptr).csr.write(0); // Disable
-            (*syst_ptr).cvr.write(0); // Clear current
-            (*syst_ptr).rvr.write(SYSTICK_MAX_RELOAD);
-            // Enable with processor clock, no interrupt
-            (*syst_ptr).csr.write(0b101); // ENABLE | CLKSOURCE
-        }
-
-        Self {
-            _syst: None,
+            syst,
             freq_hz,
             ticks_per_us,
         }
@@ -132,8 +104,7 @@ impl SysTick {
     #[inline]
     pub fn has_wrapped(&mut self) -> bool {
         // Read CSR - the COUNTFLAG bit is cleared by reading it
-        let syst = unsafe { &*SYST::PTR };
-        (syst.csr.read() & (1 << 16)) != 0
+        self.syst.has_wrapped()
     }
 
     /// Get the calibration value (if available)
@@ -145,60 +116,49 @@ impl SysTick {
     /// Enable the SysTick counter
     #[inline]
     pub fn enable(&mut self) {
-        let syst = unsafe { &*SYST::PTR };
-        syst.csr.modify(|v| v | 1); // Set ENABLE bit
+        self.syst.enable_counter();
     }
 
     /// Disable the SysTick counter
     #[inline]
     pub fn disable(&mut self) {
-        let syst = unsafe { &*SYST::PTR };
-        syst.csr.modify(|v| v & !1); // Clear ENABLE bit
+        self.syst.disable_counter();
     }
 
     /// Check if the counter is enabled
     #[inline]
     pub fn is_enabled(&self) -> bool {
-        let syst = unsafe { &*SYST::PTR };
-        (syst.csr.read() & 1) != 0
+        self.syst.is_counter_enabled()
     }
 
     /// Enable the SysTick interrupt
     #[inline]
     pub fn enable_interrupt(&mut self) {
-        let syst = unsafe { &*SYST::PTR };
-        syst.csr.modify(|v| v | (1 << 1)); // Set TICKINT bit
+        self.syst.enable_interrupt();
     }
 
     /// Disable the SysTick interrupt
     #[inline]
     pub fn disable_interrupt(&mut self) {
-        let syst = unsafe { &*SYST::PTR };
-        syst.csr.modify(|v| v & !(1 << 1)); // Clear TICKINT bit
+        self.syst.disable_interrupt();
     }
 
     /// Check if the interrupt is enabled
     #[inline]
     pub fn is_interrupt_enabled(&self) -> bool {
-        let syst = unsafe { &*SYST::PTR };
-        (syst.csr.read() & (1 << 1)) != 0
+        self.syst.is_interrupt_enabled()
     }
 
     /// Set the clock source
     #[inline]
     pub fn set_clock_source(&mut self, source: SystClkSource) {
-        let syst = unsafe { &*SYST::PTR };
-        match source {
-            SystClkSource::Core => syst.csr.modify(|v| v | (1 << 2)),
-            SystClkSource::External => syst.csr.modify(|v| v & !(1 << 2)),
-        }
+        self.syst.set_clock_source(source);
     }
 
     /// Set the reload value
     #[inline]
     pub fn set_reload(&mut self, value: u32) {
-        let syst = unsafe { &*SYST::PTR };
-        syst.rvr.write(value.min(SYSTICK_MAX_RELOAD));
+        self.syst.set_reload(value.min(SYSTICK_MAX_RELOAD));
     }
 
     /// Delay for a duration
@@ -276,11 +236,11 @@ impl SysTick {
         }
     }
 
-    /// Release the SYST peripheral (only if it was taken with `new`)
+    /// Release the SYST peripheral
     #[inline]
-    pub fn release(mut self) -> Option<SYST> {
+    pub fn release(mut self) -> SYST {
         self.disable();
-        self._syst.take()
+        self.syst
     }
 }
 
@@ -293,54 +253,24 @@ pub struct Delay {
 }
 
 impl Delay {
-    /// Create a new Delay instance with just the clock frequency
-    ///
-    /// This is a convenience constructor that accesses the SysTick peripheral
-    /// directly. In most embedded applications, this is safe because only one
-    /// Delay instance is typically needed.
-    ///
-    /// # Arguments
-    /// * `freq_hz` - The clock frequency in Hz
-    ///
-    /// # Example
-    /// ```ignore
-    /// use pico_rs::Delay;
-    ///
-    /// let mut delay = Delay::new(12_000_000); // 12 MHz
-    /// delay.delay_ms(500);
-    /// ```
-    pub fn new(freq_hz: u32) -> Self {
-        // SAFETY: In typical bare-metal applications, only one Delay instance
-        // is created and SysTick is not used elsewhere. This provides a
-        // convenient API while being safe in common use cases.
-        unsafe {
-            Self {
-                systick: SysTick::new_unchecked(freq_hz),
-            }
-        }
-    }
-
     /// Create a new Delay instance from an owned SYST peripheral
-    ///
-    /// Use this constructor when you need compile-time ownership tracking
-    /// of the SysTick peripheral.
     ///
     /// # Arguments
     /// * `syst` - The SYST peripheral from pico-rs-rt
     /// * `freq_hz` - The clock frequency in Hz
-    pub fn from_syst(syst: SYST, freq_hz: u32) -> Self {
+    ///
+    /// # Example
+    /// ```ignore
+    /// use pico_rs_rt::Peripherals;
+    /// use pico_rs::systick::Delay;
+    ///
+    /// let cp = Peripherals::take().unwrap();
+    /// let mut delay = Delay::new(cp.SYST, 150_000_000);
+    /// delay.delay_ms(500);
+    /// ```
+    pub fn new(syst: SYST, freq_hz: u32) -> Self {
         Self {
             systick: SysTick::new(syst, freq_hz),
-        }
-    }
-
-    /// Create a new Delay instance using raw pointer access
-    ///
-    /// # Safety
-    /// The caller must ensure no other code is using the SysTick peripheral.
-    pub unsafe fn new_unchecked(freq_hz: u32) -> Self {
-        Self {
-            systick: unsafe { SysTick::new_unchecked(freq_hz) },
         }
     }
 
@@ -378,33 +308,11 @@ impl Delay {
         &mut self.systick
     }
 
-    /// Release the underlying SysTick
+    /// Release the underlying SYST peripheral
     #[inline]
-    pub fn release(self) -> SysTick {
-        self.systick
+    pub fn release(self) -> SYST {
+        self.systick.release()
     }
-}
-
-// ============================================================================
-// Global tick counter functions (for use with SysTick interrupt)
-// ============================================================================
-
-/// Increment tick counter (call from SysTick interrupt handler if using interrupts)
-#[inline]
-pub fn tick() {
-    TICK_COUNT.fetch_add(1, Ordering::Relaxed);
-}
-
-/// Get current tick count
-#[inline]
-pub fn get_tick_count() -> u32 {
-    TICK_COUNT.load(Ordering::Relaxed)
-}
-
-/// Reset tick counter
-#[inline]
-pub fn reset_tick_count() {
-    TICK_COUNT.store(0, Ordering::Relaxed);
 }
 
 // ============================================================================

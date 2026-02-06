@@ -20,7 +20,10 @@ use panic_probe as _;
 use pico_rs::Delay;
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
-use pico_rs::gpio::{self, Pin0, Pin1, Pin4, Pin5, Pin8, Pin9, Pin10, Pin11, Pin12, Pin13, Pin16, Pin17, Pin18, Pin19, Pin25};
+use pico_rs::gpio::{
+    self, Pin0, Pin1, Pin4, Pin5, Pin8, Pin9, Pin10, Pin11, Pin12, Pin13, Pin16, Pin17, Pin18,
+    Pin19, Pin25,
+};
 
 #[unsafe(link_section = ".start_block")]
 #[used]
@@ -114,14 +117,14 @@ fn main() -> ! {
 
     // We'll use GPIO25 (LED) for PWM demonstration
     let led = Pin25::new();
-    let _pwm_led = led.into_pwm_b();
+    let _pwm_led = led.into_pwm();
     info!("GPIO25 (LED) configured as PWM channel B");
 
     // Additional PWM pins
     let pwm_pin0 = Pin12::new();
     let pwm_pin1 = Pin13::new();
-    let _pwm0a = pwm_pin0.into_pwm_a();
-    let _pwm0b = pwm_pin1.into_pwm_b();
+    let _pwm0a = pwm_pin0.into_pwm();
+    let _pwm0b = pwm_pin1.into_pwm();
     info!("GPIO12 -> PWM A, GPIO13 -> PWM B configured");
 
     // ========================================================================

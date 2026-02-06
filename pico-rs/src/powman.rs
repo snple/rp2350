@@ -17,8 +17,11 @@
 //!
 //! ```ignore
 //! use pico_rs::powman::Powman;
+//! use pico_rs_pac::POWMAN;
 //!
-//! let powman = Powman::new();
+//! // Get POWMAN peripheral
+//! let powman_pac = unsafe { POWMAN::steal() };
+//! let powman = Powman::new(powman_pac);
 //!
 //! // Use XOSC as timer source
 //! powman.timer_set_1khz_tick_source_xosc(12_000_000);
@@ -101,16 +104,33 @@ pub type PowerState = u32;
 
 /// Power Management peripheral wrapper
 pub struct Powman {
-    regs: &'static pico_rs_pac::powman::RegisterBlock,
+    powman: POWMAN,
 }
 
 impl Powman {
     /// Create a new Powman instance
+    ///
+    /// # Arguments
+    /// * `powman` - The POWMAN peripheral from PAC
     #[inline]
-    pub fn new() -> Self {
-        Self {
-            regs: unsafe { &*POWMAN::PTR },
-        }
+    pub fn new(powman: POWMAN) -> Self {
+        Self { powman }
+    }
+
+    /// Get reference to the underlying register block
+    ///
+    /// # Safety
+    /// Direct register access can bypass the HAL's safety guarantees.
+    /// The caller must ensure operations do not conflict with the HAL state.
+    #[inline]
+    pub unsafe fn regs(&self) -> &pico_rs_pac::powman::RegisterBlock {
+        &self.powman
+    }
+
+    /// Release the POWMAN peripheral
+    #[inline]
+    pub fn release(self) -> POWMAN {
+        self.powman
     }
 
     // ========================================================================
@@ -125,25 +145,25 @@ impl Powman {
     ///   - 0x0F (15): 1.30V (for higher clock speeds)
     pub fn set_voltage(&self, vsel: u8) {
         let vsel = vsel.min(31) as u32;
-        self.regs.vreg.write_vsel(vsel);
+        self.powman.vreg.write_vsel(vsel);
     }
 
     /// Get the current voltage setting
     #[inline]
     pub fn get_voltage(&self) -> u8 {
-        self.regs.vreg.vsel() as u8
+        self.powman.vreg.vsel() as u8
     }
 
     /// Check if voltage regulator output is stable
     #[inline]
     pub fn is_vreg_ok(&self) -> bool {
-        self.regs.vreg_sts.vout_ok()
+        self.powman.vreg_sts.vout_ok()
     }
 
     /// Check if voltage regulator is still starting up
     #[inline]
     pub fn is_vreg_starting(&self) -> bool {
-        self.regs.vreg_sts.startup()
+        self.powman.vreg_sts.startup()
     }
 
     /// Wait for voltage regulator to stabilize
@@ -155,7 +175,7 @@ impl Powman {
 
     /// Set high-temperature protection threshold
     pub fn set_vreg_temp_threshold(&self, threshold: VregTempThreshold) {
-        self.regs.vreg_ctrl.write_ht_th(threshold as u32);
+        self.powman.vreg_ctrl.write_ht_th(threshold as u32);
     }
 
     /// Enable or disable voltage limit bypass
@@ -164,9 +184,9 @@ impl Powman {
     /// When enabled, can go higher but may damage chip if not careful!
     pub fn set_voltage_limit_disabled(&self, disabled: bool) {
         if disabled {
-            self.regs.vreg_ctrl.set_disable_voltage_limit();
+            self.powman.vreg_ctrl.set_disable_voltage_limit();
         } else {
-            self.regs.vreg_ctrl.clr_disable_voltage_limit();
+            self.powman.vreg_ctrl.clr_disable_voltage_limit();
         }
     }
 
@@ -177,13 +197,13 @@ impl Powman {
     /// Enable brown-out detection
     #[inline]
     pub fn enable_bod(&self) {
-        self.regs.bod.set_en();
+        self.powman.bod.set_en();
     }
 
     /// Disable brown-out detection
     #[inline]
     pub fn disable_bod(&self) {
-        self.regs.bod.clr_en();
+        self.powman.bod.clr_en();
     }
 
     /// Set brown-out detection threshold
@@ -192,7 +212,7 @@ impl Powman {
     /// * `vsel` - Voltage threshold (0-31). Higher = higher threshold.
     pub fn set_bod_threshold(&self, vsel: u8) {
         let vsel = vsel.min(31) as u32;
-        self.regs.bod.write_vsel(vsel);
+        self.powman.bod.write_vsel(vsel);
     }
 
     // ========================================================================
@@ -225,22 +245,22 @@ impl Powman {
         let freq_khz_frac = (lposc_freq_hz % 1000) * 65536 / 1000;
 
         // Write frequency info using PAC write_bits (includes UnsafeCell)
-        self.regs
+        self.powman
             .lposc_freq_khz_int
             .write_bits(POWMAN_PASSWORD | (freq_khz & 0xFFFF));
-        self.regs
+        self.powman
             .lposc_freq_khz_frac
             .write_bits(POWMAN_PASSWORD | (freq_khz_frac & 0xFFFF));
 
         // Enable LPOSC as source using atomic SET alias
         const USE_LPOSC: u32 = 1 << 9; // POWMAN_TIMER_USE_LPOSC
-        self.regs.timer.set_bits(POWMAN_PASSWORD | USE_LPOSC);
+        self.powman.timer.set_bits(POWMAN_PASSWORD | USE_LPOSC);
 
         if was_running {
             self.timer_start();
             // Wait for source to be active
             const USING_LPOSC: u32 = 1 << 5; // POWMAN_TIMER_USING_LPOSC
-            while (self.regs.timer.read_bits() & USING_LPOSC) == 0 {
+            while (self.powman.timer.read_bits() & USING_LPOSC) == 0 {
                 core::hint::spin_loop();
             }
         }
@@ -262,22 +282,22 @@ impl Powman {
         let freq_khz_frac = (xosc_freq_hz % 1000) * 65536 / 1000;
 
         // Write frequency info using PAC write_bits (includes UnsafeCell)
-        self.regs
+        self.powman
             .xosc_freq_khz_int
             .write_bits(POWMAN_PASSWORD | (freq_khz & 0xFFFF));
-        self.regs
+        self.powman
             .xosc_freq_khz_frac
             .write_bits(POWMAN_PASSWORD | (freq_khz_frac & 0xFFFF));
 
         // Enable XOSC as source using atomic SET alias
         const USE_XOSC: u32 = 1 << 8; // POWMAN_TIMER_USE_XOSC
-        self.regs.timer.set_bits(POWMAN_PASSWORD | USE_XOSC);
+        self.powman.timer.set_bits(POWMAN_PASSWORD | USE_XOSC);
 
         if was_running {
             self.timer_start();
             // Wait for source to be active
             const USING_XOSC: u32 = 1 << 4; // POWMAN_TIMER_USING_XOSC
-            while (self.regs.timer.read_bits() & USING_XOSC) == 0 {
+            while (self.powman.timer.read_bits() & USING_XOSC) == 0 {
                 core::hint::spin_loop();
             }
         }
@@ -302,11 +322,13 @@ impl Powman {
         }
 
         // Set external time reference source
-        self.regs.ext_time_ref.write_bits(POWMAN_PASSWORD | source);
+        self.powman
+            .ext_time_ref
+            .write_bits(POWMAN_PASSWORD | source);
 
         // Enable GPIO 1kHz as source using atomic SET alias
         const USE_GPIO_1KHZ: u32 = 1 << 10; // POWMAN_TIMER_USE_GPIO_1KHZ
-        self.regs.timer.set_bits(POWMAN_PASSWORD | USE_GPIO_1KHZ);
+        self.powman.timer.set_bits(POWMAN_PASSWORD | USE_GPIO_1KHZ);
 
         if was_running {
             self.timer_start();
@@ -316,28 +338,28 @@ impl Powman {
     /// Check if timer is running
     #[inline]
     pub fn timer_is_running(&self) -> bool {
-        (self.regs.timer.read_bits() & 1) != 0 // POWMAN_TIMER_RUN
+        (self.powman.timer.read_bits() & 1) != 0 // POWMAN_TIMER_RUN
     }
 
     /// Start the AON timer
     pub fn timer_start(&self) {
         const RUN: u32 = 1; // POWMAN_TIMER_RUN
-        self.regs.timer.set_bits(POWMAN_PASSWORD | RUN);
+        self.powman.timer.set_bits(POWMAN_PASSWORD | RUN);
     }
 
     /// Stop the AON timer
     pub fn timer_stop(&self) {
         const RUN: u32 = 1; // POWMAN_TIMER_RUN
-        self.regs.timer.clr_bits(POWMAN_PASSWORD | RUN);
+        self.powman.timer.clr_bits(POWMAN_PASSWORD | RUN);
     }
 
     /// Get current timer value in milliseconds
     pub fn timer_get_ms(&self) -> u64 {
         // Read upper 32 bits first
-        let mut hi = self.regs.read_time_upper.read_bits();
+        let mut hi = self.powman.read_time_upper.read_bits();
         loop {
-            let lo = self.regs.read_time_lower.read_bits();
-            let next_hi = self.regs.read_time_upper.read_bits();
+            let lo = self.powman.read_time_lower.read_bits();
+            let next_hi = self.powman.read_time_upper.read_bits();
             if hi == next_hi {
                 return ((hi as u64) << 32) | (lo as u64);
             }
@@ -353,16 +375,16 @@ impl Powman {
         }
 
         // Write time values using PAC write_bits
-        self.regs
+        self.powman
             .set_time_15to0
             .write_bits(POWMAN_PASSWORD | ((time_ms & 0xFFFF) as u32));
-        self.regs
+        self.powman
             .set_time_31to16
             .write_bits(POWMAN_PASSWORD | (((time_ms >> 16) & 0xFFFF) as u32));
-        self.regs
+        self.powman
             .set_time_47to32
             .write_bits(POWMAN_PASSWORD | (((time_ms >> 32) & 0xFFFF) as u32));
-        self.regs
+        self.powman
             .set_time_63to48
             .write_bits(POWMAN_PASSWORD | (((time_ms >> 48) & 0xFFFF) as u32));
 
@@ -375,23 +397,23 @@ impl Powman {
     pub fn timer_enable_alarm_at_ms(&self, alarm_time_ms: u64) {
         // Enable timer interrupt
         const TIMER_INT: u32 = 1 << 0; // POWMAN_INTE_TIMER
-        self.regs.inte.set_bits(POWMAN_PASSWORD | TIMER_INT);
+        self.powman.inte.set_bits(POWMAN_PASSWORD | TIMER_INT);
 
         // Disable alarm first
         const ALARM_ENAB: u32 = 1 << 2; // POWMAN_TIMER_ALARM_ENAB
-        self.regs.timer.clr_bits(POWMAN_PASSWORD | ALARM_ENAB);
+        self.powman.timer.clr_bits(POWMAN_PASSWORD | ALARM_ENAB);
 
         // Set alarm time using PAC write_bits
-        self.regs
+        self.powman
             .alarm_time_15to0
             .write_bits(POWMAN_PASSWORD | ((alarm_time_ms & 0xFFFF) as u32));
-        self.regs
+        self.powman
             .alarm_time_31to16
             .write_bits(POWMAN_PASSWORD | (((alarm_time_ms >> 16) & 0xFFFF) as u32));
-        self.regs
+        self.powman
             .alarm_time_47to32
             .write_bits(POWMAN_PASSWORD | (((alarm_time_ms >> 32) & 0xFFFF) as u32));
-        self.regs
+        self.powman
             .alarm_time_63to48
             .write_bits(POWMAN_PASSWORD | (((alarm_time_ms >> 48) & 0xFFFF) as u32));
 
@@ -399,7 +421,7 @@ impl Powman {
         self.timer_clear_alarm();
 
         // Enable alarm
-        self.regs.timer.set_bits(POWMAN_PASSWORD | ALARM_ENAB);
+        self.powman.timer.set_bits(POWMAN_PASSWORD | ALARM_ENAB);
     }
 
     /// Disable timer alarm
@@ -407,21 +429,21 @@ impl Powman {
         const TIMER_INT: u32 = 1 << 0;
         const ALARM_ENAB: u32 = 1 << 2;
         // Disable interrupt
-        self.regs.inte.clr_bits(POWMAN_PASSWORD | TIMER_INT);
+        self.powman.inte.clr_bits(POWMAN_PASSWORD | TIMER_INT);
         // Disable alarm
-        self.regs.timer.clr_bits(POWMAN_PASSWORD | ALARM_ENAB);
+        self.powman.timer.clr_bits(POWMAN_PASSWORD | ALARM_ENAB);
     }
 
     /// Clear the alarm flag
     pub fn timer_clear_alarm(&self) {
         const ALARM: u32 = 1 << 1; // POWMAN_TIMER_ALARM
-        self.regs.timer.clr_bits(POWMAN_PASSWORD | ALARM);
+        self.powman.timer.clr_bits(POWMAN_PASSWORD | ALARM);
     }
 
     /// Check if alarm has fired
     #[inline]
     pub fn timer_alarm_fired(&self) -> bool {
-        (self.regs.timer.read_bits() & (1 << 1)) != 0
+        (self.powman.timer.read_bits() & (1 << 1)) != 0
     }
 
     /// Enable alarm wakeup from low power mode
@@ -430,7 +452,7 @@ impl Powman {
 
         // Enable powerup on alarm
         const PWRUP_ON_ALARM: u32 = 1 << 3; // POWMAN_TIMER_PWRUP_ON_ALARM
-        self.regs.timer.set_bits(POWMAN_PASSWORD | PWRUP_ON_ALARM);
+        self.powman.timer.set_bits(POWMAN_PASSWORD | PWRUP_ON_ALARM);
     }
 
     /// Disable alarm wakeup
@@ -438,7 +460,7 @@ impl Powman {
         self.timer_disable_alarm();
 
         const PWRUP_ON_ALARM: u32 = 1 << 3;
-        self.regs.timer.clr_bits(POWMAN_PASSWORD | PWRUP_ON_ALARM);
+        self.powman.timer.clr_bits(POWMAN_PASSWORD | PWRUP_ON_ALARM);
     }
 
     // ========================================================================
@@ -478,24 +500,24 @@ impl Powman {
         // Access the pwrup register based on wakeup_num
         match wakeup_num {
             0 => {
-                self.regs.pwrup0.write_bits(POWMAN_PASSWORD | value);
-                self.regs.pwrup0.clr_bits(POWMAN_PASSWORD | (1 << 7)); // Clear STATUS
-                self.regs.pwrup0.set_bits(POWMAN_PASSWORD | 1); // Set ENABLE
+                self.powman.pwrup0.write_bits(POWMAN_PASSWORD | value);
+                self.powman.pwrup0.clr_bits(POWMAN_PASSWORD | (1 << 7)); // Clear STATUS
+                self.powman.pwrup0.set_bits(POWMAN_PASSWORD | 1); // Set ENABLE
             }
             1 => {
-                self.regs.pwrup1.write_bits(POWMAN_PASSWORD | value);
-                self.regs.pwrup1.clr_bits(POWMAN_PASSWORD | (1 << 7));
-                self.regs.pwrup1.set_bits(POWMAN_PASSWORD | 1);
+                self.powman.pwrup1.write_bits(POWMAN_PASSWORD | value);
+                self.powman.pwrup1.clr_bits(POWMAN_PASSWORD | (1 << 7));
+                self.powman.pwrup1.set_bits(POWMAN_PASSWORD | 1);
             }
             2 => {
-                self.regs.pwrup2.write_bits(POWMAN_PASSWORD | value);
-                self.regs.pwrup2.clr_bits(POWMAN_PASSWORD | (1 << 7));
-                self.regs.pwrup2.set_bits(POWMAN_PASSWORD | 1);
+                self.powman.pwrup2.write_bits(POWMAN_PASSWORD | value);
+                self.powman.pwrup2.clr_bits(POWMAN_PASSWORD | (1 << 7));
+                self.powman.pwrup2.set_bits(POWMAN_PASSWORD | 1);
             }
             3 => {
-                self.regs.pwrup3.write_bits(POWMAN_PASSWORD | value);
-                self.regs.pwrup3.clr_bits(POWMAN_PASSWORD | (1 << 7));
-                self.regs.pwrup3.set_bits(POWMAN_PASSWORD | 1);
+                self.powman.pwrup3.write_bits(POWMAN_PASSWORD | value);
+                self.powman.pwrup3.clr_bits(POWMAN_PASSWORD | (1 << 7));
+                self.powman.pwrup3.set_bits(POWMAN_PASSWORD | 1);
             }
             _ => {}
         }
@@ -509,10 +531,10 @@ impl Powman {
 
         // Access the pwrup register based on wakeup_num
         match wakeup_num {
-            0 => self.regs.pwrup0.clr_bits(POWMAN_PASSWORD | 1), // Clear ENABLE
-            1 => self.regs.pwrup1.clr_bits(POWMAN_PASSWORD | 1),
-            2 => self.regs.pwrup2.clr_bits(POWMAN_PASSWORD | 1),
-            3 => self.regs.pwrup3.clr_bits(POWMAN_PASSWORD | 1),
+            0 => self.powman.pwrup0.clr_bits(POWMAN_PASSWORD | 1), // Clear ENABLE
+            1 => self.powman.pwrup1.clr_bits(POWMAN_PASSWORD | 1),
+            2 => self.powman.pwrup2.clr_bits(POWMAN_PASSWORD | 1),
+            3 => self.powman.pwrup3.clr_bits(POWMAN_PASSWORD | 1),
             _ => {}
         }
     }
@@ -533,7 +555,7 @@ impl Powman {
     pub fn get_power_state(&self) -> PowerState {
         // State register shows which domains are OFF (inverted)
 
-        !self.regs.state.read_bits() & 0xF
+        !self.powman.state.read_bits() & 0xF
     }
 
     /// Check if a power domain is on
@@ -560,14 +582,14 @@ impl Powman {
     /// Note: Scratch registers 0-7 are available
     pub fn write_scratch(&self, index: u8, value: u32) {
         match index {
-            0 => self.regs.scratch0.write_bits(value),
-            1 => self.regs.scratch1.write_bits(value),
-            2 => self.regs.scratch2.write_bits(value),
-            3 => self.regs.scratch3.write_bits(value),
-            4 => self.regs.scratch4.write_bits(value),
-            5 => self.regs.scratch5.write_bits(value),
-            6 => self.regs.scratch6.write_bits(value),
-            7 => self.regs.scratch7.write_bits(value),
+            0 => self.powman.scratch0.write_bits(value),
+            1 => self.powman.scratch1.write_bits(value),
+            2 => self.powman.scratch2.write_bits(value),
+            3 => self.powman.scratch3.write_bits(value),
+            4 => self.powman.scratch4.write_bits(value),
+            5 => self.powman.scratch5.write_bits(value),
+            6 => self.powman.scratch6.write_bits(value),
+            7 => self.powman.scratch7.write_bits(value),
             _ => {}
         }
     }
@@ -575,14 +597,14 @@ impl Powman {
     /// Read from scratch register
     pub fn read_scratch(&self, index: u8) -> u32 {
         match index {
-            0 => self.regs.scratch0.read_bits(),
-            1 => self.regs.scratch1.read_bits(),
-            2 => self.regs.scratch2.read_bits(),
-            3 => self.regs.scratch3.read_bits(),
-            4 => self.regs.scratch4.read_bits(),
-            5 => self.regs.scratch5.read_bits(),
-            6 => self.regs.scratch6.read_bits(),
-            7 => self.regs.scratch7.read_bits(),
+            0 => self.powman.scratch0.read_bits(),
+            1 => self.powman.scratch1.read_bits(),
+            2 => self.powman.scratch2.read_bits(),
+            3 => self.powman.scratch3.read_bits(),
+            4 => self.powman.scratch4.read_bits(),
+            5 => self.powman.scratch5.read_bits(),
+            6 => self.powman.scratch6.read_bits(),
+            7 => self.powman.scratch7.read_bits(),
             _ => 0,
         }
     }
@@ -594,54 +616,48 @@ impl Powman {
     /// Check raw timer interrupt
     #[inline]
     pub fn timer_irq_raw(&self) -> bool {
-        self.regs.intr.timer()
+        self.powman.intr.timer()
     }
 
     /// Check raw VREG output low interrupt
     #[inline]
     pub fn vreg_output_low_irq_raw(&self) -> bool {
-        self.regs.intr.vreg_output_low()
+        self.powman.intr.vreg_output_low()
     }
 
     /// Check raw state request ignored interrupt
     #[inline]
     pub fn state_req_ignored_irq_raw(&self) -> bool {
-        self.regs.intr.state_req_ignored()
+        self.powman.intr.state_req_ignored()
     }
 
     /// Check raw pwrup while waiting interrupt
     #[inline]
     pub fn pwrup_while_waiting_irq_raw(&self) -> bool {
-        self.regs.intr.pwrup_while_waiting()
+        self.powman.intr.pwrup_while_waiting()
     }
 
     /// Check pwrup0 status
     #[inline]
     pub fn pwrup0_status(&self) -> bool {
-        self.regs.pwrup0.status()
+        self.powman.pwrup0.status()
     }
 
     /// Check pwrup1 status
     #[inline]
     pub fn pwrup1_status(&self) -> bool {
-        self.regs.pwrup1.status()
+        self.powman.pwrup1.status()
     }
 
     /// Check pwrup2 status
     #[inline]
     pub fn pwrup2_status(&self) -> bool {
-        self.regs.pwrup2.status()
+        self.powman.pwrup2.status()
     }
 
     /// Check pwrup3 status
     #[inline]
     pub fn pwrup3_status(&self) -> bool {
-        self.regs.pwrup3.status()
-    }
-}
-
-impl Default for Powman {
-    fn default() -> Self {
-        Self::new()
+        self.powman.pwrup3.status()
     }
 }

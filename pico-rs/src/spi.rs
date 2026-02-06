@@ -3,7 +3,7 @@
 //! This module provides a safe interface for the RP2350 SPI peripherals.
 //! The RP2350 has two SPI controllers (SPI0 and SPI1) based on the ARM PrimeCell SSP (PL022).
 //!
-//! ## Features
+//! # Features
 //!
 //! - Master and slave modes
 //! - 4-16 data bits
@@ -11,28 +11,41 @@
 //! - Motorola SPI, TI Synchronous Serial, and Microwire frame formats
 //! - 8-entry TX and RX FIFOs
 //! - DMA support
+//! - **Type-safe pin ownership**: Pins are consumed by SPI, preventing misuse
 //!
-//! ## GPIO Mapping
+//! # GPIO Mapping
 //!
 //! SPI0:
-//! - RX: GPIO 0, 4, 16, 20
+//! - RX (MISO): GPIO 0, 4, 16, 20
 //! - CSn: GPIO 1, 5, 17, 21
 //! - SCK: GPIO 2, 6, 18, 22
-//! - TX: GPIO 3, 7, 19, 23
+//! - TX (MOSI): GPIO 3, 7, 19, 23
 //!
 //! SPI1:
-//! - RX: GPIO 8, 12, 24, 28
+//! - RX (MISO): GPIO 8, 12, 24, 28
 //! - CSn: GPIO 9, 13, 25, 29
 //! - SCK: GPIO 10, 14, 26
-//! - TX: GPIO 11, 15, 27
+//! - TX (MOSI): GPIO 11, 15, 27
 //!
-//! ## Example
+//! # Example (Master Mode with Pin Ownership)
 //!
 //! ```ignore
+//! use pico_rs::gpio::Pins;
 //! use pico_rs::spi::{Spi0, Mode};
+//! use pico_rs::Peripherals;
 //!
-//! // Initialize SPI0 at 1 MHz
-//! let mut spi = Spi0::init(1_000_000, 150_000_000);
+//! let dp = Peripherals::take().unwrap();
+//! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+//!
+//! // Initialize SPI0 at 1 MHz, consuming pins
+//! let mut spi = Spi0::new(
+//!     dp.SPI0,
+//!     pins.p2,      // SCK pin - ownership transferred
+//!     pins.p3,      // TX (MOSI) pin - ownership transferred
+//!     pins.p0,      // RX (MISO) pin - ownership transferred
+//!     1_000_000,    // 1 MHz
+//!     150_000_000,  // System clock
+//! );
 //!
 //! // Configure mode (optional, default is Mode0)
 //! spi.set_mode(Mode::Mode0);
@@ -43,10 +56,57 @@
 //! // Transfer data
 //! let mut buf = [0u8; 3];
 //! spi.transfer(&mut buf, &[0x01, 0x02, 0x03]);
+//!
+//! // Compile error: pins.p2 already moved!
+//! // pins.p2.into_output();
+//! ```
+//!
+//! # Example (Master Mode with Chip Select)
+//!
+//! ```ignore
+//! use pico_rs::gpio::Pins;
+//! use pico_rs::spi::Spi0;
+//!
+//! let dp = Peripherals::take().unwrap();
+//! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+//!
+//! // Initialize SPI0 with hardware chip select
+//! let mut spi = Spi0::new_with_cs(
+//!     dp.SPI0,
+//!     pins.p2,      // SCK
+//!     pins.p3,      // TX (MOSI)
+//!     pins.p0,      // RX (MISO)
+//!     pins.p1,      // CSn (hardware chip select)
+//!     1_000_000,
+//!     150_000_000,
+//! );
+//! ```
+//!
+//! # Example (Slave Mode)
+//!
+//! ```ignore
+//! use pico_rs::gpio::Pins;
+//! use pico_rs::spi::Spi0;
+//!
+//! let dp = Peripherals::take().unwrap();
+//! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+//!
+//! // Initialize SPI0 as slave (requires CSn pin)
+//! let mut spi = Spi0::new_slave(
+//!     dp.SPI0,
+//!     pins.p2,      // SCK
+//!     pins.p3,      // TX (MOSI from slave perspective)
+//!     pins.p0,      // RX (MISO from slave perspective)
+//!     pins.p1,      // CSn
+//!     150_000_000,
+//! );
 //! ```
 
 use paste::paste;
 
+use crate::gpio::{
+    Spi0CsnPin, Spi0RxPin, Spi0SckPin, Spi0TxPin, Spi1CsnPin, Spi1RxPin, Spi1SckPin, Spi1TxPin,
+};
 use crate::reset::{self, Peripheral};
 
 /// SPI mode (clock polarity and phase)
@@ -104,92 +164,132 @@ pub enum Error {
 // ============================================================================
 
 macro_rules! impl_spi {
-    ($SpiName:ident, $spi_num:literal, $SpiType:ty, $spi_mod:ident, $reset_peripheral:expr) => {
+    ($SpiName:ident, $spi_num:literal, $SpiType:ty, $spi_mod:ident, $reset_peripheral:expr, $SckTrait:ident, $TxTrait:ident, $RxTrait:ident, $CsnTrait:ident) => {
         paste! {
-            /// SPI$spi_num peripheral wrapper
-            pub struct $SpiName {
-                regs: &'static pico_rs_pac::$spi_mod::RegisterBlock,
+            /// SPI peripheral wrapper with type-safe pin ownership.
+            ///
+            /// This struct owns the SPI peripheral and the GPIO pins used for
+            /// SCK, TX (MOSI), and RX (MISO). The pins are configured automatically
+            /// when the SPI instance is created.
+            ///
+            #[doc = concat!("# SPI", $spi_num, " Pin Mapping")]
+            ///
+            #[doc = concat!("See [`", stringify!($SckTrait), "`] for valid SCK pins.")]
+            ///
+            #[doc = concat!("See [`", stringify!($TxTrait), "`] for valid TX (MOSI) pins.")]
+            ///
+            #[doc = concat!("See [`", stringify!($RxTrait), "`] for valid RX (MISO) pins.")]
+            pub struct $SpiName<SCK, TX, RX>
+            where
+                SCK: $SckTrait,
+                TX: $TxTrait,
+                RX: $RxTrait,
+            {
+                spi: $SpiType,
+                _sck: SCK,
+                _tx: TX,
+                _rx: RX,
                 baudrate: u32,
             }
 
-            impl $SpiName {
+            impl<SCK, TX, RX> $SpiName<SCK, TX, RX>
+            where
+                SCK: $SckTrait,
+                TX: $TxTrait,
+                RX: $RxTrait,
+            {
                 /// SPI peripheral number
                 pub const NUM: u8 = $spi_num;
 
-                /// Create a new SPI instance without initialization
+                /// Get reference to the underlying register block.
+                ///
+                /// # Safety
+                /// Direct register access can bypass the HAL's safety guarantees.
+                /// The caller must ensure operations do not conflict with the HAL state.
                 #[inline]
-                pub fn new() -> Self {
-                    Self {
-                        regs: unsafe { &*<$SpiType>::PTR },
-                        baudrate: 0,
-                    }
-                }
-
-                /// Get reference to the register block
-                #[inline]
-                pub fn regs(&self) -> &pico_rs_pac::$spi_mod::RegisterBlock {
-                    self.regs
+                pub unsafe fn regs(&self) -> &pico_rs_pac::$spi_mod::RegisterBlock {
+                    &self.spi
                 }
 
                 // ================================================================
                 // Initialization
                 // ================================================================
 
-                /// Initialize the SPI peripheral with default settings (8 data bits, Mode0)
+                /// Initialize SPI in master mode without hardware chip select.
+                ///
+                /// Use this when you want to control the chip select manually via
+                /// a separate GPIO pin, or when connecting to a single device that
+                /// doesn't require CS toggling.
                 ///
                 /// # Arguments
+                ///
+                /// * `spi` - The SPI peripheral from PAC
+                /// * `sck` - SCK (clock) pin
+                /// * `tx` - TX (MOSI) pin
+                /// * `rx` - RX (MISO) pin
                 /// * `baudrate` - Desired baudrate in Hz
                 /// * `peri_clk` - Peripheral clock frequency in Hz
-                pub fn init(baudrate: u32, peri_clk: u32) -> Self {
+                ///
+                /// # Example
+                ///
+                /// ```ignore
+                #[doc = concat!("let spi = ", stringify!($SpiName), "::new(")]
+                #[doc = concat!("    dp.SPI", $spi_num, ",")]
+                ///     pins.p2,      // SCK
+                ///     pins.p3,      // TX (MOSI)
+                ///     pins.p0,      // RX (MISO)
+                ///     1_000_000,    // 1 MHz
+                ///     150_000_000,  // System clock
+                /// );
+                /// ```
+                pub fn new(
+                    spi: $SpiType,
+                    sck: SCK,
+                    tx: TX,
+                    rx: RX,
+                    baudrate: u32,
+                    peri_clk: u32,
+                ) -> Self {
+                    // Configure pins for SPI function
+                    sck.[<configure_spi $spi_num _sck>]();
+                    tx.[<configure_spi $spi_num _tx>]();
+                    rx.[<configure_spi $spi_num _rx>]();
+
                     // Bring SPI out of reset
                     reset::unreset_block_wait($reset_peripheral);
 
-                    let mut spi = Self::new();
+                    let mut spi_dev = Self {
+                        spi,
+                        _sck: sck,
+                        _tx: tx,
+                        _rx: rx,
+                        baudrate: 0,
+                    };
 
                     // Disable first
-                    spi.regs.sspcr1.clr_sse();
+                    spi_dev.spi.sspcr1.clr_sse();
 
                     // Set baudrate
-                    spi.configure_baudrate(baudrate, peri_clk);
+                    spi_dev.configure_baudrate(baudrate, peri_clk);
 
                     // Set default format: 8 data bits, Mode0, Motorola SPI
-                    spi.set_format(8, Mode::Mode0, FrameFormat::MotorolaSpi);
+                    spi_dev.set_format(8, Mode::Mode0, FrameFormat::MotorolaSpi);
 
                     // Configure as master (MS=0), no loopback
-                    spi.regs.sspcr1.write_bits(0);
+                    spi_dev.spi.sspcr1.write_bits(0);
 
                     // Enable
-                    spi.regs.sspcr1.set_sse();
+                    spi_dev.spi.sspcr1.set_sse();
 
-                    spi
+                    spi_dev
                 }
 
-                /// Initialize the SPI peripheral in slave mode
+                /// Release the SPI peripheral and pins.
                 ///
-                /// # Arguments
-                /// * `peri_clk` - Peripheral clock frequency in Hz
-                pub fn init_slave(peri_clk: u32) -> Self {
-                    // Bring SPI out of reset
-                    reset::unreset_block_wait($reset_peripheral);
-
-                    let mut spi = Self::new();
-
-                    // Disable first
-                    spi.regs.sspcr1.clr_sse();
-
-                    // Set a reasonable default baudrate for timing
-                    spi.configure_baudrate(1_000_000, peri_clk);
-
-                    // Set default format
-                    spi.set_format(8, Mode::Mode0, FrameFormat::MotorolaSpi);
-
-                    // Configure as slave (MS=1)
-                    spi.regs.sspcr1.set_ms();
-
-                    // Enable
-                    spi.regs.sspcr1.set_sse();
-
-                    spi
+                /// Returns a tuple of (SPI peripheral, SCK pin, TX pin, RX pin).
+                #[inline]
+                pub fn release(self) -> ($SpiType, SCK, TX, RX) {
+                    (self.spi, self._sck, self._tx, self._rx)
                 }
 
                 // ================================================================
@@ -233,12 +333,12 @@ macro_rules! impl_spi {
                     }
 
                     // Write prescaler
-                    self.regs.sspcpsr.write_cpsdvsr(best_cpsdvsr);
+                    self.spi.sspcpsr.write_cpsdvsr(best_cpsdvsr);
 
                     // Update SCR in CR0 (bits 15:8)
-                    let cr0 = self.regs.sspcr0.read_bits();
+                    let cr0 = self.spi.sspcr0.read_bits();
                     let cr0 = (cr0 & 0x00ff) | (best_scr << 8);
-                    self.regs.sspcr0.write_bits(cr0);
+                    self.spi.sspcr0.write_bits(cr0);
 
                     self.baudrate = peri_clk / (best_cpsdvsr * (1 + best_scr));
                 }
@@ -252,9 +352,9 @@ macro_rules! impl_spi {
                 /// # Returns
                 /// The actual baudrate achieved
                 pub fn set_baudrate(&mut self, baudrate: u32, peri_clk: u32) -> u32 {
-                    self.regs.sspcr1.clr_sse();
+                    self.spi.sspcr1.clr_sse();
                     self.configure_baudrate(baudrate, peri_clk);
-                    self.regs.sspcr1.set_sse();
+                    self.spi.sspcr1.set_sse();
                     self.baudrate
                 }
 
@@ -268,7 +368,7 @@ macro_rules! impl_spi {
                     let data_bits = data_bits.clamp(4, 16);
 
                     // Read current CR0 to preserve SCR
-                    let scr = self.regs.sspcr0.scr();
+                    let scr = self.spi.sspcr0.scr();
 
                     // Build new CR0 value
                     let cr0 = (scr << 8)
@@ -277,21 +377,21 @@ macro_rules! impl_spi {
                         | ((format as u32) << 4)
                         | ((data_bits - 1) as u32);
 
-                    self.regs.sspcr0.write_bits(cr0);
+                    self.spi.sspcr0.write_bits(cr0);
                 }
 
                 /// Set the SPI mode
                 pub fn set_mode(&self, mode: Mode) {
                     if mode.polarity() {
-                        self.regs.sspcr0.set_spo();
+                        self.spi.sspcr0.set_spo();
                     } else {
-                        self.regs.sspcr0.clr_spo();
+                        self.spi.sspcr0.clr_spo();
                     }
 
                     if mode.phase() {
-                        self.regs.sspcr0.set_sph();
+                        self.spi.sspcr0.set_sph();
                     } else {
-                        self.regs.sspcr0.clr_sph();
+                        self.spi.sspcr0.clr_sph();
                     }
                 }
 
@@ -299,9 +399,9 @@ macro_rules! impl_spi {
                 #[inline]
                 pub fn set_enabled(&self, enable: bool) {
                     if enable {
-                        self.regs.sspcr1.set_sse();
+                        self.spi.sspcr1.set_sse();
                     } else {
-                        self.regs.sspcr1.clr_sse();
+                        self.spi.sspcr1.clr_sse();
                     }
                 }
 
@@ -318,43 +418,43 @@ macro_rules! impl_spi {
                 /// Check if the SPI is busy
                 #[inline]
                 pub fn is_busy(&self) -> bool {
-                    self.regs.sspsr.bsy()
+                    self.spi.sspsr.bsy()
                 }
 
                 /// Check if the TX FIFO is full
                 #[inline]
                 pub fn is_tx_full(&self) -> bool {
-                    !self.regs.sspsr.tnf()
+                    !self.spi.sspsr.tnf()
                 }
 
                 /// Check if the TX FIFO is empty
                 #[inline]
                 pub fn is_tx_empty(&self) -> bool {
-                    self.regs.sspsr.tfe()
+                    self.spi.sspsr.tfe()
                 }
 
                 /// Check if the RX FIFO is empty
                 #[inline]
                 pub fn is_rx_empty(&self) -> bool {
-                    !self.regs.sspsr.rne()
+                    !self.spi.sspsr.rne()
                 }
 
                 /// Check if the RX FIFO is full
                 #[inline]
                 pub fn is_rx_full(&self) -> bool {
-                    self.regs.sspsr.rff()
+                    self.spi.sspsr.rff()
                 }
 
                 /// Check if readable (RX FIFO has data)
                 #[inline]
                 pub fn is_readable(&self) -> bool {
-                    self.regs.sspsr.rne()
+                    self.spi.sspsr.rne()
                 }
 
                 /// Check if writable (TX FIFO has space)
                 #[inline]
                 pub fn is_writable(&self) -> bool {
-                    self.regs.sspsr.tnf()
+                    self.spi.sspsr.tnf()
                 }
 
                 // ================================================================
@@ -366,8 +466,8 @@ macro_rules! impl_spi {
                 /// Returns true if the word was written, false if FIFO is full.
                 #[inline]
                 pub fn try_write_word(&self, word: u16) -> bool {
-                    if self.regs.sspsr.tnf() {
-                        self.regs.sspdr.write_data(word as u32);
+                    if self.spi.sspsr.tnf() {
+                        self.spi.sspdr.write_data(word as u32);
                         true
                     } else {
                         false
@@ -377,10 +477,10 @@ macro_rules! impl_spi {
                 /// Write a single word to the TX FIFO (blocking)
                 #[inline]
                 pub fn write_word(&self, word: u16) {
-                    while !self.regs.sspsr.tnf() {
+                    while !self.spi.sspsr.tnf() {
                         core::hint::spin_loop();
                     }
-                    self.regs.sspdr.write_data(word as u32);
+                    self.spi.sspdr.write_data(word as u32);
                 }
 
                 /// Read a single word from the RX FIFO (non-blocking)
@@ -388,8 +488,8 @@ macro_rules! impl_spi {
                 /// Returns Some(word) if data available, None if FIFO is empty.
                 #[inline]
                 pub fn try_read_word(&self) -> Option<u16> {
-                    if self.regs.sspsr.rne() {
-                        Some(self.regs.sspdr.data() as u16)
+                    if self.spi.sspsr.rne() {
+                        Some(self.spi.sspdr.data() as u16)
                     } else {
                         None
                     }
@@ -398,10 +498,10 @@ macro_rules! impl_spi {
                 /// Read a single word from the RX FIFO (blocking)
                 #[inline]
                 pub fn read_word(&self) -> u16 {
-                    while !self.regs.sspsr.rne() {
+                    while !self.spi.sspsr.rne() {
                         core::hint::spin_loop();
                     }
-                    self.regs.sspdr.data() as u16
+                    self.spi.sspdr.data() as u16
                 }
 
                 /// Write multiple bytes (8-bit mode)
@@ -434,14 +534,14 @@ macro_rules! impl_spi {
 
                     while rx_idx < len {
                         // Fill TX FIFO
-                        while tx_idx < len && self.regs.sspsr.tnf() {
-                            self.regs.sspdr.write_data(write[tx_idx] as u32);
+                        while tx_idx < len && self.spi.sspsr.tnf() {
+                            self.spi.sspdr.write_data(write[tx_idx] as u32);
                             tx_idx += 1;
                         }
 
                         // Read from RX FIFO
-                        while rx_idx < tx_idx && self.regs.sspsr.rne() {
-                            read[rx_idx] = self.regs.sspdr.data() as u8;
+                        while rx_idx < tx_idx && self.spi.sspsr.rne() {
+                            read[rx_idx] = self.spi.sspdr.data() as u8;
                             rx_idx += 1;
                         }
                     }
@@ -455,14 +555,14 @@ macro_rules! impl_spi {
 
                     while rx_idx < len {
                         // Fill TX FIFO
-                        while tx_idx < len && self.regs.sspsr.tnf() {
-                            self.regs.sspdr.write_data(data[tx_idx] as u32);
+                        while tx_idx < len && self.spi.sspsr.tnf() {
+                            self.spi.sspdr.write_data(data[tx_idx] as u32);
                             tx_idx += 1;
                         }
 
                         // Read from RX FIFO
-                        while rx_idx < tx_idx && self.regs.sspsr.rne() {
-                            data[rx_idx] = self.regs.sspdr.data() as u8;
+                        while rx_idx < tx_idx && self.spi.sspsr.rne() {
+                            data[rx_idx] = self.spi.sspdr.data() as u8;
                             rx_idx += 1;
                         }
                     }
@@ -476,14 +576,14 @@ macro_rules! impl_spi {
 
                     while rx_idx < len {
                         // Fill TX FIFO with dummy bytes
-                        while tx_idx < len && self.regs.sspsr.tnf() {
-                            self.regs.sspdr.write_data(0);
+                        while tx_idx < len && self.spi.sspsr.tnf() {
+                            self.spi.sspdr.write_data(0);
                             tx_idx += 1;
                         }
 
                         // Read from RX FIFO
-                        while rx_idx < tx_idx && self.regs.sspsr.rne() {
-                            data[rx_idx] = self.regs.sspdr.data() as u8;
+                        while rx_idx < tx_idx && self.spi.sspsr.rne() {
+                            data[rx_idx] = self.spi.sspdr.data() as u8;
                             rx_idx += 1;
                         }
                     }
@@ -492,7 +592,7 @@ macro_rules! impl_spi {
                 /// Flush - wait for all transfers to complete
                 #[inline]
                 pub fn flush(&self) {
-                    while self.regs.sspsr.bsy() {
+                    while self.spi.sspsr.bsy() {
                         core::hint::spin_loop();
                     }
                 }
@@ -504,97 +604,97 @@ macro_rules! impl_spi {
                 /// Enable TX FIFO interrupt (half empty or less)
                 #[inline]
                 pub fn enable_tx_interrupt(&self) {
-                    self.regs.sspimsc.set_txim();
+                    self.spi.sspimsc.set_txim();
                 }
 
                 /// Disable TX FIFO interrupt
                 #[inline]
                 pub fn disable_tx_interrupt(&self) {
-                    self.regs.sspimsc.clr_txim();
+                    self.spi.sspimsc.clr_txim();
                 }
 
                 /// Enable RX FIFO interrupt (half full or more)
                 #[inline]
                 pub fn enable_rx_interrupt(&self) {
-                    self.regs.sspimsc.set_rxim();
+                    self.spi.sspimsc.set_rxim();
                 }
 
                 /// Disable RX FIFO interrupt
                 #[inline]
                 pub fn disable_rx_interrupt(&self) {
-                    self.regs.sspimsc.clr_rxim();
+                    self.spi.sspimsc.clr_rxim();
                 }
 
                 /// Enable RX timeout interrupt
                 #[inline]
                 pub fn enable_rx_timeout_interrupt(&self) {
-                    self.regs.sspimsc.set_rtim();
+                    self.spi.sspimsc.set_rtim();
                 }
 
                 /// Disable RX timeout interrupt
                 #[inline]
                 pub fn disable_rx_timeout_interrupt(&self) {
-                    self.regs.sspimsc.clr_rtim();
+                    self.spi.sspimsc.clr_rtim();
                 }
 
                 /// Enable RX overrun interrupt
                 #[inline]
                 pub fn enable_rx_overrun_interrupt(&self) {
-                    self.regs.sspimsc.set_rorim();
+                    self.spi.sspimsc.set_rorim();
                 }
 
                 /// Disable RX overrun interrupt
                 #[inline]
                 pub fn disable_rx_overrun_interrupt(&self) {
-                    self.regs.sspimsc.clr_rorim();
+                    self.spi.sspimsc.clr_rorim();
                 }
 
                 /// Check raw TX interrupt status
                 #[inline]
                 pub fn raw_tx_interrupt(&self) -> bool {
-                    self.regs.sspris.txris()
+                    self.spi.sspris.txris()
                 }
 
                 /// Check raw RX interrupt status
                 #[inline]
                 pub fn raw_rx_interrupt(&self) -> bool {
-                    self.regs.sspris.rxris()
+                    self.spi.sspris.rxris()
                 }
 
                 /// Check raw RX timeout interrupt status
                 #[inline]
                 pub fn raw_rx_timeout_interrupt(&self) -> bool {
-                    self.regs.sspris.rtris()
+                    self.spi.sspris.rtris()
                 }
 
                 /// Check raw RX overrun interrupt status
                 #[inline]
                 pub fn raw_rx_overrun_interrupt(&self) -> bool {
-                    self.regs.sspris.rorris()
+                    self.spi.sspris.rorris()
                 }
 
                 /// Check masked TX interrupt status
                 #[inline]
                 pub fn masked_tx_interrupt(&self) -> bool {
-                    self.regs.sspmis.txmis()
+                    self.spi.sspmis.txmis()
                 }
 
                 /// Check masked RX interrupt status
                 #[inline]
                 pub fn masked_rx_interrupt(&self) -> bool {
-                    self.regs.sspmis.rxmis()
+                    self.spi.sspmis.rxmis()
                 }
 
                 /// Clear RX timeout interrupt
                 #[inline]
                 pub fn clear_rx_timeout_interrupt(&self) {
-                    self.regs.sspicr.set_rtic();
+                    self.spi.sspicr.set_rtic();
                 }
 
                 /// Clear RX overrun interrupt
                 #[inline]
                 pub fn clear_rx_overrun_interrupt(&self) {
-                    self.regs.sspicr.set_roric();
+                    self.spi.sspicr.set_roric();
                 }
 
                 // ================================================================
@@ -604,25 +704,25 @@ macro_rules! impl_spi {
                 /// Enable DMA for transmit
                 #[inline]
                 pub fn enable_dma_tx(&self) {
-                    self.regs.sspdmacr.set_txdmae();
+                    self.spi.sspdmacr.set_txdmae();
                 }
 
                 /// Disable DMA for transmit
                 #[inline]
                 pub fn disable_dma_tx(&self) {
-                    self.regs.sspdmacr.clr_txdmae();
+                    self.spi.sspdmacr.clr_txdmae();
                 }
 
                 /// Enable DMA for receive
                 #[inline]
                 pub fn enable_dma_rx(&self) {
-                    self.regs.sspdmacr.set_rxdmae();
+                    self.spi.sspdmacr.set_rxdmae();
                 }
 
                 /// Disable DMA for receive
                 #[inline]
                 pub fn disable_dma_rx(&self) {
-                    self.regs.sspdmacr.clr_rxdmae();
+                    self.spi.sspdmacr.clr_rxdmae();
                 }
 
                 /// Get the data register address for DMA
@@ -638,19 +738,646 @@ macro_rules! impl_spi {
                 /// Enable loopback mode (TX output fed back to RX input)
                 #[inline]
                 pub fn enable_loopback(&self) {
-                    self.regs.sspcr1.set_lbm();
+                    self.spi.sspcr1.set_lbm();
                 }
 
                 /// Disable loopback mode
                 #[inline]
                 pub fn disable_loopback(&self) {
-                    self.regs.sspcr1.clr_lbm();
+                    self.spi.sspcr1.clr_lbm();
                 }
             }
 
-            impl Default for $SpiName {
-                fn default() -> Self {
-                    Self::new()
+            // ================================================================
+            // SPI with hardware chip select (Master/Slave modes)
+            // ================================================================
+
+            /// SPI peripheral wrapper with hardware chip select.
+            ///
+            /// This struct owns the SPI peripheral and all four pins (SCK, TX, RX, CSn).
+            /// It supports both master and slave modes.
+            ///
+            /// # Master Mode
+            ///
+            /// Use [`new()`](Self::new) to initialize in master mode. The hardware
+            /// controls the CSn pin automatically during transfers.
+            ///
+            /// # Slave Mode
+            ///
+            /// Use [`new_slave()`](Self::new_slave) to initialize in slave mode.
+            /// The CSn pin is used by the master to select this slave device.
+            ///
+            #[doc = concat!("# SPI", $spi_num, " Pin Mapping")]
+            ///
+            #[doc = concat!("See [`", stringify!($SckTrait), "`] for valid SCK pins.")]
+            ///
+            #[doc = concat!("See [`", stringify!($TxTrait), "`] for valid TX pins.")]
+            ///
+            #[doc = concat!("See [`", stringify!($RxTrait), "`] for valid RX pins.")]
+            ///
+            #[doc = concat!("See [`", stringify!($CsnTrait), "`] for valid CSn pins.")]
+            ///
+            /// # Example (Master Mode)
+            ///
+            /// ```ignore
+            #[doc = concat!("let spi = ", stringify!($SpiName), "WithCs::new(")]
+            #[doc = concat!("    dp.SPI", $spi_num, ",")]
+            ///     pins.p2,      // SCK
+            ///     pins.p3,      // TX (MOSI)
+            ///     pins.p0,      // RX (MISO)
+            ///     pins.p1,      // CSn
+            ///     1_000_000,    // 1 MHz
+            ///     150_000_000,  // System clock
+            /// );
+            /// ```
+            ///
+            /// # Example (Slave Mode)
+            ///
+            /// ```ignore
+            #[doc = concat!("let spi = ", stringify!($SpiName), "WithCs::new_slave(")]
+            #[doc = concat!("    dp.SPI", $spi_num, ",")]
+            ///     pins.p2,      // SCK (input from master)
+            ///     pins.p3,      // TX (MISO - output to master)
+            ///     pins.p0,      // RX (MOSI - input from master)
+            ///     pins.p1,      // CSn (chip select from master)
+            ///     150_000_000,  // System clock
+            /// );
+            ///
+            /// // Wait for data from master
+            /// while spi.is_rx_empty() {}
+            /// let data = spi.read_word();
+            ///
+            /// // Send response to master
+            /// spi.write_word(0x42);
+            /// ```
+            pub struct [<$SpiName WithCs>]<SCK, TX, RX, CSN>
+            where
+                SCK: $SckTrait,
+                TX: $TxTrait,
+                RX: $RxTrait,
+                CSN: $CsnTrait,
+            {
+                spi: $SpiType,
+                _sck: SCK,
+                _tx: TX,
+                _rx: RX,
+                _csn: CSN,
+                baudrate: u32,
+            }
+
+            impl<SCK, TX, RX, CSN> [<$SpiName WithCs>]<SCK, TX, RX, CSN>
+            where
+                SCK: $SckTrait,
+                TX: $TxTrait,
+                RX: $RxTrait,
+                CSN: $CsnTrait,
+            {
+                /// SPI peripheral number
+                pub const NUM: u8 = $spi_num;
+
+                /// Get reference to the underlying register block.
+                ///
+                /// # Safety
+                /// Direct register access can bypass the HAL's safety guarantees.
+                /// The caller must ensure operations do not conflict with the HAL state.
+                #[inline]
+                pub unsafe fn regs(&self) -> &pico_rs_pac::$spi_mod::RegisterBlock {
+                    &self.spi
+                }
+
+                /// Initialize SPI in master mode with hardware chip select.
+                ///
+                /// # Arguments
+                ///
+                /// * `spi` - The SPI peripheral from PAC
+                /// * `sck` - SCK (clock) pin
+                /// * `tx` - TX (MOSI) pin
+                /// * `rx` - RX (MISO) pin
+                /// * `csn` - CSn (chip select) pin
+                /// * `baudrate` - Desired baudrate in Hz
+                /// * `peri_clk` - Peripheral clock frequency in Hz
+                pub fn new(
+                    spi: $SpiType,
+                    sck: SCK,
+                    tx: TX,
+                    rx: RX,
+                    csn: CSN,
+                    baudrate: u32,
+                    peri_clk: u32,
+                ) -> Self {
+                    // Configure pins for SPI function
+                    sck.[<configure_spi $spi_num _sck>]();
+                    tx.[<configure_spi $spi_num _tx>]();
+                    rx.[<configure_spi $spi_num _rx>]();
+                    csn.[<configure_spi $spi_num _csn>]();
+
+                    // Bring SPI out of reset
+                    reset::unreset_block_wait($reset_peripheral);
+
+                    let mut spi_dev = Self {
+                        spi,
+                        _sck: sck,
+                        _tx: tx,
+                        _rx: rx,
+                        _csn: csn,
+                        baudrate: 0,
+                    };
+
+                    // Disable first
+                    spi_dev.spi.sspcr1.clr_sse();
+
+                    // Set baudrate
+                    spi_dev.configure_baudrate(baudrate, peri_clk);
+
+                    // Set default format: 8 data bits, Mode0, Motorola SPI
+                    spi_dev.set_format(8, Mode::Mode0, FrameFormat::MotorolaSpi);
+
+                    // Configure as master (MS=0)
+                    spi_dev.spi.sspcr1.write_bits(0);
+
+                    // Enable
+                    spi_dev.spi.sspcr1.set_sse();
+
+                    spi_dev
+                }
+
+                /// Initialize SPI in slave mode.
+                ///
+                /// In slave mode, CSn is required as it's used by the master
+                /// to select this device.
+                ///
+                /// # Arguments
+                ///
+                /// * `spi` - The SPI peripheral from PAC
+                /// * `sck` - SCK (clock) pin
+                /// * `tx` - TX pin (slave output)
+                /// * `rx` - RX pin (slave input)
+                /// * `csn` - CSn (chip select) pin
+                /// * `peri_clk` - Peripheral clock frequency in Hz
+                pub fn new_slave(
+                    spi: $SpiType,
+                    sck: SCK,
+                    tx: TX,
+                    rx: RX,
+                    csn: CSN,
+                    peri_clk: u32,
+                ) -> Self {
+                    // Configure pins for SPI function
+                    sck.[<configure_spi $spi_num _sck>]();
+                    tx.[<configure_spi $spi_num _tx>]();
+                    rx.[<configure_spi $spi_num _rx>]();
+                    csn.[<configure_spi $spi_num _csn>]();
+
+                    // Bring SPI out of reset
+                    reset::unreset_block_wait($reset_peripheral);
+
+                    let mut spi_dev = Self {
+                        spi,
+                        _sck: sck,
+                        _tx: tx,
+                        _rx: rx,
+                        _csn: csn,
+                        baudrate: 0,
+                    };
+
+                    // Disable first
+                    spi_dev.spi.sspcr1.clr_sse();
+
+                    // Set a reasonable default baudrate for timing
+                    spi_dev.configure_baudrate(1_000_000, peri_clk);
+
+                    // Set default format
+                    spi_dev.set_format(8, Mode::Mode0, FrameFormat::MotorolaSpi);
+
+                    // Configure as slave (MS=1)
+                    spi_dev.spi.sspcr1.set_ms();
+
+                    // Enable
+                    spi_dev.spi.sspcr1.set_sse();
+
+                    spi_dev
+                }
+
+                /// Release the SPI peripheral and all pins.
+                #[inline]
+                pub fn release(self) -> ($SpiType, SCK, TX, RX, CSN) {
+                    (self.spi, self._sck, self._tx, self._rx, self._csn)
+                }
+
+                /// Configure the SPI baudrate (internal helper)
+                fn configure_baudrate(&mut self, baudrate: u32, peri_clk: u32) {
+                    let mut best_cpsdvsr = 2u32;
+                    let mut best_scr = 0u32;
+                    let mut best_error = u32::MAX;
+
+                    for cpsdvsr in (2u32..=254).step_by(2) {
+                        let scr = peri_clk / (cpsdvsr * baudrate);
+                        let scr = if scr > 0 { scr - 1 } else { 0 };
+
+                        if scr > 255 {
+                            continue;
+                        }
+
+                        let actual = peri_clk / (cpsdvsr * (1 + scr));
+                        let error = if actual > baudrate {
+                            actual - baudrate
+                        } else {
+                            baudrate - actual
+                        };
+
+                        if error < best_error {
+                            best_error = error;
+                            best_cpsdvsr = cpsdvsr;
+                            best_scr = scr;
+                        }
+
+                        if error == 0 {
+                            break;
+                        }
+                    }
+
+                    self.spi.sspcpsr.write_cpsdvsr(best_cpsdvsr);
+                    let cr0 = self.spi.sspcr0.read_bits();
+                    let cr0 = (cr0 & 0x00ff) | (best_scr << 8);
+                    self.spi.sspcr0.write_bits(cr0);
+                    self.baudrate = peri_clk / (best_cpsdvsr * (1 + best_scr));
+                }
+
+                /// Set the SPI baudrate
+                pub fn set_baudrate(&mut self, baudrate: u32, peri_clk: u32) -> u32 {
+                    self.spi.sspcr1.clr_sse();
+                    self.configure_baudrate(baudrate, peri_clk);
+                    self.spi.sspcr1.set_sse();
+                    self.baudrate
+                }
+
+                /// Set the data format
+                pub fn set_format(&self, data_bits: u8, mode: Mode, format: FrameFormat) {
+                    let data_bits = data_bits.clamp(4, 16);
+                    let scr = self.spi.sspcr0.scr();
+                    let cr0 = (scr << 8)
+                        | (if mode.phase() { 1 << 7 } else { 0 })
+                        | (if mode.polarity() { 1 << 6 } else { 0 })
+                        | ((format as u32) << 4)
+                        | ((data_bits - 1) as u32);
+                    self.spi.sspcr0.write_bits(cr0);
+                }
+
+                /// Set the SPI mode
+                pub fn set_mode(&self, mode: Mode) {
+                    if mode.polarity() {
+                        self.spi.sspcr0.set_spo();
+                    } else {
+                        self.spi.sspcr0.clr_spo();
+                    }
+
+                    if mode.phase() {
+                        self.spi.sspcr0.set_sph();
+                    } else {
+                        self.spi.sspcr0.clr_sph();
+                    }
+                }
+
+                /// Enable/disable the SPI peripheral
+                #[inline]
+                pub fn set_enabled(&self, enable: bool) {
+                    if enable {
+                        self.spi.sspcr1.set_sse();
+                    } else {
+                        self.spi.sspcr1.clr_sse();
+                    }
+                }
+
+                /// Get the current baudrate
+                #[inline]
+                pub fn baudrate(&self) -> u32 {
+                    self.baudrate
+                }
+
+                /// Check if the SPI is busy
+                #[inline]
+                pub fn is_busy(&self) -> bool {
+                    self.spi.sspsr.bsy()
+                }
+
+                /// Check if the TX FIFO is full
+                #[inline]
+                pub fn is_tx_full(&self) -> bool {
+                    !self.spi.sspsr.tnf()
+                }
+
+                /// Check if the RX FIFO is empty
+                #[inline]
+                pub fn is_rx_empty(&self) -> bool {
+                    !self.spi.sspsr.rne()
+                }
+
+                /// Write a single word to the TX FIFO (blocking)
+                #[inline]
+                pub fn write_word(&self, word: u16) {
+                    while !self.spi.sspsr.tnf() {
+                        core::hint::spin_loop();
+                    }
+                    self.spi.sspdr.write_data(word as u32);
+                }
+
+                /// Read a single word from the RX FIFO (blocking)
+                #[inline]
+                pub fn read_word(&self) -> u16 {
+                    while !self.spi.sspsr.rne() {
+                        core::hint::spin_loop();
+                    }
+                    self.spi.sspdr.data() as u16
+                }
+
+                /// Read a single word from the RX FIFO (non-blocking)
+                #[inline]
+                pub fn try_read_word(&self) -> Option<u16> {
+                    if self.spi.sspsr.rne() {
+                        Some(self.spi.sspdr.data() as u16)
+                    } else {
+                        None
+                    }
+                }
+
+                /// Write multiple bytes (8-bit mode)
+                pub fn write(&self, data: &[u8]) {
+                    for &byte in data {
+                        self.write_word(byte as u16);
+                    }
+                    self.flush();
+                    while self.try_read_word().is_some() {}
+                }
+
+                /// Transfer data (write and read simultaneously)
+                pub fn transfer(&self, read: &mut [u8], write: &[u8]) {
+                    let len = read.len().min(write.len());
+                    let mut tx_idx = 0;
+                    let mut rx_idx = 0;
+
+                    while rx_idx < len {
+                        while tx_idx < len && self.spi.sspsr.tnf() {
+                            self.spi.sspdr.write_data(write[tx_idx] as u32);
+                            tx_idx += 1;
+                        }
+
+                        while rx_idx < tx_idx && self.spi.sspsr.rne() {
+                            read[rx_idx] = self.spi.sspdr.data() as u8;
+                            rx_idx += 1;
+                        }
+                    }
+                }
+
+                /// Transfer data in-place
+                pub fn transfer_in_place(&self, data: &mut [u8]) {
+                    let mut tx_idx = 0;
+                    let mut rx_idx = 0;
+                    let len = data.len();
+
+                    while rx_idx < len {
+                        while tx_idx < len && self.spi.sspsr.tnf() {
+                            self.spi.sspdr.write_data(data[tx_idx] as u32);
+                            tx_idx += 1;
+                        }
+
+                        while rx_idx < tx_idx && self.spi.sspsr.rne() {
+                            data[rx_idx] = self.spi.sspdr.data() as u8;
+                            rx_idx += 1;
+                        }
+                    }
+                }
+
+                /// Read data by writing dummy bytes
+                pub fn read(&self, data: &mut [u8]) {
+                    let mut tx_idx = 0;
+                    let mut rx_idx = 0;
+                    let len = data.len();
+
+                    while rx_idx < len {
+                        while tx_idx < len && self.spi.sspsr.tnf() {
+                            self.spi.sspdr.write_data(0);
+                            tx_idx += 1;
+                        }
+
+                        while rx_idx < tx_idx && self.spi.sspsr.rne() {
+                            data[rx_idx] = self.spi.sspdr.data() as u8;
+                            rx_idx += 1;
+                        }
+                    }
+                }
+
+                /// Flush - wait for all transfers to complete
+                #[inline]
+                pub fn flush(&self) {
+                    while self.spi.sspsr.bsy() {
+                        core::hint::spin_loop();
+                    }
+                }
+
+                /// Enable DMA for transmit
+                #[inline]
+                pub fn enable_dma_tx(&self) {
+                    self.spi.sspdmacr.set_txdmae();
+                }
+
+                /// Disable DMA for transmit
+                #[inline]
+                pub fn disable_dma_tx(&self) {
+                    self.spi.sspdmacr.clr_txdmae();
+                }
+
+                /// Enable DMA for receive
+                #[inline]
+                pub fn enable_dma_rx(&self) {
+                    self.spi.sspdmacr.set_rxdmae();
+                }
+
+                /// Disable DMA for receive
+                #[inline]
+                pub fn disable_dma_rx(&self) {
+                    self.spi.sspdmacr.clr_rxdmae();
+                }
+
+                /// Get the data register address for DMA
+                #[inline]
+                pub fn data_register_address(&self) -> u32 {
+                    <$SpiType>::PTR as u32 + 0x08
+                }
+
+                // ================================================================
+                // Status (additional methods)
+                // ================================================================
+
+                /// Check if the TX FIFO is empty
+                #[inline]
+                pub fn is_tx_empty(&self) -> bool {
+                    self.spi.sspsr.tfe()
+                }
+
+                /// Check if the RX FIFO is full
+                #[inline]
+                pub fn is_rx_full(&self) -> bool {
+                    self.spi.sspsr.rff()
+                }
+
+                /// Check if readable (RX FIFO has data)
+                #[inline]
+                pub fn is_readable(&self) -> bool {
+                    self.spi.sspsr.rne()
+                }
+
+                /// Check if writable (TX FIFO has space)
+                #[inline]
+                pub fn is_writable(&self) -> bool {
+                    self.spi.sspsr.tnf()
+                }
+
+                // ================================================================
+                // Interrupts
+                // ================================================================
+
+                /// Enable TX FIFO interrupt (half empty or less)
+                #[inline]
+                pub fn enable_tx_interrupt(&self) {
+                    self.spi.sspimsc.set_txim();
+                }
+
+                /// Disable TX FIFO interrupt
+                #[inline]
+                pub fn disable_tx_interrupt(&self) {
+                    self.spi.sspimsc.clr_txim();
+                }
+
+                /// Enable RX FIFO interrupt (half full or more)
+                #[inline]
+                pub fn enable_rx_interrupt(&self) {
+                    self.spi.sspimsc.set_rxim();
+                }
+
+                /// Disable RX FIFO interrupt
+                #[inline]
+                pub fn disable_rx_interrupt(&self) {
+                    self.spi.sspimsc.clr_rxim();
+                }
+
+                /// Enable RX timeout interrupt
+                #[inline]
+                pub fn enable_rx_timeout_interrupt(&self) {
+                    self.spi.sspimsc.set_rtim();
+                }
+
+                /// Disable RX timeout interrupt
+                #[inline]
+                pub fn disable_rx_timeout_interrupt(&self) {
+                    self.spi.sspimsc.clr_rtim();
+                }
+
+                /// Enable RX overrun interrupt
+                #[inline]
+                pub fn enable_rx_overrun_interrupt(&self) {
+                    self.spi.sspimsc.set_rorim();
+                }
+
+                /// Disable RX overrun interrupt
+                #[inline]
+                pub fn disable_rx_overrun_interrupt(&self) {
+                    self.spi.sspimsc.clr_rorim();
+                }
+
+                /// Check raw TX interrupt status
+                #[inline]
+                pub fn raw_tx_interrupt(&self) -> bool {
+                    self.spi.sspris.txris()
+                }
+
+                /// Check raw RX interrupt status
+                #[inline]
+                pub fn raw_rx_interrupt(&self) -> bool {
+                    self.spi.sspris.rxris()
+                }
+
+                /// Check raw RX timeout interrupt status
+                #[inline]
+                pub fn raw_rx_timeout_interrupt(&self) -> bool {
+                    self.spi.sspris.rtris()
+                }
+
+                /// Check raw RX overrun interrupt status
+                #[inline]
+                pub fn raw_rx_overrun_interrupt(&self) -> bool {
+                    self.spi.sspris.rorris()
+                }
+
+                /// Check masked TX interrupt status
+                #[inline]
+                pub fn masked_tx_interrupt(&self) -> bool {
+                    self.spi.sspmis.txmis()
+                }
+
+                /// Check masked RX interrupt status
+                #[inline]
+                pub fn masked_rx_interrupt(&self) -> bool {
+                    self.spi.sspmis.rxmis()
+                }
+
+                /// Clear RX timeout interrupt
+                #[inline]
+                pub fn clear_rx_timeout_interrupt(&self) {
+                    self.spi.sspicr.set_rtic();
+                }
+
+                /// Clear RX overrun interrupt
+                #[inline]
+                pub fn clear_rx_overrun_interrupt(&self) {
+                    self.spi.sspicr.set_roric();
+                }
+
+                // ================================================================
+                // Loopback
+                // ================================================================
+
+                /// Enable loopback mode (TX output fed back to RX input)
+                #[inline]
+                pub fn enable_loopback(&self) {
+                    self.spi.sspcr1.set_lbm();
+                }
+
+                /// Disable loopback mode
+                #[inline]
+                pub fn disable_loopback(&self) {
+                    self.spi.sspcr1.clr_lbm();
+                }
+
+                // ================================================================
+                // Slave-specific methods
+                // ================================================================
+
+                /// Check if this SPI is configured as slave.
+                ///
+                /// Returns true if MS bit is set (slave mode).
+                #[inline]
+                pub fn is_slave(&self) -> bool {
+                    self.spi.sspcr1.ms()
+                }
+
+                /// Disable slave output (SOD).
+                ///
+                /// When set, the SPI will not drive the TX pin in slave mode.
+                /// Useful for multi-slave configurations where only one slave
+                /// should respond at a time.
+                #[inline]
+                pub fn set_slave_output_disabled(&self, disabled: bool) {
+                    if disabled {
+                        self.spi.sspcr1.set_sod();
+                    } else {
+                        self.spi.sspcr1.clr_sod();
+                    }
+                }
+
+                /// Check if slave output is disabled.
+                #[inline]
+                pub fn is_slave_output_disabled(&self) -> bool {
+                    self.spi.sspcr1.sod()
                 }
             }
         }
@@ -661,5 +1388,25 @@ macro_rules! impl_spi {
 // Generate SPI0 and SPI1
 // ============================================================================
 
-impl_spi!(Spi0, 0, pico_rs_pac::SPI0, spi0, Peripheral::SPI0);
-impl_spi!(Spi1, 1, pico_rs_pac::SPI1, spi1, Peripheral::SPI1);
+impl_spi!(
+    Spi0,
+    0,
+    pico_rs_pac::SPI0,
+    spi0,
+    Peripheral::SPI0,
+    Spi0SckPin,
+    Spi0TxPin,
+    Spi0RxPin,
+    Spi0CsnPin
+);
+impl_spi!(
+    Spi1,
+    1,
+    pico_rs_pac::SPI1,
+    spi1,
+    Peripheral::SPI1,
+    Spi1SckPin,
+    Spi1TxPin,
+    Spi1RxPin,
+    Spi1CsnPin
+);

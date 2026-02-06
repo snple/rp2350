@@ -34,6 +34,7 @@
 //! ```
 
 use crate::powman::Powman;
+use pico_rs_pac::POWMAN;
 
 /// Time representation (seconds and nanoseconds since epoch)
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
@@ -119,26 +120,36 @@ pub struct AonTimer {
 impl AonTimer {
     /// Create a new AON timer instance
     ///
+    /// # Arguments
+    /// * `powman` - The POWMAN peripheral from PAC
+    ///
     /// Note: You should call one of the init methods to configure the clock source.
     #[inline]
-    pub fn new() -> Self {
+    pub fn new(powman: POWMAN) -> Self {
         Self {
-            powman: Powman::new(),
+            powman: Powman::new(powman),
         }
     }
 
     /// Initialize AON timer with LPOSC as clock source
     ///
+    /// # Arguments
+    /// * `powman` - The POWMAN peripheral from PAC
+    ///
     /// LPOSC is less accurate but available in all power modes.
-    pub fn init_with_lposc() -> Self {
-        let timer = Self::new();
+    pub fn init_with_lposc(powman: POWMAN) -> Self {
+        let timer = Self::new(powman);
         timer.powman.timer_set_1khz_tick_source_lposc();
         timer
     }
 
     /// Initialize AON timer with LPOSC and known frequency
-    pub fn init_with_lposc_hz(lposc_freq_hz: u32) -> Self {
-        let timer = Self::new();
+    ///
+    /// # Arguments
+    /// * `powman` - The POWMAN peripheral from PAC
+    /// * `lposc_freq_hz` - LPOSC frequency in Hz
+    pub fn init_with_lposc_hz(powman: POWMAN, lposc_freq_hz: u32) -> Self {
+        let timer = Self::new(powman);
         timer
             .powman
             .timer_set_1khz_tick_source_lposc_with_hz(lposc_freq_hz);
@@ -147,9 +158,13 @@ impl AonTimer {
 
     /// Initialize AON timer with XOSC as clock source
     ///
+    /// # Arguments
+    /// * `powman` - The POWMAN peripheral from PAC
+    /// * `xosc_freq_hz` - XOSC frequency in Hz
+    ///
     /// XOSC is more accurate but requires crystal to be running.
-    pub fn init_with_xosc(xosc_freq_hz: u32) -> Self {
-        let timer = Self::new();
+    pub fn init_with_xosc(powman: POWMAN, xosc_freq_hz: u32) -> Self {
+        let timer = Self::new(powman);
         timer
             .powman
             .timer_set_1khz_tick_source_xosc_with_hz(xosc_freq_hz);
@@ -159,9 +174,10 @@ impl AonTimer {
     /// Initialize AON timer with GPIO as clock source
     ///
     /// # Arguments
+    /// * `powman` - The POWMAN peripheral from PAC
     /// * `gpio` - GPIO number (must be 12, 14, 20, or 22)
-    pub fn init_with_gpio(gpio: u8) -> Self {
-        let timer = Self::new();
+    pub fn init_with_gpio(powman: POWMAN, gpio: u8) -> Self {
+        let timer = Self::new(powman);
         timer.powman.timer_set_1khz_tick_source_gpio(gpio);
         timer
     }
@@ -300,12 +316,6 @@ impl AonTimer {
     #[inline]
     pub fn powman(&self) -> &Powman {
         &self.powman
-    }
-}
-
-impl Default for AonTimer {
-    fn default() -> Self {
-        Self::new()
     }
 }
 

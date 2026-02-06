@@ -1,215 +1,220 @@
 //! GPIO (General Purpose Input/Output) HAL for RP2350
 //!
-//! This module provides a type-safe interface for configuring and using GPIO pins.
-//! Each pin can be configured for various functions including SIO, PIO, UART, SPI, I2C, and PWM.
+//! This module provides a type-safe interface for configuring and using GPIO pins
+//! on the RP2350 microcontroller. It leverages Rust's ownership system to prevent
+//! common GPIO programming errors at compile time.
 //!
-//! # GPIO Architecture
+//! # Architecture Overview
 //!
-//! The RP2350 GPIO system consists of three main components:
+//! The RP2350 GPIO system consists of three main hardware blocks:
 //!
 //! ```text
-//! ╔══════════════════════════════════════════════════════════════════════════════════╗
-//! ║                              GPIO PIN ARCHITECTURE                               ║
-//! ╠══════════════════════════════════════════════════════════════════════════════════╣
-//! ║                                                                                  ║
-//! ║  ┌────────────────────────────────────────────────────────────────────────────┐  ║
-//! ║  │                           IO_BANK0 (Control)                               │  ║
-//! ║  │  ┌──────────────────────────────────────────────────────────────────────┐  │  ║
-//! ║  │  │  Function Selection (funcsel)                                        │  │  ║
-//! ║  │  │    0: JTAG   1: SPI     2: UART    3: I2C     4: PWM                  │  │  ║
-//! ║  │  │    5: SIO    6: PIO0    7: PIO1    8: PIO2    9: USB                  │  │  ║
-//! ║  │  │   31: NULL (disable)                                                  │  │  ║
-//! ║  │  └──────────────────────────────────────────────────────────────────────┘  │  ║
-//! ║  │  ┌──────────────────────────────────────────────────────────────────────┐  │  ║
-//! ║  │  │  Override Controls                                                   │  │  ║
-//! ║  │  │    OUTOVER: Output override (normal, invert, low, high)              │  │  ║
-//! ║  │  │    OEOVER:  Output enable override                                   │  │  ║
-//! ║  │  │    INOVER:  Input override (normal, invert, low, high)               │  │  ║
-//! ║  │  │    IRQOVER: Interrupt override                                       │  │  ║
-//! ║  │  └──────────────────────────────────────────────────────────────────────┘  │  ║
-//! ║  │  ┌──────────────────────────────────────────────────────────────────────┐  │  ║
-//! ║  │  │  Interrupts                                                          │  │  ║
-//! ║  │  │    INTR:  Raw interrupt status (write to clear edge)                 │  │  ║
-//! ║  │  │    INTE:  Interrupt enable per CPU                                   │  │  ║
-//! ║  │  │    INTF:  Interrupt force                                            │  │  ║
-//! ║  │  │    INTS:  Masked interrupt status                                    │  │  ║
-//! ║  │  └──────────────────────────────────────────────────────────────────────┘  │  ║
-//! ║  └────────────────────────────────────────────────────────────────────────────┘  ║
-//! ║                                                                                  ║
-//! ║  ┌────────────────────────────────────────────────────────────────────────────┐  ║
-//! ║  │                        PADS_BANK0 (Electrical)                             │  ║
-//! ║  │  ┌──────────────────────────────────────────────────────────────────────┐  │  ║
-//! ║  │  │  Pad Configuration                                                   │  │  ║
-//! ║  │  │    OD:       Output disable (1 = disable output driver)              │  │  ║
-//! ║  │  │    IE:       Input enable  (1 = enable input receiver)               │  │  ║
-//! ║  │  │    DRIVE:    Drive strength (2/4/8/12 mA)                            │  │  ║
-//! ║  │  │    PUE:      Pull-up enable                                          │  │  ║
-//! ║  │  │    PDE:      Pull-down enable                                        │  │  ║
-//! ║  │  │    SCHMITT:  Schmitt trigger enable                                  │  │  ║
-//! ║  │  │    SLEWFAST: Slew rate (0 = slow, 1 = fast)                          │  │  ║
-//! ║  │  │    ISO:      Isolation (for pad retention during sleep)              │  │  ║
-//! ║  │  └──────────────────────────────────────────────────────────────────────┘  │  ║
-//! ║  └────────────────────────────────────────────────────────────────────────────┘  ║
-//! ║                                                                                  ║
-//! ║  ┌────────────────────────────────────────────────────────────────────────────┐  ║
-//! ║  │                         SIO (Single-cycle I/O)                             │  ║
-//! ║  │  ┌──────────────────────────────────────────────────────────────────────┐  │  ║
-//! ║  │  │  GPIO Registers (when funcsel = SIO)                                 │  │  ║
-//! ║  │  │    GPIO_IN:     Read input values                                    │  │  ║
-//! ║  │  │    GPIO_OUT:    Output level                                         │  │  ║
-//! ║  │  │    GPIO_OE:     Output enable (direction)                            │  │  ║
-//! ║  │  │    *_SET/CLR/XOR: Atomic set/clear/toggle registers                  │  │  ║
-//! ║  │  │    GPIO_HI_*:   Registers for pins 32-47 (RP2350B only)              │  │  ║
-//! ║  │  └──────────────────────────────────────────────────────────────────────┘  │  ║
-//! ║  └────────────────────────────────────────────────────────────────────────────┘  ║
-//! ║                                                                                  ║
-//! ╚══════════════════════════════════════════════════════════════════════════════════╝
+//! ┌─────────────────────────────────────────────────────────────────────────────┐
+//! │                          GPIO Hardware Architecture                          │
+//! ├─────────────────────────────────────────────────────────────────────────────┤
+//! │                                                                             │
+//! │  ┌─────────────────────────────────────────────────────────────────────┐   │
+//! │  │                    IO_BANK0 (Function Control)                       │   │
+//! │  │                                                                      │   │
+//! │  │  • Function selection (funcsel): SIO, UART, SPI, I2C, PWM, PIO, etc │   │
+//! │  │  • Output/Input/OE overrides for signal manipulation                 │   │
+//! │  │  • Interrupt configuration and status                                │   │
+//! │  │                                                                      │   │
+//! │  │  Registers per pin: GPIOx_STATUS, GPIOx_CTRL                        │   │
+//! │  └─────────────────────────────────────────────────────────────────────┘   │
+//! │                                                                             │
+//! │  ┌─────────────────────────────────────────────────────────────────────┐   │
+//! │  │                 PADS_BANK0 (Electrical Configuration)                │   │
+//! │  │                                                                      │   │
+//! │  │  • Drive strength: 2mA, 4mA, 8mA, 12mA                              │   │
+//! │  │  • Pull resistors: None, Up, Down                                   │   │
+//! │  │  • Slew rate: Slow, Fast                                            │   │
+//! │  │  • Schmitt trigger enable                                           │   │
+//! │  │  • Input enable (IE) and Output disable (OD)                        │   │
+//! │  │  • Pad isolation (ISO) for low-power modes                          │   │
+//! │  │                                                                      │   │
+//! │  │  Registers per pin: GPIOx                                           │   │
+//! │  └─────────────────────────────────────────────────────────────────────┘   │
+//! │                                                                             │
+//! │  ┌─────────────────────────────────────────────────────────────────────┐   │
+//! │  │                    SIO (Single-cycle I/O)                            │   │
+//! │  │                                                                      │   │
+//! │  │  • Direct CPU-controlled GPIO when funcsel = SIO                    │   │
+//! │  │  • Single-cycle read/write operations                               │   │
+//! │  │  • Atomic SET/CLR/XOR registers for safe bit manipulation           │   │
+//! │  │                                                                      │   │
+//! │  │  Registers: GPIO_IN, GPIO_OUT, GPIO_OE (+ SET/CLR/XOR variants)    │   │
+//! │  │            GPIO_HI_* for pins 32-47 (RP2350B only)                  │   │
+//! │  └─────────────────────────────────────────────────────────────────────┘   │
+//! │                                                                             │
+//! └─────────────────────────────────────────────────────────────────────────────┘
 //! ```
 //!
 //! # Pin Count by Variant
 //!
-//! | Variant  | GPIO Pins | Notes                        |
-//! |----------|-----------|------------------------------|
-//! | RP2350A  | 30 (0-29) | Pico 2 board                 |
-//! | RP2350B  | 48 (0-47) | QFN-80 package               |
+//! | Variant  | GPIO Pins | Package  | Notes                    |
+//! |----------|-----------|----------|--------------------------|
+//! | RP2350A  | 30 (0-29) | QFN-60   | Raspberry Pi Pico 2      |
+//! | RP2350B  | 48 (0-47) | QFN-80   | More pins, same core     |
 //!
-//! # GPIO Function Mapping
+//! # Ownership Model
 //!
-//! Each GPIO pin can be assigned to one of several peripheral functions:
+//! This module uses Rust's ownership system to ensure GPIO pins cannot be
+//! misconfigured or used by multiple drivers simultaneously:
+//!
+//! 1. **`Pins` struct**: Created by consuming `IO_BANK0` and `PADS_BANK0`
+//!    peripherals. This initializes the GPIO subsystem.
+//!
+//! 2. **`Pin<N>` struct**: Each GPIO pin is represented by a unique type.
+//!    Pins can be moved out of `Pins` and consumed by peripheral drivers.
+//!
+//! 3. **Peripheral ownership**: Drivers like I2C or SPI can consume pins,
+//!    making them unavailable for other uses (enforced at compile time).
 //!
 //! ```text
-//! ┌───────┬────────────────────────────────────────────────────────────────┐
-//! │ GPIO  │  F1(SPI)   F2(UART)  F3(I2C)  F4(PWM)   F5(SIO)  F6/7/8(PIO)  │
-//! ├───────┼────────────────────────────────────────────────────────────────┤
-//! │  0    │  SPI0 RX   UART0 TX  I2C0 SDA  PWM0 A    SIO      PIO          │
-//! │  1    │  SPI0 CSn  UART0 RX  I2C0 SCL  PWM0 B    SIO      PIO          │
-//! │  2    │  SPI0 SCK  UART0 CTS I2C1 SDA  PWM1 A    SIO      PIO          │
-//! │  3    │  SPI0 TX   UART0 RTS I2C1 SCL  PWM1 B    SIO      PIO          │
-//! │  4    │  SPI0 RX   UART1 TX  I2C0 SDA  PWM2 A    SIO      PIO          │
-//! │  5    │  SPI0 CSn  UART1 RX  I2C0 SCL  PWM2 B    SIO      PIO          │
-//! │  6    │  SPI0 SCK  UART1 CTS I2C1 SDA  PWM3 A    SIO      PIO          │
-//! │  7    │  SPI0 TX   UART1 RTS I2C1 SCL  PWM3 B    SIO      PIO          │
-//! │  8    │  SPI1 RX   UART1 TX  I2C0 SDA  PWM4 A    SIO      PIO          │
-//! │  9    │  SPI1 CSn  UART1 RX  I2C0 SCL  PWM4 B    SIO      PIO          │
-//! │  10   │  SPI1 SCK  UART1 CTS I2C1 SDA  PWM5 A    SIO      PIO          │
-//! │  11   │  SPI1 TX   UART1 RTS I2C1 SCL  PWM5 B    SIO      PIO          │
-//! │  12   │  SPI1 RX   UART0 TX  I2C0 SDA  PWM6 A    SIO      PIO          │
-//! │  13   │  SPI1 CSn  UART0 RX  I2C0 SCL  PWM6 B    SIO      PIO          │
-//! │  14   │  SPI1 SCK  UART0 CTS I2C1 SDA  PWM7 A    SIO      PIO          │
-//! │  15   │  SPI1 TX   UART0 RTS I2C1 SCL  PWM7 B    SIO      PIO          │
-//! │  ...  │  (pattern repeats with variations)                             │
-//! │  25   │                                PWM4 B    SIO(LED) PIO          │
-//! │  26   │  ADC0                          PWM5 A    SIO      PIO          │
-//! │  27   │  ADC1                          PWM5 B    SIO      PIO          │
-//! │  28   │  ADC2                          PWM6 A    SIO      PIO          │
-//! │  29   │  ADC3                          PWM6 B    SIO      PIO          │
-//! └───────┴────────────────────────────────────────────────────────────────┘
+//! Peripherals::take()
+//!       │
+//!       ├── IO_BANK0 ──┐
+//!       │              │
+//!       ├── PADS_BANK0 ┼──► Pins::new() ──► Pins { p0, p1, ..., p29 }
+//!       │              │                          │
+//!       ├── I2C0 ──────┼──────────────────────────┼──► I2c0::new(i2c0, p4, p5, ...)
+//!       │              │                          │         ▲
+//!       └── ...        │                          │    p4, p5 consumed!
+//!                      │                          │
+//!                      │                          └──► led = pins.p25
+//!                      │                                led.into_output()
+//!                      │                                led.set_high()
 //! ```
 //!
-//! # Initialization Requirements
+//! # Function Selection
 //!
-//! **Important**: Before using GPIO pins, you must bring the `IO_BANK0` and `PADS_BANK0`
-//! peripherals out of reset. Use the [`init_gpio()`] function:
+//! Each GPIO pin can be assigned to different peripheral functions:
 //!
-//! ```ignore
-//! use pico_rs::gpio;
-//!
-//! // Initialize GPIO subsystem (unresets IO_BANK0 and PADS_BANK0)
-//! gpio::init_gpio();
-//!
-//! // Now you can use pins
-//! let led = gpio::Pin25::new();
-//! led.into_output();
-//! led.set_high();
-//! ```
-//!
-//! If you skip this step, GPIO operations may have no effect or behave unexpectedly.
+//! | funcsel | Function | Description                              |
+//! |---------|----------|------------------------------------------|
+//! | 0       | JTAG     | Debug interface                          |
+//! | 1       | SPI      | Serial Peripheral Interface              |
+//! | 2       | UART     | Serial communication                     |
+//! | 3       | I2C      | Inter-Integrated Circuit                 |
+//! | 4       | PWM      | Pulse Width Modulation                   |
+//! | 5       | SIO      | Software I/O (direct CPU control)        |
+//! | 6       | PIO0     | Programmable I/O block 0                 |
+//! | 7       | PIO1     | Programmable I/O block 1                 |
+//! | 8       | PIO2     | Programmable I/O block 2                 |
+//! | 9       | XIP      | Execute-in-place (QSPI)                  |
+//! | 10      | USB      | USB controller                           |
+//! | 31      | NULL     | Disabled (high impedance)                |
 //!
 //! # Usage Examples
 //!
-//! ## Basic Output (LED Blink)
+//! ## Basic LED Blink (Output)
 //!
 //! ```ignore
-//! use pico_rs::gpio;
+//! use pico_rs::gpio::Pins;
+//! use pico_rs::Peripherals;
 //!
-//! gpio::init_gpio();
-//! let led = gpio::Pin25::new();
+//! // Take device peripherals (singleton)
+//! let dp = Peripherals::take().unwrap();
+//!
+//! // Create GPIO pins by consuming IO_BANK0 and PADS_BANK0
+//! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+//!
+//! // Configure pin 25 (on-board LED) as output
+//! let led = pins.p25;
 //! led.into_output();
 //!
 //! loop {
 //!     led.toggle();
-//!     // delay...
+//!     delay_ms(500);
 //! }
 //! ```
 //!
-//! ## Basic Input (Button)
+//! ## Button Input with Pull-up
 //!
 //! ```ignore
-//! use pico_rs::gpio;
+//! use pico_rs::gpio::Pins;
 //!
-//! gpio::init_gpio();
-//! let button = gpio::Pin14::new();
+//! let dp = Peripherals::take().unwrap();
+//! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+//!
+//! // Configure pin 14 as input with internal pull-up
+//! let button = pins.p14;
 //! button.into_input_pullup();
 //!
-//! if !button.read() {  // Active low
-//!     // Button pressed
+//! // Button is active-low (pressed = low)
+//! if !button.read() {
+//!     // Button is pressed
 //! }
 //! ```
 //!
-//! ## Using PinBuilder for Complex Configuration
+//! ## I2C with Pin Ownership Transfer
 //!
 //! ```ignore
-//! use pico_rs::gpio::{self, DriveStrength, SlewRate};
+//! use pico_rs::gpio::Pins;
+//! use pico_rs::i2c::I2c0;
 //!
-//! gpio::init_gpio();
+//! let dp = Peripherals::take().unwrap();
+//! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
 //!
-//! // Configure a pin with specific electrical characteristics
-//! let pin = gpio::Pin25::new();
-//! pin.builder()
-//!     .output()
-//!     .drive_strength(DriveStrength::Ma8)
-//!     .slew_rate(SlewRate::Fast)
-//!     .build();
+//! // Initialize I2C, consuming the SDA and SCL pins
+//! // After this, pins.p4 and pins.p5 cannot be used elsewhere
+//! let i2c = I2c0::new(
+//!     dp.I2C0,
+//!     pins.p4,  // SDA - ownership transferred
+//!     pins.p5,  // SCL - ownership transferred
+//!     400_000,
+//!     sys_clk,
+//! );
 //!
-//! pin.set_high();
+//! // Compile error: pins.p4 already moved!
+//! // pins.p4.into_output();
 //! ```
 //!
-//! ## Configuring for Peripheral Functions
+//! ## PWM Output
 //!
 //! ```ignore
-//! use pico_rs::gpio;
+//! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
 //!
-//! gpio::init_gpio();
-//!
-//! // Configure for UART
-//! let tx_pin = gpio::Pin0::new();
-//! tx_pin.init_pad();
-//! tx_pin.set_function(gpio::Function::Uart);
-//!
-//! // Configure for PWM
-//! let pwm_pin = gpio::Pin16::new();
+//! // Configure pin for PWM function
+//! let pwm_pin = pins.p16;
 //! pwm_pin.into_pwm();
+//!
+//! // Now configure the PWM peripheral...
 //! ```
 //!
-//! ## Edge Interrupt
+//! ## PIO for Custom Protocols
 //!
 //! ```ignore
-//! use pico_rs::gpio::{self, EdgeLevel};
+//! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
 //!
-//! gpio::init_gpio();
-//! let button = gpio::Pin14::new();
-//! button.into_input_pullup();
-//! button.enable_interrupt(EdgeLevel::EdgeLow);
+//! // Configure pins for PIO0
+//! pins.p0.into_pio0();
+//! pins.p1.into_pio0();
 //!
-//! // In interrupt handler:
-//! // button.clear_interrupt(EdgeLevel::EdgeLow);
+//! // Load and run PIO program...
 //! ```
+//!
+//! # SIO (Single-cycle I/O) Details
+//!
+//! When a pin's function is set to SIO, it can be directly controlled by the CPU:
+//!
+//! - **GPIO_OUT**: Output level register (read/write)
+//! - **GPIO_OUT_SET**: Atomic set (write 1 to set bits high)
+//! - **GPIO_OUT_CLR**: Atomic clear (write 1 to set bits low)
+//! - **GPIO_OUT_XOR**: Atomic toggle (write 1 to invert bits)
+//! - **GPIO_OE**: Output enable (direction) register
+//! - **GPIO_IN**: Input value (read-only)
+//!
+//! The SET/CLR/XOR registers allow atomic bit manipulation without
+//! read-modify-write cycles, which is essential for interrupt safety.
 //!
 //! # Safety Considerations
 //!
-//! - [`init_gpio()`] should be called once before using any GPIO pins
-//! - Multiple instances of the same pin type can exist (no ownership enforcement)
-//! - The user is responsible for avoiding conflicting configurations
+//! - Pin ownership prevents accidental conflicts at compile time
+//! - Internal register access uses `steal()` for zero-cost abstraction
+//! - SIO uses atomic registers, safe for use from interrupts
+//! - Each pin type (`Pin<N>`) has compile-time known register offsets
 
 #![allow(clippy::identity_op)]
 
@@ -219,325 +224,314 @@ use pico_rs_pac::{IO_BANK0, PADS_BANK0, SIO};
 use crate::reset::{self, Peripheral};
 
 // ============================================================================
-// GPIO Subsystem Initialization
+// Function Select Values (from RP2350 datasheet Table 294)
 // ============================================================================
 
-/// Initialize the GPIO subsystem by bringing IO_BANK0 and PADS_BANK0 out of reset.
+/// GPIO function selection values.
 ///
-/// This function must be called before using any GPIO pins. It performs
-/// a reset cycle on both peripherals to ensure they start in a known state.
-///
-/// # What this does
-///
-/// 1. Resets `IO_BANK0` (GPIO control registers)
-/// 2. Resets `PADS_BANK0` (GPIO electrical configuration)
-/// 3. Waits for both peripherals to complete their reset cycle
+/// Each GPIO pin can be connected to one of several peripheral functions.
+/// The function is selected by writing to the `funcsel` field of the
+/// pin's control register (`GPIOx_CTRL`).
 ///
 /// # Example
 ///
 /// ```ignore
-/// use pico_rs::gpio;
+/// // Configure pin for UART function
+/// pin.set_function(Function::Uart);
 ///
-/// // Call once at startup
-/// gpio::init_gpio();
-///
-/// // Now GPIO pins can be used
-/// let led = gpio::Pin25::new();
-/// led.into_output();
+/// // Or use convenience methods
+/// pin.into_uart();
 /// ```
-///
-/// # Note
-///
-/// This function is idempotent - calling it multiple times is safe but
-/// will reset all GPIO configurations each time.
-#[inline]
-pub fn init_gpio() {
-    // Reset both peripherals
-    let mask = Peripheral::IO_BANK0.mask() | Peripheral::PADS_BANK0.mask();
-    reset::reset_block_mask(mask);
-    reset::unreset_block_mask(mask);
-    reset::unreset_wait_mask(mask);
-}
-
-// ============================================================================
-// Function Select Values (from RP2350 datasheet)
-// ============================================================================
-
-/// GPIO function select values
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[repr(u32)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum Function {
-    /// JTAG function (pin-specific)
+    /// JTAG debug interface (pin-specific)
     Jtag = 0,
-    /// SPI function (pin-specific)
+    /// SPI peripheral (pin-specific for RX/TX/SCK/CS)
     Spi = 1,
-    /// UART function (pin-specific)
+    /// UART peripheral (pin-specific for TX/RX/CTS/RTS)
     Uart = 2,
-    /// I2C function (pin-specific)
+    /// I2C peripheral (pin-specific for SDA/SCL)
     I2c = 3,
-    /// PWM function (pin-specific)
+    /// PWM output (pin determines slice and channel)
     Pwm = 4,
-    /// SIO (Software I/O) - direct CPU control
+    /// SIO - Software I/O, direct CPU control
     Sio = 5,
-    /// PIO0
+    /// PIO0 - Programmable I/O block 0
     Pio0 = 6,
-    /// PIO1
+    /// PIO1 - Programmable I/O block 1
     Pio1 = 7,
-    /// PIO2 (RP2350 only)
+    /// PIO2 - Programmable I/O block 2 (RP2350 only)
     Pio2 = 8,
-    /// XIP (pin-specific)
+    /// XIP - Execute-in-place for QSPI (pin-specific)
     Xip = 9,
-    /// USB function (pin-specific)
+    /// USB controller (pin-specific)
     Usb = 10,
-    /// Null function (disabled)
+    /// NULL - Disabled, pin is high-impedance
     Null = 31,
 }
 
-/// GPIO pull resistor configuration
+/// Pull resistor configuration.
+///
+/// Internal pull resistors can be used to define a default state
+/// when a pin is not actively driven.
+///
+/// # Example
+///
+/// ```ignore
+/// // Enable pull-up for a button (active-low)
+/// button.set_pull(Pull::Up);
+///
+/// // Or use convenience method
+/// button.into_input_pullup();
+/// ```
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum Pull {
-    /// No pull resistor
+    /// No pull resistor (floating input)
     None,
-    /// Pull-up resistor
+    /// Pull-up resistor (~50kΩ to VDD)
     Up,
-    /// Pull-down resistor
+    /// Pull-down resistor (~50kΩ to GND)
     Down,
 }
 
-/// GPIO drive strength
+/// Output drive strength.
+///
+/// Controls the maximum current a pin can source or sink.
+/// Higher drive strength allows driving heavier loads but
+/// increases power consumption and EMI.
+///
+/// # Example
+///
+/// ```ignore
+/// // High-speed LED driver
+/// led.set_drive_strength(DriveStrength::_12mA);
+/// ```
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[repr(u32)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum DriveStrength {
-    /// 2mA drive
+    /// 2mA drive (lowest power, suitable for slow signals)
     _2mA = 0,
-    /// 4mA drive
+    /// 4mA drive (default)
     _4mA = 1,
-    /// 8mA drive
+    /// 8mA drive (good for LEDs)
     _8mA = 2,
-    /// 12mA drive
+    /// 12mA drive (maximum, for heavy loads)
     _12mA = 3,
 }
 
-/// GPIO slew rate
+/// Output slew rate control.
+///
+/// Controls how fast the output transitions between high and low.
+/// Fast slew rate enables higher frequencies but increases EMI.
+///
+/// # Example
+///
+/// ```ignore
+/// // High-speed SPI clock
+/// sck_pin.set_slew_rate(SlewRate::Fast);
+/// ```
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum SlewRate {
-    /// Slow slew rate
+    /// Slow slew rate (reduced EMI, ~10ns rise/fall)
     Slow,
-    /// Fast slew rate
+    /// Fast slew rate (higher speed, ~2ns rise/fall)
     Fast,
 }
 
-/// Output override mode
+/// Output override mode.
+///
+/// Allows forcing the output value regardless of the peripheral signal.
+/// Useful for debugging or special control scenarios.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[repr(u32)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum OutputOverride {
-    /// Use peripheral signal
+    /// Use the peripheral's output signal normally
     Normal = 0,
-    /// Invert peripheral signal
+    /// Invert the peripheral's output signal
     Invert = 1,
-    /// Drive low
+    /// Force output low (ignore peripheral)
     Low = 2,
-    /// Drive high
+    /// Force output high (ignore peripheral)
     High = 3,
 }
 
-/// Output enable override mode
+/// Output enable override mode.
+///
+/// Controls whether the output driver is enabled (pin drives actively)
+/// or disabled (high-impedance state).
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[repr(u32)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum OutputEnableOverride {
-    /// Use peripheral signal
+    /// Use the peripheral's output enable signal
     Normal = 0,
-    /// Invert peripheral signal
+    /// Invert the peripheral's output enable
     Invert = 1,
-    /// Disable output
+    /// Force output disabled (high-impedance)
     Disable = 2,
-    /// Enable output
+    /// Force output enabled
     Enable = 3,
 }
 
-/// Input override mode
+/// Input override mode.
+///
+/// Allows modifying the input signal seen by the peripheral.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[repr(u32)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum InputOverride {
-    /// Use peripheral signal
+    /// Use the pad's input signal normally
     Normal = 0,
-    /// Invert peripheral signal
+    /// Invert the input signal
     Invert = 1,
-    /// Force low
+    /// Force input low (ignore pad)
     Low = 2,
-    /// Force high
+    /// Force input high (ignore pad)
     High = 3,
 }
 
-/// Interrupt override mode
+/// Interrupt override mode.
+///
+/// Allows modifying the interrupt signal generated by the pin.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[repr(u32)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum IrqOverride {
-    /// Use peripheral signal
+    /// Use the generated interrupt signal
     Normal = 0,
-    /// Invert peripheral signal
+    /// Invert the interrupt signal
     Invert = 1,
-    /// Force low
+    /// Force interrupt inactive
     Low = 2,
-    /// Force high
+    /// Force interrupt active
     High = 3,
 }
 
-/// GPIO interrupt trigger edge/level
+/// GPIO interrupt trigger condition.
+///
+/// Specifies what condition should trigger an interrupt.
+/// Multiple conditions can be enabled simultaneously.
+///
+/// # Example
+///
+/// ```ignore
+/// // Trigger interrupt on button press (falling edge)
+/// button.enable_interrupt(EdgeLevel::EdgeLow);
+/// ```
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum EdgeLevel {
-    /// Trigger on low level
+    /// Trigger while input is low
     LevelLow,
-    /// Trigger on high level
+    /// Trigger while input is high
     LevelHigh,
-    /// Trigger on falling edge
+    /// Trigger on falling edge (high to low transition)
     EdgeLow,
-    /// Trigger on rising edge
+    /// Trigger on rising edge (low to high transition)
     EdgeHigh,
 }
 
 // ============================================================================
-// Macro for generating GPIO Pin implementations
+// Pin Implementation Macro
 // ============================================================================
 
-macro_rules! impl_gpio_pin {
-    ($PinName:ident, $pin_num:expr, $inte_reg:ident, $intr_reg:ident, $ints_reg:ident) => {
+/// Macro to implement a GPIO pin with compile-time known register offsets.
+///
+/// This macro generates a `Pin<N>` implementation that uses hardcoded
+/// register names (e.g., `gpio25_ctrl`, `gpio25`) instead of runtime
+/// offset calculations, resulting in optimal code generation.
+macro_rules! impl_pin {
+    // Standard pin (0-31) - uses GPIO_OUT/GPIO_OE
+    ($n:literal, low) => {
         paste! {
-            #[doc = concat!("GPIO Pin ", stringify!($pin_num))]
-            ///
-            /// This type provides access to a specific GPIO pin with type-safe configuration
-            /// methods. Create an instance using [`new()`](Self::new) after calling [`init_gpio()`].
-            ///
-            /// # Example
-            ///
-            /// ```ignore
-            #[doc = concat!("use pico_rs::gpio::{self, ", stringify!($PinName), "};")]
-            ///
-            /// gpio::init_gpio();
-            #[doc = concat!("let pin = ", stringify!($PinName), "::new();")]
-            /// pin.into_output();
-            /// pin.set_high();
-            /// ```
-            #[derive(Clone, Copy)]
-            pub struct $PinName {
-                io_bank: &'static pico_rs_pac::io_bank0::RegisterBlock,
-                pads_bank: &'static pico_rs_pac::pads_bank0::RegisterBlock,
-                sio: &'static pico_rs_pac::sio::RegisterBlock,
-            }
-
-            impl $PinName {
+            impl Pin<$n> {
                 /// Pin number
-                pub const PIN: u8 = $pin_num;
+                pub const PIN: u8 = $n;
 
-                /// Pin mask for SIO operations
-                pub const MASK: u32 = 1u32 << ($pin_num % 32);
+                /// Bit mask for this pin in the 32-bit GPIO registers
+                pub const MASK: u32 = 1u32 << $n;
 
-                /// Whether this is a high GPIO (32-47)
-                pub const IS_HIGH: bool = $pin_num >= 32;
-
-                /// Create a new pin instance.
-                ///
-                /// # Prerequisites
-                ///
-                /// You must call [`init_gpio()`] before creating pin instances to ensure
-                /// the GPIO peripherals (IO_BANK0 and PADS_BANK0) are out of reset.
-                ///
-                /// # Example
-                ///
-                /// ```ignore
-                /// use pico_rs::gpio;
-                ///
-                /// gpio::init_gpio();
-                #[doc = concat!("let pin = gpio::", stringify!($PinName), "::new();")]
-                /// pin.into_output();
-                /// ```
+                /// Create a new pin instance (internal use only)
                 #[inline]
-                pub fn new() -> Self {
-                    unsafe {
-                        Self {
-                            io_bank: &*IO_BANK0::PTR,
-                            pads_bank: &*PADS_BANK0::PTR,
-                            sio: &*SIO::PTR,
-                        }
-                    }
+                const fn new() -> Self {
+                    Self { _private: () }
                 }
 
-                /// Create a builder for fluent configuration of this pin.
-                ///
-                /// # Example
-                ///
-                /// ```ignore
-                /// use pico_rs::gpio::{self, DriveStrength, SlewRate};
-                ///
-                /// gpio::init_gpio();
-                #[doc = concat!("let pin = gpio::", stringify!($PinName), "::new();")]
-                /// pin.builder()
-                ///     .output()
-                ///     .drive_strength(DriveStrength::_8mA)
-                ///     .slew_rate(SlewRate::Fast)
-                ///     .build();
-                /// ```
-                #[inline]
-                pub fn builder(&self) -> [<$PinName Builder>] {
-                    [<$PinName Builder>]::new(*self)
+                // ================================================================
+                // Internal register accessors (using steal)
+                // ================================================================
+
+                #[inline(always)]
+                fn io_bank(&self) -> pico_rs_pac::IO_BANK0 {
+                    unsafe { IO_BANK0::steal() }
+                }
+
+                #[inline(always)]
+                fn pads_bank(&self) -> pico_rs_pac::PADS_BANK0 {
+                    unsafe { PADS_BANK0::steal() }
+                }
+
+                #[inline(always)]
+                fn sio(&self) -> pico_rs_pac::SIO {
+                    unsafe { SIO::steal() }
                 }
 
                 // ================================================================
                 // Function Selection
                 // ================================================================
 
-                /// Set the GPIO function
+                /// Set the GPIO function.
+                ///
+                /// This determines which peripheral (if any) controls the pin.
+                /// For direct CPU control, use `Function::Sio`.
+                ///
+                /// # Example
+                ///
+                /// ```ignore
+                /// pin.set_function(Function::Uart);
+                /// ```
                 #[inline]
                 pub fn set_function(&self, func: Function) {
-                    unsafe {
-                        let ctrl = self.io_bank.gpio_ctrl($pin_num);
-                        ctrl.write_funcsel(func as u32);
-                    }
+                    self.io_bank().[<gpio $n _ctrl>].write_funcsel(func as u32);
                 }
 
-                /// Get the current GPIO function
+                /// Get the current GPIO function.
                 #[inline]
                 pub fn function(&self) -> u32 {
-                    unsafe {
-                        let ctrl = self.io_bank.gpio_ctrl($pin_num);
-                        ctrl.funcsel()
-                    }
+                    self.io_bank().[<gpio $n _ctrl>].funcsel()
                 }
 
-                /// Set function to SIO (direct CPU control)
+                /// Set function to SIO (direct CPU control).
                 #[inline]
                 pub fn set_function_sio(&self) {
                     self.set_function(Function::Sio);
                 }
 
-                /// Set function to PIO0
+                /// Set function to PIO0.
                 #[inline]
                 pub fn set_function_pio0(&self) {
                     self.set_function(Function::Pio0);
                 }
 
-                /// Set function to PIO1
+                /// Set function to PIO1.
                 #[inline]
                 pub fn set_function_pio1(&self) {
                     self.set_function(Function::Pio1);
                 }
 
-                /// Set function to PIO2
+                /// Set function to PIO2.
                 #[inline]
                 pub fn set_function_pio2(&self) {
                     self.set_function(Function::Pio2);
                 }
 
-                /// Set function to NULL (disabled)
+                /// Set function to NULL (disabled).
                 #[inline]
                 pub fn set_function_null(&self) {
                     self.set_function(Function::Null);
@@ -547,123 +541,130 @@ macro_rules! impl_gpio_pin {
                 // Pad Configuration
                 // ================================================================
 
-                /// Initialize the pad for normal operation
+                /// Initialize the pad for normal operation.
                 ///
+                /// This method:
                 /// - Clears pad isolation (critical for RP2350)
-                /// - Enables input
+                /// - Enables input receiver
                 /// - Clears output disable
+                ///
+                /// Call this before using a pin for the first time.
                 #[inline]
                 pub fn init_pad(&self) {
-                    unsafe {
-                        let pad = self.pads_bank.gpio($pin_num);
-                        pad.clr_iso();  // Remove pad isolation (RP2350 critical)
-                        pad.set_ie();   // Enable input
-                        pad.clr_od();   // Clear output disable
-                    }
+                    let pad = &self.pads_bank().[<gpio $n>];
+                    pad.clr_iso();  // Remove pad isolation
+                    pad.set_ie();   // Enable input
+                    pad.clr_od();   // Clear output disable
                 }
 
-                /// Set pull resistor configuration
+                /// Set pull resistor configuration.
+                ///
+                /// # Arguments
+                ///
+                /// * `pull` - The pull resistor configuration
+                ///
+                /// # Example
+                ///
+                /// ```ignore
+                /// button.set_pull(Pull::Up);
+                /// ```
                 #[inline]
                 pub fn set_pull(&self, pull: Pull) {
-                    unsafe {
-                        let pad = self.pads_bank.gpio($pin_num);
-                        match pull {
-                            Pull::None => {
-                                pad.clr_pue();
-                                pad.clr_pde();
-                            }
-                            Pull::Up => {
-                                pad.set_pue();
-                                pad.clr_pde();
-                            }
-                            Pull::Down => {
-                                pad.clr_pue();
-                                pad.set_pde();
-                            }
+                    let pad = &self.pads_bank().[<gpio $n>];
+                    match pull {
+                        Pull::None => {
+                            pad.clr_pue();
+                            pad.clr_pde();
+                        }
+                        Pull::Up => {
+                            pad.set_pue();
+                            pad.clr_pde();
+                        }
+                        Pull::Down => {
+                            pad.clr_pue();
+                            pad.set_pde();
                         }
                     }
                 }
 
-                /// Enable pull-up resistor
+                /// Enable pull-up resistor.
                 #[inline]
                 pub fn set_pull_up(&self) {
                     self.set_pull(Pull::Up);
                 }
 
-                /// Enable pull-down resistor
+                /// Enable pull-down resistor.
                 #[inline]
                 pub fn set_pull_down(&self) {
                     self.set_pull(Pull::Down);
                 }
 
-                /// Disable pull resistor
+                /// Disable pull resistor.
                 #[inline]
                 pub fn set_pull_none(&self) {
                     self.set_pull(Pull::None);
                 }
 
-                /// Set drive strength
+                /// Set output drive strength.
+                ///
+                /// # Arguments
+                ///
+                /// * `strength` - Drive current capability
                 #[inline]
                 pub fn set_drive_strength(&self, strength: DriveStrength) {
-                    unsafe {
-                        let pad = self.pads_bank.gpio($pin_num);
-                        pad.write_drive(strength as u32);
-                    }
+                    self.pads_bank().[<gpio $n>].write_drive(strength as u32);
                 }
 
-                /// Set slew rate
+                /// Set output slew rate.
+                ///
+                /// # Arguments
+                ///
+                /// * `rate` - Slew rate (Slow or Fast)
                 #[inline]
                 pub fn set_slew_rate(&self, rate: SlewRate) {
-                    unsafe {
-                        let pad = self.pads_bank.gpio($pin_num);
-                        match rate {
-                            SlewRate::Slow => pad.clr_slewfast(),
-                            SlewRate::Fast => pad.set_slewfast(),
-                        }
+                    let pad = &self.pads_bank().[<gpio $n>];
+                    match rate {
+                        SlewRate::Slow => pad.clr_slewfast(),
+                        SlewRate::Fast => pad.set_slewfast(),
                     }
                 }
 
-                /// Enable or disable Schmitt trigger
+                /// Enable or disable Schmitt trigger.
+                ///
+                /// Schmitt trigger adds hysteresis to the input, improving
+                /// noise immunity for slow or noisy signals.
                 #[inline]
                 pub fn set_schmitt(&self, enable: bool) {
-                    unsafe {
-                        let pad = self.pads_bank.gpio($pin_num);
-                        if enable {
-                            pad.set_schmitt();
-                        } else {
-                            pad.clr_schmitt();
-                        }
+                    let pad = &self.pads_bank().[<gpio $n>];
+                    if enable {
+                        pad.set_schmitt();
+                    } else {
+                        pad.clr_schmitt();
                     }
                 }
 
-                /// Enable input
+                /// Enable input receiver.
                 #[inline]
                 pub fn enable_input(&self) {
-                    unsafe {
-                        let pad = self.pads_bank.gpio($pin_num);
-                        pad.set_ie();
-                    }
+                    self.pads_bank().[<gpio $n>].set_ie();
                 }
 
-                /// Disable input
+                /// Disable input receiver.
                 #[inline]
                 pub fn disable_input(&self) {
-                    unsafe {
-                        let pad = self.pads_bank.gpio($pin_num);
-                        pad.clr_ie();
-                    }
+                    self.pads_bank().[<gpio $n>].clr_ie();
                 }
 
-                /// Set output disable (forces output off regardless of SIO)
+                /// Set output disable.
+                ///
+                /// When disabled, the output driver is in high-impedance state.
                 #[inline]
                 pub fn set_output_disable(&self, disable: bool) {
-                    unsafe {
-                        let pad = self.pads_bank.gpio($pin_num);
-                        if disable {
-                            pad.set_od();
-                        } else {
-                            pad.clr_od();
-                        }
+                    let pad = &self.pads_bank().[<gpio $n>];
+                    if disable {
+                        pad.set_od();
+                    } else {
+                        pad.clr_od();
                     }
                 }
 
@@ -671,213 +672,97 @@ macro_rules! impl_gpio_pin {
                 // GPIO Control Overrides
                 // ================================================================
 
-                /// Set output override
+                /// Set output override.
                 #[inline]
                 pub fn set_output_override(&self, ov: OutputOverride) {
-                    unsafe {
-                        let ctrl = self.io_bank.gpio_ctrl($pin_num);
-                        ctrl.write_outover(ov as u32);
-                    }
+                    self.io_bank().[<gpio $n _ctrl>].write_outover(ov as u32);
                 }
 
-                /// Set output enable override
+                /// Set output enable override.
                 #[inline]
                 pub fn set_output_enable_override(&self, ov: OutputEnableOverride) {
-                    unsafe {
-                        let ctrl = self.io_bank.gpio_ctrl($pin_num);
-                        ctrl.write_oeover(ov as u32);
-                    }
+                    self.io_bank().[<gpio $n _ctrl>].write_oeover(ov as u32);
                 }
 
-                /// Set input override
+                /// Set input override.
                 #[inline]
                 pub fn set_input_override(&self, ov: InputOverride) {
-                    unsafe {
-                        let ctrl = self.io_bank.gpio_ctrl($pin_num);
-                        ctrl.write_inover(ov as u32);
-                    }
+                    self.io_bank().[<gpio $n _ctrl>].write_inover(ov as u32);
                 }
 
-                /// Set IRQ override
+                /// Set IRQ override.
                 #[inline]
                 pub fn set_irq_override(&self, ov: IrqOverride) {
-                    unsafe {
-                        let ctrl = self.io_bank.gpio_ctrl($pin_num);
-                        ctrl.write_irqover(ov as u32);
-                    }
-                }
-
-                // ================================================================
-                // Interrupt Support
-                // ================================================================
-
-                /// Enable interrupt for this pin on the specified edge/level
-                ///
-                /// This enables the interrupt for the current processor (proc0 by default).
-                /// You must also enable IO_IRQ_BANK0 in the NVIC.
-                #[inline]
-                pub fn enable_interrupt(&self, trigger: EdgeLevel) {
-                    match trigger {
-                        EdgeLevel::LevelLow => self.io_bank.$inte_reg.[<set_gpio $pin_num _level_low>](),
-                        EdgeLevel::LevelHigh => self.io_bank.$inte_reg.[<set_gpio $pin_num _level_high>](),
-                        EdgeLevel::EdgeLow => self.io_bank.$inte_reg.[<set_gpio $pin_num _edge_low>](),
-                        EdgeLevel::EdgeHigh => self.io_bank.$inte_reg.[<set_gpio $pin_num _edge_high>](),
-                    }
-                }
-
-                /// Disable interrupt for this pin on the specified edge/level
-                #[inline]
-                pub fn disable_interrupt(&self, trigger: EdgeLevel) {
-                    match trigger {
-                        EdgeLevel::LevelLow => self.io_bank.$inte_reg.[<clr_gpio $pin_num _level_low>](),
-                        EdgeLevel::LevelHigh => self.io_bank.$inte_reg.[<clr_gpio $pin_num _level_high>](),
-                        EdgeLevel::EdgeLow => self.io_bank.$inte_reg.[<clr_gpio $pin_num _edge_low>](),
-                        EdgeLevel::EdgeHigh => self.io_bank.$inte_reg.[<clr_gpio $pin_num _edge_high>](),
-                    }
-                }
-
-                /// Disable all interrupts for this pin
-                #[inline]
-                pub fn disable_all_interrupts(&self) {
-                    self.io_bank.$inte_reg.[<clr_gpio $pin_num _level_low>]();
-                    self.io_bank.$inte_reg.[<clr_gpio $pin_num _level_high>]();
-                    self.io_bank.$inte_reg.[<clr_gpio $pin_num _edge_low>]();
-                    self.io_bank.$inte_reg.[<clr_gpio $pin_num _edge_high>]();
-                }
-
-                /// Check if interrupt is enabled for this pin
-                #[inline]
-                pub fn is_interrupt_enabled(&self, trigger: EdgeLevel) -> bool {
-                    match trigger {
-                        EdgeLevel::LevelLow => self.io_bank.$inte_reg.[<gpio $pin_num _level_low>](),
-                        EdgeLevel::LevelHigh => self.io_bank.$inte_reg.[<gpio $pin_num _level_high>](),
-                        EdgeLevel::EdgeLow => self.io_bank.$inte_reg.[<gpio $pin_num _edge_low>](),
-                        EdgeLevel::EdgeHigh => self.io_bank.$inte_reg.[<gpio $pin_num _edge_high>](),
-                    }
-                }
-
-                /// Check if interrupt is pending (raw, before masking)
-                #[inline]
-                pub fn interrupt_raw(&self, trigger: EdgeLevel) -> bool {
-                    match trigger {
-                        EdgeLevel::LevelLow => self.io_bank.$intr_reg.[<gpio $pin_num _level_low>](),
-                        EdgeLevel::LevelHigh => self.io_bank.$intr_reg.[<gpio $pin_num _level_high>](),
-                        EdgeLevel::EdgeLow => self.io_bank.$intr_reg.[<gpio $pin_num _edge_low>](),
-                        EdgeLevel::EdgeHigh => self.io_bank.$intr_reg.[<gpio $pin_num _edge_high>](),
-                    }
-                }
-
-                /// Check if interrupt is pending (after masking)
-                #[inline]
-                pub fn interrupt_status(&self, trigger: EdgeLevel) -> bool {
-                    match trigger {
-                        EdgeLevel::LevelLow => self.io_bank.$ints_reg.[<gpio $pin_num _level_low>](),
-                        EdgeLevel::LevelHigh => self.io_bank.$ints_reg.[<gpio $pin_num _level_high>](),
-                        EdgeLevel::EdgeLow => self.io_bank.$ints_reg.[<gpio $pin_num _edge_low>](),
-                        EdgeLevel::EdgeHigh => self.io_bank.$ints_reg.[<gpio $pin_num _edge_high>](),
-                    }
-                }
-
-                /// Clear edge-triggered interrupt (write 1 to clear)
-                ///
-                /// Note: Level interrupts cannot be cleared here - they clear
-                /// automatically when the pin level changes.
-                #[inline]
-                pub fn clear_interrupt(&self, trigger: EdgeLevel) {
-                    match trigger {
-                        // Level interrupts auto-clear when pin level changes
-                        EdgeLevel::LevelLow | EdgeLevel::LevelHigh => {},
-                        EdgeLevel::EdgeLow => self.io_bank.$intr_reg.[<set_gpio $pin_num _edge_low>](),
-                        EdgeLevel::EdgeHigh => self.io_bank.$intr_reg.[<set_gpio $pin_num _edge_high>](),
-                    }
-                }
-
-                /// Clear all pending edge interrupts for this pin
-                #[inline]
-                pub fn clear_all_interrupts(&self) {
-                    self.io_bank.$intr_reg.[<set_gpio $pin_num _edge_low>]();
-                    self.io_bank.$intr_reg.[<set_gpio $pin_num _edge_high>]();
+                    self.io_bank().[<gpio $n _ctrl>].write_irqover(ov as u32);
                 }
 
                 // ================================================================
                 // SIO Direction Control
                 // ================================================================
 
-                /// Set pin direction to output
+                /// Set pin direction to output.
+                ///
+                /// Uses the atomic SET register for interrupt safety.
                 #[inline]
                 pub fn set_direction_out(&self) {
-                    if Self::IS_HIGH {
-                        self.sio.gpio_hi_oe_set.write_bits(Self::MASK);
-                    } else {
-                        self.sio.gpio_oe_set.write_bits(Self::MASK);
-                    }
+                    self.sio().gpio_oe_set.write_bits(Self::MASK);
                 }
 
-                /// Set pin direction to input
+                /// Set pin direction to input.
+                ///
+                /// Uses the atomic CLR register for interrupt safety.
                 #[inline]
                 pub fn set_direction_in(&self) {
-                    if Self::IS_HIGH {
-                        self.sio.gpio_hi_oe_clr.write_bits(Self::MASK);
-                    } else {
-                        self.sio.gpio_oe_clr.write_bits(Self::MASK);
-                    }
+                    self.sio().gpio_oe_clr.write_bits(Self::MASK);
                 }
 
-                /// Check if pin is configured as output
+                /// Check if pin is configured as output.
                 #[inline]
                 pub fn is_output(&self) -> bool {
-                    if Self::IS_HIGH {
-                        (self.sio.gpio_hi_oe.read_bits() & Self::MASK) != 0
-                    } else {
-                        (self.sio.gpio_oe.read_bits() & Self::MASK) != 0
-                    }
+                    (self.sio().gpio_oe.read_bits() & Self::MASK) != 0
                 }
 
                 // ================================================================
                 // SIO Input/Output Operations
                 // ================================================================
 
-                /// Read the input value
+                /// Read the input value.
+                ///
+                /// Returns `true` if the pin is high, `false` if low.
                 #[inline]
                 pub fn read(&self) -> bool {
-                    if Self::IS_HIGH {
-                        (self.sio.gpio_hi_in.read_bits() & Self::MASK) != 0
-                    } else {
-                        (self.sio.gpio_in.read_bits() & Self::MASK) != 0
-                    }
+                    (self.sio().gpio_in.read_bits() & Self::MASK) != 0
                 }
 
-                /// Set output high
+                /// Set output high.
+                ///
+                /// Uses the atomic SET register for interrupt safety.
                 #[inline]
                 pub fn set_high(&self) {
-                    if Self::IS_HIGH {
-                        self.sio.gpio_hi_out_set.write_bits(Self::MASK);
-                    } else {
-                        self.sio.gpio_out_set.write_bits(Self::MASK);
-                    }
+                    self.sio().gpio_out_set.write_bits(Self::MASK);
                 }
 
-                /// Set output low
+                /// Set output low.
+                ///
+                /// Uses the atomic CLR register for interrupt safety.
                 #[inline]
                 pub fn set_low(&self) {
-                    if Self::IS_HIGH {
-                        self.sio.gpio_hi_out_clr.write_bits(Self::MASK);
-                    } else {
-                        self.sio.gpio_out_clr.write_bits(Self::MASK);
-                    }
+                    self.sio().gpio_out_clr.write_bits(Self::MASK);
                 }
 
-                /// Toggle output
+                /// Toggle output.
+                ///
+                /// Uses the atomic XOR register for interrupt safety.
                 #[inline]
                 pub fn toggle(&self) {
-                    if Self::IS_HIGH {
-                        self.sio.gpio_hi_out_xor.write_bits(Self::MASK);
-                    } else {
-                        self.sio.gpio_out_xor.write_bits(Self::MASK);
-                    }
+                    self.sio().gpio_out_xor.write_bits(Self::MASK);
                 }
 
-                /// Set output to a specific value
+                /// Set output to a specific value.
+                ///
+                /// # Arguments
+                ///
+                /// * `high` - `true` for high, `false` for low
                 #[inline]
                 pub fn set(&self, high: bool) {
                     if high {
@@ -887,25 +772,35 @@ macro_rules! impl_gpio_pin {
                     }
                 }
 
-                /// Get the current output level (not the actual pin state)
+                /// Get the current output level (not the actual pin state).
+                ///
+                /// This reads the output register, not the input.
+                /// Use `read()` to get the actual pin state.
                 #[inline]
                 pub fn output_level(&self) -> bool {
-                    if Self::IS_HIGH {
-                        (self.sio.gpio_hi_out.read_bits() & Self::MASK) != 0
-                    } else {
-                        (self.sio.gpio_out.read_bits() & Self::MASK) != 0
-                    }
+                    (self.sio().gpio_out.read_bits() & Self::MASK) != 0
                 }
 
                 // ================================================================
                 // Convenience Methods
                 // ================================================================
 
-                /// Initialize as SIO output
+                /// Configure as SIO output.
                 ///
-                /// - Initializes pad
-                /// - Sets function to SIO
-                /// - Sets direction to output
+                /// This method:
+                /// 1. Initializes the pad
+                /// 2. Sets function to SIO
+                /// 3. Sets direction to output
+                ///
+                /// # Returns
+                ///
+                /// Reference to self for method chaining.
+                ///
+                /// # Example
+                ///
+                /// ```ignore
+                /// led.into_output().set_high();
+                /// ```
                 #[inline]
                 pub fn into_output(&self) -> &Self {
                     self.init_pad();
@@ -914,11 +809,12 @@ macro_rules! impl_gpio_pin {
                     self
                 }
 
-                /// Initialize as SIO input
+                /// Configure as SIO input (no pull).
                 ///
-                /// - Initializes pad
-                /// - Sets function to SIO
-                /// - Sets direction to input
+                /// This method:
+                /// 1. Initializes the pad
+                /// 2. Sets function to SIO
+                /// 3. Sets direction to input
                 #[inline]
                 pub fn into_input(&self) -> &Self {
                     self.init_pad();
@@ -927,7 +823,9 @@ macro_rules! impl_gpio_pin {
                     self
                 }
 
-                /// Initialize as SIO input with pull-up
+                /// Configure as SIO input with pull-up.
+                ///
+                /// Suitable for active-low buttons and open-drain signals.
                 #[inline]
                 pub fn into_input_pullup(&self) -> &Self {
                     self.into_input();
@@ -935,7 +833,9 @@ macro_rules! impl_gpio_pin {
                     self
                 }
 
-                /// Initialize as SIO input with pull-down
+                /// Configure as SIO input with pull-down.
+                ///
+                /// Suitable for active-high buttons.
                 #[inline]
                 pub fn into_input_pulldown(&self) -> &Self {
                     self.into_input();
@@ -943,7 +843,7 @@ macro_rules! impl_gpio_pin {
                     self
                 }
 
-                /// Initialize as PIO0 pin
+                /// Configure as PIO0 pin.
                 #[inline]
                 pub fn into_pio0(&self) -> &Self {
                     self.init_pad();
@@ -951,7 +851,7 @@ macro_rules! impl_gpio_pin {
                     self
                 }
 
-                /// Initialize as PIO1 pin
+                /// Configure as PIO1 pin.
                 #[inline]
                 pub fn into_pio1(&self) -> &Self {
                     self.init_pad();
@@ -959,7 +859,7 @@ macro_rules! impl_gpio_pin {
                     self
                 }
 
-                /// Initialize as PIO2 pin
+                /// Configure as PIO2 pin.
                 #[inline]
                 pub fn into_pio2(&self) -> &Self {
                     self.init_pad();
@@ -967,307 +867,886 @@ macro_rules! impl_gpio_pin {
                     self
                 }
 
-                /// Initialize as PWM pin
+                /// Configure as PWM pin.
                 #[inline]
                 pub fn into_pwm(&self) -> &Self {
                     self.init_pad();
                     self.set_function(Function::Pwm);
                     self
                 }
-            }
 
-            // ================================================================
-            // Default trait implementation
-            // ================================================================
+                /// Configure as I2C pin.
+                ///
+                /// Also enables pull-up (required for I2C).
+                #[inline]
+                pub fn into_i2c(&self) -> &Self {
+                    self.init_pad();
+                    self.set_function(Function::I2c);
+                    self.set_pull_up();
+                    self
+                }
 
-            impl Default for $PinName {
-                fn default() -> Self {
-                    Self::new()
+                /// Configure as SPI pin.
+                #[inline]
+                pub fn into_spi(&self) -> &Self {
+                    self.init_pad();
+                    self.set_function(Function::Spi);
+                    self
+                }
+
+                /// Configure as UART pin.
+                #[inline]
+                pub fn into_uart(&self) -> &Self {
+                    self.init_pad();
+                    self.set_function(Function::Uart);
+                    self
                 }
             }
 
-            // ================================================================
-            // Debug trait implementation
-            // ================================================================
-
-            impl core::fmt::Debug for $PinName {
+            impl core::fmt::Debug for Pin<$n> {
                 fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-                    f.debug_struct(stringify!($PinName))
-                        .field("pin", &Self::PIN)
+                    f.debug_struct("Pin")
+                        .field("number", &$n)
                         .field("function", &self.function())
                         .field("is_output", &self.is_output())
                         .finish()
                 }
             }
-
-            // ================================================================
-            // PinBuilder for fluent configuration
-            // ================================================================
-
-            #[doc = concat!("Builder for configuring ", stringify!($PinName))]
-            ///
-            /// Provides a fluent interface for configuring pin parameters.
-            /// Call [`build()`](Self::build) to apply the configuration.
-            ///
-            /// # Example
-            ///
-            /// ```ignore
-            /// use pico_rs::gpio::{self, DriveStrength, SlewRate};
-            ///
-            /// gpio::init_gpio();
-            #[doc = concat!("let pin = gpio::", stringify!($PinName), "::new();")]
-            /// pin.builder()
-            ///     .output()
-            ///     .drive_strength(DriveStrength::_8mA)
-            ///     .slew_rate(SlewRate::Fast)
-            ///     .pull(Pull::None)
-            ///     .build();
-            /// ```
-            pub struct [<$PinName Builder>] {
-                pin: $PinName,
-                function: Option<Function>,
-                direction_out: Option<bool>,
-                pull: Option<Pull>,
-                drive_strength: Option<DriveStrength>,
-                slew_rate: Option<SlewRate>,
-                schmitt_trigger: Option<bool>,
-            }
-
-            impl [<$PinName Builder>] {
-                /// Create a new builder for the given pin
-                #[inline]
-                fn new(pin: $PinName) -> Self {
-                    Self {
-                        pin,
-                        function: None,
-                        direction_out: None,
-                        pull: None,
-                        drive_strength: None,
-                        slew_rate: None,
-                        schmitt_trigger: None,
-                    }
-                }
-
-                /// Set the pin function
-                #[inline]
-                pub fn function(mut self, func: Function) -> Self {
-                    self.function = Some(func);
-                    self
-                }
-
-                /// Configure as SIO output
-                #[inline]
-                pub fn output(mut self) -> Self {
-                    self.function = Some(Function::Sio);
-                    self.direction_out = Some(true);
-                    self
-                }
-
-                /// Configure as SIO input
-                #[inline]
-                pub fn input(mut self) -> Self {
-                    self.function = Some(Function::Sio);
-                    self.direction_out = Some(false);
-                    self
-                }
-
-                /// Set pull resistor configuration
-                #[inline]
-                pub fn pull(mut self, pull: Pull) -> Self {
-                    self.pull = Some(pull);
-                    self
-                }
-
-                /// Enable pull-up resistor
-                #[inline]
-                pub fn pull_up(self) -> Self {
-                    self.pull(Pull::Up)
-                }
-
-                /// Enable pull-down resistor
-                #[inline]
-                pub fn pull_down(self) -> Self {
-                    self.pull(Pull::Down)
-                }
-
-                /// Set drive strength
-                #[inline]
-                pub fn drive_strength(mut self, strength: DriveStrength) -> Self {
-                    self.drive_strength = Some(strength);
-                    self
-                }
-
-                /// Set slew rate
-                #[inline]
-                pub fn slew_rate(mut self, rate: SlewRate) -> Self {
-                    self.slew_rate = Some(rate);
-                    self
-                }
-
-                /// Enable or disable Schmitt trigger
-                #[inline]
-                pub fn schmitt_trigger(mut self, enable: bool) -> Self {
-                    self.schmitt_trigger = Some(enable);
-                    self
-                }
-
-                /// Apply the configuration and return the pin
-                #[inline]
-                pub fn build(self) -> $PinName {
-                    // Initialize pad first
-                    self.pin.init_pad();
-
-                    // Apply function if set
-                    if let Some(func) = self.function {
-                        self.pin.set_function(func);
-                    }
-
-                    // Apply direction if set (only for SIO)
-                    if let Some(is_output) = self.direction_out {
-                        if is_output {
-                            self.pin.set_direction_out();
-                        } else {
-                            self.pin.set_direction_in();
-                        }
-                    }
-
-                    // Apply pull if set
-                    if let Some(pull) = self.pull {
-                        self.pin.set_pull(pull);
-                    }
-
-                    // Apply drive strength if set
-                    if let Some(strength) = self.drive_strength {
-                        self.pin.set_drive_strength(strength);
-                    }
-
-                    // Apply slew rate if set
-                    if let Some(rate) = self.slew_rate {
-                        self.pin.set_slew_rate(rate);
-                    }
-
-                    // Apply Schmitt trigger if set
-                    if let Some(enable) = self.schmitt_trigger {
-                        if enable {
-                            self.pin.set_schmitt(true);
-                        } else {
-                            self.pin.set_schmitt(false);
-                        }
-                    }
-
-                    self.pin
-                }
-            }
         }
     };
-}
 
-// ============================================================================
-// Macro for generating all pins
-// ============================================================================
-
-macro_rules! impl_gpio_pins {
-    ($($pin_num:literal => $PinName:ident => [$inte_reg:ident, $intr_reg:ident, $ints_reg:ident]),+ $(,)?) => {
+    // High pin (32-47) - uses GPIO_HI_OUT/GPIO_HI_OE (RP2350B only)
+    ($n:literal, high) => {
         paste! {
-            // Generate all pin types
-            $(
-                impl_gpio_pin!($PinName, $pin_num, $inte_reg, $intr_reg, $ints_reg);
-            )+
+            impl Pin<$n> {
+                /// Pin number
+                pub const PIN: u8 = $n;
+
+                /// Bit mask for this pin in the high GPIO registers (32-47 → bits 0-15)
+                pub const MASK: u32 = 1u32 << ($n - 32);
+
+                /// Create a new pin instance (internal use only)
+                #[inline]
+                const fn new() -> Self {
+                    Self { _private: () }
+                }
+
+                #[inline(always)]
+                fn io_bank(&self) -> pico_rs_pac::IO_BANK0 {
+                    unsafe { IO_BANK0::steal() }
+                }
+
+                #[inline(always)]
+                fn pads_bank(&self) -> pico_rs_pac::PADS_BANK0 {
+                    unsafe { PADS_BANK0::steal() }
+                }
+
+                #[inline(always)]
+                fn sio(&self) -> pico_rs_pac::SIO {
+                    unsafe { SIO::steal() }
+                }
+
+                // Function selection (same as low pins)
+                #[inline]
+                pub fn set_function(&self, func: Function) {
+                    self.io_bank().[<gpio $n _ctrl>].write_funcsel(func as u32);
+                }
+
+                #[inline]
+                pub fn function(&self) -> u32 {
+                    self.io_bank().[<gpio $n _ctrl>].funcsel()
+                }
+
+                #[inline]
+                pub fn set_function_sio(&self) {
+                    self.set_function(Function::Sio);
+                }
+
+                #[inline]
+                pub fn set_function_pio0(&self) {
+                    self.set_function(Function::Pio0);
+                }
+
+                #[inline]
+                pub fn set_function_pio1(&self) {
+                    self.set_function(Function::Pio1);
+                }
+
+                #[inline]
+                pub fn set_function_pio2(&self) {
+                    self.set_function(Function::Pio2);
+                }
+
+                #[inline]
+                pub fn set_function_null(&self) {
+                    self.set_function(Function::Null);
+                }
+
+                // Pad configuration (same as low pins)
+                #[inline]
+                pub fn init_pad(&self) {
+                    let pad = &self.pads_bank().[<gpio $n>];
+                    pad.clr_iso();
+                    pad.set_ie();
+                    pad.clr_od();
+                }
+
+                #[inline]
+                pub fn set_pull(&self, pull: Pull) {
+                    let pad = &self.pads_bank().[<gpio $n>];
+                    match pull {
+                        Pull::None => {
+                            pad.clr_pue();
+                            pad.clr_pde();
+                        }
+                        Pull::Up => {
+                            pad.set_pue();
+                            pad.clr_pde();
+                        }
+                        Pull::Down => {
+                            pad.clr_pue();
+                            pad.set_pde();
+                        }
+                    }
+                }
+
+                #[inline]
+                pub fn set_pull_up(&self) {
+                    self.set_pull(Pull::Up);
+                }
+
+                #[inline]
+                pub fn set_pull_down(&self) {
+                    self.set_pull(Pull::Down);
+                }
+
+                #[inline]
+                pub fn set_pull_none(&self) {
+                    self.set_pull(Pull::None);
+                }
+
+                #[inline]
+                pub fn set_drive_strength(&self, strength: DriveStrength) {
+                    self.pads_bank().[<gpio $n>].write_drive(strength as u32);
+                }
+
+                #[inline]
+                pub fn set_slew_rate(&self, rate: SlewRate) {
+                    let pad = &self.pads_bank().[<gpio $n>];
+                    match rate {
+                        SlewRate::Slow => pad.clr_slewfast(),
+                        SlewRate::Fast => pad.set_slewfast(),
+                    }
+                }
+
+                #[inline]
+                pub fn set_schmitt(&self, enable: bool) {
+                    let pad = &self.pads_bank().[<gpio $n>];
+                    if enable {
+                        pad.set_schmitt();
+                    } else {
+                        pad.clr_schmitt();
+                    }
+                }
+
+                #[inline]
+                pub fn enable_input(&self) {
+                    self.pads_bank().[<gpio $n>].set_ie();
+                }
+
+                #[inline]
+                pub fn disable_input(&self) {
+                    self.pads_bank().[<gpio $n>].clr_ie();
+                }
+
+                #[inline]
+                pub fn set_output_disable(&self, disable: bool) {
+                    let pad = &self.pads_bank().[<gpio $n>];
+                    if disable {
+                        pad.set_od();
+                    } else {
+                        pad.clr_od();
+                    }
+                }
+
+                // Control overrides (same as low pins)
+                #[inline]
+                pub fn set_output_override(&self, ov: OutputOverride) {
+                    self.io_bank().[<gpio $n _ctrl>].write_outover(ov as u32);
+                }
+
+                #[inline]
+                pub fn set_output_enable_override(&self, ov: OutputEnableOverride) {
+                    self.io_bank().[<gpio $n _ctrl>].write_oeover(ov as u32);
+                }
+
+                #[inline]
+                pub fn set_input_override(&self, ov: InputOverride) {
+                    self.io_bank().[<gpio $n _ctrl>].write_inover(ov as u32);
+                }
+
+                #[inline]
+                pub fn set_irq_override(&self, ov: IrqOverride) {
+                    self.io_bank().[<gpio $n _ctrl>].write_irqover(ov as u32);
+                }
+
+                // SIO operations - use GPIO_HI_* registers
+                #[inline]
+                pub fn set_direction_out(&self) {
+                    self.sio().gpio_hi_oe_set.write_bits(Self::MASK);
+                }
+
+                #[inline]
+                pub fn set_direction_in(&self) {
+                    self.sio().gpio_hi_oe_clr.write_bits(Self::MASK);
+                }
+
+                #[inline]
+                pub fn is_output(&self) -> bool {
+                    (self.sio().gpio_hi_oe.read_bits() & Self::MASK) != 0
+                }
+
+                #[inline]
+                pub fn read(&self) -> bool {
+                    (self.sio().gpio_hi_in.read_bits() & Self::MASK) != 0
+                }
+
+                #[inline]
+                pub fn set_high(&self) {
+                    self.sio().gpio_hi_out_set.write_bits(Self::MASK);
+                }
+
+                #[inline]
+                pub fn set_low(&self) {
+                    self.sio().gpio_hi_out_clr.write_bits(Self::MASK);
+                }
+
+                #[inline]
+                pub fn toggle(&self) {
+                    self.sio().gpio_hi_out_xor.write_bits(Self::MASK);
+                }
+
+                #[inline]
+                pub fn set(&self, high: bool) {
+                    if high {
+                        self.set_high();
+                    } else {
+                        self.set_low();
+                    }
+                }
+
+                #[inline]
+                pub fn output_level(&self) -> bool {
+                    (self.sio().gpio_hi_out.read_bits() & Self::MASK) != 0
+                }
+
+                // Convenience methods (same as low pins)
+                #[inline]
+                pub fn into_output(&self) -> &Self {
+                    self.init_pad();
+                    self.set_function_sio();
+                    self.set_direction_out();
+                    self
+                }
+
+                #[inline]
+                pub fn into_input(&self) -> &Self {
+                    self.init_pad();
+                    self.set_function_sio();
+                    self.set_direction_in();
+                    self
+                }
+
+                #[inline]
+                pub fn into_input_pullup(&self) -> &Self {
+                    self.into_input();
+                    self.set_pull_up();
+                    self
+                }
+
+                #[inline]
+                pub fn into_input_pulldown(&self) -> &Self {
+                    self.into_input();
+                    self.set_pull_down();
+                    self
+                }
+
+                #[inline]
+                pub fn into_pio0(&self) -> &Self {
+                    self.init_pad();
+                    self.set_function_pio0();
+                    self
+                }
+
+                #[inline]
+                pub fn into_pio1(&self) -> &Self {
+                    self.init_pad();
+                    self.set_function_pio1();
+                    self
+                }
+
+                #[inline]
+                pub fn into_pio2(&self) -> &Self {
+                    self.init_pad();
+                    self.set_function_pio2();
+                    self
+                }
+
+                #[inline]
+                pub fn into_pwm(&self) -> &Self {
+                    self.init_pad();
+                    self.set_function(Function::Pwm);
+                    self
+                }
+
+                #[inline]
+                pub fn into_i2c(&self) -> &Self {
+                    self.init_pad();
+                    self.set_function(Function::I2c);
+                    self.set_pull_up();
+                    self
+                }
+
+                #[inline]
+                pub fn into_spi(&self) -> &Self {
+                    self.init_pad();
+                    self.set_function(Function::Spi);
+                    self
+                }
+
+                #[inline]
+                pub fn into_uart(&self) -> &Self {
+                    self.init_pad();
+                    self.set_function(Function::Uart);
+                    self
+                }
+            }
+
+            impl core::fmt::Debug for Pin<$n> {
+                fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+                    f.debug_struct("Pin")
+                        .field("number", &$n)
+                        .field("function", &self.function())
+                        .field("is_output", &self.is_output())
+                        .finish()
+                }
+            }
         }
     };
 }
 
 // ============================================================================
-// Generate GPIO pins based on chip variant
+// Pin Type Definition
 // ============================================================================
 
-// RP2350A: 30 GPIO pins (0-29)
-#[cfg(feature = "rp2350a")]
-impl_gpio_pins!(
-    0 => Pin0 => [proc0_inte0, intr0, proc0_ints0],
-    1 => Pin1 => [proc0_inte0, intr0, proc0_ints0],
-    2 => Pin2 => [proc0_inte0, intr0, proc0_ints0],
-    3 => Pin3 => [proc0_inte0, intr0, proc0_ints0],
-    4 => Pin4 => [proc0_inte0, intr0, proc0_ints0],
-    5 => Pin5 => [proc0_inte0, intr0, proc0_ints0],
-    6 => Pin6 => [proc0_inte0, intr0, proc0_ints0],
-    7 => Pin7 => [proc0_inte0, intr0, proc0_ints0],
-    8 => Pin8 => [proc0_inte1, intr1, proc0_ints1],
-    9 => Pin9 => [proc0_inte1, intr1, proc0_ints1],
-    10 => Pin10 => [proc0_inte1, intr1, proc0_ints1],
-    11 => Pin11 => [proc0_inte1, intr1, proc0_ints1],
-    12 => Pin12 => [proc0_inte1, intr1, proc0_ints1],
-    13 => Pin13 => [proc0_inte1, intr1, proc0_ints1],
-    14 => Pin14 => [proc0_inte1, intr1, proc0_ints1],
-    15 => Pin15 => [proc0_inte1, intr1, proc0_ints1],
-    16 => Pin16 => [proc0_inte2, intr2, proc0_ints2],
-    17 => Pin17 => [proc0_inte2, intr2, proc0_ints2],
-    18 => Pin18 => [proc0_inte2, intr2, proc0_ints2],
-    19 => Pin19 => [proc0_inte2, intr2, proc0_ints2],
-    20 => Pin20 => [proc0_inte2, intr2, proc0_ints2],
-    21 => Pin21 => [proc0_inte2, intr2, proc0_ints2],
-    22 => Pin22 => [proc0_inte2, intr2, proc0_ints2],
-    23 => Pin23 => [proc0_inte2, intr2, proc0_ints2],
-    24 => Pin24 => [proc0_inte3, intr3, proc0_ints3],
-    25 => Pin25 => [proc0_inte3, intr3, proc0_ints3],
-    26 => Pin26 => [proc0_inte3, intr3, proc0_ints3],
-    27 => Pin27 => [proc0_inte3, intr3, proc0_ints3],
-    28 => Pin28 => [proc0_inte3, intr3, proc0_ints3],
-    29 => Pin29 => [proc0_inte3, intr3, proc0_ints3],
-);
+/// A GPIO pin with compile-time known pin number.
+///
+/// The pin number `N` is a const generic parameter, allowing the compiler
+/// to generate optimal code with hardcoded register addresses.
+///
+/// # Ownership
+///
+/// `Pin<N>` instances can only be obtained from the `Pins` struct,
+/// which ensures the GPIO subsystem is properly initialized.
+/// Pins can be moved (consumed) by peripheral drivers to enforce
+/// exclusive access at compile time.
+///
+/// # Example
+///
+/// ```ignore
+/// let dp = Peripherals::take().unwrap();
+/// let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+///
+/// // led has type Pin<25>
+/// let led = pins.p25;
+/// led.into_output();
+/// led.set_high();
+/// ```
+pub struct Pin<const N: u8> {
+    _private: (),
+}
 
-// RP2350B: 48 GPIO pins (0-47)
+// ============================================================================
+// Generate Pin implementations for all pins
+// ============================================================================
+
+// RP2350A: Pins 0-29 (low bank)
+impl_pin!(0, low);
+impl_pin!(1, low);
+impl_pin!(2, low);
+impl_pin!(3, low);
+impl_pin!(4, low);
+impl_pin!(5, low);
+impl_pin!(6, low);
+impl_pin!(7, low);
+impl_pin!(8, low);
+impl_pin!(9, low);
+impl_pin!(10, low);
+impl_pin!(11, low);
+impl_pin!(12, low);
+impl_pin!(13, low);
+impl_pin!(14, low);
+impl_pin!(15, low);
+impl_pin!(16, low);
+impl_pin!(17, low);
+impl_pin!(18, low);
+impl_pin!(19, low);
+impl_pin!(20, low);
+impl_pin!(21, low);
+impl_pin!(22, low);
+impl_pin!(23, low);
+impl_pin!(24, low);
+impl_pin!(25, low);
+impl_pin!(26, low);
+impl_pin!(27, low);
+impl_pin!(28, low);
+impl_pin!(29, low);
+
+// RP2350B: Additional pins 30-31 (still in low bank)
 #[cfg(feature = "rp2350b")]
-impl_gpio_pins!(
-    0 => Pin0 => [proc0_inte0, intr0, proc0_ints0],
-    1 => Pin1 => [proc0_inte0, intr0, proc0_ints0],
-    2 => Pin2 => [proc0_inte0, intr0, proc0_ints0],
-    3 => Pin3 => [proc0_inte0, intr0, proc0_ints0],
-    4 => Pin4 => [proc0_inte0, intr0, proc0_ints0],
-    5 => Pin5 => [proc0_inte0, intr0, proc0_ints0],
-    6 => Pin6 => [proc0_inte0, intr0, proc0_ints0],
-    7 => Pin7 => [proc0_inte0, intr0, proc0_ints0],
-    8 => Pin8 => [proc0_inte1, intr1, proc0_ints1],
-    9 => Pin9 => [proc0_inte1, intr1, proc0_ints1],
-    10 => Pin10 => [proc0_inte1, intr1, proc0_ints1],
-    11 => Pin11 => [proc0_inte1, intr1, proc0_ints1],
-    12 => Pin12 => [proc0_inte1, intr1, proc0_ints1],
-    13 => Pin13 => [proc0_inte1, intr1, proc0_ints1],
-    14 => Pin14 => [proc0_inte1, intr1, proc0_ints1],
-    15 => Pin15 => [proc0_inte1, intr1, proc0_ints1],
-    16 => Pin16 => [proc0_inte2, intr2, proc0_ints2],
-    17 => Pin17 => [proc0_inte2, intr2, proc0_ints2],
-    18 => Pin18 => [proc0_inte2, intr2, proc0_ints2],
-    19 => Pin19 => [proc0_inte2, intr2, proc0_ints2],
-    20 => Pin20 => [proc0_inte2, intr2, proc0_ints2],
-    21 => Pin21 => [proc0_inte2, intr2, proc0_ints2],
-    22 => Pin22 => [proc0_inte2, intr2, proc0_ints2],
-    23 => Pin23 => [proc0_inte2, intr2, proc0_ints2],
-    24 => Pin24 => [proc0_inte3, intr3, proc0_ints3],
-    25 => Pin25 => [proc0_inte3, intr3, proc0_ints3],
-    26 => Pin26 => [proc0_inte3, intr3, proc0_ints3],
-    27 => Pin27 => [proc0_inte3, intr3, proc0_ints3],
-    28 => Pin28 => [proc0_inte3, intr3, proc0_ints3],
-    29 => Pin29 => [proc0_inte3, intr3, proc0_ints3],
-    30 => Pin30 => [proc0_inte3, intr3, proc0_ints3],
-    31 => Pin31 => [proc0_inte3, intr3, proc0_ints3],
-    32 => Pin32 => [proc0_inte4, intr4, proc0_ints4],
-    33 => Pin33 => [proc0_inte4, intr4, proc0_ints4],
-    34 => Pin34 => [proc0_inte4, intr4, proc0_ints4],
-    35 => Pin35 => [proc0_inte4, intr4, proc0_ints4],
-    36 => Pin36 => [proc0_inte4, intr4, proc0_ints4],
-    37 => Pin37 => [proc0_inte4, intr4, proc0_ints4],
-    38 => Pin38 => [proc0_inte4, intr4, proc0_ints4],
-    39 => Pin39 => [proc0_inte4, intr4, proc0_ints4],
-    40 => Pin40 => [proc0_inte5, intr5, proc0_ints5],
-    41 => Pin41 => [proc0_inte5, intr5, proc0_ints5],
-    42 => Pin42 => [proc0_inte5, intr5, proc0_ints5],
-    43 => Pin43 => [proc0_inte5, intr5, proc0_ints5],
-    44 => Pin44 => [proc0_inte5, intr5, proc0_ints5],
-    45 => Pin45 => [proc0_inte5, intr5, proc0_ints5],
-    46 => Pin46 => [proc0_inte5, intr5, proc0_ints5],
-    47 => Pin47 => [proc0_inte5, intr5, proc0_ints5],
-);
+impl_pin!(30, low);
+#[cfg(feature = "rp2350b")]
+impl_pin!(31, low);
+
+// RP2350B: Pins 32-47 (high bank)
+#[cfg(feature = "rp2350b")]
+impl_pin!(32, high);
+#[cfg(feature = "rp2350b")]
+impl_pin!(33, high);
+#[cfg(feature = "rp2350b")]
+impl_pin!(34, high);
+#[cfg(feature = "rp2350b")]
+impl_pin!(35, high);
+#[cfg(feature = "rp2350b")]
+impl_pin!(36, high);
+#[cfg(feature = "rp2350b")]
+impl_pin!(37, high);
+#[cfg(feature = "rp2350b")]
+impl_pin!(38, high);
+#[cfg(feature = "rp2350b")]
+impl_pin!(39, high);
+#[cfg(feature = "rp2350b")]
+impl_pin!(40, high);
+#[cfg(feature = "rp2350b")]
+impl_pin!(41, high);
+#[cfg(feature = "rp2350b")]
+impl_pin!(42, high);
+#[cfg(feature = "rp2350b")]
+impl_pin!(43, high);
+#[cfg(feature = "rp2350b")]
+impl_pin!(44, high);
+#[cfg(feature = "rp2350b")]
+impl_pin!(45, high);
+#[cfg(feature = "rp2350b")]
+impl_pin!(46, high);
+#[cfg(feature = "rp2350b")]
+impl_pin!(47, high);
+
+// ============================================================================
+// Pins Container
+// ============================================================================
+
+/// Container for all GPIO pins.
+///
+/// This struct is created by consuming `IO_BANK0` and `PADS_BANK0` peripherals
+/// from the PAC. This ensures:
+///
+/// 1. The GPIO subsystem is properly initialized (reset and unreset)
+/// 2. Only one `Pins` instance can exist (enforced by PAC singleton)
+/// 3. Each pin can only be used once (Rust ownership rules)
+///
+/// # Example
+///
+/// ```ignore
+/// use pico_rs::gpio::Pins;
+/// use pico_rs::Peripherals;
+///
+/// // Take device peripherals (singleton)
+/// let dp = Peripherals::take().unwrap();
+///
+/// // Create Pins, consuming IO_BANK0 and PADS_BANK0
+/// let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+///
+/// // Use individual pins
+/// let led = pins.p25;    // Move pin 25 out
+/// let button = pins.p14; // Move pin 14 out
+///
+/// // Configure and use
+/// led.into_output();
+/// button.into_input_pullup();
+/// ```
+///
+/// # Pin Naming
+///
+/// Pins are named `p0` through `p29` (RP2350A) or `p0` through `p47` (RP2350B).
+/// Common pins on Raspberry Pi Pico 2:
+///
+/// - `p25`: On-board LED
+/// - `p26-p29`: ADC capable pins
+/// - `p0-p1`: Default UART0 TX/RX
+/// - `p4-p5`: Default I2C0 SDA/SCL
+#[allow(non_snake_case)]
+pub struct Pins {
+    /// GPIO Pin 0 (UART0 TX, SPI0 RX, I2C0 SDA)
+    pub p0: Pin<0>,
+    /// GPIO Pin 1 (UART0 RX, SPI0 CSn, I2C0 SCL)
+    pub p1: Pin<1>,
+    /// GPIO Pin 2 (UART0 CTS, SPI0 SCK, I2C1 SDA)
+    pub p2: Pin<2>,
+    /// GPIO Pin 3 (UART0 RTS, SPI0 TX, I2C1 SCL)
+    pub p3: Pin<3>,
+    /// GPIO Pin 4 (UART1 TX, SPI0 RX, I2C0 SDA)
+    pub p4: Pin<4>,
+    /// GPIO Pin 5 (UART1 RX, SPI0 CSn, I2C0 SCL)
+    pub p5: Pin<5>,
+    /// GPIO Pin 6 (UART1 CTS, SPI0 SCK, I2C1 SDA)
+    pub p6: Pin<6>,
+    /// GPIO Pin 7 (UART1 RTS, SPI0 TX, I2C1 SCL)
+    pub p7: Pin<7>,
+    /// GPIO Pin 8 (UART1 TX, SPI1 RX, I2C0 SDA)
+    pub p8: Pin<8>,
+    /// GPIO Pin 9 (UART1 RX, SPI1 CSn, I2C0 SCL)
+    pub p9: Pin<9>,
+    /// GPIO Pin 10 (UART1 CTS, SPI1 SCK, I2C1 SDA)
+    pub p10: Pin<10>,
+    /// GPIO Pin 11 (UART1 RTS, SPI1 TX, I2C1 SCL)
+    pub p11: Pin<11>,
+    /// GPIO Pin 12 (UART0 TX, SPI1 RX, I2C0 SDA)
+    pub p12: Pin<12>,
+    /// GPIO Pin 13 (UART0 RX, SPI1 CSn, I2C0 SCL)
+    pub p13: Pin<13>,
+    /// GPIO Pin 14 (UART0 CTS, SPI1 SCK, I2C1 SDA)
+    pub p14: Pin<14>,
+    /// GPIO Pin 15 (UART0 RTS, SPI1 TX, I2C1 SCL)
+    pub p15: Pin<15>,
+    /// GPIO Pin 16 (UART0 TX, SPI0 RX, I2C0 SDA)
+    pub p16: Pin<16>,
+    /// GPIO Pin 17 (UART0 RX, SPI0 CSn, I2C0 SCL)
+    pub p17: Pin<17>,
+    /// GPIO Pin 18 (UART0 CTS, SPI0 SCK, I2C1 SDA)
+    pub p18: Pin<18>,
+    /// GPIO Pin 19 (UART0 RTS, SPI0 TX, I2C1 SCL)
+    pub p19: Pin<19>,
+    /// GPIO Pin 20 (UART1 TX, SPI0 RX, I2C0 SDA)
+    pub p20: Pin<20>,
+    /// GPIO Pin 21 (UART1 RX, SPI0 CSn, I2C0 SCL)
+    pub p21: Pin<21>,
+    /// GPIO Pin 22 (UART1 CTS, SPI0 SCK, I2C1 SDA)
+    pub p22: Pin<22>,
+    /// GPIO Pin 23 (UART1 RTS, SPI0 TX, I2C1 SCL)
+    pub p23: Pin<23>,
+    /// GPIO Pin 24 (UART1 TX, SPI1 RX, I2C0 SDA)
+    pub p24: Pin<24>,
+    /// GPIO Pin 25 - **On-board LED** on Raspberry Pi Pico 2
+    pub p25: Pin<25>,
+    /// GPIO Pin 26 - **ADC0** capable
+    pub p26: Pin<26>,
+    /// GPIO Pin 27 - **ADC1** capable
+    pub p27: Pin<27>,
+    /// GPIO Pin 28 - **ADC2** capable
+    pub p28: Pin<28>,
+    /// GPIO Pin 29 - **ADC3** capable (also VSYS/3 voltage sense on Pico 2)
+    pub p29: Pin<29>,
+
+    // RP2350B additional pins (30-47)
+    #[cfg(feature = "rp2350b")]
+    /// GPIO Pin 30
+    pub p30: Pin<30>,
+    #[cfg(feature = "rp2350b")]
+    /// GPIO Pin 31
+    pub p31: Pin<31>,
+    #[cfg(feature = "rp2350b")]
+    /// GPIO Pin 32
+    pub p32: Pin<32>,
+    #[cfg(feature = "rp2350b")]
+    /// GPIO Pin 33
+    pub p33: Pin<33>,
+    #[cfg(feature = "rp2350b")]
+    /// GPIO Pin 34
+    pub p34: Pin<34>,
+    #[cfg(feature = "rp2350b")]
+    /// GPIO Pin 35
+    pub p35: Pin<35>,
+    #[cfg(feature = "rp2350b")]
+    /// GPIO Pin 36
+    pub p36: Pin<36>,
+    #[cfg(feature = "rp2350b")]
+    /// GPIO Pin 37
+    pub p37: Pin<37>,
+    #[cfg(feature = "rp2350b")]
+    /// GPIO Pin 38
+    pub p38: Pin<38>,
+    #[cfg(feature = "rp2350b")]
+    /// GPIO Pin 39
+    pub p39: Pin<39>,
+    #[cfg(feature = "rp2350b")]
+    /// GPIO Pin 40
+    pub p40: Pin<40>,
+    #[cfg(feature = "rp2350b")]
+    /// GPIO Pin 41
+    pub p41: Pin<41>,
+    #[cfg(feature = "rp2350b")]
+    /// GPIO Pin 42
+    pub p42: Pin<42>,
+    #[cfg(feature = "rp2350b")]
+    /// GPIO Pin 43
+    pub p43: Pin<43>,
+    #[cfg(feature = "rp2350b")]
+    /// GPIO Pin 44
+    pub p44: Pin<44>,
+    #[cfg(feature = "rp2350b")]
+    /// GPIO Pin 45
+    pub p45: Pin<45>,
+    #[cfg(feature = "rp2350b")]
+    /// GPIO Pin 46
+    pub p46: Pin<46>,
+    #[cfg(feature = "rp2350b")]
+    /// GPIO Pin 47
+    pub p47: Pin<47>,
+}
+
+impl Pins {
+    /// Create a new `Pins` container by consuming GPIO peripherals.
+    ///
+    /// This function:
+    /// 1. Takes ownership of `IO_BANK0` and `PADS_BANK0`
+    /// 2. Resets and initializes the GPIO subsystem
+    /// 3. Returns all GPIO pins ready for use
+    ///
+    /// # Arguments
+    ///
+    /// * `_io_bank0` - IO_BANK0 peripheral (consumed)
+    /// * `_pads_bank0` - PADS_BANK0 peripheral (consumed)
+    ///
+    /// # Example
+    ///
+    /// ```ignore
+    /// use pico_rs::gpio::Pins;
+    /// use pico_rs::Peripherals;
+    ///
+    /// let dp = Peripherals::take().unwrap();
+    /// let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    /// ```
+    ///
+    /// # Panics
+    ///
+    /// This function does not panic. The reset sequence is synchronous
+    /// and waits for completion.
+    #[inline]
+    pub fn new(_io_bank0: IO_BANK0, _pads_bank0: PADS_BANK0) -> Self {
+        // Initialize GPIO subsystem: reset and unreset peripherals
+        let mask = Peripheral::IO_BANK0.mask() | Peripheral::PADS_BANK0.mask();
+        reset::reset_block_mask(mask);
+        reset::unreset_block_mask(mask);
+        reset::unreset_wait_mask(mask);
+
+        Self {
+            p0: Pin::<0>::new(),
+            p1: Pin::<1>::new(),
+            p2: Pin::<2>::new(),
+            p3: Pin::<3>::new(),
+            p4: Pin::<4>::new(),
+            p5: Pin::<5>::new(),
+            p6: Pin::<6>::new(),
+            p7: Pin::<7>::new(),
+            p8: Pin::<8>::new(),
+            p9: Pin::<9>::new(),
+            p10: Pin::<10>::new(),
+            p11: Pin::<11>::new(),
+            p12: Pin::<12>::new(),
+            p13: Pin::<13>::new(),
+            p14: Pin::<14>::new(),
+            p15: Pin::<15>::new(),
+            p16: Pin::<16>::new(),
+            p17: Pin::<17>::new(),
+            p18: Pin::<18>::new(),
+            p19: Pin::<19>::new(),
+            p20: Pin::<20>::new(),
+            p21: Pin::<21>::new(),
+            p22: Pin::<22>::new(),
+            p23: Pin::<23>::new(),
+            p24: Pin::<24>::new(),
+            p25: Pin::<25>::new(),
+            p26: Pin::<26>::new(),
+            p27: Pin::<27>::new(),
+            p28: Pin::<28>::new(),
+            p29: Pin::<29>::new(),
+            #[cfg(feature = "rp2350b")]
+            p30: Pin::<30>::new(),
+            #[cfg(feature = "rp2350b")]
+            p31: Pin::<31>::new(),
+            #[cfg(feature = "rp2350b")]
+            p32: Pin::<32>::new(),
+            #[cfg(feature = "rp2350b")]
+            p33: Pin::<33>::new(),
+            #[cfg(feature = "rp2350b")]
+            p34: Pin::<34>::new(),
+            #[cfg(feature = "rp2350b")]
+            p35: Pin::<35>::new(),
+            #[cfg(feature = "rp2350b")]
+            p36: Pin::<36>::new(),
+            #[cfg(feature = "rp2350b")]
+            p37: Pin::<37>::new(),
+            #[cfg(feature = "rp2350b")]
+            p38: Pin::<38>::new(),
+            #[cfg(feature = "rp2350b")]
+            p39: Pin::<39>::new(),
+            #[cfg(feature = "rp2350b")]
+            p40: Pin::<40>::new(),
+            #[cfg(feature = "rp2350b")]
+            p41: Pin::<41>::new(),
+            #[cfg(feature = "rp2350b")]
+            p42: Pin::<42>::new(),
+            #[cfg(feature = "rp2350b")]
+            p43: Pin::<43>::new(),
+            #[cfg(feature = "rp2350b")]
+            p44: Pin::<44>::new(),
+            #[cfg(feature = "rp2350b")]
+            p45: Pin::<45>::new(),
+            #[cfg(feature = "rp2350b")]
+            p46: Pin::<46>::new(),
+            #[cfg(feature = "rp2350b")]
+            p47: Pin::<47>::new(),
+        }
+    }
+}
+
+// ============================================================================
+// Pin Traits for Peripheral Compatibility
+// ============================================================================
+
+/// Marker trait for any GPIO pin.
+///
+/// This trait is implemented for all `Pin<N>` types and provides
+/// a way to work with pins generically when needed.
+pub trait GpioPin {
+    /// The pin number (0-47)
+    const PIN: u8;
+}
+
+impl<const N: u8> GpioPin for Pin<N> {
+    const PIN: u8 = N;
+}
+
+// ============================================================================
+// Type Aliases for Convenience
+// ============================================================================
+
+/// Type alias for Pin 0
+pub type Pin0 = Pin<0>;
+/// Type alias for Pin 1
+pub type Pin1 = Pin<1>;
+/// Type alias for Pin 2
+pub type Pin2 = Pin<2>;
+/// Type alias for Pin 3
+pub type Pin3 = Pin<3>;
+/// Type alias for Pin 4
+pub type Pin4 = Pin<4>;
+/// Type alias for Pin 5
+pub type Pin5 = Pin<5>;
+/// Type alias for Pin 6
+pub type Pin6 = Pin<6>;
+/// Type alias for Pin 7
+pub type Pin7 = Pin<7>;
+/// Type alias for Pin 8
+pub type Pin8 = Pin<8>;
+/// Type alias for Pin 9
+pub type Pin9 = Pin<9>;
+/// Type alias for Pin 10
+pub type Pin10 = Pin<10>;
+/// Type alias for Pin 11
+pub type Pin11 = Pin<11>;
+/// Type alias for Pin 12
+pub type Pin12 = Pin<12>;
+/// Type alias for Pin 13
+pub type Pin13 = Pin<13>;
+/// Type alias for Pin 14
+pub type Pin14 = Pin<14>;
+/// Type alias for Pin 15
+pub type Pin15 = Pin<15>;
+/// Type alias for Pin 16
+pub type Pin16 = Pin<16>;
+/// Type alias for Pin 17
+pub type Pin17 = Pin<17>;
+/// Type alias for Pin 18
+pub type Pin18 = Pin<18>;
+/// Type alias for Pin 19
+pub type Pin19 = Pin<19>;
+/// Type alias for Pin 20
+pub type Pin20 = Pin<20>;
+/// Type alias for Pin 21
+pub type Pin21 = Pin<21>;
+/// Type alias for Pin 22
+pub type Pin22 = Pin<22>;
+/// Type alias for Pin 23
+pub type Pin23 = Pin<23>;
+/// Type alias for Pin 24
+pub type Pin24 = Pin<24>;
+/// Type alias for Pin 25 (LED on Pico 2)
+pub type Pin25 = Pin<25>;
+/// Type alias for Pin 26 (ADC0)
+pub type Pin26 = Pin<26>;
+/// Type alias for Pin 27 (ADC1)
+pub type Pin27 = Pin<27>;
+/// Type alias for Pin 28 (ADC2)
+pub type Pin28 = Pin<28>;
+/// Type alias for Pin 29 (ADC3)
+pub type Pin29 = Pin<29>;
+
+#[cfg(feature = "rp2350b")]
+/// Type alias for Pin 30
+pub type Pin30 = Pin<30>;
+#[cfg(feature = "rp2350b")]
+/// Type alias for Pin 31
+pub type Pin31 = Pin<31>;
+#[cfg(feature = "rp2350b")]
+/// Type alias for Pin 32
+pub type Pin32 = Pin<32>;
+#[cfg(feature = "rp2350b")]
+/// Type alias for Pin 33
+pub type Pin33 = Pin<33>;
+#[cfg(feature = "rp2350b")]
+/// Type alias for Pin 34
+pub type Pin34 = Pin<34>;
+#[cfg(feature = "rp2350b")]
+/// Type alias for Pin 35
+pub type Pin35 = Pin<35>;
+#[cfg(feature = "rp2350b")]
+/// Type alias for Pin 36
+pub type Pin36 = Pin<36>;
+#[cfg(feature = "rp2350b")]
+/// Type alias for Pin 37
+pub type Pin37 = Pin<37>;
+#[cfg(feature = "rp2350b")]
+/// Type alias for Pin 38
+pub type Pin38 = Pin<38>;
+#[cfg(feature = "rp2350b")]
+/// Type alias for Pin 39
+pub type Pin39 = Pin<39>;
+#[cfg(feature = "rp2350b")]
+/// Type alias for Pin 40
+pub type Pin40 = Pin<40>;
+#[cfg(feature = "rp2350b")]
+/// Type alias for Pin 41
+pub type Pin41 = Pin<41>;
+#[cfg(feature = "rp2350b")]
+/// Type alias for Pin 42
+pub type Pin42 = Pin<42>;
+#[cfg(feature = "rp2350b")]
+/// Type alias for Pin 43
+pub type Pin43 = Pin<43>;
+#[cfg(feature = "rp2350b")]
+/// Type alias for Pin 44
+pub type Pin44 = Pin<44>;
+#[cfg(feature = "rp2350b")]
+/// Type alias for Pin 45
+pub type Pin45 = Pin<45>;
+#[cfg(feature = "rp2350b")]
+/// Type alias for Pin 46
+pub type Pin46 = Pin<46>;
+#[cfg(feature = "rp2350b")]
+/// Type alias for Pin 47
+pub type Pin47 = Pin<47>;
 
 // ============================================================================
 // Pin function mapping submodule
@@ -1296,6 +1775,7 @@ pub use pins::{
     Spi1TxPin,
     // UART traits
     Uart0CtsPin,
+    Uart0RtsPin,
     Uart0RxPin,
     Uart0TxPin,
     Uart1CtsPin,

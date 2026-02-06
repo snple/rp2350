@@ -7,9 +7,13 @@
 //!
 //! ```ignore
 //! use pico_rs::xosc::{Xosc, FrequencyRange};
+//! use pico_rs_pac::XOSC;
+//!
+//! // Get XOSC peripheral
+//! let xosc_pac = unsafe { XOSC::steal() };
 //!
 //! // Initialize XOSC with a 12 MHz crystal (default for Pico 2)
-//! let xosc = Xosc::init(12_000_000);
+//! let xosc = Xosc::init(xosc_pac, 12_000_000);
 //!
 //! // Wait for XOSC to stabilize
 //! xosc.wait_stable();
@@ -74,22 +78,37 @@ impl FrequencyRange {
 
 /// Crystal Oscillator (XOSC) peripheral wrapper
 pub struct Xosc {
-    xosc: &'static pico_rs_pac::xosc::RegisterBlock,
+    xosc: XOSC,
     frequency: u32,
 }
 
 impl Xosc {
     /// Create a new XOSC instance without initialization
     ///
-    /// # Safety
-    /// This does not track ownership. The caller must ensure exclusive access
-    /// to the XOSC peripheral if needed.
+    /// # Arguments
+    /// * `xosc` - The XOSC peripheral from PAC
     #[inline]
-    pub fn new() -> Self {
+    pub fn new(xosc: XOSC) -> Self {
         Self {
-            xosc: unsafe { &*XOSC::PTR },
+            xosc,
             frequency: XOSC_HZ,
         }
+    }
+
+    /// Get reference to the underlying register block
+    ///
+    /// # Safety
+    /// Direct register access can bypass the HAL's safety guarantees.
+    /// The caller must ensure operations do not conflict with the HAL state.
+    #[inline]
+    pub unsafe fn regs(&self) -> &pico_rs_pac::xosc::RegisterBlock {
+        &self.xosc
+    }
+
+    /// Release the XOSC peripheral
+    #[inline]
+    pub fn release(self) -> XOSC {
+        self.xosc
     }
 
     /// Initialize the crystal oscillator
@@ -98,15 +117,14 @@ impl Xosc {
     /// delay, enables it, and waits for it to stabilize.
     ///
     /// # Arguments
+    /// * `xosc` - The XOSC peripheral from PAC
     /// * `freq_hz` - The crystal frequency in Hz (typically 12 MHz for Pico 2)
     ///
     /// # Example
     /// ```ignore
-    /// let xosc = Xosc::init(12_000_000);
+    /// let xosc = Xosc::init(xosc_pac, 12_000_000);
     /// ```
-    pub fn init(freq_hz: u32) -> Self {
-        let xosc = unsafe { &*XOSC::PTR };
-
+    pub fn init(xosc: XOSC, freq_hz: u32) -> Self {
         // Determine frequency range
         let range = FrequencyRange::from_frequency(freq_hz);
 
@@ -130,7 +148,7 @@ impl Xosc {
         xosc.ctrl.write_enable(ENABLE_VALUE);
 
         // Wait for XOSC to stabilize
-        while !Self::is_stable_raw(xosc) {
+        while !xosc.status.stable() {
             core::hint::spin_loop();
         }
 
@@ -141,21 +159,18 @@ impl Xosc {
     }
 
     /// Initialize XOSC with default 12 MHz crystal frequency
+    ///
+    /// # Arguments
+    /// * `xosc` - The XOSC peripheral from PAC
     #[inline]
-    pub fn init_default() -> Self {
-        Self::init(XOSC_HZ)
+    pub fn init_default(xosc: XOSC) -> Self {
+        Self::init(xosc, XOSC_HZ)
     }
 
     /// Check if the XOSC is running and stable
     #[inline]
     pub fn is_stable(&self) -> bool {
-        Self::is_stable_raw(self.xosc)
-    }
-
-    /// Internal function to check stability from register block
-    #[inline]
-    fn is_stable_raw(xosc: &pico_rs_pac::xosc::RegisterBlock) -> bool {
-        xosc.status.stable()
+        self.xosc.status.stable()
     }
 
     /// Check if the XOSC is enabled
@@ -296,20 +311,5 @@ impl Xosc {
         while !self.count_done() {
             core::hint::spin_loop();
         }
-    }
-
-    /// Get reference to the underlying register block
-    ///
-    /// # Safety
-    /// Direct register access can bypass the HAL's safety guarantees.
-    #[inline]
-    pub unsafe fn registers(&self) -> &pico_rs_pac::xosc::RegisterBlock {
-        self.xosc
-    }
-}
-
-impl Default for Xosc {
-    fn default() -> Self {
-        Self::new()
     }
 }

@@ -13,7 +13,9 @@ use panic_probe as _;
 use pico_rs::Delay;
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
-use pico_rs::gpio::{self, Pin25};
+use pico_rs::gpio::Pins;
+use pico_rs::pico_rs_pac::Peripherals;
+use pico_rs::pico_rs_rt::peripheral::Peripherals as CorePeripherals;
 
 /// RP2350 Boot Block - tells the Boot ROM this is a valid ARM executable
 #[unsafe(link_section = ".start_block")]
@@ -29,17 +31,23 @@ fn main() -> ! {
     info!("RP2350 started!");
     info!("Blink example with GPIO LED control...");
 
-    // Initialize GPIO subsystem (unresets IO_BANK0 and PADS_BANK0)
-    gpio::init_gpio();
+    // Take device peripherals from PAC
+    let dp = Peripherals::take().unwrap();
+
+    // Initialize GPIO pins by consuming IO_BANK0 and PADS_BANK0
+    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
 
     // Configure GPIO 25 (LED) as output
-    let led = Pin25::new();
+    let led = pins.p25;
     led.into_output();
 
     info!("GPIO 25 configured as output");
 
+    // Take core peripherals (NVIC, SCB, SYST, MPU, FPU, SAU)
+    let core_peripherals = CorePeripherals::take().unwrap();
+
     // Initialize SysTick-based delay
-    let mut delay = Delay::new(CLOCK_FREQ_HZ);
+    let mut delay = Delay::new(core_peripherals.SYST, CLOCK_FREQ_HZ);
 
     let mut led_on = false;
     loop {

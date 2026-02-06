@@ -131,7 +131,7 @@
 
 #![allow(clippy::identity_op)]
 
-use pico_rs_pac::CLOCKS;
+use pico_rs_pac::{CLOCKS, PLL_SYS, PLL_USB, XOSC};
 
 // ============================================================================
 // Clock Tree Layer 0: Clock Sources
@@ -525,22 +525,37 @@ struct ClockFrequencies {
 /// - `ClockBuilder::new().build()` - 150 MHz sys, 48 MHz USB
 /// - `ClockBuilder::low_power().build()` - 48 MHz sys for low power
 pub struct Clocks {
-    clocks: &'static pico_rs_pac::clocks::RegisterBlock,
+    clocks: CLOCKS,
     frequencies: ClockFrequencies,
 }
 
 impl Clocks {
     /// Create a new Clocks instance
     ///
-    /// # Safety
-    /// This does not track ownership. The caller must ensure exclusive access
-    /// to the CLOCKS peripheral if needed.
+    /// # Arguments
+    /// * `clocks` - The CLOCKS peripheral from PAC
     #[inline]
-    pub fn new() -> Self {
+    pub fn new(clocks: CLOCKS) -> Self {
         Self {
-            clocks: unsafe { &*CLOCKS::PTR },
+            clocks,
             frequencies: ClockFrequencies::default(),
         }
+    }
+
+    /// Get reference to the underlying register block
+    ///
+    /// # Safety
+    /// Direct register access can bypass the HAL's safety guarantees.
+    /// The caller must ensure operations do not conflict with the HAL state.
+    #[inline]
+    pub unsafe fn regs(&self) -> &pico_rs_pac::clocks::RegisterBlock {
+        &self.clocks
+    }
+
+    /// Release the CLOCKS peripheral
+    #[inline]
+    pub fn release(self) -> CLOCKS {
+        self.clocks
     }
 
     // ========================================================================
@@ -1180,21 +1195,6 @@ impl Clocks {
             ClockId::Adc => self.frequencies.adc_clk = freq,
         }
     }
-
-    /// Get reference to the underlying register block
-    ///
-    /// # Safety
-    /// Direct register access can bypass the HAL's safety guarantees.
-    #[inline]
-    pub unsafe fn registers(&self) -> &pico_rs_pac::clocks::RegisterBlock {
-        self.clocks
-    }
-}
-
-impl Default for Clocks {
-    fn default() -> Self {
-        Self::new()
-    }
 }
 
 // ============================================================================
@@ -1516,19 +1516,31 @@ impl ClockBuilder {
     /// 6. Switch CLK_SYS to final source
     /// 7. Configure peripheral clocks
     ///
+    /// # Arguments
+    /// * `clocks` - The CLOCKS peripheral from PAC
+    /// * `xosc` - The XOSC peripheral from PAC
+    /// * `pll_sys` - The PLL_SYS peripheral from PAC
+    /// * `pll_usb` - The PLL_USB peripheral from PAC
+    ///
     /// # Returns
     /// A [`Clocks`] instance with the configured frequencies
     ///
     /// # Panics
     /// Panics if an unsupported system frequency is requested.
-    pub fn build(self) -> Clocks {
+    pub fn build(
+        self,
+        clocks: CLOCKS,
+        xosc: XOSC,
+        pll_sys: PLL_SYS,
+        pll_usb: PLL_USB,
+    ) -> Clocks {
         // ====================================================================
         // Step 1: Initialize XOSC (Clock Tree Layer 0)
         // ====================================================================
-        let xosc = Xosc::init(self.xosc_freq);
+        let xosc = Xosc::init(xosc, self.xosc_freq);
         xosc.wait_stable();
 
-        let mut clocks = Clocks::new();
+        let mut clocks = Clocks::new(clocks);
 
         // ====================================================================
         // Step 2: Configure CLK_REF from XOSC (Clock Tree Layer 1)
@@ -1550,7 +1562,7 @@ impl ClockBuilder {
             reset::reset_block(Peripheral::PLL_SYS);
             reset::unreset_block_wait(Peripheral::PLL_SYS);
 
-            let pll_sys = PllSys::new();
+            let pll_sys = PllSys::new(pll_sys);
             let sys_config = Self::get_pll_config_for_freq(self.sys_freq);
             pll_sys.configure(
                 sys_config.refdiv,
@@ -1568,7 +1580,7 @@ impl ClockBuilder {
         reset::reset_block(Peripheral::PLL_USB);
         reset::unreset_block_wait(Peripheral::PLL_USB);
 
-        let pll_usb = PllUsb::new();
+        let pll_usb = PllUsb::new(pll_usb);
         let usb_config = PllConfig::usb_48mhz();
         pll_usb.configure(
             usb_config.refdiv,

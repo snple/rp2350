@@ -13,8 +13,11 @@
 //!
 //! ```ignore
 //! use pico_rs::eppb::Eppb;
+//! use pico_rs_pac::EPPB;
 //!
-//! let eppb = Eppb::new();
+//! // Get EPPB peripheral
+//! let eppb_pac = unsafe { EPPB::steal() };
+//! let eppb = Eppb::new(eppb_pac);
 //!
 //! // Mask IRQ 5 as NMI
 //! eppb.set_nmi_mask0(1 << 5);
@@ -34,22 +37,33 @@ use pico_rs_pac::EPPB;
 /// Provides access to Extended Private Peripheral Bus registers
 /// for NMI masking and sleep control.
 pub struct Eppb {
-    regs: &'static pico_rs_pac::eppb::RegisterBlock,
+    eppb: EPPB,
 }
 
 impl Eppb {
     /// Create a new Eppb instance
+    ///
+    /// # Arguments
+    /// * `eppb` - The EPPB peripheral from PAC
     #[inline]
-    pub fn new() -> Self {
-        Self {
-            regs: unsafe { &*EPPB::PTR },
-        }
+    pub fn new(eppb: EPPB) -> Self {
+        Self { eppb }
     }
 
-    /// Get reference to the register block
+    /// Get reference to the underlying register block
+    ///
+    /// # Safety
+    /// Direct register access can bypass the HAL's safety guarantees.
+    /// The caller must ensure operations do not conflict with the HAL state.
     #[inline]
-    pub fn regs(&self) -> &pico_rs_pac::eppb::RegisterBlock {
-        self.regs
+    pub unsafe fn regs(&self) -> &pico_rs_pac::eppb::RegisterBlock {
+        &self.eppb
+    }
+
+    /// Release the EPPB peripheral
+    #[inline]
+    pub fn release(self) -> EPPB {
+        self.eppb
     }
 
     // ========================================================================
@@ -59,7 +73,7 @@ impl Eppb {
     /// Get NMI mask for IRQs 0-31
     #[inline]
     pub fn nmi_mask0(&self) -> u32 {
-        self.regs.nmi_mask0.nmi_mask0()
+        self.eppb.nmi_mask0.nmi_mask0()
     }
 
     /// Set NMI mask for IRQs 0-31
@@ -68,14 +82,14 @@ impl Eppb {
     /// to be escalated to an NMI (Non-Maskable Interrupt).
     #[inline]
     pub fn set_nmi_mask0(&self, mask: u32) {
-        self.regs.nmi_mask0.write_nmi_mask0(mask);
+        self.eppb.nmi_mask0.write_nmi_mask0(mask);
     }
 
     /// Enable NMI for a specific IRQ (0-31)
     #[inline]
     pub fn enable_nmi_irq0_31(&self, irq: u8) {
         if irq < 32 {
-            self.regs.nmi_mask0.modify_bits(|r| r | (1 << irq));
+            self.eppb.nmi_mask0.modify_bits(|r| r | (1 << irq));
         }
     }
 
@@ -83,14 +97,14 @@ impl Eppb {
     #[inline]
     pub fn disable_nmi_irq0_31(&self, irq: u8) {
         if irq < 32 {
-            self.regs.nmi_mask0.modify_bits(|r| r & !(1 << irq));
+            self.eppb.nmi_mask0.modify_bits(|r| r & !(1 << irq));
         }
     }
 
     /// Get NMI mask for IRQs 32-51
     #[inline]
     pub fn nmi_mask1(&self) -> u32 {
-        self.regs.nmi_mask1.nmi_mask1()
+        self.eppb.nmi_mask1.nmi_mask1()
     }
 
     /// Set NMI mask for IRQs 32-51
@@ -98,14 +112,14 @@ impl Eppb {
     /// Only bits [19:0] are valid (for IRQs 32-51).
     #[inline]
     pub fn set_nmi_mask1(&self, mask: u32) {
-        self.regs.nmi_mask1.write_nmi_mask1(mask & 0x000F_FFFF);
+        self.eppb.nmi_mask1.write_nmi_mask1(mask & 0x000F_FFFF);
     }
 
     /// Enable NMI for a specific IRQ (32-51)
     #[inline]
     pub fn enable_nmi_irq32_51(&self, irq: u8) {
         if (32..52).contains(&irq) {
-            self.regs.nmi_mask1.modify_bits(|r| r | (1 << (irq - 32)));
+            self.eppb.nmi_mask1.modify_bits(|r| r | (1 << (irq - 32)));
         }
     }
 
@@ -113,7 +127,7 @@ impl Eppb {
     #[inline]
     pub fn disable_nmi_irq32_51(&self, irq: u8) {
         if (32..52).contains(&irq) {
-            self.regs.nmi_mask1.modify_bits(|r| r & !(1 << (irq - 32)));
+            self.eppb.nmi_mask1.modify_bits(|r| r & !(1 << (irq - 32)));
         }
     }
 
@@ -127,7 +141,7 @@ impl Eppb {
     /// clock request (light sleep mode).
     #[inline]
     pub fn is_light_sleep(&self) -> bool {
-        self.regs.sleepctrl.light_sleep()
+        self.eppb.sleepctrl.light_sleep()
     }
 
     /// Set light sleep mode
@@ -138,9 +152,9 @@ impl Eppb {
     #[inline]
     pub fn set_light_sleep(&self, enable: bool) {
         if enable {
-            self.regs.sleepctrl.set_light_sleep();
+            self.eppb.sleepctrl.set_light_sleep();
         } else {
-            self.regs.sleepctrl.clr_light_sleep();
+            self.eppb.sleepctrl.clr_light_sleep();
         }
     }
 
@@ -149,7 +163,7 @@ impl Eppb {
     /// Returns true if WIC (Wake-up Interrupt Controller) sleep is requested.
     #[inline]
     pub fn is_wicenreq(&self) -> bool {
-        self.regs.sleepctrl.wicenreq()
+        self.eppb.sleepctrl.wicenreq()
     }
 
     /// Request WIC sleep for next deep sleep
@@ -159,9 +173,9 @@ impl Eppb {
     #[inline]
     pub fn set_wicenreq(&self, enable: bool) {
         if enable {
-            self.regs.sleepctrl.set_wicenreq();
+            self.eppb.sleepctrl.set_wicenreq();
         } else {
-            self.regs.sleepctrl.clr_wicenreq();
+            self.eppb.sleepctrl.clr_wicenreq();
         }
     }
 
@@ -172,7 +186,7 @@ impl Eppb {
     /// before entering deep sleep.
     #[inline]
     pub fn is_wicenack(&self) -> bool {
-        self.regs.sleepctrl.wicenack()
+        self.eppb.sleepctrl.wicenack()
     }
 
     /// Wait for WIC enable to be acknowledged
@@ -192,11 +206,5 @@ impl Eppb {
     pub fn prepare_wic_sleep(&self) {
         self.set_wicenreq(true);
         self.wait_wicenack();
-    }
-}
-
-impl Default for Eppb {
-    fn default() -> Self {
-        Self::new()
     }
 }

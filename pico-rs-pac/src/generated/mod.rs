@@ -249,6 +249,54 @@ unsafe impl pico_rs_rt::peripheral::nvic::InterruptNumber for Interrupt {
 }
 
 // ============================================================================
+// Peripheral Wrapper Macro
+// ============================================================================
+
+/// Helper macro to create peripheral wrappers
+macro_rules! peripheral {
+    ($name:ident, $reg:ty, $base:expr) => {
+        impl $name {
+            /// Pointer to the peripheral's register block
+            pub const PTR: *const $reg = $base as *const $reg;
+
+            /// Steal an instance of this peripheral
+            ///
+            /// # Safety
+            ///
+            /// Ensure that the new instance of the peripheral cannot be used in a way
+            /// that may race with any existing instances.
+            #[inline]
+            pub unsafe fn steal() -> Self {
+                Self {
+                    _marker: PhantomData,
+                }
+            }
+
+            /// Returns a raw pointer to the register block
+            #[inline(always)]
+            pub const fn ptr() -> *const $reg {
+                Self::PTR
+            }
+        }
+
+        impl Deref for $name {
+            type Target = $reg;
+
+            #[inline(always)]
+            fn deref(&self) -> &Self::Target {
+                unsafe { &*Self::PTR }
+            }
+        }
+
+        impl core::fmt::Debug for $name {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                f.debug_struct(stringify!($name)).finish()
+            }
+        }
+    };
+}
+
+// ============================================================================
 // Peripheral Definitions
 // ============================================================================
 
@@ -259,42 +307,7 @@ pub struct RESETS {
 
 unsafe impl Send for RESETS {}
 
-impl RESETS {
-    /// Pointer to the register block
-    pub const PTR: *const resets::RegisterBlock = 0x40020000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const resets::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for RESETS {
-    type Target = resets::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for RESETS {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("RESETS").finish()
-    }
-}
+peripheral!(RESETS, resets::RegisterBlock, 0x40020000);
 
 /// RESETS register module
 pub mod resets;
@@ -306,42 +319,7 @@ pub struct PSM {
 
 unsafe impl Send for PSM {}
 
-impl PSM {
-    /// Pointer to the register block
-    pub const PTR: *const psm::RegisterBlock = 0x40018000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const psm::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for PSM {
-    type Target = psm::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for PSM {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("PSM").finish()
-    }
-}
+peripheral!(PSM, psm::RegisterBlock, 0x40018000);
 
 /// PSM register module
 pub mod psm;
@@ -353,42 +331,7 @@ pub struct CLOCKS {
 
 unsafe impl Send for CLOCKS {}
 
-impl CLOCKS {
-    /// Pointer to the register block
-    pub const PTR: *const clocks::RegisterBlock = 0x40010000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const clocks::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for CLOCKS {
-    type Target = clocks::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for CLOCKS {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("CLOCKS").finish()
-    }
-}
+peripheral!(CLOCKS, clocks::RegisterBlock, 0x40010000);
 
 /// CLOCKS register module
 pub mod clocks;
@@ -400,42 +343,7 @@ pub struct TICKS {
 
 unsafe impl Send for TICKS {}
 
-impl TICKS {
-    /// Pointer to the register block
-    pub const PTR: *const ticks::RegisterBlock = 0x40108000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const ticks::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for TICKS {
-    type Target = ticks::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for TICKS {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("TICKS").finish()
-    }
-}
+peripheral!(TICKS, ticks::RegisterBlock, 0x40108000);
 
 /// TICKS register module
 pub mod ticks;
@@ -447,42 +355,7 @@ pub struct PADS_BANK0 {
 
 unsafe impl Send for PADS_BANK0 {}
 
-impl PADS_BANK0 {
-    /// Pointer to the register block
-    pub const PTR: *const pads_bank0::RegisterBlock = 0x40038000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const pads_bank0::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for PADS_BANK0 {
-    type Target = pads_bank0::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for PADS_BANK0 {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("PADS_BANK0").finish()
-    }
-}
+peripheral!(PADS_BANK0, pads_bank0::RegisterBlock, 0x40038000);
 
 /// PADS_BANK0 register module
 pub mod pads_bank0;
@@ -494,42 +367,7 @@ pub struct PADS_QSPI {
 
 unsafe impl Send for PADS_QSPI {}
 
-impl PADS_QSPI {
-    /// Pointer to the register block
-    pub const PTR: *const pads_qspi::RegisterBlock = 0x40040000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const pads_qspi::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for PADS_QSPI {
-    type Target = pads_qspi::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for PADS_QSPI {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("PADS_QSPI").finish()
-    }
-}
+peripheral!(PADS_QSPI, pads_qspi::RegisterBlock, 0x40040000);
 
 /// PADS_QSPI register module
 pub mod pads_qspi;
@@ -541,42 +379,7 @@ pub struct IO_QSPI {
 
 unsafe impl Send for IO_QSPI {}
 
-impl IO_QSPI {
-    /// Pointer to the register block
-    pub const PTR: *const io_qspi::RegisterBlock = 0x40030000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const io_qspi::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for IO_QSPI {
-    type Target = io_qspi::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for IO_QSPI {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("IO_QSPI").finish()
-    }
-}
+peripheral!(IO_QSPI, io_qspi::RegisterBlock, 0x40030000);
 
 /// IO_QSPI register module
 pub mod io_qspi;
@@ -588,42 +391,7 @@ pub struct IO_BANK0 {
 
 unsafe impl Send for IO_BANK0 {}
 
-impl IO_BANK0 {
-    /// Pointer to the register block
-    pub const PTR: *const io_bank0::RegisterBlock = 0x40028000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const io_bank0::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for IO_BANK0 {
-    type Target = io_bank0::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for IO_BANK0 {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("IO_BANK0").finish()
-    }
-}
+peripheral!(IO_BANK0, io_bank0::RegisterBlock, 0x40028000);
 
 /// IO_BANK0 register module
 pub mod io_bank0;
@@ -635,42 +403,7 @@ pub struct SYSINFO {
 
 unsafe impl Send for SYSINFO {}
 
-impl SYSINFO {
-    /// Pointer to the register block
-    pub const PTR: *const sysinfo::RegisterBlock = 0x40000000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const sysinfo::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for SYSINFO {
-    type Target = sysinfo::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for SYSINFO {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("SYSINFO").finish()
-    }
-}
+peripheral!(SYSINFO, sysinfo::RegisterBlock, 0x40000000);
 
 /// SYSINFO register module
 pub mod sysinfo;
@@ -682,42 +415,7 @@ pub struct SHA256 {
 
 unsafe impl Send for SHA256 {}
 
-impl SHA256 {
-    /// Pointer to the register block
-    pub const PTR: *const sha256::RegisterBlock = 0x400f8000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const sha256::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for SHA256 {
-    type Target = sha256::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for SHA256 {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("SHA256").finish()
-    }
-}
+peripheral!(SHA256, sha256::RegisterBlock, 0x400f8000);
 
 /// SHA-256 hash function implementation
 pub mod sha256;
@@ -729,42 +427,7 @@ pub struct HSTX_FIFO {
 
 unsafe impl Send for HSTX_FIFO {}
 
-impl HSTX_FIFO {
-    /// Pointer to the register block
-    pub const PTR: *const hstx_fifo::RegisterBlock = 0x50600000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const hstx_fifo::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for HSTX_FIFO {
-    type Target = hstx_fifo::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for HSTX_FIFO {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("HSTX_FIFO").finish()
-    }
-}
+peripheral!(HSTX_FIFO, hstx_fifo::RegisterBlock, 0x50600000);
 
 /// FIFO status and write access for HSTX
 pub mod hstx_fifo;
@@ -776,42 +439,7 @@ pub struct HSTX_CTRL {
 
 unsafe impl Send for HSTX_CTRL {}
 
-impl HSTX_CTRL {
-    /// Pointer to the register block
-    pub const PTR: *const hstx_ctrl::RegisterBlock = 0x400c0000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const hstx_ctrl::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for HSTX_CTRL {
-    type Target = hstx_ctrl::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for HSTX_CTRL {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("HSTX_CTRL").finish()
-    }
-}
+peripheral!(HSTX_CTRL, hstx_ctrl::RegisterBlock, 0x400c0000);
 
 /// Control interface to HSTX. For FIFO write access and status, see the HSTX_FIFO register block.
 pub mod hstx_ctrl;
@@ -823,42 +451,7 @@ pub struct EPPB {
 
 unsafe impl Send for EPPB {}
 
-impl EPPB {
-    /// Pointer to the register block
-    pub const PTR: *const eppb::RegisterBlock = 0xe0080000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const eppb::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for EPPB {
-    type Target = eppb::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for EPPB {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("EPPB").finish()
-    }
-}
+peripheral!(EPPB, eppb::RegisterBlock, 0xe0080000);
 
 /// Cortex-M33 EPPB vendor register block for RP2350
 pub mod eppb;
@@ -870,42 +463,7 @@ pub struct PPB {
 
 unsafe impl Send for PPB {}
 
-impl PPB {
-    /// Pointer to the register block
-    pub const PTR: *const ppb::RegisterBlock = 0xe0000000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const ppb::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for PPB {
-    type Target = ppb::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for PPB {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("PPB").finish()
-    }
-}
+peripheral!(PPB, ppb::RegisterBlock, 0xe0000000);
 
 /// TEAL registers accessible through the debug interface
 pub mod ppb;
@@ -917,42 +475,7 @@ pub struct PPB_NS {
 
 unsafe impl Send for PPB_NS {}
 
-impl PPB_NS {
-    /// Pointer to the register block
-    pub const PTR: *const ppb_ns::RegisterBlock = 0xe0020000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const ppb_ns::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for PPB_NS {
-    type Target = ppb_ns::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for PPB_NS {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("PPB_NS").finish()
-    }
-}
+peripheral!(PPB_NS, ppb_ns::RegisterBlock, 0xe0020000);
 
 /// PPB_NS register module
 pub mod ppb_ns;
@@ -964,42 +487,7 @@ pub struct QMI {
 
 unsafe impl Send for QMI {}
 
-impl QMI {
-    /// Pointer to the register block
-    pub const PTR: *const qmi::RegisterBlock = 0x400d0000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const qmi::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for QMI {
-    type Target = qmi::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for QMI {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("QMI").finish()
-    }
-}
+peripheral!(QMI, qmi::RegisterBlock, 0x400d0000);
 
 /// QSPI Memory Interface.
 pub mod qmi;
@@ -1011,42 +499,7 @@ pub struct XIP_CTRL {
 
 unsafe impl Send for XIP_CTRL {}
 
-impl XIP_CTRL {
-    /// Pointer to the register block
-    pub const PTR: *const xip_ctrl::RegisterBlock = 0x400c8000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const xip_ctrl::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for XIP_CTRL {
-    type Target = xip_ctrl::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for XIP_CTRL {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("XIP_CTRL").finish()
-    }
-}
+peripheral!(XIP_CTRL, xip_ctrl::RegisterBlock, 0x400c8000);
 
 /// QSPI flash execute-in-place block
 pub mod xip_ctrl;
@@ -1058,42 +511,7 @@ pub struct XIP_AUX {
 
 unsafe impl Send for XIP_AUX {}
 
-impl XIP_AUX {
-    /// Pointer to the register block
-    pub const PTR: *const xip_aux::RegisterBlock = 0x50500000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const xip_aux::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for XIP_AUX {
-    type Target = xip_aux::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for XIP_AUX {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("XIP_AUX").finish()
-    }
-}
+peripheral!(XIP_AUX, xip_aux::RegisterBlock, 0x50500000);
 
 /// Auxiliary DMA access to XIP FIFOs, via fast AHB bus access
 pub mod xip_aux;
@@ -1105,42 +523,7 @@ pub struct SYSCFG {
 
 unsafe impl Send for SYSCFG {}
 
-impl SYSCFG {
-    /// Pointer to the register block
-    pub const PTR: *const syscfg::RegisterBlock = 0x40008000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const syscfg::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for SYSCFG {
-    type Target = syscfg::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for SYSCFG {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("SYSCFG").finish()
-    }
-}
+peripheral!(SYSCFG, syscfg::RegisterBlock, 0x40008000);
 
 /// Register block for various chip control signals
 pub mod syscfg;
@@ -1152,42 +535,7 @@ pub struct XOSC {
 
 unsafe impl Send for XOSC {}
 
-impl XOSC {
-    /// Pointer to the register block
-    pub const PTR: *const xosc::RegisterBlock = 0x40048000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const xosc::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for XOSC {
-    type Target = xosc::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for XOSC {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("XOSC").finish()
-    }
-}
+peripheral!(XOSC, xosc::RegisterBlock, 0x40048000);
 
 /// Controls the crystal oscillator
 pub mod xosc;
@@ -1199,42 +547,7 @@ pub struct PLL_SYS {
 
 unsafe impl Send for PLL_SYS {}
 
-impl PLL_SYS {
-    /// Pointer to the register block
-    pub const PTR: *const pll_sys::RegisterBlock = 0x40050000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const pll_sys::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for PLL_SYS {
-    type Target = pll_sys::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for PLL_SYS {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("PLL_SYS").finish()
-    }
-}
+peripheral!(PLL_SYS, pll_sys::RegisterBlock, 0x40050000);
 
 /// PLL_SYS register module
 pub mod pll_sys;
@@ -1246,42 +559,7 @@ pub struct PLL_USB {
 
 unsafe impl Send for PLL_USB {}
 
-impl PLL_USB {
-    /// Pointer to the register block
-    pub const PTR: *const pll_usb::RegisterBlock = 0x40058000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const pll_usb::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for PLL_USB {
-    type Target = pll_usb::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for PLL_USB {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("PLL_USB").finish()
-    }
-}
+peripheral!(PLL_USB, pll_usb::RegisterBlock, 0x40058000);
 
 /// PLL_USB register module
 pub mod pll_usb;
@@ -1293,42 +571,7 @@ pub struct ACCESSCTRL {
 
 unsafe impl Send for ACCESSCTRL {}
 
-impl ACCESSCTRL {
-    /// Pointer to the register block
-    pub const PTR: *const accessctrl::RegisterBlock = 0x40060000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const accessctrl::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for ACCESSCTRL {
-    type Target = accessctrl::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for ACCESSCTRL {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("ACCESSCTRL").finish()
-    }
-}
+peripheral!(ACCESSCTRL, accessctrl::RegisterBlock, 0x40060000);
 
 /// Hardware access control registers
 pub mod accessctrl;
@@ -1340,42 +583,7 @@ pub struct UART0 {
 
 unsafe impl Send for UART0 {}
 
-impl UART0 {
-    /// Pointer to the register block
-    pub const PTR: *const uart0::RegisterBlock = 0x40070000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const uart0::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for UART0 {
-    type Target = uart0::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for UART0 {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("UART0").finish()
-    }
-}
+peripheral!(UART0, uart0::RegisterBlock, 0x40070000);
 
 /// UART0 register module
 pub mod uart0;
@@ -1387,42 +595,7 @@ pub struct UART1 {
 
 unsafe impl Send for UART1 {}
 
-impl UART1 {
-    /// Pointer to the register block
-    pub const PTR: *const uart1::RegisterBlock = 0x40078000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const uart1::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for UART1 {
-    type Target = uart1::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for UART1 {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("UART1").finish()
-    }
-}
+peripheral!(UART1, uart1::RegisterBlock, 0x40078000);
 
 /// UART1 register module
 pub mod uart1;
@@ -1434,42 +607,7 @@ pub struct ROSC {
 
 unsafe impl Send for ROSC {}
 
-impl ROSC {
-    /// Pointer to the register block
-    pub const PTR: *const rosc::RegisterBlock = 0x400e8000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const rosc::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for ROSC {
-    type Target = rosc::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for ROSC {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("ROSC").finish()
-    }
-}
+peripheral!(ROSC, rosc::RegisterBlock, 0x400e8000);
 
 /// ROSC register module
 pub mod rosc;
@@ -1481,42 +619,7 @@ pub struct POWMAN {
 
 unsafe impl Send for POWMAN {}
 
-impl POWMAN {
-    /// Pointer to the register block
-    pub const PTR: *const powman::RegisterBlock = 0x40100000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const powman::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for POWMAN {
-    type Target = powman::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for POWMAN {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("POWMAN").finish()
-    }
-}
+peripheral!(POWMAN, powman::RegisterBlock, 0x40100000);
 
 /// Controls vreg, bor, lposc, chip resets & xosc startup, powman and provides scratch register for general use and for bootcode use
 pub mod powman;
@@ -1528,42 +631,7 @@ pub struct WATCHDOG {
 
 unsafe impl Send for WATCHDOG {}
 
-impl WATCHDOG {
-    /// Pointer to the register block
-    pub const PTR: *const watchdog::RegisterBlock = 0x400d8000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const watchdog::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for WATCHDOG {
-    type Target = watchdog::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for WATCHDOG {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("WATCHDOG").finish()
-    }
-}
+peripheral!(WATCHDOG, watchdog::RegisterBlock, 0x400d8000);
 
 /// WATCHDOG register module
 pub mod watchdog;
@@ -1575,42 +643,7 @@ pub struct DMA {
 
 unsafe impl Send for DMA {}
 
-impl DMA {
-    /// Pointer to the register block
-    pub const PTR: *const dma::RegisterBlock = 0x50000000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const dma::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for DMA {
-    type Target = dma::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for DMA {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("DMA").finish()
-    }
-}
+peripheral!(DMA, dma::RegisterBlock, 0x50000000);
 
 /// DMA with separate read and write masters
 pub mod dma;
@@ -1622,42 +655,7 @@ pub struct TIMER0 {
 
 unsafe impl Send for TIMER0 {}
 
-impl TIMER0 {
-    /// Pointer to the register block
-    pub const PTR: *const timer0::RegisterBlock = 0x400b0000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const timer0::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for TIMER0 {
-    type Target = timer0::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for TIMER0 {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("TIMER0").finish()
-    }
-}
+peripheral!(TIMER0, timer0::RegisterBlock, 0x400b0000);
 
 /// Controls time and alarms
 pub mod timer0;
@@ -1669,42 +667,7 @@ pub struct TIMER1 {
 
 unsafe impl Send for TIMER1 {}
 
-impl TIMER1 {
-    /// Pointer to the register block
-    pub const PTR: *const timer1::RegisterBlock = 0x400b8000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const timer1::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for TIMER1 {
-    type Target = timer1::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for TIMER1 {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("TIMER1").finish()
-    }
-}
+peripheral!(TIMER1, timer1::RegisterBlock, 0x400b8000);
 
 /// TIMER1 register module
 pub mod timer1;
@@ -1716,42 +679,7 @@ pub struct PWM {
 
 unsafe impl Send for PWM {}
 
-impl PWM {
-    /// Pointer to the register block
-    pub const PTR: *const pwm::RegisterBlock = 0x400a8000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const pwm::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for PWM {
-    type Target = pwm::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for PWM {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("PWM").finish()
-    }
-}
+peripheral!(PWM, pwm::RegisterBlock, 0x400a8000);
 
 /// Simple PWM
 pub mod pwm;
@@ -1763,42 +691,7 @@ pub struct ADC {
 
 unsafe impl Send for ADC {}
 
-impl ADC {
-    /// Pointer to the register block
-    pub const PTR: *const adc::RegisterBlock = 0x400a0000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const adc::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for ADC {
-    type Target = adc::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for ADC {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("ADC").finish()
-    }
-}
+peripheral!(ADC, adc::RegisterBlock, 0x400a0000);
 
 /// Control and data interface to SAR ADC
 pub mod adc;
@@ -1810,42 +703,7 @@ pub struct I2C0 {
 
 unsafe impl Send for I2C0 {}
 
-impl I2C0 {
-    /// Pointer to the register block
-    pub const PTR: *const i2c0::RegisterBlock = 0x40090000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const i2c0::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for I2C0 {
-    type Target = i2c0::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for I2C0 {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("I2C0").finish()
-    }
-}
+peripheral!(I2C0, i2c0::RegisterBlock, 0x40090000);
 
 /// DW_apb_i2c address block
 pub mod i2c0;
@@ -1857,42 +715,7 @@ pub struct I2C1 {
 
 unsafe impl Send for I2C1 {}
 
-impl I2C1 {
-    /// Pointer to the register block
-    pub const PTR: *const i2c1::RegisterBlock = 0x40098000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const i2c1::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for I2C1 {
-    type Target = i2c1::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for I2C1 {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("I2C1").finish()
-    }
-}
+peripheral!(I2C1, i2c1::RegisterBlock, 0x40098000);
 
 /// I2C1 register module
 pub mod i2c1;
@@ -1904,42 +727,7 @@ pub struct SPI0 {
 
 unsafe impl Send for SPI0 {}
 
-impl SPI0 {
-    /// Pointer to the register block
-    pub const PTR: *const spi0::RegisterBlock = 0x40080000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const spi0::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for SPI0 {
-    type Target = spi0::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for SPI0 {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("SPI0").finish()
-    }
-}
+peripheral!(SPI0, spi0::RegisterBlock, 0x40080000);
 
 /// SPI0 register module
 pub mod spi0;
@@ -1951,42 +739,7 @@ pub struct SPI1 {
 
 unsafe impl Send for SPI1 {}
 
-impl SPI1 {
-    /// Pointer to the register block
-    pub const PTR: *const spi1::RegisterBlock = 0x40088000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const spi1::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for SPI1 {
-    type Target = spi1::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for SPI1 {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("SPI1").finish()
-    }
-}
+peripheral!(SPI1, spi1::RegisterBlock, 0x40088000);
 
 /// SPI1 register module
 pub mod spi1;
@@ -1998,42 +751,7 @@ pub struct PIO0 {
 
 unsafe impl Send for PIO0 {}
 
-impl PIO0 {
-    /// Pointer to the register block
-    pub const PTR: *const pio0::RegisterBlock = 0x50200000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const pio0::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for PIO0 {
-    type Target = pio0::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for PIO0 {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("PIO0").finish()
-    }
-}
+peripheral!(PIO0, pio0::RegisterBlock, 0x50200000);
 
 /// Programmable IO block
 pub mod pio0;
@@ -2045,42 +763,7 @@ pub struct PIO1 {
 
 unsafe impl Send for PIO1 {}
 
-impl PIO1 {
-    /// Pointer to the register block
-    pub const PTR: *const pio1::RegisterBlock = 0x50300000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const pio1::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for PIO1 {
-    type Target = pio1::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for PIO1 {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("PIO1").finish()
-    }
-}
+peripheral!(PIO1, pio1::RegisterBlock, 0x50300000);
 
 /// PIO1 register module
 pub mod pio1;
@@ -2092,42 +775,7 @@ pub struct PIO2 {
 
 unsafe impl Send for PIO2 {}
 
-impl PIO2 {
-    /// Pointer to the register block
-    pub const PTR: *const pio2::RegisterBlock = 0x50400000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const pio2::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for PIO2 {
-    type Target = pio2::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for PIO2 {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("PIO2").finish()
-    }
-}
+peripheral!(PIO2, pio2::RegisterBlock, 0x50400000);
 
 /// PIO2 register module
 pub mod pio2;
@@ -2139,42 +787,7 @@ pub struct BUSCTRL {
 
 unsafe impl Send for BUSCTRL {}
 
-impl BUSCTRL {
-    /// Pointer to the register block
-    pub const PTR: *const busctrl::RegisterBlock = 0x40068000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const busctrl::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for BUSCTRL {
-    type Target = busctrl::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for BUSCTRL {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("BUSCTRL").finish()
-    }
-}
+peripheral!(BUSCTRL, busctrl::RegisterBlock, 0x40068000);
 
 /// Register block for busfabric control signals and performance counters
 pub mod busctrl;
@@ -2186,42 +799,7 @@ pub struct SIO {
 
 unsafe impl Send for SIO {}
 
-impl SIO {
-    /// Pointer to the register block
-    pub const PTR: *const sio::RegisterBlock = 0xd0000000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const sio::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for SIO {
-    type Target = sio::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for SIO {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("SIO").finish()
-    }
-}
+peripheral!(SIO, sio::RegisterBlock, 0xd0000000);
 
 /// Single-cycle IO block
 pub mod sio;
@@ -2233,42 +811,7 @@ pub struct SIO_NS {
 
 unsafe impl Send for SIO_NS {}
 
-impl SIO_NS {
-    /// Pointer to the register block
-    pub const PTR: *const sio_ns::RegisterBlock = 0xd0020000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const sio_ns::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for SIO_NS {
-    type Target = sio_ns::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for SIO_NS {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("SIO_NS").finish()
-    }
-}
+peripheral!(SIO_NS, sio_ns::RegisterBlock, 0xd0020000);
 
 /// SIO_NS register module
 pub mod sio_ns;
@@ -2280,42 +823,7 @@ pub struct BOOTRAM {
 
 unsafe impl Send for BOOTRAM {}
 
-impl BOOTRAM {
-    /// Pointer to the register block
-    pub const PTR: *const bootram::RegisterBlock = 0x400e0000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const bootram::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for BOOTRAM {
-    type Target = bootram::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for BOOTRAM {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("BOOTRAM").finish()
-    }
-}
+peripheral!(BOOTRAM, bootram::RegisterBlock, 0x400e0000);
 
 /// Additional registers mapped adjacent to the bootram, for use by the bootrom.
 pub mod bootram;
@@ -2327,42 +835,7 @@ pub struct CORESIGHT_TRACE {
 
 unsafe impl Send for CORESIGHT_TRACE {}
 
-impl CORESIGHT_TRACE {
-    /// Pointer to the register block
-    pub const PTR: *const coresight_trace::RegisterBlock = 0x50700000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const coresight_trace::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for CORESIGHT_TRACE {
-    type Target = coresight_trace::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for CORESIGHT_TRACE {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("CORESIGHT_TRACE").finish()
-    }
-}
+peripheral!(CORESIGHT_TRACE, coresight_trace::RegisterBlock, 0x50700000);
 
 /// Coresight block - RP specific registers
 pub mod coresight_trace;
@@ -2374,42 +847,7 @@ pub struct USB {
 
 unsafe impl Send for USB {}
 
-impl USB {
-    /// Pointer to the register block
-    pub const PTR: *const usb::RegisterBlock = 0x50110000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const usb::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for USB {
-    type Target = usb::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for USB {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("USB").finish()
-    }
-}
+peripheral!(USB, usb::RegisterBlock, 0x50110000);
 
 /// USB FS/LS controller device registers
 pub mod usb;
@@ -2421,42 +859,7 @@ pub struct TRNG {
 
 unsafe impl Send for TRNG {}
 
-impl TRNG {
-    /// Pointer to the register block
-    pub const PTR: *const trng::RegisterBlock = 0x400f0000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const trng::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for TRNG {
-    type Target = trng::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for TRNG {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("TRNG").finish()
-    }
-}
+peripheral!(TRNG, trng::RegisterBlock, 0x400f0000);
 
 /// ARM TrustZone RNG register block
 pub mod trng;
@@ -2468,42 +871,7 @@ pub struct GLITCH_DETECTOR {
 
 unsafe impl Send for GLITCH_DETECTOR {}
 
-impl GLITCH_DETECTOR {
-    /// Pointer to the register block
-    pub const PTR: *const glitch_detector::RegisterBlock = 0x40158000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const glitch_detector::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for GLITCH_DETECTOR {
-    type Target = glitch_detector::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for GLITCH_DETECTOR {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("GLITCH_DETECTOR").finish()
-    }
-}
+peripheral!(GLITCH_DETECTOR, glitch_detector::RegisterBlock, 0x40158000);
 
 /// Glitch detector controls
 pub mod glitch_detector;
@@ -2515,42 +883,7 @@ pub struct OTP {
 
 unsafe impl Send for OTP {}
 
-impl OTP {
-    /// Pointer to the register block
-    pub const PTR: *const otp::RegisterBlock = 0x40120000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const otp::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for OTP {
-    type Target = otp::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for OTP {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("OTP").finish()
-    }
-}
+peripheral!(OTP, otp::RegisterBlock, 0x40120000);
 
 /// SNPS OTP control IF (SBPI and RPi wrapper control)
 pub mod otp;
@@ -2562,42 +895,7 @@ pub struct OTP_DATA {
 
 unsafe impl Send for OTP_DATA {}
 
-impl OTP_DATA {
-    /// Pointer to the register block
-    pub const PTR: *const otp_data::RegisterBlock = 0x40130000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const otp_data::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for OTP_DATA {
-    type Target = otp_data::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for OTP_DATA {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("OTP_DATA").finish()
-    }
-}
+peripheral!(OTP_DATA, otp_data::RegisterBlock, 0x40130000);
 
 /// Predefined OTP data layout for RP2350
 pub mod otp_data;
@@ -2609,42 +907,7 @@ pub struct OTP_DATA_RAW {
 
 unsafe impl Send for OTP_DATA_RAW {}
 
-impl OTP_DATA_RAW {
-    /// Pointer to the register block
-    pub const PTR: *const otp_data_raw::RegisterBlock = 0x40134000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const otp_data_raw::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for OTP_DATA_RAW {
-    type Target = otp_data_raw::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for OTP_DATA_RAW {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("OTP_DATA_RAW").finish()
-    }
-}
+peripheral!(OTP_DATA_RAW, otp_data_raw::RegisterBlock, 0x40134000);
 
 /// Predefined OTP data layout for RP2350
 pub mod otp_data_raw;
@@ -2656,42 +919,7 @@ pub struct TBMAN {
 
 unsafe impl Send for TBMAN {}
 
-impl TBMAN {
-    /// Pointer to the register block
-    pub const PTR: *const tbman::RegisterBlock = 0x40160000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const tbman::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for TBMAN {
-    type Target = tbman::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for TBMAN {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("TBMAN").finish()
-    }
-}
+peripheral!(TBMAN, tbman::RegisterBlock, 0x40160000);
 
 /// For managing simulation testbenches
 pub mod tbman;
@@ -2703,42 +931,7 @@ pub struct USB_DPRAM {
 
 unsafe impl Send for USB_DPRAM {}
 
-impl USB_DPRAM {
-    /// Pointer to the register block
-    pub const PTR: *const usb_dpram::RegisterBlock = 0x50100000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const usb_dpram::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for USB_DPRAM {
-    type Target = usb_dpram::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for USB_DPRAM {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("USB_DPRAM").finish()
-    }
-}
+peripheral!(USB_DPRAM, usb_dpram::RegisterBlock, 0x50100000);
 
 /// DPRAM layout for USB device.
 pub mod usb_dpram;
@@ -2750,42 +943,7 @@ pub struct SPARE_IRQ {
 
 unsafe impl Send for SPARE_IRQ {}
 
-impl SPARE_IRQ {
-    /// Pointer to the register block
-    pub const PTR: *const spare_irq::RegisterBlock = 0x00000000 as *const _;
-
-    /// Return the pointer to the register block
-    #[inline(always)]
-    pub const fn ptr() -> *const spare_irq::RegisterBlock {
-        Self::PTR
-    }
-
-    /// Steal an instance of this peripheral
-    ///
-    /// # Safety
-    ///
-    /// Ensure that the new instance of the peripheral cannot be used in a way
-    /// that may race with any existing instances.
-    #[inline]
-    pub unsafe fn steal() -> Self {
-        Self { _marker: PhantomData }
-    }
-}
-
-impl Deref for SPARE_IRQ {
-    type Target = spare_irq::RegisterBlock;
-
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        unsafe { &*Self::PTR }
-    }
-}
-
-impl core::fmt::Debug for SPARE_IRQ {
-    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        f.debug_struct("SPARE_IRQ").finish()
-    }
-}
+peripheral!(SPARE_IRQ, spare_irq::RegisterBlock, 0x00000000);
 
 /// SPARE_IRQ register module
 pub mod spare_irq;

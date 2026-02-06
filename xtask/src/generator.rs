@@ -197,6 +197,93 @@ fn generate_mod_rs(peripherals: &[&Peripheral]) -> String {
     }
 
     // Generate peripheral structs
+    // Generate peripheral! macro
+    writeln!(
+        out,
+        "// ============================================================================"
+    )
+    .unwrap();
+    writeln!(out, "// Peripheral Wrapper Macro").unwrap();
+    writeln!(
+        out,
+        "// ============================================================================"
+    )
+    .unwrap();
+    writeln!(out).unwrap();
+
+    writeln!(out, "/// Helper macro to create peripheral wrappers").unwrap();
+    writeln!(out, "macro_rules! peripheral {{").unwrap();
+    writeln!(out, "    ($name:ident, $reg:ty, $base:expr) => {{").unwrap();
+    writeln!(out, "        impl $name {{").unwrap();
+    writeln!(
+        out,
+        "            /// Pointer to the peripheral's register block"
+    )
+    .unwrap();
+    writeln!(
+        out,
+        "            pub const PTR: *const $reg = $base as *const $reg;"
+    )
+    .unwrap();
+    writeln!(out).unwrap();
+    writeln!(out, "            /// Steal an instance of this peripheral").unwrap();
+    writeln!(out, "            ///").unwrap();
+    writeln!(out, "            /// # Safety").unwrap();
+    writeln!(out, "            ///").unwrap();
+    writeln!(
+        out,
+        "            /// Ensure that the new instance of the peripheral cannot be used in a way"
+    )
+    .unwrap();
+    writeln!(
+        out,
+        "            /// that may race with any existing instances."
+    )
+    .unwrap();
+    writeln!(out, "            #[inline]").unwrap();
+    writeln!(out, "            pub unsafe fn steal() -> Self {{").unwrap();
+    writeln!(out, "                Self {{").unwrap();
+    writeln!(out, "                    _marker: PhantomData,").unwrap();
+    writeln!(out, "                }}").unwrap();
+    writeln!(out, "            }}").unwrap();
+    writeln!(out).unwrap();
+    writeln!(
+        out,
+        "            /// Returns a raw pointer to the register block"
+    )
+    .unwrap();
+    writeln!(out, "            #[inline(always)]").unwrap();
+    writeln!(out, "            pub const fn ptr() -> *const $reg {{").unwrap();
+    writeln!(out, "                Self::PTR").unwrap();
+    writeln!(out, "            }}").unwrap();
+    writeln!(out, "        }}").unwrap();
+    writeln!(out).unwrap();
+    writeln!(out, "        impl Deref for $name {{").unwrap();
+    writeln!(out, "            type Target = $reg;").unwrap();
+    writeln!(out).unwrap();
+    writeln!(out, "            #[inline(always)]").unwrap();
+    writeln!(out, "            fn deref(&self) -> &Self::Target {{").unwrap();
+    writeln!(out, "                unsafe {{ &*Self::PTR }}").unwrap();
+    writeln!(out, "            }}").unwrap();
+    writeln!(out, "        }}").unwrap();
+    writeln!(out).unwrap();
+    writeln!(out, "        impl core::fmt::Debug for $name {{").unwrap();
+    writeln!(
+        out,
+        "            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {{"
+    )
+    .unwrap();
+    writeln!(
+        out,
+        "                f.debug_struct(stringify!($name)).finish()"
+    )
+    .unwrap();
+    writeln!(out, "            }}").unwrap();
+    writeln!(out, "        }}").unwrap();
+    writeln!(out, "    }};").unwrap();
+    writeln!(out, "}}").unwrap();
+    writeln!(out).unwrap();
+
     writeln!(
         out,
         "// ============================================================================"
@@ -226,60 +313,12 @@ fn generate_mod_rs(peripherals: &[&Peripheral]) -> String {
         writeln!(out).unwrap();
         writeln!(out, "unsafe impl Send for {} {{}}", struct_name).unwrap();
         writeln!(out).unwrap();
-        writeln!(out, "impl {} {{", struct_name).unwrap();
-        writeln!(out, "    /// Pointer to the register block").unwrap();
         writeln!(
             out,
-            "    pub const PTR: *const {}::RegisterBlock = {:#010x} as *const _;",
-            mod_name, base_addr
+            "peripheral!({}, {}::RegisterBlock, {:#010x});",
+            struct_name, mod_name, base_addr
         )
         .unwrap();
-        writeln!(out).unwrap();
-        writeln!(out, "    /// Return the pointer to the register block").unwrap();
-        writeln!(out, "    #[inline(always)]").unwrap();
-        writeln!(
-            out,
-            "    pub const fn ptr() -> *const {}::RegisterBlock {{",
-            mod_name
-        )
-        .unwrap();
-        writeln!(out, "        Self::PTR").unwrap();
-        writeln!(out, "    }}").unwrap();
-        writeln!(out).unwrap();
-        writeln!(out, "    /// Steal an instance of this peripheral").unwrap();
-        writeln!(out, "    ///").unwrap();
-        writeln!(out, "    /// # Safety").unwrap();
-        writeln!(out, "    ///").unwrap();
-        writeln!(
-            out,
-            "    /// Ensure that the new instance of the peripheral cannot be used in a way"
-        )
-        .unwrap();
-        writeln!(out, "    /// that may race with any existing instances.").unwrap();
-        writeln!(out, "    #[inline]").unwrap();
-        writeln!(out, "    pub unsafe fn steal() -> Self {{").unwrap();
-        writeln!(out, "        Self {{ _marker: PhantomData }}").unwrap();
-        writeln!(out, "    }}").unwrap();
-        writeln!(out, "}}").unwrap();
-        writeln!(out).unwrap();
-        writeln!(out, "impl Deref for {} {{", struct_name).unwrap();
-        writeln!(out, "    type Target = {}::RegisterBlock;", mod_name).unwrap();
-        writeln!(out).unwrap();
-        writeln!(out, "    #[inline(always)]").unwrap();
-        writeln!(out, "    fn deref(&self) -> &Self::Target {{").unwrap();
-        writeln!(out, "        unsafe {{ &*Self::PTR }}").unwrap();
-        writeln!(out, "    }}").unwrap();
-        writeln!(out, "}}").unwrap();
-        writeln!(out).unwrap();
-        writeln!(out, "impl core::fmt::Debug for {} {{", struct_name).unwrap();
-        writeln!(
-            out,
-            "    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {{"
-        )
-        .unwrap();
-        writeln!(out, "        f.debug_struct(\"{}\").finish()", struct_name).unwrap();
-        writeln!(out, "    }}").unwrap();
-        writeln!(out, "}}").unwrap();
         writeln!(out).unwrap();
         if !periph.description.is_empty() {
             writeln!(out, "/// {}", short_desc(&periph.description)).unwrap();
@@ -1246,7 +1285,7 @@ fn write_register_value_struct(out: &mut String, reg: &Register) -> Result<()> {
 /// Generate the RegisterBlock struct
 fn write_register_block(
     out: &mut String,
-    periph_name: &str,
+    _periph_name: &str,
     registers: &[Register],
     _supports_atomic: bool,
 ) -> Result<()> {
@@ -1284,123 +1323,6 @@ fn write_register_block(
     writeln!(out, "}}")?;
     writeln!(out)?;
 
-    // Generate helper methods for specific peripherals
-    write_peripheral_helpers(out, periph_name)?;
-
-    Ok(())
-}
-
-/// Generate peripheral-specific helper methods
-fn write_peripheral_helpers(out: &mut String, periph_name: &str) -> Result<()> {
-    match periph_name {
-        "IO_BANK0" => {
-            writeln!(out, "impl RegisterBlock {{")?;
-            writeln!(
-                out,
-                "    /// Get GPIO control register by pin number (0-47)"
-            )?;
-            writeln!(out, "    ///")?;
-            writeln!(out, "    /// # Safety")?;
-            writeln!(out, "    /// Pin number must be < 48")?;
-            writeln!(out, "    #[inline(always)]")?;
-            writeln!(
-                out,
-                "    pub unsafe fn gpio_ctrl(&self, pin: u8) -> &Gpio0Ctrl {{"
-            )?;
-            writeln!(out, "        debug_assert!(pin < 48);")?;
-            writeln!(
-                out,
-                "        // GPIO ctrl registers are at offset 0x04 + (pin * 8)"
-            )?;
-            writeln!(out, "        unsafe {{")?;
-            writeln!(
-                out,
-                "            let ptr = (self as *const Self as *const u8).add(0x04 + (pin as usize) * 8);"
-            )?;
-            writeln!(out, "            &*(ptr as *const Gpio0Ctrl)")?;
-            writeln!(out, "        }}")?;
-            writeln!(out, "    }}")?;
-            writeln!(out)?;
-            writeln!(out, "    /// Get GPIO status register by pin number (0-47)")?;
-            writeln!(out, "    ///")?;
-            writeln!(out, "    /// # Safety")?;
-            writeln!(out, "    /// Pin number must be < 48")?;
-            writeln!(out, "    #[inline(always)]")?;
-            writeln!(
-                out,
-                "    pub unsafe fn gpio_status(&self, pin: u8) -> &Gpio0Status {{"
-            )?;
-            writeln!(out, "        debug_assert!(pin < 48);")?;
-            writeln!(
-                out,
-                "        // GPIO status registers are at offset 0x00 + (pin * 8)"
-            )?;
-            writeln!(out, "        unsafe {{")?;
-            writeln!(
-                out,
-                "            let ptr = (self as *const Self as *const u8).add((pin as usize) * 8);"
-            )?;
-            writeln!(out, "            &*(ptr as *const Gpio0Status)")?;
-            writeln!(out, "        }}")?;
-            writeln!(out, "    }}")?;
-            writeln!(out, "}}")?;
-            writeln!(out)?;
-        }
-        "PADS_BANK0" => {
-            writeln!(out, "impl RegisterBlock {{")?;
-            writeln!(
-                out,
-                "    /// Get pad control register by GPIO pin number (0-47)"
-            )?;
-            writeln!(out, "    ///")?;
-            writeln!(out, "    /// # Safety")?;
-            writeln!(out, "    /// Pin number must be < 48")?;
-            writeln!(out, "    #[inline(always)]")?;
-            writeln!(out, "    pub unsafe fn gpio(&self, pin: u8) -> &Gpio0 {{")?;
-            writeln!(out, "        debug_assert!(pin < 48);")?;
-            writeln!(
-                out,
-                "        // Pad registers are at offset 0x04 + (pin * 4)"
-            )?;
-            writeln!(out, "        unsafe {{")?;
-            writeln!(
-                out,
-                "            let ptr = (self as *const Self as *const u8).add(0x04 + (pin as usize) * 4);"
-            )?;
-            writeln!(out, "            &*(ptr as *const Gpio0)")?;
-            writeln!(out, "        }}")?;
-            writeln!(out, "    }}")?;
-            writeln!(out, "}}")?;
-            writeln!(out)?;
-        }
-        "PADS_QSPI" => {
-            writeln!(out, "impl RegisterBlock {{")?;
-            writeln!(
-                out,
-                "    /// Get QSPI pad control register by index (0=SCLK, 1=SD0, 2=SD1, 3=SD2, 4=SD3, 5=SS)"
-            )?;
-            writeln!(out, "    ///")?;
-            writeln!(out, "    /// # Safety")?;
-            writeln!(out, "    /// Index must be < 6")?;
-            writeln!(out, "    #[inline(always)]")?;
-            writeln!(
-                out,
-                "    pub unsafe fn pad(&self, index: u8) -> &GpioQspiSclk {{"
-            )?;
-            writeln!(out, "        debug_assert!(index < 6);")?;
-            writeln!(out, "        unsafe {{")?;
-            writeln!(
-                out,
-                "            let ptr = (self as *const Self as *const u8).add(0x04 + (index as usize) * 4);"
-            )?;
-            writeln!(out, "            &*(ptr as *const GpioQspiSclk)")?;
-            writeln!(out, "        }}")?;
-            writeln!(out, "    }}")?;
-            writeln!(out, "}}")?;
-            writeln!(out)?;
-        }
-        _ => {}
-    }
     Ok(())
 }
 
