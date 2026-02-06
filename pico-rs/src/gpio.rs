@@ -901,6 +901,72 @@ macro_rules! impl_pin {
                     self.set_function(Function::Uart);
                     self
                 }
+
+                // ================================================================
+                // Dormant Wake Configuration
+                // ================================================================
+
+                /// Enable this pin as a wake source for dormant mode.
+                ///
+                /// Configures the GPIO to generate a dormant wake interrupt
+                /// on the specified edge/level condition.
+                ///
+                /// # Arguments
+                ///
+                /// * `edge` - The edge/level condition to trigger wake
+                ///
+                /// # Example
+                ///
+                /// ```ignore
+                /// // Configure pin 0 to wake on falling edge (button press)
+                /// pins.p0.into_input_pullup();
+                /// pins.p0.set_dormant_wake(EdgeLevel::EdgeLow);
+                ///
+                /// // Enter dormant mode...
+                /// clocks.dormant(DormantSource::Xosc, &xosc);
+                /// ```
+                #[inline]
+                pub fn set_dormant_wake(&self, edge: EdgeLevel) {
+                    // Each DORMANT_WAKE_INTE register covers 8 GPIOs (4 bits each)
+                    // Pin N is in register N/8, at bit offset (N%8)*4
+                    const REG_IDX: usize = $n / 8;
+                    const BIT_OFFSET: u32 = (($n % 8) * 4) as u32;
+
+                    let bit = match edge {
+                        EdgeLevel::LevelLow => 1 << (BIT_OFFSET + 0),
+                        EdgeLevel::LevelHigh => 1 << (BIT_OFFSET + 1),
+                        EdgeLevel::EdgeLow => 1 << (BIT_OFFSET + 2),
+                        EdgeLevel::EdgeHigh => 1 << (BIT_OFFSET + 3),
+                    };
+
+                    let io = self.io_bank();
+                    match REG_IDX {
+                        0 => io.dormant_wake_inte0.set_bits(bit),
+                        1 => io.dormant_wake_inte1.set_bits(bit),
+                        2 => io.dormant_wake_inte2.set_bits(bit),
+                        3 => io.dormant_wake_inte3.set_bits(bit),
+                        _ => {} // Pins 0-29 only use INTE0-INTE3
+                    }
+                }
+
+                /// Disable dormant wake for this pin.
+                ///
+                /// Clears all dormant wake conditions for this pin.
+                #[inline]
+                pub fn clear_dormant_wake(&self) {
+                    const REG_IDX: usize = $n / 8;
+                    const BIT_OFFSET: u32 = (($n % 8) * 4) as u32;
+                    const MASK: u32 = 0xF << BIT_OFFSET;
+
+                    let io = self.io_bank();
+                    match REG_IDX {
+                        0 => io.dormant_wake_inte0.clr_bits(MASK),
+                        1 => io.dormant_wake_inte1.clr_bits(MASK),
+                        2 => io.dormant_wake_inte2.clr_bits(MASK),
+                        3 => io.dormant_wake_inte3.clr_bits(MASK),
+                        _ => {}
+                    }
+                }
             }
 
             impl core::fmt::Debug for Pin<$n> {
@@ -1219,6 +1285,50 @@ macro_rules! impl_pin {
                     self.init_pad();
                     self.set_function(Function::Uart);
                     self
+                }
+
+                // ================================================================
+                // Dormant Wake Configuration
+                // ================================================================
+
+                /// Enable this pin as a wake source for dormant mode.
+                ///
+                /// Configures the GPIO to generate a dormant wake interrupt
+                /// on the specified edge/level condition.
+                #[inline]
+                pub fn set_dormant_wake(&self, edge: EdgeLevel) {
+                    // High pins (32-47) use INTE4 and INTE5
+                    const REG_IDX: usize = $n / 8;  // 32-39 → 4, 40-47 → 5
+                    const BIT_OFFSET: u32 = (($n % 8) * 4) as u32;
+
+                    let bit = match edge {
+                        EdgeLevel::LevelLow => 1 << (BIT_OFFSET + 0),
+                        EdgeLevel::LevelHigh => 1 << (BIT_OFFSET + 1),
+                        EdgeLevel::EdgeLow => 1 << (BIT_OFFSET + 2),
+                        EdgeLevel::EdgeHigh => 1 << (BIT_OFFSET + 3),
+                    };
+
+                    let io = self.io_bank();
+                    match REG_IDX {
+                        4 => io.dormant_wake_inte4.set_bits(bit),
+                        5 => io.dormant_wake_inte5.set_bits(bit),
+                        _ => {}
+                    }
+                }
+
+                /// Disable dormant wake for this pin.
+                #[inline]
+                pub fn clear_dormant_wake(&self) {
+                    const REG_IDX: usize = $n / 8;
+                    const BIT_OFFSET: u32 = (($n % 8) * 4) as u32;
+                    const MASK: u32 = 0xF << BIT_OFFSET;
+
+                    let io = self.io_bank();
+                    match REG_IDX {
+                        4 => io.dormant_wake_inte4.clr_bits(MASK),
+                        5 => io.dormant_wake_inte5.clr_bits(MASK),
+                        _ => {}
+                    }
                 }
             }
 

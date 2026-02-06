@@ -131,6 +131,19 @@
 
 #![allow(clippy::identity_op)]
 
+// ============================================================================
+// Sub-modules: Clock Sources (Layer 0)
+// ============================================================================
+
+pub mod pll;
+pub mod rosc;
+pub mod xosc;
+
+use crate::reset::{self, Peripheral};
+pub use pll::{PllConfig, PllSys, PllUsb};
+pub use rosc::Rosc;
+pub use xosc::Xosc;
+
 use pico_rs_pac::{CLOCKS, PLL_SYS, PLL_USB, XOSC};
 
 // ============================================================================
@@ -190,6 +203,24 @@ pub enum ClockId {
     /// ADC clock - MUST be exactly 48 MHz for correct ADC operation
     /// Typical source: PLL_USB
     Adc = 9,
+}
+
+/// Dormant mode clock source selection.
+///
+/// Specifies which oscillator to put into dormant mode.
+/// The other oscillator is used to keep clk_ref running at a low frequency.
+///
+/// | Source | Sleep Oscillator | clk_ref Source | Notes                    |
+/// |--------|------------------|----------------|--------------------------|
+/// | Xosc   | XOSC             | ROSC           | Lower power, less stable |
+/// | Rosc   | ROSC             | XOSC           | Stable ref clock         |
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+pub enum DormantSource {
+    /// Put XOSC into dormant mode, use ROSC for clk_ref
+    Xosc,
+    /// Put ROSC into dormant mode, use XOSC for clk_ref
+    Rosc,
 }
 
 // ============================================================================
@@ -527,6 +558,10 @@ struct ClockFrequencies {
 pub struct Clocks {
     clocks: CLOCKS,
     frequencies: ClockFrequencies,
+    /// Crystal oscillator (owned for dormant mode)
+    xosc: Xosc,
+    /// Ring oscillator (owned for dormant mode and RNG)
+    rosc: Rosc,
 }
 
 impl Clocks {
@@ -534,12 +569,30 @@ impl Clocks {
     ///
     /// # Arguments
     /// * `clocks` - The CLOCKS peripheral from PAC
+    /// * `xosc` - The initialized XOSC
+    /// * `rosc` - The ROSC driver
     #[inline]
-    pub fn new(clocks: CLOCKS) -> Self {
+    pub fn new(clocks: CLOCKS, xosc: Xosc) -> Self {
+        // ROSC is already running from boot, just create the driver
+        let rosc = Rosc::new();
         Self {
             clocks,
             frequencies: ClockFrequencies::default(),
+            xosc,
+            rosc,
         }
+    }
+
+    /// Get a reference to the XOSC
+    #[inline]
+    pub fn xosc(&self) -> &Xosc {
+        &self.xosc
+    }
+
+    /// Get a mutable reference to the ROSC
+    #[inline]
+    pub fn rosc(&mut self) -> &Rosc {
+        &self.rosc
     }
 
     /// Get reference to the underlying register block
@@ -1195,6 +1248,253 @@ impl Clocks {
             ClockId::Adc => self.frequencies.adc_clk = freq,
         }
     }
+
+    // ========================================================================
+    // ██████╗  ██████╗ ██████╗ ███╗   ███╗ █████╗ ███╗   ██╗████████╗
+    // ██╔══██╗██╔═══██╗██╔══██╗████╗ ████║██╔══██╗████╗  ██║╚══██╔══╝
+    // ██║  ██║██║   ██║██████╔╝██╔████╔██║███████║██╔██╗ ██║   ██║
+    // ██║  ██║██║   ██║██╔══██╗██║╚██╔╝██║██╔══██║██║╚██╗██║   ██║
+    // ██████╔╝╚██████╔╝██║  ██║██║ ╚═╝ ██║██║  ██║██║ ╚████║   ██║
+    // ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝
+    // Dormant Mode - Ultra Low Power Sleep
+    // ========================================================================
+    //
+    // Dormant mode stops all clocks for ultra-low power consumption.
+    // The system is woken by an external interrupt (GPIO, RTC, etc.).
+    //
+    // Flow:
+    //   1. Configure wake source (GPIO interrupt)
+    //   2. Call prepare_dormant_xosc() or prepare_dormant_rosc()
+    //   3. Call xosc.dormant() or rosc.dormant()
+    //   4. CPU sleeps until wake interrupt
+    //   5. After wake, call restore_clocks() to resume normal operation
+    //
+    // ========================================================================
+
+    /// Prepare system for XOSC dormant mode.
+    ///
+    /// This switches clk_sys to clk_ref, then clk_ref to ROSC, and stops the PLLs.
+    /// After calling this, you can safely put XOSC into dormant mode.
+    ///
+    /// # Returns
+    /// The previous system clock frequency (for restoration after wake)
+    ///
+    /// # Example
+    ///
+    /// ```ignore
+    /// // Configure GPIO wake source first
+    /// gpio.set_dormant_wake(pins.p0, EdgeLow);
+    ///
+    /// // Prepare for dormant
+    /// let saved_sys_freq = clocks.prepare_dormant_xosc();
+    ///
+    /// // Enter dormant (CPU stops here until wake)
+    /// unsafe { xosc.dormant(); }
+    ///
+    /// // After wake, restore clocks
+    /// clocks.restore_from_dormant_xosc(saved_sys_freq);
+    /// ```
+    pub fn prepare_dormant_xosc(&mut self) -> u32 {
+        let saved_sys_freq = self.frequencies.sys_clk;
+
+        // Step 1: Switch clk_sys to clk_ref (safe, glitchless)
+        self.configure_sys_from_ref();
+
+        // Step 2: Switch clk_ref to ROSC (so XOSC can sleep)
+        self.configure_ref_src(ClkRefSrc::Rosc, 6_500_000); // ~6.5 MHz nominal
+
+        // Step 3: Disable PLLs to save power
+        // Safety: clk_sys is now running from clk_ref (ROSC), not PLLs
+        unsafe {
+            let pll_sys = pico_rs_pac::PLL_SYS::steal();
+            let pll_usb = pico_rs_pac::PLL_USB::steal();
+            // Power down PLLs: PD | VCOPD | POSTDIVPD | DSMPD
+            pll_sys.pwr.set_pd();
+            pll_sys.pwr.set_vcopd();
+            pll_sys.pwr.set_postdivpd();
+            pll_sys.pwr.set_dsmpd();
+            pll_usb.pwr.set_pd();
+            pll_usb.pwr.set_vcopd();
+            pll_usb.pwr.set_postdivpd();
+            pll_usb.pwr.set_dsmpd();
+        }
+
+        saved_sys_freq
+    }
+
+    /// Restore clocks after waking from XOSC dormant mode.
+    ///
+    /// This reconfigures the PLLs and restores clk_sys to its previous frequency.
+    ///
+    /// # Arguments
+    /// * `sys_freq` - The system clock frequency to restore (from prepare_dormant_xosc)
+    pub fn restore_from_dormant_xosc(&mut self, sys_freq: u32) {
+        // XOSC should already be running and stable after wake
+
+        // Step 1: Switch clk_ref back to XOSC
+        self.configure_ref_src(ClkRefSrc::Xosc, xosc::XOSC_HZ);
+
+        // Step 2: Reconfigure PLLs
+        unsafe {
+            // Reset and reconfigure PLL_SYS
+            reset::reset_block(Peripheral::PLL_SYS);
+            reset::unreset_block_wait(Peripheral::PLL_SYS);
+
+            let pll_sys = PllSys::new(pico_rs_pac::PLL_SYS::steal());
+            let config = match sys_freq {
+                125_000_000 => pll::PllConfig::sys_125mhz(),
+                133_000_000 => pll::PllConfig::sys_133mhz(),
+                _ => pll::PllConfig::sys_150mhz(),
+            };
+            pll_sys.configure(
+                config.refdiv,
+                config.fbdiv,
+                config.postdiv1,
+                config.postdiv2,
+            );
+            pll_sys.wait_lock();
+
+            // Reset and reconfigure PLL_USB
+            reset::reset_block(Peripheral::PLL_USB);
+            reset::unreset_block_wait(Peripheral::PLL_USB);
+
+            let pll_usb = PllUsb::new(pico_rs_pac::PLL_USB::steal());
+            let usb_config = pll::PllConfig::usb_48mhz();
+            pll_usb.configure(
+                usb_config.refdiv,
+                usb_config.fbdiv,
+                usb_config.postdiv1,
+                usb_config.postdiv2,
+            );
+            pll_usb.wait_lock();
+        }
+
+        // Step 3: Switch clk_sys back to PLL_SYS
+        self.configure_sys_aux(ClkSysAuxSrc::PllSys, sys_freq, sys_freq);
+    }
+
+    /// Prepare system for ROSC dormant mode.
+    ///
+    /// This switches clk_sys to clk_ref, then clk_ref to XOSC, and stops the PLLs.
+    /// After calling this, you can safely put ROSC into dormant mode.
+    ///
+    /// # Returns
+    /// The previous system clock frequency (for restoration after wake)
+    pub fn prepare_dormant_rosc(&mut self) -> u32 {
+        let saved_sys_freq = self.frequencies.sys_clk;
+
+        // Step 1: Switch clk_sys to clk_ref (safe, glitchless)
+        self.configure_sys_from_ref();
+
+        // Step 2: Switch clk_ref to XOSC (so ROSC can sleep)
+        // Note: XOSC must be running for this to work
+        self.configure_ref_src(ClkRefSrc::Xosc, xosc::XOSC_HZ);
+
+        // Step 3: Disable PLLs to save power
+        unsafe {
+            let pll_sys = pico_rs_pac::PLL_SYS::steal();
+            let pll_usb = pico_rs_pac::PLL_USB::steal();
+            // Power down PLLs: PD | VCOPD | POSTDIVPD | DSMPD
+            pll_sys.pwr.set_pd();
+            pll_sys.pwr.set_vcopd();
+            pll_sys.pwr.set_postdivpd();
+            pll_sys.pwr.set_dsmpd();
+            pll_usb.pwr.set_pd();
+            pll_usb.pwr.set_vcopd();
+            pll_usb.pwr.set_postdivpd();
+            pll_usb.pwr.set_dsmpd();
+        }
+
+        saved_sys_freq
+    }
+
+    /// Restore clocks after waking from ROSC dormant mode.
+    ///
+    /// # Arguments
+    /// * `sys_freq` - The system clock frequency to restore
+    pub fn restore_from_dormant_rosc(&mut self, sys_freq: u32) {
+        // ROSC should already be running after wake
+        // clk_ref is still on XOSC, which is fine
+
+        // Reconfigure PLLs and restore sys clock
+        self.restore_from_dormant_xosc(sys_freq);
+    }
+
+    /// Enter dormant (ultra-low power) mode.
+    ///
+    /// This method:
+    /// 1. Prepares the clock system for dormant mode
+    /// 2. Puts the specified oscillator into dormant state
+    /// 3. CPU stops here until a wake interrupt occurs
+    ///
+    /// After wake, call [`restore`](Self::restore) to resume normal operation.
+    ///
+    /// # Arguments
+    ///
+    /// * `source` - Which oscillator to put into dormant mode
+    ///
+    /// # Returns
+    ///
+    /// A tuple of (saved_sys_freq, source) to pass to `restore()`.
+    ///
+    /// # Example
+    ///
+    /// ```ignore
+    /// use pico_rs::clocks::DormantSource;
+    /// use pico_rs::gpio::EdgeLevel;
+    ///
+    /// // Configure GPIO wake source
+    /// pins.p0.into_input_pullup();
+    /// pins.p0.set_dormant_wake(EdgeLevel::EdgeLow);
+    ///
+    /// // Enter dormant mode (CPU stops here)
+    /// let state = clocks.dormant(DormantSource::Xosc);
+    ///
+    /// // After wake, restore clocks
+    /// clocks.restore(state);
+    /// ```
+    ///
+    /// # Safety
+    ///
+    /// The oscillator being put to sleep must be the one currently NOT driving
+    /// any active clocks. This is handled automatically by prepare_dormant_* methods.
+    pub fn dormant(&mut self, source: DormantSource) -> (u32, DormantSource) {
+        let saved_freq = match source {
+            DormantSource::Xosc => {
+                let freq = self.prepare_dormant_xosc();
+                self.xosc.dormant();
+                freq
+            }
+            DormantSource::Rosc => {
+                let freq = self.prepare_dormant_rosc();
+                // Safety: We've already switched clk_ref to XOSC, so ROSC is not driving any clocks
+                unsafe { self.rosc.dormant() };
+                freq
+            }
+        };
+        (saved_freq, source)
+    }
+
+    /// Restore clocks after waking from dormant mode.
+    ///
+    /// # Arguments
+    ///
+    /// * `state` - The state returned from [`dormant()`](Self::dormant)
+    ///
+    /// # Example
+    ///
+    /// ```ignore
+    /// let state = clocks.dormant(DormantSource::Xosc);
+    /// // ... CPU sleeps, wakes on GPIO interrupt ...
+    /// clocks.restore(state);
+    /// ```
+    pub fn restore(&mut self, state: (u32, DormantSource)) {
+        let (sys_freq, source) = state;
+        match source {
+            DormantSource::Xosc => self.restore_from_dormant_xosc(sys_freq),
+            DormantSource::Rosc => self.restore_from_dormant_rosc(sys_freq),
+        }
+    }
 }
 
 // ============================================================================
@@ -1219,10 +1519,6 @@ impl Clocks {
 //   6. Configure peripheral clocks (CLK_PERI, CLK_USB, CLK_ADC)
 //
 // ============================================================================
-
-use crate::pll::{PllConfig, PllSys, PllUsb};
-use crate::reset::{self, Peripheral};
-use crate::xosc::Xosc;
 
 // ============================================================================
 // Clock Builder - Flexible Clock Configuration with Sensible Defaults
@@ -1527,20 +1823,14 @@ impl ClockBuilder {
     ///
     /// # Panics
     /// Panics if an unsupported system frequency is requested.
-    pub fn build(
-        self,
-        clocks: CLOCKS,
-        xosc: XOSC,
-        pll_sys: PLL_SYS,
-        pll_usb: PLL_USB,
-    ) -> Clocks {
+    pub fn build(self, clocks: CLOCKS, xosc: XOSC, pll_sys: PLL_SYS, pll_usb: PLL_USB) -> Clocks {
         // ====================================================================
-        // Step 1: Initialize XOSC (Clock Tree Layer 0)
+        // Step 1: Initialize XOSC and ROSC (Clock Tree Layer 0)
         // ====================================================================
         let xosc = Xosc::init(xosc, self.xosc_freq);
         xosc.wait_stable();
 
-        let mut clocks = Clocks::new(clocks);
+        let mut clocks = Clocks::new(clocks, xosc);
 
         // ====================================================================
         // Step 2: Configure CLK_REF from XOSC (Clock Tree Layer 1)

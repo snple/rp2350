@@ -22,7 +22,7 @@
 //! ## Example
 //!
 //! ```ignore
-//! use pico_rs::pll::{PllSys, PllUsb};
+//! use pico_rs::clocks::pll::{PllSys, PllUsb};
 //! use pico_rs_pac::PLL_SYS;
 //!
 //! // Get PLL_SYS peripheral

@@ -119,7 +119,7 @@ impl Rosc {
 
     /// Enable the ring oscillator
     #[inline]
-    pub fn enable(&mut self) {
+    pub fn enable(&self) {
         let rosc = self.regs();
         rosc.ctrl
             .write_enable(Ctrl::ENABLE_ENABLE >> Ctrl::ENABLE_OFFSET);
@@ -130,7 +130,7 @@ impl Rosc {
     /// # Safety
     /// The system clock must not be using ROSC when disabling it.
     #[inline]
-    pub fn disable(&mut self) {
+    pub fn disable(&self) {
         let rosc = self.regs();
         rosc.ctrl
             .write_enable(Ctrl::ENABLE_DISABLE >> Ctrl::ENABLE_OFFSET);
@@ -162,7 +162,7 @@ impl Rosc {
 
     /// Clear the badwrite flag
     #[inline]
-    pub fn clear_badwrite(&mut self) {
+    pub fn clear_badwrite(&self) {
         self.regs().status.clr_badwrite();
     }
 
@@ -172,7 +172,7 @@ impl Rosc {
 
     /// Set the frequency range
     #[inline]
-    pub fn set_freq_range(&mut self, range: FreqRange) {
+    pub fn set_freq_range(&self, range: FreqRange) {
         let rosc = self.regs();
         rosc.ctrl.write_freq_range(range as u32);
     }
@@ -189,7 +189,7 @@ impl Rosc {
     /// * `strength` - Drive strength (0-7)
     /// * `randomize` - If true, randomize this stage's drive strength
     #[inline]
-    pub fn set_stage0_drive(&mut self, strength: DriveStrength, randomize: bool) {
+    pub fn set_stage0_drive(&self, strength: DriveStrength, randomize: bool) {
         let rosc = self.regs();
         let mut val = rosc.freqa.read_bits();
         val = (val & !Freqa::DS0_MASK) | ((strength.0 as u32) << Freqa::DS0_OFFSET);
@@ -205,7 +205,7 @@ impl Rosc {
 
     /// Set drive strength for stage 1
     #[inline]
-    pub fn set_stage1_drive(&mut self, strength: DriveStrength, randomize: bool) {
+    pub fn set_stage1_drive(&self, strength: DriveStrength, randomize: bool) {
         let rosc = self.regs();
         let mut val = rosc.freqa.read_bits();
         val = (val & !Freqa::DS1_MASK) | ((strength.0 as u32) << Freqa::DS1_OFFSET);
@@ -220,7 +220,7 @@ impl Rosc {
 
     /// Set drive strength for stage 2
     #[inline]
-    pub fn set_stage2_drive(&mut self, strength: DriveStrength) {
+    pub fn set_stage2_drive(&self, strength: DriveStrength) {
         let rosc = self.regs();
         let mut val = rosc.freqa.read_bits();
         val = (val & !Freqa::DS2_MASK) | ((strength.0 as u32) << Freqa::DS2_OFFSET);
@@ -230,7 +230,7 @@ impl Rosc {
 
     /// Set drive strength for stage 3
     #[inline]
-    pub fn set_stage3_drive(&mut self, strength: DriveStrength) {
+    pub fn set_stage3_drive(&self, strength: DriveStrength) {
         let rosc = self.regs();
         let mut val = rosc.freqa.read_bits();
         val = (val & !Freqa::DS3_MASK) | ((strength.0 as u32) << Freqa::DS3_OFFSET);
@@ -247,7 +247,7 @@ impl Rosc {
     /// * `ds7` - Stage 7 drive strength
     #[inline]
     pub fn set_stages_4_7_drive(
-        &mut self,
+        &self,
         ds4: DriveStrength,
         ds5: DriveStrength,
         ds6: DriveStrength,
@@ -264,7 +264,7 @@ impl Rosc {
 
     /// Enable drive strength randomization for better random number generation
     #[inline]
-    pub fn enable_randomization(&mut self) {
+    pub fn enable_randomization(&self) {
         let rosc = self.regs();
         let mut val = rosc.freqa.read_bits();
         val |= Freqa::DS0_RANDOM_MASK | Freqa::DS1_RANDOM_MASK;
@@ -274,7 +274,7 @@ impl Rosc {
 
     /// Disable drive strength randomization
     #[inline]
-    pub fn disable_randomization(&mut self) {
+    pub fn disable_randomization(&self) {
         let rosc = self.regs();
         let mut val = rosc.freqa.read_bits();
         val &= !(Freqa::DS0_RANDOM_MASK | Freqa::DS1_RANDOM_MASK);
@@ -291,7 +291,7 @@ impl Rosc {
     /// # Arguments
     /// * `div` - Divider value (0 = pass-through, 1-32 = divide by that amount)
     #[inline]
-    pub fn set_divider(&mut self, div: Divider) {
+    pub fn set_divider(&self, div: Divider) {
         let rosc = self.regs();
         // DIV register uses 0xaa0 + divider value encoding
         let val = if div.0 == 0 {
@@ -324,7 +324,7 @@ impl Rosc {
 
     /// Disable the phase-shifted output
     #[inline]
-    pub fn disable_phase_output(&mut self) {
+    pub fn disable_phase_output(&self) {
         let rosc = self.regs();
         let val = 0xAA << 4; // Password, enable=0
         rosc.phase.write_bits(val);
@@ -378,7 +378,7 @@ impl Rosc {
 
     /// Load a seed value into the LFSR randomizer
     #[inline]
-    pub fn seed_random(&mut self, seed: u32) {
+    pub fn seed_random(&self, seed: u32) {
         self.regs().random.write_bits(seed);
     }
 
@@ -391,7 +391,7 @@ impl Rosc {
     /// The counter counts down at the ROSC frequency and stops at zero.
     /// This can be used for short software delays.
     #[inline]
-    pub fn start_count(&mut self, count: u16) {
+    pub fn start_count(&self, count: u16) {
         self.regs().count.write_count(count as u32);
     }
 
@@ -414,7 +414,7 @@ impl Rosc {
     /// # Arguments
     /// * `count` - Number of ROSC cycles to wait
     #[inline]
-    pub fn delay(&mut self, count: u16) {
+    pub fn delay(&self, count: u16) {
         self.start_count(count);
         self.wait_count();
     }
@@ -433,7 +433,7 @@ impl Rosc {
     /// This method returns after the processor awakens.
     /// After waking up, ROSC restarts in approximately 1µs.
     #[inline]
-    pub unsafe fn dormant(&mut self) {
+    pub unsafe fn dormant(&self) {
         self.regs().dormant.write_bits(ROSC_DORMANT_VALUE);
     }
 }

@@ -19,13 +19,14 @@ use defmt_rtt as _;
 use panic_probe as _;
 
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClkAdcAuxSrc, ClkPeriAuxSrc, ClkRefSrc, ClkSysAuxSrc, ClkUsbAuxSrc, Clocks};
+use pico_rs::clocks::{
+    ClkAdcAuxSrc, ClkPeriAuxSrc, ClkRefSrc, ClkSysAuxSrc, ClkUsbAuxSrc, Clocks, PllConfig, PllSys,
+    PllUsb, Xosc,
+};
 use pico_rs::entry;
 use pico_rs::gpio::{self, Pin25};
-use pico_rs::pll::{PllConfig, PllSys, PllUsb};
 use pico_rs::reset::{self, Peripheral};
 use pico_rs::systick::Delay;
-use pico_rs::xosc::Xosc;
 
 /// RP2350 Boot Block
 #[unsafe(link_section = ".start_block")]

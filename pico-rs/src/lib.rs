@@ -42,11 +42,9 @@ pub mod i2c;
 pub mod interrupt;
 pub mod multicore;
 pub mod pio;
-pub mod pll;
 pub mod powman;
 pub mod pwm;
 pub mod reset;
-pub mod rosc;
 pub mod sha256;
 pub mod sio;
 pub mod spi;
@@ -59,7 +57,6 @@ pub mod timer;
 pub mod trng;
 pub mod uart;
 pub mod watchdog;
-pub mod xosc;
 
 pub mod task;
 
@@ -100,10 +97,8 @@ pub use eppb::Eppb;
 pub use gpio::Pins;
 pub use i2c::{I2c0, I2c1};
 pub use multicore::{Fifo, Multicore, Stack};
-pub use pll::{PllConfig, PllSys, PllUsb};
 pub use powman::Powman;
 pub use pwm::Pwm;
-pub use rosc::Rosc;
 pub use sha256::Sha256;
 pub use spi::{Spi0, Spi1};
 pub use syscfg::Syscfg;
@@ -115,7 +110,6 @@ pub use timer::{Timer0, Timer1};
 pub use trng::Trng;
 pub use uart::{Uart0, Uart1};
 pub use watchdog::Watchdog;
-pub use xosc::Xosc;
 
 // Re-export pico-rs-rt for convenience
 pub use pico_rs_rt;

@@ -6,7 +6,7 @@
 //! ## Example
 //!
 //! ```ignore
-//! use pico_rs::xosc::{Xosc, FrequencyRange};
+//! use pico_rs::clocks::xosc::{Xosc, FrequencyRange};
 //! use pico_rs_pac::XOSC;
 //!
 //! // Get XOSC peripheral
