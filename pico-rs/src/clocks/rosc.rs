@@ -28,6 +28,9 @@
 use pico_rs_pac::ROSC;
 use pico_rs_pac::rosc::{Ctrl, Freqa, Freqb};
 
+/// Nominal ROSC frequency (~6.5 MHz, varies with temperature and voltage)
+pub const ROSC_HZ: u32 = 6_500_000;
+
 /// ROSC frequency range
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
