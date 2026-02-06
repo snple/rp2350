@@ -68,7 +68,7 @@ impl MemoryBank {
 
 /// System Configuration driver
 pub struct Syscfg {
-    _private: (),
+    _marker: core::marker::PhantomData<*const ()>,
 }
 
 impl Syscfg {
@@ -78,7 +78,9 @@ impl Syscfg {
     #[inline]
     pub fn new() -> Self {
         reset::unreset_syscfg_wait();
-        Self { _private: () }
+        Self {
+            _marker: core::marker::PhantomData,
+        }
     }
 
     /// Get a reference to the SYSCFG registers

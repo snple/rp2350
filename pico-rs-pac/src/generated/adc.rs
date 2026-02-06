@@ -262,7 +262,7 @@ impl Cs {
     /// Start a single conversion. Self-clearing. Ignored if start_many is asserted.
     #[inline(always)]
     pub fn trigger_start_once(&self) {
-        self.value.write_bits(Self::START_ONCE_MASK);
+        self.set_bits(Self::START_ONCE_MASK);
     }
 
     /// **TS_EN** `[1]` (RW)
@@ -305,7 +305,6 @@ impl Cs {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// CS value type for batch read/modify/write operations
@@ -500,7 +499,6 @@ impl CsVal {
             }
         }
     }
-
 }
 
 impl Default for CsVal {
@@ -527,7 +525,6 @@ impl Cs {
     pub fn modify_val<F: FnOnce(CsVal) -> CsVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// RESULT Register
@@ -568,7 +565,6 @@ impl Result {
     pub fn result(&self) -> u32 {
         (self.value.read_bits() & Self::RESULT_MASK) >> Self::RESULT_OFFSET
     }
-
 }
 
 /// RESULT value type for batch read/modify/write operations
@@ -604,7 +600,6 @@ impl ResultVal {
     pub const fn result(&self) -> u32 {
         (self.bits & Result::RESULT_MASK) >> Result::RESULT_OFFSET
     }
-
 }
 
 impl Default for ResultVal {
@@ -619,19 +614,6 @@ impl Result {
     pub fn read_val(&self) -> ResultVal {
         ResultVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: ResultVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(ResultVal) -> ResultVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// FCS Register
@@ -933,7 +915,6 @@ impl Fcs {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// FCS value type for batch read/modify/write operations
@@ -1133,7 +1114,6 @@ impl FcsVal {
             }
         }
     }
-
 }
 
 impl Default for FcsVal {
@@ -1160,7 +1140,6 @@ impl Fcs {
     pub fn modify_val<F: FnOnce(FcsVal) -> FcsVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FIFO Register
@@ -1222,7 +1201,6 @@ impl Fifo {
     pub fn val(&self) -> u32 {
         (self.value.read_bits() & Self::VAL_MASK) >> Self::VAL_OFFSET
     }
-
 }
 
 /// FIFO value type for batch read/modify/write operations
@@ -1266,7 +1244,6 @@ impl FifoVal {
     pub const fn val(&self) -> u32 {
         (self.bits & Fifo::VAL_MASK) >> Fifo::VAL_OFFSET
     }
-
 }
 
 impl Default for FifoVal {
@@ -1281,19 +1258,6 @@ impl Fifo {
     pub fn read_val(&self) -> FifoVal {
         FifoVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: FifoVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(FifoVal) -> FifoVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DIV Register
@@ -1380,7 +1344,6 @@ impl Div {
     pub fn write_frac(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
     }
-
 }
 
 /// DIV value type for batch read/modify/write operations
@@ -1446,7 +1409,6 @@ impl DivVal {
             bits: (self.bits & !Div::FRAC_MASK) | ((value << Div::FRAC_OFFSET) & Div::FRAC_MASK)
         }
     }
-
 }
 
 impl Default for DivVal {
@@ -1473,7 +1435,6 @@ impl Div {
     pub fn modify_val<F: FnOnce(DivVal) -> DivVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTR Register
@@ -1525,7 +1486,6 @@ impl Intr {
     pub fn fifo(&self) -> bool {
         (self.value.read_bits() & Self::FIFO_MASK) != 0
     }
-
 }
 
 /// INTR value type for batch read/modify/write operations
@@ -1564,7 +1524,6 @@ impl IntrVal {
     pub const fn fifo(&self) -> bool {
         (self.bits & Intr::FIFO_MASK) != 0
     }
-
 }
 
 impl Default for IntrVal {
@@ -1579,19 +1538,6 @@ impl Intr {
     pub fn read_val(&self) -> IntrVal {
         IntrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IntrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IntrVal) -> IntrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INTE Register
@@ -1655,7 +1601,6 @@ impl Inte {
     pub fn clr_fifo(&self) {
         self.clr_bits(Self::FIFO_MASK);
     }
-
 }
 
 /// INTE value type for batch read/modify/write operations
@@ -1709,7 +1654,6 @@ impl InteVal {
             }
         }
     }
-
 }
 
 impl Default for InteVal {
@@ -1736,7 +1680,6 @@ impl Inte {
     pub fn modify_val<F: FnOnce(InteVal) -> InteVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTF Register
@@ -1800,7 +1743,6 @@ impl Intf {
     pub fn clr_fifo(&self) {
         self.clr_bits(Self::FIFO_MASK);
     }
-
 }
 
 /// INTF value type for batch read/modify/write operations
@@ -1854,7 +1796,6 @@ impl IntfVal {
             }
         }
     }
-
 }
 
 impl Default for IntfVal {
@@ -1881,7 +1822,6 @@ impl Intf {
     pub fn modify_val<F: FnOnce(IntfVal) -> IntfVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTS Register
@@ -1933,7 +1873,6 @@ impl Ints {
     pub fn fifo(&self) -> bool {
         (self.value.read_bits() & Self::FIFO_MASK) != 0
     }
-
 }
 
 /// INTS value type for batch read/modify/write operations
@@ -1972,7 +1911,6 @@ impl IntsVal {
     pub const fn fifo(&self) -> bool {
         (self.bits & Ints::FIFO_MASK) != 0
     }
-
 }
 
 impl Default for IntsVal {
@@ -1987,19 +1925,6 @@ impl Ints {
     pub fn read_val(&self) -> IntsVal {
         IntsVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IntsVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IntsVal) -> IntsVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// Register block

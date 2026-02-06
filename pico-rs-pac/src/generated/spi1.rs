@@ -181,7 +181,6 @@ impl Sspcr0 {
     pub fn write_dss(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::DSS_MASK) | ((value << Self::DSS_OFFSET) & Self::DSS_MASK));
     }
-
 }
 
 /// SSPCR0 value type for batch read/modify/write operations
@@ -309,7 +308,6 @@ impl Sspcr0Val {
             bits: (self.bits & !Sspcr0::DSS_MASK) | ((value << Sspcr0::DSS_OFFSET) & Sspcr0::DSS_MASK)
         }
     }
-
 }
 
 impl Default for Sspcr0Val {
@@ -336,7 +334,6 @@ impl Sspcr0 {
     pub fn modify_val<F: FnOnce(Sspcr0Val) -> Sspcr0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SSPCR1 Register
@@ -496,7 +493,6 @@ impl Sspcr1 {
     pub fn clr_lbm(&self) {
         self.clr_bits(Self::LBM_MASK);
     }
-
 }
 
 /// SSPCR1 value type for batch read/modify/write operations
@@ -614,7 +610,6 @@ impl Sspcr1Val {
             }
         }
     }
-
 }
 
 impl Default for Sspcr1Val {
@@ -641,7 +636,6 @@ impl Sspcr1 {
     pub fn modify_val<F: FnOnce(Sspcr1Val) -> Sspcr1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SSPDR Register
@@ -696,7 +690,6 @@ impl Sspdr {
     pub fn write_data(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::DATA_MASK) | ((value << Self::DATA_OFFSET) & Self::DATA_MASK));
     }
-
 }
 
 /// SSPDR value type for batch read/modify/write operations
@@ -738,7 +731,6 @@ impl SspdrVal {
             bits: (self.bits & !Sspdr::DATA_MASK) | ((value << Sspdr::DATA_OFFSET) & Sspdr::DATA_MASK)
         }
     }
-
 }
 
 impl Default for SspdrVal {
@@ -765,7 +757,6 @@ impl Sspdr {
     pub fn modify_val<F: FnOnce(SspdrVal) -> SspdrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SSPSR Register
@@ -898,7 +889,6 @@ impl Sspsr {
     pub fn tfe(&self) -> bool {
         (self.value.read_bits() & Self::TFE_MASK) != 0
     }
-
 }
 
 /// SSPSR value type for batch read/modify/write operations
@@ -968,7 +958,6 @@ impl SspsrVal {
     pub const fn tfe(&self) -> bool {
         (self.bits & Sspsr::TFE_MASK) != 0
     }
-
 }
 
 impl Default for SspsrVal {
@@ -983,19 +972,6 @@ impl Sspsr {
     pub fn read_val(&self) -> SspsrVal {
         SspsrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: SspsrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(SspsrVal) -> SspsrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SSPCPSR Register
@@ -1051,7 +1027,6 @@ impl Sspcpsr {
     pub fn write_cpsdvsr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CPSDVSR_MASK) | ((value << Self::CPSDVSR_OFFSET) & Self::CPSDVSR_MASK));
     }
-
 }
 
 /// SSPCPSR value type for batch read/modify/write operations
@@ -1099,7 +1074,6 @@ impl SspcpsrVal {
             bits: (self.bits & !Sspcpsr::CPSDVSR_MASK) | ((value << Sspcpsr::CPSDVSR_OFFSET) & Sspcpsr::CPSDVSR_MASK)
         }
     }
-
 }
 
 impl Default for SspcpsrVal {
@@ -1126,7 +1100,6 @@ impl Sspcpsr {
     pub fn modify_val<F: FnOnce(SspcpsrVal) -> SspcpsrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SSPIMSC Register
@@ -1286,7 +1259,6 @@ impl Sspimsc {
     pub fn clr_rorim(&self) {
         self.clr_bits(Self::RORIM_MASK);
     }
-
 }
 
 /// SSPIMSC value type for batch read/modify/write operations
@@ -1404,7 +1376,6 @@ impl SspimscVal {
             }
         }
     }
-
 }
 
 impl Default for SspimscVal {
@@ -1431,7 +1402,6 @@ impl Sspimsc {
     pub fn modify_val<F: FnOnce(SspimscVal) -> SspimscVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SSPRIS Register
@@ -1543,7 +1513,6 @@ impl Sspris {
     pub fn rorris(&self) -> bool {
         (self.value.read_bits() & Self::RORRIS_MASK) != 0
     }
-
 }
 
 /// SSPRIS value type for batch read/modify/write operations
@@ -1605,7 +1574,6 @@ impl SsprisVal {
     pub const fn rorris(&self) -> bool {
         (self.bits & Sspris::RORRIS_MASK) != 0
     }
-
 }
 
 impl Default for SsprisVal {
@@ -1620,19 +1588,6 @@ impl Sspris {
     pub fn read_val(&self) -> SsprisVal {
         SsprisVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: SsprisVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(SsprisVal) -> SsprisVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SSPMIS Register
@@ -1744,7 +1699,6 @@ impl Sspmis {
     pub fn rormis(&self) -> bool {
         (self.value.read_bits() & Self::RORMIS_MASK) != 0
     }
-
 }
 
 /// SSPMIS value type for batch read/modify/write operations
@@ -1806,7 +1760,6 @@ impl SspmisVal {
     pub const fn rormis(&self) -> bool {
         (self.bits & Sspmis::RORMIS_MASK) != 0
     }
-
 }
 
 impl Default for SspmisVal {
@@ -1821,19 +1774,6 @@ impl Sspmis {
     pub fn read_val(&self) -> SspmisVal {
         SspmisVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: SspmisVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(SspmisVal) -> SspmisVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SSPICR Register
@@ -1927,7 +1867,6 @@ impl Sspicr {
     pub fn clr_roric(&self) {
         self.clr_bits(Self::RORIC_MASK);
     }
-
 }
 
 /// SSPICR value type for batch read/modify/write operations
@@ -2001,7 +1940,6 @@ impl SspicrVal {
             }
         }
     }
-
 }
 
 impl Default for SspicrVal {
@@ -2028,7 +1966,6 @@ impl Sspicr {
     pub fn modify_val<F: FnOnce(SspicrVal) -> SspicrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SSPDMACR Register
@@ -2122,7 +2059,6 @@ impl Sspdmacr {
     pub fn clr_rxdmae(&self) {
         self.clr_bits(Self::RXDMAE_MASK);
     }
-
 }
 
 /// SSPDMACR value type for batch read/modify/write operations
@@ -2196,7 +2132,6 @@ impl SspdmacrVal {
             }
         }
     }
-
 }
 
 impl Default for SspdmacrVal {
@@ -2223,7 +2158,6 @@ impl Sspdmacr {
     pub fn modify_val<F: FnOnce(SspdmacrVal) -> SspdmacrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SSPPERIPHID0 Register
@@ -2271,7 +2205,6 @@ impl Sspperiphid0 {
     pub fn partnumber0(&self) -> u32 {
         (self.value.read_bits() & Self::PARTNUMBER0_MASK) >> Self::PARTNUMBER0_OFFSET
     }
-
 }
 
 /// SSPPERIPHID0 value type for batch read/modify/write operations
@@ -2309,7 +2242,6 @@ impl Sspperiphid0Val {
     pub const fn partnumber0(&self) -> u32 {
         (self.bits & Sspperiphid0::PARTNUMBER0_MASK) >> Sspperiphid0::PARTNUMBER0_OFFSET
     }
-
 }
 
 impl Default for Sspperiphid0Val {
@@ -2324,19 +2256,6 @@ impl Sspperiphid0 {
     pub fn read_val(&self) -> Sspperiphid0Val {
         Sspperiphid0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Sspperiphid0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Sspperiphid0Val) -> Sspperiphid0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SSPPERIPHID1 Register
@@ -2404,7 +2323,6 @@ impl Sspperiphid1 {
     pub fn partnumber1(&self) -> u32 {
         (self.value.read_bits() & Self::PARTNUMBER1_MASK) >> Self::PARTNUMBER1_OFFSET
     }
-
 }
 
 /// SSPPERIPHID1 value type for batch read/modify/write operations
@@ -2450,7 +2368,6 @@ impl Sspperiphid1Val {
     pub const fn partnumber1(&self) -> u32 {
         (self.bits & Sspperiphid1::PARTNUMBER1_MASK) >> Sspperiphid1::PARTNUMBER1_OFFSET
     }
-
 }
 
 impl Default for Sspperiphid1Val {
@@ -2465,19 +2382,6 @@ impl Sspperiphid1 {
     pub fn read_val(&self) -> Sspperiphid1Val {
         Sspperiphid1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Sspperiphid1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Sspperiphid1Val) -> Sspperiphid1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SSPPERIPHID2 Register
@@ -2545,7 +2449,6 @@ impl Sspperiphid2 {
     pub fn designer1(&self) -> u32 {
         (self.value.read_bits() & Self::DESIGNER1_MASK) >> Self::DESIGNER1_OFFSET
     }
-
 }
 
 /// SSPPERIPHID2 value type for batch read/modify/write operations
@@ -2591,7 +2494,6 @@ impl Sspperiphid2Val {
     pub const fn designer1(&self) -> u32 {
         (self.bits & Sspperiphid2::DESIGNER1_MASK) >> Sspperiphid2::DESIGNER1_OFFSET
     }
-
 }
 
 impl Default for Sspperiphid2Val {
@@ -2606,19 +2508,6 @@ impl Sspperiphid2 {
     pub fn read_val(&self) -> Sspperiphid2Val {
         Sspperiphid2Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Sspperiphid2Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Sspperiphid2Val) -> Sspperiphid2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SSPPERIPHID3 Register
@@ -2666,7 +2555,6 @@ impl Sspperiphid3 {
     pub fn configuration(&self) -> u32 {
         (self.value.read_bits() & Self::CONFIGURATION_MASK) >> Self::CONFIGURATION_OFFSET
     }
-
 }
 
 /// SSPPERIPHID3 value type for batch read/modify/write operations
@@ -2704,7 +2592,6 @@ impl Sspperiphid3Val {
     pub const fn configuration(&self) -> u32 {
         (self.bits & Sspperiphid3::CONFIGURATION_MASK) >> Sspperiphid3::CONFIGURATION_OFFSET
     }
-
 }
 
 impl Default for Sspperiphid3Val {
@@ -2719,19 +2606,6 @@ impl Sspperiphid3 {
     pub fn read_val(&self) -> Sspperiphid3Val {
         Sspperiphid3Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Sspperiphid3Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Sspperiphid3Val) -> Sspperiphid3Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SSPPCELLID0 Register
@@ -2779,7 +2653,6 @@ impl Ssppcellid0 {
     pub fn ssppcellid0(&self) -> u32 {
         (self.value.read_bits() & Self::SSPPCELLID0_MASK) >> Self::SSPPCELLID0_OFFSET
     }
-
 }
 
 /// SSPPCELLID0 value type for batch read/modify/write operations
@@ -2817,7 +2690,6 @@ impl Ssppcellid0Val {
     pub const fn ssppcellid0(&self) -> u32 {
         (self.bits & Ssppcellid0::SSPPCELLID0_MASK) >> Ssppcellid0::SSPPCELLID0_OFFSET
     }
-
 }
 
 impl Default for Ssppcellid0Val {
@@ -2832,19 +2704,6 @@ impl Ssppcellid0 {
     pub fn read_val(&self) -> Ssppcellid0Val {
         Ssppcellid0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Ssppcellid0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Ssppcellid0Val) -> Ssppcellid0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SSPPCELLID1 Register
@@ -2892,7 +2751,6 @@ impl Ssppcellid1 {
     pub fn ssppcellid1(&self) -> u32 {
         (self.value.read_bits() & Self::SSPPCELLID1_MASK) >> Self::SSPPCELLID1_OFFSET
     }
-
 }
 
 /// SSPPCELLID1 value type for batch read/modify/write operations
@@ -2930,7 +2788,6 @@ impl Ssppcellid1Val {
     pub const fn ssppcellid1(&self) -> u32 {
         (self.bits & Ssppcellid1::SSPPCELLID1_MASK) >> Ssppcellid1::SSPPCELLID1_OFFSET
     }
-
 }
 
 impl Default for Ssppcellid1Val {
@@ -2945,19 +2802,6 @@ impl Ssppcellid1 {
     pub fn read_val(&self) -> Ssppcellid1Val {
         Ssppcellid1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Ssppcellid1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Ssppcellid1Val) -> Ssppcellid1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SSPPCELLID2 Register
@@ -3005,7 +2849,6 @@ impl Ssppcellid2 {
     pub fn ssppcellid2(&self) -> u32 {
         (self.value.read_bits() & Self::SSPPCELLID2_MASK) >> Self::SSPPCELLID2_OFFSET
     }
-
 }
 
 /// SSPPCELLID2 value type for batch read/modify/write operations
@@ -3043,7 +2886,6 @@ impl Ssppcellid2Val {
     pub const fn ssppcellid2(&self) -> u32 {
         (self.bits & Ssppcellid2::SSPPCELLID2_MASK) >> Ssppcellid2::SSPPCELLID2_OFFSET
     }
-
 }
 
 impl Default for Ssppcellid2Val {
@@ -3058,19 +2900,6 @@ impl Ssppcellid2 {
     pub fn read_val(&self) -> Ssppcellid2Val {
         Ssppcellid2Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Ssppcellid2Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Ssppcellid2Val) -> Ssppcellid2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SSPPCELLID3 Register
@@ -3118,7 +2947,6 @@ impl Ssppcellid3 {
     pub fn ssppcellid3(&self) -> u32 {
         (self.value.read_bits() & Self::SSPPCELLID3_MASK) >> Self::SSPPCELLID3_OFFSET
     }
-
 }
 
 /// SSPPCELLID3 value type for batch read/modify/write operations
@@ -3156,7 +2984,6 @@ impl Ssppcellid3Val {
     pub const fn ssppcellid3(&self) -> u32 {
         (self.bits & Ssppcellid3::SSPPCELLID3_MASK) >> Ssppcellid3::SSPPCELLID3_OFFSET
     }
-
 }
 
 impl Default for Ssppcellid3Val {
@@ -3171,19 +2998,6 @@ impl Ssppcellid3 {
     pub fn read_val(&self) -> Ssppcellid3Val {
         Ssppcellid3Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Ssppcellid3Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Ssppcellid3Val) -> Ssppcellid3Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// Register block

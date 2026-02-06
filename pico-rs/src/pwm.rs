@@ -474,13 +474,13 @@ macro_rules! impl_pwm_slice {
             /// This token is consumed when creating a configured PWM slice,
             /// ensuring each slice can only be created once.
             pub struct $SliceToken {
-                _private: (),
+                _marker: core::marker::PhantomData<*const ()>,
             }
 
             impl $SliceToken {
                 #[inline]
                 const fn new() -> Self {
-                    Self { _private: () }
+                    Self { _marker: core::marker::PhantomData }
                 }
 
                 #[doc = concat!("Create PWM slice ", $slice_num, " with output on channel A only.")]

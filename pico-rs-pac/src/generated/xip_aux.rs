@@ -45,7 +45,6 @@ impl Stream {
     pub fn stream(&self) -> u32 {
         (self.value.read_bits() & Self::STREAM_MASK) >> Self::STREAM_OFFSET
     }
-
 }
 
 /// STREAM value type for batch read/modify/write operations
@@ -81,7 +80,6 @@ impl StreamVal {
     pub const fn stream(&self) -> u32 {
         (self.bits & Stream::STREAM_MASK) >> Stream::STREAM_OFFSET
     }
-
 }
 
 impl Default for StreamVal {
@@ -96,19 +94,6 @@ impl Stream {
     pub fn read_val(&self) -> StreamVal {
         StreamVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: StreamVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(StreamVal) -> StreamVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// QMI_DIRECT_TX Register
@@ -224,7 +209,7 @@ impl QmiDirectTx {
     /// Useful to avoid garbage appearing in the RX FIFO when pushing the command at the beginning of a SPI transfer.
     #[inline(always)]
     pub fn trigger_nopush(&self) {
-        self.value.write_bits(Self::NOPUSH_MASK);
+        self.set_bits(Self::NOPUSH_MASK);
     }
 
     /// Trigger **OE** (WO)
@@ -233,7 +218,7 @@ impl QmiDirectTx {
     /// For dual and quad width (DSPI/QSPI), this sets whether the relevant SDx pads are set to output whilst transferring this FIFO record. In this case the command/address should have OE set, and the data transfer should have OE set or clear depending on the direction of the transfer.
     #[inline(always)]
     pub fn trigger_oe(&self) {
-        self.value.write_bits(Self::OE_MASK);
+        self.set_bits(Self::OE_MASK);
     }
 
     /// Trigger **DWIDTH** (WO)
@@ -241,7 +226,7 @@ impl QmiDirectTx {
     /// Data width. If 0, hardware will transmit the 8 LSBs of the DIRECT_TX DATA field, and return an 8-bit value in the 8 LSBs of DIRECT_RX. If 1, the full 16-bit width is used. 8-bit and 16-bit transfers can be mixed freely.
     #[inline(always)]
     pub fn trigger_dwidth(&self) {
-        self.value.write_bits(Self::DWIDTH_MASK);
+        self.set_bits(Self::DWIDTH_MASK);
     }
 
     /// Write **IWIDTH** `[17:16]` (WO)
@@ -260,7 +245,6 @@ impl QmiDirectTx {
     pub fn write_data(&self, value: u32) {
         self.value.write_bits((value << Self::DATA_OFFSET) & Self::DATA_MASK);
     }
-
 }
 
 /// QMI_DIRECT_TX value type for batch read/modify/write operations
@@ -355,7 +339,6 @@ impl QmiDirectTxVal {
             bits: (self.bits & !QmiDirectTx::DATA_MASK) | ((value << QmiDirectTx::DATA_OFFSET) & QmiDirectTx::DATA_MASK)
         }
     }
-
 }
 
 impl Default for QmiDirectTxVal {
@@ -365,24 +348,11 @@ impl Default for QmiDirectTxVal {
 }
 
 impl QmiDirectTx {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> QmiDirectTxVal {
-        QmiDirectTxVal::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: QmiDirectTxVal) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(QmiDirectTxVal) -> QmiDirectTxVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// QMI_DIRECT_RX Register
@@ -433,7 +403,6 @@ impl QmiDirectRx {
     pub fn qmi_direct_rx(&self) -> u32 {
         (self.value.read_bits() & Self::QMI_DIRECT_RX_MASK) >> Self::QMI_DIRECT_RX_OFFSET
     }
-
 }
 
 /// QMI_DIRECT_RX value type for batch read/modify/write operations
@@ -472,7 +441,6 @@ impl QmiDirectRxVal {
     pub const fn qmi_direct_rx(&self) -> u32 {
         (self.bits & QmiDirectRx::QMI_DIRECT_RX_MASK) >> QmiDirectRx::QMI_DIRECT_RX_OFFSET
     }
-
 }
 
 impl Default for QmiDirectRxVal {
@@ -487,19 +455,6 @@ impl QmiDirectRx {
     pub fn read_val(&self) -> QmiDirectRxVal {
         QmiDirectRxVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: QmiDirectRxVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(QmiDirectRxVal) -> QmiDirectRxVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// Register block

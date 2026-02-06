@@ -45,7 +45,8 @@ pub enum Error {
 ///
 /// Provides access to the True Random Number Generator.
 pub struct Trng {
-    regs: &'static pico_rs_pac::trng::RegisterBlock,
+    // regs: &'static pico_rs_pac::trng::RegisterBlock,
+    trng: TRNG,
 }
 
 impl Trng {
@@ -53,14 +54,14 @@ impl Trng {
     #[inline]
     pub fn new() -> Self {
         Self {
-            regs: unsafe { &*TRNG::PTR },
+            trng: unsafe { TRNG::steal() },
         }
     }
 
     /// Get reference to the register block
     #[inline]
     pub fn regs(&self) -> &pico_rs_pac::trng::RegisterBlock {
-        self.regs
+        &self.trng
     }
 
     // ========================================================================
@@ -75,22 +76,22 @@ impl Trng {
         let trng = Self::new();
 
         // Reset the TRNG
-        trng.regs.trng_sw_reset.write_bits(1);
+        trng.regs().trng_sw_reset.write_bits(1);
 
         // Wait for reset to complete
-        while trng.regs.trng_sw_reset.read_bits() != 0 {
+        while trng.regs().trng_sw_reset.read_bits() != 0 {
             core::hint::spin_loop();
         }
 
         // Configure ROSC sample rate (default is fine for most uses)
         // sample_cnt1 controls the number of clock cycles between samples
-        trng.regs.sample_cnt1.write_bits(0xFFFF);
+        trng.regs().sample_cnt1.write_bits(0xFFFF);
 
         // Enable the random source
-        trng.regs.rnd_source_enable.set_rnd_src_en();
+        trng.regs().rnd_source_enable.set_rnd_src_en();
 
         // Unmask EHR valid interrupt (we poll, but it helps for checking)
-        trng.regs.rng_imr.clr_ehr_valid_int_mask();
+        trng.regs().rng_imr.clr_ehr_valid_int_mask();
 
         trng
     }
@@ -103,20 +104,20 @@ impl Trng {
     fn wait_for_entropy(&self) -> Result<(), Error> {
         loop {
             // Check for errors
-            if self.regs.rng_isr.vn_err() {
-                self.regs.rng_icr.set_vn_err();
+            if self.regs().rng_isr.vn_err() {
+                self.regs().rng_icr.set_vn_err();
                 return Err(Error::VonNeumannError);
             }
-            if self.regs.rng_isr.crngt_err() {
-                self.regs.rng_icr.set_crngt_err();
+            if self.regs().rng_isr.crngt_err() {
+                self.regs().rng_icr.set_crngt_err();
                 return Err(Error::CrngtError);
             }
-            if self.regs.rng_isr.autocorr_err() {
+            if self.regs().rng_isr.autocorr_err() {
                 return Err(Error::AutocorrError);
             }
 
             // Check if entropy is valid
-            if self.regs.rng_isr.ehr_valid() {
+            if self.regs().rng_isr.ehr_valid() {
                 return Ok(());
             }
 
@@ -127,7 +128,7 @@ impl Trng {
     /// Check if entropy is available (non-blocking)
     #[inline]
     pub fn entropy_available(&self) -> bool {
-        self.regs.rng_isr.ehr_valid()
+        self.regs().rng_isr.ehr_valid()
     }
 
     /// Read the 192-bit entropy holding registers (6 x 32-bit words)
@@ -137,16 +138,16 @@ impl Trng {
         self.wait_for_entropy()?;
 
         let data = [
-            self.regs.ehr_data0.read_bits(),
-            self.regs.ehr_data1.read_bits(),
-            self.regs.ehr_data2.read_bits(),
-            self.regs.ehr_data3.read_bits(),
-            self.regs.ehr_data4.read_bits(),
-            self.regs.ehr_data5.read_bits(),
+            self.regs().ehr_data0.read_bits(),
+            self.regs().ehr_data1.read_bits(),
+            self.regs().ehr_data2.read_bits(),
+            self.regs().ehr_data3.read_bits(),
+            self.regs().ehr_data4.read_bits(),
+            self.regs().ehr_data5.read_bits(),
         ];
 
         // Clear the EHR valid flag to start collecting new entropy
-        self.regs.rng_icr.set_ehr_valid();
+        self.regs().rng_icr.set_ehr_valid();
 
         Ok(data)
     }
@@ -210,25 +211,25 @@ impl Trng {
     /// Enable the random source
     #[inline]
     pub fn enable(&self) {
-        self.regs.rnd_source_enable.set_rnd_src_en();
+        self.regs().rnd_source_enable.set_rnd_src_en();
     }
 
     /// Disable the random source
     #[inline]
     pub fn disable(&self) {
-        self.regs.rnd_source_enable.clr_rnd_src_en();
+        self.regs().rnd_source_enable.clr_rnd_src_en();
     }
 
     /// Check if the TRNG is busy
     #[inline]
     pub fn is_busy(&self) -> bool {
-        self.regs.trng_busy.trng_busy()
+        self.regs().trng_busy.trng_busy()
     }
 
     /// Reset the TRNG
     pub fn reset(&self) {
-        self.regs.trng_sw_reset.write_bits(1);
-        while self.regs.trng_sw_reset.read_bits() != 0 {
+        self.regs().trng_sw_reset.write_bits(1);
+        while self.regs().trng_sw_reset.read_bits() != 0 {
             core::hint::spin_loop();
         }
     }
@@ -236,7 +237,7 @@ impl Trng {
     /// Reset the bits counter
     #[inline]
     pub fn reset_bits_counter(&self) {
-        self.regs.rst_bits_counter.set_rst_bits_counter();
+        self.regs().rst_bits_counter.set_rst_bits_counter();
     }
 
     // ========================================================================
@@ -246,13 +247,13 @@ impl Trng {
     /// Set the sample count (number of clock cycles between ROSC samples)
     #[inline]
     pub fn set_sample_count(&self, count: u32) {
-        self.regs.sample_cnt1.write_bits(count);
+        self.regs().sample_cnt1.write_bits(count);
     }
 
     /// Get the current sample count
     #[inline]
     pub fn sample_count(&self) -> u32 {
-        self.regs.sample_cnt1.read_bits()
+        self.regs().sample_cnt1.read_bits()
     }
 
     /// Configure the TRNG ROSC length
@@ -260,7 +261,7 @@ impl Trng {
     /// Selects the inverter chain length for the ring oscillator.
     #[inline]
     pub fn set_rosc_length(&self, length: u8) {
-        self.regs.trng_config.write_rnd_src_sel(length as u32);
+        self.regs().trng_config.write_rnd_src_sel(length as u32);
     }
 
     // ========================================================================
@@ -270,49 +271,49 @@ impl Trng {
     /// Enable EHR valid interrupt
     #[inline]
     pub fn enable_ehr_interrupt(&self) {
-        self.regs.rng_imr.clr_ehr_valid_int_mask();
+        self.regs().rng_imr.clr_ehr_valid_int_mask();
     }
 
     /// Disable EHR valid interrupt
     #[inline]
     pub fn disable_ehr_interrupt(&self) {
-        self.regs.rng_imr.set_ehr_valid_int_mask();
+        self.regs().rng_imr.set_ehr_valid_int_mask();
     }
 
     /// Enable autocorrelation error interrupt
     #[inline]
     pub fn enable_autocorr_interrupt(&self) {
-        self.regs.rng_imr.clr_autocorr_err_int_mask();
+        self.regs().rng_imr.clr_autocorr_err_int_mask();
     }
 
     /// Disable autocorrelation error interrupt
     #[inline]
     pub fn disable_autocorr_interrupt(&self) {
-        self.regs.rng_imr.set_autocorr_err_int_mask();
+        self.regs().rng_imr.set_autocorr_err_int_mask();
     }
 
     /// Enable CRNGT error interrupt
     #[inline]
     pub fn enable_crngt_interrupt(&self) {
-        self.regs.rng_imr.clr_crngt_err_int_mask();
+        self.regs().rng_imr.clr_crngt_err_int_mask();
     }
 
     /// Disable CRNGT error interrupt
     #[inline]
     pub fn disable_crngt_interrupt(&self) {
-        self.regs.rng_imr.set_crngt_err_int_mask();
+        self.regs().rng_imr.set_crngt_err_int_mask();
     }
 
     /// Enable Von Neumann error interrupt
     #[inline]
     pub fn enable_vn_interrupt(&self) {
-        self.regs.rng_imr.clr_vn_err_int_mask();
+        self.regs().rng_imr.clr_vn_err_int_mask();
     }
 
     /// Disable Von Neumann error interrupt
     #[inline]
     pub fn disable_vn_interrupt(&self) {
-        self.regs.rng_imr.set_vn_err_int_mask();
+        self.regs().rng_imr.set_vn_err_int_mask();
     }
 
     // ========================================================================
@@ -322,43 +323,43 @@ impl Trng {
     /// Check for Von Neumann error
     #[inline]
     pub fn vn_error(&self) -> bool {
-        self.regs.rng_isr.vn_err()
+        self.regs().rng_isr.vn_err()
     }
 
     /// Check for CRNGT error
     #[inline]
     pub fn crngt_error(&self) -> bool {
-        self.regs.rng_isr.crngt_err()
+        self.regs().rng_isr.crngt_err()
     }
 
     /// Check for autocorrelation error
     #[inline]
     pub fn autocorr_error(&self) -> bool {
-        self.regs.rng_isr.autocorr_err()
+        self.regs().rng_isr.autocorr_err()
     }
 
     /// Clear Von Neumann error flag
     #[inline]
     pub fn clear_vn_error(&self) {
-        self.regs.rng_icr.set_vn_err();
+        self.regs().rng_icr.set_vn_err();
     }
 
     /// Clear CRNGT error flag
     #[inline]
     pub fn clear_crngt_error(&self) {
-        self.regs.rng_icr.set_crngt_err();
+        self.regs().rng_icr.set_crngt_err();
     }
 
     /// Clear EHR valid flag
     #[inline]
     pub fn clear_ehr_valid(&self) {
-        self.regs.rng_icr.set_ehr_valid();
+        self.regs().rng_icr.set_ehr_valid();
     }
 
     /// Get the TRNG version
     #[inline]
     pub fn version(&self) -> u32 {
-        self.regs.rng_version.read_bits()
+        self.regs().rng_version.read_bits()
     }
 
     // ========================================================================
@@ -368,7 +369,7 @@ impl Trng {
     /// Get autocorrelation test statistics
     #[inline]
     pub fn autocorr_statistic(&self) -> u32 {
-        self.regs.autocorr_statistic.read_bits()
+        self.regs().autocorr_statistic.read_bits()
     }
 }
 

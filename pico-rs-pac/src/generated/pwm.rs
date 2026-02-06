@@ -147,7 +147,7 @@ impl Ch0Csr {
     /// at less than full speed (div_int + div_frac / 16 > 1)
     #[inline(always)]
     pub fn trigger_ph_adv(&self) {
-        self.value.write_bits(Self::PH_ADV_MASK);
+        self.set_bits(Self::PH_ADV_MASK);
     }
 
     /// Trigger **PH_RET** (WO)
@@ -156,7 +156,7 @@ impl Ch0Csr {
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
     pub fn trigger_ph_ret(&self) {
-        self.value.write_bits(Self::PH_RET_MASK);
+        self.set_bits(Self::PH_RET_MASK);
     }
 
     /// **DIVMODE** `[5:4]` (RW)
@@ -250,7 +250,6 @@ impl Ch0Csr {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// CH0_CSR value type for batch read/modify/write operations
@@ -413,7 +412,6 @@ impl Ch0CsrVal {
             }
         }
     }
-
 }
 
 impl Default for Ch0CsrVal {
@@ -440,7 +438,6 @@ impl Ch0Csr {
     pub fn modify_val<F: FnOnce(Ch0CsrVal) -> Ch0CsrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH0_DIV Register
@@ -508,7 +505,6 @@ impl Ch0Div {
     pub fn write_frac(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
     }
-
 }
 
 /// CH0_DIV value type for batch read/modify/write operations
@@ -566,7 +562,6 @@ impl Ch0DivVal {
             bits: (self.bits & !Ch0Div::FRAC_MASK) | ((value << Ch0Div::FRAC_OFFSET) & Ch0Div::FRAC_MASK)
         }
     }
-
 }
 
 impl Default for Ch0DivVal {
@@ -593,7 +588,6 @@ impl Ch0Div {
     pub fn modify_val<F: FnOnce(Ch0DivVal) -> Ch0DivVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH0_CTR Register
@@ -640,7 +634,6 @@ impl Ch0Ctr {
     pub fn write_ch0_ctr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH0_CTR_MASK) | ((value << Self::CH0_CTR_OFFSET) & Self::CH0_CTR_MASK));
     }
-
 }
 
 /// CH0_CTR value type for batch read/modify/write operations
@@ -684,7 +677,6 @@ impl Ch0CtrVal {
             bits: (self.bits & !Ch0Ctr::CH0_CTR_MASK) | ((value << Ch0Ctr::CH0_CTR_OFFSET) & Ch0Ctr::CH0_CTR_MASK)
         }
     }
-
 }
 
 impl Default for Ch0CtrVal {
@@ -711,7 +703,6 @@ impl Ch0Ctr {
     pub fn modify_val<F: FnOnce(Ch0CtrVal) -> Ch0CtrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH0_CC Register
@@ -777,7 +768,6 @@ impl Ch0Cc {
     pub fn write_a(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
     }
-
 }
 
 /// CH0_CC value type for batch read/modify/write operations
@@ -835,7 +825,6 @@ impl Ch0CcVal {
             bits: (self.bits & !Ch0Cc::A_MASK) | ((value << Ch0Cc::A_OFFSET) & Ch0Cc::A_MASK)
         }
     }
-
 }
 
 impl Default for Ch0CcVal {
@@ -862,7 +851,6 @@ impl Ch0Cc {
     pub fn modify_val<F: FnOnce(Ch0CcVal) -> Ch0CcVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH0_TOP Register
@@ -909,7 +897,6 @@ impl Ch0Top {
     pub fn write_ch0_top(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH0_TOP_MASK) | ((value << Self::CH0_TOP_OFFSET) & Self::CH0_TOP_MASK));
     }
-
 }
 
 /// CH0_TOP value type for batch read/modify/write operations
@@ -953,7 +940,6 @@ impl Ch0TopVal {
             bits: (self.bits & !Ch0Top::CH0_TOP_MASK) | ((value << Ch0Top::CH0_TOP_OFFSET) & Ch0Top::CH0_TOP_MASK)
         }
     }
-
 }
 
 impl Default for Ch0TopVal {
@@ -980,7 +966,6 @@ impl Ch0Top {
     pub fn modify_val<F: FnOnce(Ch0TopVal) -> Ch0TopVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH1_CSR Register
@@ -1123,7 +1108,7 @@ impl Ch1Csr {
     /// at less than full speed (div_int + div_frac / 16 > 1)
     #[inline(always)]
     pub fn trigger_ph_adv(&self) {
-        self.value.write_bits(Self::PH_ADV_MASK);
+        self.set_bits(Self::PH_ADV_MASK);
     }
 
     /// Trigger **PH_RET** (WO)
@@ -1132,7 +1117,7 @@ impl Ch1Csr {
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
     pub fn trigger_ph_ret(&self) {
-        self.value.write_bits(Self::PH_RET_MASK);
+        self.set_bits(Self::PH_RET_MASK);
     }
 
     /// **DIVMODE** `[5:4]` (RW)
@@ -1226,7 +1211,6 @@ impl Ch1Csr {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// CH1_CSR value type for batch read/modify/write operations
@@ -1389,7 +1373,6 @@ impl Ch1CsrVal {
             }
         }
     }
-
 }
 
 impl Default for Ch1CsrVal {
@@ -1416,7 +1399,6 @@ impl Ch1Csr {
     pub fn modify_val<F: FnOnce(Ch1CsrVal) -> Ch1CsrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH1_DIV Register
@@ -1484,7 +1466,6 @@ impl Ch1Div {
     pub fn write_frac(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
     }
-
 }
 
 /// CH1_DIV value type for batch read/modify/write operations
@@ -1542,7 +1523,6 @@ impl Ch1DivVal {
             bits: (self.bits & !Ch1Div::FRAC_MASK) | ((value << Ch1Div::FRAC_OFFSET) & Ch1Div::FRAC_MASK)
         }
     }
-
 }
 
 impl Default for Ch1DivVal {
@@ -1569,7 +1549,6 @@ impl Ch1Div {
     pub fn modify_val<F: FnOnce(Ch1DivVal) -> Ch1DivVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH1_CTR Register
@@ -1616,7 +1595,6 @@ impl Ch1Ctr {
     pub fn write_ch1_ctr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH1_CTR_MASK) | ((value << Self::CH1_CTR_OFFSET) & Self::CH1_CTR_MASK));
     }
-
 }
 
 /// CH1_CTR value type for batch read/modify/write operations
@@ -1660,7 +1638,6 @@ impl Ch1CtrVal {
             bits: (self.bits & !Ch1Ctr::CH1_CTR_MASK) | ((value << Ch1Ctr::CH1_CTR_OFFSET) & Ch1Ctr::CH1_CTR_MASK)
         }
     }
-
 }
 
 impl Default for Ch1CtrVal {
@@ -1687,7 +1664,6 @@ impl Ch1Ctr {
     pub fn modify_val<F: FnOnce(Ch1CtrVal) -> Ch1CtrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH1_CC Register
@@ -1753,7 +1729,6 @@ impl Ch1Cc {
     pub fn write_a(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
     }
-
 }
 
 /// CH1_CC value type for batch read/modify/write operations
@@ -1811,7 +1786,6 @@ impl Ch1CcVal {
             bits: (self.bits & !Ch1Cc::A_MASK) | ((value << Ch1Cc::A_OFFSET) & Ch1Cc::A_MASK)
         }
     }
-
 }
 
 impl Default for Ch1CcVal {
@@ -1838,7 +1812,6 @@ impl Ch1Cc {
     pub fn modify_val<F: FnOnce(Ch1CcVal) -> Ch1CcVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH1_TOP Register
@@ -1885,7 +1858,6 @@ impl Ch1Top {
     pub fn write_ch1_top(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH1_TOP_MASK) | ((value << Self::CH1_TOP_OFFSET) & Self::CH1_TOP_MASK));
     }
-
 }
 
 /// CH1_TOP value type for batch read/modify/write operations
@@ -1929,7 +1901,6 @@ impl Ch1TopVal {
             bits: (self.bits & !Ch1Top::CH1_TOP_MASK) | ((value << Ch1Top::CH1_TOP_OFFSET) & Ch1Top::CH1_TOP_MASK)
         }
     }
-
 }
 
 impl Default for Ch1TopVal {
@@ -1956,7 +1927,6 @@ impl Ch1Top {
     pub fn modify_val<F: FnOnce(Ch1TopVal) -> Ch1TopVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH2_CSR Register
@@ -2099,7 +2069,7 @@ impl Ch2Csr {
     /// at less than full speed (div_int + div_frac / 16 > 1)
     #[inline(always)]
     pub fn trigger_ph_adv(&self) {
-        self.value.write_bits(Self::PH_ADV_MASK);
+        self.set_bits(Self::PH_ADV_MASK);
     }
 
     /// Trigger **PH_RET** (WO)
@@ -2108,7 +2078,7 @@ impl Ch2Csr {
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
     pub fn trigger_ph_ret(&self) {
-        self.value.write_bits(Self::PH_RET_MASK);
+        self.set_bits(Self::PH_RET_MASK);
     }
 
     /// **DIVMODE** `[5:4]` (RW)
@@ -2202,7 +2172,6 @@ impl Ch2Csr {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// CH2_CSR value type for batch read/modify/write operations
@@ -2365,7 +2334,6 @@ impl Ch2CsrVal {
             }
         }
     }
-
 }
 
 impl Default for Ch2CsrVal {
@@ -2392,7 +2360,6 @@ impl Ch2Csr {
     pub fn modify_val<F: FnOnce(Ch2CsrVal) -> Ch2CsrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH2_DIV Register
@@ -2460,7 +2427,6 @@ impl Ch2Div {
     pub fn write_frac(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
     }
-
 }
 
 /// CH2_DIV value type for batch read/modify/write operations
@@ -2518,7 +2484,6 @@ impl Ch2DivVal {
             bits: (self.bits & !Ch2Div::FRAC_MASK) | ((value << Ch2Div::FRAC_OFFSET) & Ch2Div::FRAC_MASK)
         }
     }
-
 }
 
 impl Default for Ch2DivVal {
@@ -2545,7 +2510,6 @@ impl Ch2Div {
     pub fn modify_val<F: FnOnce(Ch2DivVal) -> Ch2DivVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH2_CTR Register
@@ -2592,7 +2556,6 @@ impl Ch2Ctr {
     pub fn write_ch2_ctr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH2_CTR_MASK) | ((value << Self::CH2_CTR_OFFSET) & Self::CH2_CTR_MASK));
     }
-
 }
 
 /// CH2_CTR value type for batch read/modify/write operations
@@ -2636,7 +2599,6 @@ impl Ch2CtrVal {
             bits: (self.bits & !Ch2Ctr::CH2_CTR_MASK) | ((value << Ch2Ctr::CH2_CTR_OFFSET) & Ch2Ctr::CH2_CTR_MASK)
         }
     }
-
 }
 
 impl Default for Ch2CtrVal {
@@ -2663,7 +2625,6 @@ impl Ch2Ctr {
     pub fn modify_val<F: FnOnce(Ch2CtrVal) -> Ch2CtrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH2_CC Register
@@ -2729,7 +2690,6 @@ impl Ch2Cc {
     pub fn write_a(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
     }
-
 }
 
 /// CH2_CC value type for batch read/modify/write operations
@@ -2787,7 +2747,6 @@ impl Ch2CcVal {
             bits: (self.bits & !Ch2Cc::A_MASK) | ((value << Ch2Cc::A_OFFSET) & Ch2Cc::A_MASK)
         }
     }
-
 }
 
 impl Default for Ch2CcVal {
@@ -2814,7 +2773,6 @@ impl Ch2Cc {
     pub fn modify_val<F: FnOnce(Ch2CcVal) -> Ch2CcVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH2_TOP Register
@@ -2861,7 +2819,6 @@ impl Ch2Top {
     pub fn write_ch2_top(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH2_TOP_MASK) | ((value << Self::CH2_TOP_OFFSET) & Self::CH2_TOP_MASK));
     }
-
 }
 
 /// CH2_TOP value type for batch read/modify/write operations
@@ -2905,7 +2862,6 @@ impl Ch2TopVal {
             bits: (self.bits & !Ch2Top::CH2_TOP_MASK) | ((value << Ch2Top::CH2_TOP_OFFSET) & Ch2Top::CH2_TOP_MASK)
         }
     }
-
 }
 
 impl Default for Ch2TopVal {
@@ -2932,7 +2888,6 @@ impl Ch2Top {
     pub fn modify_val<F: FnOnce(Ch2TopVal) -> Ch2TopVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH3_CSR Register
@@ -3075,7 +3030,7 @@ impl Ch3Csr {
     /// at less than full speed (div_int + div_frac / 16 > 1)
     #[inline(always)]
     pub fn trigger_ph_adv(&self) {
-        self.value.write_bits(Self::PH_ADV_MASK);
+        self.set_bits(Self::PH_ADV_MASK);
     }
 
     /// Trigger **PH_RET** (WO)
@@ -3084,7 +3039,7 @@ impl Ch3Csr {
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
     pub fn trigger_ph_ret(&self) {
-        self.value.write_bits(Self::PH_RET_MASK);
+        self.set_bits(Self::PH_RET_MASK);
     }
 
     /// **DIVMODE** `[5:4]` (RW)
@@ -3178,7 +3133,6 @@ impl Ch3Csr {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// CH3_CSR value type for batch read/modify/write operations
@@ -3341,7 +3295,6 @@ impl Ch3CsrVal {
             }
         }
     }
-
 }
 
 impl Default for Ch3CsrVal {
@@ -3368,7 +3321,6 @@ impl Ch3Csr {
     pub fn modify_val<F: FnOnce(Ch3CsrVal) -> Ch3CsrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH3_DIV Register
@@ -3436,7 +3388,6 @@ impl Ch3Div {
     pub fn write_frac(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
     }
-
 }
 
 /// CH3_DIV value type for batch read/modify/write operations
@@ -3494,7 +3445,6 @@ impl Ch3DivVal {
             bits: (self.bits & !Ch3Div::FRAC_MASK) | ((value << Ch3Div::FRAC_OFFSET) & Ch3Div::FRAC_MASK)
         }
     }
-
 }
 
 impl Default for Ch3DivVal {
@@ -3521,7 +3471,6 @@ impl Ch3Div {
     pub fn modify_val<F: FnOnce(Ch3DivVal) -> Ch3DivVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH3_CTR Register
@@ -3568,7 +3517,6 @@ impl Ch3Ctr {
     pub fn write_ch3_ctr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH3_CTR_MASK) | ((value << Self::CH3_CTR_OFFSET) & Self::CH3_CTR_MASK));
     }
-
 }
 
 /// CH3_CTR value type for batch read/modify/write operations
@@ -3612,7 +3560,6 @@ impl Ch3CtrVal {
             bits: (self.bits & !Ch3Ctr::CH3_CTR_MASK) | ((value << Ch3Ctr::CH3_CTR_OFFSET) & Ch3Ctr::CH3_CTR_MASK)
         }
     }
-
 }
 
 impl Default for Ch3CtrVal {
@@ -3639,7 +3586,6 @@ impl Ch3Ctr {
     pub fn modify_val<F: FnOnce(Ch3CtrVal) -> Ch3CtrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH3_CC Register
@@ -3705,7 +3651,6 @@ impl Ch3Cc {
     pub fn write_a(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
     }
-
 }
 
 /// CH3_CC value type for batch read/modify/write operations
@@ -3763,7 +3708,6 @@ impl Ch3CcVal {
             bits: (self.bits & !Ch3Cc::A_MASK) | ((value << Ch3Cc::A_OFFSET) & Ch3Cc::A_MASK)
         }
     }
-
 }
 
 impl Default for Ch3CcVal {
@@ -3790,7 +3734,6 @@ impl Ch3Cc {
     pub fn modify_val<F: FnOnce(Ch3CcVal) -> Ch3CcVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH3_TOP Register
@@ -3837,7 +3780,6 @@ impl Ch3Top {
     pub fn write_ch3_top(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH3_TOP_MASK) | ((value << Self::CH3_TOP_OFFSET) & Self::CH3_TOP_MASK));
     }
-
 }
 
 /// CH3_TOP value type for batch read/modify/write operations
@@ -3881,7 +3823,6 @@ impl Ch3TopVal {
             bits: (self.bits & !Ch3Top::CH3_TOP_MASK) | ((value << Ch3Top::CH3_TOP_OFFSET) & Ch3Top::CH3_TOP_MASK)
         }
     }
-
 }
 
 impl Default for Ch3TopVal {
@@ -3908,7 +3849,6 @@ impl Ch3Top {
     pub fn modify_val<F: FnOnce(Ch3TopVal) -> Ch3TopVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH4_CSR Register
@@ -4051,7 +3991,7 @@ impl Ch4Csr {
     /// at less than full speed (div_int + div_frac / 16 > 1)
     #[inline(always)]
     pub fn trigger_ph_adv(&self) {
-        self.value.write_bits(Self::PH_ADV_MASK);
+        self.set_bits(Self::PH_ADV_MASK);
     }
 
     /// Trigger **PH_RET** (WO)
@@ -4060,7 +4000,7 @@ impl Ch4Csr {
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
     pub fn trigger_ph_ret(&self) {
-        self.value.write_bits(Self::PH_RET_MASK);
+        self.set_bits(Self::PH_RET_MASK);
     }
 
     /// **DIVMODE** `[5:4]` (RW)
@@ -4154,7 +4094,6 @@ impl Ch4Csr {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// CH4_CSR value type for batch read/modify/write operations
@@ -4317,7 +4256,6 @@ impl Ch4CsrVal {
             }
         }
     }
-
 }
 
 impl Default for Ch4CsrVal {
@@ -4344,7 +4282,6 @@ impl Ch4Csr {
     pub fn modify_val<F: FnOnce(Ch4CsrVal) -> Ch4CsrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH4_DIV Register
@@ -4412,7 +4349,6 @@ impl Ch4Div {
     pub fn write_frac(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
     }
-
 }
 
 /// CH4_DIV value type for batch read/modify/write operations
@@ -4470,7 +4406,6 @@ impl Ch4DivVal {
             bits: (self.bits & !Ch4Div::FRAC_MASK) | ((value << Ch4Div::FRAC_OFFSET) & Ch4Div::FRAC_MASK)
         }
     }
-
 }
 
 impl Default for Ch4DivVal {
@@ -4497,7 +4432,6 @@ impl Ch4Div {
     pub fn modify_val<F: FnOnce(Ch4DivVal) -> Ch4DivVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH4_CTR Register
@@ -4544,7 +4478,6 @@ impl Ch4Ctr {
     pub fn write_ch4_ctr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH4_CTR_MASK) | ((value << Self::CH4_CTR_OFFSET) & Self::CH4_CTR_MASK));
     }
-
 }
 
 /// CH4_CTR value type for batch read/modify/write operations
@@ -4588,7 +4521,6 @@ impl Ch4CtrVal {
             bits: (self.bits & !Ch4Ctr::CH4_CTR_MASK) | ((value << Ch4Ctr::CH4_CTR_OFFSET) & Ch4Ctr::CH4_CTR_MASK)
         }
     }
-
 }
 
 impl Default for Ch4CtrVal {
@@ -4615,7 +4547,6 @@ impl Ch4Ctr {
     pub fn modify_val<F: FnOnce(Ch4CtrVal) -> Ch4CtrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH4_CC Register
@@ -4681,7 +4612,6 @@ impl Ch4Cc {
     pub fn write_a(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
     }
-
 }
 
 /// CH4_CC value type for batch read/modify/write operations
@@ -4739,7 +4669,6 @@ impl Ch4CcVal {
             bits: (self.bits & !Ch4Cc::A_MASK) | ((value << Ch4Cc::A_OFFSET) & Ch4Cc::A_MASK)
         }
     }
-
 }
 
 impl Default for Ch4CcVal {
@@ -4766,7 +4695,6 @@ impl Ch4Cc {
     pub fn modify_val<F: FnOnce(Ch4CcVal) -> Ch4CcVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH4_TOP Register
@@ -4813,7 +4741,6 @@ impl Ch4Top {
     pub fn write_ch4_top(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH4_TOP_MASK) | ((value << Self::CH4_TOP_OFFSET) & Self::CH4_TOP_MASK));
     }
-
 }
 
 /// CH4_TOP value type for batch read/modify/write operations
@@ -4857,7 +4784,6 @@ impl Ch4TopVal {
             bits: (self.bits & !Ch4Top::CH4_TOP_MASK) | ((value << Ch4Top::CH4_TOP_OFFSET) & Ch4Top::CH4_TOP_MASK)
         }
     }
-
 }
 
 impl Default for Ch4TopVal {
@@ -4884,7 +4810,6 @@ impl Ch4Top {
     pub fn modify_val<F: FnOnce(Ch4TopVal) -> Ch4TopVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH5_CSR Register
@@ -5027,7 +4952,7 @@ impl Ch5Csr {
     /// at less than full speed (div_int + div_frac / 16 > 1)
     #[inline(always)]
     pub fn trigger_ph_adv(&self) {
-        self.value.write_bits(Self::PH_ADV_MASK);
+        self.set_bits(Self::PH_ADV_MASK);
     }
 
     /// Trigger **PH_RET** (WO)
@@ -5036,7 +4961,7 @@ impl Ch5Csr {
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
     pub fn trigger_ph_ret(&self) {
-        self.value.write_bits(Self::PH_RET_MASK);
+        self.set_bits(Self::PH_RET_MASK);
     }
 
     /// **DIVMODE** `[5:4]` (RW)
@@ -5130,7 +5055,6 @@ impl Ch5Csr {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// CH5_CSR value type for batch read/modify/write operations
@@ -5293,7 +5217,6 @@ impl Ch5CsrVal {
             }
         }
     }
-
 }
 
 impl Default for Ch5CsrVal {
@@ -5320,7 +5243,6 @@ impl Ch5Csr {
     pub fn modify_val<F: FnOnce(Ch5CsrVal) -> Ch5CsrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH5_DIV Register
@@ -5388,7 +5310,6 @@ impl Ch5Div {
     pub fn write_frac(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
     }
-
 }
 
 /// CH5_DIV value type for batch read/modify/write operations
@@ -5446,7 +5367,6 @@ impl Ch5DivVal {
             bits: (self.bits & !Ch5Div::FRAC_MASK) | ((value << Ch5Div::FRAC_OFFSET) & Ch5Div::FRAC_MASK)
         }
     }
-
 }
 
 impl Default for Ch5DivVal {
@@ -5473,7 +5393,6 @@ impl Ch5Div {
     pub fn modify_val<F: FnOnce(Ch5DivVal) -> Ch5DivVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH5_CTR Register
@@ -5520,7 +5439,6 @@ impl Ch5Ctr {
     pub fn write_ch5_ctr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH5_CTR_MASK) | ((value << Self::CH5_CTR_OFFSET) & Self::CH5_CTR_MASK));
     }
-
 }
 
 /// CH5_CTR value type for batch read/modify/write operations
@@ -5564,7 +5482,6 @@ impl Ch5CtrVal {
             bits: (self.bits & !Ch5Ctr::CH5_CTR_MASK) | ((value << Ch5Ctr::CH5_CTR_OFFSET) & Ch5Ctr::CH5_CTR_MASK)
         }
     }
-
 }
 
 impl Default for Ch5CtrVal {
@@ -5591,7 +5508,6 @@ impl Ch5Ctr {
     pub fn modify_val<F: FnOnce(Ch5CtrVal) -> Ch5CtrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH5_CC Register
@@ -5657,7 +5573,6 @@ impl Ch5Cc {
     pub fn write_a(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
     }
-
 }
 
 /// CH5_CC value type for batch read/modify/write operations
@@ -5715,7 +5630,6 @@ impl Ch5CcVal {
             bits: (self.bits & !Ch5Cc::A_MASK) | ((value << Ch5Cc::A_OFFSET) & Ch5Cc::A_MASK)
         }
     }
-
 }
 
 impl Default for Ch5CcVal {
@@ -5742,7 +5656,6 @@ impl Ch5Cc {
     pub fn modify_val<F: FnOnce(Ch5CcVal) -> Ch5CcVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH5_TOP Register
@@ -5789,7 +5702,6 @@ impl Ch5Top {
     pub fn write_ch5_top(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH5_TOP_MASK) | ((value << Self::CH5_TOP_OFFSET) & Self::CH5_TOP_MASK));
     }
-
 }
 
 /// CH5_TOP value type for batch read/modify/write operations
@@ -5833,7 +5745,6 @@ impl Ch5TopVal {
             bits: (self.bits & !Ch5Top::CH5_TOP_MASK) | ((value << Ch5Top::CH5_TOP_OFFSET) & Ch5Top::CH5_TOP_MASK)
         }
     }
-
 }
 
 impl Default for Ch5TopVal {
@@ -5860,7 +5771,6 @@ impl Ch5Top {
     pub fn modify_val<F: FnOnce(Ch5TopVal) -> Ch5TopVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH6_CSR Register
@@ -6003,7 +5913,7 @@ impl Ch6Csr {
     /// at less than full speed (div_int + div_frac / 16 > 1)
     #[inline(always)]
     pub fn trigger_ph_adv(&self) {
-        self.value.write_bits(Self::PH_ADV_MASK);
+        self.set_bits(Self::PH_ADV_MASK);
     }
 
     /// Trigger **PH_RET** (WO)
@@ -6012,7 +5922,7 @@ impl Ch6Csr {
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
     pub fn trigger_ph_ret(&self) {
-        self.value.write_bits(Self::PH_RET_MASK);
+        self.set_bits(Self::PH_RET_MASK);
     }
 
     /// **DIVMODE** `[5:4]` (RW)
@@ -6106,7 +6016,6 @@ impl Ch6Csr {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// CH6_CSR value type for batch read/modify/write operations
@@ -6269,7 +6178,6 @@ impl Ch6CsrVal {
             }
         }
     }
-
 }
 
 impl Default for Ch6CsrVal {
@@ -6296,7 +6204,6 @@ impl Ch6Csr {
     pub fn modify_val<F: FnOnce(Ch6CsrVal) -> Ch6CsrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH6_DIV Register
@@ -6364,7 +6271,6 @@ impl Ch6Div {
     pub fn write_frac(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
     }
-
 }
 
 /// CH6_DIV value type for batch read/modify/write operations
@@ -6422,7 +6328,6 @@ impl Ch6DivVal {
             bits: (self.bits & !Ch6Div::FRAC_MASK) | ((value << Ch6Div::FRAC_OFFSET) & Ch6Div::FRAC_MASK)
         }
     }
-
 }
 
 impl Default for Ch6DivVal {
@@ -6449,7 +6354,6 @@ impl Ch6Div {
     pub fn modify_val<F: FnOnce(Ch6DivVal) -> Ch6DivVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH6_CTR Register
@@ -6496,7 +6400,6 @@ impl Ch6Ctr {
     pub fn write_ch6_ctr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH6_CTR_MASK) | ((value << Self::CH6_CTR_OFFSET) & Self::CH6_CTR_MASK));
     }
-
 }
 
 /// CH6_CTR value type for batch read/modify/write operations
@@ -6540,7 +6443,6 @@ impl Ch6CtrVal {
             bits: (self.bits & !Ch6Ctr::CH6_CTR_MASK) | ((value << Ch6Ctr::CH6_CTR_OFFSET) & Ch6Ctr::CH6_CTR_MASK)
         }
     }
-
 }
 
 impl Default for Ch6CtrVal {
@@ -6567,7 +6469,6 @@ impl Ch6Ctr {
     pub fn modify_val<F: FnOnce(Ch6CtrVal) -> Ch6CtrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH6_CC Register
@@ -6633,7 +6534,6 @@ impl Ch6Cc {
     pub fn write_a(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
     }
-
 }
 
 /// CH6_CC value type for batch read/modify/write operations
@@ -6691,7 +6591,6 @@ impl Ch6CcVal {
             bits: (self.bits & !Ch6Cc::A_MASK) | ((value << Ch6Cc::A_OFFSET) & Ch6Cc::A_MASK)
         }
     }
-
 }
 
 impl Default for Ch6CcVal {
@@ -6718,7 +6617,6 @@ impl Ch6Cc {
     pub fn modify_val<F: FnOnce(Ch6CcVal) -> Ch6CcVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH6_TOP Register
@@ -6765,7 +6663,6 @@ impl Ch6Top {
     pub fn write_ch6_top(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH6_TOP_MASK) | ((value << Self::CH6_TOP_OFFSET) & Self::CH6_TOP_MASK));
     }
-
 }
 
 /// CH6_TOP value type for batch read/modify/write operations
@@ -6809,7 +6706,6 @@ impl Ch6TopVal {
             bits: (self.bits & !Ch6Top::CH6_TOP_MASK) | ((value << Ch6Top::CH6_TOP_OFFSET) & Ch6Top::CH6_TOP_MASK)
         }
     }
-
 }
 
 impl Default for Ch6TopVal {
@@ -6836,7 +6732,6 @@ impl Ch6Top {
     pub fn modify_val<F: FnOnce(Ch6TopVal) -> Ch6TopVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH7_CSR Register
@@ -6979,7 +6874,7 @@ impl Ch7Csr {
     /// at less than full speed (div_int + div_frac / 16 > 1)
     #[inline(always)]
     pub fn trigger_ph_adv(&self) {
-        self.value.write_bits(Self::PH_ADV_MASK);
+        self.set_bits(Self::PH_ADV_MASK);
     }
 
     /// Trigger **PH_RET** (WO)
@@ -6988,7 +6883,7 @@ impl Ch7Csr {
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
     pub fn trigger_ph_ret(&self) {
-        self.value.write_bits(Self::PH_RET_MASK);
+        self.set_bits(Self::PH_RET_MASK);
     }
 
     /// **DIVMODE** `[5:4]` (RW)
@@ -7082,7 +6977,6 @@ impl Ch7Csr {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// CH7_CSR value type for batch read/modify/write operations
@@ -7245,7 +7139,6 @@ impl Ch7CsrVal {
             }
         }
     }
-
 }
 
 impl Default for Ch7CsrVal {
@@ -7272,7 +7165,6 @@ impl Ch7Csr {
     pub fn modify_val<F: FnOnce(Ch7CsrVal) -> Ch7CsrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH7_DIV Register
@@ -7340,7 +7232,6 @@ impl Ch7Div {
     pub fn write_frac(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
     }
-
 }
 
 /// CH7_DIV value type for batch read/modify/write operations
@@ -7398,7 +7289,6 @@ impl Ch7DivVal {
             bits: (self.bits & !Ch7Div::FRAC_MASK) | ((value << Ch7Div::FRAC_OFFSET) & Ch7Div::FRAC_MASK)
         }
     }
-
 }
 
 impl Default for Ch7DivVal {
@@ -7425,7 +7315,6 @@ impl Ch7Div {
     pub fn modify_val<F: FnOnce(Ch7DivVal) -> Ch7DivVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH7_CTR Register
@@ -7472,7 +7361,6 @@ impl Ch7Ctr {
     pub fn write_ch7_ctr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH7_CTR_MASK) | ((value << Self::CH7_CTR_OFFSET) & Self::CH7_CTR_MASK));
     }
-
 }
 
 /// CH7_CTR value type for batch read/modify/write operations
@@ -7516,7 +7404,6 @@ impl Ch7CtrVal {
             bits: (self.bits & !Ch7Ctr::CH7_CTR_MASK) | ((value << Ch7Ctr::CH7_CTR_OFFSET) & Ch7Ctr::CH7_CTR_MASK)
         }
     }
-
 }
 
 impl Default for Ch7CtrVal {
@@ -7543,7 +7430,6 @@ impl Ch7Ctr {
     pub fn modify_val<F: FnOnce(Ch7CtrVal) -> Ch7CtrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH7_CC Register
@@ -7609,7 +7495,6 @@ impl Ch7Cc {
     pub fn write_a(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
     }
-
 }
 
 /// CH7_CC value type for batch read/modify/write operations
@@ -7667,7 +7552,6 @@ impl Ch7CcVal {
             bits: (self.bits & !Ch7Cc::A_MASK) | ((value << Ch7Cc::A_OFFSET) & Ch7Cc::A_MASK)
         }
     }
-
 }
 
 impl Default for Ch7CcVal {
@@ -7694,7 +7578,6 @@ impl Ch7Cc {
     pub fn modify_val<F: FnOnce(Ch7CcVal) -> Ch7CcVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH7_TOP Register
@@ -7741,7 +7624,6 @@ impl Ch7Top {
     pub fn write_ch7_top(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH7_TOP_MASK) | ((value << Self::CH7_TOP_OFFSET) & Self::CH7_TOP_MASK));
     }
-
 }
 
 /// CH7_TOP value type for batch read/modify/write operations
@@ -7785,7 +7667,6 @@ impl Ch7TopVal {
             bits: (self.bits & !Ch7Top::CH7_TOP_MASK) | ((value << Ch7Top::CH7_TOP_OFFSET) & Ch7Top::CH7_TOP_MASK)
         }
     }
-
 }
 
 impl Default for Ch7TopVal {
@@ -7812,7 +7693,6 @@ impl Ch7Top {
     pub fn modify_val<F: FnOnce(Ch7TopVal) -> Ch7TopVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH8_CSR Register
@@ -7955,7 +7835,7 @@ impl Ch8Csr {
     /// at less than full speed (div_int + div_frac / 16 > 1)
     #[inline(always)]
     pub fn trigger_ph_adv(&self) {
-        self.value.write_bits(Self::PH_ADV_MASK);
+        self.set_bits(Self::PH_ADV_MASK);
     }
 
     /// Trigger **PH_RET** (WO)
@@ -7964,7 +7844,7 @@ impl Ch8Csr {
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
     pub fn trigger_ph_ret(&self) {
-        self.value.write_bits(Self::PH_RET_MASK);
+        self.set_bits(Self::PH_RET_MASK);
     }
 
     /// **DIVMODE** `[5:4]` (RW)
@@ -8058,7 +7938,6 @@ impl Ch8Csr {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// CH8_CSR value type for batch read/modify/write operations
@@ -8221,7 +8100,6 @@ impl Ch8CsrVal {
             }
         }
     }
-
 }
 
 impl Default for Ch8CsrVal {
@@ -8248,7 +8126,6 @@ impl Ch8Csr {
     pub fn modify_val<F: FnOnce(Ch8CsrVal) -> Ch8CsrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH8_DIV Register
@@ -8316,7 +8193,6 @@ impl Ch8Div {
     pub fn write_frac(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
     }
-
 }
 
 /// CH8_DIV value type for batch read/modify/write operations
@@ -8374,7 +8250,6 @@ impl Ch8DivVal {
             bits: (self.bits & !Ch8Div::FRAC_MASK) | ((value << Ch8Div::FRAC_OFFSET) & Ch8Div::FRAC_MASK)
         }
     }
-
 }
 
 impl Default for Ch8DivVal {
@@ -8401,7 +8276,6 @@ impl Ch8Div {
     pub fn modify_val<F: FnOnce(Ch8DivVal) -> Ch8DivVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH8_CTR Register
@@ -8448,7 +8322,6 @@ impl Ch8Ctr {
     pub fn write_ch8_ctr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH8_CTR_MASK) | ((value << Self::CH8_CTR_OFFSET) & Self::CH8_CTR_MASK));
     }
-
 }
 
 /// CH8_CTR value type for batch read/modify/write operations
@@ -8492,7 +8365,6 @@ impl Ch8CtrVal {
             bits: (self.bits & !Ch8Ctr::CH8_CTR_MASK) | ((value << Ch8Ctr::CH8_CTR_OFFSET) & Ch8Ctr::CH8_CTR_MASK)
         }
     }
-
 }
 
 impl Default for Ch8CtrVal {
@@ -8519,7 +8391,6 @@ impl Ch8Ctr {
     pub fn modify_val<F: FnOnce(Ch8CtrVal) -> Ch8CtrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH8_CC Register
@@ -8585,7 +8456,6 @@ impl Ch8Cc {
     pub fn write_a(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
     }
-
 }
 
 /// CH8_CC value type for batch read/modify/write operations
@@ -8643,7 +8513,6 @@ impl Ch8CcVal {
             bits: (self.bits & !Ch8Cc::A_MASK) | ((value << Ch8Cc::A_OFFSET) & Ch8Cc::A_MASK)
         }
     }
-
 }
 
 impl Default for Ch8CcVal {
@@ -8670,7 +8539,6 @@ impl Ch8Cc {
     pub fn modify_val<F: FnOnce(Ch8CcVal) -> Ch8CcVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH8_TOP Register
@@ -8717,7 +8585,6 @@ impl Ch8Top {
     pub fn write_ch8_top(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH8_TOP_MASK) | ((value << Self::CH8_TOP_OFFSET) & Self::CH8_TOP_MASK));
     }
-
 }
 
 /// CH8_TOP value type for batch read/modify/write operations
@@ -8761,7 +8628,6 @@ impl Ch8TopVal {
             bits: (self.bits & !Ch8Top::CH8_TOP_MASK) | ((value << Ch8Top::CH8_TOP_OFFSET) & Ch8Top::CH8_TOP_MASK)
         }
     }
-
 }
 
 impl Default for Ch8TopVal {
@@ -8788,7 +8654,6 @@ impl Ch8Top {
     pub fn modify_val<F: FnOnce(Ch8TopVal) -> Ch8TopVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH9_CSR Register
@@ -8931,7 +8796,7 @@ impl Ch9Csr {
     /// at less than full speed (div_int + div_frac / 16 > 1)
     #[inline(always)]
     pub fn trigger_ph_adv(&self) {
-        self.value.write_bits(Self::PH_ADV_MASK);
+        self.set_bits(Self::PH_ADV_MASK);
     }
 
     /// Trigger **PH_RET** (WO)
@@ -8940,7 +8805,7 @@ impl Ch9Csr {
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
     pub fn trigger_ph_ret(&self) {
-        self.value.write_bits(Self::PH_RET_MASK);
+        self.set_bits(Self::PH_RET_MASK);
     }
 
     /// **DIVMODE** `[5:4]` (RW)
@@ -9034,7 +8899,6 @@ impl Ch9Csr {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// CH9_CSR value type for batch read/modify/write operations
@@ -9197,7 +9061,6 @@ impl Ch9CsrVal {
             }
         }
     }
-
 }
 
 impl Default for Ch9CsrVal {
@@ -9224,7 +9087,6 @@ impl Ch9Csr {
     pub fn modify_val<F: FnOnce(Ch9CsrVal) -> Ch9CsrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH9_DIV Register
@@ -9292,7 +9154,6 @@ impl Ch9Div {
     pub fn write_frac(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
     }
-
 }
 
 /// CH9_DIV value type for batch read/modify/write operations
@@ -9350,7 +9211,6 @@ impl Ch9DivVal {
             bits: (self.bits & !Ch9Div::FRAC_MASK) | ((value << Ch9Div::FRAC_OFFSET) & Ch9Div::FRAC_MASK)
         }
     }
-
 }
 
 impl Default for Ch9DivVal {
@@ -9377,7 +9237,6 @@ impl Ch9Div {
     pub fn modify_val<F: FnOnce(Ch9DivVal) -> Ch9DivVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH9_CTR Register
@@ -9424,7 +9283,6 @@ impl Ch9Ctr {
     pub fn write_ch9_ctr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH9_CTR_MASK) | ((value << Self::CH9_CTR_OFFSET) & Self::CH9_CTR_MASK));
     }
-
 }
 
 /// CH9_CTR value type for batch read/modify/write operations
@@ -9468,7 +9326,6 @@ impl Ch9CtrVal {
             bits: (self.bits & !Ch9Ctr::CH9_CTR_MASK) | ((value << Ch9Ctr::CH9_CTR_OFFSET) & Ch9Ctr::CH9_CTR_MASK)
         }
     }
-
 }
 
 impl Default for Ch9CtrVal {
@@ -9495,7 +9352,6 @@ impl Ch9Ctr {
     pub fn modify_val<F: FnOnce(Ch9CtrVal) -> Ch9CtrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH9_CC Register
@@ -9561,7 +9417,6 @@ impl Ch9Cc {
     pub fn write_a(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
     }
-
 }
 
 /// CH9_CC value type for batch read/modify/write operations
@@ -9619,7 +9474,6 @@ impl Ch9CcVal {
             bits: (self.bits & !Ch9Cc::A_MASK) | ((value << Ch9Cc::A_OFFSET) & Ch9Cc::A_MASK)
         }
     }
-
 }
 
 impl Default for Ch9CcVal {
@@ -9646,7 +9500,6 @@ impl Ch9Cc {
     pub fn modify_val<F: FnOnce(Ch9CcVal) -> Ch9CcVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH9_TOP Register
@@ -9693,7 +9546,6 @@ impl Ch9Top {
     pub fn write_ch9_top(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH9_TOP_MASK) | ((value << Self::CH9_TOP_OFFSET) & Self::CH9_TOP_MASK));
     }
-
 }
 
 /// CH9_TOP value type for batch read/modify/write operations
@@ -9737,7 +9589,6 @@ impl Ch9TopVal {
             bits: (self.bits & !Ch9Top::CH9_TOP_MASK) | ((value << Ch9Top::CH9_TOP_OFFSET) & Ch9Top::CH9_TOP_MASK)
         }
     }
-
 }
 
 impl Default for Ch9TopVal {
@@ -9764,7 +9615,6 @@ impl Ch9Top {
     pub fn modify_val<F: FnOnce(Ch9TopVal) -> Ch9TopVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH10_CSR Register
@@ -9907,7 +9757,7 @@ impl Ch10Csr {
     /// at less than full speed (div_int + div_frac / 16 > 1)
     #[inline(always)]
     pub fn trigger_ph_adv(&self) {
-        self.value.write_bits(Self::PH_ADV_MASK);
+        self.set_bits(Self::PH_ADV_MASK);
     }
 
     /// Trigger **PH_RET** (WO)
@@ -9916,7 +9766,7 @@ impl Ch10Csr {
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
     pub fn trigger_ph_ret(&self) {
-        self.value.write_bits(Self::PH_RET_MASK);
+        self.set_bits(Self::PH_RET_MASK);
     }
 
     /// **DIVMODE** `[5:4]` (RW)
@@ -10010,7 +9860,6 @@ impl Ch10Csr {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// CH10_CSR value type for batch read/modify/write operations
@@ -10173,7 +10022,6 @@ impl Ch10CsrVal {
             }
         }
     }
-
 }
 
 impl Default for Ch10CsrVal {
@@ -10200,7 +10048,6 @@ impl Ch10Csr {
     pub fn modify_val<F: FnOnce(Ch10CsrVal) -> Ch10CsrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH10_DIV Register
@@ -10268,7 +10115,6 @@ impl Ch10Div {
     pub fn write_frac(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
     }
-
 }
 
 /// CH10_DIV value type for batch read/modify/write operations
@@ -10326,7 +10172,6 @@ impl Ch10DivVal {
             bits: (self.bits & !Ch10Div::FRAC_MASK) | ((value << Ch10Div::FRAC_OFFSET) & Ch10Div::FRAC_MASK)
         }
     }
-
 }
 
 impl Default for Ch10DivVal {
@@ -10353,7 +10198,6 @@ impl Ch10Div {
     pub fn modify_val<F: FnOnce(Ch10DivVal) -> Ch10DivVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH10_CTR Register
@@ -10400,7 +10244,6 @@ impl Ch10Ctr {
     pub fn write_ch10_ctr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH10_CTR_MASK) | ((value << Self::CH10_CTR_OFFSET) & Self::CH10_CTR_MASK));
     }
-
 }
 
 /// CH10_CTR value type for batch read/modify/write operations
@@ -10444,7 +10287,6 @@ impl Ch10CtrVal {
             bits: (self.bits & !Ch10Ctr::CH10_CTR_MASK) | ((value << Ch10Ctr::CH10_CTR_OFFSET) & Ch10Ctr::CH10_CTR_MASK)
         }
     }
-
 }
 
 impl Default for Ch10CtrVal {
@@ -10471,7 +10313,6 @@ impl Ch10Ctr {
     pub fn modify_val<F: FnOnce(Ch10CtrVal) -> Ch10CtrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH10_CC Register
@@ -10537,7 +10378,6 @@ impl Ch10Cc {
     pub fn write_a(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
     }
-
 }
 
 /// CH10_CC value type for batch read/modify/write operations
@@ -10595,7 +10435,6 @@ impl Ch10CcVal {
             bits: (self.bits & !Ch10Cc::A_MASK) | ((value << Ch10Cc::A_OFFSET) & Ch10Cc::A_MASK)
         }
     }
-
 }
 
 impl Default for Ch10CcVal {
@@ -10622,7 +10461,6 @@ impl Ch10Cc {
     pub fn modify_val<F: FnOnce(Ch10CcVal) -> Ch10CcVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH10_TOP Register
@@ -10669,7 +10507,6 @@ impl Ch10Top {
     pub fn write_ch10_top(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH10_TOP_MASK) | ((value << Self::CH10_TOP_OFFSET) & Self::CH10_TOP_MASK));
     }
-
 }
 
 /// CH10_TOP value type for batch read/modify/write operations
@@ -10713,7 +10550,6 @@ impl Ch10TopVal {
             bits: (self.bits & !Ch10Top::CH10_TOP_MASK) | ((value << Ch10Top::CH10_TOP_OFFSET) & Ch10Top::CH10_TOP_MASK)
         }
     }
-
 }
 
 impl Default for Ch10TopVal {
@@ -10740,7 +10576,6 @@ impl Ch10Top {
     pub fn modify_val<F: FnOnce(Ch10TopVal) -> Ch10TopVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH11_CSR Register
@@ -10883,7 +10718,7 @@ impl Ch11Csr {
     /// at less than full speed (div_int + div_frac / 16 > 1)
     #[inline(always)]
     pub fn trigger_ph_adv(&self) {
-        self.value.write_bits(Self::PH_ADV_MASK);
+        self.set_bits(Self::PH_ADV_MASK);
     }
 
     /// Trigger **PH_RET** (WO)
@@ -10892,7 +10727,7 @@ impl Ch11Csr {
     /// Self-clearing. Write a 1, and poll until low. Counter must be running.
     #[inline(always)]
     pub fn trigger_ph_ret(&self) {
-        self.value.write_bits(Self::PH_RET_MASK);
+        self.set_bits(Self::PH_RET_MASK);
     }
 
     /// **DIVMODE** `[5:4]` (RW)
@@ -10986,7 +10821,6 @@ impl Ch11Csr {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// CH11_CSR value type for batch read/modify/write operations
@@ -11149,7 +10983,6 @@ impl Ch11CsrVal {
             }
         }
     }
-
 }
 
 impl Default for Ch11CsrVal {
@@ -11176,7 +11009,6 @@ impl Ch11Csr {
     pub fn modify_val<F: FnOnce(Ch11CsrVal) -> Ch11CsrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH11_DIV Register
@@ -11244,7 +11076,6 @@ impl Ch11Div {
     pub fn write_frac(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
     }
-
 }
 
 /// CH11_DIV value type for batch read/modify/write operations
@@ -11302,7 +11133,6 @@ impl Ch11DivVal {
             bits: (self.bits & !Ch11Div::FRAC_MASK) | ((value << Ch11Div::FRAC_OFFSET) & Ch11Div::FRAC_MASK)
         }
     }
-
 }
 
 impl Default for Ch11DivVal {
@@ -11329,7 +11159,6 @@ impl Ch11Div {
     pub fn modify_val<F: FnOnce(Ch11DivVal) -> Ch11DivVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH11_CTR Register
@@ -11376,7 +11205,6 @@ impl Ch11Ctr {
     pub fn write_ch11_ctr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH11_CTR_MASK) | ((value << Self::CH11_CTR_OFFSET) & Self::CH11_CTR_MASK));
     }
-
 }
 
 /// CH11_CTR value type for batch read/modify/write operations
@@ -11420,7 +11248,6 @@ impl Ch11CtrVal {
             bits: (self.bits & !Ch11Ctr::CH11_CTR_MASK) | ((value << Ch11Ctr::CH11_CTR_OFFSET) & Ch11Ctr::CH11_CTR_MASK)
         }
     }
-
 }
 
 impl Default for Ch11CtrVal {
@@ -11447,7 +11274,6 @@ impl Ch11Ctr {
     pub fn modify_val<F: FnOnce(Ch11CtrVal) -> Ch11CtrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH11_CC Register
@@ -11513,7 +11339,6 @@ impl Ch11Cc {
     pub fn write_a(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
     }
-
 }
 
 /// CH11_CC value type for batch read/modify/write operations
@@ -11571,7 +11396,6 @@ impl Ch11CcVal {
             bits: (self.bits & !Ch11Cc::A_MASK) | ((value << Ch11Cc::A_OFFSET) & Ch11Cc::A_MASK)
         }
     }
-
 }
 
 impl Default for Ch11CcVal {
@@ -11598,7 +11422,6 @@ impl Ch11Cc {
     pub fn modify_val<F: FnOnce(Ch11CcVal) -> Ch11CcVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH11_TOP Register
@@ -11645,7 +11468,6 @@ impl Ch11Top {
     pub fn write_ch11_top(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH11_TOP_MASK) | ((value << Self::CH11_TOP_OFFSET) & Self::CH11_TOP_MASK));
     }
-
 }
 
 /// CH11_TOP value type for batch read/modify/write operations
@@ -11689,7 +11511,6 @@ impl Ch11TopVal {
             bits: (self.bits & !Ch11Top::CH11_TOP_MASK) | ((value << Ch11Top::CH11_TOP_OFFSET) & Ch11Top::CH11_TOP_MASK)
         }
     }
-
 }
 
 impl Default for Ch11TopVal {
@@ -11716,7 +11537,6 @@ impl Ch11Top {
     pub fn modify_val<F: FnOnce(Ch11TopVal) -> Ch11TopVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EN Register
@@ -12060,7 +11880,6 @@ impl En {
     pub fn clr_ch0(&self) {
         self.clr_bits(Self::CH0_MASK);
     }
-
 }
 
 /// EN value type for batch read/modify/write operations
@@ -12306,7 +12125,6 @@ impl EnVal {
             }
         }
     }
-
 }
 
 impl Default for EnVal {
@@ -12333,7 +12151,6 @@ impl En {
     pub fn modify_val<F: FnOnce(EnVal) -> EnVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTR Register
@@ -12673,7 +12490,6 @@ impl Intr {
     pub fn clr_ch0(&self) {
         self.clr_bits(Self::CH0_MASK);
     }
-
 }
 
 /// INTR value type for batch read/modify/write operations
@@ -12919,7 +12735,6 @@ impl IntrVal {
             }
         }
     }
-
 }
 
 impl Default for IntrVal {
@@ -12946,7 +12761,6 @@ impl Intr {
     pub fn modify_val<F: FnOnce(IntrVal) -> IntrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IRQ0_INTE Register
@@ -13286,7 +13100,6 @@ impl Irq0Inte {
     pub fn clr_ch0(&self) {
         self.clr_bits(Self::CH0_MASK);
     }
-
 }
 
 /// IRQ0_INTE value type for batch read/modify/write operations
@@ -13532,7 +13345,6 @@ impl Irq0InteVal {
             }
         }
     }
-
 }
 
 impl Default for Irq0InteVal {
@@ -13559,7 +13371,6 @@ impl Irq0Inte {
     pub fn modify_val<F: FnOnce(Irq0InteVal) -> Irq0InteVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IRQ0_INTF Register
@@ -13899,7 +13710,6 @@ impl Irq0Intf {
     pub fn clr_ch0(&self) {
         self.clr_bits(Self::CH0_MASK);
     }
-
 }
 
 /// IRQ0_INTF value type for batch read/modify/write operations
@@ -14145,7 +13955,6 @@ impl Irq0IntfVal {
             }
         }
     }
-
 }
 
 impl Default for Irq0IntfVal {
@@ -14172,7 +13981,6 @@ impl Irq0Intf {
     pub fn modify_val<F: FnOnce(Irq0IntfVal) -> Irq0IntfVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IRQ0_INTS Register
@@ -14368,7 +14176,6 @@ impl Irq0Ints {
     pub fn ch0(&self) -> bool {
         (self.value.read_bits() & Self::CH0_MASK) != 0
     }
-
 }
 
 /// IRQ0_INTS value type for batch read/modify/write operations
@@ -14470,7 +14277,6 @@ impl Irq0IntsVal {
     pub const fn ch0(&self) -> bool {
         (self.bits & Irq0Ints::CH0_MASK) != 0
     }
-
 }
 
 impl Default for Irq0IntsVal {
@@ -14485,19 +14291,6 @@ impl Irq0Ints {
     pub fn read_val(&self) -> Irq0IntsVal {
         Irq0IntsVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Irq0IntsVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Irq0IntsVal) -> Irq0IntsVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IRQ1_INTE Register
@@ -14837,7 +14630,6 @@ impl Irq1Inte {
     pub fn clr_ch0(&self) {
         self.clr_bits(Self::CH0_MASK);
     }
-
 }
 
 /// IRQ1_INTE value type for batch read/modify/write operations
@@ -15083,7 +14875,6 @@ impl Irq1InteVal {
             }
         }
     }
-
 }
 
 impl Default for Irq1InteVal {
@@ -15110,7 +14901,6 @@ impl Irq1Inte {
     pub fn modify_val<F: FnOnce(Irq1InteVal) -> Irq1InteVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IRQ1_INTF Register
@@ -15450,7 +15240,6 @@ impl Irq1Intf {
     pub fn clr_ch0(&self) {
         self.clr_bits(Self::CH0_MASK);
     }
-
 }
 
 /// IRQ1_INTF value type for batch read/modify/write operations
@@ -15696,7 +15485,6 @@ impl Irq1IntfVal {
             }
         }
     }
-
 }
 
 impl Default for Irq1IntfVal {
@@ -15723,7 +15511,6 @@ impl Irq1Intf {
     pub fn modify_val<F: FnOnce(Irq1IntfVal) -> Irq1IntfVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IRQ1_INTS Register
@@ -15919,7 +15706,6 @@ impl Irq1Ints {
     pub fn ch0(&self) -> bool {
         (self.value.read_bits() & Self::CH0_MASK) != 0
     }
-
 }
 
 /// IRQ1_INTS value type for batch read/modify/write operations
@@ -16021,7 +15807,6 @@ impl Irq1IntsVal {
     pub const fn ch0(&self) -> bool {
         (self.bits & Irq1Ints::CH0_MASK) != 0
     }
-
 }
 
 impl Default for Irq1IntsVal {
@@ -16036,19 +15821,6 @@ impl Irq1Ints {
     pub fn read_val(&self) -> Irq1IntsVal {
         Irq1IntsVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Irq1IntsVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Irq1IntsVal) -> Irq1IntsVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// Register block

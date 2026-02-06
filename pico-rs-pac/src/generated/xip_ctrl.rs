@@ -446,7 +446,6 @@ impl Ctrl {
     pub fn clr_en_secure(&self) {
         self.clr_bits(Self::EN_SECURE_MASK);
     }
-
 }
 
 /// CTRL value type for batch read/modify/write operations
@@ -752,7 +751,6 @@ impl CtrlVal {
             }
         }
     }
-
 }
 
 impl Default for CtrlVal {
@@ -779,7 +777,6 @@ impl Ctrl {
     pub fn modify_val<F: FnOnce(CtrlVal) -> CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// STAT Register
@@ -853,7 +850,6 @@ impl Stat {
     pub fn fifo_empty(&self) -> bool {
         (self.value.read_bits() & Self::FIFO_EMPTY_MASK) != 0
     }
-
 }
 
 /// STAT value type for batch read/modify/write operations
@@ -901,7 +897,6 @@ impl StatVal {
     pub const fn fifo_empty(&self) -> bool {
         (self.bits & Stat::FIFO_EMPTY_MASK) != 0
     }
-
 }
 
 impl Default for StatVal {
@@ -916,19 +911,6 @@ impl Stat {
     pub fn read_val(&self) -> StatVal {
         StatVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: StatVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(StatVal) -> StatVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CTR_HIT Register
@@ -992,7 +974,6 @@ impl CtrHit {
     pub fn write_ctr_hit(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CTR_HIT_MASK) | ((value << Self::CTR_HIT_OFFSET) & Self::CTR_HIT_MASK));
     }
-
 }
 
 /// CTR_HIT value type for batch read/modify/write operations
@@ -1044,7 +1025,6 @@ impl CtrHitVal {
             bits: (self.bits & !CtrHit::CTR_HIT_MASK) | ((value << CtrHit::CTR_HIT_OFFSET) & CtrHit::CTR_HIT_MASK)
         }
     }
-
 }
 
 impl Default for CtrHitVal {
@@ -1071,7 +1051,6 @@ impl CtrHit {
     pub fn modify_val<F: FnOnce(CtrHitVal) -> CtrHitVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CTR_ACC Register
@@ -1135,7 +1114,6 @@ impl CtrAcc {
     pub fn write_ctr_acc(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CTR_ACC_MASK) | ((value << Self::CTR_ACC_OFFSET) & Self::CTR_ACC_MASK));
     }
-
 }
 
 /// CTR_ACC value type for batch read/modify/write operations
@@ -1187,7 +1165,6 @@ impl CtrAccVal {
             bits: (self.bits & !CtrAcc::CTR_ACC_MASK) | ((value << CtrAcc::CTR_ACC_OFFSET) & CtrAcc::CTR_ACC_MASK)
         }
     }
-
 }
 
 impl Default for CtrAccVal {
@@ -1214,7 +1191,6 @@ impl CtrAcc {
     pub fn modify_val<F: FnOnce(CtrAccVal) -> CtrAccVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// STREAM_ADDR Register
@@ -1278,7 +1254,6 @@ impl StreamAddr {
     pub fn write_stream_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STREAM_ADDR_MASK) | ((value << Self::STREAM_ADDR_OFFSET) & Self::STREAM_ADDR_MASK));
     }
-
 }
 
 /// STREAM_ADDR value type for batch read/modify/write operations
@@ -1330,7 +1305,6 @@ impl StreamAddrVal {
             bits: (self.bits & !StreamAddr::STREAM_ADDR_MASK) | ((value << StreamAddr::STREAM_ADDR_OFFSET) & StreamAddr::STREAM_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for StreamAddrVal {
@@ -1357,7 +1331,6 @@ impl StreamAddr {
     pub fn modify_val<F: FnOnce(StreamAddrVal) -> StreamAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// STREAM_CTR Register
@@ -1441,7 +1414,6 @@ impl StreamCtr {
     pub fn write_stream_ctr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STREAM_CTR_MASK) | ((value << Self::STREAM_CTR_OFFSET) & Self::STREAM_CTR_MASK));
     }
-
 }
 
 /// STREAM_CTR value type for batch read/modify/write operations
@@ -1503,7 +1475,6 @@ impl StreamCtrVal {
             bits: (self.bits & !StreamCtr::STREAM_CTR_MASK) | ((value << StreamCtr::STREAM_CTR_OFFSET) & StreamCtr::STREAM_CTR_MASK)
         }
     }
-
 }
 
 impl Default for StreamCtrVal {
@@ -1530,7 +1501,6 @@ impl StreamCtr {
     pub fn modify_val<F: FnOnce(StreamCtrVal) -> StreamCtrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// STREAM_FIFO Register
@@ -1584,7 +1554,6 @@ impl StreamFifo {
     pub fn stream_fifo(&self) -> u32 {
         (self.value.read_bits() & Self::STREAM_FIFO_MASK) >> Self::STREAM_FIFO_OFFSET
     }
-
 }
 
 /// STREAM_FIFO value type for batch read/modify/write operations
@@ -1624,7 +1593,6 @@ impl StreamFifoVal {
     pub const fn stream_fifo(&self) -> u32 {
         (self.bits & StreamFifo::STREAM_FIFO_MASK) >> StreamFifo::STREAM_FIFO_OFFSET
     }
-
 }
 
 impl Default for StreamFifoVal {
@@ -1639,19 +1607,6 @@ impl StreamFifo {
     pub fn read_val(&self) -> StreamFifoVal {
         StreamFifoVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: StreamFifoVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(StreamFifoVal) -> StreamFifoVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// Register block

@@ -135,7 +135,6 @@ impl Ctrl {
     pub fn write_freq_range(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FREQ_RANGE_MASK) | ((value << Self::FREQ_RANGE_OFFSET) & Self::FREQ_RANGE_MASK));
     }
-
 }
 
 /// CTRL value type for batch read/modify/write operations
@@ -219,7 +218,6 @@ impl CtrlVal {
             bits: (self.bits & !Ctrl::FREQ_RANGE_MASK) | ((value << Ctrl::FREQ_RANGE_OFFSET) & Ctrl::FREQ_RANGE_MASK)
         }
     }
-
 }
 
 impl Default for CtrlVal {
@@ -246,7 +244,6 @@ impl Ctrl {
     pub fn modify_val<F: FnOnce(CtrlVal) -> CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FREQA Register
@@ -493,7 +490,6 @@ impl Freqa {
     pub fn write_ds0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::DS0_MASK) | ((value << Self::DS0_OFFSET) & Self::DS0_MASK));
     }
-
 }
 
 /// FREQA value type for batch read/modify/write operations
@@ -659,7 +655,6 @@ impl FreqaVal {
             bits: (self.bits & !Freqa::DS0_MASK) | ((value << Freqa::DS0_OFFSET) & Freqa::DS0_MASK)
         }
     }
-
 }
 
 impl Default for FreqaVal {
@@ -686,7 +681,6 @@ impl Freqa {
     pub fn modify_val<F: FnOnce(FreqaVal) -> FreqaVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FREQB Register
@@ -860,7 +854,6 @@ impl Freqb {
     pub fn write_ds4(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::DS4_MASK) | ((value << Self::DS4_OFFSET) & Self::DS4_MASK));
     }
-
 }
 
 /// FREQB value type for batch read/modify/write operations
@@ -982,7 +975,6 @@ impl FreqbVal {
             bits: (self.bits & !Freqb::DS4_MASK) | ((value << Freqb::DS4_OFFSET) & Freqb::DS4_MASK)
         }
     }
-
 }
 
 impl Default for FreqbVal {
@@ -1009,7 +1001,6 @@ impl Freqb {
     pub fn modify_val<F: FnOnce(FreqbVal) -> FreqbVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// RANDOM Register
@@ -1056,7 +1047,6 @@ impl Random {
     pub fn write_seed(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEED_MASK) | ((value << Self::SEED_OFFSET) & Self::SEED_MASK));
     }
-
 }
 
 /// RANDOM value type for batch read/modify/write operations
@@ -1100,7 +1090,6 @@ impl RandomVal {
             bits: (self.bits & !Random::SEED_MASK) | ((value << Random::SEED_OFFSET) & Random::SEED_MASK)
         }
     }
-
 }
 
 impl Default for RandomVal {
@@ -1127,7 +1116,6 @@ impl Random {
     pub fn modify_val<F: FnOnce(RandomVal) -> RandomVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DORMANT Register
@@ -1198,7 +1186,6 @@ impl Dormant {
     pub fn write_dormant(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::DORMANT_MASK) | ((value << Self::DORMANT_OFFSET) & Self::DORMANT_MASK));
     }
-
 }
 
 /// DORMANT value type for batch read/modify/write operations
@@ -1246,7 +1233,6 @@ impl DormantVal {
             bits: (self.bits & !Dormant::DORMANT_MASK) | ((value << Dormant::DORMANT_OFFSET) & Dormant::DORMANT_MASK)
         }
     }
-
 }
 
 impl Default for DormantVal {
@@ -1273,7 +1259,6 @@ impl Dormant {
     pub fn modify_val<F: FnOnce(DormantVal) -> DormantVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DIV Register
@@ -1346,7 +1331,6 @@ impl Div {
     pub fn write_div(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::DIV_MASK) | ((value << Self::DIV_OFFSET) & Self::DIV_MASK));
     }
-
 }
 
 /// DIV value type for batch read/modify/write operations
@@ -1396,7 +1380,6 @@ impl DivVal {
             bits: (self.bits & !Div::DIV_MASK) | ((value << Div::DIV_OFFSET) & Div::DIV_MASK)
         }
     }
-
 }
 
 impl Default for DivVal {
@@ -1423,7 +1406,6 @@ impl Div {
     pub fn modify_val<F: FnOnce(DivVal) -> DivVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PHASE Register
@@ -1591,7 +1573,6 @@ impl Phase {
     pub fn write_shift(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SHIFT_MASK) | ((value << Self::SHIFT_OFFSET) & Self::SHIFT_MASK));
     }
-
 }
 
 /// PHASE value type for batch read/modify/write operations
@@ -1711,7 +1692,6 @@ impl PhaseVal {
             bits: (self.bits & !Phase::SHIFT_MASK) | ((value << Phase::SHIFT_OFFSET) & Phase::SHIFT_MASK)
         }
     }
-
 }
 
 impl Default for PhaseVal {
@@ -1738,7 +1718,6 @@ impl Phase {
     pub fn modify_val<F: FnOnce(PhaseVal) -> PhaseVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// STATUS Register
@@ -1868,7 +1847,6 @@ impl Status {
     pub fn enabled(&self) -> bool {
         (self.value.read_bits() & Self::ENABLED_MASK) != 0
     }
-
 }
 
 /// STATUS value type for batch read/modify/write operations
@@ -1946,7 +1924,6 @@ impl StatusVal {
             }
         }
     }
-
 }
 
 impl Default for StatusVal {
@@ -1973,7 +1950,6 @@ impl Status {
     pub fn modify_val<F: FnOnce(StatusVal) -> StatusVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// RANDOMBIT Register
@@ -2015,7 +1991,6 @@ impl Randombit {
     pub fn randombit(&self) -> bool {
         (self.value.read_bits() & Self::RANDOMBIT_MASK) != 0
     }
-
 }
 
 /// RANDOMBIT value type for batch read/modify/write operations
@@ -2051,7 +2026,6 @@ impl RandombitVal {
     pub const fn randombit(&self) -> bool {
         (self.bits & Randombit::RANDOMBIT_MASK) != 0
     }
-
 }
 
 impl Default for RandombitVal {
@@ -2066,19 +2040,6 @@ impl Randombit {
     pub fn read_val(&self) -> RandombitVal {
         RandombitVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: RandombitVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(RandombitVal) -> RandombitVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// COUNT Register
@@ -2127,7 +2088,6 @@ impl Count {
     pub fn write_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
     }
-
 }
 
 /// COUNT value type for batch read/modify/write operations
@@ -2171,7 +2131,6 @@ impl CountVal {
             bits: (self.bits & !Count::COUNT_MASK) | ((value << Count::COUNT_OFFSET) & Count::COUNT_MASK)
         }
     }
-
 }
 
 impl Default for CountVal {
@@ -2198,7 +2157,6 @@ impl Count {
     pub fn modify_val<F: FnOnce(CountVal) -> CountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// Register block

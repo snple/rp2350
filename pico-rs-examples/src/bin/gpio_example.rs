@@ -3,8 +3,8 @@
 //! This example demonstrates the new type-safe GPIO API with dedicated pin types.
 //!
 //! Features demonstrated:
-//! - gpio::init_gpio() initialization
-//! - Pin0-Pin47 dedicated types
+//! - Pins::new() initialization
+//! - Pin ownership model
 //! - SIO function (direct CPU control)
 //! - Output/Input configuration
 //! - Pull resistor configuration
@@ -18,33 +18,43 @@
 use defmt::*;
 use defmt_rtt as _;
 use panic_probe as _;
+use pico_rs::Delay;
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
-use pico_rs::gpio::{self, DriveStrength, Pin0, Pin1, Pin2, Pin3, Pin4, Pin25, Pull, SlewRate};
+use pico_rs::gpio::{DriveStrength, Pin, Pins, Pull, SlewRate};
+use pico_rs::pac::Peripherals;
+use pico_rs::pico_rs_rt::peripheral::Peripherals as CorePeripherals;
 use pico_rs::sio::Sio;
-use pico_rs::systick::Delay;
 
 /// RP2350 Boot Block
 #[unsafe(link_section = ".start_block")]
 #[used]
 pub static IMAGE_DEF: ImageDef = ImageDef::secure_exe();
 
+const CLOCK_FREQ_HZ: u32 = 12_000_000;
+
 #[entry]
 fn main() -> ! {
     info!("=== GPIO HAL Example ===");
 
-    // Initialize GPIO bank (unresets IO_BANK0 and PADS_BANK0)
-    gpio::init_gpio();
+    // Take device peripherals
+    let dp = Peripherals::take().unwrap();
+
+    // Initialize GPIO bank using Pins::new() - consumes IO_BANK0 and PADS_BANK0
+    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
     info!("GPIO bank initialized");
 
-    // Get individual pins
-    let led = Pin25::new();
-    let pin0 = Pin0::new();
-    let pin1 = Pin1::new();
-    let pin2 = Pin2::new();
+    // Take core peripherals for Delay
+    let core_peripherals = CorePeripherals::take().unwrap();
 
     // Initialize delay (12MHz)
-    let mut delay = Delay::new(12_000_000);
+    let mut delay = Delay::new(core_peripherals.SYST, CLOCK_FREQ_HZ);
+
+    // Get individual pins from the Pins struct
+    let led = pins.p25;
+    let pin0 = pins.p0;
+    let pin1 = pins.p1;
+    let pin2 = pins.p2;
 
     // ========================================================================
     // Example 1: Basic LED Blink
@@ -125,16 +135,14 @@ fn main() -> ! {
     // ========================================================================
     info!("--- Example 4: Pin Constants ---");
 
-    info!("Pin25 number: {}", Pin25::PIN);
-    info!("Pin25 mask: {:#010X}", Pin25::MASK);
-    info!("Pin25 is high bank: {}", Pin25::IS_HIGH);
+    // Pin<25> has compile-time constants
+    info!("Pin25 number: {}", Pin::<25>::PIN);
+    info!("Pin25 mask: {:#010X}", Pin::<25>::MASK);
 
     #[cfg(feature = "rp2350b")]
     {
-        use pico_rs::gpio::Pin32;
-        info!("Pin32 number: {}", Pin32::PIN);
-        info!("Pin32 mask: {:#010X}", Pin32::MASK);
-        info!("Pin32 is high bank: {}", Pin32::IS_HIGH);
+        info!("Pin32 number: {}", Pin::<32>::PIN);
+        info!("Pin32 mask: {:#010X}", Pin::<32>::MASK);
     }
 
     // ========================================================================
@@ -142,34 +150,35 @@ fn main() -> ! {
     // ========================================================================
     info!("--- Example 5: PIO Function Select ---");
 
-    let pin3 = Pin3::new();
+    let pin3 = pins.p3;
     pin3.init_pad();
     pin3.set_function_pio0();
     info!("Pin3 configured for PIO0");
-    info!("Pin3 function: {}", pin3.function());
+    info!("Pin3 function: {:?}", pin3.function());
 
-    let pin4 = Pin4::new();
+    let pin4 = pins.p4;
     pin4.into_pio1();
     info!("Pin4 configured for PIO1");
-    info!("Pin4 function: {}", pin4.function());
+    info!("Pin4 function: {:?}", pin4.function());
 
     // ========================================================================
     // Example 6: Direct SIO Access (via SIO HAL)
     // ========================================================================
-    info!("--- Example 7: Direct SIO Access ---");
+    info!("--- Example 6: Direct SIO Access ---");
 
     let sio = Sio::new();
 
     // Read GPIO input for low bank (pins 0-31)
-    let gpio_in = sio.gpio_in();
+    let gpio = sio.gpio();
+    let gpio_in = gpio.input_low();
     info!("GPIO IN (0-31): {:#010X}", gpio_in);
 
     // Read GPIO output for low bank
-    let gpio_out = sio.gpio_out();
+    let gpio_out = gpio.output_low();
     info!("GPIO OUT (0-31): {:#010X}", gpio_out);
 
     // Read GPIO OE for low bank
-    let gpio_oe = sio.gpio_oe();
+    let gpio_oe = gpio.oe_low();
     info!("GPIO OE (0-31): {:#010X}", gpio_oe);
 
     // ========================================================================

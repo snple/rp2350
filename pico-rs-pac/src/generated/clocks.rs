@@ -277,7 +277,6 @@ impl ClkGpout0Ctrl {
     pub fn write_auxsrc(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::AUXSRC_MASK) | ((value << Self::AUXSRC_OFFSET) & Self::AUXSRC_MASK));
     }
-
 }
 
 /// CLK_GPOUT0_CTRL value type for batch read/modify/write operations
@@ -443,7 +442,6 @@ impl ClkGpout0CtrlVal {
             bits: (self.bits & !ClkGpout0Ctrl::AUXSRC_MASK) | ((value << ClkGpout0Ctrl::AUXSRC_OFFSET) & ClkGpout0Ctrl::AUXSRC_MASK)
         }
     }
-
 }
 
 impl Default for ClkGpout0CtrlVal {
@@ -470,7 +468,6 @@ impl ClkGpout0Ctrl {
     pub fn modify_val<F: FnOnce(ClkGpout0CtrlVal) -> ClkGpout0CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CLK_GPOUT0_DIV Register
@@ -552,7 +549,6 @@ impl ClkGpout0Div {
     pub fn write_frac(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
     }
-
 }
 
 /// CLK_GPOUT0_DIV value type for batch read/modify/write operations
@@ -618,7 +614,6 @@ impl ClkGpout0DivVal {
             bits: (self.bits & !ClkGpout0Div::FRAC_MASK) | ((value << ClkGpout0Div::FRAC_OFFSET) & ClkGpout0Div::FRAC_MASK)
         }
     }
-
 }
 
 impl Default for ClkGpout0DivVal {
@@ -645,7 +640,6 @@ impl ClkGpout0Div {
     pub fn modify_val<F: FnOnce(ClkGpout0DivVal) -> ClkGpout0DivVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CLK_GPOUT0_SELECTED Register
@@ -694,7 +688,6 @@ impl ClkGpout0Selected {
     pub fn clk_gpout0_selected(&self) -> bool {
         (self.value.read_bits() & Self::CLK_GPOUT0_SELECTED_MASK) != 0
     }
-
 }
 
 /// CLK_GPOUT0_SELECTED value type for batch read/modify/write operations
@@ -732,7 +725,6 @@ impl ClkGpout0SelectedVal {
     pub const fn clk_gpout0_selected(&self) -> bool {
         (self.bits & ClkGpout0Selected::CLK_GPOUT0_SELECTED_MASK) != 0
     }
-
 }
 
 impl Default for ClkGpout0SelectedVal {
@@ -747,19 +739,6 @@ impl ClkGpout0Selected {
     pub fn read_val(&self) -> ClkGpout0SelectedVal {
         ClkGpout0SelectedVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: ClkGpout0SelectedVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(ClkGpout0SelectedVal) -> ClkGpout0SelectedVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CLK_GPOUT1_CTRL Register
@@ -1033,7 +1012,6 @@ impl ClkGpout1Ctrl {
     pub fn write_auxsrc(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::AUXSRC_MASK) | ((value << Self::AUXSRC_OFFSET) & Self::AUXSRC_MASK));
     }
-
 }
 
 /// CLK_GPOUT1_CTRL value type for batch read/modify/write operations
@@ -1199,7 +1177,6 @@ impl ClkGpout1CtrlVal {
             bits: (self.bits & !ClkGpout1Ctrl::AUXSRC_MASK) | ((value << ClkGpout1Ctrl::AUXSRC_OFFSET) & ClkGpout1Ctrl::AUXSRC_MASK)
         }
     }
-
 }
 
 impl Default for ClkGpout1CtrlVal {
@@ -1226,7 +1203,6 @@ impl ClkGpout1Ctrl {
     pub fn modify_val<F: FnOnce(ClkGpout1CtrlVal) -> ClkGpout1CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CLK_GPOUT1_DIV Register
@@ -1308,7 +1284,6 @@ impl ClkGpout1Div {
     pub fn write_frac(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
     }
-
 }
 
 /// CLK_GPOUT1_DIV value type for batch read/modify/write operations
@@ -1374,7 +1349,6 @@ impl ClkGpout1DivVal {
             bits: (self.bits & !ClkGpout1Div::FRAC_MASK) | ((value << ClkGpout1Div::FRAC_OFFSET) & ClkGpout1Div::FRAC_MASK)
         }
     }
-
 }
 
 impl Default for ClkGpout1DivVal {
@@ -1401,7 +1375,6 @@ impl ClkGpout1Div {
     pub fn modify_val<F: FnOnce(ClkGpout1DivVal) -> ClkGpout1DivVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CLK_GPOUT1_SELECTED Register
@@ -1450,7 +1423,6 @@ impl ClkGpout1Selected {
     pub fn clk_gpout1_selected(&self) -> bool {
         (self.value.read_bits() & Self::CLK_GPOUT1_SELECTED_MASK) != 0
     }
-
 }
 
 /// CLK_GPOUT1_SELECTED value type for batch read/modify/write operations
@@ -1488,7 +1460,6 @@ impl ClkGpout1SelectedVal {
     pub const fn clk_gpout1_selected(&self) -> bool {
         (self.bits & ClkGpout1Selected::CLK_GPOUT1_SELECTED_MASK) != 0
     }
-
 }
 
 impl Default for ClkGpout1SelectedVal {
@@ -1503,19 +1474,6 @@ impl ClkGpout1Selected {
     pub fn read_val(&self) -> ClkGpout1SelectedVal {
         ClkGpout1SelectedVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: ClkGpout1SelectedVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(ClkGpout1SelectedVal) -> ClkGpout1SelectedVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CLK_GPOUT2_CTRL Register
@@ -1789,7 +1747,6 @@ impl ClkGpout2Ctrl {
     pub fn write_auxsrc(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::AUXSRC_MASK) | ((value << Self::AUXSRC_OFFSET) & Self::AUXSRC_MASK));
     }
-
 }
 
 /// CLK_GPOUT2_CTRL value type for batch read/modify/write operations
@@ -1955,7 +1912,6 @@ impl ClkGpout2CtrlVal {
             bits: (self.bits & !ClkGpout2Ctrl::AUXSRC_MASK) | ((value << ClkGpout2Ctrl::AUXSRC_OFFSET) & ClkGpout2Ctrl::AUXSRC_MASK)
         }
     }
-
 }
 
 impl Default for ClkGpout2CtrlVal {
@@ -1982,7 +1938,6 @@ impl ClkGpout2Ctrl {
     pub fn modify_val<F: FnOnce(ClkGpout2CtrlVal) -> ClkGpout2CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CLK_GPOUT2_DIV Register
@@ -2064,7 +2019,6 @@ impl ClkGpout2Div {
     pub fn write_frac(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
     }
-
 }
 
 /// CLK_GPOUT2_DIV value type for batch read/modify/write operations
@@ -2130,7 +2084,6 @@ impl ClkGpout2DivVal {
             bits: (self.bits & !ClkGpout2Div::FRAC_MASK) | ((value << ClkGpout2Div::FRAC_OFFSET) & ClkGpout2Div::FRAC_MASK)
         }
     }
-
 }
 
 impl Default for ClkGpout2DivVal {
@@ -2157,7 +2110,6 @@ impl ClkGpout2Div {
     pub fn modify_val<F: FnOnce(ClkGpout2DivVal) -> ClkGpout2DivVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CLK_GPOUT2_SELECTED Register
@@ -2206,7 +2158,6 @@ impl ClkGpout2Selected {
     pub fn clk_gpout2_selected(&self) -> bool {
         (self.value.read_bits() & Self::CLK_GPOUT2_SELECTED_MASK) != 0
     }
-
 }
 
 /// CLK_GPOUT2_SELECTED value type for batch read/modify/write operations
@@ -2244,7 +2195,6 @@ impl ClkGpout2SelectedVal {
     pub const fn clk_gpout2_selected(&self) -> bool {
         (self.bits & ClkGpout2Selected::CLK_GPOUT2_SELECTED_MASK) != 0
     }
-
 }
 
 impl Default for ClkGpout2SelectedVal {
@@ -2259,19 +2209,6 @@ impl ClkGpout2Selected {
     pub fn read_val(&self) -> ClkGpout2SelectedVal {
         ClkGpout2SelectedVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: ClkGpout2SelectedVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(ClkGpout2SelectedVal) -> ClkGpout2SelectedVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CLK_GPOUT3_CTRL Register
@@ -2545,7 +2482,6 @@ impl ClkGpout3Ctrl {
     pub fn write_auxsrc(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::AUXSRC_MASK) | ((value << Self::AUXSRC_OFFSET) & Self::AUXSRC_MASK));
     }
-
 }
 
 /// CLK_GPOUT3_CTRL value type for batch read/modify/write operations
@@ -2711,7 +2647,6 @@ impl ClkGpout3CtrlVal {
             bits: (self.bits & !ClkGpout3Ctrl::AUXSRC_MASK) | ((value << ClkGpout3Ctrl::AUXSRC_OFFSET) & ClkGpout3Ctrl::AUXSRC_MASK)
         }
     }
-
 }
 
 impl Default for ClkGpout3CtrlVal {
@@ -2738,7 +2673,6 @@ impl ClkGpout3Ctrl {
     pub fn modify_val<F: FnOnce(ClkGpout3CtrlVal) -> ClkGpout3CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CLK_GPOUT3_DIV Register
@@ -2820,7 +2754,6 @@ impl ClkGpout3Div {
     pub fn write_frac(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
     }
-
 }
 
 /// CLK_GPOUT3_DIV value type for batch read/modify/write operations
@@ -2886,7 +2819,6 @@ impl ClkGpout3DivVal {
             bits: (self.bits & !ClkGpout3Div::FRAC_MASK) | ((value << ClkGpout3Div::FRAC_OFFSET) & ClkGpout3Div::FRAC_MASK)
         }
     }
-
 }
 
 impl Default for ClkGpout3DivVal {
@@ -2913,7 +2845,6 @@ impl ClkGpout3Div {
     pub fn modify_val<F: FnOnce(ClkGpout3DivVal) -> ClkGpout3DivVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CLK_GPOUT3_SELECTED Register
@@ -2962,7 +2893,6 @@ impl ClkGpout3Selected {
     pub fn clk_gpout3_selected(&self) -> bool {
         (self.value.read_bits() & Self::CLK_GPOUT3_SELECTED_MASK) != 0
     }
-
 }
 
 /// CLK_GPOUT3_SELECTED value type for batch read/modify/write operations
@@ -3000,7 +2930,6 @@ impl ClkGpout3SelectedVal {
     pub const fn clk_gpout3_selected(&self) -> bool {
         (self.bits & ClkGpout3Selected::CLK_GPOUT3_SELECTED_MASK) != 0
     }
-
 }
 
 impl Default for ClkGpout3SelectedVal {
@@ -3015,19 +2944,6 @@ impl ClkGpout3Selected {
     pub fn read_val(&self) -> ClkGpout3SelectedVal {
         ClkGpout3SelectedVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: ClkGpout3SelectedVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(ClkGpout3SelectedVal) -> ClkGpout3SelectedVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CLK_REF_CTRL Register
@@ -3127,7 +3043,6 @@ impl ClkRefCtrl {
     pub fn write_src(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SRC_MASK) | ((value << Self::SRC_OFFSET) & Self::SRC_MASK));
     }
-
 }
 
 /// CLK_REF_CTRL value type for batch read/modify/write operations
@@ -3193,7 +3108,6 @@ impl ClkRefCtrlVal {
             bits: (self.bits & !ClkRefCtrl::SRC_MASK) | ((value << ClkRefCtrl::SRC_OFFSET) & ClkRefCtrl::SRC_MASK)
         }
     }
-
 }
 
 impl Default for ClkRefCtrlVal {
@@ -3220,7 +3134,6 @@ impl ClkRefCtrl {
     pub fn modify_val<F: FnOnce(ClkRefCtrlVal) -> ClkRefCtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CLK_REF_DIV Register
@@ -3274,7 +3187,6 @@ impl ClkRefDiv {
     pub fn write_int(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
     }
-
 }
 
 /// CLK_REF_DIV value type for batch read/modify/write operations
@@ -3322,7 +3234,6 @@ impl ClkRefDivVal {
             bits: (self.bits & !ClkRefDiv::INT_MASK) | ((value << ClkRefDiv::INT_OFFSET) & ClkRefDiv::INT_MASK)
         }
     }
-
 }
 
 impl Default for ClkRefDivVal {
@@ -3349,7 +3260,6 @@ impl ClkRefDiv {
     pub fn modify_val<F: FnOnce(ClkRefDivVal) -> ClkRefDivVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CLK_REF_SELECTED Register
@@ -3397,7 +3307,6 @@ impl ClkRefSelected {
     pub fn clk_ref_selected(&self) -> u32 {
         (self.value.read_bits() & Self::CLK_REF_SELECTED_MASK) >> Self::CLK_REF_SELECTED_OFFSET
     }
-
 }
 
 /// CLK_REF_SELECTED value type for batch read/modify/write operations
@@ -3435,7 +3344,6 @@ impl ClkRefSelectedVal {
     pub const fn clk_ref_selected(&self) -> u32 {
         (self.bits & ClkRefSelected::CLK_REF_SELECTED_MASK) >> ClkRefSelected::CLK_REF_SELECTED_OFFSET
     }
-
 }
 
 impl Default for ClkRefSelectedVal {
@@ -3450,19 +3358,6 @@ impl ClkRefSelected {
     pub fn read_val(&self) -> ClkRefSelectedVal {
         ClkRefSelectedVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: ClkRefSelectedVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(ClkRefSelectedVal) -> ClkRefSelectedVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CLK_SYS_CTRL Register
@@ -3567,7 +3462,6 @@ impl ClkSysCtrl {
     pub fn clr_src(&self) {
         self.clr_bits(Self::SRC_MASK);
     }
-
 }
 
 /// CLK_SYS_CTRL value type for batch read/modify/write operations
@@ -3637,7 +3531,6 @@ impl ClkSysCtrlVal {
             }
         }
     }
-
 }
 
 impl Default for ClkSysCtrlVal {
@@ -3664,7 +3557,6 @@ impl ClkSysCtrl {
     pub fn modify_val<F: FnOnce(ClkSysCtrlVal) -> ClkSysCtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CLK_SYS_DIV Register
@@ -3746,7 +3638,6 @@ impl ClkSysDiv {
     pub fn write_frac(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
     }
-
 }
 
 /// CLK_SYS_DIV value type for batch read/modify/write operations
@@ -3812,7 +3703,6 @@ impl ClkSysDivVal {
             bits: (self.bits & !ClkSysDiv::FRAC_MASK) | ((value << ClkSysDiv::FRAC_OFFSET) & ClkSysDiv::FRAC_MASK)
         }
     }
-
 }
 
 impl Default for ClkSysDivVal {
@@ -3839,7 +3729,6 @@ impl ClkSysDiv {
     pub fn modify_val<F: FnOnce(ClkSysDivVal) -> ClkSysDivVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CLK_SYS_SELECTED Register
@@ -3887,7 +3776,6 @@ impl ClkSysSelected {
     pub fn clk_sys_selected(&self) -> u32 {
         (self.value.read_bits() & Self::CLK_SYS_SELECTED_MASK) >> Self::CLK_SYS_SELECTED_OFFSET
     }
-
 }
 
 /// CLK_SYS_SELECTED value type for batch read/modify/write operations
@@ -3925,7 +3813,6 @@ impl ClkSysSelectedVal {
     pub const fn clk_sys_selected(&self) -> u32 {
         (self.bits & ClkSysSelected::CLK_SYS_SELECTED_MASK) >> ClkSysSelected::CLK_SYS_SELECTED_OFFSET
     }
-
 }
 
 impl Default for ClkSysSelectedVal {
@@ -3940,19 +3827,6 @@ impl ClkSysSelected {
     pub fn read_val(&self) -> ClkSysSelectedVal {
         ClkSysSelectedVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: ClkSysSelectedVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(ClkSysSelectedVal) -> ClkSysSelectedVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CLK_PERI_CTRL Register
@@ -4109,7 +3983,6 @@ impl ClkPeriCtrl {
     pub fn write_auxsrc(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::AUXSRC_MASK) | ((value << Self::AUXSRC_OFFSET) & Self::AUXSRC_MASK));
     }
-
 }
 
 /// CLK_PERI_CTRL value type for batch read/modify/write operations
@@ -4209,7 +4082,6 @@ impl ClkPeriCtrlVal {
             bits: (self.bits & !ClkPeriCtrl::AUXSRC_MASK) | ((value << ClkPeriCtrl::AUXSRC_OFFSET) & ClkPeriCtrl::AUXSRC_MASK)
         }
     }
-
 }
 
 impl Default for ClkPeriCtrlVal {
@@ -4236,7 +4108,6 @@ impl ClkPeriCtrl {
     pub fn modify_val<F: FnOnce(ClkPeriCtrlVal) -> ClkPeriCtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CLK_PERI_DIV Register
@@ -4290,7 +4161,6 @@ impl ClkPeriDiv {
     pub fn write_int(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
     }
-
 }
 
 /// CLK_PERI_DIV value type for batch read/modify/write operations
@@ -4338,7 +4208,6 @@ impl ClkPeriDivVal {
             bits: (self.bits & !ClkPeriDiv::INT_MASK) | ((value << ClkPeriDiv::INT_OFFSET) & ClkPeriDiv::INT_MASK)
         }
     }
-
 }
 
 impl Default for ClkPeriDivVal {
@@ -4365,7 +4234,6 @@ impl ClkPeriDiv {
     pub fn modify_val<F: FnOnce(ClkPeriDivVal) -> ClkPeriDivVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CLK_PERI_SELECTED Register
@@ -4414,7 +4282,6 @@ impl ClkPeriSelected {
     pub fn clk_peri_selected(&self) -> bool {
         (self.value.read_bits() & Self::CLK_PERI_SELECTED_MASK) != 0
     }
-
 }
 
 /// CLK_PERI_SELECTED value type for batch read/modify/write operations
@@ -4452,7 +4319,6 @@ impl ClkPeriSelectedVal {
     pub const fn clk_peri_selected(&self) -> bool {
         (self.bits & ClkPeriSelected::CLK_PERI_SELECTED_MASK) != 0
     }
-
 }
 
 impl Default for ClkPeriSelectedVal {
@@ -4467,19 +4333,6 @@ impl ClkPeriSelected {
     pub fn read_val(&self) -> ClkPeriSelectedVal {
         ClkPeriSelectedVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: ClkPeriSelectedVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(ClkPeriSelectedVal) -> ClkPeriSelectedVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CLK_HSTX_CTRL Register
@@ -4700,7 +4553,6 @@ impl ClkHstxCtrl {
     pub fn write_auxsrc(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::AUXSRC_MASK) | ((value << Self::AUXSRC_OFFSET) & Self::AUXSRC_MASK));
     }
-
 }
 
 /// CLK_HSTX_CTRL value type for batch read/modify/write operations
@@ -4844,7 +4696,6 @@ impl ClkHstxCtrlVal {
             bits: (self.bits & !ClkHstxCtrl::AUXSRC_MASK) | ((value << ClkHstxCtrl::AUXSRC_OFFSET) & ClkHstxCtrl::AUXSRC_MASK)
         }
     }
-
 }
 
 impl Default for ClkHstxCtrlVal {
@@ -4871,7 +4722,6 @@ impl ClkHstxCtrl {
     pub fn modify_val<F: FnOnce(ClkHstxCtrlVal) -> ClkHstxCtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CLK_HSTX_DIV Register
@@ -4925,7 +4775,6 @@ impl ClkHstxDiv {
     pub fn write_int(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
     }
-
 }
 
 /// CLK_HSTX_DIV value type for batch read/modify/write operations
@@ -4973,7 +4822,6 @@ impl ClkHstxDivVal {
             bits: (self.bits & !ClkHstxDiv::INT_MASK) | ((value << ClkHstxDiv::INT_OFFSET) & ClkHstxDiv::INT_MASK)
         }
     }
-
 }
 
 impl Default for ClkHstxDivVal {
@@ -5000,7 +4848,6 @@ impl ClkHstxDiv {
     pub fn modify_val<F: FnOnce(ClkHstxDivVal) -> ClkHstxDivVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CLK_HSTX_SELECTED Register
@@ -5049,7 +4896,6 @@ impl ClkHstxSelected {
     pub fn clk_hstx_selected(&self) -> bool {
         (self.value.read_bits() & Self::CLK_HSTX_SELECTED_MASK) != 0
     }
-
 }
 
 /// CLK_HSTX_SELECTED value type for batch read/modify/write operations
@@ -5087,7 +4933,6 @@ impl ClkHstxSelectedVal {
     pub const fn clk_hstx_selected(&self) -> bool {
         (self.bits & ClkHstxSelected::CLK_HSTX_SELECTED_MASK) != 0
     }
-
 }
 
 impl Default for ClkHstxSelectedVal {
@@ -5102,19 +4947,6 @@ impl ClkHstxSelected {
     pub fn read_val(&self) -> ClkHstxSelectedVal {
         ClkHstxSelectedVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: ClkHstxSelectedVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(ClkHstxSelectedVal) -> ClkHstxSelectedVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CLK_USB_CTRL Register
@@ -5337,7 +5169,6 @@ impl ClkUsbCtrl {
     pub fn write_auxsrc(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::AUXSRC_MASK) | ((value << Self::AUXSRC_OFFSET) & Self::AUXSRC_MASK));
     }
-
 }
 
 /// CLK_USB_CTRL value type for batch read/modify/write operations
@@ -5481,7 +5312,6 @@ impl ClkUsbCtrlVal {
             bits: (self.bits & !ClkUsbCtrl::AUXSRC_MASK) | ((value << ClkUsbCtrl::AUXSRC_OFFSET) & ClkUsbCtrl::AUXSRC_MASK)
         }
     }
-
 }
 
 impl Default for ClkUsbCtrlVal {
@@ -5508,7 +5338,6 @@ impl ClkUsbCtrl {
     pub fn modify_val<F: FnOnce(ClkUsbCtrlVal) -> ClkUsbCtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CLK_USB_DIV Register
@@ -5562,7 +5391,6 @@ impl ClkUsbDiv {
     pub fn write_int(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
     }
-
 }
 
 /// CLK_USB_DIV value type for batch read/modify/write operations
@@ -5610,7 +5438,6 @@ impl ClkUsbDivVal {
             bits: (self.bits & !ClkUsbDiv::INT_MASK) | ((value << ClkUsbDiv::INT_OFFSET) & ClkUsbDiv::INT_MASK)
         }
     }
-
 }
 
 impl Default for ClkUsbDivVal {
@@ -5637,7 +5464,6 @@ impl ClkUsbDiv {
     pub fn modify_val<F: FnOnce(ClkUsbDivVal) -> ClkUsbDivVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CLK_USB_SELECTED Register
@@ -5686,7 +5512,6 @@ impl ClkUsbSelected {
     pub fn clk_usb_selected(&self) -> bool {
         (self.value.read_bits() & Self::CLK_USB_SELECTED_MASK) != 0
     }
-
 }
 
 /// CLK_USB_SELECTED value type for batch read/modify/write operations
@@ -5724,7 +5549,6 @@ impl ClkUsbSelectedVal {
     pub const fn clk_usb_selected(&self) -> bool {
         (self.bits & ClkUsbSelected::CLK_USB_SELECTED_MASK) != 0
     }
-
 }
 
 impl Default for ClkUsbSelectedVal {
@@ -5739,19 +5563,6 @@ impl ClkUsbSelected {
     pub fn read_val(&self) -> ClkUsbSelectedVal {
         ClkUsbSelectedVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: ClkUsbSelectedVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(ClkUsbSelectedVal) -> ClkUsbSelectedVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CLK_ADC_CTRL Register
@@ -5974,7 +5785,6 @@ impl ClkAdcCtrl {
     pub fn write_auxsrc(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::AUXSRC_MASK) | ((value << Self::AUXSRC_OFFSET) & Self::AUXSRC_MASK));
     }
-
 }
 
 /// CLK_ADC_CTRL value type for batch read/modify/write operations
@@ -6118,7 +5928,6 @@ impl ClkAdcCtrlVal {
             bits: (self.bits & !ClkAdcCtrl::AUXSRC_MASK) | ((value << ClkAdcCtrl::AUXSRC_OFFSET) & ClkAdcCtrl::AUXSRC_MASK)
         }
     }
-
 }
 
 impl Default for ClkAdcCtrlVal {
@@ -6145,7 +5954,6 @@ impl ClkAdcCtrl {
     pub fn modify_val<F: FnOnce(ClkAdcCtrlVal) -> ClkAdcCtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CLK_ADC_DIV Register
@@ -6199,7 +6007,6 @@ impl ClkAdcDiv {
     pub fn write_int(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
     }
-
 }
 
 /// CLK_ADC_DIV value type for batch read/modify/write operations
@@ -6247,7 +6054,6 @@ impl ClkAdcDivVal {
             bits: (self.bits & !ClkAdcDiv::INT_MASK) | ((value << ClkAdcDiv::INT_OFFSET) & ClkAdcDiv::INT_MASK)
         }
     }
-
 }
 
 impl Default for ClkAdcDivVal {
@@ -6274,7 +6080,6 @@ impl ClkAdcDiv {
     pub fn modify_val<F: FnOnce(ClkAdcDivVal) -> ClkAdcDivVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CLK_ADC_SELECTED Register
@@ -6323,7 +6128,6 @@ impl ClkAdcSelected {
     pub fn clk_adc_selected(&self) -> bool {
         (self.value.read_bits() & Self::CLK_ADC_SELECTED_MASK) != 0
     }
-
 }
 
 /// CLK_ADC_SELECTED value type for batch read/modify/write operations
@@ -6361,7 +6165,6 @@ impl ClkAdcSelectedVal {
     pub const fn clk_adc_selected(&self) -> bool {
         (self.bits & ClkAdcSelected::CLK_ADC_SELECTED_MASK) != 0
     }
-
 }
 
 impl Default for ClkAdcSelectedVal {
@@ -6376,19 +6179,6 @@ impl ClkAdcSelected {
     pub fn read_val(&self) -> ClkAdcSelectedVal {
         ClkAdcSelectedVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: ClkAdcSelectedVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(ClkAdcSelectedVal) -> ClkAdcSelectedVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DFTCLK_XOSC_CTRL Register
@@ -6439,7 +6229,6 @@ impl DftclkXoscCtrl {
     pub fn write_src(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SRC_MASK) | ((value << Self::SRC_OFFSET) & Self::SRC_MASK));
     }
-
 }
 
 /// DFTCLK_XOSC_CTRL value type for batch read/modify/write operations
@@ -6483,7 +6272,6 @@ impl DftclkXoscCtrlVal {
             bits: (self.bits & !DftclkXoscCtrl::SRC_MASK) | ((value << DftclkXoscCtrl::SRC_OFFSET) & DftclkXoscCtrl::SRC_MASK)
         }
     }
-
 }
 
 impl Default for DftclkXoscCtrlVal {
@@ -6510,7 +6298,6 @@ impl DftclkXoscCtrl {
     pub fn modify_val<F: FnOnce(DftclkXoscCtrlVal) -> DftclkXoscCtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DFTCLK_ROSC_CTRL Register
@@ -6561,7 +6348,6 @@ impl DftclkRoscCtrl {
     pub fn write_src(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SRC_MASK) | ((value << Self::SRC_OFFSET) & Self::SRC_MASK));
     }
-
 }
 
 /// DFTCLK_ROSC_CTRL value type for batch read/modify/write operations
@@ -6605,7 +6391,6 @@ impl DftclkRoscCtrlVal {
             bits: (self.bits & !DftclkRoscCtrl::SRC_MASK) | ((value << DftclkRoscCtrl::SRC_OFFSET) & DftclkRoscCtrl::SRC_MASK)
         }
     }
-
 }
 
 impl Default for DftclkRoscCtrlVal {
@@ -6632,7 +6417,6 @@ impl DftclkRoscCtrl {
     pub fn modify_val<F: FnOnce(DftclkRoscCtrlVal) -> DftclkRoscCtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DFTCLK_LPOSC_CTRL Register
@@ -6683,7 +6467,6 @@ impl DftclkLposcCtrl {
     pub fn write_src(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SRC_MASK) | ((value << Self::SRC_OFFSET) & Self::SRC_MASK));
     }
-
 }
 
 /// DFTCLK_LPOSC_CTRL value type for batch read/modify/write operations
@@ -6727,7 +6510,6 @@ impl DftclkLposcCtrlVal {
             bits: (self.bits & !DftclkLposcCtrl::SRC_MASK) | ((value << DftclkLposcCtrl::SRC_OFFSET) & DftclkLposcCtrl::SRC_MASK)
         }
     }
-
 }
 
 impl Default for DftclkLposcCtrlVal {
@@ -6754,7 +6536,6 @@ impl DftclkLposcCtrl {
     pub fn modify_val<F: FnOnce(DftclkLposcCtrlVal) -> DftclkLposcCtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CLK_SYS_RESUS_CTRL Register
@@ -6911,7 +6692,6 @@ impl ClkSysResusCtrl {
     pub fn write_timeout(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::TIMEOUT_MASK) | ((value << Self::TIMEOUT_OFFSET) & Self::TIMEOUT_MASK));
     }
-
 }
 
 /// CLK_SYS_RESUS_CTRL value type for batch read/modify/write operations
@@ -7027,7 +6807,6 @@ impl ClkSysResusCtrlVal {
             bits: (self.bits & !ClkSysResusCtrl::TIMEOUT_MASK) | ((value << ClkSysResusCtrl::TIMEOUT_OFFSET) & ClkSysResusCtrl::TIMEOUT_MASK)
         }
     }
-
 }
 
 impl Default for ClkSysResusCtrlVal {
@@ -7054,7 +6833,6 @@ impl ClkSysResusCtrl {
     pub fn modify_val<F: FnOnce(ClkSysResusCtrlVal) -> ClkSysResusCtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CLK_SYS_RESUS_STATUS Register
@@ -7101,7 +6879,6 @@ impl ClkSysResusStatus {
     pub fn resussed(&self) -> bool {
         (self.value.read_bits() & Self::RESUSSED_MASK) != 0
     }
-
 }
 
 /// CLK_SYS_RESUS_STATUS value type for batch read/modify/write operations
@@ -7139,7 +6916,6 @@ impl ClkSysResusStatusVal {
     pub const fn resussed(&self) -> bool {
         (self.bits & ClkSysResusStatus::RESUSSED_MASK) != 0
     }
-
 }
 
 impl Default for ClkSysResusStatusVal {
@@ -7154,19 +6930,6 @@ impl ClkSysResusStatus {
     pub fn read_val(&self) -> ClkSysResusStatusVal {
         ClkSysResusStatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: ClkSysResusStatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(ClkSysResusStatusVal) -> ClkSysResusStatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// FC0_REF_KHZ Register
@@ -7213,7 +6976,6 @@ impl Fc0RefKhz {
     pub fn write_fc0_ref_khz(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FC0_REF_KHZ_MASK) | ((value << Self::FC0_REF_KHZ_OFFSET) & Self::FC0_REF_KHZ_MASK));
     }
-
 }
 
 /// FC0_REF_KHZ value type for batch read/modify/write operations
@@ -7257,7 +7019,6 @@ impl Fc0RefKhzVal {
             bits: (self.bits & !Fc0RefKhz::FC0_REF_KHZ_MASK) | ((value << Fc0RefKhz::FC0_REF_KHZ_OFFSET) & Fc0RefKhz::FC0_REF_KHZ_MASK)
         }
     }
-
 }
 
 impl Default for Fc0RefKhzVal {
@@ -7284,7 +7045,6 @@ impl Fc0RefKhz {
     pub fn modify_val<F: FnOnce(Fc0RefKhzVal) -> Fc0RefKhzVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FC0_MIN_KHZ Register
@@ -7331,7 +7091,6 @@ impl Fc0MinKhz {
     pub fn write_fc0_min_khz(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FC0_MIN_KHZ_MASK) | ((value << Self::FC0_MIN_KHZ_OFFSET) & Self::FC0_MIN_KHZ_MASK));
     }
-
 }
 
 /// FC0_MIN_KHZ value type for batch read/modify/write operations
@@ -7375,7 +7134,6 @@ impl Fc0MinKhzVal {
             bits: (self.bits & !Fc0MinKhz::FC0_MIN_KHZ_MASK) | ((value << Fc0MinKhz::FC0_MIN_KHZ_OFFSET) & Fc0MinKhz::FC0_MIN_KHZ_MASK)
         }
     }
-
 }
 
 impl Default for Fc0MinKhzVal {
@@ -7402,7 +7160,6 @@ impl Fc0MinKhz {
     pub fn modify_val<F: FnOnce(Fc0MinKhzVal) -> Fc0MinKhzVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FC0_MAX_KHZ Register
@@ -7449,7 +7206,6 @@ impl Fc0MaxKhz {
     pub fn write_fc0_max_khz(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FC0_MAX_KHZ_MASK) | ((value << Self::FC0_MAX_KHZ_OFFSET) & Self::FC0_MAX_KHZ_MASK));
     }
-
 }
 
 /// FC0_MAX_KHZ value type for batch read/modify/write operations
@@ -7493,7 +7249,6 @@ impl Fc0MaxKhzVal {
             bits: (self.bits & !Fc0MaxKhz::FC0_MAX_KHZ_MASK) | ((value << Fc0MaxKhz::FC0_MAX_KHZ_OFFSET) & Fc0MaxKhz::FC0_MAX_KHZ_MASK)
         }
     }
-
 }
 
 impl Default for Fc0MaxKhzVal {
@@ -7520,7 +7275,6 @@ impl Fc0MaxKhz {
     pub fn modify_val<F: FnOnce(Fc0MaxKhzVal) -> Fc0MaxKhzVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FC0_DELAY Register
@@ -7568,7 +7322,6 @@ impl Fc0Delay {
     pub fn write_fc0_delay(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FC0_DELAY_MASK) | ((value << Self::FC0_DELAY_OFFSET) & Self::FC0_DELAY_MASK));
     }
-
 }
 
 /// FC0_DELAY value type for batch read/modify/write operations
@@ -7612,7 +7365,6 @@ impl Fc0DelayVal {
             bits: (self.bits & !Fc0Delay::FC0_DELAY_MASK) | ((value << Fc0Delay::FC0_DELAY_OFFSET) & Fc0Delay::FC0_DELAY_MASK)
         }
     }
-
 }
 
 impl Default for Fc0DelayVal {
@@ -7639,7 +7391,6 @@ impl Fc0Delay {
     pub fn modify_val<F: FnOnce(Fc0DelayVal) -> Fc0DelayVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FC0_INTERVAL Register
@@ -7687,7 +7438,6 @@ impl Fc0Interval {
     pub fn write_fc0_interval(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FC0_INTERVAL_MASK) | ((value << Self::FC0_INTERVAL_OFFSET) & Self::FC0_INTERVAL_MASK));
     }
-
 }
 
 /// FC0_INTERVAL value type for batch read/modify/write operations
@@ -7731,7 +7481,6 @@ impl Fc0IntervalVal {
             bits: (self.bits & !Fc0Interval::FC0_INTERVAL_MASK) | ((value << Fc0Interval::FC0_INTERVAL_OFFSET) & Fc0Interval::FC0_INTERVAL_MASK)
         }
     }
-
 }
 
 impl Default for Fc0IntervalVal {
@@ -7758,7 +7507,6 @@ impl Fc0Interval {
     pub fn modify_val<F: FnOnce(Fc0IntervalVal) -> Fc0IntervalVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FC0_SRC Register
@@ -7840,7 +7588,6 @@ impl Fc0Src {
     pub fn write_fc0_src(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FC0_SRC_MASK) | ((value << Self::FC0_SRC_OFFSET) & Self::FC0_SRC_MASK));
     }
-
 }
 
 /// FC0_SRC value type for batch read/modify/write operations
@@ -7884,7 +7631,6 @@ impl Fc0SrcVal {
             bits: (self.bits & !Fc0Src::FC0_SRC_MASK) | ((value << Fc0Src::FC0_SRC_OFFSET) & Fc0Src::FC0_SRC_MASK)
         }
     }
-
 }
 
 impl Default for Fc0SrcVal {
@@ -7911,7 +7657,6 @@ impl Fc0Src {
     pub fn modify_val<F: FnOnce(Fc0SrcVal) -> Fc0SrcVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FC0_STATUS Register
@@ -8107,7 +7852,6 @@ impl Fc0Status {
     pub fn pass(&self) -> bool {
         (self.value.read_bits() & Self::PASS_MASK) != 0
     }
-
 }
 
 /// FC0_STATUS value type for batch read/modify/write operations
@@ -8201,7 +7945,6 @@ impl Fc0StatusVal {
     pub const fn pass(&self) -> bool {
         (self.bits & Fc0Status::PASS_MASK) != 0
     }
-
 }
 
 impl Default for Fc0StatusVal {
@@ -8216,19 +7959,6 @@ impl Fc0Status {
     pub fn read_val(&self) -> Fc0StatusVal {
         Fc0StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Fc0StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Fc0StatusVal) -> Fc0StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// FC0_RESULT Register
@@ -8282,7 +8012,6 @@ impl Fc0Result {
     pub fn frac(&self) -> u32 {
         (self.value.read_bits() & Self::FRAC_MASK) >> Self::FRAC_OFFSET
     }
-
 }
 
 /// FC0_RESULT value type for batch read/modify/write operations
@@ -8324,7 +8053,6 @@ impl Fc0ResultVal {
     pub const fn frac(&self) -> u32 {
         (self.bits & Fc0Result::FRAC_MASK) >> Fc0Result::FRAC_OFFSET
     }
-
 }
 
 impl Default for Fc0ResultVal {
@@ -8339,19 +8067,6 @@ impl Fc0Result {
     pub fn read_val(&self) -> Fc0ResultVal {
         Fc0ResultVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Fc0ResultVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Fc0ResultVal) -> Fc0ResultVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// WAKE_EN0 Register
@@ -9211,7 +8926,6 @@ impl WakeEn0 {
     pub fn clr_clk_sys_clocks(&self) {
         self.clr_bits(Self::CLK_SYS_CLOCKS_MASK);
     }
-
 }
 
 /// WAKE_EN0 value type for batch read/modify/write operations
@@ -9817,7 +9531,6 @@ impl WakeEn0Val {
             }
         }
     }
-
 }
 
 impl Default for WakeEn0Val {
@@ -9844,7 +9557,6 @@ impl WakeEn0 {
     pub fn modify_val<F: FnOnce(WakeEn0Val) -> WakeEn0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// WAKE_EN1 Register
@@ -10678,7 +10390,6 @@ impl WakeEn1 {
     pub fn clr_clk_peri_spi0(&self) {
         self.clr_bits(Self::CLK_PERI_SPI0_MASK);
     }
-
 }
 
 /// WAKE_EN1 value type for batch read/modify/write operations
@@ -11266,7 +10977,6 @@ impl WakeEn1Val {
             }
         }
     }
-
 }
 
 impl Default for WakeEn1Val {
@@ -11293,7 +11003,6 @@ impl WakeEn1 {
     pub fn modify_val<F: FnOnce(WakeEn1Val) -> WakeEn1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SLEEP_EN0 Register
@@ -12153,7 +11862,6 @@ impl SleepEn0 {
     pub fn clr_clk_sys_clocks(&self) {
         self.clr_bits(Self::CLK_SYS_CLOCKS_MASK);
     }
-
 }
 
 /// SLEEP_EN0 value type for batch read/modify/write operations
@@ -12759,7 +12467,6 @@ impl SleepEn0Val {
             }
         }
     }
-
 }
 
 impl Default for SleepEn0Val {
@@ -12786,7 +12493,6 @@ impl SleepEn0 {
     pub fn modify_val<F: FnOnce(SleepEn0Val) -> SleepEn0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SLEEP_EN1 Register
@@ -13620,7 +13326,6 @@ impl SleepEn1 {
     pub fn clr_clk_peri_spi0(&self) {
         self.clr_bits(Self::CLK_PERI_SPI0_MASK);
     }
-
 }
 
 /// SLEEP_EN1 value type for batch read/modify/write operations
@@ -14208,7 +13913,6 @@ impl SleepEn1Val {
             }
         }
     }
-
 }
 
 impl Default for SleepEn1Val {
@@ -14235,7 +13939,6 @@ impl SleepEn1 {
     pub fn modify_val<F: FnOnce(SleepEn1Val) -> SleepEn1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ENABLED0 Register
@@ -14711,7 +14414,6 @@ impl Enabled0 {
     pub fn clk_sys_clocks(&self) -> bool {
         (self.value.read_bits() & Self::CLK_SYS_CLOCKS_MASK) != 0
     }
-
 }
 
 /// ENABLED0 value type for batch read/modify/write operations
@@ -14933,7 +14635,6 @@ impl Enabled0Val {
     pub const fn clk_sys_clocks(&self) -> bool {
         (self.bits & Enabled0::CLK_SYS_CLOCKS_MASK) != 0
     }
-
 }
 
 impl Default for Enabled0Val {
@@ -14948,19 +14649,6 @@ impl Enabled0 {
     pub fn read_val(&self) -> Enabled0Val {
         Enabled0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Enabled0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Enabled0Val) -> Enabled0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// ENABLED1 Register
@@ -15422,7 +15110,6 @@ impl Enabled1 {
     pub fn clk_peri_spi0(&self) -> bool {
         (self.value.read_bits() & Self::CLK_PERI_SPI0_MASK) != 0
     }
-
 }
 
 /// ENABLED1 value type for batch read/modify/write operations
@@ -15638,7 +15325,6 @@ impl Enabled1Val {
     pub const fn clk_peri_spi0(&self) -> bool {
         (self.bits & Enabled1::CLK_PERI_SPI0_MASK) != 0
     }
-
 }
 
 impl Default for Enabled1Val {
@@ -15653,19 +15339,6 @@ impl Enabled1 {
     pub fn read_val(&self) -> Enabled1Val {
         Enabled1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Enabled1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Enabled1Val) -> Enabled1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INTR Register
@@ -15707,7 +15380,6 @@ impl Intr {
     pub fn clk_sys_resus(&self) -> bool {
         (self.value.read_bits() & Self::CLK_SYS_RESUS_MASK) != 0
     }
-
 }
 
 /// INTR value type for batch read/modify/write operations
@@ -15743,7 +15415,6 @@ impl IntrVal {
     pub const fn clk_sys_resus(&self) -> bool {
         (self.bits & Intr::CLK_SYS_RESUS_MASK) != 0
     }
-
 }
 
 impl Default for IntrVal {
@@ -15758,19 +15429,6 @@ impl Intr {
     pub fn read_val(&self) -> IntrVal {
         IntrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IntrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IntrVal) -> IntrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INTE Register
@@ -15824,7 +15482,6 @@ impl Inte {
     pub fn clr_clk_sys_resus(&self) {
         self.clr_bits(Self::CLK_SYS_RESUS_MASK);
     }
-
 }
 
 /// INTE value type for batch read/modify/write operations
@@ -15872,7 +15529,6 @@ impl InteVal {
             }
         }
     }
-
 }
 
 impl Default for InteVal {
@@ -15899,7 +15555,6 @@ impl Inte {
     pub fn modify_val<F: FnOnce(InteVal) -> InteVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTF Register
@@ -15953,7 +15608,6 @@ impl Intf {
     pub fn clr_clk_sys_resus(&self) {
         self.clr_bits(Self::CLK_SYS_RESUS_MASK);
     }
-
 }
 
 /// INTF value type for batch read/modify/write operations
@@ -16001,7 +15655,6 @@ impl IntfVal {
             }
         }
     }
-
 }
 
 impl Default for IntfVal {
@@ -16028,7 +15681,6 @@ impl Intf {
     pub fn modify_val<F: FnOnce(IntfVal) -> IntfVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTS Register
@@ -16070,7 +15722,6 @@ impl Ints {
     pub fn clk_sys_resus(&self) -> bool {
         (self.value.read_bits() & Self::CLK_SYS_RESUS_MASK) != 0
     }
-
 }
 
 /// INTS value type for batch read/modify/write operations
@@ -16106,7 +15757,6 @@ impl IntsVal {
     pub const fn clk_sys_resus(&self) -> bool {
         (self.bits & Ints::CLK_SYS_RESUS_MASK) != 0
     }
-
 }
 
 impl Default for IntsVal {
@@ -16121,19 +15771,6 @@ impl Ints {
     pub fn read_val(&self) -> IntsVal {
         IntsVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IntsVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IntsVal) -> IntsVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// Register block

@@ -97,7 +97,7 @@ const ROSC_DORMANT_VALUE: u32 = 0x636f6d61;
 
 /// Ring Oscillator driver
 pub struct Rosc {
-    _private: (),
+    _marker: core::marker::PhantomData<*const ()>,
 }
 
 impl Rosc {
@@ -107,7 +107,9 @@ impl Rosc {
     /// The caller must ensure only one instance of this driver exists at a time.
     #[inline]
     pub fn new() -> Self {
-        Self { _private: () }
+        Self {
+            _marker: core::marker::PhantomData,
+        }
     }
 
     /// Get a reference to the ROSC registers

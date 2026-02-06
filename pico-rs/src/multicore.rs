@@ -49,7 +49,7 @@
 //! let value = fifo.read();  // Receive from Core 0
 //! ```
 
-use crate::pac::{PPB, PSM, SIO};
+use crate::pac::{PPB, PSM};
 use core::sync::atomic::{Ordering, compiler_fence};
 
 // ============================================================================
@@ -111,8 +111,7 @@ impl<const N: usize> Default for Stack<N> {
 /// Get the current core's ID (0 or 1)
 #[inline]
 pub fn core_id() -> u32 {
-    let sio = unsafe { &*SIO::PTR };
-    sio.cpuid.cpuid()
+    crate::sio::regs().cpuid.cpuid()
 }
 
 /// Returns `true` if running on Core 0
@@ -151,7 +150,7 @@ impl Fifo {
     #[inline]
     pub fn new() -> Self {
         Self {
-            sio: unsafe { &*SIO::PTR },
+            sio: crate::sio::regs(),
         }
     }
 
@@ -301,7 +300,7 @@ impl Doorbell {
     #[inline]
     pub fn new() -> Self {
         Self {
-            sio: unsafe { &*SIO::PTR },
+            sio: crate::sio::regs(),
         }
     }
 

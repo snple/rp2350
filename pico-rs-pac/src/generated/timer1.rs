@@ -44,7 +44,6 @@ impl Timehw {
     pub fn write_timehw(&self, value: u32) {
         self.value.write_bits((value << Self::TIMEHW_OFFSET) & Self::TIMEHW_MASK);
     }
-
 }
 
 /// TIMEHW value type for batch read/modify/write operations
@@ -82,7 +81,6 @@ impl TimehwVal {
             bits: (self.bits & !Timehw::TIMEHW_MASK) | ((value << Timehw::TIMEHW_OFFSET) & Timehw::TIMEHW_MASK)
         }
     }
-
 }
 
 impl Default for TimehwVal {
@@ -92,24 +90,11 @@ impl Default for TimehwVal {
 }
 
 impl Timehw {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> TimehwVal {
-        TimehwVal::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: TimehwVal) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(TimehwVal) -> TimehwVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TIMELW Register
@@ -150,7 +135,6 @@ impl Timelw {
     pub fn write_timelw(&self, value: u32) {
         self.value.write_bits((value << Self::TIMELW_OFFSET) & Self::TIMELW_MASK);
     }
-
 }
 
 /// TIMELW value type for batch read/modify/write operations
@@ -188,7 +172,6 @@ impl TimelwVal {
             bits: (self.bits & !Timelw::TIMELW_MASK) | ((value << Timelw::TIMELW_OFFSET) & Timelw::TIMELW_MASK)
         }
     }
-
 }
 
 impl Default for TimelwVal {
@@ -198,24 +181,11 @@ impl Default for TimelwVal {
 }
 
 impl Timelw {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> TimelwVal {
-        TimelwVal::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: TimelwVal) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(TimelwVal) -> TimelwVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TIMEHR Register
@@ -256,7 +226,6 @@ impl Timehr {
     pub fn timehr(&self) -> u32 {
         (self.value.read_bits() & Self::TIMEHR_MASK) >> Self::TIMEHR_OFFSET
     }
-
 }
 
 /// TIMEHR value type for batch read/modify/write operations
@@ -292,7 +261,6 @@ impl TimehrVal {
     pub const fn timehr(&self) -> u32 {
         (self.bits & Timehr::TIMEHR_MASK) >> Timehr::TIMEHR_OFFSET
     }
-
 }
 
 impl Default for TimehrVal {
@@ -307,19 +275,6 @@ impl Timehr {
     pub fn read_val(&self) -> TimehrVal {
         TimehrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: TimehrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(TimehrVal) -> TimehrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TIMELR Register
@@ -360,7 +315,6 @@ impl Timelr {
     pub fn timelr(&self) -> u32 {
         (self.value.read_bits() & Self::TIMELR_MASK) >> Self::TIMELR_OFFSET
     }
-
 }
 
 /// TIMELR value type for batch read/modify/write operations
@@ -396,7 +350,6 @@ impl TimelrVal {
     pub const fn timelr(&self) -> u32 {
         (self.bits & Timelr::TIMELR_MASK) >> Timelr::TIMELR_OFFSET
     }
-
 }
 
 impl Default for TimelrVal {
@@ -411,19 +364,6 @@ impl Timelr {
     pub fn read_val(&self) -> TimelrVal {
         TimelrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: TimelrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(TimelrVal) -> TimelrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// ALARM0 Register
@@ -470,7 +410,6 @@ impl Alarm0 {
     pub fn write_alarm0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ALARM0_MASK) | ((value << Self::ALARM0_OFFSET) & Self::ALARM0_MASK));
     }
-
 }
 
 /// ALARM0 value type for batch read/modify/write operations
@@ -514,7 +453,6 @@ impl Alarm0Val {
             bits: (self.bits & !Alarm0::ALARM0_MASK) | ((value << Alarm0::ALARM0_OFFSET) & Alarm0::ALARM0_MASK)
         }
     }
-
 }
 
 impl Default for Alarm0Val {
@@ -541,7 +479,6 @@ impl Alarm0 {
     pub fn modify_val<F: FnOnce(Alarm0Val) -> Alarm0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ALARM1 Register
@@ -588,7 +525,6 @@ impl Alarm1 {
     pub fn write_alarm1(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ALARM1_MASK) | ((value << Self::ALARM1_OFFSET) & Self::ALARM1_MASK));
     }
-
 }
 
 /// ALARM1 value type for batch read/modify/write operations
@@ -632,7 +568,6 @@ impl Alarm1Val {
             bits: (self.bits & !Alarm1::ALARM1_MASK) | ((value << Alarm1::ALARM1_OFFSET) & Alarm1::ALARM1_MASK)
         }
     }
-
 }
 
 impl Default for Alarm1Val {
@@ -659,7 +594,6 @@ impl Alarm1 {
     pub fn modify_val<F: FnOnce(Alarm1Val) -> Alarm1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ALARM2 Register
@@ -706,7 +640,6 @@ impl Alarm2 {
     pub fn write_alarm2(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ALARM2_MASK) | ((value << Self::ALARM2_OFFSET) & Self::ALARM2_MASK));
     }
-
 }
 
 /// ALARM2 value type for batch read/modify/write operations
@@ -750,7 +683,6 @@ impl Alarm2Val {
             bits: (self.bits & !Alarm2::ALARM2_MASK) | ((value << Alarm2::ALARM2_OFFSET) & Alarm2::ALARM2_MASK)
         }
     }
-
 }
 
 impl Default for Alarm2Val {
@@ -777,7 +709,6 @@ impl Alarm2 {
     pub fn modify_val<F: FnOnce(Alarm2Val) -> Alarm2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ALARM3 Register
@@ -824,7 +755,6 @@ impl Alarm3 {
     pub fn write_alarm3(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ALARM3_MASK) | ((value << Self::ALARM3_OFFSET) & Self::ALARM3_MASK));
     }
-
 }
 
 /// ALARM3 value type for batch read/modify/write operations
@@ -868,7 +798,6 @@ impl Alarm3Val {
             bits: (self.bits & !Alarm3::ALARM3_MASK) | ((value << Alarm3::ALARM3_OFFSET) & Alarm3::ALARM3_MASK)
         }
     }
-
 }
 
 impl Default for Alarm3Val {
@@ -895,7 +824,6 @@ impl Alarm3 {
     pub fn modify_val<F: FnOnce(Alarm3Val) -> Alarm3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ARMED Register
@@ -942,7 +870,6 @@ impl Armed {
     pub fn write_armed(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ARMED_MASK) | ((value << Self::ARMED_OFFSET) & Self::ARMED_MASK));
     }
-
 }
 
 /// ARMED value type for batch read/modify/write operations
@@ -986,7 +913,6 @@ impl ArmedVal {
             bits: (self.bits & !Armed::ARMED_MASK) | ((value << Armed::ARMED_OFFSET) & Armed::ARMED_MASK)
         }
     }
-
 }
 
 impl Default for ArmedVal {
@@ -1013,7 +939,6 @@ impl Armed {
     pub fn modify_val<F: FnOnce(ArmedVal) -> ArmedVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TIMERAWH Register
@@ -1054,7 +979,6 @@ impl Timerawh {
     pub fn timerawh(&self) -> u32 {
         (self.value.read_bits() & Self::TIMERAWH_MASK) >> Self::TIMERAWH_OFFSET
     }
-
 }
 
 /// TIMERAWH value type for batch read/modify/write operations
@@ -1090,7 +1014,6 @@ impl TimerawhVal {
     pub const fn timerawh(&self) -> u32 {
         (self.bits & Timerawh::TIMERAWH_MASK) >> Timerawh::TIMERAWH_OFFSET
     }
-
 }
 
 impl Default for TimerawhVal {
@@ -1105,19 +1028,6 @@ impl Timerawh {
     pub fn read_val(&self) -> TimerawhVal {
         TimerawhVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: TimerawhVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(TimerawhVal) -> TimerawhVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TIMERAWL Register
@@ -1158,7 +1068,6 @@ impl Timerawl {
     pub fn timerawl(&self) -> u32 {
         (self.value.read_bits() & Self::TIMERAWL_MASK) >> Self::TIMERAWL_OFFSET
     }
-
 }
 
 /// TIMERAWL value type for batch read/modify/write operations
@@ -1194,7 +1103,6 @@ impl TimerawlVal {
     pub const fn timerawl(&self) -> u32 {
         (self.bits & Timerawl::TIMERAWL_MASK) >> Timerawl::TIMERAWL_OFFSET
     }
-
 }
 
 impl Default for TimerawlVal {
@@ -1209,19 +1117,6 @@ impl Timerawl {
     pub fn read_val(&self) -> TimerawlVal {
         TimerawlVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: TimerawlVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(TimerawlVal) -> TimerawlVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DBGPAUSE Register
@@ -1315,7 +1210,6 @@ impl Dbgpause {
     pub fn clr_dbg0(&self) {
         self.clr_bits(Self::DBG0_MASK);
     }
-
 }
 
 /// DBGPAUSE value type for batch read/modify/write operations
@@ -1389,7 +1283,6 @@ impl DbgpauseVal {
             }
         }
     }
-
 }
 
 impl Default for DbgpauseVal {
@@ -1416,7 +1309,6 @@ impl Dbgpause {
     pub fn modify_val<F: FnOnce(DbgpauseVal) -> DbgpauseVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PAUSE Register
@@ -1470,7 +1362,6 @@ impl Pause {
     pub fn clr_pause(&self) {
         self.clr_bits(Self::PAUSE_MASK);
     }
-
 }
 
 /// PAUSE value type for batch read/modify/write operations
@@ -1518,7 +1409,6 @@ impl PauseVal {
             }
         }
     }
-
 }
 
 impl Default for PauseVal {
@@ -1545,7 +1435,6 @@ impl Pause {
     pub fn modify_val<F: FnOnce(PauseVal) -> PauseVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// LOCKED Register
@@ -1599,7 +1488,6 @@ impl Locked {
     pub fn clr_locked(&self) {
         self.clr_bits(Self::LOCKED_MASK);
     }
-
 }
 
 /// LOCKED value type for batch read/modify/write operations
@@ -1647,7 +1535,6 @@ impl LockedVal {
             }
         }
     }
-
 }
 
 impl Default for LockedVal {
@@ -1674,7 +1561,6 @@ impl Locked {
     pub fn modify_val<F: FnOnce(LockedVal) -> LockedVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SOURCE Register
@@ -1732,7 +1618,6 @@ impl Source {
     pub fn clr_clk_sys(&self) {
         self.clr_bits(Self::CLK_SYS_MASK);
     }
-
 }
 
 /// SOURCE value type for batch read/modify/write operations
@@ -1780,7 +1665,6 @@ impl SourceVal {
             }
         }
     }
-
 }
 
 impl Default for SourceVal {
@@ -1807,7 +1691,6 @@ impl Source {
     pub fn modify_val<F: FnOnce(SourceVal) -> SourceVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTR Register
@@ -1939,7 +1822,6 @@ impl Intr {
     pub fn clr_alarm_0(&self) {
         self.clr_bits(Self::ALARM_0_MASK);
     }
-
 }
 
 /// INTR value type for batch read/modify/write operations
@@ -2041,7 +1923,6 @@ impl IntrVal {
             }
         }
     }
-
 }
 
 impl Default for IntrVal {
@@ -2068,7 +1949,6 @@ impl Intr {
     pub fn modify_val<F: FnOnce(IntrVal) -> IntrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTE Register
@@ -2200,7 +2080,6 @@ impl Inte {
     pub fn clr_alarm_0(&self) {
         self.clr_bits(Self::ALARM_0_MASK);
     }
-
 }
 
 /// INTE value type for batch read/modify/write operations
@@ -2302,7 +2181,6 @@ impl InteVal {
             }
         }
     }
-
 }
 
 impl Default for InteVal {
@@ -2329,7 +2207,6 @@ impl Inte {
     pub fn modify_val<F: FnOnce(InteVal) -> InteVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTF Register
@@ -2461,7 +2338,6 @@ impl Intf {
     pub fn clr_alarm_0(&self) {
         self.clr_bits(Self::ALARM_0_MASK);
     }
-
 }
 
 /// INTF value type for batch read/modify/write operations
@@ -2563,7 +2439,6 @@ impl IntfVal {
             }
         }
     }
-
 }
 
 impl Default for IntfVal {
@@ -2590,7 +2465,6 @@ impl Intf {
     pub fn modify_val<F: FnOnce(IntfVal) -> IntfVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTS Register
@@ -2674,7 +2548,6 @@ impl Ints {
     pub fn alarm_0(&self) -> bool {
         (self.value.read_bits() & Self::ALARM_0_MASK) != 0
     }
-
 }
 
 /// INTS value type for batch read/modify/write operations
@@ -2728,7 +2601,6 @@ impl IntsVal {
     pub const fn alarm_0(&self) -> bool {
         (self.bits & Ints::ALARM_0_MASK) != 0
     }
-
 }
 
 impl Default for IntsVal {
@@ -2743,19 +2615,6 @@ impl Ints {
     pub fn read_val(&self) -> IntsVal {
         IntsVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IntsVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IntsVal) -> IntsVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// Register block

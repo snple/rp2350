@@ -24,7 +24,9 @@ use pico_rs::clocks::{
     PllUsb, Xosc,
 };
 use pico_rs::entry;
-use pico_rs::gpio::{self, Pin25};
+use pico_rs::gpio::Pins;
+use pico_rs::pac::Peripherals;
+use pico_rs::pico_rs_rt::peripheral::Peripherals as CorePeripherals;
 use pico_rs::reset::{self, Peripheral};
 use pico_rs::systick::Delay;
 
@@ -47,12 +49,15 @@ fn main() -> ! {
     info!("=== RP2350 Clock Configuration Example ===");
     info!("Target: {} MHz system clock", SYS_CLK_HZ / 1_000_000);
 
+    // Take device peripherals
+    let dp = Peripherals::take().unwrap();
+
     // ========================================================================
     // Step 1: Initialize XOSC (Crystal Oscillator)
     // ========================================================================
     info!("Initializing XOSC ({} MHz crystal)...", XOSC_HZ / 1_000_000);
 
-    let xosc = Xosc::init(XOSC_HZ);
+    let xosc = Xosc::init(dp.XOSC, XOSC_HZ);
     xosc.wait_stable();
 
     info!("XOSC stable and running");
@@ -62,7 +67,7 @@ fn main() -> ! {
     // ========================================================================
     info!("Configuring reference clock from XOSC...");
 
-    let mut clocks = Clocks::new();
+    let mut clocks = Clocks::new(dp.CLOCKS, xosc);
 
     // Configure ref clock from XOSC first
     clocks.configure_ref_src(ClkRefSrc::Xosc, XOSC_HZ);
@@ -92,7 +97,7 @@ fn main() -> ! {
     reset::reset_block(Peripheral::PLL_SYS);
     reset::unreset_block_wait(Peripheral::PLL_SYS);
 
-    let pll_sys = PllSys::new();
+    let pll_sys = PllSys::new(dp.PLL_SYS);
 
     // Use predefined configuration for 150 MHz
     let config = PllConfig::sys_150mhz();
@@ -133,7 +138,7 @@ fn main() -> ! {
     reset::reset_block(Peripheral::PLL_USB);
     reset::unreset_block_wait(Peripheral::PLL_USB);
 
-    let pll_usb = PllUsb::new();
+    let pll_usb = PllUsb::new(dp.PLL_USB);
     let usb_config = PllConfig::usb_48mhz();
     pll_usb.configure(
         usb_config.refdiv,
@@ -187,12 +192,15 @@ fn main() -> ! {
     info!("LED should blink at exactly 1 Hz (500ms on, 500ms off)");
 
     // Initialize GPIO
-    gpio::init_gpio();
-    let led = Pin25::new();
+    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let led = pins.p25;
     led.into_output();
 
+    // Take core peripherals for Delay
+    let core_peripherals = CorePeripherals::take().unwrap();
+
     // Create delay using the new system clock frequency
-    let mut delay = Delay::new(SYS_CLK_HZ);
+    let mut delay = Delay::new(core_peripherals.SYST, SYS_CLK_HZ);
     info!("Delay initialized with {} Hz", SYS_CLK_HZ);
     info!(
         "Delay ticks_per_us: {} (should be {})",

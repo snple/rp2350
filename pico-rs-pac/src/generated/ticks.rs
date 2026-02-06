@@ -85,7 +85,6 @@ impl Proc0Ctrl {
     pub fn clr_enable(&self) {
         self.clr_bits(Self::ENABLE_MASK);
     }
-
 }
 
 /// PROC0_CTRL value type for batch read/modify/write operations
@@ -145,7 +144,6 @@ impl Proc0CtrlVal {
             }
         }
     }
-
 }
 
 impl Default for Proc0CtrlVal {
@@ -172,7 +170,6 @@ impl Proc0Ctrl {
     pub fn modify_val<F: FnOnce(Proc0CtrlVal) -> Proc0CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PROC0_CYCLES Register
@@ -226,7 +223,6 @@ impl Proc0Cycles {
     pub fn write_proc0_cycles(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PROC0_CYCLES_MASK) | ((value << Self::PROC0_CYCLES_OFFSET) & Self::PROC0_CYCLES_MASK));
     }
-
 }
 
 /// PROC0_CYCLES value type for batch read/modify/write operations
@@ -274,7 +270,6 @@ impl Proc0CyclesVal {
             bits: (self.bits & !Proc0Cycles::PROC0_CYCLES_MASK) | ((value << Proc0Cycles::PROC0_CYCLES_OFFSET) & Proc0Cycles::PROC0_CYCLES_MASK)
         }
     }
-
 }
 
 impl Default for Proc0CyclesVal {
@@ -301,7 +296,6 @@ impl Proc0Cycles {
     pub fn modify_val<F: FnOnce(Proc0CyclesVal) -> Proc0CyclesVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PROC0_COUNT Register
@@ -346,7 +340,6 @@ impl Proc0Count {
     pub fn proc0_count(&self) -> u32 {
         (self.value.read_bits() & Self::PROC0_COUNT_MASK) >> Self::PROC0_COUNT_OFFSET
     }
-
 }
 
 /// PROC0_COUNT value type for batch read/modify/write operations
@@ -378,7 +371,6 @@ impl Proc0CountVal {
     pub const fn proc0_count(&self) -> u32 {
         (self.bits & Proc0Count::PROC0_COUNT_MASK) >> Proc0Count::PROC0_COUNT_OFFSET
     }
-
 }
 
 impl Default for Proc0CountVal {
@@ -393,19 +385,6 @@ impl Proc0Count {
     pub fn read_val(&self) -> Proc0CountVal {
         Proc0CountVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Proc0CountVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Proc0CountVal) -> Proc0CountVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// PROC1_CTRL Register
@@ -487,7 +466,6 @@ impl Proc1Ctrl {
     pub fn clr_enable(&self) {
         self.clr_bits(Self::ENABLE_MASK);
     }
-
 }
 
 /// PROC1_CTRL value type for batch read/modify/write operations
@@ -547,7 +525,6 @@ impl Proc1CtrlVal {
             }
         }
     }
-
 }
 
 impl Default for Proc1CtrlVal {
@@ -574,7 +551,6 @@ impl Proc1Ctrl {
     pub fn modify_val<F: FnOnce(Proc1CtrlVal) -> Proc1CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PROC1_CYCLES Register
@@ -628,7 +604,6 @@ impl Proc1Cycles {
     pub fn write_proc1_cycles(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PROC1_CYCLES_MASK) | ((value << Self::PROC1_CYCLES_OFFSET) & Self::PROC1_CYCLES_MASK));
     }
-
 }
 
 /// PROC1_CYCLES value type for batch read/modify/write operations
@@ -676,7 +651,6 @@ impl Proc1CyclesVal {
             bits: (self.bits & !Proc1Cycles::PROC1_CYCLES_MASK) | ((value << Proc1Cycles::PROC1_CYCLES_OFFSET) & Proc1Cycles::PROC1_CYCLES_MASK)
         }
     }
-
 }
 
 impl Default for Proc1CyclesVal {
@@ -703,7 +677,6 @@ impl Proc1Cycles {
     pub fn modify_val<F: FnOnce(Proc1CyclesVal) -> Proc1CyclesVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PROC1_COUNT Register
@@ -748,7 +721,6 @@ impl Proc1Count {
     pub fn proc1_count(&self) -> u32 {
         (self.value.read_bits() & Self::PROC1_COUNT_MASK) >> Self::PROC1_COUNT_OFFSET
     }
-
 }
 
 /// PROC1_COUNT value type for batch read/modify/write operations
@@ -780,7 +752,6 @@ impl Proc1CountVal {
     pub const fn proc1_count(&self) -> u32 {
         (self.bits & Proc1Count::PROC1_COUNT_MASK) >> Proc1Count::PROC1_COUNT_OFFSET
     }
-
 }
 
 impl Default for Proc1CountVal {
@@ -795,19 +766,6 @@ impl Proc1Count {
     pub fn read_val(&self) -> Proc1CountVal {
         Proc1CountVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Proc1CountVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Proc1CountVal) -> Proc1CountVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TIMER0_CTRL Register
@@ -889,7 +847,6 @@ impl Timer0Ctrl {
     pub fn clr_enable(&self) {
         self.clr_bits(Self::ENABLE_MASK);
     }
-
 }
 
 /// TIMER0_CTRL value type for batch read/modify/write operations
@@ -949,7 +906,6 @@ impl Timer0CtrlVal {
             }
         }
     }
-
 }
 
 impl Default for Timer0CtrlVal {
@@ -976,7 +932,6 @@ impl Timer0Ctrl {
     pub fn modify_val<F: FnOnce(Timer0CtrlVal) -> Timer0CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TIMER0_CYCLES Register
@@ -1030,7 +985,6 @@ impl Timer0Cycles {
     pub fn write_timer0_cycles(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::TIMER0_CYCLES_MASK) | ((value << Self::TIMER0_CYCLES_OFFSET) & Self::TIMER0_CYCLES_MASK));
     }
-
 }
 
 /// TIMER0_CYCLES value type for batch read/modify/write operations
@@ -1078,7 +1032,6 @@ impl Timer0CyclesVal {
             bits: (self.bits & !Timer0Cycles::TIMER0_CYCLES_MASK) | ((value << Timer0Cycles::TIMER0_CYCLES_OFFSET) & Timer0Cycles::TIMER0_CYCLES_MASK)
         }
     }
-
 }
 
 impl Default for Timer0CyclesVal {
@@ -1105,7 +1058,6 @@ impl Timer0Cycles {
     pub fn modify_val<F: FnOnce(Timer0CyclesVal) -> Timer0CyclesVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TIMER0_COUNT Register
@@ -1150,7 +1102,6 @@ impl Timer0Count {
     pub fn timer0_count(&self) -> u32 {
         (self.value.read_bits() & Self::TIMER0_COUNT_MASK) >> Self::TIMER0_COUNT_OFFSET
     }
-
 }
 
 /// TIMER0_COUNT value type for batch read/modify/write operations
@@ -1182,7 +1133,6 @@ impl Timer0CountVal {
     pub const fn timer0_count(&self) -> u32 {
         (self.bits & Timer0Count::TIMER0_COUNT_MASK) >> Timer0Count::TIMER0_COUNT_OFFSET
     }
-
 }
 
 impl Default for Timer0CountVal {
@@ -1197,19 +1147,6 @@ impl Timer0Count {
     pub fn read_val(&self) -> Timer0CountVal {
         Timer0CountVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Timer0CountVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Timer0CountVal) -> Timer0CountVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TIMER1_CTRL Register
@@ -1291,7 +1228,6 @@ impl Timer1Ctrl {
     pub fn clr_enable(&self) {
         self.clr_bits(Self::ENABLE_MASK);
     }
-
 }
 
 /// TIMER1_CTRL value type for batch read/modify/write operations
@@ -1351,7 +1287,6 @@ impl Timer1CtrlVal {
             }
         }
     }
-
 }
 
 impl Default for Timer1CtrlVal {
@@ -1378,7 +1313,6 @@ impl Timer1Ctrl {
     pub fn modify_val<F: FnOnce(Timer1CtrlVal) -> Timer1CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TIMER1_CYCLES Register
@@ -1432,7 +1366,6 @@ impl Timer1Cycles {
     pub fn write_timer1_cycles(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::TIMER1_CYCLES_MASK) | ((value << Self::TIMER1_CYCLES_OFFSET) & Self::TIMER1_CYCLES_MASK));
     }
-
 }
 
 /// TIMER1_CYCLES value type for batch read/modify/write operations
@@ -1480,7 +1413,6 @@ impl Timer1CyclesVal {
             bits: (self.bits & !Timer1Cycles::TIMER1_CYCLES_MASK) | ((value << Timer1Cycles::TIMER1_CYCLES_OFFSET) & Timer1Cycles::TIMER1_CYCLES_MASK)
         }
     }
-
 }
 
 impl Default for Timer1CyclesVal {
@@ -1507,7 +1439,6 @@ impl Timer1Cycles {
     pub fn modify_val<F: FnOnce(Timer1CyclesVal) -> Timer1CyclesVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TIMER1_COUNT Register
@@ -1552,7 +1483,6 @@ impl Timer1Count {
     pub fn timer1_count(&self) -> u32 {
         (self.value.read_bits() & Self::TIMER1_COUNT_MASK) >> Self::TIMER1_COUNT_OFFSET
     }
-
 }
 
 /// TIMER1_COUNT value type for batch read/modify/write operations
@@ -1584,7 +1514,6 @@ impl Timer1CountVal {
     pub const fn timer1_count(&self) -> u32 {
         (self.bits & Timer1Count::TIMER1_COUNT_MASK) >> Timer1Count::TIMER1_COUNT_OFFSET
     }
-
 }
 
 impl Default for Timer1CountVal {
@@ -1599,19 +1528,6 @@ impl Timer1Count {
     pub fn read_val(&self) -> Timer1CountVal {
         Timer1CountVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Timer1CountVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Timer1CountVal) -> Timer1CountVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// WATCHDOG_CTRL Register
@@ -1693,7 +1609,6 @@ impl WatchdogCtrl {
     pub fn clr_enable(&self) {
         self.clr_bits(Self::ENABLE_MASK);
     }
-
 }
 
 /// WATCHDOG_CTRL value type for batch read/modify/write operations
@@ -1753,7 +1668,6 @@ impl WatchdogCtrlVal {
             }
         }
     }
-
 }
 
 impl Default for WatchdogCtrlVal {
@@ -1780,7 +1694,6 @@ impl WatchdogCtrl {
     pub fn modify_val<F: FnOnce(WatchdogCtrlVal) -> WatchdogCtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// WATCHDOG_CYCLES Register
@@ -1834,7 +1747,6 @@ impl WatchdogCycles {
     pub fn write_watchdog_cycles(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::WATCHDOG_CYCLES_MASK) | ((value << Self::WATCHDOG_CYCLES_OFFSET) & Self::WATCHDOG_CYCLES_MASK));
     }
-
 }
 
 /// WATCHDOG_CYCLES value type for batch read/modify/write operations
@@ -1882,7 +1794,6 @@ impl WatchdogCyclesVal {
             bits: (self.bits & !WatchdogCycles::WATCHDOG_CYCLES_MASK) | ((value << WatchdogCycles::WATCHDOG_CYCLES_OFFSET) & WatchdogCycles::WATCHDOG_CYCLES_MASK)
         }
     }
-
 }
 
 impl Default for WatchdogCyclesVal {
@@ -1909,7 +1820,6 @@ impl WatchdogCycles {
     pub fn modify_val<F: FnOnce(WatchdogCyclesVal) -> WatchdogCyclesVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// WATCHDOG_COUNT Register
@@ -1954,7 +1864,6 @@ impl WatchdogCount {
     pub fn watchdog_count(&self) -> u32 {
         (self.value.read_bits() & Self::WATCHDOG_COUNT_MASK) >> Self::WATCHDOG_COUNT_OFFSET
     }
-
 }
 
 /// WATCHDOG_COUNT value type for batch read/modify/write operations
@@ -1986,7 +1895,6 @@ impl WatchdogCountVal {
     pub const fn watchdog_count(&self) -> u32 {
         (self.bits & WatchdogCount::WATCHDOG_COUNT_MASK) >> WatchdogCount::WATCHDOG_COUNT_OFFSET
     }
-
 }
 
 impl Default for WatchdogCountVal {
@@ -2001,19 +1909,6 @@ impl WatchdogCount {
     pub fn read_val(&self) -> WatchdogCountVal {
         WatchdogCountVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: WatchdogCountVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(WatchdogCountVal) -> WatchdogCountVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// RISCV_CTRL Register
@@ -2095,7 +1990,6 @@ impl RiscvCtrl {
     pub fn clr_enable(&self) {
         self.clr_bits(Self::ENABLE_MASK);
     }
-
 }
 
 /// RISCV_CTRL value type for batch read/modify/write operations
@@ -2155,7 +2049,6 @@ impl RiscvCtrlVal {
             }
         }
     }
-
 }
 
 impl Default for RiscvCtrlVal {
@@ -2182,7 +2075,6 @@ impl RiscvCtrl {
     pub fn modify_val<F: FnOnce(RiscvCtrlVal) -> RiscvCtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// RISCV_CYCLES Register
@@ -2236,7 +2128,6 @@ impl RiscvCycles {
     pub fn write_riscv_cycles(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::RISCV_CYCLES_MASK) | ((value << Self::RISCV_CYCLES_OFFSET) & Self::RISCV_CYCLES_MASK));
     }
-
 }
 
 /// RISCV_CYCLES value type for batch read/modify/write operations
@@ -2284,7 +2175,6 @@ impl RiscvCyclesVal {
             bits: (self.bits & !RiscvCycles::RISCV_CYCLES_MASK) | ((value << RiscvCycles::RISCV_CYCLES_OFFSET) & RiscvCycles::RISCV_CYCLES_MASK)
         }
     }
-
 }
 
 impl Default for RiscvCyclesVal {
@@ -2311,7 +2201,6 @@ impl RiscvCycles {
     pub fn modify_val<F: FnOnce(RiscvCyclesVal) -> RiscvCyclesVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// RISCV_COUNT Register
@@ -2356,7 +2245,6 @@ impl RiscvCount {
     pub fn riscv_count(&self) -> u32 {
         (self.value.read_bits() & Self::RISCV_COUNT_MASK) >> Self::RISCV_COUNT_OFFSET
     }
-
 }
 
 /// RISCV_COUNT value type for batch read/modify/write operations
@@ -2388,7 +2276,6 @@ impl RiscvCountVal {
     pub const fn riscv_count(&self) -> u32 {
         (self.bits & RiscvCount::RISCV_COUNT_MASK) >> RiscvCount::RISCV_COUNT_OFFSET
     }
-
 }
 
 impl Default for RiscvCountVal {
@@ -2403,19 +2290,6 @@ impl RiscvCount {
     pub fn read_val(&self) -> RiscvCountVal {
         RiscvCountVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: RiscvCountVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(RiscvCountVal) -> RiscvCountVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// Register block

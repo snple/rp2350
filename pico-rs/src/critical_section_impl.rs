@@ -43,16 +43,14 @@ critical_section::set_impl!(Rp2350CriticalSection);
 #[inline]
 fn core_id() -> usize {
     // SIO CPUID 寄存器返回当前核的 ID
-    let sio = unsafe { &*pico_rs_pac::SIO::PTR };
-    sio.cpuid.read_bits() as usize
+    crate::sio::regs().cpuid.cpuid() as usize
 }
 
 /// 尝试获取 spinlock（非阻塞）
 #[inline]
 fn try_acquire_spinlock() -> bool {
-    let sio = unsafe { &*pico_rs_pac::SIO::PTR };
     // 读取 spinlock 寄存器：返回非零表示获取成功
-    sio.spinlock31.read_bits() != 0
+    crate::sio::regs().spinlock31.spinlock31() != 0
 }
 
 /// 获取 spinlock（阻塞）
@@ -66,9 +64,8 @@ fn acquire_spinlock() {
 /// 释放 spinlock
 #[inline]
 fn release_spinlock() {
-    let sio = unsafe { &*pico_rs_pac::SIO::PTR };
     // 写入任意值释放 spinlock
-    sio.spinlock31.write_bits(1);
+    crate::sio::regs().spinlock31.write_spinlock31(1);
 }
 
 unsafe impl critical_section::Impl for Rp2350CriticalSection {

@@ -60,7 +60,6 @@ impl Ch0ReadAddr {
     pub fn write_ch0_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH0_READ_ADDR_MASK) | ((value << Self::CH0_READ_ADDR_OFFSET) & Self::CH0_READ_ADDR_MASK));
     }
-
 }
 
 /// CH0_READ_ADDR value type for batch read/modify/write operations
@@ -108,7 +107,6 @@ impl Ch0ReadAddrVal {
             bits: (self.bits & !Ch0ReadAddr::CH0_READ_ADDR_MASK) | ((value << Ch0ReadAddr::CH0_READ_ADDR_OFFSET) & Ch0ReadAddr::CH0_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch0ReadAddrVal {
@@ -135,7 +133,6 @@ impl Ch0ReadAddr {
     pub fn modify_val<F: FnOnce(Ch0ReadAddrVal) -> Ch0ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH0_WRITE_ADDR Register
@@ -191,7 +188,6 @@ impl Ch0WriteAddr {
     pub fn write_ch0_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH0_WRITE_ADDR_MASK) | ((value << Self::CH0_WRITE_ADDR_OFFSET) & Self::CH0_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH0_WRITE_ADDR value type for batch read/modify/write operations
@@ -239,7 +235,6 @@ impl Ch0WriteAddrVal {
             bits: (self.bits & !Ch0WriteAddr::CH0_WRITE_ADDR_MASK) | ((value << Ch0WriteAddr::CH0_WRITE_ADDR_OFFSET) & Ch0WriteAddr::CH0_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch0WriteAddrVal {
@@ -266,7 +261,6 @@ impl Ch0WriteAddr {
     pub fn modify_val<F: FnOnce(Ch0WriteAddrVal) -> Ch0WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH0_TRANS_COUNT Register
@@ -384,7 +378,6 @@ impl Ch0TransCount {
     pub fn write_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
     }
-
 }
 
 /// CH0_TRANS_COUNT value type for batch read/modify/write operations
@@ -464,7 +457,6 @@ impl Ch0TransCountVal {
             bits: (self.bits & !Ch0TransCount::COUNT_MASK) | ((value << Ch0TransCount::COUNT_OFFSET) & Ch0TransCount::COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch0TransCountVal {
@@ -491,7 +483,6 @@ impl Ch0TransCount {
     pub fn modify_val<F: FnOnce(Ch0TransCountVal) -> Ch0TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH0_CTRL_TRIG Register
@@ -1372,7 +1363,6 @@ impl Ch0CtrlTrig {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// CH0_CTRL_TRIG value type for batch read/modify/write operations
@@ -1787,7 +1777,6 @@ impl Ch0CtrlTrigVal {
             }
         }
     }
-
 }
 
 impl Default for Ch0CtrlTrigVal {
@@ -1814,7 +1803,6 @@ impl Ch0CtrlTrig {
     pub fn modify_val<F: FnOnce(Ch0CtrlTrigVal) -> Ch0CtrlTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH0_AL1_CTRL Register
@@ -1860,7 +1848,6 @@ impl Ch0Al1Ctrl {
     pub fn write_ch0_al1_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH0_AL1_CTRL_MASK) | ((value << Self::CH0_AL1_CTRL_OFFSET) & Self::CH0_AL1_CTRL_MASK));
     }
-
 }
 
 /// CH0_AL1_CTRL value type for batch read/modify/write operations
@@ -1898,7 +1885,6 @@ impl Ch0Al1CtrlVal {
             bits: (self.bits & !Ch0Al1Ctrl::CH0_AL1_CTRL_MASK) | ((value << Ch0Al1Ctrl::CH0_AL1_CTRL_OFFSET) & Ch0Al1Ctrl::CH0_AL1_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch0Al1CtrlVal {
@@ -1925,7 +1911,6 @@ impl Ch0Al1Ctrl {
     pub fn modify_val<F: FnOnce(Ch0Al1CtrlVal) -> Ch0Al1CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH0_AL1_READ_ADDR Register
@@ -1971,7 +1956,6 @@ impl Ch0Al1ReadAddr {
     pub fn write_ch0_al1_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH0_AL1_READ_ADDR_MASK) | ((value << Self::CH0_AL1_READ_ADDR_OFFSET) & Self::CH0_AL1_READ_ADDR_MASK));
     }
-
 }
 
 /// CH0_AL1_READ_ADDR value type for batch read/modify/write operations
@@ -2009,7 +1993,6 @@ impl Ch0Al1ReadAddrVal {
             bits: (self.bits & !Ch0Al1ReadAddr::CH0_AL1_READ_ADDR_MASK) | ((value << Ch0Al1ReadAddr::CH0_AL1_READ_ADDR_OFFSET) & Ch0Al1ReadAddr::CH0_AL1_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch0Al1ReadAddrVal {
@@ -2036,7 +2019,6 @@ impl Ch0Al1ReadAddr {
     pub fn modify_val<F: FnOnce(Ch0Al1ReadAddrVal) -> Ch0Al1ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH0_AL1_WRITE_ADDR Register
@@ -2082,7 +2064,6 @@ impl Ch0Al1WriteAddr {
     pub fn write_ch0_al1_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH0_AL1_WRITE_ADDR_MASK) | ((value << Self::CH0_AL1_WRITE_ADDR_OFFSET) & Self::CH0_AL1_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH0_AL1_WRITE_ADDR value type for batch read/modify/write operations
@@ -2120,7 +2101,6 @@ impl Ch0Al1WriteAddrVal {
             bits: (self.bits & !Ch0Al1WriteAddr::CH0_AL1_WRITE_ADDR_MASK) | ((value << Ch0Al1WriteAddr::CH0_AL1_WRITE_ADDR_OFFSET) & Ch0Al1WriteAddr::CH0_AL1_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch0Al1WriteAddrVal {
@@ -2147,7 +2127,6 @@ impl Ch0Al1WriteAddr {
     pub fn modify_val<F: FnOnce(Ch0Al1WriteAddrVal) -> Ch0Al1WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH0_AL1_TRANS_COUNT_TRIG Register
@@ -2195,7 +2174,6 @@ impl Ch0Al1TransCountTrig {
     pub fn write_ch0_al1_trans_count_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH0_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH0_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH0_AL1_TRANS_COUNT_TRIG_MASK));
     }
-
 }
 
 /// CH0_AL1_TRANS_COUNT_TRIG value type for batch read/modify/write operations
@@ -2233,7 +2211,6 @@ impl Ch0Al1TransCountTrigVal {
             bits: (self.bits & !Ch0Al1TransCountTrig::CH0_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch0Al1TransCountTrig::CH0_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch0Al1TransCountTrig::CH0_AL1_TRANS_COUNT_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch0Al1TransCountTrigVal {
@@ -2260,7 +2237,6 @@ impl Ch0Al1TransCountTrig {
     pub fn modify_val<F: FnOnce(Ch0Al1TransCountTrigVal) -> Ch0Al1TransCountTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH0_AL2_CTRL Register
@@ -2306,7 +2282,6 @@ impl Ch0Al2Ctrl {
     pub fn write_ch0_al2_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH0_AL2_CTRL_MASK) | ((value << Self::CH0_AL2_CTRL_OFFSET) & Self::CH0_AL2_CTRL_MASK));
     }
-
 }
 
 /// CH0_AL2_CTRL value type for batch read/modify/write operations
@@ -2344,7 +2319,6 @@ impl Ch0Al2CtrlVal {
             bits: (self.bits & !Ch0Al2Ctrl::CH0_AL2_CTRL_MASK) | ((value << Ch0Al2Ctrl::CH0_AL2_CTRL_OFFSET) & Ch0Al2Ctrl::CH0_AL2_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch0Al2CtrlVal {
@@ -2371,7 +2345,6 @@ impl Ch0Al2Ctrl {
     pub fn modify_val<F: FnOnce(Ch0Al2CtrlVal) -> Ch0Al2CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH0_AL2_TRANS_COUNT Register
@@ -2417,7 +2390,6 @@ impl Ch0Al2TransCount {
     pub fn write_ch0_al2_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH0_AL2_TRANS_COUNT_MASK) | ((value << Self::CH0_AL2_TRANS_COUNT_OFFSET) & Self::CH0_AL2_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH0_AL2_TRANS_COUNT value type for batch read/modify/write operations
@@ -2455,7 +2427,6 @@ impl Ch0Al2TransCountVal {
             bits: (self.bits & !Ch0Al2TransCount::CH0_AL2_TRANS_COUNT_MASK) | ((value << Ch0Al2TransCount::CH0_AL2_TRANS_COUNT_OFFSET) & Ch0Al2TransCount::CH0_AL2_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch0Al2TransCountVal {
@@ -2482,7 +2453,6 @@ impl Ch0Al2TransCount {
     pub fn modify_val<F: FnOnce(Ch0Al2TransCountVal) -> Ch0Al2TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH0_AL2_READ_ADDR Register
@@ -2528,7 +2498,6 @@ impl Ch0Al2ReadAddr {
     pub fn write_ch0_al2_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH0_AL2_READ_ADDR_MASK) | ((value << Self::CH0_AL2_READ_ADDR_OFFSET) & Self::CH0_AL2_READ_ADDR_MASK));
     }
-
 }
 
 /// CH0_AL2_READ_ADDR value type for batch read/modify/write operations
@@ -2566,7 +2535,6 @@ impl Ch0Al2ReadAddrVal {
             bits: (self.bits & !Ch0Al2ReadAddr::CH0_AL2_READ_ADDR_MASK) | ((value << Ch0Al2ReadAddr::CH0_AL2_READ_ADDR_OFFSET) & Ch0Al2ReadAddr::CH0_AL2_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch0Al2ReadAddrVal {
@@ -2593,7 +2561,6 @@ impl Ch0Al2ReadAddr {
     pub fn modify_val<F: FnOnce(Ch0Al2ReadAddrVal) -> Ch0Al2ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH0_AL2_WRITE_ADDR_TRIG Register
@@ -2641,7 +2608,6 @@ impl Ch0Al2WriteAddrTrig {
     pub fn write_ch0_al2_write_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH0_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH0_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH0_AL2_WRITE_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH0_AL2_WRITE_ADDR_TRIG value type for batch read/modify/write operations
@@ -2679,7 +2645,6 @@ impl Ch0Al2WriteAddrTrigVal {
             bits: (self.bits & !Ch0Al2WriteAddrTrig::CH0_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch0Al2WriteAddrTrig::CH0_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch0Al2WriteAddrTrig::CH0_AL2_WRITE_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch0Al2WriteAddrTrigVal {
@@ -2706,7 +2671,6 @@ impl Ch0Al2WriteAddrTrig {
     pub fn modify_val<F: FnOnce(Ch0Al2WriteAddrTrigVal) -> Ch0Al2WriteAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH0_AL3_CTRL Register
@@ -2752,7 +2716,6 @@ impl Ch0Al3Ctrl {
     pub fn write_ch0_al3_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH0_AL3_CTRL_MASK) | ((value << Self::CH0_AL3_CTRL_OFFSET) & Self::CH0_AL3_CTRL_MASK));
     }
-
 }
 
 /// CH0_AL3_CTRL value type for batch read/modify/write operations
@@ -2790,7 +2753,6 @@ impl Ch0Al3CtrlVal {
             bits: (self.bits & !Ch0Al3Ctrl::CH0_AL3_CTRL_MASK) | ((value << Ch0Al3Ctrl::CH0_AL3_CTRL_OFFSET) & Ch0Al3Ctrl::CH0_AL3_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch0Al3CtrlVal {
@@ -2817,7 +2779,6 @@ impl Ch0Al3Ctrl {
     pub fn modify_val<F: FnOnce(Ch0Al3CtrlVal) -> Ch0Al3CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH0_AL3_WRITE_ADDR Register
@@ -2863,7 +2824,6 @@ impl Ch0Al3WriteAddr {
     pub fn write_ch0_al3_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH0_AL3_WRITE_ADDR_MASK) | ((value << Self::CH0_AL3_WRITE_ADDR_OFFSET) & Self::CH0_AL3_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH0_AL3_WRITE_ADDR value type for batch read/modify/write operations
@@ -2901,7 +2861,6 @@ impl Ch0Al3WriteAddrVal {
             bits: (self.bits & !Ch0Al3WriteAddr::CH0_AL3_WRITE_ADDR_MASK) | ((value << Ch0Al3WriteAddr::CH0_AL3_WRITE_ADDR_OFFSET) & Ch0Al3WriteAddr::CH0_AL3_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch0Al3WriteAddrVal {
@@ -2928,7 +2887,6 @@ impl Ch0Al3WriteAddr {
     pub fn modify_val<F: FnOnce(Ch0Al3WriteAddrVal) -> Ch0Al3WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH0_AL3_TRANS_COUNT Register
@@ -2974,7 +2932,6 @@ impl Ch0Al3TransCount {
     pub fn write_ch0_al3_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH0_AL3_TRANS_COUNT_MASK) | ((value << Self::CH0_AL3_TRANS_COUNT_OFFSET) & Self::CH0_AL3_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH0_AL3_TRANS_COUNT value type for batch read/modify/write operations
@@ -3012,7 +2969,6 @@ impl Ch0Al3TransCountVal {
             bits: (self.bits & !Ch0Al3TransCount::CH0_AL3_TRANS_COUNT_MASK) | ((value << Ch0Al3TransCount::CH0_AL3_TRANS_COUNT_OFFSET) & Ch0Al3TransCount::CH0_AL3_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch0Al3TransCountVal {
@@ -3039,7 +2995,6 @@ impl Ch0Al3TransCount {
     pub fn modify_val<F: FnOnce(Ch0Al3TransCountVal) -> Ch0Al3TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH0_AL3_READ_ADDR_TRIG Register
@@ -3087,7 +3042,6 @@ impl Ch0Al3ReadAddrTrig {
     pub fn write_ch0_al3_read_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH0_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH0_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH0_AL3_READ_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH0_AL3_READ_ADDR_TRIG value type for batch read/modify/write operations
@@ -3125,7 +3079,6 @@ impl Ch0Al3ReadAddrTrigVal {
             bits: (self.bits & !Ch0Al3ReadAddrTrig::CH0_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch0Al3ReadAddrTrig::CH0_AL3_READ_ADDR_TRIG_OFFSET) & Ch0Al3ReadAddrTrig::CH0_AL3_READ_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch0Al3ReadAddrTrigVal {
@@ -3152,7 +3105,6 @@ impl Ch0Al3ReadAddrTrig {
     pub fn modify_val<F: FnOnce(Ch0Al3ReadAddrTrigVal) -> Ch0Al3ReadAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH1_READ_ADDR Register
@@ -3208,7 +3160,6 @@ impl Ch1ReadAddr {
     pub fn write_ch1_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH1_READ_ADDR_MASK) | ((value << Self::CH1_READ_ADDR_OFFSET) & Self::CH1_READ_ADDR_MASK));
     }
-
 }
 
 /// CH1_READ_ADDR value type for batch read/modify/write operations
@@ -3256,7 +3207,6 @@ impl Ch1ReadAddrVal {
             bits: (self.bits & !Ch1ReadAddr::CH1_READ_ADDR_MASK) | ((value << Ch1ReadAddr::CH1_READ_ADDR_OFFSET) & Ch1ReadAddr::CH1_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch1ReadAddrVal {
@@ -3283,7 +3233,6 @@ impl Ch1ReadAddr {
     pub fn modify_val<F: FnOnce(Ch1ReadAddrVal) -> Ch1ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH1_WRITE_ADDR Register
@@ -3339,7 +3288,6 @@ impl Ch1WriteAddr {
     pub fn write_ch1_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH1_WRITE_ADDR_MASK) | ((value << Self::CH1_WRITE_ADDR_OFFSET) & Self::CH1_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH1_WRITE_ADDR value type for batch read/modify/write operations
@@ -3387,7 +3335,6 @@ impl Ch1WriteAddrVal {
             bits: (self.bits & !Ch1WriteAddr::CH1_WRITE_ADDR_MASK) | ((value << Ch1WriteAddr::CH1_WRITE_ADDR_OFFSET) & Ch1WriteAddr::CH1_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch1WriteAddrVal {
@@ -3414,7 +3361,6 @@ impl Ch1WriteAddr {
     pub fn modify_val<F: FnOnce(Ch1WriteAddrVal) -> Ch1WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH1_TRANS_COUNT Register
@@ -3532,7 +3478,6 @@ impl Ch1TransCount {
     pub fn write_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
     }
-
 }
 
 /// CH1_TRANS_COUNT value type for batch read/modify/write operations
@@ -3612,7 +3557,6 @@ impl Ch1TransCountVal {
             bits: (self.bits & !Ch1TransCount::COUNT_MASK) | ((value << Ch1TransCount::COUNT_OFFSET) & Ch1TransCount::COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch1TransCountVal {
@@ -3639,7 +3583,6 @@ impl Ch1TransCount {
     pub fn modify_val<F: FnOnce(Ch1TransCountVal) -> Ch1TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH1_CTRL_TRIG Register
@@ -4520,7 +4463,6 @@ impl Ch1CtrlTrig {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// CH1_CTRL_TRIG value type for batch read/modify/write operations
@@ -4935,7 +4877,6 @@ impl Ch1CtrlTrigVal {
             }
         }
     }
-
 }
 
 impl Default for Ch1CtrlTrigVal {
@@ -4962,7 +4903,6 @@ impl Ch1CtrlTrig {
     pub fn modify_val<F: FnOnce(Ch1CtrlTrigVal) -> Ch1CtrlTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH1_AL1_CTRL Register
@@ -5008,7 +4948,6 @@ impl Ch1Al1Ctrl {
     pub fn write_ch1_al1_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH1_AL1_CTRL_MASK) | ((value << Self::CH1_AL1_CTRL_OFFSET) & Self::CH1_AL1_CTRL_MASK));
     }
-
 }
 
 /// CH1_AL1_CTRL value type for batch read/modify/write operations
@@ -5046,7 +4985,6 @@ impl Ch1Al1CtrlVal {
             bits: (self.bits & !Ch1Al1Ctrl::CH1_AL1_CTRL_MASK) | ((value << Ch1Al1Ctrl::CH1_AL1_CTRL_OFFSET) & Ch1Al1Ctrl::CH1_AL1_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch1Al1CtrlVal {
@@ -5073,7 +5011,6 @@ impl Ch1Al1Ctrl {
     pub fn modify_val<F: FnOnce(Ch1Al1CtrlVal) -> Ch1Al1CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH1_AL1_READ_ADDR Register
@@ -5119,7 +5056,6 @@ impl Ch1Al1ReadAddr {
     pub fn write_ch1_al1_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH1_AL1_READ_ADDR_MASK) | ((value << Self::CH1_AL1_READ_ADDR_OFFSET) & Self::CH1_AL1_READ_ADDR_MASK));
     }
-
 }
 
 /// CH1_AL1_READ_ADDR value type for batch read/modify/write operations
@@ -5157,7 +5093,6 @@ impl Ch1Al1ReadAddrVal {
             bits: (self.bits & !Ch1Al1ReadAddr::CH1_AL1_READ_ADDR_MASK) | ((value << Ch1Al1ReadAddr::CH1_AL1_READ_ADDR_OFFSET) & Ch1Al1ReadAddr::CH1_AL1_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch1Al1ReadAddrVal {
@@ -5184,7 +5119,6 @@ impl Ch1Al1ReadAddr {
     pub fn modify_val<F: FnOnce(Ch1Al1ReadAddrVal) -> Ch1Al1ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH1_AL1_WRITE_ADDR Register
@@ -5230,7 +5164,6 @@ impl Ch1Al1WriteAddr {
     pub fn write_ch1_al1_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH1_AL1_WRITE_ADDR_MASK) | ((value << Self::CH1_AL1_WRITE_ADDR_OFFSET) & Self::CH1_AL1_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH1_AL1_WRITE_ADDR value type for batch read/modify/write operations
@@ -5268,7 +5201,6 @@ impl Ch1Al1WriteAddrVal {
             bits: (self.bits & !Ch1Al1WriteAddr::CH1_AL1_WRITE_ADDR_MASK) | ((value << Ch1Al1WriteAddr::CH1_AL1_WRITE_ADDR_OFFSET) & Ch1Al1WriteAddr::CH1_AL1_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch1Al1WriteAddrVal {
@@ -5295,7 +5227,6 @@ impl Ch1Al1WriteAddr {
     pub fn modify_val<F: FnOnce(Ch1Al1WriteAddrVal) -> Ch1Al1WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH1_AL1_TRANS_COUNT_TRIG Register
@@ -5343,7 +5274,6 @@ impl Ch1Al1TransCountTrig {
     pub fn write_ch1_al1_trans_count_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH1_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH1_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH1_AL1_TRANS_COUNT_TRIG_MASK));
     }
-
 }
 
 /// CH1_AL1_TRANS_COUNT_TRIG value type for batch read/modify/write operations
@@ -5381,7 +5311,6 @@ impl Ch1Al1TransCountTrigVal {
             bits: (self.bits & !Ch1Al1TransCountTrig::CH1_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch1Al1TransCountTrig::CH1_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch1Al1TransCountTrig::CH1_AL1_TRANS_COUNT_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch1Al1TransCountTrigVal {
@@ -5408,7 +5337,6 @@ impl Ch1Al1TransCountTrig {
     pub fn modify_val<F: FnOnce(Ch1Al1TransCountTrigVal) -> Ch1Al1TransCountTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH1_AL2_CTRL Register
@@ -5454,7 +5382,6 @@ impl Ch1Al2Ctrl {
     pub fn write_ch1_al2_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH1_AL2_CTRL_MASK) | ((value << Self::CH1_AL2_CTRL_OFFSET) & Self::CH1_AL2_CTRL_MASK));
     }
-
 }
 
 /// CH1_AL2_CTRL value type for batch read/modify/write operations
@@ -5492,7 +5419,6 @@ impl Ch1Al2CtrlVal {
             bits: (self.bits & !Ch1Al2Ctrl::CH1_AL2_CTRL_MASK) | ((value << Ch1Al2Ctrl::CH1_AL2_CTRL_OFFSET) & Ch1Al2Ctrl::CH1_AL2_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch1Al2CtrlVal {
@@ -5519,7 +5445,6 @@ impl Ch1Al2Ctrl {
     pub fn modify_val<F: FnOnce(Ch1Al2CtrlVal) -> Ch1Al2CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH1_AL2_TRANS_COUNT Register
@@ -5565,7 +5490,6 @@ impl Ch1Al2TransCount {
     pub fn write_ch1_al2_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH1_AL2_TRANS_COUNT_MASK) | ((value << Self::CH1_AL2_TRANS_COUNT_OFFSET) & Self::CH1_AL2_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH1_AL2_TRANS_COUNT value type for batch read/modify/write operations
@@ -5603,7 +5527,6 @@ impl Ch1Al2TransCountVal {
             bits: (self.bits & !Ch1Al2TransCount::CH1_AL2_TRANS_COUNT_MASK) | ((value << Ch1Al2TransCount::CH1_AL2_TRANS_COUNT_OFFSET) & Ch1Al2TransCount::CH1_AL2_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch1Al2TransCountVal {
@@ -5630,7 +5553,6 @@ impl Ch1Al2TransCount {
     pub fn modify_val<F: FnOnce(Ch1Al2TransCountVal) -> Ch1Al2TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH1_AL2_READ_ADDR Register
@@ -5676,7 +5598,6 @@ impl Ch1Al2ReadAddr {
     pub fn write_ch1_al2_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH1_AL2_READ_ADDR_MASK) | ((value << Self::CH1_AL2_READ_ADDR_OFFSET) & Self::CH1_AL2_READ_ADDR_MASK));
     }
-
 }
 
 /// CH1_AL2_READ_ADDR value type for batch read/modify/write operations
@@ -5714,7 +5635,6 @@ impl Ch1Al2ReadAddrVal {
             bits: (self.bits & !Ch1Al2ReadAddr::CH1_AL2_READ_ADDR_MASK) | ((value << Ch1Al2ReadAddr::CH1_AL2_READ_ADDR_OFFSET) & Ch1Al2ReadAddr::CH1_AL2_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch1Al2ReadAddrVal {
@@ -5741,7 +5661,6 @@ impl Ch1Al2ReadAddr {
     pub fn modify_val<F: FnOnce(Ch1Al2ReadAddrVal) -> Ch1Al2ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH1_AL2_WRITE_ADDR_TRIG Register
@@ -5789,7 +5708,6 @@ impl Ch1Al2WriteAddrTrig {
     pub fn write_ch1_al2_write_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH1_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH1_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH1_AL2_WRITE_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH1_AL2_WRITE_ADDR_TRIG value type for batch read/modify/write operations
@@ -5827,7 +5745,6 @@ impl Ch1Al2WriteAddrTrigVal {
             bits: (self.bits & !Ch1Al2WriteAddrTrig::CH1_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch1Al2WriteAddrTrig::CH1_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch1Al2WriteAddrTrig::CH1_AL2_WRITE_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch1Al2WriteAddrTrigVal {
@@ -5854,7 +5771,6 @@ impl Ch1Al2WriteAddrTrig {
     pub fn modify_val<F: FnOnce(Ch1Al2WriteAddrTrigVal) -> Ch1Al2WriteAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH1_AL3_CTRL Register
@@ -5900,7 +5816,6 @@ impl Ch1Al3Ctrl {
     pub fn write_ch1_al3_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH1_AL3_CTRL_MASK) | ((value << Self::CH1_AL3_CTRL_OFFSET) & Self::CH1_AL3_CTRL_MASK));
     }
-
 }
 
 /// CH1_AL3_CTRL value type for batch read/modify/write operations
@@ -5938,7 +5853,6 @@ impl Ch1Al3CtrlVal {
             bits: (self.bits & !Ch1Al3Ctrl::CH1_AL3_CTRL_MASK) | ((value << Ch1Al3Ctrl::CH1_AL3_CTRL_OFFSET) & Ch1Al3Ctrl::CH1_AL3_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch1Al3CtrlVal {
@@ -5965,7 +5879,6 @@ impl Ch1Al3Ctrl {
     pub fn modify_val<F: FnOnce(Ch1Al3CtrlVal) -> Ch1Al3CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH1_AL3_WRITE_ADDR Register
@@ -6011,7 +5924,6 @@ impl Ch1Al3WriteAddr {
     pub fn write_ch1_al3_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH1_AL3_WRITE_ADDR_MASK) | ((value << Self::CH1_AL3_WRITE_ADDR_OFFSET) & Self::CH1_AL3_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH1_AL3_WRITE_ADDR value type for batch read/modify/write operations
@@ -6049,7 +5961,6 @@ impl Ch1Al3WriteAddrVal {
             bits: (self.bits & !Ch1Al3WriteAddr::CH1_AL3_WRITE_ADDR_MASK) | ((value << Ch1Al3WriteAddr::CH1_AL3_WRITE_ADDR_OFFSET) & Ch1Al3WriteAddr::CH1_AL3_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch1Al3WriteAddrVal {
@@ -6076,7 +5987,6 @@ impl Ch1Al3WriteAddr {
     pub fn modify_val<F: FnOnce(Ch1Al3WriteAddrVal) -> Ch1Al3WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH1_AL3_TRANS_COUNT Register
@@ -6122,7 +6032,6 @@ impl Ch1Al3TransCount {
     pub fn write_ch1_al3_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH1_AL3_TRANS_COUNT_MASK) | ((value << Self::CH1_AL3_TRANS_COUNT_OFFSET) & Self::CH1_AL3_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH1_AL3_TRANS_COUNT value type for batch read/modify/write operations
@@ -6160,7 +6069,6 @@ impl Ch1Al3TransCountVal {
             bits: (self.bits & !Ch1Al3TransCount::CH1_AL3_TRANS_COUNT_MASK) | ((value << Ch1Al3TransCount::CH1_AL3_TRANS_COUNT_OFFSET) & Ch1Al3TransCount::CH1_AL3_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch1Al3TransCountVal {
@@ -6187,7 +6095,6 @@ impl Ch1Al3TransCount {
     pub fn modify_val<F: FnOnce(Ch1Al3TransCountVal) -> Ch1Al3TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH1_AL3_READ_ADDR_TRIG Register
@@ -6235,7 +6142,6 @@ impl Ch1Al3ReadAddrTrig {
     pub fn write_ch1_al3_read_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH1_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH1_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH1_AL3_READ_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH1_AL3_READ_ADDR_TRIG value type for batch read/modify/write operations
@@ -6273,7 +6179,6 @@ impl Ch1Al3ReadAddrTrigVal {
             bits: (self.bits & !Ch1Al3ReadAddrTrig::CH1_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch1Al3ReadAddrTrig::CH1_AL3_READ_ADDR_TRIG_OFFSET) & Ch1Al3ReadAddrTrig::CH1_AL3_READ_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch1Al3ReadAddrTrigVal {
@@ -6300,7 +6205,6 @@ impl Ch1Al3ReadAddrTrig {
     pub fn modify_val<F: FnOnce(Ch1Al3ReadAddrTrigVal) -> Ch1Al3ReadAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH2_READ_ADDR Register
@@ -6356,7 +6260,6 @@ impl Ch2ReadAddr {
     pub fn write_ch2_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH2_READ_ADDR_MASK) | ((value << Self::CH2_READ_ADDR_OFFSET) & Self::CH2_READ_ADDR_MASK));
     }
-
 }
 
 /// CH2_READ_ADDR value type for batch read/modify/write operations
@@ -6404,7 +6307,6 @@ impl Ch2ReadAddrVal {
             bits: (self.bits & !Ch2ReadAddr::CH2_READ_ADDR_MASK) | ((value << Ch2ReadAddr::CH2_READ_ADDR_OFFSET) & Ch2ReadAddr::CH2_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch2ReadAddrVal {
@@ -6431,7 +6333,6 @@ impl Ch2ReadAddr {
     pub fn modify_val<F: FnOnce(Ch2ReadAddrVal) -> Ch2ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH2_WRITE_ADDR Register
@@ -6487,7 +6388,6 @@ impl Ch2WriteAddr {
     pub fn write_ch2_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH2_WRITE_ADDR_MASK) | ((value << Self::CH2_WRITE_ADDR_OFFSET) & Self::CH2_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH2_WRITE_ADDR value type for batch read/modify/write operations
@@ -6535,7 +6435,6 @@ impl Ch2WriteAddrVal {
             bits: (self.bits & !Ch2WriteAddr::CH2_WRITE_ADDR_MASK) | ((value << Ch2WriteAddr::CH2_WRITE_ADDR_OFFSET) & Ch2WriteAddr::CH2_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch2WriteAddrVal {
@@ -6562,7 +6461,6 @@ impl Ch2WriteAddr {
     pub fn modify_val<F: FnOnce(Ch2WriteAddrVal) -> Ch2WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH2_TRANS_COUNT Register
@@ -6680,7 +6578,6 @@ impl Ch2TransCount {
     pub fn write_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
     }
-
 }
 
 /// CH2_TRANS_COUNT value type for batch read/modify/write operations
@@ -6760,7 +6657,6 @@ impl Ch2TransCountVal {
             bits: (self.bits & !Ch2TransCount::COUNT_MASK) | ((value << Ch2TransCount::COUNT_OFFSET) & Ch2TransCount::COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch2TransCountVal {
@@ -6787,7 +6683,6 @@ impl Ch2TransCount {
     pub fn modify_val<F: FnOnce(Ch2TransCountVal) -> Ch2TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH2_CTRL_TRIG Register
@@ -7668,7 +7563,6 @@ impl Ch2CtrlTrig {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// CH2_CTRL_TRIG value type for batch read/modify/write operations
@@ -8083,7 +7977,6 @@ impl Ch2CtrlTrigVal {
             }
         }
     }
-
 }
 
 impl Default for Ch2CtrlTrigVal {
@@ -8110,7 +8003,6 @@ impl Ch2CtrlTrig {
     pub fn modify_val<F: FnOnce(Ch2CtrlTrigVal) -> Ch2CtrlTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH2_AL1_CTRL Register
@@ -8156,7 +8048,6 @@ impl Ch2Al1Ctrl {
     pub fn write_ch2_al1_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH2_AL1_CTRL_MASK) | ((value << Self::CH2_AL1_CTRL_OFFSET) & Self::CH2_AL1_CTRL_MASK));
     }
-
 }
 
 /// CH2_AL1_CTRL value type for batch read/modify/write operations
@@ -8194,7 +8085,6 @@ impl Ch2Al1CtrlVal {
             bits: (self.bits & !Ch2Al1Ctrl::CH2_AL1_CTRL_MASK) | ((value << Ch2Al1Ctrl::CH2_AL1_CTRL_OFFSET) & Ch2Al1Ctrl::CH2_AL1_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch2Al1CtrlVal {
@@ -8221,7 +8111,6 @@ impl Ch2Al1Ctrl {
     pub fn modify_val<F: FnOnce(Ch2Al1CtrlVal) -> Ch2Al1CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH2_AL1_READ_ADDR Register
@@ -8267,7 +8156,6 @@ impl Ch2Al1ReadAddr {
     pub fn write_ch2_al1_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH2_AL1_READ_ADDR_MASK) | ((value << Self::CH2_AL1_READ_ADDR_OFFSET) & Self::CH2_AL1_READ_ADDR_MASK));
     }
-
 }
 
 /// CH2_AL1_READ_ADDR value type for batch read/modify/write operations
@@ -8305,7 +8193,6 @@ impl Ch2Al1ReadAddrVal {
             bits: (self.bits & !Ch2Al1ReadAddr::CH2_AL1_READ_ADDR_MASK) | ((value << Ch2Al1ReadAddr::CH2_AL1_READ_ADDR_OFFSET) & Ch2Al1ReadAddr::CH2_AL1_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch2Al1ReadAddrVal {
@@ -8332,7 +8219,6 @@ impl Ch2Al1ReadAddr {
     pub fn modify_val<F: FnOnce(Ch2Al1ReadAddrVal) -> Ch2Al1ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH2_AL1_WRITE_ADDR Register
@@ -8378,7 +8264,6 @@ impl Ch2Al1WriteAddr {
     pub fn write_ch2_al1_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH2_AL1_WRITE_ADDR_MASK) | ((value << Self::CH2_AL1_WRITE_ADDR_OFFSET) & Self::CH2_AL1_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH2_AL1_WRITE_ADDR value type for batch read/modify/write operations
@@ -8416,7 +8301,6 @@ impl Ch2Al1WriteAddrVal {
             bits: (self.bits & !Ch2Al1WriteAddr::CH2_AL1_WRITE_ADDR_MASK) | ((value << Ch2Al1WriteAddr::CH2_AL1_WRITE_ADDR_OFFSET) & Ch2Al1WriteAddr::CH2_AL1_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch2Al1WriteAddrVal {
@@ -8443,7 +8327,6 @@ impl Ch2Al1WriteAddr {
     pub fn modify_val<F: FnOnce(Ch2Al1WriteAddrVal) -> Ch2Al1WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH2_AL1_TRANS_COUNT_TRIG Register
@@ -8491,7 +8374,6 @@ impl Ch2Al1TransCountTrig {
     pub fn write_ch2_al1_trans_count_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH2_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH2_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH2_AL1_TRANS_COUNT_TRIG_MASK));
     }
-
 }
 
 /// CH2_AL1_TRANS_COUNT_TRIG value type for batch read/modify/write operations
@@ -8529,7 +8411,6 @@ impl Ch2Al1TransCountTrigVal {
             bits: (self.bits & !Ch2Al1TransCountTrig::CH2_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch2Al1TransCountTrig::CH2_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch2Al1TransCountTrig::CH2_AL1_TRANS_COUNT_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch2Al1TransCountTrigVal {
@@ -8556,7 +8437,6 @@ impl Ch2Al1TransCountTrig {
     pub fn modify_val<F: FnOnce(Ch2Al1TransCountTrigVal) -> Ch2Al1TransCountTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH2_AL2_CTRL Register
@@ -8602,7 +8482,6 @@ impl Ch2Al2Ctrl {
     pub fn write_ch2_al2_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH2_AL2_CTRL_MASK) | ((value << Self::CH2_AL2_CTRL_OFFSET) & Self::CH2_AL2_CTRL_MASK));
     }
-
 }
 
 /// CH2_AL2_CTRL value type for batch read/modify/write operations
@@ -8640,7 +8519,6 @@ impl Ch2Al2CtrlVal {
             bits: (self.bits & !Ch2Al2Ctrl::CH2_AL2_CTRL_MASK) | ((value << Ch2Al2Ctrl::CH2_AL2_CTRL_OFFSET) & Ch2Al2Ctrl::CH2_AL2_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch2Al2CtrlVal {
@@ -8667,7 +8545,6 @@ impl Ch2Al2Ctrl {
     pub fn modify_val<F: FnOnce(Ch2Al2CtrlVal) -> Ch2Al2CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH2_AL2_TRANS_COUNT Register
@@ -8713,7 +8590,6 @@ impl Ch2Al2TransCount {
     pub fn write_ch2_al2_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH2_AL2_TRANS_COUNT_MASK) | ((value << Self::CH2_AL2_TRANS_COUNT_OFFSET) & Self::CH2_AL2_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH2_AL2_TRANS_COUNT value type for batch read/modify/write operations
@@ -8751,7 +8627,6 @@ impl Ch2Al2TransCountVal {
             bits: (self.bits & !Ch2Al2TransCount::CH2_AL2_TRANS_COUNT_MASK) | ((value << Ch2Al2TransCount::CH2_AL2_TRANS_COUNT_OFFSET) & Ch2Al2TransCount::CH2_AL2_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch2Al2TransCountVal {
@@ -8778,7 +8653,6 @@ impl Ch2Al2TransCount {
     pub fn modify_val<F: FnOnce(Ch2Al2TransCountVal) -> Ch2Al2TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH2_AL2_READ_ADDR Register
@@ -8824,7 +8698,6 @@ impl Ch2Al2ReadAddr {
     pub fn write_ch2_al2_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH2_AL2_READ_ADDR_MASK) | ((value << Self::CH2_AL2_READ_ADDR_OFFSET) & Self::CH2_AL2_READ_ADDR_MASK));
     }
-
 }
 
 /// CH2_AL2_READ_ADDR value type for batch read/modify/write operations
@@ -8862,7 +8735,6 @@ impl Ch2Al2ReadAddrVal {
             bits: (self.bits & !Ch2Al2ReadAddr::CH2_AL2_READ_ADDR_MASK) | ((value << Ch2Al2ReadAddr::CH2_AL2_READ_ADDR_OFFSET) & Ch2Al2ReadAddr::CH2_AL2_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch2Al2ReadAddrVal {
@@ -8889,7 +8761,6 @@ impl Ch2Al2ReadAddr {
     pub fn modify_val<F: FnOnce(Ch2Al2ReadAddrVal) -> Ch2Al2ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH2_AL2_WRITE_ADDR_TRIG Register
@@ -8937,7 +8808,6 @@ impl Ch2Al2WriteAddrTrig {
     pub fn write_ch2_al2_write_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH2_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH2_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH2_AL2_WRITE_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH2_AL2_WRITE_ADDR_TRIG value type for batch read/modify/write operations
@@ -8975,7 +8845,6 @@ impl Ch2Al2WriteAddrTrigVal {
             bits: (self.bits & !Ch2Al2WriteAddrTrig::CH2_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch2Al2WriteAddrTrig::CH2_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch2Al2WriteAddrTrig::CH2_AL2_WRITE_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch2Al2WriteAddrTrigVal {
@@ -9002,7 +8871,6 @@ impl Ch2Al2WriteAddrTrig {
     pub fn modify_val<F: FnOnce(Ch2Al2WriteAddrTrigVal) -> Ch2Al2WriteAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH2_AL3_CTRL Register
@@ -9048,7 +8916,6 @@ impl Ch2Al3Ctrl {
     pub fn write_ch2_al3_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH2_AL3_CTRL_MASK) | ((value << Self::CH2_AL3_CTRL_OFFSET) & Self::CH2_AL3_CTRL_MASK));
     }
-
 }
 
 /// CH2_AL3_CTRL value type for batch read/modify/write operations
@@ -9086,7 +8953,6 @@ impl Ch2Al3CtrlVal {
             bits: (self.bits & !Ch2Al3Ctrl::CH2_AL3_CTRL_MASK) | ((value << Ch2Al3Ctrl::CH2_AL3_CTRL_OFFSET) & Ch2Al3Ctrl::CH2_AL3_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch2Al3CtrlVal {
@@ -9113,7 +8979,6 @@ impl Ch2Al3Ctrl {
     pub fn modify_val<F: FnOnce(Ch2Al3CtrlVal) -> Ch2Al3CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH2_AL3_WRITE_ADDR Register
@@ -9159,7 +9024,6 @@ impl Ch2Al3WriteAddr {
     pub fn write_ch2_al3_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH2_AL3_WRITE_ADDR_MASK) | ((value << Self::CH2_AL3_WRITE_ADDR_OFFSET) & Self::CH2_AL3_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH2_AL3_WRITE_ADDR value type for batch read/modify/write operations
@@ -9197,7 +9061,6 @@ impl Ch2Al3WriteAddrVal {
             bits: (self.bits & !Ch2Al3WriteAddr::CH2_AL3_WRITE_ADDR_MASK) | ((value << Ch2Al3WriteAddr::CH2_AL3_WRITE_ADDR_OFFSET) & Ch2Al3WriteAddr::CH2_AL3_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch2Al3WriteAddrVal {
@@ -9224,7 +9087,6 @@ impl Ch2Al3WriteAddr {
     pub fn modify_val<F: FnOnce(Ch2Al3WriteAddrVal) -> Ch2Al3WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH2_AL3_TRANS_COUNT Register
@@ -9270,7 +9132,6 @@ impl Ch2Al3TransCount {
     pub fn write_ch2_al3_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH2_AL3_TRANS_COUNT_MASK) | ((value << Self::CH2_AL3_TRANS_COUNT_OFFSET) & Self::CH2_AL3_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH2_AL3_TRANS_COUNT value type for batch read/modify/write operations
@@ -9308,7 +9169,6 @@ impl Ch2Al3TransCountVal {
             bits: (self.bits & !Ch2Al3TransCount::CH2_AL3_TRANS_COUNT_MASK) | ((value << Ch2Al3TransCount::CH2_AL3_TRANS_COUNT_OFFSET) & Ch2Al3TransCount::CH2_AL3_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch2Al3TransCountVal {
@@ -9335,7 +9195,6 @@ impl Ch2Al3TransCount {
     pub fn modify_val<F: FnOnce(Ch2Al3TransCountVal) -> Ch2Al3TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH2_AL3_READ_ADDR_TRIG Register
@@ -9383,7 +9242,6 @@ impl Ch2Al3ReadAddrTrig {
     pub fn write_ch2_al3_read_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH2_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH2_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH2_AL3_READ_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH2_AL3_READ_ADDR_TRIG value type for batch read/modify/write operations
@@ -9421,7 +9279,6 @@ impl Ch2Al3ReadAddrTrigVal {
             bits: (self.bits & !Ch2Al3ReadAddrTrig::CH2_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch2Al3ReadAddrTrig::CH2_AL3_READ_ADDR_TRIG_OFFSET) & Ch2Al3ReadAddrTrig::CH2_AL3_READ_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch2Al3ReadAddrTrigVal {
@@ -9448,7 +9305,6 @@ impl Ch2Al3ReadAddrTrig {
     pub fn modify_val<F: FnOnce(Ch2Al3ReadAddrTrigVal) -> Ch2Al3ReadAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH3_READ_ADDR Register
@@ -9504,7 +9360,6 @@ impl Ch3ReadAddr {
     pub fn write_ch3_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH3_READ_ADDR_MASK) | ((value << Self::CH3_READ_ADDR_OFFSET) & Self::CH3_READ_ADDR_MASK));
     }
-
 }
 
 /// CH3_READ_ADDR value type for batch read/modify/write operations
@@ -9552,7 +9407,6 @@ impl Ch3ReadAddrVal {
             bits: (self.bits & !Ch3ReadAddr::CH3_READ_ADDR_MASK) | ((value << Ch3ReadAddr::CH3_READ_ADDR_OFFSET) & Ch3ReadAddr::CH3_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch3ReadAddrVal {
@@ -9579,7 +9433,6 @@ impl Ch3ReadAddr {
     pub fn modify_val<F: FnOnce(Ch3ReadAddrVal) -> Ch3ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH3_WRITE_ADDR Register
@@ -9635,7 +9488,6 @@ impl Ch3WriteAddr {
     pub fn write_ch3_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH3_WRITE_ADDR_MASK) | ((value << Self::CH3_WRITE_ADDR_OFFSET) & Self::CH3_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH3_WRITE_ADDR value type for batch read/modify/write operations
@@ -9683,7 +9535,6 @@ impl Ch3WriteAddrVal {
             bits: (self.bits & !Ch3WriteAddr::CH3_WRITE_ADDR_MASK) | ((value << Ch3WriteAddr::CH3_WRITE_ADDR_OFFSET) & Ch3WriteAddr::CH3_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch3WriteAddrVal {
@@ -9710,7 +9561,6 @@ impl Ch3WriteAddr {
     pub fn modify_val<F: FnOnce(Ch3WriteAddrVal) -> Ch3WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH3_TRANS_COUNT Register
@@ -9828,7 +9678,6 @@ impl Ch3TransCount {
     pub fn write_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
     }
-
 }
 
 /// CH3_TRANS_COUNT value type for batch read/modify/write operations
@@ -9908,7 +9757,6 @@ impl Ch3TransCountVal {
             bits: (self.bits & !Ch3TransCount::COUNT_MASK) | ((value << Ch3TransCount::COUNT_OFFSET) & Ch3TransCount::COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch3TransCountVal {
@@ -9935,7 +9783,6 @@ impl Ch3TransCount {
     pub fn modify_val<F: FnOnce(Ch3TransCountVal) -> Ch3TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH3_CTRL_TRIG Register
@@ -10816,7 +10663,6 @@ impl Ch3CtrlTrig {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// CH3_CTRL_TRIG value type for batch read/modify/write operations
@@ -11231,7 +11077,6 @@ impl Ch3CtrlTrigVal {
             }
         }
     }
-
 }
 
 impl Default for Ch3CtrlTrigVal {
@@ -11258,7 +11103,6 @@ impl Ch3CtrlTrig {
     pub fn modify_val<F: FnOnce(Ch3CtrlTrigVal) -> Ch3CtrlTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH3_AL1_CTRL Register
@@ -11304,7 +11148,6 @@ impl Ch3Al1Ctrl {
     pub fn write_ch3_al1_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH3_AL1_CTRL_MASK) | ((value << Self::CH3_AL1_CTRL_OFFSET) & Self::CH3_AL1_CTRL_MASK));
     }
-
 }
 
 /// CH3_AL1_CTRL value type for batch read/modify/write operations
@@ -11342,7 +11185,6 @@ impl Ch3Al1CtrlVal {
             bits: (self.bits & !Ch3Al1Ctrl::CH3_AL1_CTRL_MASK) | ((value << Ch3Al1Ctrl::CH3_AL1_CTRL_OFFSET) & Ch3Al1Ctrl::CH3_AL1_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch3Al1CtrlVal {
@@ -11369,7 +11211,6 @@ impl Ch3Al1Ctrl {
     pub fn modify_val<F: FnOnce(Ch3Al1CtrlVal) -> Ch3Al1CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH3_AL1_READ_ADDR Register
@@ -11415,7 +11256,6 @@ impl Ch3Al1ReadAddr {
     pub fn write_ch3_al1_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH3_AL1_READ_ADDR_MASK) | ((value << Self::CH3_AL1_READ_ADDR_OFFSET) & Self::CH3_AL1_READ_ADDR_MASK));
     }
-
 }
 
 /// CH3_AL1_READ_ADDR value type for batch read/modify/write operations
@@ -11453,7 +11293,6 @@ impl Ch3Al1ReadAddrVal {
             bits: (self.bits & !Ch3Al1ReadAddr::CH3_AL1_READ_ADDR_MASK) | ((value << Ch3Al1ReadAddr::CH3_AL1_READ_ADDR_OFFSET) & Ch3Al1ReadAddr::CH3_AL1_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch3Al1ReadAddrVal {
@@ -11480,7 +11319,6 @@ impl Ch3Al1ReadAddr {
     pub fn modify_val<F: FnOnce(Ch3Al1ReadAddrVal) -> Ch3Al1ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH3_AL1_WRITE_ADDR Register
@@ -11526,7 +11364,6 @@ impl Ch3Al1WriteAddr {
     pub fn write_ch3_al1_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH3_AL1_WRITE_ADDR_MASK) | ((value << Self::CH3_AL1_WRITE_ADDR_OFFSET) & Self::CH3_AL1_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH3_AL1_WRITE_ADDR value type for batch read/modify/write operations
@@ -11564,7 +11401,6 @@ impl Ch3Al1WriteAddrVal {
             bits: (self.bits & !Ch3Al1WriteAddr::CH3_AL1_WRITE_ADDR_MASK) | ((value << Ch3Al1WriteAddr::CH3_AL1_WRITE_ADDR_OFFSET) & Ch3Al1WriteAddr::CH3_AL1_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch3Al1WriteAddrVal {
@@ -11591,7 +11427,6 @@ impl Ch3Al1WriteAddr {
     pub fn modify_val<F: FnOnce(Ch3Al1WriteAddrVal) -> Ch3Al1WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH3_AL1_TRANS_COUNT_TRIG Register
@@ -11639,7 +11474,6 @@ impl Ch3Al1TransCountTrig {
     pub fn write_ch3_al1_trans_count_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH3_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH3_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH3_AL1_TRANS_COUNT_TRIG_MASK));
     }
-
 }
 
 /// CH3_AL1_TRANS_COUNT_TRIG value type for batch read/modify/write operations
@@ -11677,7 +11511,6 @@ impl Ch3Al1TransCountTrigVal {
             bits: (self.bits & !Ch3Al1TransCountTrig::CH3_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch3Al1TransCountTrig::CH3_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch3Al1TransCountTrig::CH3_AL1_TRANS_COUNT_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch3Al1TransCountTrigVal {
@@ -11704,7 +11537,6 @@ impl Ch3Al1TransCountTrig {
     pub fn modify_val<F: FnOnce(Ch3Al1TransCountTrigVal) -> Ch3Al1TransCountTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH3_AL2_CTRL Register
@@ -11750,7 +11582,6 @@ impl Ch3Al2Ctrl {
     pub fn write_ch3_al2_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH3_AL2_CTRL_MASK) | ((value << Self::CH3_AL2_CTRL_OFFSET) & Self::CH3_AL2_CTRL_MASK));
     }
-
 }
 
 /// CH3_AL2_CTRL value type for batch read/modify/write operations
@@ -11788,7 +11619,6 @@ impl Ch3Al2CtrlVal {
             bits: (self.bits & !Ch3Al2Ctrl::CH3_AL2_CTRL_MASK) | ((value << Ch3Al2Ctrl::CH3_AL2_CTRL_OFFSET) & Ch3Al2Ctrl::CH3_AL2_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch3Al2CtrlVal {
@@ -11815,7 +11645,6 @@ impl Ch3Al2Ctrl {
     pub fn modify_val<F: FnOnce(Ch3Al2CtrlVal) -> Ch3Al2CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH3_AL2_TRANS_COUNT Register
@@ -11861,7 +11690,6 @@ impl Ch3Al2TransCount {
     pub fn write_ch3_al2_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH3_AL2_TRANS_COUNT_MASK) | ((value << Self::CH3_AL2_TRANS_COUNT_OFFSET) & Self::CH3_AL2_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH3_AL2_TRANS_COUNT value type for batch read/modify/write operations
@@ -11899,7 +11727,6 @@ impl Ch3Al2TransCountVal {
             bits: (self.bits & !Ch3Al2TransCount::CH3_AL2_TRANS_COUNT_MASK) | ((value << Ch3Al2TransCount::CH3_AL2_TRANS_COUNT_OFFSET) & Ch3Al2TransCount::CH3_AL2_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch3Al2TransCountVal {
@@ -11926,7 +11753,6 @@ impl Ch3Al2TransCount {
     pub fn modify_val<F: FnOnce(Ch3Al2TransCountVal) -> Ch3Al2TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH3_AL2_READ_ADDR Register
@@ -11972,7 +11798,6 @@ impl Ch3Al2ReadAddr {
     pub fn write_ch3_al2_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH3_AL2_READ_ADDR_MASK) | ((value << Self::CH3_AL2_READ_ADDR_OFFSET) & Self::CH3_AL2_READ_ADDR_MASK));
     }
-
 }
 
 /// CH3_AL2_READ_ADDR value type for batch read/modify/write operations
@@ -12010,7 +11835,6 @@ impl Ch3Al2ReadAddrVal {
             bits: (self.bits & !Ch3Al2ReadAddr::CH3_AL2_READ_ADDR_MASK) | ((value << Ch3Al2ReadAddr::CH3_AL2_READ_ADDR_OFFSET) & Ch3Al2ReadAddr::CH3_AL2_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch3Al2ReadAddrVal {
@@ -12037,7 +11861,6 @@ impl Ch3Al2ReadAddr {
     pub fn modify_val<F: FnOnce(Ch3Al2ReadAddrVal) -> Ch3Al2ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH3_AL2_WRITE_ADDR_TRIG Register
@@ -12085,7 +11908,6 @@ impl Ch3Al2WriteAddrTrig {
     pub fn write_ch3_al2_write_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH3_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH3_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH3_AL2_WRITE_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH3_AL2_WRITE_ADDR_TRIG value type for batch read/modify/write operations
@@ -12123,7 +11945,6 @@ impl Ch3Al2WriteAddrTrigVal {
             bits: (self.bits & !Ch3Al2WriteAddrTrig::CH3_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch3Al2WriteAddrTrig::CH3_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch3Al2WriteAddrTrig::CH3_AL2_WRITE_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch3Al2WriteAddrTrigVal {
@@ -12150,7 +11971,6 @@ impl Ch3Al2WriteAddrTrig {
     pub fn modify_val<F: FnOnce(Ch3Al2WriteAddrTrigVal) -> Ch3Al2WriteAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH3_AL3_CTRL Register
@@ -12196,7 +12016,6 @@ impl Ch3Al3Ctrl {
     pub fn write_ch3_al3_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH3_AL3_CTRL_MASK) | ((value << Self::CH3_AL3_CTRL_OFFSET) & Self::CH3_AL3_CTRL_MASK));
     }
-
 }
 
 /// CH3_AL3_CTRL value type for batch read/modify/write operations
@@ -12234,7 +12053,6 @@ impl Ch3Al3CtrlVal {
             bits: (self.bits & !Ch3Al3Ctrl::CH3_AL3_CTRL_MASK) | ((value << Ch3Al3Ctrl::CH3_AL3_CTRL_OFFSET) & Ch3Al3Ctrl::CH3_AL3_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch3Al3CtrlVal {
@@ -12261,7 +12079,6 @@ impl Ch3Al3Ctrl {
     pub fn modify_val<F: FnOnce(Ch3Al3CtrlVal) -> Ch3Al3CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH3_AL3_WRITE_ADDR Register
@@ -12307,7 +12124,6 @@ impl Ch3Al3WriteAddr {
     pub fn write_ch3_al3_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH3_AL3_WRITE_ADDR_MASK) | ((value << Self::CH3_AL3_WRITE_ADDR_OFFSET) & Self::CH3_AL3_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH3_AL3_WRITE_ADDR value type for batch read/modify/write operations
@@ -12345,7 +12161,6 @@ impl Ch3Al3WriteAddrVal {
             bits: (self.bits & !Ch3Al3WriteAddr::CH3_AL3_WRITE_ADDR_MASK) | ((value << Ch3Al3WriteAddr::CH3_AL3_WRITE_ADDR_OFFSET) & Ch3Al3WriteAddr::CH3_AL3_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch3Al3WriteAddrVal {
@@ -12372,7 +12187,6 @@ impl Ch3Al3WriteAddr {
     pub fn modify_val<F: FnOnce(Ch3Al3WriteAddrVal) -> Ch3Al3WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH3_AL3_TRANS_COUNT Register
@@ -12418,7 +12232,6 @@ impl Ch3Al3TransCount {
     pub fn write_ch3_al3_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH3_AL3_TRANS_COUNT_MASK) | ((value << Self::CH3_AL3_TRANS_COUNT_OFFSET) & Self::CH3_AL3_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH3_AL3_TRANS_COUNT value type for batch read/modify/write operations
@@ -12456,7 +12269,6 @@ impl Ch3Al3TransCountVal {
             bits: (self.bits & !Ch3Al3TransCount::CH3_AL3_TRANS_COUNT_MASK) | ((value << Ch3Al3TransCount::CH3_AL3_TRANS_COUNT_OFFSET) & Ch3Al3TransCount::CH3_AL3_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch3Al3TransCountVal {
@@ -12483,7 +12295,6 @@ impl Ch3Al3TransCount {
     pub fn modify_val<F: FnOnce(Ch3Al3TransCountVal) -> Ch3Al3TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH3_AL3_READ_ADDR_TRIG Register
@@ -12531,7 +12342,6 @@ impl Ch3Al3ReadAddrTrig {
     pub fn write_ch3_al3_read_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH3_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH3_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH3_AL3_READ_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH3_AL3_READ_ADDR_TRIG value type for batch read/modify/write operations
@@ -12569,7 +12379,6 @@ impl Ch3Al3ReadAddrTrigVal {
             bits: (self.bits & !Ch3Al3ReadAddrTrig::CH3_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch3Al3ReadAddrTrig::CH3_AL3_READ_ADDR_TRIG_OFFSET) & Ch3Al3ReadAddrTrig::CH3_AL3_READ_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch3Al3ReadAddrTrigVal {
@@ -12596,7 +12405,6 @@ impl Ch3Al3ReadAddrTrig {
     pub fn modify_val<F: FnOnce(Ch3Al3ReadAddrTrigVal) -> Ch3Al3ReadAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH4_READ_ADDR Register
@@ -12652,7 +12460,6 @@ impl Ch4ReadAddr {
     pub fn write_ch4_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH4_READ_ADDR_MASK) | ((value << Self::CH4_READ_ADDR_OFFSET) & Self::CH4_READ_ADDR_MASK));
     }
-
 }
 
 /// CH4_READ_ADDR value type for batch read/modify/write operations
@@ -12700,7 +12507,6 @@ impl Ch4ReadAddrVal {
             bits: (self.bits & !Ch4ReadAddr::CH4_READ_ADDR_MASK) | ((value << Ch4ReadAddr::CH4_READ_ADDR_OFFSET) & Ch4ReadAddr::CH4_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch4ReadAddrVal {
@@ -12727,7 +12533,6 @@ impl Ch4ReadAddr {
     pub fn modify_val<F: FnOnce(Ch4ReadAddrVal) -> Ch4ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH4_WRITE_ADDR Register
@@ -12783,7 +12588,6 @@ impl Ch4WriteAddr {
     pub fn write_ch4_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH4_WRITE_ADDR_MASK) | ((value << Self::CH4_WRITE_ADDR_OFFSET) & Self::CH4_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH4_WRITE_ADDR value type for batch read/modify/write operations
@@ -12831,7 +12635,6 @@ impl Ch4WriteAddrVal {
             bits: (self.bits & !Ch4WriteAddr::CH4_WRITE_ADDR_MASK) | ((value << Ch4WriteAddr::CH4_WRITE_ADDR_OFFSET) & Ch4WriteAddr::CH4_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch4WriteAddrVal {
@@ -12858,7 +12661,6 @@ impl Ch4WriteAddr {
     pub fn modify_val<F: FnOnce(Ch4WriteAddrVal) -> Ch4WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH4_TRANS_COUNT Register
@@ -12976,7 +12778,6 @@ impl Ch4TransCount {
     pub fn write_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
     }
-
 }
 
 /// CH4_TRANS_COUNT value type for batch read/modify/write operations
@@ -13056,7 +12857,6 @@ impl Ch4TransCountVal {
             bits: (self.bits & !Ch4TransCount::COUNT_MASK) | ((value << Ch4TransCount::COUNT_OFFSET) & Ch4TransCount::COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch4TransCountVal {
@@ -13083,7 +12883,6 @@ impl Ch4TransCount {
     pub fn modify_val<F: FnOnce(Ch4TransCountVal) -> Ch4TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH4_CTRL_TRIG Register
@@ -13964,7 +13763,6 @@ impl Ch4CtrlTrig {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// CH4_CTRL_TRIG value type for batch read/modify/write operations
@@ -14379,7 +14177,6 @@ impl Ch4CtrlTrigVal {
             }
         }
     }
-
 }
 
 impl Default for Ch4CtrlTrigVal {
@@ -14406,7 +14203,6 @@ impl Ch4CtrlTrig {
     pub fn modify_val<F: FnOnce(Ch4CtrlTrigVal) -> Ch4CtrlTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH4_AL1_CTRL Register
@@ -14452,7 +14248,6 @@ impl Ch4Al1Ctrl {
     pub fn write_ch4_al1_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH4_AL1_CTRL_MASK) | ((value << Self::CH4_AL1_CTRL_OFFSET) & Self::CH4_AL1_CTRL_MASK));
     }
-
 }
 
 /// CH4_AL1_CTRL value type for batch read/modify/write operations
@@ -14490,7 +14285,6 @@ impl Ch4Al1CtrlVal {
             bits: (self.bits & !Ch4Al1Ctrl::CH4_AL1_CTRL_MASK) | ((value << Ch4Al1Ctrl::CH4_AL1_CTRL_OFFSET) & Ch4Al1Ctrl::CH4_AL1_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch4Al1CtrlVal {
@@ -14517,7 +14311,6 @@ impl Ch4Al1Ctrl {
     pub fn modify_val<F: FnOnce(Ch4Al1CtrlVal) -> Ch4Al1CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH4_AL1_READ_ADDR Register
@@ -14563,7 +14356,6 @@ impl Ch4Al1ReadAddr {
     pub fn write_ch4_al1_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH4_AL1_READ_ADDR_MASK) | ((value << Self::CH4_AL1_READ_ADDR_OFFSET) & Self::CH4_AL1_READ_ADDR_MASK));
     }
-
 }
 
 /// CH4_AL1_READ_ADDR value type for batch read/modify/write operations
@@ -14601,7 +14393,6 @@ impl Ch4Al1ReadAddrVal {
             bits: (self.bits & !Ch4Al1ReadAddr::CH4_AL1_READ_ADDR_MASK) | ((value << Ch4Al1ReadAddr::CH4_AL1_READ_ADDR_OFFSET) & Ch4Al1ReadAddr::CH4_AL1_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch4Al1ReadAddrVal {
@@ -14628,7 +14419,6 @@ impl Ch4Al1ReadAddr {
     pub fn modify_val<F: FnOnce(Ch4Al1ReadAddrVal) -> Ch4Al1ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH4_AL1_WRITE_ADDR Register
@@ -14674,7 +14464,6 @@ impl Ch4Al1WriteAddr {
     pub fn write_ch4_al1_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH4_AL1_WRITE_ADDR_MASK) | ((value << Self::CH4_AL1_WRITE_ADDR_OFFSET) & Self::CH4_AL1_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH4_AL1_WRITE_ADDR value type for batch read/modify/write operations
@@ -14712,7 +14501,6 @@ impl Ch4Al1WriteAddrVal {
             bits: (self.bits & !Ch4Al1WriteAddr::CH4_AL1_WRITE_ADDR_MASK) | ((value << Ch4Al1WriteAddr::CH4_AL1_WRITE_ADDR_OFFSET) & Ch4Al1WriteAddr::CH4_AL1_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch4Al1WriteAddrVal {
@@ -14739,7 +14527,6 @@ impl Ch4Al1WriteAddr {
     pub fn modify_val<F: FnOnce(Ch4Al1WriteAddrVal) -> Ch4Al1WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH4_AL1_TRANS_COUNT_TRIG Register
@@ -14787,7 +14574,6 @@ impl Ch4Al1TransCountTrig {
     pub fn write_ch4_al1_trans_count_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH4_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH4_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH4_AL1_TRANS_COUNT_TRIG_MASK));
     }
-
 }
 
 /// CH4_AL1_TRANS_COUNT_TRIG value type for batch read/modify/write operations
@@ -14825,7 +14611,6 @@ impl Ch4Al1TransCountTrigVal {
             bits: (self.bits & !Ch4Al1TransCountTrig::CH4_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch4Al1TransCountTrig::CH4_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch4Al1TransCountTrig::CH4_AL1_TRANS_COUNT_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch4Al1TransCountTrigVal {
@@ -14852,7 +14637,6 @@ impl Ch4Al1TransCountTrig {
     pub fn modify_val<F: FnOnce(Ch4Al1TransCountTrigVal) -> Ch4Al1TransCountTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH4_AL2_CTRL Register
@@ -14898,7 +14682,6 @@ impl Ch4Al2Ctrl {
     pub fn write_ch4_al2_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH4_AL2_CTRL_MASK) | ((value << Self::CH4_AL2_CTRL_OFFSET) & Self::CH4_AL2_CTRL_MASK));
     }
-
 }
 
 /// CH4_AL2_CTRL value type for batch read/modify/write operations
@@ -14936,7 +14719,6 @@ impl Ch4Al2CtrlVal {
             bits: (self.bits & !Ch4Al2Ctrl::CH4_AL2_CTRL_MASK) | ((value << Ch4Al2Ctrl::CH4_AL2_CTRL_OFFSET) & Ch4Al2Ctrl::CH4_AL2_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch4Al2CtrlVal {
@@ -14963,7 +14745,6 @@ impl Ch4Al2Ctrl {
     pub fn modify_val<F: FnOnce(Ch4Al2CtrlVal) -> Ch4Al2CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH4_AL2_TRANS_COUNT Register
@@ -15009,7 +14790,6 @@ impl Ch4Al2TransCount {
     pub fn write_ch4_al2_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH4_AL2_TRANS_COUNT_MASK) | ((value << Self::CH4_AL2_TRANS_COUNT_OFFSET) & Self::CH4_AL2_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH4_AL2_TRANS_COUNT value type for batch read/modify/write operations
@@ -15047,7 +14827,6 @@ impl Ch4Al2TransCountVal {
             bits: (self.bits & !Ch4Al2TransCount::CH4_AL2_TRANS_COUNT_MASK) | ((value << Ch4Al2TransCount::CH4_AL2_TRANS_COUNT_OFFSET) & Ch4Al2TransCount::CH4_AL2_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch4Al2TransCountVal {
@@ -15074,7 +14853,6 @@ impl Ch4Al2TransCount {
     pub fn modify_val<F: FnOnce(Ch4Al2TransCountVal) -> Ch4Al2TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH4_AL2_READ_ADDR Register
@@ -15120,7 +14898,6 @@ impl Ch4Al2ReadAddr {
     pub fn write_ch4_al2_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH4_AL2_READ_ADDR_MASK) | ((value << Self::CH4_AL2_READ_ADDR_OFFSET) & Self::CH4_AL2_READ_ADDR_MASK));
     }
-
 }
 
 /// CH4_AL2_READ_ADDR value type for batch read/modify/write operations
@@ -15158,7 +14935,6 @@ impl Ch4Al2ReadAddrVal {
             bits: (self.bits & !Ch4Al2ReadAddr::CH4_AL2_READ_ADDR_MASK) | ((value << Ch4Al2ReadAddr::CH4_AL2_READ_ADDR_OFFSET) & Ch4Al2ReadAddr::CH4_AL2_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch4Al2ReadAddrVal {
@@ -15185,7 +14961,6 @@ impl Ch4Al2ReadAddr {
     pub fn modify_val<F: FnOnce(Ch4Al2ReadAddrVal) -> Ch4Al2ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH4_AL2_WRITE_ADDR_TRIG Register
@@ -15233,7 +15008,6 @@ impl Ch4Al2WriteAddrTrig {
     pub fn write_ch4_al2_write_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH4_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH4_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH4_AL2_WRITE_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH4_AL2_WRITE_ADDR_TRIG value type for batch read/modify/write operations
@@ -15271,7 +15045,6 @@ impl Ch4Al2WriteAddrTrigVal {
             bits: (self.bits & !Ch4Al2WriteAddrTrig::CH4_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch4Al2WriteAddrTrig::CH4_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch4Al2WriteAddrTrig::CH4_AL2_WRITE_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch4Al2WriteAddrTrigVal {
@@ -15298,7 +15071,6 @@ impl Ch4Al2WriteAddrTrig {
     pub fn modify_val<F: FnOnce(Ch4Al2WriteAddrTrigVal) -> Ch4Al2WriteAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH4_AL3_CTRL Register
@@ -15344,7 +15116,6 @@ impl Ch4Al3Ctrl {
     pub fn write_ch4_al3_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH4_AL3_CTRL_MASK) | ((value << Self::CH4_AL3_CTRL_OFFSET) & Self::CH4_AL3_CTRL_MASK));
     }
-
 }
 
 /// CH4_AL3_CTRL value type for batch read/modify/write operations
@@ -15382,7 +15153,6 @@ impl Ch4Al3CtrlVal {
             bits: (self.bits & !Ch4Al3Ctrl::CH4_AL3_CTRL_MASK) | ((value << Ch4Al3Ctrl::CH4_AL3_CTRL_OFFSET) & Ch4Al3Ctrl::CH4_AL3_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch4Al3CtrlVal {
@@ -15409,7 +15179,6 @@ impl Ch4Al3Ctrl {
     pub fn modify_val<F: FnOnce(Ch4Al3CtrlVal) -> Ch4Al3CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH4_AL3_WRITE_ADDR Register
@@ -15455,7 +15224,6 @@ impl Ch4Al3WriteAddr {
     pub fn write_ch4_al3_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH4_AL3_WRITE_ADDR_MASK) | ((value << Self::CH4_AL3_WRITE_ADDR_OFFSET) & Self::CH4_AL3_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH4_AL3_WRITE_ADDR value type for batch read/modify/write operations
@@ -15493,7 +15261,6 @@ impl Ch4Al3WriteAddrVal {
             bits: (self.bits & !Ch4Al3WriteAddr::CH4_AL3_WRITE_ADDR_MASK) | ((value << Ch4Al3WriteAddr::CH4_AL3_WRITE_ADDR_OFFSET) & Ch4Al3WriteAddr::CH4_AL3_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch4Al3WriteAddrVal {
@@ -15520,7 +15287,6 @@ impl Ch4Al3WriteAddr {
     pub fn modify_val<F: FnOnce(Ch4Al3WriteAddrVal) -> Ch4Al3WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH4_AL3_TRANS_COUNT Register
@@ -15566,7 +15332,6 @@ impl Ch4Al3TransCount {
     pub fn write_ch4_al3_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH4_AL3_TRANS_COUNT_MASK) | ((value << Self::CH4_AL3_TRANS_COUNT_OFFSET) & Self::CH4_AL3_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH4_AL3_TRANS_COUNT value type for batch read/modify/write operations
@@ -15604,7 +15369,6 @@ impl Ch4Al3TransCountVal {
             bits: (self.bits & !Ch4Al3TransCount::CH4_AL3_TRANS_COUNT_MASK) | ((value << Ch4Al3TransCount::CH4_AL3_TRANS_COUNT_OFFSET) & Ch4Al3TransCount::CH4_AL3_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch4Al3TransCountVal {
@@ -15631,7 +15395,6 @@ impl Ch4Al3TransCount {
     pub fn modify_val<F: FnOnce(Ch4Al3TransCountVal) -> Ch4Al3TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH4_AL3_READ_ADDR_TRIG Register
@@ -15679,7 +15442,6 @@ impl Ch4Al3ReadAddrTrig {
     pub fn write_ch4_al3_read_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH4_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH4_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH4_AL3_READ_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH4_AL3_READ_ADDR_TRIG value type for batch read/modify/write operations
@@ -15717,7 +15479,6 @@ impl Ch4Al3ReadAddrTrigVal {
             bits: (self.bits & !Ch4Al3ReadAddrTrig::CH4_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch4Al3ReadAddrTrig::CH4_AL3_READ_ADDR_TRIG_OFFSET) & Ch4Al3ReadAddrTrig::CH4_AL3_READ_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch4Al3ReadAddrTrigVal {
@@ -15744,7 +15505,6 @@ impl Ch4Al3ReadAddrTrig {
     pub fn modify_val<F: FnOnce(Ch4Al3ReadAddrTrigVal) -> Ch4Al3ReadAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH5_READ_ADDR Register
@@ -15800,7 +15560,6 @@ impl Ch5ReadAddr {
     pub fn write_ch5_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH5_READ_ADDR_MASK) | ((value << Self::CH5_READ_ADDR_OFFSET) & Self::CH5_READ_ADDR_MASK));
     }
-
 }
 
 /// CH5_READ_ADDR value type for batch read/modify/write operations
@@ -15848,7 +15607,6 @@ impl Ch5ReadAddrVal {
             bits: (self.bits & !Ch5ReadAddr::CH5_READ_ADDR_MASK) | ((value << Ch5ReadAddr::CH5_READ_ADDR_OFFSET) & Ch5ReadAddr::CH5_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch5ReadAddrVal {
@@ -15875,7 +15633,6 @@ impl Ch5ReadAddr {
     pub fn modify_val<F: FnOnce(Ch5ReadAddrVal) -> Ch5ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH5_WRITE_ADDR Register
@@ -15931,7 +15688,6 @@ impl Ch5WriteAddr {
     pub fn write_ch5_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH5_WRITE_ADDR_MASK) | ((value << Self::CH5_WRITE_ADDR_OFFSET) & Self::CH5_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH5_WRITE_ADDR value type for batch read/modify/write operations
@@ -15979,7 +15735,6 @@ impl Ch5WriteAddrVal {
             bits: (self.bits & !Ch5WriteAddr::CH5_WRITE_ADDR_MASK) | ((value << Ch5WriteAddr::CH5_WRITE_ADDR_OFFSET) & Ch5WriteAddr::CH5_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch5WriteAddrVal {
@@ -16006,7 +15761,6 @@ impl Ch5WriteAddr {
     pub fn modify_val<F: FnOnce(Ch5WriteAddrVal) -> Ch5WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH5_TRANS_COUNT Register
@@ -16124,7 +15878,6 @@ impl Ch5TransCount {
     pub fn write_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
     }
-
 }
 
 /// CH5_TRANS_COUNT value type for batch read/modify/write operations
@@ -16204,7 +15957,6 @@ impl Ch5TransCountVal {
             bits: (self.bits & !Ch5TransCount::COUNT_MASK) | ((value << Ch5TransCount::COUNT_OFFSET) & Ch5TransCount::COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch5TransCountVal {
@@ -16231,7 +15983,6 @@ impl Ch5TransCount {
     pub fn modify_val<F: FnOnce(Ch5TransCountVal) -> Ch5TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH5_CTRL_TRIG Register
@@ -17112,7 +16863,6 @@ impl Ch5CtrlTrig {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// CH5_CTRL_TRIG value type for batch read/modify/write operations
@@ -17527,7 +17277,6 @@ impl Ch5CtrlTrigVal {
             }
         }
     }
-
 }
 
 impl Default for Ch5CtrlTrigVal {
@@ -17554,7 +17303,6 @@ impl Ch5CtrlTrig {
     pub fn modify_val<F: FnOnce(Ch5CtrlTrigVal) -> Ch5CtrlTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH5_AL1_CTRL Register
@@ -17600,7 +17348,6 @@ impl Ch5Al1Ctrl {
     pub fn write_ch5_al1_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH5_AL1_CTRL_MASK) | ((value << Self::CH5_AL1_CTRL_OFFSET) & Self::CH5_AL1_CTRL_MASK));
     }
-
 }
 
 /// CH5_AL1_CTRL value type for batch read/modify/write operations
@@ -17638,7 +17385,6 @@ impl Ch5Al1CtrlVal {
             bits: (self.bits & !Ch5Al1Ctrl::CH5_AL1_CTRL_MASK) | ((value << Ch5Al1Ctrl::CH5_AL1_CTRL_OFFSET) & Ch5Al1Ctrl::CH5_AL1_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch5Al1CtrlVal {
@@ -17665,7 +17411,6 @@ impl Ch5Al1Ctrl {
     pub fn modify_val<F: FnOnce(Ch5Al1CtrlVal) -> Ch5Al1CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH5_AL1_READ_ADDR Register
@@ -17711,7 +17456,6 @@ impl Ch5Al1ReadAddr {
     pub fn write_ch5_al1_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH5_AL1_READ_ADDR_MASK) | ((value << Self::CH5_AL1_READ_ADDR_OFFSET) & Self::CH5_AL1_READ_ADDR_MASK));
     }
-
 }
 
 /// CH5_AL1_READ_ADDR value type for batch read/modify/write operations
@@ -17749,7 +17493,6 @@ impl Ch5Al1ReadAddrVal {
             bits: (self.bits & !Ch5Al1ReadAddr::CH5_AL1_READ_ADDR_MASK) | ((value << Ch5Al1ReadAddr::CH5_AL1_READ_ADDR_OFFSET) & Ch5Al1ReadAddr::CH5_AL1_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch5Al1ReadAddrVal {
@@ -17776,7 +17519,6 @@ impl Ch5Al1ReadAddr {
     pub fn modify_val<F: FnOnce(Ch5Al1ReadAddrVal) -> Ch5Al1ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH5_AL1_WRITE_ADDR Register
@@ -17822,7 +17564,6 @@ impl Ch5Al1WriteAddr {
     pub fn write_ch5_al1_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH5_AL1_WRITE_ADDR_MASK) | ((value << Self::CH5_AL1_WRITE_ADDR_OFFSET) & Self::CH5_AL1_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH5_AL1_WRITE_ADDR value type for batch read/modify/write operations
@@ -17860,7 +17601,6 @@ impl Ch5Al1WriteAddrVal {
             bits: (self.bits & !Ch5Al1WriteAddr::CH5_AL1_WRITE_ADDR_MASK) | ((value << Ch5Al1WriteAddr::CH5_AL1_WRITE_ADDR_OFFSET) & Ch5Al1WriteAddr::CH5_AL1_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch5Al1WriteAddrVal {
@@ -17887,7 +17627,6 @@ impl Ch5Al1WriteAddr {
     pub fn modify_val<F: FnOnce(Ch5Al1WriteAddrVal) -> Ch5Al1WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH5_AL1_TRANS_COUNT_TRIG Register
@@ -17935,7 +17674,6 @@ impl Ch5Al1TransCountTrig {
     pub fn write_ch5_al1_trans_count_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH5_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH5_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH5_AL1_TRANS_COUNT_TRIG_MASK));
     }
-
 }
 
 /// CH5_AL1_TRANS_COUNT_TRIG value type for batch read/modify/write operations
@@ -17973,7 +17711,6 @@ impl Ch5Al1TransCountTrigVal {
             bits: (self.bits & !Ch5Al1TransCountTrig::CH5_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch5Al1TransCountTrig::CH5_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch5Al1TransCountTrig::CH5_AL1_TRANS_COUNT_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch5Al1TransCountTrigVal {
@@ -18000,7 +17737,6 @@ impl Ch5Al1TransCountTrig {
     pub fn modify_val<F: FnOnce(Ch5Al1TransCountTrigVal) -> Ch5Al1TransCountTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH5_AL2_CTRL Register
@@ -18046,7 +17782,6 @@ impl Ch5Al2Ctrl {
     pub fn write_ch5_al2_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH5_AL2_CTRL_MASK) | ((value << Self::CH5_AL2_CTRL_OFFSET) & Self::CH5_AL2_CTRL_MASK));
     }
-
 }
 
 /// CH5_AL2_CTRL value type for batch read/modify/write operations
@@ -18084,7 +17819,6 @@ impl Ch5Al2CtrlVal {
             bits: (self.bits & !Ch5Al2Ctrl::CH5_AL2_CTRL_MASK) | ((value << Ch5Al2Ctrl::CH5_AL2_CTRL_OFFSET) & Ch5Al2Ctrl::CH5_AL2_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch5Al2CtrlVal {
@@ -18111,7 +17845,6 @@ impl Ch5Al2Ctrl {
     pub fn modify_val<F: FnOnce(Ch5Al2CtrlVal) -> Ch5Al2CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH5_AL2_TRANS_COUNT Register
@@ -18157,7 +17890,6 @@ impl Ch5Al2TransCount {
     pub fn write_ch5_al2_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH5_AL2_TRANS_COUNT_MASK) | ((value << Self::CH5_AL2_TRANS_COUNT_OFFSET) & Self::CH5_AL2_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH5_AL2_TRANS_COUNT value type for batch read/modify/write operations
@@ -18195,7 +17927,6 @@ impl Ch5Al2TransCountVal {
             bits: (self.bits & !Ch5Al2TransCount::CH5_AL2_TRANS_COUNT_MASK) | ((value << Ch5Al2TransCount::CH5_AL2_TRANS_COUNT_OFFSET) & Ch5Al2TransCount::CH5_AL2_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch5Al2TransCountVal {
@@ -18222,7 +17953,6 @@ impl Ch5Al2TransCount {
     pub fn modify_val<F: FnOnce(Ch5Al2TransCountVal) -> Ch5Al2TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH5_AL2_READ_ADDR Register
@@ -18268,7 +17998,6 @@ impl Ch5Al2ReadAddr {
     pub fn write_ch5_al2_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH5_AL2_READ_ADDR_MASK) | ((value << Self::CH5_AL2_READ_ADDR_OFFSET) & Self::CH5_AL2_READ_ADDR_MASK));
     }
-
 }
 
 /// CH5_AL2_READ_ADDR value type for batch read/modify/write operations
@@ -18306,7 +18035,6 @@ impl Ch5Al2ReadAddrVal {
             bits: (self.bits & !Ch5Al2ReadAddr::CH5_AL2_READ_ADDR_MASK) | ((value << Ch5Al2ReadAddr::CH5_AL2_READ_ADDR_OFFSET) & Ch5Al2ReadAddr::CH5_AL2_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch5Al2ReadAddrVal {
@@ -18333,7 +18061,6 @@ impl Ch5Al2ReadAddr {
     pub fn modify_val<F: FnOnce(Ch5Al2ReadAddrVal) -> Ch5Al2ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH5_AL2_WRITE_ADDR_TRIG Register
@@ -18381,7 +18108,6 @@ impl Ch5Al2WriteAddrTrig {
     pub fn write_ch5_al2_write_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH5_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH5_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH5_AL2_WRITE_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH5_AL2_WRITE_ADDR_TRIG value type for batch read/modify/write operations
@@ -18419,7 +18145,6 @@ impl Ch5Al2WriteAddrTrigVal {
             bits: (self.bits & !Ch5Al2WriteAddrTrig::CH5_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch5Al2WriteAddrTrig::CH5_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch5Al2WriteAddrTrig::CH5_AL2_WRITE_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch5Al2WriteAddrTrigVal {
@@ -18446,7 +18171,6 @@ impl Ch5Al2WriteAddrTrig {
     pub fn modify_val<F: FnOnce(Ch5Al2WriteAddrTrigVal) -> Ch5Al2WriteAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH5_AL3_CTRL Register
@@ -18492,7 +18216,6 @@ impl Ch5Al3Ctrl {
     pub fn write_ch5_al3_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH5_AL3_CTRL_MASK) | ((value << Self::CH5_AL3_CTRL_OFFSET) & Self::CH5_AL3_CTRL_MASK));
     }
-
 }
 
 /// CH5_AL3_CTRL value type for batch read/modify/write operations
@@ -18530,7 +18253,6 @@ impl Ch5Al3CtrlVal {
             bits: (self.bits & !Ch5Al3Ctrl::CH5_AL3_CTRL_MASK) | ((value << Ch5Al3Ctrl::CH5_AL3_CTRL_OFFSET) & Ch5Al3Ctrl::CH5_AL3_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch5Al3CtrlVal {
@@ -18557,7 +18279,6 @@ impl Ch5Al3Ctrl {
     pub fn modify_val<F: FnOnce(Ch5Al3CtrlVal) -> Ch5Al3CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH5_AL3_WRITE_ADDR Register
@@ -18603,7 +18324,6 @@ impl Ch5Al3WriteAddr {
     pub fn write_ch5_al3_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH5_AL3_WRITE_ADDR_MASK) | ((value << Self::CH5_AL3_WRITE_ADDR_OFFSET) & Self::CH5_AL3_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH5_AL3_WRITE_ADDR value type for batch read/modify/write operations
@@ -18641,7 +18361,6 @@ impl Ch5Al3WriteAddrVal {
             bits: (self.bits & !Ch5Al3WriteAddr::CH5_AL3_WRITE_ADDR_MASK) | ((value << Ch5Al3WriteAddr::CH5_AL3_WRITE_ADDR_OFFSET) & Ch5Al3WriteAddr::CH5_AL3_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch5Al3WriteAddrVal {
@@ -18668,7 +18387,6 @@ impl Ch5Al3WriteAddr {
     pub fn modify_val<F: FnOnce(Ch5Al3WriteAddrVal) -> Ch5Al3WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH5_AL3_TRANS_COUNT Register
@@ -18714,7 +18432,6 @@ impl Ch5Al3TransCount {
     pub fn write_ch5_al3_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH5_AL3_TRANS_COUNT_MASK) | ((value << Self::CH5_AL3_TRANS_COUNT_OFFSET) & Self::CH5_AL3_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH5_AL3_TRANS_COUNT value type for batch read/modify/write operations
@@ -18752,7 +18469,6 @@ impl Ch5Al3TransCountVal {
             bits: (self.bits & !Ch5Al3TransCount::CH5_AL3_TRANS_COUNT_MASK) | ((value << Ch5Al3TransCount::CH5_AL3_TRANS_COUNT_OFFSET) & Ch5Al3TransCount::CH5_AL3_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch5Al3TransCountVal {
@@ -18779,7 +18495,6 @@ impl Ch5Al3TransCount {
     pub fn modify_val<F: FnOnce(Ch5Al3TransCountVal) -> Ch5Al3TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH5_AL3_READ_ADDR_TRIG Register
@@ -18827,7 +18542,6 @@ impl Ch5Al3ReadAddrTrig {
     pub fn write_ch5_al3_read_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH5_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH5_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH5_AL3_READ_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH5_AL3_READ_ADDR_TRIG value type for batch read/modify/write operations
@@ -18865,7 +18579,6 @@ impl Ch5Al3ReadAddrTrigVal {
             bits: (self.bits & !Ch5Al3ReadAddrTrig::CH5_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch5Al3ReadAddrTrig::CH5_AL3_READ_ADDR_TRIG_OFFSET) & Ch5Al3ReadAddrTrig::CH5_AL3_READ_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch5Al3ReadAddrTrigVal {
@@ -18892,7 +18605,6 @@ impl Ch5Al3ReadAddrTrig {
     pub fn modify_val<F: FnOnce(Ch5Al3ReadAddrTrigVal) -> Ch5Al3ReadAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH6_READ_ADDR Register
@@ -18948,7 +18660,6 @@ impl Ch6ReadAddr {
     pub fn write_ch6_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH6_READ_ADDR_MASK) | ((value << Self::CH6_READ_ADDR_OFFSET) & Self::CH6_READ_ADDR_MASK));
     }
-
 }
 
 /// CH6_READ_ADDR value type for batch read/modify/write operations
@@ -18996,7 +18707,6 @@ impl Ch6ReadAddrVal {
             bits: (self.bits & !Ch6ReadAddr::CH6_READ_ADDR_MASK) | ((value << Ch6ReadAddr::CH6_READ_ADDR_OFFSET) & Ch6ReadAddr::CH6_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch6ReadAddrVal {
@@ -19023,7 +18733,6 @@ impl Ch6ReadAddr {
     pub fn modify_val<F: FnOnce(Ch6ReadAddrVal) -> Ch6ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH6_WRITE_ADDR Register
@@ -19079,7 +18788,6 @@ impl Ch6WriteAddr {
     pub fn write_ch6_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH6_WRITE_ADDR_MASK) | ((value << Self::CH6_WRITE_ADDR_OFFSET) & Self::CH6_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH6_WRITE_ADDR value type for batch read/modify/write operations
@@ -19127,7 +18835,6 @@ impl Ch6WriteAddrVal {
             bits: (self.bits & !Ch6WriteAddr::CH6_WRITE_ADDR_MASK) | ((value << Ch6WriteAddr::CH6_WRITE_ADDR_OFFSET) & Ch6WriteAddr::CH6_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch6WriteAddrVal {
@@ -19154,7 +18861,6 @@ impl Ch6WriteAddr {
     pub fn modify_val<F: FnOnce(Ch6WriteAddrVal) -> Ch6WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH6_TRANS_COUNT Register
@@ -19272,7 +18978,6 @@ impl Ch6TransCount {
     pub fn write_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
     }
-
 }
 
 /// CH6_TRANS_COUNT value type for batch read/modify/write operations
@@ -19352,7 +19057,6 @@ impl Ch6TransCountVal {
             bits: (self.bits & !Ch6TransCount::COUNT_MASK) | ((value << Ch6TransCount::COUNT_OFFSET) & Ch6TransCount::COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch6TransCountVal {
@@ -19379,7 +19083,6 @@ impl Ch6TransCount {
     pub fn modify_val<F: FnOnce(Ch6TransCountVal) -> Ch6TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH6_CTRL_TRIG Register
@@ -20260,7 +19963,6 @@ impl Ch6CtrlTrig {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// CH6_CTRL_TRIG value type for batch read/modify/write operations
@@ -20675,7 +20377,6 @@ impl Ch6CtrlTrigVal {
             }
         }
     }
-
 }
 
 impl Default for Ch6CtrlTrigVal {
@@ -20702,7 +20403,6 @@ impl Ch6CtrlTrig {
     pub fn modify_val<F: FnOnce(Ch6CtrlTrigVal) -> Ch6CtrlTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH6_AL1_CTRL Register
@@ -20748,7 +20448,6 @@ impl Ch6Al1Ctrl {
     pub fn write_ch6_al1_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH6_AL1_CTRL_MASK) | ((value << Self::CH6_AL1_CTRL_OFFSET) & Self::CH6_AL1_CTRL_MASK));
     }
-
 }
 
 /// CH6_AL1_CTRL value type for batch read/modify/write operations
@@ -20786,7 +20485,6 @@ impl Ch6Al1CtrlVal {
             bits: (self.bits & !Ch6Al1Ctrl::CH6_AL1_CTRL_MASK) | ((value << Ch6Al1Ctrl::CH6_AL1_CTRL_OFFSET) & Ch6Al1Ctrl::CH6_AL1_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch6Al1CtrlVal {
@@ -20813,7 +20511,6 @@ impl Ch6Al1Ctrl {
     pub fn modify_val<F: FnOnce(Ch6Al1CtrlVal) -> Ch6Al1CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH6_AL1_READ_ADDR Register
@@ -20859,7 +20556,6 @@ impl Ch6Al1ReadAddr {
     pub fn write_ch6_al1_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH6_AL1_READ_ADDR_MASK) | ((value << Self::CH6_AL1_READ_ADDR_OFFSET) & Self::CH6_AL1_READ_ADDR_MASK));
     }
-
 }
 
 /// CH6_AL1_READ_ADDR value type for batch read/modify/write operations
@@ -20897,7 +20593,6 @@ impl Ch6Al1ReadAddrVal {
             bits: (self.bits & !Ch6Al1ReadAddr::CH6_AL1_READ_ADDR_MASK) | ((value << Ch6Al1ReadAddr::CH6_AL1_READ_ADDR_OFFSET) & Ch6Al1ReadAddr::CH6_AL1_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch6Al1ReadAddrVal {
@@ -20924,7 +20619,6 @@ impl Ch6Al1ReadAddr {
     pub fn modify_val<F: FnOnce(Ch6Al1ReadAddrVal) -> Ch6Al1ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH6_AL1_WRITE_ADDR Register
@@ -20970,7 +20664,6 @@ impl Ch6Al1WriteAddr {
     pub fn write_ch6_al1_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH6_AL1_WRITE_ADDR_MASK) | ((value << Self::CH6_AL1_WRITE_ADDR_OFFSET) & Self::CH6_AL1_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH6_AL1_WRITE_ADDR value type for batch read/modify/write operations
@@ -21008,7 +20701,6 @@ impl Ch6Al1WriteAddrVal {
             bits: (self.bits & !Ch6Al1WriteAddr::CH6_AL1_WRITE_ADDR_MASK) | ((value << Ch6Al1WriteAddr::CH6_AL1_WRITE_ADDR_OFFSET) & Ch6Al1WriteAddr::CH6_AL1_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch6Al1WriteAddrVal {
@@ -21035,7 +20727,6 @@ impl Ch6Al1WriteAddr {
     pub fn modify_val<F: FnOnce(Ch6Al1WriteAddrVal) -> Ch6Al1WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH6_AL1_TRANS_COUNT_TRIG Register
@@ -21083,7 +20774,6 @@ impl Ch6Al1TransCountTrig {
     pub fn write_ch6_al1_trans_count_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH6_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH6_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH6_AL1_TRANS_COUNT_TRIG_MASK));
     }
-
 }
 
 /// CH6_AL1_TRANS_COUNT_TRIG value type for batch read/modify/write operations
@@ -21121,7 +20811,6 @@ impl Ch6Al1TransCountTrigVal {
             bits: (self.bits & !Ch6Al1TransCountTrig::CH6_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch6Al1TransCountTrig::CH6_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch6Al1TransCountTrig::CH6_AL1_TRANS_COUNT_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch6Al1TransCountTrigVal {
@@ -21148,7 +20837,6 @@ impl Ch6Al1TransCountTrig {
     pub fn modify_val<F: FnOnce(Ch6Al1TransCountTrigVal) -> Ch6Al1TransCountTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH6_AL2_CTRL Register
@@ -21194,7 +20882,6 @@ impl Ch6Al2Ctrl {
     pub fn write_ch6_al2_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH6_AL2_CTRL_MASK) | ((value << Self::CH6_AL2_CTRL_OFFSET) & Self::CH6_AL2_CTRL_MASK));
     }
-
 }
 
 /// CH6_AL2_CTRL value type for batch read/modify/write operations
@@ -21232,7 +20919,6 @@ impl Ch6Al2CtrlVal {
             bits: (self.bits & !Ch6Al2Ctrl::CH6_AL2_CTRL_MASK) | ((value << Ch6Al2Ctrl::CH6_AL2_CTRL_OFFSET) & Ch6Al2Ctrl::CH6_AL2_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch6Al2CtrlVal {
@@ -21259,7 +20945,6 @@ impl Ch6Al2Ctrl {
     pub fn modify_val<F: FnOnce(Ch6Al2CtrlVal) -> Ch6Al2CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH6_AL2_TRANS_COUNT Register
@@ -21305,7 +20990,6 @@ impl Ch6Al2TransCount {
     pub fn write_ch6_al2_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH6_AL2_TRANS_COUNT_MASK) | ((value << Self::CH6_AL2_TRANS_COUNT_OFFSET) & Self::CH6_AL2_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH6_AL2_TRANS_COUNT value type for batch read/modify/write operations
@@ -21343,7 +21027,6 @@ impl Ch6Al2TransCountVal {
             bits: (self.bits & !Ch6Al2TransCount::CH6_AL2_TRANS_COUNT_MASK) | ((value << Ch6Al2TransCount::CH6_AL2_TRANS_COUNT_OFFSET) & Ch6Al2TransCount::CH6_AL2_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch6Al2TransCountVal {
@@ -21370,7 +21053,6 @@ impl Ch6Al2TransCount {
     pub fn modify_val<F: FnOnce(Ch6Al2TransCountVal) -> Ch6Al2TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH6_AL2_READ_ADDR Register
@@ -21416,7 +21098,6 @@ impl Ch6Al2ReadAddr {
     pub fn write_ch6_al2_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH6_AL2_READ_ADDR_MASK) | ((value << Self::CH6_AL2_READ_ADDR_OFFSET) & Self::CH6_AL2_READ_ADDR_MASK));
     }
-
 }
 
 /// CH6_AL2_READ_ADDR value type for batch read/modify/write operations
@@ -21454,7 +21135,6 @@ impl Ch6Al2ReadAddrVal {
             bits: (self.bits & !Ch6Al2ReadAddr::CH6_AL2_READ_ADDR_MASK) | ((value << Ch6Al2ReadAddr::CH6_AL2_READ_ADDR_OFFSET) & Ch6Al2ReadAddr::CH6_AL2_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch6Al2ReadAddrVal {
@@ -21481,7 +21161,6 @@ impl Ch6Al2ReadAddr {
     pub fn modify_val<F: FnOnce(Ch6Al2ReadAddrVal) -> Ch6Al2ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH6_AL2_WRITE_ADDR_TRIG Register
@@ -21529,7 +21208,6 @@ impl Ch6Al2WriteAddrTrig {
     pub fn write_ch6_al2_write_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH6_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH6_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH6_AL2_WRITE_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH6_AL2_WRITE_ADDR_TRIG value type for batch read/modify/write operations
@@ -21567,7 +21245,6 @@ impl Ch6Al2WriteAddrTrigVal {
             bits: (self.bits & !Ch6Al2WriteAddrTrig::CH6_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch6Al2WriteAddrTrig::CH6_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch6Al2WriteAddrTrig::CH6_AL2_WRITE_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch6Al2WriteAddrTrigVal {
@@ -21594,7 +21271,6 @@ impl Ch6Al2WriteAddrTrig {
     pub fn modify_val<F: FnOnce(Ch6Al2WriteAddrTrigVal) -> Ch6Al2WriteAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH6_AL3_CTRL Register
@@ -21640,7 +21316,6 @@ impl Ch6Al3Ctrl {
     pub fn write_ch6_al3_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH6_AL3_CTRL_MASK) | ((value << Self::CH6_AL3_CTRL_OFFSET) & Self::CH6_AL3_CTRL_MASK));
     }
-
 }
 
 /// CH6_AL3_CTRL value type for batch read/modify/write operations
@@ -21678,7 +21353,6 @@ impl Ch6Al3CtrlVal {
             bits: (self.bits & !Ch6Al3Ctrl::CH6_AL3_CTRL_MASK) | ((value << Ch6Al3Ctrl::CH6_AL3_CTRL_OFFSET) & Ch6Al3Ctrl::CH6_AL3_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch6Al3CtrlVal {
@@ -21705,7 +21379,6 @@ impl Ch6Al3Ctrl {
     pub fn modify_val<F: FnOnce(Ch6Al3CtrlVal) -> Ch6Al3CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH6_AL3_WRITE_ADDR Register
@@ -21751,7 +21424,6 @@ impl Ch6Al3WriteAddr {
     pub fn write_ch6_al3_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH6_AL3_WRITE_ADDR_MASK) | ((value << Self::CH6_AL3_WRITE_ADDR_OFFSET) & Self::CH6_AL3_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH6_AL3_WRITE_ADDR value type for batch read/modify/write operations
@@ -21789,7 +21461,6 @@ impl Ch6Al3WriteAddrVal {
             bits: (self.bits & !Ch6Al3WriteAddr::CH6_AL3_WRITE_ADDR_MASK) | ((value << Ch6Al3WriteAddr::CH6_AL3_WRITE_ADDR_OFFSET) & Ch6Al3WriteAddr::CH6_AL3_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch6Al3WriteAddrVal {
@@ -21816,7 +21487,6 @@ impl Ch6Al3WriteAddr {
     pub fn modify_val<F: FnOnce(Ch6Al3WriteAddrVal) -> Ch6Al3WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH6_AL3_TRANS_COUNT Register
@@ -21862,7 +21532,6 @@ impl Ch6Al3TransCount {
     pub fn write_ch6_al3_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH6_AL3_TRANS_COUNT_MASK) | ((value << Self::CH6_AL3_TRANS_COUNT_OFFSET) & Self::CH6_AL3_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH6_AL3_TRANS_COUNT value type for batch read/modify/write operations
@@ -21900,7 +21569,6 @@ impl Ch6Al3TransCountVal {
             bits: (self.bits & !Ch6Al3TransCount::CH6_AL3_TRANS_COUNT_MASK) | ((value << Ch6Al3TransCount::CH6_AL3_TRANS_COUNT_OFFSET) & Ch6Al3TransCount::CH6_AL3_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch6Al3TransCountVal {
@@ -21927,7 +21595,6 @@ impl Ch6Al3TransCount {
     pub fn modify_val<F: FnOnce(Ch6Al3TransCountVal) -> Ch6Al3TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH6_AL3_READ_ADDR_TRIG Register
@@ -21975,7 +21642,6 @@ impl Ch6Al3ReadAddrTrig {
     pub fn write_ch6_al3_read_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH6_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH6_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH6_AL3_READ_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH6_AL3_READ_ADDR_TRIG value type for batch read/modify/write operations
@@ -22013,7 +21679,6 @@ impl Ch6Al3ReadAddrTrigVal {
             bits: (self.bits & !Ch6Al3ReadAddrTrig::CH6_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch6Al3ReadAddrTrig::CH6_AL3_READ_ADDR_TRIG_OFFSET) & Ch6Al3ReadAddrTrig::CH6_AL3_READ_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch6Al3ReadAddrTrigVal {
@@ -22040,7 +21705,6 @@ impl Ch6Al3ReadAddrTrig {
     pub fn modify_val<F: FnOnce(Ch6Al3ReadAddrTrigVal) -> Ch6Al3ReadAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH7_READ_ADDR Register
@@ -22096,7 +21760,6 @@ impl Ch7ReadAddr {
     pub fn write_ch7_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH7_READ_ADDR_MASK) | ((value << Self::CH7_READ_ADDR_OFFSET) & Self::CH7_READ_ADDR_MASK));
     }
-
 }
 
 /// CH7_READ_ADDR value type for batch read/modify/write operations
@@ -22144,7 +21807,6 @@ impl Ch7ReadAddrVal {
             bits: (self.bits & !Ch7ReadAddr::CH7_READ_ADDR_MASK) | ((value << Ch7ReadAddr::CH7_READ_ADDR_OFFSET) & Ch7ReadAddr::CH7_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch7ReadAddrVal {
@@ -22171,7 +21833,6 @@ impl Ch7ReadAddr {
     pub fn modify_val<F: FnOnce(Ch7ReadAddrVal) -> Ch7ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH7_WRITE_ADDR Register
@@ -22227,7 +21888,6 @@ impl Ch7WriteAddr {
     pub fn write_ch7_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH7_WRITE_ADDR_MASK) | ((value << Self::CH7_WRITE_ADDR_OFFSET) & Self::CH7_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH7_WRITE_ADDR value type for batch read/modify/write operations
@@ -22275,7 +21935,6 @@ impl Ch7WriteAddrVal {
             bits: (self.bits & !Ch7WriteAddr::CH7_WRITE_ADDR_MASK) | ((value << Ch7WriteAddr::CH7_WRITE_ADDR_OFFSET) & Ch7WriteAddr::CH7_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch7WriteAddrVal {
@@ -22302,7 +21961,6 @@ impl Ch7WriteAddr {
     pub fn modify_val<F: FnOnce(Ch7WriteAddrVal) -> Ch7WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH7_TRANS_COUNT Register
@@ -22420,7 +22078,6 @@ impl Ch7TransCount {
     pub fn write_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
     }
-
 }
 
 /// CH7_TRANS_COUNT value type for batch read/modify/write operations
@@ -22500,7 +22157,6 @@ impl Ch7TransCountVal {
             bits: (self.bits & !Ch7TransCount::COUNT_MASK) | ((value << Ch7TransCount::COUNT_OFFSET) & Ch7TransCount::COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch7TransCountVal {
@@ -22527,7 +22183,6 @@ impl Ch7TransCount {
     pub fn modify_val<F: FnOnce(Ch7TransCountVal) -> Ch7TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH7_CTRL_TRIG Register
@@ -23408,7 +23063,6 @@ impl Ch7CtrlTrig {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// CH7_CTRL_TRIG value type for batch read/modify/write operations
@@ -23823,7 +23477,6 @@ impl Ch7CtrlTrigVal {
             }
         }
     }
-
 }
 
 impl Default for Ch7CtrlTrigVal {
@@ -23850,7 +23503,6 @@ impl Ch7CtrlTrig {
     pub fn modify_val<F: FnOnce(Ch7CtrlTrigVal) -> Ch7CtrlTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH7_AL1_CTRL Register
@@ -23896,7 +23548,6 @@ impl Ch7Al1Ctrl {
     pub fn write_ch7_al1_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH7_AL1_CTRL_MASK) | ((value << Self::CH7_AL1_CTRL_OFFSET) & Self::CH7_AL1_CTRL_MASK));
     }
-
 }
 
 /// CH7_AL1_CTRL value type for batch read/modify/write operations
@@ -23934,7 +23585,6 @@ impl Ch7Al1CtrlVal {
             bits: (self.bits & !Ch7Al1Ctrl::CH7_AL1_CTRL_MASK) | ((value << Ch7Al1Ctrl::CH7_AL1_CTRL_OFFSET) & Ch7Al1Ctrl::CH7_AL1_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch7Al1CtrlVal {
@@ -23961,7 +23611,6 @@ impl Ch7Al1Ctrl {
     pub fn modify_val<F: FnOnce(Ch7Al1CtrlVal) -> Ch7Al1CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH7_AL1_READ_ADDR Register
@@ -24007,7 +23656,6 @@ impl Ch7Al1ReadAddr {
     pub fn write_ch7_al1_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH7_AL1_READ_ADDR_MASK) | ((value << Self::CH7_AL1_READ_ADDR_OFFSET) & Self::CH7_AL1_READ_ADDR_MASK));
     }
-
 }
 
 /// CH7_AL1_READ_ADDR value type for batch read/modify/write operations
@@ -24045,7 +23693,6 @@ impl Ch7Al1ReadAddrVal {
             bits: (self.bits & !Ch7Al1ReadAddr::CH7_AL1_READ_ADDR_MASK) | ((value << Ch7Al1ReadAddr::CH7_AL1_READ_ADDR_OFFSET) & Ch7Al1ReadAddr::CH7_AL1_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch7Al1ReadAddrVal {
@@ -24072,7 +23719,6 @@ impl Ch7Al1ReadAddr {
     pub fn modify_val<F: FnOnce(Ch7Al1ReadAddrVal) -> Ch7Al1ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH7_AL1_WRITE_ADDR Register
@@ -24118,7 +23764,6 @@ impl Ch7Al1WriteAddr {
     pub fn write_ch7_al1_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH7_AL1_WRITE_ADDR_MASK) | ((value << Self::CH7_AL1_WRITE_ADDR_OFFSET) & Self::CH7_AL1_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH7_AL1_WRITE_ADDR value type for batch read/modify/write operations
@@ -24156,7 +23801,6 @@ impl Ch7Al1WriteAddrVal {
             bits: (self.bits & !Ch7Al1WriteAddr::CH7_AL1_WRITE_ADDR_MASK) | ((value << Ch7Al1WriteAddr::CH7_AL1_WRITE_ADDR_OFFSET) & Ch7Al1WriteAddr::CH7_AL1_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch7Al1WriteAddrVal {
@@ -24183,7 +23827,6 @@ impl Ch7Al1WriteAddr {
     pub fn modify_val<F: FnOnce(Ch7Al1WriteAddrVal) -> Ch7Al1WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH7_AL1_TRANS_COUNT_TRIG Register
@@ -24231,7 +23874,6 @@ impl Ch7Al1TransCountTrig {
     pub fn write_ch7_al1_trans_count_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH7_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH7_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH7_AL1_TRANS_COUNT_TRIG_MASK));
     }
-
 }
 
 /// CH7_AL1_TRANS_COUNT_TRIG value type for batch read/modify/write operations
@@ -24269,7 +23911,6 @@ impl Ch7Al1TransCountTrigVal {
             bits: (self.bits & !Ch7Al1TransCountTrig::CH7_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch7Al1TransCountTrig::CH7_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch7Al1TransCountTrig::CH7_AL1_TRANS_COUNT_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch7Al1TransCountTrigVal {
@@ -24296,7 +23937,6 @@ impl Ch7Al1TransCountTrig {
     pub fn modify_val<F: FnOnce(Ch7Al1TransCountTrigVal) -> Ch7Al1TransCountTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH7_AL2_CTRL Register
@@ -24342,7 +23982,6 @@ impl Ch7Al2Ctrl {
     pub fn write_ch7_al2_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH7_AL2_CTRL_MASK) | ((value << Self::CH7_AL2_CTRL_OFFSET) & Self::CH7_AL2_CTRL_MASK));
     }
-
 }
 
 /// CH7_AL2_CTRL value type for batch read/modify/write operations
@@ -24380,7 +24019,6 @@ impl Ch7Al2CtrlVal {
             bits: (self.bits & !Ch7Al2Ctrl::CH7_AL2_CTRL_MASK) | ((value << Ch7Al2Ctrl::CH7_AL2_CTRL_OFFSET) & Ch7Al2Ctrl::CH7_AL2_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch7Al2CtrlVal {
@@ -24407,7 +24045,6 @@ impl Ch7Al2Ctrl {
     pub fn modify_val<F: FnOnce(Ch7Al2CtrlVal) -> Ch7Al2CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH7_AL2_TRANS_COUNT Register
@@ -24453,7 +24090,6 @@ impl Ch7Al2TransCount {
     pub fn write_ch7_al2_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH7_AL2_TRANS_COUNT_MASK) | ((value << Self::CH7_AL2_TRANS_COUNT_OFFSET) & Self::CH7_AL2_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH7_AL2_TRANS_COUNT value type for batch read/modify/write operations
@@ -24491,7 +24127,6 @@ impl Ch7Al2TransCountVal {
             bits: (self.bits & !Ch7Al2TransCount::CH7_AL2_TRANS_COUNT_MASK) | ((value << Ch7Al2TransCount::CH7_AL2_TRANS_COUNT_OFFSET) & Ch7Al2TransCount::CH7_AL2_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch7Al2TransCountVal {
@@ -24518,7 +24153,6 @@ impl Ch7Al2TransCount {
     pub fn modify_val<F: FnOnce(Ch7Al2TransCountVal) -> Ch7Al2TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH7_AL2_READ_ADDR Register
@@ -24564,7 +24198,6 @@ impl Ch7Al2ReadAddr {
     pub fn write_ch7_al2_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH7_AL2_READ_ADDR_MASK) | ((value << Self::CH7_AL2_READ_ADDR_OFFSET) & Self::CH7_AL2_READ_ADDR_MASK));
     }
-
 }
 
 /// CH7_AL2_READ_ADDR value type for batch read/modify/write operations
@@ -24602,7 +24235,6 @@ impl Ch7Al2ReadAddrVal {
             bits: (self.bits & !Ch7Al2ReadAddr::CH7_AL2_READ_ADDR_MASK) | ((value << Ch7Al2ReadAddr::CH7_AL2_READ_ADDR_OFFSET) & Ch7Al2ReadAddr::CH7_AL2_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch7Al2ReadAddrVal {
@@ -24629,7 +24261,6 @@ impl Ch7Al2ReadAddr {
     pub fn modify_val<F: FnOnce(Ch7Al2ReadAddrVal) -> Ch7Al2ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH7_AL2_WRITE_ADDR_TRIG Register
@@ -24677,7 +24308,6 @@ impl Ch7Al2WriteAddrTrig {
     pub fn write_ch7_al2_write_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH7_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH7_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH7_AL2_WRITE_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH7_AL2_WRITE_ADDR_TRIG value type for batch read/modify/write operations
@@ -24715,7 +24345,6 @@ impl Ch7Al2WriteAddrTrigVal {
             bits: (self.bits & !Ch7Al2WriteAddrTrig::CH7_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch7Al2WriteAddrTrig::CH7_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch7Al2WriteAddrTrig::CH7_AL2_WRITE_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch7Al2WriteAddrTrigVal {
@@ -24742,7 +24371,6 @@ impl Ch7Al2WriteAddrTrig {
     pub fn modify_val<F: FnOnce(Ch7Al2WriteAddrTrigVal) -> Ch7Al2WriteAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH7_AL3_CTRL Register
@@ -24788,7 +24416,6 @@ impl Ch7Al3Ctrl {
     pub fn write_ch7_al3_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH7_AL3_CTRL_MASK) | ((value << Self::CH7_AL3_CTRL_OFFSET) & Self::CH7_AL3_CTRL_MASK));
     }
-
 }
 
 /// CH7_AL3_CTRL value type for batch read/modify/write operations
@@ -24826,7 +24453,6 @@ impl Ch7Al3CtrlVal {
             bits: (self.bits & !Ch7Al3Ctrl::CH7_AL3_CTRL_MASK) | ((value << Ch7Al3Ctrl::CH7_AL3_CTRL_OFFSET) & Ch7Al3Ctrl::CH7_AL3_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch7Al3CtrlVal {
@@ -24853,7 +24479,6 @@ impl Ch7Al3Ctrl {
     pub fn modify_val<F: FnOnce(Ch7Al3CtrlVal) -> Ch7Al3CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH7_AL3_WRITE_ADDR Register
@@ -24899,7 +24524,6 @@ impl Ch7Al3WriteAddr {
     pub fn write_ch7_al3_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH7_AL3_WRITE_ADDR_MASK) | ((value << Self::CH7_AL3_WRITE_ADDR_OFFSET) & Self::CH7_AL3_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH7_AL3_WRITE_ADDR value type for batch read/modify/write operations
@@ -24937,7 +24561,6 @@ impl Ch7Al3WriteAddrVal {
             bits: (self.bits & !Ch7Al3WriteAddr::CH7_AL3_WRITE_ADDR_MASK) | ((value << Ch7Al3WriteAddr::CH7_AL3_WRITE_ADDR_OFFSET) & Ch7Al3WriteAddr::CH7_AL3_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch7Al3WriteAddrVal {
@@ -24964,7 +24587,6 @@ impl Ch7Al3WriteAddr {
     pub fn modify_val<F: FnOnce(Ch7Al3WriteAddrVal) -> Ch7Al3WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH7_AL3_TRANS_COUNT Register
@@ -25010,7 +24632,6 @@ impl Ch7Al3TransCount {
     pub fn write_ch7_al3_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH7_AL3_TRANS_COUNT_MASK) | ((value << Self::CH7_AL3_TRANS_COUNT_OFFSET) & Self::CH7_AL3_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH7_AL3_TRANS_COUNT value type for batch read/modify/write operations
@@ -25048,7 +24669,6 @@ impl Ch7Al3TransCountVal {
             bits: (self.bits & !Ch7Al3TransCount::CH7_AL3_TRANS_COUNT_MASK) | ((value << Ch7Al3TransCount::CH7_AL3_TRANS_COUNT_OFFSET) & Ch7Al3TransCount::CH7_AL3_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch7Al3TransCountVal {
@@ -25075,7 +24695,6 @@ impl Ch7Al3TransCount {
     pub fn modify_val<F: FnOnce(Ch7Al3TransCountVal) -> Ch7Al3TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH7_AL3_READ_ADDR_TRIG Register
@@ -25123,7 +24742,6 @@ impl Ch7Al3ReadAddrTrig {
     pub fn write_ch7_al3_read_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH7_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH7_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH7_AL3_READ_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH7_AL3_READ_ADDR_TRIG value type for batch read/modify/write operations
@@ -25161,7 +24779,6 @@ impl Ch7Al3ReadAddrTrigVal {
             bits: (self.bits & !Ch7Al3ReadAddrTrig::CH7_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch7Al3ReadAddrTrig::CH7_AL3_READ_ADDR_TRIG_OFFSET) & Ch7Al3ReadAddrTrig::CH7_AL3_READ_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch7Al3ReadAddrTrigVal {
@@ -25188,7 +24805,6 @@ impl Ch7Al3ReadAddrTrig {
     pub fn modify_val<F: FnOnce(Ch7Al3ReadAddrTrigVal) -> Ch7Al3ReadAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH8_READ_ADDR Register
@@ -25244,7 +24860,6 @@ impl Ch8ReadAddr {
     pub fn write_ch8_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH8_READ_ADDR_MASK) | ((value << Self::CH8_READ_ADDR_OFFSET) & Self::CH8_READ_ADDR_MASK));
     }
-
 }
 
 /// CH8_READ_ADDR value type for batch read/modify/write operations
@@ -25292,7 +24907,6 @@ impl Ch8ReadAddrVal {
             bits: (self.bits & !Ch8ReadAddr::CH8_READ_ADDR_MASK) | ((value << Ch8ReadAddr::CH8_READ_ADDR_OFFSET) & Ch8ReadAddr::CH8_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch8ReadAddrVal {
@@ -25319,7 +24933,6 @@ impl Ch8ReadAddr {
     pub fn modify_val<F: FnOnce(Ch8ReadAddrVal) -> Ch8ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH8_WRITE_ADDR Register
@@ -25375,7 +24988,6 @@ impl Ch8WriteAddr {
     pub fn write_ch8_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH8_WRITE_ADDR_MASK) | ((value << Self::CH8_WRITE_ADDR_OFFSET) & Self::CH8_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH8_WRITE_ADDR value type for batch read/modify/write operations
@@ -25423,7 +25035,6 @@ impl Ch8WriteAddrVal {
             bits: (self.bits & !Ch8WriteAddr::CH8_WRITE_ADDR_MASK) | ((value << Ch8WriteAddr::CH8_WRITE_ADDR_OFFSET) & Ch8WriteAddr::CH8_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch8WriteAddrVal {
@@ -25450,7 +25061,6 @@ impl Ch8WriteAddr {
     pub fn modify_val<F: FnOnce(Ch8WriteAddrVal) -> Ch8WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH8_TRANS_COUNT Register
@@ -25568,7 +25178,6 @@ impl Ch8TransCount {
     pub fn write_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
     }
-
 }
 
 /// CH8_TRANS_COUNT value type for batch read/modify/write operations
@@ -25648,7 +25257,6 @@ impl Ch8TransCountVal {
             bits: (self.bits & !Ch8TransCount::COUNT_MASK) | ((value << Ch8TransCount::COUNT_OFFSET) & Ch8TransCount::COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch8TransCountVal {
@@ -25675,7 +25283,6 @@ impl Ch8TransCount {
     pub fn modify_val<F: FnOnce(Ch8TransCountVal) -> Ch8TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH8_CTRL_TRIG Register
@@ -26556,7 +26163,6 @@ impl Ch8CtrlTrig {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// CH8_CTRL_TRIG value type for batch read/modify/write operations
@@ -26971,7 +26577,6 @@ impl Ch8CtrlTrigVal {
             }
         }
     }
-
 }
 
 impl Default for Ch8CtrlTrigVal {
@@ -26998,7 +26603,6 @@ impl Ch8CtrlTrig {
     pub fn modify_val<F: FnOnce(Ch8CtrlTrigVal) -> Ch8CtrlTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH8_AL1_CTRL Register
@@ -27044,7 +26648,6 @@ impl Ch8Al1Ctrl {
     pub fn write_ch8_al1_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH8_AL1_CTRL_MASK) | ((value << Self::CH8_AL1_CTRL_OFFSET) & Self::CH8_AL1_CTRL_MASK));
     }
-
 }
 
 /// CH8_AL1_CTRL value type for batch read/modify/write operations
@@ -27082,7 +26685,6 @@ impl Ch8Al1CtrlVal {
             bits: (self.bits & !Ch8Al1Ctrl::CH8_AL1_CTRL_MASK) | ((value << Ch8Al1Ctrl::CH8_AL1_CTRL_OFFSET) & Ch8Al1Ctrl::CH8_AL1_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch8Al1CtrlVal {
@@ -27109,7 +26711,6 @@ impl Ch8Al1Ctrl {
     pub fn modify_val<F: FnOnce(Ch8Al1CtrlVal) -> Ch8Al1CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH8_AL1_READ_ADDR Register
@@ -27155,7 +26756,6 @@ impl Ch8Al1ReadAddr {
     pub fn write_ch8_al1_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH8_AL1_READ_ADDR_MASK) | ((value << Self::CH8_AL1_READ_ADDR_OFFSET) & Self::CH8_AL1_READ_ADDR_MASK));
     }
-
 }
 
 /// CH8_AL1_READ_ADDR value type for batch read/modify/write operations
@@ -27193,7 +26793,6 @@ impl Ch8Al1ReadAddrVal {
             bits: (self.bits & !Ch8Al1ReadAddr::CH8_AL1_READ_ADDR_MASK) | ((value << Ch8Al1ReadAddr::CH8_AL1_READ_ADDR_OFFSET) & Ch8Al1ReadAddr::CH8_AL1_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch8Al1ReadAddrVal {
@@ -27220,7 +26819,6 @@ impl Ch8Al1ReadAddr {
     pub fn modify_val<F: FnOnce(Ch8Al1ReadAddrVal) -> Ch8Al1ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH8_AL1_WRITE_ADDR Register
@@ -27266,7 +26864,6 @@ impl Ch8Al1WriteAddr {
     pub fn write_ch8_al1_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH8_AL1_WRITE_ADDR_MASK) | ((value << Self::CH8_AL1_WRITE_ADDR_OFFSET) & Self::CH8_AL1_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH8_AL1_WRITE_ADDR value type for batch read/modify/write operations
@@ -27304,7 +26901,6 @@ impl Ch8Al1WriteAddrVal {
             bits: (self.bits & !Ch8Al1WriteAddr::CH8_AL1_WRITE_ADDR_MASK) | ((value << Ch8Al1WriteAddr::CH8_AL1_WRITE_ADDR_OFFSET) & Ch8Al1WriteAddr::CH8_AL1_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch8Al1WriteAddrVal {
@@ -27331,7 +26927,6 @@ impl Ch8Al1WriteAddr {
     pub fn modify_val<F: FnOnce(Ch8Al1WriteAddrVal) -> Ch8Al1WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH8_AL1_TRANS_COUNT_TRIG Register
@@ -27379,7 +26974,6 @@ impl Ch8Al1TransCountTrig {
     pub fn write_ch8_al1_trans_count_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH8_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH8_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH8_AL1_TRANS_COUNT_TRIG_MASK));
     }
-
 }
 
 /// CH8_AL1_TRANS_COUNT_TRIG value type for batch read/modify/write operations
@@ -27417,7 +27011,6 @@ impl Ch8Al1TransCountTrigVal {
             bits: (self.bits & !Ch8Al1TransCountTrig::CH8_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch8Al1TransCountTrig::CH8_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch8Al1TransCountTrig::CH8_AL1_TRANS_COUNT_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch8Al1TransCountTrigVal {
@@ -27444,7 +27037,6 @@ impl Ch8Al1TransCountTrig {
     pub fn modify_val<F: FnOnce(Ch8Al1TransCountTrigVal) -> Ch8Al1TransCountTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH8_AL2_CTRL Register
@@ -27490,7 +27082,6 @@ impl Ch8Al2Ctrl {
     pub fn write_ch8_al2_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH8_AL2_CTRL_MASK) | ((value << Self::CH8_AL2_CTRL_OFFSET) & Self::CH8_AL2_CTRL_MASK));
     }
-
 }
 
 /// CH8_AL2_CTRL value type for batch read/modify/write operations
@@ -27528,7 +27119,6 @@ impl Ch8Al2CtrlVal {
             bits: (self.bits & !Ch8Al2Ctrl::CH8_AL2_CTRL_MASK) | ((value << Ch8Al2Ctrl::CH8_AL2_CTRL_OFFSET) & Ch8Al2Ctrl::CH8_AL2_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch8Al2CtrlVal {
@@ -27555,7 +27145,6 @@ impl Ch8Al2Ctrl {
     pub fn modify_val<F: FnOnce(Ch8Al2CtrlVal) -> Ch8Al2CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH8_AL2_TRANS_COUNT Register
@@ -27601,7 +27190,6 @@ impl Ch8Al2TransCount {
     pub fn write_ch8_al2_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH8_AL2_TRANS_COUNT_MASK) | ((value << Self::CH8_AL2_TRANS_COUNT_OFFSET) & Self::CH8_AL2_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH8_AL2_TRANS_COUNT value type for batch read/modify/write operations
@@ -27639,7 +27227,6 @@ impl Ch8Al2TransCountVal {
             bits: (self.bits & !Ch8Al2TransCount::CH8_AL2_TRANS_COUNT_MASK) | ((value << Ch8Al2TransCount::CH8_AL2_TRANS_COUNT_OFFSET) & Ch8Al2TransCount::CH8_AL2_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch8Al2TransCountVal {
@@ -27666,7 +27253,6 @@ impl Ch8Al2TransCount {
     pub fn modify_val<F: FnOnce(Ch8Al2TransCountVal) -> Ch8Al2TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH8_AL2_READ_ADDR Register
@@ -27712,7 +27298,6 @@ impl Ch8Al2ReadAddr {
     pub fn write_ch8_al2_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH8_AL2_READ_ADDR_MASK) | ((value << Self::CH8_AL2_READ_ADDR_OFFSET) & Self::CH8_AL2_READ_ADDR_MASK));
     }
-
 }
 
 /// CH8_AL2_READ_ADDR value type for batch read/modify/write operations
@@ -27750,7 +27335,6 @@ impl Ch8Al2ReadAddrVal {
             bits: (self.bits & !Ch8Al2ReadAddr::CH8_AL2_READ_ADDR_MASK) | ((value << Ch8Al2ReadAddr::CH8_AL2_READ_ADDR_OFFSET) & Ch8Al2ReadAddr::CH8_AL2_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch8Al2ReadAddrVal {
@@ -27777,7 +27361,6 @@ impl Ch8Al2ReadAddr {
     pub fn modify_val<F: FnOnce(Ch8Al2ReadAddrVal) -> Ch8Al2ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH8_AL2_WRITE_ADDR_TRIG Register
@@ -27825,7 +27408,6 @@ impl Ch8Al2WriteAddrTrig {
     pub fn write_ch8_al2_write_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH8_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH8_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH8_AL2_WRITE_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH8_AL2_WRITE_ADDR_TRIG value type for batch read/modify/write operations
@@ -27863,7 +27445,6 @@ impl Ch8Al2WriteAddrTrigVal {
             bits: (self.bits & !Ch8Al2WriteAddrTrig::CH8_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch8Al2WriteAddrTrig::CH8_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch8Al2WriteAddrTrig::CH8_AL2_WRITE_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch8Al2WriteAddrTrigVal {
@@ -27890,7 +27471,6 @@ impl Ch8Al2WriteAddrTrig {
     pub fn modify_val<F: FnOnce(Ch8Al2WriteAddrTrigVal) -> Ch8Al2WriteAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH8_AL3_CTRL Register
@@ -27936,7 +27516,6 @@ impl Ch8Al3Ctrl {
     pub fn write_ch8_al3_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH8_AL3_CTRL_MASK) | ((value << Self::CH8_AL3_CTRL_OFFSET) & Self::CH8_AL3_CTRL_MASK));
     }
-
 }
 
 /// CH8_AL3_CTRL value type for batch read/modify/write operations
@@ -27974,7 +27553,6 @@ impl Ch8Al3CtrlVal {
             bits: (self.bits & !Ch8Al3Ctrl::CH8_AL3_CTRL_MASK) | ((value << Ch8Al3Ctrl::CH8_AL3_CTRL_OFFSET) & Ch8Al3Ctrl::CH8_AL3_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch8Al3CtrlVal {
@@ -28001,7 +27579,6 @@ impl Ch8Al3Ctrl {
     pub fn modify_val<F: FnOnce(Ch8Al3CtrlVal) -> Ch8Al3CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH8_AL3_WRITE_ADDR Register
@@ -28047,7 +27624,6 @@ impl Ch8Al3WriteAddr {
     pub fn write_ch8_al3_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH8_AL3_WRITE_ADDR_MASK) | ((value << Self::CH8_AL3_WRITE_ADDR_OFFSET) & Self::CH8_AL3_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH8_AL3_WRITE_ADDR value type for batch read/modify/write operations
@@ -28085,7 +27661,6 @@ impl Ch8Al3WriteAddrVal {
             bits: (self.bits & !Ch8Al3WriteAddr::CH8_AL3_WRITE_ADDR_MASK) | ((value << Ch8Al3WriteAddr::CH8_AL3_WRITE_ADDR_OFFSET) & Ch8Al3WriteAddr::CH8_AL3_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch8Al3WriteAddrVal {
@@ -28112,7 +27687,6 @@ impl Ch8Al3WriteAddr {
     pub fn modify_val<F: FnOnce(Ch8Al3WriteAddrVal) -> Ch8Al3WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH8_AL3_TRANS_COUNT Register
@@ -28158,7 +27732,6 @@ impl Ch8Al3TransCount {
     pub fn write_ch8_al3_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH8_AL3_TRANS_COUNT_MASK) | ((value << Self::CH8_AL3_TRANS_COUNT_OFFSET) & Self::CH8_AL3_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH8_AL3_TRANS_COUNT value type for batch read/modify/write operations
@@ -28196,7 +27769,6 @@ impl Ch8Al3TransCountVal {
             bits: (self.bits & !Ch8Al3TransCount::CH8_AL3_TRANS_COUNT_MASK) | ((value << Ch8Al3TransCount::CH8_AL3_TRANS_COUNT_OFFSET) & Ch8Al3TransCount::CH8_AL3_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch8Al3TransCountVal {
@@ -28223,7 +27795,6 @@ impl Ch8Al3TransCount {
     pub fn modify_val<F: FnOnce(Ch8Al3TransCountVal) -> Ch8Al3TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH8_AL3_READ_ADDR_TRIG Register
@@ -28271,7 +27842,6 @@ impl Ch8Al3ReadAddrTrig {
     pub fn write_ch8_al3_read_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH8_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH8_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH8_AL3_READ_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH8_AL3_READ_ADDR_TRIG value type for batch read/modify/write operations
@@ -28309,7 +27879,6 @@ impl Ch8Al3ReadAddrTrigVal {
             bits: (self.bits & !Ch8Al3ReadAddrTrig::CH8_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch8Al3ReadAddrTrig::CH8_AL3_READ_ADDR_TRIG_OFFSET) & Ch8Al3ReadAddrTrig::CH8_AL3_READ_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch8Al3ReadAddrTrigVal {
@@ -28336,7 +27905,6 @@ impl Ch8Al3ReadAddrTrig {
     pub fn modify_val<F: FnOnce(Ch8Al3ReadAddrTrigVal) -> Ch8Al3ReadAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH9_READ_ADDR Register
@@ -28392,7 +27960,6 @@ impl Ch9ReadAddr {
     pub fn write_ch9_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH9_READ_ADDR_MASK) | ((value << Self::CH9_READ_ADDR_OFFSET) & Self::CH9_READ_ADDR_MASK));
     }
-
 }
 
 /// CH9_READ_ADDR value type for batch read/modify/write operations
@@ -28440,7 +28007,6 @@ impl Ch9ReadAddrVal {
             bits: (self.bits & !Ch9ReadAddr::CH9_READ_ADDR_MASK) | ((value << Ch9ReadAddr::CH9_READ_ADDR_OFFSET) & Ch9ReadAddr::CH9_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch9ReadAddrVal {
@@ -28467,7 +28033,6 @@ impl Ch9ReadAddr {
     pub fn modify_val<F: FnOnce(Ch9ReadAddrVal) -> Ch9ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH9_WRITE_ADDR Register
@@ -28523,7 +28088,6 @@ impl Ch9WriteAddr {
     pub fn write_ch9_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH9_WRITE_ADDR_MASK) | ((value << Self::CH9_WRITE_ADDR_OFFSET) & Self::CH9_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH9_WRITE_ADDR value type for batch read/modify/write operations
@@ -28571,7 +28135,6 @@ impl Ch9WriteAddrVal {
             bits: (self.bits & !Ch9WriteAddr::CH9_WRITE_ADDR_MASK) | ((value << Ch9WriteAddr::CH9_WRITE_ADDR_OFFSET) & Ch9WriteAddr::CH9_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch9WriteAddrVal {
@@ -28598,7 +28161,6 @@ impl Ch9WriteAddr {
     pub fn modify_val<F: FnOnce(Ch9WriteAddrVal) -> Ch9WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH9_TRANS_COUNT Register
@@ -28716,7 +28278,6 @@ impl Ch9TransCount {
     pub fn write_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
     }
-
 }
 
 /// CH9_TRANS_COUNT value type for batch read/modify/write operations
@@ -28796,7 +28357,6 @@ impl Ch9TransCountVal {
             bits: (self.bits & !Ch9TransCount::COUNT_MASK) | ((value << Ch9TransCount::COUNT_OFFSET) & Ch9TransCount::COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch9TransCountVal {
@@ -28823,7 +28383,6 @@ impl Ch9TransCount {
     pub fn modify_val<F: FnOnce(Ch9TransCountVal) -> Ch9TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH9_CTRL_TRIG Register
@@ -29704,7 +29263,6 @@ impl Ch9CtrlTrig {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// CH9_CTRL_TRIG value type for batch read/modify/write operations
@@ -30119,7 +29677,6 @@ impl Ch9CtrlTrigVal {
             }
         }
     }
-
 }
 
 impl Default for Ch9CtrlTrigVal {
@@ -30146,7 +29703,6 @@ impl Ch9CtrlTrig {
     pub fn modify_val<F: FnOnce(Ch9CtrlTrigVal) -> Ch9CtrlTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH9_AL1_CTRL Register
@@ -30192,7 +29748,6 @@ impl Ch9Al1Ctrl {
     pub fn write_ch9_al1_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH9_AL1_CTRL_MASK) | ((value << Self::CH9_AL1_CTRL_OFFSET) & Self::CH9_AL1_CTRL_MASK));
     }
-
 }
 
 /// CH9_AL1_CTRL value type for batch read/modify/write operations
@@ -30230,7 +29785,6 @@ impl Ch9Al1CtrlVal {
             bits: (self.bits & !Ch9Al1Ctrl::CH9_AL1_CTRL_MASK) | ((value << Ch9Al1Ctrl::CH9_AL1_CTRL_OFFSET) & Ch9Al1Ctrl::CH9_AL1_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch9Al1CtrlVal {
@@ -30257,7 +29811,6 @@ impl Ch9Al1Ctrl {
     pub fn modify_val<F: FnOnce(Ch9Al1CtrlVal) -> Ch9Al1CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH9_AL1_READ_ADDR Register
@@ -30303,7 +29856,6 @@ impl Ch9Al1ReadAddr {
     pub fn write_ch9_al1_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH9_AL1_READ_ADDR_MASK) | ((value << Self::CH9_AL1_READ_ADDR_OFFSET) & Self::CH9_AL1_READ_ADDR_MASK));
     }
-
 }
 
 /// CH9_AL1_READ_ADDR value type for batch read/modify/write operations
@@ -30341,7 +29893,6 @@ impl Ch9Al1ReadAddrVal {
             bits: (self.bits & !Ch9Al1ReadAddr::CH9_AL1_READ_ADDR_MASK) | ((value << Ch9Al1ReadAddr::CH9_AL1_READ_ADDR_OFFSET) & Ch9Al1ReadAddr::CH9_AL1_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch9Al1ReadAddrVal {
@@ -30368,7 +29919,6 @@ impl Ch9Al1ReadAddr {
     pub fn modify_val<F: FnOnce(Ch9Al1ReadAddrVal) -> Ch9Al1ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH9_AL1_WRITE_ADDR Register
@@ -30414,7 +29964,6 @@ impl Ch9Al1WriteAddr {
     pub fn write_ch9_al1_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH9_AL1_WRITE_ADDR_MASK) | ((value << Self::CH9_AL1_WRITE_ADDR_OFFSET) & Self::CH9_AL1_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH9_AL1_WRITE_ADDR value type for batch read/modify/write operations
@@ -30452,7 +30001,6 @@ impl Ch9Al1WriteAddrVal {
             bits: (self.bits & !Ch9Al1WriteAddr::CH9_AL1_WRITE_ADDR_MASK) | ((value << Ch9Al1WriteAddr::CH9_AL1_WRITE_ADDR_OFFSET) & Ch9Al1WriteAddr::CH9_AL1_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch9Al1WriteAddrVal {
@@ -30479,7 +30027,6 @@ impl Ch9Al1WriteAddr {
     pub fn modify_val<F: FnOnce(Ch9Al1WriteAddrVal) -> Ch9Al1WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH9_AL1_TRANS_COUNT_TRIG Register
@@ -30527,7 +30074,6 @@ impl Ch9Al1TransCountTrig {
     pub fn write_ch9_al1_trans_count_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH9_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH9_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH9_AL1_TRANS_COUNT_TRIG_MASK));
     }
-
 }
 
 /// CH9_AL1_TRANS_COUNT_TRIG value type for batch read/modify/write operations
@@ -30565,7 +30111,6 @@ impl Ch9Al1TransCountTrigVal {
             bits: (self.bits & !Ch9Al1TransCountTrig::CH9_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch9Al1TransCountTrig::CH9_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch9Al1TransCountTrig::CH9_AL1_TRANS_COUNT_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch9Al1TransCountTrigVal {
@@ -30592,7 +30137,6 @@ impl Ch9Al1TransCountTrig {
     pub fn modify_val<F: FnOnce(Ch9Al1TransCountTrigVal) -> Ch9Al1TransCountTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH9_AL2_CTRL Register
@@ -30638,7 +30182,6 @@ impl Ch9Al2Ctrl {
     pub fn write_ch9_al2_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH9_AL2_CTRL_MASK) | ((value << Self::CH9_AL2_CTRL_OFFSET) & Self::CH9_AL2_CTRL_MASK));
     }
-
 }
 
 /// CH9_AL2_CTRL value type for batch read/modify/write operations
@@ -30676,7 +30219,6 @@ impl Ch9Al2CtrlVal {
             bits: (self.bits & !Ch9Al2Ctrl::CH9_AL2_CTRL_MASK) | ((value << Ch9Al2Ctrl::CH9_AL2_CTRL_OFFSET) & Ch9Al2Ctrl::CH9_AL2_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch9Al2CtrlVal {
@@ -30703,7 +30245,6 @@ impl Ch9Al2Ctrl {
     pub fn modify_val<F: FnOnce(Ch9Al2CtrlVal) -> Ch9Al2CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH9_AL2_TRANS_COUNT Register
@@ -30749,7 +30290,6 @@ impl Ch9Al2TransCount {
     pub fn write_ch9_al2_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH9_AL2_TRANS_COUNT_MASK) | ((value << Self::CH9_AL2_TRANS_COUNT_OFFSET) & Self::CH9_AL2_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH9_AL2_TRANS_COUNT value type for batch read/modify/write operations
@@ -30787,7 +30327,6 @@ impl Ch9Al2TransCountVal {
             bits: (self.bits & !Ch9Al2TransCount::CH9_AL2_TRANS_COUNT_MASK) | ((value << Ch9Al2TransCount::CH9_AL2_TRANS_COUNT_OFFSET) & Ch9Al2TransCount::CH9_AL2_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch9Al2TransCountVal {
@@ -30814,7 +30353,6 @@ impl Ch9Al2TransCount {
     pub fn modify_val<F: FnOnce(Ch9Al2TransCountVal) -> Ch9Al2TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH9_AL2_READ_ADDR Register
@@ -30860,7 +30398,6 @@ impl Ch9Al2ReadAddr {
     pub fn write_ch9_al2_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH9_AL2_READ_ADDR_MASK) | ((value << Self::CH9_AL2_READ_ADDR_OFFSET) & Self::CH9_AL2_READ_ADDR_MASK));
     }
-
 }
 
 /// CH9_AL2_READ_ADDR value type for batch read/modify/write operations
@@ -30898,7 +30435,6 @@ impl Ch9Al2ReadAddrVal {
             bits: (self.bits & !Ch9Al2ReadAddr::CH9_AL2_READ_ADDR_MASK) | ((value << Ch9Al2ReadAddr::CH9_AL2_READ_ADDR_OFFSET) & Ch9Al2ReadAddr::CH9_AL2_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch9Al2ReadAddrVal {
@@ -30925,7 +30461,6 @@ impl Ch9Al2ReadAddr {
     pub fn modify_val<F: FnOnce(Ch9Al2ReadAddrVal) -> Ch9Al2ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH9_AL2_WRITE_ADDR_TRIG Register
@@ -30973,7 +30508,6 @@ impl Ch9Al2WriteAddrTrig {
     pub fn write_ch9_al2_write_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH9_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH9_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH9_AL2_WRITE_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH9_AL2_WRITE_ADDR_TRIG value type for batch read/modify/write operations
@@ -31011,7 +30545,6 @@ impl Ch9Al2WriteAddrTrigVal {
             bits: (self.bits & !Ch9Al2WriteAddrTrig::CH9_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch9Al2WriteAddrTrig::CH9_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch9Al2WriteAddrTrig::CH9_AL2_WRITE_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch9Al2WriteAddrTrigVal {
@@ -31038,7 +30571,6 @@ impl Ch9Al2WriteAddrTrig {
     pub fn modify_val<F: FnOnce(Ch9Al2WriteAddrTrigVal) -> Ch9Al2WriteAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH9_AL3_CTRL Register
@@ -31084,7 +30616,6 @@ impl Ch9Al3Ctrl {
     pub fn write_ch9_al3_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH9_AL3_CTRL_MASK) | ((value << Self::CH9_AL3_CTRL_OFFSET) & Self::CH9_AL3_CTRL_MASK));
     }
-
 }
 
 /// CH9_AL3_CTRL value type for batch read/modify/write operations
@@ -31122,7 +30653,6 @@ impl Ch9Al3CtrlVal {
             bits: (self.bits & !Ch9Al3Ctrl::CH9_AL3_CTRL_MASK) | ((value << Ch9Al3Ctrl::CH9_AL3_CTRL_OFFSET) & Ch9Al3Ctrl::CH9_AL3_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch9Al3CtrlVal {
@@ -31149,7 +30679,6 @@ impl Ch9Al3Ctrl {
     pub fn modify_val<F: FnOnce(Ch9Al3CtrlVal) -> Ch9Al3CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH9_AL3_WRITE_ADDR Register
@@ -31195,7 +30724,6 @@ impl Ch9Al3WriteAddr {
     pub fn write_ch9_al3_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH9_AL3_WRITE_ADDR_MASK) | ((value << Self::CH9_AL3_WRITE_ADDR_OFFSET) & Self::CH9_AL3_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH9_AL3_WRITE_ADDR value type for batch read/modify/write operations
@@ -31233,7 +30761,6 @@ impl Ch9Al3WriteAddrVal {
             bits: (self.bits & !Ch9Al3WriteAddr::CH9_AL3_WRITE_ADDR_MASK) | ((value << Ch9Al3WriteAddr::CH9_AL3_WRITE_ADDR_OFFSET) & Ch9Al3WriteAddr::CH9_AL3_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch9Al3WriteAddrVal {
@@ -31260,7 +30787,6 @@ impl Ch9Al3WriteAddr {
     pub fn modify_val<F: FnOnce(Ch9Al3WriteAddrVal) -> Ch9Al3WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH9_AL3_TRANS_COUNT Register
@@ -31306,7 +30832,6 @@ impl Ch9Al3TransCount {
     pub fn write_ch9_al3_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH9_AL3_TRANS_COUNT_MASK) | ((value << Self::CH9_AL3_TRANS_COUNT_OFFSET) & Self::CH9_AL3_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH9_AL3_TRANS_COUNT value type for batch read/modify/write operations
@@ -31344,7 +30869,6 @@ impl Ch9Al3TransCountVal {
             bits: (self.bits & !Ch9Al3TransCount::CH9_AL3_TRANS_COUNT_MASK) | ((value << Ch9Al3TransCount::CH9_AL3_TRANS_COUNT_OFFSET) & Ch9Al3TransCount::CH9_AL3_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch9Al3TransCountVal {
@@ -31371,7 +30895,6 @@ impl Ch9Al3TransCount {
     pub fn modify_val<F: FnOnce(Ch9Al3TransCountVal) -> Ch9Al3TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH9_AL3_READ_ADDR_TRIG Register
@@ -31419,7 +30942,6 @@ impl Ch9Al3ReadAddrTrig {
     pub fn write_ch9_al3_read_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH9_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH9_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH9_AL3_READ_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH9_AL3_READ_ADDR_TRIG value type for batch read/modify/write operations
@@ -31457,7 +30979,6 @@ impl Ch9Al3ReadAddrTrigVal {
             bits: (self.bits & !Ch9Al3ReadAddrTrig::CH9_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch9Al3ReadAddrTrig::CH9_AL3_READ_ADDR_TRIG_OFFSET) & Ch9Al3ReadAddrTrig::CH9_AL3_READ_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch9Al3ReadAddrTrigVal {
@@ -31484,7 +31005,6 @@ impl Ch9Al3ReadAddrTrig {
     pub fn modify_val<F: FnOnce(Ch9Al3ReadAddrTrigVal) -> Ch9Al3ReadAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH10_READ_ADDR Register
@@ -31540,7 +31060,6 @@ impl Ch10ReadAddr {
     pub fn write_ch10_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH10_READ_ADDR_MASK) | ((value << Self::CH10_READ_ADDR_OFFSET) & Self::CH10_READ_ADDR_MASK));
     }
-
 }
 
 /// CH10_READ_ADDR value type for batch read/modify/write operations
@@ -31588,7 +31107,6 @@ impl Ch10ReadAddrVal {
             bits: (self.bits & !Ch10ReadAddr::CH10_READ_ADDR_MASK) | ((value << Ch10ReadAddr::CH10_READ_ADDR_OFFSET) & Ch10ReadAddr::CH10_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch10ReadAddrVal {
@@ -31615,7 +31133,6 @@ impl Ch10ReadAddr {
     pub fn modify_val<F: FnOnce(Ch10ReadAddrVal) -> Ch10ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH10_WRITE_ADDR Register
@@ -31671,7 +31188,6 @@ impl Ch10WriteAddr {
     pub fn write_ch10_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH10_WRITE_ADDR_MASK) | ((value << Self::CH10_WRITE_ADDR_OFFSET) & Self::CH10_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH10_WRITE_ADDR value type for batch read/modify/write operations
@@ -31719,7 +31235,6 @@ impl Ch10WriteAddrVal {
             bits: (self.bits & !Ch10WriteAddr::CH10_WRITE_ADDR_MASK) | ((value << Ch10WriteAddr::CH10_WRITE_ADDR_OFFSET) & Ch10WriteAddr::CH10_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch10WriteAddrVal {
@@ -31746,7 +31261,6 @@ impl Ch10WriteAddr {
     pub fn modify_val<F: FnOnce(Ch10WriteAddrVal) -> Ch10WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH10_TRANS_COUNT Register
@@ -31864,7 +31378,6 @@ impl Ch10TransCount {
     pub fn write_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
     }
-
 }
 
 /// CH10_TRANS_COUNT value type for batch read/modify/write operations
@@ -31944,7 +31457,6 @@ impl Ch10TransCountVal {
             bits: (self.bits & !Ch10TransCount::COUNT_MASK) | ((value << Ch10TransCount::COUNT_OFFSET) & Ch10TransCount::COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch10TransCountVal {
@@ -31971,7 +31483,6 @@ impl Ch10TransCount {
     pub fn modify_val<F: FnOnce(Ch10TransCountVal) -> Ch10TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH10_CTRL_TRIG Register
@@ -32852,7 +32363,6 @@ impl Ch10CtrlTrig {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// CH10_CTRL_TRIG value type for batch read/modify/write operations
@@ -33267,7 +32777,6 @@ impl Ch10CtrlTrigVal {
             }
         }
     }
-
 }
 
 impl Default for Ch10CtrlTrigVal {
@@ -33294,7 +32803,6 @@ impl Ch10CtrlTrig {
     pub fn modify_val<F: FnOnce(Ch10CtrlTrigVal) -> Ch10CtrlTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH10_AL1_CTRL Register
@@ -33340,7 +32848,6 @@ impl Ch10Al1Ctrl {
     pub fn write_ch10_al1_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH10_AL1_CTRL_MASK) | ((value << Self::CH10_AL1_CTRL_OFFSET) & Self::CH10_AL1_CTRL_MASK));
     }
-
 }
 
 /// CH10_AL1_CTRL value type for batch read/modify/write operations
@@ -33378,7 +32885,6 @@ impl Ch10Al1CtrlVal {
             bits: (self.bits & !Ch10Al1Ctrl::CH10_AL1_CTRL_MASK) | ((value << Ch10Al1Ctrl::CH10_AL1_CTRL_OFFSET) & Ch10Al1Ctrl::CH10_AL1_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch10Al1CtrlVal {
@@ -33405,7 +32911,6 @@ impl Ch10Al1Ctrl {
     pub fn modify_val<F: FnOnce(Ch10Al1CtrlVal) -> Ch10Al1CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH10_AL1_READ_ADDR Register
@@ -33451,7 +32956,6 @@ impl Ch10Al1ReadAddr {
     pub fn write_ch10_al1_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH10_AL1_READ_ADDR_MASK) | ((value << Self::CH10_AL1_READ_ADDR_OFFSET) & Self::CH10_AL1_READ_ADDR_MASK));
     }
-
 }
 
 /// CH10_AL1_READ_ADDR value type for batch read/modify/write operations
@@ -33489,7 +32993,6 @@ impl Ch10Al1ReadAddrVal {
             bits: (self.bits & !Ch10Al1ReadAddr::CH10_AL1_READ_ADDR_MASK) | ((value << Ch10Al1ReadAddr::CH10_AL1_READ_ADDR_OFFSET) & Ch10Al1ReadAddr::CH10_AL1_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch10Al1ReadAddrVal {
@@ -33516,7 +33019,6 @@ impl Ch10Al1ReadAddr {
     pub fn modify_val<F: FnOnce(Ch10Al1ReadAddrVal) -> Ch10Al1ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH10_AL1_WRITE_ADDR Register
@@ -33562,7 +33064,6 @@ impl Ch10Al1WriteAddr {
     pub fn write_ch10_al1_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH10_AL1_WRITE_ADDR_MASK) | ((value << Self::CH10_AL1_WRITE_ADDR_OFFSET) & Self::CH10_AL1_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH10_AL1_WRITE_ADDR value type for batch read/modify/write operations
@@ -33600,7 +33101,6 @@ impl Ch10Al1WriteAddrVal {
             bits: (self.bits & !Ch10Al1WriteAddr::CH10_AL1_WRITE_ADDR_MASK) | ((value << Ch10Al1WriteAddr::CH10_AL1_WRITE_ADDR_OFFSET) & Ch10Al1WriteAddr::CH10_AL1_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch10Al1WriteAddrVal {
@@ -33627,7 +33127,6 @@ impl Ch10Al1WriteAddr {
     pub fn modify_val<F: FnOnce(Ch10Al1WriteAddrVal) -> Ch10Al1WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH10_AL1_TRANS_COUNT_TRIG Register
@@ -33675,7 +33174,6 @@ impl Ch10Al1TransCountTrig {
     pub fn write_ch10_al1_trans_count_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH10_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH10_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH10_AL1_TRANS_COUNT_TRIG_MASK));
     }
-
 }
 
 /// CH10_AL1_TRANS_COUNT_TRIG value type for batch read/modify/write operations
@@ -33713,7 +33211,6 @@ impl Ch10Al1TransCountTrigVal {
             bits: (self.bits & !Ch10Al1TransCountTrig::CH10_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch10Al1TransCountTrig::CH10_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch10Al1TransCountTrig::CH10_AL1_TRANS_COUNT_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch10Al1TransCountTrigVal {
@@ -33740,7 +33237,6 @@ impl Ch10Al1TransCountTrig {
     pub fn modify_val<F: FnOnce(Ch10Al1TransCountTrigVal) -> Ch10Al1TransCountTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH10_AL2_CTRL Register
@@ -33786,7 +33282,6 @@ impl Ch10Al2Ctrl {
     pub fn write_ch10_al2_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH10_AL2_CTRL_MASK) | ((value << Self::CH10_AL2_CTRL_OFFSET) & Self::CH10_AL2_CTRL_MASK));
     }
-
 }
 
 /// CH10_AL2_CTRL value type for batch read/modify/write operations
@@ -33824,7 +33319,6 @@ impl Ch10Al2CtrlVal {
             bits: (self.bits & !Ch10Al2Ctrl::CH10_AL2_CTRL_MASK) | ((value << Ch10Al2Ctrl::CH10_AL2_CTRL_OFFSET) & Ch10Al2Ctrl::CH10_AL2_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch10Al2CtrlVal {
@@ -33851,7 +33345,6 @@ impl Ch10Al2Ctrl {
     pub fn modify_val<F: FnOnce(Ch10Al2CtrlVal) -> Ch10Al2CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH10_AL2_TRANS_COUNT Register
@@ -33897,7 +33390,6 @@ impl Ch10Al2TransCount {
     pub fn write_ch10_al2_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH10_AL2_TRANS_COUNT_MASK) | ((value << Self::CH10_AL2_TRANS_COUNT_OFFSET) & Self::CH10_AL2_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH10_AL2_TRANS_COUNT value type for batch read/modify/write operations
@@ -33935,7 +33427,6 @@ impl Ch10Al2TransCountVal {
             bits: (self.bits & !Ch10Al2TransCount::CH10_AL2_TRANS_COUNT_MASK) | ((value << Ch10Al2TransCount::CH10_AL2_TRANS_COUNT_OFFSET) & Ch10Al2TransCount::CH10_AL2_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch10Al2TransCountVal {
@@ -33962,7 +33453,6 @@ impl Ch10Al2TransCount {
     pub fn modify_val<F: FnOnce(Ch10Al2TransCountVal) -> Ch10Al2TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH10_AL2_READ_ADDR Register
@@ -34008,7 +33498,6 @@ impl Ch10Al2ReadAddr {
     pub fn write_ch10_al2_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH10_AL2_READ_ADDR_MASK) | ((value << Self::CH10_AL2_READ_ADDR_OFFSET) & Self::CH10_AL2_READ_ADDR_MASK));
     }
-
 }
 
 /// CH10_AL2_READ_ADDR value type for batch read/modify/write operations
@@ -34046,7 +33535,6 @@ impl Ch10Al2ReadAddrVal {
             bits: (self.bits & !Ch10Al2ReadAddr::CH10_AL2_READ_ADDR_MASK) | ((value << Ch10Al2ReadAddr::CH10_AL2_READ_ADDR_OFFSET) & Ch10Al2ReadAddr::CH10_AL2_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch10Al2ReadAddrVal {
@@ -34073,7 +33561,6 @@ impl Ch10Al2ReadAddr {
     pub fn modify_val<F: FnOnce(Ch10Al2ReadAddrVal) -> Ch10Al2ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH10_AL2_WRITE_ADDR_TRIG Register
@@ -34121,7 +33608,6 @@ impl Ch10Al2WriteAddrTrig {
     pub fn write_ch10_al2_write_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH10_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH10_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH10_AL2_WRITE_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH10_AL2_WRITE_ADDR_TRIG value type for batch read/modify/write operations
@@ -34159,7 +33645,6 @@ impl Ch10Al2WriteAddrTrigVal {
             bits: (self.bits & !Ch10Al2WriteAddrTrig::CH10_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch10Al2WriteAddrTrig::CH10_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch10Al2WriteAddrTrig::CH10_AL2_WRITE_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch10Al2WriteAddrTrigVal {
@@ -34186,7 +33671,6 @@ impl Ch10Al2WriteAddrTrig {
     pub fn modify_val<F: FnOnce(Ch10Al2WriteAddrTrigVal) -> Ch10Al2WriteAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH10_AL3_CTRL Register
@@ -34232,7 +33716,6 @@ impl Ch10Al3Ctrl {
     pub fn write_ch10_al3_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH10_AL3_CTRL_MASK) | ((value << Self::CH10_AL3_CTRL_OFFSET) & Self::CH10_AL3_CTRL_MASK));
     }
-
 }
 
 /// CH10_AL3_CTRL value type for batch read/modify/write operations
@@ -34270,7 +33753,6 @@ impl Ch10Al3CtrlVal {
             bits: (self.bits & !Ch10Al3Ctrl::CH10_AL3_CTRL_MASK) | ((value << Ch10Al3Ctrl::CH10_AL3_CTRL_OFFSET) & Ch10Al3Ctrl::CH10_AL3_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch10Al3CtrlVal {
@@ -34297,7 +33779,6 @@ impl Ch10Al3Ctrl {
     pub fn modify_val<F: FnOnce(Ch10Al3CtrlVal) -> Ch10Al3CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH10_AL3_WRITE_ADDR Register
@@ -34343,7 +33824,6 @@ impl Ch10Al3WriteAddr {
     pub fn write_ch10_al3_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH10_AL3_WRITE_ADDR_MASK) | ((value << Self::CH10_AL3_WRITE_ADDR_OFFSET) & Self::CH10_AL3_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH10_AL3_WRITE_ADDR value type for batch read/modify/write operations
@@ -34381,7 +33861,6 @@ impl Ch10Al3WriteAddrVal {
             bits: (self.bits & !Ch10Al3WriteAddr::CH10_AL3_WRITE_ADDR_MASK) | ((value << Ch10Al3WriteAddr::CH10_AL3_WRITE_ADDR_OFFSET) & Ch10Al3WriteAddr::CH10_AL3_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch10Al3WriteAddrVal {
@@ -34408,7 +33887,6 @@ impl Ch10Al3WriteAddr {
     pub fn modify_val<F: FnOnce(Ch10Al3WriteAddrVal) -> Ch10Al3WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH10_AL3_TRANS_COUNT Register
@@ -34454,7 +33932,6 @@ impl Ch10Al3TransCount {
     pub fn write_ch10_al3_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH10_AL3_TRANS_COUNT_MASK) | ((value << Self::CH10_AL3_TRANS_COUNT_OFFSET) & Self::CH10_AL3_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH10_AL3_TRANS_COUNT value type for batch read/modify/write operations
@@ -34492,7 +33969,6 @@ impl Ch10Al3TransCountVal {
             bits: (self.bits & !Ch10Al3TransCount::CH10_AL3_TRANS_COUNT_MASK) | ((value << Ch10Al3TransCount::CH10_AL3_TRANS_COUNT_OFFSET) & Ch10Al3TransCount::CH10_AL3_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch10Al3TransCountVal {
@@ -34519,7 +33995,6 @@ impl Ch10Al3TransCount {
     pub fn modify_val<F: FnOnce(Ch10Al3TransCountVal) -> Ch10Al3TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH10_AL3_READ_ADDR_TRIG Register
@@ -34567,7 +34042,6 @@ impl Ch10Al3ReadAddrTrig {
     pub fn write_ch10_al3_read_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH10_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH10_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH10_AL3_READ_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH10_AL3_READ_ADDR_TRIG value type for batch read/modify/write operations
@@ -34605,7 +34079,6 @@ impl Ch10Al3ReadAddrTrigVal {
             bits: (self.bits & !Ch10Al3ReadAddrTrig::CH10_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch10Al3ReadAddrTrig::CH10_AL3_READ_ADDR_TRIG_OFFSET) & Ch10Al3ReadAddrTrig::CH10_AL3_READ_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch10Al3ReadAddrTrigVal {
@@ -34632,7 +34105,6 @@ impl Ch10Al3ReadAddrTrig {
     pub fn modify_val<F: FnOnce(Ch10Al3ReadAddrTrigVal) -> Ch10Al3ReadAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH11_READ_ADDR Register
@@ -34688,7 +34160,6 @@ impl Ch11ReadAddr {
     pub fn write_ch11_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH11_READ_ADDR_MASK) | ((value << Self::CH11_READ_ADDR_OFFSET) & Self::CH11_READ_ADDR_MASK));
     }
-
 }
 
 /// CH11_READ_ADDR value type for batch read/modify/write operations
@@ -34736,7 +34207,6 @@ impl Ch11ReadAddrVal {
             bits: (self.bits & !Ch11ReadAddr::CH11_READ_ADDR_MASK) | ((value << Ch11ReadAddr::CH11_READ_ADDR_OFFSET) & Ch11ReadAddr::CH11_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch11ReadAddrVal {
@@ -34763,7 +34233,6 @@ impl Ch11ReadAddr {
     pub fn modify_val<F: FnOnce(Ch11ReadAddrVal) -> Ch11ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH11_WRITE_ADDR Register
@@ -34819,7 +34288,6 @@ impl Ch11WriteAddr {
     pub fn write_ch11_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH11_WRITE_ADDR_MASK) | ((value << Self::CH11_WRITE_ADDR_OFFSET) & Self::CH11_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH11_WRITE_ADDR value type for batch read/modify/write operations
@@ -34867,7 +34335,6 @@ impl Ch11WriteAddrVal {
             bits: (self.bits & !Ch11WriteAddr::CH11_WRITE_ADDR_MASK) | ((value << Ch11WriteAddr::CH11_WRITE_ADDR_OFFSET) & Ch11WriteAddr::CH11_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch11WriteAddrVal {
@@ -34894,7 +34361,6 @@ impl Ch11WriteAddr {
     pub fn modify_val<F: FnOnce(Ch11WriteAddrVal) -> Ch11WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH11_TRANS_COUNT Register
@@ -35012,7 +34478,6 @@ impl Ch11TransCount {
     pub fn write_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
     }
-
 }
 
 /// CH11_TRANS_COUNT value type for batch read/modify/write operations
@@ -35092,7 +34557,6 @@ impl Ch11TransCountVal {
             bits: (self.bits & !Ch11TransCount::COUNT_MASK) | ((value << Ch11TransCount::COUNT_OFFSET) & Ch11TransCount::COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch11TransCountVal {
@@ -35119,7 +34583,6 @@ impl Ch11TransCount {
     pub fn modify_val<F: FnOnce(Ch11TransCountVal) -> Ch11TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH11_CTRL_TRIG Register
@@ -36000,7 +35463,6 @@ impl Ch11CtrlTrig {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// CH11_CTRL_TRIG value type for batch read/modify/write operations
@@ -36415,7 +35877,6 @@ impl Ch11CtrlTrigVal {
             }
         }
     }
-
 }
 
 impl Default for Ch11CtrlTrigVal {
@@ -36442,7 +35903,6 @@ impl Ch11CtrlTrig {
     pub fn modify_val<F: FnOnce(Ch11CtrlTrigVal) -> Ch11CtrlTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH11_AL1_CTRL Register
@@ -36488,7 +35948,6 @@ impl Ch11Al1Ctrl {
     pub fn write_ch11_al1_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH11_AL1_CTRL_MASK) | ((value << Self::CH11_AL1_CTRL_OFFSET) & Self::CH11_AL1_CTRL_MASK));
     }
-
 }
 
 /// CH11_AL1_CTRL value type for batch read/modify/write operations
@@ -36526,7 +35985,6 @@ impl Ch11Al1CtrlVal {
             bits: (self.bits & !Ch11Al1Ctrl::CH11_AL1_CTRL_MASK) | ((value << Ch11Al1Ctrl::CH11_AL1_CTRL_OFFSET) & Ch11Al1Ctrl::CH11_AL1_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch11Al1CtrlVal {
@@ -36553,7 +36011,6 @@ impl Ch11Al1Ctrl {
     pub fn modify_val<F: FnOnce(Ch11Al1CtrlVal) -> Ch11Al1CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH11_AL1_READ_ADDR Register
@@ -36599,7 +36056,6 @@ impl Ch11Al1ReadAddr {
     pub fn write_ch11_al1_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH11_AL1_READ_ADDR_MASK) | ((value << Self::CH11_AL1_READ_ADDR_OFFSET) & Self::CH11_AL1_READ_ADDR_MASK));
     }
-
 }
 
 /// CH11_AL1_READ_ADDR value type for batch read/modify/write operations
@@ -36637,7 +36093,6 @@ impl Ch11Al1ReadAddrVal {
             bits: (self.bits & !Ch11Al1ReadAddr::CH11_AL1_READ_ADDR_MASK) | ((value << Ch11Al1ReadAddr::CH11_AL1_READ_ADDR_OFFSET) & Ch11Al1ReadAddr::CH11_AL1_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch11Al1ReadAddrVal {
@@ -36664,7 +36119,6 @@ impl Ch11Al1ReadAddr {
     pub fn modify_val<F: FnOnce(Ch11Al1ReadAddrVal) -> Ch11Al1ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH11_AL1_WRITE_ADDR Register
@@ -36710,7 +36164,6 @@ impl Ch11Al1WriteAddr {
     pub fn write_ch11_al1_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH11_AL1_WRITE_ADDR_MASK) | ((value << Self::CH11_AL1_WRITE_ADDR_OFFSET) & Self::CH11_AL1_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH11_AL1_WRITE_ADDR value type for batch read/modify/write operations
@@ -36748,7 +36201,6 @@ impl Ch11Al1WriteAddrVal {
             bits: (self.bits & !Ch11Al1WriteAddr::CH11_AL1_WRITE_ADDR_MASK) | ((value << Ch11Al1WriteAddr::CH11_AL1_WRITE_ADDR_OFFSET) & Ch11Al1WriteAddr::CH11_AL1_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch11Al1WriteAddrVal {
@@ -36775,7 +36227,6 @@ impl Ch11Al1WriteAddr {
     pub fn modify_val<F: FnOnce(Ch11Al1WriteAddrVal) -> Ch11Al1WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH11_AL1_TRANS_COUNT_TRIG Register
@@ -36823,7 +36274,6 @@ impl Ch11Al1TransCountTrig {
     pub fn write_ch11_al1_trans_count_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH11_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH11_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH11_AL1_TRANS_COUNT_TRIG_MASK));
     }
-
 }
 
 /// CH11_AL1_TRANS_COUNT_TRIG value type for batch read/modify/write operations
@@ -36861,7 +36311,6 @@ impl Ch11Al1TransCountTrigVal {
             bits: (self.bits & !Ch11Al1TransCountTrig::CH11_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch11Al1TransCountTrig::CH11_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch11Al1TransCountTrig::CH11_AL1_TRANS_COUNT_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch11Al1TransCountTrigVal {
@@ -36888,7 +36337,6 @@ impl Ch11Al1TransCountTrig {
     pub fn modify_val<F: FnOnce(Ch11Al1TransCountTrigVal) -> Ch11Al1TransCountTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH11_AL2_CTRL Register
@@ -36934,7 +36382,6 @@ impl Ch11Al2Ctrl {
     pub fn write_ch11_al2_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH11_AL2_CTRL_MASK) | ((value << Self::CH11_AL2_CTRL_OFFSET) & Self::CH11_AL2_CTRL_MASK));
     }
-
 }
 
 /// CH11_AL2_CTRL value type for batch read/modify/write operations
@@ -36972,7 +36419,6 @@ impl Ch11Al2CtrlVal {
             bits: (self.bits & !Ch11Al2Ctrl::CH11_AL2_CTRL_MASK) | ((value << Ch11Al2Ctrl::CH11_AL2_CTRL_OFFSET) & Ch11Al2Ctrl::CH11_AL2_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch11Al2CtrlVal {
@@ -36999,7 +36445,6 @@ impl Ch11Al2Ctrl {
     pub fn modify_val<F: FnOnce(Ch11Al2CtrlVal) -> Ch11Al2CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH11_AL2_TRANS_COUNT Register
@@ -37045,7 +36490,6 @@ impl Ch11Al2TransCount {
     pub fn write_ch11_al2_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH11_AL2_TRANS_COUNT_MASK) | ((value << Self::CH11_AL2_TRANS_COUNT_OFFSET) & Self::CH11_AL2_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH11_AL2_TRANS_COUNT value type for batch read/modify/write operations
@@ -37083,7 +36527,6 @@ impl Ch11Al2TransCountVal {
             bits: (self.bits & !Ch11Al2TransCount::CH11_AL2_TRANS_COUNT_MASK) | ((value << Ch11Al2TransCount::CH11_AL2_TRANS_COUNT_OFFSET) & Ch11Al2TransCount::CH11_AL2_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch11Al2TransCountVal {
@@ -37110,7 +36553,6 @@ impl Ch11Al2TransCount {
     pub fn modify_val<F: FnOnce(Ch11Al2TransCountVal) -> Ch11Al2TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH11_AL2_READ_ADDR Register
@@ -37156,7 +36598,6 @@ impl Ch11Al2ReadAddr {
     pub fn write_ch11_al2_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH11_AL2_READ_ADDR_MASK) | ((value << Self::CH11_AL2_READ_ADDR_OFFSET) & Self::CH11_AL2_READ_ADDR_MASK));
     }
-
 }
 
 /// CH11_AL2_READ_ADDR value type for batch read/modify/write operations
@@ -37194,7 +36635,6 @@ impl Ch11Al2ReadAddrVal {
             bits: (self.bits & !Ch11Al2ReadAddr::CH11_AL2_READ_ADDR_MASK) | ((value << Ch11Al2ReadAddr::CH11_AL2_READ_ADDR_OFFSET) & Ch11Al2ReadAddr::CH11_AL2_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch11Al2ReadAddrVal {
@@ -37221,7 +36661,6 @@ impl Ch11Al2ReadAddr {
     pub fn modify_val<F: FnOnce(Ch11Al2ReadAddrVal) -> Ch11Al2ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH11_AL2_WRITE_ADDR_TRIG Register
@@ -37269,7 +36708,6 @@ impl Ch11Al2WriteAddrTrig {
     pub fn write_ch11_al2_write_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH11_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH11_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH11_AL2_WRITE_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH11_AL2_WRITE_ADDR_TRIG value type for batch read/modify/write operations
@@ -37307,7 +36745,6 @@ impl Ch11Al2WriteAddrTrigVal {
             bits: (self.bits & !Ch11Al2WriteAddrTrig::CH11_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch11Al2WriteAddrTrig::CH11_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch11Al2WriteAddrTrig::CH11_AL2_WRITE_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch11Al2WriteAddrTrigVal {
@@ -37334,7 +36771,6 @@ impl Ch11Al2WriteAddrTrig {
     pub fn modify_val<F: FnOnce(Ch11Al2WriteAddrTrigVal) -> Ch11Al2WriteAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH11_AL3_CTRL Register
@@ -37380,7 +36816,6 @@ impl Ch11Al3Ctrl {
     pub fn write_ch11_al3_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH11_AL3_CTRL_MASK) | ((value << Self::CH11_AL3_CTRL_OFFSET) & Self::CH11_AL3_CTRL_MASK));
     }
-
 }
 
 /// CH11_AL3_CTRL value type for batch read/modify/write operations
@@ -37418,7 +36853,6 @@ impl Ch11Al3CtrlVal {
             bits: (self.bits & !Ch11Al3Ctrl::CH11_AL3_CTRL_MASK) | ((value << Ch11Al3Ctrl::CH11_AL3_CTRL_OFFSET) & Ch11Al3Ctrl::CH11_AL3_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch11Al3CtrlVal {
@@ -37445,7 +36879,6 @@ impl Ch11Al3Ctrl {
     pub fn modify_val<F: FnOnce(Ch11Al3CtrlVal) -> Ch11Al3CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH11_AL3_WRITE_ADDR Register
@@ -37491,7 +36924,6 @@ impl Ch11Al3WriteAddr {
     pub fn write_ch11_al3_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH11_AL3_WRITE_ADDR_MASK) | ((value << Self::CH11_AL3_WRITE_ADDR_OFFSET) & Self::CH11_AL3_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH11_AL3_WRITE_ADDR value type for batch read/modify/write operations
@@ -37529,7 +36961,6 @@ impl Ch11Al3WriteAddrVal {
             bits: (self.bits & !Ch11Al3WriteAddr::CH11_AL3_WRITE_ADDR_MASK) | ((value << Ch11Al3WriteAddr::CH11_AL3_WRITE_ADDR_OFFSET) & Ch11Al3WriteAddr::CH11_AL3_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch11Al3WriteAddrVal {
@@ -37556,7 +36987,6 @@ impl Ch11Al3WriteAddr {
     pub fn modify_val<F: FnOnce(Ch11Al3WriteAddrVal) -> Ch11Al3WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH11_AL3_TRANS_COUNT Register
@@ -37602,7 +37032,6 @@ impl Ch11Al3TransCount {
     pub fn write_ch11_al3_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH11_AL3_TRANS_COUNT_MASK) | ((value << Self::CH11_AL3_TRANS_COUNT_OFFSET) & Self::CH11_AL3_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH11_AL3_TRANS_COUNT value type for batch read/modify/write operations
@@ -37640,7 +37069,6 @@ impl Ch11Al3TransCountVal {
             bits: (self.bits & !Ch11Al3TransCount::CH11_AL3_TRANS_COUNT_MASK) | ((value << Ch11Al3TransCount::CH11_AL3_TRANS_COUNT_OFFSET) & Ch11Al3TransCount::CH11_AL3_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch11Al3TransCountVal {
@@ -37667,7 +37095,6 @@ impl Ch11Al3TransCount {
     pub fn modify_val<F: FnOnce(Ch11Al3TransCountVal) -> Ch11Al3TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH11_AL3_READ_ADDR_TRIG Register
@@ -37715,7 +37142,6 @@ impl Ch11Al3ReadAddrTrig {
     pub fn write_ch11_al3_read_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH11_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH11_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH11_AL3_READ_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH11_AL3_READ_ADDR_TRIG value type for batch read/modify/write operations
@@ -37753,7 +37179,6 @@ impl Ch11Al3ReadAddrTrigVal {
             bits: (self.bits & !Ch11Al3ReadAddrTrig::CH11_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch11Al3ReadAddrTrig::CH11_AL3_READ_ADDR_TRIG_OFFSET) & Ch11Al3ReadAddrTrig::CH11_AL3_READ_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch11Al3ReadAddrTrigVal {
@@ -37780,7 +37205,6 @@ impl Ch11Al3ReadAddrTrig {
     pub fn modify_val<F: FnOnce(Ch11Al3ReadAddrTrigVal) -> Ch11Al3ReadAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH12_READ_ADDR Register
@@ -37836,7 +37260,6 @@ impl Ch12ReadAddr {
     pub fn write_ch12_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH12_READ_ADDR_MASK) | ((value << Self::CH12_READ_ADDR_OFFSET) & Self::CH12_READ_ADDR_MASK));
     }
-
 }
 
 /// CH12_READ_ADDR value type for batch read/modify/write operations
@@ -37884,7 +37307,6 @@ impl Ch12ReadAddrVal {
             bits: (self.bits & !Ch12ReadAddr::CH12_READ_ADDR_MASK) | ((value << Ch12ReadAddr::CH12_READ_ADDR_OFFSET) & Ch12ReadAddr::CH12_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch12ReadAddrVal {
@@ -37911,7 +37333,6 @@ impl Ch12ReadAddr {
     pub fn modify_val<F: FnOnce(Ch12ReadAddrVal) -> Ch12ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH12_WRITE_ADDR Register
@@ -37967,7 +37388,6 @@ impl Ch12WriteAddr {
     pub fn write_ch12_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH12_WRITE_ADDR_MASK) | ((value << Self::CH12_WRITE_ADDR_OFFSET) & Self::CH12_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH12_WRITE_ADDR value type for batch read/modify/write operations
@@ -38015,7 +37435,6 @@ impl Ch12WriteAddrVal {
             bits: (self.bits & !Ch12WriteAddr::CH12_WRITE_ADDR_MASK) | ((value << Ch12WriteAddr::CH12_WRITE_ADDR_OFFSET) & Ch12WriteAddr::CH12_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch12WriteAddrVal {
@@ -38042,7 +37461,6 @@ impl Ch12WriteAddr {
     pub fn modify_val<F: FnOnce(Ch12WriteAddrVal) -> Ch12WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH12_TRANS_COUNT Register
@@ -38160,7 +37578,6 @@ impl Ch12TransCount {
     pub fn write_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
     }
-
 }
 
 /// CH12_TRANS_COUNT value type for batch read/modify/write operations
@@ -38240,7 +37657,6 @@ impl Ch12TransCountVal {
             bits: (self.bits & !Ch12TransCount::COUNT_MASK) | ((value << Ch12TransCount::COUNT_OFFSET) & Ch12TransCount::COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch12TransCountVal {
@@ -38267,7 +37683,6 @@ impl Ch12TransCount {
     pub fn modify_val<F: FnOnce(Ch12TransCountVal) -> Ch12TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH12_CTRL_TRIG Register
@@ -39148,7 +38563,6 @@ impl Ch12CtrlTrig {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// CH12_CTRL_TRIG value type for batch read/modify/write operations
@@ -39563,7 +38977,6 @@ impl Ch12CtrlTrigVal {
             }
         }
     }
-
 }
 
 impl Default for Ch12CtrlTrigVal {
@@ -39590,7 +39003,6 @@ impl Ch12CtrlTrig {
     pub fn modify_val<F: FnOnce(Ch12CtrlTrigVal) -> Ch12CtrlTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH12_AL1_CTRL Register
@@ -39636,7 +39048,6 @@ impl Ch12Al1Ctrl {
     pub fn write_ch12_al1_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH12_AL1_CTRL_MASK) | ((value << Self::CH12_AL1_CTRL_OFFSET) & Self::CH12_AL1_CTRL_MASK));
     }
-
 }
 
 /// CH12_AL1_CTRL value type for batch read/modify/write operations
@@ -39674,7 +39085,6 @@ impl Ch12Al1CtrlVal {
             bits: (self.bits & !Ch12Al1Ctrl::CH12_AL1_CTRL_MASK) | ((value << Ch12Al1Ctrl::CH12_AL1_CTRL_OFFSET) & Ch12Al1Ctrl::CH12_AL1_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch12Al1CtrlVal {
@@ -39701,7 +39111,6 @@ impl Ch12Al1Ctrl {
     pub fn modify_val<F: FnOnce(Ch12Al1CtrlVal) -> Ch12Al1CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH12_AL1_READ_ADDR Register
@@ -39747,7 +39156,6 @@ impl Ch12Al1ReadAddr {
     pub fn write_ch12_al1_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH12_AL1_READ_ADDR_MASK) | ((value << Self::CH12_AL1_READ_ADDR_OFFSET) & Self::CH12_AL1_READ_ADDR_MASK));
     }
-
 }
 
 /// CH12_AL1_READ_ADDR value type for batch read/modify/write operations
@@ -39785,7 +39193,6 @@ impl Ch12Al1ReadAddrVal {
             bits: (self.bits & !Ch12Al1ReadAddr::CH12_AL1_READ_ADDR_MASK) | ((value << Ch12Al1ReadAddr::CH12_AL1_READ_ADDR_OFFSET) & Ch12Al1ReadAddr::CH12_AL1_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch12Al1ReadAddrVal {
@@ -39812,7 +39219,6 @@ impl Ch12Al1ReadAddr {
     pub fn modify_val<F: FnOnce(Ch12Al1ReadAddrVal) -> Ch12Al1ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH12_AL1_WRITE_ADDR Register
@@ -39858,7 +39264,6 @@ impl Ch12Al1WriteAddr {
     pub fn write_ch12_al1_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH12_AL1_WRITE_ADDR_MASK) | ((value << Self::CH12_AL1_WRITE_ADDR_OFFSET) & Self::CH12_AL1_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH12_AL1_WRITE_ADDR value type for batch read/modify/write operations
@@ -39896,7 +39301,6 @@ impl Ch12Al1WriteAddrVal {
             bits: (self.bits & !Ch12Al1WriteAddr::CH12_AL1_WRITE_ADDR_MASK) | ((value << Ch12Al1WriteAddr::CH12_AL1_WRITE_ADDR_OFFSET) & Ch12Al1WriteAddr::CH12_AL1_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch12Al1WriteAddrVal {
@@ -39923,7 +39327,6 @@ impl Ch12Al1WriteAddr {
     pub fn modify_val<F: FnOnce(Ch12Al1WriteAddrVal) -> Ch12Al1WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH12_AL1_TRANS_COUNT_TRIG Register
@@ -39971,7 +39374,6 @@ impl Ch12Al1TransCountTrig {
     pub fn write_ch12_al1_trans_count_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH12_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH12_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH12_AL1_TRANS_COUNT_TRIG_MASK));
     }
-
 }
 
 /// CH12_AL1_TRANS_COUNT_TRIG value type for batch read/modify/write operations
@@ -40009,7 +39411,6 @@ impl Ch12Al1TransCountTrigVal {
             bits: (self.bits & !Ch12Al1TransCountTrig::CH12_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch12Al1TransCountTrig::CH12_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch12Al1TransCountTrig::CH12_AL1_TRANS_COUNT_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch12Al1TransCountTrigVal {
@@ -40036,7 +39437,6 @@ impl Ch12Al1TransCountTrig {
     pub fn modify_val<F: FnOnce(Ch12Al1TransCountTrigVal) -> Ch12Al1TransCountTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH12_AL2_CTRL Register
@@ -40082,7 +39482,6 @@ impl Ch12Al2Ctrl {
     pub fn write_ch12_al2_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH12_AL2_CTRL_MASK) | ((value << Self::CH12_AL2_CTRL_OFFSET) & Self::CH12_AL2_CTRL_MASK));
     }
-
 }
 
 /// CH12_AL2_CTRL value type for batch read/modify/write operations
@@ -40120,7 +39519,6 @@ impl Ch12Al2CtrlVal {
             bits: (self.bits & !Ch12Al2Ctrl::CH12_AL2_CTRL_MASK) | ((value << Ch12Al2Ctrl::CH12_AL2_CTRL_OFFSET) & Ch12Al2Ctrl::CH12_AL2_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch12Al2CtrlVal {
@@ -40147,7 +39545,6 @@ impl Ch12Al2Ctrl {
     pub fn modify_val<F: FnOnce(Ch12Al2CtrlVal) -> Ch12Al2CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH12_AL2_TRANS_COUNT Register
@@ -40193,7 +39590,6 @@ impl Ch12Al2TransCount {
     pub fn write_ch12_al2_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH12_AL2_TRANS_COUNT_MASK) | ((value << Self::CH12_AL2_TRANS_COUNT_OFFSET) & Self::CH12_AL2_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH12_AL2_TRANS_COUNT value type for batch read/modify/write operations
@@ -40231,7 +39627,6 @@ impl Ch12Al2TransCountVal {
             bits: (self.bits & !Ch12Al2TransCount::CH12_AL2_TRANS_COUNT_MASK) | ((value << Ch12Al2TransCount::CH12_AL2_TRANS_COUNT_OFFSET) & Ch12Al2TransCount::CH12_AL2_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch12Al2TransCountVal {
@@ -40258,7 +39653,6 @@ impl Ch12Al2TransCount {
     pub fn modify_val<F: FnOnce(Ch12Al2TransCountVal) -> Ch12Al2TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH12_AL2_READ_ADDR Register
@@ -40304,7 +39698,6 @@ impl Ch12Al2ReadAddr {
     pub fn write_ch12_al2_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH12_AL2_READ_ADDR_MASK) | ((value << Self::CH12_AL2_READ_ADDR_OFFSET) & Self::CH12_AL2_READ_ADDR_MASK));
     }
-
 }
 
 /// CH12_AL2_READ_ADDR value type for batch read/modify/write operations
@@ -40342,7 +39735,6 @@ impl Ch12Al2ReadAddrVal {
             bits: (self.bits & !Ch12Al2ReadAddr::CH12_AL2_READ_ADDR_MASK) | ((value << Ch12Al2ReadAddr::CH12_AL2_READ_ADDR_OFFSET) & Ch12Al2ReadAddr::CH12_AL2_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch12Al2ReadAddrVal {
@@ -40369,7 +39761,6 @@ impl Ch12Al2ReadAddr {
     pub fn modify_val<F: FnOnce(Ch12Al2ReadAddrVal) -> Ch12Al2ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH12_AL2_WRITE_ADDR_TRIG Register
@@ -40417,7 +39808,6 @@ impl Ch12Al2WriteAddrTrig {
     pub fn write_ch12_al2_write_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH12_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH12_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH12_AL2_WRITE_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH12_AL2_WRITE_ADDR_TRIG value type for batch read/modify/write operations
@@ -40455,7 +39845,6 @@ impl Ch12Al2WriteAddrTrigVal {
             bits: (self.bits & !Ch12Al2WriteAddrTrig::CH12_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch12Al2WriteAddrTrig::CH12_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch12Al2WriteAddrTrig::CH12_AL2_WRITE_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch12Al2WriteAddrTrigVal {
@@ -40482,7 +39871,6 @@ impl Ch12Al2WriteAddrTrig {
     pub fn modify_val<F: FnOnce(Ch12Al2WriteAddrTrigVal) -> Ch12Al2WriteAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH12_AL3_CTRL Register
@@ -40528,7 +39916,6 @@ impl Ch12Al3Ctrl {
     pub fn write_ch12_al3_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH12_AL3_CTRL_MASK) | ((value << Self::CH12_AL3_CTRL_OFFSET) & Self::CH12_AL3_CTRL_MASK));
     }
-
 }
 
 /// CH12_AL3_CTRL value type for batch read/modify/write operations
@@ -40566,7 +39953,6 @@ impl Ch12Al3CtrlVal {
             bits: (self.bits & !Ch12Al3Ctrl::CH12_AL3_CTRL_MASK) | ((value << Ch12Al3Ctrl::CH12_AL3_CTRL_OFFSET) & Ch12Al3Ctrl::CH12_AL3_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch12Al3CtrlVal {
@@ -40593,7 +39979,6 @@ impl Ch12Al3Ctrl {
     pub fn modify_val<F: FnOnce(Ch12Al3CtrlVal) -> Ch12Al3CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH12_AL3_WRITE_ADDR Register
@@ -40639,7 +40024,6 @@ impl Ch12Al3WriteAddr {
     pub fn write_ch12_al3_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH12_AL3_WRITE_ADDR_MASK) | ((value << Self::CH12_AL3_WRITE_ADDR_OFFSET) & Self::CH12_AL3_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH12_AL3_WRITE_ADDR value type for batch read/modify/write operations
@@ -40677,7 +40061,6 @@ impl Ch12Al3WriteAddrVal {
             bits: (self.bits & !Ch12Al3WriteAddr::CH12_AL3_WRITE_ADDR_MASK) | ((value << Ch12Al3WriteAddr::CH12_AL3_WRITE_ADDR_OFFSET) & Ch12Al3WriteAddr::CH12_AL3_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch12Al3WriteAddrVal {
@@ -40704,7 +40087,6 @@ impl Ch12Al3WriteAddr {
     pub fn modify_val<F: FnOnce(Ch12Al3WriteAddrVal) -> Ch12Al3WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH12_AL3_TRANS_COUNT Register
@@ -40750,7 +40132,6 @@ impl Ch12Al3TransCount {
     pub fn write_ch12_al3_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH12_AL3_TRANS_COUNT_MASK) | ((value << Self::CH12_AL3_TRANS_COUNT_OFFSET) & Self::CH12_AL3_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH12_AL3_TRANS_COUNT value type for batch read/modify/write operations
@@ -40788,7 +40169,6 @@ impl Ch12Al3TransCountVal {
             bits: (self.bits & !Ch12Al3TransCount::CH12_AL3_TRANS_COUNT_MASK) | ((value << Ch12Al3TransCount::CH12_AL3_TRANS_COUNT_OFFSET) & Ch12Al3TransCount::CH12_AL3_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch12Al3TransCountVal {
@@ -40815,7 +40195,6 @@ impl Ch12Al3TransCount {
     pub fn modify_val<F: FnOnce(Ch12Al3TransCountVal) -> Ch12Al3TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH12_AL3_READ_ADDR_TRIG Register
@@ -40863,7 +40242,6 @@ impl Ch12Al3ReadAddrTrig {
     pub fn write_ch12_al3_read_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH12_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH12_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH12_AL3_READ_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH12_AL3_READ_ADDR_TRIG value type for batch read/modify/write operations
@@ -40901,7 +40279,6 @@ impl Ch12Al3ReadAddrTrigVal {
             bits: (self.bits & !Ch12Al3ReadAddrTrig::CH12_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch12Al3ReadAddrTrig::CH12_AL3_READ_ADDR_TRIG_OFFSET) & Ch12Al3ReadAddrTrig::CH12_AL3_READ_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch12Al3ReadAddrTrigVal {
@@ -40928,7 +40305,6 @@ impl Ch12Al3ReadAddrTrig {
     pub fn modify_val<F: FnOnce(Ch12Al3ReadAddrTrigVal) -> Ch12Al3ReadAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH13_READ_ADDR Register
@@ -40984,7 +40360,6 @@ impl Ch13ReadAddr {
     pub fn write_ch13_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH13_READ_ADDR_MASK) | ((value << Self::CH13_READ_ADDR_OFFSET) & Self::CH13_READ_ADDR_MASK));
     }
-
 }
 
 /// CH13_READ_ADDR value type for batch read/modify/write operations
@@ -41032,7 +40407,6 @@ impl Ch13ReadAddrVal {
             bits: (self.bits & !Ch13ReadAddr::CH13_READ_ADDR_MASK) | ((value << Ch13ReadAddr::CH13_READ_ADDR_OFFSET) & Ch13ReadAddr::CH13_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch13ReadAddrVal {
@@ -41059,7 +40433,6 @@ impl Ch13ReadAddr {
     pub fn modify_val<F: FnOnce(Ch13ReadAddrVal) -> Ch13ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH13_WRITE_ADDR Register
@@ -41115,7 +40488,6 @@ impl Ch13WriteAddr {
     pub fn write_ch13_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH13_WRITE_ADDR_MASK) | ((value << Self::CH13_WRITE_ADDR_OFFSET) & Self::CH13_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH13_WRITE_ADDR value type for batch read/modify/write operations
@@ -41163,7 +40535,6 @@ impl Ch13WriteAddrVal {
             bits: (self.bits & !Ch13WriteAddr::CH13_WRITE_ADDR_MASK) | ((value << Ch13WriteAddr::CH13_WRITE_ADDR_OFFSET) & Ch13WriteAddr::CH13_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch13WriteAddrVal {
@@ -41190,7 +40561,6 @@ impl Ch13WriteAddr {
     pub fn modify_val<F: FnOnce(Ch13WriteAddrVal) -> Ch13WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH13_TRANS_COUNT Register
@@ -41308,7 +40678,6 @@ impl Ch13TransCount {
     pub fn write_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
     }
-
 }
 
 /// CH13_TRANS_COUNT value type for batch read/modify/write operations
@@ -41388,7 +40757,6 @@ impl Ch13TransCountVal {
             bits: (self.bits & !Ch13TransCount::COUNT_MASK) | ((value << Ch13TransCount::COUNT_OFFSET) & Ch13TransCount::COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch13TransCountVal {
@@ -41415,7 +40783,6 @@ impl Ch13TransCount {
     pub fn modify_val<F: FnOnce(Ch13TransCountVal) -> Ch13TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH13_CTRL_TRIG Register
@@ -42296,7 +41663,6 @@ impl Ch13CtrlTrig {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// CH13_CTRL_TRIG value type for batch read/modify/write operations
@@ -42711,7 +42077,6 @@ impl Ch13CtrlTrigVal {
             }
         }
     }
-
 }
 
 impl Default for Ch13CtrlTrigVal {
@@ -42738,7 +42103,6 @@ impl Ch13CtrlTrig {
     pub fn modify_val<F: FnOnce(Ch13CtrlTrigVal) -> Ch13CtrlTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH13_AL1_CTRL Register
@@ -42784,7 +42148,6 @@ impl Ch13Al1Ctrl {
     pub fn write_ch13_al1_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH13_AL1_CTRL_MASK) | ((value << Self::CH13_AL1_CTRL_OFFSET) & Self::CH13_AL1_CTRL_MASK));
     }
-
 }
 
 /// CH13_AL1_CTRL value type for batch read/modify/write operations
@@ -42822,7 +42185,6 @@ impl Ch13Al1CtrlVal {
             bits: (self.bits & !Ch13Al1Ctrl::CH13_AL1_CTRL_MASK) | ((value << Ch13Al1Ctrl::CH13_AL1_CTRL_OFFSET) & Ch13Al1Ctrl::CH13_AL1_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch13Al1CtrlVal {
@@ -42849,7 +42211,6 @@ impl Ch13Al1Ctrl {
     pub fn modify_val<F: FnOnce(Ch13Al1CtrlVal) -> Ch13Al1CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH13_AL1_READ_ADDR Register
@@ -42895,7 +42256,6 @@ impl Ch13Al1ReadAddr {
     pub fn write_ch13_al1_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH13_AL1_READ_ADDR_MASK) | ((value << Self::CH13_AL1_READ_ADDR_OFFSET) & Self::CH13_AL1_READ_ADDR_MASK));
     }
-
 }
 
 /// CH13_AL1_READ_ADDR value type for batch read/modify/write operations
@@ -42933,7 +42293,6 @@ impl Ch13Al1ReadAddrVal {
             bits: (self.bits & !Ch13Al1ReadAddr::CH13_AL1_READ_ADDR_MASK) | ((value << Ch13Al1ReadAddr::CH13_AL1_READ_ADDR_OFFSET) & Ch13Al1ReadAddr::CH13_AL1_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch13Al1ReadAddrVal {
@@ -42960,7 +42319,6 @@ impl Ch13Al1ReadAddr {
     pub fn modify_val<F: FnOnce(Ch13Al1ReadAddrVal) -> Ch13Al1ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH13_AL1_WRITE_ADDR Register
@@ -43006,7 +42364,6 @@ impl Ch13Al1WriteAddr {
     pub fn write_ch13_al1_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH13_AL1_WRITE_ADDR_MASK) | ((value << Self::CH13_AL1_WRITE_ADDR_OFFSET) & Self::CH13_AL1_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH13_AL1_WRITE_ADDR value type for batch read/modify/write operations
@@ -43044,7 +42401,6 @@ impl Ch13Al1WriteAddrVal {
             bits: (self.bits & !Ch13Al1WriteAddr::CH13_AL1_WRITE_ADDR_MASK) | ((value << Ch13Al1WriteAddr::CH13_AL1_WRITE_ADDR_OFFSET) & Ch13Al1WriteAddr::CH13_AL1_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch13Al1WriteAddrVal {
@@ -43071,7 +42427,6 @@ impl Ch13Al1WriteAddr {
     pub fn modify_val<F: FnOnce(Ch13Al1WriteAddrVal) -> Ch13Al1WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH13_AL1_TRANS_COUNT_TRIG Register
@@ -43119,7 +42474,6 @@ impl Ch13Al1TransCountTrig {
     pub fn write_ch13_al1_trans_count_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH13_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH13_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH13_AL1_TRANS_COUNT_TRIG_MASK));
     }
-
 }
 
 /// CH13_AL1_TRANS_COUNT_TRIG value type for batch read/modify/write operations
@@ -43157,7 +42511,6 @@ impl Ch13Al1TransCountTrigVal {
             bits: (self.bits & !Ch13Al1TransCountTrig::CH13_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch13Al1TransCountTrig::CH13_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch13Al1TransCountTrig::CH13_AL1_TRANS_COUNT_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch13Al1TransCountTrigVal {
@@ -43184,7 +42537,6 @@ impl Ch13Al1TransCountTrig {
     pub fn modify_val<F: FnOnce(Ch13Al1TransCountTrigVal) -> Ch13Al1TransCountTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH13_AL2_CTRL Register
@@ -43230,7 +42582,6 @@ impl Ch13Al2Ctrl {
     pub fn write_ch13_al2_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH13_AL2_CTRL_MASK) | ((value << Self::CH13_AL2_CTRL_OFFSET) & Self::CH13_AL2_CTRL_MASK));
     }
-
 }
 
 /// CH13_AL2_CTRL value type for batch read/modify/write operations
@@ -43268,7 +42619,6 @@ impl Ch13Al2CtrlVal {
             bits: (self.bits & !Ch13Al2Ctrl::CH13_AL2_CTRL_MASK) | ((value << Ch13Al2Ctrl::CH13_AL2_CTRL_OFFSET) & Ch13Al2Ctrl::CH13_AL2_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch13Al2CtrlVal {
@@ -43295,7 +42645,6 @@ impl Ch13Al2Ctrl {
     pub fn modify_val<F: FnOnce(Ch13Al2CtrlVal) -> Ch13Al2CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH13_AL2_TRANS_COUNT Register
@@ -43341,7 +42690,6 @@ impl Ch13Al2TransCount {
     pub fn write_ch13_al2_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH13_AL2_TRANS_COUNT_MASK) | ((value << Self::CH13_AL2_TRANS_COUNT_OFFSET) & Self::CH13_AL2_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH13_AL2_TRANS_COUNT value type for batch read/modify/write operations
@@ -43379,7 +42727,6 @@ impl Ch13Al2TransCountVal {
             bits: (self.bits & !Ch13Al2TransCount::CH13_AL2_TRANS_COUNT_MASK) | ((value << Ch13Al2TransCount::CH13_AL2_TRANS_COUNT_OFFSET) & Ch13Al2TransCount::CH13_AL2_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch13Al2TransCountVal {
@@ -43406,7 +42753,6 @@ impl Ch13Al2TransCount {
     pub fn modify_val<F: FnOnce(Ch13Al2TransCountVal) -> Ch13Al2TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH13_AL2_READ_ADDR Register
@@ -43452,7 +42798,6 @@ impl Ch13Al2ReadAddr {
     pub fn write_ch13_al2_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH13_AL2_READ_ADDR_MASK) | ((value << Self::CH13_AL2_READ_ADDR_OFFSET) & Self::CH13_AL2_READ_ADDR_MASK));
     }
-
 }
 
 /// CH13_AL2_READ_ADDR value type for batch read/modify/write operations
@@ -43490,7 +42835,6 @@ impl Ch13Al2ReadAddrVal {
             bits: (self.bits & !Ch13Al2ReadAddr::CH13_AL2_READ_ADDR_MASK) | ((value << Ch13Al2ReadAddr::CH13_AL2_READ_ADDR_OFFSET) & Ch13Al2ReadAddr::CH13_AL2_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch13Al2ReadAddrVal {
@@ -43517,7 +42861,6 @@ impl Ch13Al2ReadAddr {
     pub fn modify_val<F: FnOnce(Ch13Al2ReadAddrVal) -> Ch13Al2ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH13_AL2_WRITE_ADDR_TRIG Register
@@ -43565,7 +42908,6 @@ impl Ch13Al2WriteAddrTrig {
     pub fn write_ch13_al2_write_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH13_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH13_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH13_AL2_WRITE_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH13_AL2_WRITE_ADDR_TRIG value type for batch read/modify/write operations
@@ -43603,7 +42945,6 @@ impl Ch13Al2WriteAddrTrigVal {
             bits: (self.bits & !Ch13Al2WriteAddrTrig::CH13_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch13Al2WriteAddrTrig::CH13_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch13Al2WriteAddrTrig::CH13_AL2_WRITE_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch13Al2WriteAddrTrigVal {
@@ -43630,7 +42971,6 @@ impl Ch13Al2WriteAddrTrig {
     pub fn modify_val<F: FnOnce(Ch13Al2WriteAddrTrigVal) -> Ch13Al2WriteAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH13_AL3_CTRL Register
@@ -43676,7 +43016,6 @@ impl Ch13Al3Ctrl {
     pub fn write_ch13_al3_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH13_AL3_CTRL_MASK) | ((value << Self::CH13_AL3_CTRL_OFFSET) & Self::CH13_AL3_CTRL_MASK));
     }
-
 }
 
 /// CH13_AL3_CTRL value type for batch read/modify/write operations
@@ -43714,7 +43053,6 @@ impl Ch13Al3CtrlVal {
             bits: (self.bits & !Ch13Al3Ctrl::CH13_AL3_CTRL_MASK) | ((value << Ch13Al3Ctrl::CH13_AL3_CTRL_OFFSET) & Ch13Al3Ctrl::CH13_AL3_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch13Al3CtrlVal {
@@ -43741,7 +43079,6 @@ impl Ch13Al3Ctrl {
     pub fn modify_val<F: FnOnce(Ch13Al3CtrlVal) -> Ch13Al3CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH13_AL3_WRITE_ADDR Register
@@ -43787,7 +43124,6 @@ impl Ch13Al3WriteAddr {
     pub fn write_ch13_al3_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH13_AL3_WRITE_ADDR_MASK) | ((value << Self::CH13_AL3_WRITE_ADDR_OFFSET) & Self::CH13_AL3_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH13_AL3_WRITE_ADDR value type for batch read/modify/write operations
@@ -43825,7 +43161,6 @@ impl Ch13Al3WriteAddrVal {
             bits: (self.bits & !Ch13Al3WriteAddr::CH13_AL3_WRITE_ADDR_MASK) | ((value << Ch13Al3WriteAddr::CH13_AL3_WRITE_ADDR_OFFSET) & Ch13Al3WriteAddr::CH13_AL3_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch13Al3WriteAddrVal {
@@ -43852,7 +43187,6 @@ impl Ch13Al3WriteAddr {
     pub fn modify_val<F: FnOnce(Ch13Al3WriteAddrVal) -> Ch13Al3WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH13_AL3_TRANS_COUNT Register
@@ -43898,7 +43232,6 @@ impl Ch13Al3TransCount {
     pub fn write_ch13_al3_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH13_AL3_TRANS_COUNT_MASK) | ((value << Self::CH13_AL3_TRANS_COUNT_OFFSET) & Self::CH13_AL3_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH13_AL3_TRANS_COUNT value type for batch read/modify/write operations
@@ -43936,7 +43269,6 @@ impl Ch13Al3TransCountVal {
             bits: (self.bits & !Ch13Al3TransCount::CH13_AL3_TRANS_COUNT_MASK) | ((value << Ch13Al3TransCount::CH13_AL3_TRANS_COUNT_OFFSET) & Ch13Al3TransCount::CH13_AL3_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch13Al3TransCountVal {
@@ -43963,7 +43295,6 @@ impl Ch13Al3TransCount {
     pub fn modify_val<F: FnOnce(Ch13Al3TransCountVal) -> Ch13Al3TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH13_AL3_READ_ADDR_TRIG Register
@@ -44011,7 +43342,6 @@ impl Ch13Al3ReadAddrTrig {
     pub fn write_ch13_al3_read_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH13_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH13_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH13_AL3_READ_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH13_AL3_READ_ADDR_TRIG value type for batch read/modify/write operations
@@ -44049,7 +43379,6 @@ impl Ch13Al3ReadAddrTrigVal {
             bits: (self.bits & !Ch13Al3ReadAddrTrig::CH13_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch13Al3ReadAddrTrig::CH13_AL3_READ_ADDR_TRIG_OFFSET) & Ch13Al3ReadAddrTrig::CH13_AL3_READ_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch13Al3ReadAddrTrigVal {
@@ -44076,7 +43405,6 @@ impl Ch13Al3ReadAddrTrig {
     pub fn modify_val<F: FnOnce(Ch13Al3ReadAddrTrigVal) -> Ch13Al3ReadAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH14_READ_ADDR Register
@@ -44132,7 +43460,6 @@ impl Ch14ReadAddr {
     pub fn write_ch14_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH14_READ_ADDR_MASK) | ((value << Self::CH14_READ_ADDR_OFFSET) & Self::CH14_READ_ADDR_MASK));
     }
-
 }
 
 /// CH14_READ_ADDR value type for batch read/modify/write operations
@@ -44180,7 +43507,6 @@ impl Ch14ReadAddrVal {
             bits: (self.bits & !Ch14ReadAddr::CH14_READ_ADDR_MASK) | ((value << Ch14ReadAddr::CH14_READ_ADDR_OFFSET) & Ch14ReadAddr::CH14_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch14ReadAddrVal {
@@ -44207,7 +43533,6 @@ impl Ch14ReadAddr {
     pub fn modify_val<F: FnOnce(Ch14ReadAddrVal) -> Ch14ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH14_WRITE_ADDR Register
@@ -44263,7 +43588,6 @@ impl Ch14WriteAddr {
     pub fn write_ch14_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH14_WRITE_ADDR_MASK) | ((value << Self::CH14_WRITE_ADDR_OFFSET) & Self::CH14_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH14_WRITE_ADDR value type for batch read/modify/write operations
@@ -44311,7 +43635,6 @@ impl Ch14WriteAddrVal {
             bits: (self.bits & !Ch14WriteAddr::CH14_WRITE_ADDR_MASK) | ((value << Ch14WriteAddr::CH14_WRITE_ADDR_OFFSET) & Ch14WriteAddr::CH14_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch14WriteAddrVal {
@@ -44338,7 +43661,6 @@ impl Ch14WriteAddr {
     pub fn modify_val<F: FnOnce(Ch14WriteAddrVal) -> Ch14WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH14_TRANS_COUNT Register
@@ -44456,7 +43778,6 @@ impl Ch14TransCount {
     pub fn write_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
     }
-
 }
 
 /// CH14_TRANS_COUNT value type for batch read/modify/write operations
@@ -44536,7 +43857,6 @@ impl Ch14TransCountVal {
             bits: (self.bits & !Ch14TransCount::COUNT_MASK) | ((value << Ch14TransCount::COUNT_OFFSET) & Ch14TransCount::COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch14TransCountVal {
@@ -44563,7 +43883,6 @@ impl Ch14TransCount {
     pub fn modify_val<F: FnOnce(Ch14TransCountVal) -> Ch14TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH14_CTRL_TRIG Register
@@ -45444,7 +44763,6 @@ impl Ch14CtrlTrig {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// CH14_CTRL_TRIG value type for batch read/modify/write operations
@@ -45859,7 +45177,6 @@ impl Ch14CtrlTrigVal {
             }
         }
     }
-
 }
 
 impl Default for Ch14CtrlTrigVal {
@@ -45886,7 +45203,6 @@ impl Ch14CtrlTrig {
     pub fn modify_val<F: FnOnce(Ch14CtrlTrigVal) -> Ch14CtrlTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH14_AL1_CTRL Register
@@ -45932,7 +45248,6 @@ impl Ch14Al1Ctrl {
     pub fn write_ch14_al1_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH14_AL1_CTRL_MASK) | ((value << Self::CH14_AL1_CTRL_OFFSET) & Self::CH14_AL1_CTRL_MASK));
     }
-
 }
 
 /// CH14_AL1_CTRL value type for batch read/modify/write operations
@@ -45970,7 +45285,6 @@ impl Ch14Al1CtrlVal {
             bits: (self.bits & !Ch14Al1Ctrl::CH14_AL1_CTRL_MASK) | ((value << Ch14Al1Ctrl::CH14_AL1_CTRL_OFFSET) & Ch14Al1Ctrl::CH14_AL1_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch14Al1CtrlVal {
@@ -45997,7 +45311,6 @@ impl Ch14Al1Ctrl {
     pub fn modify_val<F: FnOnce(Ch14Al1CtrlVal) -> Ch14Al1CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH14_AL1_READ_ADDR Register
@@ -46043,7 +45356,6 @@ impl Ch14Al1ReadAddr {
     pub fn write_ch14_al1_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH14_AL1_READ_ADDR_MASK) | ((value << Self::CH14_AL1_READ_ADDR_OFFSET) & Self::CH14_AL1_READ_ADDR_MASK));
     }
-
 }
 
 /// CH14_AL1_READ_ADDR value type for batch read/modify/write operations
@@ -46081,7 +45393,6 @@ impl Ch14Al1ReadAddrVal {
             bits: (self.bits & !Ch14Al1ReadAddr::CH14_AL1_READ_ADDR_MASK) | ((value << Ch14Al1ReadAddr::CH14_AL1_READ_ADDR_OFFSET) & Ch14Al1ReadAddr::CH14_AL1_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch14Al1ReadAddrVal {
@@ -46108,7 +45419,6 @@ impl Ch14Al1ReadAddr {
     pub fn modify_val<F: FnOnce(Ch14Al1ReadAddrVal) -> Ch14Al1ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH14_AL1_WRITE_ADDR Register
@@ -46154,7 +45464,6 @@ impl Ch14Al1WriteAddr {
     pub fn write_ch14_al1_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH14_AL1_WRITE_ADDR_MASK) | ((value << Self::CH14_AL1_WRITE_ADDR_OFFSET) & Self::CH14_AL1_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH14_AL1_WRITE_ADDR value type for batch read/modify/write operations
@@ -46192,7 +45501,6 @@ impl Ch14Al1WriteAddrVal {
             bits: (self.bits & !Ch14Al1WriteAddr::CH14_AL1_WRITE_ADDR_MASK) | ((value << Ch14Al1WriteAddr::CH14_AL1_WRITE_ADDR_OFFSET) & Ch14Al1WriteAddr::CH14_AL1_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch14Al1WriteAddrVal {
@@ -46219,7 +45527,6 @@ impl Ch14Al1WriteAddr {
     pub fn modify_val<F: FnOnce(Ch14Al1WriteAddrVal) -> Ch14Al1WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH14_AL1_TRANS_COUNT_TRIG Register
@@ -46267,7 +45574,6 @@ impl Ch14Al1TransCountTrig {
     pub fn write_ch14_al1_trans_count_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH14_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH14_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH14_AL1_TRANS_COUNT_TRIG_MASK));
     }
-
 }
 
 /// CH14_AL1_TRANS_COUNT_TRIG value type for batch read/modify/write operations
@@ -46305,7 +45611,6 @@ impl Ch14Al1TransCountTrigVal {
             bits: (self.bits & !Ch14Al1TransCountTrig::CH14_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch14Al1TransCountTrig::CH14_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch14Al1TransCountTrig::CH14_AL1_TRANS_COUNT_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch14Al1TransCountTrigVal {
@@ -46332,7 +45637,6 @@ impl Ch14Al1TransCountTrig {
     pub fn modify_val<F: FnOnce(Ch14Al1TransCountTrigVal) -> Ch14Al1TransCountTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH14_AL2_CTRL Register
@@ -46378,7 +45682,6 @@ impl Ch14Al2Ctrl {
     pub fn write_ch14_al2_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH14_AL2_CTRL_MASK) | ((value << Self::CH14_AL2_CTRL_OFFSET) & Self::CH14_AL2_CTRL_MASK));
     }
-
 }
 
 /// CH14_AL2_CTRL value type for batch read/modify/write operations
@@ -46416,7 +45719,6 @@ impl Ch14Al2CtrlVal {
             bits: (self.bits & !Ch14Al2Ctrl::CH14_AL2_CTRL_MASK) | ((value << Ch14Al2Ctrl::CH14_AL2_CTRL_OFFSET) & Ch14Al2Ctrl::CH14_AL2_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch14Al2CtrlVal {
@@ -46443,7 +45745,6 @@ impl Ch14Al2Ctrl {
     pub fn modify_val<F: FnOnce(Ch14Al2CtrlVal) -> Ch14Al2CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH14_AL2_TRANS_COUNT Register
@@ -46489,7 +45790,6 @@ impl Ch14Al2TransCount {
     pub fn write_ch14_al2_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH14_AL2_TRANS_COUNT_MASK) | ((value << Self::CH14_AL2_TRANS_COUNT_OFFSET) & Self::CH14_AL2_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH14_AL2_TRANS_COUNT value type for batch read/modify/write operations
@@ -46527,7 +45827,6 @@ impl Ch14Al2TransCountVal {
             bits: (self.bits & !Ch14Al2TransCount::CH14_AL2_TRANS_COUNT_MASK) | ((value << Ch14Al2TransCount::CH14_AL2_TRANS_COUNT_OFFSET) & Ch14Al2TransCount::CH14_AL2_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch14Al2TransCountVal {
@@ -46554,7 +45853,6 @@ impl Ch14Al2TransCount {
     pub fn modify_val<F: FnOnce(Ch14Al2TransCountVal) -> Ch14Al2TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH14_AL2_READ_ADDR Register
@@ -46600,7 +45898,6 @@ impl Ch14Al2ReadAddr {
     pub fn write_ch14_al2_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH14_AL2_READ_ADDR_MASK) | ((value << Self::CH14_AL2_READ_ADDR_OFFSET) & Self::CH14_AL2_READ_ADDR_MASK));
     }
-
 }
 
 /// CH14_AL2_READ_ADDR value type for batch read/modify/write operations
@@ -46638,7 +45935,6 @@ impl Ch14Al2ReadAddrVal {
             bits: (self.bits & !Ch14Al2ReadAddr::CH14_AL2_READ_ADDR_MASK) | ((value << Ch14Al2ReadAddr::CH14_AL2_READ_ADDR_OFFSET) & Ch14Al2ReadAddr::CH14_AL2_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch14Al2ReadAddrVal {
@@ -46665,7 +45961,6 @@ impl Ch14Al2ReadAddr {
     pub fn modify_val<F: FnOnce(Ch14Al2ReadAddrVal) -> Ch14Al2ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH14_AL2_WRITE_ADDR_TRIG Register
@@ -46713,7 +46008,6 @@ impl Ch14Al2WriteAddrTrig {
     pub fn write_ch14_al2_write_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH14_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH14_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH14_AL2_WRITE_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH14_AL2_WRITE_ADDR_TRIG value type for batch read/modify/write operations
@@ -46751,7 +46045,6 @@ impl Ch14Al2WriteAddrTrigVal {
             bits: (self.bits & !Ch14Al2WriteAddrTrig::CH14_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch14Al2WriteAddrTrig::CH14_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch14Al2WriteAddrTrig::CH14_AL2_WRITE_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch14Al2WriteAddrTrigVal {
@@ -46778,7 +46071,6 @@ impl Ch14Al2WriteAddrTrig {
     pub fn modify_val<F: FnOnce(Ch14Al2WriteAddrTrigVal) -> Ch14Al2WriteAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH14_AL3_CTRL Register
@@ -46824,7 +46116,6 @@ impl Ch14Al3Ctrl {
     pub fn write_ch14_al3_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH14_AL3_CTRL_MASK) | ((value << Self::CH14_AL3_CTRL_OFFSET) & Self::CH14_AL3_CTRL_MASK));
     }
-
 }
 
 /// CH14_AL3_CTRL value type for batch read/modify/write operations
@@ -46862,7 +46153,6 @@ impl Ch14Al3CtrlVal {
             bits: (self.bits & !Ch14Al3Ctrl::CH14_AL3_CTRL_MASK) | ((value << Ch14Al3Ctrl::CH14_AL3_CTRL_OFFSET) & Ch14Al3Ctrl::CH14_AL3_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch14Al3CtrlVal {
@@ -46889,7 +46179,6 @@ impl Ch14Al3Ctrl {
     pub fn modify_val<F: FnOnce(Ch14Al3CtrlVal) -> Ch14Al3CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH14_AL3_WRITE_ADDR Register
@@ -46935,7 +46224,6 @@ impl Ch14Al3WriteAddr {
     pub fn write_ch14_al3_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH14_AL3_WRITE_ADDR_MASK) | ((value << Self::CH14_AL3_WRITE_ADDR_OFFSET) & Self::CH14_AL3_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH14_AL3_WRITE_ADDR value type for batch read/modify/write operations
@@ -46973,7 +46261,6 @@ impl Ch14Al3WriteAddrVal {
             bits: (self.bits & !Ch14Al3WriteAddr::CH14_AL3_WRITE_ADDR_MASK) | ((value << Ch14Al3WriteAddr::CH14_AL3_WRITE_ADDR_OFFSET) & Ch14Al3WriteAddr::CH14_AL3_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch14Al3WriteAddrVal {
@@ -47000,7 +46287,6 @@ impl Ch14Al3WriteAddr {
     pub fn modify_val<F: FnOnce(Ch14Al3WriteAddrVal) -> Ch14Al3WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH14_AL3_TRANS_COUNT Register
@@ -47046,7 +46332,6 @@ impl Ch14Al3TransCount {
     pub fn write_ch14_al3_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH14_AL3_TRANS_COUNT_MASK) | ((value << Self::CH14_AL3_TRANS_COUNT_OFFSET) & Self::CH14_AL3_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH14_AL3_TRANS_COUNT value type for batch read/modify/write operations
@@ -47084,7 +46369,6 @@ impl Ch14Al3TransCountVal {
             bits: (self.bits & !Ch14Al3TransCount::CH14_AL3_TRANS_COUNT_MASK) | ((value << Ch14Al3TransCount::CH14_AL3_TRANS_COUNT_OFFSET) & Ch14Al3TransCount::CH14_AL3_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch14Al3TransCountVal {
@@ -47111,7 +46395,6 @@ impl Ch14Al3TransCount {
     pub fn modify_val<F: FnOnce(Ch14Al3TransCountVal) -> Ch14Al3TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH14_AL3_READ_ADDR_TRIG Register
@@ -47159,7 +46442,6 @@ impl Ch14Al3ReadAddrTrig {
     pub fn write_ch14_al3_read_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH14_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH14_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH14_AL3_READ_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH14_AL3_READ_ADDR_TRIG value type for batch read/modify/write operations
@@ -47197,7 +46479,6 @@ impl Ch14Al3ReadAddrTrigVal {
             bits: (self.bits & !Ch14Al3ReadAddrTrig::CH14_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch14Al3ReadAddrTrig::CH14_AL3_READ_ADDR_TRIG_OFFSET) & Ch14Al3ReadAddrTrig::CH14_AL3_READ_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch14Al3ReadAddrTrigVal {
@@ -47224,7 +46505,6 @@ impl Ch14Al3ReadAddrTrig {
     pub fn modify_val<F: FnOnce(Ch14Al3ReadAddrTrigVal) -> Ch14Al3ReadAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH15_READ_ADDR Register
@@ -47280,7 +46560,6 @@ impl Ch15ReadAddr {
     pub fn write_ch15_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH15_READ_ADDR_MASK) | ((value << Self::CH15_READ_ADDR_OFFSET) & Self::CH15_READ_ADDR_MASK));
     }
-
 }
 
 /// CH15_READ_ADDR value type for batch read/modify/write operations
@@ -47328,7 +46607,6 @@ impl Ch15ReadAddrVal {
             bits: (self.bits & !Ch15ReadAddr::CH15_READ_ADDR_MASK) | ((value << Ch15ReadAddr::CH15_READ_ADDR_OFFSET) & Ch15ReadAddr::CH15_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch15ReadAddrVal {
@@ -47355,7 +46633,6 @@ impl Ch15ReadAddr {
     pub fn modify_val<F: FnOnce(Ch15ReadAddrVal) -> Ch15ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH15_WRITE_ADDR Register
@@ -47411,7 +46688,6 @@ impl Ch15WriteAddr {
     pub fn write_ch15_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH15_WRITE_ADDR_MASK) | ((value << Self::CH15_WRITE_ADDR_OFFSET) & Self::CH15_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH15_WRITE_ADDR value type for batch read/modify/write operations
@@ -47459,7 +46735,6 @@ impl Ch15WriteAddrVal {
             bits: (self.bits & !Ch15WriteAddr::CH15_WRITE_ADDR_MASK) | ((value << Ch15WriteAddr::CH15_WRITE_ADDR_OFFSET) & Ch15WriteAddr::CH15_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch15WriteAddrVal {
@@ -47486,7 +46761,6 @@ impl Ch15WriteAddr {
     pub fn modify_val<F: FnOnce(Ch15WriteAddrVal) -> Ch15WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH15_TRANS_COUNT Register
@@ -47604,7 +46878,6 @@ impl Ch15TransCount {
     pub fn write_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
     }
-
 }
 
 /// CH15_TRANS_COUNT value type for batch read/modify/write operations
@@ -47684,7 +46957,6 @@ impl Ch15TransCountVal {
             bits: (self.bits & !Ch15TransCount::COUNT_MASK) | ((value << Ch15TransCount::COUNT_OFFSET) & Ch15TransCount::COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch15TransCountVal {
@@ -47711,7 +46983,6 @@ impl Ch15TransCount {
     pub fn modify_val<F: FnOnce(Ch15TransCountVal) -> Ch15TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH15_CTRL_TRIG Register
@@ -48592,7 +47863,6 @@ impl Ch15CtrlTrig {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// CH15_CTRL_TRIG value type for batch read/modify/write operations
@@ -49007,7 +48277,6 @@ impl Ch15CtrlTrigVal {
             }
         }
     }
-
 }
 
 impl Default for Ch15CtrlTrigVal {
@@ -49034,7 +48303,6 @@ impl Ch15CtrlTrig {
     pub fn modify_val<F: FnOnce(Ch15CtrlTrigVal) -> Ch15CtrlTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH15_AL1_CTRL Register
@@ -49080,7 +48348,6 @@ impl Ch15Al1Ctrl {
     pub fn write_ch15_al1_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH15_AL1_CTRL_MASK) | ((value << Self::CH15_AL1_CTRL_OFFSET) & Self::CH15_AL1_CTRL_MASK));
     }
-
 }
 
 /// CH15_AL1_CTRL value type for batch read/modify/write operations
@@ -49118,7 +48385,6 @@ impl Ch15Al1CtrlVal {
             bits: (self.bits & !Ch15Al1Ctrl::CH15_AL1_CTRL_MASK) | ((value << Ch15Al1Ctrl::CH15_AL1_CTRL_OFFSET) & Ch15Al1Ctrl::CH15_AL1_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch15Al1CtrlVal {
@@ -49145,7 +48411,6 @@ impl Ch15Al1Ctrl {
     pub fn modify_val<F: FnOnce(Ch15Al1CtrlVal) -> Ch15Al1CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH15_AL1_READ_ADDR Register
@@ -49191,7 +48456,6 @@ impl Ch15Al1ReadAddr {
     pub fn write_ch15_al1_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH15_AL1_READ_ADDR_MASK) | ((value << Self::CH15_AL1_READ_ADDR_OFFSET) & Self::CH15_AL1_READ_ADDR_MASK));
     }
-
 }
 
 /// CH15_AL1_READ_ADDR value type for batch read/modify/write operations
@@ -49229,7 +48493,6 @@ impl Ch15Al1ReadAddrVal {
             bits: (self.bits & !Ch15Al1ReadAddr::CH15_AL1_READ_ADDR_MASK) | ((value << Ch15Al1ReadAddr::CH15_AL1_READ_ADDR_OFFSET) & Ch15Al1ReadAddr::CH15_AL1_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch15Al1ReadAddrVal {
@@ -49256,7 +48519,6 @@ impl Ch15Al1ReadAddr {
     pub fn modify_val<F: FnOnce(Ch15Al1ReadAddrVal) -> Ch15Al1ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH15_AL1_WRITE_ADDR Register
@@ -49302,7 +48564,6 @@ impl Ch15Al1WriteAddr {
     pub fn write_ch15_al1_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH15_AL1_WRITE_ADDR_MASK) | ((value << Self::CH15_AL1_WRITE_ADDR_OFFSET) & Self::CH15_AL1_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH15_AL1_WRITE_ADDR value type for batch read/modify/write operations
@@ -49340,7 +48601,6 @@ impl Ch15Al1WriteAddrVal {
             bits: (self.bits & !Ch15Al1WriteAddr::CH15_AL1_WRITE_ADDR_MASK) | ((value << Ch15Al1WriteAddr::CH15_AL1_WRITE_ADDR_OFFSET) & Ch15Al1WriteAddr::CH15_AL1_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch15Al1WriteAddrVal {
@@ -49367,7 +48627,6 @@ impl Ch15Al1WriteAddr {
     pub fn modify_val<F: FnOnce(Ch15Al1WriteAddrVal) -> Ch15Al1WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH15_AL1_TRANS_COUNT_TRIG Register
@@ -49415,7 +48674,6 @@ impl Ch15Al1TransCountTrig {
     pub fn write_ch15_al1_trans_count_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH15_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH15_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH15_AL1_TRANS_COUNT_TRIG_MASK));
     }
-
 }
 
 /// CH15_AL1_TRANS_COUNT_TRIG value type for batch read/modify/write operations
@@ -49453,7 +48711,6 @@ impl Ch15Al1TransCountTrigVal {
             bits: (self.bits & !Ch15Al1TransCountTrig::CH15_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch15Al1TransCountTrig::CH15_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch15Al1TransCountTrig::CH15_AL1_TRANS_COUNT_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch15Al1TransCountTrigVal {
@@ -49480,7 +48737,6 @@ impl Ch15Al1TransCountTrig {
     pub fn modify_val<F: FnOnce(Ch15Al1TransCountTrigVal) -> Ch15Al1TransCountTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH15_AL2_CTRL Register
@@ -49526,7 +48782,6 @@ impl Ch15Al2Ctrl {
     pub fn write_ch15_al2_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH15_AL2_CTRL_MASK) | ((value << Self::CH15_AL2_CTRL_OFFSET) & Self::CH15_AL2_CTRL_MASK));
     }
-
 }
 
 /// CH15_AL2_CTRL value type for batch read/modify/write operations
@@ -49564,7 +48819,6 @@ impl Ch15Al2CtrlVal {
             bits: (self.bits & !Ch15Al2Ctrl::CH15_AL2_CTRL_MASK) | ((value << Ch15Al2Ctrl::CH15_AL2_CTRL_OFFSET) & Ch15Al2Ctrl::CH15_AL2_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch15Al2CtrlVal {
@@ -49591,7 +48845,6 @@ impl Ch15Al2Ctrl {
     pub fn modify_val<F: FnOnce(Ch15Al2CtrlVal) -> Ch15Al2CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH15_AL2_TRANS_COUNT Register
@@ -49637,7 +48890,6 @@ impl Ch15Al2TransCount {
     pub fn write_ch15_al2_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH15_AL2_TRANS_COUNT_MASK) | ((value << Self::CH15_AL2_TRANS_COUNT_OFFSET) & Self::CH15_AL2_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH15_AL2_TRANS_COUNT value type for batch read/modify/write operations
@@ -49675,7 +48927,6 @@ impl Ch15Al2TransCountVal {
             bits: (self.bits & !Ch15Al2TransCount::CH15_AL2_TRANS_COUNT_MASK) | ((value << Ch15Al2TransCount::CH15_AL2_TRANS_COUNT_OFFSET) & Ch15Al2TransCount::CH15_AL2_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch15Al2TransCountVal {
@@ -49702,7 +48953,6 @@ impl Ch15Al2TransCount {
     pub fn modify_val<F: FnOnce(Ch15Al2TransCountVal) -> Ch15Al2TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH15_AL2_READ_ADDR Register
@@ -49748,7 +48998,6 @@ impl Ch15Al2ReadAddr {
     pub fn write_ch15_al2_read_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH15_AL2_READ_ADDR_MASK) | ((value << Self::CH15_AL2_READ_ADDR_OFFSET) & Self::CH15_AL2_READ_ADDR_MASK));
     }
-
 }
 
 /// CH15_AL2_READ_ADDR value type for batch read/modify/write operations
@@ -49786,7 +49035,6 @@ impl Ch15Al2ReadAddrVal {
             bits: (self.bits & !Ch15Al2ReadAddr::CH15_AL2_READ_ADDR_MASK) | ((value << Ch15Al2ReadAddr::CH15_AL2_READ_ADDR_OFFSET) & Ch15Al2ReadAddr::CH15_AL2_READ_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch15Al2ReadAddrVal {
@@ -49813,7 +49061,6 @@ impl Ch15Al2ReadAddr {
     pub fn modify_val<F: FnOnce(Ch15Al2ReadAddrVal) -> Ch15Al2ReadAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH15_AL2_WRITE_ADDR_TRIG Register
@@ -49861,7 +49108,6 @@ impl Ch15Al2WriteAddrTrig {
     pub fn write_ch15_al2_write_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH15_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH15_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH15_AL2_WRITE_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH15_AL2_WRITE_ADDR_TRIG value type for batch read/modify/write operations
@@ -49899,7 +49145,6 @@ impl Ch15Al2WriteAddrTrigVal {
             bits: (self.bits & !Ch15Al2WriteAddrTrig::CH15_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch15Al2WriteAddrTrig::CH15_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch15Al2WriteAddrTrig::CH15_AL2_WRITE_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch15Al2WriteAddrTrigVal {
@@ -49926,7 +49171,6 @@ impl Ch15Al2WriteAddrTrig {
     pub fn modify_val<F: FnOnce(Ch15Al2WriteAddrTrigVal) -> Ch15Al2WriteAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH15_AL3_CTRL Register
@@ -49972,7 +49216,6 @@ impl Ch15Al3Ctrl {
     pub fn write_ch15_al3_ctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH15_AL3_CTRL_MASK) | ((value << Self::CH15_AL3_CTRL_OFFSET) & Self::CH15_AL3_CTRL_MASK));
     }
-
 }
 
 /// CH15_AL3_CTRL value type for batch read/modify/write operations
@@ -50010,7 +49253,6 @@ impl Ch15Al3CtrlVal {
             bits: (self.bits & !Ch15Al3Ctrl::CH15_AL3_CTRL_MASK) | ((value << Ch15Al3Ctrl::CH15_AL3_CTRL_OFFSET) & Ch15Al3Ctrl::CH15_AL3_CTRL_MASK)
         }
     }
-
 }
 
 impl Default for Ch15Al3CtrlVal {
@@ -50037,7 +49279,6 @@ impl Ch15Al3Ctrl {
     pub fn modify_val<F: FnOnce(Ch15Al3CtrlVal) -> Ch15Al3CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH15_AL3_WRITE_ADDR Register
@@ -50083,7 +49324,6 @@ impl Ch15Al3WriteAddr {
     pub fn write_ch15_al3_write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH15_AL3_WRITE_ADDR_MASK) | ((value << Self::CH15_AL3_WRITE_ADDR_OFFSET) & Self::CH15_AL3_WRITE_ADDR_MASK));
     }
-
 }
 
 /// CH15_AL3_WRITE_ADDR value type for batch read/modify/write operations
@@ -50121,7 +49361,6 @@ impl Ch15Al3WriteAddrVal {
             bits: (self.bits & !Ch15Al3WriteAddr::CH15_AL3_WRITE_ADDR_MASK) | ((value << Ch15Al3WriteAddr::CH15_AL3_WRITE_ADDR_OFFSET) & Ch15Al3WriteAddr::CH15_AL3_WRITE_ADDR_MASK)
         }
     }
-
 }
 
 impl Default for Ch15Al3WriteAddrVal {
@@ -50148,7 +49387,6 @@ impl Ch15Al3WriteAddr {
     pub fn modify_val<F: FnOnce(Ch15Al3WriteAddrVal) -> Ch15Al3WriteAddrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH15_AL3_TRANS_COUNT Register
@@ -50194,7 +49432,6 @@ impl Ch15Al3TransCount {
     pub fn write_ch15_al3_trans_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH15_AL3_TRANS_COUNT_MASK) | ((value << Self::CH15_AL3_TRANS_COUNT_OFFSET) & Self::CH15_AL3_TRANS_COUNT_MASK));
     }
-
 }
 
 /// CH15_AL3_TRANS_COUNT value type for batch read/modify/write operations
@@ -50232,7 +49469,6 @@ impl Ch15Al3TransCountVal {
             bits: (self.bits & !Ch15Al3TransCount::CH15_AL3_TRANS_COUNT_MASK) | ((value << Ch15Al3TransCount::CH15_AL3_TRANS_COUNT_OFFSET) & Ch15Al3TransCount::CH15_AL3_TRANS_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Ch15Al3TransCountVal {
@@ -50259,7 +49495,6 @@ impl Ch15Al3TransCount {
     pub fn modify_val<F: FnOnce(Ch15Al3TransCountVal) -> Ch15Al3TransCountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH15_AL3_READ_ADDR_TRIG Register
@@ -50307,7 +49542,6 @@ impl Ch15Al3ReadAddrTrig {
     pub fn write_ch15_al3_read_addr_trig(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH15_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH15_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH15_AL3_READ_ADDR_TRIG_MASK));
     }
-
 }
 
 /// CH15_AL3_READ_ADDR_TRIG value type for batch read/modify/write operations
@@ -50345,7 +49579,6 @@ impl Ch15Al3ReadAddrTrigVal {
             bits: (self.bits & !Ch15Al3ReadAddrTrig::CH15_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch15Al3ReadAddrTrig::CH15_AL3_READ_ADDR_TRIG_OFFSET) & Ch15Al3ReadAddrTrig::CH15_AL3_READ_ADDR_TRIG_MASK)
         }
     }
-
 }
 
 impl Default for Ch15Al3ReadAddrTrigVal {
@@ -50372,7 +49605,6 @@ impl Ch15Al3ReadAddrTrig {
     pub fn modify_val<F: FnOnce(Ch15Al3ReadAddrTrigVal) -> Ch15Al3ReadAddrTrigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTR Register
@@ -50444,7 +49676,6 @@ impl Intr {
     pub fn write_intr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::INTR_MASK) | ((value << Self::INTR_OFFSET) & Self::INTR_MASK));
     }
-
 }
 
 /// INTR value type for batch read/modify/write operations
@@ -50500,7 +49731,6 @@ impl IntrVal {
             bits: (self.bits & !Intr::INTR_MASK) | ((value << Intr::INTR_OFFSET) & Intr::INTR_MASK)
         }
     }
-
 }
 
 impl Default for IntrVal {
@@ -50527,7 +49757,6 @@ impl Intr {
     pub fn modify_val<F: FnOnce(IntrVal) -> IntrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTE0 Register
@@ -50587,7 +49816,6 @@ impl Inte0 {
     pub fn write_inte0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::INTE0_MASK) | ((value << Self::INTE0_OFFSET) & Self::INTE0_MASK));
     }
-
 }
 
 /// INTE0 value type for batch read/modify/write operations
@@ -50637,7 +49865,6 @@ impl Inte0Val {
             bits: (self.bits & !Inte0::INTE0_MASK) | ((value << Inte0::INTE0_OFFSET) & Inte0::INTE0_MASK)
         }
     }
-
 }
 
 impl Default for Inte0Val {
@@ -50664,7 +49891,6 @@ impl Inte0 {
     pub fn modify_val<F: FnOnce(Inte0Val) -> Inte0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTF0 Register
@@ -50720,7 +49946,6 @@ impl Intf0 {
     pub fn write_intf0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::INTF0_MASK) | ((value << Self::INTF0_OFFSET) & Self::INTF0_MASK));
     }
-
 }
 
 /// INTF0 value type for batch read/modify/write operations
@@ -50768,7 +49993,6 @@ impl Intf0Val {
             bits: (self.bits & !Intf0::INTF0_MASK) | ((value << Intf0::INTF0_OFFSET) & Intf0::INTF0_MASK)
         }
     }
-
 }
 
 impl Default for Intf0Val {
@@ -50795,7 +50019,6 @@ impl Intf0 {
     pub fn modify_val<F: FnOnce(Intf0Val) -> Intf0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTS0 Register
@@ -50859,7 +50082,6 @@ impl Ints0 {
     pub fn write_ints0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::INTS0_MASK) | ((value << Self::INTS0_OFFSET) & Self::INTS0_MASK));
     }
-
 }
 
 /// INTS0 value type for batch read/modify/write operations
@@ -50911,7 +50133,6 @@ impl Ints0Val {
             bits: (self.bits & !Ints0::INTS0_MASK) | ((value << Ints0::INTS0_OFFSET) & Ints0::INTS0_MASK)
         }
     }
-
 }
 
 impl Default for Ints0Val {
@@ -50938,7 +50159,6 @@ impl Ints0 {
     pub fn modify_val<F: FnOnce(Ints0Val) -> Ints0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTR1 Register
@@ -51010,7 +50230,6 @@ impl Intr1 {
     pub fn write_intr1(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::INTR1_MASK) | ((value << Self::INTR1_OFFSET) & Self::INTR1_MASK));
     }
-
 }
 
 /// INTR1 value type for batch read/modify/write operations
@@ -51066,7 +50285,6 @@ impl Intr1Val {
             bits: (self.bits & !Intr1::INTR1_MASK) | ((value << Intr1::INTR1_OFFSET) & Intr1::INTR1_MASK)
         }
     }
-
 }
 
 impl Default for Intr1Val {
@@ -51093,7 +50311,6 @@ impl Intr1 {
     pub fn modify_val<F: FnOnce(Intr1Val) -> Intr1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTE1 Register
@@ -51153,7 +50370,6 @@ impl Inte1 {
     pub fn write_inte1(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::INTE1_MASK) | ((value << Self::INTE1_OFFSET) & Self::INTE1_MASK));
     }
-
 }
 
 /// INTE1 value type for batch read/modify/write operations
@@ -51203,7 +50419,6 @@ impl Inte1Val {
             bits: (self.bits & !Inte1::INTE1_MASK) | ((value << Inte1::INTE1_OFFSET) & Inte1::INTE1_MASK)
         }
     }
-
 }
 
 impl Default for Inte1Val {
@@ -51230,7 +50445,6 @@ impl Inte1 {
     pub fn modify_val<F: FnOnce(Inte1Val) -> Inte1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTF1 Register
@@ -51286,7 +50500,6 @@ impl Intf1 {
     pub fn write_intf1(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::INTF1_MASK) | ((value << Self::INTF1_OFFSET) & Self::INTF1_MASK));
     }
-
 }
 
 /// INTF1 value type for batch read/modify/write operations
@@ -51334,7 +50547,6 @@ impl Intf1Val {
             bits: (self.bits & !Intf1::INTF1_MASK) | ((value << Intf1::INTF1_OFFSET) & Intf1::INTF1_MASK)
         }
     }
-
 }
 
 impl Default for Intf1Val {
@@ -51361,7 +50573,6 @@ impl Intf1 {
     pub fn modify_val<F: FnOnce(Intf1Val) -> Intf1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTS1 Register
@@ -51425,7 +50636,6 @@ impl Ints1 {
     pub fn write_ints1(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::INTS1_MASK) | ((value << Self::INTS1_OFFSET) & Self::INTS1_MASK));
     }
-
 }
 
 /// INTS1 value type for batch read/modify/write operations
@@ -51477,7 +50687,6 @@ impl Ints1Val {
             bits: (self.bits & !Ints1::INTS1_MASK) | ((value << Ints1::INTS1_OFFSET) & Ints1::INTS1_MASK)
         }
     }
-
 }
 
 impl Default for Ints1Val {
@@ -51504,7 +50713,6 @@ impl Ints1 {
     pub fn modify_val<F: FnOnce(Ints1Val) -> Ints1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTR2 Register
@@ -51576,7 +50784,6 @@ impl Intr2 {
     pub fn write_intr2(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::INTR2_MASK) | ((value << Self::INTR2_OFFSET) & Self::INTR2_MASK));
     }
-
 }
 
 /// INTR2 value type for batch read/modify/write operations
@@ -51632,7 +50839,6 @@ impl Intr2Val {
             bits: (self.bits & !Intr2::INTR2_MASK) | ((value << Intr2::INTR2_OFFSET) & Intr2::INTR2_MASK)
         }
     }
-
 }
 
 impl Default for Intr2Val {
@@ -51659,7 +50865,6 @@ impl Intr2 {
     pub fn modify_val<F: FnOnce(Intr2Val) -> Intr2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTE2 Register
@@ -51719,7 +50924,6 @@ impl Inte2 {
     pub fn write_inte2(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::INTE2_MASK) | ((value << Self::INTE2_OFFSET) & Self::INTE2_MASK));
     }
-
 }
 
 /// INTE2 value type for batch read/modify/write operations
@@ -51769,7 +50973,6 @@ impl Inte2Val {
             bits: (self.bits & !Inte2::INTE2_MASK) | ((value << Inte2::INTE2_OFFSET) & Inte2::INTE2_MASK)
         }
     }
-
 }
 
 impl Default for Inte2Val {
@@ -51796,7 +50999,6 @@ impl Inte2 {
     pub fn modify_val<F: FnOnce(Inte2Val) -> Inte2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTF2 Register
@@ -51852,7 +51054,6 @@ impl Intf2 {
     pub fn write_intf2(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::INTF2_MASK) | ((value << Self::INTF2_OFFSET) & Self::INTF2_MASK));
     }
-
 }
 
 /// INTF2 value type for batch read/modify/write operations
@@ -51900,7 +51101,6 @@ impl Intf2Val {
             bits: (self.bits & !Intf2::INTF2_MASK) | ((value << Intf2::INTF2_OFFSET) & Intf2::INTF2_MASK)
         }
     }
-
 }
 
 impl Default for Intf2Val {
@@ -51927,7 +51127,6 @@ impl Intf2 {
     pub fn modify_val<F: FnOnce(Intf2Val) -> Intf2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTS2 Register
@@ -51991,7 +51190,6 @@ impl Ints2 {
     pub fn write_ints2(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::INTS2_MASK) | ((value << Self::INTS2_OFFSET) & Self::INTS2_MASK));
     }
-
 }
 
 /// INTS2 value type for batch read/modify/write operations
@@ -52043,7 +51241,6 @@ impl Ints2Val {
             bits: (self.bits & !Ints2::INTS2_MASK) | ((value << Ints2::INTS2_OFFSET) & Ints2::INTS2_MASK)
         }
     }
-
 }
 
 impl Default for Ints2Val {
@@ -52070,7 +51267,6 @@ impl Ints2 {
     pub fn modify_val<F: FnOnce(Ints2Val) -> Ints2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTR3 Register
@@ -52142,7 +51338,6 @@ impl Intr3 {
     pub fn write_intr3(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::INTR3_MASK) | ((value << Self::INTR3_OFFSET) & Self::INTR3_MASK));
     }
-
 }
 
 /// INTR3 value type for batch read/modify/write operations
@@ -52198,7 +51393,6 @@ impl Intr3Val {
             bits: (self.bits & !Intr3::INTR3_MASK) | ((value << Intr3::INTR3_OFFSET) & Intr3::INTR3_MASK)
         }
     }
-
 }
 
 impl Default for Intr3Val {
@@ -52225,7 +51419,6 @@ impl Intr3 {
     pub fn modify_val<F: FnOnce(Intr3Val) -> Intr3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTE3 Register
@@ -52285,7 +51478,6 @@ impl Inte3 {
     pub fn write_inte3(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::INTE3_MASK) | ((value << Self::INTE3_OFFSET) & Self::INTE3_MASK));
     }
-
 }
 
 /// INTE3 value type for batch read/modify/write operations
@@ -52335,7 +51527,6 @@ impl Inte3Val {
             bits: (self.bits & !Inte3::INTE3_MASK) | ((value << Inte3::INTE3_OFFSET) & Inte3::INTE3_MASK)
         }
     }
-
 }
 
 impl Default for Inte3Val {
@@ -52362,7 +51553,6 @@ impl Inte3 {
     pub fn modify_val<F: FnOnce(Inte3Val) -> Inte3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTF3 Register
@@ -52418,7 +51608,6 @@ impl Intf3 {
     pub fn write_intf3(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::INTF3_MASK) | ((value << Self::INTF3_OFFSET) & Self::INTF3_MASK));
     }
-
 }
 
 /// INTF3 value type for batch read/modify/write operations
@@ -52466,7 +51655,6 @@ impl Intf3Val {
             bits: (self.bits & !Intf3::INTF3_MASK) | ((value << Intf3::INTF3_OFFSET) & Intf3::INTF3_MASK)
         }
     }
-
 }
 
 impl Default for Intf3Val {
@@ -52493,7 +51681,6 @@ impl Intf3 {
     pub fn modify_val<F: FnOnce(Intf3Val) -> Intf3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTS3 Register
@@ -52557,7 +51744,6 @@ impl Ints3 {
     pub fn write_ints3(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::INTS3_MASK) | ((value << Self::INTS3_OFFSET) & Self::INTS3_MASK));
     }
-
 }
 
 /// INTS3 value type for batch read/modify/write operations
@@ -52609,7 +51795,6 @@ impl Ints3Val {
             bits: (self.bits & !Ints3::INTS3_MASK) | ((value << Ints3::INTS3_OFFSET) & Ints3::INTS3_MASK)
         }
     }
-
 }
 
 impl Default for Ints3Val {
@@ -52636,7 +51821,6 @@ impl Ints3 {
     pub fn modify_val<F: FnOnce(Ints3Val) -> Ints3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TIMER0 Register
@@ -52721,7 +51905,6 @@ impl Timer0 {
     pub fn write_y(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::Y_MASK) | ((value << Self::Y_OFFSET) & Self::Y_MASK));
     }
-
 }
 
 /// TIMER0 value type for batch read/modify/write operations
@@ -52787,7 +51970,6 @@ impl Timer0Val {
             bits: (self.bits & !Timer0::Y_MASK) | ((value << Timer0::Y_OFFSET) & Timer0::Y_MASK)
         }
     }
-
 }
 
 impl Default for Timer0Val {
@@ -52814,7 +51996,6 @@ impl Timer0 {
     pub fn modify_val<F: FnOnce(Timer0Val) -> Timer0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TIMER1 Register
@@ -52899,7 +52080,6 @@ impl Timer1 {
     pub fn write_y(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::Y_MASK) | ((value << Self::Y_OFFSET) & Self::Y_MASK));
     }
-
 }
 
 /// TIMER1 value type for batch read/modify/write operations
@@ -52965,7 +52145,6 @@ impl Timer1Val {
             bits: (self.bits & !Timer1::Y_MASK) | ((value << Timer1::Y_OFFSET) & Timer1::Y_MASK)
         }
     }
-
 }
 
 impl Default for Timer1Val {
@@ -52992,7 +52171,6 @@ impl Timer1 {
     pub fn modify_val<F: FnOnce(Timer1Val) -> Timer1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TIMER2 Register
@@ -53077,7 +52255,6 @@ impl Timer2 {
     pub fn write_y(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::Y_MASK) | ((value << Self::Y_OFFSET) & Self::Y_MASK));
     }
-
 }
 
 /// TIMER2 value type for batch read/modify/write operations
@@ -53143,7 +52320,6 @@ impl Timer2Val {
             bits: (self.bits & !Timer2::Y_MASK) | ((value << Timer2::Y_OFFSET) & Timer2::Y_MASK)
         }
     }
-
 }
 
 impl Default for Timer2Val {
@@ -53170,7 +52346,6 @@ impl Timer2 {
     pub fn modify_val<F: FnOnce(Timer2Val) -> Timer2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TIMER3 Register
@@ -53255,7 +52430,6 @@ impl Timer3 {
     pub fn write_y(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::Y_MASK) | ((value << Self::Y_OFFSET) & Self::Y_MASK));
     }
-
 }
 
 /// TIMER3 value type for batch read/modify/write operations
@@ -53321,7 +52495,6 @@ impl Timer3Val {
             bits: (self.bits & !Timer3::Y_MASK) | ((value << Timer3::Y_OFFSET) & Timer3::Y_MASK)
         }
     }
-
 }
 
 impl Default for Timer3Val {
@@ -53348,7 +52521,6 @@ impl Timer3 {
     pub fn modify_val<F: FnOnce(Timer3Val) -> Timer3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MULTI_CHAN_TRIGGER Register
@@ -53396,7 +52568,6 @@ impl MultiChanTrigger {
     pub fn write_multi_chan_trigger(&self, value: u32) {
         self.value.write_bits((value << Self::MULTI_CHAN_TRIGGER_OFFSET) & Self::MULTI_CHAN_TRIGGER_MASK);
     }
-
 }
 
 /// MULTI_CHAN_TRIGGER value type for batch read/modify/write operations
@@ -53436,7 +52607,6 @@ impl MultiChanTriggerVal {
             bits: (self.bits & !MultiChanTrigger::MULTI_CHAN_TRIGGER_MASK) | ((value << MultiChanTrigger::MULTI_CHAN_TRIGGER_OFFSET) & MultiChanTrigger::MULTI_CHAN_TRIGGER_MASK)
         }
     }
-
 }
 
 impl Default for MultiChanTriggerVal {
@@ -53446,24 +52616,11 @@ impl Default for MultiChanTriggerVal {
 }
 
 impl MultiChanTrigger {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> MultiChanTriggerVal {
-        MultiChanTriggerVal::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: MultiChanTriggerVal) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(MultiChanTriggerVal) -> MultiChanTriggerVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SNIFF_CTRL Register
@@ -53697,7 +52854,6 @@ impl SniffCtrl {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// SNIFF_CTRL value type for batch read/modify/write operations
@@ -53849,7 +53005,6 @@ impl SniffCtrlVal {
             }
         }
     }
-
 }
 
 impl Default for SniffCtrlVal {
@@ -53876,7 +53031,6 @@ impl SniffCtrl {
     pub fn modify_val<F: FnOnce(SniffCtrlVal) -> SniffCtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SNIFF_DATA Register
@@ -53932,7 +53086,6 @@ impl SniffData {
     pub fn write_sniff_data(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SNIFF_DATA_MASK) | ((value << Self::SNIFF_DATA_OFFSET) & Self::SNIFF_DATA_MASK));
     }
-
 }
 
 /// SNIFF_DATA value type for batch read/modify/write operations
@@ -53980,7 +53133,6 @@ impl SniffDataVal {
             bits: (self.bits & !SniffData::SNIFF_DATA_MASK) | ((value << SniffData::SNIFF_DATA_OFFSET) & SniffData::SNIFF_DATA_MASK)
         }
     }
-
 }
 
 impl Default for SniffDataVal {
@@ -54007,7 +53159,6 @@ impl SniffData {
     pub fn modify_val<F: FnOnce(SniffDataVal) -> SniffDataVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FIFO_LEVELS Register
@@ -54095,7 +53246,6 @@ impl FifoLevels {
     pub fn tdf_lvl(&self) -> u32 {
         (self.value.read_bits() & Self::TDF_LVL_MASK) >> Self::TDF_LVL_OFFSET
     }
-
 }
 
 /// FIFO_LEVELS value type for batch read/modify/write operations
@@ -54149,7 +53299,6 @@ impl FifoLevelsVal {
     pub const fn tdf_lvl(&self) -> u32 {
         (self.bits & FifoLevels::TDF_LVL_MASK) >> FifoLevels::TDF_LVL_OFFSET
     }
-
 }
 
 impl Default for FifoLevelsVal {
@@ -54164,19 +53313,6 @@ impl FifoLevels {
     pub fn read_val(&self) -> FifoLevelsVal {
         FifoLevelsVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: FifoLevelsVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(FifoLevelsVal) -> FifoLevelsVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CHAN_ABORT Register
@@ -54236,7 +53372,6 @@ impl ChanAbort {
     pub fn write_chan_abort(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CHAN_ABORT_MASK) | ((value << Self::CHAN_ABORT_OFFSET) & Self::CHAN_ABORT_MASK));
     }
-
 }
 
 /// CHAN_ABORT value type for batch read/modify/write operations
@@ -54286,7 +53421,6 @@ impl ChanAbortVal {
             bits: (self.bits & !ChanAbort::CHAN_ABORT_MASK) | ((value << ChanAbort::CHAN_ABORT_OFFSET) & ChanAbort::CHAN_ABORT_MASK)
         }
     }
-
 }
 
 impl Default for ChanAbortVal {
@@ -54313,7 +53447,6 @@ impl ChanAbort {
     pub fn modify_val<F: FnOnce(ChanAbortVal) -> ChanAbortVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// N_CHANNELS Register
@@ -54353,7 +53486,6 @@ impl NChannels {
     pub fn n_channels(&self) -> u32 {
         (self.value.read_bits() & Self::N_CHANNELS_MASK) >> Self::N_CHANNELS_OFFSET
     }
-
 }
 
 /// N_CHANNELS value type for batch read/modify/write operations
@@ -54383,7 +53515,6 @@ impl NChannelsVal {
     pub const fn n_channels(&self) -> u32 {
         (self.bits & NChannels::N_CHANNELS_MASK) >> NChannels::N_CHANNELS_OFFSET
     }
-
 }
 
 impl Default for NChannelsVal {
@@ -54398,19 +53529,6 @@ impl NChannels {
     pub fn read_val(&self) -> NChannelsVal {
         NChannelsVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: NChannelsVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(NChannelsVal) -> NChannelsVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SECCFG_CH0 Register
@@ -54552,7 +53670,6 @@ impl SeccfgCh0 {
     pub fn clr_p(&self) {
         self.clr_bits(Self::P_MASK);
     }
-
 }
 
 /// SECCFG_CH0 value type for batch read/modify/write operations
@@ -54656,7 +53773,6 @@ impl SeccfgCh0Val {
             }
         }
     }
-
 }
 
 impl Default for SeccfgCh0Val {
@@ -54683,7 +53799,6 @@ impl SeccfgCh0 {
     pub fn modify_val<F: FnOnce(SeccfgCh0Val) -> SeccfgCh0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SECCFG_CH1 Register
@@ -54825,7 +53940,6 @@ impl SeccfgCh1 {
     pub fn clr_p(&self) {
         self.clr_bits(Self::P_MASK);
     }
-
 }
 
 /// SECCFG_CH1 value type for batch read/modify/write operations
@@ -54929,7 +54043,6 @@ impl SeccfgCh1Val {
             }
         }
     }
-
 }
 
 impl Default for SeccfgCh1Val {
@@ -54956,7 +54069,6 @@ impl SeccfgCh1 {
     pub fn modify_val<F: FnOnce(SeccfgCh1Val) -> SeccfgCh1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SECCFG_CH2 Register
@@ -55098,7 +54210,6 @@ impl SeccfgCh2 {
     pub fn clr_p(&self) {
         self.clr_bits(Self::P_MASK);
     }
-
 }
 
 /// SECCFG_CH2 value type for batch read/modify/write operations
@@ -55202,7 +54313,6 @@ impl SeccfgCh2Val {
             }
         }
     }
-
 }
 
 impl Default for SeccfgCh2Val {
@@ -55229,7 +54339,6 @@ impl SeccfgCh2 {
     pub fn modify_val<F: FnOnce(SeccfgCh2Val) -> SeccfgCh2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SECCFG_CH3 Register
@@ -55371,7 +54480,6 @@ impl SeccfgCh3 {
     pub fn clr_p(&self) {
         self.clr_bits(Self::P_MASK);
     }
-
 }
 
 /// SECCFG_CH3 value type for batch read/modify/write operations
@@ -55475,7 +54583,6 @@ impl SeccfgCh3Val {
             }
         }
     }
-
 }
 
 impl Default for SeccfgCh3Val {
@@ -55502,7 +54609,6 @@ impl SeccfgCh3 {
     pub fn modify_val<F: FnOnce(SeccfgCh3Val) -> SeccfgCh3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SECCFG_CH4 Register
@@ -55644,7 +54750,6 @@ impl SeccfgCh4 {
     pub fn clr_p(&self) {
         self.clr_bits(Self::P_MASK);
     }
-
 }
 
 /// SECCFG_CH4 value type for batch read/modify/write operations
@@ -55748,7 +54853,6 @@ impl SeccfgCh4Val {
             }
         }
     }
-
 }
 
 impl Default for SeccfgCh4Val {
@@ -55775,7 +54879,6 @@ impl SeccfgCh4 {
     pub fn modify_val<F: FnOnce(SeccfgCh4Val) -> SeccfgCh4Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SECCFG_CH5 Register
@@ -55917,7 +55020,6 @@ impl SeccfgCh5 {
     pub fn clr_p(&self) {
         self.clr_bits(Self::P_MASK);
     }
-
 }
 
 /// SECCFG_CH5 value type for batch read/modify/write operations
@@ -56021,7 +55123,6 @@ impl SeccfgCh5Val {
             }
         }
     }
-
 }
 
 impl Default for SeccfgCh5Val {
@@ -56048,7 +55149,6 @@ impl SeccfgCh5 {
     pub fn modify_val<F: FnOnce(SeccfgCh5Val) -> SeccfgCh5Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SECCFG_CH6 Register
@@ -56190,7 +55290,6 @@ impl SeccfgCh6 {
     pub fn clr_p(&self) {
         self.clr_bits(Self::P_MASK);
     }
-
 }
 
 /// SECCFG_CH6 value type for batch read/modify/write operations
@@ -56294,7 +55393,6 @@ impl SeccfgCh6Val {
             }
         }
     }
-
 }
 
 impl Default for SeccfgCh6Val {
@@ -56321,7 +55419,6 @@ impl SeccfgCh6 {
     pub fn modify_val<F: FnOnce(SeccfgCh6Val) -> SeccfgCh6Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SECCFG_CH7 Register
@@ -56463,7 +55560,6 @@ impl SeccfgCh7 {
     pub fn clr_p(&self) {
         self.clr_bits(Self::P_MASK);
     }
-
 }
 
 /// SECCFG_CH7 value type for batch read/modify/write operations
@@ -56567,7 +55663,6 @@ impl SeccfgCh7Val {
             }
         }
     }
-
 }
 
 impl Default for SeccfgCh7Val {
@@ -56594,7 +55689,6 @@ impl SeccfgCh7 {
     pub fn modify_val<F: FnOnce(SeccfgCh7Val) -> SeccfgCh7Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SECCFG_CH8 Register
@@ -56736,7 +55830,6 @@ impl SeccfgCh8 {
     pub fn clr_p(&self) {
         self.clr_bits(Self::P_MASK);
     }
-
 }
 
 /// SECCFG_CH8 value type for batch read/modify/write operations
@@ -56840,7 +55933,6 @@ impl SeccfgCh8Val {
             }
         }
     }
-
 }
 
 impl Default for SeccfgCh8Val {
@@ -56867,7 +55959,6 @@ impl SeccfgCh8 {
     pub fn modify_val<F: FnOnce(SeccfgCh8Val) -> SeccfgCh8Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SECCFG_CH9 Register
@@ -57009,7 +56100,6 @@ impl SeccfgCh9 {
     pub fn clr_p(&self) {
         self.clr_bits(Self::P_MASK);
     }
-
 }
 
 /// SECCFG_CH9 value type for batch read/modify/write operations
@@ -57113,7 +56203,6 @@ impl SeccfgCh9Val {
             }
         }
     }
-
 }
 
 impl Default for SeccfgCh9Val {
@@ -57140,7 +56229,6 @@ impl SeccfgCh9 {
     pub fn modify_val<F: FnOnce(SeccfgCh9Val) -> SeccfgCh9Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SECCFG_CH10 Register
@@ -57282,7 +56370,6 @@ impl SeccfgCh10 {
     pub fn clr_p(&self) {
         self.clr_bits(Self::P_MASK);
     }
-
 }
 
 /// SECCFG_CH10 value type for batch read/modify/write operations
@@ -57386,7 +56473,6 @@ impl SeccfgCh10Val {
             }
         }
     }
-
 }
 
 impl Default for SeccfgCh10Val {
@@ -57413,7 +56499,6 @@ impl SeccfgCh10 {
     pub fn modify_val<F: FnOnce(SeccfgCh10Val) -> SeccfgCh10Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SECCFG_CH11 Register
@@ -57555,7 +56640,6 @@ impl SeccfgCh11 {
     pub fn clr_p(&self) {
         self.clr_bits(Self::P_MASK);
     }
-
 }
 
 /// SECCFG_CH11 value type for batch read/modify/write operations
@@ -57659,7 +56743,6 @@ impl SeccfgCh11Val {
             }
         }
     }
-
 }
 
 impl Default for SeccfgCh11Val {
@@ -57686,7 +56769,6 @@ impl SeccfgCh11 {
     pub fn modify_val<F: FnOnce(SeccfgCh11Val) -> SeccfgCh11Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SECCFG_CH12 Register
@@ -57828,7 +56910,6 @@ impl SeccfgCh12 {
     pub fn clr_p(&self) {
         self.clr_bits(Self::P_MASK);
     }
-
 }
 
 /// SECCFG_CH12 value type for batch read/modify/write operations
@@ -57932,7 +57013,6 @@ impl SeccfgCh12Val {
             }
         }
     }
-
 }
 
 impl Default for SeccfgCh12Val {
@@ -57959,7 +57039,6 @@ impl SeccfgCh12 {
     pub fn modify_val<F: FnOnce(SeccfgCh12Val) -> SeccfgCh12Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SECCFG_CH13 Register
@@ -58101,7 +57180,6 @@ impl SeccfgCh13 {
     pub fn clr_p(&self) {
         self.clr_bits(Self::P_MASK);
     }
-
 }
 
 /// SECCFG_CH13 value type for batch read/modify/write operations
@@ -58205,7 +57283,6 @@ impl SeccfgCh13Val {
             }
         }
     }
-
 }
 
 impl Default for SeccfgCh13Val {
@@ -58232,7 +57309,6 @@ impl SeccfgCh13 {
     pub fn modify_val<F: FnOnce(SeccfgCh13Val) -> SeccfgCh13Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SECCFG_CH14 Register
@@ -58374,7 +57450,6 @@ impl SeccfgCh14 {
     pub fn clr_p(&self) {
         self.clr_bits(Self::P_MASK);
     }
-
 }
 
 /// SECCFG_CH14 value type for batch read/modify/write operations
@@ -58478,7 +57553,6 @@ impl SeccfgCh14Val {
             }
         }
     }
-
 }
 
 impl Default for SeccfgCh14Val {
@@ -58505,7 +57579,6 @@ impl SeccfgCh14 {
     pub fn modify_val<F: FnOnce(SeccfgCh14Val) -> SeccfgCh14Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SECCFG_CH15 Register
@@ -58647,7 +57720,6 @@ impl SeccfgCh15 {
     pub fn clr_p(&self) {
         self.clr_bits(Self::P_MASK);
     }
-
 }
 
 /// SECCFG_CH15 value type for batch read/modify/write operations
@@ -58751,7 +57823,6 @@ impl SeccfgCh15Val {
             }
         }
     }
-
 }
 
 impl Default for SeccfgCh15Val {
@@ -58778,7 +57849,6 @@ impl SeccfgCh15 {
     pub fn modify_val<F: FnOnce(SeccfgCh15Val) -> SeccfgCh15Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SECCFG_IRQ0 Register
@@ -58878,7 +57948,6 @@ impl SeccfgIrq0 {
     pub fn clr_p(&self) {
         self.clr_bits(Self::P_MASK);
     }
-
 }
 
 /// SECCFG_IRQ0 value type for batch read/modify/write operations
@@ -58956,7 +58025,6 @@ impl SeccfgIrq0Val {
             }
         }
     }
-
 }
 
 impl Default for SeccfgIrq0Val {
@@ -58983,7 +58051,6 @@ impl SeccfgIrq0 {
     pub fn modify_val<F: FnOnce(SeccfgIrq0Val) -> SeccfgIrq0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SECCFG_IRQ1 Register
@@ -59083,7 +58150,6 @@ impl SeccfgIrq1 {
     pub fn clr_p(&self) {
         self.clr_bits(Self::P_MASK);
     }
-
 }
 
 /// SECCFG_IRQ1 value type for batch read/modify/write operations
@@ -59161,7 +58227,6 @@ impl SeccfgIrq1Val {
             }
         }
     }
-
 }
 
 impl Default for SeccfgIrq1Val {
@@ -59188,7 +58253,6 @@ impl SeccfgIrq1 {
     pub fn modify_val<F: FnOnce(SeccfgIrq1Val) -> SeccfgIrq1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SECCFG_IRQ2 Register
@@ -59288,7 +58352,6 @@ impl SeccfgIrq2 {
     pub fn clr_p(&self) {
         self.clr_bits(Self::P_MASK);
     }
-
 }
 
 /// SECCFG_IRQ2 value type for batch read/modify/write operations
@@ -59366,7 +58429,6 @@ impl SeccfgIrq2Val {
             }
         }
     }
-
 }
 
 impl Default for SeccfgIrq2Val {
@@ -59393,7 +58455,6 @@ impl SeccfgIrq2 {
     pub fn modify_val<F: FnOnce(SeccfgIrq2Val) -> SeccfgIrq2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SECCFG_IRQ3 Register
@@ -59493,7 +58554,6 @@ impl SeccfgIrq3 {
     pub fn clr_p(&self) {
         self.clr_bits(Self::P_MASK);
     }
-
 }
 
 /// SECCFG_IRQ3 value type for batch read/modify/write operations
@@ -59571,7 +58631,6 @@ impl SeccfgIrq3Val {
             }
         }
     }
-
 }
 
 impl Default for SeccfgIrq3Val {
@@ -59598,7 +58657,6 @@ impl SeccfgIrq3 {
     pub fn modify_val<F: FnOnce(SeccfgIrq3Val) -> SeccfgIrq3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SECCFG_MISC Register
@@ -59962,7 +59020,6 @@ impl SeccfgMisc {
     pub fn clr_sniff_p(&self) {
         self.clr_bits(Self::SNIFF_P_MASK);
     }
-
 }
 
 /// SECCFG_MISC value type for batch read/modify/write operations
@@ -60216,7 +59273,6 @@ impl SeccfgMiscVal {
             }
         }
     }
-
 }
 
 impl Default for SeccfgMiscVal {
@@ -60243,7 +59299,6 @@ impl SeccfgMisc {
     pub fn modify_val<F: FnOnce(SeccfgMiscVal) -> SeccfgMiscVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MPU_CTRL Register
@@ -60370,7 +59425,6 @@ impl MpuCtrl {
     pub fn clr_p(&self) {
         self.clr_bits(Self::P_MASK);
     }
-
 }
 
 /// MPU_CTRL value type for batch read/modify/write operations
@@ -60466,7 +59520,6 @@ impl MpuCtrlVal {
             }
         }
     }
-
 }
 
 impl Default for MpuCtrlVal {
@@ -60493,7 +59546,6 @@ impl MpuCtrl {
     pub fn modify_val<F: FnOnce(MpuCtrlVal) -> MpuCtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MPU_BAR0 Register
@@ -60553,7 +59605,6 @@ impl MpuBar0 {
     pub fn write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK));
     }
-
 }
 
 /// MPU_BAR0 value type for batch read/modify/write operations
@@ -60603,7 +59654,6 @@ impl MpuBar0Val {
             bits: (self.bits & !MpuBar0::ADDR_MASK) | ((value << MpuBar0::ADDR_OFFSET) & MpuBar0::ADDR_MASK)
         }
     }
-
 }
 
 impl Default for MpuBar0Val {
@@ -60630,7 +59680,6 @@ impl MpuBar0 {
     pub fn modify_val<F: FnOnce(MpuBar0Val) -> MpuBar0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MPU_LAR0 Register
@@ -60785,7 +59834,6 @@ impl MpuLar0 {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// MPU_LAR0 value type for batch read/modify/write operations
@@ -60899,7 +59947,6 @@ impl MpuLar0Val {
             }
         }
     }
-
 }
 
 impl Default for MpuLar0Val {
@@ -60926,7 +59973,6 @@ impl MpuLar0 {
     pub fn modify_val<F: FnOnce(MpuLar0Val) -> MpuLar0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MPU_BAR1 Register
@@ -60986,7 +60032,6 @@ impl MpuBar1 {
     pub fn write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK));
     }
-
 }
 
 /// MPU_BAR1 value type for batch read/modify/write operations
@@ -61036,7 +60081,6 @@ impl MpuBar1Val {
             bits: (self.bits & !MpuBar1::ADDR_MASK) | ((value << MpuBar1::ADDR_OFFSET) & MpuBar1::ADDR_MASK)
         }
     }
-
 }
 
 impl Default for MpuBar1Val {
@@ -61063,7 +60107,6 @@ impl MpuBar1 {
     pub fn modify_val<F: FnOnce(MpuBar1Val) -> MpuBar1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MPU_LAR1 Register
@@ -61218,7 +60261,6 @@ impl MpuLar1 {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// MPU_LAR1 value type for batch read/modify/write operations
@@ -61332,7 +60374,6 @@ impl MpuLar1Val {
             }
         }
     }
-
 }
 
 impl Default for MpuLar1Val {
@@ -61359,7 +60400,6 @@ impl MpuLar1 {
     pub fn modify_val<F: FnOnce(MpuLar1Val) -> MpuLar1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MPU_BAR2 Register
@@ -61419,7 +60459,6 @@ impl MpuBar2 {
     pub fn write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK));
     }
-
 }
 
 /// MPU_BAR2 value type for batch read/modify/write operations
@@ -61469,7 +60508,6 @@ impl MpuBar2Val {
             bits: (self.bits & !MpuBar2::ADDR_MASK) | ((value << MpuBar2::ADDR_OFFSET) & MpuBar2::ADDR_MASK)
         }
     }
-
 }
 
 impl Default for MpuBar2Val {
@@ -61496,7 +60534,6 @@ impl MpuBar2 {
     pub fn modify_val<F: FnOnce(MpuBar2Val) -> MpuBar2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MPU_LAR2 Register
@@ -61651,7 +60688,6 @@ impl MpuLar2 {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// MPU_LAR2 value type for batch read/modify/write operations
@@ -61765,7 +60801,6 @@ impl MpuLar2Val {
             }
         }
     }
-
 }
 
 impl Default for MpuLar2Val {
@@ -61792,7 +60827,6 @@ impl MpuLar2 {
     pub fn modify_val<F: FnOnce(MpuLar2Val) -> MpuLar2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MPU_BAR3 Register
@@ -61852,7 +60886,6 @@ impl MpuBar3 {
     pub fn write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK));
     }
-
 }
 
 /// MPU_BAR3 value type for batch read/modify/write operations
@@ -61902,7 +60935,6 @@ impl MpuBar3Val {
             bits: (self.bits & !MpuBar3::ADDR_MASK) | ((value << MpuBar3::ADDR_OFFSET) & MpuBar3::ADDR_MASK)
         }
     }
-
 }
 
 impl Default for MpuBar3Val {
@@ -61929,7 +60961,6 @@ impl MpuBar3 {
     pub fn modify_val<F: FnOnce(MpuBar3Val) -> MpuBar3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MPU_LAR3 Register
@@ -62084,7 +61115,6 @@ impl MpuLar3 {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// MPU_LAR3 value type for batch read/modify/write operations
@@ -62198,7 +61228,6 @@ impl MpuLar3Val {
             }
         }
     }
-
 }
 
 impl Default for MpuLar3Val {
@@ -62225,7 +61254,6 @@ impl MpuLar3 {
     pub fn modify_val<F: FnOnce(MpuLar3Val) -> MpuLar3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MPU_BAR4 Register
@@ -62285,7 +61313,6 @@ impl MpuBar4 {
     pub fn write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK));
     }
-
 }
 
 /// MPU_BAR4 value type for batch read/modify/write operations
@@ -62335,7 +61362,6 @@ impl MpuBar4Val {
             bits: (self.bits & !MpuBar4::ADDR_MASK) | ((value << MpuBar4::ADDR_OFFSET) & MpuBar4::ADDR_MASK)
         }
     }
-
 }
 
 impl Default for MpuBar4Val {
@@ -62362,7 +61388,6 @@ impl MpuBar4 {
     pub fn modify_val<F: FnOnce(MpuBar4Val) -> MpuBar4Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MPU_LAR4 Register
@@ -62517,7 +61542,6 @@ impl MpuLar4 {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// MPU_LAR4 value type for batch read/modify/write operations
@@ -62631,7 +61655,6 @@ impl MpuLar4Val {
             }
         }
     }
-
 }
 
 impl Default for MpuLar4Val {
@@ -62658,7 +61681,6 @@ impl MpuLar4 {
     pub fn modify_val<F: FnOnce(MpuLar4Val) -> MpuLar4Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MPU_BAR5 Register
@@ -62718,7 +61740,6 @@ impl MpuBar5 {
     pub fn write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK));
     }
-
 }
 
 /// MPU_BAR5 value type for batch read/modify/write operations
@@ -62768,7 +61789,6 @@ impl MpuBar5Val {
             bits: (self.bits & !MpuBar5::ADDR_MASK) | ((value << MpuBar5::ADDR_OFFSET) & MpuBar5::ADDR_MASK)
         }
     }
-
 }
 
 impl Default for MpuBar5Val {
@@ -62795,7 +61815,6 @@ impl MpuBar5 {
     pub fn modify_val<F: FnOnce(MpuBar5Val) -> MpuBar5Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MPU_LAR5 Register
@@ -62950,7 +61969,6 @@ impl MpuLar5 {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// MPU_LAR5 value type for batch read/modify/write operations
@@ -63064,7 +62082,6 @@ impl MpuLar5Val {
             }
         }
     }
-
 }
 
 impl Default for MpuLar5Val {
@@ -63091,7 +62108,6 @@ impl MpuLar5 {
     pub fn modify_val<F: FnOnce(MpuLar5Val) -> MpuLar5Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MPU_BAR6 Register
@@ -63151,7 +62167,6 @@ impl MpuBar6 {
     pub fn write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK));
     }
-
 }
 
 /// MPU_BAR6 value type for batch read/modify/write operations
@@ -63201,7 +62216,6 @@ impl MpuBar6Val {
             bits: (self.bits & !MpuBar6::ADDR_MASK) | ((value << MpuBar6::ADDR_OFFSET) & MpuBar6::ADDR_MASK)
         }
     }
-
 }
 
 impl Default for MpuBar6Val {
@@ -63228,7 +62242,6 @@ impl MpuBar6 {
     pub fn modify_val<F: FnOnce(MpuBar6Val) -> MpuBar6Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MPU_LAR6 Register
@@ -63383,7 +62396,6 @@ impl MpuLar6 {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// MPU_LAR6 value type for batch read/modify/write operations
@@ -63497,7 +62509,6 @@ impl MpuLar6Val {
             }
         }
     }
-
 }
 
 impl Default for MpuLar6Val {
@@ -63524,7 +62535,6 @@ impl MpuLar6 {
     pub fn modify_val<F: FnOnce(MpuLar6Val) -> MpuLar6Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MPU_BAR7 Register
@@ -63584,7 +62594,6 @@ impl MpuBar7 {
     pub fn write_addr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK));
     }
-
 }
 
 /// MPU_BAR7 value type for batch read/modify/write operations
@@ -63634,7 +62643,6 @@ impl MpuBar7Val {
             bits: (self.bits & !MpuBar7::ADDR_MASK) | ((value << MpuBar7::ADDR_OFFSET) & MpuBar7::ADDR_MASK)
         }
     }
-
 }
 
 impl Default for MpuBar7Val {
@@ -63661,7 +62669,6 @@ impl MpuBar7 {
     pub fn modify_val<F: FnOnce(MpuBar7Val) -> MpuBar7Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MPU_LAR7 Register
@@ -63816,7 +62823,6 @@ impl MpuLar7 {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// MPU_LAR7 value type for batch read/modify/write operations
@@ -63930,7 +62936,6 @@ impl MpuLar7Val {
             }
         }
     }
-
 }
 
 impl Default for MpuLar7Val {
@@ -63957,7 +62962,6 @@ impl MpuLar7 {
     pub fn modify_val<F: FnOnce(MpuLar7Val) -> MpuLar7Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH0_DBG_CTDREQ Register
@@ -64004,7 +63008,6 @@ impl Ch0DbgCtdreq {
     pub fn write_ch0_dbg_ctdreq(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH0_DBG_CTDREQ_MASK) | ((value << Self::CH0_DBG_CTDREQ_OFFSET) & Self::CH0_DBG_CTDREQ_MASK));
     }
-
 }
 
 /// CH0_DBG_CTDREQ value type for batch read/modify/write operations
@@ -64048,7 +63051,6 @@ impl Ch0DbgCtdreqVal {
             bits: (self.bits & !Ch0DbgCtdreq::CH0_DBG_CTDREQ_MASK) | ((value << Ch0DbgCtdreq::CH0_DBG_CTDREQ_OFFSET) & Ch0DbgCtdreq::CH0_DBG_CTDREQ_MASK)
         }
     }
-
 }
 
 impl Default for Ch0DbgCtdreqVal {
@@ -64075,7 +63077,6 @@ impl Ch0DbgCtdreq {
     pub fn modify_val<F: FnOnce(Ch0DbgCtdreqVal) -> Ch0DbgCtdreqVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH0_DBG_TCR Register
@@ -64116,7 +63117,6 @@ impl Ch0DbgTcr {
     pub fn ch0_dbg_tcr(&self) -> u32 {
         (self.value.read_bits() & Self::CH0_DBG_TCR_MASK) >> Self::CH0_DBG_TCR_OFFSET
     }
-
 }
 
 /// CH0_DBG_TCR value type for batch read/modify/write operations
@@ -64152,7 +63152,6 @@ impl Ch0DbgTcrVal {
     pub const fn ch0_dbg_tcr(&self) -> u32 {
         (self.bits & Ch0DbgTcr::CH0_DBG_TCR_MASK) >> Ch0DbgTcr::CH0_DBG_TCR_OFFSET
     }
-
 }
 
 impl Default for Ch0DbgTcrVal {
@@ -64167,19 +63166,6 @@ impl Ch0DbgTcr {
     pub fn read_val(&self) -> Ch0DbgTcrVal {
         Ch0DbgTcrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Ch0DbgTcrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Ch0DbgTcrVal) -> Ch0DbgTcrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CH1_DBG_CTDREQ Register
@@ -64226,7 +63212,6 @@ impl Ch1DbgCtdreq {
     pub fn write_ch1_dbg_ctdreq(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH1_DBG_CTDREQ_MASK) | ((value << Self::CH1_DBG_CTDREQ_OFFSET) & Self::CH1_DBG_CTDREQ_MASK));
     }
-
 }
 
 /// CH1_DBG_CTDREQ value type for batch read/modify/write operations
@@ -64270,7 +63255,6 @@ impl Ch1DbgCtdreqVal {
             bits: (self.bits & !Ch1DbgCtdreq::CH1_DBG_CTDREQ_MASK) | ((value << Ch1DbgCtdreq::CH1_DBG_CTDREQ_OFFSET) & Ch1DbgCtdreq::CH1_DBG_CTDREQ_MASK)
         }
     }
-
 }
 
 impl Default for Ch1DbgCtdreqVal {
@@ -64297,7 +63281,6 @@ impl Ch1DbgCtdreq {
     pub fn modify_val<F: FnOnce(Ch1DbgCtdreqVal) -> Ch1DbgCtdreqVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH1_DBG_TCR Register
@@ -64338,7 +63321,6 @@ impl Ch1DbgTcr {
     pub fn ch1_dbg_tcr(&self) -> u32 {
         (self.value.read_bits() & Self::CH1_DBG_TCR_MASK) >> Self::CH1_DBG_TCR_OFFSET
     }
-
 }
 
 /// CH1_DBG_TCR value type for batch read/modify/write operations
@@ -64374,7 +63356,6 @@ impl Ch1DbgTcrVal {
     pub const fn ch1_dbg_tcr(&self) -> u32 {
         (self.bits & Ch1DbgTcr::CH1_DBG_TCR_MASK) >> Ch1DbgTcr::CH1_DBG_TCR_OFFSET
     }
-
 }
 
 impl Default for Ch1DbgTcrVal {
@@ -64389,19 +63370,6 @@ impl Ch1DbgTcr {
     pub fn read_val(&self) -> Ch1DbgTcrVal {
         Ch1DbgTcrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Ch1DbgTcrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Ch1DbgTcrVal) -> Ch1DbgTcrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CH2_DBG_CTDREQ Register
@@ -64448,7 +63416,6 @@ impl Ch2DbgCtdreq {
     pub fn write_ch2_dbg_ctdreq(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH2_DBG_CTDREQ_MASK) | ((value << Self::CH2_DBG_CTDREQ_OFFSET) & Self::CH2_DBG_CTDREQ_MASK));
     }
-
 }
 
 /// CH2_DBG_CTDREQ value type for batch read/modify/write operations
@@ -64492,7 +63459,6 @@ impl Ch2DbgCtdreqVal {
             bits: (self.bits & !Ch2DbgCtdreq::CH2_DBG_CTDREQ_MASK) | ((value << Ch2DbgCtdreq::CH2_DBG_CTDREQ_OFFSET) & Ch2DbgCtdreq::CH2_DBG_CTDREQ_MASK)
         }
     }
-
 }
 
 impl Default for Ch2DbgCtdreqVal {
@@ -64519,7 +63485,6 @@ impl Ch2DbgCtdreq {
     pub fn modify_val<F: FnOnce(Ch2DbgCtdreqVal) -> Ch2DbgCtdreqVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH2_DBG_TCR Register
@@ -64560,7 +63525,6 @@ impl Ch2DbgTcr {
     pub fn ch2_dbg_tcr(&self) -> u32 {
         (self.value.read_bits() & Self::CH2_DBG_TCR_MASK) >> Self::CH2_DBG_TCR_OFFSET
     }
-
 }
 
 /// CH2_DBG_TCR value type for batch read/modify/write operations
@@ -64596,7 +63560,6 @@ impl Ch2DbgTcrVal {
     pub const fn ch2_dbg_tcr(&self) -> u32 {
         (self.bits & Ch2DbgTcr::CH2_DBG_TCR_MASK) >> Ch2DbgTcr::CH2_DBG_TCR_OFFSET
     }
-
 }
 
 impl Default for Ch2DbgTcrVal {
@@ -64611,19 +63574,6 @@ impl Ch2DbgTcr {
     pub fn read_val(&self) -> Ch2DbgTcrVal {
         Ch2DbgTcrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Ch2DbgTcrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Ch2DbgTcrVal) -> Ch2DbgTcrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CH3_DBG_CTDREQ Register
@@ -64670,7 +63620,6 @@ impl Ch3DbgCtdreq {
     pub fn write_ch3_dbg_ctdreq(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH3_DBG_CTDREQ_MASK) | ((value << Self::CH3_DBG_CTDREQ_OFFSET) & Self::CH3_DBG_CTDREQ_MASK));
     }
-
 }
 
 /// CH3_DBG_CTDREQ value type for batch read/modify/write operations
@@ -64714,7 +63663,6 @@ impl Ch3DbgCtdreqVal {
             bits: (self.bits & !Ch3DbgCtdreq::CH3_DBG_CTDREQ_MASK) | ((value << Ch3DbgCtdreq::CH3_DBG_CTDREQ_OFFSET) & Ch3DbgCtdreq::CH3_DBG_CTDREQ_MASK)
         }
     }
-
 }
 
 impl Default for Ch3DbgCtdreqVal {
@@ -64741,7 +63689,6 @@ impl Ch3DbgCtdreq {
     pub fn modify_val<F: FnOnce(Ch3DbgCtdreqVal) -> Ch3DbgCtdreqVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH3_DBG_TCR Register
@@ -64782,7 +63729,6 @@ impl Ch3DbgTcr {
     pub fn ch3_dbg_tcr(&self) -> u32 {
         (self.value.read_bits() & Self::CH3_DBG_TCR_MASK) >> Self::CH3_DBG_TCR_OFFSET
     }
-
 }
 
 /// CH3_DBG_TCR value type for batch read/modify/write operations
@@ -64818,7 +63764,6 @@ impl Ch3DbgTcrVal {
     pub const fn ch3_dbg_tcr(&self) -> u32 {
         (self.bits & Ch3DbgTcr::CH3_DBG_TCR_MASK) >> Ch3DbgTcr::CH3_DBG_TCR_OFFSET
     }
-
 }
 
 impl Default for Ch3DbgTcrVal {
@@ -64833,19 +63778,6 @@ impl Ch3DbgTcr {
     pub fn read_val(&self) -> Ch3DbgTcrVal {
         Ch3DbgTcrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Ch3DbgTcrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Ch3DbgTcrVal) -> Ch3DbgTcrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CH4_DBG_CTDREQ Register
@@ -64892,7 +63824,6 @@ impl Ch4DbgCtdreq {
     pub fn write_ch4_dbg_ctdreq(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH4_DBG_CTDREQ_MASK) | ((value << Self::CH4_DBG_CTDREQ_OFFSET) & Self::CH4_DBG_CTDREQ_MASK));
     }
-
 }
 
 /// CH4_DBG_CTDREQ value type for batch read/modify/write operations
@@ -64936,7 +63867,6 @@ impl Ch4DbgCtdreqVal {
             bits: (self.bits & !Ch4DbgCtdreq::CH4_DBG_CTDREQ_MASK) | ((value << Ch4DbgCtdreq::CH4_DBG_CTDREQ_OFFSET) & Ch4DbgCtdreq::CH4_DBG_CTDREQ_MASK)
         }
     }
-
 }
 
 impl Default for Ch4DbgCtdreqVal {
@@ -64963,7 +63893,6 @@ impl Ch4DbgCtdreq {
     pub fn modify_val<F: FnOnce(Ch4DbgCtdreqVal) -> Ch4DbgCtdreqVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH4_DBG_TCR Register
@@ -65004,7 +63933,6 @@ impl Ch4DbgTcr {
     pub fn ch4_dbg_tcr(&self) -> u32 {
         (self.value.read_bits() & Self::CH4_DBG_TCR_MASK) >> Self::CH4_DBG_TCR_OFFSET
     }
-
 }
 
 /// CH4_DBG_TCR value type for batch read/modify/write operations
@@ -65040,7 +63968,6 @@ impl Ch4DbgTcrVal {
     pub const fn ch4_dbg_tcr(&self) -> u32 {
         (self.bits & Ch4DbgTcr::CH4_DBG_TCR_MASK) >> Ch4DbgTcr::CH4_DBG_TCR_OFFSET
     }
-
 }
 
 impl Default for Ch4DbgTcrVal {
@@ -65055,19 +63982,6 @@ impl Ch4DbgTcr {
     pub fn read_val(&self) -> Ch4DbgTcrVal {
         Ch4DbgTcrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Ch4DbgTcrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Ch4DbgTcrVal) -> Ch4DbgTcrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CH5_DBG_CTDREQ Register
@@ -65114,7 +64028,6 @@ impl Ch5DbgCtdreq {
     pub fn write_ch5_dbg_ctdreq(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH5_DBG_CTDREQ_MASK) | ((value << Self::CH5_DBG_CTDREQ_OFFSET) & Self::CH5_DBG_CTDREQ_MASK));
     }
-
 }
 
 /// CH5_DBG_CTDREQ value type for batch read/modify/write operations
@@ -65158,7 +64071,6 @@ impl Ch5DbgCtdreqVal {
             bits: (self.bits & !Ch5DbgCtdreq::CH5_DBG_CTDREQ_MASK) | ((value << Ch5DbgCtdreq::CH5_DBG_CTDREQ_OFFSET) & Ch5DbgCtdreq::CH5_DBG_CTDREQ_MASK)
         }
     }
-
 }
 
 impl Default for Ch5DbgCtdreqVal {
@@ -65185,7 +64097,6 @@ impl Ch5DbgCtdreq {
     pub fn modify_val<F: FnOnce(Ch5DbgCtdreqVal) -> Ch5DbgCtdreqVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH5_DBG_TCR Register
@@ -65226,7 +64137,6 @@ impl Ch5DbgTcr {
     pub fn ch5_dbg_tcr(&self) -> u32 {
         (self.value.read_bits() & Self::CH5_DBG_TCR_MASK) >> Self::CH5_DBG_TCR_OFFSET
     }
-
 }
 
 /// CH5_DBG_TCR value type for batch read/modify/write operations
@@ -65262,7 +64172,6 @@ impl Ch5DbgTcrVal {
     pub const fn ch5_dbg_tcr(&self) -> u32 {
         (self.bits & Ch5DbgTcr::CH5_DBG_TCR_MASK) >> Ch5DbgTcr::CH5_DBG_TCR_OFFSET
     }
-
 }
 
 impl Default for Ch5DbgTcrVal {
@@ -65277,19 +64186,6 @@ impl Ch5DbgTcr {
     pub fn read_val(&self) -> Ch5DbgTcrVal {
         Ch5DbgTcrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Ch5DbgTcrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Ch5DbgTcrVal) -> Ch5DbgTcrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CH6_DBG_CTDREQ Register
@@ -65336,7 +64232,6 @@ impl Ch6DbgCtdreq {
     pub fn write_ch6_dbg_ctdreq(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH6_DBG_CTDREQ_MASK) | ((value << Self::CH6_DBG_CTDREQ_OFFSET) & Self::CH6_DBG_CTDREQ_MASK));
     }
-
 }
 
 /// CH6_DBG_CTDREQ value type for batch read/modify/write operations
@@ -65380,7 +64275,6 @@ impl Ch6DbgCtdreqVal {
             bits: (self.bits & !Ch6DbgCtdreq::CH6_DBG_CTDREQ_MASK) | ((value << Ch6DbgCtdreq::CH6_DBG_CTDREQ_OFFSET) & Ch6DbgCtdreq::CH6_DBG_CTDREQ_MASK)
         }
     }
-
 }
 
 impl Default for Ch6DbgCtdreqVal {
@@ -65407,7 +64301,6 @@ impl Ch6DbgCtdreq {
     pub fn modify_val<F: FnOnce(Ch6DbgCtdreqVal) -> Ch6DbgCtdreqVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH6_DBG_TCR Register
@@ -65448,7 +64341,6 @@ impl Ch6DbgTcr {
     pub fn ch6_dbg_tcr(&self) -> u32 {
         (self.value.read_bits() & Self::CH6_DBG_TCR_MASK) >> Self::CH6_DBG_TCR_OFFSET
     }
-
 }
 
 /// CH6_DBG_TCR value type for batch read/modify/write operations
@@ -65484,7 +64376,6 @@ impl Ch6DbgTcrVal {
     pub const fn ch6_dbg_tcr(&self) -> u32 {
         (self.bits & Ch6DbgTcr::CH6_DBG_TCR_MASK) >> Ch6DbgTcr::CH6_DBG_TCR_OFFSET
     }
-
 }
 
 impl Default for Ch6DbgTcrVal {
@@ -65499,19 +64390,6 @@ impl Ch6DbgTcr {
     pub fn read_val(&self) -> Ch6DbgTcrVal {
         Ch6DbgTcrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Ch6DbgTcrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Ch6DbgTcrVal) -> Ch6DbgTcrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CH7_DBG_CTDREQ Register
@@ -65558,7 +64436,6 @@ impl Ch7DbgCtdreq {
     pub fn write_ch7_dbg_ctdreq(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH7_DBG_CTDREQ_MASK) | ((value << Self::CH7_DBG_CTDREQ_OFFSET) & Self::CH7_DBG_CTDREQ_MASK));
     }
-
 }
 
 /// CH7_DBG_CTDREQ value type for batch read/modify/write operations
@@ -65602,7 +64479,6 @@ impl Ch7DbgCtdreqVal {
             bits: (self.bits & !Ch7DbgCtdreq::CH7_DBG_CTDREQ_MASK) | ((value << Ch7DbgCtdreq::CH7_DBG_CTDREQ_OFFSET) & Ch7DbgCtdreq::CH7_DBG_CTDREQ_MASK)
         }
     }
-
 }
 
 impl Default for Ch7DbgCtdreqVal {
@@ -65629,7 +64505,6 @@ impl Ch7DbgCtdreq {
     pub fn modify_val<F: FnOnce(Ch7DbgCtdreqVal) -> Ch7DbgCtdreqVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH7_DBG_TCR Register
@@ -65670,7 +64545,6 @@ impl Ch7DbgTcr {
     pub fn ch7_dbg_tcr(&self) -> u32 {
         (self.value.read_bits() & Self::CH7_DBG_TCR_MASK) >> Self::CH7_DBG_TCR_OFFSET
     }
-
 }
 
 /// CH7_DBG_TCR value type for batch read/modify/write operations
@@ -65706,7 +64580,6 @@ impl Ch7DbgTcrVal {
     pub const fn ch7_dbg_tcr(&self) -> u32 {
         (self.bits & Ch7DbgTcr::CH7_DBG_TCR_MASK) >> Ch7DbgTcr::CH7_DBG_TCR_OFFSET
     }
-
 }
 
 impl Default for Ch7DbgTcrVal {
@@ -65721,19 +64594,6 @@ impl Ch7DbgTcr {
     pub fn read_val(&self) -> Ch7DbgTcrVal {
         Ch7DbgTcrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Ch7DbgTcrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Ch7DbgTcrVal) -> Ch7DbgTcrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CH8_DBG_CTDREQ Register
@@ -65780,7 +64640,6 @@ impl Ch8DbgCtdreq {
     pub fn write_ch8_dbg_ctdreq(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH8_DBG_CTDREQ_MASK) | ((value << Self::CH8_DBG_CTDREQ_OFFSET) & Self::CH8_DBG_CTDREQ_MASK));
     }
-
 }
 
 /// CH8_DBG_CTDREQ value type for batch read/modify/write operations
@@ -65824,7 +64683,6 @@ impl Ch8DbgCtdreqVal {
             bits: (self.bits & !Ch8DbgCtdreq::CH8_DBG_CTDREQ_MASK) | ((value << Ch8DbgCtdreq::CH8_DBG_CTDREQ_OFFSET) & Ch8DbgCtdreq::CH8_DBG_CTDREQ_MASK)
         }
     }
-
 }
 
 impl Default for Ch8DbgCtdreqVal {
@@ -65851,7 +64709,6 @@ impl Ch8DbgCtdreq {
     pub fn modify_val<F: FnOnce(Ch8DbgCtdreqVal) -> Ch8DbgCtdreqVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH8_DBG_TCR Register
@@ -65892,7 +64749,6 @@ impl Ch8DbgTcr {
     pub fn ch8_dbg_tcr(&self) -> u32 {
         (self.value.read_bits() & Self::CH8_DBG_TCR_MASK) >> Self::CH8_DBG_TCR_OFFSET
     }
-
 }
 
 /// CH8_DBG_TCR value type for batch read/modify/write operations
@@ -65928,7 +64784,6 @@ impl Ch8DbgTcrVal {
     pub const fn ch8_dbg_tcr(&self) -> u32 {
         (self.bits & Ch8DbgTcr::CH8_DBG_TCR_MASK) >> Ch8DbgTcr::CH8_DBG_TCR_OFFSET
     }
-
 }
 
 impl Default for Ch8DbgTcrVal {
@@ -65943,19 +64798,6 @@ impl Ch8DbgTcr {
     pub fn read_val(&self) -> Ch8DbgTcrVal {
         Ch8DbgTcrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Ch8DbgTcrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Ch8DbgTcrVal) -> Ch8DbgTcrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CH9_DBG_CTDREQ Register
@@ -66002,7 +64844,6 @@ impl Ch9DbgCtdreq {
     pub fn write_ch9_dbg_ctdreq(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH9_DBG_CTDREQ_MASK) | ((value << Self::CH9_DBG_CTDREQ_OFFSET) & Self::CH9_DBG_CTDREQ_MASK));
     }
-
 }
 
 /// CH9_DBG_CTDREQ value type for batch read/modify/write operations
@@ -66046,7 +64887,6 @@ impl Ch9DbgCtdreqVal {
             bits: (self.bits & !Ch9DbgCtdreq::CH9_DBG_CTDREQ_MASK) | ((value << Ch9DbgCtdreq::CH9_DBG_CTDREQ_OFFSET) & Ch9DbgCtdreq::CH9_DBG_CTDREQ_MASK)
         }
     }
-
 }
 
 impl Default for Ch9DbgCtdreqVal {
@@ -66073,7 +64913,6 @@ impl Ch9DbgCtdreq {
     pub fn modify_val<F: FnOnce(Ch9DbgCtdreqVal) -> Ch9DbgCtdreqVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH9_DBG_TCR Register
@@ -66114,7 +64953,6 @@ impl Ch9DbgTcr {
     pub fn ch9_dbg_tcr(&self) -> u32 {
         (self.value.read_bits() & Self::CH9_DBG_TCR_MASK) >> Self::CH9_DBG_TCR_OFFSET
     }
-
 }
 
 /// CH9_DBG_TCR value type for batch read/modify/write operations
@@ -66150,7 +64988,6 @@ impl Ch9DbgTcrVal {
     pub const fn ch9_dbg_tcr(&self) -> u32 {
         (self.bits & Ch9DbgTcr::CH9_DBG_TCR_MASK) >> Ch9DbgTcr::CH9_DBG_TCR_OFFSET
     }
-
 }
 
 impl Default for Ch9DbgTcrVal {
@@ -66165,19 +65002,6 @@ impl Ch9DbgTcr {
     pub fn read_val(&self) -> Ch9DbgTcrVal {
         Ch9DbgTcrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Ch9DbgTcrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Ch9DbgTcrVal) -> Ch9DbgTcrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CH10_DBG_CTDREQ Register
@@ -66224,7 +65048,6 @@ impl Ch10DbgCtdreq {
     pub fn write_ch10_dbg_ctdreq(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH10_DBG_CTDREQ_MASK) | ((value << Self::CH10_DBG_CTDREQ_OFFSET) & Self::CH10_DBG_CTDREQ_MASK));
     }
-
 }
 
 /// CH10_DBG_CTDREQ value type for batch read/modify/write operations
@@ -66268,7 +65091,6 @@ impl Ch10DbgCtdreqVal {
             bits: (self.bits & !Ch10DbgCtdreq::CH10_DBG_CTDREQ_MASK) | ((value << Ch10DbgCtdreq::CH10_DBG_CTDREQ_OFFSET) & Ch10DbgCtdreq::CH10_DBG_CTDREQ_MASK)
         }
     }
-
 }
 
 impl Default for Ch10DbgCtdreqVal {
@@ -66295,7 +65117,6 @@ impl Ch10DbgCtdreq {
     pub fn modify_val<F: FnOnce(Ch10DbgCtdreqVal) -> Ch10DbgCtdreqVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH10_DBG_TCR Register
@@ -66336,7 +65157,6 @@ impl Ch10DbgTcr {
     pub fn ch10_dbg_tcr(&self) -> u32 {
         (self.value.read_bits() & Self::CH10_DBG_TCR_MASK) >> Self::CH10_DBG_TCR_OFFSET
     }
-
 }
 
 /// CH10_DBG_TCR value type for batch read/modify/write operations
@@ -66372,7 +65192,6 @@ impl Ch10DbgTcrVal {
     pub const fn ch10_dbg_tcr(&self) -> u32 {
         (self.bits & Ch10DbgTcr::CH10_DBG_TCR_MASK) >> Ch10DbgTcr::CH10_DBG_TCR_OFFSET
     }
-
 }
 
 impl Default for Ch10DbgTcrVal {
@@ -66387,19 +65206,6 @@ impl Ch10DbgTcr {
     pub fn read_val(&self) -> Ch10DbgTcrVal {
         Ch10DbgTcrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Ch10DbgTcrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Ch10DbgTcrVal) -> Ch10DbgTcrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CH11_DBG_CTDREQ Register
@@ -66446,7 +65252,6 @@ impl Ch11DbgCtdreq {
     pub fn write_ch11_dbg_ctdreq(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH11_DBG_CTDREQ_MASK) | ((value << Self::CH11_DBG_CTDREQ_OFFSET) & Self::CH11_DBG_CTDREQ_MASK));
     }
-
 }
 
 /// CH11_DBG_CTDREQ value type for batch read/modify/write operations
@@ -66490,7 +65295,6 @@ impl Ch11DbgCtdreqVal {
             bits: (self.bits & !Ch11DbgCtdreq::CH11_DBG_CTDREQ_MASK) | ((value << Ch11DbgCtdreq::CH11_DBG_CTDREQ_OFFSET) & Ch11DbgCtdreq::CH11_DBG_CTDREQ_MASK)
         }
     }
-
 }
 
 impl Default for Ch11DbgCtdreqVal {
@@ -66517,7 +65321,6 @@ impl Ch11DbgCtdreq {
     pub fn modify_val<F: FnOnce(Ch11DbgCtdreqVal) -> Ch11DbgCtdreqVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH11_DBG_TCR Register
@@ -66558,7 +65361,6 @@ impl Ch11DbgTcr {
     pub fn ch11_dbg_tcr(&self) -> u32 {
         (self.value.read_bits() & Self::CH11_DBG_TCR_MASK) >> Self::CH11_DBG_TCR_OFFSET
     }
-
 }
 
 /// CH11_DBG_TCR value type for batch read/modify/write operations
@@ -66594,7 +65396,6 @@ impl Ch11DbgTcrVal {
     pub const fn ch11_dbg_tcr(&self) -> u32 {
         (self.bits & Ch11DbgTcr::CH11_DBG_TCR_MASK) >> Ch11DbgTcr::CH11_DBG_TCR_OFFSET
     }
-
 }
 
 impl Default for Ch11DbgTcrVal {
@@ -66609,19 +65410,6 @@ impl Ch11DbgTcr {
     pub fn read_val(&self) -> Ch11DbgTcrVal {
         Ch11DbgTcrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Ch11DbgTcrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Ch11DbgTcrVal) -> Ch11DbgTcrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CH12_DBG_CTDREQ Register
@@ -66668,7 +65456,6 @@ impl Ch12DbgCtdreq {
     pub fn write_ch12_dbg_ctdreq(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH12_DBG_CTDREQ_MASK) | ((value << Self::CH12_DBG_CTDREQ_OFFSET) & Self::CH12_DBG_CTDREQ_MASK));
     }
-
 }
 
 /// CH12_DBG_CTDREQ value type for batch read/modify/write operations
@@ -66712,7 +65499,6 @@ impl Ch12DbgCtdreqVal {
             bits: (self.bits & !Ch12DbgCtdreq::CH12_DBG_CTDREQ_MASK) | ((value << Ch12DbgCtdreq::CH12_DBG_CTDREQ_OFFSET) & Ch12DbgCtdreq::CH12_DBG_CTDREQ_MASK)
         }
     }
-
 }
 
 impl Default for Ch12DbgCtdreqVal {
@@ -66739,7 +65525,6 @@ impl Ch12DbgCtdreq {
     pub fn modify_val<F: FnOnce(Ch12DbgCtdreqVal) -> Ch12DbgCtdreqVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH12_DBG_TCR Register
@@ -66780,7 +65565,6 @@ impl Ch12DbgTcr {
     pub fn ch12_dbg_tcr(&self) -> u32 {
         (self.value.read_bits() & Self::CH12_DBG_TCR_MASK) >> Self::CH12_DBG_TCR_OFFSET
     }
-
 }
 
 /// CH12_DBG_TCR value type for batch read/modify/write operations
@@ -66816,7 +65600,6 @@ impl Ch12DbgTcrVal {
     pub const fn ch12_dbg_tcr(&self) -> u32 {
         (self.bits & Ch12DbgTcr::CH12_DBG_TCR_MASK) >> Ch12DbgTcr::CH12_DBG_TCR_OFFSET
     }
-
 }
 
 impl Default for Ch12DbgTcrVal {
@@ -66831,19 +65614,6 @@ impl Ch12DbgTcr {
     pub fn read_val(&self) -> Ch12DbgTcrVal {
         Ch12DbgTcrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Ch12DbgTcrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Ch12DbgTcrVal) -> Ch12DbgTcrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CH13_DBG_CTDREQ Register
@@ -66890,7 +65660,6 @@ impl Ch13DbgCtdreq {
     pub fn write_ch13_dbg_ctdreq(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH13_DBG_CTDREQ_MASK) | ((value << Self::CH13_DBG_CTDREQ_OFFSET) & Self::CH13_DBG_CTDREQ_MASK));
     }
-
 }
 
 /// CH13_DBG_CTDREQ value type for batch read/modify/write operations
@@ -66934,7 +65703,6 @@ impl Ch13DbgCtdreqVal {
             bits: (self.bits & !Ch13DbgCtdreq::CH13_DBG_CTDREQ_MASK) | ((value << Ch13DbgCtdreq::CH13_DBG_CTDREQ_OFFSET) & Ch13DbgCtdreq::CH13_DBG_CTDREQ_MASK)
         }
     }
-
 }
 
 impl Default for Ch13DbgCtdreqVal {
@@ -66961,7 +65729,6 @@ impl Ch13DbgCtdreq {
     pub fn modify_val<F: FnOnce(Ch13DbgCtdreqVal) -> Ch13DbgCtdreqVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH13_DBG_TCR Register
@@ -67002,7 +65769,6 @@ impl Ch13DbgTcr {
     pub fn ch13_dbg_tcr(&self) -> u32 {
         (self.value.read_bits() & Self::CH13_DBG_TCR_MASK) >> Self::CH13_DBG_TCR_OFFSET
     }
-
 }
 
 /// CH13_DBG_TCR value type for batch read/modify/write operations
@@ -67038,7 +65804,6 @@ impl Ch13DbgTcrVal {
     pub const fn ch13_dbg_tcr(&self) -> u32 {
         (self.bits & Ch13DbgTcr::CH13_DBG_TCR_MASK) >> Ch13DbgTcr::CH13_DBG_TCR_OFFSET
     }
-
 }
 
 impl Default for Ch13DbgTcrVal {
@@ -67053,19 +65818,6 @@ impl Ch13DbgTcr {
     pub fn read_val(&self) -> Ch13DbgTcrVal {
         Ch13DbgTcrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Ch13DbgTcrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Ch13DbgTcrVal) -> Ch13DbgTcrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CH14_DBG_CTDREQ Register
@@ -67112,7 +65864,6 @@ impl Ch14DbgCtdreq {
     pub fn write_ch14_dbg_ctdreq(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH14_DBG_CTDREQ_MASK) | ((value << Self::CH14_DBG_CTDREQ_OFFSET) & Self::CH14_DBG_CTDREQ_MASK));
     }
-
 }
 
 /// CH14_DBG_CTDREQ value type for batch read/modify/write operations
@@ -67156,7 +65907,6 @@ impl Ch14DbgCtdreqVal {
             bits: (self.bits & !Ch14DbgCtdreq::CH14_DBG_CTDREQ_MASK) | ((value << Ch14DbgCtdreq::CH14_DBG_CTDREQ_OFFSET) & Ch14DbgCtdreq::CH14_DBG_CTDREQ_MASK)
         }
     }
-
 }
 
 impl Default for Ch14DbgCtdreqVal {
@@ -67183,7 +65933,6 @@ impl Ch14DbgCtdreq {
     pub fn modify_val<F: FnOnce(Ch14DbgCtdreqVal) -> Ch14DbgCtdreqVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH14_DBG_TCR Register
@@ -67224,7 +65973,6 @@ impl Ch14DbgTcr {
     pub fn ch14_dbg_tcr(&self) -> u32 {
         (self.value.read_bits() & Self::CH14_DBG_TCR_MASK) >> Self::CH14_DBG_TCR_OFFSET
     }
-
 }
 
 /// CH14_DBG_TCR value type for batch read/modify/write operations
@@ -67260,7 +66008,6 @@ impl Ch14DbgTcrVal {
     pub const fn ch14_dbg_tcr(&self) -> u32 {
         (self.bits & Ch14DbgTcr::CH14_DBG_TCR_MASK) >> Ch14DbgTcr::CH14_DBG_TCR_OFFSET
     }
-
 }
 
 impl Default for Ch14DbgTcrVal {
@@ -67275,19 +66022,6 @@ impl Ch14DbgTcr {
     pub fn read_val(&self) -> Ch14DbgTcrVal {
         Ch14DbgTcrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Ch14DbgTcrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Ch14DbgTcrVal) -> Ch14DbgTcrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CH15_DBG_CTDREQ Register
@@ -67334,7 +66068,6 @@ impl Ch15DbgCtdreq {
     pub fn write_ch15_dbg_ctdreq(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CH15_DBG_CTDREQ_MASK) | ((value << Self::CH15_DBG_CTDREQ_OFFSET) & Self::CH15_DBG_CTDREQ_MASK));
     }
-
 }
 
 /// CH15_DBG_CTDREQ value type for batch read/modify/write operations
@@ -67378,7 +66111,6 @@ impl Ch15DbgCtdreqVal {
             bits: (self.bits & !Ch15DbgCtdreq::CH15_DBG_CTDREQ_MASK) | ((value << Ch15DbgCtdreq::CH15_DBG_CTDREQ_OFFSET) & Ch15DbgCtdreq::CH15_DBG_CTDREQ_MASK)
         }
     }
-
 }
 
 impl Default for Ch15DbgCtdreqVal {
@@ -67405,7 +66137,6 @@ impl Ch15DbgCtdreq {
     pub fn modify_val<F: FnOnce(Ch15DbgCtdreqVal) -> Ch15DbgCtdreqVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CH15_DBG_TCR Register
@@ -67446,7 +66177,6 @@ impl Ch15DbgTcr {
     pub fn ch15_dbg_tcr(&self) -> u32 {
         (self.value.read_bits() & Self::CH15_DBG_TCR_MASK) >> Self::CH15_DBG_TCR_OFFSET
     }
-
 }
 
 /// CH15_DBG_TCR value type for batch read/modify/write operations
@@ -67482,7 +66212,6 @@ impl Ch15DbgTcrVal {
     pub const fn ch15_dbg_tcr(&self) -> u32 {
         (self.bits & Ch15DbgTcr::CH15_DBG_TCR_MASK) >> Ch15DbgTcr::CH15_DBG_TCR_OFFSET
     }
-
 }
 
 impl Default for Ch15DbgTcrVal {
@@ -67497,19 +66226,6 @@ impl Ch15DbgTcr {
     pub fn read_val(&self) -> Ch15DbgTcrVal {
         Ch15DbgTcrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Ch15DbgTcrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Ch15DbgTcrVal) -> Ch15DbgTcrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// Register block

@@ -161,7 +161,6 @@ impl Cs {
     pub fn write_refdiv(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::REFDIV_MASK) | ((value << Self::REFDIV_OFFSET) & Self::REFDIV_MASK));
     }
-
 }
 
 /// CS value type for batch read/modify/write operations
@@ -267,7 +266,6 @@ impl CsVal {
             bits: (self.bits & !Cs::REFDIV_MASK) | ((value << Cs::REFDIV_OFFSET) & Cs::REFDIV_MASK)
         }
     }
-
 }
 
 impl Default for CsVal {
@@ -294,7 +292,6 @@ impl Cs {
     pub fn modify_val<F: FnOnce(CsVal) -> CsVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PWR Register
@@ -466,7 +463,6 @@ impl Pwr {
     pub fn clr_pd(&self) {
         self.clr_bits(Self::PD_MASK);
     }
-
 }
 
 /// PWR value type for batch read/modify/write operations
@@ -592,7 +588,6 @@ impl PwrVal {
             }
         }
     }
-
 }
 
 impl Default for PwrVal {
@@ -619,7 +614,6 @@ impl Pwr {
     pub fn modify_val<F: FnOnce(PwrVal) -> PwrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FBDIV_INT Register
@@ -676,7 +670,6 @@ impl FbdivInt {
     pub fn write_fbdiv_int(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FBDIV_INT_MASK) | ((value << Self::FBDIV_INT_OFFSET) & Self::FBDIV_INT_MASK));
     }
-
 }
 
 /// FBDIV_INT value type for batch read/modify/write operations
@@ -724,7 +717,6 @@ impl FbdivIntVal {
             bits: (self.bits & !FbdivInt::FBDIV_INT_MASK) | ((value << FbdivInt::FBDIV_INT_OFFSET) & FbdivInt::FBDIV_INT_MASK)
         }
     }
-
 }
 
 impl Default for FbdivIntVal {
@@ -751,7 +743,6 @@ impl FbdivInt {
     pub fn modify_val<F: FnOnce(FbdivIntVal) -> FbdivIntVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PRIM Register
@@ -837,7 +828,6 @@ impl Prim {
     pub fn write_postdiv2(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::POSTDIV2_MASK) | ((value << Self::POSTDIV2_OFFSET) & Self::POSTDIV2_MASK));
     }
-
 }
 
 /// PRIM value type for batch read/modify/write operations
@@ -903,7 +893,6 @@ impl PrimVal {
             bits: (self.bits & !Prim::POSTDIV2_MASK) | ((value << Prim::POSTDIV2_OFFSET) & Prim::POSTDIV2_MASK)
         }
     }
-
 }
 
 impl Default for PrimVal {
@@ -930,7 +919,6 @@ impl Prim {
     pub fn modify_val<F: FnOnce(PrimVal) -> PrimVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTR Register
@@ -984,7 +972,6 @@ impl Intr {
     pub fn clr_lock_n_sticky(&self) {
         self.clr_bits(Self::LOCK_N_STICKY_MASK);
     }
-
 }
 
 /// INTR value type for batch read/modify/write operations
@@ -1032,7 +1019,6 @@ impl IntrVal {
             }
         }
     }
-
 }
 
 impl Default for IntrVal {
@@ -1059,7 +1045,6 @@ impl Intr {
     pub fn modify_val<F: FnOnce(IntrVal) -> IntrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTE Register
@@ -1113,7 +1098,6 @@ impl Inte {
     pub fn clr_lock_n_sticky(&self) {
         self.clr_bits(Self::LOCK_N_STICKY_MASK);
     }
-
 }
 
 /// INTE value type for batch read/modify/write operations
@@ -1161,7 +1145,6 @@ impl InteVal {
             }
         }
     }
-
 }
 
 impl Default for InteVal {
@@ -1188,7 +1171,6 @@ impl Inte {
     pub fn modify_val<F: FnOnce(InteVal) -> InteVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTF Register
@@ -1242,7 +1224,6 @@ impl Intf {
     pub fn clr_lock_n_sticky(&self) {
         self.clr_bits(Self::LOCK_N_STICKY_MASK);
     }
-
 }
 
 /// INTF value type for batch read/modify/write operations
@@ -1290,7 +1271,6 @@ impl IntfVal {
             }
         }
     }
-
 }
 
 impl Default for IntfVal {
@@ -1317,7 +1297,6 @@ impl Intf {
     pub fn modify_val<F: FnOnce(IntfVal) -> IntfVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTS Register
@@ -1359,7 +1338,6 @@ impl Ints {
     pub fn lock_n_sticky(&self) -> bool {
         (self.value.read_bits() & Self::LOCK_N_STICKY_MASK) != 0
     }
-
 }
 
 /// INTS value type for batch read/modify/write operations
@@ -1395,7 +1373,6 @@ impl IntsVal {
     pub const fn lock_n_sticky(&self) -> bool {
         (self.bits & Ints::LOCK_N_STICKY_MASK) != 0
     }
-
 }
 
 impl Default for IntsVal {
@@ -1410,19 +1387,6 @@ impl Ints {
     pub fn read_val(&self) -> IntsVal {
         IntsVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IntsVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IntsVal) -> IntsVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// Register block

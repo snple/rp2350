@@ -74,7 +74,6 @@ impl ProcConfig {
     pub fn proc0_halted(&self) -> bool {
         (self.value.read_bits() & Self::PROC0_HALTED_MASK) != 0
     }
-
 }
 
 /// PROC_CONFIG value type for batch read/modify/write operations
@@ -120,7 +119,6 @@ impl ProcConfigVal {
     pub const fn proc0_halted(&self) -> bool {
         (self.bits & ProcConfig::PROC0_HALTED_MASK) != 0
     }
-
 }
 
 impl Default for ProcConfigVal {
@@ -135,19 +133,6 @@ impl ProcConfig {
     pub fn read_val(&self) -> ProcConfigVal {
         ProcConfigVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: ProcConfigVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(ProcConfigVal) -> ProcConfigVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// PROC_IN_SYNC_BYPASS Register
@@ -198,7 +183,6 @@ impl ProcInSyncBypass {
     pub fn write_gpio(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::GPIO_MASK) | ((value << Self::GPIO_OFFSET) & Self::GPIO_MASK));
     }
-
 }
 
 /// PROC_IN_SYNC_BYPASS value type for batch read/modify/write operations
@@ -242,7 +226,6 @@ impl ProcInSyncBypassVal {
             bits: (self.bits & !ProcInSyncBypass::GPIO_MASK) | ((value << ProcInSyncBypass::GPIO_OFFSET) & ProcInSyncBypass::GPIO_MASK)
         }
     }
-
 }
 
 impl Default for ProcInSyncBypassVal {
@@ -269,7 +252,6 @@ impl ProcInSyncBypass {
     pub fn modify_val<F: FnOnce(ProcInSyncBypassVal) -> ProcInSyncBypassVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PROC_IN_SYNC_BYPASS_HI Register
@@ -443,7 +425,6 @@ impl ProcInSyncBypassHi {
     pub fn write_gpio(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::GPIO_MASK) | ((value << Self::GPIO_OFFSET) & Self::GPIO_MASK));
     }
-
 }
 
 /// PROC_IN_SYNC_BYPASS_HI value type for batch read/modify/write operations
@@ -573,7 +554,6 @@ impl ProcInSyncBypassHiVal {
             bits: (self.bits & !ProcInSyncBypassHi::GPIO_MASK) | ((value << ProcInSyncBypassHi::GPIO_OFFSET) & ProcInSyncBypassHi::GPIO_MASK)
         }
     }
-
 }
 
 impl Default for ProcInSyncBypassHiVal {
@@ -600,7 +580,6 @@ impl ProcInSyncBypassHi {
     pub fn modify_val<F: FnOnce(ProcInSyncBypassHiVal) -> ProcInSyncBypassHiVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DBGFORCE Register
@@ -748,7 +727,6 @@ impl Dbgforce {
     pub fn swdo(&self) -> bool {
         (self.value.read_bits() & Self::SWDO_MASK) != 0
     }
-
 }
 
 /// DBGFORCE value type for batch read/modify/write operations
@@ -852,7 +830,6 @@ impl DbgforceVal {
             }
         }
     }
-
 }
 
 impl Default for DbgforceVal {
@@ -879,7 +856,6 @@ impl Dbgforce {
     pub fn modify_val<F: FnOnce(DbgforceVal) -> DbgforceVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MEMPOWERDOWN Register
@@ -1247,7 +1223,6 @@ impl Mempowerdown {
     pub fn clr_sram0(&self) {
         self.clr_bits(Self::SRAM0_MASK);
     }
-
 }
 
 /// MEMPOWERDOWN value type for batch read/modify/write operations
@@ -1511,7 +1486,6 @@ impl MempowerdownVal {
             }
         }
     }
-
 }
 
 impl Default for MempowerdownVal {
@@ -1538,7 +1512,6 @@ impl Mempowerdown {
     pub fn modify_val<F: FnOnce(MempowerdownVal) -> MempowerdownVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// AUXCTRL Register
@@ -1606,7 +1579,6 @@ impl Auxctrl {
     pub fn write_auxctrl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::AUXCTRL_MASK) | ((value << Self::AUXCTRL_OFFSET) & Self::AUXCTRL_MASK));
     }
-
 }
 
 /// AUXCTRL value type for batch read/modify/write operations
@@ -1660,7 +1632,6 @@ impl AuxctrlVal {
             bits: (self.bits & !Auxctrl::AUXCTRL_MASK) | ((value << Auxctrl::AUXCTRL_OFFSET) & Auxctrl::AUXCTRL_MASK)
         }
     }
-
 }
 
 impl Default for AuxctrlVal {
@@ -1687,7 +1658,6 @@ impl Auxctrl {
     pub fn modify_val<F: FnOnce(AuxctrlVal) -> AuxctrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// Register block

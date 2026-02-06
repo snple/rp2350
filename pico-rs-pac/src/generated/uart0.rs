@@ -143,7 +143,6 @@ impl Uartdr {
     pub fn write_data(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::DATA_MASK) | ((value << Self::DATA_OFFSET) & Self::DATA_MASK));
     }
-
 }
 
 /// UARTDR value type for batch read/modify/write operations
@@ -223,7 +222,6 @@ impl UartdrVal {
             bits: (self.bits & !Uartdr::DATA_MASK) | ((value << Uartdr::DATA_OFFSET) & Uartdr::DATA_MASK)
         }
     }
-
 }
 
 impl Default for UartdrVal {
@@ -250,7 +248,6 @@ impl Uartdr {
     pub fn modify_val<F: FnOnce(UartdrVal) -> UartdrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// UARTRSR Register
@@ -410,7 +407,6 @@ impl Uartrsr {
     pub fn clr_fe(&self) {
         self.clr_bits(Self::FE_MASK);
     }
-
 }
 
 /// UARTRSR value type for batch read/modify/write operations
@@ -528,7 +524,6 @@ impl UartrsrVal {
             }
         }
     }
-
 }
 
 impl Default for UartrsrVal {
@@ -555,7 +550,6 @@ impl Uartrsr {
     pub fn modify_val<F: FnOnce(UartrsrVal) -> UartrsrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// UARTFR Register
@@ -772,7 +766,6 @@ impl Uartfr {
     pub fn cts(&self) -> bool {
         (self.value.read_bits() & Self::CTS_MASK) != 0
     }
-
 }
 
 /// UARTFR value type for batch read/modify/write operations
@@ -874,7 +867,6 @@ impl UartfrVal {
     pub const fn cts(&self) -> bool {
         (self.bits & Uartfr::CTS_MASK) != 0
     }
-
 }
 
 impl Default for UartfrVal {
@@ -889,19 +881,6 @@ impl Uartfr {
     pub fn read_val(&self) -> UartfrVal {
         UartfrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: UartfrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(UartfrVal) -> UartfrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// UARTILPR Register
@@ -957,7 +936,6 @@ impl Uartilpr {
     pub fn write_ilpdvsr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ILPDVSR_MASK) | ((value << Self::ILPDVSR_OFFSET) & Self::ILPDVSR_MASK));
     }
-
 }
 
 /// UARTILPR value type for batch read/modify/write operations
@@ -1005,7 +983,6 @@ impl UartilprVal {
             bits: (self.bits & !Uartilpr::ILPDVSR_MASK) | ((value << Uartilpr::ILPDVSR_OFFSET) & Uartilpr::ILPDVSR_MASK)
         }
     }
-
 }
 
 impl Default for UartilprVal {
@@ -1032,7 +1009,6 @@ impl Uartilpr {
     pub fn modify_val<F: FnOnce(UartilprVal) -> UartilprVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// UARTIBRD Register
@@ -1088,7 +1064,6 @@ impl Uartibrd {
     pub fn write_baud_divint(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BAUD_DIVINT_MASK) | ((value << Self::BAUD_DIVINT_OFFSET) & Self::BAUD_DIVINT_MASK));
     }
-
 }
 
 /// UARTIBRD value type for batch read/modify/write operations
@@ -1136,7 +1111,6 @@ impl UartibrdVal {
             bits: (self.bits & !Uartibrd::BAUD_DIVINT_MASK) | ((value << Uartibrd::BAUD_DIVINT_OFFSET) & Uartibrd::BAUD_DIVINT_MASK)
         }
     }
-
 }
 
 impl Default for UartibrdVal {
@@ -1163,7 +1137,6 @@ impl Uartibrd {
     pub fn modify_val<F: FnOnce(UartibrdVal) -> UartibrdVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// UARTFBRD Register
@@ -1219,7 +1192,6 @@ impl Uartfbrd {
     pub fn write_baud_divfrac(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BAUD_DIVFRAC_MASK) | ((value << Self::BAUD_DIVFRAC_OFFSET) & Self::BAUD_DIVFRAC_MASK));
     }
-
 }
 
 /// UARTFBRD value type for batch read/modify/write operations
@@ -1267,7 +1239,6 @@ impl UartfbrdVal {
             bits: (self.bits & !Uartfbrd::BAUD_DIVFRAC_MASK) | ((value << Uartfbrd::BAUD_DIVFRAC_OFFSET) & Uartfbrd::BAUD_DIVFRAC_MASK)
         }
     }
-
 }
 
 impl Default for UartfbrdVal {
@@ -1294,7 +1265,6 @@ impl Uartfbrd {
     pub fn modify_val<F: FnOnce(UartfbrdVal) -> UartfbrdVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// UARTLCR_H Register
@@ -1548,7 +1518,6 @@ impl UartlcrH {
     pub fn clr_brk(&self) {
         self.clr_bits(Self::BRK_MASK);
     }
-
 }
 
 /// UARTLCR_H value type for batch read/modify/write operations
@@ -1728,7 +1697,6 @@ impl UartlcrHVal {
             }
         }
     }
-
 }
 
 impl Default for UartlcrHVal {
@@ -1755,7 +1723,6 @@ impl UartlcrH {
     pub fn modify_val<F: FnOnce(UartlcrHVal) -> UartlcrHVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// UARTCR Register
@@ -2179,7 +2146,6 @@ impl Uartcr {
     pub fn clr_uarten(&self) {
         self.clr_bits(Self::UARTEN_MASK);
     }
-
 }
 
 /// UARTCR value type for batch read/modify/write operations
@@ -2473,7 +2439,6 @@ impl UartcrVal {
             }
         }
     }
-
 }
 
 impl Default for UartcrVal {
@@ -2500,7 +2465,6 @@ impl Uartcr {
     pub fn modify_val<F: FnOnce(UartcrVal) -> UartcrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// UARTIFLS Register
@@ -2584,7 +2548,6 @@ impl Uartifls {
     pub fn write_txiflsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::TXIFLSEL_MASK) | ((value << Self::TXIFLSEL_OFFSET) & Self::TXIFLSEL_MASK));
     }
-
 }
 
 /// UARTIFLS value type for batch read/modify/write operations
@@ -2650,7 +2613,6 @@ impl UartiflsVal {
             bits: (self.bits & !Uartifls::TXIFLSEL_MASK) | ((value << Uartifls::TXIFLSEL_OFFSET) & Uartifls::TXIFLSEL_MASK)
         }
     }
-
 }
 
 impl Default for UartiflsVal {
@@ -2677,7 +2639,6 @@ impl Uartifls {
     pub fn modify_val<F: FnOnce(UartiflsVal) -> UartiflsVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// UARTIMSC Register
@@ -3068,7 +3029,6 @@ impl Uartimsc {
     pub fn clr_rimim(&self) {
         self.clr_bits(Self::RIMIM_MASK);
     }
-
 }
 
 /// UARTIMSC value type for batch read/modify/write operations
@@ -3340,7 +3300,6 @@ impl UartimscVal {
             }
         }
     }
-
 }
 
 impl Default for UartimscVal {
@@ -3367,7 +3326,6 @@ impl Uartimsc {
     pub fn modify_val<F: FnOnce(UartimscVal) -> UartimscVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// UARTRIS Register
@@ -3626,7 +3584,6 @@ impl Uartris {
     pub fn rirmis(&self) -> bool {
         (self.value.read_bits() & Self::RIRMIS_MASK) != 0
     }
-
 }
 
 /// UARTRIS value type for batch read/modify/write operations
@@ -3744,7 +3701,6 @@ impl UartrisVal {
     pub const fn rirmis(&self) -> bool {
         (self.bits & Uartris::RIRMIS_MASK) != 0
     }
-
 }
 
 impl Default for UartrisVal {
@@ -3759,19 +3715,6 @@ impl Uartris {
     pub fn read_val(&self) -> UartrisVal {
         UartrisVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: UartrisVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(UartrisVal) -> UartrisVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// UARTMIS Register
@@ -4030,7 +3973,6 @@ impl Uartmis {
     pub fn rimmis(&self) -> bool {
         (self.value.read_bits() & Self::RIMMIS_MASK) != 0
     }
-
 }
 
 /// UARTMIS value type for batch read/modify/write operations
@@ -4148,7 +4090,6 @@ impl UartmisVal {
     pub const fn rimmis(&self) -> bool {
         (self.bits & Uartmis::RIMMIS_MASK) != 0
     }
-
 }
 
 impl Default for UartmisVal {
@@ -4163,19 +4104,6 @@ impl Uartmis {
     pub fn read_val(&self) -> UartmisVal {
         UartmisVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: UartmisVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(UartmisVal) -> UartmisVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// UARTICR Register
@@ -4566,7 +4494,6 @@ impl Uarticr {
     pub fn clr_rimic(&self) {
         self.clr_bits(Self::RIMIC_MASK);
     }
-
 }
 
 /// UARTICR value type for batch read/modify/write operations
@@ -4838,7 +4765,6 @@ impl UarticrVal {
             }
         }
     }
-
 }
 
 impl Default for UarticrVal {
@@ -4865,7 +4791,6 @@ impl Uarticr {
     pub fn modify_val<F: FnOnce(UarticrVal) -> UarticrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// UARTDMACR Register
@@ -4992,7 +4917,6 @@ impl Uartdmacr {
     pub fn clr_rxdmae(&self) {
         self.clr_bits(Self::RXDMAE_MASK);
     }
-
 }
 
 /// UARTDMACR value type for batch read/modify/write operations
@@ -5088,7 +5012,6 @@ impl UartdmacrVal {
             }
         }
     }
-
 }
 
 impl Default for UartdmacrVal {
@@ -5115,7 +5038,6 @@ impl Uartdmacr {
     pub fn modify_val<F: FnOnce(UartdmacrVal) -> UartdmacrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// UARTPERIPHID0 Register
@@ -5163,7 +5085,6 @@ impl Uartperiphid0 {
     pub fn partnumber0(&self) -> u32 {
         (self.value.read_bits() & Self::PARTNUMBER0_MASK) >> Self::PARTNUMBER0_OFFSET
     }
-
 }
 
 /// UARTPERIPHID0 value type for batch read/modify/write operations
@@ -5201,7 +5122,6 @@ impl Uartperiphid0Val {
     pub const fn partnumber0(&self) -> u32 {
         (self.bits & Uartperiphid0::PARTNUMBER0_MASK) >> Uartperiphid0::PARTNUMBER0_OFFSET
     }
-
 }
 
 impl Default for Uartperiphid0Val {
@@ -5216,19 +5136,6 @@ impl Uartperiphid0 {
     pub fn read_val(&self) -> Uartperiphid0Val {
         Uartperiphid0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Uartperiphid0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Uartperiphid0Val) -> Uartperiphid0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// UARTPERIPHID1 Register
@@ -5296,7 +5203,6 @@ impl Uartperiphid1 {
     pub fn partnumber1(&self) -> u32 {
         (self.value.read_bits() & Self::PARTNUMBER1_MASK) >> Self::PARTNUMBER1_OFFSET
     }
-
 }
 
 /// UARTPERIPHID1 value type for batch read/modify/write operations
@@ -5342,7 +5248,6 @@ impl Uartperiphid1Val {
     pub const fn partnumber1(&self) -> u32 {
         (self.bits & Uartperiphid1::PARTNUMBER1_MASK) >> Uartperiphid1::PARTNUMBER1_OFFSET
     }
-
 }
 
 impl Default for Uartperiphid1Val {
@@ -5357,19 +5262,6 @@ impl Uartperiphid1 {
     pub fn read_val(&self) -> Uartperiphid1Val {
         Uartperiphid1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Uartperiphid1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Uartperiphid1Val) -> Uartperiphid1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// UARTPERIPHID2 Register
@@ -5437,7 +5329,6 @@ impl Uartperiphid2 {
     pub fn designer1(&self) -> u32 {
         (self.value.read_bits() & Self::DESIGNER1_MASK) >> Self::DESIGNER1_OFFSET
     }
-
 }
 
 /// UARTPERIPHID2 value type for batch read/modify/write operations
@@ -5483,7 +5374,6 @@ impl Uartperiphid2Val {
     pub const fn designer1(&self) -> u32 {
         (self.bits & Uartperiphid2::DESIGNER1_MASK) >> Uartperiphid2::DESIGNER1_OFFSET
     }
-
 }
 
 impl Default for Uartperiphid2Val {
@@ -5498,19 +5388,6 @@ impl Uartperiphid2 {
     pub fn read_val(&self) -> Uartperiphid2Val {
         Uartperiphid2Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Uartperiphid2Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Uartperiphid2Val) -> Uartperiphid2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// UARTPERIPHID3 Register
@@ -5558,7 +5435,6 @@ impl Uartperiphid3 {
     pub fn configuration(&self) -> u32 {
         (self.value.read_bits() & Self::CONFIGURATION_MASK) >> Self::CONFIGURATION_OFFSET
     }
-
 }
 
 /// UARTPERIPHID3 value type for batch read/modify/write operations
@@ -5596,7 +5472,6 @@ impl Uartperiphid3Val {
     pub const fn configuration(&self) -> u32 {
         (self.bits & Uartperiphid3::CONFIGURATION_MASK) >> Uartperiphid3::CONFIGURATION_OFFSET
     }
-
 }
 
 impl Default for Uartperiphid3Val {
@@ -5611,19 +5486,6 @@ impl Uartperiphid3 {
     pub fn read_val(&self) -> Uartperiphid3Val {
         Uartperiphid3Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Uartperiphid3Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Uartperiphid3Val) -> Uartperiphid3Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// UARTPCELLID0 Register
@@ -5671,7 +5533,6 @@ impl Uartpcellid0 {
     pub fn uartpcellid0(&self) -> u32 {
         (self.value.read_bits() & Self::UARTPCELLID0_MASK) >> Self::UARTPCELLID0_OFFSET
     }
-
 }
 
 /// UARTPCELLID0 value type for batch read/modify/write operations
@@ -5709,7 +5570,6 @@ impl Uartpcellid0Val {
     pub const fn uartpcellid0(&self) -> u32 {
         (self.bits & Uartpcellid0::UARTPCELLID0_MASK) >> Uartpcellid0::UARTPCELLID0_OFFSET
     }
-
 }
 
 impl Default for Uartpcellid0Val {
@@ -5724,19 +5584,6 @@ impl Uartpcellid0 {
     pub fn read_val(&self) -> Uartpcellid0Val {
         Uartpcellid0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Uartpcellid0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Uartpcellid0Val) -> Uartpcellid0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// UARTPCELLID1 Register
@@ -5784,7 +5631,6 @@ impl Uartpcellid1 {
     pub fn uartpcellid1(&self) -> u32 {
         (self.value.read_bits() & Self::UARTPCELLID1_MASK) >> Self::UARTPCELLID1_OFFSET
     }
-
 }
 
 /// UARTPCELLID1 value type for batch read/modify/write operations
@@ -5822,7 +5668,6 @@ impl Uartpcellid1Val {
     pub const fn uartpcellid1(&self) -> u32 {
         (self.bits & Uartpcellid1::UARTPCELLID1_MASK) >> Uartpcellid1::UARTPCELLID1_OFFSET
     }
-
 }
 
 impl Default for Uartpcellid1Val {
@@ -5837,19 +5682,6 @@ impl Uartpcellid1 {
     pub fn read_val(&self) -> Uartpcellid1Val {
         Uartpcellid1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Uartpcellid1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Uartpcellid1Val) -> Uartpcellid1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// UARTPCELLID2 Register
@@ -5897,7 +5729,6 @@ impl Uartpcellid2 {
     pub fn uartpcellid2(&self) -> u32 {
         (self.value.read_bits() & Self::UARTPCELLID2_MASK) >> Self::UARTPCELLID2_OFFSET
     }
-
 }
 
 /// UARTPCELLID2 value type for batch read/modify/write operations
@@ -5935,7 +5766,6 @@ impl Uartpcellid2Val {
     pub const fn uartpcellid2(&self) -> u32 {
         (self.bits & Uartpcellid2::UARTPCELLID2_MASK) >> Uartpcellid2::UARTPCELLID2_OFFSET
     }
-
 }
 
 impl Default for Uartpcellid2Val {
@@ -5950,19 +5780,6 @@ impl Uartpcellid2 {
     pub fn read_val(&self) -> Uartpcellid2Val {
         Uartpcellid2Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Uartpcellid2Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Uartpcellid2Val) -> Uartpcellid2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// UARTPCELLID3 Register
@@ -6010,7 +5827,6 @@ impl Uartpcellid3 {
     pub fn uartpcellid3(&self) -> u32 {
         (self.value.read_bits() & Self::UARTPCELLID3_MASK) >> Self::UARTPCELLID3_OFFSET
     }
-
 }
 
 /// UARTPCELLID3 value type for batch read/modify/write operations
@@ -6048,7 +5864,6 @@ impl Uartpcellid3Val {
     pub const fn uartpcellid3(&self) -> u32 {
         (self.bits & Uartpcellid3::UARTPCELLID3_MASK) >> Uartpcellid3::UARTPCELLID3_OFFSET
     }
-
 }
 
 impl Default for Uartpcellid3Val {
@@ -6063,19 +5878,6 @@ impl Uartpcellid3 {
     pub fn read_val(&self) -> Uartpcellid3Val {
         Uartpcellid3Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Uartpcellid3Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Uartpcellid3Val) -> Uartpcellid3Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// Register block

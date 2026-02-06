@@ -219,7 +219,8 @@
 #![allow(clippy::identity_op)]
 
 use paste::paste;
-use pico_rs_pac::{IO_BANK0, PADS_BANK0, SIO};
+use pico_rs_pac::sio::RegisterBlock as SioRegisterBlock;
+use pico_rs_pac::{IO_BANK0, PADS_BANK0};
 
 use crate::reset::{self, Peripheral};
 
@@ -460,7 +461,7 @@ macro_rules! impl_pin {
                 /// Create a new pin instance (internal use only)
                 #[inline]
                 const fn new() -> Self {
-                    Self { _private: () }
+                    Self { _marker: core::marker::PhantomData }
                 }
 
                 // ================================================================
@@ -478,8 +479,8 @@ macro_rules! impl_pin {
                 }
 
                 #[inline(always)]
-                fn sio(&self) -> pico_rs_pac::SIO {
-                    unsafe { SIO::steal() }
+                fn sio(&self) -> &'static SioRegisterBlock {
+                    crate::sio::regs()
                 }
 
                 // ================================================================
@@ -705,7 +706,7 @@ macro_rules! impl_pin {
                 /// Uses the atomic SET register for interrupt safety.
                 #[inline]
                 pub fn set_direction_out(&self) {
-                    self.sio().gpio_oe_set.write_bits(Self::MASK);
+                    self.sio().gpio_oe_set.write_gpio_oe_set(Self::MASK);
                 }
 
                 /// Set pin direction to input.
@@ -713,13 +714,13 @@ macro_rules! impl_pin {
                 /// Uses the atomic CLR register for interrupt safety.
                 #[inline]
                 pub fn set_direction_in(&self) {
-                    self.sio().gpio_oe_clr.write_bits(Self::MASK);
+                    self.sio().gpio_oe_clr.write_gpio_oe_clr(Self::MASK);
                 }
 
                 /// Check if pin is configured as output.
                 #[inline]
                 pub fn is_output(&self) -> bool {
-                    (self.sio().gpio_oe.read_bits() & Self::MASK) != 0
+                    (self.sio().gpio_oe.gpio_oe() & Self::MASK) != 0
                 }
 
                 // ================================================================
@@ -731,7 +732,7 @@ macro_rules! impl_pin {
                 /// Returns `true` if the pin is high, `false` if low.
                 #[inline]
                 pub fn read(&self) -> bool {
-                    (self.sio().gpio_in.read_bits() & Self::MASK) != 0
+                    (self.sio().gpio_in.gpio_in() & Self::MASK) != 0
                 }
 
                 /// Set output high.
@@ -739,7 +740,7 @@ macro_rules! impl_pin {
                 /// Uses the atomic SET register for interrupt safety.
                 #[inline]
                 pub fn set_high(&self) {
-                    self.sio().gpio_out_set.write_bits(Self::MASK);
+                    self.sio().gpio_out_set.write_gpio_out_set(Self::MASK);
                 }
 
                 /// Set output low.
@@ -747,7 +748,7 @@ macro_rules! impl_pin {
                 /// Uses the atomic CLR register for interrupt safety.
                 #[inline]
                 pub fn set_low(&self) {
-                    self.sio().gpio_out_clr.write_bits(Self::MASK);
+                    self.sio().gpio_out_clr.write_gpio_out_clr(Self::MASK);
                 }
 
                 /// Toggle output.
@@ -755,7 +756,7 @@ macro_rules! impl_pin {
                 /// Uses the atomic XOR register for interrupt safety.
                 #[inline]
                 pub fn toggle(&self) {
-                    self.sio().gpio_out_xor.write_bits(Self::MASK);
+                    self.sio().gpio_out_xor.write_gpio_out_xor(Self::MASK);
                 }
 
                 /// Set output to a specific value.
@@ -778,7 +779,7 @@ macro_rules! impl_pin {
                 /// Use `read()` to get the actual pin state.
                 #[inline]
                 pub fn output_level(&self) -> bool {
-                    (self.sio().gpio_out.read_bits() & Self::MASK) != 0
+                    (self.sio().gpio_out.gpio_out() & Self::MASK) != 0
                 }
 
                 // ================================================================
@@ -903,6 +904,182 @@ macro_rules! impl_pin {
                 }
 
                 // ================================================================
+                // Interrupt Configuration
+                // ================================================================
+
+                /// Enable a GPIO interrupt for processor 0.
+                ///
+                /// Configures the GPIO to generate an interrupt on the specified
+                /// edge or level condition. You must also enable `IO_IRQ_BANK0`
+                /// in the NVIC for the interrupt handler to fire.
+                ///
+                /// # Arguments
+                ///
+                /// * `edge` - The edge/level condition to trigger the interrupt
+                ///
+                /// # Example
+                ///
+                /// ```ignore
+                /// use pico_rs::gpio::{Pins, EdgeLevel};
+                /// use pico_rs::interrupt;
+                /// use pico_rs::pac::Interrupt;
+                ///
+                /// let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+                /// let button = pins.p15;
+                /// button.into_input_pullup();
+                /// button.enable_interrupt(EdgeLevel::EdgeLow);
+                ///
+                /// unsafe { interrupt::enable(Interrupt::IO_IRQ_BANK0); }
+                /// ```
+                #[inline]
+                pub fn enable_interrupt(&self, edge: EdgeLevel) {
+                    const REG_IDX: usize = $n / 8;
+                    const BIT_OFFSET: u32 = (($n % 8) * 4) as u32;
+
+                    let bit = match edge {
+                        EdgeLevel::LevelLow => 1 << (BIT_OFFSET + 0),
+                        EdgeLevel::LevelHigh => 1 << (BIT_OFFSET + 1),
+                        EdgeLevel::EdgeLow => 1 << (BIT_OFFSET + 2),
+                        EdgeLevel::EdgeHigh => 1 << (BIT_OFFSET + 3),
+                    };
+
+                    let io = self.io_bank();
+                    match REG_IDX {
+                        0 => io.proc0_inte0.set_bits(bit),
+                        1 => io.proc0_inte1.set_bits(bit),
+                        2 => io.proc0_inte2.set_bits(bit),
+                        3 => io.proc0_inte3.set_bits(bit),
+                        _ => {} // Pins 0-29 only use INTE0-INTE3
+                    }
+                }
+
+                /// Disable a GPIO interrupt for processor 0.
+                ///
+                /// Clears the interrupt enable for the specified edge/level condition.
+                ///
+                /// # Arguments
+                ///
+                /// * `edge` - The edge/level condition to disable
+                #[inline]
+                pub fn disable_interrupt(&self, edge: EdgeLevel) {
+                    const REG_IDX: usize = $n / 8;
+                    const BIT_OFFSET: u32 = (($n % 8) * 4) as u32;
+
+                    let bit = match edge {
+                        EdgeLevel::LevelLow => 1 << (BIT_OFFSET + 0),
+                        EdgeLevel::LevelHigh => 1 << (BIT_OFFSET + 1),
+                        EdgeLevel::EdgeLow => 1 << (BIT_OFFSET + 2),
+                        EdgeLevel::EdgeHigh => 1 << (BIT_OFFSET + 3),
+                    };
+
+                    let io = self.io_bank();
+                    match REG_IDX {
+                        0 => io.proc0_inte0.clr_bits(bit),
+                        1 => io.proc0_inte1.clr_bits(bit),
+                        2 => io.proc0_inte2.clr_bits(bit),
+                        3 => io.proc0_inte3.clr_bits(bit),
+                        _ => {}
+                    }
+                }
+
+                /// Check if a GPIO interrupt is pending (masked status).
+                ///
+                /// Returns `true` if the specified interrupt condition is active
+                /// and enabled for processor 0.
+                ///
+                /// # Arguments
+                ///
+                /// * `edge` - The edge/level condition to check
+                #[inline]
+                pub fn interrupt_status(&self, edge: EdgeLevel) -> bool {
+                    const REG_IDX: usize = $n / 8;
+                    const BIT_OFFSET: u32 = (($n % 8) * 4) as u32;
+
+                    let bit = match edge {
+                        EdgeLevel::LevelLow => 1 << (BIT_OFFSET + 0),
+                        EdgeLevel::LevelHigh => 1 << (BIT_OFFSET + 1),
+                        EdgeLevel::EdgeLow => 1 << (BIT_OFFSET + 2),
+                        EdgeLevel::EdgeHigh => 1 << (BIT_OFFSET + 3),
+                    };
+
+                    let io = self.io_bank();
+                    let status = match REG_IDX {
+                        0 => io.proc0_ints0.read_bits(),
+                        1 => io.proc0_ints1.read_bits(),
+                        2 => io.proc0_ints2.read_bits(),
+                        3 => io.proc0_ints3.read_bits(),
+                        _ => 0,
+                    };
+                    (status & bit) != 0
+                }
+
+                /// Clear a GPIO edge interrupt.
+                ///
+                /// For edge-triggered interrupts, the interrupt flag must be
+                /// explicitly cleared by writing to the raw interrupt register.
+                /// Level-triggered interrupts are cleared automatically when the
+                /// level condition is no longer met.
+                ///
+                /// # Arguments
+                ///
+                /// * `edge` - The edge/level condition to acknowledge
+                ///
+                /// # Example
+                ///
+                /// ```ignore
+                /// // In the IO_IRQ_BANK0 interrupt handler:
+                /// if button.interrupt_status(EdgeLevel::EdgeLow) {
+                ///     button.clear_interrupt(EdgeLevel::EdgeLow);
+                ///     // Handle the interrupt...
+                /// }
+                /// ```
+                #[inline]
+                pub fn clear_interrupt(&self, edge: EdgeLevel) {
+                    const REG_IDX: usize = $n / 8;
+                    const BIT_OFFSET: u32 = (($n % 8) * 4) as u32;
+
+                    let bit = match edge {
+                        EdgeLevel::LevelLow => 1 << (BIT_OFFSET + 0),
+                        EdgeLevel::LevelHigh => 1 << (BIT_OFFSET + 1),
+                        EdgeLevel::EdgeLow => 1 << (BIT_OFFSET + 2),
+                        EdgeLevel::EdgeHigh => 1 << (BIT_OFFSET + 3),
+                    };
+
+                    // INTR registers are W1C (Write-1-to-Clear).
+                    // Must use write_bits() to write directly to the register.
+                    // Do NOT use set_bits() — it writes to the SET alias (+0x2000),
+                    // which has undefined behaviour on W1C registers.
+                    let io = self.io_bank();
+                    match REG_IDX {
+                        0 => io.intr0.write_bits(bit),
+                        1 => io.intr1.write_bits(bit),
+                        2 => io.intr2.write_bits(bit),
+                        3 => io.intr3.write_bits(bit),
+                        _ => {}
+                    }
+                }
+
+                /// Disable all interrupt conditions for this pin.
+                ///
+                /// Clears all four interrupt enable bits (level_low, level_high,
+                /// edge_low, edge_high) for processor 0.
+                #[inline]
+                pub fn disable_all_interrupts(&self) {
+                    const REG_IDX: usize = $n / 8;
+                    const BIT_OFFSET: u32 = (($n % 8) * 4) as u32;
+                    const MASK: u32 = 0xF << BIT_OFFSET;
+
+                    let io = self.io_bank();
+                    match REG_IDX {
+                        0 => io.proc0_inte0.clr_bits(MASK),
+                        1 => io.proc0_inte1.clr_bits(MASK),
+                        2 => io.proc0_inte2.clr_bits(MASK),
+                        3 => io.proc0_inte3.clr_bits(MASK),
+                        _ => {}
+                    }
+                }
+
+                // ================================================================
                 // Dormant Wake Configuration
                 // ================================================================
 
@@ -994,7 +1171,7 @@ macro_rules! impl_pin {
                 /// Create a new pin instance (internal use only)
                 #[inline]
                 const fn new() -> Self {
-                    Self { _private: () }
+                    Self { _marker: core::marker::PhantomData<*const ()> }
                 }
 
                 #[inline(always)]
@@ -1008,8 +1185,8 @@ macro_rules! impl_pin {
                 }
 
                 #[inline(always)]
-                fn sio(&self) -> pico_rs_pac::SIO {
-                    unsafe { SIO::steal() }
+                fn sio(&self) -> &'static SioRegisterBlock {
+                    crate::sio::regs()
                 }
 
                 // Function selection (same as low pins)
@@ -1159,37 +1336,37 @@ macro_rules! impl_pin {
                 // SIO operations - use GPIO_HI_* registers
                 #[inline]
                 pub fn set_direction_out(&self) {
-                    self.sio().gpio_hi_oe_set.write_bits(Self::MASK);
+                    self.sio().gpio_hi_oe_set.write_gpio(Self::MASK);
                 }
 
                 #[inline]
                 pub fn set_direction_in(&self) {
-                    self.sio().gpio_hi_oe_clr.write_bits(Self::MASK);
+                    self.sio().gpio_hi_oe_clr.write_gpio(Self::MASK);
                 }
 
                 #[inline]
                 pub fn is_output(&self) -> bool {
-                    (self.sio().gpio_hi_oe.read_bits() & Self::MASK) != 0
+                    (self.sio().gpio_hi_oe.gpio() & Self::MASK) != 0
                 }
 
                 #[inline]
                 pub fn read(&self) -> bool {
-                    (self.sio().gpio_hi_in.read_bits() & Self::MASK) != 0
+                    (self.sio().gpio_hi_in.gpio() & Self::MASK) != 0
                 }
 
                 #[inline]
                 pub fn set_high(&self) {
-                    self.sio().gpio_hi_out_set.write_bits(Self::MASK);
+                    self.sio().gpio_hi_out_set.write_gpio(Self::MASK);
                 }
 
                 #[inline]
                 pub fn set_low(&self) {
-                    self.sio().gpio_hi_out_clr.write_bits(Self::MASK);
+                    self.sio().gpio_hi_out_clr.write_gpio(Self::MASK);
                 }
 
                 #[inline]
                 pub fn toggle(&self) {
-                    self.sio().gpio_hi_out_xor.write_bits(Self::MASK);
+                    self.sio().gpio_hi_out_xor.write_gpio(Self::MASK);
                 }
 
                 #[inline]
@@ -1203,7 +1380,7 @@ macro_rules! impl_pin {
 
                 #[inline]
                 pub fn output_level(&self) -> bool {
-                    (self.sio().gpio_hi_out.read_bits() & Self::MASK) != 0
+                    (self.sio().gpio_hi_out.gpio() & Self::MASK) != 0
                 }
 
                 // Convenience methods (same as low pins)
@@ -1285,6 +1462,115 @@ macro_rules! impl_pin {
                     self.init_pad();
                     self.set_function(Function::Uart);
                     self
+                }
+
+                // ================================================================
+                // Interrupt Configuration
+                // ================================================================
+
+                /// Enable a GPIO interrupt for processor 0.
+                ///
+                /// Configures the GPIO to generate an interrupt on the specified
+                /// edge or level condition. You must also enable `IO_IRQ_BANK0`
+                /// in the NVIC for the interrupt handler to fire.
+                #[inline]
+                pub fn enable_interrupt(&self, edge: EdgeLevel) {
+                    const REG_IDX: usize = $n / 8;
+                    const BIT_OFFSET: u32 = (($n % 8) * 4) as u32;
+
+                    let bit = match edge {
+                        EdgeLevel::LevelLow => 1 << (BIT_OFFSET + 0),
+                        EdgeLevel::LevelHigh => 1 << (BIT_OFFSET + 1),
+                        EdgeLevel::EdgeLow => 1 << (BIT_OFFSET + 2),
+                        EdgeLevel::EdgeHigh => 1 << (BIT_OFFSET + 3),
+                    };
+
+                    let io = self.io_bank();
+                    match REG_IDX {
+                        4 => io.proc0_inte4.set_bits(bit),
+                        5 => io.proc0_inte5.set_bits(bit),
+                        _ => {}
+                    }
+                }
+
+                /// Disable a GPIO interrupt for processor 0.
+                #[inline]
+                pub fn disable_interrupt(&self, edge: EdgeLevel) {
+                    const REG_IDX: usize = $n / 8;
+                    const BIT_OFFSET: u32 = (($n % 8) * 4) as u32;
+
+                    let bit = match edge {
+                        EdgeLevel::LevelLow => 1 << (BIT_OFFSET + 0),
+                        EdgeLevel::LevelHigh => 1 << (BIT_OFFSET + 1),
+                        EdgeLevel::EdgeLow => 1 << (BIT_OFFSET + 2),
+                        EdgeLevel::EdgeHigh => 1 << (BIT_OFFSET + 3),
+                    };
+
+                    let io = self.io_bank();
+                    match REG_IDX {
+                        4 => io.proc0_inte4.clr_bits(bit),
+                        5 => io.proc0_inte5.clr_bits(bit),
+                        _ => {}
+                    }
+                }
+
+                /// Check if a GPIO interrupt is pending (masked status).
+                #[inline]
+                pub fn interrupt_status(&self, edge: EdgeLevel) -> bool {
+                    const REG_IDX: usize = $n / 8;
+                    const BIT_OFFSET: u32 = (($n % 8) * 4) as u32;
+
+                    let bit = match edge {
+                        EdgeLevel::LevelLow => 1 << (BIT_OFFSET + 0),
+                        EdgeLevel::LevelHigh => 1 << (BIT_OFFSET + 1),
+                        EdgeLevel::EdgeLow => 1 << (BIT_OFFSET + 2),
+                        EdgeLevel::EdgeHigh => 1 << (BIT_OFFSET + 3),
+                    };
+
+                    let io = self.io_bank();
+                    let status = match REG_IDX {
+                        4 => io.proc0_ints4.read_bits(),
+                        5 => io.proc0_ints5.read_bits(),
+                        _ => 0,
+                    };
+                    (status & bit) != 0
+                }
+
+                /// Clear a GPIO edge interrupt.
+                #[inline]
+                pub fn clear_interrupt(&self, edge: EdgeLevel) {
+                    const REG_IDX: usize = $n / 8;
+                    const BIT_OFFSET: u32 = (($n % 8) * 4) as u32;
+
+                    let bit = match edge {
+                        EdgeLevel::LevelLow => 1 << (BIT_OFFSET + 0),
+                        EdgeLevel::LevelHigh => 1 << (BIT_OFFSET + 1),
+                        EdgeLevel::EdgeLow => 1 << (BIT_OFFSET + 2),
+                        EdgeLevel::EdgeHigh => 1 << (BIT_OFFSET + 3),
+                    };
+
+                    // INTR registers are W1C — must use write_bits(), not set_bits().
+                    let io = self.io_bank();
+                    match REG_IDX {
+                        4 => io.intr4.write_bits(bit),
+                        5 => io.intr5.write_bits(bit),
+                        _ => {}
+                    }
+                }
+
+                /// Disable all interrupt conditions for this pin.
+                #[inline]
+                pub fn disable_all_interrupts(&self) {
+                    const REG_IDX: usize = $n / 8;
+                    const BIT_OFFSET: u32 = (($n % 8) * 4) as u32;
+                    const MASK: u32 = 0xF << BIT_OFFSET;
+
+                    let io = self.io_bank();
+                    match REG_IDX {
+                        4 => io.proc0_inte4.clr_bits(MASK),
+                        5 => io.proc0_inte5.clr_bits(MASK),
+                        _ => {}
+                    }
                 }
 
                 // ================================================================
@@ -1373,7 +1659,7 @@ macro_rules! impl_pin {
 /// led.set_high();
 /// ```
 pub struct Pin<const N: u8> {
-    _private: (),
+    _marker: core::marker::PhantomData<*const ()>,
 }
 
 // ============================================================================
@@ -1857,6 +2143,242 @@ pub type Pin46 = Pin<46>;
 #[cfg(feature = "rp2350b")]
 /// Type alias for Pin 47
 pub type Pin47 = Pin<47>;
+
+// ============================================================================
+// GPIO Interrupt Helper (no ownership required)
+// ============================================================================
+
+/// GPIO interrupt helper for use in interrupt handlers.
+///
+/// In ISR context, `Pin<N>` instances are typically owned by `main()` and
+/// cannot be accessed. `GpioInterrupt` provides the same interrupt
+/// status / clear / enable / disable operations using runtime pin numbers,
+/// without requiring any ownership.
+///
+/// # Example
+///
+/// ```ignore
+/// use pico_rs::gpio::{GpioInterrupt, EdgeLevel};
+///
+/// #[unsafe(no_mangle)]
+/// extern "C" fn IO_IRQ_BANK0() {
+///     let irq = GpioInterrupt::new();
+///
+///     if irq.is_pending(15, EdgeLevel::EdgeLow) {
+///         irq.clear(15, EdgeLevel::EdgeLow);
+///         // Handle the button press...
+///     }
+/// }
+/// ```
+#[derive(Copy, Clone, Default, Debug)]
+pub struct Interrupt {
+    _marker: core::marker::PhantomData<*const ()>,
+}
+
+impl Interrupt {
+    /// Create a new GPIO interrupt helper.
+    #[inline]
+    pub const fn new() -> Self {
+        Self {
+            _marker: core::marker::PhantomData,
+        }
+    }
+
+    /// Get the IO_BANK0 register block.
+    #[inline(always)]
+    fn io(&self) -> pico_rs_pac::IO_BANK0 {
+        unsafe { IO_BANK0::steal() }
+    }
+
+    /// Compute the bit mask for a given pin and edge/level condition.
+    #[inline]
+    const fn bit_mask(pin: u8, edge: EdgeLevel) -> u32 {
+        let bit_offset = (pin % 8) as u32 * 4;
+        match edge {
+            EdgeLevel::LevelLow => 1 << (bit_offset + 0),
+            EdgeLevel::LevelHigh => 1 << (bit_offset + 1),
+            EdgeLevel::EdgeLow => 1 << (bit_offset + 2),
+            EdgeLevel::EdgeHigh => 1 << (bit_offset + 3),
+        }
+    }
+
+    /// Compute the 4-bit mask covering all conditions for a pin.
+    #[inline]
+    const fn pin_mask(pin: u8) -> u32 {
+        0xF << ((pin % 8) as u32 * 4)
+    }
+
+    // ========================================================================
+    // Interrupt Status (proc0)
+    // ========================================================================
+
+    /// Check if an interrupt is pending for the given pin and condition.
+    ///
+    /// Reads the masked interrupt status register (`proc0_ints`).
+    /// Returns `true` if the condition is both active and enabled.
+    #[inline]
+    pub fn is_pending(&self, pin: u8, edge: EdgeLevel) -> bool {
+        let mask = Self::bit_mask(pin, edge);
+        let io = self.io();
+        let status = match pin / 8 {
+            0 => io.proc0_ints0.read_bits(),
+            1 => io.proc0_ints1.read_bits(),
+            2 => io.proc0_ints2.read_bits(),
+            3 => io.proc0_ints3.read_bits(),
+            4 => io.proc0_ints4.read_bits(),
+            5 => io.proc0_ints5.read_bits(),
+            _ => 0,
+        };
+        (status & mask) != 0
+    }
+
+    /// Get the raw masked interrupt status for a pin (all 4 conditions).
+    ///
+    /// Returns bits `[3:0]` = `EDGE_HIGH | EDGE_LOW | LEVEL_HIGH | LEVEL_LOW`.
+    #[inline]
+    pub fn pending_flags(&self, pin: u8) -> u32 {
+        let shift = (pin % 8) as u32 * 4;
+        let io = self.io();
+        let raw = match pin / 8 {
+            0 => io.proc0_ints0.read_bits(),
+            1 => io.proc0_ints1.read_bits(),
+            2 => io.proc0_ints2.read_bits(),
+            3 => io.proc0_ints3.read_bits(),
+            4 => io.proc0_ints4.read_bits(),
+            5 => io.proc0_ints5.read_bits(),
+            _ => 0,
+        };
+        (raw >> shift) & 0xF
+    }
+
+    // ========================================================================
+    // Clear (acknowledge) Edge Interrupts
+    // ========================================================================
+
+    /// Clear (acknowledge) an edge interrupt for the given pin and condition.
+    ///
+    /// Writes to the raw interrupt register (`INTR`) which is **W1C**
+    /// (Write-1-to-Clear). Only edge interrupts need explicit clearing;
+    /// level interrupts clear automatically when the level condition ends.
+    ///
+    /// # Important
+    ///
+    /// Uses `write_bits()` (direct write) — **not** `set_bits()` (SET alias).
+    /// The RP2350 atomic SET alias (`+0x2000`) has undefined behaviour on
+    /// W1C registers.
+    #[inline]
+    pub fn clear(&self, pin: u8, edge: EdgeLevel) {
+        let mask = Self::bit_mask(pin, edge);
+        let io = self.io();
+        match pin / 8 {
+            0 => io.intr0.write_bits(mask),
+            1 => io.intr1.write_bits(mask),
+            2 => io.intr2.write_bits(mask),
+            3 => io.intr3.write_bits(mask),
+            4 => io.intr4.write_bits(mask),
+            5 => io.intr5.write_bits(mask),
+            _ => {}
+        }
+    }
+
+    /// Clear all pending edge interrupts for a pin.
+    ///
+    /// Clears all four interrupt conditions (level_low, level_high,
+    /// edge_low, edge_high). Level bits are RO and unaffected by the write.
+    #[inline]
+    pub fn clear_all(&self, pin: u8) {
+        let mask = Self::pin_mask(pin);
+        let io = self.io();
+        match pin / 8 {
+            0 => io.intr0.write_bits(mask),
+            1 => io.intr1.write_bits(mask),
+            2 => io.intr2.write_bits(mask),
+            3 => io.intr3.write_bits(mask),
+            4 => io.intr4.write_bits(mask),
+            5 => io.intr5.write_bits(mask),
+            _ => {}
+        }
+    }
+
+    // ========================================================================
+    // Interrupt Enable / Disable (proc0)
+    // ========================================================================
+
+    /// Enable an interrupt for the given pin and condition (proc0).
+    #[inline]
+    pub fn enable(&self, pin: u8, edge: EdgeLevel) {
+        let mask = Self::bit_mask(pin, edge);
+        let io = self.io();
+        match pin / 8 {
+            0 => io.proc0_inte0.set_bits(mask),
+            1 => io.proc0_inte1.set_bits(mask),
+            2 => io.proc0_inte2.set_bits(mask),
+            3 => io.proc0_inte3.set_bits(mask),
+            4 => io.proc0_inte4.set_bits(mask),
+            5 => io.proc0_inte5.set_bits(mask),
+            _ => {}
+        }
+    }
+
+    /// Disable an interrupt for the given pin and condition (proc0).
+    #[inline]
+    pub fn disable(&self, pin: u8, edge: EdgeLevel) {
+        let mask = Self::bit_mask(pin, edge);
+        let io = self.io();
+        match pin / 8 {
+            0 => io.proc0_inte0.clr_bits(mask),
+            1 => io.proc0_inte1.clr_bits(mask),
+            2 => io.proc0_inte2.clr_bits(mask),
+            3 => io.proc0_inte3.clr_bits(mask),
+            4 => io.proc0_inte4.clr_bits(mask),
+            5 => io.proc0_inte5.clr_bits(mask),
+            _ => {}
+        }
+    }
+
+    /// Disable all interrupt conditions for a pin (proc0).
+    #[inline]
+    pub fn disable_all(&self, pin: u8) {
+        let mask = Self::pin_mask(pin);
+        let io = self.io();
+        match pin / 8 {
+            0 => io.proc0_inte0.clr_bits(mask),
+            1 => io.proc0_inte1.clr_bits(mask),
+            2 => io.proc0_inte2.clr_bits(mask),
+            3 => io.proc0_inte3.clr_bits(mask),
+            4 => io.proc0_inte4.clr_bits(mask),
+            5 => io.proc0_inte5.clr_bits(mask),
+            _ => {}
+        }
+    }
+
+    // ========================================================================
+    // Convenience: check-and-clear
+    // ========================================================================
+
+    /// Check and clear an edge interrupt in one call.
+    ///
+    /// Returns `true` if the interrupt was pending (and is now cleared).
+    /// This is the typical pattern for edge-triggered interrupt handlers.
+    ///
+    /// # Example
+    ///
+    /// ```ignore
+    /// let irq = GpioInterrupt::new();
+    /// if irq.check_and_clear(15, EdgeLevel::EdgeLow) {
+    ///     // Button was pressed
+    /// }
+    /// ```
+    #[inline]
+    pub fn check_and_clear(&self, pin: u8, edge: EdgeLevel) -> bool {
+        if self.is_pending(pin, edge) {
+            self.clear(pin, edge);
+            true
+        } else {
+            false
+        }
+    }
+}
 
 // ============================================================================
 // Pin function mapping submodule

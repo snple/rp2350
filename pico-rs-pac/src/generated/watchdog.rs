@@ -116,7 +116,7 @@ impl Ctrl {
     /// Trigger a watchdog reset
     #[inline(always)]
     pub fn trigger_trigger(&self) {
-        self.value.write_bits(Self::TRIGGER_MASK);
+        self.set_bits(Self::TRIGGER_MASK);
     }
 
     /// **ENABLE** `[30]` (RW)
@@ -206,7 +206,6 @@ impl Ctrl {
     pub fn time(&self) -> u32 {
         (self.value.read_bits() & Self::TIME_MASK) >> Self::TIME_OFFSET
     }
-
 }
 
 /// CTRL value type for batch read/modify/write operations
@@ -346,7 +345,6 @@ impl CtrlVal {
             }
         }
     }
-
 }
 
 impl Default for CtrlVal {
@@ -373,7 +371,6 @@ impl Ctrl {
     pub fn modify_val<F: FnOnce(CtrlVal) -> CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// LOAD Register
@@ -414,7 +411,6 @@ impl Load {
     pub fn write_load(&self, value: u32) {
         self.value.write_bits((value << Self::LOAD_OFFSET) & Self::LOAD_MASK);
     }
-
 }
 
 /// LOAD value type for batch read/modify/write operations
@@ -452,7 +448,6 @@ impl LoadVal {
             bits: (self.bits & !Load::LOAD_MASK) | ((value << Load::LOAD_OFFSET) & Load::LOAD_MASK)
         }
     }
-
 }
 
 impl Default for LoadVal {
@@ -462,24 +457,11 @@ impl Default for LoadVal {
 }
 
 impl Load {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> LoadVal {
-        LoadVal::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: LoadVal) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(LoadVal) -> LoadVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// REASON Register
@@ -536,7 +518,6 @@ impl Reason {
     pub fn timer(&self) -> bool {
         (self.value.read_bits() & Self::TIMER_MASK) != 0
     }
-
 }
 
 /// REASON value type for batch read/modify/write operations
@@ -578,7 +559,6 @@ impl ReasonVal {
     pub const fn timer(&self) -> bool {
         (self.bits & Reason::TIMER_MASK) != 0
     }
-
 }
 
 impl Default for ReasonVal {
@@ -593,19 +573,6 @@ impl Reason {
     pub fn read_val(&self) -> ReasonVal {
         ReasonVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: ReasonVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(ReasonVal) -> ReasonVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SCRATCH0 Register
@@ -652,7 +619,6 @@ impl Scratch0 {
     pub fn write_scratch0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SCRATCH0_MASK) | ((value << Self::SCRATCH0_OFFSET) & Self::SCRATCH0_MASK));
     }
-
 }
 
 /// SCRATCH0 value type for batch read/modify/write operations
@@ -696,7 +662,6 @@ impl Scratch0Val {
             bits: (self.bits & !Scratch0::SCRATCH0_MASK) | ((value << Scratch0::SCRATCH0_OFFSET) & Scratch0::SCRATCH0_MASK)
         }
     }
-
 }
 
 impl Default for Scratch0Val {
@@ -723,7 +688,6 @@ impl Scratch0 {
     pub fn modify_val<F: FnOnce(Scratch0Val) -> Scratch0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SCRATCH1 Register
@@ -770,7 +734,6 @@ impl Scratch1 {
     pub fn write_scratch1(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SCRATCH1_MASK) | ((value << Self::SCRATCH1_OFFSET) & Self::SCRATCH1_MASK));
     }
-
 }
 
 /// SCRATCH1 value type for batch read/modify/write operations
@@ -814,7 +777,6 @@ impl Scratch1Val {
             bits: (self.bits & !Scratch1::SCRATCH1_MASK) | ((value << Scratch1::SCRATCH1_OFFSET) & Scratch1::SCRATCH1_MASK)
         }
     }
-
 }
 
 impl Default for Scratch1Val {
@@ -841,7 +803,6 @@ impl Scratch1 {
     pub fn modify_val<F: FnOnce(Scratch1Val) -> Scratch1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SCRATCH2 Register
@@ -888,7 +849,6 @@ impl Scratch2 {
     pub fn write_scratch2(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SCRATCH2_MASK) | ((value << Self::SCRATCH2_OFFSET) & Self::SCRATCH2_MASK));
     }
-
 }
 
 /// SCRATCH2 value type for batch read/modify/write operations
@@ -932,7 +892,6 @@ impl Scratch2Val {
             bits: (self.bits & !Scratch2::SCRATCH2_MASK) | ((value << Scratch2::SCRATCH2_OFFSET) & Scratch2::SCRATCH2_MASK)
         }
     }
-
 }
 
 impl Default for Scratch2Val {
@@ -959,7 +918,6 @@ impl Scratch2 {
     pub fn modify_val<F: FnOnce(Scratch2Val) -> Scratch2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SCRATCH3 Register
@@ -1006,7 +964,6 @@ impl Scratch3 {
     pub fn write_scratch3(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SCRATCH3_MASK) | ((value << Self::SCRATCH3_OFFSET) & Self::SCRATCH3_MASK));
     }
-
 }
 
 /// SCRATCH3 value type for batch read/modify/write operations
@@ -1050,7 +1007,6 @@ impl Scratch3Val {
             bits: (self.bits & !Scratch3::SCRATCH3_MASK) | ((value << Scratch3::SCRATCH3_OFFSET) & Scratch3::SCRATCH3_MASK)
         }
     }
-
 }
 
 impl Default for Scratch3Val {
@@ -1077,7 +1033,6 @@ impl Scratch3 {
     pub fn modify_val<F: FnOnce(Scratch3Val) -> Scratch3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SCRATCH4 Register
@@ -1124,7 +1079,6 @@ impl Scratch4 {
     pub fn write_scratch4(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SCRATCH4_MASK) | ((value << Self::SCRATCH4_OFFSET) & Self::SCRATCH4_MASK));
     }
-
 }
 
 /// SCRATCH4 value type for batch read/modify/write operations
@@ -1168,7 +1122,6 @@ impl Scratch4Val {
             bits: (self.bits & !Scratch4::SCRATCH4_MASK) | ((value << Scratch4::SCRATCH4_OFFSET) & Scratch4::SCRATCH4_MASK)
         }
     }
-
 }
 
 impl Default for Scratch4Val {
@@ -1195,7 +1148,6 @@ impl Scratch4 {
     pub fn modify_val<F: FnOnce(Scratch4Val) -> Scratch4Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SCRATCH5 Register
@@ -1242,7 +1194,6 @@ impl Scratch5 {
     pub fn write_scratch5(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SCRATCH5_MASK) | ((value << Self::SCRATCH5_OFFSET) & Self::SCRATCH5_MASK));
     }
-
 }
 
 /// SCRATCH5 value type for batch read/modify/write operations
@@ -1286,7 +1237,6 @@ impl Scratch5Val {
             bits: (self.bits & !Scratch5::SCRATCH5_MASK) | ((value << Scratch5::SCRATCH5_OFFSET) & Scratch5::SCRATCH5_MASK)
         }
     }
-
 }
 
 impl Default for Scratch5Val {
@@ -1313,7 +1263,6 @@ impl Scratch5 {
     pub fn modify_val<F: FnOnce(Scratch5Val) -> Scratch5Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SCRATCH6 Register
@@ -1360,7 +1309,6 @@ impl Scratch6 {
     pub fn write_scratch6(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SCRATCH6_MASK) | ((value << Self::SCRATCH6_OFFSET) & Self::SCRATCH6_MASK));
     }
-
 }
 
 /// SCRATCH6 value type for batch read/modify/write operations
@@ -1404,7 +1352,6 @@ impl Scratch6Val {
             bits: (self.bits & !Scratch6::SCRATCH6_MASK) | ((value << Scratch6::SCRATCH6_OFFSET) & Scratch6::SCRATCH6_MASK)
         }
     }
-
 }
 
 impl Default for Scratch6Val {
@@ -1431,7 +1378,6 @@ impl Scratch6 {
     pub fn modify_val<F: FnOnce(Scratch6Val) -> Scratch6Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SCRATCH7 Register
@@ -1478,7 +1424,6 @@ impl Scratch7 {
     pub fn write_scratch7(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SCRATCH7_MASK) | ((value << Self::SCRATCH7_OFFSET) & Self::SCRATCH7_MASK));
     }
-
 }
 
 /// SCRATCH7 value type for batch read/modify/write operations
@@ -1522,7 +1467,6 @@ impl Scratch7Val {
             bits: (self.bits & !Scratch7::SCRATCH7_MASK) | ((value << Scratch7::SCRATCH7_OFFSET) & Scratch7::SCRATCH7_MASK)
         }
     }
-
 }
 
 impl Default for Scratch7Val {
@@ -1549,7 +1493,6 @@ impl Scratch7 {
     pub fn modify_val<F: FnOnce(Scratch7Val) -> Scratch7Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// Register block

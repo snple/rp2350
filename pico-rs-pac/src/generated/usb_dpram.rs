@@ -89,7 +89,6 @@ impl SetupPacketLow {
     pub fn write_bmrequesttype(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BMREQUESTTYPE_MASK) | ((value << Self::BMREQUESTTYPE_OFFSET) & Self::BMREQUESTTYPE_MASK));
     }
-
 }
 
 /// SETUP_PACKET_LOW value type for batch read/modify/write operations
@@ -161,7 +160,6 @@ impl SetupPacketLowVal {
             bits: (self.bits & !SetupPacketLow::BMREQUESTTYPE_MASK) | ((value << SetupPacketLow::BMREQUESTTYPE_OFFSET) & SetupPacketLow::BMREQUESTTYPE_MASK)
         }
     }
-
 }
 
 impl Default for SetupPacketLowVal {
@@ -188,7 +186,6 @@ impl SetupPacketLow {
     pub fn modify_val<F: FnOnce(SetupPacketLowVal) -> SetupPacketLowVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SETUP_PACKET_HIGH Register
@@ -254,7 +251,6 @@ impl SetupPacketHigh {
     pub fn write_windex(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::WINDEX_MASK) | ((value << Self::WINDEX_OFFSET) & Self::WINDEX_MASK));
     }
-
 }
 
 /// SETUP_PACKET_HIGH value type for batch read/modify/write operations
@@ -312,7 +308,6 @@ impl SetupPacketHighVal {
             bits: (self.bits & !SetupPacketHigh::WINDEX_MASK) | ((value << SetupPacketHigh::WINDEX_OFFSET) & SetupPacketHigh::WINDEX_MASK)
         }
     }
-
 }
 
 impl Default for SetupPacketHighVal {
@@ -339,7 +334,6 @@ impl SetupPacketHigh {
     pub fn modify_val<F: FnOnce(SetupPacketHighVal) -> SetupPacketHighVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP1_IN_CONTROL Register
@@ -618,7 +612,6 @@ impl Ep1InControl {
     pub fn write_buffer_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
     }
-
 }
 
 /// EP1_IN_CONTROL value type for batch read/modify/write operations
@@ -812,7 +805,6 @@ impl Ep1InControlVal {
             bits: (self.bits & !Ep1InControl::BUFFER_ADDRESS_MASK) | ((value << Ep1InControl::BUFFER_ADDRESS_OFFSET) & Ep1InControl::BUFFER_ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for Ep1InControlVal {
@@ -839,7 +831,6 @@ impl Ep1InControl {
     pub fn modify_val<F: FnOnce(Ep1InControlVal) -> Ep1InControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP1_OUT_CONTROL Register
@@ -1118,7 +1109,6 @@ impl Ep1OutControl {
     pub fn write_buffer_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
     }
-
 }
 
 /// EP1_OUT_CONTROL value type for batch read/modify/write operations
@@ -1312,7 +1302,6 @@ impl Ep1OutControlVal {
             bits: (self.bits & !Ep1OutControl::BUFFER_ADDRESS_MASK) | ((value << Ep1OutControl::BUFFER_ADDRESS_OFFSET) & Ep1OutControl::BUFFER_ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for Ep1OutControlVal {
@@ -1339,7 +1328,6 @@ impl Ep1OutControl {
     pub fn modify_val<F: FnOnce(Ep1OutControlVal) -> Ep1OutControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP2_IN_CONTROL Register
@@ -1618,7 +1606,6 @@ impl Ep2InControl {
     pub fn write_buffer_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
     }
-
 }
 
 /// EP2_IN_CONTROL value type for batch read/modify/write operations
@@ -1812,7 +1799,6 @@ impl Ep2InControlVal {
             bits: (self.bits & !Ep2InControl::BUFFER_ADDRESS_MASK) | ((value << Ep2InControl::BUFFER_ADDRESS_OFFSET) & Ep2InControl::BUFFER_ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for Ep2InControlVal {
@@ -1839,7 +1825,6 @@ impl Ep2InControl {
     pub fn modify_val<F: FnOnce(Ep2InControlVal) -> Ep2InControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP2_OUT_CONTROL Register
@@ -2118,7 +2103,6 @@ impl Ep2OutControl {
     pub fn write_buffer_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
     }
-
 }
 
 /// EP2_OUT_CONTROL value type for batch read/modify/write operations
@@ -2312,7 +2296,6 @@ impl Ep2OutControlVal {
             bits: (self.bits & !Ep2OutControl::BUFFER_ADDRESS_MASK) | ((value << Ep2OutControl::BUFFER_ADDRESS_OFFSET) & Ep2OutControl::BUFFER_ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for Ep2OutControlVal {
@@ -2339,7 +2322,6 @@ impl Ep2OutControl {
     pub fn modify_val<F: FnOnce(Ep2OutControlVal) -> Ep2OutControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP3_IN_CONTROL Register
@@ -2618,7 +2600,6 @@ impl Ep3InControl {
     pub fn write_buffer_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
     }
-
 }
 
 /// EP3_IN_CONTROL value type for batch read/modify/write operations
@@ -2812,7 +2793,6 @@ impl Ep3InControlVal {
             bits: (self.bits & !Ep3InControl::BUFFER_ADDRESS_MASK) | ((value << Ep3InControl::BUFFER_ADDRESS_OFFSET) & Ep3InControl::BUFFER_ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for Ep3InControlVal {
@@ -2839,7 +2819,6 @@ impl Ep3InControl {
     pub fn modify_val<F: FnOnce(Ep3InControlVal) -> Ep3InControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP3_OUT_CONTROL Register
@@ -3118,7 +3097,6 @@ impl Ep3OutControl {
     pub fn write_buffer_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
     }
-
 }
 
 /// EP3_OUT_CONTROL value type for batch read/modify/write operations
@@ -3312,7 +3290,6 @@ impl Ep3OutControlVal {
             bits: (self.bits & !Ep3OutControl::BUFFER_ADDRESS_MASK) | ((value << Ep3OutControl::BUFFER_ADDRESS_OFFSET) & Ep3OutControl::BUFFER_ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for Ep3OutControlVal {
@@ -3339,7 +3316,6 @@ impl Ep3OutControl {
     pub fn modify_val<F: FnOnce(Ep3OutControlVal) -> Ep3OutControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP4_IN_CONTROL Register
@@ -3618,7 +3594,6 @@ impl Ep4InControl {
     pub fn write_buffer_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
     }
-
 }
 
 /// EP4_IN_CONTROL value type for batch read/modify/write operations
@@ -3812,7 +3787,6 @@ impl Ep4InControlVal {
             bits: (self.bits & !Ep4InControl::BUFFER_ADDRESS_MASK) | ((value << Ep4InControl::BUFFER_ADDRESS_OFFSET) & Ep4InControl::BUFFER_ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for Ep4InControlVal {
@@ -3839,7 +3813,6 @@ impl Ep4InControl {
     pub fn modify_val<F: FnOnce(Ep4InControlVal) -> Ep4InControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP4_OUT_CONTROL Register
@@ -4118,7 +4091,6 @@ impl Ep4OutControl {
     pub fn write_buffer_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
     }
-
 }
 
 /// EP4_OUT_CONTROL value type for batch read/modify/write operations
@@ -4312,7 +4284,6 @@ impl Ep4OutControlVal {
             bits: (self.bits & !Ep4OutControl::BUFFER_ADDRESS_MASK) | ((value << Ep4OutControl::BUFFER_ADDRESS_OFFSET) & Ep4OutControl::BUFFER_ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for Ep4OutControlVal {
@@ -4339,7 +4310,6 @@ impl Ep4OutControl {
     pub fn modify_val<F: FnOnce(Ep4OutControlVal) -> Ep4OutControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP5_IN_CONTROL Register
@@ -4618,7 +4588,6 @@ impl Ep5InControl {
     pub fn write_buffer_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
     }
-
 }
 
 /// EP5_IN_CONTROL value type for batch read/modify/write operations
@@ -4812,7 +4781,6 @@ impl Ep5InControlVal {
             bits: (self.bits & !Ep5InControl::BUFFER_ADDRESS_MASK) | ((value << Ep5InControl::BUFFER_ADDRESS_OFFSET) & Ep5InControl::BUFFER_ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for Ep5InControlVal {
@@ -4839,7 +4807,6 @@ impl Ep5InControl {
     pub fn modify_val<F: FnOnce(Ep5InControlVal) -> Ep5InControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP5_OUT_CONTROL Register
@@ -5118,7 +5085,6 @@ impl Ep5OutControl {
     pub fn write_buffer_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
     }
-
 }
 
 /// EP5_OUT_CONTROL value type for batch read/modify/write operations
@@ -5312,7 +5278,6 @@ impl Ep5OutControlVal {
             bits: (self.bits & !Ep5OutControl::BUFFER_ADDRESS_MASK) | ((value << Ep5OutControl::BUFFER_ADDRESS_OFFSET) & Ep5OutControl::BUFFER_ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for Ep5OutControlVal {
@@ -5339,7 +5304,6 @@ impl Ep5OutControl {
     pub fn modify_val<F: FnOnce(Ep5OutControlVal) -> Ep5OutControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP6_IN_CONTROL Register
@@ -5618,7 +5582,6 @@ impl Ep6InControl {
     pub fn write_buffer_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
     }
-
 }
 
 /// EP6_IN_CONTROL value type for batch read/modify/write operations
@@ -5812,7 +5775,6 @@ impl Ep6InControlVal {
             bits: (self.bits & !Ep6InControl::BUFFER_ADDRESS_MASK) | ((value << Ep6InControl::BUFFER_ADDRESS_OFFSET) & Ep6InControl::BUFFER_ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for Ep6InControlVal {
@@ -5839,7 +5801,6 @@ impl Ep6InControl {
     pub fn modify_val<F: FnOnce(Ep6InControlVal) -> Ep6InControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP6_OUT_CONTROL Register
@@ -6118,7 +6079,6 @@ impl Ep6OutControl {
     pub fn write_buffer_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
     }
-
 }
 
 /// EP6_OUT_CONTROL value type for batch read/modify/write operations
@@ -6312,7 +6272,6 @@ impl Ep6OutControlVal {
             bits: (self.bits & !Ep6OutControl::BUFFER_ADDRESS_MASK) | ((value << Ep6OutControl::BUFFER_ADDRESS_OFFSET) & Ep6OutControl::BUFFER_ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for Ep6OutControlVal {
@@ -6339,7 +6298,6 @@ impl Ep6OutControl {
     pub fn modify_val<F: FnOnce(Ep6OutControlVal) -> Ep6OutControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP7_IN_CONTROL Register
@@ -6618,7 +6576,6 @@ impl Ep7InControl {
     pub fn write_buffer_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
     }
-
 }
 
 /// EP7_IN_CONTROL value type for batch read/modify/write operations
@@ -6812,7 +6769,6 @@ impl Ep7InControlVal {
             bits: (self.bits & !Ep7InControl::BUFFER_ADDRESS_MASK) | ((value << Ep7InControl::BUFFER_ADDRESS_OFFSET) & Ep7InControl::BUFFER_ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for Ep7InControlVal {
@@ -6839,7 +6795,6 @@ impl Ep7InControl {
     pub fn modify_val<F: FnOnce(Ep7InControlVal) -> Ep7InControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP7_OUT_CONTROL Register
@@ -7118,7 +7073,6 @@ impl Ep7OutControl {
     pub fn write_buffer_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
     }
-
 }
 
 /// EP7_OUT_CONTROL value type for batch read/modify/write operations
@@ -7312,7 +7266,6 @@ impl Ep7OutControlVal {
             bits: (self.bits & !Ep7OutControl::BUFFER_ADDRESS_MASK) | ((value << Ep7OutControl::BUFFER_ADDRESS_OFFSET) & Ep7OutControl::BUFFER_ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for Ep7OutControlVal {
@@ -7339,7 +7292,6 @@ impl Ep7OutControl {
     pub fn modify_val<F: FnOnce(Ep7OutControlVal) -> Ep7OutControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP8_IN_CONTROL Register
@@ -7618,7 +7570,6 @@ impl Ep8InControl {
     pub fn write_buffer_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
     }
-
 }
 
 /// EP8_IN_CONTROL value type for batch read/modify/write operations
@@ -7812,7 +7763,6 @@ impl Ep8InControlVal {
             bits: (self.bits & !Ep8InControl::BUFFER_ADDRESS_MASK) | ((value << Ep8InControl::BUFFER_ADDRESS_OFFSET) & Ep8InControl::BUFFER_ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for Ep8InControlVal {
@@ -7839,7 +7789,6 @@ impl Ep8InControl {
     pub fn modify_val<F: FnOnce(Ep8InControlVal) -> Ep8InControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP8_OUT_CONTROL Register
@@ -8118,7 +8067,6 @@ impl Ep8OutControl {
     pub fn write_buffer_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
     }
-
 }
 
 /// EP8_OUT_CONTROL value type for batch read/modify/write operations
@@ -8312,7 +8260,6 @@ impl Ep8OutControlVal {
             bits: (self.bits & !Ep8OutControl::BUFFER_ADDRESS_MASK) | ((value << Ep8OutControl::BUFFER_ADDRESS_OFFSET) & Ep8OutControl::BUFFER_ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for Ep8OutControlVal {
@@ -8339,7 +8286,6 @@ impl Ep8OutControl {
     pub fn modify_val<F: FnOnce(Ep8OutControlVal) -> Ep8OutControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP9_IN_CONTROL Register
@@ -8618,7 +8564,6 @@ impl Ep9InControl {
     pub fn write_buffer_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
     }
-
 }
 
 /// EP9_IN_CONTROL value type for batch read/modify/write operations
@@ -8812,7 +8757,6 @@ impl Ep9InControlVal {
             bits: (self.bits & !Ep9InControl::BUFFER_ADDRESS_MASK) | ((value << Ep9InControl::BUFFER_ADDRESS_OFFSET) & Ep9InControl::BUFFER_ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for Ep9InControlVal {
@@ -8839,7 +8783,6 @@ impl Ep9InControl {
     pub fn modify_val<F: FnOnce(Ep9InControlVal) -> Ep9InControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP9_OUT_CONTROL Register
@@ -9118,7 +9061,6 @@ impl Ep9OutControl {
     pub fn write_buffer_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
     }
-
 }
 
 /// EP9_OUT_CONTROL value type for batch read/modify/write operations
@@ -9312,7 +9254,6 @@ impl Ep9OutControlVal {
             bits: (self.bits & !Ep9OutControl::BUFFER_ADDRESS_MASK) | ((value << Ep9OutControl::BUFFER_ADDRESS_OFFSET) & Ep9OutControl::BUFFER_ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for Ep9OutControlVal {
@@ -9339,7 +9280,6 @@ impl Ep9OutControl {
     pub fn modify_val<F: FnOnce(Ep9OutControlVal) -> Ep9OutControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP10_IN_CONTROL Register
@@ -9618,7 +9558,6 @@ impl Ep10InControl {
     pub fn write_buffer_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
     }
-
 }
 
 /// EP10_IN_CONTROL value type for batch read/modify/write operations
@@ -9812,7 +9751,6 @@ impl Ep10InControlVal {
             bits: (self.bits & !Ep10InControl::BUFFER_ADDRESS_MASK) | ((value << Ep10InControl::BUFFER_ADDRESS_OFFSET) & Ep10InControl::BUFFER_ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for Ep10InControlVal {
@@ -9839,7 +9777,6 @@ impl Ep10InControl {
     pub fn modify_val<F: FnOnce(Ep10InControlVal) -> Ep10InControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP10_OUT_CONTROL Register
@@ -10118,7 +10055,6 @@ impl Ep10OutControl {
     pub fn write_buffer_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
     }
-
 }
 
 /// EP10_OUT_CONTROL value type for batch read/modify/write operations
@@ -10312,7 +10248,6 @@ impl Ep10OutControlVal {
             bits: (self.bits & !Ep10OutControl::BUFFER_ADDRESS_MASK) | ((value << Ep10OutControl::BUFFER_ADDRESS_OFFSET) & Ep10OutControl::BUFFER_ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for Ep10OutControlVal {
@@ -10339,7 +10274,6 @@ impl Ep10OutControl {
     pub fn modify_val<F: FnOnce(Ep10OutControlVal) -> Ep10OutControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP11_IN_CONTROL Register
@@ -10618,7 +10552,6 @@ impl Ep11InControl {
     pub fn write_buffer_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
     }
-
 }
 
 /// EP11_IN_CONTROL value type for batch read/modify/write operations
@@ -10812,7 +10745,6 @@ impl Ep11InControlVal {
             bits: (self.bits & !Ep11InControl::BUFFER_ADDRESS_MASK) | ((value << Ep11InControl::BUFFER_ADDRESS_OFFSET) & Ep11InControl::BUFFER_ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for Ep11InControlVal {
@@ -10839,7 +10771,6 @@ impl Ep11InControl {
     pub fn modify_val<F: FnOnce(Ep11InControlVal) -> Ep11InControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP11_OUT_CONTROL Register
@@ -11118,7 +11049,6 @@ impl Ep11OutControl {
     pub fn write_buffer_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
     }
-
 }
 
 /// EP11_OUT_CONTROL value type for batch read/modify/write operations
@@ -11312,7 +11242,6 @@ impl Ep11OutControlVal {
             bits: (self.bits & !Ep11OutControl::BUFFER_ADDRESS_MASK) | ((value << Ep11OutControl::BUFFER_ADDRESS_OFFSET) & Ep11OutControl::BUFFER_ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for Ep11OutControlVal {
@@ -11339,7 +11268,6 @@ impl Ep11OutControl {
     pub fn modify_val<F: FnOnce(Ep11OutControlVal) -> Ep11OutControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP12_IN_CONTROL Register
@@ -11618,7 +11546,6 @@ impl Ep12InControl {
     pub fn write_buffer_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
     }
-
 }
 
 /// EP12_IN_CONTROL value type for batch read/modify/write operations
@@ -11812,7 +11739,6 @@ impl Ep12InControlVal {
             bits: (self.bits & !Ep12InControl::BUFFER_ADDRESS_MASK) | ((value << Ep12InControl::BUFFER_ADDRESS_OFFSET) & Ep12InControl::BUFFER_ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for Ep12InControlVal {
@@ -11839,7 +11765,6 @@ impl Ep12InControl {
     pub fn modify_val<F: FnOnce(Ep12InControlVal) -> Ep12InControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP12_OUT_CONTROL Register
@@ -12118,7 +12043,6 @@ impl Ep12OutControl {
     pub fn write_buffer_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
     }
-
 }
 
 /// EP12_OUT_CONTROL value type for batch read/modify/write operations
@@ -12312,7 +12236,6 @@ impl Ep12OutControlVal {
             bits: (self.bits & !Ep12OutControl::BUFFER_ADDRESS_MASK) | ((value << Ep12OutControl::BUFFER_ADDRESS_OFFSET) & Ep12OutControl::BUFFER_ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for Ep12OutControlVal {
@@ -12339,7 +12262,6 @@ impl Ep12OutControl {
     pub fn modify_val<F: FnOnce(Ep12OutControlVal) -> Ep12OutControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP13_IN_CONTROL Register
@@ -12618,7 +12540,6 @@ impl Ep13InControl {
     pub fn write_buffer_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
     }
-
 }
 
 /// EP13_IN_CONTROL value type for batch read/modify/write operations
@@ -12812,7 +12733,6 @@ impl Ep13InControlVal {
             bits: (self.bits & !Ep13InControl::BUFFER_ADDRESS_MASK) | ((value << Ep13InControl::BUFFER_ADDRESS_OFFSET) & Ep13InControl::BUFFER_ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for Ep13InControlVal {
@@ -12839,7 +12759,6 @@ impl Ep13InControl {
     pub fn modify_val<F: FnOnce(Ep13InControlVal) -> Ep13InControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP13_OUT_CONTROL Register
@@ -13118,7 +13037,6 @@ impl Ep13OutControl {
     pub fn write_buffer_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
     }
-
 }
 
 /// EP13_OUT_CONTROL value type for batch read/modify/write operations
@@ -13312,7 +13230,6 @@ impl Ep13OutControlVal {
             bits: (self.bits & !Ep13OutControl::BUFFER_ADDRESS_MASK) | ((value << Ep13OutControl::BUFFER_ADDRESS_OFFSET) & Ep13OutControl::BUFFER_ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for Ep13OutControlVal {
@@ -13339,7 +13256,6 @@ impl Ep13OutControl {
     pub fn modify_val<F: FnOnce(Ep13OutControlVal) -> Ep13OutControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP14_IN_CONTROL Register
@@ -13618,7 +13534,6 @@ impl Ep14InControl {
     pub fn write_buffer_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
     }
-
 }
 
 /// EP14_IN_CONTROL value type for batch read/modify/write operations
@@ -13812,7 +13727,6 @@ impl Ep14InControlVal {
             bits: (self.bits & !Ep14InControl::BUFFER_ADDRESS_MASK) | ((value << Ep14InControl::BUFFER_ADDRESS_OFFSET) & Ep14InControl::BUFFER_ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for Ep14InControlVal {
@@ -13839,7 +13753,6 @@ impl Ep14InControl {
     pub fn modify_val<F: FnOnce(Ep14InControlVal) -> Ep14InControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP14_OUT_CONTROL Register
@@ -14118,7 +14031,6 @@ impl Ep14OutControl {
     pub fn write_buffer_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
     }
-
 }
 
 /// EP14_OUT_CONTROL value type for batch read/modify/write operations
@@ -14312,7 +14224,6 @@ impl Ep14OutControlVal {
             bits: (self.bits & !Ep14OutControl::BUFFER_ADDRESS_MASK) | ((value << Ep14OutControl::BUFFER_ADDRESS_OFFSET) & Ep14OutControl::BUFFER_ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for Ep14OutControlVal {
@@ -14339,7 +14250,6 @@ impl Ep14OutControl {
     pub fn modify_val<F: FnOnce(Ep14OutControlVal) -> Ep14OutControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP15_IN_CONTROL Register
@@ -14618,7 +14528,6 @@ impl Ep15InControl {
     pub fn write_buffer_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
     }
-
 }
 
 /// EP15_IN_CONTROL value type for batch read/modify/write operations
@@ -14812,7 +14721,6 @@ impl Ep15InControlVal {
             bits: (self.bits & !Ep15InControl::BUFFER_ADDRESS_MASK) | ((value << Ep15InControl::BUFFER_ADDRESS_OFFSET) & Ep15InControl::BUFFER_ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for Ep15InControlVal {
@@ -14839,7 +14747,6 @@ impl Ep15InControl {
     pub fn modify_val<F: FnOnce(Ep15InControlVal) -> Ep15InControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP15_OUT_CONTROL Register
@@ -15118,7 +15025,6 @@ impl Ep15OutControl {
     pub fn write_buffer_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
     }
-
 }
 
 /// EP15_OUT_CONTROL value type for batch read/modify/write operations
@@ -15312,7 +15218,6 @@ impl Ep15OutControlVal {
             bits: (self.bits & !Ep15OutControl::BUFFER_ADDRESS_MASK) | ((value << Ep15OutControl::BUFFER_ADDRESS_OFFSET) & Ep15OutControl::BUFFER_ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for Ep15OutControlVal {
@@ -15339,7 +15244,6 @@ impl Ep15OutControl {
     pub fn modify_val<F: FnOnce(Ep15OutControlVal) -> Ep15OutControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP0_IN_BUFFER_CONTROL Register
@@ -15794,7 +15698,6 @@ impl Ep0InBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP0_IN_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -16094,7 +15997,6 @@ impl Ep0InBufferControlVal {
             bits: (self.bits & !Ep0InBufferControl::LENGTH_0_MASK) | ((value << Ep0InBufferControl::LENGTH_0_OFFSET) & Ep0InBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep0InBufferControlVal {
@@ -16121,7 +16023,6 @@ impl Ep0InBufferControl {
     pub fn modify_val<F: FnOnce(Ep0InBufferControlVal) -> Ep0InBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP0_OUT_BUFFER_CONTROL Register
@@ -16576,7 +16477,6 @@ impl Ep0OutBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP0_OUT_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -16876,7 +16776,6 @@ impl Ep0OutBufferControlVal {
             bits: (self.bits & !Ep0OutBufferControl::LENGTH_0_MASK) | ((value << Ep0OutBufferControl::LENGTH_0_OFFSET) & Ep0OutBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep0OutBufferControlVal {
@@ -16903,7 +16802,6 @@ impl Ep0OutBufferControl {
     pub fn modify_val<F: FnOnce(Ep0OutBufferControlVal) -> Ep0OutBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP1_IN_BUFFER_CONTROL Register
@@ -17358,7 +17256,6 @@ impl Ep1InBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP1_IN_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -17658,7 +17555,6 @@ impl Ep1InBufferControlVal {
             bits: (self.bits & !Ep1InBufferControl::LENGTH_0_MASK) | ((value << Ep1InBufferControl::LENGTH_0_OFFSET) & Ep1InBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep1InBufferControlVal {
@@ -17685,7 +17581,6 @@ impl Ep1InBufferControl {
     pub fn modify_val<F: FnOnce(Ep1InBufferControlVal) -> Ep1InBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP1_OUT_BUFFER_CONTROL Register
@@ -18140,7 +18035,6 @@ impl Ep1OutBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP1_OUT_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -18440,7 +18334,6 @@ impl Ep1OutBufferControlVal {
             bits: (self.bits & !Ep1OutBufferControl::LENGTH_0_MASK) | ((value << Ep1OutBufferControl::LENGTH_0_OFFSET) & Ep1OutBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep1OutBufferControlVal {
@@ -18467,7 +18360,6 @@ impl Ep1OutBufferControl {
     pub fn modify_val<F: FnOnce(Ep1OutBufferControlVal) -> Ep1OutBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP2_IN_BUFFER_CONTROL Register
@@ -18922,7 +18814,6 @@ impl Ep2InBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP2_IN_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -19222,7 +19113,6 @@ impl Ep2InBufferControlVal {
             bits: (self.bits & !Ep2InBufferControl::LENGTH_0_MASK) | ((value << Ep2InBufferControl::LENGTH_0_OFFSET) & Ep2InBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep2InBufferControlVal {
@@ -19249,7 +19139,6 @@ impl Ep2InBufferControl {
     pub fn modify_val<F: FnOnce(Ep2InBufferControlVal) -> Ep2InBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP2_OUT_BUFFER_CONTROL Register
@@ -19704,7 +19593,6 @@ impl Ep2OutBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP2_OUT_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -20004,7 +19892,6 @@ impl Ep2OutBufferControlVal {
             bits: (self.bits & !Ep2OutBufferControl::LENGTH_0_MASK) | ((value << Ep2OutBufferControl::LENGTH_0_OFFSET) & Ep2OutBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep2OutBufferControlVal {
@@ -20031,7 +19918,6 @@ impl Ep2OutBufferControl {
     pub fn modify_val<F: FnOnce(Ep2OutBufferControlVal) -> Ep2OutBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP3_IN_BUFFER_CONTROL Register
@@ -20486,7 +20372,6 @@ impl Ep3InBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP3_IN_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -20786,7 +20671,6 @@ impl Ep3InBufferControlVal {
             bits: (self.bits & !Ep3InBufferControl::LENGTH_0_MASK) | ((value << Ep3InBufferControl::LENGTH_0_OFFSET) & Ep3InBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep3InBufferControlVal {
@@ -20813,7 +20697,6 @@ impl Ep3InBufferControl {
     pub fn modify_val<F: FnOnce(Ep3InBufferControlVal) -> Ep3InBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP3_OUT_BUFFER_CONTROL Register
@@ -21268,7 +21151,6 @@ impl Ep3OutBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP3_OUT_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -21568,7 +21450,6 @@ impl Ep3OutBufferControlVal {
             bits: (self.bits & !Ep3OutBufferControl::LENGTH_0_MASK) | ((value << Ep3OutBufferControl::LENGTH_0_OFFSET) & Ep3OutBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep3OutBufferControlVal {
@@ -21595,7 +21476,6 @@ impl Ep3OutBufferControl {
     pub fn modify_val<F: FnOnce(Ep3OutBufferControlVal) -> Ep3OutBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP4_IN_BUFFER_CONTROL Register
@@ -22050,7 +21930,6 @@ impl Ep4InBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP4_IN_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -22350,7 +22229,6 @@ impl Ep4InBufferControlVal {
             bits: (self.bits & !Ep4InBufferControl::LENGTH_0_MASK) | ((value << Ep4InBufferControl::LENGTH_0_OFFSET) & Ep4InBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep4InBufferControlVal {
@@ -22377,7 +22255,6 @@ impl Ep4InBufferControl {
     pub fn modify_val<F: FnOnce(Ep4InBufferControlVal) -> Ep4InBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP4_OUT_BUFFER_CONTROL Register
@@ -22832,7 +22709,6 @@ impl Ep4OutBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP4_OUT_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -23132,7 +23008,6 @@ impl Ep4OutBufferControlVal {
             bits: (self.bits & !Ep4OutBufferControl::LENGTH_0_MASK) | ((value << Ep4OutBufferControl::LENGTH_0_OFFSET) & Ep4OutBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep4OutBufferControlVal {
@@ -23159,7 +23034,6 @@ impl Ep4OutBufferControl {
     pub fn modify_val<F: FnOnce(Ep4OutBufferControlVal) -> Ep4OutBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP5_IN_BUFFER_CONTROL Register
@@ -23614,7 +23488,6 @@ impl Ep5InBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP5_IN_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -23914,7 +23787,6 @@ impl Ep5InBufferControlVal {
             bits: (self.bits & !Ep5InBufferControl::LENGTH_0_MASK) | ((value << Ep5InBufferControl::LENGTH_0_OFFSET) & Ep5InBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep5InBufferControlVal {
@@ -23941,7 +23813,6 @@ impl Ep5InBufferControl {
     pub fn modify_val<F: FnOnce(Ep5InBufferControlVal) -> Ep5InBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP5_OUT_BUFFER_CONTROL Register
@@ -24396,7 +24267,6 @@ impl Ep5OutBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP5_OUT_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -24696,7 +24566,6 @@ impl Ep5OutBufferControlVal {
             bits: (self.bits & !Ep5OutBufferControl::LENGTH_0_MASK) | ((value << Ep5OutBufferControl::LENGTH_0_OFFSET) & Ep5OutBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep5OutBufferControlVal {
@@ -24723,7 +24592,6 @@ impl Ep5OutBufferControl {
     pub fn modify_val<F: FnOnce(Ep5OutBufferControlVal) -> Ep5OutBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP6_IN_BUFFER_CONTROL Register
@@ -25178,7 +25046,6 @@ impl Ep6InBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP6_IN_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -25478,7 +25345,6 @@ impl Ep6InBufferControlVal {
             bits: (self.bits & !Ep6InBufferControl::LENGTH_0_MASK) | ((value << Ep6InBufferControl::LENGTH_0_OFFSET) & Ep6InBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep6InBufferControlVal {
@@ -25505,7 +25371,6 @@ impl Ep6InBufferControl {
     pub fn modify_val<F: FnOnce(Ep6InBufferControlVal) -> Ep6InBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP6_OUT_BUFFER_CONTROL Register
@@ -25960,7 +25825,6 @@ impl Ep6OutBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP6_OUT_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -26260,7 +26124,6 @@ impl Ep6OutBufferControlVal {
             bits: (self.bits & !Ep6OutBufferControl::LENGTH_0_MASK) | ((value << Ep6OutBufferControl::LENGTH_0_OFFSET) & Ep6OutBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep6OutBufferControlVal {
@@ -26287,7 +26150,6 @@ impl Ep6OutBufferControl {
     pub fn modify_val<F: FnOnce(Ep6OutBufferControlVal) -> Ep6OutBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP7_IN_BUFFER_CONTROL Register
@@ -26742,7 +26604,6 @@ impl Ep7InBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP7_IN_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -27042,7 +26903,6 @@ impl Ep7InBufferControlVal {
             bits: (self.bits & !Ep7InBufferControl::LENGTH_0_MASK) | ((value << Ep7InBufferControl::LENGTH_0_OFFSET) & Ep7InBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep7InBufferControlVal {
@@ -27069,7 +26929,6 @@ impl Ep7InBufferControl {
     pub fn modify_val<F: FnOnce(Ep7InBufferControlVal) -> Ep7InBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP7_OUT_BUFFER_CONTROL Register
@@ -27524,7 +27383,6 @@ impl Ep7OutBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP7_OUT_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -27824,7 +27682,6 @@ impl Ep7OutBufferControlVal {
             bits: (self.bits & !Ep7OutBufferControl::LENGTH_0_MASK) | ((value << Ep7OutBufferControl::LENGTH_0_OFFSET) & Ep7OutBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep7OutBufferControlVal {
@@ -27851,7 +27708,6 @@ impl Ep7OutBufferControl {
     pub fn modify_val<F: FnOnce(Ep7OutBufferControlVal) -> Ep7OutBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP8_IN_BUFFER_CONTROL Register
@@ -28306,7 +28162,6 @@ impl Ep8InBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP8_IN_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -28606,7 +28461,6 @@ impl Ep8InBufferControlVal {
             bits: (self.bits & !Ep8InBufferControl::LENGTH_0_MASK) | ((value << Ep8InBufferControl::LENGTH_0_OFFSET) & Ep8InBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep8InBufferControlVal {
@@ -28633,7 +28487,6 @@ impl Ep8InBufferControl {
     pub fn modify_val<F: FnOnce(Ep8InBufferControlVal) -> Ep8InBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP8_OUT_BUFFER_CONTROL Register
@@ -29088,7 +28941,6 @@ impl Ep8OutBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP8_OUT_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -29388,7 +29240,6 @@ impl Ep8OutBufferControlVal {
             bits: (self.bits & !Ep8OutBufferControl::LENGTH_0_MASK) | ((value << Ep8OutBufferControl::LENGTH_0_OFFSET) & Ep8OutBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep8OutBufferControlVal {
@@ -29415,7 +29266,6 @@ impl Ep8OutBufferControl {
     pub fn modify_val<F: FnOnce(Ep8OutBufferControlVal) -> Ep8OutBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP9_IN_BUFFER_CONTROL Register
@@ -29870,7 +29720,6 @@ impl Ep9InBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP9_IN_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -30170,7 +30019,6 @@ impl Ep9InBufferControlVal {
             bits: (self.bits & !Ep9InBufferControl::LENGTH_0_MASK) | ((value << Ep9InBufferControl::LENGTH_0_OFFSET) & Ep9InBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep9InBufferControlVal {
@@ -30197,7 +30045,6 @@ impl Ep9InBufferControl {
     pub fn modify_val<F: FnOnce(Ep9InBufferControlVal) -> Ep9InBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP9_OUT_BUFFER_CONTROL Register
@@ -30652,7 +30499,6 @@ impl Ep9OutBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP9_OUT_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -30952,7 +30798,6 @@ impl Ep9OutBufferControlVal {
             bits: (self.bits & !Ep9OutBufferControl::LENGTH_0_MASK) | ((value << Ep9OutBufferControl::LENGTH_0_OFFSET) & Ep9OutBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep9OutBufferControlVal {
@@ -30979,7 +30824,6 @@ impl Ep9OutBufferControl {
     pub fn modify_val<F: FnOnce(Ep9OutBufferControlVal) -> Ep9OutBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP10_IN_BUFFER_CONTROL Register
@@ -31434,7 +31278,6 @@ impl Ep10InBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP10_IN_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -31734,7 +31577,6 @@ impl Ep10InBufferControlVal {
             bits: (self.bits & !Ep10InBufferControl::LENGTH_0_MASK) | ((value << Ep10InBufferControl::LENGTH_0_OFFSET) & Ep10InBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep10InBufferControlVal {
@@ -31761,7 +31603,6 @@ impl Ep10InBufferControl {
     pub fn modify_val<F: FnOnce(Ep10InBufferControlVal) -> Ep10InBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP10_OUT_BUFFER_CONTROL Register
@@ -32216,7 +32057,6 @@ impl Ep10OutBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP10_OUT_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -32516,7 +32356,6 @@ impl Ep10OutBufferControlVal {
             bits: (self.bits & !Ep10OutBufferControl::LENGTH_0_MASK) | ((value << Ep10OutBufferControl::LENGTH_0_OFFSET) & Ep10OutBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep10OutBufferControlVal {
@@ -32543,7 +32382,6 @@ impl Ep10OutBufferControl {
     pub fn modify_val<F: FnOnce(Ep10OutBufferControlVal) -> Ep10OutBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP11_IN_BUFFER_CONTROL Register
@@ -32998,7 +32836,6 @@ impl Ep11InBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP11_IN_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -33298,7 +33135,6 @@ impl Ep11InBufferControlVal {
             bits: (self.bits & !Ep11InBufferControl::LENGTH_0_MASK) | ((value << Ep11InBufferControl::LENGTH_0_OFFSET) & Ep11InBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep11InBufferControlVal {
@@ -33325,7 +33161,6 @@ impl Ep11InBufferControl {
     pub fn modify_val<F: FnOnce(Ep11InBufferControlVal) -> Ep11InBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP11_OUT_BUFFER_CONTROL Register
@@ -33780,7 +33615,6 @@ impl Ep11OutBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP11_OUT_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -34080,7 +33914,6 @@ impl Ep11OutBufferControlVal {
             bits: (self.bits & !Ep11OutBufferControl::LENGTH_0_MASK) | ((value << Ep11OutBufferControl::LENGTH_0_OFFSET) & Ep11OutBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep11OutBufferControlVal {
@@ -34107,7 +33940,6 @@ impl Ep11OutBufferControl {
     pub fn modify_val<F: FnOnce(Ep11OutBufferControlVal) -> Ep11OutBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP12_IN_BUFFER_CONTROL Register
@@ -34562,7 +34394,6 @@ impl Ep12InBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP12_IN_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -34862,7 +34693,6 @@ impl Ep12InBufferControlVal {
             bits: (self.bits & !Ep12InBufferControl::LENGTH_0_MASK) | ((value << Ep12InBufferControl::LENGTH_0_OFFSET) & Ep12InBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep12InBufferControlVal {
@@ -34889,7 +34719,6 @@ impl Ep12InBufferControl {
     pub fn modify_val<F: FnOnce(Ep12InBufferControlVal) -> Ep12InBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP12_OUT_BUFFER_CONTROL Register
@@ -35344,7 +35173,6 @@ impl Ep12OutBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP12_OUT_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -35644,7 +35472,6 @@ impl Ep12OutBufferControlVal {
             bits: (self.bits & !Ep12OutBufferControl::LENGTH_0_MASK) | ((value << Ep12OutBufferControl::LENGTH_0_OFFSET) & Ep12OutBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep12OutBufferControlVal {
@@ -35671,7 +35498,6 @@ impl Ep12OutBufferControl {
     pub fn modify_val<F: FnOnce(Ep12OutBufferControlVal) -> Ep12OutBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP13_IN_BUFFER_CONTROL Register
@@ -36126,7 +35952,6 @@ impl Ep13InBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP13_IN_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -36426,7 +36251,6 @@ impl Ep13InBufferControlVal {
             bits: (self.bits & !Ep13InBufferControl::LENGTH_0_MASK) | ((value << Ep13InBufferControl::LENGTH_0_OFFSET) & Ep13InBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep13InBufferControlVal {
@@ -36453,7 +36277,6 @@ impl Ep13InBufferControl {
     pub fn modify_val<F: FnOnce(Ep13InBufferControlVal) -> Ep13InBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP13_OUT_BUFFER_CONTROL Register
@@ -36908,7 +36731,6 @@ impl Ep13OutBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP13_OUT_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -37208,7 +37030,6 @@ impl Ep13OutBufferControlVal {
             bits: (self.bits & !Ep13OutBufferControl::LENGTH_0_MASK) | ((value << Ep13OutBufferControl::LENGTH_0_OFFSET) & Ep13OutBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep13OutBufferControlVal {
@@ -37235,7 +37056,6 @@ impl Ep13OutBufferControl {
     pub fn modify_val<F: FnOnce(Ep13OutBufferControlVal) -> Ep13OutBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP14_IN_BUFFER_CONTROL Register
@@ -37690,7 +37510,6 @@ impl Ep14InBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP14_IN_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -37990,7 +37809,6 @@ impl Ep14InBufferControlVal {
             bits: (self.bits & !Ep14InBufferControl::LENGTH_0_MASK) | ((value << Ep14InBufferControl::LENGTH_0_OFFSET) & Ep14InBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep14InBufferControlVal {
@@ -38017,7 +37835,6 @@ impl Ep14InBufferControl {
     pub fn modify_val<F: FnOnce(Ep14InBufferControlVal) -> Ep14InBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP14_OUT_BUFFER_CONTROL Register
@@ -38472,7 +38289,6 @@ impl Ep14OutBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP14_OUT_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -38772,7 +38588,6 @@ impl Ep14OutBufferControlVal {
             bits: (self.bits & !Ep14OutBufferControl::LENGTH_0_MASK) | ((value << Ep14OutBufferControl::LENGTH_0_OFFSET) & Ep14OutBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep14OutBufferControlVal {
@@ -38799,7 +38614,6 @@ impl Ep14OutBufferControl {
     pub fn modify_val<F: FnOnce(Ep14OutBufferControlVal) -> Ep14OutBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP15_IN_BUFFER_CONTROL Register
@@ -39254,7 +39068,6 @@ impl Ep15InBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP15_IN_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -39554,7 +39367,6 @@ impl Ep15InBufferControlVal {
             bits: (self.bits & !Ep15InBufferControl::LENGTH_0_MASK) | ((value << Ep15InBufferControl::LENGTH_0_OFFSET) & Ep15InBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep15InBufferControlVal {
@@ -39581,7 +39393,6 @@ impl Ep15InBufferControl {
     pub fn modify_val<F: FnOnce(Ep15InBufferControlVal) -> Ep15InBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP15_OUT_BUFFER_CONTROL Register
@@ -40036,7 +39847,6 @@ impl Ep15OutBufferControl {
     pub fn write_length_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
     }
-
 }
 
 /// EP15_OUT_BUFFER_CONTROL value type for batch read/modify/write operations
@@ -40336,7 +40146,6 @@ impl Ep15OutBufferControlVal {
             bits: (self.bits & !Ep15OutBufferControl::LENGTH_0_MASK) | ((value << Ep15OutBufferControl::LENGTH_0_OFFSET) & Ep15OutBufferControl::LENGTH_0_MASK)
         }
     }
-
 }
 
 impl Default for Ep15OutBufferControlVal {
@@ -40363,7 +40172,6 @@ impl Ep15OutBufferControl {
     pub fn modify_val<F: FnOnce(Ep15OutBufferControlVal) -> Ep15OutBufferControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// Register block

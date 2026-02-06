@@ -65,7 +65,6 @@ impl VoltageSelect {
     pub fn clr_voltage_select(&self) {
         self.clr_bits(Self::VOLTAGE_SELECT_MASK);
     }
-
 }
 
 /// VOLTAGE_SELECT value type for batch read/modify/write operations
@@ -113,7 +112,6 @@ impl VoltageSelectVal {
             }
         }
     }
-
 }
 
 impl Default for VoltageSelectVal {
@@ -140,7 +138,6 @@ impl VoltageSelect {
     pub fn modify_val<F: FnOnce(VoltageSelectVal) -> VoltageSelectVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO0 Register
@@ -433,7 +430,6 @@ impl Gpio0 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO0 value type for batch read/modify/write operations
@@ -635,7 +631,6 @@ impl Gpio0Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio0Val {
@@ -662,7 +657,6 @@ impl Gpio0 {
     pub fn modify_val<F: FnOnce(Gpio0Val) -> Gpio0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO1 Register
@@ -955,7 +949,6 @@ impl Gpio1 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO1 value type for batch read/modify/write operations
@@ -1157,7 +1150,6 @@ impl Gpio1Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio1Val {
@@ -1184,7 +1176,6 @@ impl Gpio1 {
     pub fn modify_val<F: FnOnce(Gpio1Val) -> Gpio1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO2 Register
@@ -1477,7 +1468,6 @@ impl Gpio2 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO2 value type for batch read/modify/write operations
@@ -1679,7 +1669,6 @@ impl Gpio2Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio2Val {
@@ -1706,7 +1695,6 @@ impl Gpio2 {
     pub fn modify_val<F: FnOnce(Gpio2Val) -> Gpio2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO3 Register
@@ -1999,7 +1987,6 @@ impl Gpio3 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO3 value type for batch read/modify/write operations
@@ -2201,7 +2188,6 @@ impl Gpio3Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio3Val {
@@ -2228,7 +2214,6 @@ impl Gpio3 {
     pub fn modify_val<F: FnOnce(Gpio3Val) -> Gpio3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO4 Register
@@ -2521,7 +2506,6 @@ impl Gpio4 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO4 value type for batch read/modify/write operations
@@ -2723,7 +2707,6 @@ impl Gpio4Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio4Val {
@@ -2750,7 +2733,6 @@ impl Gpio4 {
     pub fn modify_val<F: FnOnce(Gpio4Val) -> Gpio4Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO5 Register
@@ -3043,7 +3025,6 @@ impl Gpio5 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO5 value type for batch read/modify/write operations
@@ -3245,7 +3226,6 @@ impl Gpio5Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio5Val {
@@ -3272,7 +3252,6 @@ impl Gpio5 {
     pub fn modify_val<F: FnOnce(Gpio5Val) -> Gpio5Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO6 Register
@@ -3565,7 +3544,6 @@ impl Gpio6 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO6 value type for batch read/modify/write operations
@@ -3767,7 +3745,6 @@ impl Gpio6Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio6Val {
@@ -3794,7 +3771,6 @@ impl Gpio6 {
     pub fn modify_val<F: FnOnce(Gpio6Val) -> Gpio6Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO7 Register
@@ -4087,7 +4063,6 @@ impl Gpio7 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO7 value type for batch read/modify/write operations
@@ -4289,7 +4264,6 @@ impl Gpio7Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio7Val {
@@ -4316,7 +4290,6 @@ impl Gpio7 {
     pub fn modify_val<F: FnOnce(Gpio7Val) -> Gpio7Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO8 Register
@@ -4609,7 +4582,6 @@ impl Gpio8 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO8 value type for batch read/modify/write operations
@@ -4811,7 +4783,6 @@ impl Gpio8Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio8Val {
@@ -4838,7 +4809,6 @@ impl Gpio8 {
     pub fn modify_val<F: FnOnce(Gpio8Val) -> Gpio8Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO9 Register
@@ -5131,7 +5101,6 @@ impl Gpio9 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO9 value type for batch read/modify/write operations
@@ -5333,7 +5302,6 @@ impl Gpio9Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio9Val {
@@ -5360,7 +5328,6 @@ impl Gpio9 {
     pub fn modify_val<F: FnOnce(Gpio9Val) -> Gpio9Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO10 Register
@@ -5653,7 +5620,6 @@ impl Gpio10 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO10 value type for batch read/modify/write operations
@@ -5855,7 +5821,6 @@ impl Gpio10Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio10Val {
@@ -5882,7 +5847,6 @@ impl Gpio10 {
     pub fn modify_val<F: FnOnce(Gpio10Val) -> Gpio10Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO11 Register
@@ -6175,7 +6139,6 @@ impl Gpio11 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO11 value type for batch read/modify/write operations
@@ -6377,7 +6340,6 @@ impl Gpio11Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio11Val {
@@ -6404,7 +6366,6 @@ impl Gpio11 {
     pub fn modify_val<F: FnOnce(Gpio11Val) -> Gpio11Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO12 Register
@@ -6697,7 +6658,6 @@ impl Gpio12 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO12 value type for batch read/modify/write operations
@@ -6899,7 +6859,6 @@ impl Gpio12Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio12Val {
@@ -6926,7 +6885,6 @@ impl Gpio12 {
     pub fn modify_val<F: FnOnce(Gpio12Val) -> Gpio12Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO13 Register
@@ -7219,7 +7177,6 @@ impl Gpio13 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO13 value type for batch read/modify/write operations
@@ -7421,7 +7378,6 @@ impl Gpio13Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio13Val {
@@ -7448,7 +7404,6 @@ impl Gpio13 {
     pub fn modify_val<F: FnOnce(Gpio13Val) -> Gpio13Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO14 Register
@@ -7741,7 +7696,6 @@ impl Gpio14 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO14 value type for batch read/modify/write operations
@@ -7943,7 +7897,6 @@ impl Gpio14Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio14Val {
@@ -7970,7 +7923,6 @@ impl Gpio14 {
     pub fn modify_val<F: FnOnce(Gpio14Val) -> Gpio14Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO15 Register
@@ -8263,7 +8215,6 @@ impl Gpio15 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO15 value type for batch read/modify/write operations
@@ -8465,7 +8416,6 @@ impl Gpio15Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio15Val {
@@ -8492,7 +8442,6 @@ impl Gpio15 {
     pub fn modify_val<F: FnOnce(Gpio15Val) -> Gpio15Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO16 Register
@@ -8785,7 +8734,6 @@ impl Gpio16 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO16 value type for batch read/modify/write operations
@@ -8987,7 +8935,6 @@ impl Gpio16Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio16Val {
@@ -9014,7 +8961,6 @@ impl Gpio16 {
     pub fn modify_val<F: FnOnce(Gpio16Val) -> Gpio16Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO17 Register
@@ -9307,7 +9253,6 @@ impl Gpio17 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO17 value type for batch read/modify/write operations
@@ -9509,7 +9454,6 @@ impl Gpio17Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio17Val {
@@ -9536,7 +9480,6 @@ impl Gpio17 {
     pub fn modify_val<F: FnOnce(Gpio17Val) -> Gpio17Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO18 Register
@@ -9829,7 +9772,6 @@ impl Gpio18 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO18 value type for batch read/modify/write operations
@@ -10031,7 +9973,6 @@ impl Gpio18Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio18Val {
@@ -10058,7 +9999,6 @@ impl Gpio18 {
     pub fn modify_val<F: FnOnce(Gpio18Val) -> Gpio18Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO19 Register
@@ -10351,7 +10291,6 @@ impl Gpio19 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO19 value type for batch read/modify/write operations
@@ -10553,7 +10492,6 @@ impl Gpio19Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio19Val {
@@ -10580,7 +10518,6 @@ impl Gpio19 {
     pub fn modify_val<F: FnOnce(Gpio19Val) -> Gpio19Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO20 Register
@@ -10873,7 +10810,6 @@ impl Gpio20 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO20 value type for batch read/modify/write operations
@@ -11075,7 +11011,6 @@ impl Gpio20Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio20Val {
@@ -11102,7 +11037,6 @@ impl Gpio20 {
     pub fn modify_val<F: FnOnce(Gpio20Val) -> Gpio20Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO21 Register
@@ -11395,7 +11329,6 @@ impl Gpio21 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO21 value type for batch read/modify/write operations
@@ -11597,7 +11530,6 @@ impl Gpio21Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio21Val {
@@ -11624,7 +11556,6 @@ impl Gpio21 {
     pub fn modify_val<F: FnOnce(Gpio21Val) -> Gpio21Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO22 Register
@@ -11917,7 +11848,6 @@ impl Gpio22 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO22 value type for batch read/modify/write operations
@@ -12119,7 +12049,6 @@ impl Gpio22Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio22Val {
@@ -12146,7 +12075,6 @@ impl Gpio22 {
     pub fn modify_val<F: FnOnce(Gpio22Val) -> Gpio22Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO23 Register
@@ -12439,7 +12367,6 @@ impl Gpio23 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO23 value type for batch read/modify/write operations
@@ -12641,7 +12568,6 @@ impl Gpio23Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio23Val {
@@ -12668,7 +12594,6 @@ impl Gpio23 {
     pub fn modify_val<F: FnOnce(Gpio23Val) -> Gpio23Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO24 Register
@@ -12961,7 +12886,6 @@ impl Gpio24 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO24 value type for batch read/modify/write operations
@@ -13163,7 +13087,6 @@ impl Gpio24Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio24Val {
@@ -13190,7 +13113,6 @@ impl Gpio24 {
     pub fn modify_val<F: FnOnce(Gpio24Val) -> Gpio24Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO25 Register
@@ -13483,7 +13405,6 @@ impl Gpio25 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO25 value type for batch read/modify/write operations
@@ -13685,7 +13606,6 @@ impl Gpio25Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio25Val {
@@ -13712,7 +13632,6 @@ impl Gpio25 {
     pub fn modify_val<F: FnOnce(Gpio25Val) -> Gpio25Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO26 Register
@@ -14005,7 +13924,6 @@ impl Gpio26 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO26 value type for batch read/modify/write operations
@@ -14207,7 +14125,6 @@ impl Gpio26Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio26Val {
@@ -14234,7 +14151,6 @@ impl Gpio26 {
     pub fn modify_val<F: FnOnce(Gpio26Val) -> Gpio26Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO27 Register
@@ -14527,7 +14443,6 @@ impl Gpio27 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO27 value type for batch read/modify/write operations
@@ -14729,7 +14644,6 @@ impl Gpio27Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio27Val {
@@ -14756,7 +14670,6 @@ impl Gpio27 {
     pub fn modify_val<F: FnOnce(Gpio27Val) -> Gpio27Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO28 Register
@@ -15049,7 +14962,6 @@ impl Gpio28 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO28 value type for batch read/modify/write operations
@@ -15251,7 +15163,6 @@ impl Gpio28Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio28Val {
@@ -15278,7 +15189,6 @@ impl Gpio28 {
     pub fn modify_val<F: FnOnce(Gpio28Val) -> Gpio28Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO29 Register
@@ -15571,7 +15481,6 @@ impl Gpio29 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO29 value type for batch read/modify/write operations
@@ -15773,7 +15682,6 @@ impl Gpio29Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio29Val {
@@ -15800,7 +15708,6 @@ impl Gpio29 {
     pub fn modify_val<F: FnOnce(Gpio29Val) -> Gpio29Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO30 Register
@@ -16093,7 +16000,6 @@ impl Gpio30 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO30 value type for batch read/modify/write operations
@@ -16295,7 +16201,6 @@ impl Gpio30Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio30Val {
@@ -16322,7 +16227,6 @@ impl Gpio30 {
     pub fn modify_val<F: FnOnce(Gpio30Val) -> Gpio30Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO31 Register
@@ -16615,7 +16519,6 @@ impl Gpio31 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO31 value type for batch read/modify/write operations
@@ -16817,7 +16720,6 @@ impl Gpio31Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio31Val {
@@ -16844,7 +16746,6 @@ impl Gpio31 {
     pub fn modify_val<F: FnOnce(Gpio31Val) -> Gpio31Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO32 Register
@@ -17137,7 +17038,6 @@ impl Gpio32 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO32 value type for batch read/modify/write operations
@@ -17339,7 +17239,6 @@ impl Gpio32Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio32Val {
@@ -17366,7 +17265,6 @@ impl Gpio32 {
     pub fn modify_val<F: FnOnce(Gpio32Val) -> Gpio32Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO33 Register
@@ -17659,7 +17557,6 @@ impl Gpio33 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO33 value type for batch read/modify/write operations
@@ -17861,7 +17758,6 @@ impl Gpio33Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio33Val {
@@ -17888,7 +17784,6 @@ impl Gpio33 {
     pub fn modify_val<F: FnOnce(Gpio33Val) -> Gpio33Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO34 Register
@@ -18181,7 +18076,6 @@ impl Gpio34 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO34 value type for batch read/modify/write operations
@@ -18383,7 +18277,6 @@ impl Gpio34Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio34Val {
@@ -18410,7 +18303,6 @@ impl Gpio34 {
     pub fn modify_val<F: FnOnce(Gpio34Val) -> Gpio34Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO35 Register
@@ -18703,7 +18595,6 @@ impl Gpio35 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO35 value type for batch read/modify/write operations
@@ -18905,7 +18796,6 @@ impl Gpio35Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio35Val {
@@ -18932,7 +18822,6 @@ impl Gpio35 {
     pub fn modify_val<F: FnOnce(Gpio35Val) -> Gpio35Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO36 Register
@@ -19225,7 +19114,6 @@ impl Gpio36 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO36 value type for batch read/modify/write operations
@@ -19427,7 +19315,6 @@ impl Gpio36Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio36Val {
@@ -19454,7 +19341,6 @@ impl Gpio36 {
     pub fn modify_val<F: FnOnce(Gpio36Val) -> Gpio36Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO37 Register
@@ -19747,7 +19633,6 @@ impl Gpio37 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO37 value type for batch read/modify/write operations
@@ -19949,7 +19834,6 @@ impl Gpio37Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio37Val {
@@ -19976,7 +19860,6 @@ impl Gpio37 {
     pub fn modify_val<F: FnOnce(Gpio37Val) -> Gpio37Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO38 Register
@@ -20269,7 +20152,6 @@ impl Gpio38 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO38 value type for batch read/modify/write operations
@@ -20471,7 +20353,6 @@ impl Gpio38Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio38Val {
@@ -20498,7 +20379,6 @@ impl Gpio38 {
     pub fn modify_val<F: FnOnce(Gpio38Val) -> Gpio38Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO39 Register
@@ -20791,7 +20671,6 @@ impl Gpio39 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO39 value type for batch read/modify/write operations
@@ -20993,7 +20872,6 @@ impl Gpio39Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio39Val {
@@ -21020,7 +20898,6 @@ impl Gpio39 {
     pub fn modify_val<F: FnOnce(Gpio39Val) -> Gpio39Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO40 Register
@@ -21313,7 +21190,6 @@ impl Gpio40 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO40 value type for batch read/modify/write operations
@@ -21515,7 +21391,6 @@ impl Gpio40Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio40Val {
@@ -21542,7 +21417,6 @@ impl Gpio40 {
     pub fn modify_val<F: FnOnce(Gpio40Val) -> Gpio40Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO41 Register
@@ -21835,7 +21709,6 @@ impl Gpio41 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO41 value type for batch read/modify/write operations
@@ -22037,7 +21910,6 @@ impl Gpio41Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio41Val {
@@ -22064,7 +21936,6 @@ impl Gpio41 {
     pub fn modify_val<F: FnOnce(Gpio41Val) -> Gpio41Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO42 Register
@@ -22357,7 +22228,6 @@ impl Gpio42 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO42 value type for batch read/modify/write operations
@@ -22559,7 +22429,6 @@ impl Gpio42Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio42Val {
@@ -22586,7 +22455,6 @@ impl Gpio42 {
     pub fn modify_val<F: FnOnce(Gpio42Val) -> Gpio42Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO43 Register
@@ -22879,7 +22747,6 @@ impl Gpio43 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO43 value type for batch read/modify/write operations
@@ -23081,7 +22948,6 @@ impl Gpio43Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio43Val {
@@ -23108,7 +22974,6 @@ impl Gpio43 {
     pub fn modify_val<F: FnOnce(Gpio43Val) -> Gpio43Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO44 Register
@@ -23401,7 +23266,6 @@ impl Gpio44 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO44 value type for batch read/modify/write operations
@@ -23603,7 +23467,6 @@ impl Gpio44Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio44Val {
@@ -23630,7 +23493,6 @@ impl Gpio44 {
     pub fn modify_val<F: FnOnce(Gpio44Val) -> Gpio44Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO45 Register
@@ -23923,7 +23785,6 @@ impl Gpio45 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO45 value type for batch read/modify/write operations
@@ -24125,7 +23986,6 @@ impl Gpio45Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio45Val {
@@ -24152,7 +24012,6 @@ impl Gpio45 {
     pub fn modify_val<F: FnOnce(Gpio45Val) -> Gpio45Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO46 Register
@@ -24445,7 +24304,6 @@ impl Gpio46 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO46 value type for batch read/modify/write operations
@@ -24647,7 +24505,6 @@ impl Gpio46Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio46Val {
@@ -24674,7 +24531,6 @@ impl Gpio46 {
     pub fn modify_val<F: FnOnce(Gpio46Val) -> Gpio46Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO47 Register
@@ -24967,7 +24823,6 @@ impl Gpio47 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO47 value type for batch read/modify/write operations
@@ -25169,7 +25024,6 @@ impl Gpio47Val {
             }
         }
     }
-
 }
 
 impl Default for Gpio47Val {
@@ -25196,7 +25050,6 @@ impl Gpio47 {
     pub fn modify_val<F: FnOnce(Gpio47Val) -> Gpio47Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SWCLK Register
@@ -25489,7 +25342,6 @@ impl Swclk {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// SWCLK value type for batch read/modify/write operations
@@ -25691,7 +25543,6 @@ impl SwclkVal {
             }
         }
     }
-
 }
 
 impl Default for SwclkVal {
@@ -25718,7 +25569,6 @@ impl Swclk {
     pub fn modify_val<F: FnOnce(SwclkVal) -> SwclkVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SWD Register
@@ -26011,7 +25861,6 @@ impl Swd {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// SWD value type for batch read/modify/write operations
@@ -26213,7 +26062,6 @@ impl SwdVal {
             }
         }
     }
-
 }
 
 impl Default for SwdVal {
@@ -26240,7 +26088,6 @@ impl Swd {
     pub fn modify_val<F: FnOnce(SwdVal) -> SwdVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// Register block

@@ -46,7 +46,8 @@ pub enum DmaSize {
 
 /// SHA-256 hardware accelerator driver
 pub struct Sha256 {
-    _private: (),
+    // _marker: core::marker::PhantomData<*const ()>,
+    sha256: SHA256,
 }
 
 impl Sha256 {
@@ -58,13 +59,15 @@ impl Sha256 {
         // Unreset the SHA256 peripheral
         reset::unreset_sha256_wait();
 
-        Self { _private: () }
+        Self {
+            sha256: unsafe { SHA256::steal() },
+        }
     }
 
     /// Get a reference to the SHA256 registers
     #[inline]
     fn regs(&self) -> &pico_rs_pac::sha256::RegisterBlock {
-        unsafe { &*SHA256::PTR }
+        &self.sha256
     }
 
     // ========================================================================

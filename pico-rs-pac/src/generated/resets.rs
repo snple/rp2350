@@ -783,7 +783,6 @@ impl Reset {
     pub fn clr_adc(&self) {
         self.clr_bits(Self::ADC_MASK);
     }
-
 }
 
 /// RESET value type for batch read/modify/write operations
@@ -1335,7 +1334,6 @@ impl ResetVal {
             }
         }
     }
-
 }
 
 impl Default for ResetVal {
@@ -1362,7 +1360,6 @@ impl Reset {
     pub fn modify_val<F: FnOnce(ResetVal) -> ResetVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// WDSEL Register
@@ -2142,7 +2139,6 @@ impl Wdsel {
     pub fn clr_adc(&self) {
         self.clr_bits(Self::ADC_MASK);
     }
-
 }
 
 /// WDSEL value type for batch read/modify/write operations
@@ -2694,7 +2690,6 @@ impl WdselVal {
             }
         }
     }
-
 }
 
 impl Default for WdselVal {
@@ -2721,7 +2716,6 @@ impl Wdsel {
     pub fn modify_val<F: FnOnce(WdselVal) -> WdselVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// RESET_DONE Register
@@ -3153,7 +3147,6 @@ impl ResetDone {
     pub fn adc(&self) -> bool {
         (self.value.read_bits() & Self::ADC_MASK) != 0
     }
-
 }
 
 /// RESET_DONE value type for batch read/modify/write operations
@@ -3357,7 +3350,6 @@ impl ResetDoneVal {
     pub const fn adc(&self) -> bool {
         (self.bits & ResetDone::ADC_MASK) != 0
     }
-
 }
 
 impl Default for ResetDoneVal {
@@ -3372,19 +3364,6 @@ impl ResetDone {
     pub fn read_val(&self) -> ResetDoneVal {
         ResetDoneVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: ResetDoneVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(ResetDoneVal) -> ResetDoneVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// Register block

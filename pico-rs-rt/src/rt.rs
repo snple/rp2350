@@ -135,8 +135,8 @@ pub unsafe extern "C" fn Reset() -> ! {
         );
     }
 
-    // Enable FPU (CP10 and CP11) if target has hardware FP
-    #[cfg(target_feature = "fpregs")]
+    // Enable FPU (CP10 and CP11)
+    // RP2350's Cortex-M33 has FPU, enable it unconditionally
     unsafe {
         const CPACR: *mut u32 = 0xE000_ED88 as *mut u32;
         let cpacr = core::ptr::read_volatile(CPACR);

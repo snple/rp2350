@@ -61,7 +61,6 @@ impl Arm {
     pub fn write_arm(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ARM_MASK) | ((value << Self::ARM_OFFSET) & Self::ARM_MASK));
     }
-
 }
 
 /// ARM value type for batch read/modify/write operations
@@ -105,7 +104,6 @@ impl ArmVal {
             bits: (self.bits & !Arm::ARM_MASK) | ((value << Arm::ARM_OFFSET) & Arm::ARM_MASK)
         }
     }
-
 }
 
 impl Default for ArmVal {
@@ -132,7 +130,6 @@ impl Arm {
     pub fn modify_val<F: FnOnce(ArmVal) -> ArmVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DISARM Register
@@ -198,7 +195,6 @@ impl Disarm {
     pub fn write_disarm(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::DISARM_MASK) | ((value << Self::DISARM_OFFSET) & Self::DISARM_MASK));
     }
-
 }
 
 /// DISARM value type for batch read/modify/write operations
@@ -248,7 +244,6 @@ impl DisarmVal {
             bits: (self.bits & !Disarm::DISARM_MASK) | ((value << Disarm::DISARM_OFFSET) & Disarm::DISARM_MASK)
         }
     }
-
 }
 
 impl Default for DisarmVal {
@@ -275,7 +270,6 @@ impl Disarm {
     pub fn modify_val<F: FnOnce(DisarmVal) -> DisarmVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SENSITIVITY Register
@@ -555,7 +549,6 @@ impl Sensitivity {
     pub fn write_det0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::DET0_MASK) | ((value << Self::DET0_OFFSET) & Self::DET0_MASK));
     }
-
 }
 
 /// SENSITIVITY value type for batch read/modify/write operations
@@ -743,7 +736,6 @@ impl SensitivityVal {
             bits: (self.bits & !Sensitivity::DET0_MASK) | ((value << Sensitivity::DET0_OFFSET) & Sensitivity::DET0_MASK)
         }
     }
-
 }
 
 impl Default for SensitivityVal {
@@ -770,7 +762,6 @@ impl Sensitivity {
     pub fn modify_val<F: FnOnce(SensitivityVal) -> SensitivityVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// LOCK Register
@@ -824,7 +815,6 @@ impl Lock {
     pub fn write_lock(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LOCK_MASK) | ((value << Self::LOCK_OFFSET) & Self::LOCK_MASK));
     }
-
 }
 
 /// LOCK value type for batch read/modify/write operations
@@ -872,7 +862,6 @@ impl LockVal {
             bits: (self.bits & !Lock::LOCK_MASK) | ((value << Lock::LOCK_OFFSET) & Lock::LOCK_MASK)
         }
     }
-
 }
 
 impl Default for LockVal {
@@ -899,7 +888,6 @@ impl Lock {
     pub fn modify_val<F: FnOnce(LockVal) -> LockVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRIG_STATUS Register
@@ -1033,7 +1021,6 @@ impl TrigStatus {
     pub fn clr_det0(&self) {
         self.clr_bits(Self::DET0_MASK);
     }
-
 }
 
 /// TRIG_STATUS value type for batch read/modify/write operations
@@ -1135,7 +1122,6 @@ impl TrigStatusVal {
             }
         }
     }
-
 }
 
 impl Default for TrigStatusVal {
@@ -1162,7 +1148,6 @@ impl TrigStatus {
     pub fn modify_val<F: FnOnce(TrigStatusVal) -> TrigStatusVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRIG_FORCE Register
@@ -1205,7 +1190,6 @@ impl TrigForce {
     pub fn write_trig_force(&self, value: u32) {
         self.value.write_bits((value << Self::TRIG_FORCE_OFFSET) & Self::TRIG_FORCE_MASK);
     }
-
 }
 
 /// TRIG_FORCE value type for batch read/modify/write operations
@@ -1243,7 +1227,6 @@ impl TrigForceVal {
             bits: (self.bits & !TrigForce::TRIG_FORCE_MASK) | ((value << TrigForce::TRIG_FORCE_OFFSET) & TrigForce::TRIG_FORCE_MASK)
         }
     }
-
 }
 
 impl Default for TrigForceVal {
@@ -1253,24 +1236,11 @@ impl Default for TrigForceVal {
 }
 
 impl TrigForce {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> TrigForceVal {
-        TrigForceVal::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: TrigForceVal) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(TrigForceVal) -> TrigForceVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// Register block

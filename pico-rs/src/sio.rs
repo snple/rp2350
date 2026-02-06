@@ -8,61 +8,144 @@
 //! - Hardware spinlocks for synchronization
 //! - Interpolators for fast hardware-accelerated math
 //!
-//! This implementation uses the `paste` crate to generate dedicated types
-//! for each spinlock and interpolator lane.
+//! ## Security Mode
 //!
-//! ## Example
+//! RP2350 has two SIO register sets:
+//! - **SIO** (`0xd000_0000`): Secure access — full control of all GPIOs
+//! - **SIO_NS** (`0xd002_0000`): Non-Secure access — Secure-only GPIOs are hidden
+//!
+//! The module defaults to Secure mode. Call [`init_non_secure()`] early in
+//! `main()` when using [`ImageDef::non_secure_exe()`](crate::block::ImageDef::non_secure_exe).
+//!
+//! ## Usage
+//!
+//! SIO is a shared, core-local peripheral. Unlike I2C or SPI, it does not
+//! require ownership — you can create instances anywhere, anytime:
 //!
 //! ```ignore
 //! use pico_rs::sio::{Sio, Spinlock};
 //!
-//! // Get the SIO instance
+//! // Create SIO instance (zero-cost, no ownership required)
 //! let sio = Sio::new();
 //!
-//! // Get current core ID
-//! let core_id = sio.core_id();
+//! // Read current core ID
+//! let core = sio.core_id();
 //!
-//! // Use a spinlock for synchronization
+//! // GPIO operations via SIO
+//! let gpio = sio.gpio();
+//! gpio.pin_set(25);       // Set GPIO 25 high
+//! gpio.pin_clr(25);       // Set GPIO 25 low
+//! let input = gpio.pin_read(25);
+//!
+//! // High GPIO (32-47) also via the same controller
+//! gpio.pin_set(32);       // Set GPIO 32 high
+//!
+//! // Mask-level operations for batch control
+//! gpio.set_low(1 << 25);  // Set GPIO 25 high (low bank mask)
+//!
+//! // Spinlock (static, no Sio instance needed)
 //! {
 //!     let _lock = Spinlock::<0>::acquire();
 //!     // Critical section protected by spinlock 0
 //! }
 //!
-//! // Read GPIO input
-//! let gpio_state = sio.gpio_in();
-//!
-//! // Set GPIO output (atomic)
-//! sio.gpio_set(1 << 25); // Set GPIO 25 high
+//! // Interpolators
+//! let interp0 = sio.interp0();
+//! interp0.set_accum0(100);
 //! ```
 
 #![allow(clippy::identity_op)]
 
+use core::sync::atomic::{AtomicU32, Ordering};
 use paste::paste;
+use pico_rs_pac::sio::RegisterBlock;
 
 /// Number of hardware spinlocks
 pub const SPINLOCK_COUNT: usize = 32;
+
+/// Maximum GPIO pin number (0–47)
+pub const GPIO_PIN_MAX: u8 = 47;
+
+// ============================================================================
+// Security Mode / Register Base
+// ============================================================================
+
+/// SIO base address — defaults to Secure SIO (`0xd000_0000`).
+///
+/// Updated by [`init_secure()`] / [`init_non_secure()`].
+/// Both `sio::RegisterBlock` and `sio_ns::RegisterBlock` have identical memory
+/// layouts, so we cast the Non-Secure address to the same type.
+static SIO_BASE: AtomicU32 = AtomicU32::new(pico_rs_pac::sio::BASE);
+
+/// Initialize SIO for Secure mode (default).
+///
+/// Uses SIO at `0xd000_0000` with full GPIO access.
+/// This is the default — calling this is only needed to revert after
+/// [`init_non_secure()`].
+#[inline]
+pub fn init_secure() {
+    SIO_BASE.store(pico_rs_pac::sio::BASE, Ordering::Relaxed);
+}
+
+/// Initialize SIO for Non-Secure mode.
+///
+/// Uses SIO_NS at `0xd002_0000`. Secure-only GPIOs (per ACCESSCTRL)
+/// will appear as zero on reads and ignore writes.
+///
+/// Call this early in `main()` when using
+/// [`ImageDef::non_secure_exe()`](crate::block::ImageDef::non_secure_exe).
+#[inline]
+pub fn init_non_secure() {
+    SIO_BASE.store(pico_rs_pac::sio_ns::BASE, Ordering::Relaxed);
+}
+
+/// Check if SIO is configured for Secure mode.
+#[inline]
+pub fn is_secure() -> bool {
+    SIO_BASE.load(Ordering::Relaxed) == pico_rs_pac::sio::BASE
+}
+
+/// Get the SIO register block reference.
+///
+/// This is the central access point for all SIO operations.
+/// Uses the base address configured by [`init_secure()`] / [`init_non_secure()`].
+///
+/// # Safety
+///
+/// Both `sio::RegisterBlock` and `sio_ns::RegisterBlock` have identical memory
+/// layouts (verified from SVD). The cast from SIO_NS address to
+/// `sio::RegisterBlock` is safe due to layout equivalence.
+#[inline(always)]
+pub(crate) fn regs() -> &'static RegisterBlock {
+    unsafe { &*(SIO_BASE.load(Ordering::Relaxed) as *const RegisterBlock) }
+}
 
 // ============================================================================
 // SIO Core
 // ============================================================================
 
-/// SIO (Single-cycle IO) peripheral wrapper
+/// SIO (Single-cycle IO) peripheral wrapper.
 ///
-/// Provides access to core-local and inter-core hardware features.
+/// Creating instances is cheap. All register access goes through the
+/// statically configured base address.
+///
+/// The `_private` field prevents external construction — use [`Sio::new()`].
+///
+/// SIO is core-local and does not require ownership tracking. Multiple
+/// instances can coexist safely.
+#[derive(Copy, Clone, Default, Debug)]
 pub struct Sio {
-    sio: &'static pico_rs_pac::sio::RegisterBlock,
+    _marker: core::marker::PhantomData<*const ()>,
 }
 
 impl Sio {
-    /// Create a new SIO instance
+    /// Create a new SIO instance.
     ///
-    /// # Safety
-    /// This does not track ownership. The caller must ensure exclusive access
-    /// to the SIO peripheral if needed.
+    /// This is a low-cost operation. No peripheral ownership is taken.
     #[inline]
-    pub fn new() -> Self {
-        Self {
-            sio: unsafe { &*pico_rs_pac::SIO::PTR },
+    pub const fn new() -> Self {
+        Sio {
+            _marker: core::marker::PhantomData,
         }
     }
 
@@ -70,217 +153,52 @@ impl Sio {
     // Core Information
     // ========================================================================
 
-    /// Get the current core's ID (0 or 1)
+    /// Get the current core's ID (0 or 1).
     #[inline]
     pub fn core_id(&self) -> u32 {
-        self.sio.cpuid.cpuid()
+        regs().cpuid.cpuid()
     }
 
     // ========================================================================
-    // GPIO Input
+    // GPIO Access
     // ========================================================================
 
-    /// Read GPIO0..31 input values
-    #[inline]
-    pub fn gpio_in(&self) -> u32 {
-        self.sio.gpio_in.read_bits()
-    }
-
-    /// Read GPIO32..47 input values (bits 0-15) plus QSPI/USB pins
-    #[inline]
-    pub fn gpio_hi_in(&self) -> u32 {
-        self.sio.gpio_hi_in.read_bits()
-    }
-
-    // ========================================================================
-    // GPIO Output
-    // ========================================================================
-
-    /// Read current GPIO0..31 output value
-    #[inline]
-    pub fn gpio_out(&self) -> u32 {
-        self.sio.gpio_out.read_bits()
-    }
-
-    /// Write GPIO0..31 output value
-    #[inline]
-    pub fn gpio_out_write(&self, value: u32) {
-        self.sio.gpio_out.write_bits(value);
-    }
-
-    /// Atomically set bits in GPIO0..31 output
-    #[inline]
-    pub fn gpio_set(&self, mask: u32) {
-        self.sio.gpio_out_set.write_bits(mask);
-    }
-
-    /// Atomically clear bits in GPIO0..31 output
-    #[inline]
-    pub fn gpio_clr(&self, mask: u32) {
-        self.sio.gpio_out_clr.write_bits(mask);
-    }
-
-    /// Atomically toggle bits in GPIO0..31 output
-    #[inline]
-    pub fn gpio_xor(&self, mask: u32) {
-        self.sio.gpio_out_xor.write_bits(mask);
-    }
-
-    /// Read current GPIO32..47 output value
-    #[inline]
-    pub fn gpio_hi_out(&self) -> u32 {
-        self.sio.gpio_hi_out.read_bits()
-    }
-
-    /// Write GPIO32..47 output value
-    #[inline]
-    pub fn gpio_hi_out_write(&self, value: u32) {
-        self.sio.gpio_hi_out.write_bits(value);
-    }
-
-    /// Atomically set bits in GPIO32..47 output
-    #[inline]
-    pub fn gpio_hi_set(&self, mask: u32) {
-        self.sio.gpio_hi_out_set.write_bits(mask);
-    }
-
-    /// Atomically clear bits in GPIO32..47 output
-    #[inline]
-    pub fn gpio_hi_clr(&self, mask: u32) {
-        self.sio.gpio_hi_out_clr.write_bits(mask);
-    }
-
-    /// Atomically toggle bits in GPIO32..47 output
-    #[inline]
-    pub fn gpio_hi_xor(&self, mask: u32) {
-        self.sio.gpio_hi_out_xor.write_bits(mask);
-    }
-
-    // ========================================================================
-    // GPIO Output Enable
-    // ========================================================================
-
-    /// Read GPIO0..31 output enable
-    #[inline]
-    pub fn gpio_oe(&self) -> u32 {
-        self.sio.gpio_oe.read_bits()
-    }
-
-    /// Write GPIO0..31 output enable
-    #[inline]
-    pub fn gpio_oe_write(&self, value: u32) {
-        self.sio.gpio_oe.write_bits(value);
-    }
-
-    /// Atomically set bits in GPIO0..31 output enable
-    #[inline]
-    pub fn gpio_oe_set(&self, mask: u32) {
-        self.sio.gpio_oe_set.write_bits(mask);
-    }
-
-    /// Atomically clear bits in GPIO0..31 output enable
-    #[inline]
-    pub fn gpio_oe_clr(&self, mask: u32) {
-        self.sio.gpio_oe_clr.write_bits(mask);
-    }
-
-    /// Atomically toggle bits in GPIO0..31 output enable
-    #[inline]
-    pub fn gpio_oe_xor(&self, mask: u32) {
-        self.sio.gpio_oe_xor.write_bits(mask);
-    }
-
-    /// Read GPIO32..47 output enable
-    #[inline]
-    pub fn gpio_hi_oe(&self) -> u32 {
-        self.sio.gpio_hi_oe.read_bits()
-    }
-
-    /// Write GPIO32..47 output enable
-    #[inline]
-    pub fn gpio_hi_oe_write(&self, value: u32) {
-        self.sio.gpio_hi_oe.write_bits(value);
-    }
-
-    /// Atomically set bits in GPIO32..47 output enable
-    #[inline]
-    pub fn gpio_hi_oe_set(&self, mask: u32) {
-        self.sio.gpio_hi_oe_set.write_bits(mask);
-    }
-
-    /// Atomically clear bits in GPIO32..47 output enable
-    #[inline]
-    pub fn gpio_hi_oe_clr(&self, mask: u32) {
-        self.sio.gpio_hi_oe_clr.write_bits(mask);
-    }
-
-    /// Atomically toggle bits in GPIO32..47 output enable
-    #[inline]
-    pub fn gpio_hi_oe_xor(&self, mask: u32) {
-        self.sio.gpio_hi_oe_xor.write_bits(mask);
-    }
-
-    // ========================================================================
-    // Inter-core FIFO
-    // ========================================================================
-    //
-    // NOTE: For high-level inter-core FIFO operations, use the `multicore::Fifo`
-    // API which provides a more ergonomic interface. The methods below provide
-    // direct low-level access to the FIFO registers if needed.
-    //
-    // See: `crate::multicore::Fifo`
-
-    /// Get raw FIFO status register value
+    /// Get the GPIO controller for pins 0–47.
     ///
-    /// Bits:
-    /// - 0: VLD (RX FIFO has data)
-    /// - 1: RDY (TX FIFO has space)
-    /// - 2: WOF (write-on-full error)
-    /// - 3: ROE (read-on-empty error)
-    ///
-    /// For higher-level FIFO operations, prefer using `multicore::Fifo`.
+    /// GPIO operations accept a pin number and automatically route to
+    /// the correct register bank (low 0–31 or high 32–47).
     #[inline]
-    pub fn fifo_status(&self) -> u32 {
-        self.sio.fifo_st.read_bits()
+    pub const fn gpio(&self) -> SioGpio<'_> {
+        SioGpio {
+            _marker: core::marker::PhantomData,
+        }
     }
 
-    /// Write raw FIFO status register (for clearing error flags)
-    ///
-    /// Write 1 to bits 2-3 to clear WOF/ROE error flags.
-    #[inline]
-    pub fn fifo_status_write(&self, value: u32) {
-        self.sio.fifo_st.write_bits(value);
-    }
+    // ========================================================================
+    // FIFO Access
+    // ========================================================================
 
-    /// Raw read from FIFO RX register
-    ///
-    /// For higher-level FIFO operations, prefer using `multicore::Fifo`.
+    /// Get the inter-core FIFO controller.
     #[inline]
-    pub fn fifo_rd(&self) -> u32 {
-        self.sio.fifo_rd.read_bits()
-    }
-
-    /// Raw write to FIFO TX register
-    ///
-    /// For higher-level FIFO operations, prefer using `multicore::Fifo`.
-    #[inline]
-    pub fn fifo_wr(&self, value: u32) {
-        self.sio.fifo_wr.write_bits(value);
+    pub const fn fifo(&self) -> SioFifo<'_> {
+        SioFifo {
+            _marker: core::marker::PhantomData,
+        }
     }
 
     // ========================================================================
     // Spinlock State
     // ========================================================================
 
-    /// Get the state of all 32 spinlocks as a bitmap
+    /// Get the state of all 32 spinlocks as a bitmap.
     ///
     /// Each bit represents a spinlock: 1 = locked, 0 = unlocked.
     #[inline]
     pub fn spinlock_state(&self) -> u32 {
-        self.sio.spinlock_st.read_bits()
+        regs().spinlock_st.read_bits()
     }
 
-    /// Check if a specific spinlock is locked
+    /// Check if a specific spinlock is locked.
     #[inline]
     pub fn is_spinlock_locked(&self, lock_num: u8) -> bool {
         assert!(lock_num < 32, "Spinlock number must be 0-31");
@@ -291,22 +209,388 @@ impl Sio {
     // Interpolators
     // ========================================================================
 
-    /// Get access to interpolator 0
+    /// Get access to interpolator 0.
+    ///
+    /// Interpolator 0 supports BLEND mode for linear interpolation.
     #[inline]
-    pub fn interp0(&self) -> Interp0<'_> {
-        Interp0 { sio: self.sio }
+    pub const fn interp0(&self) -> Interp0<'_> {
+        Interp0 {
+            _marker: core::marker::PhantomData,
+        }
     }
 
-    /// Get access to interpolator 1
+    /// Get access to interpolator 1.
+    ///
+    /// Interpolator 1 supports CLAMP mode for clamping operations.
     #[inline]
-    pub fn interp1(&self) -> Interp1<'_> {
-        Interp1 { sio: self.sio }
+    pub const fn interp1(&self) -> Interp1<'_> {
+        Interp1 {
+            _marker: core::marker::PhantomData,
+        }
     }
 }
 
-impl Default for Sio {
-    fn default() -> Self {
-        Self::new()
+// ============================================================================
+// GPIO (Pins 0–47)
+// ============================================================================
+
+/// SIO GPIO controller for pins 0–47.
+///
+/// Provides direct CPU control of GPIO output, output enable, and input
+/// with atomic set/clear/xor operations.
+///
+/// Pin-level methods accept a pin number (0–47) and automatically route
+/// to the correct register bank:
+/// - Pins 0–31: `GPIO_OUT` / `GPIO_OE` / `GPIO_IN`
+/// - Pins 32–47: `GPIO_HI_OUT` / `GPIO_HI_OE` / `GPIO_HI_IN`
+///
+/// The `_private` field prevents external construction — obtain via
+/// [`Sio::gpio()`].
+pub struct SioGpio<'a> {
+    _marker: core::marker::PhantomData<*const &'a ()>,
+}
+
+impl<'a> SioGpio<'a> {
+    // ========================================================================
+    // Pin-level operations (auto-routing by pin number)
+    // ========================================================================
+
+    /// Get the input value of a single pin (0–47).
+    ///
+    /// Returns `true` if the pin is high.
+    #[inline]
+    pub fn pin_get(&self, pin: u8) -> bool {
+        debug_assert!(pin <= GPIO_PIN_MAX);
+        if pin < 32 {
+            (regs().gpio_in.gpio_in() & (1 << pin)) != 0
+        } else {
+            (regs().gpio_hi_in.gpio() & (1 << (pin - 32))) != 0
+        }
+    }
+
+    /// Set a single pin (0–47) output high.
+    #[inline]
+    pub fn pin_set(&self, pin: u8) {
+        debug_assert!(pin <= GPIO_PIN_MAX);
+        if pin < 32 {
+            regs().gpio_out_set.write_gpio_out_set(1 << pin);
+        } else {
+            regs().gpio_hi_out_set.write_gpio(1 << (pin - 32));
+        }
+    }
+
+    /// Set a single pin (0–47) output low.
+    #[inline]
+    pub fn pin_clr(&self, pin: u8) {
+        debug_assert!(pin <= GPIO_PIN_MAX);
+        if pin < 32 {
+            regs().gpio_out_clr.write_gpio_out_clr(1 << pin);
+        } else {
+            regs().gpio_hi_out_clr.write_gpio(1 << (pin - 32));
+        }
+    }
+
+    /// Toggle a single pin (0–47) output.
+    #[inline]
+    pub fn pin_toggle(&self, pin: u8) {
+        debug_assert!(pin <= GPIO_PIN_MAX);
+        if pin < 32 {
+            regs().gpio_out_xor.write_gpio_out_xor(1 << pin);
+        } else {
+            regs().gpio_hi_out_xor.write_gpio(1 << (pin - 32));
+        }
+    }
+
+    /// Set a single pin (0–47) output to a specific value.
+    #[inline]
+    pub fn pin_write(&self, pin: u8, high: bool) {
+        if high {
+            self.pin_set(pin);
+        } else {
+            self.pin_clr(pin);
+        }
+    }
+
+    /// Read the current output level of a single pin (0–47).
+    ///
+    /// This reads the output register, not the actual pin state.
+    /// Use [`pin_read()`](Self::pin_read) for the actual pin input value.
+    #[inline]
+    pub fn pin_output(&self, pin: u8) -> bool {
+        debug_assert!(pin <= GPIO_PIN_MAX);
+        if pin < 32 {
+            (regs().gpio_out.gpio_out() & (1 << pin)) != 0
+        } else {
+            (regs().gpio_hi_out.gpio() & (1 << (pin - 32))) != 0
+        }
+    }
+
+    /// Enable output for a single pin (0–47).
+    #[inline]
+    pub fn pin_oe_set(&self, pin: u8) {
+        debug_assert!(pin <= GPIO_PIN_MAX);
+        if pin < 32 {
+            regs().gpio_oe_set.write_gpio_oe_set(1 << pin);
+        } else {
+            regs().gpio_hi_oe_set.write_gpio(1 << (pin - 32));
+        }
+    }
+
+    /// Disable output for a single pin (0–47).
+    #[inline]
+    pub fn pin_oe_clr(&self, pin: u8) {
+        debug_assert!(pin <= GPIO_PIN_MAX);
+        if pin < 32 {
+            regs().gpio_oe_clr.write_gpio_oe_clr(1 << pin);
+        } else {
+            regs().gpio_hi_oe_clr.write_gpio(1 << (pin - 32));
+        }
+    }
+
+    /// Check if output is enabled for a single pin (0–47).
+    #[inline]
+    pub fn pin_is_output(&self, pin: u8) -> bool {
+        debug_assert!(pin <= GPIO_PIN_MAX);
+        if pin < 32 {
+            (regs().gpio_oe.gpio_oe() & (1 << pin)) != 0
+        } else {
+            (regs().gpio_hi_oe.gpio() & (1 << (pin - 32))) != 0
+        }
+    }
+
+    // ========================================================================
+    // Mask-level operations — Low bank (pins 0–31)
+    // ========================================================================
+
+    /// Read all GPIO 0–31 input values as a bitmask.
+    #[inline]
+    pub fn input_low(&self) -> u32 {
+        regs().gpio_in.gpio_in()
+    }
+
+    /// Read current GPIO 0–31 output value (last written, not pin state).
+    #[inline]
+    pub fn output_low(&self) -> u32 {
+        regs().gpio_out.gpio_out()
+    }
+
+    /// Write GPIO 0–31 output value (replaces all 32 bits).
+    #[inline]
+    pub fn write_output_low(&self, value: u32) {
+        regs().gpio_out.write_gpio_out(value);
+    }
+
+    /// Atomically set bits in GPIO 0–31 output (OR).
+    #[inline]
+    pub fn set_low(&self, mask: u32) {
+        regs().gpio_out_set.write_gpio_out_set(mask);
+    }
+
+    /// Atomically clear bits in GPIO 0–31 output (AND NOT).
+    #[inline]
+    pub fn clr_low(&self, mask: u32) {
+        regs().gpio_out_clr.write_gpio_out_clr(mask);
+    }
+
+    /// Atomically toggle bits in GPIO 0–31 output (XOR).
+    #[inline]
+    pub fn xor_low(&self, mask: u32) {
+        regs().gpio_out_xor.write_gpio_out_xor(mask);
+    }
+
+    /// Read GPIO 0–31 output enable bitmask.
+    #[inline]
+    pub fn oe_low(&self) -> u32 {
+        regs().gpio_oe.gpio_oe()
+    }
+
+    /// Write GPIO 0–31 output enable (replaces all 32 bits).
+    #[inline]
+    pub fn write_oe_low(&self, value: u32) {
+        regs().gpio_oe.write_gpio_oe(value);
+    }
+
+    /// Atomically set bits in GPIO 0–31 output enable.
+    #[inline]
+    pub fn oe_set_low(&self, mask: u32) {
+        regs().gpio_oe_set.write_gpio_oe_set(mask);
+    }
+
+    /// Atomically clear bits in GPIO 0–31 output enable.
+    #[inline]
+    pub fn oe_clr_low(&self, mask: u32) {
+        regs().gpio_oe_clr.write_gpio_oe_clr(mask);
+    }
+
+    /// Atomically toggle bits in GPIO 0–31 output enable.
+    #[inline]
+    pub fn oe_xor_low(&self, mask: u32) {
+        regs().gpio_oe_xor.write_gpio_oe_xor(mask);
+    }
+
+    // ========================================================================
+    // Mask-level operations — High bank (pins 32–47)
+    // ========================================================================
+
+    /// Read all GPIO 32–47 input values as a bitmask (bits 0–15).
+    #[inline]
+    pub fn input_high(&self) -> u32 {
+        regs().gpio_hi_in.gpio()
+    }
+
+    /// Read current GPIO 32–47 output value.
+    #[inline]
+    pub fn output_high(&self) -> u32 {
+        regs().gpio_hi_out.gpio()
+    }
+
+    /// Write GPIO 32–47 output value.
+    #[inline]
+    pub fn write_output_high(&self, value: u32) {
+        regs().gpio_hi_out.write_gpio(value);
+    }
+
+    /// Atomically set bits in GPIO 32–47 output.
+    #[inline]
+    pub fn set_high(&self, mask: u32) {
+        regs().gpio_hi_out_set.write_gpio(mask);
+    }
+
+    /// Atomically clear bits in GPIO 32–47 output.
+    #[inline]
+    pub fn clr_high(&self, mask: u32) {
+        regs().gpio_hi_out_clr.write_gpio(mask);
+    }
+
+    /// Atomically toggle bits in GPIO 32–47 output.
+    #[inline]
+    pub fn xor_high(&self, mask: u32) {
+        regs().gpio_hi_out_xor.write_gpio(mask);
+    }
+
+    /// Read GPIO 32–47 output enable bitmask.
+    #[inline]
+    pub fn oe_high(&self) -> u32 {
+        regs().gpio_hi_oe.gpio()
+    }
+
+    /// Write GPIO 32–47 output enable.
+    #[inline]
+    pub fn write_oe_high(&self, value: u32) {
+        regs().gpio_hi_oe.write_gpio(value);
+    }
+
+    /// Atomically set bits in GPIO 32–47 output enable.
+    #[inline]
+    pub fn oe_set_high(&self, mask: u32) {
+        regs().gpio_hi_oe_set.write_gpio(mask);
+    }
+
+    /// Atomically clear bits in GPIO 32–47 output enable.
+    #[inline]
+    pub fn oe_clr_high(&self, mask: u32) {
+        regs().gpio_hi_oe_clr.write_gpio(mask);
+    }
+
+    /// Atomically toggle bits in GPIO 32–47 output enable.
+    #[inline]
+    pub fn oe_xor_high(&self, mask: u32) {
+        regs().gpio_hi_oe_xor.write_gpio(mask);
+    }
+}
+
+// ============================================================================
+// Inter-core FIFO
+// ============================================================================
+
+/// SIO FIFO controller for inter-core communication.
+///
+/// Each core has a separate view: writing goes to the TX FIFO (sent to the
+/// other core), reading comes from the RX FIFO (received from the other core).
+///
+/// The `_private` field prevents external construction — obtain via
+/// [`Sio::fifo()`].
+pub struct SioFifo<'a> {
+    _marker: core::marker::PhantomData<*const &'a ()>,
+}
+
+impl<'a> SioFifo<'a> {
+    // ========================================================================
+    // Status
+    // ========================================================================
+
+    /// Check if the RX FIFO has data available (VLD bit).
+    #[inline]
+    pub fn is_read_ready(&self) -> bool {
+        regs().fifo_st.vld()
+    }
+
+    /// Check if the TX FIFO has space for writing (RDY bit).
+    #[inline]
+    pub fn is_write_ready(&self) -> bool {
+        regs().fifo_st.rdy()
+    }
+
+    /// Check if a read-on-empty error occurred (ROE bit).
+    #[inline]
+    pub fn read_error(&self) -> bool {
+        regs().fifo_st.roe()
+    }
+
+    /// Check if a write-on-full error occurred (WOF bit).
+    #[inline]
+    pub fn write_error(&self) -> bool {
+        regs().fifo_st.wof()
+    }
+
+    /// Clear the read-on-empty error flag.
+    #[inline]
+    pub fn clear_read_error(&self) {
+        regs().fifo_st.set_roe();
+    }
+
+    /// Clear the write-on-full error flag.
+    #[inline]
+    pub fn clear_write_error(&self) {
+        regs().fifo_st.set_wof();
+    }
+
+    /// Clear all FIFO error flags.
+    #[inline]
+    pub fn clear_errors(&self) {
+        let r = regs();
+        r.fifo_st.set_roe();
+        r.fifo_st.set_wof();
+    }
+
+    // ========================================================================
+    // Read / Write
+    // ========================================================================
+
+    /// Write a value to the TX FIFO (sent to the other core).
+    ///
+    /// Caller must check [`is_write_ready()`](Self::is_write_ready) first
+    /// or use the blocking wrappers in [`multicore::Fifo`](crate::multicore::Fifo).
+    #[inline]
+    pub fn write(&self, value: u32) {
+        regs().fifo_wr.write_fifo_wr(value);
+    }
+
+    /// Read a value from the RX FIFO (received from the other core).
+    ///
+    /// Caller must check [`is_read_ready()`](Self::is_read_ready) first
+    /// or use the blocking wrappers in [`multicore::Fifo`](crate::multicore::Fifo).
+    #[inline]
+    pub fn read(&self) -> u32 {
+        regs().fifo_rd.fifo_rd()
+    }
+
+    /// Drain the RX FIFO, discarding all values.
+    #[inline]
+    pub fn drain(&self) {
+        while self.is_read_ready() {
+            let _ = self.read();
+        }
     }
 }
 
@@ -314,13 +598,13 @@ impl Default for Sio {
 // Hardware Spinlocks
 // ============================================================================
 
-/// A hardware spinlock
+/// A hardware spinlock.
 ///
-/// RP2350 provides 32 hardware spinlocks. Reading from a spinlock address will:
-/// - Return 0 if the lock is already locked
-/// - Return a non-zero value (and claim the lock) if it was unlocked
+/// RP2350 provides 32 hardware spinlocks. Reading from a spinlock register:
+/// - Returns 0 if the lock is already held
+/// - Returns non-zero (and claims the lock) if it was free
 ///
-/// Writing any value to the spinlock releases it.
+/// Writing any value releases the lock.
 ///
 /// ## Example
 ///
@@ -335,12 +619,10 @@ impl Default for Sio {
 /// ```
 pub struct Spinlock<const N: u8>;
 
-/// Guard that releases the spinlock when dropped
+/// Guard that releases the spinlock when dropped.
 ///
-/// This type is `!Send` and `!Sync` because spinlock guards are core-local.
-/// The `PhantomData<*const ()>` marker prevents auto-implementation of these traits.
+/// `!Send` and `!Sync` because spinlock guards are core-local.
 pub struct SpinlockGuard<const N: u8> {
-    // *const () is !Send and !Sync, which prevents SpinlockGuard from being transferred
     _marker: core::marker::PhantomData<*const ()>,
 }
 
@@ -350,23 +632,23 @@ impl<const N: u8> Drop for SpinlockGuard<N> {
     }
 }
 
-/// Macro to generate spinlock register access
+/// Macro to generate spinlock register access via PAC field methods.
 macro_rules! impl_spinlock_access {
     ($($num:literal => $spinlock:ident),+ $(,)?) => {
         paste! {
             impl<const N: u8> Spinlock<N> {
                 const _ASSERT: () = assert!(N < 32, "Spinlock number must be 0-31");
 
-                /// Try to acquire the spinlock (non-blocking)
+                /// Try to acquire the spinlock (non-blocking).
                 ///
-                /// Returns `Some(SpinlockGuard)` if acquired, `None` if already locked.
+                /// Returns `Some(SpinlockGuard)` if acquired, `None` if already held.
                 #[inline]
                 pub fn try_acquire() -> Option<SpinlockGuard<N>> {
                     let _ = Self::_ASSERT;
-                    let sio = unsafe { &*pico_rs_pac::SIO::PTR };
+                    let r = regs();
                     let result = match N {
                         $(
-                            $num => sio.$spinlock.read_bits(),
+                            $num => r.$spinlock.[<$spinlock>](),
                         )+
                         _ => unreachable!(),
                     };
@@ -377,7 +659,7 @@ macro_rules! impl_spinlock_access {
                     }
                 }
 
-                /// Acquire the spinlock (blocking)
+                /// Acquire the spinlock (blocking).
                 ///
                 /// Spins until the lock is acquired.
                 #[inline]
@@ -390,27 +672,28 @@ macro_rules! impl_spinlock_access {
                     }
                 }
 
-                /// Release the spinlock
+                /// Release the spinlock.
                 ///
                 /// # Safety
+                ///
                 /// This should only be called if the lock is held by the current core.
+                /// Normally you should let [`SpinlockGuard`] handle this via `Drop`.
                 #[inline]
                 pub fn release() {
                     let _ = Self::_ASSERT;
-                    let sio = unsafe { &*pico_rs_pac::SIO::PTR };
+                    let r = regs();
                     match N {
                         $(
-                            $num => sio.$spinlock.write_bits(1),
+                            $num => r.$spinlock.[<write_ $spinlock>](1),
                         )+
                         _ => unreachable!(),
                     }
                 }
 
-                /// Check if the spinlock is currently locked
+                /// Check if the spinlock is currently locked.
                 #[inline]
                 pub fn is_locked() -> bool {
-                    let sio = unsafe { &*pico_rs_pac::SIO::PTR };
-                    (sio.spinlock_st.read_bits() & (1u32 << N)) != 0
+                    (regs().spinlock_st.read_bits() & (1u32 << N)) != 0
                 }
             }
         }
@@ -425,22 +708,19 @@ impl_spinlock_access!(
     16 => spinlock16, 17 => spinlock17, 18 => spinlock18, 19 => spinlock19,
     20 => spinlock20, 21 => spinlock21, 22 => spinlock22, 23 => spinlock23,
     24 => spinlock24, 25 => spinlock25, 26 => spinlock26, 27 => spinlock27,
-    28 => spinlock28, 29 => spinlock29, 30 => spinlock30,
+    28 => spinlock28, 29 => spinlock29, 30 => spinlock30, 31 => spinlock31,
 );
 
 // ============================================================================
 // Interpolator 0
 // ============================================================================
 
-/// Interpolator 0
+/// Interpolator 0.
 ///
-/// The interpolators are hardware-accelerated math units that perform
-/// shift-and-mask operations. Each interpolator has two lanes with
-/// accumulators, bases, and control registers.
-///
+/// Hardware-accelerated shift-and-mask unit with two lanes.
 /// Interpolator 0 additionally supports BLEND mode for linear interpolation.
 pub struct Interp0<'a> {
-    sio: &'a pico_rs_pac::sio::RegisterBlock,
+    _marker: core::marker::PhantomData<*const &'a ()>,
 }
 
 impl<'a> Interp0<'a> {
@@ -448,237 +728,232 @@ impl<'a> Interp0<'a> {
     // Accumulator Access
     // ========================================================================
 
-    /// Read accumulator 0
+    /// Read accumulator 0.
     #[inline]
     pub fn accum0(&self) -> u32 {
-        self.sio.interp0_accum0.read_bits()
+        regs().interp0_accum0.read_bits()
     }
 
-    /// Write accumulator 0
+    /// Write accumulator 0.
     #[inline]
     pub fn set_accum0(&self, value: u32) {
-        self.sio.interp0_accum0.write_bits(value);
+        regs().interp0_accum0.write_bits(value);
     }
 
-    /// Read accumulator 1
+    /// Read accumulator 1.
     #[inline]
     pub fn accum1(&self) -> u32 {
-        self.sio.interp0_accum1.read_bits()
+        regs().interp0_accum1.read_bits()
     }
 
-    /// Write accumulator 1
+    /// Write accumulator 1.
     #[inline]
     pub fn set_accum1(&self, value: u32) {
-        self.sio.interp0_accum1.write_bits(value);
+        regs().interp0_accum1.write_bits(value);
     }
 
-    /// Add to accumulator 0 atomically and return lane 0 result
+    /// Add to accumulator 0 atomically and return the add value.
     #[inline]
     pub fn add_accum0(&self, value: u32) -> u32 {
-        self.sio.interp0_accum0_add.write_bits(value);
-        self.sio.interp0_accum0_add.read_bits()
+        let r = regs();
+        r.interp0_accum0_add.write_interp0_accum0_add(value);
+        r.interp0_accum0_add.interp0_accum0_add()
     }
 
-    /// Add to accumulator 1 atomically and return lane 1 result
+    /// Add to accumulator 1 atomically and return the add value.
     #[inline]
     pub fn add_accum1(&self, value: u32) -> u32 {
-        self.sio.interp0_accum1_add.write_bits(value);
-        self.sio.interp0_accum1_add.read_bits()
+        let r = regs();
+        r.interp0_accum1_add.write_interp0_accum1_add(value);
+        r.interp0_accum1_add.interp0_accum1_add()
     }
 
     // ========================================================================
     // Base Register Access
     // ========================================================================
 
-    /// Read base 0
+    /// Read base 0.
     #[inline]
     pub fn base0(&self) -> u32 {
-        self.sio.interp0_base0.read_bits()
+        regs().interp0_base0.read_bits()
     }
 
-    /// Write base 0
+    /// Write base 0.
     #[inline]
     pub fn set_base0(&self, value: u32) {
-        self.sio.interp0_base0.write_bits(value);
+        regs().interp0_base0.write_bits(value);
     }
 
-    /// Read base 1
+    /// Read base 1.
     #[inline]
     pub fn base1(&self) -> u32 {
-        self.sio.interp0_base1.read_bits()
+        regs().interp0_base1.read_bits()
     }
 
-    /// Write base 1
+    /// Write base 1.
     #[inline]
     pub fn set_base1(&self, value: u32) {
-        self.sio.interp0_base1.write_bits(value);
+        regs().interp0_base1.write_bits(value);
     }
 
-    /// Read base 2
+    /// Read base 2.
     #[inline]
     pub fn base2(&self) -> u32 {
-        self.sio.interp0_base2.read_bits()
+        regs().interp0_base2.read_bits()
     }
 
-    /// Write base 2
+    /// Write base 2.
     #[inline]
     pub fn set_base2(&self, value: u32) {
-        self.sio.interp0_base2.write_bits(value);
+        regs().interp0_base2.write_bits(value);
     }
 
-    /// Write both base 0 (lower 16 bits) and base 1 (upper 16 bits) simultaneously
+    /// Write both base 0 (lower 16 bits) and base 1 (upper 16 bits) simultaneously.
     #[inline]
     pub fn set_base_1and0(&self, base0: u16, base1: u16) {
-        self.sio
+        regs()
             .interp0_base_1and0
-            .write_bits((base0 as u32) | ((base1 as u32) << 16));
+            .write_interp0_base_1and0((base0 as u32) | ((base1 as u32) << 16));
     }
 
     // ========================================================================
-    // Results (PEEK - read without side effects)
+    // Results (PEEK — read without side effects)
     // ========================================================================
 
-    /// Peek lane 0 result without modifying state
+    /// Peek lane 0 result without modifying state.
     #[inline]
     pub fn peek_lane0(&self) -> u32 {
-        self.sio.interp0_peek_lane0.read_bits()
+        regs().interp0_peek_lane0.read_bits()
     }
 
-    /// Peek lane 1 result without modifying state
+    /// Peek lane 1 result without modifying state.
     #[inline]
     pub fn peek_lane1(&self) -> u32 {
-        self.sio.interp0_peek_lane1.read_bits()
+        regs().interp0_peek_lane1.read_bits()
     }
 
-    /// Peek full result without modifying state
+    /// Peek full result without modifying state.
     #[inline]
     pub fn peek_full(&self) -> u32 {
-        self.sio.interp0_peek_full.read_bits()
+        regs().interp0_peek_full.read_bits()
     }
 
     // ========================================================================
-    // Results (POP - read and update accumulators)
+    // Results (POP — read and update accumulators)
     // ========================================================================
 
-    /// Pop lane 0 result and write lane results to both accumulators
+    /// Pop lane 0 result and write lane results to both accumulators.
     #[inline]
     pub fn pop_lane0(&self) -> u32 {
-        self.sio.interp0_pop_lane0.read_bits()
+        regs().interp0_pop_lane0.read_bits()
     }
 
-    /// Pop lane 1 result and write lane results to both accumulators
+    /// Pop lane 1 result and write lane results to both accumulators.
     #[inline]
     pub fn pop_lane1(&self) -> u32 {
-        self.sio.interp0_pop_lane1.read_bits()
+        regs().interp0_pop_lane1.read_bits()
     }
 
-    /// Pop full result and write lane results to both accumulators
+    /// Pop full result and write lane results to both accumulators.
     #[inline]
     pub fn pop_full(&self) -> u32 {
-        self.sio.interp0_pop_full.read_bits()
+        regs().interp0_pop_full.read_bits()
     }
 
     // ========================================================================
     // Lane 0 Control
     // ========================================================================
 
-    /// Read lane 0 control register
+    /// Read lane 0 control register raw value.
     #[inline]
     pub fn ctrl_lane0(&self) -> u32 {
-        self.sio.interp0_ctrl_lane0.read_bits()
+        regs().interp0_ctrl_lane0.read_bits()
     }
 
-    /// Write lane 0 control register
+    /// Write lane 0 control register raw value.
     #[inline]
     pub fn set_ctrl_lane0(&self, value: u32) {
-        self.sio.interp0_ctrl_lane0.write_bits(value);
+        regs().interp0_ctrl_lane0.write_bits(value);
     }
 
-    /// Configure lane 0 shift and mask
+    /// Configure lane 0 shift and mask using PAC field methods.
     ///
     /// # Arguments
-    /// * `shift` - Right-rotate applied before masking (0-31)
-    /// * `mask_lsb` - Least significant bit of mask (0-31)
-    /// * `mask_msb` - Most significant bit of mask (0-31)
-    /// * `signed` - Enable sign extension
+    /// * `shift` — Right-rotate applied before masking (0–31)
+    /// * `mask_lsb` — Least significant bit of mask (0–31)
+    /// * `mask_msb` — Most significant bit of mask (0–31)
+    /// * `signed` — Enable sign extension
     #[inline]
     pub fn config_lane0(&self, shift: u8, mask_lsb: u8, mask_msb: u8, signed: bool) {
-        let ctrl = ((shift as u32) & 0x1F)
-            | (((mask_lsb as u32) & 0x1F) << 5)
-            | (((mask_msb as u32) & 0x1F) << 10)
-            | if signed { 1 << 15 } else { 0 };
-        self.sio.interp0_ctrl_lane0.write_bits(ctrl);
+        regs().interp0_ctrl_lane0.modify_val(|v| {
+            v.with_shift(shift as u32)
+                .with_mask_lsb(mask_lsb as u32)
+                .with_mask_msb(mask_msb as u32)
+                .with_signed(signed)
+        });
     }
 
-    /// Enable or disable BLEND mode (interpolator 0 only)
+    /// Enable or disable BLEND mode (interpolator 0 only).
     #[inline]
     pub fn set_blend(&self, enable: bool) {
-        // Note: SIO does not support atomic SET/CLR aliases
-        if enable {
-            self.sio.interp0_ctrl_lane0.modify_bits(|r| r | (1 << 21));
-        } else {
-            self.sio.interp0_ctrl_lane0.modify_bits(|r| r & !(1 << 21));
-        }
+        regs()
+            .interp0_ctrl_lane0
+            .modify_val(|v| v.with_blend(enable));
     }
 
-    /// Check if BLEND mode is enabled
+    /// Check if BLEND mode is enabled.
     #[inline]
     pub fn blend(&self) -> bool {
-        (self.sio.interp0_ctrl_lane0.read_bits() & (1 << 21)) != 0
+        regs().interp0_ctrl_lane0.blend()
     }
 
     // ========================================================================
     // Lane 1 Control
     // ========================================================================
 
-    /// Read lane 1 control register
+    /// Read lane 1 control register raw value.
     #[inline]
     pub fn ctrl_lane1(&self) -> u32 {
-        self.sio.interp0_ctrl_lane1.read_bits()
+        regs().interp0_ctrl_lane1.read_bits()
     }
 
-    /// Write lane 1 control register
+    /// Write lane 1 control register raw value.
     #[inline]
     pub fn set_ctrl_lane1(&self, value: u32) {
-        self.sio.interp0_ctrl_lane1.write_bits(value);
+        regs().interp0_ctrl_lane1.write_bits(value);
     }
 
-    /// Configure lane 1 shift and mask
-    ///
-    /// # Arguments
-    /// * `shift` - Right-rotate applied before masking (0-31)
-    /// * `mask_lsb` - Least significant bit of mask (0-31)
-    /// * `mask_msb` - Most significant bit of mask (0-31)
-    /// * `signed` - Enable sign extension
+    /// Configure lane 1 shift and mask.
     #[inline]
     pub fn config_lane1(&self, shift: u8, mask_lsb: u8, mask_msb: u8, signed: bool) {
-        let ctrl = ((shift as u32) & 0x1F)
-            | (((mask_lsb as u32) & 0x1F) << 5)
-            | (((mask_msb as u32) & 0x1F) << 10)
-            | if signed { 1 << 15 } else { 0 };
-        self.sio.interp0_ctrl_lane1.write_bits(ctrl);
+        regs().interp0_ctrl_lane1.modify_val(|v| {
+            v.with_shift(shift as u32)
+                .with_mask_lsb(mask_lsb as u32)
+                .with_mask_msb(mask_msb as u32)
+                .with_signed(signed)
+        });
     }
 
     // ========================================================================
-    // Overflow Status
+    // Overflow Status (read-only)
     // ========================================================================
 
-    /// Check if accumulator 0 has overflow
+    /// Check if accumulator 0 has overflow.
     #[inline]
     pub fn overf0(&self) -> bool {
-        (self.sio.interp0_ctrl_lane0.read_bits() & (1 << 23)) != 0
+        regs().interp0_ctrl_lane0.overf0()
     }
 
-    /// Check if accumulator 1 has overflow
+    /// Check if accumulator 1 has overflow.
     #[inline]
     pub fn overf1(&self) -> bool {
-        (self.sio.interp0_ctrl_lane0.read_bits() & (1 << 24)) != 0
+        regs().interp0_ctrl_lane0.overf1()
     }
 
-    /// Check if either accumulator has overflow
+    /// Check if either accumulator has overflow.
     #[inline]
     pub fn overf(&self) -> bool {
-        (self.sio.interp0_ctrl_lane0.read_bits() & (1 << 25)) != 0
+        regs().interp0_ctrl_lane0.overf()
     }
 }
 
@@ -686,15 +961,12 @@ impl<'a> Interp0<'a> {
 // Interpolator 1
 // ============================================================================
 
-/// Interpolator 1
+/// Interpolator 1.
 ///
-/// The interpolators are hardware-accelerated math units that perform
-/// shift-and-mask operations. Each interpolator has two lanes with
-/// accumulators, bases, and control registers.
-///
+/// Hardware-accelerated shift-and-mask unit with two lanes.
 /// Interpolator 1 additionally supports CLAMP mode for clamping operations.
 pub struct Interp1<'a> {
-    sio: &'a pico_rs_pac::sio::RegisterBlock,
+    _marker: core::marker::PhantomData<*const &'a ()>,
 }
 
 impl<'a> Interp1<'a> {
@@ -702,237 +974,226 @@ impl<'a> Interp1<'a> {
     // Accumulator Access
     // ========================================================================
 
-    /// Read accumulator 0
+    /// Read accumulator 0.
     #[inline]
     pub fn accum0(&self) -> u32 {
-        self.sio.interp1_accum0.read_bits()
+        regs().interp1_accum0.read_bits()
     }
 
-    /// Write accumulator 0
+    /// Write accumulator 0.
     #[inline]
     pub fn set_accum0(&self, value: u32) {
-        self.sio.interp1_accum0.write_bits(value);
+        regs().interp1_accum0.write_bits(value);
     }
 
-    /// Read accumulator 1
+    /// Read accumulator 1.
     #[inline]
     pub fn accum1(&self) -> u32 {
-        self.sio.interp1_accum1.read_bits()
+        regs().interp1_accum1.read_bits()
     }
 
-    /// Write accumulator 1
+    /// Write accumulator 1.
     #[inline]
     pub fn set_accum1(&self, value: u32) {
-        self.sio.interp1_accum1.write_bits(value);
+        regs().interp1_accum1.write_bits(value);
     }
 
-    /// Add to accumulator 0 atomically and return lane 0 result
+    /// Add to accumulator 0 atomically and return the add value.
     #[inline]
     pub fn add_accum0(&self, value: u32) -> u32 {
-        self.sio.interp1_accum0_add.write_bits(value);
-        self.sio.interp1_accum0_add.read_bits()
+        let r = regs();
+        r.interp1_accum0_add.write_interp1_accum0_add(value);
+        r.interp1_accum0_add.interp1_accum0_add()
     }
 
-    /// Add to accumulator 1 atomically and return lane 1 result
+    /// Add to accumulator 1 atomically and return the add value.
     #[inline]
     pub fn add_accum1(&self, value: u32) -> u32 {
-        self.sio.interp1_accum1_add.write_bits(value);
-        self.sio.interp1_accum1_add.read_bits()
+        let r = regs();
+        r.interp1_accum1_add.write_interp1_accum1_add(value);
+        r.interp1_accum1_add.interp1_accum1_add()
     }
 
     // ========================================================================
     // Base Register Access
     // ========================================================================
 
-    /// Read base 0
+    /// Read base 0.
     #[inline]
     pub fn base0(&self) -> u32 {
-        self.sio.interp1_base0.read_bits()
+        regs().interp1_base0.read_bits()
     }
 
-    /// Write base 0
+    /// Write base 0.
     #[inline]
     pub fn set_base0(&self, value: u32) {
-        self.sio.interp1_base0.write_bits(value);
+        regs().interp1_base0.write_bits(value);
     }
 
-    /// Read base 1
+    /// Read base 1.
     #[inline]
     pub fn base1(&self) -> u32 {
-        self.sio.interp1_base1.read_bits()
+        regs().interp1_base1.read_bits()
     }
 
-    /// Write base 1
+    /// Write base 1.
     #[inline]
     pub fn set_base1(&self, value: u32) {
-        self.sio.interp1_base1.write_bits(value);
+        regs().interp1_base1.write_bits(value);
     }
 
-    /// Read base 2
+    /// Read base 2.
     #[inline]
     pub fn base2(&self) -> u32 {
-        self.sio.interp1_base2.read_bits()
+        regs().interp1_base2.read_bits()
     }
 
-    /// Write base 2
+    /// Write base 2.
     #[inline]
     pub fn set_base2(&self, value: u32) {
-        self.sio.interp1_base2.write_bits(value);
+        regs().interp1_base2.write_bits(value);
     }
 
-    /// Write both base 0 (lower 16 bits) and base 1 (upper 16 bits) simultaneously
+    /// Write both base 0 (lower 16 bits) and base 1 (upper 16 bits) simultaneously.
     #[inline]
     pub fn set_base_1and0(&self, base0: u16, base1: u16) {
-        self.sio
+        regs()
             .interp1_base_1and0
-            .write_bits((base0 as u32) | ((base1 as u32) << 16));
+            .write_interp1_base_1and0((base0 as u32) | ((base1 as u32) << 16));
     }
 
     // ========================================================================
-    // Results (PEEK - read without side effects)
+    // Results (PEEK — read without side effects)
     // ========================================================================
 
-    /// Peek lane 0 result without modifying state
+    /// Peek lane 0 result without modifying state.
     #[inline]
     pub fn peek_lane0(&self) -> u32 {
-        self.sio.interp1_peek_lane0.read_bits()
+        regs().interp1_peek_lane0.read_bits()
     }
 
-    /// Peek lane 1 result without modifying state
+    /// Peek lane 1 result without modifying state.
     #[inline]
     pub fn peek_lane1(&self) -> u32 {
-        self.sio.interp1_peek_lane1.read_bits()
+        regs().interp1_peek_lane1.read_bits()
     }
 
-    /// Peek full result without modifying state
+    /// Peek full result without modifying state.
     #[inline]
     pub fn peek_full(&self) -> u32 {
-        self.sio.interp1_peek_full.read_bits()
+        regs().interp1_peek_full.read_bits()
     }
 
     // ========================================================================
-    // Results (POP - read and update accumulators)
+    // Results (POP — read and update accumulators)
     // ========================================================================
 
-    /// Pop lane 0 result and write lane results to both accumulators
+    /// Pop lane 0 result and write lane results to both accumulators.
     #[inline]
     pub fn pop_lane0(&self) -> u32 {
-        self.sio.interp1_pop_lane0.read_bits()
+        regs().interp1_pop_lane0.read_bits()
     }
 
-    /// Pop lane 1 result and write lane results to both accumulators
+    /// Pop lane 1 result and write lane results to both accumulators.
     #[inline]
     pub fn pop_lane1(&self) -> u32 {
-        self.sio.interp1_pop_lane1.read_bits()
+        regs().interp1_pop_lane1.read_bits()
     }
 
-    /// Pop full result and write lane results to both accumulators
+    /// Pop full result and write lane results to both accumulators.
     #[inline]
     pub fn pop_full(&self) -> u32 {
-        self.sio.interp1_pop_full.read_bits()
+        regs().interp1_pop_full.read_bits()
     }
 
     // ========================================================================
     // Lane 0 Control
     // ========================================================================
 
-    /// Read lane 0 control register
+    /// Read lane 0 control register raw value.
     #[inline]
     pub fn ctrl_lane0(&self) -> u32 {
-        self.sio.interp1_ctrl_lane0.read_bits()
+        regs().interp1_ctrl_lane0.read_bits()
     }
 
-    /// Write lane 0 control register
+    /// Write lane 0 control register raw value.
     #[inline]
     pub fn set_ctrl_lane0(&self, value: u32) {
-        self.sio.interp1_ctrl_lane0.write_bits(value);
+        regs().interp1_ctrl_lane0.write_bits(value);
     }
 
-    /// Configure lane 0 shift and mask
-    ///
-    /// # Arguments
-    /// * `shift` - Right-rotate applied before masking (0-31)
-    /// * `mask_lsb` - Least significant bit of mask (0-31)
-    /// * `mask_msb` - Most significant bit of mask (0-31)
-    /// * `signed` - Enable sign extension
+    /// Configure lane 0 shift and mask using PAC field methods.
     #[inline]
     pub fn config_lane0(&self, shift: u8, mask_lsb: u8, mask_msb: u8, signed: bool) {
-        let ctrl = ((shift as u32) & 0x1F)
-            | (((mask_lsb as u32) & 0x1F) << 5)
-            | (((mask_msb as u32) & 0x1F) << 10)
-            | if signed { 1 << 15 } else { 0 };
-        self.sio.interp1_ctrl_lane0.write_bits(ctrl);
+        regs().interp1_ctrl_lane0.modify_val(|v| {
+            v.with_shift(shift as u32)
+                .with_mask_lsb(mask_lsb as u32)
+                .with_mask_msb(mask_msb as u32)
+                .with_signed(signed)
+        });
     }
 
-    /// Enable or disable CLAMP mode (interpolator 1 only)
+    /// Enable or disable CLAMP mode (interpolator 1 only).
     #[inline]
     pub fn set_clamp(&self, enable: bool) {
-        // Note: SIO does not support atomic SET/CLR aliases
-        if enable {
-            self.sio.interp1_ctrl_lane0.modify_bits(|r| r | (1 << 22));
-        } else {
-            self.sio.interp1_ctrl_lane0.modify_bits(|r| r & !(1 << 22));
-        }
+        regs()
+            .interp1_ctrl_lane0
+            .modify_val(|v| v.with_clamp(enable));
     }
 
-    /// Check if CLAMP mode is enabled
+    /// Check if CLAMP mode is enabled.
     #[inline]
     pub fn clamp(&self) -> bool {
-        (self.sio.interp1_ctrl_lane0.read_bits() & (1 << 22)) != 0
+        regs().interp1_ctrl_lane0.clamp()
     }
 
     // ========================================================================
     // Lane 1 Control
     // ========================================================================
 
-    /// Read lane 1 control register
+    /// Read lane 1 control register raw value.
     #[inline]
     pub fn ctrl_lane1(&self) -> u32 {
-        self.sio.interp1_ctrl_lane1.read_bits()
+        regs().interp1_ctrl_lane1.read_bits()
     }
 
-    /// Write lane 1 control register
+    /// Write lane 1 control register raw value.
     #[inline]
     pub fn set_ctrl_lane1(&self, value: u32) {
-        self.sio.interp1_ctrl_lane1.write_bits(value);
+        regs().interp1_ctrl_lane1.write_bits(value);
     }
 
-    /// Configure lane 1 shift and mask
-    ///
-    /// # Arguments
-    /// * `shift` - Right-rotate applied before masking (0-31)
-    /// * `mask_lsb` - Least significant bit of mask (0-31)
-    /// * `mask_msb` - Most significant bit of mask (0-31)
-    /// * `signed` - Enable sign extension
+    /// Configure lane 1 shift and mask.
     #[inline]
     pub fn config_lane1(&self, shift: u8, mask_lsb: u8, mask_msb: u8, signed: bool) {
-        let ctrl = ((shift as u32) & 0x1F)
-            | (((mask_lsb as u32) & 0x1F) << 5)
-            | (((mask_msb as u32) & 0x1F) << 10)
-            | if signed { 1 << 15 } else { 0 };
-        self.sio.interp1_ctrl_lane1.write_bits(ctrl);
+        regs().interp1_ctrl_lane1.modify_val(|v| {
+            v.with_shift(shift as u32)
+                .with_mask_lsb(mask_lsb as u32)
+                .with_mask_msb(mask_msb as u32)
+                .with_signed(signed)
+        });
     }
 
     // ========================================================================
-    // Overflow Status
+    // Overflow Status (read-only)
     // ========================================================================
 
-    /// Check if accumulator 0 has overflow
+    /// Check if accumulator 0 has overflow.
     #[inline]
     pub fn overf0(&self) -> bool {
-        (self.sio.interp1_ctrl_lane0.read_bits() & (1 << 23)) != 0
+        regs().interp1_ctrl_lane0.overf0()
     }
 
-    /// Check if accumulator 1 has overflow
+    /// Check if accumulator 1 has overflow.
     #[inline]
     pub fn overf1(&self) -> bool {
-        (self.sio.interp1_ctrl_lane0.read_bits() & (1 << 24)) != 0
+        regs().interp1_ctrl_lane0.overf1()
     }
 
-    /// Check if either accumulator has overflow
+    /// Check if either accumulator has overflow.
     #[inline]
     pub fn overf(&self) -> bool {
-        (self.sio.interp1_ctrl_lane0.read_bits() & (1 << 25)) != 0
+        regs().interp1_ctrl_lane0.overf()
     }
 }
 
@@ -944,7 +1205,3 @@ impl<'a> Interp1<'a> {
 // which provides a more ergonomic interface with proper safety guarantees.
 //
 // See: `crate::multicore::Doorbell`
-//
-// Raw register access is available through the PAC if needed:
-// - doorbell_out_set / doorbell_out_clr: Signal the other core
-// - doorbell_in_set / doorbell_in_clr: Manage this core's doorbells

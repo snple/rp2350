@@ -20,9 +20,9 @@ use panic_probe as _;
 
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
-use pico_rs::gpio::{self, EdgeLevel, Pin15, Pin25};
-use pico_rs::interrupt as irq;
-use pico_rs::pac::Interrupt;
+use pico_rs::gpio::{EdgeLevel, Interrupt as GpioInterrupt, Pins};
+use pico_rs::interrupt;
+use pico_rs::pac::{Interrupt, Peripherals};
 
 /// RP2350 Boot Block
 #[unsafe(link_section = ".start_block")]
@@ -34,20 +34,26 @@ static LED_STATE: AtomicBool = AtomicBool::new(false);
 // Debounce flag
 static BUTTON_PRESSED: AtomicBool = AtomicBool::new(false);
 
+/// Button GPIO pin number
+const BUTTON_PIN: u8 = 15;
+
 #[entry]
 fn main() -> ! {
     info!("GPIO Interrupt Example");
 
-    // Initialize GPIO
-    gpio::init_gpio();
+    // Take device peripherals
+    let dp = Peripherals::take().unwrap();
+
+    // Initialize GPIO via Pins (consumes IO_BANK0 and PADS_BANK0)
+    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
 
     // Configure LED as output
-    let led = Pin25::new();
+    let led = pins.p25;
     led.into_output();
     led.set_low();
 
     // Configure button as input with pull-up
-    let button = Pin15::new();
+    let button = pins.p15;
     button.into_input_pullup();
 
     // Enable falling edge interrupt on button (button press = falling edge with pull-up)
@@ -56,7 +62,7 @@ fn main() -> ! {
 
     // Enable IO_IRQ_BANK0 in NVIC
     unsafe {
-        irq::enable(Interrupt::IO_IRQ_BANK0);
+        interrupt::enable(Interrupt::IO_IRQ_BANK0);
     }
     info!("NVIC interrupt enabled");
 
@@ -64,17 +70,16 @@ fn main() -> ! {
     loop {
         // Check if button was pressed (set by interrupt handler)
         if BUTTON_PRESSED.swap(false, Ordering::Relaxed) {
-            // Toggle LED
+            // Toggle LED using SIO atomic registers (interrupt-safe)
             let new_state = !LED_STATE.load(Ordering::Relaxed);
             LED_STATE.store(new_state, Ordering::Relaxed);
 
-            let led = Pin25::new();
             if new_state {
                 led.set_high();
                 info!("LED ON");
             } else {
-                led.set_low();
                 info!("LED OFF");
+                led.set_low();
             }
         }
 
@@ -86,17 +91,14 @@ fn main() -> ! {
 /// GPIO Bank0 interrupt handler
 ///
 /// This replaces the default weak interrupt handler defined in the vector table.
+/// Uses `GpioInterrupt` for safe register access without needing Pin ownership.
 #[allow(non_snake_case)]
 #[unsafe(no_mangle)]
 extern "C" fn IO_IRQ_BANK0() {
-    // Access GPIO to check and clear interrupt
-    let button = Pin15::new();
+    let irq = GpioInterrupt::new();
 
-    // Check if this is our button's falling edge interrupt
-    if button.interrupt_status(EdgeLevel::EdgeLow) {
-        // Clear the interrupt
-        button.clear_interrupt(EdgeLevel::EdgeLow);
-
+    // Check and clear GPIO15 falling edge interrupt in one call
+    if irq.check_and_clear(BUTTON_PIN, EdgeLevel::EdgeLow) {
         // Signal to main loop that button was pressed
         BUTTON_PRESSED.store(true, Ordering::Relaxed);
     }

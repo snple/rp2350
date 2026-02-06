@@ -34,6 +34,7 @@ use panic_probe as _;
 use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::interrupt::{self, Interrupt, Mutex};
+use pico_rs::pac::Peripherals;
 use pico_rs::task::{Event, EventQueue};
 use pico_rs::{entry, exception};
 
@@ -188,8 +189,13 @@ fn SysTick() {
 fn main() -> ! {
     info!("USB CDC Interrupt Example starting...");
 
+    // Take device peripherals
+    let dp = Peripherals::take().unwrap();
+
     // Initialize clock system (150 MHz sys, 48 MHz USB)
-    let clocks = ClockBuilder::new().enable_usb().build();
+    let clocks = ClockBuilder::new()
+        .enable_usb()
+        .build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
     info!(
         "Clock system initialized: sys={} Hz, usb={} Hz",
         clocks.sys_freq(),

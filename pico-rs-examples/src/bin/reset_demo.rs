@@ -13,6 +13,7 @@ use panic_probe as _;
 use pico_rs::Delay;
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
+use pico_rs::pico_rs_rt::peripheral::Peripherals as CorePeripherals;
 use pico_rs::reset::{self, Peripheral};
 
 /// RP2350 Boot Block - tells the Boot ROM this is a valid ARM executable
@@ -27,8 +28,11 @@ const CLOCK_FREQ_HZ: u32 = 12_000_000;
 fn main() -> ! {
     info!("RP2350 Reset HAL Demo");
 
+    // Take core peripherals for Delay
+    let core_peripherals = CorePeripherals::take().unwrap();
+
     // Initialize delay
-    let mut delay = Delay::new(CLOCK_FREQ_HZ);
+    let mut delay = Delay::new(core_peripherals.SYST, CLOCK_FREQ_HZ);
 
     // Check initial reset status
     info!("Checking initial reset status...");

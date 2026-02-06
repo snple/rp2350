@@ -88,7 +88,6 @@ impl AddrEndp {
     pub fn write_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
     }
-
 }
 
 /// ADDR_ENDP value type for batch read/modify/write operations
@@ -154,7 +153,6 @@ impl AddrEndpVal {
             bits: (self.bits & !AddrEndp::ADDRESS_MASK) | ((value << AddrEndp::ADDRESS_OFFSET) & AddrEndp::ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for AddrEndpVal {
@@ -181,7 +179,6 @@ impl AddrEndp {
     pub fn modify_val<F: FnOnce(AddrEndpVal) -> AddrEndpVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ADDR_ENDP1 Register
@@ -331,7 +328,6 @@ impl AddrEndp1 {
     pub fn write_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
     }
-
 }
 
 /// ADDR_ENDP1 value type for batch read/modify/write operations
@@ -441,7 +437,6 @@ impl AddrEndp1Val {
             bits: (self.bits & !AddrEndp1::ADDRESS_MASK) | ((value << AddrEndp1::ADDRESS_OFFSET) & AddrEndp1::ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for AddrEndp1Val {
@@ -468,7 +463,6 @@ impl AddrEndp1 {
     pub fn modify_val<F: FnOnce(AddrEndp1Val) -> AddrEndp1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ADDR_ENDP2 Register
@@ -618,7 +612,6 @@ impl AddrEndp2 {
     pub fn write_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
     }
-
 }
 
 /// ADDR_ENDP2 value type for batch read/modify/write operations
@@ -728,7 +721,6 @@ impl AddrEndp2Val {
             bits: (self.bits & !AddrEndp2::ADDRESS_MASK) | ((value << AddrEndp2::ADDRESS_OFFSET) & AddrEndp2::ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for AddrEndp2Val {
@@ -755,7 +747,6 @@ impl AddrEndp2 {
     pub fn modify_val<F: FnOnce(AddrEndp2Val) -> AddrEndp2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ADDR_ENDP3 Register
@@ -905,7 +896,6 @@ impl AddrEndp3 {
     pub fn write_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
     }
-
 }
 
 /// ADDR_ENDP3 value type for batch read/modify/write operations
@@ -1015,7 +1005,6 @@ impl AddrEndp3Val {
             bits: (self.bits & !AddrEndp3::ADDRESS_MASK) | ((value << AddrEndp3::ADDRESS_OFFSET) & AddrEndp3::ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for AddrEndp3Val {
@@ -1042,7 +1031,6 @@ impl AddrEndp3 {
     pub fn modify_val<F: FnOnce(AddrEndp3Val) -> AddrEndp3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ADDR_ENDP4 Register
@@ -1192,7 +1180,6 @@ impl AddrEndp4 {
     pub fn write_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
     }
-
 }
 
 /// ADDR_ENDP4 value type for batch read/modify/write operations
@@ -1302,7 +1289,6 @@ impl AddrEndp4Val {
             bits: (self.bits & !AddrEndp4::ADDRESS_MASK) | ((value << AddrEndp4::ADDRESS_OFFSET) & AddrEndp4::ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for AddrEndp4Val {
@@ -1329,7 +1315,6 @@ impl AddrEndp4 {
     pub fn modify_val<F: FnOnce(AddrEndp4Val) -> AddrEndp4Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ADDR_ENDP5 Register
@@ -1479,7 +1464,6 @@ impl AddrEndp5 {
     pub fn write_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
     }
-
 }
 
 /// ADDR_ENDP5 value type for batch read/modify/write operations
@@ -1589,7 +1573,6 @@ impl AddrEndp5Val {
             bits: (self.bits & !AddrEndp5::ADDRESS_MASK) | ((value << AddrEndp5::ADDRESS_OFFSET) & AddrEndp5::ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for AddrEndp5Val {
@@ -1616,7 +1599,6 @@ impl AddrEndp5 {
     pub fn modify_val<F: FnOnce(AddrEndp5Val) -> AddrEndp5Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ADDR_ENDP6 Register
@@ -1766,7 +1748,6 @@ impl AddrEndp6 {
     pub fn write_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
     }
-
 }
 
 /// ADDR_ENDP6 value type for batch read/modify/write operations
@@ -1876,7 +1857,6 @@ impl AddrEndp6Val {
             bits: (self.bits & !AddrEndp6::ADDRESS_MASK) | ((value << AddrEndp6::ADDRESS_OFFSET) & AddrEndp6::ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for AddrEndp6Val {
@@ -1903,7 +1883,6 @@ impl AddrEndp6 {
     pub fn modify_val<F: FnOnce(AddrEndp6Val) -> AddrEndp6Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ADDR_ENDP7 Register
@@ -2053,7 +2032,6 @@ impl AddrEndp7 {
     pub fn write_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
     }
-
 }
 
 /// ADDR_ENDP7 value type for batch read/modify/write operations
@@ -2163,7 +2141,6 @@ impl AddrEndp7Val {
             bits: (self.bits & !AddrEndp7::ADDRESS_MASK) | ((value << AddrEndp7::ADDRESS_OFFSET) & AddrEndp7::ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for AddrEndp7Val {
@@ -2190,7 +2167,6 @@ impl AddrEndp7 {
     pub fn modify_val<F: FnOnce(AddrEndp7Val) -> AddrEndp7Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ADDR_ENDP8 Register
@@ -2340,7 +2316,6 @@ impl AddrEndp8 {
     pub fn write_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
     }
-
 }
 
 /// ADDR_ENDP8 value type for batch read/modify/write operations
@@ -2450,7 +2425,6 @@ impl AddrEndp8Val {
             bits: (self.bits & !AddrEndp8::ADDRESS_MASK) | ((value << AddrEndp8::ADDRESS_OFFSET) & AddrEndp8::ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for AddrEndp8Val {
@@ -2477,7 +2451,6 @@ impl AddrEndp8 {
     pub fn modify_val<F: FnOnce(AddrEndp8Val) -> AddrEndp8Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ADDR_ENDP9 Register
@@ -2627,7 +2600,6 @@ impl AddrEndp9 {
     pub fn write_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
     }
-
 }
 
 /// ADDR_ENDP9 value type for batch read/modify/write operations
@@ -2737,7 +2709,6 @@ impl AddrEndp9Val {
             bits: (self.bits & !AddrEndp9::ADDRESS_MASK) | ((value << AddrEndp9::ADDRESS_OFFSET) & AddrEndp9::ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for AddrEndp9Val {
@@ -2764,7 +2735,6 @@ impl AddrEndp9 {
     pub fn modify_val<F: FnOnce(AddrEndp9Val) -> AddrEndp9Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ADDR_ENDP10 Register
@@ -2914,7 +2884,6 @@ impl AddrEndp10 {
     pub fn write_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
     }
-
 }
 
 /// ADDR_ENDP10 value type for batch read/modify/write operations
@@ -3024,7 +2993,6 @@ impl AddrEndp10Val {
             bits: (self.bits & !AddrEndp10::ADDRESS_MASK) | ((value << AddrEndp10::ADDRESS_OFFSET) & AddrEndp10::ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for AddrEndp10Val {
@@ -3051,7 +3019,6 @@ impl AddrEndp10 {
     pub fn modify_val<F: FnOnce(AddrEndp10Val) -> AddrEndp10Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ADDR_ENDP11 Register
@@ -3201,7 +3168,6 @@ impl AddrEndp11 {
     pub fn write_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
     }
-
 }
 
 /// ADDR_ENDP11 value type for batch read/modify/write operations
@@ -3311,7 +3277,6 @@ impl AddrEndp11Val {
             bits: (self.bits & !AddrEndp11::ADDRESS_MASK) | ((value << AddrEndp11::ADDRESS_OFFSET) & AddrEndp11::ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for AddrEndp11Val {
@@ -3338,7 +3303,6 @@ impl AddrEndp11 {
     pub fn modify_val<F: FnOnce(AddrEndp11Val) -> AddrEndp11Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ADDR_ENDP12 Register
@@ -3488,7 +3452,6 @@ impl AddrEndp12 {
     pub fn write_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
     }
-
 }
 
 /// ADDR_ENDP12 value type for batch read/modify/write operations
@@ -3598,7 +3561,6 @@ impl AddrEndp12Val {
             bits: (self.bits & !AddrEndp12::ADDRESS_MASK) | ((value << AddrEndp12::ADDRESS_OFFSET) & AddrEndp12::ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for AddrEndp12Val {
@@ -3625,7 +3587,6 @@ impl AddrEndp12 {
     pub fn modify_val<F: FnOnce(AddrEndp12Val) -> AddrEndp12Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ADDR_ENDP13 Register
@@ -3775,7 +3736,6 @@ impl AddrEndp13 {
     pub fn write_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
     }
-
 }
 
 /// ADDR_ENDP13 value type for batch read/modify/write operations
@@ -3885,7 +3845,6 @@ impl AddrEndp13Val {
             bits: (self.bits & !AddrEndp13::ADDRESS_MASK) | ((value << AddrEndp13::ADDRESS_OFFSET) & AddrEndp13::ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for AddrEndp13Val {
@@ -3912,7 +3871,6 @@ impl AddrEndp13 {
     pub fn modify_val<F: FnOnce(AddrEndp13Val) -> AddrEndp13Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ADDR_ENDP14 Register
@@ -4062,7 +4020,6 @@ impl AddrEndp14 {
     pub fn write_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
     }
-
 }
 
 /// ADDR_ENDP14 value type for batch read/modify/write operations
@@ -4172,7 +4129,6 @@ impl AddrEndp14Val {
             bits: (self.bits & !AddrEndp14::ADDRESS_MASK) | ((value << AddrEndp14::ADDRESS_OFFSET) & AddrEndp14::ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for AddrEndp14Val {
@@ -4199,7 +4155,6 @@ impl AddrEndp14 {
     pub fn modify_val<F: FnOnce(AddrEndp14Val) -> AddrEndp14Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ADDR_ENDP15 Register
@@ -4349,7 +4304,6 @@ impl AddrEndp15 {
     pub fn write_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
     }
-
 }
 
 /// ADDR_ENDP15 value type for batch read/modify/write operations
@@ -4459,7 +4413,6 @@ impl AddrEndp15Val {
             bits: (self.bits & !AddrEndp15::ADDRESS_MASK) | ((value << AddrEndp15::ADDRESS_OFFSET) & AddrEndp15::ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for AddrEndp15Val {
@@ -4486,7 +4439,6 @@ impl AddrEndp15 {
     pub fn modify_val<F: FnOnce(AddrEndp15Val) -> AddrEndp15Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MAIN_CTRL Register
@@ -4652,7 +4604,6 @@ impl MainCtrl {
     pub fn clr_controller_en(&self) {
         self.clr_bits(Self::CONTROLLER_EN_MASK);
     }
-
 }
 
 /// MAIN_CTRL value type for batch read/modify/write operations
@@ -4774,7 +4725,6 @@ impl MainCtrlVal {
             }
         }
     }
-
 }
 
 impl Default for MainCtrlVal {
@@ -4801,7 +4751,6 @@ impl MainCtrl {
     pub fn modify_val<F: FnOnce(MainCtrlVal) -> MainCtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SOF_WR Register
@@ -4842,7 +4791,6 @@ impl SofWr {
     pub fn write_count(&self, value: u32) {
         self.value.write_bits((value << Self::COUNT_OFFSET) & Self::COUNT_MASK);
     }
-
 }
 
 /// SOF_WR value type for batch read/modify/write operations
@@ -4880,7 +4828,6 @@ impl SofWrVal {
             bits: (self.bits & !SofWr::COUNT_MASK) | ((value << SofWr::COUNT_OFFSET) & SofWr::COUNT_MASK)
         }
     }
-
 }
 
 impl Default for SofWrVal {
@@ -4890,24 +4837,11 @@ impl Default for SofWrVal {
 }
 
 impl SofWr {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> SofWrVal {
-        SofWrVal::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: SofWrVal) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(SofWrVal) -> SofWrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SOF_RD Register
@@ -4948,7 +4882,6 @@ impl SofRd {
     pub fn count(&self) -> u32 {
         (self.value.read_bits() & Self::COUNT_MASK) >> Self::COUNT_OFFSET
     }
-
 }
 
 /// SOF_RD value type for batch read/modify/write operations
@@ -4984,7 +4917,6 @@ impl SofRdVal {
     pub const fn count(&self) -> u32 {
         (self.bits & SofRd::COUNT_MASK) >> SofRd::COUNT_OFFSET
     }
-
 }
 
 impl Default for SofRdVal {
@@ -4999,19 +4931,6 @@ impl SofRd {
     pub fn read_val(&self) -> SofRdVal {
         SofRdVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: SofRdVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(SofRdVal) -> SofRdVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SIE_CTRL Register
@@ -5630,7 +5549,7 @@ impl SieCtrl {
     /// Host: Reset bus
     #[inline(always)]
     pub fn trigger_reset_bus(&self) {
-        self.value.write_bits(Self::RESET_BUS_MASK);
+        self.set_bits(Self::RESET_BUS_MASK);
     }
 
     /// Trigger **RESUME** (WO)
@@ -5638,7 +5557,7 @@ impl SieCtrl {
     /// Device: Remote wakeup. Device can initiate its own resume after suspend.
     #[inline(always)]
     pub fn trigger_resume(&self) {
-        self.value.write_bits(Self::RESUME_MASK);
+        self.set_bits(Self::RESUME_MASK);
     }
 
     /// **VBUS_EN** `[11]` (RW)
@@ -5746,7 +5665,7 @@ impl SieCtrl {
     /// Host: Stop transaction
     #[inline(always)]
     pub fn trigger_stop_trans(&self) {
-        self.value.write_bits(Self::STOP_TRANS_MASK);
+        self.set_bits(Self::STOP_TRANS_MASK);
     }
 
     /// **RECEIVE_DATA** `[3]` (RW)
@@ -5814,9 +5733,8 @@ impl SieCtrl {
     /// Host: Start transaction
     #[inline(always)]
     pub fn trigger_start_trans(&self) {
-        self.value.write_bits(Self::START_TRANS_MASK);
+        self.set_bits(Self::START_TRANS_MASK);
     }
-
 }
 
 /// SIE_CTRL value type for batch read/modify/write operations
@@ -6364,7 +6282,6 @@ impl SieCtrlVal {
             }
         }
     }
-
 }
 
 impl Default for SieCtrlVal {
@@ -6391,7 +6308,6 @@ impl SieCtrl {
     pub fn modify_val<F: FnOnce(SieCtrlVal) -> SieCtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SIE_STATUS Register
@@ -7041,7 +6957,6 @@ impl SieStatus {
     pub fn vbus_detected(&self) -> bool {
         (self.value.read_bits() & Self::VBUS_DETECTED_MASK) != 0
     }
-
 }
 
 /// SIE_STATUS value type for batch read/modify/write operations
@@ -7457,7 +7372,6 @@ impl SieStatusVal {
             }
         }
     }
-
 }
 
 impl Default for SieStatusVal {
@@ -7484,7 +7398,6 @@ impl SieStatus {
     pub fn modify_val<F: FnOnce(SieStatusVal) -> SieStatusVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INT_EP_CTRL Register
@@ -7540,7 +7453,6 @@ impl IntEpCtrl {
     pub fn write_int_ep_active(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::INT_EP_ACTIVE_MASK) | ((value << Self::INT_EP_ACTIVE_OFFSET) & Self::INT_EP_ACTIVE_MASK));
     }
-
 }
 
 /// INT_EP_CTRL value type for batch read/modify/write operations
@@ -7588,7 +7500,6 @@ impl IntEpCtrlVal {
             bits: (self.bits & !IntEpCtrl::INT_EP_ACTIVE_MASK) | ((value << IntEpCtrl::INT_EP_ACTIVE_OFFSET) & IntEpCtrl::INT_EP_ACTIVE_MASK)
         }
     }
-
 }
 
 impl Default for IntEpCtrlVal {
@@ -7615,7 +7526,6 @@ impl IntEpCtrl {
     pub fn modify_val<F: FnOnce(IntEpCtrlVal) -> IntEpCtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// BUFF_STATUS Register
@@ -8475,7 +8385,6 @@ impl BuffStatus {
     pub fn clr_ep0_in(&self) {
         self.clr_bits(Self::EP0_IN_MASK);
     }
-
 }
 
 /// BUFF_STATUS value type for batch read/modify/write operations
@@ -9081,7 +8990,6 @@ impl BuffStatusVal {
             }
         }
     }
-
 }
 
 impl Default for BuffStatusVal {
@@ -9108,7 +9016,6 @@ impl BuffStatus {
     pub fn modify_val<F: FnOnce(BuffStatusVal) -> BuffStatusVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// BUFF_CPU_SHOULD_HANDLE Register
@@ -9584,7 +9491,6 @@ impl BuffCpuShouldHandle {
     pub fn ep0_in(&self) -> bool {
         (self.value.read_bits() & Self::EP0_IN_MASK) != 0
     }
-
 }
 
 /// BUFF_CPU_SHOULD_HANDLE value type for batch read/modify/write operations
@@ -9806,7 +9712,6 @@ impl BuffCpuShouldHandleVal {
     pub const fn ep0_in(&self) -> bool {
         (self.bits & BuffCpuShouldHandle::EP0_IN_MASK) != 0
     }
-
 }
 
 impl Default for BuffCpuShouldHandleVal {
@@ -9821,19 +9726,6 @@ impl BuffCpuShouldHandle {
     pub fn read_val(&self) -> BuffCpuShouldHandleVal {
         BuffCpuShouldHandleVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: BuffCpuShouldHandleVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(BuffCpuShouldHandleVal) -> BuffCpuShouldHandleVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// EP_ABORT Register
@@ -10693,7 +10585,6 @@ impl EpAbort {
     pub fn clr_ep0_in(&self) {
         self.clr_bits(Self::EP0_IN_MASK);
     }
-
 }
 
 /// EP_ABORT value type for batch read/modify/write operations
@@ -11299,7 +11190,6 @@ impl EpAbortVal {
             }
         }
     }
-
 }
 
 impl Default for EpAbortVal {
@@ -11326,7 +11216,6 @@ impl EpAbort {
     pub fn modify_val<F: FnOnce(EpAbortVal) -> EpAbortVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP_ABORT_DONE Register
@@ -12186,7 +12075,6 @@ impl EpAbortDone {
     pub fn clr_ep0_in(&self) {
         self.clr_bits(Self::EP0_IN_MASK);
     }
-
 }
 
 /// EP_ABORT_DONE value type for batch read/modify/write operations
@@ -12792,7 +12680,6 @@ impl EpAbortDoneVal {
             }
         }
     }
-
 }
 
 impl Default for EpAbortDoneVal {
@@ -12819,7 +12706,6 @@ impl EpAbortDone {
     pub fn modify_val<F: FnOnce(EpAbortDoneVal) -> EpAbortDoneVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP_STALL_ARM Register
@@ -12899,7 +12785,6 @@ impl EpStallArm {
     pub fn clr_ep0_in(&self) {
         self.clr_bits(Self::EP0_IN_MASK);
     }
-
 }
 
 /// EP_STALL_ARM value type for batch read/modify/write operations
@@ -12965,7 +12850,6 @@ impl EpStallArmVal {
             }
         }
     }
-
 }
 
 impl Default for EpStallArmVal {
@@ -12992,7 +12876,6 @@ impl EpStallArm {
     pub fn modify_val<F: FnOnce(EpStallArmVal) -> EpStallArmVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// NAK_POLL Register
@@ -13182,7 +13065,6 @@ impl NakPoll {
     pub fn write_delay_ls(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::DELAY_LS_MASK) | ((value << Self::DELAY_LS_OFFSET) & Self::DELAY_LS_MASK));
     }
-
 }
 
 /// NAK_POLL value type for batch read/modify/write operations
@@ -13308,7 +13190,6 @@ impl NakPollVal {
             bits: (self.bits & !NakPoll::DELAY_LS_MASK) | ((value << NakPoll::DELAY_LS_OFFSET) & NakPoll::DELAY_LS_MASK)
         }
     }
-
 }
 
 impl Default for NakPollVal {
@@ -13335,7 +13216,6 @@ impl NakPoll {
     pub fn modify_val<F: FnOnce(NakPollVal) -> NakPollVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP_STATUS_STALL_NAK Register
@@ -14195,7 +14075,6 @@ impl EpStatusStallNak {
     pub fn clr_ep0_in(&self) {
         self.clr_bits(Self::EP0_IN_MASK);
     }
-
 }
 
 /// EP_STATUS_STALL_NAK value type for batch read/modify/write operations
@@ -14801,7 +14680,6 @@ impl EpStatusStallNakVal {
             }
         }
     }
-
 }
 
 impl Default for EpStatusStallNakVal {
@@ -14828,7 +14706,6 @@ impl EpStatusStallNak {
     pub fn modify_val<F: FnOnce(EpStatusStallNakVal) -> EpStatusStallNakVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// USB_MUXING Register
@@ -15029,7 +14906,6 @@ impl UsbMuxing {
     pub fn clr_to_phy(&self) {
         self.clr_bits(Self::TO_PHY_MASK);
     }
-
 }
 
 /// USB_MUXING value type for batch read/modify/write operations
@@ -15177,7 +15053,6 @@ impl UsbMuxingVal {
             }
         }
     }
-
 }
 
 impl Default for UsbMuxingVal {
@@ -15204,7 +15079,6 @@ impl UsbMuxing {
     pub fn modify_val<F: FnOnce(UsbMuxingVal) -> UsbMuxingVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// USB_PWR Register
@@ -15388,7 +15262,6 @@ impl UsbPwr {
     pub fn clr_vbus_en(&self) {
         self.clr_bits(Self::VBUS_EN_MASK);
     }
-
 }
 
 /// USB_PWR value type for batch read/modify/write operations
@@ -15526,7 +15399,6 @@ impl UsbPwrVal {
             }
         }
     }
-
 }
 
 impl Default for UsbPwrVal {
@@ -15553,7 +15425,6 @@ impl UsbPwr {
     pub fn modify_val<F: FnOnce(UsbPwrVal) -> UsbPwrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// USBPHY_DIRECT Register
@@ -16307,7 +16178,6 @@ impl UsbphyDirect {
     pub fn clr_dp_pullup_hisel(&self) {
         self.clr_bits(Self::DP_PULLUP_HISEL_MASK);
     }
-
 }
 
 /// USBPHY_DIRECT value type for batch read/modify/write operations
@@ -16779,7 +16649,6 @@ impl UsbphyDirectVal {
             }
         }
     }
-
 }
 
 impl Default for UsbphyDirectVal {
@@ -16806,7 +16675,6 @@ impl UsbphyDirect {
     pub fn modify_val<F: FnOnce(UsbphyDirectVal) -> UsbphyDirectVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// USBPHY_DIRECT_OVERRIDE Register
@@ -17276,7 +17144,6 @@ impl UsbphyDirectOverride {
     pub fn clr_dp_pullup_hisel_override_en(&self) {
         self.clr_bits(Self::DP_PULLUP_HISEL_OVERRIDE_EN_MASK);
     }
-
 }
 
 /// USBPHY_DIRECT_OVERRIDE value type for batch read/modify/write operations
@@ -17612,7 +17479,6 @@ impl UsbphyDirectOverrideVal {
             }
         }
     }
-
 }
 
 impl Default for UsbphyDirectOverrideVal {
@@ -17639,7 +17505,6 @@ impl UsbphyDirectOverride {
     pub fn modify_val<F: FnOnce(UsbphyDirectOverrideVal) -> UsbphyDirectOverrideVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// USBPHY_TRIM Register
@@ -17739,7 +17604,6 @@ impl UsbphyTrim {
     pub fn write_dp_pulldn_trim(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::DP_PULLDN_TRIM_MASK) | ((value << Self::DP_PULLDN_TRIM_OFFSET) & Self::DP_PULLDN_TRIM_MASK));
     }
-
 }
 
 /// USBPHY_TRIM value type for batch read/modify/write operations
@@ -17813,7 +17677,6 @@ impl UsbphyTrimVal {
             bits: (self.bits & !UsbphyTrim::DP_PULLDN_TRIM_MASK) | ((value << UsbphyTrim::DP_PULLDN_TRIM_OFFSET) & UsbphyTrim::DP_PULLDN_TRIM_MASK)
         }
     }
-
 }
 
 impl Default for UsbphyTrimVal {
@@ -17840,7 +17703,6 @@ impl UsbphyTrim {
     pub fn modify_val<F: FnOnce(UsbphyTrimVal) -> UsbphyTrimVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// LINESTATE_TUNING Register
@@ -18160,7 +18022,6 @@ impl LinestateTuning {
     pub fn clr_rcv_delay(&self) {
         self.clr_bits(Self::RCV_DELAY_MASK);
     }
-
 }
 
 /// LINESTATE_TUNING value type for batch read/modify/write operations
@@ -18386,7 +18247,6 @@ impl LinestateTuningVal {
             }
         }
     }
-
 }
 
 impl Default for LinestateTuningVal {
@@ -18413,7 +18273,6 @@ impl LinestateTuning {
     pub fn modify_val<F: FnOnce(LinestateTuningVal) -> LinestateTuningVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTR Register
@@ -18945,7 +18804,6 @@ impl Intr {
     pub fn host_conn_dis(&self) -> bool {
         (self.value.read_bits() & Self::HOST_CONN_DIS_MASK) != 0
     }
-
 }
 
 /// INTR value type for batch read/modify/write operations
@@ -19167,7 +19025,6 @@ impl IntrVal {
     pub const fn host_conn_dis(&self) -> bool {
         (self.bits & Intr::HOST_CONN_DIS_MASK) != 0
     }
-
 }
 
 impl Default for IntrVal {
@@ -19182,19 +19039,6 @@ impl Intr {
     pub fn read_val(&self) -> IntrVal {
         IntrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IntrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IntrVal) -> IntrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INTE Register
@@ -20014,7 +19858,6 @@ impl Inte {
     pub fn clr_host_conn_dis(&self) {
         self.clr_bits(Self::HOST_CONN_DIS_MASK);
     }
-
 }
 
 /// INTE value type for batch read/modify/write operations
@@ -20572,7 +20415,6 @@ impl InteVal {
             }
         }
     }
-
 }
 
 impl Default for InteVal {
@@ -20599,7 +20441,6 @@ impl Inte {
     pub fn modify_val<F: FnOnce(InteVal) -> InteVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTF Register
@@ -21419,7 +21260,6 @@ impl Intf {
     pub fn clr_host_conn_dis(&self) {
         self.clr_bits(Self::HOST_CONN_DIS_MASK);
     }
-
 }
 
 /// INTF value type for batch read/modify/write operations
@@ -21977,7 +21817,6 @@ impl IntfVal {
             }
         }
     }
-
 }
 
 impl Default for IntfVal {
@@ -22004,7 +21843,6 @@ impl Intf {
     pub fn modify_val<F: FnOnce(IntfVal) -> IntfVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTS Register
@@ -22536,7 +22374,6 @@ impl Ints {
     pub fn host_conn_dis(&self) -> bool {
         (self.value.read_bits() & Self::HOST_CONN_DIS_MASK) != 0
     }
-
 }
 
 /// INTS value type for batch read/modify/write operations
@@ -22758,7 +22595,6 @@ impl IntsVal {
     pub const fn host_conn_dis(&self) -> bool {
         (self.bits & Ints::HOST_CONN_DIS_MASK) != 0
     }
-
 }
 
 impl Default for IntsVal {
@@ -22773,19 +22609,6 @@ impl Ints {
     pub fn read_val(&self) -> IntsVal {
         IntsVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IntsVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IntsVal) -> IntsVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SOF_TIMESTAMP_RAW Register
@@ -22826,7 +22649,6 @@ impl SofTimestampRaw {
     pub fn sof_timestamp_raw(&self) -> u32 {
         (self.value.read_bits() & Self::SOF_TIMESTAMP_RAW_MASK) >> Self::SOF_TIMESTAMP_RAW_OFFSET
     }
-
 }
 
 /// SOF_TIMESTAMP_RAW value type for batch read/modify/write operations
@@ -22862,7 +22684,6 @@ impl SofTimestampRawVal {
     pub const fn sof_timestamp_raw(&self) -> u32 {
         (self.bits & SofTimestampRaw::SOF_TIMESTAMP_RAW_MASK) >> SofTimestampRaw::SOF_TIMESTAMP_RAW_OFFSET
     }
-
 }
 
 impl Default for SofTimestampRawVal {
@@ -22877,19 +22698,6 @@ impl SofTimestampRaw {
     pub fn read_val(&self) -> SofTimestampRawVal {
         SofTimestampRawVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: SofTimestampRawVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(SofTimestampRawVal) -> SofTimestampRawVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SOF_TIMESTAMP_LAST Register
@@ -22930,7 +22738,6 @@ impl SofTimestampLast {
     pub fn sof_timestamp_last(&self) -> u32 {
         (self.value.read_bits() & Self::SOF_TIMESTAMP_LAST_MASK) >> Self::SOF_TIMESTAMP_LAST_OFFSET
     }
-
 }
 
 /// SOF_TIMESTAMP_LAST value type for batch read/modify/write operations
@@ -22966,7 +22773,6 @@ impl SofTimestampLastVal {
     pub const fn sof_timestamp_last(&self) -> u32 {
         (self.bits & SofTimestampLast::SOF_TIMESTAMP_LAST_MASK) >> SofTimestampLast::SOF_TIMESTAMP_LAST_OFFSET
     }
-
 }
 
 impl Default for SofTimestampLastVal {
@@ -22981,19 +22787,6 @@ impl SofTimestampLast {
     pub fn read_val(&self) -> SofTimestampLastVal {
         SofTimestampLastVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: SofTimestampLastVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(SofTimestampLastVal) -> SofTimestampLastVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SM_STATE Register
@@ -23058,7 +22851,6 @@ impl SmState {
     pub fn state(&self) -> u32 {
         (self.value.read_bits() & Self::STATE_MASK) >> Self::STATE_OFFSET
     }
-
 }
 
 /// SM_STATE value type for batch read/modify/write operations
@@ -23106,7 +22898,6 @@ impl SmStateVal {
     pub const fn state(&self) -> u32 {
         (self.bits & SmState::STATE_MASK) >> SmState::STATE_OFFSET
     }
-
 }
 
 impl Default for SmStateVal {
@@ -23121,19 +22912,6 @@ impl SmState {
     pub fn read_val(&self) -> SmStateVal {
         SmStateVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: SmStateVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(SmStateVal) -> SmStateVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// EP_TX_ERROR Register
@@ -23465,7 +23243,6 @@ impl EpTxError {
     pub fn write_ep0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::EP0_MASK) | ((value << Self::EP0_OFFSET) & Self::EP0_MASK));
     }
-
 }
 
 /// EP_TX_ERROR value type for batch read/modify/write operations
@@ -23719,7 +23496,6 @@ impl EpTxErrorVal {
             bits: (self.bits & !EpTxError::EP0_MASK) | ((value << EpTxError::EP0_OFFSET) & EpTxError::EP0_MASK)
         }
     }
-
 }
 
 impl Default for EpTxErrorVal {
@@ -23746,7 +23522,6 @@ impl EpTxError {
     pub fn modify_val<F: FnOnce(EpTxErrorVal) -> EpTxErrorVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// EP_RX_ERROR Register
@@ -24606,7 +24381,6 @@ impl EpRxError {
     pub fn clr_ep0_transaction(&self) {
         self.clr_bits(Self::EP0_TRANSACTION_MASK);
     }
-
 }
 
 /// EP_RX_ERROR value type for batch read/modify/write operations
@@ -25212,7 +24986,6 @@ impl EpRxErrorVal {
             }
         }
     }
-
 }
 
 impl Default for EpRxErrorVal {
@@ -25239,7 +25012,6 @@ impl EpRxError {
     pub fn modify_val<F: FnOnce(EpRxErrorVal) -> EpRxErrorVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DEV_SM_WATCHDOG Register
@@ -25372,7 +25144,6 @@ impl DevSmWatchdog {
     pub fn write_limit(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LIMIT_MASK) | ((value << Self::LIMIT_OFFSET) & Self::LIMIT_MASK));
     }
-
 }
 
 /// DEV_SM_WATCHDOG value type for batch read/modify/write operations
@@ -25468,7 +25239,6 @@ impl DevSmWatchdogVal {
             bits: (self.bits & !DevSmWatchdog::LIMIT_MASK) | ((value << DevSmWatchdog::LIMIT_OFFSET) & DevSmWatchdog::LIMIT_MASK)
         }
     }
-
 }
 
 impl Default for DevSmWatchdogVal {
@@ -25495,7 +25265,6 @@ impl DevSmWatchdog {
     pub fn modify_val<F: FnOnce(DevSmWatchdogVal) -> DevSmWatchdogVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// Register block

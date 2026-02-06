@@ -95,7 +95,6 @@ impl Platform {
     pub fn asic(&self) -> bool {
         (self.value.read_bits() & Self::ASIC_MASK) != 0
     }
-
 }
 
 /// PLATFORM value type for batch read/modify/write operations
@@ -149,7 +148,6 @@ impl PlatformVal {
     pub const fn asic(&self) -> bool {
         (self.bits & Platform::ASIC_MASK) != 0
     }
-
 }
 
 impl Default for PlatformVal {
@@ -164,19 +162,6 @@ impl Platform {
     pub fn read_val(&self) -> PlatformVal {
         PlatformVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: PlatformVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(PlatformVal) -> PlatformVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// Register block

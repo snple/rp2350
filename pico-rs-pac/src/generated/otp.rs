@@ -101,7 +101,6 @@ impl SwLock0 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK0 value type for batch read/modify/write operations
@@ -167,7 +166,6 @@ impl SwLock0Val {
             bits: (self.bits & !SwLock0::SEC_MASK) | ((value << SwLock0::SEC_OFFSET) & SwLock0::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock0Val {
@@ -194,7 +192,6 @@ impl SwLock0 {
     pub fn modify_val<F: FnOnce(SwLock0Val) -> SwLock0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK1 Register
@@ -291,7 +288,6 @@ impl SwLock1 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK1 value type for batch read/modify/write operations
@@ -357,7 +353,6 @@ impl SwLock1Val {
             bits: (self.bits & !SwLock1::SEC_MASK) | ((value << SwLock1::SEC_OFFSET) & SwLock1::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock1Val {
@@ -384,7 +379,6 @@ impl SwLock1 {
     pub fn modify_val<F: FnOnce(SwLock1Val) -> SwLock1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK2 Register
@@ -481,7 +475,6 @@ impl SwLock2 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK2 value type for batch read/modify/write operations
@@ -547,7 +540,6 @@ impl SwLock2Val {
             bits: (self.bits & !SwLock2::SEC_MASK) | ((value << SwLock2::SEC_OFFSET) & SwLock2::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock2Val {
@@ -574,7 +566,6 @@ impl SwLock2 {
     pub fn modify_val<F: FnOnce(SwLock2Val) -> SwLock2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK3 Register
@@ -671,7 +662,6 @@ impl SwLock3 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK3 value type for batch read/modify/write operations
@@ -737,7 +727,6 @@ impl SwLock3Val {
             bits: (self.bits & !SwLock3::SEC_MASK) | ((value << SwLock3::SEC_OFFSET) & SwLock3::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock3Val {
@@ -764,7 +753,6 @@ impl SwLock3 {
     pub fn modify_val<F: FnOnce(SwLock3Val) -> SwLock3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK4 Register
@@ -861,7 +849,6 @@ impl SwLock4 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK4 value type for batch read/modify/write operations
@@ -927,7 +914,6 @@ impl SwLock4Val {
             bits: (self.bits & !SwLock4::SEC_MASK) | ((value << SwLock4::SEC_OFFSET) & SwLock4::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock4Val {
@@ -954,7 +940,6 @@ impl SwLock4 {
     pub fn modify_val<F: FnOnce(SwLock4Val) -> SwLock4Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK5 Register
@@ -1051,7 +1036,6 @@ impl SwLock5 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK5 value type for batch read/modify/write operations
@@ -1117,7 +1101,6 @@ impl SwLock5Val {
             bits: (self.bits & !SwLock5::SEC_MASK) | ((value << SwLock5::SEC_OFFSET) & SwLock5::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock5Val {
@@ -1144,7 +1127,6 @@ impl SwLock5 {
     pub fn modify_val<F: FnOnce(SwLock5Val) -> SwLock5Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK6 Register
@@ -1241,7 +1223,6 @@ impl SwLock6 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK6 value type for batch read/modify/write operations
@@ -1307,7 +1288,6 @@ impl SwLock6Val {
             bits: (self.bits & !SwLock6::SEC_MASK) | ((value << SwLock6::SEC_OFFSET) & SwLock6::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock6Val {
@@ -1334,7 +1314,6 @@ impl SwLock6 {
     pub fn modify_val<F: FnOnce(SwLock6Val) -> SwLock6Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK7 Register
@@ -1431,7 +1410,6 @@ impl SwLock7 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK7 value type for batch read/modify/write operations
@@ -1497,7 +1475,6 @@ impl SwLock7Val {
             bits: (self.bits & !SwLock7::SEC_MASK) | ((value << SwLock7::SEC_OFFSET) & SwLock7::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock7Val {
@@ -1524,7 +1501,6 @@ impl SwLock7 {
     pub fn modify_val<F: FnOnce(SwLock7Val) -> SwLock7Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK8 Register
@@ -1621,7 +1597,6 @@ impl SwLock8 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK8 value type for batch read/modify/write operations
@@ -1687,7 +1662,6 @@ impl SwLock8Val {
             bits: (self.bits & !SwLock8::SEC_MASK) | ((value << SwLock8::SEC_OFFSET) & SwLock8::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock8Val {
@@ -1714,7 +1688,6 @@ impl SwLock8 {
     pub fn modify_val<F: FnOnce(SwLock8Val) -> SwLock8Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK9 Register
@@ -1811,7 +1784,6 @@ impl SwLock9 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK9 value type for batch read/modify/write operations
@@ -1877,7 +1849,6 @@ impl SwLock9Val {
             bits: (self.bits & !SwLock9::SEC_MASK) | ((value << SwLock9::SEC_OFFSET) & SwLock9::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock9Val {
@@ -1904,7 +1875,6 @@ impl SwLock9 {
     pub fn modify_val<F: FnOnce(SwLock9Val) -> SwLock9Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK10 Register
@@ -2001,7 +1971,6 @@ impl SwLock10 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK10 value type for batch read/modify/write operations
@@ -2067,7 +2036,6 @@ impl SwLock10Val {
             bits: (self.bits & !SwLock10::SEC_MASK) | ((value << SwLock10::SEC_OFFSET) & SwLock10::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock10Val {
@@ -2094,7 +2062,6 @@ impl SwLock10 {
     pub fn modify_val<F: FnOnce(SwLock10Val) -> SwLock10Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK11 Register
@@ -2191,7 +2158,6 @@ impl SwLock11 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK11 value type for batch read/modify/write operations
@@ -2257,7 +2223,6 @@ impl SwLock11Val {
             bits: (self.bits & !SwLock11::SEC_MASK) | ((value << SwLock11::SEC_OFFSET) & SwLock11::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock11Val {
@@ -2284,7 +2249,6 @@ impl SwLock11 {
     pub fn modify_val<F: FnOnce(SwLock11Val) -> SwLock11Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK12 Register
@@ -2381,7 +2345,6 @@ impl SwLock12 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK12 value type for batch read/modify/write operations
@@ -2447,7 +2410,6 @@ impl SwLock12Val {
             bits: (self.bits & !SwLock12::SEC_MASK) | ((value << SwLock12::SEC_OFFSET) & SwLock12::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock12Val {
@@ -2474,7 +2436,6 @@ impl SwLock12 {
     pub fn modify_val<F: FnOnce(SwLock12Val) -> SwLock12Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK13 Register
@@ -2571,7 +2532,6 @@ impl SwLock13 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK13 value type for batch read/modify/write operations
@@ -2637,7 +2597,6 @@ impl SwLock13Val {
             bits: (self.bits & !SwLock13::SEC_MASK) | ((value << SwLock13::SEC_OFFSET) & SwLock13::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock13Val {
@@ -2664,7 +2623,6 @@ impl SwLock13 {
     pub fn modify_val<F: FnOnce(SwLock13Val) -> SwLock13Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK14 Register
@@ -2761,7 +2719,6 @@ impl SwLock14 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK14 value type for batch read/modify/write operations
@@ -2827,7 +2784,6 @@ impl SwLock14Val {
             bits: (self.bits & !SwLock14::SEC_MASK) | ((value << SwLock14::SEC_OFFSET) & SwLock14::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock14Val {
@@ -2854,7 +2810,6 @@ impl SwLock14 {
     pub fn modify_val<F: FnOnce(SwLock14Val) -> SwLock14Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK15 Register
@@ -2951,7 +2906,6 @@ impl SwLock15 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK15 value type for batch read/modify/write operations
@@ -3017,7 +2971,6 @@ impl SwLock15Val {
             bits: (self.bits & !SwLock15::SEC_MASK) | ((value << SwLock15::SEC_OFFSET) & SwLock15::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock15Val {
@@ -3044,7 +2997,6 @@ impl SwLock15 {
     pub fn modify_val<F: FnOnce(SwLock15Val) -> SwLock15Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK16 Register
@@ -3141,7 +3093,6 @@ impl SwLock16 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK16 value type for batch read/modify/write operations
@@ -3207,7 +3158,6 @@ impl SwLock16Val {
             bits: (self.bits & !SwLock16::SEC_MASK) | ((value << SwLock16::SEC_OFFSET) & SwLock16::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock16Val {
@@ -3234,7 +3184,6 @@ impl SwLock16 {
     pub fn modify_val<F: FnOnce(SwLock16Val) -> SwLock16Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK17 Register
@@ -3331,7 +3280,6 @@ impl SwLock17 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK17 value type for batch read/modify/write operations
@@ -3397,7 +3345,6 @@ impl SwLock17Val {
             bits: (self.bits & !SwLock17::SEC_MASK) | ((value << SwLock17::SEC_OFFSET) & SwLock17::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock17Val {
@@ -3424,7 +3371,6 @@ impl SwLock17 {
     pub fn modify_val<F: FnOnce(SwLock17Val) -> SwLock17Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK18 Register
@@ -3521,7 +3467,6 @@ impl SwLock18 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK18 value type for batch read/modify/write operations
@@ -3587,7 +3532,6 @@ impl SwLock18Val {
             bits: (self.bits & !SwLock18::SEC_MASK) | ((value << SwLock18::SEC_OFFSET) & SwLock18::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock18Val {
@@ -3614,7 +3558,6 @@ impl SwLock18 {
     pub fn modify_val<F: FnOnce(SwLock18Val) -> SwLock18Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK19 Register
@@ -3711,7 +3654,6 @@ impl SwLock19 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK19 value type for batch read/modify/write operations
@@ -3777,7 +3719,6 @@ impl SwLock19Val {
             bits: (self.bits & !SwLock19::SEC_MASK) | ((value << SwLock19::SEC_OFFSET) & SwLock19::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock19Val {
@@ -3804,7 +3745,6 @@ impl SwLock19 {
     pub fn modify_val<F: FnOnce(SwLock19Val) -> SwLock19Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK20 Register
@@ -3901,7 +3841,6 @@ impl SwLock20 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK20 value type for batch read/modify/write operations
@@ -3967,7 +3906,6 @@ impl SwLock20Val {
             bits: (self.bits & !SwLock20::SEC_MASK) | ((value << SwLock20::SEC_OFFSET) & SwLock20::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock20Val {
@@ -3994,7 +3932,6 @@ impl SwLock20 {
     pub fn modify_val<F: FnOnce(SwLock20Val) -> SwLock20Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK21 Register
@@ -4091,7 +4028,6 @@ impl SwLock21 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK21 value type for batch read/modify/write operations
@@ -4157,7 +4093,6 @@ impl SwLock21Val {
             bits: (self.bits & !SwLock21::SEC_MASK) | ((value << SwLock21::SEC_OFFSET) & SwLock21::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock21Val {
@@ -4184,7 +4119,6 @@ impl SwLock21 {
     pub fn modify_val<F: FnOnce(SwLock21Val) -> SwLock21Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK22 Register
@@ -4281,7 +4215,6 @@ impl SwLock22 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK22 value type for batch read/modify/write operations
@@ -4347,7 +4280,6 @@ impl SwLock22Val {
             bits: (self.bits & !SwLock22::SEC_MASK) | ((value << SwLock22::SEC_OFFSET) & SwLock22::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock22Val {
@@ -4374,7 +4306,6 @@ impl SwLock22 {
     pub fn modify_val<F: FnOnce(SwLock22Val) -> SwLock22Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK23 Register
@@ -4471,7 +4402,6 @@ impl SwLock23 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK23 value type for batch read/modify/write operations
@@ -4537,7 +4467,6 @@ impl SwLock23Val {
             bits: (self.bits & !SwLock23::SEC_MASK) | ((value << SwLock23::SEC_OFFSET) & SwLock23::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock23Val {
@@ -4564,7 +4493,6 @@ impl SwLock23 {
     pub fn modify_val<F: FnOnce(SwLock23Val) -> SwLock23Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK24 Register
@@ -4661,7 +4589,6 @@ impl SwLock24 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK24 value type for batch read/modify/write operations
@@ -4727,7 +4654,6 @@ impl SwLock24Val {
             bits: (self.bits & !SwLock24::SEC_MASK) | ((value << SwLock24::SEC_OFFSET) & SwLock24::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock24Val {
@@ -4754,7 +4680,6 @@ impl SwLock24 {
     pub fn modify_val<F: FnOnce(SwLock24Val) -> SwLock24Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK25 Register
@@ -4851,7 +4776,6 @@ impl SwLock25 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK25 value type for batch read/modify/write operations
@@ -4917,7 +4841,6 @@ impl SwLock25Val {
             bits: (self.bits & !SwLock25::SEC_MASK) | ((value << SwLock25::SEC_OFFSET) & SwLock25::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock25Val {
@@ -4944,7 +4867,6 @@ impl SwLock25 {
     pub fn modify_val<F: FnOnce(SwLock25Val) -> SwLock25Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK26 Register
@@ -5041,7 +4963,6 @@ impl SwLock26 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK26 value type for batch read/modify/write operations
@@ -5107,7 +5028,6 @@ impl SwLock26Val {
             bits: (self.bits & !SwLock26::SEC_MASK) | ((value << SwLock26::SEC_OFFSET) & SwLock26::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock26Val {
@@ -5134,7 +5054,6 @@ impl SwLock26 {
     pub fn modify_val<F: FnOnce(SwLock26Val) -> SwLock26Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK27 Register
@@ -5231,7 +5150,6 @@ impl SwLock27 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK27 value type for batch read/modify/write operations
@@ -5297,7 +5215,6 @@ impl SwLock27Val {
             bits: (self.bits & !SwLock27::SEC_MASK) | ((value << SwLock27::SEC_OFFSET) & SwLock27::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock27Val {
@@ -5324,7 +5241,6 @@ impl SwLock27 {
     pub fn modify_val<F: FnOnce(SwLock27Val) -> SwLock27Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK28 Register
@@ -5421,7 +5337,6 @@ impl SwLock28 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK28 value type for batch read/modify/write operations
@@ -5487,7 +5402,6 @@ impl SwLock28Val {
             bits: (self.bits & !SwLock28::SEC_MASK) | ((value << SwLock28::SEC_OFFSET) & SwLock28::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock28Val {
@@ -5514,7 +5428,6 @@ impl SwLock28 {
     pub fn modify_val<F: FnOnce(SwLock28Val) -> SwLock28Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK29 Register
@@ -5611,7 +5524,6 @@ impl SwLock29 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK29 value type for batch read/modify/write operations
@@ -5677,7 +5589,6 @@ impl SwLock29Val {
             bits: (self.bits & !SwLock29::SEC_MASK) | ((value << SwLock29::SEC_OFFSET) & SwLock29::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock29Val {
@@ -5704,7 +5615,6 @@ impl SwLock29 {
     pub fn modify_val<F: FnOnce(SwLock29Val) -> SwLock29Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK30 Register
@@ -5801,7 +5711,6 @@ impl SwLock30 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK30 value type for batch read/modify/write operations
@@ -5867,7 +5776,6 @@ impl SwLock30Val {
             bits: (self.bits & !SwLock30::SEC_MASK) | ((value << SwLock30::SEC_OFFSET) & SwLock30::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock30Val {
@@ -5894,7 +5802,6 @@ impl SwLock30 {
     pub fn modify_val<F: FnOnce(SwLock30Val) -> SwLock30Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK31 Register
@@ -5991,7 +5898,6 @@ impl SwLock31 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK31 value type for batch read/modify/write operations
@@ -6057,7 +5963,6 @@ impl SwLock31Val {
             bits: (self.bits & !SwLock31::SEC_MASK) | ((value << SwLock31::SEC_OFFSET) & SwLock31::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock31Val {
@@ -6084,7 +5989,6 @@ impl SwLock31 {
     pub fn modify_val<F: FnOnce(SwLock31Val) -> SwLock31Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK32 Register
@@ -6181,7 +6085,6 @@ impl SwLock32 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK32 value type for batch read/modify/write operations
@@ -6247,7 +6150,6 @@ impl SwLock32Val {
             bits: (self.bits & !SwLock32::SEC_MASK) | ((value << SwLock32::SEC_OFFSET) & SwLock32::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock32Val {
@@ -6274,7 +6176,6 @@ impl SwLock32 {
     pub fn modify_val<F: FnOnce(SwLock32Val) -> SwLock32Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK33 Register
@@ -6371,7 +6272,6 @@ impl SwLock33 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK33 value type for batch read/modify/write operations
@@ -6437,7 +6337,6 @@ impl SwLock33Val {
             bits: (self.bits & !SwLock33::SEC_MASK) | ((value << SwLock33::SEC_OFFSET) & SwLock33::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock33Val {
@@ -6464,7 +6363,6 @@ impl SwLock33 {
     pub fn modify_val<F: FnOnce(SwLock33Val) -> SwLock33Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK34 Register
@@ -6561,7 +6459,6 @@ impl SwLock34 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK34 value type for batch read/modify/write operations
@@ -6627,7 +6524,6 @@ impl SwLock34Val {
             bits: (self.bits & !SwLock34::SEC_MASK) | ((value << SwLock34::SEC_OFFSET) & SwLock34::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock34Val {
@@ -6654,7 +6550,6 @@ impl SwLock34 {
     pub fn modify_val<F: FnOnce(SwLock34Val) -> SwLock34Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK35 Register
@@ -6751,7 +6646,6 @@ impl SwLock35 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK35 value type for batch read/modify/write operations
@@ -6817,7 +6711,6 @@ impl SwLock35Val {
             bits: (self.bits & !SwLock35::SEC_MASK) | ((value << SwLock35::SEC_OFFSET) & SwLock35::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock35Val {
@@ -6844,7 +6737,6 @@ impl SwLock35 {
     pub fn modify_val<F: FnOnce(SwLock35Val) -> SwLock35Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK36 Register
@@ -6941,7 +6833,6 @@ impl SwLock36 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK36 value type for batch read/modify/write operations
@@ -7007,7 +6898,6 @@ impl SwLock36Val {
             bits: (self.bits & !SwLock36::SEC_MASK) | ((value << SwLock36::SEC_OFFSET) & SwLock36::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock36Val {
@@ -7034,7 +6924,6 @@ impl SwLock36 {
     pub fn modify_val<F: FnOnce(SwLock36Val) -> SwLock36Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK37 Register
@@ -7131,7 +7020,6 @@ impl SwLock37 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK37 value type for batch read/modify/write operations
@@ -7197,7 +7085,6 @@ impl SwLock37Val {
             bits: (self.bits & !SwLock37::SEC_MASK) | ((value << SwLock37::SEC_OFFSET) & SwLock37::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock37Val {
@@ -7224,7 +7111,6 @@ impl SwLock37 {
     pub fn modify_val<F: FnOnce(SwLock37Val) -> SwLock37Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK38 Register
@@ -7321,7 +7207,6 @@ impl SwLock38 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK38 value type for batch read/modify/write operations
@@ -7387,7 +7272,6 @@ impl SwLock38Val {
             bits: (self.bits & !SwLock38::SEC_MASK) | ((value << SwLock38::SEC_OFFSET) & SwLock38::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock38Val {
@@ -7414,7 +7298,6 @@ impl SwLock38 {
     pub fn modify_val<F: FnOnce(SwLock38Val) -> SwLock38Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK39 Register
@@ -7511,7 +7394,6 @@ impl SwLock39 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK39 value type for batch read/modify/write operations
@@ -7577,7 +7459,6 @@ impl SwLock39Val {
             bits: (self.bits & !SwLock39::SEC_MASK) | ((value << SwLock39::SEC_OFFSET) & SwLock39::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock39Val {
@@ -7604,7 +7485,6 @@ impl SwLock39 {
     pub fn modify_val<F: FnOnce(SwLock39Val) -> SwLock39Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK40 Register
@@ -7701,7 +7581,6 @@ impl SwLock40 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK40 value type for batch read/modify/write operations
@@ -7767,7 +7646,6 @@ impl SwLock40Val {
             bits: (self.bits & !SwLock40::SEC_MASK) | ((value << SwLock40::SEC_OFFSET) & SwLock40::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock40Val {
@@ -7794,7 +7672,6 @@ impl SwLock40 {
     pub fn modify_val<F: FnOnce(SwLock40Val) -> SwLock40Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK41 Register
@@ -7891,7 +7768,6 @@ impl SwLock41 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK41 value type for batch read/modify/write operations
@@ -7957,7 +7833,6 @@ impl SwLock41Val {
             bits: (self.bits & !SwLock41::SEC_MASK) | ((value << SwLock41::SEC_OFFSET) & SwLock41::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock41Val {
@@ -7984,7 +7859,6 @@ impl SwLock41 {
     pub fn modify_val<F: FnOnce(SwLock41Val) -> SwLock41Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK42 Register
@@ -8081,7 +7955,6 @@ impl SwLock42 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK42 value type for batch read/modify/write operations
@@ -8147,7 +8020,6 @@ impl SwLock42Val {
             bits: (self.bits & !SwLock42::SEC_MASK) | ((value << SwLock42::SEC_OFFSET) & SwLock42::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock42Val {
@@ -8174,7 +8046,6 @@ impl SwLock42 {
     pub fn modify_val<F: FnOnce(SwLock42Val) -> SwLock42Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK43 Register
@@ -8271,7 +8142,6 @@ impl SwLock43 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK43 value type for batch read/modify/write operations
@@ -8337,7 +8207,6 @@ impl SwLock43Val {
             bits: (self.bits & !SwLock43::SEC_MASK) | ((value << SwLock43::SEC_OFFSET) & SwLock43::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock43Val {
@@ -8364,7 +8233,6 @@ impl SwLock43 {
     pub fn modify_val<F: FnOnce(SwLock43Val) -> SwLock43Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK44 Register
@@ -8461,7 +8329,6 @@ impl SwLock44 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK44 value type for batch read/modify/write operations
@@ -8527,7 +8394,6 @@ impl SwLock44Val {
             bits: (self.bits & !SwLock44::SEC_MASK) | ((value << SwLock44::SEC_OFFSET) & SwLock44::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock44Val {
@@ -8554,7 +8420,6 @@ impl SwLock44 {
     pub fn modify_val<F: FnOnce(SwLock44Val) -> SwLock44Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK45 Register
@@ -8651,7 +8516,6 @@ impl SwLock45 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK45 value type for batch read/modify/write operations
@@ -8717,7 +8581,6 @@ impl SwLock45Val {
             bits: (self.bits & !SwLock45::SEC_MASK) | ((value << SwLock45::SEC_OFFSET) & SwLock45::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock45Val {
@@ -8744,7 +8607,6 @@ impl SwLock45 {
     pub fn modify_val<F: FnOnce(SwLock45Val) -> SwLock45Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK46 Register
@@ -8841,7 +8703,6 @@ impl SwLock46 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK46 value type for batch read/modify/write operations
@@ -8907,7 +8768,6 @@ impl SwLock46Val {
             bits: (self.bits & !SwLock46::SEC_MASK) | ((value << SwLock46::SEC_OFFSET) & SwLock46::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock46Val {
@@ -8934,7 +8794,6 @@ impl SwLock46 {
     pub fn modify_val<F: FnOnce(SwLock46Val) -> SwLock46Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK47 Register
@@ -9031,7 +8890,6 @@ impl SwLock47 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK47 value type for batch read/modify/write operations
@@ -9097,7 +8955,6 @@ impl SwLock47Val {
             bits: (self.bits & !SwLock47::SEC_MASK) | ((value << SwLock47::SEC_OFFSET) & SwLock47::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock47Val {
@@ -9124,7 +8981,6 @@ impl SwLock47 {
     pub fn modify_val<F: FnOnce(SwLock47Val) -> SwLock47Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK48 Register
@@ -9221,7 +9077,6 @@ impl SwLock48 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK48 value type for batch read/modify/write operations
@@ -9287,7 +9142,6 @@ impl SwLock48Val {
             bits: (self.bits & !SwLock48::SEC_MASK) | ((value << SwLock48::SEC_OFFSET) & SwLock48::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock48Val {
@@ -9314,7 +9168,6 @@ impl SwLock48 {
     pub fn modify_val<F: FnOnce(SwLock48Val) -> SwLock48Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK49 Register
@@ -9411,7 +9264,6 @@ impl SwLock49 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK49 value type for batch read/modify/write operations
@@ -9477,7 +9329,6 @@ impl SwLock49Val {
             bits: (self.bits & !SwLock49::SEC_MASK) | ((value << SwLock49::SEC_OFFSET) & SwLock49::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock49Val {
@@ -9504,7 +9355,6 @@ impl SwLock49 {
     pub fn modify_val<F: FnOnce(SwLock49Val) -> SwLock49Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK50 Register
@@ -9601,7 +9451,6 @@ impl SwLock50 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK50 value type for batch read/modify/write operations
@@ -9667,7 +9516,6 @@ impl SwLock50Val {
             bits: (self.bits & !SwLock50::SEC_MASK) | ((value << SwLock50::SEC_OFFSET) & SwLock50::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock50Val {
@@ -9694,7 +9542,6 @@ impl SwLock50 {
     pub fn modify_val<F: FnOnce(SwLock50Val) -> SwLock50Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK51 Register
@@ -9791,7 +9638,6 @@ impl SwLock51 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK51 value type for batch read/modify/write operations
@@ -9857,7 +9703,6 @@ impl SwLock51Val {
             bits: (self.bits & !SwLock51::SEC_MASK) | ((value << SwLock51::SEC_OFFSET) & SwLock51::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock51Val {
@@ -9884,7 +9729,6 @@ impl SwLock51 {
     pub fn modify_val<F: FnOnce(SwLock51Val) -> SwLock51Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK52 Register
@@ -9981,7 +9825,6 @@ impl SwLock52 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK52 value type for batch read/modify/write operations
@@ -10047,7 +9890,6 @@ impl SwLock52Val {
             bits: (self.bits & !SwLock52::SEC_MASK) | ((value << SwLock52::SEC_OFFSET) & SwLock52::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock52Val {
@@ -10074,7 +9916,6 @@ impl SwLock52 {
     pub fn modify_val<F: FnOnce(SwLock52Val) -> SwLock52Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK53 Register
@@ -10171,7 +10012,6 @@ impl SwLock53 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK53 value type for batch read/modify/write operations
@@ -10237,7 +10077,6 @@ impl SwLock53Val {
             bits: (self.bits & !SwLock53::SEC_MASK) | ((value << SwLock53::SEC_OFFSET) & SwLock53::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock53Val {
@@ -10264,7 +10103,6 @@ impl SwLock53 {
     pub fn modify_val<F: FnOnce(SwLock53Val) -> SwLock53Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK54 Register
@@ -10361,7 +10199,6 @@ impl SwLock54 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK54 value type for batch read/modify/write operations
@@ -10427,7 +10264,6 @@ impl SwLock54Val {
             bits: (self.bits & !SwLock54::SEC_MASK) | ((value << SwLock54::SEC_OFFSET) & SwLock54::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock54Val {
@@ -10454,7 +10290,6 @@ impl SwLock54 {
     pub fn modify_val<F: FnOnce(SwLock54Val) -> SwLock54Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK55 Register
@@ -10551,7 +10386,6 @@ impl SwLock55 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK55 value type for batch read/modify/write operations
@@ -10617,7 +10451,6 @@ impl SwLock55Val {
             bits: (self.bits & !SwLock55::SEC_MASK) | ((value << SwLock55::SEC_OFFSET) & SwLock55::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock55Val {
@@ -10644,7 +10477,6 @@ impl SwLock55 {
     pub fn modify_val<F: FnOnce(SwLock55Val) -> SwLock55Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK56 Register
@@ -10741,7 +10573,6 @@ impl SwLock56 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK56 value type for batch read/modify/write operations
@@ -10807,7 +10638,6 @@ impl SwLock56Val {
             bits: (self.bits & !SwLock56::SEC_MASK) | ((value << SwLock56::SEC_OFFSET) & SwLock56::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock56Val {
@@ -10834,7 +10664,6 @@ impl SwLock56 {
     pub fn modify_val<F: FnOnce(SwLock56Val) -> SwLock56Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK57 Register
@@ -10931,7 +10760,6 @@ impl SwLock57 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK57 value type for batch read/modify/write operations
@@ -10997,7 +10825,6 @@ impl SwLock57Val {
             bits: (self.bits & !SwLock57::SEC_MASK) | ((value << SwLock57::SEC_OFFSET) & SwLock57::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock57Val {
@@ -11024,7 +10851,6 @@ impl SwLock57 {
     pub fn modify_val<F: FnOnce(SwLock57Val) -> SwLock57Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK58 Register
@@ -11121,7 +10947,6 @@ impl SwLock58 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK58 value type for batch read/modify/write operations
@@ -11187,7 +11012,6 @@ impl SwLock58Val {
             bits: (self.bits & !SwLock58::SEC_MASK) | ((value << SwLock58::SEC_OFFSET) & SwLock58::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock58Val {
@@ -11214,7 +11038,6 @@ impl SwLock58 {
     pub fn modify_val<F: FnOnce(SwLock58Val) -> SwLock58Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK59 Register
@@ -11311,7 +11134,6 @@ impl SwLock59 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK59 value type for batch read/modify/write operations
@@ -11377,7 +11199,6 @@ impl SwLock59Val {
             bits: (self.bits & !SwLock59::SEC_MASK) | ((value << SwLock59::SEC_OFFSET) & SwLock59::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock59Val {
@@ -11404,7 +11225,6 @@ impl SwLock59 {
     pub fn modify_val<F: FnOnce(SwLock59Val) -> SwLock59Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK60 Register
@@ -11501,7 +11321,6 @@ impl SwLock60 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK60 value type for batch read/modify/write operations
@@ -11567,7 +11386,6 @@ impl SwLock60Val {
             bits: (self.bits & !SwLock60::SEC_MASK) | ((value << SwLock60::SEC_OFFSET) & SwLock60::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock60Val {
@@ -11594,7 +11412,6 @@ impl SwLock60 {
     pub fn modify_val<F: FnOnce(SwLock60Val) -> SwLock60Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK61 Register
@@ -11691,7 +11508,6 @@ impl SwLock61 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK61 value type for batch read/modify/write operations
@@ -11757,7 +11573,6 @@ impl SwLock61Val {
             bits: (self.bits & !SwLock61::SEC_MASK) | ((value << SwLock61::SEC_OFFSET) & SwLock61::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock61Val {
@@ -11784,7 +11599,6 @@ impl SwLock61 {
     pub fn modify_val<F: FnOnce(SwLock61Val) -> SwLock61Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK62 Register
@@ -11881,7 +11695,6 @@ impl SwLock62 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK62 value type for batch read/modify/write operations
@@ -11947,7 +11760,6 @@ impl SwLock62Val {
             bits: (self.bits & !SwLock62::SEC_MASK) | ((value << SwLock62::SEC_OFFSET) & SwLock62::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock62Val {
@@ -11974,7 +11786,6 @@ impl SwLock62 {
     pub fn modify_val<F: FnOnce(SwLock62Val) -> SwLock62Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SW_LOCK63 Register
@@ -12071,7 +11882,6 @@ impl SwLock63 {
     pub fn write_sec(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
     }
-
 }
 
 /// SW_LOCK63 value type for batch read/modify/write operations
@@ -12137,7 +11947,6 @@ impl SwLock63Val {
             bits: (self.bits & !SwLock63::SEC_MASK) | ((value << SwLock63::SEC_OFFSET) & SwLock63::SEC_MASK)
         }
     }
-
 }
 
 impl Default for SwLock63Val {
@@ -12164,7 +11973,6 @@ impl SwLock63 {
     pub fn modify_val<F: FnOnce(SwLock63Val) -> SwLock63Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SBPI_INSTR Register
@@ -12280,7 +12088,7 @@ impl SbpiInstr {
     /// Execute instruction
     #[inline(always)]
     pub fn trigger_exec(&self) {
-        self.value.write_bits(Self::EXEC_MASK);
+        self.set_bits(Self::EXEC_MASK);
     }
 
     /// **IS_WR** `[29]` (RW)
@@ -12382,7 +12190,6 @@ impl SbpiInstr {
     pub fn write_short_wdata(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SHORT_WDATA_MASK) | ((value << Self::SHORT_WDATA_OFFSET) & Self::SHORT_WDATA_MASK));
     }
-
 }
 
 /// SBPI_INSTR value type for batch read/modify/write operations
@@ -12538,7 +12345,6 @@ impl SbpiInstrVal {
             bits: (self.bits & !SbpiInstr::SHORT_WDATA_MASK) | ((value << SbpiInstr::SHORT_WDATA_OFFSET) & SbpiInstr::SHORT_WDATA_MASK)
         }
     }
-
 }
 
 impl Default for SbpiInstrVal {
@@ -12565,7 +12371,6 @@ impl SbpiInstr {
     pub fn modify_val<F: FnOnce(SbpiInstrVal) -> SbpiInstrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SBPI_WDATA_0 Register
@@ -12612,7 +12417,6 @@ impl SbpiWdata0 {
     pub fn write_sbpi_wdata_0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SBPI_WDATA_0_MASK) | ((value << Self::SBPI_WDATA_0_OFFSET) & Self::SBPI_WDATA_0_MASK));
     }
-
 }
 
 /// SBPI_WDATA_0 value type for batch read/modify/write operations
@@ -12656,7 +12460,6 @@ impl SbpiWdata0Val {
             bits: (self.bits & !SbpiWdata0::SBPI_WDATA_0_MASK) | ((value << SbpiWdata0::SBPI_WDATA_0_OFFSET) & SbpiWdata0::SBPI_WDATA_0_MASK)
         }
     }
-
 }
 
 impl Default for SbpiWdata0Val {
@@ -12683,7 +12486,6 @@ impl SbpiWdata0 {
     pub fn modify_val<F: FnOnce(SbpiWdata0Val) -> SbpiWdata0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SBPI_WDATA_1 Register
@@ -12730,7 +12532,6 @@ impl SbpiWdata1 {
     pub fn write_sbpi_wdata_1(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SBPI_WDATA_1_MASK) | ((value << Self::SBPI_WDATA_1_OFFSET) & Self::SBPI_WDATA_1_MASK));
     }
-
 }
 
 /// SBPI_WDATA_1 value type for batch read/modify/write operations
@@ -12774,7 +12575,6 @@ impl SbpiWdata1Val {
             bits: (self.bits & !SbpiWdata1::SBPI_WDATA_1_MASK) | ((value << SbpiWdata1::SBPI_WDATA_1_OFFSET) & SbpiWdata1::SBPI_WDATA_1_MASK)
         }
     }
-
 }
 
 impl Default for SbpiWdata1Val {
@@ -12801,7 +12601,6 @@ impl SbpiWdata1 {
     pub fn modify_val<F: FnOnce(SbpiWdata1Val) -> SbpiWdata1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SBPI_WDATA_2 Register
@@ -12848,7 +12647,6 @@ impl SbpiWdata2 {
     pub fn write_sbpi_wdata_2(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SBPI_WDATA_2_MASK) | ((value << Self::SBPI_WDATA_2_OFFSET) & Self::SBPI_WDATA_2_MASK));
     }
-
 }
 
 /// SBPI_WDATA_2 value type for batch read/modify/write operations
@@ -12892,7 +12690,6 @@ impl SbpiWdata2Val {
             bits: (self.bits & !SbpiWdata2::SBPI_WDATA_2_MASK) | ((value << SbpiWdata2::SBPI_WDATA_2_OFFSET) & SbpiWdata2::SBPI_WDATA_2_MASK)
         }
     }
-
 }
 
 impl Default for SbpiWdata2Val {
@@ -12919,7 +12716,6 @@ impl SbpiWdata2 {
     pub fn modify_val<F: FnOnce(SbpiWdata2Val) -> SbpiWdata2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SBPI_WDATA_3 Register
@@ -12966,7 +12762,6 @@ impl SbpiWdata3 {
     pub fn write_sbpi_wdata_3(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SBPI_WDATA_3_MASK) | ((value << Self::SBPI_WDATA_3_OFFSET) & Self::SBPI_WDATA_3_MASK));
     }
-
 }
 
 /// SBPI_WDATA_3 value type for batch read/modify/write operations
@@ -13010,7 +12805,6 @@ impl SbpiWdata3Val {
             bits: (self.bits & !SbpiWdata3::SBPI_WDATA_3_MASK) | ((value << SbpiWdata3::SBPI_WDATA_3_OFFSET) & SbpiWdata3::SBPI_WDATA_3_MASK)
         }
     }
-
 }
 
 impl Default for SbpiWdata3Val {
@@ -13037,7 +12831,6 @@ impl SbpiWdata3 {
     pub fn modify_val<F: FnOnce(SbpiWdata3Val) -> SbpiWdata3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SBPI_RDATA_0 Register
@@ -13078,7 +12871,6 @@ impl SbpiRdata0 {
     pub fn sbpi_rdata_0(&self) -> u32 {
         (self.value.read_bits() & Self::SBPI_RDATA_0_MASK) >> Self::SBPI_RDATA_0_OFFSET
     }
-
 }
 
 /// SBPI_RDATA_0 value type for batch read/modify/write operations
@@ -13114,7 +12906,6 @@ impl SbpiRdata0Val {
     pub const fn sbpi_rdata_0(&self) -> u32 {
         (self.bits & SbpiRdata0::SBPI_RDATA_0_MASK) >> SbpiRdata0::SBPI_RDATA_0_OFFSET
     }
-
 }
 
 impl Default for SbpiRdata0Val {
@@ -13129,19 +12920,6 @@ impl SbpiRdata0 {
     pub fn read_val(&self) -> SbpiRdata0Val {
         SbpiRdata0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: SbpiRdata0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(SbpiRdata0Val) -> SbpiRdata0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SBPI_RDATA_1 Register
@@ -13182,7 +12960,6 @@ impl SbpiRdata1 {
     pub fn sbpi_rdata_1(&self) -> u32 {
         (self.value.read_bits() & Self::SBPI_RDATA_1_MASK) >> Self::SBPI_RDATA_1_OFFSET
     }
-
 }
 
 /// SBPI_RDATA_1 value type for batch read/modify/write operations
@@ -13218,7 +12995,6 @@ impl SbpiRdata1Val {
     pub const fn sbpi_rdata_1(&self) -> u32 {
         (self.bits & SbpiRdata1::SBPI_RDATA_1_MASK) >> SbpiRdata1::SBPI_RDATA_1_OFFSET
     }
-
 }
 
 impl Default for SbpiRdata1Val {
@@ -13233,19 +13009,6 @@ impl SbpiRdata1 {
     pub fn read_val(&self) -> SbpiRdata1Val {
         SbpiRdata1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: SbpiRdata1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(SbpiRdata1Val) -> SbpiRdata1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SBPI_RDATA_2 Register
@@ -13286,7 +13049,6 @@ impl SbpiRdata2 {
     pub fn sbpi_rdata_2(&self) -> u32 {
         (self.value.read_bits() & Self::SBPI_RDATA_2_MASK) >> Self::SBPI_RDATA_2_OFFSET
     }
-
 }
 
 /// SBPI_RDATA_2 value type for batch read/modify/write operations
@@ -13322,7 +13084,6 @@ impl SbpiRdata2Val {
     pub const fn sbpi_rdata_2(&self) -> u32 {
         (self.bits & SbpiRdata2::SBPI_RDATA_2_MASK) >> SbpiRdata2::SBPI_RDATA_2_OFFSET
     }
-
 }
 
 impl Default for SbpiRdata2Val {
@@ -13337,19 +13098,6 @@ impl SbpiRdata2 {
     pub fn read_val(&self) -> SbpiRdata2Val {
         SbpiRdata2Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: SbpiRdata2Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(SbpiRdata2Val) -> SbpiRdata2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SBPI_RDATA_3 Register
@@ -13390,7 +13138,6 @@ impl SbpiRdata3 {
     pub fn sbpi_rdata_3(&self) -> u32 {
         (self.value.read_bits() & Self::SBPI_RDATA_3_MASK) >> Self::SBPI_RDATA_3_OFFSET
     }
-
 }
 
 /// SBPI_RDATA_3 value type for batch read/modify/write operations
@@ -13426,7 +13173,6 @@ impl SbpiRdata3Val {
     pub const fn sbpi_rdata_3(&self) -> u32 {
         (self.bits & SbpiRdata3::SBPI_RDATA_3_MASK) >> SbpiRdata3::SBPI_RDATA_3_OFFSET
     }
-
 }
 
 impl Default for SbpiRdata3Val {
@@ -13441,19 +13187,6 @@ impl SbpiRdata3 {
     pub fn read_val(&self) -> SbpiRdata3Val {
         SbpiRdata3Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: SbpiRdata3Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(SbpiRdata3Val) -> SbpiRdata3Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SBPI_STATUS Register
@@ -13619,7 +13352,6 @@ impl SbpiStatus {
     pub fn clr_rdata_vld(&self) {
         self.clr_bits(Self::RDATA_VLD_MASK);
     }
-
 }
 
 /// SBPI_STATUS value type for batch read/modify/write operations
@@ -13731,7 +13463,6 @@ impl SbpiStatusVal {
             }
         }
     }
-
 }
 
 impl Default for SbpiStatusVal {
@@ -13758,7 +13489,6 @@ impl SbpiStatus {
     pub fn modify_val<F: FnOnce(SbpiStatusVal) -> SbpiStatusVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// USR Register
@@ -13855,7 +13585,6 @@ impl Usr {
     pub fn clr_dctrl(&self) {
         self.clr_bits(Self::DCTRL_MASK);
     }
-
 }
 
 /// USR value type for batch read/modify/write operations
@@ -13931,7 +13660,6 @@ impl UsrVal {
             }
         }
     }
-
 }
 
 impl Default for UsrVal {
@@ -13958,7 +13686,6 @@ impl Usr {
     pub fn modify_val<F: FnOnce(UsrVal) -> UsrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DBG Register
@@ -14123,7 +13850,6 @@ impl Dbg {
     pub fn psm_done(&self) -> bool {
         (self.value.read_bits() & Self::PSM_DONE_MASK) != 0
     }
-
 }
 
 /// DBG value type for batch read/modify/write operations
@@ -14215,7 +13941,6 @@ impl DbgVal {
             }
         }
     }
-
 }
 
 impl Default for DbgVal {
@@ -14242,7 +13967,6 @@ impl Dbg {
     pub fn modify_val<F: FnOnce(DbgVal) -> DbgVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// BIST Register
@@ -14347,7 +14071,7 @@ impl Bist {
     /// Clear counter before use
     #[inline(always)]
     pub fn trigger_cnt_clr(&self) {
-        self.value.write_bits(Self::CNT_CLR_MASK);
+        self.set_bits(Self::CNT_CLR_MASK);
     }
 
     /// **CNT_ENA** `[28]` (RW)
@@ -14393,7 +14117,6 @@ impl Bist {
     pub fn cnt(&self) -> u32 {
         (self.value.read_bits() & Self::CNT_MASK) >> Self::CNT_OFFSET
     }
-
 }
 
 /// BIST value type for batch read/modify/write operations
@@ -14493,7 +14216,6 @@ impl BistVal {
             bits: (self.bits & !Bist::CNT_MAX_MASK) | ((value << Bist::CNT_MAX_OFFSET) & Bist::CNT_MAX_MASK)
         }
     }
-
 }
 
 impl Default for BistVal {
@@ -14520,7 +14242,6 @@ impl Bist {
     pub fn modify_val<F: FnOnce(BistVal) -> BistVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CRT_KEY_W0 Register
@@ -14561,7 +14282,6 @@ impl CrtKeyW0 {
     pub fn write_crt_key_w0(&self, value: u32) {
         self.value.write_bits((value << Self::CRT_KEY_W0_OFFSET) & Self::CRT_KEY_W0_MASK);
     }
-
 }
 
 /// CRT_KEY_W0 value type for batch read/modify/write operations
@@ -14599,7 +14319,6 @@ impl CrtKeyW0Val {
             bits: (self.bits & !CrtKeyW0::CRT_KEY_W0_MASK) | ((value << CrtKeyW0::CRT_KEY_W0_OFFSET) & CrtKeyW0::CRT_KEY_W0_MASK)
         }
     }
-
 }
 
 impl Default for CrtKeyW0Val {
@@ -14609,24 +14328,11 @@ impl Default for CrtKeyW0Val {
 }
 
 impl CrtKeyW0 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> CrtKeyW0Val {
-        CrtKeyW0Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: CrtKeyW0Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(CrtKeyW0Val) -> CrtKeyW0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CRT_KEY_W1 Register
@@ -14667,7 +14373,6 @@ impl CrtKeyW1 {
     pub fn write_crt_key_w1(&self, value: u32) {
         self.value.write_bits((value << Self::CRT_KEY_W1_OFFSET) & Self::CRT_KEY_W1_MASK);
     }
-
 }
 
 /// CRT_KEY_W1 value type for batch read/modify/write operations
@@ -14705,7 +14410,6 @@ impl CrtKeyW1Val {
             bits: (self.bits & !CrtKeyW1::CRT_KEY_W1_MASK) | ((value << CrtKeyW1::CRT_KEY_W1_OFFSET) & CrtKeyW1::CRT_KEY_W1_MASK)
         }
     }
-
 }
 
 impl Default for CrtKeyW1Val {
@@ -14715,24 +14419,11 @@ impl Default for CrtKeyW1Val {
 }
 
 impl CrtKeyW1 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> CrtKeyW1Val {
-        CrtKeyW1Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: CrtKeyW1Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(CrtKeyW1Val) -> CrtKeyW1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CRT_KEY_W2 Register
@@ -14773,7 +14464,6 @@ impl CrtKeyW2 {
     pub fn write_crt_key_w2(&self, value: u32) {
         self.value.write_bits((value << Self::CRT_KEY_W2_OFFSET) & Self::CRT_KEY_W2_MASK);
     }
-
 }
 
 /// CRT_KEY_W2 value type for batch read/modify/write operations
@@ -14811,7 +14501,6 @@ impl CrtKeyW2Val {
             bits: (self.bits & !CrtKeyW2::CRT_KEY_W2_MASK) | ((value << CrtKeyW2::CRT_KEY_W2_OFFSET) & CrtKeyW2::CRT_KEY_W2_MASK)
         }
     }
-
 }
 
 impl Default for CrtKeyW2Val {
@@ -14821,24 +14510,11 @@ impl Default for CrtKeyW2Val {
 }
 
 impl CrtKeyW2 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> CrtKeyW2Val {
-        CrtKeyW2Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: CrtKeyW2Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(CrtKeyW2Val) -> CrtKeyW2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CRT_KEY_W3 Register
@@ -14879,7 +14555,6 @@ impl CrtKeyW3 {
     pub fn write_crt_key_w3(&self, value: u32) {
         self.value.write_bits((value << Self::CRT_KEY_W3_OFFSET) & Self::CRT_KEY_W3_MASK);
     }
-
 }
 
 /// CRT_KEY_W3 value type for batch read/modify/write operations
@@ -14917,7 +14592,6 @@ impl CrtKeyW3Val {
             bits: (self.bits & !CrtKeyW3::CRT_KEY_W3_MASK) | ((value << CrtKeyW3::CRT_KEY_W3_OFFSET) & CrtKeyW3::CRT_KEY_W3_MASK)
         }
     }
-
 }
 
 impl Default for CrtKeyW3Val {
@@ -14927,24 +14601,11 @@ impl Default for CrtKeyW3Val {
 }
 
 impl CrtKeyW3 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> CrtKeyW3Val {
-        CrtKeyW3Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: CrtKeyW3Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(CrtKeyW3Val) -> CrtKeyW3Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CRITICAL Register
@@ -15083,7 +14744,6 @@ impl Critical {
     pub fn secure_boot_enable(&self) -> bool {
         (self.value.read_bits() & Self::SECURE_BOOT_ENABLE_MASK) != 0
     }
-
 }
 
 /// CRITICAL value type for batch read/modify/write operations
@@ -15161,7 +14821,6 @@ impl CriticalVal {
     pub const fn secure_boot_enable(&self) -> bool {
         (self.bits & Critical::SECURE_BOOT_ENABLE_MASK) != 0
     }
-
 }
 
 impl Default for CriticalVal {
@@ -15176,19 +14835,6 @@ impl Critical {
     pub fn read_val(&self) -> CriticalVal {
         CriticalVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: CriticalVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(CriticalVal) -> CriticalVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// KEY_VALID Register
@@ -15229,7 +14875,6 @@ impl KeyValid {
     pub fn key_valid(&self) -> u32 {
         (self.value.read_bits() & Self::KEY_VALID_MASK) >> Self::KEY_VALID_OFFSET
     }
-
 }
 
 /// KEY_VALID value type for batch read/modify/write operations
@@ -15265,7 +14910,6 @@ impl KeyValidVal {
     pub const fn key_valid(&self) -> u32 {
         (self.bits & KeyValid::KEY_VALID_MASK) >> KeyValid::KEY_VALID_OFFSET
     }
-
 }
 
 impl Default for KeyValidVal {
@@ -15280,19 +14924,6 @@ impl KeyValid {
     pub fn read_val(&self) -> KeyValidVal {
         KeyValidVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: KeyValidVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(KeyValidVal) -> KeyValidVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DEBUGEN Register
@@ -15512,7 +15143,6 @@ impl Debugen {
     pub fn clr_proc0(&self) {
         self.clr_bits(Self::PROC0_MASK);
     }
-
 }
 
 /// DEBUGEN value type for batch read/modify/write operations
@@ -15666,7 +15296,6 @@ impl DebugenVal {
             }
         }
     }
-
 }
 
 impl Default for DebugenVal {
@@ -15693,7 +15322,6 @@ impl Debugen {
     pub fn modify_val<F: FnOnce(DebugenVal) -> DebugenVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DEBUGEN_LOCK Register
@@ -15886,7 +15514,6 @@ impl DebugenLock {
     pub fn clr_proc0(&self) {
         self.clr_bits(Self::PROC0_MASK);
     }
-
 }
 
 /// DEBUGEN_LOCK value type for batch read/modify/write operations
@@ -16026,7 +15653,6 @@ impl DebugenLockVal {
             }
         }
     }
-
 }
 
 impl Default for DebugenLockVal {
@@ -16053,7 +15679,6 @@ impl DebugenLock {
     pub fn modify_val<F: FnOnce(DebugenLockVal) -> DebugenLockVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ARCHSEL Register
@@ -16166,7 +15791,6 @@ impl Archsel {
     pub fn clr_core0(&self) {
         self.clr_bits(Self::CORE0_MASK);
     }
-
 }
 
 /// ARCHSEL value type for batch read/modify/write operations
@@ -16240,7 +15864,6 @@ impl ArchselVal {
             }
         }
     }
-
 }
 
 impl Default for ArchselVal {
@@ -16267,7 +15890,6 @@ impl Archsel {
     pub fn modify_val<F: FnOnce(ArchselVal) -> ArchselVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ARCHSEL_STATUS Register
@@ -16353,7 +15975,6 @@ impl ArchselStatus {
     pub fn core0(&self) -> bool {
         (self.value.read_bits() & Self::CORE0_MASK) != 0
     }
-
 }
 
 /// ARCHSEL_STATUS value type for batch read/modify/write operations
@@ -16399,7 +16020,6 @@ impl ArchselStatusVal {
     pub const fn core0(&self) -> bool {
         (self.bits & ArchselStatus::CORE0_MASK) != 0
     }
-
 }
 
 impl Default for ArchselStatusVal {
@@ -16414,19 +16034,6 @@ impl ArchselStatus {
     pub fn read_val(&self) -> ArchselStatusVal {
         ArchselStatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: ArchselStatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(ArchselStatusVal) -> ArchselStatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// BOOTDIS Register
@@ -16532,7 +16139,6 @@ impl Bootdis {
     pub fn clr_now(&self) {
         self.clr_bits(Self::NOW_MASK);
     }
-
 }
 
 /// BOOTDIS value type for batch read/modify/write operations
@@ -16612,7 +16218,6 @@ impl BootdisVal {
             }
         }
     }
-
 }
 
 impl Default for BootdisVal {
@@ -16639,7 +16244,6 @@ impl Bootdis {
     pub fn modify_val<F: FnOnce(BootdisVal) -> BootdisVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTR Register
@@ -16785,7 +16389,6 @@ impl Intr {
     pub fn sbpi_flag_n(&self) -> bool {
         (self.value.read_bits() & Self::SBPI_FLAG_N_MASK) != 0
     }
-
 }
 
 /// INTR value type for batch read/modify/write operations
@@ -16893,7 +16496,6 @@ impl IntrVal {
             }
         }
     }
-
 }
 
 impl Default for IntrVal {
@@ -16920,7 +16522,6 @@ impl Intr {
     pub fn modify_val<F: FnOnce(IntrVal) -> IntrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTE Register
@@ -17078,7 +16679,6 @@ impl Inte {
     pub fn clr_sbpi_flag_n(&self) {
         self.clr_bits(Self::SBPI_FLAG_N_MASK);
     }
-
 }
 
 /// INTE value type for batch read/modify/write operations
@@ -17198,7 +16798,6 @@ impl InteVal {
             }
         }
     }
-
 }
 
 impl Default for InteVal {
@@ -17225,7 +16824,6 @@ impl Inte {
     pub fn modify_val<F: FnOnce(InteVal) -> InteVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTF Register
@@ -17383,7 +16981,6 @@ impl Intf {
     pub fn clr_sbpi_flag_n(&self) {
         self.clr_bits(Self::SBPI_FLAG_N_MASK);
     }
-
 }
 
 /// INTF value type for batch read/modify/write operations
@@ -17503,7 +17100,6 @@ impl IntfVal {
             }
         }
     }
-
 }
 
 impl Default for IntfVal {
@@ -17530,7 +17126,6 @@ impl Intf {
     pub fn modify_val<F: FnOnce(IntfVal) -> IntfVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTS Register
@@ -17628,7 +17223,6 @@ impl Ints {
     pub fn sbpi_flag_n(&self) -> bool {
         (self.value.read_bits() & Self::SBPI_FLAG_N_MASK) != 0
     }
-
 }
 
 /// INTS value type for batch read/modify/write operations
@@ -17688,7 +17282,6 @@ impl IntsVal {
     pub const fn sbpi_flag_n(&self) -> bool {
         (self.bits & Ints::SBPI_FLAG_N_MASK) != 0
     }
-
 }
 
 impl Default for IntsVal {
@@ -17703,19 +17296,6 @@ impl Ints {
     pub fn read_val(&self) -> IntsVal {
         IntsVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IntsVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IntsVal) -> IntsVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// Register block

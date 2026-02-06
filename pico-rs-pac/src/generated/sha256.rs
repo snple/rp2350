@@ -218,9 +218,8 @@ impl Csr {
     /// START must be written before initiating a DMA transfer to the SHA-256 core, because the core will always request 16 transfers at a time (1 512-bit block). Additionally, the DMA channel should be configured for a multiple of 16 32-bit transfers.
     #[inline(always)]
     pub fn trigger_start(&self) {
-        self.value.write_bits(Self::START_MASK);
+        self.set_bits(Self::START_MASK);
     }
-
 }
 
 /// CSR value type for batch read/modify/write operations
@@ -354,7 +353,6 @@ impl CsrVal {
             }
         }
     }
-
 }
 
 impl Default for CsrVal {
@@ -381,7 +379,6 @@ impl Csr {
     pub fn modify_val<F: FnOnce(CsrVal) -> CsrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// WDATA Register
@@ -438,7 +435,6 @@ impl Wdata {
     pub fn write_wdata(&self, value: u32) {
         self.value.write_bits((value << Self::WDATA_OFFSET) & Self::WDATA_MASK);
     }
-
 }
 
 /// WDATA value type for batch read/modify/write operations
@@ -481,7 +477,6 @@ impl WdataVal {
             bits: (self.bits & !Wdata::WDATA_MASK) | ((value << Wdata::WDATA_OFFSET) & Wdata::WDATA_MASK)
         }
     }
-
 }
 
 impl Default for WdataVal {
@@ -491,24 +486,11 @@ impl Default for WdataVal {
 }
 
 impl Wdata {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> WdataVal {
-        WdataVal::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: WdataVal) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(WdataVal) -> WdataVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SUM0 Register
@@ -549,7 +531,6 @@ impl Sum0 {
     pub fn sum0(&self) -> u32 {
         (self.value.read_bits() & Self::SUM0_MASK) >> Self::SUM0_OFFSET
     }
-
 }
 
 /// SUM0 value type for batch read/modify/write operations
@@ -585,7 +566,6 @@ impl Sum0Val {
     pub const fn sum0(&self) -> u32 {
         (self.bits & Sum0::SUM0_MASK) >> Sum0::SUM0_OFFSET
     }
-
 }
 
 impl Default for Sum0Val {
@@ -600,19 +580,6 @@ impl Sum0 {
     pub fn read_val(&self) -> Sum0Val {
         Sum0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Sum0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Sum0Val) -> Sum0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SUM1 Register
@@ -653,7 +620,6 @@ impl Sum1 {
     pub fn sum1(&self) -> u32 {
         (self.value.read_bits() & Self::SUM1_MASK) >> Self::SUM1_OFFSET
     }
-
 }
 
 /// SUM1 value type for batch read/modify/write operations
@@ -689,7 +655,6 @@ impl Sum1Val {
     pub const fn sum1(&self) -> u32 {
         (self.bits & Sum1::SUM1_MASK) >> Sum1::SUM1_OFFSET
     }
-
 }
 
 impl Default for Sum1Val {
@@ -704,19 +669,6 @@ impl Sum1 {
     pub fn read_val(&self) -> Sum1Val {
         Sum1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Sum1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Sum1Val) -> Sum1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SUM2 Register
@@ -757,7 +709,6 @@ impl Sum2 {
     pub fn sum2(&self) -> u32 {
         (self.value.read_bits() & Self::SUM2_MASK) >> Self::SUM2_OFFSET
     }
-
 }
 
 /// SUM2 value type for batch read/modify/write operations
@@ -793,7 +744,6 @@ impl Sum2Val {
     pub const fn sum2(&self) -> u32 {
         (self.bits & Sum2::SUM2_MASK) >> Sum2::SUM2_OFFSET
     }
-
 }
 
 impl Default for Sum2Val {
@@ -808,19 +758,6 @@ impl Sum2 {
     pub fn read_val(&self) -> Sum2Val {
         Sum2Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Sum2Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Sum2Val) -> Sum2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SUM3 Register
@@ -861,7 +798,6 @@ impl Sum3 {
     pub fn sum3(&self) -> u32 {
         (self.value.read_bits() & Self::SUM3_MASK) >> Self::SUM3_OFFSET
     }
-
 }
 
 /// SUM3 value type for batch read/modify/write operations
@@ -897,7 +833,6 @@ impl Sum3Val {
     pub const fn sum3(&self) -> u32 {
         (self.bits & Sum3::SUM3_MASK) >> Sum3::SUM3_OFFSET
     }
-
 }
 
 impl Default for Sum3Val {
@@ -912,19 +847,6 @@ impl Sum3 {
     pub fn read_val(&self) -> Sum3Val {
         Sum3Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Sum3Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Sum3Val) -> Sum3Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SUM4 Register
@@ -965,7 +887,6 @@ impl Sum4 {
     pub fn sum4(&self) -> u32 {
         (self.value.read_bits() & Self::SUM4_MASK) >> Self::SUM4_OFFSET
     }
-
 }
 
 /// SUM4 value type for batch read/modify/write operations
@@ -1001,7 +922,6 @@ impl Sum4Val {
     pub const fn sum4(&self) -> u32 {
         (self.bits & Sum4::SUM4_MASK) >> Sum4::SUM4_OFFSET
     }
-
 }
 
 impl Default for Sum4Val {
@@ -1016,19 +936,6 @@ impl Sum4 {
     pub fn read_val(&self) -> Sum4Val {
         Sum4Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Sum4Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Sum4Val) -> Sum4Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SUM5 Register
@@ -1069,7 +976,6 @@ impl Sum5 {
     pub fn sum5(&self) -> u32 {
         (self.value.read_bits() & Self::SUM5_MASK) >> Self::SUM5_OFFSET
     }
-
 }
 
 /// SUM5 value type for batch read/modify/write operations
@@ -1105,7 +1011,6 @@ impl Sum5Val {
     pub const fn sum5(&self) -> u32 {
         (self.bits & Sum5::SUM5_MASK) >> Sum5::SUM5_OFFSET
     }
-
 }
 
 impl Default for Sum5Val {
@@ -1120,19 +1025,6 @@ impl Sum5 {
     pub fn read_val(&self) -> Sum5Val {
         Sum5Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Sum5Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Sum5Val) -> Sum5Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SUM6 Register
@@ -1173,7 +1065,6 @@ impl Sum6 {
     pub fn sum6(&self) -> u32 {
         (self.value.read_bits() & Self::SUM6_MASK) >> Self::SUM6_OFFSET
     }
-
 }
 
 /// SUM6 value type for batch read/modify/write operations
@@ -1209,7 +1100,6 @@ impl Sum6Val {
     pub const fn sum6(&self) -> u32 {
         (self.bits & Sum6::SUM6_MASK) >> Sum6::SUM6_OFFSET
     }
-
 }
 
 impl Default for Sum6Val {
@@ -1224,19 +1114,6 @@ impl Sum6 {
     pub fn read_val(&self) -> Sum6Val {
         Sum6Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Sum6Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Sum6Val) -> Sum6Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SUM7 Register
@@ -1277,7 +1154,6 @@ impl Sum7 {
     pub fn sum7(&self) -> u32 {
         (self.value.read_bits() & Self::SUM7_MASK) >> Self::SUM7_OFFSET
     }
-
 }
 
 /// SUM7 value type for batch read/modify/write operations
@@ -1313,7 +1189,6 @@ impl Sum7Val {
     pub const fn sum7(&self) -> u32 {
         (self.bits & Sum7::SUM7_MASK) >> Sum7::SUM7_OFFSET
     }
-
 }
 
 impl Default for Sum7Val {
@@ -1328,19 +1203,6 @@ impl Sum7 {
     pub fn read_val(&self) -> Sum7Val {
         Sum7Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Sum7Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Sum7Val) -> Sum7Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// Register block

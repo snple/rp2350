@@ -422,7 +422,6 @@ impl DirectCsr {
     pub fn clr_en(&self) {
         self.clr_bits(Self::EN_MASK);
     }
-
 }
 
 /// DIRECT_CSR value type for batch read/modify/write operations
@@ -666,7 +665,6 @@ impl DirectCsrVal {
             }
         }
     }
-
 }
 
 impl Default for DirectCsrVal {
@@ -693,7 +691,6 @@ impl DirectCsr {
     pub fn modify_val<F: FnOnce(DirectCsrVal) -> DirectCsrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DIRECT_TX Register
@@ -809,7 +806,7 @@ impl DirectTx {
     /// Useful to avoid garbage appearing in the RX FIFO when pushing the command at the beginning of a SPI transfer.
     #[inline(always)]
     pub fn trigger_nopush(&self) {
-        self.value.write_bits(Self::NOPUSH_MASK);
+        self.set_bits(Self::NOPUSH_MASK);
     }
 
     /// Trigger **OE** (WO)
@@ -818,7 +815,7 @@ impl DirectTx {
     /// For dual and quad width (DSPI/QSPI), this sets whether the relevant SDx pads are set to output whilst transferring this FIFO record. In this case the command/address should have OE set, and the data transfer should have OE set or clear depending on the direction of the transfer.
     #[inline(always)]
     pub fn trigger_oe(&self) {
-        self.value.write_bits(Self::OE_MASK);
+        self.set_bits(Self::OE_MASK);
     }
 
     /// Trigger **DWIDTH** (WO)
@@ -826,7 +823,7 @@ impl DirectTx {
     /// Data width. If 0, hardware will transmit the 8 LSBs of the DIRECT_TX DATA field, and return an 8-bit value in the 8 LSBs of DIRECT_RX. If 1, the full 16-bit width is used. 8-bit and 16-bit transfers can be mixed freely.
     #[inline(always)]
     pub fn trigger_dwidth(&self) {
-        self.value.write_bits(Self::DWIDTH_MASK);
+        self.set_bits(Self::DWIDTH_MASK);
     }
 
     /// Write **IWIDTH** `[17:16]` (WO)
@@ -845,7 +842,6 @@ impl DirectTx {
     pub fn write_data(&self, value: u32) {
         self.value.write_bits((value << Self::DATA_OFFSET) & Self::DATA_MASK);
     }
-
 }
 
 /// DIRECT_TX value type for batch read/modify/write operations
@@ -940,7 +936,6 @@ impl DirectTxVal {
             bits: (self.bits & !DirectTx::DATA_MASK) | ((value << DirectTx::DATA_OFFSET) & DirectTx::DATA_MASK)
         }
     }
-
 }
 
 impl Default for DirectTxVal {
@@ -950,24 +945,11 @@ impl Default for DirectTxVal {
 }
 
 impl DirectTx {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> DirectTxVal {
-        DirectTxVal::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: DirectTxVal) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(DirectTxVal) -> DirectTxVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DIRECT_RX Register
@@ -1018,7 +1000,6 @@ impl DirectRx {
     pub fn direct_rx(&self) -> u32 {
         (self.value.read_bits() & Self::DIRECT_RX_MASK) >> Self::DIRECT_RX_OFFSET
     }
-
 }
 
 /// DIRECT_RX value type for batch read/modify/write operations
@@ -1057,7 +1038,6 @@ impl DirectRxVal {
     pub const fn direct_rx(&self) -> u32 {
         (self.bits & DirectRx::DIRECT_RX_MASK) >> DirectRx::DIRECT_RX_OFFSET
     }
-
 }
 
 impl Default for DirectRxVal {
@@ -1072,19 +1052,6 @@ impl DirectRx {
     pub fn read_val(&self) -> DirectRxVal {
         DirectRxVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: DirectRxVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(DirectRxVal) -> DirectRxVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// M0_TIMING Register
@@ -1416,7 +1383,6 @@ impl M0Timing {
     pub fn write_clkdiv(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CLKDIV_MASK) | ((value << Self::CLKDIV_OFFSET) & Self::CLKDIV_MASK));
     }
-
 }
 
 /// M0_TIMING value type for batch read/modify/write operations
@@ -1624,7 +1590,6 @@ impl M0TimingVal {
             bits: (self.bits & !M0Timing::CLKDIV_MASK) | ((value << M0Timing::CLKDIV_OFFSET) & M0Timing::CLKDIV_MASK)
         }
     }
-
 }
 
 impl Default for M0TimingVal {
@@ -1651,7 +1616,6 @@ impl M0Timing {
     pub fn modify_val<F: FnOnce(M0TimingVal) -> M0TimingVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// M0_RFMT Register
@@ -2065,7 +2029,6 @@ impl M0Rfmt {
     pub fn write_prefix_width(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PREFIX_WIDTH_MASK) | ((value << Self::PREFIX_WIDTH_OFFSET) & Self::PREFIX_WIDTH_MASK));
     }
-
 }
 
 /// M0_RFMT value type for batch read/modify/write operations
@@ -2273,7 +2236,6 @@ impl M0RfmtVal {
             bits: (self.bits & !M0Rfmt::PREFIX_WIDTH_MASK) | ((value << M0Rfmt::PREFIX_WIDTH_OFFSET) & M0Rfmt::PREFIX_WIDTH_MASK)
         }
     }
-
 }
 
 impl Default for M0RfmtVal {
@@ -2300,7 +2262,6 @@ impl M0Rfmt {
     pub fn modify_val<F: FnOnce(M0RfmtVal) -> M0RfmtVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// M0_RCMD Register
@@ -2385,7 +2346,6 @@ impl M0Rcmd {
     pub fn write_prefix(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PREFIX_MASK) | ((value << Self::PREFIX_OFFSET) & Self::PREFIX_MASK));
     }
-
 }
 
 /// M0_RCMD value type for batch read/modify/write operations
@@ -2451,7 +2411,6 @@ impl M0RcmdVal {
             bits: (self.bits & !M0Rcmd::PREFIX_MASK) | ((value << M0Rcmd::PREFIX_OFFSET) & M0Rcmd::PREFIX_MASK)
         }
     }
-
 }
 
 impl Default for M0RcmdVal {
@@ -2478,7 +2437,6 @@ impl M0Rcmd {
     pub fn modify_val<F: FnOnce(M0RcmdVal) -> M0RcmdVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// M0_WFMT Register
@@ -2892,7 +2850,6 @@ impl M0Wfmt {
     pub fn write_prefix_width(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PREFIX_WIDTH_MASK) | ((value << Self::PREFIX_WIDTH_OFFSET) & Self::PREFIX_WIDTH_MASK));
     }
-
 }
 
 /// M0_WFMT value type for batch read/modify/write operations
@@ -3100,7 +3057,6 @@ impl M0WfmtVal {
             bits: (self.bits & !M0Wfmt::PREFIX_WIDTH_MASK) | ((value << M0Wfmt::PREFIX_WIDTH_OFFSET) & M0Wfmt::PREFIX_WIDTH_MASK)
         }
     }
-
 }
 
 impl Default for M0WfmtVal {
@@ -3127,7 +3083,6 @@ impl M0Wfmt {
     pub fn modify_val<F: FnOnce(M0WfmtVal) -> M0WfmtVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// M0_WCMD Register
@@ -3212,7 +3167,6 @@ impl M0Wcmd {
     pub fn write_prefix(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PREFIX_MASK) | ((value << Self::PREFIX_OFFSET) & Self::PREFIX_MASK));
     }
-
 }
 
 /// M0_WCMD value type for batch read/modify/write operations
@@ -3278,7 +3232,6 @@ impl M0WcmdVal {
             bits: (self.bits & !M0Wcmd::PREFIX_MASK) | ((value << M0Wcmd::PREFIX_OFFSET) & M0Wcmd::PREFIX_MASK)
         }
     }
-
 }
 
 impl Default for M0WcmdVal {
@@ -3305,7 +3258,6 @@ impl M0Wcmd {
     pub fn modify_val<F: FnOnce(M0WcmdVal) -> M0WcmdVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// M1_TIMING Register
@@ -3637,7 +3589,6 @@ impl M1Timing {
     pub fn write_clkdiv(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CLKDIV_MASK) | ((value << Self::CLKDIV_OFFSET) & Self::CLKDIV_MASK));
     }
-
 }
 
 /// M1_TIMING value type for batch read/modify/write operations
@@ -3845,7 +3796,6 @@ impl M1TimingVal {
             bits: (self.bits & !M1Timing::CLKDIV_MASK) | ((value << M1Timing::CLKDIV_OFFSET) & M1Timing::CLKDIV_MASK)
         }
     }
-
 }
 
 impl Default for M1TimingVal {
@@ -3872,7 +3822,6 @@ impl M1Timing {
     pub fn modify_val<F: FnOnce(M1TimingVal) -> M1TimingVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// M1_RFMT Register
@@ -4286,7 +4235,6 @@ impl M1Rfmt {
     pub fn write_prefix_width(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PREFIX_WIDTH_MASK) | ((value << Self::PREFIX_WIDTH_OFFSET) & Self::PREFIX_WIDTH_MASK));
     }
-
 }
 
 /// M1_RFMT value type for batch read/modify/write operations
@@ -4494,7 +4442,6 @@ impl M1RfmtVal {
             bits: (self.bits & !M1Rfmt::PREFIX_WIDTH_MASK) | ((value << M1Rfmt::PREFIX_WIDTH_OFFSET) & M1Rfmt::PREFIX_WIDTH_MASK)
         }
     }
-
 }
 
 impl Default for M1RfmtVal {
@@ -4521,7 +4468,6 @@ impl M1Rfmt {
     pub fn modify_val<F: FnOnce(M1RfmtVal) -> M1RfmtVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// M1_RCMD Register
@@ -4606,7 +4552,6 @@ impl M1Rcmd {
     pub fn write_prefix(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PREFIX_MASK) | ((value << Self::PREFIX_OFFSET) & Self::PREFIX_MASK));
     }
-
 }
 
 /// M1_RCMD value type for batch read/modify/write operations
@@ -4672,7 +4617,6 @@ impl M1RcmdVal {
             bits: (self.bits & !M1Rcmd::PREFIX_MASK) | ((value << M1Rcmd::PREFIX_OFFSET) & M1Rcmd::PREFIX_MASK)
         }
     }
-
 }
 
 impl Default for M1RcmdVal {
@@ -4699,7 +4643,6 @@ impl M1Rcmd {
     pub fn modify_val<F: FnOnce(M1RcmdVal) -> M1RcmdVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// M1_WFMT Register
@@ -5113,7 +5056,6 @@ impl M1Wfmt {
     pub fn write_prefix_width(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PREFIX_WIDTH_MASK) | ((value << Self::PREFIX_WIDTH_OFFSET) & Self::PREFIX_WIDTH_MASK));
     }
-
 }
 
 /// M1_WFMT value type for batch read/modify/write operations
@@ -5321,7 +5263,6 @@ impl M1WfmtVal {
             bits: (self.bits & !M1Wfmt::PREFIX_WIDTH_MASK) | ((value << M1Wfmt::PREFIX_WIDTH_OFFSET) & M1Wfmt::PREFIX_WIDTH_MASK)
         }
     }
-
 }
 
 impl Default for M1WfmtVal {
@@ -5348,7 +5289,6 @@ impl M1Wfmt {
     pub fn modify_val<F: FnOnce(M1WfmtVal) -> M1WfmtVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// M1_WCMD Register
@@ -5433,7 +5373,6 @@ impl M1Wcmd {
     pub fn write_prefix(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PREFIX_MASK) | ((value << Self::PREFIX_OFFSET) & Self::PREFIX_MASK));
     }
-
 }
 
 /// M1_WCMD value type for batch read/modify/write operations
@@ -5499,7 +5438,6 @@ impl M1WcmdVal {
             bits: (self.bits & !M1Wcmd::PREFIX_MASK) | ((value << M1Wcmd::PREFIX_OFFSET) & M1Wcmd::PREFIX_MASK)
         }
     }
-
 }
 
 impl Default for M1WcmdVal {
@@ -5526,7 +5464,6 @@ impl M1Wcmd {
     pub fn modify_val<F: FnOnce(M1WcmdVal) -> M1WcmdVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ATRANS0 Register
@@ -5621,7 +5558,6 @@ impl Atrans0 {
     pub fn write_base(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK));
     }
-
 }
 
 /// ATRANS0 value type for batch read/modify/write operations
@@ -5691,7 +5627,6 @@ impl Atrans0Val {
             bits: (self.bits & !Atrans0::BASE_MASK) | ((value << Atrans0::BASE_OFFSET) & Atrans0::BASE_MASK)
         }
     }
-
 }
 
 impl Default for Atrans0Val {
@@ -5718,7 +5653,6 @@ impl Atrans0 {
     pub fn modify_val<F: FnOnce(Atrans0Val) -> Atrans0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ATRANS1 Register
@@ -5813,7 +5747,6 @@ impl Atrans1 {
     pub fn write_base(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK));
     }
-
 }
 
 /// ATRANS1 value type for batch read/modify/write operations
@@ -5883,7 +5816,6 @@ impl Atrans1Val {
             bits: (self.bits & !Atrans1::BASE_MASK) | ((value << Atrans1::BASE_OFFSET) & Atrans1::BASE_MASK)
         }
     }
-
 }
 
 impl Default for Atrans1Val {
@@ -5910,7 +5842,6 @@ impl Atrans1 {
     pub fn modify_val<F: FnOnce(Atrans1Val) -> Atrans1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ATRANS2 Register
@@ -6005,7 +5936,6 @@ impl Atrans2 {
     pub fn write_base(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK));
     }
-
 }
 
 /// ATRANS2 value type for batch read/modify/write operations
@@ -6075,7 +6005,6 @@ impl Atrans2Val {
             bits: (self.bits & !Atrans2::BASE_MASK) | ((value << Atrans2::BASE_OFFSET) & Atrans2::BASE_MASK)
         }
     }
-
 }
 
 impl Default for Atrans2Val {
@@ -6102,7 +6031,6 @@ impl Atrans2 {
     pub fn modify_val<F: FnOnce(Atrans2Val) -> Atrans2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ATRANS3 Register
@@ -6197,7 +6125,6 @@ impl Atrans3 {
     pub fn write_base(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK));
     }
-
 }
 
 /// ATRANS3 value type for batch read/modify/write operations
@@ -6267,7 +6194,6 @@ impl Atrans3Val {
             bits: (self.bits & !Atrans3::BASE_MASK) | ((value << Atrans3::BASE_OFFSET) & Atrans3::BASE_MASK)
         }
     }
-
 }
 
 impl Default for Atrans3Val {
@@ -6294,7 +6220,6 @@ impl Atrans3 {
     pub fn modify_val<F: FnOnce(Atrans3Val) -> Atrans3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ATRANS4 Register
@@ -6389,7 +6314,6 @@ impl Atrans4 {
     pub fn write_base(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK));
     }
-
 }
 
 /// ATRANS4 value type for batch read/modify/write operations
@@ -6459,7 +6383,6 @@ impl Atrans4Val {
             bits: (self.bits & !Atrans4::BASE_MASK) | ((value << Atrans4::BASE_OFFSET) & Atrans4::BASE_MASK)
         }
     }
-
 }
 
 impl Default for Atrans4Val {
@@ -6486,7 +6409,6 @@ impl Atrans4 {
     pub fn modify_val<F: FnOnce(Atrans4Val) -> Atrans4Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ATRANS5 Register
@@ -6581,7 +6503,6 @@ impl Atrans5 {
     pub fn write_base(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK));
     }
-
 }
 
 /// ATRANS5 value type for batch read/modify/write operations
@@ -6651,7 +6572,6 @@ impl Atrans5Val {
             bits: (self.bits & !Atrans5::BASE_MASK) | ((value << Atrans5::BASE_OFFSET) & Atrans5::BASE_MASK)
         }
     }
-
 }
 
 impl Default for Atrans5Val {
@@ -6678,7 +6598,6 @@ impl Atrans5 {
     pub fn modify_val<F: FnOnce(Atrans5Val) -> Atrans5Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ATRANS6 Register
@@ -6773,7 +6692,6 @@ impl Atrans6 {
     pub fn write_base(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK));
     }
-
 }
 
 /// ATRANS6 value type for batch read/modify/write operations
@@ -6843,7 +6761,6 @@ impl Atrans6Val {
             bits: (self.bits & !Atrans6::BASE_MASK) | ((value << Atrans6::BASE_OFFSET) & Atrans6::BASE_MASK)
         }
     }
-
 }
 
 impl Default for Atrans6Val {
@@ -6870,7 +6787,6 @@ impl Atrans6 {
     pub fn modify_val<F: FnOnce(Atrans6Val) -> Atrans6Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ATRANS7 Register
@@ -6965,7 +6881,6 @@ impl Atrans7 {
     pub fn write_base(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK));
     }
-
 }
 
 /// ATRANS7 value type for batch read/modify/write operations
@@ -7035,7 +6950,6 @@ impl Atrans7Val {
             bits: (self.bits & !Atrans7::BASE_MASK) | ((value << Atrans7::BASE_OFFSET) & Atrans7::BASE_MASK)
         }
     }
-
 }
 
 impl Default for Atrans7Val {
@@ -7062,7 +6976,6 @@ impl Atrans7 {
     pub fn modify_val<F: FnOnce(Atrans7Val) -> Atrans7Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// Register block

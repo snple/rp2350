@@ -113,7 +113,6 @@ impl Gpio0Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO0_STATUS value type for batch read/modify/write operations
@@ -175,7 +174,6 @@ impl Gpio0StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio0Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio0StatusVal {
@@ -190,19 +188,6 @@ impl Gpio0Status {
     pub fn read_val(&self) -> Gpio0StatusVal {
         Gpio0StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio0StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio0StatusVal) -> Gpio0StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO0_CTRL Register
@@ -424,7 +409,6 @@ impl Gpio0Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO0_CTRL value type for batch read/modify/write operations
@@ -530,7 +514,6 @@ impl Gpio0CtrlVal {
             bits: (self.bits & !Gpio0Ctrl::FUNCSEL_MASK) | ((value << Gpio0Ctrl::FUNCSEL_OFFSET) & Gpio0Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio0CtrlVal {
@@ -557,7 +540,6 @@ impl Gpio0Ctrl {
     pub fn modify_val<F: FnOnce(Gpio0CtrlVal) -> Gpio0CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO1_STATUS Register
@@ -667,7 +649,6 @@ impl Gpio1Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO1_STATUS value type for batch read/modify/write operations
@@ -729,7 +710,6 @@ impl Gpio1StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio1Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio1StatusVal {
@@ -744,19 +724,6 @@ impl Gpio1Status {
     pub fn read_val(&self) -> Gpio1StatusVal {
         Gpio1StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio1StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio1StatusVal) -> Gpio1StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO1_CTRL Register
@@ -978,7 +945,6 @@ impl Gpio1Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO1_CTRL value type for batch read/modify/write operations
@@ -1084,7 +1050,6 @@ impl Gpio1CtrlVal {
             bits: (self.bits & !Gpio1Ctrl::FUNCSEL_MASK) | ((value << Gpio1Ctrl::FUNCSEL_OFFSET) & Gpio1Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio1CtrlVal {
@@ -1111,7 +1076,6 @@ impl Gpio1Ctrl {
     pub fn modify_val<F: FnOnce(Gpio1CtrlVal) -> Gpio1CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO2_STATUS Register
@@ -1221,7 +1185,6 @@ impl Gpio2Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO2_STATUS value type for batch read/modify/write operations
@@ -1283,7 +1246,6 @@ impl Gpio2StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio2Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio2StatusVal {
@@ -1298,19 +1260,6 @@ impl Gpio2Status {
     pub fn read_val(&self) -> Gpio2StatusVal {
         Gpio2StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio2StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio2StatusVal) -> Gpio2StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO2_CTRL Register
@@ -1534,7 +1483,6 @@ impl Gpio2Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO2_CTRL value type for batch read/modify/write operations
@@ -1640,7 +1588,6 @@ impl Gpio2CtrlVal {
             bits: (self.bits & !Gpio2Ctrl::FUNCSEL_MASK) | ((value << Gpio2Ctrl::FUNCSEL_OFFSET) & Gpio2Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio2CtrlVal {
@@ -1667,7 +1614,6 @@ impl Gpio2Ctrl {
     pub fn modify_val<F: FnOnce(Gpio2CtrlVal) -> Gpio2CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO3_STATUS Register
@@ -1777,7 +1723,6 @@ impl Gpio3Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO3_STATUS value type for batch read/modify/write operations
@@ -1839,7 +1784,6 @@ impl Gpio3StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio3Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio3StatusVal {
@@ -1854,19 +1798,6 @@ impl Gpio3Status {
     pub fn read_val(&self) -> Gpio3StatusVal {
         Gpio3StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio3StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio3StatusVal) -> Gpio3StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO3_CTRL Register
@@ -2090,7 +2021,6 @@ impl Gpio3Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO3_CTRL value type for batch read/modify/write operations
@@ -2196,7 +2126,6 @@ impl Gpio3CtrlVal {
             bits: (self.bits & !Gpio3Ctrl::FUNCSEL_MASK) | ((value << Gpio3Ctrl::FUNCSEL_OFFSET) & Gpio3Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio3CtrlVal {
@@ -2223,7 +2152,6 @@ impl Gpio3Ctrl {
     pub fn modify_val<F: FnOnce(Gpio3CtrlVal) -> Gpio3CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO4_STATUS Register
@@ -2333,7 +2261,6 @@ impl Gpio4Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO4_STATUS value type for batch read/modify/write operations
@@ -2395,7 +2322,6 @@ impl Gpio4StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio4Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio4StatusVal {
@@ -2410,19 +2336,6 @@ impl Gpio4Status {
     pub fn read_val(&self) -> Gpio4StatusVal {
         Gpio4StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio4StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio4StatusVal) -> Gpio4StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO4_CTRL Register
@@ -2642,7 +2555,6 @@ impl Gpio4Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO4_CTRL value type for batch read/modify/write operations
@@ -2748,7 +2660,6 @@ impl Gpio4CtrlVal {
             bits: (self.bits & !Gpio4Ctrl::FUNCSEL_MASK) | ((value << Gpio4Ctrl::FUNCSEL_OFFSET) & Gpio4Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio4CtrlVal {
@@ -2775,7 +2686,6 @@ impl Gpio4Ctrl {
     pub fn modify_val<F: FnOnce(Gpio4CtrlVal) -> Gpio4CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO5_STATUS Register
@@ -2885,7 +2795,6 @@ impl Gpio5Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO5_STATUS value type for batch read/modify/write operations
@@ -2947,7 +2856,6 @@ impl Gpio5StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio5Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio5StatusVal {
@@ -2962,19 +2870,6 @@ impl Gpio5Status {
     pub fn read_val(&self) -> Gpio5StatusVal {
         Gpio5StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio5StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio5StatusVal) -> Gpio5StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO5_CTRL Register
@@ -3194,7 +3089,6 @@ impl Gpio5Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO5_CTRL value type for batch read/modify/write operations
@@ -3300,7 +3194,6 @@ impl Gpio5CtrlVal {
             bits: (self.bits & !Gpio5Ctrl::FUNCSEL_MASK) | ((value << Gpio5Ctrl::FUNCSEL_OFFSET) & Gpio5Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio5CtrlVal {
@@ -3327,7 +3220,6 @@ impl Gpio5Ctrl {
     pub fn modify_val<F: FnOnce(Gpio5CtrlVal) -> Gpio5CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO6_STATUS Register
@@ -3437,7 +3329,6 @@ impl Gpio6Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO6_STATUS value type for batch read/modify/write operations
@@ -3499,7 +3390,6 @@ impl Gpio6StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio6Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio6StatusVal {
@@ -3514,19 +3404,6 @@ impl Gpio6Status {
     pub fn read_val(&self) -> Gpio6StatusVal {
         Gpio6StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio6StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio6StatusVal) -> Gpio6StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO6_CTRL Register
@@ -3746,7 +3623,6 @@ impl Gpio6Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO6_CTRL value type for batch read/modify/write operations
@@ -3852,7 +3728,6 @@ impl Gpio6CtrlVal {
             bits: (self.bits & !Gpio6Ctrl::FUNCSEL_MASK) | ((value << Gpio6Ctrl::FUNCSEL_OFFSET) & Gpio6Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio6CtrlVal {
@@ -3879,7 +3754,6 @@ impl Gpio6Ctrl {
     pub fn modify_val<F: FnOnce(Gpio6CtrlVal) -> Gpio6CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO7_STATUS Register
@@ -3989,7 +3863,6 @@ impl Gpio7Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO7_STATUS value type for batch read/modify/write operations
@@ -4051,7 +3924,6 @@ impl Gpio7StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio7Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio7StatusVal {
@@ -4066,19 +3938,6 @@ impl Gpio7Status {
     pub fn read_val(&self) -> Gpio7StatusVal {
         Gpio7StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio7StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio7StatusVal) -> Gpio7StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO7_CTRL Register
@@ -4298,7 +4157,6 @@ impl Gpio7Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO7_CTRL value type for batch read/modify/write operations
@@ -4404,7 +4262,6 @@ impl Gpio7CtrlVal {
             bits: (self.bits & !Gpio7Ctrl::FUNCSEL_MASK) | ((value << Gpio7Ctrl::FUNCSEL_OFFSET) & Gpio7Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio7CtrlVal {
@@ -4431,7 +4288,6 @@ impl Gpio7Ctrl {
     pub fn modify_val<F: FnOnce(Gpio7CtrlVal) -> Gpio7CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO8_STATUS Register
@@ -4541,7 +4397,6 @@ impl Gpio8Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO8_STATUS value type for batch read/modify/write operations
@@ -4603,7 +4458,6 @@ impl Gpio8StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio8Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio8StatusVal {
@@ -4618,19 +4472,6 @@ impl Gpio8Status {
     pub fn read_val(&self) -> Gpio8StatusVal {
         Gpio8StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio8StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio8StatusVal) -> Gpio8StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO8_CTRL Register
@@ -4850,7 +4691,6 @@ impl Gpio8Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO8_CTRL value type for batch read/modify/write operations
@@ -4956,7 +4796,6 @@ impl Gpio8CtrlVal {
             bits: (self.bits & !Gpio8Ctrl::FUNCSEL_MASK) | ((value << Gpio8Ctrl::FUNCSEL_OFFSET) & Gpio8Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio8CtrlVal {
@@ -4983,7 +4822,6 @@ impl Gpio8Ctrl {
     pub fn modify_val<F: FnOnce(Gpio8CtrlVal) -> Gpio8CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO9_STATUS Register
@@ -5093,7 +4931,6 @@ impl Gpio9Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO9_STATUS value type for batch read/modify/write operations
@@ -5155,7 +4992,6 @@ impl Gpio9StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio9Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio9StatusVal {
@@ -5170,19 +5006,6 @@ impl Gpio9Status {
     pub fn read_val(&self) -> Gpio9StatusVal {
         Gpio9StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio9StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio9StatusVal) -> Gpio9StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO9_CTRL Register
@@ -5400,7 +5223,6 @@ impl Gpio9Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO9_CTRL value type for batch read/modify/write operations
@@ -5506,7 +5328,6 @@ impl Gpio9CtrlVal {
             bits: (self.bits & !Gpio9Ctrl::FUNCSEL_MASK) | ((value << Gpio9Ctrl::FUNCSEL_OFFSET) & Gpio9Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio9CtrlVal {
@@ -5533,7 +5354,6 @@ impl Gpio9Ctrl {
     pub fn modify_val<F: FnOnce(Gpio9CtrlVal) -> Gpio9CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO10_STATUS Register
@@ -5643,7 +5463,6 @@ impl Gpio10Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO10_STATUS value type for batch read/modify/write operations
@@ -5705,7 +5524,6 @@ impl Gpio10StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio10Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio10StatusVal {
@@ -5720,19 +5538,6 @@ impl Gpio10Status {
     pub fn read_val(&self) -> Gpio10StatusVal {
         Gpio10StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio10StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio10StatusVal) -> Gpio10StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO10_CTRL Register
@@ -5952,7 +5757,6 @@ impl Gpio10Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO10_CTRL value type for batch read/modify/write operations
@@ -6058,7 +5862,6 @@ impl Gpio10CtrlVal {
             bits: (self.bits & !Gpio10Ctrl::FUNCSEL_MASK) | ((value << Gpio10Ctrl::FUNCSEL_OFFSET) & Gpio10Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio10CtrlVal {
@@ -6085,7 +5888,6 @@ impl Gpio10Ctrl {
     pub fn modify_val<F: FnOnce(Gpio10CtrlVal) -> Gpio10CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO11_STATUS Register
@@ -6195,7 +5997,6 @@ impl Gpio11Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO11_STATUS value type for batch read/modify/write operations
@@ -6257,7 +6058,6 @@ impl Gpio11StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio11Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio11StatusVal {
@@ -6272,19 +6072,6 @@ impl Gpio11Status {
     pub fn read_val(&self) -> Gpio11StatusVal {
         Gpio11StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio11StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio11StatusVal) -> Gpio11StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO11_CTRL Register
@@ -6504,7 +6291,6 @@ impl Gpio11Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO11_CTRL value type for batch read/modify/write operations
@@ -6610,7 +6396,6 @@ impl Gpio11CtrlVal {
             bits: (self.bits & !Gpio11Ctrl::FUNCSEL_MASK) | ((value << Gpio11Ctrl::FUNCSEL_OFFSET) & Gpio11Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio11CtrlVal {
@@ -6637,7 +6422,6 @@ impl Gpio11Ctrl {
     pub fn modify_val<F: FnOnce(Gpio11CtrlVal) -> Gpio11CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO12_STATUS Register
@@ -6747,7 +6531,6 @@ impl Gpio12Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO12_STATUS value type for batch read/modify/write operations
@@ -6809,7 +6592,6 @@ impl Gpio12StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio12Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio12StatusVal {
@@ -6824,19 +6606,6 @@ impl Gpio12Status {
     pub fn read_val(&self) -> Gpio12StatusVal {
         Gpio12StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio12StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio12StatusVal) -> Gpio12StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO12_CTRL Register
@@ -7058,7 +6827,6 @@ impl Gpio12Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO12_CTRL value type for batch read/modify/write operations
@@ -7164,7 +6932,6 @@ impl Gpio12CtrlVal {
             bits: (self.bits & !Gpio12Ctrl::FUNCSEL_MASK) | ((value << Gpio12Ctrl::FUNCSEL_OFFSET) & Gpio12Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio12CtrlVal {
@@ -7191,7 +6958,6 @@ impl Gpio12Ctrl {
     pub fn modify_val<F: FnOnce(Gpio12CtrlVal) -> Gpio12CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO13_STATUS Register
@@ -7301,7 +7067,6 @@ impl Gpio13Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO13_STATUS value type for batch read/modify/write operations
@@ -7363,7 +7128,6 @@ impl Gpio13StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio13Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio13StatusVal {
@@ -7378,19 +7142,6 @@ impl Gpio13Status {
     pub fn read_val(&self) -> Gpio13StatusVal {
         Gpio13StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio13StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio13StatusVal) -> Gpio13StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO13_CTRL Register
@@ -7612,7 +7363,6 @@ impl Gpio13Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO13_CTRL value type for batch read/modify/write operations
@@ -7718,7 +7468,6 @@ impl Gpio13CtrlVal {
             bits: (self.bits & !Gpio13Ctrl::FUNCSEL_MASK) | ((value << Gpio13Ctrl::FUNCSEL_OFFSET) & Gpio13Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio13CtrlVal {
@@ -7745,7 +7494,6 @@ impl Gpio13Ctrl {
     pub fn modify_val<F: FnOnce(Gpio13CtrlVal) -> Gpio13CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO14_STATUS Register
@@ -7855,7 +7603,6 @@ impl Gpio14Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO14_STATUS value type for batch read/modify/write operations
@@ -7917,7 +7664,6 @@ impl Gpio14StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio14Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio14StatusVal {
@@ -7932,19 +7678,6 @@ impl Gpio14Status {
     pub fn read_val(&self) -> Gpio14StatusVal {
         Gpio14StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio14StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio14StatusVal) -> Gpio14StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO14_CTRL Register
@@ -8168,7 +7901,6 @@ impl Gpio14Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO14_CTRL value type for batch read/modify/write operations
@@ -8274,7 +8006,6 @@ impl Gpio14CtrlVal {
             bits: (self.bits & !Gpio14Ctrl::FUNCSEL_MASK) | ((value << Gpio14Ctrl::FUNCSEL_OFFSET) & Gpio14Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio14CtrlVal {
@@ -8301,7 +8032,6 @@ impl Gpio14Ctrl {
     pub fn modify_val<F: FnOnce(Gpio14CtrlVal) -> Gpio14CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO15_STATUS Register
@@ -8411,7 +8141,6 @@ impl Gpio15Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO15_STATUS value type for batch read/modify/write operations
@@ -8473,7 +8202,6 @@ impl Gpio15StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio15Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio15StatusVal {
@@ -8488,19 +8216,6 @@ impl Gpio15Status {
     pub fn read_val(&self) -> Gpio15StatusVal {
         Gpio15StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio15StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio15StatusVal) -> Gpio15StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO15_CTRL Register
@@ -8724,7 +8439,6 @@ impl Gpio15Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO15_CTRL value type for batch read/modify/write operations
@@ -8830,7 +8544,6 @@ impl Gpio15CtrlVal {
             bits: (self.bits & !Gpio15Ctrl::FUNCSEL_MASK) | ((value << Gpio15Ctrl::FUNCSEL_OFFSET) & Gpio15Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio15CtrlVal {
@@ -8857,7 +8570,6 @@ impl Gpio15Ctrl {
     pub fn modify_val<F: FnOnce(Gpio15CtrlVal) -> Gpio15CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO16_STATUS Register
@@ -8967,7 +8679,6 @@ impl Gpio16Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO16_STATUS value type for batch read/modify/write operations
@@ -9029,7 +8740,6 @@ impl Gpio16StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio16Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio16StatusVal {
@@ -9044,19 +8754,6 @@ impl Gpio16Status {
     pub fn read_val(&self) -> Gpio16StatusVal {
         Gpio16StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio16StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio16StatusVal) -> Gpio16StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO16_CTRL Register
@@ -9276,7 +8973,6 @@ impl Gpio16Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO16_CTRL value type for batch read/modify/write operations
@@ -9382,7 +9078,6 @@ impl Gpio16CtrlVal {
             bits: (self.bits & !Gpio16Ctrl::FUNCSEL_MASK) | ((value << Gpio16Ctrl::FUNCSEL_OFFSET) & Gpio16Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio16CtrlVal {
@@ -9409,7 +9104,6 @@ impl Gpio16Ctrl {
     pub fn modify_val<F: FnOnce(Gpio16CtrlVal) -> Gpio16CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO17_STATUS Register
@@ -9519,7 +9213,6 @@ impl Gpio17Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO17_STATUS value type for batch read/modify/write operations
@@ -9581,7 +9274,6 @@ impl Gpio17StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio17Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio17StatusVal {
@@ -9596,19 +9288,6 @@ impl Gpio17Status {
     pub fn read_val(&self) -> Gpio17StatusVal {
         Gpio17StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio17StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio17StatusVal) -> Gpio17StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO17_CTRL Register
@@ -9828,7 +9507,6 @@ impl Gpio17Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO17_CTRL value type for batch read/modify/write operations
@@ -9934,7 +9612,6 @@ impl Gpio17CtrlVal {
             bits: (self.bits & !Gpio17Ctrl::FUNCSEL_MASK) | ((value << Gpio17Ctrl::FUNCSEL_OFFSET) & Gpio17Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio17CtrlVal {
@@ -9961,7 +9638,6 @@ impl Gpio17Ctrl {
     pub fn modify_val<F: FnOnce(Gpio17CtrlVal) -> Gpio17CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO18_STATUS Register
@@ -10071,7 +9747,6 @@ impl Gpio18Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO18_STATUS value type for batch read/modify/write operations
@@ -10133,7 +9808,6 @@ impl Gpio18StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio18Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio18StatusVal {
@@ -10148,19 +9822,6 @@ impl Gpio18Status {
     pub fn read_val(&self) -> Gpio18StatusVal {
         Gpio18StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio18StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio18StatusVal) -> Gpio18StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO18_CTRL Register
@@ -10382,7 +10043,6 @@ impl Gpio18Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO18_CTRL value type for batch read/modify/write operations
@@ -10488,7 +10148,6 @@ impl Gpio18CtrlVal {
             bits: (self.bits & !Gpio18Ctrl::FUNCSEL_MASK) | ((value << Gpio18Ctrl::FUNCSEL_OFFSET) & Gpio18Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio18CtrlVal {
@@ -10515,7 +10174,6 @@ impl Gpio18Ctrl {
     pub fn modify_val<F: FnOnce(Gpio18CtrlVal) -> Gpio18CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO19_STATUS Register
@@ -10625,7 +10283,6 @@ impl Gpio19Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO19_STATUS value type for batch read/modify/write operations
@@ -10687,7 +10344,6 @@ impl Gpio19StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio19Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio19StatusVal {
@@ -10702,19 +10358,6 @@ impl Gpio19Status {
     pub fn read_val(&self) -> Gpio19StatusVal {
         Gpio19StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio19StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio19StatusVal) -> Gpio19StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO19_CTRL Register
@@ -10938,7 +10581,6 @@ impl Gpio19Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO19_CTRL value type for batch read/modify/write operations
@@ -11044,7 +10686,6 @@ impl Gpio19CtrlVal {
             bits: (self.bits & !Gpio19Ctrl::FUNCSEL_MASK) | ((value << Gpio19Ctrl::FUNCSEL_OFFSET) & Gpio19Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio19CtrlVal {
@@ -11071,7 +10712,6 @@ impl Gpio19Ctrl {
     pub fn modify_val<F: FnOnce(Gpio19CtrlVal) -> Gpio19CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO20_STATUS Register
@@ -11181,7 +10821,6 @@ impl Gpio20Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO20_STATUS value type for batch read/modify/write operations
@@ -11243,7 +10882,6 @@ impl Gpio20StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio20Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio20StatusVal {
@@ -11258,19 +10896,6 @@ impl Gpio20Status {
     pub fn read_val(&self) -> Gpio20StatusVal {
         Gpio20StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio20StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio20StatusVal) -> Gpio20StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO20_CTRL Register
@@ -11490,7 +11115,6 @@ impl Gpio20Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO20_CTRL value type for batch read/modify/write operations
@@ -11596,7 +11220,6 @@ impl Gpio20CtrlVal {
             bits: (self.bits & !Gpio20Ctrl::FUNCSEL_MASK) | ((value << Gpio20Ctrl::FUNCSEL_OFFSET) & Gpio20Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio20CtrlVal {
@@ -11623,7 +11246,6 @@ impl Gpio20Ctrl {
     pub fn modify_val<F: FnOnce(Gpio20CtrlVal) -> Gpio20CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO21_STATUS Register
@@ -11733,7 +11355,6 @@ impl Gpio21Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO21_STATUS value type for batch read/modify/write operations
@@ -11795,7 +11416,6 @@ impl Gpio21StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio21Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio21StatusVal {
@@ -11810,19 +11430,6 @@ impl Gpio21Status {
     pub fn read_val(&self) -> Gpio21StatusVal {
         Gpio21StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio21StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio21StatusVal) -> Gpio21StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO21_CTRL Register
@@ -12042,7 +11649,6 @@ impl Gpio21Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO21_CTRL value type for batch read/modify/write operations
@@ -12148,7 +11754,6 @@ impl Gpio21CtrlVal {
             bits: (self.bits & !Gpio21Ctrl::FUNCSEL_MASK) | ((value << Gpio21Ctrl::FUNCSEL_OFFSET) & Gpio21Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio21CtrlVal {
@@ -12175,7 +11780,6 @@ impl Gpio21Ctrl {
     pub fn modify_val<F: FnOnce(Gpio21CtrlVal) -> Gpio21CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO22_STATUS Register
@@ -12285,7 +11889,6 @@ impl Gpio22Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO22_STATUS value type for batch read/modify/write operations
@@ -12347,7 +11950,6 @@ impl Gpio22StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio22Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio22StatusVal {
@@ -12362,19 +11964,6 @@ impl Gpio22Status {
     pub fn read_val(&self) -> Gpio22StatusVal {
         Gpio22StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio22StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio22StatusVal) -> Gpio22StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO22_CTRL Register
@@ -12596,7 +12185,6 @@ impl Gpio22Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO22_CTRL value type for batch read/modify/write operations
@@ -12702,7 +12290,6 @@ impl Gpio22CtrlVal {
             bits: (self.bits & !Gpio22Ctrl::FUNCSEL_MASK) | ((value << Gpio22Ctrl::FUNCSEL_OFFSET) & Gpio22Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio22CtrlVal {
@@ -12729,7 +12316,6 @@ impl Gpio22Ctrl {
     pub fn modify_val<F: FnOnce(Gpio22CtrlVal) -> Gpio22CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO23_STATUS Register
@@ -12839,7 +12425,6 @@ impl Gpio23Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO23_STATUS value type for batch read/modify/write operations
@@ -12901,7 +12486,6 @@ impl Gpio23StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio23Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio23StatusVal {
@@ -12916,19 +12500,6 @@ impl Gpio23Status {
     pub fn read_val(&self) -> Gpio23StatusVal {
         Gpio23StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio23StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio23StatusVal) -> Gpio23StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO23_CTRL Register
@@ -13150,7 +12721,6 @@ impl Gpio23Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO23_CTRL value type for batch read/modify/write operations
@@ -13256,7 +12826,6 @@ impl Gpio23CtrlVal {
             bits: (self.bits & !Gpio23Ctrl::FUNCSEL_MASK) | ((value << Gpio23Ctrl::FUNCSEL_OFFSET) & Gpio23Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio23CtrlVal {
@@ -13283,7 +12852,6 @@ impl Gpio23Ctrl {
     pub fn modify_val<F: FnOnce(Gpio23CtrlVal) -> Gpio23CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO24_STATUS Register
@@ -13393,7 +12961,6 @@ impl Gpio24Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO24_STATUS value type for batch read/modify/write operations
@@ -13455,7 +13022,6 @@ impl Gpio24StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio24Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio24StatusVal {
@@ -13470,19 +13036,6 @@ impl Gpio24Status {
     pub fn read_val(&self) -> Gpio24StatusVal {
         Gpio24StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio24StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio24StatusVal) -> Gpio24StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO24_CTRL Register
@@ -13702,7 +13255,6 @@ impl Gpio24Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO24_CTRL value type for batch read/modify/write operations
@@ -13808,7 +13360,6 @@ impl Gpio24CtrlVal {
             bits: (self.bits & !Gpio24Ctrl::FUNCSEL_MASK) | ((value << Gpio24Ctrl::FUNCSEL_OFFSET) & Gpio24Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio24CtrlVal {
@@ -13835,7 +13386,6 @@ impl Gpio24Ctrl {
     pub fn modify_val<F: FnOnce(Gpio24CtrlVal) -> Gpio24CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO25_STATUS Register
@@ -13945,7 +13495,6 @@ impl Gpio25Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO25_STATUS value type for batch read/modify/write operations
@@ -14007,7 +13556,6 @@ impl Gpio25StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio25Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio25StatusVal {
@@ -14022,19 +13570,6 @@ impl Gpio25Status {
     pub fn read_val(&self) -> Gpio25StatusVal {
         Gpio25StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio25StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio25StatusVal) -> Gpio25StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO25_CTRL Register
@@ -14254,7 +13789,6 @@ impl Gpio25Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO25_CTRL value type for batch read/modify/write operations
@@ -14360,7 +13894,6 @@ impl Gpio25CtrlVal {
             bits: (self.bits & !Gpio25Ctrl::FUNCSEL_MASK) | ((value << Gpio25Ctrl::FUNCSEL_OFFSET) & Gpio25Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio25CtrlVal {
@@ -14387,7 +13920,6 @@ impl Gpio25Ctrl {
     pub fn modify_val<F: FnOnce(Gpio25CtrlVal) -> Gpio25CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO26_STATUS Register
@@ -14497,7 +14029,6 @@ impl Gpio26Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO26_STATUS value type for batch read/modify/write operations
@@ -14559,7 +14090,6 @@ impl Gpio26StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio26Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio26StatusVal {
@@ -14574,19 +14104,6 @@ impl Gpio26Status {
     pub fn read_val(&self) -> Gpio26StatusVal {
         Gpio26StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio26StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio26StatusVal) -> Gpio26StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO26_CTRL Register
@@ -14806,7 +14323,6 @@ impl Gpio26Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO26_CTRL value type for batch read/modify/write operations
@@ -14912,7 +14428,6 @@ impl Gpio26CtrlVal {
             bits: (self.bits & !Gpio26Ctrl::FUNCSEL_MASK) | ((value << Gpio26Ctrl::FUNCSEL_OFFSET) & Gpio26Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio26CtrlVal {
@@ -14939,7 +14454,6 @@ impl Gpio26Ctrl {
     pub fn modify_val<F: FnOnce(Gpio26CtrlVal) -> Gpio26CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO27_STATUS Register
@@ -15049,7 +14563,6 @@ impl Gpio27Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO27_STATUS value type for batch read/modify/write operations
@@ -15111,7 +14624,6 @@ impl Gpio27StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio27Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio27StatusVal {
@@ -15126,19 +14638,6 @@ impl Gpio27Status {
     pub fn read_val(&self) -> Gpio27StatusVal {
         Gpio27StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio27StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio27StatusVal) -> Gpio27StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO27_CTRL Register
@@ -15358,7 +14857,6 @@ impl Gpio27Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO27_CTRL value type for batch read/modify/write operations
@@ -15464,7 +14962,6 @@ impl Gpio27CtrlVal {
             bits: (self.bits & !Gpio27Ctrl::FUNCSEL_MASK) | ((value << Gpio27Ctrl::FUNCSEL_OFFSET) & Gpio27Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio27CtrlVal {
@@ -15491,7 +14988,6 @@ impl Gpio27Ctrl {
     pub fn modify_val<F: FnOnce(Gpio27CtrlVal) -> Gpio27CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO28_STATUS Register
@@ -15601,7 +15097,6 @@ impl Gpio28Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO28_STATUS value type for batch read/modify/write operations
@@ -15663,7 +15158,6 @@ impl Gpio28StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio28Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio28StatusVal {
@@ -15678,19 +15172,6 @@ impl Gpio28Status {
     pub fn read_val(&self) -> Gpio28StatusVal {
         Gpio28StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio28StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio28StatusVal) -> Gpio28StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO28_CTRL Register
@@ -15908,7 +15389,6 @@ impl Gpio28Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO28_CTRL value type for batch read/modify/write operations
@@ -16014,7 +15494,6 @@ impl Gpio28CtrlVal {
             bits: (self.bits & !Gpio28Ctrl::FUNCSEL_MASK) | ((value << Gpio28Ctrl::FUNCSEL_OFFSET) & Gpio28Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio28CtrlVal {
@@ -16041,7 +15520,6 @@ impl Gpio28Ctrl {
     pub fn modify_val<F: FnOnce(Gpio28CtrlVal) -> Gpio28CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO29_STATUS Register
@@ -16151,7 +15629,6 @@ impl Gpio29Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO29_STATUS value type for batch read/modify/write operations
@@ -16213,7 +15690,6 @@ impl Gpio29StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio29Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio29StatusVal {
@@ -16228,19 +15704,6 @@ impl Gpio29Status {
     pub fn read_val(&self) -> Gpio29StatusVal {
         Gpio29StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio29StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio29StatusVal) -> Gpio29StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO29_CTRL Register
@@ -16458,7 +15921,6 @@ impl Gpio29Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO29_CTRL value type for batch read/modify/write operations
@@ -16564,7 +16026,6 @@ impl Gpio29CtrlVal {
             bits: (self.bits & !Gpio29Ctrl::FUNCSEL_MASK) | ((value << Gpio29Ctrl::FUNCSEL_OFFSET) & Gpio29Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio29CtrlVal {
@@ -16591,7 +16052,6 @@ impl Gpio29Ctrl {
     pub fn modify_val<F: FnOnce(Gpio29CtrlVal) -> Gpio29CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO30_STATUS Register
@@ -16701,7 +16161,6 @@ impl Gpio30Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO30_STATUS value type for batch read/modify/write operations
@@ -16763,7 +16222,6 @@ impl Gpio30StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio30Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio30StatusVal {
@@ -16778,19 +16236,6 @@ impl Gpio30Status {
     pub fn read_val(&self) -> Gpio30StatusVal {
         Gpio30StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio30StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio30StatusVal) -> Gpio30StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO30_CTRL Register
@@ -17010,7 +16455,6 @@ impl Gpio30Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO30_CTRL value type for batch read/modify/write operations
@@ -17116,7 +16560,6 @@ impl Gpio30CtrlVal {
             bits: (self.bits & !Gpio30Ctrl::FUNCSEL_MASK) | ((value << Gpio30Ctrl::FUNCSEL_OFFSET) & Gpio30Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio30CtrlVal {
@@ -17143,7 +16586,6 @@ impl Gpio30Ctrl {
     pub fn modify_val<F: FnOnce(Gpio30CtrlVal) -> Gpio30CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO31_STATUS Register
@@ -17253,7 +16695,6 @@ impl Gpio31Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO31_STATUS value type for batch read/modify/write operations
@@ -17315,7 +16756,6 @@ impl Gpio31StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio31Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio31StatusVal {
@@ -17330,19 +16770,6 @@ impl Gpio31Status {
     pub fn read_val(&self) -> Gpio31StatusVal {
         Gpio31StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio31StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio31StatusVal) -> Gpio31StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO31_CTRL Register
@@ -17562,7 +16989,6 @@ impl Gpio31Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO31_CTRL value type for batch read/modify/write operations
@@ -17668,7 +17094,6 @@ impl Gpio31CtrlVal {
             bits: (self.bits & !Gpio31Ctrl::FUNCSEL_MASK) | ((value << Gpio31Ctrl::FUNCSEL_OFFSET) & Gpio31Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio31CtrlVal {
@@ -17695,7 +17120,6 @@ impl Gpio31Ctrl {
     pub fn modify_val<F: FnOnce(Gpio31CtrlVal) -> Gpio31CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO32_STATUS Register
@@ -17805,7 +17229,6 @@ impl Gpio32Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO32_STATUS value type for batch read/modify/write operations
@@ -17867,7 +17290,6 @@ impl Gpio32StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio32Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio32StatusVal {
@@ -17882,19 +17304,6 @@ impl Gpio32Status {
     pub fn read_val(&self) -> Gpio32StatusVal {
         Gpio32StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio32StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio32StatusVal) -> Gpio32StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO32_CTRL Register
@@ -18112,7 +17521,6 @@ impl Gpio32Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO32_CTRL value type for batch read/modify/write operations
@@ -18218,7 +17626,6 @@ impl Gpio32CtrlVal {
             bits: (self.bits & !Gpio32Ctrl::FUNCSEL_MASK) | ((value << Gpio32Ctrl::FUNCSEL_OFFSET) & Gpio32Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio32CtrlVal {
@@ -18245,7 +17652,6 @@ impl Gpio32Ctrl {
     pub fn modify_val<F: FnOnce(Gpio32CtrlVal) -> Gpio32CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO33_STATUS Register
@@ -18355,7 +17761,6 @@ impl Gpio33Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO33_STATUS value type for batch read/modify/write operations
@@ -18417,7 +17822,6 @@ impl Gpio33StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio33Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio33StatusVal {
@@ -18432,19 +17836,6 @@ impl Gpio33Status {
     pub fn read_val(&self) -> Gpio33StatusVal {
         Gpio33StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio33StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio33StatusVal) -> Gpio33StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO33_CTRL Register
@@ -18662,7 +18053,6 @@ impl Gpio33Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO33_CTRL value type for batch read/modify/write operations
@@ -18768,7 +18158,6 @@ impl Gpio33CtrlVal {
             bits: (self.bits & !Gpio33Ctrl::FUNCSEL_MASK) | ((value << Gpio33Ctrl::FUNCSEL_OFFSET) & Gpio33Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio33CtrlVal {
@@ -18795,7 +18184,6 @@ impl Gpio33Ctrl {
     pub fn modify_val<F: FnOnce(Gpio33CtrlVal) -> Gpio33CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO34_STATUS Register
@@ -18905,7 +18293,6 @@ impl Gpio34Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO34_STATUS value type for batch read/modify/write operations
@@ -18967,7 +18354,6 @@ impl Gpio34StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio34Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio34StatusVal {
@@ -18982,19 +18368,6 @@ impl Gpio34Status {
     pub fn read_val(&self) -> Gpio34StatusVal {
         Gpio34StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio34StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio34StatusVal) -> Gpio34StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO34_CTRL Register
@@ -19214,7 +18587,6 @@ impl Gpio34Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO34_CTRL value type for batch read/modify/write operations
@@ -19320,7 +18692,6 @@ impl Gpio34CtrlVal {
             bits: (self.bits & !Gpio34Ctrl::FUNCSEL_MASK) | ((value << Gpio34Ctrl::FUNCSEL_OFFSET) & Gpio34Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio34CtrlVal {
@@ -19347,7 +18718,6 @@ impl Gpio34Ctrl {
     pub fn modify_val<F: FnOnce(Gpio34CtrlVal) -> Gpio34CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO35_STATUS Register
@@ -19457,7 +18827,6 @@ impl Gpio35Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO35_STATUS value type for batch read/modify/write operations
@@ -19519,7 +18888,6 @@ impl Gpio35StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio35Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio35StatusVal {
@@ -19534,19 +18902,6 @@ impl Gpio35Status {
     pub fn read_val(&self) -> Gpio35StatusVal {
         Gpio35StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio35StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio35StatusVal) -> Gpio35StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO35_CTRL Register
@@ -19766,7 +19121,6 @@ impl Gpio35Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO35_CTRL value type for batch read/modify/write operations
@@ -19872,7 +19226,6 @@ impl Gpio35CtrlVal {
             bits: (self.bits & !Gpio35Ctrl::FUNCSEL_MASK) | ((value << Gpio35Ctrl::FUNCSEL_OFFSET) & Gpio35Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio35CtrlVal {
@@ -19899,7 +19252,6 @@ impl Gpio35Ctrl {
     pub fn modify_val<F: FnOnce(Gpio35CtrlVal) -> Gpio35CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO36_STATUS Register
@@ -20009,7 +19361,6 @@ impl Gpio36Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO36_STATUS value type for batch read/modify/write operations
@@ -20071,7 +19422,6 @@ impl Gpio36StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio36Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio36StatusVal {
@@ -20086,19 +19436,6 @@ impl Gpio36Status {
     pub fn read_val(&self) -> Gpio36StatusVal {
         Gpio36StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio36StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio36StatusVal) -> Gpio36StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO36_CTRL Register
@@ -20316,7 +19653,6 @@ impl Gpio36Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO36_CTRL value type for batch read/modify/write operations
@@ -20422,7 +19758,6 @@ impl Gpio36CtrlVal {
             bits: (self.bits & !Gpio36Ctrl::FUNCSEL_MASK) | ((value << Gpio36Ctrl::FUNCSEL_OFFSET) & Gpio36Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio36CtrlVal {
@@ -20449,7 +19784,6 @@ impl Gpio36Ctrl {
     pub fn modify_val<F: FnOnce(Gpio36CtrlVal) -> Gpio36CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO37_STATUS Register
@@ -20559,7 +19893,6 @@ impl Gpio37Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO37_STATUS value type for batch read/modify/write operations
@@ -20621,7 +19954,6 @@ impl Gpio37StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio37Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio37StatusVal {
@@ -20636,19 +19968,6 @@ impl Gpio37Status {
     pub fn read_val(&self) -> Gpio37StatusVal {
         Gpio37StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio37StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio37StatusVal) -> Gpio37StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO37_CTRL Register
@@ -20866,7 +20185,6 @@ impl Gpio37Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO37_CTRL value type for batch read/modify/write operations
@@ -20972,7 +20290,6 @@ impl Gpio37CtrlVal {
             bits: (self.bits & !Gpio37Ctrl::FUNCSEL_MASK) | ((value << Gpio37Ctrl::FUNCSEL_OFFSET) & Gpio37Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio37CtrlVal {
@@ -20999,7 +20316,6 @@ impl Gpio37Ctrl {
     pub fn modify_val<F: FnOnce(Gpio37CtrlVal) -> Gpio37CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO38_STATUS Register
@@ -21109,7 +20425,6 @@ impl Gpio38Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO38_STATUS value type for batch read/modify/write operations
@@ -21171,7 +20486,6 @@ impl Gpio38StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio38Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio38StatusVal {
@@ -21186,19 +20500,6 @@ impl Gpio38Status {
     pub fn read_val(&self) -> Gpio38StatusVal {
         Gpio38StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio38StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio38StatusVal) -> Gpio38StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO38_CTRL Register
@@ -21418,7 +20719,6 @@ impl Gpio38Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO38_CTRL value type for batch read/modify/write operations
@@ -21524,7 +20824,6 @@ impl Gpio38CtrlVal {
             bits: (self.bits & !Gpio38Ctrl::FUNCSEL_MASK) | ((value << Gpio38Ctrl::FUNCSEL_OFFSET) & Gpio38Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio38CtrlVal {
@@ -21551,7 +20850,6 @@ impl Gpio38Ctrl {
     pub fn modify_val<F: FnOnce(Gpio38CtrlVal) -> Gpio38CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO39_STATUS Register
@@ -21661,7 +20959,6 @@ impl Gpio39Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO39_STATUS value type for batch read/modify/write operations
@@ -21723,7 +21020,6 @@ impl Gpio39StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio39Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio39StatusVal {
@@ -21738,19 +21034,6 @@ impl Gpio39Status {
     pub fn read_val(&self) -> Gpio39StatusVal {
         Gpio39StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio39StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio39StatusVal) -> Gpio39StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO39_CTRL Register
@@ -21970,7 +21253,6 @@ impl Gpio39Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO39_CTRL value type for batch read/modify/write operations
@@ -22076,7 +21358,6 @@ impl Gpio39CtrlVal {
             bits: (self.bits & !Gpio39Ctrl::FUNCSEL_MASK) | ((value << Gpio39Ctrl::FUNCSEL_OFFSET) & Gpio39Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio39CtrlVal {
@@ -22103,7 +21384,6 @@ impl Gpio39Ctrl {
     pub fn modify_val<F: FnOnce(Gpio39CtrlVal) -> Gpio39CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO40_STATUS Register
@@ -22213,7 +21493,6 @@ impl Gpio40Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO40_STATUS value type for batch read/modify/write operations
@@ -22275,7 +21554,6 @@ impl Gpio40StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio40Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio40StatusVal {
@@ -22290,19 +21568,6 @@ impl Gpio40Status {
     pub fn read_val(&self) -> Gpio40StatusVal {
         Gpio40StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio40StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio40StatusVal) -> Gpio40StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO40_CTRL Register
@@ -22520,7 +21785,6 @@ impl Gpio40Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO40_CTRL value type for batch read/modify/write operations
@@ -22626,7 +21890,6 @@ impl Gpio40CtrlVal {
             bits: (self.bits & !Gpio40Ctrl::FUNCSEL_MASK) | ((value << Gpio40Ctrl::FUNCSEL_OFFSET) & Gpio40Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio40CtrlVal {
@@ -22653,7 +21916,6 @@ impl Gpio40Ctrl {
     pub fn modify_val<F: FnOnce(Gpio40CtrlVal) -> Gpio40CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO41_STATUS Register
@@ -22763,7 +22025,6 @@ impl Gpio41Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO41_STATUS value type for batch read/modify/write operations
@@ -22825,7 +22086,6 @@ impl Gpio41StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio41Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio41StatusVal {
@@ -22840,19 +22100,6 @@ impl Gpio41Status {
     pub fn read_val(&self) -> Gpio41StatusVal {
         Gpio41StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio41StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio41StatusVal) -> Gpio41StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO41_CTRL Register
@@ -23070,7 +22317,6 @@ impl Gpio41Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO41_CTRL value type for batch read/modify/write operations
@@ -23176,7 +22422,6 @@ impl Gpio41CtrlVal {
             bits: (self.bits & !Gpio41Ctrl::FUNCSEL_MASK) | ((value << Gpio41Ctrl::FUNCSEL_OFFSET) & Gpio41Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio41CtrlVal {
@@ -23203,7 +22448,6 @@ impl Gpio41Ctrl {
     pub fn modify_val<F: FnOnce(Gpio41CtrlVal) -> Gpio41CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO42_STATUS Register
@@ -23313,7 +22557,6 @@ impl Gpio42Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO42_STATUS value type for batch read/modify/write operations
@@ -23375,7 +22618,6 @@ impl Gpio42StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio42Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio42StatusVal {
@@ -23390,19 +22632,6 @@ impl Gpio42Status {
     pub fn read_val(&self) -> Gpio42StatusVal {
         Gpio42StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio42StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio42StatusVal) -> Gpio42StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO42_CTRL Register
@@ -23622,7 +22851,6 @@ impl Gpio42Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO42_CTRL value type for batch read/modify/write operations
@@ -23728,7 +22956,6 @@ impl Gpio42CtrlVal {
             bits: (self.bits & !Gpio42Ctrl::FUNCSEL_MASK) | ((value << Gpio42Ctrl::FUNCSEL_OFFSET) & Gpio42Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio42CtrlVal {
@@ -23755,7 +22982,6 @@ impl Gpio42Ctrl {
     pub fn modify_val<F: FnOnce(Gpio42CtrlVal) -> Gpio42CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO43_STATUS Register
@@ -23865,7 +23091,6 @@ impl Gpio43Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO43_STATUS value type for batch read/modify/write operations
@@ -23927,7 +23152,6 @@ impl Gpio43StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio43Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio43StatusVal {
@@ -23942,19 +23166,6 @@ impl Gpio43Status {
     pub fn read_val(&self) -> Gpio43StatusVal {
         Gpio43StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio43StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio43StatusVal) -> Gpio43StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO43_CTRL Register
@@ -24174,7 +23385,6 @@ impl Gpio43Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO43_CTRL value type for batch read/modify/write operations
@@ -24280,7 +23490,6 @@ impl Gpio43CtrlVal {
             bits: (self.bits & !Gpio43Ctrl::FUNCSEL_MASK) | ((value << Gpio43Ctrl::FUNCSEL_OFFSET) & Gpio43Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio43CtrlVal {
@@ -24307,7 +23516,6 @@ impl Gpio43Ctrl {
     pub fn modify_val<F: FnOnce(Gpio43CtrlVal) -> Gpio43CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO44_STATUS Register
@@ -24417,7 +23625,6 @@ impl Gpio44Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO44_STATUS value type for batch read/modify/write operations
@@ -24479,7 +23686,6 @@ impl Gpio44StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio44Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio44StatusVal {
@@ -24494,19 +23700,6 @@ impl Gpio44Status {
     pub fn read_val(&self) -> Gpio44StatusVal {
         Gpio44StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio44StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio44StatusVal) -> Gpio44StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO44_CTRL Register
@@ -24724,7 +23917,6 @@ impl Gpio44Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO44_CTRL value type for batch read/modify/write operations
@@ -24830,7 +24022,6 @@ impl Gpio44CtrlVal {
             bits: (self.bits & !Gpio44Ctrl::FUNCSEL_MASK) | ((value << Gpio44Ctrl::FUNCSEL_OFFSET) & Gpio44Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio44CtrlVal {
@@ -24857,7 +24048,6 @@ impl Gpio44Ctrl {
     pub fn modify_val<F: FnOnce(Gpio44CtrlVal) -> Gpio44CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO45_STATUS Register
@@ -24967,7 +24157,6 @@ impl Gpio45Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO45_STATUS value type for batch read/modify/write operations
@@ -25029,7 +24218,6 @@ impl Gpio45StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio45Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio45StatusVal {
@@ -25044,19 +24232,6 @@ impl Gpio45Status {
     pub fn read_val(&self) -> Gpio45StatusVal {
         Gpio45StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio45StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio45StatusVal) -> Gpio45StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO45_CTRL Register
@@ -25274,7 +24449,6 @@ impl Gpio45Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO45_CTRL value type for batch read/modify/write operations
@@ -25380,7 +24554,6 @@ impl Gpio45CtrlVal {
             bits: (self.bits & !Gpio45Ctrl::FUNCSEL_MASK) | ((value << Gpio45Ctrl::FUNCSEL_OFFSET) & Gpio45Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio45CtrlVal {
@@ -25407,7 +24580,6 @@ impl Gpio45Ctrl {
     pub fn modify_val<F: FnOnce(Gpio45CtrlVal) -> Gpio45CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO46_STATUS Register
@@ -25517,7 +24689,6 @@ impl Gpio46Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO46_STATUS value type for batch read/modify/write operations
@@ -25579,7 +24750,6 @@ impl Gpio46StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio46Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio46StatusVal {
@@ -25594,19 +24764,6 @@ impl Gpio46Status {
     pub fn read_val(&self) -> Gpio46StatusVal {
         Gpio46StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio46StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio46StatusVal) -> Gpio46StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO46_CTRL Register
@@ -25826,7 +24983,6 @@ impl Gpio46Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO46_CTRL value type for batch read/modify/write operations
@@ -25932,7 +25088,6 @@ impl Gpio46CtrlVal {
             bits: (self.bits & !Gpio46Ctrl::FUNCSEL_MASK) | ((value << Gpio46Ctrl::FUNCSEL_OFFSET) & Gpio46Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio46CtrlVal {
@@ -25959,7 +25114,6 @@ impl Gpio46Ctrl {
     pub fn modify_val<F: FnOnce(Gpio46CtrlVal) -> Gpio46CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO47_STATUS Register
@@ -26069,7 +25223,6 @@ impl Gpio47Status {
     pub fn outtopad(&self) -> bool {
         (self.value.read_bits() & Self::OUTTOPAD_MASK) != 0
     }
-
 }
 
 /// GPIO47_STATUS value type for batch read/modify/write operations
@@ -26131,7 +25284,6 @@ impl Gpio47StatusVal {
     pub const fn outtopad(&self) -> bool {
         (self.bits & Gpio47Status::OUTTOPAD_MASK) != 0
     }
-
 }
 
 impl Default for Gpio47StatusVal {
@@ -26146,19 +25298,6 @@ impl Gpio47Status {
     pub fn read_val(&self) -> Gpio47StatusVal {
         Gpio47StatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Gpio47StatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Gpio47StatusVal) -> Gpio47StatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO47_CTRL Register
@@ -26380,7 +25519,6 @@ impl Gpio47Ctrl {
     pub fn write_funcsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
     }
-
 }
 
 /// GPIO47_CTRL value type for batch read/modify/write operations
@@ -26486,7 +25624,6 @@ impl Gpio47CtrlVal {
             bits: (self.bits & !Gpio47Ctrl::FUNCSEL_MASK) | ((value << Gpio47Ctrl::FUNCSEL_OFFSET) & Gpio47Ctrl::FUNCSEL_MASK)
         }
     }
-
 }
 
 impl Default for Gpio47CtrlVal {
@@ -26513,7 +25650,6 @@ impl Gpio47Ctrl {
     pub fn modify_val<F: FnOnce(Gpio47CtrlVal) -> Gpio47CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IRQSUMMARY_PROC0_SECURE0 Register
@@ -26987,7 +26123,6 @@ impl IrqsummaryProc0Secure0 {
     pub fn gpio0(&self) -> bool {
         (self.value.read_bits() & Self::GPIO0_MASK) != 0
     }
-
 }
 
 /// IRQSUMMARY_PROC0_SECURE0 value type for batch read/modify/write operations
@@ -27209,7 +26344,6 @@ impl IrqsummaryProc0Secure0Val {
     pub const fn gpio0(&self) -> bool {
         (self.bits & IrqsummaryProc0Secure0::GPIO0_MASK) != 0
     }
-
 }
 
 impl Default for IrqsummaryProc0Secure0Val {
@@ -27224,19 +26358,6 @@ impl IrqsummaryProc0Secure0 {
     pub fn read_val(&self) -> IrqsummaryProc0Secure0Val {
         IrqsummaryProc0Secure0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IrqsummaryProc0Secure0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IrqsummaryProc0Secure0Val) -> IrqsummaryProc0Secure0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IRQSUMMARY_PROC0_SECURE1 Register
@@ -27486,7 +26607,6 @@ impl IrqsummaryProc0Secure1 {
     pub fn gpio32(&self) -> bool {
         (self.value.read_bits() & Self::GPIO32_MASK) != 0
     }
-
 }
 
 /// IRQSUMMARY_PROC0_SECURE1 value type for batch read/modify/write operations
@@ -27612,7 +26732,6 @@ impl IrqsummaryProc0Secure1Val {
     pub const fn gpio32(&self) -> bool {
         (self.bits & IrqsummaryProc0Secure1::GPIO32_MASK) != 0
     }
-
 }
 
 impl Default for IrqsummaryProc0Secure1Val {
@@ -27627,19 +26746,6 @@ impl IrqsummaryProc0Secure1 {
     pub fn read_val(&self) -> IrqsummaryProc0Secure1Val {
         IrqsummaryProc0Secure1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IrqsummaryProc0Secure1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IrqsummaryProc0Secure1Val) -> IrqsummaryProc0Secure1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IRQSUMMARY_PROC0_NONSECURE0 Register
@@ -28113,7 +27219,6 @@ impl IrqsummaryProc0Nonsecure0 {
     pub fn gpio0(&self) -> bool {
         (self.value.read_bits() & Self::GPIO0_MASK) != 0
     }
-
 }
 
 /// IRQSUMMARY_PROC0_NONSECURE0 value type for batch read/modify/write operations
@@ -28335,7 +27440,6 @@ impl IrqsummaryProc0Nonsecure0Val {
     pub const fn gpio0(&self) -> bool {
         (self.bits & IrqsummaryProc0Nonsecure0::GPIO0_MASK) != 0
     }
-
 }
 
 impl Default for IrqsummaryProc0Nonsecure0Val {
@@ -28350,19 +27454,6 @@ impl IrqsummaryProc0Nonsecure0 {
     pub fn read_val(&self) -> IrqsummaryProc0Nonsecure0Val {
         IrqsummaryProc0Nonsecure0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IrqsummaryProc0Nonsecure0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IrqsummaryProc0Nonsecure0Val) -> IrqsummaryProc0Nonsecure0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IRQSUMMARY_PROC0_NONSECURE1 Register
@@ -28612,7 +27703,6 @@ impl IrqsummaryProc0Nonsecure1 {
     pub fn gpio32(&self) -> bool {
         (self.value.read_bits() & Self::GPIO32_MASK) != 0
     }
-
 }
 
 /// IRQSUMMARY_PROC0_NONSECURE1 value type for batch read/modify/write operations
@@ -28738,7 +27828,6 @@ impl IrqsummaryProc0Nonsecure1Val {
     pub const fn gpio32(&self) -> bool {
         (self.bits & IrqsummaryProc0Nonsecure1::GPIO32_MASK) != 0
     }
-
 }
 
 impl Default for IrqsummaryProc0Nonsecure1Val {
@@ -28753,19 +27842,6 @@ impl IrqsummaryProc0Nonsecure1 {
     pub fn read_val(&self) -> IrqsummaryProc0Nonsecure1Val {
         IrqsummaryProc0Nonsecure1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IrqsummaryProc0Nonsecure1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IrqsummaryProc0Nonsecure1Val) -> IrqsummaryProc0Nonsecure1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IRQSUMMARY_PROC1_SECURE0 Register
@@ -29239,7 +28315,6 @@ impl IrqsummaryProc1Secure0 {
     pub fn gpio0(&self) -> bool {
         (self.value.read_bits() & Self::GPIO0_MASK) != 0
     }
-
 }
 
 /// IRQSUMMARY_PROC1_SECURE0 value type for batch read/modify/write operations
@@ -29461,7 +28536,6 @@ impl IrqsummaryProc1Secure0Val {
     pub const fn gpio0(&self) -> bool {
         (self.bits & IrqsummaryProc1Secure0::GPIO0_MASK) != 0
     }
-
 }
 
 impl Default for IrqsummaryProc1Secure0Val {
@@ -29476,19 +28550,6 @@ impl IrqsummaryProc1Secure0 {
     pub fn read_val(&self) -> IrqsummaryProc1Secure0Val {
         IrqsummaryProc1Secure0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IrqsummaryProc1Secure0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IrqsummaryProc1Secure0Val) -> IrqsummaryProc1Secure0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IRQSUMMARY_PROC1_SECURE1 Register
@@ -29738,7 +28799,6 @@ impl IrqsummaryProc1Secure1 {
     pub fn gpio32(&self) -> bool {
         (self.value.read_bits() & Self::GPIO32_MASK) != 0
     }
-
 }
 
 /// IRQSUMMARY_PROC1_SECURE1 value type for batch read/modify/write operations
@@ -29864,7 +28924,6 @@ impl IrqsummaryProc1Secure1Val {
     pub const fn gpio32(&self) -> bool {
         (self.bits & IrqsummaryProc1Secure1::GPIO32_MASK) != 0
     }
-
 }
 
 impl Default for IrqsummaryProc1Secure1Val {
@@ -29879,19 +28938,6 @@ impl IrqsummaryProc1Secure1 {
     pub fn read_val(&self) -> IrqsummaryProc1Secure1Val {
         IrqsummaryProc1Secure1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IrqsummaryProc1Secure1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IrqsummaryProc1Secure1Val) -> IrqsummaryProc1Secure1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IRQSUMMARY_PROC1_NONSECURE0 Register
@@ -30365,7 +29411,6 @@ impl IrqsummaryProc1Nonsecure0 {
     pub fn gpio0(&self) -> bool {
         (self.value.read_bits() & Self::GPIO0_MASK) != 0
     }
-
 }
 
 /// IRQSUMMARY_PROC1_NONSECURE0 value type for batch read/modify/write operations
@@ -30587,7 +29632,6 @@ impl IrqsummaryProc1Nonsecure0Val {
     pub const fn gpio0(&self) -> bool {
         (self.bits & IrqsummaryProc1Nonsecure0::GPIO0_MASK) != 0
     }
-
 }
 
 impl Default for IrqsummaryProc1Nonsecure0Val {
@@ -30602,19 +29646,6 @@ impl IrqsummaryProc1Nonsecure0 {
     pub fn read_val(&self) -> IrqsummaryProc1Nonsecure0Val {
         IrqsummaryProc1Nonsecure0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IrqsummaryProc1Nonsecure0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IrqsummaryProc1Nonsecure0Val) -> IrqsummaryProc1Nonsecure0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IRQSUMMARY_PROC1_NONSECURE1 Register
@@ -30864,7 +29895,6 @@ impl IrqsummaryProc1Nonsecure1 {
     pub fn gpio32(&self) -> bool {
         (self.value.read_bits() & Self::GPIO32_MASK) != 0
     }
-
 }
 
 /// IRQSUMMARY_PROC1_NONSECURE1 value type for batch read/modify/write operations
@@ -30990,7 +30020,6 @@ impl IrqsummaryProc1Nonsecure1Val {
     pub const fn gpio32(&self) -> bool {
         (self.bits & IrqsummaryProc1Nonsecure1::GPIO32_MASK) != 0
     }
-
 }
 
 impl Default for IrqsummaryProc1Nonsecure1Val {
@@ -31005,19 +30034,6 @@ impl IrqsummaryProc1Nonsecure1 {
     pub fn read_val(&self) -> IrqsummaryProc1Nonsecure1Val {
         IrqsummaryProc1Nonsecure1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IrqsummaryProc1Nonsecure1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IrqsummaryProc1Nonsecure1Val) -> IrqsummaryProc1Nonsecure1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IRQSUMMARY_DORMANT_WAKE_SECURE0 Register
@@ -31491,7 +30507,6 @@ impl IrqsummaryDormantWakeSecure0 {
     pub fn gpio0(&self) -> bool {
         (self.value.read_bits() & Self::GPIO0_MASK) != 0
     }
-
 }
 
 /// IRQSUMMARY_DORMANT_WAKE_SECURE0 value type for batch read/modify/write operations
@@ -31713,7 +30728,6 @@ impl IrqsummaryDormantWakeSecure0Val {
     pub const fn gpio0(&self) -> bool {
         (self.bits & IrqsummaryDormantWakeSecure0::GPIO0_MASK) != 0
     }
-
 }
 
 impl Default for IrqsummaryDormantWakeSecure0Val {
@@ -31728,19 +30742,6 @@ impl IrqsummaryDormantWakeSecure0 {
     pub fn read_val(&self) -> IrqsummaryDormantWakeSecure0Val {
         IrqsummaryDormantWakeSecure0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IrqsummaryDormantWakeSecure0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IrqsummaryDormantWakeSecure0Val) -> IrqsummaryDormantWakeSecure0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IRQSUMMARY_DORMANT_WAKE_SECURE1 Register
@@ -31990,7 +30991,6 @@ impl IrqsummaryDormantWakeSecure1 {
     pub fn gpio32(&self) -> bool {
         (self.value.read_bits() & Self::GPIO32_MASK) != 0
     }
-
 }
 
 /// IRQSUMMARY_DORMANT_WAKE_SECURE1 value type for batch read/modify/write operations
@@ -32116,7 +31116,6 @@ impl IrqsummaryDormantWakeSecure1Val {
     pub const fn gpio32(&self) -> bool {
         (self.bits & IrqsummaryDormantWakeSecure1::GPIO32_MASK) != 0
     }
-
 }
 
 impl Default for IrqsummaryDormantWakeSecure1Val {
@@ -32131,19 +31130,6 @@ impl IrqsummaryDormantWakeSecure1 {
     pub fn read_val(&self) -> IrqsummaryDormantWakeSecure1Val {
         IrqsummaryDormantWakeSecure1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IrqsummaryDormantWakeSecure1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IrqsummaryDormantWakeSecure1Val) -> IrqsummaryDormantWakeSecure1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IRQSUMMARY_DORMANT_WAKE_NONSECURE0 Register
@@ -32617,7 +31603,6 @@ impl IrqsummaryDormantWakeNonsecure0 {
     pub fn gpio0(&self) -> bool {
         (self.value.read_bits() & Self::GPIO0_MASK) != 0
     }
-
 }
 
 /// IRQSUMMARY_DORMANT_WAKE_NONSECURE0 value type for batch read/modify/write operations
@@ -32839,7 +31824,6 @@ impl IrqsummaryDormantWakeNonsecure0Val {
     pub const fn gpio0(&self) -> bool {
         (self.bits & IrqsummaryDormantWakeNonsecure0::GPIO0_MASK) != 0
     }
-
 }
 
 impl Default for IrqsummaryDormantWakeNonsecure0Val {
@@ -32854,19 +31838,6 @@ impl IrqsummaryDormantWakeNonsecure0 {
     pub fn read_val(&self) -> IrqsummaryDormantWakeNonsecure0Val {
         IrqsummaryDormantWakeNonsecure0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IrqsummaryDormantWakeNonsecure0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IrqsummaryDormantWakeNonsecure0Val) -> IrqsummaryDormantWakeNonsecure0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IRQSUMMARY_DORMANT_WAKE_NONSECURE1 Register
@@ -33116,7 +32087,6 @@ impl IrqsummaryDormantWakeNonsecure1 {
     pub fn gpio32(&self) -> bool {
         (self.value.read_bits() & Self::GPIO32_MASK) != 0
     }
-
 }
 
 /// IRQSUMMARY_DORMANT_WAKE_NONSECURE1 value type for batch read/modify/write operations
@@ -33242,7 +32212,6 @@ impl IrqsummaryDormantWakeNonsecure1Val {
     pub const fn gpio32(&self) -> bool {
         (self.bits & IrqsummaryDormantWakeNonsecure1::GPIO32_MASK) != 0
     }
-
 }
 
 impl Default for IrqsummaryDormantWakeNonsecure1Val {
@@ -33257,19 +32226,6 @@ impl IrqsummaryDormantWakeNonsecure1 {
     pub fn read_val(&self) -> IrqsummaryDormantWakeNonsecure1Val {
         IrqsummaryDormantWakeNonsecure1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IrqsummaryDormantWakeNonsecure1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IrqsummaryDormantWakeNonsecure1Val) -> IrqsummaryDormantWakeNonsecure1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INTR0 Register
@@ -33937,7 +32893,6 @@ impl Intr0 {
     pub fn gpio0_level_low(&self) -> bool {
         (self.value.read_bits() & Self::GPIO0_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 /// INTR0 value type for batch read/modify/write operations
@@ -34351,7 +33306,6 @@ impl Intr0Val {
             }
         }
     }
-
 }
 
 impl Default for Intr0Val {
@@ -34378,7 +33332,6 @@ impl Intr0 {
     pub fn modify_val<F: FnOnce(Intr0Val) -> Intr0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTR1 Register
@@ -35046,7 +33999,6 @@ impl Intr1 {
     pub fn gpio8_level_low(&self) -> bool {
         (self.value.read_bits() & Self::GPIO8_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 /// INTR1 value type for batch read/modify/write operations
@@ -35460,7 +34412,6 @@ impl Intr1Val {
             }
         }
     }
-
 }
 
 impl Default for Intr1Val {
@@ -35487,7 +34438,6 @@ impl Intr1 {
     pub fn modify_val<F: FnOnce(Intr1Val) -> Intr1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTR2 Register
@@ -36155,7 +35105,6 @@ impl Intr2 {
     pub fn gpio16_level_low(&self) -> bool {
         (self.value.read_bits() & Self::GPIO16_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 /// INTR2 value type for batch read/modify/write operations
@@ -36569,7 +35518,6 @@ impl Intr2Val {
             }
         }
     }
-
 }
 
 impl Default for Intr2Val {
@@ -36596,7 +35544,6 @@ impl Intr2 {
     pub fn modify_val<F: FnOnce(Intr2Val) -> Intr2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTR3 Register
@@ -37264,7 +36211,6 @@ impl Intr3 {
     pub fn gpio24_level_low(&self) -> bool {
         (self.value.read_bits() & Self::GPIO24_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 /// INTR3 value type for batch read/modify/write operations
@@ -37678,7 +36624,6 @@ impl Intr3Val {
             }
         }
     }
-
 }
 
 impl Default for Intr3Val {
@@ -37705,7 +36650,6 @@ impl Intr3 {
     pub fn modify_val<F: FnOnce(Intr3Val) -> Intr3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTR4 Register
@@ -38373,7 +37317,6 @@ impl Intr4 {
     pub fn gpio32_level_low(&self) -> bool {
         (self.value.read_bits() & Self::GPIO32_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 /// INTR4 value type for batch read/modify/write operations
@@ -38787,7 +37730,6 @@ impl Intr4Val {
             }
         }
     }
-
 }
 
 impl Default for Intr4Val {
@@ -38814,7 +37756,6 @@ impl Intr4 {
     pub fn modify_val<F: FnOnce(Intr4Val) -> Intr4Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTR5 Register
@@ -39482,7 +38423,6 @@ impl Intr5 {
     pub fn gpio40_level_low(&self) -> bool {
         (self.value.read_bits() & Self::GPIO40_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 /// INTR5 value type for batch read/modify/write operations
@@ -39896,7 +38836,6 @@ impl Intr5Val {
             }
         }
     }
-
 }
 
 impl Default for Intr5Val {
@@ -39923,7 +38862,6 @@ impl Intr5 {
     pub fn modify_val<F: FnOnce(Intr5Val) -> Intr5Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PROC0_INTE0 Register
@@ -40783,7 +39721,6 @@ impl Proc0Inte0 {
     pub fn clr_gpio0_level_low(&self) {
         self.clr_bits(Self::GPIO0_LEVEL_LOW_MASK);
     }
-
 }
 
 /// PROC0_INTE0 value type for batch read/modify/write operations
@@ -41389,7 +40326,6 @@ impl Proc0Inte0Val {
             }
         }
     }
-
 }
 
 impl Default for Proc0Inte0Val {
@@ -41416,7 +40352,6 @@ impl Proc0Inte0 {
     pub fn modify_val<F: FnOnce(Proc0Inte0Val) -> Proc0Inte0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PROC0_INTE1 Register
@@ -42276,7 +41211,6 @@ impl Proc0Inte1 {
     pub fn clr_gpio8_level_low(&self) {
         self.clr_bits(Self::GPIO8_LEVEL_LOW_MASK);
     }
-
 }
 
 /// PROC0_INTE1 value type for batch read/modify/write operations
@@ -42882,7 +41816,6 @@ impl Proc0Inte1Val {
             }
         }
     }
-
 }
 
 impl Default for Proc0Inte1Val {
@@ -42909,7 +41842,6 @@ impl Proc0Inte1 {
     pub fn modify_val<F: FnOnce(Proc0Inte1Val) -> Proc0Inte1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PROC0_INTE2 Register
@@ -43769,7 +42701,6 @@ impl Proc0Inte2 {
     pub fn clr_gpio16_level_low(&self) {
         self.clr_bits(Self::GPIO16_LEVEL_LOW_MASK);
     }
-
 }
 
 /// PROC0_INTE2 value type for batch read/modify/write operations
@@ -44375,7 +43306,6 @@ impl Proc0Inte2Val {
             }
         }
     }
-
 }
 
 impl Default for Proc0Inte2Val {
@@ -44402,7 +43332,6 @@ impl Proc0Inte2 {
     pub fn modify_val<F: FnOnce(Proc0Inte2Val) -> Proc0Inte2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PROC0_INTE3 Register
@@ -45262,7 +44191,6 @@ impl Proc0Inte3 {
     pub fn clr_gpio24_level_low(&self) {
         self.clr_bits(Self::GPIO24_LEVEL_LOW_MASK);
     }
-
 }
 
 /// PROC0_INTE3 value type for batch read/modify/write operations
@@ -45868,7 +44796,6 @@ impl Proc0Inte3Val {
             }
         }
     }
-
 }
 
 impl Default for Proc0Inte3Val {
@@ -45895,7 +44822,6 @@ impl Proc0Inte3 {
     pub fn modify_val<F: FnOnce(Proc0Inte3Val) -> Proc0Inte3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PROC0_INTE4 Register
@@ -46755,7 +45681,6 @@ impl Proc0Inte4 {
     pub fn clr_gpio32_level_low(&self) {
         self.clr_bits(Self::GPIO32_LEVEL_LOW_MASK);
     }
-
 }
 
 /// PROC0_INTE4 value type for batch read/modify/write operations
@@ -47361,7 +46286,6 @@ impl Proc0Inte4Val {
             }
         }
     }
-
 }
 
 impl Default for Proc0Inte4Val {
@@ -47388,7 +46312,6 @@ impl Proc0Inte4 {
     pub fn modify_val<F: FnOnce(Proc0Inte4Val) -> Proc0Inte4Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PROC0_INTE5 Register
@@ -48248,7 +47171,6 @@ impl Proc0Inte5 {
     pub fn clr_gpio40_level_low(&self) {
         self.clr_bits(Self::GPIO40_LEVEL_LOW_MASK);
     }
-
 }
 
 /// PROC0_INTE5 value type for batch read/modify/write operations
@@ -48854,7 +47776,6 @@ impl Proc0Inte5Val {
             }
         }
     }
-
 }
 
 impl Default for Proc0Inte5Val {
@@ -48881,7 +47802,6 @@ impl Proc0Inte5 {
     pub fn modify_val<F: FnOnce(Proc0Inte5Val) -> Proc0Inte5Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PROC0_INTF0 Register
@@ -49741,7 +48661,6 @@ impl Proc0Intf0 {
     pub fn clr_gpio0_level_low(&self) {
         self.clr_bits(Self::GPIO0_LEVEL_LOW_MASK);
     }
-
 }
 
 /// PROC0_INTF0 value type for batch read/modify/write operations
@@ -50347,7 +49266,6 @@ impl Proc0Intf0Val {
             }
         }
     }
-
 }
 
 impl Default for Proc0Intf0Val {
@@ -50374,7 +49292,6 @@ impl Proc0Intf0 {
     pub fn modify_val<F: FnOnce(Proc0Intf0Val) -> Proc0Intf0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PROC0_INTF1 Register
@@ -51234,7 +50151,6 @@ impl Proc0Intf1 {
     pub fn clr_gpio8_level_low(&self) {
         self.clr_bits(Self::GPIO8_LEVEL_LOW_MASK);
     }
-
 }
 
 /// PROC0_INTF1 value type for batch read/modify/write operations
@@ -51840,7 +50756,6 @@ impl Proc0Intf1Val {
             }
         }
     }
-
 }
 
 impl Default for Proc0Intf1Val {
@@ -51867,7 +50782,6 @@ impl Proc0Intf1 {
     pub fn modify_val<F: FnOnce(Proc0Intf1Val) -> Proc0Intf1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PROC0_INTF2 Register
@@ -52727,7 +51641,6 @@ impl Proc0Intf2 {
     pub fn clr_gpio16_level_low(&self) {
         self.clr_bits(Self::GPIO16_LEVEL_LOW_MASK);
     }
-
 }
 
 /// PROC0_INTF2 value type for batch read/modify/write operations
@@ -53333,7 +52246,6 @@ impl Proc0Intf2Val {
             }
         }
     }
-
 }
 
 impl Default for Proc0Intf2Val {
@@ -53360,7 +52272,6 @@ impl Proc0Intf2 {
     pub fn modify_val<F: FnOnce(Proc0Intf2Val) -> Proc0Intf2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PROC0_INTF3 Register
@@ -54220,7 +53131,6 @@ impl Proc0Intf3 {
     pub fn clr_gpio24_level_low(&self) {
         self.clr_bits(Self::GPIO24_LEVEL_LOW_MASK);
     }
-
 }
 
 /// PROC0_INTF3 value type for batch read/modify/write operations
@@ -54826,7 +53736,6 @@ impl Proc0Intf3Val {
             }
         }
     }
-
 }
 
 impl Default for Proc0Intf3Val {
@@ -54853,7 +53762,6 @@ impl Proc0Intf3 {
     pub fn modify_val<F: FnOnce(Proc0Intf3Val) -> Proc0Intf3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PROC0_INTF4 Register
@@ -55713,7 +54621,6 @@ impl Proc0Intf4 {
     pub fn clr_gpio32_level_low(&self) {
         self.clr_bits(Self::GPIO32_LEVEL_LOW_MASK);
     }
-
 }
 
 /// PROC0_INTF4 value type for batch read/modify/write operations
@@ -56319,7 +55226,6 @@ impl Proc0Intf4Val {
             }
         }
     }
-
 }
 
 impl Default for Proc0Intf4Val {
@@ -56346,7 +55252,6 @@ impl Proc0Intf4 {
     pub fn modify_val<F: FnOnce(Proc0Intf4Val) -> Proc0Intf4Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PROC0_INTF5 Register
@@ -57206,7 +56111,6 @@ impl Proc0Intf5 {
     pub fn clr_gpio40_level_low(&self) {
         self.clr_bits(Self::GPIO40_LEVEL_LOW_MASK);
     }
-
 }
 
 /// PROC0_INTF5 value type for batch read/modify/write operations
@@ -57812,7 +56716,6 @@ impl Proc0Intf5Val {
             }
         }
     }
-
 }
 
 impl Default for Proc0Intf5Val {
@@ -57839,7 +56742,6 @@ impl Proc0Intf5 {
     pub fn modify_val<F: FnOnce(Proc0Intf5Val) -> Proc0Intf5Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PROC0_INTS0 Register
@@ -58315,7 +57217,6 @@ impl Proc0Ints0 {
     pub fn gpio0_level_low(&self) -> bool {
         (self.value.read_bits() & Self::GPIO0_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 /// PROC0_INTS0 value type for batch read/modify/write operations
@@ -58537,7 +57438,6 @@ impl Proc0Ints0Val {
     pub const fn gpio0_level_low(&self) -> bool {
         (self.bits & Proc0Ints0::GPIO0_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 impl Default for Proc0Ints0Val {
@@ -58552,19 +57452,6 @@ impl Proc0Ints0 {
     pub fn read_val(&self) -> Proc0Ints0Val {
         Proc0Ints0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Proc0Ints0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Proc0Ints0Val) -> Proc0Ints0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// PROC0_INTS1 Register
@@ -59040,7 +57927,6 @@ impl Proc0Ints1 {
     pub fn gpio8_level_low(&self) -> bool {
         (self.value.read_bits() & Self::GPIO8_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 /// PROC0_INTS1 value type for batch read/modify/write operations
@@ -59262,7 +58148,6 @@ impl Proc0Ints1Val {
     pub const fn gpio8_level_low(&self) -> bool {
         (self.bits & Proc0Ints1::GPIO8_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 impl Default for Proc0Ints1Val {
@@ -59277,19 +58162,6 @@ impl Proc0Ints1 {
     pub fn read_val(&self) -> Proc0Ints1Val {
         Proc0Ints1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Proc0Ints1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Proc0Ints1Val) -> Proc0Ints1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// PROC0_INTS2 Register
@@ -59765,7 +58637,6 @@ impl Proc0Ints2 {
     pub fn gpio16_level_low(&self) -> bool {
         (self.value.read_bits() & Self::GPIO16_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 /// PROC0_INTS2 value type for batch read/modify/write operations
@@ -59987,7 +58858,6 @@ impl Proc0Ints2Val {
     pub const fn gpio16_level_low(&self) -> bool {
         (self.bits & Proc0Ints2::GPIO16_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 impl Default for Proc0Ints2Val {
@@ -60002,19 +58872,6 @@ impl Proc0Ints2 {
     pub fn read_val(&self) -> Proc0Ints2Val {
         Proc0Ints2Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Proc0Ints2Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Proc0Ints2Val) -> Proc0Ints2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// PROC0_INTS3 Register
@@ -60490,7 +59347,6 @@ impl Proc0Ints3 {
     pub fn gpio24_level_low(&self) -> bool {
         (self.value.read_bits() & Self::GPIO24_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 /// PROC0_INTS3 value type for batch read/modify/write operations
@@ -60712,7 +59568,6 @@ impl Proc0Ints3Val {
     pub const fn gpio24_level_low(&self) -> bool {
         (self.bits & Proc0Ints3::GPIO24_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 impl Default for Proc0Ints3Val {
@@ -60727,19 +59582,6 @@ impl Proc0Ints3 {
     pub fn read_val(&self) -> Proc0Ints3Val {
         Proc0Ints3Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Proc0Ints3Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Proc0Ints3Val) -> Proc0Ints3Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// PROC0_INTS4 Register
@@ -61215,7 +60057,6 @@ impl Proc0Ints4 {
     pub fn gpio32_level_low(&self) -> bool {
         (self.value.read_bits() & Self::GPIO32_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 /// PROC0_INTS4 value type for batch read/modify/write operations
@@ -61437,7 +60278,6 @@ impl Proc0Ints4Val {
     pub const fn gpio32_level_low(&self) -> bool {
         (self.bits & Proc0Ints4::GPIO32_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 impl Default for Proc0Ints4Val {
@@ -61452,19 +60292,6 @@ impl Proc0Ints4 {
     pub fn read_val(&self) -> Proc0Ints4Val {
         Proc0Ints4Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Proc0Ints4Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Proc0Ints4Val) -> Proc0Ints4Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// PROC0_INTS5 Register
@@ -61940,7 +60767,6 @@ impl Proc0Ints5 {
     pub fn gpio40_level_low(&self) -> bool {
         (self.value.read_bits() & Self::GPIO40_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 /// PROC0_INTS5 value type for batch read/modify/write operations
@@ -62162,7 +60988,6 @@ impl Proc0Ints5Val {
     pub const fn gpio40_level_low(&self) -> bool {
         (self.bits & Proc0Ints5::GPIO40_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 impl Default for Proc0Ints5Val {
@@ -62177,19 +61002,6 @@ impl Proc0Ints5 {
     pub fn read_val(&self) -> Proc0Ints5Val {
         Proc0Ints5Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Proc0Ints5Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Proc0Ints5Val) -> Proc0Ints5Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// PROC1_INTE0 Register
@@ -63049,7 +61861,6 @@ impl Proc1Inte0 {
     pub fn clr_gpio0_level_low(&self) {
         self.clr_bits(Self::GPIO0_LEVEL_LOW_MASK);
     }
-
 }
 
 /// PROC1_INTE0 value type for batch read/modify/write operations
@@ -63655,7 +62466,6 @@ impl Proc1Inte0Val {
             }
         }
     }
-
 }
 
 impl Default for Proc1Inte0Val {
@@ -63682,7 +62492,6 @@ impl Proc1Inte0 {
     pub fn modify_val<F: FnOnce(Proc1Inte0Val) -> Proc1Inte0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PROC1_INTE1 Register
@@ -64542,7 +63351,6 @@ impl Proc1Inte1 {
     pub fn clr_gpio8_level_low(&self) {
         self.clr_bits(Self::GPIO8_LEVEL_LOW_MASK);
     }
-
 }
 
 /// PROC1_INTE1 value type for batch read/modify/write operations
@@ -65148,7 +63956,6 @@ impl Proc1Inte1Val {
             }
         }
     }
-
 }
 
 impl Default for Proc1Inte1Val {
@@ -65175,7 +63982,6 @@ impl Proc1Inte1 {
     pub fn modify_val<F: FnOnce(Proc1Inte1Val) -> Proc1Inte1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PROC1_INTE2 Register
@@ -66035,7 +64841,6 @@ impl Proc1Inte2 {
     pub fn clr_gpio16_level_low(&self) {
         self.clr_bits(Self::GPIO16_LEVEL_LOW_MASK);
     }
-
 }
 
 /// PROC1_INTE2 value type for batch read/modify/write operations
@@ -66641,7 +65446,6 @@ impl Proc1Inte2Val {
             }
         }
     }
-
 }
 
 impl Default for Proc1Inte2Val {
@@ -66668,7 +65472,6 @@ impl Proc1Inte2 {
     pub fn modify_val<F: FnOnce(Proc1Inte2Val) -> Proc1Inte2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PROC1_INTE3 Register
@@ -67528,7 +66331,6 @@ impl Proc1Inte3 {
     pub fn clr_gpio24_level_low(&self) {
         self.clr_bits(Self::GPIO24_LEVEL_LOW_MASK);
     }
-
 }
 
 /// PROC1_INTE3 value type for batch read/modify/write operations
@@ -68134,7 +66936,6 @@ impl Proc1Inte3Val {
             }
         }
     }
-
 }
 
 impl Default for Proc1Inte3Val {
@@ -68161,7 +66962,6 @@ impl Proc1Inte3 {
     pub fn modify_val<F: FnOnce(Proc1Inte3Val) -> Proc1Inte3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PROC1_INTE4 Register
@@ -69021,7 +67821,6 @@ impl Proc1Inte4 {
     pub fn clr_gpio32_level_low(&self) {
         self.clr_bits(Self::GPIO32_LEVEL_LOW_MASK);
     }
-
 }
 
 /// PROC1_INTE4 value type for batch read/modify/write operations
@@ -69627,7 +68426,6 @@ impl Proc1Inte4Val {
             }
         }
     }
-
 }
 
 impl Default for Proc1Inte4Val {
@@ -69654,7 +68452,6 @@ impl Proc1Inte4 {
     pub fn modify_val<F: FnOnce(Proc1Inte4Val) -> Proc1Inte4Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PROC1_INTE5 Register
@@ -70514,7 +69311,6 @@ impl Proc1Inte5 {
     pub fn clr_gpio40_level_low(&self) {
         self.clr_bits(Self::GPIO40_LEVEL_LOW_MASK);
     }
-
 }
 
 /// PROC1_INTE5 value type for batch read/modify/write operations
@@ -71120,7 +69916,6 @@ impl Proc1Inte5Val {
             }
         }
     }
-
 }
 
 impl Default for Proc1Inte5Val {
@@ -71147,7 +69942,6 @@ impl Proc1Inte5 {
     pub fn modify_val<F: FnOnce(Proc1Inte5Val) -> Proc1Inte5Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PROC1_INTF0 Register
@@ -72007,7 +70801,6 @@ impl Proc1Intf0 {
     pub fn clr_gpio0_level_low(&self) {
         self.clr_bits(Self::GPIO0_LEVEL_LOW_MASK);
     }
-
 }
 
 /// PROC1_INTF0 value type for batch read/modify/write operations
@@ -72613,7 +71406,6 @@ impl Proc1Intf0Val {
             }
         }
     }
-
 }
 
 impl Default for Proc1Intf0Val {
@@ -72640,7 +71432,6 @@ impl Proc1Intf0 {
     pub fn modify_val<F: FnOnce(Proc1Intf0Val) -> Proc1Intf0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PROC1_INTF1 Register
@@ -73500,7 +72291,6 @@ impl Proc1Intf1 {
     pub fn clr_gpio8_level_low(&self) {
         self.clr_bits(Self::GPIO8_LEVEL_LOW_MASK);
     }
-
 }
 
 /// PROC1_INTF1 value type for batch read/modify/write operations
@@ -74106,7 +72896,6 @@ impl Proc1Intf1Val {
             }
         }
     }
-
 }
 
 impl Default for Proc1Intf1Val {
@@ -74133,7 +72922,6 @@ impl Proc1Intf1 {
     pub fn modify_val<F: FnOnce(Proc1Intf1Val) -> Proc1Intf1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PROC1_INTF2 Register
@@ -74993,7 +73781,6 @@ impl Proc1Intf2 {
     pub fn clr_gpio16_level_low(&self) {
         self.clr_bits(Self::GPIO16_LEVEL_LOW_MASK);
     }
-
 }
 
 /// PROC1_INTF2 value type for batch read/modify/write operations
@@ -75599,7 +74386,6 @@ impl Proc1Intf2Val {
             }
         }
     }
-
 }
 
 impl Default for Proc1Intf2Val {
@@ -75626,7 +74412,6 @@ impl Proc1Intf2 {
     pub fn modify_val<F: FnOnce(Proc1Intf2Val) -> Proc1Intf2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PROC1_INTF3 Register
@@ -76486,7 +75271,6 @@ impl Proc1Intf3 {
     pub fn clr_gpio24_level_low(&self) {
         self.clr_bits(Self::GPIO24_LEVEL_LOW_MASK);
     }
-
 }
 
 /// PROC1_INTF3 value type for batch read/modify/write operations
@@ -77092,7 +75876,6 @@ impl Proc1Intf3Val {
             }
         }
     }
-
 }
 
 impl Default for Proc1Intf3Val {
@@ -77119,7 +75902,6 @@ impl Proc1Intf3 {
     pub fn modify_val<F: FnOnce(Proc1Intf3Val) -> Proc1Intf3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PROC1_INTF4 Register
@@ -77979,7 +76761,6 @@ impl Proc1Intf4 {
     pub fn clr_gpio32_level_low(&self) {
         self.clr_bits(Self::GPIO32_LEVEL_LOW_MASK);
     }
-
 }
 
 /// PROC1_INTF4 value type for batch read/modify/write operations
@@ -78585,7 +77366,6 @@ impl Proc1Intf4Val {
             }
         }
     }
-
 }
 
 impl Default for Proc1Intf4Val {
@@ -78612,7 +77392,6 @@ impl Proc1Intf4 {
     pub fn modify_val<F: FnOnce(Proc1Intf4Val) -> Proc1Intf4Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PROC1_INTF5 Register
@@ -79472,7 +78251,6 @@ impl Proc1Intf5 {
     pub fn clr_gpio40_level_low(&self) {
         self.clr_bits(Self::GPIO40_LEVEL_LOW_MASK);
     }
-
 }
 
 /// PROC1_INTF5 value type for batch read/modify/write operations
@@ -80078,7 +78856,6 @@ impl Proc1Intf5Val {
             }
         }
     }
-
 }
 
 impl Default for Proc1Intf5Val {
@@ -80105,7 +78882,6 @@ impl Proc1Intf5 {
     pub fn modify_val<F: FnOnce(Proc1Intf5Val) -> Proc1Intf5Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PROC1_INTS0 Register
@@ -80581,7 +79357,6 @@ impl Proc1Ints0 {
     pub fn gpio0_level_low(&self) -> bool {
         (self.value.read_bits() & Self::GPIO0_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 /// PROC1_INTS0 value type for batch read/modify/write operations
@@ -80803,7 +79578,6 @@ impl Proc1Ints0Val {
     pub const fn gpio0_level_low(&self) -> bool {
         (self.bits & Proc1Ints0::GPIO0_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 impl Default for Proc1Ints0Val {
@@ -80818,19 +79592,6 @@ impl Proc1Ints0 {
     pub fn read_val(&self) -> Proc1Ints0Val {
         Proc1Ints0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Proc1Ints0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Proc1Ints0Val) -> Proc1Ints0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// PROC1_INTS1 Register
@@ -81306,7 +80067,6 @@ impl Proc1Ints1 {
     pub fn gpio8_level_low(&self) -> bool {
         (self.value.read_bits() & Self::GPIO8_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 /// PROC1_INTS1 value type for batch read/modify/write operations
@@ -81528,7 +80288,6 @@ impl Proc1Ints1Val {
     pub const fn gpio8_level_low(&self) -> bool {
         (self.bits & Proc1Ints1::GPIO8_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 impl Default for Proc1Ints1Val {
@@ -81543,19 +80302,6 @@ impl Proc1Ints1 {
     pub fn read_val(&self) -> Proc1Ints1Val {
         Proc1Ints1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Proc1Ints1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Proc1Ints1Val) -> Proc1Ints1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// PROC1_INTS2 Register
@@ -82031,7 +80777,6 @@ impl Proc1Ints2 {
     pub fn gpio16_level_low(&self) -> bool {
         (self.value.read_bits() & Self::GPIO16_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 /// PROC1_INTS2 value type for batch read/modify/write operations
@@ -82253,7 +80998,6 @@ impl Proc1Ints2Val {
     pub const fn gpio16_level_low(&self) -> bool {
         (self.bits & Proc1Ints2::GPIO16_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 impl Default for Proc1Ints2Val {
@@ -82268,19 +81012,6 @@ impl Proc1Ints2 {
     pub fn read_val(&self) -> Proc1Ints2Val {
         Proc1Ints2Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Proc1Ints2Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Proc1Ints2Val) -> Proc1Ints2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// PROC1_INTS3 Register
@@ -82756,7 +81487,6 @@ impl Proc1Ints3 {
     pub fn gpio24_level_low(&self) -> bool {
         (self.value.read_bits() & Self::GPIO24_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 /// PROC1_INTS3 value type for batch read/modify/write operations
@@ -82978,7 +81708,6 @@ impl Proc1Ints3Val {
     pub const fn gpio24_level_low(&self) -> bool {
         (self.bits & Proc1Ints3::GPIO24_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 impl Default for Proc1Ints3Val {
@@ -82993,19 +81722,6 @@ impl Proc1Ints3 {
     pub fn read_val(&self) -> Proc1Ints3Val {
         Proc1Ints3Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Proc1Ints3Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Proc1Ints3Val) -> Proc1Ints3Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// PROC1_INTS4 Register
@@ -83481,7 +82197,6 @@ impl Proc1Ints4 {
     pub fn gpio32_level_low(&self) -> bool {
         (self.value.read_bits() & Self::GPIO32_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 /// PROC1_INTS4 value type for batch read/modify/write operations
@@ -83703,7 +82418,6 @@ impl Proc1Ints4Val {
     pub const fn gpio32_level_low(&self) -> bool {
         (self.bits & Proc1Ints4::GPIO32_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 impl Default for Proc1Ints4Val {
@@ -83718,19 +82432,6 @@ impl Proc1Ints4 {
     pub fn read_val(&self) -> Proc1Ints4Val {
         Proc1Ints4Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Proc1Ints4Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Proc1Ints4Val) -> Proc1Ints4Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// PROC1_INTS5 Register
@@ -84206,7 +82907,6 @@ impl Proc1Ints5 {
     pub fn gpio40_level_low(&self) -> bool {
         (self.value.read_bits() & Self::GPIO40_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 /// PROC1_INTS5 value type for batch read/modify/write operations
@@ -84428,7 +83128,6 @@ impl Proc1Ints5Val {
     pub const fn gpio40_level_low(&self) -> bool {
         (self.bits & Proc1Ints5::GPIO40_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 impl Default for Proc1Ints5Val {
@@ -84443,19 +83142,6 @@ impl Proc1Ints5 {
     pub fn read_val(&self) -> Proc1Ints5Val {
         Proc1Ints5Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Proc1Ints5Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Proc1Ints5Val) -> Proc1Ints5Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DORMANT_WAKE_INTE0 Register
@@ -85315,7 +84001,6 @@ impl DormantWakeInte0 {
     pub fn clr_gpio0_level_low(&self) {
         self.clr_bits(Self::GPIO0_LEVEL_LOW_MASK);
     }
-
 }
 
 /// DORMANT_WAKE_INTE0 value type for batch read/modify/write operations
@@ -85921,7 +84606,6 @@ impl DormantWakeInte0Val {
             }
         }
     }
-
 }
 
 impl Default for DormantWakeInte0Val {
@@ -85948,7 +84632,6 @@ impl DormantWakeInte0 {
     pub fn modify_val<F: FnOnce(DormantWakeInte0Val) -> DormantWakeInte0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DORMANT_WAKE_INTE1 Register
@@ -86808,7 +85491,6 @@ impl DormantWakeInte1 {
     pub fn clr_gpio8_level_low(&self) {
         self.clr_bits(Self::GPIO8_LEVEL_LOW_MASK);
     }
-
 }
 
 /// DORMANT_WAKE_INTE1 value type for batch read/modify/write operations
@@ -87414,7 +86096,6 @@ impl DormantWakeInte1Val {
             }
         }
     }
-
 }
 
 impl Default for DormantWakeInte1Val {
@@ -87441,7 +86122,6 @@ impl DormantWakeInte1 {
     pub fn modify_val<F: FnOnce(DormantWakeInte1Val) -> DormantWakeInte1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DORMANT_WAKE_INTE2 Register
@@ -88301,7 +86981,6 @@ impl DormantWakeInte2 {
     pub fn clr_gpio16_level_low(&self) {
         self.clr_bits(Self::GPIO16_LEVEL_LOW_MASK);
     }
-
 }
 
 /// DORMANT_WAKE_INTE2 value type for batch read/modify/write operations
@@ -88907,7 +87586,6 @@ impl DormantWakeInte2Val {
             }
         }
     }
-
 }
 
 impl Default for DormantWakeInte2Val {
@@ -88934,7 +87612,6 @@ impl DormantWakeInte2 {
     pub fn modify_val<F: FnOnce(DormantWakeInte2Val) -> DormantWakeInte2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DORMANT_WAKE_INTE3 Register
@@ -89794,7 +88471,6 @@ impl DormantWakeInte3 {
     pub fn clr_gpio24_level_low(&self) {
         self.clr_bits(Self::GPIO24_LEVEL_LOW_MASK);
     }
-
 }
 
 /// DORMANT_WAKE_INTE3 value type for batch read/modify/write operations
@@ -90400,7 +89076,6 @@ impl DormantWakeInte3Val {
             }
         }
     }
-
 }
 
 impl Default for DormantWakeInte3Val {
@@ -90427,7 +89102,6 @@ impl DormantWakeInte3 {
     pub fn modify_val<F: FnOnce(DormantWakeInte3Val) -> DormantWakeInte3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DORMANT_WAKE_INTE4 Register
@@ -91287,7 +89961,6 @@ impl DormantWakeInte4 {
     pub fn clr_gpio32_level_low(&self) {
         self.clr_bits(Self::GPIO32_LEVEL_LOW_MASK);
     }
-
 }
 
 /// DORMANT_WAKE_INTE4 value type for batch read/modify/write operations
@@ -91893,7 +90566,6 @@ impl DormantWakeInte4Val {
             }
         }
     }
-
 }
 
 impl Default for DormantWakeInte4Val {
@@ -91920,7 +90592,6 @@ impl DormantWakeInte4 {
     pub fn modify_val<F: FnOnce(DormantWakeInte4Val) -> DormantWakeInte4Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DORMANT_WAKE_INTE5 Register
@@ -92780,7 +91451,6 @@ impl DormantWakeInte5 {
     pub fn clr_gpio40_level_low(&self) {
         self.clr_bits(Self::GPIO40_LEVEL_LOW_MASK);
     }
-
 }
 
 /// DORMANT_WAKE_INTE5 value type for batch read/modify/write operations
@@ -93386,7 +92056,6 @@ impl DormantWakeInte5Val {
             }
         }
     }
-
 }
 
 impl Default for DormantWakeInte5Val {
@@ -93413,7 +92082,6 @@ impl DormantWakeInte5 {
     pub fn modify_val<F: FnOnce(DormantWakeInte5Val) -> DormantWakeInte5Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DORMANT_WAKE_INTF0 Register
@@ -94273,7 +92941,6 @@ impl DormantWakeIntf0 {
     pub fn clr_gpio0_level_low(&self) {
         self.clr_bits(Self::GPIO0_LEVEL_LOW_MASK);
     }
-
 }
 
 /// DORMANT_WAKE_INTF0 value type for batch read/modify/write operations
@@ -94879,7 +93546,6 @@ impl DormantWakeIntf0Val {
             }
         }
     }
-
 }
 
 impl Default for DormantWakeIntf0Val {
@@ -94906,7 +93572,6 @@ impl DormantWakeIntf0 {
     pub fn modify_val<F: FnOnce(DormantWakeIntf0Val) -> DormantWakeIntf0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DORMANT_WAKE_INTF1 Register
@@ -95766,7 +94431,6 @@ impl DormantWakeIntf1 {
     pub fn clr_gpio8_level_low(&self) {
         self.clr_bits(Self::GPIO8_LEVEL_LOW_MASK);
     }
-
 }
 
 /// DORMANT_WAKE_INTF1 value type for batch read/modify/write operations
@@ -96372,7 +95036,6 @@ impl DormantWakeIntf1Val {
             }
         }
     }
-
 }
 
 impl Default for DormantWakeIntf1Val {
@@ -96399,7 +95062,6 @@ impl DormantWakeIntf1 {
     pub fn modify_val<F: FnOnce(DormantWakeIntf1Val) -> DormantWakeIntf1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DORMANT_WAKE_INTF2 Register
@@ -97259,7 +95921,6 @@ impl DormantWakeIntf2 {
     pub fn clr_gpio16_level_low(&self) {
         self.clr_bits(Self::GPIO16_LEVEL_LOW_MASK);
     }
-
 }
 
 /// DORMANT_WAKE_INTF2 value type for batch read/modify/write operations
@@ -97865,7 +96526,6 @@ impl DormantWakeIntf2Val {
             }
         }
     }
-
 }
 
 impl Default for DormantWakeIntf2Val {
@@ -97892,7 +96552,6 @@ impl DormantWakeIntf2 {
     pub fn modify_val<F: FnOnce(DormantWakeIntf2Val) -> DormantWakeIntf2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DORMANT_WAKE_INTF3 Register
@@ -98752,7 +97411,6 @@ impl DormantWakeIntf3 {
     pub fn clr_gpio24_level_low(&self) {
         self.clr_bits(Self::GPIO24_LEVEL_LOW_MASK);
     }
-
 }
 
 /// DORMANT_WAKE_INTF3 value type for batch read/modify/write operations
@@ -99358,7 +98016,6 @@ impl DormantWakeIntf3Val {
             }
         }
     }
-
 }
 
 impl Default for DormantWakeIntf3Val {
@@ -99385,7 +98042,6 @@ impl DormantWakeIntf3 {
     pub fn modify_val<F: FnOnce(DormantWakeIntf3Val) -> DormantWakeIntf3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DORMANT_WAKE_INTF4 Register
@@ -100245,7 +98901,6 @@ impl DormantWakeIntf4 {
     pub fn clr_gpio32_level_low(&self) {
         self.clr_bits(Self::GPIO32_LEVEL_LOW_MASK);
     }
-
 }
 
 /// DORMANT_WAKE_INTF4 value type for batch read/modify/write operations
@@ -100851,7 +99506,6 @@ impl DormantWakeIntf4Val {
             }
         }
     }
-
 }
 
 impl Default for DormantWakeIntf4Val {
@@ -100878,7 +99532,6 @@ impl DormantWakeIntf4 {
     pub fn modify_val<F: FnOnce(DormantWakeIntf4Val) -> DormantWakeIntf4Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DORMANT_WAKE_INTF5 Register
@@ -101738,7 +100391,6 @@ impl DormantWakeIntf5 {
     pub fn clr_gpio40_level_low(&self) {
         self.clr_bits(Self::GPIO40_LEVEL_LOW_MASK);
     }
-
 }
 
 /// DORMANT_WAKE_INTF5 value type for batch read/modify/write operations
@@ -102344,7 +100996,6 @@ impl DormantWakeIntf5Val {
             }
         }
     }
-
 }
 
 impl Default for DormantWakeIntf5Val {
@@ -102371,7 +101022,6 @@ impl DormantWakeIntf5 {
     pub fn modify_val<F: FnOnce(DormantWakeIntf5Val) -> DormantWakeIntf5Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DORMANT_WAKE_INTS0 Register
@@ -102847,7 +101497,6 @@ impl DormantWakeInts0 {
     pub fn gpio0_level_low(&self) -> bool {
         (self.value.read_bits() & Self::GPIO0_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 /// DORMANT_WAKE_INTS0 value type for batch read/modify/write operations
@@ -103069,7 +101718,6 @@ impl DormantWakeInts0Val {
     pub const fn gpio0_level_low(&self) -> bool {
         (self.bits & DormantWakeInts0::GPIO0_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 impl Default for DormantWakeInts0Val {
@@ -103084,19 +101732,6 @@ impl DormantWakeInts0 {
     pub fn read_val(&self) -> DormantWakeInts0Val {
         DormantWakeInts0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: DormantWakeInts0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(DormantWakeInts0Val) -> DormantWakeInts0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DORMANT_WAKE_INTS1 Register
@@ -103572,7 +102207,6 @@ impl DormantWakeInts1 {
     pub fn gpio8_level_low(&self) -> bool {
         (self.value.read_bits() & Self::GPIO8_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 /// DORMANT_WAKE_INTS1 value type for batch read/modify/write operations
@@ -103794,7 +102428,6 @@ impl DormantWakeInts1Val {
     pub const fn gpio8_level_low(&self) -> bool {
         (self.bits & DormantWakeInts1::GPIO8_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 impl Default for DormantWakeInts1Val {
@@ -103809,19 +102442,6 @@ impl DormantWakeInts1 {
     pub fn read_val(&self) -> DormantWakeInts1Val {
         DormantWakeInts1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: DormantWakeInts1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(DormantWakeInts1Val) -> DormantWakeInts1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DORMANT_WAKE_INTS2 Register
@@ -104297,7 +102917,6 @@ impl DormantWakeInts2 {
     pub fn gpio16_level_low(&self) -> bool {
         (self.value.read_bits() & Self::GPIO16_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 /// DORMANT_WAKE_INTS2 value type for batch read/modify/write operations
@@ -104519,7 +103138,6 @@ impl DormantWakeInts2Val {
     pub const fn gpio16_level_low(&self) -> bool {
         (self.bits & DormantWakeInts2::GPIO16_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 impl Default for DormantWakeInts2Val {
@@ -104534,19 +103152,6 @@ impl DormantWakeInts2 {
     pub fn read_val(&self) -> DormantWakeInts2Val {
         DormantWakeInts2Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: DormantWakeInts2Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(DormantWakeInts2Val) -> DormantWakeInts2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DORMANT_WAKE_INTS3 Register
@@ -105022,7 +103627,6 @@ impl DormantWakeInts3 {
     pub fn gpio24_level_low(&self) -> bool {
         (self.value.read_bits() & Self::GPIO24_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 /// DORMANT_WAKE_INTS3 value type for batch read/modify/write operations
@@ -105244,7 +103848,6 @@ impl DormantWakeInts3Val {
     pub const fn gpio24_level_low(&self) -> bool {
         (self.bits & DormantWakeInts3::GPIO24_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 impl Default for DormantWakeInts3Val {
@@ -105259,19 +103862,6 @@ impl DormantWakeInts3 {
     pub fn read_val(&self) -> DormantWakeInts3Val {
         DormantWakeInts3Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: DormantWakeInts3Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(DormantWakeInts3Val) -> DormantWakeInts3Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DORMANT_WAKE_INTS4 Register
@@ -105747,7 +104337,6 @@ impl DormantWakeInts4 {
     pub fn gpio32_level_low(&self) -> bool {
         (self.value.read_bits() & Self::GPIO32_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 /// DORMANT_WAKE_INTS4 value type for batch read/modify/write operations
@@ -105969,7 +104558,6 @@ impl DormantWakeInts4Val {
     pub const fn gpio32_level_low(&self) -> bool {
         (self.bits & DormantWakeInts4::GPIO32_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 impl Default for DormantWakeInts4Val {
@@ -105984,19 +104572,6 @@ impl DormantWakeInts4 {
     pub fn read_val(&self) -> DormantWakeInts4Val {
         DormantWakeInts4Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: DormantWakeInts4Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(DormantWakeInts4Val) -> DormantWakeInts4Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DORMANT_WAKE_INTS5 Register
@@ -106472,7 +105047,6 @@ impl DormantWakeInts5 {
     pub fn gpio40_level_low(&self) -> bool {
         (self.value.read_bits() & Self::GPIO40_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 /// DORMANT_WAKE_INTS5 value type for batch read/modify/write operations
@@ -106694,7 +105268,6 @@ impl DormantWakeInts5Val {
     pub const fn gpio40_level_low(&self) -> bool {
         (self.bits & DormantWakeInts5::GPIO40_LEVEL_LOW_MASK) != 0
     }
-
 }
 
 impl Default for DormantWakeInts5Val {
@@ -106709,19 +105282,6 @@ impl DormantWakeInts5 {
     pub fn read_val(&self) -> DormantWakeInts5Val {
         DormantWakeInts5Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: DormantWakeInts5Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(DormantWakeInts5Val) -> DormantWakeInts5Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// Register block

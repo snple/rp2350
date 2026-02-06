@@ -184,7 +184,6 @@ impl RngImr {
     pub fn clr_ehr_valid_int_mask(&self) {
         self.clr_bits(Self::EHR_VALID_INT_MASK_MASK);
     }
-
 }
 
 /// RNG_IMR value type for batch read/modify/write operations
@@ -310,7 +309,6 @@ impl RngImrVal {
             }
         }
     }
-
 }
 
 impl Default for RngImrVal {
@@ -337,7 +335,6 @@ impl RngImr {
     pub fn modify_val<F: FnOnce(RngImrVal) -> RngImrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// RNG_ISR Register
@@ -469,7 +466,6 @@ impl RngIsr {
     pub fn ehr_valid(&self) -> bool {
         (self.value.read_bits() & Self::EHR_VALID_MASK) != 0
     }
-
 }
 
 /// RNG_ISR value type for batch read/modify/write operations
@@ -539,7 +535,6 @@ impl RngIsrVal {
     pub const fn ehr_valid(&self) -> bool {
         (self.bits & RngIsr::EHR_VALID_MASK) != 0
     }
-
 }
 
 impl Default for RngIsrVal {
@@ -554,19 +549,6 @@ impl RngIsr {
     pub fn read_val(&self) -> RngIsrVal {
         RngIsrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: RngIsrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(RngIsrVal) -> RngIsrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// RNG_ICR Register
@@ -746,7 +728,6 @@ impl RngIcr {
     pub fn clr_ehr_valid(&self) {
         self.clr_bits(Self::EHR_VALID_MASK);
     }
-
 }
 
 /// RNG_ICR value type for batch read/modify/write operations
@@ -872,7 +853,6 @@ impl RngIcrVal {
             }
         }
     }
-
 }
 
 impl Default for RngIcrVal {
@@ -899,7 +879,6 @@ impl RngIcr {
     pub fn modify_val<F: FnOnce(RngIcrVal) -> RngIcrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRNG_CONFIG Register
@@ -975,7 +954,6 @@ impl TrngConfig {
     pub fn write_rnd_src_sel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::RND_SRC_SEL_MASK) | ((value << Self::RND_SRC_SEL_OFFSET) & Self::RND_SRC_SEL_MASK));
     }
-
 }
 
 /// TRNG_CONFIG value type for batch read/modify/write operations
@@ -1031,7 +1009,6 @@ impl TrngConfigVal {
             bits: (self.bits & !TrngConfig::RND_SRC_SEL_MASK) | ((value << TrngConfig::RND_SRC_SEL_OFFSET) & TrngConfig::RND_SRC_SEL_MASK)
         }
     }
-
 }
 
 impl Default for TrngConfigVal {
@@ -1058,7 +1035,6 @@ impl TrngConfig {
     pub fn modify_val<F: FnOnce(TrngConfigVal) -> TrngConfigVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRNG_VALID Register
@@ -1127,7 +1103,6 @@ impl TrngValid {
     pub fn ehr_valid(&self) -> bool {
         (self.value.read_bits() & Self::EHR_VALID_MASK) != 0
     }
-
 }
 
 /// TRNG_VALID value type for batch read/modify/write operations
@@ -1173,7 +1148,6 @@ impl TrngValidVal {
     pub const fn ehr_valid(&self) -> bool {
         (self.bits & TrngValid::EHR_VALID_MASK) != 0
     }
-
 }
 
 impl Default for TrngValidVal {
@@ -1188,19 +1162,6 @@ impl TrngValid {
     pub fn read_val(&self) -> TrngValidVal {
         TrngValidVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: TrngValidVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(TrngValidVal) -> TrngValidVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// EHR_DATA0 Register
@@ -1248,7 +1209,6 @@ impl EhrData0 {
     pub fn ehr_data0(&self) -> u32 {
         (self.value.read_bits() & Self::EHR_DATA0_MASK) >> Self::EHR_DATA0_OFFSET
     }
-
 }
 
 /// EHR_DATA0 value type for batch read/modify/write operations
@@ -1286,7 +1246,6 @@ impl EhrData0Val {
     pub const fn ehr_data0(&self) -> u32 {
         (self.bits & EhrData0::EHR_DATA0_MASK) >> EhrData0::EHR_DATA0_OFFSET
     }
-
 }
 
 impl Default for EhrData0Val {
@@ -1301,19 +1260,6 @@ impl EhrData0 {
     pub fn read_val(&self) -> EhrData0Val {
         EhrData0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: EhrData0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(EhrData0Val) -> EhrData0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// EHR_DATA1 Register
@@ -1361,7 +1307,6 @@ impl EhrData1 {
     pub fn ehr_data1(&self) -> u32 {
         (self.value.read_bits() & Self::EHR_DATA1_MASK) >> Self::EHR_DATA1_OFFSET
     }
-
 }
 
 /// EHR_DATA1 value type for batch read/modify/write operations
@@ -1399,7 +1344,6 @@ impl EhrData1Val {
     pub const fn ehr_data1(&self) -> u32 {
         (self.bits & EhrData1::EHR_DATA1_MASK) >> EhrData1::EHR_DATA1_OFFSET
     }
-
 }
 
 impl Default for EhrData1Val {
@@ -1414,19 +1358,6 @@ impl EhrData1 {
     pub fn read_val(&self) -> EhrData1Val {
         EhrData1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: EhrData1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(EhrData1Val) -> EhrData1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// EHR_DATA2 Register
@@ -1474,7 +1405,6 @@ impl EhrData2 {
     pub fn ehr_data2(&self) -> u32 {
         (self.value.read_bits() & Self::EHR_DATA2_MASK) >> Self::EHR_DATA2_OFFSET
     }
-
 }
 
 /// EHR_DATA2 value type for batch read/modify/write operations
@@ -1512,7 +1442,6 @@ impl EhrData2Val {
     pub const fn ehr_data2(&self) -> u32 {
         (self.bits & EhrData2::EHR_DATA2_MASK) >> EhrData2::EHR_DATA2_OFFSET
     }
-
 }
 
 impl Default for EhrData2Val {
@@ -1527,19 +1456,6 @@ impl EhrData2 {
     pub fn read_val(&self) -> EhrData2Val {
         EhrData2Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: EhrData2Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(EhrData2Val) -> EhrData2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// EHR_DATA3 Register
@@ -1587,7 +1503,6 @@ impl EhrData3 {
     pub fn ehr_data3(&self) -> u32 {
         (self.value.read_bits() & Self::EHR_DATA3_MASK) >> Self::EHR_DATA3_OFFSET
     }
-
 }
 
 /// EHR_DATA3 value type for batch read/modify/write operations
@@ -1625,7 +1540,6 @@ impl EhrData3Val {
     pub const fn ehr_data3(&self) -> u32 {
         (self.bits & EhrData3::EHR_DATA3_MASK) >> EhrData3::EHR_DATA3_OFFSET
     }
-
 }
 
 impl Default for EhrData3Val {
@@ -1640,19 +1554,6 @@ impl EhrData3 {
     pub fn read_val(&self) -> EhrData3Val {
         EhrData3Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: EhrData3Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(EhrData3Val) -> EhrData3Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// EHR_DATA4 Register
@@ -1700,7 +1601,6 @@ impl EhrData4 {
     pub fn ehr_data4(&self) -> u32 {
         (self.value.read_bits() & Self::EHR_DATA4_MASK) >> Self::EHR_DATA4_OFFSET
     }
-
 }
 
 /// EHR_DATA4 value type for batch read/modify/write operations
@@ -1738,7 +1638,6 @@ impl EhrData4Val {
     pub const fn ehr_data4(&self) -> u32 {
         (self.bits & EhrData4::EHR_DATA4_MASK) >> EhrData4::EHR_DATA4_OFFSET
     }
-
 }
 
 impl Default for EhrData4Val {
@@ -1753,19 +1652,6 @@ impl EhrData4 {
     pub fn read_val(&self) -> EhrData4Val {
         EhrData4Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: EhrData4Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(EhrData4Val) -> EhrData4Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// EHR_DATA5 Register
@@ -1813,7 +1699,6 @@ impl EhrData5 {
     pub fn ehr_data5(&self) -> u32 {
         (self.value.read_bits() & Self::EHR_DATA5_MASK) >> Self::EHR_DATA5_OFFSET
     }
-
 }
 
 /// EHR_DATA5 value type for batch read/modify/write operations
@@ -1851,7 +1736,6 @@ impl EhrData5Val {
     pub const fn ehr_data5(&self) -> u32 {
         (self.bits & EhrData5::EHR_DATA5_MASK) >> EhrData5::EHR_DATA5_OFFSET
     }
-
 }
 
 impl Default for EhrData5Val {
@@ -1866,19 +1750,6 @@ impl EhrData5 {
     pub fn read_val(&self) -> EhrData5Val {
         EhrData5Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: EhrData5Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(EhrData5Val) -> EhrData5Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// RND_SOURCE_ENABLE Register
@@ -1959,7 +1830,6 @@ impl RndSourceEnable {
     pub fn clr_rnd_src_en(&self) {
         self.clr_bits(Self::RND_SRC_EN_MASK);
     }
-
 }
 
 /// RND_SOURCE_ENABLE value type for batch read/modify/write operations
@@ -2019,7 +1889,6 @@ impl RndSourceEnableVal {
             }
         }
     }
-
 }
 
 impl Default for RndSourceEnableVal {
@@ -2046,7 +1915,6 @@ impl RndSourceEnable {
     pub fn modify_val<F: FnOnce(RndSourceEnableVal) -> RndSourceEnableVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SAMPLE_CNT1 Register
@@ -2102,7 +1970,6 @@ impl SampleCnt1 {
     pub fn write_sample_cntr1(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SAMPLE_CNTR1_MASK) | ((value << Self::SAMPLE_CNTR1_OFFSET) & Self::SAMPLE_CNTR1_MASK));
     }
-
 }
 
 /// SAMPLE_CNT1 value type for batch read/modify/write operations
@@ -2150,7 +2017,6 @@ impl SampleCnt1Val {
             bits: (self.bits & !SampleCnt1::SAMPLE_CNTR1_MASK) | ((value << SampleCnt1::SAMPLE_CNTR1_OFFSET) & SampleCnt1::SAMPLE_CNTR1_MASK)
         }
     }
-
 }
 
 impl Default for SampleCnt1Val {
@@ -2177,7 +2043,6 @@ impl SampleCnt1 {
     pub fn modify_val<F: FnOnce(SampleCnt1Val) -> SampleCnt1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// AUTOCORR_STATISTIC Register
@@ -2281,7 +2146,6 @@ impl AutocorrStatistic {
     pub fn write_autocorr_trys(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::AUTOCORR_TRYS_MASK) | ((value << Self::AUTOCORR_TRYS_OFFSET) & Self::AUTOCORR_TRYS_MASK));
     }
-
 }
 
 /// AUTOCORR_STATISTIC value type for batch read/modify/write operations
@@ -2355,7 +2219,6 @@ impl AutocorrStatisticVal {
             bits: (self.bits & !AutocorrStatistic::AUTOCORR_TRYS_MASK) | ((value << AutocorrStatistic::AUTOCORR_TRYS_OFFSET) & AutocorrStatistic::AUTOCORR_TRYS_MASK)
         }
     }
-
 }
 
 impl Default for AutocorrStatisticVal {
@@ -2382,7 +2245,6 @@ impl AutocorrStatistic {
     pub fn modify_val<F: FnOnce(AutocorrStatisticVal) -> AutocorrStatisticVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRNG_DEBUG_CONTROL Register
@@ -2530,7 +2392,6 @@ impl TrngDebugControl {
     pub fn reserved(&self) -> bool {
         (self.value.read_bits() & Self::RESERVED_MASK) != 0
     }
-
 }
 
 /// TRNG_DEBUG_CONTROL value type for batch read/modify/write operations
@@ -2634,7 +2495,6 @@ impl TrngDebugControlVal {
             }
         }
     }
-
 }
 
 impl Default for TrngDebugControlVal {
@@ -2661,7 +2521,6 @@ impl TrngDebugControl {
     pub fn modify_val<F: FnOnce(TrngDebugControlVal) -> TrngDebugControlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRNG_SW_RESET Register
@@ -2742,7 +2601,6 @@ impl TrngSwReset {
     pub fn clr_trng_sw_reset(&self) {
         self.clr_bits(Self::TRNG_SW_RESET_MASK);
     }
-
 }
 
 /// TRNG_SW_RESET value type for batch read/modify/write operations
@@ -2802,7 +2660,6 @@ impl TrngSwResetVal {
             }
         }
     }
-
 }
 
 impl Default for TrngSwResetVal {
@@ -2829,7 +2686,6 @@ impl TrngSwReset {
     pub fn modify_val<F: FnOnce(TrngSwResetVal) -> TrngSwResetVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// RNG_DEBUG_EN_INPUT Register
@@ -2910,7 +2766,6 @@ impl RngDebugEnInput {
     pub fn clr_rng_debug_en(&self) {
         self.clr_bits(Self::RNG_DEBUG_EN_MASK);
     }
-
 }
 
 /// RNG_DEBUG_EN_INPUT value type for batch read/modify/write operations
@@ -2970,7 +2825,6 @@ impl RngDebugEnInputVal {
             }
         }
     }
-
 }
 
 impl Default for RngDebugEnInputVal {
@@ -2997,7 +2851,6 @@ impl RngDebugEnInput {
     pub fn modify_val<F: FnOnce(RngDebugEnInputVal) -> RngDebugEnInputVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRNG_BUSY Register
@@ -3066,7 +2919,6 @@ impl TrngBusy {
     pub fn trng_busy(&self) -> bool {
         (self.value.read_bits() & Self::TRNG_BUSY_MASK) != 0
     }
-
 }
 
 /// TRNG_BUSY value type for batch read/modify/write operations
@@ -3112,7 +2964,6 @@ impl TrngBusyVal {
     pub const fn trng_busy(&self) -> bool {
         (self.bits & TrngBusy::TRNG_BUSY_MASK) != 0
     }
-
 }
 
 impl Default for TrngBusyVal {
@@ -3127,19 +2978,6 @@ impl TrngBusy {
     pub fn read_val(&self) -> TrngBusyVal {
         TrngBusyVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: TrngBusyVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(TrngBusyVal) -> TrngBusyVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// RST_BITS_COUNTER Register
@@ -3220,7 +3058,6 @@ impl RstBitsCounter {
     pub fn clr_rst_bits_counter(&self) {
         self.clr_bits(Self::RST_BITS_COUNTER_MASK);
     }
-
 }
 
 /// RST_BITS_COUNTER value type for batch read/modify/write operations
@@ -3280,7 +3117,6 @@ impl RstBitsCounterVal {
             }
         }
     }
-
 }
 
 impl Default for RstBitsCounterVal {
@@ -3307,7 +3143,6 @@ impl RstBitsCounter {
     pub fn modify_val<F: FnOnce(RstBitsCounterVal) -> RstBitsCounterVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// RNG_VERSION Register
@@ -3523,7 +3358,6 @@ impl RngVersion {
     pub fn ehr_width_192(&self) -> bool {
         (self.value.read_bits() & Self::EHR_WIDTH_192_MASK) != 0
     }
-
 }
 
 /// RNG_VERSION value type for batch read/modify/write operations
@@ -3625,7 +3459,6 @@ impl RngVersionVal {
     pub const fn ehr_width_192(&self) -> bool {
         (self.bits & RngVersion::EHR_WIDTH_192_MASK) != 0
     }
-
 }
 
 impl Default for RngVersionVal {
@@ -3640,19 +3473,6 @@ impl RngVersion {
     pub fn read_val(&self) -> RngVersionVal {
         RngVersionVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: RngVersionVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(RngVersionVal) -> RngVersionVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// RNG_BIST_CNTR_0 Register
@@ -3720,7 +3540,6 @@ impl RngBistCntr0 {
     pub fn rosc_cntr_val(&self) -> u32 {
         (self.value.read_bits() & Self::ROSC_CNTR_VAL_MASK) >> Self::ROSC_CNTR_VAL_OFFSET
     }
-
 }
 
 /// RNG_BIST_CNTR_0 value type for batch read/modify/write operations
@@ -3766,7 +3585,6 @@ impl RngBistCntr0Val {
     pub const fn rosc_cntr_val(&self) -> u32 {
         (self.bits & RngBistCntr0::ROSC_CNTR_VAL_MASK) >> RngBistCntr0::ROSC_CNTR_VAL_OFFSET
     }
-
 }
 
 impl Default for RngBistCntr0Val {
@@ -3781,19 +3599,6 @@ impl RngBistCntr0 {
     pub fn read_val(&self) -> RngBistCntr0Val {
         RngBistCntr0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: RngBistCntr0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(RngBistCntr0Val) -> RngBistCntr0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// RNG_BIST_CNTR_1 Register
@@ -3861,7 +3666,6 @@ impl RngBistCntr1 {
     pub fn rosc_cntr_val(&self) -> u32 {
         (self.value.read_bits() & Self::ROSC_CNTR_VAL_MASK) >> Self::ROSC_CNTR_VAL_OFFSET
     }
-
 }
 
 /// RNG_BIST_CNTR_1 value type for batch read/modify/write operations
@@ -3907,7 +3711,6 @@ impl RngBistCntr1Val {
     pub const fn rosc_cntr_val(&self) -> u32 {
         (self.bits & RngBistCntr1::ROSC_CNTR_VAL_MASK) >> RngBistCntr1::ROSC_CNTR_VAL_OFFSET
     }
-
 }
 
 impl Default for RngBistCntr1Val {
@@ -3922,19 +3725,6 @@ impl RngBistCntr1 {
     pub fn read_val(&self) -> RngBistCntr1Val {
         RngBistCntr1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: RngBistCntr1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(RngBistCntr1Val) -> RngBistCntr1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// RNG_BIST_CNTR_2 Register
@@ -4002,7 +3792,6 @@ impl RngBistCntr2 {
     pub fn rosc_cntr_val(&self) -> u32 {
         (self.value.read_bits() & Self::ROSC_CNTR_VAL_MASK) >> Self::ROSC_CNTR_VAL_OFFSET
     }
-
 }
 
 /// RNG_BIST_CNTR_2 value type for batch read/modify/write operations
@@ -4048,7 +3837,6 @@ impl RngBistCntr2Val {
     pub const fn rosc_cntr_val(&self) -> u32 {
         (self.bits & RngBistCntr2::ROSC_CNTR_VAL_MASK) >> RngBistCntr2::ROSC_CNTR_VAL_OFFSET
     }
-
 }
 
 impl Default for RngBistCntr2Val {
@@ -4063,19 +3851,6 @@ impl RngBistCntr2 {
     pub fn read_val(&self) -> RngBistCntr2Val {
         RngBistCntr2Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: RngBistCntr2Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(RngBistCntr2Val) -> RngBistCntr2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// Register block

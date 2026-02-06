@@ -995,6 +995,8 @@ fn write_register_struct(out: &mut String, reg: &Register, supports_atomic: bool
             }
 
             // WriteOnly fields - trigger method (single bit)
+            // Use set_bits to atomically set the bit without clearing other bits (like EN)
+            // For peripherals without atomic support, use modify_bits
             if matches!(field.access, Access::WriteOnly) && width == 1 {
                 writeln!(out, "    /// Trigger **{}** (WO)", field.name)?;
                 if !field.description.is_empty() {
@@ -1009,11 +1011,22 @@ fn write_register_struct(out: &mut String, reg: &Register, supports_atomic: bool
                     "    pub fn {}(&self) {{",
                     prefixed_method_name("trigger", &field.name)
                 )?;
-                writeln!(
-                    out,
-                    "        self.value.write_bits(Self::{}_MASK);",
-                    field_shouty
-                )?;
+                if supports_atomic {
+                    writeln!(out, "        self.set_bits(Self::{}_MASK);", field_shouty)?;
+                } else if matches!(reg.access, Access::WriteOnly) {
+                    // WO register: cannot read, use direct write
+                    writeln!(
+                        out,
+                        "        self.value.write_bits(Self::{}_MASK);",
+                        field_shouty
+                    )?;
+                } else {
+                    writeln!(
+                        out,
+                        "        self.value.modify_bits(|r| r | Self::{}_MASK);",
+                        field_shouty
+                    )?;
+                }
                 writeln!(out, "    }}")?;
                 writeln!(out)?;
             }
@@ -1047,6 +1060,7 @@ fn write_register_struct(out: &mut String, reg: &Register, supports_atomic: bool
     // Note: For peripherals that support atomic operations, the AtomicCell type
     // provides set_bits/clr_bits/xor_bits via Deref
 
+    trim_trailing_blank_line(out);
     writeln!(out, "}}")?;
     writeln!(out)?;
 
@@ -1221,6 +1235,7 @@ fn write_register_value_struct(out: &mut String, reg: &Register) -> Result<()> {
         }
     }
 
+    trim_trailing_blank_line(out);
     writeln!(out, "}}")?;
     writeln!(out)?;
 
@@ -1276,6 +1291,7 @@ fn write_register_value_struct(out: &mut String, reg: &Register) -> Result<()> {
         writeln!(out)?;
     }
 
+    trim_trailing_blank_line(out);
     writeln!(out, "}}")?;
     writeln!(out)?;
 
@@ -1402,6 +1418,15 @@ fn write_header(out: &mut String, periph: &Peripheral, supports_atomic: bool) ->
         writeln!(out)?;
     }
     Ok(())
+}
+
+/// Trim trailing blank line from output buffer.
+/// Many code-gen loops emit `writeln!(out)?;` after each item for spacing,
+/// which leaves an unwanted blank line right before the closing `}`.
+fn trim_trailing_blank_line(out: &mut String) {
+    if out.ends_with("\n\n") {
+        out.truncate(out.len() - 1);
+    }
 }
 
 /// Clean up description: normalize whitespace within each line, preserve original line breaks

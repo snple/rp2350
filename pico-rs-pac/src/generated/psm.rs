@@ -681,7 +681,6 @@ impl FrceOn {
     pub fn clr_proc_cold(&self) {
         self.clr_bits(Self::PROC_COLD_MASK);
     }
-
 }
 
 /// FRCE_ON value type for batch read/modify/write operations
@@ -1161,7 +1160,6 @@ impl FrceOnVal {
             }
         }
     }
-
 }
 
 impl Default for FrceOnVal {
@@ -1188,7 +1186,6 @@ impl FrceOn {
     pub fn modify_val<F: FnOnce(FrceOnVal) -> FrceOnVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FRCE_OFF Register
@@ -1866,7 +1863,6 @@ impl FrceOff {
     pub fn clr_proc_cold(&self) {
         self.clr_bits(Self::PROC_COLD_MASK);
     }
-
 }
 
 /// FRCE_OFF value type for batch read/modify/write operations
@@ -2346,7 +2342,6 @@ impl FrceOffVal {
             }
         }
     }
-
 }
 
 impl Default for FrceOffVal {
@@ -2373,7 +2368,6 @@ impl FrceOff {
     pub fn modify_val<F: FnOnce(FrceOffVal) -> FrceOffVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// WDSEL Register
@@ -3051,7 +3045,6 @@ impl Wdsel {
     pub fn clr_proc_cold(&self) {
         self.clr_bits(Self::PROC_COLD_MASK);
     }
-
 }
 
 /// WDSEL value type for batch read/modify/write operations
@@ -3531,7 +3524,6 @@ impl WdselVal {
             }
         }
     }
-
 }
 
 impl Default for WdselVal {
@@ -3558,7 +3550,6 @@ impl Wdsel {
     pub fn modify_val<F: FnOnce(WdselVal) -> WdselVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DONE Register
@@ -3936,7 +3927,6 @@ impl Done {
     pub fn proc_cold(&self) -> bool {
         (self.value.read_bits() & Self::PROC_COLD_MASK) != 0
     }
-
 }
 
 /// DONE value type for batch read/modify/write operations
@@ -4116,7 +4106,6 @@ impl DoneVal {
     pub const fn proc_cold(&self) -> bool {
         (self.bits & Done::PROC_COLD_MASK) != 0
     }
-
 }
 
 impl Default for DoneVal {
@@ -4131,19 +4120,6 @@ impl Done {
     pub fn read_val(&self) -> DoneVal {
         DoneVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: DoneVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(DoneVal) -> DoneVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// Register block

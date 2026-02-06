@@ -16,6 +16,8 @@ use defmt_rtt as _;
 use panic_probe as _;
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
+use pico_rs::pac::Peripherals;
+use pico_rs::pico_rs_rt::peripheral::Peripherals as CorePeripherals;
 use pico_rs::sio::{Sio, Spinlock};
 use pico_rs::systick::Delay;
 
@@ -25,10 +27,14 @@ use pico_rs::systick::Delay;
 pub static IMAGE_DEF: ImageDef = ImageDef::secure_exe();
 
 const LED_PIN: u8 = 25;
+const CLOCK_FREQ_HZ: u32 = 150_000_000;
 
 #[entry]
 fn main() -> ! {
     info!("SIO Example");
+
+    // Take device peripherals
+    let dp = Peripherals::take().unwrap();
 
     // Get SIO instance
     let sio = Sio::new();
@@ -37,13 +43,16 @@ fn main() -> ! {
     let core_id = sio.core_id();
     info!("Running on core {}", core_id);
 
+    // Take core peripherals for Delay
+    let core_peripherals = CorePeripherals::take().unwrap();
+
     // Initialize delay
-    let mut delay = Delay::new(150_000_000);
+    let mut delay = Delay::new(core_peripherals.SYST, CLOCK_FREQ_HZ);
 
     // Configure GPIO 25 (LED) as output via SIO
     // First need to set up the GPIO pad and function
-    let io_bank0 = unsafe { &*pico_rs::pac::IO_BANK0::PTR };
-    let pads_bank0 = unsafe { &*pico_rs::pac::PADS_BANK0::PTR };
+    let io_bank0 = dp.IO_BANK0;
+    let pads_bank0 = dp.PADS_BANK0;
 
     // Configure pad
     pads_bank0.gpio25.write_bits(
@@ -59,7 +68,7 @@ fn main() -> ! {
     io_bank0.gpio25_ctrl.write_bits(5);
 
     // Enable output via SIO
-    sio.gpio_oe_set(1 << LED_PIN);
+    sio.gpio().pin_oe_set(LED_PIN);
 
     info!("GPIO {} configured as SIO output", LED_PIN);
 
@@ -133,23 +142,25 @@ fn main() -> ! {
 
     info!("Starting LED blink via SIO...");
 
+    let gpio = sio.gpio();
+
     loop {
         // Turn LED on using atomic set
-        sio.gpio_set(1 << LED_PIN);
+        gpio.pin_set(LED_PIN);
         info!("LED ON");
         delay.delay_ms(250);
 
         // Turn LED off using atomic clear
-        sio.gpio_clr(1 << LED_PIN);
+        gpio.pin_clr(LED_PIN);
         info!("LED OFF");
         delay.delay_ms(250);
 
         // Toggle LED using atomic XOR
-        sio.gpio_xor(1 << LED_PIN);
+        gpio.pin_toggle(LED_PIN);
         info!("LED TOGGLE (ON)");
         delay.delay_ms(250);
 
-        sio.gpio_xor(1 << LED_PIN);
+        gpio.pin_toggle(LED_PIN);
         info!("LED TOGGLE (OFF)");
         delay.delay_ms(250);
     }

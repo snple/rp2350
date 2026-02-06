@@ -49,7 +49,6 @@ impl NmiMask0 {
     pub fn write_nmi_mask0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::NMI_MASK0_MASK) | ((value << Self::NMI_MASK0_OFFSET) & Self::NMI_MASK0_MASK));
     }
-
 }
 
 /// NMI_MASK0 value type for batch read/modify/write operations
@@ -93,7 +92,6 @@ impl NmiMask0Val {
             bits: (self.bits & !NmiMask0::NMI_MASK0_MASK) | ((value << NmiMask0::NMI_MASK0_OFFSET) & NmiMask0::NMI_MASK0_MASK)
         }
     }
-
 }
 
 impl Default for NmiMask0Val {
@@ -120,7 +118,6 @@ impl NmiMask0 {
     pub fn modify_val<F: FnOnce(NmiMask0Val) -> NmiMask0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// NMI_MASK1 Register
@@ -167,7 +164,6 @@ impl NmiMask1 {
     pub fn write_nmi_mask1(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::NMI_MASK1_MASK) | ((value << Self::NMI_MASK1_OFFSET) & Self::NMI_MASK1_MASK));
     }
-
 }
 
 /// NMI_MASK1 value type for batch read/modify/write operations
@@ -211,7 +207,6 @@ impl NmiMask1Val {
             bits: (self.bits & !NmiMask1::NMI_MASK1_MASK) | ((value << NmiMask1::NMI_MASK1_OFFSET) & NmiMask1::NMI_MASK1_MASK)
         }
     }
-
 }
 
 impl Default for NmiMask1Val {
@@ -238,7 +233,6 @@ impl NmiMask1 {
     pub fn modify_val<F: FnOnce(NmiMask1Val) -> NmiMask1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SLEEPCTRL Register
@@ -356,7 +350,6 @@ impl Sleepctrl {
     pub fn clr_light_sleep(&self) {
         self.value.modify_bits(|r| r & !Self::LIGHT_SLEEP_MASK);
     }
-
 }
 
 /// SLEEPCTRL value type for batch read/modify/write operations
@@ -440,7 +433,6 @@ impl SleepctrlVal {
             }
         }
     }
-
 }
 
 impl Default for SleepctrlVal {
@@ -467,7 +459,6 @@ impl Sleepctrl {
     pub fn modify_val<F: FnOnce(SleepctrlVal) -> SleepctrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// Register block

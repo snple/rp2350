@@ -462,7 +462,6 @@ impl IcCon {
     pub fn clr_master_mode(&self) {
         self.clr_bits(Self::MASTER_MODE_MASK);
     }
-
 }
 
 /// IC_CON value type for batch read/modify/write operations
@@ -718,7 +717,6 @@ impl IcConVal {
             }
         }
     }
-
 }
 
 impl Default for IcConVal {
@@ -745,7 +743,6 @@ impl IcCon {
     pub fn modify_val<F: FnOnce(IcConVal) -> IcConVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IC_TAR Register
@@ -889,7 +886,6 @@ impl IcTar {
     pub fn write_ic_tar(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::IC_TAR_MASK) | ((value << Self::IC_TAR_OFFSET) & Self::IC_TAR_MASK));
     }
-
 }
 
 /// IC_TAR value type for batch read/modify/write operations
@@ -983,7 +979,6 @@ impl IcTarVal {
             bits: (self.bits & !IcTar::IC_TAR_MASK) | ((value << IcTar::IC_TAR_OFFSET) & IcTar::IC_TAR_MASK)
         }
     }
-
 }
 
 impl Default for IcTarVal {
@@ -1010,7 +1005,6 @@ impl IcTar {
     pub fn modify_val<F: FnOnce(IcTarVal) -> IcTarVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IC_SAR Register
@@ -1074,7 +1068,6 @@ impl IcSar {
     pub fn write_ic_sar(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::IC_SAR_MASK) | ((value << Self::IC_SAR_OFFSET) & Self::IC_SAR_MASK));
     }
-
 }
 
 /// IC_SAR value type for batch read/modify/write operations
@@ -1126,7 +1119,6 @@ impl IcSarVal {
             bits: (self.bits & !IcSar::IC_SAR_MASK) | ((value << IcSar::IC_SAR_OFFSET) & IcSar::IC_SAR_MASK)
         }
     }
-
 }
 
 impl Default for IcSarVal {
@@ -1153,7 +1145,6 @@ impl IcSar {
     pub fn modify_val<F: FnOnce(IcSarVal) -> IcSarVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IC_DATA_CMD Register
@@ -1327,7 +1318,7 @@ impl IcDataCmd {
     /// Reset value: 0x0
     #[inline(always)]
     pub fn trigger_restart(&self) {
-        self.value.write_bits(Self::RESTART_MASK);
+        self.set_bits(Self::RESTART_MASK);
     }
 
     /// Trigger **STOP** (WO)
@@ -1336,7 +1327,7 @@ impl IcDataCmd {
     /// - 1 - STOP is issued after this byte, regardless of whether or not the Tx FIFO is empty. If the Tx FIFO is not empty, the master immediately tries to start a new transfer by issuing a START and arbitrating for the bus. - 0 - STOP is not issued after this byte, regardless of whether or not the Tx FIFO is empty. If the Tx FIFO is not empty, the master continues the current transfer by sending/receiving data bytes according to the value of the CMD bit. If the Tx FIFO is empty, the master holds the SCL line low and stalls the bus until a new command is available in the Tx FIFO. Reset value: 0x0
     #[inline(always)]
     pub fn trigger_stop(&self) {
-        self.value.write_bits(Self::STOP_MASK);
+        self.set_bits(Self::STOP_MASK);
     }
 
     /// Trigger **CMD** (WO)
@@ -1347,7 +1338,7 @@ impl IcDataCmd {
     /// Reset value: 0x0
     #[inline(always)]
     pub fn trigger_cmd(&self) {
-        self.value.write_bits(Self::CMD_MASK);
+        self.set_bits(Self::CMD_MASK);
     }
 
     /// **DAT** `[7:0]` (RW)
@@ -1367,7 +1358,6 @@ impl IcDataCmd {
     pub fn write_dat(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::DAT_MASK) | ((value << Self::DAT_OFFSET) & Self::DAT_MASK));
     }
-
 }
 
 /// IC_DATA_CMD value type for batch read/modify/write operations
@@ -1479,7 +1469,6 @@ impl IcDataCmdVal {
             bits: (self.bits & !IcDataCmd::DAT_MASK) | ((value << IcDataCmd::DAT_OFFSET) & IcDataCmd::DAT_MASK)
         }
     }
-
 }
 
 impl Default for IcDataCmdVal {
@@ -1506,7 +1495,6 @@ impl IcDataCmd {
     pub fn modify_val<F: FnOnce(IcDataCmdVal) -> IcDataCmdVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IC_SS_SCL_HCNT Register
@@ -1574,7 +1562,6 @@ impl IcSsSclHcnt {
     pub fn write_ic_ss_scl_hcnt(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::IC_SS_SCL_HCNT_MASK) | ((value << Self::IC_SS_SCL_HCNT_OFFSET) & Self::IC_SS_SCL_HCNT_MASK));
     }
-
 }
 
 /// IC_SS_SCL_HCNT value type for batch read/modify/write operations
@@ -1628,7 +1615,6 @@ impl IcSsSclHcntVal {
             bits: (self.bits & !IcSsSclHcnt::IC_SS_SCL_HCNT_MASK) | ((value << IcSsSclHcnt::IC_SS_SCL_HCNT_OFFSET) & IcSsSclHcnt::IC_SS_SCL_HCNT_MASK)
         }
     }
-
 }
 
 impl Default for IcSsSclHcntVal {
@@ -1655,7 +1641,6 @@ impl IcSsSclHcnt {
     pub fn modify_val<F: FnOnce(IcSsSclHcntVal) -> IcSsSclHcntVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IC_SS_SCL_LCNT Register
@@ -1719,7 +1704,6 @@ impl IcSsSclLcnt {
     pub fn write_ic_ss_scl_lcnt(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::IC_SS_SCL_LCNT_MASK) | ((value << Self::IC_SS_SCL_LCNT_OFFSET) & Self::IC_SS_SCL_LCNT_MASK));
     }
-
 }
 
 /// IC_SS_SCL_LCNT value type for batch read/modify/write operations
@@ -1771,7 +1755,6 @@ impl IcSsSclLcntVal {
             bits: (self.bits & !IcSsSclLcnt::IC_SS_SCL_LCNT_MASK) | ((value << IcSsSclLcnt::IC_SS_SCL_LCNT_OFFSET) & IcSsSclLcnt::IC_SS_SCL_LCNT_MASK)
         }
     }
-
 }
 
 impl Default for IcSsSclLcntVal {
@@ -1798,7 +1781,6 @@ impl IcSsSclLcnt {
     pub fn modify_val<F: FnOnce(IcSsSclLcntVal) -> IcSsSclLcntVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IC_FS_SCL_HCNT Register
@@ -1862,7 +1844,6 @@ impl IcFsSclHcnt {
     pub fn write_ic_fs_scl_hcnt(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::IC_FS_SCL_HCNT_MASK) | ((value << Self::IC_FS_SCL_HCNT_OFFSET) & Self::IC_FS_SCL_HCNT_MASK));
     }
-
 }
 
 /// IC_FS_SCL_HCNT value type for batch read/modify/write operations
@@ -1914,7 +1895,6 @@ impl IcFsSclHcntVal {
             bits: (self.bits & !IcFsSclHcnt::IC_FS_SCL_HCNT_MASK) | ((value << IcFsSclHcnt::IC_FS_SCL_HCNT_OFFSET) & IcFsSclHcnt::IC_FS_SCL_HCNT_MASK)
         }
     }
-
 }
 
 impl Default for IcFsSclHcntVal {
@@ -1941,7 +1921,6 @@ impl IcFsSclHcnt {
     pub fn modify_val<F: FnOnce(IcFsSclHcntVal) -> IcFsSclHcntVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IC_FS_SCL_LCNT Register
@@ -2009,7 +1988,6 @@ impl IcFsSclLcnt {
     pub fn write_ic_fs_scl_lcnt(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::IC_FS_SCL_LCNT_MASK) | ((value << Self::IC_FS_SCL_LCNT_OFFSET) & Self::IC_FS_SCL_LCNT_MASK));
     }
-
 }
 
 /// IC_FS_SCL_LCNT value type for batch read/modify/write operations
@@ -2063,7 +2041,6 @@ impl IcFsSclLcntVal {
             bits: (self.bits & !IcFsSclLcnt::IC_FS_SCL_LCNT_MASK) | ((value << IcFsSclLcnt::IC_FS_SCL_LCNT_OFFSET) & IcFsSclLcnt::IC_FS_SCL_LCNT_MASK)
         }
     }
-
 }
 
 impl Default for IcFsSclLcntVal {
@@ -2090,7 +2067,6 @@ impl IcFsSclLcnt {
     pub fn modify_val<F: FnOnce(IcFsSclLcntVal) -> IcFsSclLcntVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IC_INTR_STAT Register
@@ -2535,7 +2511,6 @@ impl IcIntrStat {
     pub fn r_rx_under(&self) -> bool {
         (self.value.read_bits() & Self::R_RX_UNDER_MASK) != 0
     }
-
 }
 
 /// IC_INTR_STAT value type for batch read/modify/write operations
@@ -2682,7 +2657,6 @@ impl IcIntrStatVal {
     pub const fn r_rx_under(&self) -> bool {
         (self.bits & IcIntrStat::R_RX_UNDER_MASK) != 0
     }
-
 }
 
 impl Default for IcIntrStatVal {
@@ -2697,19 +2671,6 @@ impl IcIntrStat {
     pub fn read_val(&self) -> IcIntrStatVal {
         IcIntrStatVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IcIntrStatVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IcIntrStatVal) -> IcIntrStatVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IC_INTR_MASK Register
@@ -3310,7 +3271,6 @@ impl IcIntrMask {
     pub fn clr_m_rx_under(&self) {
         self.clr_bits(Self::M_RX_UNDER_MASK);
     }
-
 }
 
 /// IC_INTR_MASK value type for batch read/modify/write operations
@@ -3652,7 +3612,6 @@ impl IcIntrMaskVal {
             }
         }
     }
-
 }
 
 impl Default for IcIntrMaskVal {
@@ -3679,7 +3638,6 @@ impl IcIntrMask {
     pub fn modify_val<F: FnOnce(IcIntrMaskVal) -> IcIntrMaskVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IC_RAW_INTR_STAT Register
@@ -4133,7 +4091,6 @@ impl IcRawIntrStat {
     pub fn rx_under(&self) -> bool {
         (self.value.read_bits() & Self::RX_UNDER_MASK) != 0
     }
-
 }
 
 /// IC_RAW_INTR_STAT value type for batch read/modify/write operations
@@ -4283,7 +4240,6 @@ impl IcRawIntrStatVal {
     pub const fn rx_under(&self) -> bool {
         (self.bits & IcRawIntrStat::RX_UNDER_MASK) != 0
     }
-
 }
 
 impl Default for IcRawIntrStatVal {
@@ -4298,19 +4254,6 @@ impl IcRawIntrStat {
     pub fn read_val(&self) -> IcRawIntrStatVal {
         IcRawIntrStatVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IcRawIntrStatVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IcRawIntrStatVal) -> IcRawIntrStatVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IC_RX_TL Register
@@ -4370,7 +4313,6 @@ impl IcRxTl {
     pub fn write_rx_tl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::RX_TL_MASK) | ((value << Self::RX_TL_OFFSET) & Self::RX_TL_MASK));
     }
-
 }
 
 /// IC_RX_TL value type for batch read/modify/write operations
@@ -4420,7 +4362,6 @@ impl IcRxTlVal {
             bits: (self.bits & !IcRxTl::RX_TL_MASK) | ((value << IcRxTl::RX_TL_OFFSET) & IcRxTl::RX_TL_MASK)
         }
     }
-
 }
 
 impl Default for IcRxTlVal {
@@ -4447,7 +4388,6 @@ impl IcRxTl {
     pub fn modify_val<F: FnOnce(IcRxTlVal) -> IcRxTlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IC_TX_TL Register
@@ -4507,7 +4447,6 @@ impl IcTxTl {
     pub fn write_tx_tl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::TX_TL_MASK) | ((value << Self::TX_TL_OFFSET) & Self::TX_TL_MASK));
     }
-
 }
 
 /// IC_TX_TL value type for batch read/modify/write operations
@@ -4557,7 +4496,6 @@ impl IcTxTlVal {
             bits: (self.bits & !IcTxTl::TX_TL_MASK) | ((value << IcTxTl::TX_TL_OFFSET) & IcTxTl::TX_TL_MASK)
         }
     }
-
 }
 
 impl Default for IcTxTlVal {
@@ -4584,7 +4522,6 @@ impl IcTxTl {
     pub fn modify_val<F: FnOnce(IcTxTlVal) -> IcTxTlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IC_CLR_INTR Register
@@ -4636,7 +4573,6 @@ impl IcClrIntr {
     pub fn clr_intr(&self) -> bool {
         (self.value.read_bits() & Self::CLR_INTR_MASK) != 0
     }
-
 }
 
 /// IC_CLR_INTR value type for batch read/modify/write operations
@@ -4675,7 +4611,6 @@ impl IcClrIntrVal {
     pub const fn clr_intr(&self) -> bool {
         (self.bits & IcClrIntr::CLR_INTR_MASK) != 0
     }
-
 }
 
 impl Default for IcClrIntrVal {
@@ -4690,19 +4625,6 @@ impl IcClrIntr {
     pub fn read_val(&self) -> IcClrIntrVal {
         IcClrIntrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IcClrIntrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IcClrIntrVal) -> IcClrIntrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IC_CLR_RX_UNDER Register
@@ -4754,7 +4676,6 @@ impl IcClrRxUnder {
     pub fn clr_rx_under(&self) -> bool {
         (self.value.read_bits() & Self::CLR_RX_UNDER_MASK) != 0
     }
-
 }
 
 /// IC_CLR_RX_UNDER value type for batch read/modify/write operations
@@ -4793,7 +4714,6 @@ impl IcClrRxUnderVal {
     pub const fn clr_rx_under(&self) -> bool {
         (self.bits & IcClrRxUnder::CLR_RX_UNDER_MASK) != 0
     }
-
 }
 
 impl Default for IcClrRxUnderVal {
@@ -4808,19 +4728,6 @@ impl IcClrRxUnder {
     pub fn read_val(&self) -> IcClrRxUnderVal {
         IcClrRxUnderVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IcClrRxUnderVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IcClrRxUnderVal) -> IcClrRxUnderVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IC_CLR_RX_OVER Register
@@ -4872,7 +4779,6 @@ impl IcClrRxOver {
     pub fn clr_rx_over(&self) -> bool {
         (self.value.read_bits() & Self::CLR_RX_OVER_MASK) != 0
     }
-
 }
 
 /// IC_CLR_RX_OVER value type for batch read/modify/write operations
@@ -4911,7 +4817,6 @@ impl IcClrRxOverVal {
     pub const fn clr_rx_over(&self) -> bool {
         (self.bits & IcClrRxOver::CLR_RX_OVER_MASK) != 0
     }
-
 }
 
 impl Default for IcClrRxOverVal {
@@ -4926,19 +4831,6 @@ impl IcClrRxOver {
     pub fn read_val(&self) -> IcClrRxOverVal {
         IcClrRxOverVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IcClrRxOverVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IcClrRxOverVal) -> IcClrRxOverVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IC_CLR_TX_OVER Register
@@ -4990,7 +4882,6 @@ impl IcClrTxOver {
     pub fn clr_tx_over(&self) -> bool {
         (self.value.read_bits() & Self::CLR_TX_OVER_MASK) != 0
     }
-
 }
 
 /// IC_CLR_TX_OVER value type for batch read/modify/write operations
@@ -5029,7 +4920,6 @@ impl IcClrTxOverVal {
     pub const fn clr_tx_over(&self) -> bool {
         (self.bits & IcClrTxOver::CLR_TX_OVER_MASK) != 0
     }
-
 }
 
 impl Default for IcClrTxOverVal {
@@ -5044,19 +4934,6 @@ impl IcClrTxOver {
     pub fn read_val(&self) -> IcClrTxOverVal {
         IcClrTxOverVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IcClrTxOverVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IcClrTxOverVal) -> IcClrTxOverVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IC_CLR_RD_REQ Register
@@ -5108,7 +4985,6 @@ impl IcClrRdReq {
     pub fn clr_rd_req(&self) -> bool {
         (self.value.read_bits() & Self::CLR_RD_REQ_MASK) != 0
     }
-
 }
 
 /// IC_CLR_RD_REQ value type for batch read/modify/write operations
@@ -5147,7 +5023,6 @@ impl IcClrRdReqVal {
     pub const fn clr_rd_req(&self) -> bool {
         (self.bits & IcClrRdReq::CLR_RD_REQ_MASK) != 0
     }
-
 }
 
 impl Default for IcClrRdReqVal {
@@ -5162,19 +5037,6 @@ impl IcClrRdReq {
     pub fn read_val(&self) -> IcClrRdReqVal {
         IcClrRdReqVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IcClrRdReqVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IcClrRdReqVal) -> IcClrRdReqVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IC_CLR_TX_ABRT Register
@@ -5226,7 +5088,6 @@ impl IcClrTxAbrt {
     pub fn clr_tx_abrt(&self) -> bool {
         (self.value.read_bits() & Self::CLR_TX_ABRT_MASK) != 0
     }
-
 }
 
 /// IC_CLR_TX_ABRT value type for batch read/modify/write operations
@@ -5265,7 +5126,6 @@ impl IcClrTxAbrtVal {
     pub const fn clr_tx_abrt(&self) -> bool {
         (self.bits & IcClrTxAbrt::CLR_TX_ABRT_MASK) != 0
     }
-
 }
 
 impl Default for IcClrTxAbrtVal {
@@ -5280,19 +5140,6 @@ impl IcClrTxAbrt {
     pub fn read_val(&self) -> IcClrTxAbrtVal {
         IcClrTxAbrtVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IcClrTxAbrtVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IcClrTxAbrtVal) -> IcClrTxAbrtVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IC_CLR_RX_DONE Register
@@ -5344,7 +5191,6 @@ impl IcClrRxDone {
     pub fn clr_rx_done(&self) -> bool {
         (self.value.read_bits() & Self::CLR_RX_DONE_MASK) != 0
     }
-
 }
 
 /// IC_CLR_RX_DONE value type for batch read/modify/write operations
@@ -5383,7 +5229,6 @@ impl IcClrRxDoneVal {
     pub const fn clr_rx_done(&self) -> bool {
         (self.bits & IcClrRxDone::CLR_RX_DONE_MASK) != 0
     }
-
 }
 
 impl Default for IcClrRxDoneVal {
@@ -5398,19 +5243,6 @@ impl IcClrRxDone {
     pub fn read_val(&self) -> IcClrRxDoneVal {
         IcClrRxDoneVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IcClrRxDoneVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IcClrRxDoneVal) -> IcClrRxDoneVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IC_CLR_ACTIVITY Register
@@ -5462,7 +5294,6 @@ impl IcClrActivity {
     pub fn clr_activity(&self) -> bool {
         (self.value.read_bits() & Self::CLR_ACTIVITY_MASK) != 0
     }
-
 }
 
 /// IC_CLR_ACTIVITY value type for batch read/modify/write operations
@@ -5501,7 +5332,6 @@ impl IcClrActivityVal {
     pub const fn clr_activity(&self) -> bool {
         (self.bits & IcClrActivity::CLR_ACTIVITY_MASK) != 0
     }
-
 }
 
 impl Default for IcClrActivityVal {
@@ -5516,19 +5346,6 @@ impl IcClrActivity {
     pub fn read_val(&self) -> IcClrActivityVal {
         IcClrActivityVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IcClrActivityVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IcClrActivityVal) -> IcClrActivityVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IC_CLR_STOP_DET Register
@@ -5580,7 +5397,6 @@ impl IcClrStopDet {
     pub fn clr_stop_det(&self) -> bool {
         (self.value.read_bits() & Self::CLR_STOP_DET_MASK) != 0
     }
-
 }
 
 /// IC_CLR_STOP_DET value type for batch read/modify/write operations
@@ -5619,7 +5435,6 @@ impl IcClrStopDetVal {
     pub const fn clr_stop_det(&self) -> bool {
         (self.bits & IcClrStopDet::CLR_STOP_DET_MASK) != 0
     }
-
 }
 
 impl Default for IcClrStopDetVal {
@@ -5634,19 +5449,6 @@ impl IcClrStopDet {
     pub fn read_val(&self) -> IcClrStopDetVal {
         IcClrStopDetVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IcClrStopDetVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IcClrStopDetVal) -> IcClrStopDetVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IC_CLR_START_DET Register
@@ -5698,7 +5500,6 @@ impl IcClrStartDet {
     pub fn clr_start_det(&self) -> bool {
         (self.value.read_bits() & Self::CLR_START_DET_MASK) != 0
     }
-
 }
 
 /// IC_CLR_START_DET value type for batch read/modify/write operations
@@ -5737,7 +5538,6 @@ impl IcClrStartDetVal {
     pub const fn clr_start_det(&self) -> bool {
         (self.bits & IcClrStartDet::CLR_START_DET_MASK) != 0
     }
-
 }
 
 impl Default for IcClrStartDetVal {
@@ -5752,19 +5552,6 @@ impl IcClrStartDet {
     pub fn read_val(&self) -> IcClrStartDetVal {
         IcClrStartDetVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IcClrStartDetVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IcClrStartDetVal) -> IcClrStartDetVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IC_CLR_GEN_CALL Register
@@ -5816,7 +5603,6 @@ impl IcClrGenCall {
     pub fn clr_gen_call(&self) -> bool {
         (self.value.read_bits() & Self::CLR_GEN_CALL_MASK) != 0
     }
-
 }
 
 /// IC_CLR_GEN_CALL value type for batch read/modify/write operations
@@ -5855,7 +5641,6 @@ impl IcClrGenCallVal {
     pub const fn clr_gen_call(&self) -> bool {
         (self.bits & IcClrGenCall::CLR_GEN_CALL_MASK) != 0
     }
-
 }
 
 impl Default for IcClrGenCallVal {
@@ -5870,19 +5655,6 @@ impl IcClrGenCall {
     pub fn read_val(&self) -> IcClrGenCallVal {
         IcClrGenCallVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IcClrGenCallVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IcClrGenCallVal) -> IcClrGenCallVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IC_ENABLE Register
@@ -6048,7 +5820,6 @@ impl IcEnable {
     pub fn clr_enable(&self) {
         self.clr_bits(Self::ENABLE_MASK);
     }
-
 }
 
 /// IC_ENABLE value type for batch read/modify/write operations
@@ -6154,7 +5925,6 @@ impl IcEnableVal {
             }
         }
     }
-
 }
 
 impl Default for IcEnableVal {
@@ -6181,7 +5951,6 @@ impl IcEnable {
     pub fn modify_val<F: FnOnce(IcEnableVal) -> IcEnableVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IC_STATUS Register
@@ -6417,7 +6186,6 @@ impl IcStatus {
     pub fn activity(&self) -> bool {
         (self.value.read_bits() & Self::ACTIVITY_MASK) != 0
     }
-
 }
 
 /// IC_STATUS value type for batch read/modify/write operations
@@ -6504,7 +6272,6 @@ impl IcStatusVal {
     pub const fn activity(&self) -> bool {
         (self.bits & IcStatus::ACTIVITY_MASK) != 0
     }
-
 }
 
 impl Default for IcStatusVal {
@@ -6519,19 +6286,6 @@ impl IcStatus {
     pub fn read_val(&self) -> IcStatusVal {
         IcStatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IcStatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IcStatusVal) -> IcStatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IC_TXFLR Register
@@ -6582,7 +6336,6 @@ impl IcTxflr {
     pub fn txflr(&self) -> u32 {
         (self.value.read_bits() & Self::TXFLR_MASK) >> Self::TXFLR_OFFSET
     }
-
 }
 
 /// IC_TXFLR value type for batch read/modify/write operations
@@ -6621,7 +6374,6 @@ impl IcTxflrVal {
     pub const fn txflr(&self) -> u32 {
         (self.bits & IcTxflr::TXFLR_MASK) >> IcTxflr::TXFLR_OFFSET
     }
-
 }
 
 impl Default for IcTxflrVal {
@@ -6636,19 +6388,6 @@ impl IcTxflr {
     pub fn read_val(&self) -> IcTxflrVal {
         IcTxflrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IcTxflrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IcTxflrVal) -> IcTxflrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IC_RXFLR Register
@@ -6699,7 +6438,6 @@ impl IcRxflr {
     pub fn rxflr(&self) -> u32 {
         (self.value.read_bits() & Self::RXFLR_MASK) >> Self::RXFLR_OFFSET
     }
-
 }
 
 /// IC_RXFLR value type for batch read/modify/write operations
@@ -6738,7 +6476,6 @@ impl IcRxflrVal {
     pub const fn rxflr(&self) -> u32 {
         (self.bits & IcRxflr::RXFLR_MASK) >> IcRxflr::RXFLR_OFFSET
     }
-
 }
 
 impl Default for IcRxflrVal {
@@ -6753,19 +6490,6 @@ impl IcRxflr {
     pub fn read_val(&self) -> IcRxflrVal {
         IcRxflrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IcRxflrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IcRxflrVal) -> IcRxflrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IC_SDA_HOLD Register
@@ -6862,7 +6586,6 @@ impl IcSdaHold {
     pub fn write_ic_sda_tx_hold(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::IC_SDA_TX_HOLD_MASK) | ((value << Self::IC_SDA_TX_HOLD_OFFSET) & Self::IC_SDA_TX_HOLD_MASK));
     }
-
 }
 
 /// IC_SDA_HOLD value type for batch read/modify/write operations
@@ -6932,7 +6655,6 @@ impl IcSdaHoldVal {
             bits: (self.bits & !IcSdaHold::IC_SDA_TX_HOLD_MASK) | ((value << IcSdaHold::IC_SDA_TX_HOLD_OFFSET) & IcSdaHold::IC_SDA_TX_HOLD_MASK)
         }
     }
-
 }
 
 impl Default for IcSdaHoldVal {
@@ -6959,7 +6681,6 @@ impl IcSdaHold {
     pub fn modify_val<F: FnOnce(IcSdaHoldVal) -> IcSdaHoldVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IC_TX_ABRT_SOURCE Register
@@ -7610,7 +7331,6 @@ impl IcTxAbrtSource {
     pub fn abrt_7b_addr_noack(&self) -> bool {
         (self.value.read_bits() & Self::ABRT_7B_ADDR_NOACK_MASK) != 0
     }
-
 }
 
 /// IC_TX_ABRT_SOURCE value type for batch read/modify/write operations
@@ -7820,7 +7540,6 @@ impl IcTxAbrtSourceVal {
     pub const fn abrt_7b_addr_noack(&self) -> bool {
         (self.bits & IcTxAbrtSource::ABRT_7B_ADDR_NOACK_MASK) != 0
     }
-
 }
 
 impl Default for IcTxAbrtSourceVal {
@@ -7835,19 +7554,6 @@ impl IcTxAbrtSource {
     pub fn read_val(&self) -> IcTxAbrtSourceVal {
         IcTxAbrtSourceVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IcTxAbrtSourceVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IcTxAbrtSourceVal) -> IcTxAbrtSourceVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IC_SLV_DATA_NACK_ONLY Register
@@ -7921,7 +7627,6 @@ impl IcSlvDataNackOnly {
     pub fn clr_nack(&self) {
         self.clr_bits(Self::NACK_MASK);
     }
-
 }
 
 /// IC_SLV_DATA_NACK_ONLY value type for batch read/modify/write operations
@@ -7975,7 +7680,6 @@ impl IcSlvDataNackOnlyVal {
             }
         }
     }
-
 }
 
 impl Default for IcSlvDataNackOnlyVal {
@@ -8002,7 +7706,6 @@ impl IcSlvDataNackOnly {
     pub fn modify_val<F: FnOnce(IcSlvDataNackOnlyVal) -> IcSlvDataNackOnlyVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IC_DMA_CR Register
@@ -8113,7 +7816,6 @@ impl IcDmaCr {
     pub fn clr_rdmae(&self) {
         self.clr_bits(Self::RDMAE_MASK);
     }
-
 }
 
 /// IC_DMA_CR value type for batch read/modify/write operations
@@ -8187,7 +7889,6 @@ impl IcDmaCrVal {
             }
         }
     }
-
 }
 
 impl Default for IcDmaCrVal {
@@ -8214,7 +7915,6 @@ impl IcDmaCr {
     pub fn modify_val<F: FnOnce(IcDmaCrVal) -> IcDmaCrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IC_DMA_TDLR Register
@@ -8274,7 +7974,6 @@ impl IcDmaTdlr {
     pub fn write_dmatdl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::DMATDL_MASK) | ((value << Self::DMATDL_OFFSET) & Self::DMATDL_MASK));
     }
-
 }
 
 /// IC_DMA_TDLR value type for batch read/modify/write operations
@@ -8324,7 +8023,6 @@ impl IcDmaTdlrVal {
             bits: (self.bits & !IcDmaTdlr::DMATDL_MASK) | ((value << IcDmaTdlr::DMATDL_OFFSET) & IcDmaTdlr::DMATDL_MASK)
         }
     }
-
 }
 
 impl Default for IcDmaTdlrVal {
@@ -8351,7 +8049,6 @@ impl IcDmaTdlr {
     pub fn modify_val<F: FnOnce(IcDmaTdlrVal) -> IcDmaTdlrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IC_DMA_RDLR Register
@@ -8411,7 +8108,6 @@ impl IcDmaRdlr {
     pub fn write_dmardl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::DMARDL_MASK) | ((value << Self::DMARDL_OFFSET) & Self::DMARDL_MASK));
     }
-
 }
 
 /// IC_DMA_RDLR value type for batch read/modify/write operations
@@ -8461,7 +8157,6 @@ impl IcDmaRdlrVal {
             bits: (self.bits & !IcDmaRdlr::DMARDL_MASK) | ((value << IcDmaRdlr::DMARDL_OFFSET) & IcDmaRdlr::DMARDL_MASK)
         }
     }
-
 }
 
 impl Default for IcDmaRdlrVal {
@@ -8488,7 +8183,6 @@ impl IcDmaRdlr {
     pub fn modify_val<F: FnOnce(IcDmaRdlrVal) -> IcDmaRdlrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IC_SDA_SETUP Register
@@ -8547,7 +8241,6 @@ impl IcSdaSetup {
     pub fn write_sda_setup(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SDA_SETUP_MASK) | ((value << Self::SDA_SETUP_OFFSET) & Self::SDA_SETUP_MASK));
     }
-
 }
 
 /// IC_SDA_SETUP value type for batch read/modify/write operations
@@ -8595,7 +8288,6 @@ impl IcSdaSetupVal {
             bits: (self.bits & !IcSdaSetup::SDA_SETUP_MASK) | ((value << IcSdaSetup::SDA_SETUP_OFFSET) & IcSdaSetup::SDA_SETUP_MASK)
         }
     }
-
 }
 
 impl Default for IcSdaSetupVal {
@@ -8622,7 +8314,6 @@ impl IcSdaSetup {
     pub fn modify_val<F: FnOnce(IcSdaSetupVal) -> IcSdaSetupVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IC_ACK_GENERAL_CALL Register
@@ -8693,7 +8384,6 @@ impl IcAckGeneralCall {
     pub fn clr_ack_gen_call(&self) {
         self.clr_bits(Self::ACK_GEN_CALL_MASK);
     }
-
 }
 
 /// IC_ACK_GENERAL_CALL value type for batch read/modify/write operations
@@ -8745,7 +8435,6 @@ impl IcAckGeneralCallVal {
             }
         }
     }
-
 }
 
 impl Default for IcAckGeneralCallVal {
@@ -8772,7 +8461,6 @@ impl IcAckGeneralCall {
     pub fn modify_val<F: FnOnce(IcAckGeneralCallVal) -> IcAckGeneralCallVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IC_ENABLE_STATUS Register
@@ -8930,7 +8618,6 @@ impl IcEnableStatus {
     pub fn ic_en(&self) -> bool {
         (self.value.read_bits() & Self::IC_EN_MASK) != 0
     }
-
 }
 
 /// IC_ENABLE_STATUS value type for batch read/modify/write operations
@@ -8997,7 +8684,6 @@ impl IcEnableStatusVal {
     pub const fn ic_en(&self) -> bool {
         (self.bits & IcEnableStatus::IC_EN_MASK) != 0
     }
-
 }
 
 impl Default for IcEnableStatusVal {
@@ -9012,19 +8698,6 @@ impl IcEnableStatus {
     pub fn read_val(&self) -> IcEnableStatusVal {
         IcEnableStatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IcEnableStatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IcEnableStatusVal) -> IcEnableStatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IC_FS_SPKLEN Register
@@ -9081,7 +8754,6 @@ impl IcFsSpklen {
     pub fn write_ic_fs_spklen(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::IC_FS_SPKLEN_MASK) | ((value << Self::IC_FS_SPKLEN_OFFSET) & Self::IC_FS_SPKLEN_MASK));
     }
-
 }
 
 /// IC_FS_SPKLEN value type for batch read/modify/write operations
@@ -9129,7 +8801,6 @@ impl IcFsSpklenVal {
             bits: (self.bits & !IcFsSpklen::IC_FS_SPKLEN_MASK) | ((value << IcFsSpklen::IC_FS_SPKLEN_OFFSET) & IcFsSpklen::IC_FS_SPKLEN_MASK)
         }
     }
-
 }
 
 impl Default for IcFsSpklenVal {
@@ -9156,7 +8827,6 @@ impl IcFsSpklen {
     pub fn modify_val<F: FnOnce(IcFsSpklenVal) -> IcFsSpklenVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IC_CLR_RESTART_DET Register
@@ -9208,7 +8878,6 @@ impl IcClrRestartDet {
     pub fn clr_restart_det(&self) -> bool {
         (self.value.read_bits() & Self::CLR_RESTART_DET_MASK) != 0
     }
-
 }
 
 /// IC_CLR_RESTART_DET value type for batch read/modify/write operations
@@ -9247,7 +8916,6 @@ impl IcClrRestartDetVal {
     pub const fn clr_restart_det(&self) -> bool {
         (self.bits & IcClrRestartDet::CLR_RESTART_DET_MASK) != 0
     }
-
 }
 
 impl Default for IcClrRestartDetVal {
@@ -9262,19 +8930,6 @@ impl IcClrRestartDet {
     pub fn read_val(&self) -> IcClrRestartDetVal {
         IcClrRestartDetVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IcClrRestartDetVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IcClrRestartDetVal) -> IcClrRestartDetVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IC_COMP_PARAM_1 Register
@@ -9467,7 +9122,6 @@ impl IcCompParam1 {
     pub fn apb_data_width(&self) -> u32 {
         (self.value.read_bits() & Self::APB_DATA_WIDTH_MASK) >> Self::APB_DATA_WIDTH_OFFSET
     }
-
 }
 
 /// IC_COMP_PARAM_1 value type for batch read/modify/write operations
@@ -9561,7 +9215,6 @@ impl IcCompParam1Val {
     pub const fn apb_data_width(&self) -> u32 {
         (self.bits & IcCompParam1::APB_DATA_WIDTH_MASK) >> IcCompParam1::APB_DATA_WIDTH_OFFSET
     }
-
 }
 
 impl Default for IcCompParam1Val {
@@ -9576,19 +9229,6 @@ impl IcCompParam1 {
     pub fn read_val(&self) -> IcCompParam1Val {
         IcCompParam1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IcCompParam1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IcCompParam1Val) -> IcCompParam1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IC_COMP_VERSION Register
@@ -9629,7 +9269,6 @@ impl IcCompVersion {
     pub fn ic_comp_version(&self) -> u32 {
         (self.value.read_bits() & Self::IC_COMP_VERSION_MASK) >> Self::IC_COMP_VERSION_OFFSET
     }
-
 }
 
 /// IC_COMP_VERSION value type for batch read/modify/write operations
@@ -9665,7 +9304,6 @@ impl IcCompVersionVal {
     pub const fn ic_comp_version(&self) -> u32 {
         (self.bits & IcCompVersion::IC_COMP_VERSION_MASK) >> IcCompVersion::IC_COMP_VERSION_OFFSET
     }
-
 }
 
 impl Default for IcCompVersionVal {
@@ -9680,19 +9318,6 @@ impl IcCompVersion {
     pub fn read_val(&self) -> IcCompVersionVal {
         IcCompVersionVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IcCompVersionVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IcCompVersionVal) -> IcCompVersionVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IC_COMP_TYPE Register
@@ -9740,7 +9365,6 @@ impl IcCompType {
     pub fn ic_comp_type(&self) -> u32 {
         (self.value.read_bits() & Self::IC_COMP_TYPE_MASK) >> Self::IC_COMP_TYPE_OFFSET
     }
-
 }
 
 /// IC_COMP_TYPE value type for batch read/modify/write operations
@@ -9778,7 +9402,6 @@ impl IcCompTypeVal {
     pub const fn ic_comp_type(&self) -> u32 {
         (self.bits & IcCompType::IC_COMP_TYPE_MASK) >> IcCompType::IC_COMP_TYPE_OFFSET
     }
-
 }
 
 impl Default for IcCompTypeVal {
@@ -9793,19 +9416,6 @@ impl IcCompType {
     pub fn read_val(&self) -> IcCompTypeVal {
         IcCompTypeVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IcCompTypeVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IcCompTypeVal) -> IcCompTypeVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// Register block

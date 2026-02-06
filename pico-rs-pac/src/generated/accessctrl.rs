@@ -126,7 +126,6 @@ impl Lock {
     pub fn clr_core0(&self) {
         self.clr_bits(Self::CORE0_MASK);
     }
-
 }
 
 /// LOCK value type for batch read/modify/write operations
@@ -216,7 +215,6 @@ impl LockVal {
             }
         }
     }
-
 }
 
 impl Default for LockVal {
@@ -243,7 +241,6 @@ impl Lock {
     pub fn modify_val<F: FnOnce(LockVal) -> LockVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FORCE_CORE_NS Register
@@ -298,7 +295,6 @@ impl ForceCoreNs {
     pub fn clr_core1(&self) {
         self.clr_bits(Self::CORE1_MASK);
     }
-
 }
 
 /// FORCE_CORE_NS value type for batch read/modify/write operations
@@ -346,7 +342,6 @@ impl ForceCoreNsVal {
             }
         }
     }
-
 }
 
 impl Default for ForceCoreNsVal {
@@ -373,7 +368,6 @@ impl ForceCoreNs {
     pub fn modify_val<F: FnOnce(ForceCoreNsVal) -> ForceCoreNsVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CFGRESET Register
@@ -415,9 +409,8 @@ impl Cfgreset {
     /// Trigger **CFGRESET** (WO)
     #[inline(always)]
     pub fn trigger_cfgreset(&self) {
-        self.value.write_bits(Self::CFGRESET_MASK);
+        self.set_bits(Self::CFGRESET_MASK);
     }
-
 }
 
 /// CFGRESET value type for batch read/modify/write operations
@@ -459,7 +452,6 @@ impl CfgresetVal {
             }
         }
     }
-
 }
 
 impl Default for CfgresetVal {
@@ -469,24 +461,11 @@ impl Default for CfgresetVal {
 }
 
 impl Cfgreset {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> CfgresetVal {
-        CfgresetVal::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: CfgresetVal) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(CfgresetVal) -> CfgresetVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GPIO_NSMASK0 Register
@@ -535,7 +514,6 @@ impl GpioNsmask0 {
     pub fn write_gpio_nsmask0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::GPIO_NSMASK0_MASK) | ((value << Self::GPIO_NSMASK0_OFFSET) & Self::GPIO_NSMASK0_MASK));
     }
-
 }
 
 /// GPIO_NSMASK0 value type for batch read/modify/write operations
@@ -579,7 +557,6 @@ impl GpioNsmask0Val {
             bits: (self.bits & !GpioNsmask0::GPIO_NSMASK0_MASK) | ((value << GpioNsmask0::GPIO_NSMASK0_OFFSET) & GpioNsmask0::GPIO_NSMASK0_MASK)
         }
     }
-
 }
 
 impl Default for GpioNsmask0Val {
@@ -606,7 +583,6 @@ impl GpioNsmask0 {
     pub fn modify_val<F: FnOnce(GpioNsmask0Val) -> GpioNsmask0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO_NSMASK1 Register
@@ -776,7 +752,6 @@ impl GpioNsmask1 {
     pub fn write_gpio(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::GPIO_MASK) | ((value << Self::GPIO_OFFSET) & Self::GPIO_MASK));
     }
-
 }
 
 /// GPIO_NSMASK1 value type for batch read/modify/write operations
@@ -906,7 +881,6 @@ impl GpioNsmask1Val {
             bits: (self.bits & !GpioNsmask1::GPIO_MASK) | ((value << GpioNsmask1::GPIO_OFFSET) & GpioNsmask1::GPIO_MASK)
         }
     }
-
 }
 
 impl Default for GpioNsmask1Val {
@@ -933,7 +907,6 @@ impl GpioNsmask1 {
     pub fn modify_val<F: FnOnce(GpioNsmask1Val) -> GpioNsmask1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ROM Register
@@ -1230,7 +1203,6 @@ impl Rom {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// ROM value type for batch read/modify/write operations
@@ -1438,7 +1410,6 @@ impl RomVal {
             }
         }
     }
-
 }
 
 impl Default for RomVal {
@@ -1465,7 +1436,6 @@ impl Rom {
     pub fn modify_val<F: FnOnce(RomVal) -> RomVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// XIP_MAIN Register
@@ -1762,7 +1732,6 @@ impl XipMain {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// XIP_MAIN value type for batch read/modify/write operations
@@ -1970,7 +1939,6 @@ impl XipMainVal {
             }
         }
     }
-
 }
 
 impl Default for XipMainVal {
@@ -1997,7 +1965,6 @@ impl XipMain {
     pub fn modify_val<F: FnOnce(XipMainVal) -> XipMainVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SRAM0 Register
@@ -2294,7 +2261,6 @@ impl Sram0 {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// SRAM0 value type for batch read/modify/write operations
@@ -2502,7 +2468,6 @@ impl Sram0Val {
             }
         }
     }
-
 }
 
 impl Default for Sram0Val {
@@ -2529,7 +2494,6 @@ impl Sram0 {
     pub fn modify_val<F: FnOnce(Sram0Val) -> Sram0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SRAM1 Register
@@ -2826,7 +2790,6 @@ impl Sram1 {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// SRAM1 value type for batch read/modify/write operations
@@ -3034,7 +2997,6 @@ impl Sram1Val {
             }
         }
     }
-
 }
 
 impl Default for Sram1Val {
@@ -3061,7 +3023,6 @@ impl Sram1 {
     pub fn modify_val<F: FnOnce(Sram1Val) -> Sram1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SRAM2 Register
@@ -3358,7 +3319,6 @@ impl Sram2 {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// SRAM2 value type for batch read/modify/write operations
@@ -3566,7 +3526,6 @@ impl Sram2Val {
             }
         }
     }
-
 }
 
 impl Default for Sram2Val {
@@ -3593,7 +3552,6 @@ impl Sram2 {
     pub fn modify_val<F: FnOnce(Sram2Val) -> Sram2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SRAM3 Register
@@ -3890,7 +3848,6 @@ impl Sram3 {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// SRAM3 value type for batch read/modify/write operations
@@ -4098,7 +4055,6 @@ impl Sram3Val {
             }
         }
     }
-
 }
 
 impl Default for Sram3Val {
@@ -4125,7 +4081,6 @@ impl Sram3 {
     pub fn modify_val<F: FnOnce(Sram3Val) -> Sram3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SRAM4 Register
@@ -4422,7 +4377,6 @@ impl Sram4 {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// SRAM4 value type for batch read/modify/write operations
@@ -4630,7 +4584,6 @@ impl Sram4Val {
             }
         }
     }
-
 }
 
 impl Default for Sram4Val {
@@ -4657,7 +4610,6 @@ impl Sram4 {
     pub fn modify_val<F: FnOnce(Sram4Val) -> Sram4Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SRAM5 Register
@@ -4954,7 +4906,6 @@ impl Sram5 {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// SRAM5 value type for batch read/modify/write operations
@@ -5162,7 +5113,6 @@ impl Sram5Val {
             }
         }
     }
-
 }
 
 impl Default for Sram5Val {
@@ -5189,7 +5139,6 @@ impl Sram5 {
     pub fn modify_val<F: FnOnce(Sram5Val) -> Sram5Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SRAM6 Register
@@ -5486,7 +5435,6 @@ impl Sram6 {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// SRAM6 value type for batch read/modify/write operations
@@ -5694,7 +5642,6 @@ impl Sram6Val {
             }
         }
     }
-
 }
 
 impl Default for Sram6Val {
@@ -5721,7 +5668,6 @@ impl Sram6 {
     pub fn modify_val<F: FnOnce(Sram6Val) -> Sram6Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SRAM7 Register
@@ -6018,7 +5964,6 @@ impl Sram7 {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// SRAM7 value type for batch read/modify/write operations
@@ -6226,7 +6171,6 @@ impl Sram7Val {
             }
         }
     }
-
 }
 
 impl Default for Sram7Val {
@@ -6253,7 +6197,6 @@ impl Sram7 {
     pub fn modify_val<F: FnOnce(Sram7Val) -> Sram7Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SRAM8 Register
@@ -6550,7 +6493,6 @@ impl Sram8 {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// SRAM8 value type for batch read/modify/write operations
@@ -6758,7 +6700,6 @@ impl Sram8Val {
             }
         }
     }
-
 }
 
 impl Default for Sram8Val {
@@ -6785,7 +6726,6 @@ impl Sram8 {
     pub fn modify_val<F: FnOnce(Sram8Val) -> Sram8Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SRAM9 Register
@@ -7082,7 +7022,6 @@ impl Sram9 {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// SRAM9 value type for batch read/modify/write operations
@@ -7290,7 +7229,6 @@ impl Sram9Val {
             }
         }
     }
-
 }
 
 impl Default for Sram9Val {
@@ -7317,7 +7255,6 @@ impl Sram9 {
     pub fn modify_val<F: FnOnce(Sram9Val) -> Sram9Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DMA Register
@@ -7614,7 +7551,6 @@ impl Dma {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// DMA value type for batch read/modify/write operations
@@ -7822,7 +7758,6 @@ impl DmaVal {
             }
         }
     }
-
 }
 
 impl Default for DmaVal {
@@ -7849,7 +7784,6 @@ impl Dma {
     pub fn modify_val<F: FnOnce(DmaVal) -> DmaVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// USBCTRL Register
@@ -8146,7 +8080,6 @@ impl Usbctrl {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// USBCTRL value type for batch read/modify/write operations
@@ -8354,7 +8287,6 @@ impl UsbctrlVal {
             }
         }
     }
-
 }
 
 impl Default for UsbctrlVal {
@@ -8381,7 +8313,6 @@ impl Usbctrl {
     pub fn modify_val<F: FnOnce(UsbctrlVal) -> UsbctrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PIO0 Register
@@ -8678,7 +8609,6 @@ impl Pio0 {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// PIO0 value type for batch read/modify/write operations
@@ -8886,7 +8816,6 @@ impl Pio0Val {
             }
         }
     }
-
 }
 
 impl Default for Pio0Val {
@@ -8913,7 +8842,6 @@ impl Pio0 {
     pub fn modify_val<F: FnOnce(Pio0Val) -> Pio0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PIO1 Register
@@ -9210,7 +9138,6 @@ impl Pio1 {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// PIO1 value type for batch read/modify/write operations
@@ -9418,7 +9345,6 @@ impl Pio1Val {
             }
         }
     }
-
 }
 
 impl Default for Pio1Val {
@@ -9445,7 +9371,6 @@ impl Pio1 {
     pub fn modify_val<F: FnOnce(Pio1Val) -> Pio1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PIO2 Register
@@ -9742,7 +9667,6 @@ impl Pio2 {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// PIO2 value type for batch read/modify/write operations
@@ -9950,7 +9874,6 @@ impl Pio2Val {
             }
         }
     }
-
 }
 
 impl Default for Pio2Val {
@@ -9977,7 +9900,6 @@ impl Pio2 {
     pub fn modify_val<F: FnOnce(Pio2Val) -> Pio2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CORESIGHT_TRACE Register
@@ -10274,7 +10196,6 @@ impl CoresightTrace {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// CORESIGHT_TRACE value type for batch read/modify/write operations
@@ -10482,7 +10403,6 @@ impl CoresightTraceVal {
             }
         }
     }
-
 }
 
 impl Default for CoresightTraceVal {
@@ -10509,7 +10429,6 @@ impl CoresightTrace {
     pub fn modify_val<F: FnOnce(CoresightTraceVal) -> CoresightTraceVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CORESIGHT_PERIPH Register
@@ -10806,7 +10725,6 @@ impl CoresightPeriph {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// CORESIGHT_PERIPH value type for batch read/modify/write operations
@@ -11014,7 +10932,6 @@ impl CoresightPeriphVal {
             }
         }
     }
-
 }
 
 impl Default for CoresightPeriphVal {
@@ -11041,7 +10958,6 @@ impl CoresightPeriph {
     pub fn modify_val<F: FnOnce(CoresightPeriphVal) -> CoresightPeriphVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SYSINFO Register
@@ -11338,7 +11254,6 @@ impl Sysinfo {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// SYSINFO value type for batch read/modify/write operations
@@ -11546,7 +11461,6 @@ impl SysinfoVal {
             }
         }
     }
-
 }
 
 impl Default for SysinfoVal {
@@ -11573,7 +11487,6 @@ impl Sysinfo {
     pub fn modify_val<F: FnOnce(SysinfoVal) -> SysinfoVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// RESETS Register
@@ -11870,7 +11783,6 @@ impl Resets {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// RESETS value type for batch read/modify/write operations
@@ -12078,7 +11990,6 @@ impl ResetsVal {
             }
         }
     }
-
 }
 
 impl Default for ResetsVal {
@@ -12105,7 +12016,6 @@ impl Resets {
     pub fn modify_val<F: FnOnce(ResetsVal) -> ResetsVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IO_BANK0 Register
@@ -12402,7 +12312,6 @@ impl IoBank0 {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// IO_BANK0 value type for batch read/modify/write operations
@@ -12610,7 +12519,6 @@ impl IoBank0Val {
             }
         }
     }
-
 }
 
 impl Default for IoBank0Val {
@@ -12637,7 +12545,6 @@ impl IoBank0 {
     pub fn modify_val<F: FnOnce(IoBank0Val) -> IoBank0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IO_BANK1 Register
@@ -12934,7 +12841,6 @@ impl IoBank1 {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// IO_BANK1 value type for batch read/modify/write operations
@@ -13142,7 +13048,6 @@ impl IoBank1Val {
             }
         }
     }
-
 }
 
 impl Default for IoBank1Val {
@@ -13169,7 +13074,6 @@ impl IoBank1 {
     pub fn modify_val<F: FnOnce(IoBank1Val) -> IoBank1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PADS_BANK0 Register
@@ -13466,7 +13370,6 @@ impl PadsBank0 {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// PADS_BANK0 value type for batch read/modify/write operations
@@ -13674,7 +13577,6 @@ impl PadsBank0Val {
             }
         }
     }
-
 }
 
 impl Default for PadsBank0Val {
@@ -13701,7 +13603,6 @@ impl PadsBank0 {
     pub fn modify_val<F: FnOnce(PadsBank0Val) -> PadsBank0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PADS_QSPI Register
@@ -13998,7 +13899,6 @@ impl PadsQspi {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// PADS_QSPI value type for batch read/modify/write operations
@@ -14206,7 +14106,6 @@ impl PadsQspiVal {
             }
         }
     }
-
 }
 
 impl Default for PadsQspiVal {
@@ -14233,7 +14132,6 @@ impl PadsQspi {
     pub fn modify_val<F: FnOnce(PadsQspiVal) -> PadsQspiVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// BUSCTRL Register
@@ -14530,7 +14428,6 @@ impl Busctrl {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// BUSCTRL value type for batch read/modify/write operations
@@ -14738,7 +14635,6 @@ impl BusctrlVal {
             }
         }
     }
-
 }
 
 impl Default for BusctrlVal {
@@ -14765,7 +14661,6 @@ impl Busctrl {
     pub fn modify_val<F: FnOnce(BusctrlVal) -> BusctrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ADC0 Register
@@ -15062,7 +14957,6 @@ impl Adc0 {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// ADC0 value type for batch read/modify/write operations
@@ -15270,7 +15164,6 @@ impl Adc0Val {
             }
         }
     }
-
 }
 
 impl Default for Adc0Val {
@@ -15297,7 +15190,6 @@ impl Adc0 {
     pub fn modify_val<F: FnOnce(Adc0Val) -> Adc0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// HSTX Register
@@ -15594,7 +15486,6 @@ impl Hstx {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// HSTX value type for batch read/modify/write operations
@@ -15802,7 +15693,6 @@ impl HstxVal {
             }
         }
     }
-
 }
 
 impl Default for HstxVal {
@@ -15829,7 +15719,6 @@ impl Hstx {
     pub fn modify_val<F: FnOnce(HstxVal) -> HstxVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// I2C0 Register
@@ -16126,7 +16015,6 @@ impl I2c0 {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// I2C0 value type for batch read/modify/write operations
@@ -16334,7 +16222,6 @@ impl I2c0Val {
             }
         }
     }
-
 }
 
 impl Default for I2c0Val {
@@ -16361,7 +16248,6 @@ impl I2c0 {
     pub fn modify_val<F: FnOnce(I2c0Val) -> I2c0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// I2C1 Register
@@ -16658,7 +16544,6 @@ impl I2c1 {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// I2C1 value type for batch read/modify/write operations
@@ -16866,7 +16751,6 @@ impl I2c1Val {
             }
         }
     }
-
 }
 
 impl Default for I2c1Val {
@@ -16893,7 +16777,6 @@ impl I2c1 {
     pub fn modify_val<F: FnOnce(I2c1Val) -> I2c1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PWM Register
@@ -17190,7 +17073,6 @@ impl Pwm {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// PWM value type for batch read/modify/write operations
@@ -17398,7 +17280,6 @@ impl PwmVal {
             }
         }
     }
-
 }
 
 impl Default for PwmVal {
@@ -17425,7 +17306,6 @@ impl Pwm {
     pub fn modify_val<F: FnOnce(PwmVal) -> PwmVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SPI0 Register
@@ -17722,7 +17602,6 @@ impl Spi0 {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// SPI0 value type for batch read/modify/write operations
@@ -17930,7 +17809,6 @@ impl Spi0Val {
             }
         }
     }
-
 }
 
 impl Default for Spi0Val {
@@ -17957,7 +17835,6 @@ impl Spi0 {
     pub fn modify_val<F: FnOnce(Spi0Val) -> Spi0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SPI1 Register
@@ -18254,7 +18131,6 @@ impl Spi1 {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// SPI1 value type for batch read/modify/write operations
@@ -18462,7 +18338,6 @@ impl Spi1Val {
             }
         }
     }
-
 }
 
 impl Default for Spi1Val {
@@ -18489,7 +18364,6 @@ impl Spi1 {
     pub fn modify_val<F: FnOnce(Spi1Val) -> Spi1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TIMER0 Register
@@ -18786,7 +18660,6 @@ impl Timer0 {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// TIMER0 value type for batch read/modify/write operations
@@ -18994,7 +18867,6 @@ impl Timer0Val {
             }
         }
     }
-
 }
 
 impl Default for Timer0Val {
@@ -19021,7 +18893,6 @@ impl Timer0 {
     pub fn modify_val<F: FnOnce(Timer0Val) -> Timer0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TIMER1 Register
@@ -19318,7 +19189,6 @@ impl Timer1 {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// TIMER1 value type for batch read/modify/write operations
@@ -19526,7 +19396,6 @@ impl Timer1Val {
             }
         }
     }
-
 }
 
 impl Default for Timer1Val {
@@ -19553,7 +19422,6 @@ impl Timer1 {
     pub fn modify_val<F: FnOnce(Timer1Val) -> Timer1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// UART0 Register
@@ -19850,7 +19718,6 @@ impl Uart0 {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// UART0 value type for batch read/modify/write operations
@@ -20058,7 +19925,6 @@ impl Uart0Val {
             }
         }
     }
-
 }
 
 impl Default for Uart0Val {
@@ -20085,7 +19951,6 @@ impl Uart0 {
     pub fn modify_val<F: FnOnce(Uart0Val) -> Uart0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// UART1 Register
@@ -20382,7 +20247,6 @@ impl Uart1 {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// UART1 value type for batch read/modify/write operations
@@ -20590,7 +20454,6 @@ impl Uart1Val {
             }
         }
     }
-
 }
 
 impl Default for Uart1Val {
@@ -20617,7 +20480,6 @@ impl Uart1 {
     pub fn modify_val<F: FnOnce(Uart1Val) -> Uart1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// OTP Register
@@ -20914,7 +20776,6 @@ impl Otp {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// OTP value type for batch read/modify/write operations
@@ -21122,7 +20983,6 @@ impl OtpVal {
             }
         }
     }
-
 }
 
 impl Default for OtpVal {
@@ -21149,7 +21009,6 @@ impl Otp {
     pub fn modify_val<F: FnOnce(OtpVal) -> OtpVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TBMAN Register
@@ -21446,7 +21305,6 @@ impl Tbman {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// TBMAN value type for batch read/modify/write operations
@@ -21654,7 +21512,6 @@ impl TbmanVal {
             }
         }
     }
-
 }
 
 impl Default for TbmanVal {
@@ -21681,7 +21538,6 @@ impl Tbman {
     pub fn modify_val<F: FnOnce(TbmanVal) -> TbmanVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// POWMAN Register
@@ -21978,7 +21834,6 @@ impl Powman {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// POWMAN value type for batch read/modify/write operations
@@ -22186,7 +22041,6 @@ impl PowmanVal {
             }
         }
     }
-
 }
 
 impl Default for PowmanVal {
@@ -22213,7 +22067,6 @@ impl Powman {
     pub fn modify_val<F: FnOnce(PowmanVal) -> PowmanVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRNG Register
@@ -22510,7 +22363,6 @@ impl Trng {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// TRNG value type for batch read/modify/write operations
@@ -22718,7 +22570,6 @@ impl TrngVal {
             }
         }
     }
-
 }
 
 impl Default for TrngVal {
@@ -22745,7 +22596,6 @@ impl Trng {
     pub fn modify_val<F: FnOnce(TrngVal) -> TrngVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SHA256 Register
@@ -23042,7 +22892,6 @@ impl Sha256 {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// SHA256 value type for batch read/modify/write operations
@@ -23250,7 +23099,6 @@ impl Sha256Val {
             }
         }
     }
-
 }
 
 impl Default for Sha256Val {
@@ -23277,7 +23125,6 @@ impl Sha256 {
     pub fn modify_val<F: FnOnce(Sha256Val) -> Sha256Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SYSCFG Register
@@ -23574,7 +23421,6 @@ impl Syscfg {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// SYSCFG value type for batch read/modify/write operations
@@ -23782,7 +23628,6 @@ impl SyscfgVal {
             }
         }
     }
-
 }
 
 impl Default for SyscfgVal {
@@ -23809,7 +23654,6 @@ impl Syscfg {
     pub fn modify_val<F: FnOnce(SyscfgVal) -> SyscfgVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CLOCKS Register
@@ -24106,7 +23950,6 @@ impl Clocks {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// CLOCKS value type for batch read/modify/write operations
@@ -24314,7 +24157,6 @@ impl ClocksVal {
             }
         }
     }
-
 }
 
 impl Default for ClocksVal {
@@ -24341,7 +24183,6 @@ impl Clocks {
     pub fn modify_val<F: FnOnce(ClocksVal) -> ClocksVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// XOSC Register
@@ -24638,7 +24479,6 @@ impl Xosc {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// XOSC value type for batch read/modify/write operations
@@ -24846,7 +24686,6 @@ impl XoscVal {
             }
         }
     }
-
 }
 
 impl Default for XoscVal {
@@ -24873,7 +24712,6 @@ impl Xosc {
     pub fn modify_val<F: FnOnce(XoscVal) -> XoscVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ROSC Register
@@ -25170,7 +25008,6 @@ impl Rosc {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// ROSC value type for batch read/modify/write operations
@@ -25378,7 +25215,6 @@ impl RoscVal {
             }
         }
     }
-
 }
 
 impl Default for RoscVal {
@@ -25405,7 +25241,6 @@ impl Rosc {
     pub fn modify_val<F: FnOnce(RoscVal) -> RoscVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PLL_SYS Register
@@ -25702,7 +25537,6 @@ impl PllSys {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// PLL_SYS value type for batch read/modify/write operations
@@ -25910,7 +25744,6 @@ impl PllSysVal {
             }
         }
     }
-
 }
 
 impl Default for PllSysVal {
@@ -25937,7 +25770,6 @@ impl PllSys {
     pub fn modify_val<F: FnOnce(PllSysVal) -> PllSysVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PLL_USB Register
@@ -26234,7 +26066,6 @@ impl PllUsb {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// PLL_USB value type for batch read/modify/write operations
@@ -26442,7 +26273,6 @@ impl PllUsbVal {
             }
         }
     }
-
 }
 
 impl Default for PllUsbVal {
@@ -26469,7 +26299,6 @@ impl PllUsb {
     pub fn modify_val<F: FnOnce(PllUsbVal) -> PllUsbVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TICKS Register
@@ -26766,7 +26595,6 @@ impl Ticks {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// TICKS value type for batch read/modify/write operations
@@ -26974,7 +26802,6 @@ impl TicksVal {
             }
         }
     }
-
 }
 
 impl Default for TicksVal {
@@ -27001,7 +26828,6 @@ impl Ticks {
     pub fn modify_val<F: FnOnce(TicksVal) -> TicksVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// WATCHDOG Register
@@ -27298,7 +27124,6 @@ impl Watchdog {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// WATCHDOG value type for batch read/modify/write operations
@@ -27506,7 +27331,6 @@ impl WatchdogVal {
             }
         }
     }
-
 }
 
 impl Default for WatchdogVal {
@@ -27533,7 +27357,6 @@ impl Watchdog {
     pub fn modify_val<F: FnOnce(WatchdogVal) -> WatchdogVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// RSM Register
@@ -27830,7 +27653,6 @@ impl Rsm {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// RSM value type for batch read/modify/write operations
@@ -28038,7 +27860,6 @@ impl RsmVal {
             }
         }
     }
-
 }
 
 impl Default for RsmVal {
@@ -28065,7 +27886,6 @@ impl Rsm {
     pub fn modify_val<F: FnOnce(RsmVal) -> RsmVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// XIP_CTRL Register
@@ -28362,7 +28182,6 @@ impl XipCtrl {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// XIP_CTRL value type for batch read/modify/write operations
@@ -28570,7 +28389,6 @@ impl XipCtrlVal {
             }
         }
     }
-
 }
 
 impl Default for XipCtrlVal {
@@ -28597,7 +28415,6 @@ impl XipCtrl {
     pub fn modify_val<F: FnOnce(XipCtrlVal) -> XipCtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// XIP_QMI Register
@@ -28894,7 +28711,6 @@ impl XipQmi {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// XIP_QMI value type for batch read/modify/write operations
@@ -29102,7 +28918,6 @@ impl XipQmiVal {
             }
         }
     }
-
 }
 
 impl Default for XipQmiVal {
@@ -29129,7 +28944,6 @@ impl XipQmi {
     pub fn modify_val<F: FnOnce(XipQmiVal) -> XipQmiVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// XIP_AUX Register
@@ -29426,7 +29240,6 @@ impl XipAux {
     pub fn clr_nsu(&self) {
         self.clr_bits(Self::NSU_MASK);
     }
-
 }
 
 /// XIP_AUX value type for batch read/modify/write operations
@@ -29634,7 +29447,6 @@ impl XipAuxVal {
             }
         }
     }
-
 }
 
 impl Default for XipAuxVal {
@@ -29661,7 +29473,6 @@ impl XipAux {
     pub fn modify_val<F: FnOnce(XipAuxVal) -> XipAuxVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// Register block

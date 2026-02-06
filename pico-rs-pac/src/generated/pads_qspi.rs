@@ -65,7 +65,6 @@ impl VoltageSelect {
     pub fn clr_voltage_select(&self) {
         self.clr_bits(Self::VOLTAGE_SELECT_MASK);
     }
-
 }
 
 /// VOLTAGE_SELECT value type for batch read/modify/write operations
@@ -113,7 +112,6 @@ impl VoltageSelectVal {
             }
         }
     }
-
 }
 
 impl Default for VoltageSelectVal {
@@ -140,7 +138,6 @@ impl VoltageSelect {
     pub fn modify_val<F: FnOnce(VoltageSelectVal) -> VoltageSelectVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO_QSPI_SCLK Register
@@ -433,7 +430,6 @@ impl GpioQspiSclk {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO_QSPI_SCLK value type for batch read/modify/write operations
@@ -635,7 +631,6 @@ impl GpioQspiSclkVal {
             }
         }
     }
-
 }
 
 impl Default for GpioQspiSclkVal {
@@ -662,7 +657,6 @@ impl GpioQspiSclk {
     pub fn modify_val<F: FnOnce(GpioQspiSclkVal) -> GpioQspiSclkVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO_QSPI_SD0 Register
@@ -955,7 +949,6 @@ impl GpioQspiSd0 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO_QSPI_SD0 value type for batch read/modify/write operations
@@ -1157,7 +1150,6 @@ impl GpioQspiSd0Val {
             }
         }
     }
-
 }
 
 impl Default for GpioQspiSd0Val {
@@ -1184,7 +1176,6 @@ impl GpioQspiSd0 {
     pub fn modify_val<F: FnOnce(GpioQspiSd0Val) -> GpioQspiSd0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO_QSPI_SD1 Register
@@ -1477,7 +1468,6 @@ impl GpioQspiSd1 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO_QSPI_SD1 value type for batch read/modify/write operations
@@ -1679,7 +1669,6 @@ impl GpioQspiSd1Val {
             }
         }
     }
-
 }
 
 impl Default for GpioQspiSd1Val {
@@ -1706,7 +1695,6 @@ impl GpioQspiSd1 {
     pub fn modify_val<F: FnOnce(GpioQspiSd1Val) -> GpioQspiSd1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO_QSPI_SD2 Register
@@ -1999,7 +1987,6 @@ impl GpioQspiSd2 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO_QSPI_SD2 value type for batch read/modify/write operations
@@ -2201,7 +2188,6 @@ impl GpioQspiSd2Val {
             }
         }
     }
-
 }
 
 impl Default for GpioQspiSd2Val {
@@ -2228,7 +2214,6 @@ impl GpioQspiSd2 {
     pub fn modify_val<F: FnOnce(GpioQspiSd2Val) -> GpioQspiSd2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO_QSPI_SD3 Register
@@ -2521,7 +2506,6 @@ impl GpioQspiSd3 {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO_QSPI_SD3 value type for batch read/modify/write operations
@@ -2723,7 +2707,6 @@ impl GpioQspiSd3Val {
             }
         }
     }
-
 }
 
 impl Default for GpioQspiSd3Val {
@@ -2750,7 +2733,6 @@ impl GpioQspiSd3 {
     pub fn modify_val<F: FnOnce(GpioQspiSd3Val) -> GpioQspiSd3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIO_QSPI_SS Register
@@ -3043,7 +3025,6 @@ impl GpioQspiSs {
     pub fn clr_slewfast(&self) {
         self.clr_bits(Self::SLEWFAST_MASK);
     }
-
 }
 
 /// GPIO_QSPI_SS value type for batch read/modify/write operations
@@ -3245,7 +3226,6 @@ impl GpioQspiSsVal {
             }
         }
     }
-
 }
 
 impl Default for GpioQspiSsVal {
@@ -3272,7 +3252,6 @@ impl GpioQspiSs {
     pub fn modify_val<F: FnOnce(GpioQspiSsVal) -> GpioQspiSsVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// Register block

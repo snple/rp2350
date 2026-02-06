@@ -106,7 +106,6 @@ impl Stat {
     pub fn level(&self) -> u32 {
         (self.value.read_bits() & Self::LEVEL_MASK) >> Self::LEVEL_OFFSET
     }
-
 }
 
 /// STAT value type for batch read/modify/write operations
@@ -176,7 +175,6 @@ impl StatVal {
             }
         }
     }
-
 }
 
 impl Default for StatVal {
@@ -203,7 +201,6 @@ impl Stat {
     pub fn modify_val<F: FnOnce(StatVal) -> StatVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FIFO Register
@@ -244,7 +241,6 @@ impl Fifo {
     pub fn write_fifo(&self, value: u32) {
         self.value.write_bits((value << Self::FIFO_OFFSET) & Self::FIFO_MASK);
     }
-
 }
 
 /// FIFO value type for batch read/modify/write operations
@@ -282,7 +278,6 @@ impl FifoVal {
             bits: (self.bits & !Fifo::FIFO_MASK) | ((value << Fifo::FIFO_OFFSET) & Fifo::FIFO_MASK)
         }
     }
-
 }
 
 impl Default for FifoVal {
@@ -292,24 +287,11 @@ impl Default for FifoVal {
 }
 
 impl Fifo {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> FifoVal {
-        FifoVal::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: FifoVal) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(FifoVal) -> FifoVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// Register block

@@ -57,7 +57,6 @@ impl ItmStim0 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM0 value type for batch read/modify/write operations
@@ -105,7 +104,6 @@ impl ItmStim0Val {
             bits: (self.bits & !ItmStim0::STIMULUS_MASK) | ((value << ItmStim0::STIMULUS_OFFSET) & ItmStim0::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim0Val {
@@ -132,7 +130,6 @@ impl ItmStim0 {
     pub fn modify_val<F: FnOnce(ItmStim0Val) -> ItmStim0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM1 Register
@@ -188,7 +185,6 @@ impl ItmStim1 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM1 value type for batch read/modify/write operations
@@ -236,7 +232,6 @@ impl ItmStim1Val {
             bits: (self.bits & !ItmStim1::STIMULUS_MASK) | ((value << ItmStim1::STIMULUS_OFFSET) & ItmStim1::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim1Val {
@@ -263,7 +258,6 @@ impl ItmStim1 {
     pub fn modify_val<F: FnOnce(ItmStim1Val) -> ItmStim1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM2 Register
@@ -319,7 +313,6 @@ impl ItmStim2 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM2 value type for batch read/modify/write operations
@@ -367,7 +360,6 @@ impl ItmStim2Val {
             bits: (self.bits & !ItmStim2::STIMULUS_MASK) | ((value << ItmStim2::STIMULUS_OFFSET) & ItmStim2::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim2Val {
@@ -394,7 +386,6 @@ impl ItmStim2 {
     pub fn modify_val<F: FnOnce(ItmStim2Val) -> ItmStim2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM3 Register
@@ -450,7 +441,6 @@ impl ItmStim3 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM3 value type for batch read/modify/write operations
@@ -498,7 +488,6 @@ impl ItmStim3Val {
             bits: (self.bits & !ItmStim3::STIMULUS_MASK) | ((value << ItmStim3::STIMULUS_OFFSET) & ItmStim3::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim3Val {
@@ -525,7 +514,6 @@ impl ItmStim3 {
     pub fn modify_val<F: FnOnce(ItmStim3Val) -> ItmStim3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM4 Register
@@ -581,7 +569,6 @@ impl ItmStim4 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM4 value type for batch read/modify/write operations
@@ -629,7 +616,6 @@ impl ItmStim4Val {
             bits: (self.bits & !ItmStim4::STIMULUS_MASK) | ((value << ItmStim4::STIMULUS_OFFSET) & ItmStim4::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim4Val {
@@ -656,7 +642,6 @@ impl ItmStim4 {
     pub fn modify_val<F: FnOnce(ItmStim4Val) -> ItmStim4Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM5 Register
@@ -712,7 +697,6 @@ impl ItmStim5 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM5 value type for batch read/modify/write operations
@@ -760,7 +744,6 @@ impl ItmStim5Val {
             bits: (self.bits & !ItmStim5::STIMULUS_MASK) | ((value << ItmStim5::STIMULUS_OFFSET) & ItmStim5::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim5Val {
@@ -787,7 +770,6 @@ impl ItmStim5 {
     pub fn modify_val<F: FnOnce(ItmStim5Val) -> ItmStim5Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM6 Register
@@ -843,7 +825,6 @@ impl ItmStim6 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM6 value type for batch read/modify/write operations
@@ -891,7 +872,6 @@ impl ItmStim6Val {
             bits: (self.bits & !ItmStim6::STIMULUS_MASK) | ((value << ItmStim6::STIMULUS_OFFSET) & ItmStim6::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim6Val {
@@ -918,7 +898,6 @@ impl ItmStim6 {
     pub fn modify_val<F: FnOnce(ItmStim6Val) -> ItmStim6Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM7 Register
@@ -974,7 +953,6 @@ impl ItmStim7 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM7 value type for batch read/modify/write operations
@@ -1022,7 +1000,6 @@ impl ItmStim7Val {
             bits: (self.bits & !ItmStim7::STIMULUS_MASK) | ((value << ItmStim7::STIMULUS_OFFSET) & ItmStim7::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim7Val {
@@ -1049,7 +1026,6 @@ impl ItmStim7 {
     pub fn modify_val<F: FnOnce(ItmStim7Val) -> ItmStim7Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM8 Register
@@ -1105,7 +1081,6 @@ impl ItmStim8 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM8 value type for batch read/modify/write operations
@@ -1153,7 +1128,6 @@ impl ItmStim8Val {
             bits: (self.bits & !ItmStim8::STIMULUS_MASK) | ((value << ItmStim8::STIMULUS_OFFSET) & ItmStim8::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim8Val {
@@ -1180,7 +1154,6 @@ impl ItmStim8 {
     pub fn modify_val<F: FnOnce(ItmStim8Val) -> ItmStim8Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM9 Register
@@ -1236,7 +1209,6 @@ impl ItmStim9 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM9 value type for batch read/modify/write operations
@@ -1284,7 +1256,6 @@ impl ItmStim9Val {
             bits: (self.bits & !ItmStim9::STIMULUS_MASK) | ((value << ItmStim9::STIMULUS_OFFSET) & ItmStim9::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim9Val {
@@ -1311,7 +1282,6 @@ impl ItmStim9 {
     pub fn modify_val<F: FnOnce(ItmStim9Val) -> ItmStim9Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM10 Register
@@ -1367,7 +1337,6 @@ impl ItmStim10 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM10 value type for batch read/modify/write operations
@@ -1415,7 +1384,6 @@ impl ItmStim10Val {
             bits: (self.bits & !ItmStim10::STIMULUS_MASK) | ((value << ItmStim10::STIMULUS_OFFSET) & ItmStim10::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim10Val {
@@ -1442,7 +1410,6 @@ impl ItmStim10 {
     pub fn modify_val<F: FnOnce(ItmStim10Val) -> ItmStim10Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM11 Register
@@ -1498,7 +1465,6 @@ impl ItmStim11 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM11 value type for batch read/modify/write operations
@@ -1546,7 +1512,6 @@ impl ItmStim11Val {
             bits: (self.bits & !ItmStim11::STIMULUS_MASK) | ((value << ItmStim11::STIMULUS_OFFSET) & ItmStim11::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim11Val {
@@ -1573,7 +1538,6 @@ impl ItmStim11 {
     pub fn modify_val<F: FnOnce(ItmStim11Val) -> ItmStim11Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM12 Register
@@ -1629,7 +1593,6 @@ impl ItmStim12 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM12 value type for batch read/modify/write operations
@@ -1677,7 +1640,6 @@ impl ItmStim12Val {
             bits: (self.bits & !ItmStim12::STIMULUS_MASK) | ((value << ItmStim12::STIMULUS_OFFSET) & ItmStim12::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim12Val {
@@ -1704,7 +1666,6 @@ impl ItmStim12 {
     pub fn modify_val<F: FnOnce(ItmStim12Val) -> ItmStim12Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM13 Register
@@ -1760,7 +1721,6 @@ impl ItmStim13 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM13 value type for batch read/modify/write operations
@@ -1808,7 +1768,6 @@ impl ItmStim13Val {
             bits: (self.bits & !ItmStim13::STIMULUS_MASK) | ((value << ItmStim13::STIMULUS_OFFSET) & ItmStim13::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim13Val {
@@ -1835,7 +1794,6 @@ impl ItmStim13 {
     pub fn modify_val<F: FnOnce(ItmStim13Val) -> ItmStim13Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM14 Register
@@ -1891,7 +1849,6 @@ impl ItmStim14 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM14 value type for batch read/modify/write operations
@@ -1939,7 +1896,6 @@ impl ItmStim14Val {
             bits: (self.bits & !ItmStim14::STIMULUS_MASK) | ((value << ItmStim14::STIMULUS_OFFSET) & ItmStim14::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim14Val {
@@ -1966,7 +1922,6 @@ impl ItmStim14 {
     pub fn modify_val<F: FnOnce(ItmStim14Val) -> ItmStim14Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM15 Register
@@ -2022,7 +1977,6 @@ impl ItmStim15 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM15 value type for batch read/modify/write operations
@@ -2070,7 +2024,6 @@ impl ItmStim15Val {
             bits: (self.bits & !ItmStim15::STIMULUS_MASK) | ((value << ItmStim15::STIMULUS_OFFSET) & ItmStim15::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim15Val {
@@ -2097,7 +2050,6 @@ impl ItmStim15 {
     pub fn modify_val<F: FnOnce(ItmStim15Val) -> ItmStim15Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM16 Register
@@ -2153,7 +2105,6 @@ impl ItmStim16 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM16 value type for batch read/modify/write operations
@@ -2201,7 +2152,6 @@ impl ItmStim16Val {
             bits: (self.bits & !ItmStim16::STIMULUS_MASK) | ((value << ItmStim16::STIMULUS_OFFSET) & ItmStim16::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim16Val {
@@ -2228,7 +2178,6 @@ impl ItmStim16 {
     pub fn modify_val<F: FnOnce(ItmStim16Val) -> ItmStim16Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM17 Register
@@ -2284,7 +2233,6 @@ impl ItmStim17 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM17 value type for batch read/modify/write operations
@@ -2332,7 +2280,6 @@ impl ItmStim17Val {
             bits: (self.bits & !ItmStim17::STIMULUS_MASK) | ((value << ItmStim17::STIMULUS_OFFSET) & ItmStim17::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim17Val {
@@ -2359,7 +2306,6 @@ impl ItmStim17 {
     pub fn modify_val<F: FnOnce(ItmStim17Val) -> ItmStim17Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM18 Register
@@ -2415,7 +2361,6 @@ impl ItmStim18 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM18 value type for batch read/modify/write operations
@@ -2463,7 +2408,6 @@ impl ItmStim18Val {
             bits: (self.bits & !ItmStim18::STIMULUS_MASK) | ((value << ItmStim18::STIMULUS_OFFSET) & ItmStim18::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim18Val {
@@ -2490,7 +2434,6 @@ impl ItmStim18 {
     pub fn modify_val<F: FnOnce(ItmStim18Val) -> ItmStim18Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM19 Register
@@ -2546,7 +2489,6 @@ impl ItmStim19 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM19 value type for batch read/modify/write operations
@@ -2594,7 +2536,6 @@ impl ItmStim19Val {
             bits: (self.bits & !ItmStim19::STIMULUS_MASK) | ((value << ItmStim19::STIMULUS_OFFSET) & ItmStim19::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim19Val {
@@ -2621,7 +2562,6 @@ impl ItmStim19 {
     pub fn modify_val<F: FnOnce(ItmStim19Val) -> ItmStim19Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM20 Register
@@ -2677,7 +2617,6 @@ impl ItmStim20 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM20 value type for batch read/modify/write operations
@@ -2725,7 +2664,6 @@ impl ItmStim20Val {
             bits: (self.bits & !ItmStim20::STIMULUS_MASK) | ((value << ItmStim20::STIMULUS_OFFSET) & ItmStim20::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim20Val {
@@ -2752,7 +2690,6 @@ impl ItmStim20 {
     pub fn modify_val<F: FnOnce(ItmStim20Val) -> ItmStim20Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM21 Register
@@ -2808,7 +2745,6 @@ impl ItmStim21 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM21 value type for batch read/modify/write operations
@@ -2856,7 +2792,6 @@ impl ItmStim21Val {
             bits: (self.bits & !ItmStim21::STIMULUS_MASK) | ((value << ItmStim21::STIMULUS_OFFSET) & ItmStim21::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim21Val {
@@ -2883,7 +2818,6 @@ impl ItmStim21 {
     pub fn modify_val<F: FnOnce(ItmStim21Val) -> ItmStim21Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM22 Register
@@ -2939,7 +2873,6 @@ impl ItmStim22 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM22 value type for batch read/modify/write operations
@@ -2987,7 +2920,6 @@ impl ItmStim22Val {
             bits: (self.bits & !ItmStim22::STIMULUS_MASK) | ((value << ItmStim22::STIMULUS_OFFSET) & ItmStim22::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim22Val {
@@ -3014,7 +2946,6 @@ impl ItmStim22 {
     pub fn modify_val<F: FnOnce(ItmStim22Val) -> ItmStim22Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM23 Register
@@ -3070,7 +3001,6 @@ impl ItmStim23 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM23 value type for batch read/modify/write operations
@@ -3118,7 +3048,6 @@ impl ItmStim23Val {
             bits: (self.bits & !ItmStim23::STIMULUS_MASK) | ((value << ItmStim23::STIMULUS_OFFSET) & ItmStim23::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim23Val {
@@ -3145,7 +3074,6 @@ impl ItmStim23 {
     pub fn modify_val<F: FnOnce(ItmStim23Val) -> ItmStim23Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM24 Register
@@ -3201,7 +3129,6 @@ impl ItmStim24 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM24 value type for batch read/modify/write operations
@@ -3249,7 +3176,6 @@ impl ItmStim24Val {
             bits: (self.bits & !ItmStim24::STIMULUS_MASK) | ((value << ItmStim24::STIMULUS_OFFSET) & ItmStim24::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim24Val {
@@ -3276,7 +3202,6 @@ impl ItmStim24 {
     pub fn modify_val<F: FnOnce(ItmStim24Val) -> ItmStim24Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM25 Register
@@ -3332,7 +3257,6 @@ impl ItmStim25 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM25 value type for batch read/modify/write operations
@@ -3380,7 +3304,6 @@ impl ItmStim25Val {
             bits: (self.bits & !ItmStim25::STIMULUS_MASK) | ((value << ItmStim25::STIMULUS_OFFSET) & ItmStim25::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim25Val {
@@ -3407,7 +3330,6 @@ impl ItmStim25 {
     pub fn modify_val<F: FnOnce(ItmStim25Val) -> ItmStim25Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM26 Register
@@ -3463,7 +3385,6 @@ impl ItmStim26 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM26 value type for batch read/modify/write operations
@@ -3511,7 +3432,6 @@ impl ItmStim26Val {
             bits: (self.bits & !ItmStim26::STIMULUS_MASK) | ((value << ItmStim26::STIMULUS_OFFSET) & ItmStim26::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim26Val {
@@ -3538,7 +3458,6 @@ impl ItmStim26 {
     pub fn modify_val<F: FnOnce(ItmStim26Val) -> ItmStim26Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM27 Register
@@ -3594,7 +3513,6 @@ impl ItmStim27 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM27 value type for batch read/modify/write operations
@@ -3642,7 +3560,6 @@ impl ItmStim27Val {
             bits: (self.bits & !ItmStim27::STIMULUS_MASK) | ((value << ItmStim27::STIMULUS_OFFSET) & ItmStim27::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim27Val {
@@ -3669,7 +3586,6 @@ impl ItmStim27 {
     pub fn modify_val<F: FnOnce(ItmStim27Val) -> ItmStim27Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM28 Register
@@ -3725,7 +3641,6 @@ impl ItmStim28 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM28 value type for batch read/modify/write operations
@@ -3773,7 +3688,6 @@ impl ItmStim28Val {
             bits: (self.bits & !ItmStim28::STIMULUS_MASK) | ((value << ItmStim28::STIMULUS_OFFSET) & ItmStim28::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim28Val {
@@ -3800,7 +3714,6 @@ impl ItmStim28 {
     pub fn modify_val<F: FnOnce(ItmStim28Val) -> ItmStim28Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM29 Register
@@ -3856,7 +3769,6 @@ impl ItmStim29 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM29 value type for batch read/modify/write operations
@@ -3904,7 +3816,6 @@ impl ItmStim29Val {
             bits: (self.bits & !ItmStim29::STIMULUS_MASK) | ((value << ItmStim29::STIMULUS_OFFSET) & ItmStim29::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim29Val {
@@ -3931,7 +3842,6 @@ impl ItmStim29 {
     pub fn modify_val<F: FnOnce(ItmStim29Val) -> ItmStim29Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM30 Register
@@ -3987,7 +3897,6 @@ impl ItmStim30 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM30 value type for batch read/modify/write operations
@@ -4035,7 +3944,6 @@ impl ItmStim30Val {
             bits: (self.bits & !ItmStim30::STIMULUS_MASK) | ((value << ItmStim30::STIMULUS_OFFSET) & ItmStim30::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim30Val {
@@ -4062,7 +3970,6 @@ impl ItmStim30 {
     pub fn modify_val<F: FnOnce(ItmStim30Val) -> ItmStim30Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_STIM31 Register
@@ -4118,7 +4025,6 @@ impl ItmStim31 {
     pub fn write_stimulus(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
     }
-
 }
 
 /// ITM_STIM31 value type for batch read/modify/write operations
@@ -4166,7 +4072,6 @@ impl ItmStim31Val {
             bits: (self.bits & !ItmStim31::STIMULUS_MASK) | ((value << ItmStim31::STIMULUS_OFFSET) & ItmStim31::STIMULUS_MASK)
         }
     }
-
 }
 
 impl Default for ItmStim31Val {
@@ -4193,7 +4098,6 @@ impl ItmStim31 {
     pub fn modify_val<F: FnOnce(ItmStim31Val) -> ItmStim31Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_TER0 Register
@@ -4249,7 +4153,6 @@ impl ItmTer0 {
     pub fn write_stimena(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STIMENA_MASK) | ((value << Self::STIMENA_OFFSET) & Self::STIMENA_MASK));
     }
-
 }
 
 /// ITM_TER0 value type for batch read/modify/write operations
@@ -4297,7 +4200,6 @@ impl ItmTer0Val {
             bits: (self.bits & !ItmTer0::STIMENA_MASK) | ((value << ItmTer0::STIMENA_OFFSET) & ItmTer0::STIMENA_MASK)
         }
     }
-
 }
 
 impl Default for ItmTer0Val {
@@ -4324,7 +4226,6 @@ impl ItmTer0 {
     pub fn modify_val<F: FnOnce(ItmTer0Val) -> ItmTer0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_TPR Register
@@ -4380,7 +4281,6 @@ impl ItmTpr {
     pub fn write_privmask(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PRIVMASK_MASK) | ((value << Self::PRIVMASK_OFFSET) & Self::PRIVMASK_MASK));
     }
-
 }
 
 /// ITM_TPR value type for batch read/modify/write operations
@@ -4428,7 +4328,6 @@ impl ItmTprVal {
             bits: (self.bits & !ItmTpr::PRIVMASK_MASK) | ((value << ItmTpr::PRIVMASK_OFFSET) & ItmTpr::PRIVMASK_MASK)
         }
     }
-
 }
 
 impl Default for ItmTprVal {
@@ -4455,7 +4354,6 @@ impl ItmTpr {
     pub fn modify_val<F: FnOnce(ItmTprVal) -> ItmTprVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_TCR Register
@@ -4786,7 +4684,6 @@ impl ItmTcr {
     pub fn clr_itmena(&self) {
         self.value.modify_bits(|r| r & !Self::ITMENA_MASK);
     }
-
 }
 
 /// ITM_TCR value type for batch read/modify/write operations
@@ -5010,7 +4907,6 @@ impl ItmTcrVal {
             }
         }
     }
-
 }
 
 impl Default for ItmTcrVal {
@@ -5037,7 +4933,6 @@ impl ItmTcr {
     pub fn modify_val<F: FnOnce(ItmTcrVal) -> ItmTcrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INT_ATREADY Register
@@ -5107,7 +5002,6 @@ impl IntAtready {
     pub fn atready(&self) -> bool {
         (self.value.read_bits() & Self::ATREADY_MASK) != 0
     }
-
 }
 
 /// INT_ATREADY value type for batch read/modify/write operations
@@ -5153,7 +5047,6 @@ impl IntAtreadyVal {
     pub const fn atready(&self) -> bool {
         (self.bits & IntAtready::ATREADY_MASK) != 0
     }
-
 }
 
 impl Default for IntAtreadyVal {
@@ -5168,19 +5061,6 @@ impl IntAtready {
     pub fn read_val(&self) -> IntAtreadyVal {
         IntAtreadyVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IntAtreadyVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IntAtreadyVal) -> IntAtreadyVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INT_ATVALID Register
@@ -5274,7 +5154,6 @@ impl IntAtvalid {
     pub fn clr_atready(&self) {
         self.value.modify_bits(|r| r & !Self::ATREADY_MASK);
     }
-
 }
 
 /// INT_ATVALID value type for batch read/modify/write operations
@@ -5348,7 +5227,6 @@ impl IntAtvalidVal {
             }
         }
     }
-
 }
 
 impl Default for IntAtvalidVal {
@@ -5375,7 +5253,6 @@ impl IntAtvalid {
     pub fn modify_val<F: FnOnce(IntAtvalidVal) -> IntAtvalidVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_ITCTRL Register
@@ -5436,7 +5313,6 @@ impl ItmItctrl {
     pub fn clr_ime(&self) {
         self.value.modify_bits(|r| r & !Self::IME_MASK);
     }
-
 }
 
 /// ITM_ITCTRL value type for batch read/modify/write operations
@@ -5488,7 +5364,6 @@ impl ItmItctrlVal {
             }
         }
     }
-
 }
 
 impl Default for ItmItctrlVal {
@@ -5515,7 +5390,6 @@ impl ItmItctrl {
     pub fn modify_val<F: FnOnce(ItmItctrlVal) -> ItmItctrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_DEVARCH Register
@@ -5644,7 +5518,6 @@ impl ItmDevarch {
     pub fn archpart(&self) -> u32 {
         (self.value.read_bits() & Self::ARCHPART_MASK) >> Self::ARCHPART_OFFSET
     }
-
 }
 
 /// ITM_DEVARCH value type for batch read/modify/write operations
@@ -5714,7 +5587,6 @@ impl ItmDevarchVal {
     pub const fn archpart(&self) -> u32 {
         (self.bits & ItmDevarch::ARCHPART_MASK) >> ItmDevarch::ARCHPART_OFFSET
     }
-
 }
 
 impl Default for ItmDevarchVal {
@@ -5729,19 +5601,6 @@ impl ItmDevarch {
     pub fn read_val(&self) -> ItmDevarchVal {
         ItmDevarchVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: ItmDevarchVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(ItmDevarchVal) -> ItmDevarchVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// ITM_DEVTYPE Register
@@ -5809,7 +5668,6 @@ impl ItmDevtype {
     pub fn major(&self) -> u32 {
         (self.value.read_bits() & Self::MAJOR_MASK) >> Self::MAJOR_OFFSET
     }
-
 }
 
 /// ITM_DEVTYPE value type for batch read/modify/write operations
@@ -5855,7 +5713,6 @@ impl ItmDevtypeVal {
     pub const fn major(&self) -> u32 {
         (self.bits & ItmDevtype::MAJOR_MASK) >> ItmDevtype::MAJOR_OFFSET
     }
-
 }
 
 impl Default for ItmDevtypeVal {
@@ -5870,19 +5727,6 @@ impl ItmDevtype {
     pub fn read_val(&self) -> ItmDevtypeVal {
         ItmDevtypeVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: ItmDevtypeVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(ItmDevtypeVal) -> ItmDevtypeVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// ITM_PIDR4 Register
@@ -5950,7 +5794,6 @@ impl ItmPidr4 {
     pub fn des_2(&self) -> u32 {
         (self.value.read_bits() & Self::DES_2_MASK) >> Self::DES_2_OFFSET
     }
-
 }
 
 /// ITM_PIDR4 value type for batch read/modify/write operations
@@ -5996,7 +5839,6 @@ impl ItmPidr4Val {
     pub const fn des_2(&self) -> u32 {
         (self.bits & ItmPidr4::DES_2_MASK) >> ItmPidr4::DES_2_OFFSET
     }
-
 }
 
 impl Default for ItmPidr4Val {
@@ -6011,19 +5853,6 @@ impl ItmPidr4 {
     pub fn read_val(&self) -> ItmPidr4Val {
         ItmPidr4Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: ItmPidr4Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(ItmPidr4Val) -> ItmPidr4Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// ITM_PIDR5 Register
@@ -6070,7 +5899,6 @@ impl ItmPidr5 {
     pub fn write_itm_pidr5(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ITM_PIDR5_MASK) | ((value << Self::ITM_PIDR5_OFFSET) & Self::ITM_PIDR5_MASK));
     }
-
 }
 
 /// ITM_PIDR5 value type for batch read/modify/write operations
@@ -6114,7 +5942,6 @@ impl ItmPidr5Val {
             bits: (self.bits & !ItmPidr5::ITM_PIDR5_MASK) | ((value << ItmPidr5::ITM_PIDR5_OFFSET) & ItmPidr5::ITM_PIDR5_MASK)
         }
     }
-
 }
 
 impl Default for ItmPidr5Val {
@@ -6141,7 +5968,6 @@ impl ItmPidr5 {
     pub fn modify_val<F: FnOnce(ItmPidr5Val) -> ItmPidr5Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_PIDR6 Register
@@ -6188,7 +6014,6 @@ impl ItmPidr6 {
     pub fn write_itm_pidr6(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ITM_PIDR6_MASK) | ((value << Self::ITM_PIDR6_OFFSET) & Self::ITM_PIDR6_MASK));
     }
-
 }
 
 /// ITM_PIDR6 value type for batch read/modify/write operations
@@ -6232,7 +6057,6 @@ impl ItmPidr6Val {
             bits: (self.bits & !ItmPidr6::ITM_PIDR6_MASK) | ((value << ItmPidr6::ITM_PIDR6_OFFSET) & ItmPidr6::ITM_PIDR6_MASK)
         }
     }
-
 }
 
 impl Default for ItmPidr6Val {
@@ -6259,7 +6083,6 @@ impl ItmPidr6 {
     pub fn modify_val<F: FnOnce(ItmPidr6Val) -> ItmPidr6Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_PIDR7 Register
@@ -6306,7 +6129,6 @@ impl ItmPidr7 {
     pub fn write_itm_pidr7(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ITM_PIDR7_MASK) | ((value << Self::ITM_PIDR7_OFFSET) & Self::ITM_PIDR7_MASK));
     }
-
 }
 
 /// ITM_PIDR7 value type for batch read/modify/write operations
@@ -6350,7 +6172,6 @@ impl ItmPidr7Val {
             bits: (self.bits & !ItmPidr7::ITM_PIDR7_MASK) | ((value << ItmPidr7::ITM_PIDR7_OFFSET) & ItmPidr7::ITM_PIDR7_MASK)
         }
     }
-
 }
 
 impl Default for ItmPidr7Val {
@@ -6377,7 +6198,6 @@ impl ItmPidr7 {
     pub fn modify_val<F: FnOnce(ItmPidr7Val) -> ItmPidr7Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITM_PIDR0 Register
@@ -6425,7 +6245,6 @@ impl ItmPidr0 {
     pub fn part_0(&self) -> u32 {
         (self.value.read_bits() & Self::PART_0_MASK) >> Self::PART_0_OFFSET
     }
-
 }
 
 /// ITM_PIDR0 value type for batch read/modify/write operations
@@ -6463,7 +6282,6 @@ impl ItmPidr0Val {
     pub const fn part_0(&self) -> u32 {
         (self.bits & ItmPidr0::PART_0_MASK) >> ItmPidr0::PART_0_OFFSET
     }
-
 }
 
 impl Default for ItmPidr0Val {
@@ -6478,19 +6296,6 @@ impl ItmPidr0 {
     pub fn read_val(&self) -> ItmPidr0Val {
         ItmPidr0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: ItmPidr0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(ItmPidr0Val) -> ItmPidr0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// ITM_PIDR1 Register
@@ -6558,7 +6363,6 @@ impl ItmPidr1 {
     pub fn part_1(&self) -> u32 {
         (self.value.read_bits() & Self::PART_1_MASK) >> Self::PART_1_OFFSET
     }
-
 }
 
 /// ITM_PIDR1 value type for batch read/modify/write operations
@@ -6604,7 +6408,6 @@ impl ItmPidr1Val {
     pub const fn part_1(&self) -> u32 {
         (self.bits & ItmPidr1::PART_1_MASK) >> ItmPidr1::PART_1_OFFSET
     }
-
 }
 
 impl Default for ItmPidr1Val {
@@ -6619,19 +6422,6 @@ impl ItmPidr1 {
     pub fn read_val(&self) -> ItmPidr1Val {
         ItmPidr1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: ItmPidr1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(ItmPidr1Val) -> ItmPidr1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// ITM_PIDR2 Register
@@ -6720,7 +6510,6 @@ impl ItmPidr2 {
     pub fn des_1(&self) -> u32 {
         (self.value.read_bits() & Self::DES_1_MASK) >> Self::DES_1_OFFSET
     }
-
 }
 
 /// ITM_PIDR2 value type for batch read/modify/write operations
@@ -6774,7 +6563,6 @@ impl ItmPidr2Val {
     pub const fn des_1(&self) -> u32 {
         (self.bits & ItmPidr2::DES_1_MASK) >> ItmPidr2::DES_1_OFFSET
     }
-
 }
 
 impl Default for ItmPidr2Val {
@@ -6789,19 +6577,6 @@ impl ItmPidr2 {
     pub fn read_val(&self) -> ItmPidr2Val {
         ItmPidr2Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: ItmPidr2Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(ItmPidr2Val) -> ItmPidr2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// ITM_PIDR3 Register
@@ -6869,7 +6644,6 @@ impl ItmPidr3 {
     pub fn cmod(&self) -> u32 {
         (self.value.read_bits() & Self::CMOD_MASK) >> Self::CMOD_OFFSET
     }
-
 }
 
 /// ITM_PIDR3 value type for batch read/modify/write operations
@@ -6915,7 +6689,6 @@ impl ItmPidr3Val {
     pub const fn cmod(&self) -> u32 {
         (self.bits & ItmPidr3::CMOD_MASK) >> ItmPidr3::CMOD_OFFSET
     }
-
 }
 
 impl Default for ItmPidr3Val {
@@ -6930,19 +6703,6 @@ impl ItmPidr3 {
     pub fn read_val(&self) -> ItmPidr3Val {
         ItmPidr3Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: ItmPidr3Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(ItmPidr3Val) -> ItmPidr3Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// ITM_CIDR0 Register
@@ -6990,7 +6750,6 @@ impl ItmCidr0 {
     pub fn prmbl_0(&self) -> u32 {
         (self.value.read_bits() & Self::PRMBL_0_MASK) >> Self::PRMBL_0_OFFSET
     }
-
 }
 
 /// ITM_CIDR0 value type for batch read/modify/write operations
@@ -7028,7 +6787,6 @@ impl ItmCidr0Val {
     pub const fn prmbl_0(&self) -> u32 {
         (self.bits & ItmCidr0::PRMBL_0_MASK) >> ItmCidr0::PRMBL_0_OFFSET
     }
-
 }
 
 impl Default for ItmCidr0Val {
@@ -7043,19 +6801,6 @@ impl ItmCidr0 {
     pub fn read_val(&self) -> ItmCidr0Val {
         ItmCidr0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: ItmCidr0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(ItmCidr0Val) -> ItmCidr0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// ITM_CIDR1 Register
@@ -7123,7 +6868,6 @@ impl ItmCidr1 {
     pub fn prmbl_1(&self) -> u32 {
         (self.value.read_bits() & Self::PRMBL_1_MASK) >> Self::PRMBL_1_OFFSET
     }
-
 }
 
 /// ITM_CIDR1 value type for batch read/modify/write operations
@@ -7169,7 +6913,6 @@ impl ItmCidr1Val {
     pub const fn prmbl_1(&self) -> u32 {
         (self.bits & ItmCidr1::PRMBL_1_MASK) >> ItmCidr1::PRMBL_1_OFFSET
     }
-
 }
 
 impl Default for ItmCidr1Val {
@@ -7184,19 +6927,6 @@ impl ItmCidr1 {
     pub fn read_val(&self) -> ItmCidr1Val {
         ItmCidr1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: ItmCidr1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(ItmCidr1Val) -> ItmCidr1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// ITM_CIDR2 Register
@@ -7244,7 +6974,6 @@ impl ItmCidr2 {
     pub fn prmbl_2(&self) -> u32 {
         (self.value.read_bits() & Self::PRMBL_2_MASK) >> Self::PRMBL_2_OFFSET
     }
-
 }
 
 /// ITM_CIDR2 value type for batch read/modify/write operations
@@ -7282,7 +7011,6 @@ impl ItmCidr2Val {
     pub const fn prmbl_2(&self) -> u32 {
         (self.bits & ItmCidr2::PRMBL_2_MASK) >> ItmCidr2::PRMBL_2_OFFSET
     }
-
 }
 
 impl Default for ItmCidr2Val {
@@ -7297,19 +7025,6 @@ impl ItmCidr2 {
     pub fn read_val(&self) -> ItmCidr2Val {
         ItmCidr2Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: ItmCidr2Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(ItmCidr2Val) -> ItmCidr2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// ITM_CIDR3 Register
@@ -7357,7 +7072,6 @@ impl ItmCidr3 {
     pub fn prmbl_3(&self) -> u32 {
         (self.value.read_bits() & Self::PRMBL_3_MASK) >> Self::PRMBL_3_OFFSET
     }
-
 }
 
 /// ITM_CIDR3 value type for batch read/modify/write operations
@@ -7395,7 +7109,6 @@ impl ItmCidr3Val {
     pub const fn prmbl_3(&self) -> u32 {
         (self.bits & ItmCidr3::PRMBL_3_MASK) >> ItmCidr3::PRMBL_3_OFFSET
     }
-
 }
 
 impl Default for ItmCidr3Val {
@@ -7410,19 +7123,6 @@ impl ItmCidr3 {
     pub fn read_val(&self) -> ItmCidr3Val {
         ItmCidr3Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: ItmCidr3Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(ItmCidr3Val) -> ItmCidr3Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DWT_CTRL Register
@@ -8001,7 +7701,6 @@ impl DwtCtrl {
     pub fn clr_cyccntena(&self) {
         self.value.modify_bits(|r| r & !Self::CYCCNTENA_MASK);
     }
-
 }
 
 /// DWT_CTRL value type for batch read/modify/write operations
@@ -8367,7 +8066,6 @@ impl DwtCtrlVal {
             }
         }
     }
-
 }
 
 impl Default for DwtCtrlVal {
@@ -8394,7 +8092,6 @@ impl DwtCtrl {
     pub fn modify_val<F: FnOnce(DwtCtrlVal) -> DwtCtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DWT_CYCCNT Register
@@ -8450,7 +8147,6 @@ impl DwtCyccnt {
     pub fn write_cyccnt(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CYCCNT_MASK) | ((value << Self::CYCCNT_OFFSET) & Self::CYCCNT_MASK));
     }
-
 }
 
 /// DWT_CYCCNT value type for batch read/modify/write operations
@@ -8498,7 +8194,6 @@ impl DwtCyccntVal {
             bits: (self.bits & !DwtCyccnt::CYCCNT_MASK) | ((value << DwtCyccnt::CYCCNT_OFFSET) & DwtCyccnt::CYCCNT_MASK)
         }
     }
-
 }
 
 impl Default for DwtCyccntVal {
@@ -8525,7 +8220,6 @@ impl DwtCyccnt {
     pub fn modify_val<F: FnOnce(DwtCyccntVal) -> DwtCyccntVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DWT_EXCCNT Register
@@ -8581,7 +8275,6 @@ impl DwtExccnt {
     pub fn write_exccnt(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::EXCCNT_MASK) | ((value << Self::EXCCNT_OFFSET) & Self::EXCCNT_MASK));
     }
-
 }
 
 /// DWT_EXCCNT value type for batch read/modify/write operations
@@ -8629,7 +8322,6 @@ impl DwtExccntVal {
             bits: (self.bits & !DwtExccnt::EXCCNT_MASK) | ((value << DwtExccnt::EXCCNT_OFFSET) & DwtExccnt::EXCCNT_MASK)
         }
     }
-
 }
 
 impl Default for DwtExccntVal {
@@ -8656,7 +8348,6 @@ impl DwtExccnt {
     pub fn modify_val<F: FnOnce(DwtExccntVal) -> DwtExccntVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DWT_LSUCNT Register
@@ -8712,7 +8403,6 @@ impl DwtLsucnt {
     pub fn write_lsucnt(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LSUCNT_MASK) | ((value << Self::LSUCNT_OFFSET) & Self::LSUCNT_MASK));
     }
-
 }
 
 /// DWT_LSUCNT value type for batch read/modify/write operations
@@ -8760,7 +8450,6 @@ impl DwtLsucntVal {
             bits: (self.bits & !DwtLsucnt::LSUCNT_MASK) | ((value << DwtLsucnt::LSUCNT_OFFSET) & DwtLsucnt::LSUCNT_MASK)
         }
     }
-
 }
 
 impl Default for DwtLsucntVal {
@@ -8787,7 +8476,6 @@ impl DwtLsucnt {
     pub fn modify_val<F: FnOnce(DwtLsucntVal) -> DwtLsucntVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DWT_FOLDCNT Register
@@ -8843,7 +8531,6 @@ impl DwtFoldcnt {
     pub fn write_foldcnt(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FOLDCNT_MASK) | ((value << Self::FOLDCNT_OFFSET) & Self::FOLDCNT_MASK));
     }
-
 }
 
 /// DWT_FOLDCNT value type for batch read/modify/write operations
@@ -8891,7 +8578,6 @@ impl DwtFoldcntVal {
             bits: (self.bits & !DwtFoldcnt::FOLDCNT_MASK) | ((value << DwtFoldcnt::FOLDCNT_OFFSET) & DwtFoldcnt::FOLDCNT_MASK)
         }
     }
-
 }
 
 impl Default for DwtFoldcntVal {
@@ -8918,7 +8604,6 @@ impl DwtFoldcnt {
     pub fn modify_val<F: FnOnce(DwtFoldcntVal) -> DwtFoldcntVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DWT_COMP0 Register
@@ -8965,7 +8650,6 @@ impl DwtComp0 {
     pub fn write_dwt_comp0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::DWT_COMP0_MASK) | ((value << Self::DWT_COMP0_OFFSET) & Self::DWT_COMP0_MASK));
     }
-
 }
 
 /// DWT_COMP0 value type for batch read/modify/write operations
@@ -9009,7 +8693,6 @@ impl DwtComp0Val {
             bits: (self.bits & !DwtComp0::DWT_COMP0_MASK) | ((value << DwtComp0::DWT_COMP0_OFFSET) & DwtComp0::DWT_COMP0_MASK)
         }
     }
-
 }
 
 impl Default for DwtComp0Val {
@@ -9036,7 +8719,6 @@ impl DwtComp0 {
     pub fn modify_val<F: FnOnce(DwtComp0Val) -> DwtComp0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DWT_FUNCTION0 Register
@@ -9189,7 +8871,6 @@ impl DwtFunction0 {
     pub fn write_match_(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::MATCH_MASK) | ((value << Self::MATCH_OFFSET) & Self::MATCH_MASK));
     }
-
 }
 
 /// DWT_FUNCTION0 value type for batch read/modify/write operations
@@ -9289,7 +8970,6 @@ impl DwtFunction0Val {
             bits: (self.bits & !DwtFunction0::MATCH_MASK) | ((value << DwtFunction0::MATCH_OFFSET) & DwtFunction0::MATCH_MASK)
         }
     }
-
 }
 
 impl Default for DwtFunction0Val {
@@ -9316,7 +8996,6 @@ impl DwtFunction0 {
     pub fn modify_val<F: FnOnce(DwtFunction0Val) -> DwtFunction0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DWT_COMP1 Register
@@ -9363,7 +9042,6 @@ impl DwtComp1 {
     pub fn write_dwt_comp1(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::DWT_COMP1_MASK) | ((value << Self::DWT_COMP1_OFFSET) & Self::DWT_COMP1_MASK));
     }
-
 }
 
 /// DWT_COMP1 value type for batch read/modify/write operations
@@ -9407,7 +9085,6 @@ impl DwtComp1Val {
             bits: (self.bits & !DwtComp1::DWT_COMP1_MASK) | ((value << DwtComp1::DWT_COMP1_OFFSET) & DwtComp1::DWT_COMP1_MASK)
         }
     }
-
 }
 
 impl Default for DwtComp1Val {
@@ -9434,7 +9111,6 @@ impl DwtComp1 {
     pub fn modify_val<F: FnOnce(DwtComp1Val) -> DwtComp1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DWT_FUNCTION1 Register
@@ -9587,7 +9263,6 @@ impl DwtFunction1 {
     pub fn write_match_(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::MATCH_MASK) | ((value << Self::MATCH_OFFSET) & Self::MATCH_MASK));
     }
-
 }
 
 /// DWT_FUNCTION1 value type for batch read/modify/write operations
@@ -9687,7 +9362,6 @@ impl DwtFunction1Val {
             bits: (self.bits & !DwtFunction1::MATCH_MASK) | ((value << DwtFunction1::MATCH_OFFSET) & DwtFunction1::MATCH_MASK)
         }
     }
-
 }
 
 impl Default for DwtFunction1Val {
@@ -9714,7 +9388,6 @@ impl DwtFunction1 {
     pub fn modify_val<F: FnOnce(DwtFunction1Val) -> DwtFunction1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DWT_COMP2 Register
@@ -9761,7 +9434,6 @@ impl DwtComp2 {
     pub fn write_dwt_comp2(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::DWT_COMP2_MASK) | ((value << Self::DWT_COMP2_OFFSET) & Self::DWT_COMP2_MASK));
     }
-
 }
 
 /// DWT_COMP2 value type for batch read/modify/write operations
@@ -9805,7 +9477,6 @@ impl DwtComp2Val {
             bits: (self.bits & !DwtComp2::DWT_COMP2_MASK) | ((value << DwtComp2::DWT_COMP2_OFFSET) & DwtComp2::DWT_COMP2_MASK)
         }
     }
-
 }
 
 impl Default for DwtComp2Val {
@@ -9832,7 +9503,6 @@ impl DwtComp2 {
     pub fn modify_val<F: FnOnce(DwtComp2Val) -> DwtComp2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DWT_FUNCTION2 Register
@@ -9985,7 +9655,6 @@ impl DwtFunction2 {
     pub fn write_match_(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::MATCH_MASK) | ((value << Self::MATCH_OFFSET) & Self::MATCH_MASK));
     }
-
 }
 
 /// DWT_FUNCTION2 value type for batch read/modify/write operations
@@ -10085,7 +9754,6 @@ impl DwtFunction2Val {
             bits: (self.bits & !DwtFunction2::MATCH_MASK) | ((value << DwtFunction2::MATCH_OFFSET) & DwtFunction2::MATCH_MASK)
         }
     }
-
 }
 
 impl Default for DwtFunction2Val {
@@ -10112,7 +9780,6 @@ impl DwtFunction2 {
     pub fn modify_val<F: FnOnce(DwtFunction2Val) -> DwtFunction2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DWT_COMP3 Register
@@ -10159,7 +9826,6 @@ impl DwtComp3 {
     pub fn write_dwt_comp3(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::DWT_COMP3_MASK) | ((value << Self::DWT_COMP3_OFFSET) & Self::DWT_COMP3_MASK));
     }
-
 }
 
 /// DWT_COMP3 value type for batch read/modify/write operations
@@ -10203,7 +9869,6 @@ impl DwtComp3Val {
             bits: (self.bits & !DwtComp3::DWT_COMP3_MASK) | ((value << DwtComp3::DWT_COMP3_OFFSET) & DwtComp3::DWT_COMP3_MASK)
         }
     }
-
 }
 
 impl Default for DwtComp3Val {
@@ -10230,7 +9895,6 @@ impl DwtComp3 {
     pub fn modify_val<F: FnOnce(DwtComp3Val) -> DwtComp3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DWT_FUNCTION3 Register
@@ -10383,7 +10047,6 @@ impl DwtFunction3 {
     pub fn write_match_(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::MATCH_MASK) | ((value << Self::MATCH_OFFSET) & Self::MATCH_MASK));
     }
-
 }
 
 /// DWT_FUNCTION3 value type for batch read/modify/write operations
@@ -10483,7 +10146,6 @@ impl DwtFunction3Val {
             bits: (self.bits & !DwtFunction3::MATCH_MASK) | ((value << DwtFunction3::MATCH_OFFSET) & DwtFunction3::MATCH_MASK)
         }
     }
-
 }
 
 impl Default for DwtFunction3Val {
@@ -10510,7 +10172,6 @@ impl DwtFunction3 {
     pub fn modify_val<F: FnOnce(DwtFunction3Val) -> DwtFunction3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DWT_DEVARCH Register
@@ -10639,7 +10300,6 @@ impl DwtDevarch {
     pub fn archpart(&self) -> u32 {
         (self.value.read_bits() & Self::ARCHPART_MASK) >> Self::ARCHPART_OFFSET
     }
-
 }
 
 /// DWT_DEVARCH value type for batch read/modify/write operations
@@ -10709,7 +10369,6 @@ impl DwtDevarchVal {
     pub const fn archpart(&self) -> u32 {
         (self.bits & DwtDevarch::ARCHPART_MASK) >> DwtDevarch::ARCHPART_OFFSET
     }
-
 }
 
 impl Default for DwtDevarchVal {
@@ -10724,19 +10383,6 @@ impl DwtDevarch {
     pub fn read_val(&self) -> DwtDevarchVal {
         DwtDevarchVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: DwtDevarchVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(DwtDevarchVal) -> DwtDevarchVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DWT_DEVTYPE Register
@@ -10804,7 +10450,6 @@ impl DwtDevtype {
     pub fn major(&self) -> u32 {
         (self.value.read_bits() & Self::MAJOR_MASK) >> Self::MAJOR_OFFSET
     }
-
 }
 
 /// DWT_DEVTYPE value type for batch read/modify/write operations
@@ -10850,7 +10495,6 @@ impl DwtDevtypeVal {
     pub const fn major(&self) -> u32 {
         (self.bits & DwtDevtype::MAJOR_MASK) >> DwtDevtype::MAJOR_OFFSET
     }
-
 }
 
 impl Default for DwtDevtypeVal {
@@ -10865,19 +10509,6 @@ impl DwtDevtype {
     pub fn read_val(&self) -> DwtDevtypeVal {
         DwtDevtypeVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: DwtDevtypeVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(DwtDevtypeVal) -> DwtDevtypeVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DWT_PIDR4 Register
@@ -10945,7 +10576,6 @@ impl DwtPidr4 {
     pub fn des_2(&self) -> u32 {
         (self.value.read_bits() & Self::DES_2_MASK) >> Self::DES_2_OFFSET
     }
-
 }
 
 /// DWT_PIDR4 value type for batch read/modify/write operations
@@ -10991,7 +10621,6 @@ impl DwtPidr4Val {
     pub const fn des_2(&self) -> u32 {
         (self.bits & DwtPidr4::DES_2_MASK) >> DwtPidr4::DES_2_OFFSET
     }
-
 }
 
 impl Default for DwtPidr4Val {
@@ -11006,19 +10635,6 @@ impl DwtPidr4 {
     pub fn read_val(&self) -> DwtPidr4Val {
         DwtPidr4Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: DwtPidr4Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(DwtPidr4Val) -> DwtPidr4Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DWT_PIDR5 Register
@@ -11065,7 +10681,6 @@ impl DwtPidr5 {
     pub fn write_dwt_pidr5(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::DWT_PIDR5_MASK) | ((value << Self::DWT_PIDR5_OFFSET) & Self::DWT_PIDR5_MASK));
     }
-
 }
 
 /// DWT_PIDR5 value type for batch read/modify/write operations
@@ -11109,7 +10724,6 @@ impl DwtPidr5Val {
             bits: (self.bits & !DwtPidr5::DWT_PIDR5_MASK) | ((value << DwtPidr5::DWT_PIDR5_OFFSET) & DwtPidr5::DWT_PIDR5_MASK)
         }
     }
-
 }
 
 impl Default for DwtPidr5Val {
@@ -11136,7 +10750,6 @@ impl DwtPidr5 {
     pub fn modify_val<F: FnOnce(DwtPidr5Val) -> DwtPidr5Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DWT_PIDR6 Register
@@ -11183,7 +10796,6 @@ impl DwtPidr6 {
     pub fn write_dwt_pidr6(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::DWT_PIDR6_MASK) | ((value << Self::DWT_PIDR6_OFFSET) & Self::DWT_PIDR6_MASK));
     }
-
 }
 
 /// DWT_PIDR6 value type for batch read/modify/write operations
@@ -11227,7 +10839,6 @@ impl DwtPidr6Val {
             bits: (self.bits & !DwtPidr6::DWT_PIDR6_MASK) | ((value << DwtPidr6::DWT_PIDR6_OFFSET) & DwtPidr6::DWT_PIDR6_MASK)
         }
     }
-
 }
 
 impl Default for DwtPidr6Val {
@@ -11254,7 +10865,6 @@ impl DwtPidr6 {
     pub fn modify_val<F: FnOnce(DwtPidr6Val) -> DwtPidr6Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DWT_PIDR7 Register
@@ -11301,7 +10911,6 @@ impl DwtPidr7 {
     pub fn write_dwt_pidr7(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::DWT_PIDR7_MASK) | ((value << Self::DWT_PIDR7_OFFSET) & Self::DWT_PIDR7_MASK));
     }
-
 }
 
 /// DWT_PIDR7 value type for batch read/modify/write operations
@@ -11345,7 +10954,6 @@ impl DwtPidr7Val {
             bits: (self.bits & !DwtPidr7::DWT_PIDR7_MASK) | ((value << DwtPidr7::DWT_PIDR7_OFFSET) & DwtPidr7::DWT_PIDR7_MASK)
         }
     }
-
 }
 
 impl Default for DwtPidr7Val {
@@ -11372,7 +10980,6 @@ impl DwtPidr7 {
     pub fn modify_val<F: FnOnce(DwtPidr7Val) -> DwtPidr7Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DWT_PIDR0 Register
@@ -11420,7 +11027,6 @@ impl DwtPidr0 {
     pub fn part_0(&self) -> u32 {
         (self.value.read_bits() & Self::PART_0_MASK) >> Self::PART_0_OFFSET
     }
-
 }
 
 /// DWT_PIDR0 value type for batch read/modify/write operations
@@ -11458,7 +11064,6 @@ impl DwtPidr0Val {
     pub const fn part_0(&self) -> u32 {
         (self.bits & DwtPidr0::PART_0_MASK) >> DwtPidr0::PART_0_OFFSET
     }
-
 }
 
 impl Default for DwtPidr0Val {
@@ -11473,19 +11078,6 @@ impl DwtPidr0 {
     pub fn read_val(&self) -> DwtPidr0Val {
         DwtPidr0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: DwtPidr0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(DwtPidr0Val) -> DwtPidr0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DWT_PIDR1 Register
@@ -11553,7 +11145,6 @@ impl DwtPidr1 {
     pub fn part_1(&self) -> u32 {
         (self.value.read_bits() & Self::PART_1_MASK) >> Self::PART_1_OFFSET
     }
-
 }
 
 /// DWT_PIDR1 value type for batch read/modify/write operations
@@ -11599,7 +11190,6 @@ impl DwtPidr1Val {
     pub const fn part_1(&self) -> u32 {
         (self.bits & DwtPidr1::PART_1_MASK) >> DwtPidr1::PART_1_OFFSET
     }
-
 }
 
 impl Default for DwtPidr1Val {
@@ -11614,19 +11204,6 @@ impl DwtPidr1 {
     pub fn read_val(&self) -> DwtPidr1Val {
         DwtPidr1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: DwtPidr1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(DwtPidr1Val) -> DwtPidr1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DWT_PIDR2 Register
@@ -11715,7 +11292,6 @@ impl DwtPidr2 {
     pub fn des_1(&self) -> u32 {
         (self.value.read_bits() & Self::DES_1_MASK) >> Self::DES_1_OFFSET
     }
-
 }
 
 /// DWT_PIDR2 value type for batch read/modify/write operations
@@ -11769,7 +11345,6 @@ impl DwtPidr2Val {
     pub const fn des_1(&self) -> u32 {
         (self.bits & DwtPidr2::DES_1_MASK) >> DwtPidr2::DES_1_OFFSET
     }
-
 }
 
 impl Default for DwtPidr2Val {
@@ -11784,19 +11359,6 @@ impl DwtPidr2 {
     pub fn read_val(&self) -> DwtPidr2Val {
         DwtPidr2Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: DwtPidr2Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(DwtPidr2Val) -> DwtPidr2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DWT_PIDR3 Register
@@ -11864,7 +11426,6 @@ impl DwtPidr3 {
     pub fn cmod(&self) -> u32 {
         (self.value.read_bits() & Self::CMOD_MASK) >> Self::CMOD_OFFSET
     }
-
 }
 
 /// DWT_PIDR3 value type for batch read/modify/write operations
@@ -11910,7 +11471,6 @@ impl DwtPidr3Val {
     pub const fn cmod(&self) -> u32 {
         (self.bits & DwtPidr3::CMOD_MASK) >> DwtPidr3::CMOD_OFFSET
     }
-
 }
 
 impl Default for DwtPidr3Val {
@@ -11925,19 +11485,6 @@ impl DwtPidr3 {
     pub fn read_val(&self) -> DwtPidr3Val {
         DwtPidr3Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: DwtPidr3Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(DwtPidr3Val) -> DwtPidr3Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DWT_CIDR0 Register
@@ -11985,7 +11532,6 @@ impl DwtCidr0 {
     pub fn prmbl_0(&self) -> u32 {
         (self.value.read_bits() & Self::PRMBL_0_MASK) >> Self::PRMBL_0_OFFSET
     }
-
 }
 
 /// DWT_CIDR0 value type for batch read/modify/write operations
@@ -12023,7 +11569,6 @@ impl DwtCidr0Val {
     pub const fn prmbl_0(&self) -> u32 {
         (self.bits & DwtCidr0::PRMBL_0_MASK) >> DwtCidr0::PRMBL_0_OFFSET
     }
-
 }
 
 impl Default for DwtCidr0Val {
@@ -12038,19 +11583,6 @@ impl DwtCidr0 {
     pub fn read_val(&self) -> DwtCidr0Val {
         DwtCidr0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: DwtCidr0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(DwtCidr0Val) -> DwtCidr0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DWT_CIDR1 Register
@@ -12118,7 +11650,6 @@ impl DwtCidr1 {
     pub fn prmbl_1(&self) -> u32 {
         (self.value.read_bits() & Self::PRMBL_1_MASK) >> Self::PRMBL_1_OFFSET
     }
-
 }
 
 /// DWT_CIDR1 value type for batch read/modify/write operations
@@ -12164,7 +11695,6 @@ impl DwtCidr1Val {
     pub const fn prmbl_1(&self) -> u32 {
         (self.bits & DwtCidr1::PRMBL_1_MASK) >> DwtCidr1::PRMBL_1_OFFSET
     }
-
 }
 
 impl Default for DwtCidr1Val {
@@ -12179,19 +11709,6 @@ impl DwtCidr1 {
     pub fn read_val(&self) -> DwtCidr1Val {
         DwtCidr1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: DwtCidr1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(DwtCidr1Val) -> DwtCidr1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DWT_CIDR2 Register
@@ -12239,7 +11756,6 @@ impl DwtCidr2 {
     pub fn prmbl_2(&self) -> u32 {
         (self.value.read_bits() & Self::PRMBL_2_MASK) >> Self::PRMBL_2_OFFSET
     }
-
 }
 
 /// DWT_CIDR2 value type for batch read/modify/write operations
@@ -12277,7 +11793,6 @@ impl DwtCidr2Val {
     pub const fn prmbl_2(&self) -> u32 {
         (self.bits & DwtCidr2::PRMBL_2_MASK) >> DwtCidr2::PRMBL_2_OFFSET
     }
-
 }
 
 impl Default for DwtCidr2Val {
@@ -12292,19 +11807,6 @@ impl DwtCidr2 {
     pub fn read_val(&self) -> DwtCidr2Val {
         DwtCidr2Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: DwtCidr2Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(DwtCidr2Val) -> DwtCidr2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DWT_CIDR3 Register
@@ -12352,7 +11854,6 @@ impl DwtCidr3 {
     pub fn prmbl_3(&self) -> u32 {
         (self.value.read_bits() & Self::PRMBL_3_MASK) >> Self::PRMBL_3_OFFSET
     }
-
 }
 
 /// DWT_CIDR3 value type for batch read/modify/write operations
@@ -12390,7 +11891,6 @@ impl DwtCidr3Val {
     pub const fn prmbl_3(&self) -> u32 {
         (self.bits & DwtCidr3::PRMBL_3_MASK) >> DwtCidr3::PRMBL_3_OFFSET
     }
-
 }
 
 impl Default for DwtCidr3Val {
@@ -12405,19 +11905,6 @@ impl DwtCidr3 {
     pub fn read_val(&self) -> DwtCidr3Val {
         DwtCidr3Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: DwtCidr3Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(DwtCidr3Val) -> DwtCidr3Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// FP_CTRL Register
@@ -12591,7 +12078,6 @@ impl FpCtrl {
     pub fn clr_enable(&self) {
         self.value.modify_bits(|r| r & !Self::ENABLE_MASK);
     }
-
 }
 
 /// FP_CTRL value type for batch read/modify/write operations
@@ -12697,7 +12183,6 @@ impl FpCtrlVal {
             }
         }
     }
-
 }
 
 impl Default for FpCtrlVal {
@@ -12724,7 +12209,6 @@ impl FpCtrl {
     pub fn modify_val<F: FnOnce(FpCtrlVal) -> FpCtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FP_REMAP Register
@@ -12793,7 +12277,6 @@ impl FpRemap {
     pub fn remap(&self) -> u32 {
         (self.value.read_bits() & Self::REMAP_MASK) >> Self::REMAP_OFFSET
     }
-
 }
 
 /// FP_REMAP value type for batch read/modify/write operations
@@ -12839,7 +12322,6 @@ impl FpRemapVal {
     pub const fn remap(&self) -> u32 {
         (self.bits & FpRemap::REMAP_MASK) >> FpRemap::REMAP_OFFSET
     }
-
 }
 
 impl Default for FpRemapVal {
@@ -12854,19 +12336,6 @@ impl FpRemap {
     pub fn read_val(&self) -> FpRemapVal {
         FpRemapVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: FpRemapVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(FpRemapVal) -> FpRemapVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// FP_COMP0 Register
@@ -12927,7 +12396,6 @@ impl FpComp0 {
     pub fn clr_be(&self) {
         self.value.modify_bits(|r| r & !Self::BE_MASK);
     }
-
 }
 
 /// FP_COMP0 value type for batch read/modify/write operations
@@ -12979,7 +12447,6 @@ impl FpComp0Val {
             }
         }
     }
-
 }
 
 impl Default for FpComp0Val {
@@ -13006,7 +12473,6 @@ impl FpComp0 {
     pub fn modify_val<F: FnOnce(FpComp0Val) -> FpComp0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FP_COMP1 Register
@@ -13067,7 +12533,6 @@ impl FpComp1 {
     pub fn clr_be(&self) {
         self.value.modify_bits(|r| r & !Self::BE_MASK);
     }
-
 }
 
 /// FP_COMP1 value type for batch read/modify/write operations
@@ -13119,7 +12584,6 @@ impl FpComp1Val {
             }
         }
     }
-
 }
 
 impl Default for FpComp1Val {
@@ -13146,7 +12610,6 @@ impl FpComp1 {
     pub fn modify_val<F: FnOnce(FpComp1Val) -> FpComp1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FP_COMP2 Register
@@ -13207,7 +12670,6 @@ impl FpComp2 {
     pub fn clr_be(&self) {
         self.value.modify_bits(|r| r & !Self::BE_MASK);
     }
-
 }
 
 /// FP_COMP2 value type for batch read/modify/write operations
@@ -13259,7 +12721,6 @@ impl FpComp2Val {
             }
         }
     }
-
 }
 
 impl Default for FpComp2Val {
@@ -13286,7 +12747,6 @@ impl FpComp2 {
     pub fn modify_val<F: FnOnce(FpComp2Val) -> FpComp2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FP_COMP3 Register
@@ -13347,7 +12807,6 @@ impl FpComp3 {
     pub fn clr_be(&self) {
         self.value.modify_bits(|r| r & !Self::BE_MASK);
     }
-
 }
 
 /// FP_COMP3 value type for batch read/modify/write operations
@@ -13399,7 +12858,6 @@ impl FpComp3Val {
             }
         }
     }
-
 }
 
 impl Default for FpComp3Val {
@@ -13426,7 +12884,6 @@ impl FpComp3 {
     pub fn modify_val<F: FnOnce(FpComp3Val) -> FpComp3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FP_COMP4 Register
@@ -13487,7 +12944,6 @@ impl FpComp4 {
     pub fn clr_be(&self) {
         self.value.modify_bits(|r| r & !Self::BE_MASK);
     }
-
 }
 
 /// FP_COMP4 value type for batch read/modify/write operations
@@ -13539,7 +12995,6 @@ impl FpComp4Val {
             }
         }
     }
-
 }
 
 impl Default for FpComp4Val {
@@ -13566,7 +13021,6 @@ impl FpComp4 {
     pub fn modify_val<F: FnOnce(FpComp4Val) -> FpComp4Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FP_COMP5 Register
@@ -13627,7 +13081,6 @@ impl FpComp5 {
     pub fn clr_be(&self) {
         self.value.modify_bits(|r| r & !Self::BE_MASK);
     }
-
 }
 
 /// FP_COMP5 value type for batch read/modify/write operations
@@ -13679,7 +13132,6 @@ impl FpComp5Val {
             }
         }
     }
-
 }
 
 impl Default for FpComp5Val {
@@ -13706,7 +13158,6 @@ impl FpComp5 {
     pub fn modify_val<F: FnOnce(FpComp5Val) -> FpComp5Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FP_COMP6 Register
@@ -13767,7 +13218,6 @@ impl FpComp6 {
     pub fn clr_be(&self) {
         self.value.modify_bits(|r| r & !Self::BE_MASK);
     }
-
 }
 
 /// FP_COMP6 value type for batch read/modify/write operations
@@ -13819,7 +13269,6 @@ impl FpComp6Val {
             }
         }
     }
-
 }
 
 impl Default for FpComp6Val {
@@ -13846,7 +13295,6 @@ impl FpComp6 {
     pub fn modify_val<F: FnOnce(FpComp6Val) -> FpComp6Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FP_COMP7 Register
@@ -13907,7 +13355,6 @@ impl FpComp7 {
     pub fn clr_be(&self) {
         self.value.modify_bits(|r| r & !Self::BE_MASK);
     }
-
 }
 
 /// FP_COMP7 value type for batch read/modify/write operations
@@ -13959,7 +13406,6 @@ impl FpComp7Val {
             }
         }
     }
-
 }
 
 impl Default for FpComp7Val {
@@ -13986,7 +13432,6 @@ impl FpComp7 {
     pub fn modify_val<F: FnOnce(FpComp7Val) -> FpComp7Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FP_DEVARCH Register
@@ -14115,7 +13560,6 @@ impl FpDevarch {
     pub fn archpart(&self) -> u32 {
         (self.value.read_bits() & Self::ARCHPART_MASK) >> Self::ARCHPART_OFFSET
     }
-
 }
 
 /// FP_DEVARCH value type for batch read/modify/write operations
@@ -14185,7 +13629,6 @@ impl FpDevarchVal {
     pub const fn archpart(&self) -> u32 {
         (self.bits & FpDevarch::ARCHPART_MASK) >> FpDevarch::ARCHPART_OFFSET
     }
-
 }
 
 impl Default for FpDevarchVal {
@@ -14200,19 +13643,6 @@ impl FpDevarch {
     pub fn read_val(&self) -> FpDevarchVal {
         FpDevarchVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: FpDevarchVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(FpDevarchVal) -> FpDevarchVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// FP_DEVTYPE Register
@@ -14280,7 +13710,6 @@ impl FpDevtype {
     pub fn major(&self) -> u32 {
         (self.value.read_bits() & Self::MAJOR_MASK) >> Self::MAJOR_OFFSET
     }
-
 }
 
 /// FP_DEVTYPE value type for batch read/modify/write operations
@@ -14326,7 +13755,6 @@ impl FpDevtypeVal {
     pub const fn major(&self) -> u32 {
         (self.bits & FpDevtype::MAJOR_MASK) >> FpDevtype::MAJOR_OFFSET
     }
-
 }
 
 impl Default for FpDevtypeVal {
@@ -14341,19 +13769,6 @@ impl FpDevtype {
     pub fn read_val(&self) -> FpDevtypeVal {
         FpDevtypeVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: FpDevtypeVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(FpDevtypeVal) -> FpDevtypeVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// FP_PIDR4 Register
@@ -14421,7 +13836,6 @@ impl FpPidr4 {
     pub fn des_2(&self) -> u32 {
         (self.value.read_bits() & Self::DES_2_MASK) >> Self::DES_2_OFFSET
     }
-
 }
 
 /// FP_PIDR4 value type for batch read/modify/write operations
@@ -14467,7 +13881,6 @@ impl FpPidr4Val {
     pub const fn des_2(&self) -> u32 {
         (self.bits & FpPidr4::DES_2_MASK) >> FpPidr4::DES_2_OFFSET
     }
-
 }
 
 impl Default for FpPidr4Val {
@@ -14482,19 +13895,6 @@ impl FpPidr4 {
     pub fn read_val(&self) -> FpPidr4Val {
         FpPidr4Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: FpPidr4Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(FpPidr4Val) -> FpPidr4Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// FP_PIDR5 Register
@@ -14541,7 +13941,6 @@ impl FpPidr5 {
     pub fn write_fp_pidr5(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FP_PIDR5_MASK) | ((value << Self::FP_PIDR5_OFFSET) & Self::FP_PIDR5_MASK));
     }
-
 }
 
 /// FP_PIDR5 value type for batch read/modify/write operations
@@ -14585,7 +13984,6 @@ impl FpPidr5Val {
             bits: (self.bits & !FpPidr5::FP_PIDR5_MASK) | ((value << FpPidr5::FP_PIDR5_OFFSET) & FpPidr5::FP_PIDR5_MASK)
         }
     }
-
 }
 
 impl Default for FpPidr5Val {
@@ -14612,7 +14010,6 @@ impl FpPidr5 {
     pub fn modify_val<F: FnOnce(FpPidr5Val) -> FpPidr5Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FP_PIDR6 Register
@@ -14659,7 +14056,6 @@ impl FpPidr6 {
     pub fn write_fp_pidr6(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FP_PIDR6_MASK) | ((value << Self::FP_PIDR6_OFFSET) & Self::FP_PIDR6_MASK));
     }
-
 }
 
 /// FP_PIDR6 value type for batch read/modify/write operations
@@ -14703,7 +14099,6 @@ impl FpPidr6Val {
             bits: (self.bits & !FpPidr6::FP_PIDR6_MASK) | ((value << FpPidr6::FP_PIDR6_OFFSET) & FpPidr6::FP_PIDR6_MASK)
         }
     }
-
 }
 
 impl Default for FpPidr6Val {
@@ -14730,7 +14125,6 @@ impl FpPidr6 {
     pub fn modify_val<F: FnOnce(FpPidr6Val) -> FpPidr6Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FP_PIDR7 Register
@@ -14777,7 +14171,6 @@ impl FpPidr7 {
     pub fn write_fp_pidr7(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FP_PIDR7_MASK) | ((value << Self::FP_PIDR7_OFFSET) & Self::FP_PIDR7_MASK));
     }
-
 }
 
 /// FP_PIDR7 value type for batch read/modify/write operations
@@ -14821,7 +14214,6 @@ impl FpPidr7Val {
             bits: (self.bits & !FpPidr7::FP_PIDR7_MASK) | ((value << FpPidr7::FP_PIDR7_OFFSET) & FpPidr7::FP_PIDR7_MASK)
         }
     }
-
 }
 
 impl Default for FpPidr7Val {
@@ -14848,7 +14240,6 @@ impl FpPidr7 {
     pub fn modify_val<F: FnOnce(FpPidr7Val) -> FpPidr7Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FP_PIDR0 Register
@@ -14896,7 +14287,6 @@ impl FpPidr0 {
     pub fn part_0(&self) -> u32 {
         (self.value.read_bits() & Self::PART_0_MASK) >> Self::PART_0_OFFSET
     }
-
 }
 
 /// FP_PIDR0 value type for batch read/modify/write operations
@@ -14934,7 +14324,6 @@ impl FpPidr0Val {
     pub const fn part_0(&self) -> u32 {
         (self.bits & FpPidr0::PART_0_MASK) >> FpPidr0::PART_0_OFFSET
     }
-
 }
 
 impl Default for FpPidr0Val {
@@ -14949,19 +14338,6 @@ impl FpPidr0 {
     pub fn read_val(&self) -> FpPidr0Val {
         FpPidr0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: FpPidr0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(FpPidr0Val) -> FpPidr0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// FP_PIDR1 Register
@@ -15029,7 +14405,6 @@ impl FpPidr1 {
     pub fn part_1(&self) -> u32 {
         (self.value.read_bits() & Self::PART_1_MASK) >> Self::PART_1_OFFSET
     }
-
 }
 
 /// FP_PIDR1 value type for batch read/modify/write operations
@@ -15075,7 +14450,6 @@ impl FpPidr1Val {
     pub const fn part_1(&self) -> u32 {
         (self.bits & FpPidr1::PART_1_MASK) >> FpPidr1::PART_1_OFFSET
     }
-
 }
 
 impl Default for FpPidr1Val {
@@ -15090,19 +14464,6 @@ impl FpPidr1 {
     pub fn read_val(&self) -> FpPidr1Val {
         FpPidr1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: FpPidr1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(FpPidr1Val) -> FpPidr1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// FP_PIDR2 Register
@@ -15191,7 +14552,6 @@ impl FpPidr2 {
     pub fn des_1(&self) -> u32 {
         (self.value.read_bits() & Self::DES_1_MASK) >> Self::DES_1_OFFSET
     }
-
 }
 
 /// FP_PIDR2 value type for batch read/modify/write operations
@@ -15245,7 +14605,6 @@ impl FpPidr2Val {
     pub const fn des_1(&self) -> u32 {
         (self.bits & FpPidr2::DES_1_MASK) >> FpPidr2::DES_1_OFFSET
     }
-
 }
 
 impl Default for FpPidr2Val {
@@ -15260,19 +14619,6 @@ impl FpPidr2 {
     pub fn read_val(&self) -> FpPidr2Val {
         FpPidr2Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: FpPidr2Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(FpPidr2Val) -> FpPidr2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// FP_PIDR3 Register
@@ -15340,7 +14686,6 @@ impl FpPidr3 {
     pub fn cmod(&self) -> u32 {
         (self.value.read_bits() & Self::CMOD_MASK) >> Self::CMOD_OFFSET
     }
-
 }
 
 /// FP_PIDR3 value type for batch read/modify/write operations
@@ -15386,7 +14731,6 @@ impl FpPidr3Val {
     pub const fn cmod(&self) -> u32 {
         (self.bits & FpPidr3::CMOD_MASK) >> FpPidr3::CMOD_OFFSET
     }
-
 }
 
 impl Default for FpPidr3Val {
@@ -15401,19 +14745,6 @@ impl FpPidr3 {
     pub fn read_val(&self) -> FpPidr3Val {
         FpPidr3Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: FpPidr3Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(FpPidr3Val) -> FpPidr3Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// FP_CIDR0 Register
@@ -15461,7 +14792,6 @@ impl FpCidr0 {
     pub fn prmbl_0(&self) -> u32 {
         (self.value.read_bits() & Self::PRMBL_0_MASK) >> Self::PRMBL_0_OFFSET
     }
-
 }
 
 /// FP_CIDR0 value type for batch read/modify/write operations
@@ -15499,7 +14829,6 @@ impl FpCidr0Val {
     pub const fn prmbl_0(&self) -> u32 {
         (self.bits & FpCidr0::PRMBL_0_MASK) >> FpCidr0::PRMBL_0_OFFSET
     }
-
 }
 
 impl Default for FpCidr0Val {
@@ -15514,19 +14843,6 @@ impl FpCidr0 {
     pub fn read_val(&self) -> FpCidr0Val {
         FpCidr0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: FpCidr0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(FpCidr0Val) -> FpCidr0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// FP_CIDR1 Register
@@ -15594,7 +14910,6 @@ impl FpCidr1 {
     pub fn prmbl_1(&self) -> u32 {
         (self.value.read_bits() & Self::PRMBL_1_MASK) >> Self::PRMBL_1_OFFSET
     }
-
 }
 
 /// FP_CIDR1 value type for batch read/modify/write operations
@@ -15640,7 +14955,6 @@ impl FpCidr1Val {
     pub const fn prmbl_1(&self) -> u32 {
         (self.bits & FpCidr1::PRMBL_1_MASK) >> FpCidr1::PRMBL_1_OFFSET
     }
-
 }
 
 impl Default for FpCidr1Val {
@@ -15655,19 +14969,6 @@ impl FpCidr1 {
     pub fn read_val(&self) -> FpCidr1Val {
         FpCidr1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: FpCidr1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(FpCidr1Val) -> FpCidr1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// FP_CIDR2 Register
@@ -15715,7 +15016,6 @@ impl FpCidr2 {
     pub fn prmbl_2(&self) -> u32 {
         (self.value.read_bits() & Self::PRMBL_2_MASK) >> Self::PRMBL_2_OFFSET
     }
-
 }
 
 /// FP_CIDR2 value type for batch read/modify/write operations
@@ -15753,7 +15053,6 @@ impl FpCidr2Val {
     pub const fn prmbl_2(&self) -> u32 {
         (self.bits & FpCidr2::PRMBL_2_MASK) >> FpCidr2::PRMBL_2_OFFSET
     }
-
 }
 
 impl Default for FpCidr2Val {
@@ -15768,19 +15067,6 @@ impl FpCidr2 {
     pub fn read_val(&self) -> FpCidr2Val {
         FpCidr2Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: FpCidr2Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(FpCidr2Val) -> FpCidr2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// FP_CIDR3 Register
@@ -15828,7 +15114,6 @@ impl FpCidr3 {
     pub fn prmbl_3(&self) -> u32 {
         (self.value.read_bits() & Self::PRMBL_3_MASK) >> Self::PRMBL_3_OFFSET
     }
-
 }
 
 /// FP_CIDR3 value type for batch read/modify/write operations
@@ -15866,7 +15151,6 @@ impl FpCidr3Val {
     pub const fn prmbl_3(&self) -> u32 {
         (self.bits & FpCidr3::PRMBL_3_MASK) >> FpCidr3::PRMBL_3_OFFSET
     }
-
 }
 
 impl Default for FpCidr3Val {
@@ -15881,19 +15165,6 @@ impl FpCidr3 {
     pub fn read_val(&self) -> FpCidr3Val {
         FpCidr3Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: FpCidr3Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(FpCidr3Val) -> FpCidr3Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// ICTR Register
@@ -15941,7 +15212,6 @@ impl Ictr {
     pub fn intlinesnum(&self) -> u32 {
         (self.value.read_bits() & Self::INTLINESNUM_MASK) >> Self::INTLINESNUM_OFFSET
     }
-
 }
 
 /// ICTR value type for batch read/modify/write operations
@@ -15979,7 +15249,6 @@ impl IctrVal {
     pub const fn intlinesnum(&self) -> u32 {
         (self.bits & Ictr::INTLINESNUM_MASK) >> Ictr::INTLINESNUM_OFFSET
     }
-
 }
 
 impl Default for IctrVal {
@@ -15994,19 +15263,6 @@ impl Ictr {
     pub fn read_val(&self) -> IctrVal {
         IctrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IctrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IctrVal) -> IctrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// ACTLR Register
@@ -16232,7 +15488,6 @@ impl Actlr {
     pub fn clr_dismcycint(&self) {
         self.value.modify_bits(|r| r & !Self::DISMCYCINT_MASK);
     }
-
 }
 
 /// ACTLR value type for batch read/modify/write operations
@@ -16394,7 +15649,6 @@ impl ActlrVal {
             }
         }
     }
-
 }
 
 impl Default for ActlrVal {
@@ -16421,7 +15675,6 @@ impl Actlr {
     pub fn modify_val<F: FnOnce(ActlrVal) -> ActlrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SYST_CSR Register
@@ -16590,7 +15843,6 @@ impl SystCsr {
     pub fn clr_enable(&self) {
         self.value.modify_bits(|r| r & !Self::ENABLE_MASK);
     }
-
 }
 
 /// SYST_CSR value type for batch read/modify/write operations
@@ -16708,7 +15960,6 @@ impl SystCsrVal {
             }
         }
     }
-
 }
 
 impl Default for SystCsrVal {
@@ -16735,7 +15986,6 @@ impl SystCsr {
     pub fn modify_val<F: FnOnce(SystCsrVal) -> SystCsrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SYST_RVR Register
@@ -16792,7 +16042,6 @@ impl SystRvr {
     pub fn write_reload(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::RELOAD_MASK) | ((value << Self::RELOAD_OFFSET) & Self::RELOAD_MASK));
     }
-
 }
 
 /// SYST_RVR value type for batch read/modify/write operations
@@ -16840,7 +16089,6 @@ impl SystRvrVal {
             bits: (self.bits & !SystRvr::RELOAD_MASK) | ((value << SystRvr::RELOAD_OFFSET) & SystRvr::RELOAD_MASK)
         }
     }
-
 }
 
 impl Default for SystRvrVal {
@@ -16867,7 +16115,6 @@ impl SystRvr {
     pub fn modify_val<F: FnOnce(SystRvrVal) -> SystRvrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SYST_CVR Register
@@ -16923,7 +16170,6 @@ impl SystCvr {
     pub fn write_current(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CURRENT_MASK) | ((value << Self::CURRENT_OFFSET) & Self::CURRENT_MASK));
     }
-
 }
 
 /// SYST_CVR value type for batch read/modify/write operations
@@ -16971,7 +16217,6 @@ impl SystCvrVal {
             bits: (self.bits & !SystCvr::CURRENT_MASK) | ((value << SystCvr::CURRENT_OFFSET) & SystCvr::CURRENT_MASK)
         }
     }
-
 }
 
 impl Default for SystCvrVal {
@@ -16998,7 +16243,6 @@ impl SystCvr {
     pub fn modify_val<F: FnOnce(SystCvrVal) -> SystCvrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SYST_CALIB Register
@@ -17088,7 +16332,6 @@ impl SystCalib {
     pub fn tenms(&self) -> u32 {
         (self.value.read_bits() & Self::TENMS_MASK) >> Self::TENMS_OFFSET
     }
-
 }
 
 /// SYST_CALIB value type for batch read/modify/write operations
@@ -17142,7 +16385,6 @@ impl SystCalibVal {
     pub const fn tenms(&self) -> u32 {
         (self.bits & SystCalib::TENMS_MASK) >> SystCalib::TENMS_OFFSET
     }
-
 }
 
 impl Default for SystCalibVal {
@@ -17157,19 +16399,6 @@ impl SystCalib {
     pub fn read_val(&self) -> SystCalibVal {
         SystCalibVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: SystCalibVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(SystCalibVal) -> SystCalibVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// NVIC_ISER0 Register
@@ -17225,7 +16454,6 @@ impl NvicIser0 {
     pub fn write_setena(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SETENA_MASK) | ((value << Self::SETENA_OFFSET) & Self::SETENA_MASK));
     }
-
 }
 
 /// NVIC_ISER0 value type for batch read/modify/write operations
@@ -17273,7 +16501,6 @@ impl NvicIser0Val {
             bits: (self.bits & !NvicIser0::SETENA_MASK) | ((value << NvicIser0::SETENA_OFFSET) & NvicIser0::SETENA_MASK)
         }
     }
-
 }
 
 impl Default for NvicIser0Val {
@@ -17300,7 +16527,6 @@ impl NvicIser0 {
     pub fn modify_val<F: FnOnce(NvicIser0Val) -> NvicIser0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// NVIC_ISER1 Register
@@ -17356,7 +16582,6 @@ impl NvicIser1 {
     pub fn write_setena(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SETENA_MASK) | ((value << Self::SETENA_OFFSET) & Self::SETENA_MASK));
     }
-
 }
 
 /// NVIC_ISER1 value type for batch read/modify/write operations
@@ -17404,7 +16629,6 @@ impl NvicIser1Val {
             bits: (self.bits & !NvicIser1::SETENA_MASK) | ((value << NvicIser1::SETENA_OFFSET) & NvicIser1::SETENA_MASK)
         }
     }
-
 }
 
 impl Default for NvicIser1Val {
@@ -17431,7 +16655,6 @@ impl NvicIser1 {
     pub fn modify_val<F: FnOnce(NvicIser1Val) -> NvicIser1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// NVIC_ICER0 Register
@@ -17487,7 +16710,6 @@ impl NvicIcer0 {
     pub fn write_clrena(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CLRENA_MASK) | ((value << Self::CLRENA_OFFSET) & Self::CLRENA_MASK));
     }
-
 }
 
 /// NVIC_ICER0 value type for batch read/modify/write operations
@@ -17535,7 +16757,6 @@ impl NvicIcer0Val {
             bits: (self.bits & !NvicIcer0::CLRENA_MASK) | ((value << NvicIcer0::CLRENA_OFFSET) & NvicIcer0::CLRENA_MASK)
         }
     }
-
 }
 
 impl Default for NvicIcer0Val {
@@ -17562,7 +16783,6 @@ impl NvicIcer0 {
     pub fn modify_val<F: FnOnce(NvicIcer0Val) -> NvicIcer0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// NVIC_ICER1 Register
@@ -17618,7 +16838,6 @@ impl NvicIcer1 {
     pub fn write_clrena(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CLRENA_MASK) | ((value << Self::CLRENA_OFFSET) & Self::CLRENA_MASK));
     }
-
 }
 
 /// NVIC_ICER1 value type for batch read/modify/write operations
@@ -17666,7 +16885,6 @@ impl NvicIcer1Val {
             bits: (self.bits & !NvicIcer1::CLRENA_MASK) | ((value << NvicIcer1::CLRENA_OFFSET) & NvicIcer1::CLRENA_MASK)
         }
     }
-
 }
 
 impl Default for NvicIcer1Val {
@@ -17693,7 +16911,6 @@ impl NvicIcer1 {
     pub fn modify_val<F: FnOnce(NvicIcer1Val) -> NvicIcer1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// NVIC_ISPR0 Register
@@ -17749,7 +16966,6 @@ impl NvicIspr0 {
     pub fn write_setpend(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SETPEND_MASK) | ((value << Self::SETPEND_OFFSET) & Self::SETPEND_MASK));
     }
-
 }
 
 /// NVIC_ISPR0 value type for batch read/modify/write operations
@@ -17797,7 +17013,6 @@ impl NvicIspr0Val {
             bits: (self.bits & !NvicIspr0::SETPEND_MASK) | ((value << NvicIspr0::SETPEND_OFFSET) & NvicIspr0::SETPEND_MASK)
         }
     }
-
 }
 
 impl Default for NvicIspr0Val {
@@ -17824,7 +17039,6 @@ impl NvicIspr0 {
     pub fn modify_val<F: FnOnce(NvicIspr0Val) -> NvicIspr0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// NVIC_ISPR1 Register
@@ -17880,7 +17094,6 @@ impl NvicIspr1 {
     pub fn write_setpend(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SETPEND_MASK) | ((value << Self::SETPEND_OFFSET) & Self::SETPEND_MASK));
     }
-
 }
 
 /// NVIC_ISPR1 value type for batch read/modify/write operations
@@ -17928,7 +17141,6 @@ impl NvicIspr1Val {
             bits: (self.bits & !NvicIspr1::SETPEND_MASK) | ((value << NvicIspr1::SETPEND_OFFSET) & NvicIspr1::SETPEND_MASK)
         }
     }
-
 }
 
 impl Default for NvicIspr1Val {
@@ -17955,7 +17167,6 @@ impl NvicIspr1 {
     pub fn modify_val<F: FnOnce(NvicIspr1Val) -> NvicIspr1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// NVIC_ICPR0 Register
@@ -18011,7 +17222,6 @@ impl NvicIcpr0 {
     pub fn write_clrpend(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CLRPEND_MASK) | ((value << Self::CLRPEND_OFFSET) & Self::CLRPEND_MASK));
     }
-
 }
 
 /// NVIC_ICPR0 value type for batch read/modify/write operations
@@ -18059,7 +17269,6 @@ impl NvicIcpr0Val {
             bits: (self.bits & !NvicIcpr0::CLRPEND_MASK) | ((value << NvicIcpr0::CLRPEND_OFFSET) & NvicIcpr0::CLRPEND_MASK)
         }
     }
-
 }
 
 impl Default for NvicIcpr0Val {
@@ -18086,7 +17295,6 @@ impl NvicIcpr0 {
     pub fn modify_val<F: FnOnce(NvicIcpr0Val) -> NvicIcpr0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// NVIC_ICPR1 Register
@@ -18142,7 +17350,6 @@ impl NvicIcpr1 {
     pub fn write_clrpend(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CLRPEND_MASK) | ((value << Self::CLRPEND_OFFSET) & Self::CLRPEND_MASK));
     }
-
 }
 
 /// NVIC_ICPR1 value type for batch read/modify/write operations
@@ -18190,7 +17397,6 @@ impl NvicIcpr1Val {
             bits: (self.bits & !NvicIcpr1::CLRPEND_MASK) | ((value << NvicIcpr1::CLRPEND_OFFSET) & NvicIcpr1::CLRPEND_MASK)
         }
     }
-
 }
 
 impl Default for NvicIcpr1Val {
@@ -18217,7 +17423,6 @@ impl NvicIcpr1 {
     pub fn modify_val<F: FnOnce(NvicIcpr1Val) -> NvicIcpr1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// NVIC_IABR0 Register
@@ -18273,7 +17478,6 @@ impl NvicIabr0 {
     pub fn write_active(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ACTIVE_MASK) | ((value << Self::ACTIVE_OFFSET) & Self::ACTIVE_MASK));
     }
-
 }
 
 /// NVIC_IABR0 value type for batch read/modify/write operations
@@ -18321,7 +17525,6 @@ impl NvicIabr0Val {
             bits: (self.bits & !NvicIabr0::ACTIVE_MASK) | ((value << NvicIabr0::ACTIVE_OFFSET) & NvicIabr0::ACTIVE_MASK)
         }
     }
-
 }
 
 impl Default for NvicIabr0Val {
@@ -18348,7 +17551,6 @@ impl NvicIabr0 {
     pub fn modify_val<F: FnOnce(NvicIabr0Val) -> NvicIabr0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// NVIC_IABR1 Register
@@ -18404,7 +17606,6 @@ impl NvicIabr1 {
     pub fn write_active(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ACTIVE_MASK) | ((value << Self::ACTIVE_OFFSET) & Self::ACTIVE_MASK));
     }
-
 }
 
 /// NVIC_IABR1 value type for batch read/modify/write operations
@@ -18452,7 +17653,6 @@ impl NvicIabr1Val {
             bits: (self.bits & !NvicIabr1::ACTIVE_MASK) | ((value << NvicIabr1::ACTIVE_OFFSET) & NvicIabr1::ACTIVE_MASK)
         }
     }
-
 }
 
 impl Default for NvicIabr1Val {
@@ -18479,7 +17679,6 @@ impl NvicIabr1 {
     pub fn modify_val<F: FnOnce(NvicIabr1Val) -> NvicIabr1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// NVIC_ITNS0 Register
@@ -18535,7 +17734,6 @@ impl NvicItns0 {
     pub fn write_itns(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ITNS_MASK) | ((value << Self::ITNS_OFFSET) & Self::ITNS_MASK));
     }
-
 }
 
 /// NVIC_ITNS0 value type for batch read/modify/write operations
@@ -18583,7 +17781,6 @@ impl NvicItns0Val {
             bits: (self.bits & !NvicItns0::ITNS_MASK) | ((value << NvicItns0::ITNS_OFFSET) & NvicItns0::ITNS_MASK)
         }
     }
-
 }
 
 impl Default for NvicItns0Val {
@@ -18610,7 +17807,6 @@ impl NvicItns0 {
     pub fn modify_val<F: FnOnce(NvicItns0Val) -> NvicItns0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// NVIC_ITNS1 Register
@@ -18666,7 +17862,6 @@ impl NvicItns1 {
     pub fn write_itns(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ITNS_MASK) | ((value << Self::ITNS_OFFSET) & Self::ITNS_MASK));
     }
-
 }
 
 /// NVIC_ITNS1 value type for batch read/modify/write operations
@@ -18714,7 +17909,6 @@ impl NvicItns1Val {
             bits: (self.bits & !NvicItns1::ITNS_MASK) | ((value << NvicItns1::ITNS_OFFSET) & NvicItns1::ITNS_MASK)
         }
     }
-
 }
 
 impl Default for NvicItns1Val {
@@ -18741,7 +17935,6 @@ impl NvicItns1 {
     pub fn modify_val<F: FnOnce(NvicItns1Val) -> NvicItns1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// NVIC_IPR0 Register
@@ -18881,7 +18074,6 @@ impl NvicIpr0 {
     pub fn write_pri_n0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
     }
-
 }
 
 /// NVIC_IPR0 value type for batch read/modify/write operations
@@ -18983,7 +18175,6 @@ impl NvicIpr0Val {
             bits: (self.bits & !NvicIpr0::PRI_N0_MASK) | ((value << NvicIpr0::PRI_N0_OFFSET) & NvicIpr0::PRI_N0_MASK)
         }
     }
-
 }
 
 impl Default for NvicIpr0Val {
@@ -19010,7 +18201,6 @@ impl NvicIpr0 {
     pub fn modify_val<F: FnOnce(NvicIpr0Val) -> NvicIpr0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// NVIC_IPR1 Register
@@ -19150,7 +18340,6 @@ impl NvicIpr1 {
     pub fn write_pri_n0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
     }
-
 }
 
 /// NVIC_IPR1 value type for batch read/modify/write operations
@@ -19252,7 +18441,6 @@ impl NvicIpr1Val {
             bits: (self.bits & !NvicIpr1::PRI_N0_MASK) | ((value << NvicIpr1::PRI_N0_OFFSET) & NvicIpr1::PRI_N0_MASK)
         }
     }
-
 }
 
 impl Default for NvicIpr1Val {
@@ -19279,7 +18467,6 @@ impl NvicIpr1 {
     pub fn modify_val<F: FnOnce(NvicIpr1Val) -> NvicIpr1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// NVIC_IPR2 Register
@@ -19419,7 +18606,6 @@ impl NvicIpr2 {
     pub fn write_pri_n0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
     }
-
 }
 
 /// NVIC_IPR2 value type for batch read/modify/write operations
@@ -19521,7 +18707,6 @@ impl NvicIpr2Val {
             bits: (self.bits & !NvicIpr2::PRI_N0_MASK) | ((value << NvicIpr2::PRI_N0_OFFSET) & NvicIpr2::PRI_N0_MASK)
         }
     }
-
 }
 
 impl Default for NvicIpr2Val {
@@ -19548,7 +18733,6 @@ impl NvicIpr2 {
     pub fn modify_val<F: FnOnce(NvicIpr2Val) -> NvicIpr2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// NVIC_IPR3 Register
@@ -19688,7 +18872,6 @@ impl NvicIpr3 {
     pub fn write_pri_n0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
     }
-
 }
 
 /// NVIC_IPR3 value type for batch read/modify/write operations
@@ -19790,7 +18973,6 @@ impl NvicIpr3Val {
             bits: (self.bits & !NvicIpr3::PRI_N0_MASK) | ((value << NvicIpr3::PRI_N0_OFFSET) & NvicIpr3::PRI_N0_MASK)
         }
     }
-
 }
 
 impl Default for NvicIpr3Val {
@@ -19817,7 +18999,6 @@ impl NvicIpr3 {
     pub fn modify_val<F: FnOnce(NvicIpr3Val) -> NvicIpr3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// NVIC_IPR4 Register
@@ -19957,7 +19138,6 @@ impl NvicIpr4 {
     pub fn write_pri_n0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
     }
-
 }
 
 /// NVIC_IPR4 value type for batch read/modify/write operations
@@ -20059,7 +19239,6 @@ impl NvicIpr4Val {
             bits: (self.bits & !NvicIpr4::PRI_N0_MASK) | ((value << NvicIpr4::PRI_N0_OFFSET) & NvicIpr4::PRI_N0_MASK)
         }
     }
-
 }
 
 impl Default for NvicIpr4Val {
@@ -20086,7 +19265,6 @@ impl NvicIpr4 {
     pub fn modify_val<F: FnOnce(NvicIpr4Val) -> NvicIpr4Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// NVIC_IPR5 Register
@@ -20226,7 +19404,6 @@ impl NvicIpr5 {
     pub fn write_pri_n0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
     }
-
 }
 
 /// NVIC_IPR5 value type for batch read/modify/write operations
@@ -20328,7 +19505,6 @@ impl NvicIpr5Val {
             bits: (self.bits & !NvicIpr5::PRI_N0_MASK) | ((value << NvicIpr5::PRI_N0_OFFSET) & NvicIpr5::PRI_N0_MASK)
         }
     }
-
 }
 
 impl Default for NvicIpr5Val {
@@ -20355,7 +19531,6 @@ impl NvicIpr5 {
     pub fn modify_val<F: FnOnce(NvicIpr5Val) -> NvicIpr5Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// NVIC_IPR6 Register
@@ -20495,7 +19670,6 @@ impl NvicIpr6 {
     pub fn write_pri_n0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
     }
-
 }
 
 /// NVIC_IPR6 value type for batch read/modify/write operations
@@ -20597,7 +19771,6 @@ impl NvicIpr6Val {
             bits: (self.bits & !NvicIpr6::PRI_N0_MASK) | ((value << NvicIpr6::PRI_N0_OFFSET) & NvicIpr6::PRI_N0_MASK)
         }
     }
-
 }
 
 impl Default for NvicIpr6Val {
@@ -20624,7 +19797,6 @@ impl NvicIpr6 {
     pub fn modify_val<F: FnOnce(NvicIpr6Val) -> NvicIpr6Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// NVIC_IPR7 Register
@@ -20764,7 +19936,6 @@ impl NvicIpr7 {
     pub fn write_pri_n0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
     }
-
 }
 
 /// NVIC_IPR7 value type for batch read/modify/write operations
@@ -20866,7 +20037,6 @@ impl NvicIpr7Val {
             bits: (self.bits & !NvicIpr7::PRI_N0_MASK) | ((value << NvicIpr7::PRI_N0_OFFSET) & NvicIpr7::PRI_N0_MASK)
         }
     }
-
 }
 
 impl Default for NvicIpr7Val {
@@ -20893,7 +20063,6 @@ impl NvicIpr7 {
     pub fn modify_val<F: FnOnce(NvicIpr7Val) -> NvicIpr7Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// NVIC_IPR8 Register
@@ -21033,7 +20202,6 @@ impl NvicIpr8 {
     pub fn write_pri_n0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
     }
-
 }
 
 /// NVIC_IPR8 value type for batch read/modify/write operations
@@ -21135,7 +20303,6 @@ impl NvicIpr8Val {
             bits: (self.bits & !NvicIpr8::PRI_N0_MASK) | ((value << NvicIpr8::PRI_N0_OFFSET) & NvicIpr8::PRI_N0_MASK)
         }
     }
-
 }
 
 impl Default for NvicIpr8Val {
@@ -21162,7 +20329,6 @@ impl NvicIpr8 {
     pub fn modify_val<F: FnOnce(NvicIpr8Val) -> NvicIpr8Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// NVIC_IPR9 Register
@@ -21302,7 +20468,6 @@ impl NvicIpr9 {
     pub fn write_pri_n0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
     }
-
 }
 
 /// NVIC_IPR9 value type for batch read/modify/write operations
@@ -21404,7 +20569,6 @@ impl NvicIpr9Val {
             bits: (self.bits & !NvicIpr9::PRI_N0_MASK) | ((value << NvicIpr9::PRI_N0_OFFSET) & NvicIpr9::PRI_N0_MASK)
         }
     }
-
 }
 
 impl Default for NvicIpr9Val {
@@ -21431,7 +20595,6 @@ impl NvicIpr9 {
     pub fn modify_val<F: FnOnce(NvicIpr9Val) -> NvicIpr9Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// NVIC_IPR10 Register
@@ -21571,7 +20734,6 @@ impl NvicIpr10 {
     pub fn write_pri_n0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
     }
-
 }
 
 /// NVIC_IPR10 value type for batch read/modify/write operations
@@ -21673,7 +20835,6 @@ impl NvicIpr10Val {
             bits: (self.bits & !NvicIpr10::PRI_N0_MASK) | ((value << NvicIpr10::PRI_N0_OFFSET) & NvicIpr10::PRI_N0_MASK)
         }
     }
-
 }
 
 impl Default for NvicIpr10Val {
@@ -21700,7 +20861,6 @@ impl NvicIpr10 {
     pub fn modify_val<F: FnOnce(NvicIpr10Val) -> NvicIpr10Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// NVIC_IPR11 Register
@@ -21840,7 +21000,6 @@ impl NvicIpr11 {
     pub fn write_pri_n0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
     }
-
 }
 
 /// NVIC_IPR11 value type for batch read/modify/write operations
@@ -21942,7 +21101,6 @@ impl NvicIpr11Val {
             bits: (self.bits & !NvicIpr11::PRI_N0_MASK) | ((value << NvicIpr11::PRI_N0_OFFSET) & NvicIpr11::PRI_N0_MASK)
         }
     }
-
 }
 
 impl Default for NvicIpr11Val {
@@ -21969,7 +21127,6 @@ impl NvicIpr11 {
     pub fn modify_val<F: FnOnce(NvicIpr11Val) -> NvicIpr11Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// NVIC_IPR12 Register
@@ -22109,7 +21266,6 @@ impl NvicIpr12 {
     pub fn write_pri_n0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
     }
-
 }
 
 /// NVIC_IPR12 value type for batch read/modify/write operations
@@ -22211,7 +21367,6 @@ impl NvicIpr12Val {
             bits: (self.bits & !NvicIpr12::PRI_N0_MASK) | ((value << NvicIpr12::PRI_N0_OFFSET) & NvicIpr12::PRI_N0_MASK)
         }
     }
-
 }
 
 impl Default for NvicIpr12Val {
@@ -22238,7 +21393,6 @@ impl NvicIpr12 {
     pub fn modify_val<F: FnOnce(NvicIpr12Val) -> NvicIpr12Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// NVIC_IPR13 Register
@@ -22378,7 +21532,6 @@ impl NvicIpr13 {
     pub fn write_pri_n0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
     }
-
 }
 
 /// NVIC_IPR13 value type for batch read/modify/write operations
@@ -22480,7 +21633,6 @@ impl NvicIpr13Val {
             bits: (self.bits & !NvicIpr13::PRI_N0_MASK) | ((value << NvicIpr13::PRI_N0_OFFSET) & NvicIpr13::PRI_N0_MASK)
         }
     }
-
 }
 
 impl Default for NvicIpr13Val {
@@ -22507,7 +21659,6 @@ impl NvicIpr13 {
     pub fn modify_val<F: FnOnce(NvicIpr13Val) -> NvicIpr13Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// NVIC_IPR14 Register
@@ -22647,7 +21798,6 @@ impl NvicIpr14 {
     pub fn write_pri_n0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
     }
-
 }
 
 /// NVIC_IPR14 value type for batch read/modify/write operations
@@ -22749,7 +21899,6 @@ impl NvicIpr14Val {
             bits: (self.bits & !NvicIpr14::PRI_N0_MASK) | ((value << NvicIpr14::PRI_N0_OFFSET) & NvicIpr14::PRI_N0_MASK)
         }
     }
-
 }
 
 impl Default for NvicIpr14Val {
@@ -22776,7 +21925,6 @@ impl NvicIpr14 {
     pub fn modify_val<F: FnOnce(NvicIpr14Val) -> NvicIpr14Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// NVIC_IPR15 Register
@@ -22916,7 +22064,6 @@ impl NvicIpr15 {
     pub fn write_pri_n0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
     }
-
 }
 
 /// NVIC_IPR15 value type for batch read/modify/write operations
@@ -23018,7 +22165,6 @@ impl NvicIpr15Val {
             bits: (self.bits & !NvicIpr15::PRI_N0_MASK) | ((value << NvicIpr15::PRI_N0_OFFSET) & NvicIpr15::PRI_N0_MASK)
         }
     }
-
 }
 
 impl Default for NvicIpr15Val {
@@ -23045,7 +22191,6 @@ impl NvicIpr15 {
     pub fn modify_val<F: FnOnce(NvicIpr15Val) -> NvicIpr15Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CPUID Register
@@ -23173,7 +22318,6 @@ impl Cpuid {
     pub fn revision(&self) -> u32 {
         (self.value.read_bits() & Self::REVISION_MASK) >> Self::REVISION_OFFSET
     }
-
 }
 
 /// CPUID value type for batch read/modify/write operations
@@ -23243,7 +22387,6 @@ impl CpuidVal {
     pub const fn revision(&self) -> u32 {
         (self.bits & Cpuid::REVISION_MASK) >> Cpuid::REVISION_OFFSET
     }
-
 }
 
 impl Default for CpuidVal {
@@ -23258,19 +22401,6 @@ impl Cpuid {
     pub fn read_val(&self) -> CpuidVal {
         CpuidVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: CpuidVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(CpuidVal) -> CpuidVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// ICSR Register
@@ -23596,7 +22726,6 @@ impl Icsr {
     pub fn vectactive(&self) -> u32 {
         (self.value.read_bits() & Self::VECTACTIVE_MASK) >> Self::VECTACTIVE_OFFSET
     }
-
 }
 
 /// ICSR value type for batch read/modify/write operations
@@ -23778,7 +22907,6 @@ impl IcsrVal {
             }
         }
     }
-
 }
 
 impl Default for IcsrVal {
@@ -23805,7 +22933,6 @@ impl Icsr {
     pub fn modify_val<F: FnOnce(IcsrVal) -> IcsrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// VTOR Register
@@ -23861,7 +22988,6 @@ impl Vtor {
     pub fn write_tbloff(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::TBLOFF_MASK) | ((value << Self::TBLOFF_OFFSET) & Self::TBLOFF_MASK));
     }
-
 }
 
 /// VTOR value type for batch read/modify/write operations
@@ -23909,7 +23035,6 @@ impl VtorVal {
             bits: (self.bits & !Vtor::TBLOFF_MASK) | ((value << Vtor::TBLOFF_OFFSET) & Vtor::TBLOFF_MASK)
         }
     }
-
 }
 
 impl Default for VtorVal {
@@ -23936,7 +23061,6 @@ impl Vtor {
     pub fn modify_val<F: FnOnce(VtorVal) -> VtorVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// AIRCR Register
@@ -24239,7 +23363,6 @@ impl Aircr {
     pub fn clr_vectclractive(&self) {
         self.value.modify_bits(|r| r & !Self::VECTCLRACTIVE_MASK);
     }
-
 }
 
 /// AIRCR value type for batch read/modify/write operations
@@ -24442,7 +23565,6 @@ impl AircrVal {
             }
         }
     }
-
 }
 
 impl Default for AircrVal {
@@ -24469,7 +23591,6 @@ impl Aircr {
     pub fn modify_val<F: FnOnce(AircrVal) -> AircrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SCR Register
@@ -24662,7 +23783,6 @@ impl Scr {
     pub fn clr_sleeponexit(&self) {
         self.value.modify_bits(|r| r & !Self::SLEEPONEXIT_MASK);
     }
-
 }
 
 /// SCR value type for batch read/modify/write operations
@@ -24802,7 +23922,6 @@ impl ScrVal {
             }
         }
     }
-
 }
 
 impl Default for ScrVal {
@@ -24829,7 +23948,6 @@ impl Scr {
     pub fn modify_val<F: FnOnce(ScrVal) -> ScrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CCR Register
@@ -25127,7 +24245,6 @@ impl Ccr {
     pub fn res1_1(&self) -> bool {
         (self.value.read_bits() & Self::RES1_1_MASK) != 0
     }
-
 }
 
 /// CCR value type for batch read/modify/write operations
@@ -25307,7 +24424,6 @@ impl CcrVal {
             }
         }
     }
-
 }
 
 impl Default for CcrVal {
@@ -25334,7 +24450,6 @@ impl Ccr {
     pub fn modify_val<F: FnOnce(CcrVal) -> CcrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SHPR1 Register
@@ -25474,7 +24589,6 @@ impl Shpr1 {
     pub fn write_pri_4_3(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PRI_4_3_MASK) | ((value << Self::PRI_4_3_OFFSET) & Self::PRI_4_3_MASK));
     }
-
 }
 
 /// SHPR1 value type for batch read/modify/write operations
@@ -25576,7 +24690,6 @@ impl Shpr1Val {
             bits: (self.bits & !Shpr1::PRI_4_3_MASK) | ((value << Shpr1::PRI_4_3_OFFSET) & Shpr1::PRI_4_3_MASK)
         }
     }
-
 }
 
 impl Default for Shpr1Val {
@@ -25603,7 +24716,6 @@ impl Shpr1 {
     pub fn modify_val<F: FnOnce(Shpr1Val) -> Shpr1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SHPR2 Register
@@ -25719,7 +24831,6 @@ impl Shpr2 {
     pub fn pri_8(&self) -> u32 {
         (self.value.read_bits() & Self::PRI_8_MASK) >> Self::PRI_8_OFFSET
     }
-
 }
 
 /// SHPR2 value type for batch read/modify/write operations
@@ -25791,7 +24902,6 @@ impl Shpr2Val {
             bits: (self.bits & !Shpr2::PRI_11_3_MASK) | ((value << Shpr2::PRI_11_3_OFFSET) & Shpr2::PRI_11_3_MASK)
         }
     }
-
 }
 
 impl Default for Shpr2Val {
@@ -25818,7 +24928,6 @@ impl Shpr2 {
     pub fn modify_val<F: FnOnce(Shpr2Val) -> Shpr2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SHPR3 Register
@@ -25950,7 +25059,6 @@ impl Shpr3 {
     pub fn write_pri_12_3(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PRI_12_3_MASK) | ((value << Self::PRI_12_3_OFFSET) & Self::PRI_12_3_MASK));
     }
-
 }
 
 /// SHPR3 value type for batch read/modify/write operations
@@ -26042,7 +25150,6 @@ impl Shpr3Val {
             bits: (self.bits & !Shpr3::PRI_12_3_MASK) | ((value << Shpr3::PRI_12_3_OFFSET) & Shpr3::PRI_12_3_MASK)
         }
     }
-
 }
 
 impl Default for Shpr3Val {
@@ -26069,7 +25176,6 @@ impl Shpr3 {
     pub fn modify_val<F: FnOnce(Shpr3Val) -> Shpr3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SHCSR Register
@@ -26757,7 +25863,6 @@ impl Shcsr {
     pub fn clr_memfaultact(&self) {
         self.value.modify_bits(|r| r & !Self::MEMFAULTACT_MASK);
     }
-
 }
 
 /// SHCSR value type for batch read/modify/write operations
@@ -27227,7 +26332,6 @@ impl ShcsrVal {
             }
         }
     }
-
 }
 
 impl Default for ShcsrVal {
@@ -27254,7 +26358,6 @@ impl Shcsr {
     pub fn modify_val<F: FnOnce(ShcsrVal) -> ShcsrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CFSR Register
@@ -27775,7 +26878,6 @@ impl Cfsr {
     pub fn write_mmfsr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::MMFSR_MASK) | ((value << Self::MMFSR_OFFSET) & Self::MMFSR_MASK));
     }
-
 }
 
 /// CFSR value type for batch read/modify/write operations
@@ -28131,7 +27233,6 @@ impl CfsrVal {
             bits: (self.bits & !Cfsr::MMFSR_MASK) | ((value << Cfsr::MMFSR_OFFSET) & Cfsr::MMFSR_MASK)
         }
     }
-
 }
 
 impl Default for CfsrVal {
@@ -28158,7 +27259,6 @@ impl Cfsr {
     pub fn modify_val<F: FnOnce(CfsrVal) -> CfsrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// HFSR Register
@@ -28285,7 +27385,6 @@ impl Hfsr {
     pub fn clr_vecttbl(&self) {
         self.value.modify_bits(|r| r & !Self::VECTTBL_MASK);
     }
-
 }
 
 /// HFSR value type for batch read/modify/write operations
@@ -28381,7 +27480,6 @@ impl HfsrVal {
             }
         }
     }
-
 }
 
 impl Default for HfsrVal {
@@ -28408,7 +27506,6 @@ impl Hfsr {
     pub fn modify_val<F: FnOnce(HfsrVal) -> HfsrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DFSR Register
@@ -28601,7 +27698,6 @@ impl Dfsr {
     pub fn clr_halted(&self) {
         self.value.modify_bits(|r| r & !Self::HALTED_MASK);
     }
-
 }
 
 /// DFSR value type for batch read/modify/write operations
@@ -28741,7 +27837,6 @@ impl DfsrVal {
             }
         }
     }
-
 }
 
 impl Default for DfsrVal {
@@ -28768,7 +27863,6 @@ impl Dfsr {
     pub fn modify_val<F: FnOnce(DfsrVal) -> DfsrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MMFAR Register
@@ -28824,7 +27918,6 @@ impl Mmfar {
     pub fn write_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
     }
-
 }
 
 /// MMFAR value type for batch read/modify/write operations
@@ -28872,7 +27965,6 @@ impl MmfarVal {
             bits: (self.bits & !Mmfar::ADDRESS_MASK) | ((value << Mmfar::ADDRESS_OFFSET) & Mmfar::ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for MmfarVal {
@@ -28899,7 +27991,6 @@ impl Mmfar {
     pub fn modify_val<F: FnOnce(MmfarVal) -> MmfarVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// BFAR Register
@@ -28955,7 +28046,6 @@ impl Bfar {
     pub fn write_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
     }
-
 }
 
 /// BFAR value type for batch read/modify/write operations
@@ -29003,7 +28093,6 @@ impl BfarVal {
             bits: (self.bits & !Bfar::ADDRESS_MASK) | ((value << Bfar::ADDRESS_OFFSET) & Bfar::ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for BfarVal {
@@ -29030,7 +28119,6 @@ impl Bfar {
     pub fn modify_val<F: FnOnce(BfarVal) -> BfarVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ID_PFR0 Register
@@ -29098,7 +28186,6 @@ impl IdPfr0 {
     pub fn state0(&self) -> u32 {
         (self.value.read_bits() & Self::STATE0_MASK) >> Self::STATE0_OFFSET
     }
-
 }
 
 /// ID_PFR0 value type for batch read/modify/write operations
@@ -29144,7 +28231,6 @@ impl IdPfr0Val {
     pub const fn state0(&self) -> u32 {
         (self.bits & IdPfr0::STATE0_MASK) >> IdPfr0::STATE0_OFFSET
     }
-
 }
 
 impl Default for IdPfr0Val {
@@ -29159,19 +28245,6 @@ impl IdPfr0 {
     pub fn read_val(&self) -> IdPfr0Val {
         IdPfr0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IdPfr0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IdPfr0Val) -> IdPfr0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// ID_PFR1 Register
@@ -29239,7 +28312,6 @@ impl IdPfr1 {
     pub fn security(&self) -> u32 {
         (self.value.read_bits() & Self::SECURITY_MASK) >> Self::SECURITY_OFFSET
     }
-
 }
 
 /// ID_PFR1 value type for batch read/modify/write operations
@@ -29285,7 +28357,6 @@ impl IdPfr1Val {
     pub const fn security(&self) -> u32 {
         (self.bits & IdPfr1::SECURITY_MASK) >> IdPfr1::SECURITY_OFFSET
     }
-
 }
 
 impl Default for IdPfr1Val {
@@ -29300,19 +28371,6 @@ impl IdPfr1 {
     pub fn read_val(&self) -> IdPfr1Val {
         IdPfr1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IdPfr1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IdPfr1Val) -> IdPfr1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// ID_DFR0 Register
@@ -29360,7 +28418,6 @@ impl IdDfr0 {
     pub fn mprofdbg(&self) -> u32 {
         (self.value.read_bits() & Self::MPROFDBG_MASK) >> Self::MPROFDBG_OFFSET
     }
-
 }
 
 /// ID_DFR0 value type for batch read/modify/write operations
@@ -29398,7 +28455,6 @@ impl IdDfr0Val {
     pub const fn mprofdbg(&self) -> u32 {
         (self.bits & IdDfr0::MPROFDBG_MASK) >> IdDfr0::MPROFDBG_OFFSET
     }
-
 }
 
 impl Default for IdDfr0Val {
@@ -29413,19 +28469,6 @@ impl IdDfr0 {
     pub fn read_val(&self) -> IdDfr0Val {
         IdDfr0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IdDfr0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IdDfr0Val) -> IdDfr0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// ID_AFR0 Register
@@ -29533,7 +28576,6 @@ impl IdAfr0 {
     pub fn impdef0(&self) -> u32 {
         (self.value.read_bits() & Self::IMPDEF0_MASK) >> Self::IMPDEF0_OFFSET
     }
-
 }
 
 /// ID_AFR0 value type for batch read/modify/write operations
@@ -29595,7 +28637,6 @@ impl IdAfr0Val {
     pub const fn impdef0(&self) -> u32 {
         (self.bits & IdAfr0::IMPDEF0_MASK) >> IdAfr0::IMPDEF0_OFFSET
     }
-
 }
 
 impl Default for IdAfr0Val {
@@ -29610,19 +28651,6 @@ impl IdAfr0 {
     pub fn read_val(&self) -> IdAfr0Val {
         IdAfr0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IdAfr0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IdAfr0Val) -> IdAfr0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// ID_MMFR0 Register
@@ -29750,7 +28778,6 @@ impl IdMmfr0 {
     pub fn pmsa(&self) -> u32 {
         (self.value.read_bits() & Self::PMSA_MASK) >> Self::PMSA_OFFSET
     }
-
 }
 
 /// ID_MMFR0 value type for batch read/modify/write operations
@@ -29820,7 +28847,6 @@ impl IdMmfr0Val {
     pub const fn pmsa(&self) -> u32 {
         (self.bits & IdMmfr0::PMSA_MASK) >> IdMmfr0::PMSA_OFFSET
     }
-
 }
 
 impl Default for IdMmfr0Val {
@@ -29835,19 +28861,6 @@ impl IdMmfr0 {
     pub fn read_val(&self) -> IdMmfr0Val {
         IdMmfr0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IdMmfr0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IdMmfr0Val) -> IdMmfr0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// ID_MMFR1 Register
@@ -29894,7 +28907,6 @@ impl IdMmfr1 {
     pub fn write_id_mmfr1(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ID_MMFR1_MASK) | ((value << Self::ID_MMFR1_OFFSET) & Self::ID_MMFR1_MASK));
     }
-
 }
 
 /// ID_MMFR1 value type for batch read/modify/write operations
@@ -29938,7 +28950,6 @@ impl IdMmfr1Val {
             bits: (self.bits & !IdMmfr1::ID_MMFR1_MASK) | ((value << IdMmfr1::ID_MMFR1_OFFSET) & IdMmfr1::ID_MMFR1_MASK)
         }
     }
-
 }
 
 impl Default for IdMmfr1Val {
@@ -29965,7 +28976,6 @@ impl IdMmfr1 {
     pub fn modify_val<F: FnOnce(IdMmfr1Val) -> IdMmfr1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ID_MMFR2 Register
@@ -30013,7 +29023,6 @@ impl IdMmfr2 {
     pub fn wfistall(&self) -> u32 {
         (self.value.read_bits() & Self::WFISTALL_MASK) >> Self::WFISTALL_OFFSET
     }
-
 }
 
 /// ID_MMFR2 value type for batch read/modify/write operations
@@ -30051,7 +29060,6 @@ impl IdMmfr2Val {
     pub const fn wfistall(&self) -> u32 {
         (self.bits & IdMmfr2::WFISTALL_MASK) >> IdMmfr2::WFISTALL_OFFSET
     }
-
 }
 
 impl Default for IdMmfr2Val {
@@ -30066,19 +29074,6 @@ impl IdMmfr2 {
     pub fn read_val(&self) -> IdMmfr2Val {
         IdMmfr2Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IdMmfr2Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IdMmfr2Val) -> IdMmfr2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// ID_MMFR3 Register
@@ -30166,7 +29161,6 @@ impl IdMmfr3 {
     pub fn cmaintva(&self) -> u32 {
         (self.value.read_bits() & Self::CMAINTVA_MASK) >> Self::CMAINTVA_OFFSET
     }
-
 }
 
 /// ID_MMFR3 value type for batch read/modify/write operations
@@ -30220,7 +29214,6 @@ impl IdMmfr3Val {
     pub const fn cmaintva(&self) -> u32 {
         (self.bits & IdMmfr3::CMAINTVA_MASK) >> IdMmfr3::CMAINTVA_OFFSET
     }
-
 }
 
 impl Default for IdMmfr3Val {
@@ -30235,19 +29228,6 @@ impl IdMmfr3 {
     pub fn read_val(&self) -> IdMmfr3Val {
         IdMmfr3Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IdMmfr3Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IdMmfr3Val) -> IdMmfr3Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// ID_ISAR0 Register
@@ -30395,7 +29375,6 @@ impl IdIsar0 {
     pub fn bitcount(&self) -> u32 {
         (self.value.read_bits() & Self::BITCOUNT_MASK) >> Self::BITCOUNT_OFFSET
     }
-
 }
 
 /// ID_ISAR0 value type for batch read/modify/write operations
@@ -30473,7 +29452,6 @@ impl IdIsar0Val {
     pub const fn bitcount(&self) -> u32 {
         (self.bits & IdIsar0::BITCOUNT_MASK) >> IdIsar0::BITCOUNT_OFFSET
     }
-
 }
 
 impl Default for IdIsar0Val {
@@ -30488,19 +29466,6 @@ impl IdIsar0 {
     pub fn read_val(&self) -> IdIsar0Val {
         IdIsar0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IdIsar0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IdIsar0Val) -> IdIsar0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// ID_ISAR1 Register
@@ -30608,7 +29573,6 @@ impl IdIsar1 {
     pub fn extend(&self) -> u32 {
         (self.value.read_bits() & Self::EXTEND_MASK) >> Self::EXTEND_OFFSET
     }
-
 }
 
 /// ID_ISAR1 value type for batch read/modify/write operations
@@ -30670,7 +29634,6 @@ impl IdIsar1Val {
     pub const fn extend(&self) -> u32 {
         (self.bits & IdIsar1::EXTEND_MASK) >> IdIsar1::EXTEND_OFFSET
     }
-
 }
 
 impl Default for IdIsar1Val {
@@ -30685,19 +29648,6 @@ impl IdIsar1 {
     pub fn read_val(&self) -> IdIsar1Val {
         IdIsar1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IdIsar1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IdIsar1Val) -> IdIsar1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// ID_ISAR2 Register
@@ -30865,7 +29815,6 @@ impl IdIsar2 {
     pub fn loadstore(&self) -> u32 {
         (self.value.read_bits() & Self::LOADSTORE_MASK) >> Self::LOADSTORE_OFFSET
     }
-
 }
 
 /// ID_ISAR2 value type for batch read/modify/write operations
@@ -30951,7 +29900,6 @@ impl IdIsar2Val {
     pub const fn loadstore(&self) -> u32 {
         (self.bits & IdIsar2::LOADSTORE_MASK) >> IdIsar2::LOADSTORE_OFFSET
     }
-
 }
 
 impl Default for IdIsar2Val {
@@ -30966,19 +29914,6 @@ impl IdIsar2 {
     pub fn read_val(&self) -> IdIsar2Val {
         IdIsar2Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IdIsar2Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IdIsar2Val) -> IdIsar2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// ID_ISAR3 Register
@@ -31146,7 +30081,6 @@ impl IdIsar3 {
     pub fn saturate(&self) -> u32 {
         (self.value.read_bits() & Self::SATURATE_MASK) >> Self::SATURATE_OFFSET
     }
-
 }
 
 /// ID_ISAR3 value type for batch read/modify/write operations
@@ -31232,7 +30166,6 @@ impl IdIsar3Val {
     pub const fn saturate(&self) -> u32 {
         (self.bits & IdIsar3::SATURATE_MASK) >> IdIsar3::SATURATE_OFFSET
     }
-
 }
 
 impl Default for IdIsar3Val {
@@ -31247,19 +30180,6 @@ impl IdIsar3 {
     pub fn read_val(&self) -> IdIsar3Val {
         IdIsar3Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IdIsar3Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IdIsar3Val) -> IdIsar3Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// ID_ISAR4 Register
@@ -31407,7 +30327,6 @@ impl IdIsar4 {
     pub fn unpriv(&self) -> u32 {
         (self.value.read_bits() & Self::UNPRIV_MASK) >> Self::UNPRIV_OFFSET
     }
-
 }
 
 /// ID_ISAR4 value type for batch read/modify/write operations
@@ -31485,7 +30404,6 @@ impl IdIsar4Val {
     pub const fn unpriv(&self) -> u32 {
         (self.bits & IdIsar4::UNPRIV_MASK) >> IdIsar4::UNPRIV_OFFSET
     }
-
 }
 
 impl Default for IdIsar4Val {
@@ -31500,19 +30418,6 @@ impl IdIsar4 {
     pub fn read_val(&self) -> IdIsar4Val {
         IdIsar4Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IdIsar4Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IdIsar4Val) -> IdIsar4Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// ID_ISAR5 Register
@@ -31559,7 +30464,6 @@ impl IdIsar5 {
     pub fn write_id_isar5(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ID_ISAR5_MASK) | ((value << Self::ID_ISAR5_OFFSET) & Self::ID_ISAR5_MASK));
     }
-
 }
 
 /// ID_ISAR5 value type for batch read/modify/write operations
@@ -31603,7 +30507,6 @@ impl IdIsar5Val {
             bits: (self.bits & !IdIsar5::ID_ISAR5_MASK) | ((value << IdIsar5::ID_ISAR5_OFFSET) & IdIsar5::ID_ISAR5_MASK)
         }
     }
-
 }
 
 impl Default for IdIsar5Val {
@@ -31630,7 +30533,6 @@ impl IdIsar5 {
     pub fn modify_val<F: FnOnce(IdIsar5Val) -> IdIsar5Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CTR Register
@@ -31779,7 +30681,6 @@ impl Ctr {
     pub fn iminline(&self) -> u32 {
         (self.value.read_bits() & Self::IMINLINE_MASK) >> Self::IMINLINE_OFFSET
     }
-
 }
 
 /// CTR value type for batch read/modify/write operations
@@ -31857,7 +30758,6 @@ impl CtrVal {
     pub const fn iminline(&self) -> u32 {
         (self.bits & Ctr::IMINLINE_MASK) >> Ctr::IMINLINE_OFFSET
     }
-
 }
 
 impl Default for CtrVal {
@@ -31872,19 +30772,6 @@ impl Ctr {
     pub fn read_val(&self) -> CtrVal {
         CtrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: CtrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(CtrVal) -> CtrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CPACR Register
@@ -32192,7 +31079,6 @@ impl Cpacr {
     pub fn write_cp0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CP0_MASK) | ((value << Self::CP0_OFFSET) & Self::CP0_MASK));
     }
-
 }
 
 /// CPACR value type for batch read/modify/write operations
@@ -32402,7 +31288,6 @@ impl CpacrVal {
             bits: (self.bits & !Cpacr::CP0_MASK) | ((value << Cpacr::CP0_OFFSET) & Cpacr::CP0_MASK)
         }
     }
-
 }
 
 impl Default for CpacrVal {
@@ -32429,7 +31314,6 @@ impl Cpacr {
     pub fn modify_val<F: FnOnce(CpacrVal) -> CpacrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// NSACR Register
@@ -32787,7 +31671,6 @@ impl Nsacr {
     pub fn clr_cp0(&self) {
         self.value.modify_bits(|r| r & !Self::CP0_MASK);
     }
-
 }
 
 /// NSACR value type for batch read/modify/write operations
@@ -33037,7 +31920,6 @@ impl NsacrVal {
             }
         }
     }
-
 }
 
 impl Default for NsacrVal {
@@ -33064,7 +31946,6 @@ impl Nsacr {
     pub fn modify_val<F: FnOnce(NsacrVal) -> NsacrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MPU_TYPE Register
@@ -33133,7 +32014,6 @@ impl MpuType {
     pub fn separate(&self) -> bool {
         (self.value.read_bits() & Self::SEPARATE_MASK) != 0
     }
-
 }
 
 /// MPU_TYPE value type for batch read/modify/write operations
@@ -33179,7 +32059,6 @@ impl MpuTypeVal {
     pub const fn separate(&self) -> bool {
         (self.bits & MpuType::SEPARATE_MASK) != 0
     }
-
 }
 
 impl Default for MpuTypeVal {
@@ -33194,19 +32073,6 @@ impl MpuType {
     pub fn read_val(&self) -> MpuTypeVal {
         MpuTypeVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: MpuTypeVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(MpuTypeVal) -> MpuTypeVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// MPU_CTRL Register
@@ -33333,7 +32199,6 @@ impl MpuCtrl {
     pub fn clr_enable(&self) {
         self.value.modify_bits(|r| r & !Self::ENABLE_MASK);
     }
-
 }
 
 /// MPU_CTRL value type for batch read/modify/write operations
@@ -33429,7 +32294,6 @@ impl MpuCtrlVal {
             }
         }
     }
-
 }
 
 impl Default for MpuCtrlVal {
@@ -33456,7 +32320,6 @@ impl MpuCtrl {
     pub fn modify_val<F: FnOnce(MpuCtrlVal) -> MpuCtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MPU_RNR Register
@@ -33512,7 +32375,6 @@ impl MpuRnr {
     pub fn write_region(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::REGION_MASK) | ((value << Self::REGION_OFFSET) & Self::REGION_MASK));
     }
-
 }
 
 /// MPU_RNR value type for batch read/modify/write operations
@@ -33560,7 +32422,6 @@ impl MpuRnrVal {
             bits: (self.bits & !MpuRnr::REGION_MASK) | ((value << MpuRnr::REGION_OFFSET) & MpuRnr::REGION_MASK)
         }
     }
-
 }
 
 impl Default for MpuRnrVal {
@@ -33587,7 +32448,6 @@ impl MpuRnr {
     pub fn modify_val<F: FnOnce(MpuRnrVal) -> MpuRnrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MPU_RBAR Register
@@ -33732,7 +32592,6 @@ impl MpuRbar {
     pub fn clr_xn(&self) {
         self.value.modify_bits(|r| r & !Self::XN_MASK);
     }
-
 }
 
 /// MPU_RBAR value type for batch read/modify/write operations
@@ -33838,7 +32697,6 @@ impl MpuRbarVal {
             }
         }
     }
-
 }
 
 impl Default for MpuRbarVal {
@@ -33865,7 +32723,6 @@ impl MpuRbar {
     pub fn modify_val<F: FnOnce(MpuRbarVal) -> MpuRbarVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MPU_RLAR Register
@@ -33982,7 +32839,6 @@ impl MpuRlar {
     pub fn clr_en(&self) {
         self.value.modify_bits(|r| r & !Self::EN_MASK);
     }
-
 }
 
 /// MPU_RLAR value type for batch read/modify/write operations
@@ -34070,7 +32926,6 @@ impl MpuRlarVal {
             }
         }
     }
-
 }
 
 impl Default for MpuRlarVal {
@@ -34097,7 +32952,6 @@ impl MpuRlar {
     pub fn modify_val<F: FnOnce(MpuRlarVal) -> MpuRlarVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MPU_RBAR_A1 Register
@@ -34242,7 +33096,6 @@ impl MpuRbarA1 {
     pub fn clr_xn(&self) {
         self.value.modify_bits(|r| r & !Self::XN_MASK);
     }
-
 }
 
 /// MPU_RBAR_A1 value type for batch read/modify/write operations
@@ -34348,7 +33201,6 @@ impl MpuRbarA1Val {
             }
         }
     }
-
 }
 
 impl Default for MpuRbarA1Val {
@@ -34375,7 +33227,6 @@ impl MpuRbarA1 {
     pub fn modify_val<F: FnOnce(MpuRbarA1Val) -> MpuRbarA1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MPU_RLAR_A1 Register
@@ -34492,7 +33343,6 @@ impl MpuRlarA1 {
     pub fn clr_en(&self) {
         self.value.modify_bits(|r| r & !Self::EN_MASK);
     }
-
 }
 
 /// MPU_RLAR_A1 value type for batch read/modify/write operations
@@ -34580,7 +33430,6 @@ impl MpuRlarA1Val {
             }
         }
     }
-
 }
 
 impl Default for MpuRlarA1Val {
@@ -34607,7 +33456,6 @@ impl MpuRlarA1 {
     pub fn modify_val<F: FnOnce(MpuRlarA1Val) -> MpuRlarA1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MPU_RBAR_A2 Register
@@ -34752,7 +33600,6 @@ impl MpuRbarA2 {
     pub fn clr_xn(&self) {
         self.value.modify_bits(|r| r & !Self::XN_MASK);
     }
-
 }
 
 /// MPU_RBAR_A2 value type for batch read/modify/write operations
@@ -34858,7 +33705,6 @@ impl MpuRbarA2Val {
             }
         }
     }
-
 }
 
 impl Default for MpuRbarA2Val {
@@ -34885,7 +33731,6 @@ impl MpuRbarA2 {
     pub fn modify_val<F: FnOnce(MpuRbarA2Val) -> MpuRbarA2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MPU_RLAR_A2 Register
@@ -35002,7 +33847,6 @@ impl MpuRlarA2 {
     pub fn clr_en(&self) {
         self.value.modify_bits(|r| r & !Self::EN_MASK);
     }
-
 }
 
 /// MPU_RLAR_A2 value type for batch read/modify/write operations
@@ -35090,7 +33934,6 @@ impl MpuRlarA2Val {
             }
         }
     }
-
 }
 
 impl Default for MpuRlarA2Val {
@@ -35117,7 +33960,6 @@ impl MpuRlarA2 {
     pub fn modify_val<F: FnOnce(MpuRlarA2Val) -> MpuRlarA2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MPU_RBAR_A3 Register
@@ -35262,7 +34104,6 @@ impl MpuRbarA3 {
     pub fn clr_xn(&self) {
         self.value.modify_bits(|r| r & !Self::XN_MASK);
     }
-
 }
 
 /// MPU_RBAR_A3 value type for batch read/modify/write operations
@@ -35368,7 +34209,6 @@ impl MpuRbarA3Val {
             }
         }
     }
-
 }
 
 impl Default for MpuRbarA3Val {
@@ -35395,7 +34235,6 @@ impl MpuRbarA3 {
     pub fn modify_val<F: FnOnce(MpuRbarA3Val) -> MpuRbarA3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MPU_RLAR_A3 Register
@@ -35512,7 +34351,6 @@ impl MpuRlarA3 {
     pub fn clr_en(&self) {
         self.value.modify_bits(|r| r & !Self::EN_MASK);
     }
-
 }
 
 /// MPU_RLAR_A3 value type for batch read/modify/write operations
@@ -35600,7 +34438,6 @@ impl MpuRlarA3Val {
             }
         }
     }
-
 }
 
 impl Default for MpuRlarA3Val {
@@ -35627,7 +34464,6 @@ impl MpuRlarA3 {
     pub fn modify_val<F: FnOnce(MpuRlarA3Val) -> MpuRlarA3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MPU_MAIR0 Register
@@ -35767,7 +34603,6 @@ impl MpuMair0 {
     pub fn write_attr0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ATTR0_MASK) | ((value << Self::ATTR0_OFFSET) & Self::ATTR0_MASK));
     }
-
 }
 
 /// MPU_MAIR0 value type for batch read/modify/write operations
@@ -35869,7 +34704,6 @@ impl MpuMair0Val {
             bits: (self.bits & !MpuMair0::ATTR0_MASK) | ((value << MpuMair0::ATTR0_OFFSET) & MpuMair0::ATTR0_MASK)
         }
     }
-
 }
 
 impl Default for MpuMair0Val {
@@ -35896,7 +34730,6 @@ impl MpuMair0 {
     pub fn modify_val<F: FnOnce(MpuMair0Val) -> MpuMair0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MPU_MAIR1 Register
@@ -36036,7 +34869,6 @@ impl MpuMair1 {
     pub fn write_attr4(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ATTR4_MASK) | ((value << Self::ATTR4_OFFSET) & Self::ATTR4_MASK));
     }
-
 }
 
 /// MPU_MAIR1 value type for batch read/modify/write operations
@@ -36138,7 +34970,6 @@ impl MpuMair1Val {
             bits: (self.bits & !MpuMair1::ATTR4_MASK) | ((value << MpuMair1::ATTR4_OFFSET) & MpuMair1::ATTR4_MASK)
         }
     }
-
 }
 
 impl Default for MpuMair1Val {
@@ -36165,7 +34996,6 @@ impl MpuMair1 {
     pub fn modify_val<F: FnOnce(MpuMair1Val) -> MpuMair1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SAU_CTRL Register
@@ -36259,7 +35089,6 @@ impl SauCtrl {
     pub fn clr_enable(&self) {
         self.value.modify_bits(|r| r & !Self::ENABLE_MASK);
     }
-
 }
 
 /// SAU_CTRL value type for batch read/modify/write operations
@@ -36333,7 +35162,6 @@ impl SauCtrlVal {
             }
         }
     }
-
 }
 
 impl Default for SauCtrlVal {
@@ -36360,7 +35188,6 @@ impl SauCtrl {
     pub fn modify_val<F: FnOnce(SauCtrlVal) -> SauCtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SAU_TYPE Register
@@ -36408,7 +35235,6 @@ impl SauType {
     pub fn sregion(&self) -> u32 {
         (self.value.read_bits() & Self::SREGION_MASK) >> Self::SREGION_OFFSET
     }
-
 }
 
 /// SAU_TYPE value type for batch read/modify/write operations
@@ -36446,7 +35272,6 @@ impl SauTypeVal {
     pub const fn sregion(&self) -> u32 {
         (self.bits & SauType::SREGION_MASK) >> SauType::SREGION_OFFSET
     }
-
 }
 
 impl Default for SauTypeVal {
@@ -36461,19 +35286,6 @@ impl SauType {
     pub fn read_val(&self) -> SauTypeVal {
         SauTypeVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: SauTypeVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(SauTypeVal) -> SauTypeVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SAU_RNR Register
@@ -36529,7 +35341,6 @@ impl SauRnr {
     pub fn write_region(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::REGION_MASK) | ((value << Self::REGION_OFFSET) & Self::REGION_MASK));
     }
-
 }
 
 /// SAU_RNR value type for batch read/modify/write operations
@@ -36577,7 +35388,6 @@ impl SauRnrVal {
             bits: (self.bits & !SauRnr::REGION_MASK) | ((value << SauRnr::REGION_OFFSET) & SauRnr::REGION_MASK)
         }
     }
-
 }
 
 impl Default for SauRnrVal {
@@ -36604,7 +35414,6 @@ impl SauRnr {
     pub fn modify_val<F: FnOnce(SauRnrVal) -> SauRnrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SAU_RBAR Register
@@ -36660,7 +35469,6 @@ impl SauRbar {
     pub fn write_baddr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BADDR_MASK) | ((value << Self::BADDR_OFFSET) & Self::BADDR_MASK));
     }
-
 }
 
 /// SAU_RBAR value type for batch read/modify/write operations
@@ -36708,7 +35516,6 @@ impl SauRbarVal {
             bits: (self.bits & !SauRbar::BADDR_MASK) | ((value << SauRbar::BADDR_OFFSET) & SauRbar::BADDR_MASK)
         }
     }
-
 }
 
 impl Default for SauRbarVal {
@@ -36735,7 +35542,6 @@ impl SauRbar {
     pub fn modify_val<F: FnOnce(SauRbarVal) -> SauRbarVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SAU_RLAR Register
@@ -36857,7 +35663,6 @@ impl SauRlar {
     pub fn clr_enable(&self) {
         self.value.modify_bits(|r| r & !Self::ENABLE_MASK);
     }
-
 }
 
 /// SAU_RLAR value type for batch read/modify/write operations
@@ -36949,7 +35754,6 @@ impl SauRlarVal {
             }
         }
     }
-
 }
 
 impl Default for SauRlarVal {
@@ -36976,7 +35780,6 @@ impl SauRlar {
     pub fn modify_val<F: FnOnce(SauRlarVal) -> SauRlarVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SFSR Register
@@ -37268,7 +36071,6 @@ impl Sfsr {
     pub fn clr_invep(&self) {
         self.value.modify_bits(|r| r & !Self::INVEP_MASK);
     }
-
 }
 
 /// SFSR value type for batch read/modify/write operations
@@ -37474,7 +36276,6 @@ impl SfsrVal {
             }
         }
     }
-
 }
 
 impl Default for SfsrVal {
@@ -37501,7 +36302,6 @@ impl Sfsr {
     pub fn modify_val<F: FnOnce(SfsrVal) -> SfsrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SFAR Register
@@ -37557,7 +36357,6 @@ impl Sfar {
     pub fn write_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
     }
-
 }
 
 /// SFAR value type for batch read/modify/write operations
@@ -37605,7 +36404,6 @@ impl SfarVal {
             bits: (self.bits & !Sfar::ADDRESS_MASK) | ((value << Sfar::ADDRESS_OFFSET) & Sfar::ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for SfarVal {
@@ -37632,7 +36430,6 @@ impl Sfar {
     pub fn modify_val<F: FnOnce(SfarVal) -> SfarVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DHCSR Register
@@ -37993,7 +36790,6 @@ impl Dhcsr {
     pub fn clr_c_debugen(&self) {
         self.value.modify_bits(|r| r & !Self::C_DEBUGEN_MASK);
     }
-
 }
 
 /// DHCSR value type for batch read/modify/write operations
@@ -38197,7 +36993,6 @@ impl DhcsrVal {
             }
         }
     }
-
 }
 
 impl Default for DhcsrVal {
@@ -38224,7 +37019,6 @@ impl Dhcsr {
     pub fn modify_val<F: FnOnce(DhcsrVal) -> DhcsrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DCRSR Register
@@ -38313,7 +37107,6 @@ impl Dcrsr {
     pub fn write_regsel(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::REGSEL_MASK) | ((value << Self::REGSEL_OFFSET) & Self::REGSEL_MASK));
     }
-
 }
 
 /// DCRSR value type for batch read/modify/write operations
@@ -38383,7 +37176,6 @@ impl DcrsrVal {
             bits: (self.bits & !Dcrsr::REGSEL_MASK) | ((value << Dcrsr::REGSEL_OFFSET) & Dcrsr::REGSEL_MASK)
         }
     }
-
 }
 
 impl Default for DcrsrVal {
@@ -38410,7 +37202,6 @@ impl Dcrsr {
     pub fn modify_val<F: FnOnce(DcrsrVal) -> DcrsrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DCRDR Register
@@ -38466,7 +37257,6 @@ impl Dcrdr {
     pub fn write_dbgtmp(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::DBGTMP_MASK) | ((value << Self::DBGTMP_OFFSET) & Self::DBGTMP_MASK));
     }
-
 }
 
 /// DCRDR value type for batch read/modify/write operations
@@ -38514,7 +37304,6 @@ impl DcrdrVal {
             bits: (self.bits & !Dcrdr::DBGTMP_MASK) | ((value << Dcrdr::DBGTMP_OFFSET) & Dcrdr::DBGTMP_MASK)
         }
     }
-
 }
 
 impl Default for DcrdrVal {
@@ -38541,7 +37330,6 @@ impl Dcrdr {
     pub fn modify_val<F: FnOnce(DcrdrVal) -> DcrdrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DEMCR Register
@@ -39052,7 +37840,6 @@ impl Demcr {
     pub fn clr_vc_corereset(&self) {
         self.value.modify_bits(|r| r & !Self::VC_CORERESET_MASK);
     }
-
 }
 
 /// DEMCR value type for batch read/modify/write operations
@@ -39398,7 +38185,6 @@ impl DemcrVal {
             }
         }
     }
-
 }
 
 impl Default for DemcrVal {
@@ -39425,7 +38211,6 @@ impl Demcr {
     pub fn modify_val<F: FnOnce(DemcrVal) -> DemcrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DSCSR Register
@@ -39585,7 +38370,6 @@ impl Dscsr {
     pub fn clr_sbrselen(&self) {
         self.value.modify_bits(|r| r & !Self::SBRSELEN_MASK);
     }
-
 }
 
 /// DSCSR value type for batch read/modify/write operations
@@ -39703,7 +38487,6 @@ impl DscsrVal {
             }
         }
     }
-
 }
 
 impl Default for DscsrVal {
@@ -39730,7 +38513,6 @@ impl Dscsr {
     pub fn modify_val<F: FnOnce(DscsrVal) -> DscsrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// STIR Register
@@ -39786,7 +38568,6 @@ impl Stir {
     pub fn write_intid(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::INTID_MASK) | ((value << Self::INTID_OFFSET) & Self::INTID_MASK));
     }
-
 }
 
 /// STIR value type for batch read/modify/write operations
@@ -39834,7 +38615,6 @@ impl StirVal {
             bits: (self.bits & !Stir::INTID_MASK) | ((value << Stir::INTID_OFFSET) & Stir::INTID_MASK)
         }
     }
-
 }
 
 impl Default for StirVal {
@@ -39861,7 +38641,6 @@ impl Stir {
     pub fn modify_val<F: FnOnce(StirVal) -> StirVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FPCCR Register
@@ -40450,7 +39229,6 @@ impl Fpccr {
     pub fn clr_lspact(&self) {
         self.value.modify_bits(|r| r & !Self::LSPACT_MASK);
     }
-
 }
 
 /// FPCCR value type for batch read/modify/write operations
@@ -40854,7 +39632,6 @@ impl FpccrVal {
             }
         }
     }
-
 }
 
 impl Default for FpccrVal {
@@ -40881,7 +39658,6 @@ impl Fpccr {
     pub fn modify_val<F: FnOnce(FpccrVal) -> FpccrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FPCAR Register
@@ -40937,7 +39713,6 @@ impl Fpcar {
     pub fn write_address(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
     }
-
 }
 
 /// FPCAR value type for batch read/modify/write operations
@@ -40985,7 +39760,6 @@ impl FpcarVal {
             bits: (self.bits & !Fpcar::ADDRESS_MASK) | ((value << Fpcar::ADDRESS_OFFSET) & Fpcar::ADDRESS_MASK)
         }
     }
-
 }
 
 impl Default for FpcarVal {
@@ -41012,7 +39786,6 @@ impl Fpcar {
     pub fn modify_val<F: FnOnce(FpcarVal) -> FpcarVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FPDSCR Register
@@ -41167,7 +39940,6 @@ impl Fpdscr {
     pub fn write_rmode(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::RMODE_MASK) | ((value << Self::RMODE_OFFSET) & Self::RMODE_MASK));
     }
-
 }
 
 /// FPDSCR value type for batch read/modify/write operations
@@ -41281,7 +40053,6 @@ impl FpdscrVal {
             bits: (self.bits & !Fpdscr::RMODE_MASK) | ((value << Fpdscr::RMODE_OFFSET) & Fpdscr::RMODE_MASK)
         }
     }
-
 }
 
 impl Default for FpdscrVal {
@@ -41308,7 +40079,6 @@ impl Fpdscr {
     pub fn modify_val<F: FnOnce(FpdscrVal) -> FpdscrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// MVFR0 Register
@@ -41456,7 +40226,6 @@ impl Mvfr0 {
     pub fn simdreg(&self) -> u32 {
         (self.value.read_bits() & Self::SIMDREG_MASK) >> Self::SIMDREG_OFFSET
     }
-
 }
 
 /// MVFR0 value type for batch read/modify/write operations
@@ -41534,7 +40303,6 @@ impl Mvfr0Val {
     pub const fn simdreg(&self) -> u32 {
         (self.bits & Mvfr0::SIMDREG_MASK) >> Mvfr0::SIMDREG_OFFSET
     }
-
 }
 
 impl Default for Mvfr0Val {
@@ -41549,19 +40317,6 @@ impl Mvfr0 {
     pub fn read_val(&self) -> Mvfr0Val {
         Mvfr0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Mvfr0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Mvfr0Val) -> Mvfr0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// MVFR1 Register
@@ -41669,7 +40424,6 @@ impl Mvfr1 {
     pub fn fpftz(&self) -> u32 {
         (self.value.read_bits() & Self::FPFTZ_MASK) >> Self::FPFTZ_OFFSET
     }
-
 }
 
 /// MVFR1 value type for batch read/modify/write operations
@@ -41731,7 +40485,6 @@ impl Mvfr1Val {
     pub const fn fpftz(&self) -> u32 {
         (self.bits & Mvfr1::FPFTZ_MASK) >> Mvfr1::FPFTZ_OFFSET
     }
-
 }
 
 impl Default for Mvfr1Val {
@@ -41746,19 +40499,6 @@ impl Mvfr1 {
     pub fn read_val(&self) -> Mvfr1Val {
         Mvfr1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Mvfr1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Mvfr1Val) -> Mvfr1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// MVFR2 Register
@@ -41806,7 +40546,6 @@ impl Mvfr2 {
     pub fn fpmisc(&self) -> u32 {
         (self.value.read_bits() & Self::FPMISC_MASK) >> Self::FPMISC_OFFSET
     }
-
 }
 
 /// MVFR2 value type for batch read/modify/write operations
@@ -41844,7 +40583,6 @@ impl Mvfr2Val {
     pub const fn fpmisc(&self) -> u32 {
         (self.bits & Mvfr2::FPMISC_MASK) >> Mvfr2::FPMISC_OFFSET
     }
-
 }
 
 impl Default for Mvfr2Val {
@@ -41859,19 +40597,6 @@ impl Mvfr2 {
     pub fn read_val(&self) -> Mvfr2Val {
         Mvfr2Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Mvfr2Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Mvfr2Val) -> Mvfr2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DDEVARCH Register
@@ -42000,7 +40725,6 @@ impl Ddevarch {
     pub fn archpart(&self) -> u32 {
         (self.value.read_bits() & Self::ARCHPART_MASK) >> Self::ARCHPART_OFFSET
     }
-
 }
 
 /// DDEVARCH value type for batch read/modify/write operations
@@ -42070,7 +40794,6 @@ impl DdevarchVal {
     pub const fn archpart(&self) -> u32 {
         (self.bits & Ddevarch::ARCHPART_MASK) >> Ddevarch::ARCHPART_OFFSET
     }
-
 }
 
 impl Default for DdevarchVal {
@@ -42085,19 +40808,6 @@ impl Ddevarch {
     pub fn read_val(&self) -> DdevarchVal {
         DdevarchVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: DdevarchVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(DdevarchVal) -> DdevarchVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DDEVTYPE Register
@@ -42165,7 +40875,6 @@ impl Ddevtype {
     pub fn major(&self) -> u32 {
         (self.value.read_bits() & Self::MAJOR_MASK) >> Self::MAJOR_OFFSET
     }
-
 }
 
 /// DDEVTYPE value type for batch read/modify/write operations
@@ -42211,7 +40920,6 @@ impl DdevtypeVal {
     pub const fn major(&self) -> u32 {
         (self.bits & Ddevtype::MAJOR_MASK) >> Ddevtype::MAJOR_OFFSET
     }
-
 }
 
 impl Default for DdevtypeVal {
@@ -42226,19 +40934,6 @@ impl Ddevtype {
     pub fn read_val(&self) -> DdevtypeVal {
         DdevtypeVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: DdevtypeVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(DdevtypeVal) -> DdevtypeVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DPIDR4 Register
@@ -42306,7 +41001,6 @@ impl Dpidr4 {
     pub fn des_2(&self) -> u32 {
         (self.value.read_bits() & Self::DES_2_MASK) >> Self::DES_2_OFFSET
     }
-
 }
 
 /// DPIDR4 value type for batch read/modify/write operations
@@ -42352,7 +41046,6 @@ impl Dpidr4Val {
     pub const fn des_2(&self) -> u32 {
         (self.bits & Dpidr4::DES_2_MASK) >> Dpidr4::DES_2_OFFSET
     }
-
 }
 
 impl Default for Dpidr4Val {
@@ -42367,19 +41060,6 @@ impl Dpidr4 {
     pub fn read_val(&self) -> Dpidr4Val {
         Dpidr4Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Dpidr4Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Dpidr4Val) -> Dpidr4Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DPIDR5 Register
@@ -42426,7 +41106,6 @@ impl Dpidr5 {
     pub fn write_dpidr5(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::DPIDR5_MASK) | ((value << Self::DPIDR5_OFFSET) & Self::DPIDR5_MASK));
     }
-
 }
 
 /// DPIDR5 value type for batch read/modify/write operations
@@ -42470,7 +41149,6 @@ impl Dpidr5Val {
             bits: (self.bits & !Dpidr5::DPIDR5_MASK) | ((value << Dpidr5::DPIDR5_OFFSET) & Dpidr5::DPIDR5_MASK)
         }
     }
-
 }
 
 impl Default for Dpidr5Val {
@@ -42497,7 +41175,6 @@ impl Dpidr5 {
     pub fn modify_val<F: FnOnce(Dpidr5Val) -> Dpidr5Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DPIDR6 Register
@@ -42544,7 +41221,6 @@ impl Dpidr6 {
     pub fn write_dpidr6(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::DPIDR6_MASK) | ((value << Self::DPIDR6_OFFSET) & Self::DPIDR6_MASK));
     }
-
 }
 
 /// DPIDR6 value type for batch read/modify/write operations
@@ -42588,7 +41264,6 @@ impl Dpidr6Val {
             bits: (self.bits & !Dpidr6::DPIDR6_MASK) | ((value << Dpidr6::DPIDR6_OFFSET) & Dpidr6::DPIDR6_MASK)
         }
     }
-
 }
 
 impl Default for Dpidr6Val {
@@ -42615,7 +41290,6 @@ impl Dpidr6 {
     pub fn modify_val<F: FnOnce(Dpidr6Val) -> Dpidr6Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DPIDR7 Register
@@ -42662,7 +41336,6 @@ impl Dpidr7 {
     pub fn write_dpidr7(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::DPIDR7_MASK) | ((value << Self::DPIDR7_OFFSET) & Self::DPIDR7_MASK));
     }
-
 }
 
 /// DPIDR7 value type for batch read/modify/write operations
@@ -42706,7 +41379,6 @@ impl Dpidr7Val {
             bits: (self.bits & !Dpidr7::DPIDR7_MASK) | ((value << Dpidr7::DPIDR7_OFFSET) & Dpidr7::DPIDR7_MASK)
         }
     }
-
 }
 
 impl Default for Dpidr7Val {
@@ -42733,7 +41405,6 @@ impl Dpidr7 {
     pub fn modify_val<F: FnOnce(Dpidr7Val) -> Dpidr7Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DPIDR0 Register
@@ -42781,7 +41452,6 @@ impl Dpidr0 {
     pub fn part_0(&self) -> u32 {
         (self.value.read_bits() & Self::PART_0_MASK) >> Self::PART_0_OFFSET
     }
-
 }
 
 /// DPIDR0 value type for batch read/modify/write operations
@@ -42819,7 +41489,6 @@ impl Dpidr0Val {
     pub const fn part_0(&self) -> u32 {
         (self.bits & Dpidr0::PART_0_MASK) >> Dpidr0::PART_0_OFFSET
     }
-
 }
 
 impl Default for Dpidr0Val {
@@ -42834,19 +41503,6 @@ impl Dpidr0 {
     pub fn read_val(&self) -> Dpidr0Val {
         Dpidr0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Dpidr0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Dpidr0Val) -> Dpidr0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DPIDR1 Register
@@ -42914,7 +41570,6 @@ impl Dpidr1 {
     pub fn part_1(&self) -> u32 {
         (self.value.read_bits() & Self::PART_1_MASK) >> Self::PART_1_OFFSET
     }
-
 }
 
 /// DPIDR1 value type for batch read/modify/write operations
@@ -42960,7 +41615,6 @@ impl Dpidr1Val {
     pub const fn part_1(&self) -> u32 {
         (self.bits & Dpidr1::PART_1_MASK) >> Dpidr1::PART_1_OFFSET
     }
-
 }
 
 impl Default for Dpidr1Val {
@@ -42975,19 +41629,6 @@ impl Dpidr1 {
     pub fn read_val(&self) -> Dpidr1Val {
         Dpidr1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Dpidr1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Dpidr1Val) -> Dpidr1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DPIDR2 Register
@@ -43076,7 +41717,6 @@ impl Dpidr2 {
     pub fn des_1(&self) -> u32 {
         (self.value.read_bits() & Self::DES_1_MASK) >> Self::DES_1_OFFSET
     }
-
 }
 
 /// DPIDR2 value type for batch read/modify/write operations
@@ -43130,7 +41770,6 @@ impl Dpidr2Val {
     pub const fn des_1(&self) -> u32 {
         (self.bits & Dpidr2::DES_1_MASK) >> Dpidr2::DES_1_OFFSET
     }
-
 }
 
 impl Default for Dpidr2Val {
@@ -43145,19 +41784,6 @@ impl Dpidr2 {
     pub fn read_val(&self) -> Dpidr2Val {
         Dpidr2Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Dpidr2Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Dpidr2Val) -> Dpidr2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DPIDR3 Register
@@ -43225,7 +41851,6 @@ impl Dpidr3 {
     pub fn cmod(&self) -> u32 {
         (self.value.read_bits() & Self::CMOD_MASK) >> Self::CMOD_OFFSET
     }
-
 }
 
 /// DPIDR3 value type for batch read/modify/write operations
@@ -43271,7 +41896,6 @@ impl Dpidr3Val {
     pub const fn cmod(&self) -> u32 {
         (self.bits & Dpidr3::CMOD_MASK) >> Dpidr3::CMOD_OFFSET
     }
-
 }
 
 impl Default for Dpidr3Val {
@@ -43286,19 +41910,6 @@ impl Dpidr3 {
     pub fn read_val(&self) -> Dpidr3Val {
         Dpidr3Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Dpidr3Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Dpidr3Val) -> Dpidr3Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DCIDR0 Register
@@ -43346,7 +41957,6 @@ impl Dcidr0 {
     pub fn prmbl_0(&self) -> u32 {
         (self.value.read_bits() & Self::PRMBL_0_MASK) >> Self::PRMBL_0_OFFSET
     }
-
 }
 
 /// DCIDR0 value type for batch read/modify/write operations
@@ -43384,7 +41994,6 @@ impl Dcidr0Val {
     pub const fn prmbl_0(&self) -> u32 {
         (self.bits & Dcidr0::PRMBL_0_MASK) >> Dcidr0::PRMBL_0_OFFSET
     }
-
 }
 
 impl Default for Dcidr0Val {
@@ -43399,19 +42008,6 @@ impl Dcidr0 {
     pub fn read_val(&self) -> Dcidr0Val {
         Dcidr0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Dcidr0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Dcidr0Val) -> Dcidr0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DCIDR1 Register
@@ -43479,7 +42075,6 @@ impl Dcidr1 {
     pub fn prmbl_1(&self) -> u32 {
         (self.value.read_bits() & Self::PRMBL_1_MASK) >> Self::PRMBL_1_OFFSET
     }
-
 }
 
 /// DCIDR1 value type for batch read/modify/write operations
@@ -43525,7 +42120,6 @@ impl Dcidr1Val {
     pub const fn prmbl_1(&self) -> u32 {
         (self.bits & Dcidr1::PRMBL_1_MASK) >> Dcidr1::PRMBL_1_OFFSET
     }
-
 }
 
 impl Default for Dcidr1Val {
@@ -43540,19 +42134,6 @@ impl Dcidr1 {
     pub fn read_val(&self) -> Dcidr1Val {
         Dcidr1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Dcidr1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Dcidr1Val) -> Dcidr1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DCIDR2 Register
@@ -43600,7 +42181,6 @@ impl Dcidr2 {
     pub fn prmbl_2(&self) -> u32 {
         (self.value.read_bits() & Self::PRMBL_2_MASK) >> Self::PRMBL_2_OFFSET
     }
-
 }
 
 /// DCIDR2 value type for batch read/modify/write operations
@@ -43638,7 +42218,6 @@ impl Dcidr2Val {
     pub const fn prmbl_2(&self) -> u32 {
         (self.bits & Dcidr2::PRMBL_2_MASK) >> Dcidr2::PRMBL_2_OFFSET
     }
-
 }
 
 impl Default for Dcidr2Val {
@@ -43653,19 +42232,6 @@ impl Dcidr2 {
     pub fn read_val(&self) -> Dcidr2Val {
         Dcidr2Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Dcidr2Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Dcidr2Val) -> Dcidr2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DCIDR3 Register
@@ -43713,7 +42279,6 @@ impl Dcidr3 {
     pub fn prmbl_3(&self) -> u32 {
         (self.value.read_bits() & Self::PRMBL_3_MASK) >> Self::PRMBL_3_OFFSET
     }
-
 }
 
 /// DCIDR3 value type for batch read/modify/write operations
@@ -43751,7 +42316,6 @@ impl Dcidr3Val {
     pub const fn prmbl_3(&self) -> u32 {
         (self.bits & Dcidr3::PRMBL_3_MASK) >> Dcidr3::PRMBL_3_OFFSET
     }
-
 }
 
 impl Default for Dcidr3Val {
@@ -43766,19 +42330,6 @@ impl Dcidr3 {
     pub fn read_val(&self) -> Dcidr3Val {
         Dcidr3Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Dcidr3Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Dcidr3Val) -> Dcidr3Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TRCPRGCTLR Register
@@ -43839,7 +42390,6 @@ impl Trcprgctlr {
     pub fn clr_en(&self) {
         self.value.modify_bits(|r| r & !Self::EN_MASK);
     }
-
 }
 
 /// TRCPRGCTLR value type for batch read/modify/write operations
@@ -43891,7 +42441,6 @@ impl TrcprgctlrVal {
             }
         }
     }
-
 }
 
 impl Default for TrcprgctlrVal {
@@ -43918,7 +42467,6 @@ impl Trcprgctlr {
     pub fn modify_val<F: FnOnce(TrcprgctlrVal) -> TrcprgctlrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRCSTATR Register
@@ -43988,7 +42536,6 @@ impl Trcstatr {
     pub fn idle(&self) -> bool {
         (self.value.read_bits() & Self::IDLE_MASK) != 0
     }
-
 }
 
 /// TRCSTATR value type for batch read/modify/write operations
@@ -44034,7 +42581,6 @@ impl TrcstatrVal {
     pub const fn idle(&self) -> bool {
         (self.bits & Trcstatr::IDLE_MASK) != 0
     }
-
 }
 
 impl Default for TrcstatrVal {
@@ -44049,19 +42595,6 @@ impl Trcstatr {
     pub fn read_val(&self) -> TrcstatrVal {
         TrcstatrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: TrcstatrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(TrcstatrVal) -> TrcstatrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TRCCONFIGR Register
@@ -44249,7 +42782,6 @@ impl Trcconfigr {
     pub fn clr_bb(&self) {
         self.value.modify_bits(|r| r & !Self::BB_MASK);
     }
-
 }
 
 /// TRCCONFIGR value type for batch read/modify/write operations
@@ -44385,7 +42917,6 @@ impl TrcconfigrVal {
             }
         }
     }
-
 }
 
 impl Default for TrcconfigrVal {
@@ -44412,7 +42943,6 @@ impl Trcconfigr {
     pub fn modify_val<F: FnOnce(TrcconfigrVal) -> TrcconfigrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRCEVENTCTL0R Register
@@ -44562,7 +43092,6 @@ impl Trceventctl0r {
     pub fn write_sel0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEL0_MASK) | ((value << Self::SEL0_OFFSET) & Self::SEL0_MASK));
     }
-
 }
 
 /// TRCEVENTCTL0R value type for batch read/modify/write operations
@@ -44672,7 +43201,6 @@ impl Trceventctl0rVal {
             bits: (self.bits & !Trceventctl0r::SEL0_MASK) | ((value << Trceventctl0r::SEL0_OFFSET) & Trceventctl0r::SEL0_MASK)
         }
     }
-
 }
 
 impl Default for Trceventctl0rVal {
@@ -44699,7 +43227,6 @@ impl Trceventctl0r {
     pub fn modify_val<F: FnOnce(Trceventctl0rVal) -> Trceventctl0rVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRCEVENTCTL1R Register
@@ -44859,7 +43386,6 @@ impl Trceventctl1r {
     pub fn clr_insten0(&self) {
         self.value.modify_bits(|r| r & !Self::INSTEN0_MASK);
     }
-
 }
 
 /// TRCEVENTCTL1R value type for batch read/modify/write operations
@@ -44977,7 +43503,6 @@ impl Trceventctl1rVal {
             }
         }
     }
-
 }
 
 impl Default for Trceventctl1rVal {
@@ -45004,7 +43529,6 @@ impl Trceventctl1r {
     pub fn modify_val<F: FnOnce(Trceventctl1rVal) -> Trceventctl1rVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRCSTALLCTLR Register
@@ -45114,7 +43638,6 @@ impl Trcstallctlr {
     pub fn write_level(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::LEVEL_MASK) | ((value << Self::LEVEL_OFFSET) & Self::LEVEL_MASK));
     }
-
 }
 
 /// TRCSTALLCTLR value type for batch read/modify/write operations
@@ -45192,7 +43715,6 @@ impl TrcstallctlrVal {
             bits: (self.bits & !Trcstallctlr::LEVEL_MASK) | ((value << Trcstallctlr::LEVEL_OFFSET) & Trcstallctlr::LEVEL_MASK)
         }
     }
-
 }
 
 impl Default for TrcstallctlrVal {
@@ -45219,7 +43741,6 @@ impl Trcstallctlr {
     pub fn modify_val<F: FnOnce(TrcstallctlrVal) -> TrcstallctlrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRCTSCTLR Register
@@ -45308,7 +43829,6 @@ impl Trctsctlr {
     pub fn write_sel0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEL0_MASK) | ((value << Self::SEL0_OFFSET) & Self::SEL0_MASK));
     }
-
 }
 
 /// TRCTSCTLR value type for batch read/modify/write operations
@@ -45378,7 +43898,6 @@ impl TrctsctlrVal {
             bits: (self.bits & !Trctsctlr::SEL0_MASK) | ((value << Trctsctlr::SEL0_OFFSET) & Trctsctlr::SEL0_MASK)
         }
     }
-
 }
 
 impl Default for TrctsctlrVal {
@@ -45405,7 +43924,6 @@ impl Trctsctlr {
     pub fn modify_val<F: FnOnce(TrctsctlrVal) -> TrctsctlrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRCSYNCPR Register
@@ -45453,7 +43971,6 @@ impl Trcsyncpr {
     pub fn period(&self) -> u32 {
         (self.value.read_bits() & Self::PERIOD_MASK) >> Self::PERIOD_OFFSET
     }
-
 }
 
 /// TRCSYNCPR value type for batch read/modify/write operations
@@ -45491,7 +44008,6 @@ impl TrcsyncprVal {
     pub const fn period(&self) -> u32 {
         (self.bits & Trcsyncpr::PERIOD_MASK) >> Trcsyncpr::PERIOD_OFFSET
     }
-
 }
 
 impl Default for TrcsyncprVal {
@@ -45506,19 +44022,6 @@ impl Trcsyncpr {
     pub fn read_val(&self) -> TrcsyncprVal {
         TrcsyncprVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: TrcsyncprVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(TrcsyncprVal) -> TrcsyncprVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TRCCCCTLR Register
@@ -45574,7 +44077,6 @@ impl Trcccctlr {
     pub fn write_threshold(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::THRESHOLD_MASK) | ((value << Self::THRESHOLD_OFFSET) & Self::THRESHOLD_MASK));
     }
-
 }
 
 /// TRCCCCTLR value type for batch read/modify/write operations
@@ -45622,7 +44124,6 @@ impl TrcccctlrVal {
             bits: (self.bits & !Trcccctlr::THRESHOLD_MASK) | ((value << Trcccctlr::THRESHOLD_OFFSET) & Trcccctlr::THRESHOLD_MASK)
         }
     }
-
 }
 
 impl Default for TrcccctlrVal {
@@ -45649,7 +44150,6 @@ impl Trcccctlr {
     pub fn modify_val<F: FnOnce(TrcccctlrVal) -> TrcccctlrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRCVICTLR Register
@@ -45903,7 +44403,6 @@ impl Trcvictlr {
     pub fn write_sel0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SEL0_MASK) | ((value << Self::SEL0_OFFSET) & Self::SEL0_MASK));
     }
-
 }
 
 /// TRCVICTLR value type for batch read/modify/write operations
@@ -46083,7 +44582,6 @@ impl TrcvictlrVal {
             bits: (self.bits & !Trcvictlr::SEL0_MASK) | ((value << Trcvictlr::SEL0_OFFSET) & Trcvictlr::SEL0_MASK)
         }
     }
-
 }
 
 impl Default for TrcvictlrVal {
@@ -46110,7 +44608,6 @@ impl Trcvictlr {
     pub fn modify_val<F: FnOnce(TrcvictlrVal) -> TrcvictlrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRCCNTRLDVR0 Register
@@ -46166,7 +44663,6 @@ impl Trccntrldvr0 {
     pub fn write_value(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::VALUE_MASK) | ((value << Self::VALUE_OFFSET) & Self::VALUE_MASK));
     }
-
 }
 
 /// TRCCNTRLDVR0 value type for batch read/modify/write operations
@@ -46214,7 +44710,6 @@ impl Trccntrldvr0Val {
             bits: (self.bits & !Trccntrldvr0::VALUE_MASK) | ((value << Trccntrldvr0::VALUE_OFFSET) & Trccntrldvr0::VALUE_MASK)
         }
     }
-
 }
 
 impl Default for Trccntrldvr0Val {
@@ -46241,7 +44736,6 @@ impl Trccntrldvr0 {
     pub fn modify_val<F: FnOnce(Trccntrldvr0Val) -> Trccntrldvr0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRCIDR8 Register
@@ -46289,7 +44783,6 @@ impl Trcidr8 {
     pub fn maxspec(&self) -> u32 {
         (self.value.read_bits() & Self::MAXSPEC_MASK) >> Self::MAXSPEC_OFFSET
     }
-
 }
 
 /// TRCIDR8 value type for batch read/modify/write operations
@@ -46327,7 +44820,6 @@ impl Trcidr8Val {
     pub const fn maxspec(&self) -> u32 {
         (self.bits & Trcidr8::MAXSPEC_MASK) >> Trcidr8::MAXSPEC_OFFSET
     }
-
 }
 
 impl Default for Trcidr8Val {
@@ -46342,19 +44834,6 @@ impl Trcidr8 {
     pub fn read_val(&self) -> Trcidr8Val {
         Trcidr8Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Trcidr8Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Trcidr8Val) -> Trcidr8Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TRCIDR9 Register
@@ -46402,7 +44881,6 @@ impl Trcidr9 {
     pub fn nump0key(&self) -> u32 {
         (self.value.read_bits() & Self::NUMP0KEY_MASK) >> Self::NUMP0KEY_OFFSET
     }
-
 }
 
 /// TRCIDR9 value type for batch read/modify/write operations
@@ -46440,7 +44918,6 @@ impl Trcidr9Val {
     pub const fn nump0key(&self) -> u32 {
         (self.bits & Trcidr9::NUMP0KEY_MASK) >> Trcidr9::NUMP0KEY_OFFSET
     }
-
 }
 
 impl Default for Trcidr9Val {
@@ -46455,19 +44932,6 @@ impl Trcidr9 {
     pub fn read_val(&self) -> Trcidr9Val {
         Trcidr9Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Trcidr9Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Trcidr9Val) -> Trcidr9Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TRCIDR10 Register
@@ -46515,7 +44979,6 @@ impl Trcidr10 {
     pub fn nump1key(&self) -> u32 {
         (self.value.read_bits() & Self::NUMP1KEY_MASK) >> Self::NUMP1KEY_OFFSET
     }
-
 }
 
 /// TRCIDR10 value type for batch read/modify/write operations
@@ -46553,7 +45016,6 @@ impl Trcidr10Val {
     pub const fn nump1key(&self) -> u32 {
         (self.bits & Trcidr10::NUMP1KEY_MASK) >> Trcidr10::NUMP1KEY_OFFSET
     }
-
 }
 
 impl Default for Trcidr10Val {
@@ -46568,19 +45030,6 @@ impl Trcidr10 {
     pub fn read_val(&self) -> Trcidr10Val {
         Trcidr10Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Trcidr10Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Trcidr10Val) -> Trcidr10Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TRCIDR11 Register
@@ -46628,7 +45077,6 @@ impl Trcidr11 {
     pub fn nump1spc(&self) -> u32 {
         (self.value.read_bits() & Self::NUMP1SPC_MASK) >> Self::NUMP1SPC_OFFSET
     }
-
 }
 
 /// TRCIDR11 value type for batch read/modify/write operations
@@ -46666,7 +45114,6 @@ impl Trcidr11Val {
     pub const fn nump1spc(&self) -> u32 {
         (self.bits & Trcidr11::NUMP1SPC_MASK) >> Trcidr11::NUMP1SPC_OFFSET
     }
-
 }
 
 impl Default for Trcidr11Val {
@@ -46681,19 +45128,6 @@ impl Trcidr11 {
     pub fn read_val(&self) -> Trcidr11Val {
         Trcidr11Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Trcidr11Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Trcidr11Val) -> Trcidr11Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TRCIDR12 Register
@@ -46741,7 +45175,6 @@ impl Trcidr12 {
     pub fn numcondkey(&self) -> u32 {
         (self.value.read_bits() & Self::NUMCONDKEY_MASK) >> Self::NUMCONDKEY_OFFSET
     }
-
 }
 
 /// TRCIDR12 value type for batch read/modify/write operations
@@ -46779,7 +45212,6 @@ impl Trcidr12Val {
     pub const fn numcondkey(&self) -> u32 {
         (self.bits & Trcidr12::NUMCONDKEY_MASK) >> Trcidr12::NUMCONDKEY_OFFSET
     }
-
 }
 
 impl Default for Trcidr12Val {
@@ -46794,19 +45226,6 @@ impl Trcidr12 {
     pub fn read_val(&self) -> Trcidr12Val {
         Trcidr12Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Trcidr12Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Trcidr12Val) -> Trcidr12Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TRCIDR13 Register
@@ -46854,7 +45273,6 @@ impl Trcidr13 {
     pub fn numcondspc(&self) -> u32 {
         (self.value.read_bits() & Self::NUMCONDSPC_MASK) >> Self::NUMCONDSPC_OFFSET
     }
-
 }
 
 /// TRCIDR13 value type for batch read/modify/write operations
@@ -46892,7 +45310,6 @@ impl Trcidr13Val {
     pub const fn numcondspc(&self) -> u32 {
         (self.bits & Trcidr13::NUMCONDSPC_MASK) >> Trcidr13::NUMCONDSPC_OFFSET
     }
-
 }
 
 impl Default for Trcidr13Val {
@@ -46907,19 +45324,6 @@ impl Trcidr13 {
     pub fn read_val(&self) -> Trcidr13Val {
         Trcidr13Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Trcidr13Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Trcidr13Val) -> Trcidr13Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TRCIMSPEC Register
@@ -46967,7 +45371,6 @@ impl Trcimspec {
     pub fn support(&self) -> u32 {
         (self.value.read_bits() & Self::SUPPORT_MASK) >> Self::SUPPORT_OFFSET
     }
-
 }
 
 /// TRCIMSPEC value type for batch read/modify/write operations
@@ -47005,7 +45408,6 @@ impl TrcimspecVal {
     pub const fn support(&self) -> u32 {
         (self.bits & Trcimspec::SUPPORT_MASK) >> Trcimspec::SUPPORT_OFFSET
     }
-
 }
 
 impl Default for TrcimspecVal {
@@ -47020,19 +45422,6 @@ impl Trcimspec {
     pub fn read_val(&self) -> TrcimspecVal {
         TrcimspecVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: TrcimspecVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(TrcimspecVal) -> TrcimspecVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TRCIDR0 Register
@@ -47348,7 +45737,6 @@ impl Trcidr0 {
     pub fn res1(&self) -> bool {
         (self.value.read_bits() & Self::RES1_MASK) != 0
     }
-
 }
 
 /// TRCIDR0 value type for batch read/modify/write operations
@@ -47490,7 +45878,6 @@ impl Trcidr0Val {
     pub const fn res1(&self) -> bool {
         (self.bits & Trcidr0::RES1_MASK) != 0
     }
-
 }
 
 impl Default for Trcidr0Val {
@@ -47505,19 +45892,6 @@ impl Trcidr0 {
     pub fn read_val(&self) -> Trcidr0Val {
         Trcidr0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Trcidr0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Trcidr0Val) -> Trcidr0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TRCIDR1 Register
@@ -47645,7 +46019,6 @@ impl Trcidr1 {
     pub fn revision(&self) -> u32 {
         (self.value.read_bits() & Self::REVISION_MASK) >> Self::REVISION_OFFSET
     }
-
 }
 
 /// TRCIDR1 value type for batch read/modify/write operations
@@ -47715,7 +46088,6 @@ impl Trcidr1Val {
     pub const fn revision(&self) -> u32 {
         (self.bits & Trcidr1::REVISION_MASK) >> Trcidr1::REVISION_OFFSET
     }
-
 }
 
 impl Default for Trcidr1Val {
@@ -47730,19 +46102,6 @@ impl Trcidr1 {
     pub fn read_val(&self) -> Trcidr1Val {
         Trcidr1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Trcidr1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Trcidr1Val) -> Trcidr1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TRCIDR2 Register
@@ -47890,7 +46249,6 @@ impl Trcidr2 {
     pub fn iasize(&self) -> u32 {
         (self.value.read_bits() & Self::IASIZE_MASK) >> Self::IASIZE_OFFSET
     }
-
 }
 
 /// TRCIDR2 value type for batch read/modify/write operations
@@ -47968,7 +46326,6 @@ impl Trcidr2Val {
     pub const fn iasize(&self) -> u32 {
         (self.bits & Trcidr2::IASIZE_MASK) >> Trcidr2::IASIZE_OFFSET
     }
-
 }
 
 impl Default for Trcidr2Val {
@@ -47983,19 +46340,6 @@ impl Trcidr2 {
     pub fn read_val(&self) -> Trcidr2Val {
         Trcidr2Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Trcidr2Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Trcidr2Val) -> Trcidr2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TRCIDR3 Register
@@ -48208,7 +46552,6 @@ impl Trcidr3 {
     pub fn ccitmin(&self) -> u32 {
         (self.value.read_bits() & Self::CCITMIN_MASK) >> Self::CCITMIN_OFFSET
     }
-
 }
 
 /// TRCIDR3 value type for batch read/modify/write operations
@@ -48310,7 +46653,6 @@ impl Trcidr3Val {
     pub const fn ccitmin(&self) -> u32 {
         (self.bits & Trcidr3::CCITMIN_MASK) >> Trcidr3::CCITMIN_OFFSET
     }
-
 }
 
 impl Default for Trcidr3Val {
@@ -48325,19 +46667,6 @@ impl Trcidr3 {
     pub fn read_val(&self) -> Trcidr3Val {
         Trcidr3Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Trcidr3Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Trcidr3Val) -> Trcidr3Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TRCIDR4 Register
@@ -48526,7 +46855,6 @@ impl Trcidr4 {
     pub fn numacpairs(&self) -> u32 {
         (self.value.read_bits() & Self::NUMACPAIRS_MASK) >> Self::NUMACPAIRS_OFFSET
     }
-
 }
 
 /// TRCIDR4 value type for batch read/modify/write operations
@@ -48620,7 +46948,6 @@ impl Trcidr4Val {
     pub const fn numacpairs(&self) -> u32 {
         (self.bits & Trcidr4::NUMACPAIRS_MASK) >> Trcidr4::NUMACPAIRS_OFFSET
     }
-
 }
 
 impl Default for Trcidr4Val {
@@ -48635,19 +46962,6 @@ impl Trcidr4 {
     pub fn read_val(&self) -> Trcidr4Val {
         Trcidr4Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Trcidr4Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Trcidr4Val) -> Trcidr4Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TRCIDR5 Register
@@ -48838,7 +47152,6 @@ impl Trcidr5 {
     pub fn numextin(&self) -> u32 {
         (self.value.read_bits() & Self::NUMEXTIN_MASK) >> Self::NUMEXTIN_OFFSET
     }
-
 }
 
 /// TRCIDR5 value type for batch read/modify/write operations
@@ -48932,7 +47245,6 @@ impl Trcidr5Val {
     pub const fn numextin(&self) -> u32 {
         (self.bits & Trcidr5::NUMEXTIN_MASK) >> Trcidr5::NUMEXTIN_OFFSET
     }
-
 }
 
 impl Default for Trcidr5Val {
@@ -48947,19 +47259,6 @@ impl Trcidr5 {
     pub fn read_val(&self) -> Trcidr5Val {
         Trcidr5Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Trcidr5Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Trcidr5Val) -> Trcidr5Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TRCIDR6 Register
@@ -49006,7 +47305,6 @@ impl Trcidr6 {
     pub fn write_trcidr6(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::TRCIDR6_MASK) | ((value << Self::TRCIDR6_OFFSET) & Self::TRCIDR6_MASK));
     }
-
 }
 
 /// TRCIDR6 value type for batch read/modify/write operations
@@ -49050,7 +47348,6 @@ impl Trcidr6Val {
             bits: (self.bits & !Trcidr6::TRCIDR6_MASK) | ((value << Trcidr6::TRCIDR6_OFFSET) & Trcidr6::TRCIDR6_MASK)
         }
     }
-
 }
 
 impl Default for Trcidr6Val {
@@ -49077,7 +47374,6 @@ impl Trcidr6 {
     pub fn modify_val<F: FnOnce(Trcidr6Val) -> Trcidr6Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRCIDR7 Register
@@ -49124,7 +47420,6 @@ impl Trcidr7 {
     pub fn write_trcidr7(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::TRCIDR7_MASK) | ((value << Self::TRCIDR7_OFFSET) & Self::TRCIDR7_MASK));
     }
-
 }
 
 /// TRCIDR7 value type for batch read/modify/write operations
@@ -49168,7 +47463,6 @@ impl Trcidr7Val {
             bits: (self.bits & !Trcidr7::TRCIDR7_MASK) | ((value << Trcidr7::TRCIDR7_OFFSET) & Trcidr7::TRCIDR7_MASK)
         }
     }
-
 }
 
 impl Default for Trcidr7Val {
@@ -49195,7 +47489,6 @@ impl Trcidr7 {
     pub fn modify_val<F: FnOnce(Trcidr7Val) -> Trcidr7Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRCRSCTLR2 Register
@@ -49345,7 +47638,6 @@ impl Trcrsctlr2 {
     pub fn write_select(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SELECT_MASK) | ((value << Self::SELECT_OFFSET) & Self::SELECT_MASK));
     }
-
 }
 
 /// TRCRSCTLR2 value type for batch read/modify/write operations
@@ -49455,7 +47747,6 @@ impl Trcrsctlr2Val {
             bits: (self.bits & !Trcrsctlr2::SELECT_MASK) | ((value << Trcrsctlr2::SELECT_OFFSET) & Trcrsctlr2::SELECT_MASK)
         }
     }
-
 }
 
 impl Default for Trcrsctlr2Val {
@@ -49482,7 +47773,6 @@ impl Trcrsctlr2 {
     pub fn modify_val<F: FnOnce(Trcrsctlr2Val) -> Trcrsctlr2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRCRSCTLR3 Register
@@ -49632,7 +47922,6 @@ impl Trcrsctlr3 {
     pub fn write_select(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SELECT_MASK) | ((value << Self::SELECT_OFFSET) & Self::SELECT_MASK));
     }
-
 }
 
 /// TRCRSCTLR3 value type for batch read/modify/write operations
@@ -49742,7 +48031,6 @@ impl Trcrsctlr3Val {
             bits: (self.bits & !Trcrsctlr3::SELECT_MASK) | ((value << Trcrsctlr3::SELECT_OFFSET) & Trcrsctlr3::SELECT_MASK)
         }
     }
-
 }
 
 impl Default for Trcrsctlr3Val {
@@ -49769,7 +48057,6 @@ impl Trcrsctlr3 {
     pub fn modify_val<F: FnOnce(Trcrsctlr3Val) -> Trcrsctlr3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRCSSCSR Register
@@ -49914,7 +48201,6 @@ impl Trcsscsr {
     pub fn inst(&self) -> bool {
         (self.value.read_bits() & Self::INST_MASK) != 0
     }
-
 }
 
 /// TRCSSCSR value type for batch read/modify/write operations
@@ -49998,7 +48284,6 @@ impl TrcsscsrVal {
             }
         }
     }
-
 }
 
 impl Default for TrcsscsrVal {
@@ -50025,7 +48310,6 @@ impl Trcsscsr {
     pub fn modify_val<F: FnOnce(TrcsscsrVal) -> TrcsscsrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRCSSPCICR Register
@@ -50081,7 +48365,6 @@ impl Trcsspcicr {
     pub fn write_pc(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PC_MASK) | ((value << Self::PC_OFFSET) & Self::PC_MASK));
     }
-
 }
 
 /// TRCSSPCICR value type for batch read/modify/write operations
@@ -50129,7 +48412,6 @@ impl TrcsspcicrVal {
             bits: (self.bits & !Trcsspcicr::PC_MASK) | ((value << Trcsspcicr::PC_OFFSET) & Trcsspcicr::PC_MASK)
         }
     }
-
 }
 
 impl Default for TrcsspcicrVal {
@@ -50156,7 +48438,6 @@ impl Trcsspcicr {
     pub fn modify_val<F: FnOnce(TrcsspcicrVal) -> TrcsspcicrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRCPDCR Register
@@ -50217,7 +48498,6 @@ impl Trcpdcr {
     pub fn clr_pu(&self) {
         self.value.modify_bits(|r| r & !Self::PU_MASK);
     }
-
 }
 
 /// TRCPDCR value type for batch read/modify/write operations
@@ -50269,7 +48549,6 @@ impl TrcpdcrVal {
             }
         }
     }
-
 }
 
 impl Default for TrcpdcrVal {
@@ -50296,7 +48575,6 @@ impl Trcpdcr {
     pub fn modify_val<F: FnOnce(TrcpdcrVal) -> TrcpdcrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRCPDSR Register
@@ -50387,7 +48665,6 @@ impl Trcpdsr {
     pub fn power(&self) -> bool {
         (self.value.read_bits() & Self::POWER_MASK) != 0
     }
-
 }
 
 /// TRCPDSR value type for batch read/modify/write operations
@@ -50441,7 +48718,6 @@ impl TrcpdsrVal {
     pub const fn power(&self) -> bool {
         (self.bits & Trcpdsr::POWER_MASK) != 0
     }
-
 }
 
 impl Default for TrcpdsrVal {
@@ -50456,19 +48732,6 @@ impl Trcpdsr {
     pub fn read_val(&self) -> TrcpdsrVal {
         TrcpdsrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: TrcpdsrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(TrcpdsrVal) -> TrcpdsrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TRCITATBIDR Register
@@ -50524,7 +48787,6 @@ impl Trcitatbidr {
     pub fn write_id(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ID_MASK) | ((value << Self::ID_OFFSET) & Self::ID_MASK));
     }
-
 }
 
 /// TRCITATBIDR value type for batch read/modify/write operations
@@ -50572,7 +48834,6 @@ impl TrcitatbidrVal {
             bits: (self.bits & !Trcitatbidr::ID_MASK) | ((value << Trcitatbidr::ID_OFFSET) & Trcitatbidr::ID_MASK)
         }
     }
-
 }
 
 impl Default for TrcitatbidrVal {
@@ -50599,7 +48860,6 @@ impl Trcitatbidr {
     pub fn modify_val<F: FnOnce(TrcitatbidrVal) -> TrcitatbidrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRCITIATBINR Register
@@ -50693,7 +48953,6 @@ impl Trcitiatbinr {
     pub fn clr_atreadym(&self) {
         self.value.modify_bits(|r| r & !Self::ATREADYM_MASK);
     }
-
 }
 
 /// TRCITIATBINR value type for batch read/modify/write operations
@@ -50767,7 +49026,6 @@ impl TrcitiatbinrVal {
             }
         }
     }
-
 }
 
 impl Default for TrcitiatbinrVal {
@@ -50794,7 +49052,6 @@ impl Trcitiatbinr {
     pub fn modify_val<F: FnOnce(TrcitiatbinrVal) -> TrcitiatbinrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRCITIATBOUTR Register
@@ -50888,7 +49145,6 @@ impl Trcitiatboutr {
     pub fn clr_atvalid(&self) {
         self.value.modify_bits(|r| r & !Self::ATVALID_MASK);
     }
-
 }
 
 /// TRCITIATBOUTR value type for batch read/modify/write operations
@@ -50962,7 +49218,6 @@ impl TrcitiatboutrVal {
             }
         }
     }
-
 }
 
 impl Default for TrcitiatboutrVal {
@@ -50989,7 +49244,6 @@ impl Trcitiatboutr {
     pub fn modify_val<F: FnOnce(TrcitiatboutrVal) -> TrcitiatboutrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRCCLAIMSET Register
@@ -51149,7 +49403,6 @@ impl Trcclaimset {
     pub fn clr_set0(&self) {
         self.value.modify_bits(|r| r & !Self::SET0_MASK);
     }
-
 }
 
 /// TRCCLAIMSET value type for batch read/modify/write operations
@@ -51267,7 +49520,6 @@ impl TrcclaimsetVal {
             }
         }
     }
-
 }
 
 impl Default for TrcclaimsetVal {
@@ -51294,7 +49546,6 @@ impl Trcclaimset {
     pub fn modify_val<F: FnOnce(TrcclaimsetVal) -> TrcclaimsetVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRCCLAIMCLR Register
@@ -51454,7 +49705,6 @@ impl Trcclaimclr {
     pub fn clr_clr0(&self) {
         self.value.modify_bits(|r| r & !Self::CLR0_MASK);
     }
-
 }
 
 /// TRCCLAIMCLR value type for batch read/modify/write operations
@@ -51572,7 +49822,6 @@ impl TrcclaimclrVal {
             }
         }
     }
-
 }
 
 impl Default for TrcclaimclrVal {
@@ -51599,7 +49848,6 @@ impl Trcclaimclr {
     pub fn modify_val<F: FnOnce(TrcclaimclrVal) -> TrcclaimclrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRCAUTHSTATUS Register
@@ -51707,7 +49955,6 @@ impl Trcauthstatus {
     pub fn nsid(&self) -> u32 {
         (self.value.read_bits() & Self::NSID_MASK) >> Self::NSID_OFFSET
     }
-
 }
 
 /// TRCAUTHSTATUS value type for batch read/modify/write operations
@@ -51769,7 +50016,6 @@ impl TrcauthstatusVal {
     pub const fn nsid(&self) -> u32 {
         (self.bits & Trcauthstatus::NSID_MASK) >> Trcauthstatus::NSID_OFFSET
     }
-
 }
 
 impl Default for TrcauthstatusVal {
@@ -51784,19 +50030,6 @@ impl Trcauthstatus {
     pub fn read_val(&self) -> TrcauthstatusVal {
         TrcauthstatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: TrcauthstatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(TrcauthstatusVal) -> TrcauthstatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TRCDEVARCH Register
@@ -51905,7 +50138,6 @@ impl Trcdevarch {
     pub fn archid(&self) -> u32 {
         (self.value.read_bits() & Self::ARCHID_MASK) >> Self::ARCHID_OFFSET
     }
-
 }
 
 /// TRCDEVARCH value type for batch read/modify/write operations
@@ -51967,7 +50199,6 @@ impl TrcdevarchVal {
     pub const fn archid(&self) -> u32 {
         (self.bits & Trcdevarch::ARCHID_MASK) >> Trcdevarch::ARCHID_OFFSET
     }
-
 }
 
 impl Default for TrcdevarchVal {
@@ -51982,19 +50213,6 @@ impl Trcdevarch {
     pub fn read_val(&self) -> TrcdevarchVal {
         TrcdevarchVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: TrcdevarchVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(TrcdevarchVal) -> TrcdevarchVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TRCDEVID Register
@@ -52041,7 +50259,6 @@ impl Trcdevid {
     pub fn write_trcdevid(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::TRCDEVID_MASK) | ((value << Self::TRCDEVID_OFFSET) & Self::TRCDEVID_MASK));
     }
-
 }
 
 /// TRCDEVID value type for batch read/modify/write operations
@@ -52085,7 +50302,6 @@ impl TrcdevidVal {
             bits: (self.bits & !Trcdevid::TRCDEVID_MASK) | ((value << Trcdevid::TRCDEVID_OFFSET) & Trcdevid::TRCDEVID_MASK)
         }
     }
-
 }
 
 impl Default for TrcdevidVal {
@@ -52112,7 +50328,6 @@ impl Trcdevid {
     pub fn modify_val<F: FnOnce(TrcdevidVal) -> TrcdevidVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRCDEVTYPE Register
@@ -52180,7 +50395,6 @@ impl Trcdevtype {
     pub fn major(&self) -> u32 {
         (self.value.read_bits() & Self::MAJOR_MASK) >> Self::MAJOR_OFFSET
     }
-
 }
 
 /// TRCDEVTYPE value type for batch read/modify/write operations
@@ -52226,7 +50440,6 @@ impl TrcdevtypeVal {
     pub const fn major(&self) -> u32 {
         (self.bits & Trcdevtype::MAJOR_MASK) >> Trcdevtype::MAJOR_OFFSET
     }
-
 }
 
 impl Default for TrcdevtypeVal {
@@ -52241,19 +50454,6 @@ impl Trcdevtype {
     pub fn read_val(&self) -> TrcdevtypeVal {
         TrcdevtypeVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: TrcdevtypeVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(TrcdevtypeVal) -> TrcdevtypeVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TRCPIDR4 Register
@@ -52321,7 +50521,6 @@ impl Trcpidr4 {
     pub fn des_2(&self) -> u32 {
         (self.value.read_bits() & Self::DES_2_MASK) >> Self::DES_2_OFFSET
     }
-
 }
 
 /// TRCPIDR4 value type for batch read/modify/write operations
@@ -52367,7 +50566,6 @@ impl Trcpidr4Val {
     pub const fn des_2(&self) -> u32 {
         (self.bits & Trcpidr4::DES_2_MASK) >> Trcpidr4::DES_2_OFFSET
     }
-
 }
 
 impl Default for Trcpidr4Val {
@@ -52382,19 +50580,6 @@ impl Trcpidr4 {
     pub fn read_val(&self) -> Trcpidr4Val {
         Trcpidr4Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Trcpidr4Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Trcpidr4Val) -> Trcpidr4Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TRCPIDR5 Register
@@ -52441,7 +50626,6 @@ impl Trcpidr5 {
     pub fn write_trcpidr5(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::TRCPIDR5_MASK) | ((value << Self::TRCPIDR5_OFFSET) & Self::TRCPIDR5_MASK));
     }
-
 }
 
 /// TRCPIDR5 value type for batch read/modify/write operations
@@ -52485,7 +50669,6 @@ impl Trcpidr5Val {
             bits: (self.bits & !Trcpidr5::TRCPIDR5_MASK) | ((value << Trcpidr5::TRCPIDR5_OFFSET) & Trcpidr5::TRCPIDR5_MASK)
         }
     }
-
 }
 
 impl Default for Trcpidr5Val {
@@ -52512,7 +50695,6 @@ impl Trcpidr5 {
     pub fn modify_val<F: FnOnce(Trcpidr5Val) -> Trcpidr5Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRCPIDR6 Register
@@ -52559,7 +50741,6 @@ impl Trcpidr6 {
     pub fn write_trcpidr6(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::TRCPIDR6_MASK) | ((value << Self::TRCPIDR6_OFFSET) & Self::TRCPIDR6_MASK));
     }
-
 }
 
 /// TRCPIDR6 value type for batch read/modify/write operations
@@ -52603,7 +50784,6 @@ impl Trcpidr6Val {
             bits: (self.bits & !Trcpidr6::TRCPIDR6_MASK) | ((value << Trcpidr6::TRCPIDR6_OFFSET) & Trcpidr6::TRCPIDR6_MASK)
         }
     }
-
 }
 
 impl Default for Trcpidr6Val {
@@ -52630,7 +50810,6 @@ impl Trcpidr6 {
     pub fn modify_val<F: FnOnce(Trcpidr6Val) -> Trcpidr6Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRCPIDR7 Register
@@ -52677,7 +50856,6 @@ impl Trcpidr7 {
     pub fn write_trcpidr7(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::TRCPIDR7_MASK) | ((value << Self::TRCPIDR7_OFFSET) & Self::TRCPIDR7_MASK));
     }
-
 }
 
 /// TRCPIDR7 value type for batch read/modify/write operations
@@ -52721,7 +50899,6 @@ impl Trcpidr7Val {
             bits: (self.bits & !Trcpidr7::TRCPIDR7_MASK) | ((value << Trcpidr7::TRCPIDR7_OFFSET) & Trcpidr7::TRCPIDR7_MASK)
         }
     }
-
 }
 
 impl Default for Trcpidr7Val {
@@ -52748,7 +50925,6 @@ impl Trcpidr7 {
     pub fn modify_val<F: FnOnce(Trcpidr7Val) -> Trcpidr7Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRCPIDR0 Register
@@ -52796,7 +50972,6 @@ impl Trcpidr0 {
     pub fn part_0(&self) -> u32 {
         (self.value.read_bits() & Self::PART_0_MASK) >> Self::PART_0_OFFSET
     }
-
 }
 
 /// TRCPIDR0 value type for batch read/modify/write operations
@@ -52834,7 +51009,6 @@ impl Trcpidr0Val {
     pub const fn part_0(&self) -> u32 {
         (self.bits & Trcpidr0::PART_0_MASK) >> Trcpidr0::PART_0_OFFSET
     }
-
 }
 
 impl Default for Trcpidr0Val {
@@ -52849,19 +51023,6 @@ impl Trcpidr0 {
     pub fn read_val(&self) -> Trcpidr0Val {
         Trcpidr0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Trcpidr0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Trcpidr0Val) -> Trcpidr0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TRCPIDR1 Register
@@ -52929,7 +51090,6 @@ impl Trcpidr1 {
     pub fn part_0(&self) -> u32 {
         (self.value.read_bits() & Self::PART_0_MASK) >> Self::PART_0_OFFSET
     }
-
 }
 
 /// TRCPIDR1 value type for batch read/modify/write operations
@@ -52975,7 +51135,6 @@ impl Trcpidr1Val {
     pub const fn part_0(&self) -> u32 {
         (self.bits & Trcpidr1::PART_0_MASK) >> Trcpidr1::PART_0_OFFSET
     }
-
 }
 
 impl Default for Trcpidr1Val {
@@ -52990,19 +51149,6 @@ impl Trcpidr1 {
     pub fn read_val(&self) -> Trcpidr1Val {
         Trcpidr1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Trcpidr1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Trcpidr1Val) -> Trcpidr1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TRCPIDR2 Register
@@ -53091,7 +51237,6 @@ impl Trcpidr2 {
     pub fn des_0(&self) -> u32 {
         (self.value.read_bits() & Self::DES_0_MASK) >> Self::DES_0_OFFSET
     }
-
 }
 
 /// TRCPIDR2 value type for batch read/modify/write operations
@@ -53145,7 +51290,6 @@ impl Trcpidr2Val {
     pub const fn des_0(&self) -> u32 {
         (self.bits & Trcpidr2::DES_0_MASK) >> Trcpidr2::DES_0_OFFSET
     }
-
 }
 
 impl Default for Trcpidr2Val {
@@ -53160,19 +51304,6 @@ impl Trcpidr2 {
     pub fn read_val(&self) -> Trcpidr2Val {
         Trcpidr2Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Trcpidr2Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Trcpidr2Val) -> Trcpidr2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TRCPIDR3 Register
@@ -53240,7 +51371,6 @@ impl Trcpidr3 {
     pub fn cmod(&self) -> u32 {
         (self.value.read_bits() & Self::CMOD_MASK) >> Self::CMOD_OFFSET
     }
-
 }
 
 /// TRCPIDR3 value type for batch read/modify/write operations
@@ -53286,7 +51416,6 @@ impl Trcpidr3Val {
     pub const fn cmod(&self) -> u32 {
         (self.bits & Trcpidr3::CMOD_MASK) >> Trcpidr3::CMOD_OFFSET
     }
-
 }
 
 impl Default for Trcpidr3Val {
@@ -53301,19 +51430,6 @@ impl Trcpidr3 {
     pub fn read_val(&self) -> Trcpidr3Val {
         Trcpidr3Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Trcpidr3Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Trcpidr3Val) -> Trcpidr3Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TRCCIDR0 Register
@@ -53361,7 +51477,6 @@ impl Trccidr0 {
     pub fn prmbl_0(&self) -> u32 {
         (self.value.read_bits() & Self::PRMBL_0_MASK) >> Self::PRMBL_0_OFFSET
     }
-
 }
 
 /// TRCCIDR0 value type for batch read/modify/write operations
@@ -53399,7 +51514,6 @@ impl Trccidr0Val {
     pub const fn prmbl_0(&self) -> u32 {
         (self.bits & Trccidr0::PRMBL_0_MASK) >> Trccidr0::PRMBL_0_OFFSET
     }
-
 }
 
 impl Default for Trccidr0Val {
@@ -53414,19 +51528,6 @@ impl Trccidr0 {
     pub fn read_val(&self) -> Trccidr0Val {
         Trccidr0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Trccidr0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Trccidr0Val) -> Trccidr0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TRCCIDR1 Register
@@ -53494,7 +51595,6 @@ impl Trccidr1 {
     pub fn prmbl_1(&self) -> u32 {
         (self.value.read_bits() & Self::PRMBL_1_MASK) >> Self::PRMBL_1_OFFSET
     }
-
 }
 
 /// TRCCIDR1 value type for batch read/modify/write operations
@@ -53540,7 +51640,6 @@ impl Trccidr1Val {
     pub const fn prmbl_1(&self) -> u32 {
         (self.bits & Trccidr1::PRMBL_1_MASK) >> Trccidr1::PRMBL_1_OFFSET
     }
-
 }
 
 impl Default for Trccidr1Val {
@@ -53555,19 +51654,6 @@ impl Trccidr1 {
     pub fn read_val(&self) -> Trccidr1Val {
         Trccidr1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Trccidr1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Trccidr1Val) -> Trccidr1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TRCCIDR2 Register
@@ -53615,7 +51701,6 @@ impl Trccidr2 {
     pub fn prmbl_2(&self) -> u32 {
         (self.value.read_bits() & Self::PRMBL_2_MASK) >> Self::PRMBL_2_OFFSET
     }
-
 }
 
 /// TRCCIDR2 value type for batch read/modify/write operations
@@ -53653,7 +51738,6 @@ impl Trccidr2Val {
     pub const fn prmbl_2(&self) -> u32 {
         (self.bits & Trccidr2::PRMBL_2_MASK) >> Trccidr2::PRMBL_2_OFFSET
     }
-
 }
 
 impl Default for Trccidr2Val {
@@ -53668,19 +51752,6 @@ impl Trccidr2 {
     pub fn read_val(&self) -> Trccidr2Val {
         Trccidr2Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Trccidr2Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Trccidr2Val) -> Trccidr2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TRCCIDR3 Register
@@ -53728,7 +51799,6 @@ impl Trccidr3 {
     pub fn prmbl_3(&self) -> u32 {
         (self.value.read_bits() & Self::PRMBL_3_MASK) >> Self::PRMBL_3_OFFSET
     }
-
 }
 
 /// TRCCIDR3 value type for batch read/modify/write operations
@@ -53766,7 +51836,6 @@ impl Trccidr3Val {
     pub const fn prmbl_3(&self) -> u32 {
         (self.bits & Trccidr3::PRMBL_3_MASK) >> Trccidr3::PRMBL_3_OFFSET
     }
-
 }
 
 impl Default for Trccidr3Val {
@@ -53781,19 +51850,6 @@ impl Trccidr3 {
     pub fn read_val(&self) -> Trccidr3Val {
         Trccidr3Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Trccidr3Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Trccidr3Val) -> Trccidr3Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CTICONTROL Register
@@ -53854,7 +51910,6 @@ impl Cticontrol {
     pub fn clr_glben(&self) {
         self.value.modify_bits(|r| r & !Self::GLBEN_MASK);
     }
-
 }
 
 /// CTICONTROL value type for batch read/modify/write operations
@@ -53906,7 +51961,6 @@ impl CticontrolVal {
             }
         }
     }
-
 }
 
 impl Default for CticontrolVal {
@@ -53933,7 +51987,6 @@ impl Cticontrol {
     pub fn modify_val<F: FnOnce(CticontrolVal) -> CticontrolVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CTIINTACK Register
@@ -53989,7 +52042,6 @@ impl Ctiintack {
     pub fn write_intack(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::INTACK_MASK) | ((value << Self::INTACK_OFFSET) & Self::INTACK_MASK));
     }
-
 }
 
 /// CTIINTACK value type for batch read/modify/write operations
@@ -54037,7 +52089,6 @@ impl CtiintackVal {
             bits: (self.bits & !Ctiintack::INTACK_MASK) | ((value << Ctiintack::INTACK_OFFSET) & Ctiintack::INTACK_MASK)
         }
     }
-
 }
 
 impl Default for CtiintackVal {
@@ -54064,7 +52115,6 @@ impl Ctiintack {
     pub fn modify_val<F: FnOnce(CtiintackVal) -> CtiintackVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CTIAPPSET Register
@@ -54120,7 +52170,6 @@ impl Ctiappset {
     pub fn write_appset(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::APPSET_MASK) | ((value << Self::APPSET_OFFSET) & Self::APPSET_MASK));
     }
-
 }
 
 /// CTIAPPSET value type for batch read/modify/write operations
@@ -54168,7 +52217,6 @@ impl CtiappsetVal {
             bits: (self.bits & !Ctiappset::APPSET_MASK) | ((value << Ctiappset::APPSET_OFFSET) & Ctiappset::APPSET_MASK)
         }
     }
-
 }
 
 impl Default for CtiappsetVal {
@@ -54195,7 +52243,6 @@ impl Ctiappset {
     pub fn modify_val<F: FnOnce(CtiappsetVal) -> CtiappsetVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CTIAPPCLEAR Register
@@ -54251,7 +52298,6 @@ impl Ctiappclear {
     pub fn write_appclear(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::APPCLEAR_MASK) | ((value << Self::APPCLEAR_OFFSET) & Self::APPCLEAR_MASK));
     }
-
 }
 
 /// CTIAPPCLEAR value type for batch read/modify/write operations
@@ -54299,7 +52345,6 @@ impl CtiappclearVal {
             bits: (self.bits & !Ctiappclear::APPCLEAR_MASK) | ((value << Ctiappclear::APPCLEAR_OFFSET) & Ctiappclear::APPCLEAR_MASK)
         }
     }
-
 }
 
 impl Default for CtiappclearVal {
@@ -54326,7 +52371,6 @@ impl Ctiappclear {
     pub fn modify_val<F: FnOnce(CtiappclearVal) -> CtiappclearVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CTIAPPPULSE Register
@@ -54382,7 +52426,6 @@ impl Ctiapppulse {
     pub fn write_appulse(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::APPULSE_MASK) | ((value << Self::APPULSE_OFFSET) & Self::APPULSE_MASK));
     }
-
 }
 
 /// CTIAPPPULSE value type for batch read/modify/write operations
@@ -54430,7 +52473,6 @@ impl CtiapppulseVal {
             bits: (self.bits & !Ctiapppulse::APPULSE_MASK) | ((value << Ctiapppulse::APPULSE_OFFSET) & Ctiapppulse::APPULSE_MASK)
         }
     }
-
 }
 
 impl Default for CtiapppulseVal {
@@ -54457,7 +52499,6 @@ impl Ctiapppulse {
     pub fn modify_val<F: FnOnce(CtiapppulseVal) -> CtiapppulseVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CTIINEN0 Register
@@ -54513,7 +52554,6 @@ impl Ctiinen0 {
     pub fn write_triginen(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::TRIGINEN_MASK) | ((value << Self::TRIGINEN_OFFSET) & Self::TRIGINEN_MASK));
     }
-
 }
 
 /// CTIINEN0 value type for batch read/modify/write operations
@@ -54561,7 +52601,6 @@ impl Ctiinen0Val {
             bits: (self.bits & !Ctiinen0::TRIGINEN_MASK) | ((value << Ctiinen0::TRIGINEN_OFFSET) & Ctiinen0::TRIGINEN_MASK)
         }
     }
-
 }
 
 impl Default for Ctiinen0Val {
@@ -54588,7 +52627,6 @@ impl Ctiinen0 {
     pub fn modify_val<F: FnOnce(Ctiinen0Val) -> Ctiinen0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CTIINEN1 Register
@@ -54644,7 +52682,6 @@ impl Ctiinen1 {
     pub fn write_triginen(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::TRIGINEN_MASK) | ((value << Self::TRIGINEN_OFFSET) & Self::TRIGINEN_MASK));
     }
-
 }
 
 /// CTIINEN1 value type for batch read/modify/write operations
@@ -54692,7 +52729,6 @@ impl Ctiinen1Val {
             bits: (self.bits & !Ctiinen1::TRIGINEN_MASK) | ((value << Ctiinen1::TRIGINEN_OFFSET) & Ctiinen1::TRIGINEN_MASK)
         }
     }
-
 }
 
 impl Default for Ctiinen1Val {
@@ -54719,7 +52755,6 @@ impl Ctiinen1 {
     pub fn modify_val<F: FnOnce(Ctiinen1Val) -> Ctiinen1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CTIINEN2 Register
@@ -54775,7 +52810,6 @@ impl Ctiinen2 {
     pub fn write_triginen(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::TRIGINEN_MASK) | ((value << Self::TRIGINEN_OFFSET) & Self::TRIGINEN_MASK));
     }
-
 }
 
 /// CTIINEN2 value type for batch read/modify/write operations
@@ -54823,7 +52857,6 @@ impl Ctiinen2Val {
             bits: (self.bits & !Ctiinen2::TRIGINEN_MASK) | ((value << Ctiinen2::TRIGINEN_OFFSET) & Ctiinen2::TRIGINEN_MASK)
         }
     }
-
 }
 
 impl Default for Ctiinen2Val {
@@ -54850,7 +52883,6 @@ impl Ctiinen2 {
     pub fn modify_val<F: FnOnce(Ctiinen2Val) -> Ctiinen2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CTIINEN3 Register
@@ -54906,7 +52938,6 @@ impl Ctiinen3 {
     pub fn write_triginen(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::TRIGINEN_MASK) | ((value << Self::TRIGINEN_OFFSET) & Self::TRIGINEN_MASK));
     }
-
 }
 
 /// CTIINEN3 value type for batch read/modify/write operations
@@ -54954,7 +52985,6 @@ impl Ctiinen3Val {
             bits: (self.bits & !Ctiinen3::TRIGINEN_MASK) | ((value << Ctiinen3::TRIGINEN_OFFSET) & Ctiinen3::TRIGINEN_MASK)
         }
     }
-
 }
 
 impl Default for Ctiinen3Val {
@@ -54981,7 +53011,6 @@ impl Ctiinen3 {
     pub fn modify_val<F: FnOnce(Ctiinen3Val) -> Ctiinen3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CTIINEN4 Register
@@ -55037,7 +53066,6 @@ impl Ctiinen4 {
     pub fn write_triginen(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::TRIGINEN_MASK) | ((value << Self::TRIGINEN_OFFSET) & Self::TRIGINEN_MASK));
     }
-
 }
 
 /// CTIINEN4 value type for batch read/modify/write operations
@@ -55085,7 +53113,6 @@ impl Ctiinen4Val {
             bits: (self.bits & !Ctiinen4::TRIGINEN_MASK) | ((value << Ctiinen4::TRIGINEN_OFFSET) & Ctiinen4::TRIGINEN_MASK)
         }
     }
-
 }
 
 impl Default for Ctiinen4Val {
@@ -55112,7 +53139,6 @@ impl Ctiinen4 {
     pub fn modify_val<F: FnOnce(Ctiinen4Val) -> Ctiinen4Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CTIINEN5 Register
@@ -55168,7 +53194,6 @@ impl Ctiinen5 {
     pub fn write_triginen(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::TRIGINEN_MASK) | ((value << Self::TRIGINEN_OFFSET) & Self::TRIGINEN_MASK));
     }
-
 }
 
 /// CTIINEN5 value type for batch read/modify/write operations
@@ -55216,7 +53241,6 @@ impl Ctiinen5Val {
             bits: (self.bits & !Ctiinen5::TRIGINEN_MASK) | ((value << Ctiinen5::TRIGINEN_OFFSET) & Ctiinen5::TRIGINEN_MASK)
         }
     }
-
 }
 
 impl Default for Ctiinen5Val {
@@ -55243,7 +53267,6 @@ impl Ctiinen5 {
     pub fn modify_val<F: FnOnce(Ctiinen5Val) -> Ctiinen5Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CTIINEN6 Register
@@ -55299,7 +53322,6 @@ impl Ctiinen6 {
     pub fn write_triginen(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::TRIGINEN_MASK) | ((value << Self::TRIGINEN_OFFSET) & Self::TRIGINEN_MASK));
     }
-
 }
 
 /// CTIINEN6 value type for batch read/modify/write operations
@@ -55347,7 +53369,6 @@ impl Ctiinen6Val {
             bits: (self.bits & !Ctiinen6::TRIGINEN_MASK) | ((value << Ctiinen6::TRIGINEN_OFFSET) & Ctiinen6::TRIGINEN_MASK)
         }
     }
-
 }
 
 impl Default for Ctiinen6Val {
@@ -55374,7 +53395,6 @@ impl Ctiinen6 {
     pub fn modify_val<F: FnOnce(Ctiinen6Val) -> Ctiinen6Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CTIINEN7 Register
@@ -55430,7 +53450,6 @@ impl Ctiinen7 {
     pub fn write_triginen(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::TRIGINEN_MASK) | ((value << Self::TRIGINEN_OFFSET) & Self::TRIGINEN_MASK));
     }
-
 }
 
 /// CTIINEN7 value type for batch read/modify/write operations
@@ -55478,7 +53497,6 @@ impl Ctiinen7Val {
             bits: (self.bits & !Ctiinen7::TRIGINEN_MASK) | ((value << Ctiinen7::TRIGINEN_OFFSET) & Ctiinen7::TRIGINEN_MASK)
         }
     }
-
 }
 
 impl Default for Ctiinen7Val {
@@ -55505,7 +53523,6 @@ impl Ctiinen7 {
     pub fn modify_val<F: FnOnce(Ctiinen7Val) -> Ctiinen7Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CTIOUTEN0 Register
@@ -55561,7 +53578,6 @@ impl Ctiouten0 {
     pub fn write_trigouten(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::TRIGOUTEN_MASK) | ((value << Self::TRIGOUTEN_OFFSET) & Self::TRIGOUTEN_MASK));
     }
-
 }
 
 /// CTIOUTEN0 value type for batch read/modify/write operations
@@ -55609,7 +53625,6 @@ impl Ctiouten0Val {
             bits: (self.bits & !Ctiouten0::TRIGOUTEN_MASK) | ((value << Ctiouten0::TRIGOUTEN_OFFSET) & Ctiouten0::TRIGOUTEN_MASK)
         }
     }
-
 }
 
 impl Default for Ctiouten0Val {
@@ -55636,7 +53651,6 @@ impl Ctiouten0 {
     pub fn modify_val<F: FnOnce(Ctiouten0Val) -> Ctiouten0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CTIOUTEN1 Register
@@ -55692,7 +53706,6 @@ impl Ctiouten1 {
     pub fn write_trigouten(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::TRIGOUTEN_MASK) | ((value << Self::TRIGOUTEN_OFFSET) & Self::TRIGOUTEN_MASK));
     }
-
 }
 
 /// CTIOUTEN1 value type for batch read/modify/write operations
@@ -55740,7 +53753,6 @@ impl Ctiouten1Val {
             bits: (self.bits & !Ctiouten1::TRIGOUTEN_MASK) | ((value << Ctiouten1::TRIGOUTEN_OFFSET) & Ctiouten1::TRIGOUTEN_MASK)
         }
     }
-
 }
 
 impl Default for Ctiouten1Val {
@@ -55767,7 +53779,6 @@ impl Ctiouten1 {
     pub fn modify_val<F: FnOnce(Ctiouten1Val) -> Ctiouten1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CTIOUTEN2 Register
@@ -55823,7 +53834,6 @@ impl Ctiouten2 {
     pub fn write_trigouten(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::TRIGOUTEN_MASK) | ((value << Self::TRIGOUTEN_OFFSET) & Self::TRIGOUTEN_MASK));
     }
-
 }
 
 /// CTIOUTEN2 value type for batch read/modify/write operations
@@ -55871,7 +53881,6 @@ impl Ctiouten2Val {
             bits: (self.bits & !Ctiouten2::TRIGOUTEN_MASK) | ((value << Ctiouten2::TRIGOUTEN_OFFSET) & Ctiouten2::TRIGOUTEN_MASK)
         }
     }
-
 }
 
 impl Default for Ctiouten2Val {
@@ -55898,7 +53907,6 @@ impl Ctiouten2 {
     pub fn modify_val<F: FnOnce(Ctiouten2Val) -> Ctiouten2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CTIOUTEN3 Register
@@ -55954,7 +53962,6 @@ impl Ctiouten3 {
     pub fn write_trigouten(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::TRIGOUTEN_MASK) | ((value << Self::TRIGOUTEN_OFFSET) & Self::TRIGOUTEN_MASK));
     }
-
 }
 
 /// CTIOUTEN3 value type for batch read/modify/write operations
@@ -56002,7 +54009,6 @@ impl Ctiouten3Val {
             bits: (self.bits & !Ctiouten3::TRIGOUTEN_MASK) | ((value << Ctiouten3::TRIGOUTEN_OFFSET) & Ctiouten3::TRIGOUTEN_MASK)
         }
     }
-
 }
 
 impl Default for Ctiouten3Val {
@@ -56029,7 +54035,6 @@ impl Ctiouten3 {
     pub fn modify_val<F: FnOnce(Ctiouten3Val) -> Ctiouten3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CTIOUTEN4 Register
@@ -56085,7 +54090,6 @@ impl Ctiouten4 {
     pub fn write_trigouten(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::TRIGOUTEN_MASK) | ((value << Self::TRIGOUTEN_OFFSET) & Self::TRIGOUTEN_MASK));
     }
-
 }
 
 /// CTIOUTEN4 value type for batch read/modify/write operations
@@ -56133,7 +54137,6 @@ impl Ctiouten4Val {
             bits: (self.bits & !Ctiouten4::TRIGOUTEN_MASK) | ((value << Ctiouten4::TRIGOUTEN_OFFSET) & Ctiouten4::TRIGOUTEN_MASK)
         }
     }
-
 }
 
 impl Default for Ctiouten4Val {
@@ -56160,7 +54163,6 @@ impl Ctiouten4 {
     pub fn modify_val<F: FnOnce(Ctiouten4Val) -> Ctiouten4Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CTIOUTEN5 Register
@@ -56216,7 +54218,6 @@ impl Ctiouten5 {
     pub fn write_trigouten(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::TRIGOUTEN_MASK) | ((value << Self::TRIGOUTEN_OFFSET) & Self::TRIGOUTEN_MASK));
     }
-
 }
 
 /// CTIOUTEN5 value type for batch read/modify/write operations
@@ -56264,7 +54265,6 @@ impl Ctiouten5Val {
             bits: (self.bits & !Ctiouten5::TRIGOUTEN_MASK) | ((value << Ctiouten5::TRIGOUTEN_OFFSET) & Ctiouten5::TRIGOUTEN_MASK)
         }
     }
-
 }
 
 impl Default for Ctiouten5Val {
@@ -56291,7 +54291,6 @@ impl Ctiouten5 {
     pub fn modify_val<F: FnOnce(Ctiouten5Val) -> Ctiouten5Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CTIOUTEN6 Register
@@ -56347,7 +54346,6 @@ impl Ctiouten6 {
     pub fn write_trigouten(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::TRIGOUTEN_MASK) | ((value << Self::TRIGOUTEN_OFFSET) & Self::TRIGOUTEN_MASK));
     }
-
 }
 
 /// CTIOUTEN6 value type for batch read/modify/write operations
@@ -56395,7 +54393,6 @@ impl Ctiouten6Val {
             bits: (self.bits & !Ctiouten6::TRIGOUTEN_MASK) | ((value << Ctiouten6::TRIGOUTEN_OFFSET) & Ctiouten6::TRIGOUTEN_MASK)
         }
     }
-
 }
 
 impl Default for Ctiouten6Val {
@@ -56422,7 +54419,6 @@ impl Ctiouten6 {
     pub fn modify_val<F: FnOnce(Ctiouten6Val) -> Ctiouten6Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CTIOUTEN7 Register
@@ -56478,7 +54474,6 @@ impl Ctiouten7 {
     pub fn write_trigouten(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::TRIGOUTEN_MASK) | ((value << Self::TRIGOUTEN_OFFSET) & Self::TRIGOUTEN_MASK));
     }
-
 }
 
 /// CTIOUTEN7 value type for batch read/modify/write operations
@@ -56526,7 +54521,6 @@ impl Ctiouten7Val {
             bits: (self.bits & !Ctiouten7::TRIGOUTEN_MASK) | ((value << Ctiouten7::TRIGOUTEN_OFFSET) & Ctiouten7::TRIGOUTEN_MASK)
         }
     }
-
 }
 
 impl Default for Ctiouten7Val {
@@ -56553,7 +54547,6 @@ impl Ctiouten7 {
     pub fn modify_val<F: FnOnce(Ctiouten7Val) -> Ctiouten7Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// CTITRIGINSTATUS Register
@@ -56601,7 +54594,6 @@ impl Ctitriginstatus {
     pub fn triginstatus(&self) -> u32 {
         (self.value.read_bits() & Self::TRIGINSTATUS_MASK) >> Self::TRIGINSTATUS_OFFSET
     }
-
 }
 
 /// CTITRIGINSTATUS value type for batch read/modify/write operations
@@ -56639,7 +54631,6 @@ impl CtitriginstatusVal {
     pub const fn triginstatus(&self) -> u32 {
         (self.bits & Ctitriginstatus::TRIGINSTATUS_MASK) >> Ctitriginstatus::TRIGINSTATUS_OFFSET
     }
-
 }
 
 impl Default for CtitriginstatusVal {
@@ -56654,19 +54645,6 @@ impl Ctitriginstatus {
     pub fn read_val(&self) -> CtitriginstatusVal {
         CtitriginstatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: CtitriginstatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(CtitriginstatusVal) -> CtitriginstatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CTITRIGOUTSTATUS Register
@@ -56714,7 +54692,6 @@ impl Ctitrigoutstatus {
     pub fn trigoutstatus(&self) -> u32 {
         (self.value.read_bits() & Self::TRIGOUTSTATUS_MASK) >> Self::TRIGOUTSTATUS_OFFSET
     }
-
 }
 
 /// CTITRIGOUTSTATUS value type for batch read/modify/write operations
@@ -56752,7 +54729,6 @@ impl CtitrigoutstatusVal {
     pub const fn trigoutstatus(&self) -> u32 {
         (self.bits & Ctitrigoutstatus::TRIGOUTSTATUS_MASK) >> Ctitrigoutstatus::TRIGOUTSTATUS_OFFSET
     }
-
 }
 
 impl Default for CtitrigoutstatusVal {
@@ -56767,19 +54743,6 @@ impl Ctitrigoutstatus {
     pub fn read_val(&self) -> CtitrigoutstatusVal {
         CtitrigoutstatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: CtitrigoutstatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(CtitrigoutstatusVal) -> CtitrigoutstatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CTICHINSTATUS Register
@@ -56827,7 +54790,6 @@ impl Ctichinstatus {
     pub fn ctichoutstatus(&self) -> u32 {
         (self.value.read_bits() & Self::CTICHOUTSTATUS_MASK) >> Self::CTICHOUTSTATUS_OFFSET
     }
-
 }
 
 /// CTICHINSTATUS value type for batch read/modify/write operations
@@ -56865,7 +54827,6 @@ impl CtichinstatusVal {
     pub const fn ctichoutstatus(&self) -> u32 {
         (self.bits & Ctichinstatus::CTICHOUTSTATUS_MASK) >> Ctichinstatus::CTICHOUTSTATUS_OFFSET
     }
-
 }
 
 impl Default for CtichinstatusVal {
@@ -56880,19 +54841,6 @@ impl Ctichinstatus {
     pub fn read_val(&self) -> CtichinstatusVal {
         CtichinstatusVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: CtichinstatusVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(CtichinstatusVal) -> CtichinstatusVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CTIGATE Register
@@ -57052,7 +55000,6 @@ impl Ctigate {
     pub fn clr_ctigateen0(&self) {
         self.value.modify_bits(|r| r & !Self::CTIGATEEN0_MASK);
     }
-
 }
 
 /// CTIGATE value type for batch read/modify/write operations
@@ -57170,7 +55117,6 @@ impl CtigateVal {
             }
         }
     }
-
 }
 
 impl Default for CtigateVal {
@@ -57197,7 +55143,6 @@ impl Ctigate {
     pub fn modify_val<F: FnOnce(CtigateVal) -> CtigateVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ASICCTL Register
@@ -57244,7 +55189,6 @@ impl Asicctl {
     pub fn write_asicctl(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::ASICCTL_MASK) | ((value << Self::ASICCTL_OFFSET) & Self::ASICCTL_MASK));
     }
-
 }
 
 /// ASICCTL value type for batch read/modify/write operations
@@ -57288,7 +55232,6 @@ impl AsicctlVal {
             bits: (self.bits & !Asicctl::ASICCTL_MASK) | ((value << Asicctl::ASICCTL_OFFSET) & Asicctl::ASICCTL_MASK)
         }
     }
-
 }
 
 impl Default for AsicctlVal {
@@ -57315,7 +55258,6 @@ impl Asicctl {
     pub fn modify_val<F: FnOnce(AsicctlVal) -> AsicctlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITCHOUT Register
@@ -57371,7 +55313,6 @@ impl Itchout {
     pub fn write_ctchout(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CTCHOUT_MASK) | ((value << Self::CTCHOUT_OFFSET) & Self::CTCHOUT_MASK));
     }
-
 }
 
 /// ITCHOUT value type for batch read/modify/write operations
@@ -57419,7 +55360,6 @@ impl ItchoutVal {
             bits: (self.bits & !Itchout::CTCHOUT_MASK) | ((value << Itchout::CTCHOUT_OFFSET) & Itchout::CTCHOUT_MASK)
         }
     }
-
 }
 
 impl Default for ItchoutVal {
@@ -57446,7 +55386,6 @@ impl Itchout {
     pub fn modify_val<F: FnOnce(ItchoutVal) -> ItchoutVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITTRIGOUT Register
@@ -57502,7 +55441,6 @@ impl Ittrigout {
     pub fn write_cttrigout(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::CTTRIGOUT_MASK) | ((value << Self::CTTRIGOUT_OFFSET) & Self::CTTRIGOUT_MASK));
     }
-
 }
 
 /// ITTRIGOUT value type for batch read/modify/write operations
@@ -57550,7 +55488,6 @@ impl IttrigoutVal {
             bits: (self.bits & !Ittrigout::CTTRIGOUT_MASK) | ((value << Ittrigout::CTTRIGOUT_OFFSET) & Ittrigout::CTTRIGOUT_MASK)
         }
     }
-
 }
 
 impl Default for IttrigoutVal {
@@ -57577,7 +55514,6 @@ impl Ittrigout {
     pub fn modify_val<F: FnOnce(IttrigoutVal) -> IttrigoutVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// ITCHIN Register
@@ -57625,7 +55561,6 @@ impl Itchin {
     pub fn ctchin(&self) -> u32 {
         (self.value.read_bits() & Self::CTCHIN_MASK) >> Self::CTCHIN_OFFSET
     }
-
 }
 
 /// ITCHIN value type for batch read/modify/write operations
@@ -57663,7 +55598,6 @@ impl ItchinVal {
     pub const fn ctchin(&self) -> u32 {
         (self.bits & Itchin::CTCHIN_MASK) >> Itchin::CTCHIN_OFFSET
     }
-
 }
 
 impl Default for ItchinVal {
@@ -57678,19 +55612,6 @@ impl Itchin {
     pub fn read_val(&self) -> ItchinVal {
         ItchinVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: ItchinVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(ItchinVal) -> ItchinVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// ITCTRL Register
@@ -57751,7 +55672,6 @@ impl Itctrl {
     pub fn clr_ime(&self) {
         self.value.modify_bits(|r| r & !Self::IME_MASK);
     }
-
 }
 
 /// ITCTRL value type for batch read/modify/write operations
@@ -57803,7 +55723,6 @@ impl ItctrlVal {
             }
         }
     }
-
 }
 
 impl Default for ItctrlVal {
@@ -57830,7 +55749,6 @@ impl Itctrl {
     pub fn modify_val<F: FnOnce(ItctrlVal) -> ItctrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DEVARCH Register
@@ -57939,7 +55857,6 @@ impl Devarch {
     pub fn archid(&self) -> u32 {
         (self.value.read_bits() & Self::ARCHID_MASK) >> Self::ARCHID_OFFSET
     }
-
 }
 
 /// DEVARCH value type for batch read/modify/write operations
@@ -58001,7 +55918,6 @@ impl DevarchVal {
     pub const fn archid(&self) -> u32 {
         (self.bits & Devarch::ARCHID_MASK) >> Devarch::ARCHID_OFFSET
     }
-
 }
 
 impl Default for DevarchVal {
@@ -58016,19 +55932,6 @@ impl Devarch {
     pub fn read_val(&self) -> DevarchVal {
         DevarchVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: DevarchVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(DevarchVal) -> DevarchVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DEVID Register
@@ -58116,7 +56019,6 @@ impl Devid {
     pub fn extmuxnum(&self) -> u32 {
         (self.value.read_bits() & Self::EXTMUXNUM_MASK) >> Self::EXTMUXNUM_OFFSET
     }
-
 }
 
 /// DEVID value type for batch read/modify/write operations
@@ -58170,7 +56072,6 @@ impl DevidVal {
     pub const fn extmuxnum(&self) -> u32 {
         (self.bits & Devid::EXTMUXNUM_MASK) >> Devid::EXTMUXNUM_OFFSET
     }
-
 }
 
 impl Default for DevidVal {
@@ -58185,19 +56086,6 @@ impl Devid {
     pub fn read_val(&self) -> DevidVal {
         DevidVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: DevidVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(DevidVal) -> DevidVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DEVTYPE Register
@@ -58265,7 +56153,6 @@ impl Devtype {
     pub fn major(&self) -> u32 {
         (self.value.read_bits() & Self::MAJOR_MASK) >> Self::MAJOR_OFFSET
     }
-
 }
 
 /// DEVTYPE value type for batch read/modify/write operations
@@ -58311,7 +56198,6 @@ impl DevtypeVal {
     pub const fn major(&self) -> u32 {
         (self.bits & Devtype::MAJOR_MASK) >> Devtype::MAJOR_OFFSET
     }
-
 }
 
 impl Default for DevtypeVal {
@@ -58326,19 +56212,6 @@ impl Devtype {
     pub fn read_val(&self) -> DevtypeVal {
         DevtypeVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: DevtypeVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(DevtypeVal) -> DevtypeVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// PIDR4 Register
@@ -58406,7 +56279,6 @@ impl Pidr4 {
     pub fn des_2(&self) -> u32 {
         (self.value.read_bits() & Self::DES_2_MASK) >> Self::DES_2_OFFSET
     }
-
 }
 
 /// PIDR4 value type for batch read/modify/write operations
@@ -58452,7 +56324,6 @@ impl Pidr4Val {
     pub const fn des_2(&self) -> u32 {
         (self.bits & Pidr4::DES_2_MASK) >> Pidr4::DES_2_OFFSET
     }
-
 }
 
 impl Default for Pidr4Val {
@@ -58467,19 +56338,6 @@ impl Pidr4 {
     pub fn read_val(&self) -> Pidr4Val {
         Pidr4Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Pidr4Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Pidr4Val) -> Pidr4Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// PIDR5 Register
@@ -58526,7 +56384,6 @@ impl Pidr5 {
     pub fn write_pidr5(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PIDR5_MASK) | ((value << Self::PIDR5_OFFSET) & Self::PIDR5_MASK));
     }
-
 }
 
 /// PIDR5 value type for batch read/modify/write operations
@@ -58570,7 +56427,6 @@ impl Pidr5Val {
             bits: (self.bits & !Pidr5::PIDR5_MASK) | ((value << Pidr5::PIDR5_OFFSET) & Pidr5::PIDR5_MASK)
         }
     }
-
 }
 
 impl Default for Pidr5Val {
@@ -58597,7 +56453,6 @@ impl Pidr5 {
     pub fn modify_val<F: FnOnce(Pidr5Val) -> Pidr5Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PIDR6 Register
@@ -58644,7 +56499,6 @@ impl Pidr6 {
     pub fn write_pidr6(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PIDR6_MASK) | ((value << Self::PIDR6_OFFSET) & Self::PIDR6_MASK));
     }
-
 }
 
 /// PIDR6 value type for batch read/modify/write operations
@@ -58688,7 +56542,6 @@ impl Pidr6Val {
             bits: (self.bits & !Pidr6::PIDR6_MASK) | ((value << Pidr6::PIDR6_OFFSET) & Pidr6::PIDR6_MASK)
         }
     }
-
 }
 
 impl Default for Pidr6Val {
@@ -58715,7 +56568,6 @@ impl Pidr6 {
     pub fn modify_val<F: FnOnce(Pidr6Val) -> Pidr6Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PIDR7 Register
@@ -58762,7 +56614,6 @@ impl Pidr7 {
     pub fn write_pidr7(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PIDR7_MASK) | ((value << Self::PIDR7_OFFSET) & Self::PIDR7_MASK));
     }
-
 }
 
 /// PIDR7 value type for batch read/modify/write operations
@@ -58806,7 +56657,6 @@ impl Pidr7Val {
             bits: (self.bits & !Pidr7::PIDR7_MASK) | ((value << Pidr7::PIDR7_OFFSET) & Pidr7::PIDR7_MASK)
         }
     }
-
 }
 
 impl Default for Pidr7Val {
@@ -58833,7 +56683,6 @@ impl Pidr7 {
     pub fn modify_val<F: FnOnce(Pidr7Val) -> Pidr7Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PIDR0 Register
@@ -58881,7 +56730,6 @@ impl Pidr0 {
     pub fn part_0(&self) -> u32 {
         (self.value.read_bits() & Self::PART_0_MASK) >> Self::PART_0_OFFSET
     }
-
 }
 
 /// PIDR0 value type for batch read/modify/write operations
@@ -58919,7 +56767,6 @@ impl Pidr0Val {
     pub const fn part_0(&self) -> u32 {
         (self.bits & Pidr0::PART_0_MASK) >> Pidr0::PART_0_OFFSET
     }
-
 }
 
 impl Default for Pidr0Val {
@@ -58934,19 +56781,6 @@ impl Pidr0 {
     pub fn read_val(&self) -> Pidr0Val {
         Pidr0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Pidr0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Pidr0Val) -> Pidr0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// PIDR1 Register
@@ -59014,7 +56848,6 @@ impl Pidr1 {
     pub fn part_1(&self) -> u32 {
         (self.value.read_bits() & Self::PART_1_MASK) >> Self::PART_1_OFFSET
     }
-
 }
 
 /// PIDR1 value type for batch read/modify/write operations
@@ -59060,7 +56893,6 @@ impl Pidr1Val {
     pub const fn part_1(&self) -> u32 {
         (self.bits & Pidr1::PART_1_MASK) >> Pidr1::PART_1_OFFSET
     }
-
 }
 
 impl Default for Pidr1Val {
@@ -59075,19 +56907,6 @@ impl Pidr1 {
     pub fn read_val(&self) -> Pidr1Val {
         Pidr1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Pidr1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Pidr1Val) -> Pidr1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// PIDR2 Register
@@ -59176,7 +56995,6 @@ impl Pidr2 {
     pub fn des_1(&self) -> u32 {
         (self.value.read_bits() & Self::DES_1_MASK) >> Self::DES_1_OFFSET
     }
-
 }
 
 /// PIDR2 value type for batch read/modify/write operations
@@ -59230,7 +57048,6 @@ impl Pidr2Val {
     pub const fn des_1(&self) -> u32 {
         (self.bits & Pidr2::DES_1_MASK) >> Pidr2::DES_1_OFFSET
     }
-
 }
 
 impl Default for Pidr2Val {
@@ -59245,19 +57062,6 @@ impl Pidr2 {
     pub fn read_val(&self) -> Pidr2Val {
         Pidr2Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Pidr2Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Pidr2Val) -> Pidr2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// PIDR3 Register
@@ -59325,7 +57129,6 @@ impl Pidr3 {
     pub fn cmod(&self) -> u32 {
         (self.value.read_bits() & Self::CMOD_MASK) >> Self::CMOD_OFFSET
     }
-
 }
 
 /// PIDR3 value type for batch read/modify/write operations
@@ -59371,7 +57174,6 @@ impl Pidr3Val {
     pub const fn cmod(&self) -> u32 {
         (self.bits & Pidr3::CMOD_MASK) >> Pidr3::CMOD_OFFSET
     }
-
 }
 
 impl Default for Pidr3Val {
@@ -59386,19 +57188,6 @@ impl Pidr3 {
     pub fn read_val(&self) -> Pidr3Val {
         Pidr3Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Pidr3Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Pidr3Val) -> Pidr3Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CIDR0 Register
@@ -59446,7 +57235,6 @@ impl Cidr0 {
     pub fn prmbl_0(&self) -> u32 {
         (self.value.read_bits() & Self::PRMBL_0_MASK) >> Self::PRMBL_0_OFFSET
     }
-
 }
 
 /// CIDR0 value type for batch read/modify/write operations
@@ -59484,7 +57272,6 @@ impl Cidr0Val {
     pub const fn prmbl_0(&self) -> u32 {
         (self.bits & Cidr0::PRMBL_0_MASK) >> Cidr0::PRMBL_0_OFFSET
     }
-
 }
 
 impl Default for Cidr0Val {
@@ -59499,19 +57286,6 @@ impl Cidr0 {
     pub fn read_val(&self) -> Cidr0Val {
         Cidr0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Cidr0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Cidr0Val) -> Cidr0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CIDR1 Register
@@ -59579,7 +57353,6 @@ impl Cidr1 {
     pub fn prmbl_1(&self) -> u32 {
         (self.value.read_bits() & Self::PRMBL_1_MASK) >> Self::PRMBL_1_OFFSET
     }
-
 }
 
 /// CIDR1 value type for batch read/modify/write operations
@@ -59625,7 +57398,6 @@ impl Cidr1Val {
     pub const fn prmbl_1(&self) -> u32 {
         (self.bits & Cidr1::PRMBL_1_MASK) >> Cidr1::PRMBL_1_OFFSET
     }
-
 }
 
 impl Default for Cidr1Val {
@@ -59640,19 +57412,6 @@ impl Cidr1 {
     pub fn read_val(&self) -> Cidr1Val {
         Cidr1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Cidr1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Cidr1Val) -> Cidr1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CIDR2 Register
@@ -59700,7 +57459,6 @@ impl Cidr2 {
     pub fn prmbl_2(&self) -> u32 {
         (self.value.read_bits() & Self::PRMBL_2_MASK) >> Self::PRMBL_2_OFFSET
     }
-
 }
 
 /// CIDR2 value type for batch read/modify/write operations
@@ -59738,7 +57496,6 @@ impl Cidr2Val {
     pub const fn prmbl_2(&self) -> u32 {
         (self.bits & Cidr2::PRMBL_2_MASK) >> Cidr2::PRMBL_2_OFFSET
     }
-
 }
 
 impl Default for Cidr2Val {
@@ -59753,19 +57510,6 @@ impl Cidr2 {
     pub fn read_val(&self) -> Cidr2Val {
         Cidr2Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Cidr2Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Cidr2Val) -> Cidr2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// CIDR3 Register
@@ -59813,7 +57557,6 @@ impl Cidr3 {
     pub fn prmbl_3(&self) -> u32 {
         (self.value.read_bits() & Self::PRMBL_3_MASK) >> Self::PRMBL_3_OFFSET
     }
-
 }
 
 /// CIDR3 value type for batch read/modify/write operations
@@ -59851,7 +57594,6 @@ impl Cidr3Val {
     pub const fn prmbl_3(&self) -> u32 {
         (self.bits & Cidr3::PRMBL_3_MASK) >> Cidr3::PRMBL_3_OFFSET
     }
-
 }
 
 impl Default for Cidr3Val {
@@ -59866,19 +57608,6 @@ impl Cidr3 {
     pub fn read_val(&self) -> Cidr3Val {
         Cidr3Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Cidr3Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Cidr3Val) -> Cidr3Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// Register block

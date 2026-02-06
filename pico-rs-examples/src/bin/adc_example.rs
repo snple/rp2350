@@ -1,17 +1,11 @@
-//! # ADC Example
+//! ADC Example for Pico 2
 //!
-//! Demonstrates using the RP2350's ADC to:
-//! - Read analog inputs
-//! - Read the on-chip temperature sensor
-//! - Configure FIFO for continuous sampling
+//! Demonstrates the type-safe ADC API:
+//! - Pin ownership: `into_adc_input()` consumes the pin
+//! - Type-safe reading: `adc.read(&input)` requires a configured input
+//! - Temperature sensor: `adc.read_temp()` for on-chip temperature
 //!
-//! ## Hardware Setup
-//!
-//! Connect a potentiometer or analog sensor to:
-//! - RP2350A: GPIO 26 (ADC0)
-//! - RP2350B: GPIO 40 (ADC0)
-//!
-//! The on-chip temperature sensor doesn't require external connections.
+//! Wire a potentiometer or voltage source (0-3.3V) to GPIO 26 (ADC channel 0).
 
 #![no_std]
 #![no_main]
@@ -20,178 +14,97 @@ use defmt::*;
 use defmt_rtt as _;
 use panic_probe as _;
 
-use pico_rs::adc::{ADC_BASE_PIN, Adc};
+use pico_rs::Delay;
+use pico_rs::adc::{Adc, AdcPin};
 use pico_rs::block::ImageDef;
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
-#[cfg(feature = "rp2350b")]
-use pico_rs::gpio::Pin40;
-use pico_rs::gpio::{self, Function, Pin26, Pull};
-use pico_rs::systick::Delay;
+use pico_rs::gpio::Pins;
+use pico_rs::pac::Peripherals;
+use pico_rs::pico_rs_rt::peripheral::Peripherals as CorePeripherals;
 
-/// RP2350 Boot Block
+/// RP2350 Boot Block - tells the Boot ROM this is a valid ARM executable
 #[unsafe(link_section = ".start_block")]
 #[used]
 pub static IMAGE_DEF: ImageDef = ImageDef::secure_exe();
 
-/// Clock frequency at boot (ROSC ~12 MHz)
-const CLOCK_FREQ_HZ: u32 = 12_000_000;
+/// RP2350 default boot clock frequency
+/// At boot, RP2350 runs from ROSC at approximately 12 MHz
+const CLOCK_FREQ_HZ: u32 = 150_000_000; // After PLL init, 150 MHz
 
 #[entry]
 fn main() -> ! {
-    info!("=== RP2350 ADC Example ===");
+    info!("RP2350 started!");
+    info!("ADC Type-Safe Example...");
 
-    // Initialize GPIO for ADC pins
-    gpio::init_gpio();
+    // Take device peripherals from PAC
+    let dp = Peripherals::take().unwrap();
 
-    // Configure ADC pin for channel 0
-    // For RP2350A: GPIO 26, for RP2350B: GPIO 40
-    info!("ADC base pin: GPIO {}", ADC_BASE_PIN);
+    // Initialize clock system (150 MHz sys, 48 MHz USB)
+    let clocks = ClockBuilder::new()
+        .enable_usb()
+        .enable_adc()
+        .build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
+    info!(
+        "Clock system initialized: sys={} Hz, usb={} Hz",
+        clocks.sys_freq(),
+        clocks.usb_freq()
+    );
 
-    // Set the ADC pin to NULL function (high-Z) and disable pulls
-    // This example assumes RP2350A (GPIO 26) by default.
-    // For RP2350B, enable the rp2350b feature and this will use GPIO 40.
-    #[cfg(not(feature = "rp2350b"))]
-    {
-        let adc_pin = Pin26::new();
-        adc_pin.set_function(Function::Null);
-        adc_pin.set_pull(Pull::None);
-    }
-    #[cfg(feature = "rp2350b")]
-    {
-        let adc_pin = Pin40::new();
-        adc_pin.set_function(Function::Null);
-        adc_pin.set_pull(Pull::None);
-    }
+    // Initialize GPIO pins
+    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
 
-    // Initialize ADC
-    let adc = Adc::init();
+    // Take core peripherals
+    let core_peripherals = CorePeripherals::take().unwrap();
+
+    // Initialize SysTick-based delay
+    let mut delay = Delay::new(core_peripherals.SYST, CLOCK_FREQ_HZ);
+
+    info!("Initializing ADC...");
+
+    // Create ADC controller
+    let mut adc = Adc::new(dp.ADC);
     info!("ADC initialized");
 
-    // Initialize delay
-    let mut delay = Delay::new(CLOCK_FREQ_HZ);
+    // Configure pin for ADC - this consumes the pin!
+    // The pin cannot be used for other purposes while AdcInput exists.
+    let input0 = pins.p26.into_adc_input();
+    info!(
+        "Configured GPIO 26 as ADC input (channel {})",
+        input0.channel()
+    );
 
-    // ========================================================================
-    // Part 1: Single-shot ADC reading
-    // ========================================================================
-    info!("\n--- Single-shot ADC readings ---");
+    // Trying to use pins.p26 again would be a compile error:
+    // pins.p26.into_output();  // ERROR: use of moved value
 
-    for i in 0..5 {
-        // Read channel 0 (first analog input)
-        let raw = adc.read_channel(0);
+    info!("Starting readings...");
+
+    loop {
+        // Read from the configured input - type-safe!
+        // Cannot accidentally read from an unconfigured channel.
+        let raw = adc.read(&input0);
         let voltage_mv = Adc::to_millivolts(raw);
-        info!("Reading {}: Raw={}, Voltage={}mV", i + 1, raw, voltage_mv);
-
-        delay.delay_ms(500);
-    }
-
-    // ========================================================================
-    // Part 2: Temperature sensor reading
-    // ========================================================================
-    info!("\n--- Temperature Sensor ---");
-
-    adc.enable_temperature_sensor();
-    delay.delay_ms(10); // Let sensor stabilize
-
-    for i in 0..5 {
-        let raw = adc.read_temperature_raw();
-        // Note: convert_temperature requires floating point
-        // For integer math: T_C ≈ 27 - (raw * 3300 / 4096 - 706) / 1721 * 1000
-        let voltage_mv = Adc::to_millivolts(raw);
-
-        // Simplified integer temperature calculation
-        // T = 27 - (V - 0.706) / 0.001721
-        // With V in mV: T = 27 - (V_mV - 706) / 1.721
-        let temp_c_x10 = 270i32 - ((voltage_mv as i32 - 706) * 10 / 17);
 
         info!(
-            "Temp {}: Raw={}, Voltage={}mV, Temp=~{}.{}C",
-            i + 1,
+            "ADC Ch{}: raw={}, voltage={}mV",
+            input0.channel(),
             raw,
-            voltage_mv,
-            temp_c_x10 / 10,
-            (temp_c_x10 % 10).abs()
+            voltage_mv
         );
 
-        delay.delay_ms(1000);
-    }
+        // Read temperature (doesn't need a pin)
+        let temp_raw = adc.read_temp();
+        let temp_c = Adc::convert_temp_to_celsius(temp_raw);
 
-    adc.disable_temperature_sensor();
+        // Format temperature with integer and decimal parts
+        let temp_int = temp_c as i32;
+        let temp_frac = ((temp_c - temp_int as f32).abs() * 10.0) as u32;
 
-    // ========================================================================
-    // Part 3: Round-robin sampling
-    // ========================================================================
-    info!("\n--- Round-robin sampling (CH0 + Temp) ---");
+        info!(
+            "Temperature: raw={}, temp={}.{}C",
+            temp_raw, temp_int, temp_frac
+        );
 
-    // Enable round-robin for channel 0 and temperature (last channel)
-    let temp_channel = pico_rs::adc::TEMPERATURE_CHANNEL;
-    let channel_mask = (1 << 0) | (1 << temp_channel);
-    adc.set_round_robin(channel_mask);
-    adc.enable_temperature_sensor();
-
-    for i in 0..10 {
-        let raw = adc.read();
-        let channel = adc.get_selected_channel();
-        let voltage_mv = Adc::to_millivolts(raw);
-
-        if channel == temp_channel {
-            info!("Sample {}: Temp sensor, {}mV", i + 1, voltage_mv);
-        } else {
-            info!("Sample {}: CH{}, {}mV", i + 1, channel, voltage_mv);
-        }
-
-        delay.delay_ms(200);
-    }
-
-    adc.disable_round_robin();
-
-    // ========================================================================
-    // Part 4: FIFO mode (continuous sampling)
-    // ========================================================================
-    info!("\n--- FIFO continuous sampling ---");
-
-    // Setup FIFO: enable, no DMA, threshold 4, no error in FIFO, no shift
-    adc.fifo_setup(true, false, 4, false, false);
-
-    // Set slow sample rate (about 10 samples/sec at 48 MHz ADC clock)
-    // Divisor calculation: ADC clock is typically 48 MHz
-    // For 10 S/s: div = 48_000_000 / 10 = 4_800_000
-    // But we're at 12 MHz boot clock, so ADC clock is different
-    // Just use a reasonable divisor for demonstration
-    adc.set_clkdiv(65535, 0); // Very slow for demo
-
-    // Select channel 0
-    adc.select_channel(0);
-
-    // Start free-running
-    adc.start_free_running();
-
-    // Read some samples from FIFO
-    for i in 0..10 {
-        // Wait for data
-        if let Some(raw) = adc.fifo_pop() {
-            let voltage_mv = Adc::to_millivolts(raw);
-            info!("FIFO sample {}: Raw={}, {}mV", i + 1, raw, voltage_mv);
-        } else {
-            // Wait and try again
-            delay.delay_ms(100);
-            if let Some(raw) = adc.fifo_pop() {
-                let voltage_mv = Adc::to_millivolts(raw);
-                info!("FIFO sample {}: Raw={}, {}mV", i + 1, raw, voltage_mv);
-            }
-        }
-    }
-
-    adc.stop_free_running();
-    adc.fifo_drain();
-
-    info!("\n=== ADC Example Complete ===");
-
-    // Keep reading and displaying
-    info!("Continuous reading from CH0...");
-    loop {
-        let raw = adc.read_channel(0);
-        let voltage_mv = Adc::to_millivolts(raw);
-        info!("CH0: {}mV", voltage_mv);
         delay.delay_ms(1000);
     }
 }

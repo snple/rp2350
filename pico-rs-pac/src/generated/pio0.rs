@@ -164,7 +164,7 @@ impl Ctrl {
     /// This is equivalent to writing 1 to the corresponding CLKDIV_RESTART bits in those PIOs' CTRL registers.
     #[inline(always)]
     pub fn trigger_nextprev_clkdiv_restart(&self) {
-        self.value.write_bits(Self::NEXTPREV_CLKDIV_RESTART_MASK);
+        self.set_bits(Self::NEXTPREV_CLKDIV_RESTART_MASK);
     }
 
     /// Trigger **NEXTPREV_SM_DISABLE** (WO)
@@ -173,7 +173,7 @@ impl Ctrl {
     /// This is equivalent to clearing the corresponding SM_ENABLE bits in those PIOs' CTRL registers.
     #[inline(always)]
     pub fn trigger_nextprev_sm_disable(&self) {
-        self.value.write_bits(Self::NEXTPREV_SM_DISABLE_MASK);
+        self.set_bits(Self::NEXTPREV_SM_DISABLE_MASK);
     }
 
     /// Trigger **NEXTPREV_SM_ENABLE** (WO)
@@ -183,7 +183,7 @@ impl Ctrl {
     /// If both OTHERS_SM_ENABLE and OTHERS_SM_DISABLE are set, the disable takes precedence.
     #[inline(always)]
     pub fn trigger_nextprev_sm_enable(&self) {
-        self.value.write_bits(Self::NEXTPREV_SM_ENABLE_MASK);
+        self.set_bits(Self::NEXTPREV_SM_ENABLE_MASK);
     }
 
     /// Write **NEXT_PIO_MASK** `[23:20]` (WO)
@@ -242,7 +242,6 @@ impl Ctrl {
     pub fn write_sm_enable(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SM_ENABLE_MASK) | ((value << Self::SM_ENABLE_OFFSET) & Self::SM_ENABLE_MASK));
     }
-
 }
 
 /// CTRL value type for batch read/modify/write operations
@@ -385,7 +384,6 @@ impl CtrlVal {
             bits: (self.bits & !Ctrl::SM_ENABLE_MASK) | ((value << Ctrl::SM_ENABLE_OFFSET) & Ctrl::SM_ENABLE_MASK)
         }
     }
-
 }
 
 impl Default for CtrlVal {
@@ -412,7 +410,6 @@ impl Ctrl {
     pub fn modify_val<F: FnOnce(CtrlVal) -> CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FSTAT Register
@@ -520,7 +517,6 @@ impl Fstat {
     pub fn rxfull(&self) -> u32 {
         (self.value.read_bits() & Self::RXFULL_MASK) >> Self::RXFULL_OFFSET
     }
-
 }
 
 /// FSTAT value type for batch read/modify/write operations
@@ -582,7 +578,6 @@ impl FstatVal {
     pub const fn rxfull(&self) -> u32 {
         (self.bits & Fstat::RXFULL_MASK) >> Fstat::RXFULL_OFFSET
     }
-
 }
 
 impl Default for FstatVal {
@@ -597,19 +592,6 @@ impl Fstat {
     pub fn read_val(&self) -> FstatVal {
         FstatVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: FstatVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(FstatVal) -> FstatVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// FDEBUG Register
@@ -749,7 +731,6 @@ impl Fdebug {
     pub fn write_rxstall(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::RXSTALL_MASK) | ((value << Self::RXSTALL_OFFSET) & Self::RXSTALL_MASK));
     }
-
 }
 
 /// FDEBUG value type for batch read/modify/write operations
@@ -851,7 +832,6 @@ impl FdebugVal {
             bits: (self.bits & !Fdebug::RXSTALL_MASK) | ((value << Fdebug::RXSTALL_OFFSET) & Fdebug::RXSTALL_MASK)
         }
     }
-
 }
 
 impl Default for FdebugVal {
@@ -878,7 +858,6 @@ impl Fdebug {
     pub fn modify_val<F: FnOnce(FdebugVal) -> FdebugVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// FLEVEL Register
@@ -1010,7 +989,6 @@ impl Flevel {
     pub fn tx0(&self) -> u32 {
         (self.value.read_bits() & Self::TX0_MASK) >> Self::TX0_OFFSET
     }
-
 }
 
 /// FLEVEL value type for batch read/modify/write operations
@@ -1088,7 +1066,6 @@ impl FlevelVal {
     pub const fn tx0(&self) -> u32 {
         (self.bits & Flevel::TX0_MASK) >> Flevel::TX0_OFFSET
     }
-
 }
 
 impl Default for FlevelVal {
@@ -1103,19 +1080,6 @@ impl Flevel {
     pub fn read_val(&self) -> FlevelVal {
         FlevelVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: FlevelVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(FlevelVal) -> FlevelVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TXF0 Register
@@ -1156,7 +1120,6 @@ impl Txf0 {
     pub fn write_txf0(&self, value: u32) {
         self.value.write_bits((value << Self::TXF0_OFFSET) & Self::TXF0_MASK);
     }
-
 }
 
 /// TXF0 value type for batch read/modify/write operations
@@ -1194,7 +1157,6 @@ impl Txf0Val {
             bits: (self.bits & !Txf0::TXF0_MASK) | ((value << Txf0::TXF0_OFFSET) & Txf0::TXF0_MASK)
         }
     }
-
 }
 
 impl Default for Txf0Val {
@@ -1204,24 +1166,11 @@ impl Default for Txf0Val {
 }
 
 impl Txf0 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> Txf0Val {
-        Txf0Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: Txf0Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Txf0Val) -> Txf0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TXF1 Register
@@ -1262,7 +1211,6 @@ impl Txf1 {
     pub fn write_txf1(&self, value: u32) {
         self.value.write_bits((value << Self::TXF1_OFFSET) & Self::TXF1_MASK);
     }
-
 }
 
 /// TXF1 value type for batch read/modify/write operations
@@ -1300,7 +1248,6 @@ impl Txf1Val {
             bits: (self.bits & !Txf1::TXF1_MASK) | ((value << Txf1::TXF1_OFFSET) & Txf1::TXF1_MASK)
         }
     }
-
 }
 
 impl Default for Txf1Val {
@@ -1310,24 +1257,11 @@ impl Default for Txf1Val {
 }
 
 impl Txf1 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> Txf1Val {
-        Txf1Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: Txf1Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Txf1Val) -> Txf1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TXF2 Register
@@ -1368,7 +1302,6 @@ impl Txf2 {
     pub fn write_txf2(&self, value: u32) {
         self.value.write_bits((value << Self::TXF2_OFFSET) & Self::TXF2_MASK);
     }
-
 }
 
 /// TXF2 value type for batch read/modify/write operations
@@ -1406,7 +1339,6 @@ impl Txf2Val {
             bits: (self.bits & !Txf2::TXF2_MASK) | ((value << Txf2::TXF2_OFFSET) & Txf2::TXF2_MASK)
         }
     }
-
 }
 
 impl Default for Txf2Val {
@@ -1416,24 +1348,11 @@ impl Default for Txf2Val {
 }
 
 impl Txf2 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> Txf2Val {
-        Txf2Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: Txf2Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Txf2Val) -> Txf2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// TXF3 Register
@@ -1474,7 +1393,6 @@ impl Txf3 {
     pub fn write_txf3(&self, value: u32) {
         self.value.write_bits((value << Self::TXF3_OFFSET) & Self::TXF3_MASK);
     }
-
 }
 
 /// TXF3 value type for batch read/modify/write operations
@@ -1512,7 +1430,6 @@ impl Txf3Val {
             bits: (self.bits & !Txf3::TXF3_MASK) | ((value << Txf3::TXF3_OFFSET) & Txf3::TXF3_MASK)
         }
     }
-
 }
 
 impl Default for Txf3Val {
@@ -1522,24 +1439,11 @@ impl Default for Txf3Val {
 }
 
 impl Txf3 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> Txf3Val {
-        Txf3Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: Txf3Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Txf3Val) -> Txf3Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// RXF0 Register
@@ -1579,7 +1483,6 @@ impl Rxf0 {
     pub fn rxf0(&self) -> u32 {
         (self.value.read_bits() & Self::RXF0_MASK) >> Self::RXF0_OFFSET
     }
-
 }
 
 /// RXF0 value type for batch read/modify/write operations
@@ -1609,7 +1512,6 @@ impl Rxf0Val {
     pub const fn rxf0(&self) -> u32 {
         (self.bits & Rxf0::RXF0_MASK) >> Rxf0::RXF0_OFFSET
     }
-
 }
 
 impl Default for Rxf0Val {
@@ -1624,19 +1526,6 @@ impl Rxf0 {
     pub fn read_val(&self) -> Rxf0Val {
         Rxf0Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Rxf0Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Rxf0Val) -> Rxf0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// RXF1 Register
@@ -1676,7 +1565,6 @@ impl Rxf1 {
     pub fn rxf1(&self) -> u32 {
         (self.value.read_bits() & Self::RXF1_MASK) >> Self::RXF1_OFFSET
     }
-
 }
 
 /// RXF1 value type for batch read/modify/write operations
@@ -1706,7 +1594,6 @@ impl Rxf1Val {
     pub const fn rxf1(&self) -> u32 {
         (self.bits & Rxf1::RXF1_MASK) >> Rxf1::RXF1_OFFSET
     }
-
 }
 
 impl Default for Rxf1Val {
@@ -1721,19 +1608,6 @@ impl Rxf1 {
     pub fn read_val(&self) -> Rxf1Val {
         Rxf1Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Rxf1Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Rxf1Val) -> Rxf1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// RXF2 Register
@@ -1773,7 +1647,6 @@ impl Rxf2 {
     pub fn rxf2(&self) -> u32 {
         (self.value.read_bits() & Self::RXF2_MASK) >> Self::RXF2_OFFSET
     }
-
 }
 
 /// RXF2 value type for batch read/modify/write operations
@@ -1803,7 +1676,6 @@ impl Rxf2Val {
     pub const fn rxf2(&self) -> u32 {
         (self.bits & Rxf2::RXF2_MASK) >> Rxf2::RXF2_OFFSET
     }
-
 }
 
 impl Default for Rxf2Val {
@@ -1818,19 +1690,6 @@ impl Rxf2 {
     pub fn read_val(&self) -> Rxf2Val {
         Rxf2Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Rxf2Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Rxf2Val) -> Rxf2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// RXF3 Register
@@ -1870,7 +1729,6 @@ impl Rxf3 {
     pub fn rxf3(&self) -> u32 {
         (self.value.read_bits() & Self::RXF3_MASK) >> Self::RXF3_OFFSET
     }
-
 }
 
 /// RXF3 value type for batch read/modify/write operations
@@ -1900,7 +1758,6 @@ impl Rxf3Val {
     pub const fn rxf3(&self) -> u32 {
         (self.bits & Rxf3::RXF3_MASK) >> Rxf3::RXF3_OFFSET
     }
-
 }
 
 impl Default for Rxf3Val {
@@ -1915,19 +1772,6 @@ impl Rxf3 {
     pub fn read_val(&self) -> Rxf3Val {
         Rxf3Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Rxf3Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Rxf3Val) -> Rxf3Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IRQ Register
@@ -1975,7 +1819,6 @@ impl Irq {
     pub fn write_irq(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::IRQ_MASK) | ((value << Self::IRQ_OFFSET) & Self::IRQ_MASK));
     }
-
 }
 
 /// IRQ value type for batch read/modify/write operations
@@ -2019,7 +1862,6 @@ impl IrqVal {
             bits: (self.bits & !Irq::IRQ_MASK) | ((value << Irq::IRQ_OFFSET) & Irq::IRQ_MASK)
         }
     }
-
 }
 
 impl Default for IrqVal {
@@ -2046,7 +1888,6 @@ impl Irq {
     pub fn modify_val<F: FnOnce(IrqVal) -> IrqVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IRQ_FORCE Register
@@ -2087,7 +1928,6 @@ impl IrqForce {
     pub fn write_irq_force(&self, value: u32) {
         self.value.write_bits((value << Self::IRQ_FORCE_OFFSET) & Self::IRQ_FORCE_MASK);
     }
-
 }
 
 /// IRQ_FORCE value type for batch read/modify/write operations
@@ -2125,7 +1965,6 @@ impl IrqForceVal {
             bits: (self.bits & !IrqForce::IRQ_FORCE_MASK) | ((value << IrqForce::IRQ_FORCE_OFFSET) & IrqForce::IRQ_FORCE_MASK)
         }
     }
-
 }
 
 impl Default for IrqForceVal {
@@ -2135,24 +1974,11 @@ impl Default for IrqForceVal {
 }
 
 impl IrqForce {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> IrqForceVal {
-        IrqForceVal::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: IrqForceVal) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IrqForceVal) -> IrqForceVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INPUT_SYNC_BYPASS Register
@@ -2202,7 +2028,6 @@ impl InputSyncBypass {
     pub fn write_input_sync_bypass(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::INPUT_SYNC_BYPASS_MASK) | ((value << Self::INPUT_SYNC_BYPASS_OFFSET) & Self::INPUT_SYNC_BYPASS_MASK));
     }
-
 }
 
 /// INPUT_SYNC_BYPASS value type for batch read/modify/write operations
@@ -2246,7 +2071,6 @@ impl InputSyncBypassVal {
             bits: (self.bits & !InputSyncBypass::INPUT_SYNC_BYPASS_MASK) | ((value << InputSyncBypass::INPUT_SYNC_BYPASS_OFFSET) & InputSyncBypass::INPUT_SYNC_BYPASS_MASK)
         }
     }
-
 }
 
 impl Default for InputSyncBypassVal {
@@ -2273,7 +2097,6 @@ impl InputSyncBypass {
     pub fn modify_val<F: FnOnce(InputSyncBypassVal) -> InputSyncBypassVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DBG_PADOUT Register
@@ -2314,7 +2137,6 @@ impl DbgPadout {
     pub fn dbg_padout(&self) -> u32 {
         (self.value.read_bits() & Self::DBG_PADOUT_MASK) >> Self::DBG_PADOUT_OFFSET
     }
-
 }
 
 /// DBG_PADOUT value type for batch read/modify/write operations
@@ -2350,7 +2172,6 @@ impl DbgPadoutVal {
     pub const fn dbg_padout(&self) -> u32 {
         (self.bits & DbgPadout::DBG_PADOUT_MASK) >> DbgPadout::DBG_PADOUT_OFFSET
     }
-
 }
 
 impl Default for DbgPadoutVal {
@@ -2365,19 +2186,6 @@ impl DbgPadout {
     pub fn read_val(&self) -> DbgPadoutVal {
         DbgPadoutVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: DbgPadoutVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(DbgPadoutVal) -> DbgPadoutVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DBG_PADOE Register
@@ -2418,7 +2226,6 @@ impl DbgPadoe {
     pub fn dbg_padoe(&self) -> u32 {
         (self.value.read_bits() & Self::DBG_PADOE_MASK) >> Self::DBG_PADOE_OFFSET
     }
-
 }
 
 /// DBG_PADOE value type for batch read/modify/write operations
@@ -2454,7 +2261,6 @@ impl DbgPadoeVal {
     pub const fn dbg_padoe(&self) -> u32 {
         (self.bits & DbgPadoe::DBG_PADOE_MASK) >> DbgPadoe::DBG_PADOE_OFFSET
     }
-
 }
 
 impl Default for DbgPadoeVal {
@@ -2469,19 +2275,6 @@ impl DbgPadoe {
     pub fn read_val(&self) -> DbgPadoeVal {
         DbgPadoeVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: DbgPadoeVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(DbgPadoeVal) -> DbgPadoeVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// DBG_CFGINFO Register
@@ -2604,7 +2397,6 @@ impl DbgCfginfo {
     pub fn fifo_depth(&self) -> u32 {
         (self.value.read_bits() & Self::FIFO_DEPTH_MASK) >> Self::FIFO_DEPTH_OFFSET
     }
-
 }
 
 /// DBG_CFGINFO value type for batch read/modify/write operations
@@ -2668,7 +2460,6 @@ impl DbgCfginfoVal {
     pub const fn fifo_depth(&self) -> u32 {
         (self.bits & DbgCfginfo::FIFO_DEPTH_MASK) >> DbgCfginfo::FIFO_DEPTH_OFFSET
     }
-
 }
 
 impl Default for DbgCfginfoVal {
@@ -2683,19 +2474,6 @@ impl DbgCfginfo {
     pub fn read_val(&self) -> DbgCfginfoVal {
         DbgCfginfoVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: DbgCfginfoVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(DbgCfginfoVal) -> DbgCfginfoVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM0 Register
@@ -2736,7 +2514,6 @@ impl InstrMem0 {
     pub fn write_instr_mem0(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM0_OFFSET) & Self::INSTR_MEM0_MASK);
     }
-
 }
 
 /// INSTR_MEM0 value type for batch read/modify/write operations
@@ -2774,7 +2551,6 @@ impl InstrMem0Val {
             bits: (self.bits & !InstrMem0::INSTR_MEM0_MASK) | ((value << InstrMem0::INSTR_MEM0_OFFSET) & InstrMem0::INSTR_MEM0_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem0Val {
@@ -2784,24 +2560,11 @@ impl Default for InstrMem0Val {
 }
 
 impl InstrMem0 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem0Val {
-        InstrMem0Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem0Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem0Val) -> InstrMem0Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM1 Register
@@ -2842,7 +2605,6 @@ impl InstrMem1 {
     pub fn write_instr_mem1(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM1_OFFSET) & Self::INSTR_MEM1_MASK);
     }
-
 }
 
 /// INSTR_MEM1 value type for batch read/modify/write operations
@@ -2880,7 +2642,6 @@ impl InstrMem1Val {
             bits: (self.bits & !InstrMem1::INSTR_MEM1_MASK) | ((value << InstrMem1::INSTR_MEM1_OFFSET) & InstrMem1::INSTR_MEM1_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem1Val {
@@ -2890,24 +2651,11 @@ impl Default for InstrMem1Val {
 }
 
 impl InstrMem1 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem1Val {
-        InstrMem1Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem1Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem1Val) -> InstrMem1Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM2 Register
@@ -2948,7 +2696,6 @@ impl InstrMem2 {
     pub fn write_instr_mem2(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM2_OFFSET) & Self::INSTR_MEM2_MASK);
     }
-
 }
 
 /// INSTR_MEM2 value type for batch read/modify/write operations
@@ -2986,7 +2733,6 @@ impl InstrMem2Val {
             bits: (self.bits & !InstrMem2::INSTR_MEM2_MASK) | ((value << InstrMem2::INSTR_MEM2_OFFSET) & InstrMem2::INSTR_MEM2_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem2Val {
@@ -2996,24 +2742,11 @@ impl Default for InstrMem2Val {
 }
 
 impl InstrMem2 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem2Val {
-        InstrMem2Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem2Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem2Val) -> InstrMem2Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM3 Register
@@ -3054,7 +2787,6 @@ impl InstrMem3 {
     pub fn write_instr_mem3(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM3_OFFSET) & Self::INSTR_MEM3_MASK);
     }
-
 }
 
 /// INSTR_MEM3 value type for batch read/modify/write operations
@@ -3092,7 +2824,6 @@ impl InstrMem3Val {
             bits: (self.bits & !InstrMem3::INSTR_MEM3_MASK) | ((value << InstrMem3::INSTR_MEM3_OFFSET) & InstrMem3::INSTR_MEM3_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem3Val {
@@ -3102,24 +2833,11 @@ impl Default for InstrMem3Val {
 }
 
 impl InstrMem3 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem3Val {
-        InstrMem3Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem3Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem3Val) -> InstrMem3Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM4 Register
@@ -3160,7 +2878,6 @@ impl InstrMem4 {
     pub fn write_instr_mem4(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM4_OFFSET) & Self::INSTR_MEM4_MASK);
     }
-
 }
 
 /// INSTR_MEM4 value type for batch read/modify/write operations
@@ -3198,7 +2915,6 @@ impl InstrMem4Val {
             bits: (self.bits & !InstrMem4::INSTR_MEM4_MASK) | ((value << InstrMem4::INSTR_MEM4_OFFSET) & InstrMem4::INSTR_MEM4_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem4Val {
@@ -3208,24 +2924,11 @@ impl Default for InstrMem4Val {
 }
 
 impl InstrMem4 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem4Val {
-        InstrMem4Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem4Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem4Val) -> InstrMem4Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM5 Register
@@ -3266,7 +2969,6 @@ impl InstrMem5 {
     pub fn write_instr_mem5(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM5_OFFSET) & Self::INSTR_MEM5_MASK);
     }
-
 }
 
 /// INSTR_MEM5 value type for batch read/modify/write operations
@@ -3304,7 +3006,6 @@ impl InstrMem5Val {
             bits: (self.bits & !InstrMem5::INSTR_MEM5_MASK) | ((value << InstrMem5::INSTR_MEM5_OFFSET) & InstrMem5::INSTR_MEM5_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem5Val {
@@ -3314,24 +3015,11 @@ impl Default for InstrMem5Val {
 }
 
 impl InstrMem5 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem5Val {
-        InstrMem5Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem5Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem5Val) -> InstrMem5Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM6 Register
@@ -3372,7 +3060,6 @@ impl InstrMem6 {
     pub fn write_instr_mem6(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM6_OFFSET) & Self::INSTR_MEM6_MASK);
     }
-
 }
 
 /// INSTR_MEM6 value type for batch read/modify/write operations
@@ -3410,7 +3097,6 @@ impl InstrMem6Val {
             bits: (self.bits & !InstrMem6::INSTR_MEM6_MASK) | ((value << InstrMem6::INSTR_MEM6_OFFSET) & InstrMem6::INSTR_MEM6_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem6Val {
@@ -3420,24 +3106,11 @@ impl Default for InstrMem6Val {
 }
 
 impl InstrMem6 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem6Val {
-        InstrMem6Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem6Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem6Val) -> InstrMem6Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM7 Register
@@ -3478,7 +3151,6 @@ impl InstrMem7 {
     pub fn write_instr_mem7(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM7_OFFSET) & Self::INSTR_MEM7_MASK);
     }
-
 }
 
 /// INSTR_MEM7 value type for batch read/modify/write operations
@@ -3516,7 +3188,6 @@ impl InstrMem7Val {
             bits: (self.bits & !InstrMem7::INSTR_MEM7_MASK) | ((value << InstrMem7::INSTR_MEM7_OFFSET) & InstrMem7::INSTR_MEM7_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem7Val {
@@ -3526,24 +3197,11 @@ impl Default for InstrMem7Val {
 }
 
 impl InstrMem7 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem7Val {
-        InstrMem7Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem7Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem7Val) -> InstrMem7Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM8 Register
@@ -3584,7 +3242,6 @@ impl InstrMem8 {
     pub fn write_instr_mem8(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM8_OFFSET) & Self::INSTR_MEM8_MASK);
     }
-
 }
 
 /// INSTR_MEM8 value type for batch read/modify/write operations
@@ -3622,7 +3279,6 @@ impl InstrMem8Val {
             bits: (self.bits & !InstrMem8::INSTR_MEM8_MASK) | ((value << InstrMem8::INSTR_MEM8_OFFSET) & InstrMem8::INSTR_MEM8_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem8Val {
@@ -3632,24 +3288,11 @@ impl Default for InstrMem8Val {
 }
 
 impl InstrMem8 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem8Val {
-        InstrMem8Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem8Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem8Val) -> InstrMem8Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM9 Register
@@ -3690,7 +3333,6 @@ impl InstrMem9 {
     pub fn write_instr_mem9(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM9_OFFSET) & Self::INSTR_MEM9_MASK);
     }
-
 }
 
 /// INSTR_MEM9 value type for batch read/modify/write operations
@@ -3728,7 +3370,6 @@ impl InstrMem9Val {
             bits: (self.bits & !InstrMem9::INSTR_MEM9_MASK) | ((value << InstrMem9::INSTR_MEM9_OFFSET) & InstrMem9::INSTR_MEM9_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem9Val {
@@ -3738,24 +3379,11 @@ impl Default for InstrMem9Val {
 }
 
 impl InstrMem9 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem9Val {
-        InstrMem9Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem9Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem9Val) -> InstrMem9Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM10 Register
@@ -3796,7 +3424,6 @@ impl InstrMem10 {
     pub fn write_instr_mem10(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM10_OFFSET) & Self::INSTR_MEM10_MASK);
     }
-
 }
 
 /// INSTR_MEM10 value type for batch read/modify/write operations
@@ -3834,7 +3461,6 @@ impl InstrMem10Val {
             bits: (self.bits & !InstrMem10::INSTR_MEM10_MASK) | ((value << InstrMem10::INSTR_MEM10_OFFSET) & InstrMem10::INSTR_MEM10_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem10Val {
@@ -3844,24 +3470,11 @@ impl Default for InstrMem10Val {
 }
 
 impl InstrMem10 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem10Val {
-        InstrMem10Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem10Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem10Val) -> InstrMem10Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM11 Register
@@ -3902,7 +3515,6 @@ impl InstrMem11 {
     pub fn write_instr_mem11(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM11_OFFSET) & Self::INSTR_MEM11_MASK);
     }
-
 }
 
 /// INSTR_MEM11 value type for batch read/modify/write operations
@@ -3940,7 +3552,6 @@ impl InstrMem11Val {
             bits: (self.bits & !InstrMem11::INSTR_MEM11_MASK) | ((value << InstrMem11::INSTR_MEM11_OFFSET) & InstrMem11::INSTR_MEM11_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem11Val {
@@ -3950,24 +3561,11 @@ impl Default for InstrMem11Val {
 }
 
 impl InstrMem11 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem11Val {
-        InstrMem11Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem11Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem11Val) -> InstrMem11Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM12 Register
@@ -4008,7 +3606,6 @@ impl InstrMem12 {
     pub fn write_instr_mem12(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM12_OFFSET) & Self::INSTR_MEM12_MASK);
     }
-
 }
 
 /// INSTR_MEM12 value type for batch read/modify/write operations
@@ -4046,7 +3643,6 @@ impl InstrMem12Val {
             bits: (self.bits & !InstrMem12::INSTR_MEM12_MASK) | ((value << InstrMem12::INSTR_MEM12_OFFSET) & InstrMem12::INSTR_MEM12_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem12Val {
@@ -4056,24 +3652,11 @@ impl Default for InstrMem12Val {
 }
 
 impl InstrMem12 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem12Val {
-        InstrMem12Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem12Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem12Val) -> InstrMem12Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM13 Register
@@ -4114,7 +3697,6 @@ impl InstrMem13 {
     pub fn write_instr_mem13(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM13_OFFSET) & Self::INSTR_MEM13_MASK);
     }
-
 }
 
 /// INSTR_MEM13 value type for batch read/modify/write operations
@@ -4152,7 +3734,6 @@ impl InstrMem13Val {
             bits: (self.bits & !InstrMem13::INSTR_MEM13_MASK) | ((value << InstrMem13::INSTR_MEM13_OFFSET) & InstrMem13::INSTR_MEM13_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem13Val {
@@ -4162,24 +3743,11 @@ impl Default for InstrMem13Val {
 }
 
 impl InstrMem13 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem13Val {
-        InstrMem13Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem13Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem13Val) -> InstrMem13Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM14 Register
@@ -4220,7 +3788,6 @@ impl InstrMem14 {
     pub fn write_instr_mem14(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM14_OFFSET) & Self::INSTR_MEM14_MASK);
     }
-
 }
 
 /// INSTR_MEM14 value type for batch read/modify/write operations
@@ -4258,7 +3825,6 @@ impl InstrMem14Val {
             bits: (self.bits & !InstrMem14::INSTR_MEM14_MASK) | ((value << InstrMem14::INSTR_MEM14_OFFSET) & InstrMem14::INSTR_MEM14_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem14Val {
@@ -4268,24 +3834,11 @@ impl Default for InstrMem14Val {
 }
 
 impl InstrMem14 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem14Val {
-        InstrMem14Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem14Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem14Val) -> InstrMem14Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM15 Register
@@ -4326,7 +3879,6 @@ impl InstrMem15 {
     pub fn write_instr_mem15(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM15_OFFSET) & Self::INSTR_MEM15_MASK);
     }
-
 }
 
 /// INSTR_MEM15 value type for batch read/modify/write operations
@@ -4364,7 +3916,6 @@ impl InstrMem15Val {
             bits: (self.bits & !InstrMem15::INSTR_MEM15_MASK) | ((value << InstrMem15::INSTR_MEM15_OFFSET) & InstrMem15::INSTR_MEM15_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem15Val {
@@ -4374,24 +3925,11 @@ impl Default for InstrMem15Val {
 }
 
 impl InstrMem15 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem15Val {
-        InstrMem15Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem15Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem15Val) -> InstrMem15Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM16 Register
@@ -4432,7 +3970,6 @@ impl InstrMem16 {
     pub fn write_instr_mem16(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM16_OFFSET) & Self::INSTR_MEM16_MASK);
     }
-
 }
 
 /// INSTR_MEM16 value type for batch read/modify/write operations
@@ -4470,7 +4007,6 @@ impl InstrMem16Val {
             bits: (self.bits & !InstrMem16::INSTR_MEM16_MASK) | ((value << InstrMem16::INSTR_MEM16_OFFSET) & InstrMem16::INSTR_MEM16_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem16Val {
@@ -4480,24 +4016,11 @@ impl Default for InstrMem16Val {
 }
 
 impl InstrMem16 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem16Val {
-        InstrMem16Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem16Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem16Val) -> InstrMem16Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM17 Register
@@ -4538,7 +4061,6 @@ impl InstrMem17 {
     pub fn write_instr_mem17(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM17_OFFSET) & Self::INSTR_MEM17_MASK);
     }
-
 }
 
 /// INSTR_MEM17 value type for batch read/modify/write operations
@@ -4576,7 +4098,6 @@ impl InstrMem17Val {
             bits: (self.bits & !InstrMem17::INSTR_MEM17_MASK) | ((value << InstrMem17::INSTR_MEM17_OFFSET) & InstrMem17::INSTR_MEM17_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem17Val {
@@ -4586,24 +4107,11 @@ impl Default for InstrMem17Val {
 }
 
 impl InstrMem17 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem17Val {
-        InstrMem17Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem17Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem17Val) -> InstrMem17Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM18 Register
@@ -4644,7 +4152,6 @@ impl InstrMem18 {
     pub fn write_instr_mem18(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM18_OFFSET) & Self::INSTR_MEM18_MASK);
     }
-
 }
 
 /// INSTR_MEM18 value type for batch read/modify/write operations
@@ -4682,7 +4189,6 @@ impl InstrMem18Val {
             bits: (self.bits & !InstrMem18::INSTR_MEM18_MASK) | ((value << InstrMem18::INSTR_MEM18_OFFSET) & InstrMem18::INSTR_MEM18_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem18Val {
@@ -4692,24 +4198,11 @@ impl Default for InstrMem18Val {
 }
 
 impl InstrMem18 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem18Val {
-        InstrMem18Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem18Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem18Val) -> InstrMem18Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM19 Register
@@ -4750,7 +4243,6 @@ impl InstrMem19 {
     pub fn write_instr_mem19(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM19_OFFSET) & Self::INSTR_MEM19_MASK);
     }
-
 }
 
 /// INSTR_MEM19 value type for batch read/modify/write operations
@@ -4788,7 +4280,6 @@ impl InstrMem19Val {
             bits: (self.bits & !InstrMem19::INSTR_MEM19_MASK) | ((value << InstrMem19::INSTR_MEM19_OFFSET) & InstrMem19::INSTR_MEM19_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem19Val {
@@ -4798,24 +4289,11 @@ impl Default for InstrMem19Val {
 }
 
 impl InstrMem19 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem19Val {
-        InstrMem19Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem19Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem19Val) -> InstrMem19Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM20 Register
@@ -4856,7 +4334,6 @@ impl InstrMem20 {
     pub fn write_instr_mem20(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM20_OFFSET) & Self::INSTR_MEM20_MASK);
     }
-
 }
 
 /// INSTR_MEM20 value type for batch read/modify/write operations
@@ -4894,7 +4371,6 @@ impl InstrMem20Val {
             bits: (self.bits & !InstrMem20::INSTR_MEM20_MASK) | ((value << InstrMem20::INSTR_MEM20_OFFSET) & InstrMem20::INSTR_MEM20_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem20Val {
@@ -4904,24 +4380,11 @@ impl Default for InstrMem20Val {
 }
 
 impl InstrMem20 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem20Val {
-        InstrMem20Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem20Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem20Val) -> InstrMem20Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM21 Register
@@ -4962,7 +4425,6 @@ impl InstrMem21 {
     pub fn write_instr_mem21(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM21_OFFSET) & Self::INSTR_MEM21_MASK);
     }
-
 }
 
 /// INSTR_MEM21 value type for batch read/modify/write operations
@@ -5000,7 +4462,6 @@ impl InstrMem21Val {
             bits: (self.bits & !InstrMem21::INSTR_MEM21_MASK) | ((value << InstrMem21::INSTR_MEM21_OFFSET) & InstrMem21::INSTR_MEM21_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem21Val {
@@ -5010,24 +4471,11 @@ impl Default for InstrMem21Val {
 }
 
 impl InstrMem21 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem21Val {
-        InstrMem21Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem21Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem21Val) -> InstrMem21Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM22 Register
@@ -5068,7 +4516,6 @@ impl InstrMem22 {
     pub fn write_instr_mem22(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM22_OFFSET) & Self::INSTR_MEM22_MASK);
     }
-
 }
 
 /// INSTR_MEM22 value type for batch read/modify/write operations
@@ -5106,7 +4553,6 @@ impl InstrMem22Val {
             bits: (self.bits & !InstrMem22::INSTR_MEM22_MASK) | ((value << InstrMem22::INSTR_MEM22_OFFSET) & InstrMem22::INSTR_MEM22_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem22Val {
@@ -5116,24 +4562,11 @@ impl Default for InstrMem22Val {
 }
 
 impl InstrMem22 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem22Val {
-        InstrMem22Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem22Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem22Val) -> InstrMem22Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM23 Register
@@ -5174,7 +4607,6 @@ impl InstrMem23 {
     pub fn write_instr_mem23(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM23_OFFSET) & Self::INSTR_MEM23_MASK);
     }
-
 }
 
 /// INSTR_MEM23 value type for batch read/modify/write operations
@@ -5212,7 +4644,6 @@ impl InstrMem23Val {
             bits: (self.bits & !InstrMem23::INSTR_MEM23_MASK) | ((value << InstrMem23::INSTR_MEM23_OFFSET) & InstrMem23::INSTR_MEM23_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem23Val {
@@ -5222,24 +4653,11 @@ impl Default for InstrMem23Val {
 }
 
 impl InstrMem23 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem23Val {
-        InstrMem23Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem23Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem23Val) -> InstrMem23Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM24 Register
@@ -5280,7 +4698,6 @@ impl InstrMem24 {
     pub fn write_instr_mem24(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM24_OFFSET) & Self::INSTR_MEM24_MASK);
     }
-
 }
 
 /// INSTR_MEM24 value type for batch read/modify/write operations
@@ -5318,7 +4735,6 @@ impl InstrMem24Val {
             bits: (self.bits & !InstrMem24::INSTR_MEM24_MASK) | ((value << InstrMem24::INSTR_MEM24_OFFSET) & InstrMem24::INSTR_MEM24_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem24Val {
@@ -5328,24 +4744,11 @@ impl Default for InstrMem24Val {
 }
 
 impl InstrMem24 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem24Val {
-        InstrMem24Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem24Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem24Val) -> InstrMem24Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM25 Register
@@ -5386,7 +4789,6 @@ impl InstrMem25 {
     pub fn write_instr_mem25(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM25_OFFSET) & Self::INSTR_MEM25_MASK);
     }
-
 }
 
 /// INSTR_MEM25 value type for batch read/modify/write operations
@@ -5424,7 +4826,6 @@ impl InstrMem25Val {
             bits: (self.bits & !InstrMem25::INSTR_MEM25_MASK) | ((value << InstrMem25::INSTR_MEM25_OFFSET) & InstrMem25::INSTR_MEM25_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem25Val {
@@ -5434,24 +4835,11 @@ impl Default for InstrMem25Val {
 }
 
 impl InstrMem25 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem25Val {
-        InstrMem25Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem25Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem25Val) -> InstrMem25Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM26 Register
@@ -5492,7 +4880,6 @@ impl InstrMem26 {
     pub fn write_instr_mem26(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM26_OFFSET) & Self::INSTR_MEM26_MASK);
     }
-
 }
 
 /// INSTR_MEM26 value type for batch read/modify/write operations
@@ -5530,7 +4917,6 @@ impl InstrMem26Val {
             bits: (self.bits & !InstrMem26::INSTR_MEM26_MASK) | ((value << InstrMem26::INSTR_MEM26_OFFSET) & InstrMem26::INSTR_MEM26_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem26Val {
@@ -5540,24 +4926,11 @@ impl Default for InstrMem26Val {
 }
 
 impl InstrMem26 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem26Val {
-        InstrMem26Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem26Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem26Val) -> InstrMem26Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM27 Register
@@ -5598,7 +4971,6 @@ impl InstrMem27 {
     pub fn write_instr_mem27(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM27_OFFSET) & Self::INSTR_MEM27_MASK);
     }
-
 }
 
 /// INSTR_MEM27 value type for batch read/modify/write operations
@@ -5636,7 +5008,6 @@ impl InstrMem27Val {
             bits: (self.bits & !InstrMem27::INSTR_MEM27_MASK) | ((value << InstrMem27::INSTR_MEM27_OFFSET) & InstrMem27::INSTR_MEM27_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem27Val {
@@ -5646,24 +5017,11 @@ impl Default for InstrMem27Val {
 }
 
 impl InstrMem27 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem27Val {
-        InstrMem27Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem27Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem27Val) -> InstrMem27Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM28 Register
@@ -5704,7 +5062,6 @@ impl InstrMem28 {
     pub fn write_instr_mem28(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM28_OFFSET) & Self::INSTR_MEM28_MASK);
     }
-
 }
 
 /// INSTR_MEM28 value type for batch read/modify/write operations
@@ -5742,7 +5099,6 @@ impl InstrMem28Val {
             bits: (self.bits & !InstrMem28::INSTR_MEM28_MASK) | ((value << InstrMem28::INSTR_MEM28_OFFSET) & InstrMem28::INSTR_MEM28_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem28Val {
@@ -5752,24 +5108,11 @@ impl Default for InstrMem28Val {
 }
 
 impl InstrMem28 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem28Val {
-        InstrMem28Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem28Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem28Val) -> InstrMem28Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM29 Register
@@ -5810,7 +5153,6 @@ impl InstrMem29 {
     pub fn write_instr_mem29(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM29_OFFSET) & Self::INSTR_MEM29_MASK);
     }
-
 }
 
 /// INSTR_MEM29 value type for batch read/modify/write operations
@@ -5848,7 +5190,6 @@ impl InstrMem29Val {
             bits: (self.bits & !InstrMem29::INSTR_MEM29_MASK) | ((value << InstrMem29::INSTR_MEM29_OFFSET) & InstrMem29::INSTR_MEM29_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem29Val {
@@ -5858,24 +5199,11 @@ impl Default for InstrMem29Val {
 }
 
 impl InstrMem29 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem29Val {
-        InstrMem29Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem29Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem29Val) -> InstrMem29Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM30 Register
@@ -5916,7 +5244,6 @@ impl InstrMem30 {
     pub fn write_instr_mem30(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM30_OFFSET) & Self::INSTR_MEM30_MASK);
     }
-
 }
 
 /// INSTR_MEM30 value type for batch read/modify/write operations
@@ -5954,7 +5281,6 @@ impl InstrMem30Val {
             bits: (self.bits & !InstrMem30::INSTR_MEM30_MASK) | ((value << InstrMem30::INSTR_MEM30_OFFSET) & InstrMem30::INSTR_MEM30_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem30Val {
@@ -5964,24 +5290,11 @@ impl Default for InstrMem30Val {
 }
 
 impl InstrMem30 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem30Val {
-        InstrMem30Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem30Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem30Val) -> InstrMem30Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// INSTR_MEM31 Register
@@ -6022,7 +5335,6 @@ impl InstrMem31 {
     pub fn write_instr_mem31(&self, value: u32) {
         self.value.write_bits((value << Self::INSTR_MEM31_OFFSET) & Self::INSTR_MEM31_MASK);
     }
-
 }
 
 /// INSTR_MEM31 value type for batch read/modify/write operations
@@ -6060,7 +5372,6 @@ impl InstrMem31Val {
             bits: (self.bits & !InstrMem31::INSTR_MEM31_MASK) | ((value << InstrMem31::INSTR_MEM31_OFFSET) & InstrMem31::INSTR_MEM31_MASK)
         }
     }
-
 }
 
 impl Default for InstrMem31Val {
@@ -6070,24 +5381,11 @@ impl Default for InstrMem31Val {
 }
 
 impl InstrMem31 {
-    /// Read the register into a value struct
-    #[inline(always)]
-    pub fn read_val(&self) -> InstrMem31Val {
-        InstrMem31Val::from_bits(self.value.read_bits())
-    }
-
     /// Write a value struct to the register
     #[inline(always)]
     pub fn write_val(&self, val: InstrMem31Val) {
         self.value.write_bits(val.bits())
     }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(InstrMem31Val) -> InstrMem31Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SM0_CLKDIV Register
@@ -6176,7 +5474,6 @@ impl Sm0Clkdiv {
     pub fn write_frac(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
     }
-
 }
 
 /// SM0_CLKDIV value type for batch read/modify/write operations
@@ -6244,7 +5541,6 @@ impl Sm0ClkdivVal {
             bits: (self.bits & !Sm0Clkdiv::FRAC_MASK) | ((value << Sm0Clkdiv::FRAC_OFFSET) & Sm0Clkdiv::FRAC_MASK)
         }
     }
-
 }
 
 impl Default for Sm0ClkdivVal {
@@ -6271,7 +5567,6 @@ impl Sm0Clkdiv {
     pub fn modify_val<F: FnOnce(Sm0ClkdivVal) -> Sm0ClkdivVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SM0_EXECCTRL Register
@@ -6661,7 +5956,6 @@ impl Sm0Execctrl {
     pub fn write_status_n(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STATUS_N_MASK) | ((value << Self::STATUS_N_OFFSET) & Self::STATUS_N_MASK));
     }
-
 }
 
 /// SM0_EXECCTRL value type for batch read/modify/write operations
@@ -6905,7 +6199,6 @@ impl Sm0ExecctrlVal {
             bits: (self.bits & !Sm0Execctrl::STATUS_N_MASK) | ((value << Sm0Execctrl::STATUS_N_OFFSET) & Sm0Execctrl::STATUS_N_MASK)
         }
     }
-
 }
 
 impl Default for Sm0ExecctrlVal {
@@ -6932,7 +6225,6 @@ impl Sm0Execctrl {
     pub fn modify_val<F: FnOnce(Sm0ExecctrlVal) -> Sm0ExecctrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SM0_SHIFTCTRL Register
@@ -7348,7 +6640,6 @@ impl Sm0Shiftctrl {
     pub fn write_in_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::IN_COUNT_MASK) | ((value << Self::IN_COUNT_OFFSET) & Self::IN_COUNT_MASK));
     }
-
 }
 
 /// SM0_SHIFTCTRL value type for batch read/modify/write operations
@@ -7632,7 +6923,6 @@ impl Sm0ShiftctrlVal {
             bits: (self.bits & !Sm0Shiftctrl::IN_COUNT_MASK) | ((value << Sm0Shiftctrl::IN_COUNT_OFFSET) & Sm0Shiftctrl::IN_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Sm0ShiftctrlVal {
@@ -7659,7 +6949,6 @@ impl Sm0Shiftctrl {
     pub fn modify_val<F: FnOnce(Sm0ShiftctrlVal) -> Sm0ShiftctrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SM0_ADDR Register
@@ -7700,7 +6989,6 @@ impl Sm0Addr {
     pub fn sm0_addr(&self) -> u32 {
         (self.value.read_bits() & Self::SM0_ADDR_MASK) >> Self::SM0_ADDR_OFFSET
     }
-
 }
 
 /// SM0_ADDR value type for batch read/modify/write operations
@@ -7736,7 +7024,6 @@ impl Sm0AddrVal {
     pub const fn sm0_addr(&self) -> u32 {
         (self.bits & Sm0Addr::SM0_ADDR_MASK) >> Sm0Addr::SM0_ADDR_OFFSET
     }
-
 }
 
 impl Default for Sm0AddrVal {
@@ -7751,19 +7038,6 @@ impl Sm0Addr {
     pub fn read_val(&self) -> Sm0AddrVal {
         Sm0AddrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Sm0AddrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Sm0AddrVal) -> Sm0AddrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SM0_INSTR Register
@@ -7810,7 +7084,6 @@ impl Sm0Instr {
     pub fn write_sm0_instr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SM0_INSTR_MASK) | ((value << Self::SM0_INSTR_OFFSET) & Self::SM0_INSTR_MASK));
     }
-
 }
 
 /// SM0_INSTR value type for batch read/modify/write operations
@@ -7848,7 +7121,6 @@ impl Sm0InstrVal {
             bits: (self.bits & !Sm0Instr::SM0_INSTR_MASK) | ((value << Sm0Instr::SM0_INSTR_OFFSET) & Sm0Instr::SM0_INSTR_MASK)
         }
     }
-
 }
 
 impl Default for Sm0InstrVal {
@@ -7875,7 +7147,6 @@ impl Sm0Instr {
     pub fn modify_val<F: FnOnce(Sm0InstrVal) -> Sm0InstrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SM0_PINCTRL Register
@@ -8099,7 +7370,6 @@ impl Sm0Pinctrl {
     pub fn write_out_base(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::OUT_BASE_MASK) | ((value << Self::OUT_BASE_OFFSET) & Self::OUT_BASE_MASK));
     }
-
 }
 
 /// SM0_PINCTRL value type for batch read/modify/write operations
@@ -8255,7 +7525,6 @@ impl Sm0PinctrlVal {
             bits: (self.bits & !Sm0Pinctrl::OUT_BASE_MASK) | ((value << Sm0Pinctrl::OUT_BASE_OFFSET) & Sm0Pinctrl::OUT_BASE_MASK)
         }
     }
-
 }
 
 impl Default for Sm0PinctrlVal {
@@ -8282,7 +7551,6 @@ impl Sm0Pinctrl {
     pub fn modify_val<F: FnOnce(Sm0PinctrlVal) -> Sm0PinctrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SM1_CLKDIV Register
@@ -8371,7 +7639,6 @@ impl Sm1Clkdiv {
     pub fn write_frac(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
     }
-
 }
 
 /// SM1_CLKDIV value type for batch read/modify/write operations
@@ -8439,7 +7706,6 @@ impl Sm1ClkdivVal {
             bits: (self.bits & !Sm1Clkdiv::FRAC_MASK) | ((value << Sm1Clkdiv::FRAC_OFFSET) & Sm1Clkdiv::FRAC_MASK)
         }
     }
-
 }
 
 impl Default for Sm1ClkdivVal {
@@ -8466,7 +7732,6 @@ impl Sm1Clkdiv {
     pub fn modify_val<F: FnOnce(Sm1ClkdivVal) -> Sm1ClkdivVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SM1_EXECCTRL Register
@@ -8856,7 +8121,6 @@ impl Sm1Execctrl {
     pub fn write_status_n(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STATUS_N_MASK) | ((value << Self::STATUS_N_OFFSET) & Self::STATUS_N_MASK));
     }
-
 }
 
 /// SM1_EXECCTRL value type for batch read/modify/write operations
@@ -9100,7 +8364,6 @@ impl Sm1ExecctrlVal {
             bits: (self.bits & !Sm1Execctrl::STATUS_N_MASK) | ((value << Sm1Execctrl::STATUS_N_OFFSET) & Sm1Execctrl::STATUS_N_MASK)
         }
     }
-
 }
 
 impl Default for Sm1ExecctrlVal {
@@ -9127,7 +8390,6 @@ impl Sm1Execctrl {
     pub fn modify_val<F: FnOnce(Sm1ExecctrlVal) -> Sm1ExecctrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SM1_SHIFTCTRL Register
@@ -9543,7 +8805,6 @@ impl Sm1Shiftctrl {
     pub fn write_in_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::IN_COUNT_MASK) | ((value << Self::IN_COUNT_OFFSET) & Self::IN_COUNT_MASK));
     }
-
 }
 
 /// SM1_SHIFTCTRL value type for batch read/modify/write operations
@@ -9827,7 +9088,6 @@ impl Sm1ShiftctrlVal {
             bits: (self.bits & !Sm1Shiftctrl::IN_COUNT_MASK) | ((value << Sm1Shiftctrl::IN_COUNT_OFFSET) & Sm1Shiftctrl::IN_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Sm1ShiftctrlVal {
@@ -9854,7 +9114,6 @@ impl Sm1Shiftctrl {
     pub fn modify_val<F: FnOnce(Sm1ShiftctrlVal) -> Sm1ShiftctrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SM1_ADDR Register
@@ -9895,7 +9154,6 @@ impl Sm1Addr {
     pub fn sm1_addr(&self) -> u32 {
         (self.value.read_bits() & Self::SM1_ADDR_MASK) >> Self::SM1_ADDR_OFFSET
     }
-
 }
 
 /// SM1_ADDR value type for batch read/modify/write operations
@@ -9931,7 +9189,6 @@ impl Sm1AddrVal {
     pub const fn sm1_addr(&self) -> u32 {
         (self.bits & Sm1Addr::SM1_ADDR_MASK) >> Sm1Addr::SM1_ADDR_OFFSET
     }
-
 }
 
 impl Default for Sm1AddrVal {
@@ -9946,19 +9203,6 @@ impl Sm1Addr {
     pub fn read_val(&self) -> Sm1AddrVal {
         Sm1AddrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Sm1AddrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Sm1AddrVal) -> Sm1AddrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SM1_INSTR Register
@@ -10005,7 +9249,6 @@ impl Sm1Instr {
     pub fn write_sm1_instr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SM1_INSTR_MASK) | ((value << Self::SM1_INSTR_OFFSET) & Self::SM1_INSTR_MASK));
     }
-
 }
 
 /// SM1_INSTR value type for batch read/modify/write operations
@@ -10043,7 +9286,6 @@ impl Sm1InstrVal {
             bits: (self.bits & !Sm1Instr::SM1_INSTR_MASK) | ((value << Sm1Instr::SM1_INSTR_OFFSET) & Sm1Instr::SM1_INSTR_MASK)
         }
     }
-
 }
 
 impl Default for Sm1InstrVal {
@@ -10070,7 +9312,6 @@ impl Sm1Instr {
     pub fn modify_val<F: FnOnce(Sm1InstrVal) -> Sm1InstrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SM1_PINCTRL Register
@@ -10294,7 +9535,6 @@ impl Sm1Pinctrl {
     pub fn write_out_base(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::OUT_BASE_MASK) | ((value << Self::OUT_BASE_OFFSET) & Self::OUT_BASE_MASK));
     }
-
 }
 
 /// SM1_PINCTRL value type for batch read/modify/write operations
@@ -10450,7 +9690,6 @@ impl Sm1PinctrlVal {
             bits: (self.bits & !Sm1Pinctrl::OUT_BASE_MASK) | ((value << Sm1Pinctrl::OUT_BASE_OFFSET) & Sm1Pinctrl::OUT_BASE_MASK)
         }
     }
-
 }
 
 impl Default for Sm1PinctrlVal {
@@ -10477,7 +9716,6 @@ impl Sm1Pinctrl {
     pub fn modify_val<F: FnOnce(Sm1PinctrlVal) -> Sm1PinctrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SM2_CLKDIV Register
@@ -10566,7 +9804,6 @@ impl Sm2Clkdiv {
     pub fn write_frac(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
     }
-
 }
 
 /// SM2_CLKDIV value type for batch read/modify/write operations
@@ -10634,7 +9871,6 @@ impl Sm2ClkdivVal {
             bits: (self.bits & !Sm2Clkdiv::FRAC_MASK) | ((value << Sm2Clkdiv::FRAC_OFFSET) & Sm2Clkdiv::FRAC_MASK)
         }
     }
-
 }
 
 impl Default for Sm2ClkdivVal {
@@ -10661,7 +9897,6 @@ impl Sm2Clkdiv {
     pub fn modify_val<F: FnOnce(Sm2ClkdivVal) -> Sm2ClkdivVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SM2_EXECCTRL Register
@@ -11051,7 +10286,6 @@ impl Sm2Execctrl {
     pub fn write_status_n(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STATUS_N_MASK) | ((value << Self::STATUS_N_OFFSET) & Self::STATUS_N_MASK));
     }
-
 }
 
 /// SM2_EXECCTRL value type for batch read/modify/write operations
@@ -11295,7 +10529,6 @@ impl Sm2ExecctrlVal {
             bits: (self.bits & !Sm2Execctrl::STATUS_N_MASK) | ((value << Sm2Execctrl::STATUS_N_OFFSET) & Sm2Execctrl::STATUS_N_MASK)
         }
     }
-
 }
 
 impl Default for Sm2ExecctrlVal {
@@ -11322,7 +10555,6 @@ impl Sm2Execctrl {
     pub fn modify_val<F: FnOnce(Sm2ExecctrlVal) -> Sm2ExecctrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SM2_SHIFTCTRL Register
@@ -11738,7 +10970,6 @@ impl Sm2Shiftctrl {
     pub fn write_in_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::IN_COUNT_MASK) | ((value << Self::IN_COUNT_OFFSET) & Self::IN_COUNT_MASK));
     }
-
 }
 
 /// SM2_SHIFTCTRL value type for batch read/modify/write operations
@@ -12022,7 +11253,6 @@ impl Sm2ShiftctrlVal {
             bits: (self.bits & !Sm2Shiftctrl::IN_COUNT_MASK) | ((value << Sm2Shiftctrl::IN_COUNT_OFFSET) & Sm2Shiftctrl::IN_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Sm2ShiftctrlVal {
@@ -12049,7 +11279,6 @@ impl Sm2Shiftctrl {
     pub fn modify_val<F: FnOnce(Sm2ShiftctrlVal) -> Sm2ShiftctrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SM2_ADDR Register
@@ -12090,7 +11319,6 @@ impl Sm2Addr {
     pub fn sm2_addr(&self) -> u32 {
         (self.value.read_bits() & Self::SM2_ADDR_MASK) >> Self::SM2_ADDR_OFFSET
     }
-
 }
 
 /// SM2_ADDR value type for batch read/modify/write operations
@@ -12126,7 +11354,6 @@ impl Sm2AddrVal {
     pub const fn sm2_addr(&self) -> u32 {
         (self.bits & Sm2Addr::SM2_ADDR_MASK) >> Sm2Addr::SM2_ADDR_OFFSET
     }
-
 }
 
 impl Default for Sm2AddrVal {
@@ -12141,19 +11368,6 @@ impl Sm2Addr {
     pub fn read_val(&self) -> Sm2AddrVal {
         Sm2AddrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Sm2AddrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Sm2AddrVal) -> Sm2AddrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SM2_INSTR Register
@@ -12200,7 +11414,6 @@ impl Sm2Instr {
     pub fn write_sm2_instr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SM2_INSTR_MASK) | ((value << Self::SM2_INSTR_OFFSET) & Self::SM2_INSTR_MASK));
     }
-
 }
 
 /// SM2_INSTR value type for batch read/modify/write operations
@@ -12238,7 +11451,6 @@ impl Sm2InstrVal {
             bits: (self.bits & !Sm2Instr::SM2_INSTR_MASK) | ((value << Sm2Instr::SM2_INSTR_OFFSET) & Sm2Instr::SM2_INSTR_MASK)
         }
     }
-
 }
 
 impl Default for Sm2InstrVal {
@@ -12265,7 +11477,6 @@ impl Sm2Instr {
     pub fn modify_val<F: FnOnce(Sm2InstrVal) -> Sm2InstrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SM2_PINCTRL Register
@@ -12489,7 +11700,6 @@ impl Sm2Pinctrl {
     pub fn write_out_base(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::OUT_BASE_MASK) | ((value << Self::OUT_BASE_OFFSET) & Self::OUT_BASE_MASK));
     }
-
 }
 
 /// SM2_PINCTRL value type for batch read/modify/write operations
@@ -12645,7 +11855,6 @@ impl Sm2PinctrlVal {
             bits: (self.bits & !Sm2Pinctrl::OUT_BASE_MASK) | ((value << Sm2Pinctrl::OUT_BASE_OFFSET) & Sm2Pinctrl::OUT_BASE_MASK)
         }
     }
-
 }
 
 impl Default for Sm2PinctrlVal {
@@ -12672,7 +11881,6 @@ impl Sm2Pinctrl {
     pub fn modify_val<F: FnOnce(Sm2PinctrlVal) -> Sm2PinctrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SM3_CLKDIV Register
@@ -12761,7 +11969,6 @@ impl Sm3Clkdiv {
     pub fn write_frac(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
     }
-
 }
 
 /// SM3_CLKDIV value type for batch read/modify/write operations
@@ -12829,7 +12036,6 @@ impl Sm3ClkdivVal {
             bits: (self.bits & !Sm3Clkdiv::FRAC_MASK) | ((value << Sm3Clkdiv::FRAC_OFFSET) & Sm3Clkdiv::FRAC_MASK)
         }
     }
-
 }
 
 impl Default for Sm3ClkdivVal {
@@ -12856,7 +12062,6 @@ impl Sm3Clkdiv {
     pub fn modify_val<F: FnOnce(Sm3ClkdivVal) -> Sm3ClkdivVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SM3_EXECCTRL Register
@@ -13246,7 +12451,6 @@ impl Sm3Execctrl {
     pub fn write_status_n(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::STATUS_N_MASK) | ((value << Self::STATUS_N_OFFSET) & Self::STATUS_N_MASK));
     }
-
 }
 
 /// SM3_EXECCTRL value type for batch read/modify/write operations
@@ -13490,7 +12694,6 @@ impl Sm3ExecctrlVal {
             bits: (self.bits & !Sm3Execctrl::STATUS_N_MASK) | ((value << Sm3Execctrl::STATUS_N_OFFSET) & Sm3Execctrl::STATUS_N_MASK)
         }
     }
-
 }
 
 impl Default for Sm3ExecctrlVal {
@@ -13517,7 +12720,6 @@ impl Sm3Execctrl {
     pub fn modify_val<F: FnOnce(Sm3ExecctrlVal) -> Sm3ExecctrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SM3_SHIFTCTRL Register
@@ -13933,7 +13135,6 @@ impl Sm3Shiftctrl {
     pub fn write_in_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::IN_COUNT_MASK) | ((value << Self::IN_COUNT_OFFSET) & Self::IN_COUNT_MASK));
     }
-
 }
 
 /// SM3_SHIFTCTRL value type for batch read/modify/write operations
@@ -14217,7 +13418,6 @@ impl Sm3ShiftctrlVal {
             bits: (self.bits & !Sm3Shiftctrl::IN_COUNT_MASK) | ((value << Sm3Shiftctrl::IN_COUNT_OFFSET) & Sm3Shiftctrl::IN_COUNT_MASK)
         }
     }
-
 }
 
 impl Default for Sm3ShiftctrlVal {
@@ -14244,7 +13444,6 @@ impl Sm3Shiftctrl {
     pub fn modify_val<F: FnOnce(Sm3ShiftctrlVal) -> Sm3ShiftctrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SM3_ADDR Register
@@ -14285,7 +13484,6 @@ impl Sm3Addr {
     pub fn sm3_addr(&self) -> u32 {
         (self.value.read_bits() & Self::SM3_ADDR_MASK) >> Self::SM3_ADDR_OFFSET
     }
-
 }
 
 /// SM3_ADDR value type for batch read/modify/write operations
@@ -14321,7 +13519,6 @@ impl Sm3AddrVal {
     pub const fn sm3_addr(&self) -> u32 {
         (self.bits & Sm3Addr::SM3_ADDR_MASK) >> Sm3Addr::SM3_ADDR_OFFSET
     }
-
 }
 
 impl Default for Sm3AddrVal {
@@ -14336,19 +13533,6 @@ impl Sm3Addr {
     pub fn read_val(&self) -> Sm3AddrVal {
         Sm3AddrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Sm3AddrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Sm3AddrVal) -> Sm3AddrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// SM3_INSTR Register
@@ -14395,7 +13579,6 @@ impl Sm3Instr {
     pub fn write_sm3_instr(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::SM3_INSTR_MASK) | ((value << Self::SM3_INSTR_OFFSET) & Self::SM3_INSTR_MASK));
     }
-
 }
 
 /// SM3_INSTR value type for batch read/modify/write operations
@@ -14433,7 +13616,6 @@ impl Sm3InstrVal {
             bits: (self.bits & !Sm3Instr::SM3_INSTR_MASK) | ((value << Sm3Instr::SM3_INSTR_OFFSET) & Sm3Instr::SM3_INSTR_MASK)
         }
     }
-
 }
 
 impl Default for Sm3InstrVal {
@@ -14460,7 +13642,6 @@ impl Sm3Instr {
     pub fn modify_val<F: FnOnce(Sm3InstrVal) -> Sm3InstrVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// SM3_PINCTRL Register
@@ -14684,7 +13865,6 @@ impl Sm3Pinctrl {
     pub fn write_out_base(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::OUT_BASE_MASK) | ((value << Self::OUT_BASE_OFFSET) & Self::OUT_BASE_MASK));
     }
-
 }
 
 /// SM3_PINCTRL value type for batch read/modify/write operations
@@ -14840,7 +14020,6 @@ impl Sm3PinctrlVal {
             bits: (self.bits & !Sm3Pinctrl::OUT_BASE_MASK) | ((value << Sm3Pinctrl::OUT_BASE_OFFSET) & Sm3Pinctrl::OUT_BASE_MASK)
         }
     }
-
 }
 
 impl Default for Sm3PinctrlVal {
@@ -14867,7 +14046,6 @@ impl Sm3Pinctrl {
     pub fn modify_val<F: FnOnce(Sm3PinctrlVal) -> Sm3PinctrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// RXF0_PUTGET0 Register
@@ -14914,7 +14092,6 @@ impl Rxf0Putget0 {
     pub fn write_rxf0_putget0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::RXF0_PUTGET0_MASK) | ((value << Self::RXF0_PUTGET0_OFFSET) & Self::RXF0_PUTGET0_MASK));
     }
-
 }
 
 /// RXF0_PUTGET0 value type for batch read/modify/write operations
@@ -14958,7 +14135,6 @@ impl Rxf0Putget0Val {
             bits: (self.bits & !Rxf0Putget0::RXF0_PUTGET0_MASK) | ((value << Rxf0Putget0::RXF0_PUTGET0_OFFSET) & Rxf0Putget0::RXF0_PUTGET0_MASK)
         }
     }
-
 }
 
 impl Default for Rxf0Putget0Val {
@@ -14985,7 +14161,6 @@ impl Rxf0Putget0 {
     pub fn modify_val<F: FnOnce(Rxf0Putget0Val) -> Rxf0Putget0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// RXF0_PUTGET1 Register
@@ -15032,7 +14207,6 @@ impl Rxf0Putget1 {
     pub fn write_rxf0_putget1(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::RXF0_PUTGET1_MASK) | ((value << Self::RXF0_PUTGET1_OFFSET) & Self::RXF0_PUTGET1_MASK));
     }
-
 }
 
 /// RXF0_PUTGET1 value type for batch read/modify/write operations
@@ -15076,7 +14250,6 @@ impl Rxf0Putget1Val {
             bits: (self.bits & !Rxf0Putget1::RXF0_PUTGET1_MASK) | ((value << Rxf0Putget1::RXF0_PUTGET1_OFFSET) & Rxf0Putget1::RXF0_PUTGET1_MASK)
         }
     }
-
 }
 
 impl Default for Rxf0Putget1Val {
@@ -15103,7 +14276,6 @@ impl Rxf0Putget1 {
     pub fn modify_val<F: FnOnce(Rxf0Putget1Val) -> Rxf0Putget1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// RXF0_PUTGET2 Register
@@ -15150,7 +14322,6 @@ impl Rxf0Putget2 {
     pub fn write_rxf0_putget2(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::RXF0_PUTGET2_MASK) | ((value << Self::RXF0_PUTGET2_OFFSET) & Self::RXF0_PUTGET2_MASK));
     }
-
 }
 
 /// RXF0_PUTGET2 value type for batch read/modify/write operations
@@ -15194,7 +14365,6 @@ impl Rxf0Putget2Val {
             bits: (self.bits & !Rxf0Putget2::RXF0_PUTGET2_MASK) | ((value << Rxf0Putget2::RXF0_PUTGET2_OFFSET) & Rxf0Putget2::RXF0_PUTGET2_MASK)
         }
     }
-
 }
 
 impl Default for Rxf0Putget2Val {
@@ -15221,7 +14391,6 @@ impl Rxf0Putget2 {
     pub fn modify_val<F: FnOnce(Rxf0Putget2Val) -> Rxf0Putget2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// RXF0_PUTGET3 Register
@@ -15268,7 +14437,6 @@ impl Rxf0Putget3 {
     pub fn write_rxf0_putget3(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::RXF0_PUTGET3_MASK) | ((value << Self::RXF0_PUTGET3_OFFSET) & Self::RXF0_PUTGET3_MASK));
     }
-
 }
 
 /// RXF0_PUTGET3 value type for batch read/modify/write operations
@@ -15312,7 +14480,6 @@ impl Rxf0Putget3Val {
             bits: (self.bits & !Rxf0Putget3::RXF0_PUTGET3_MASK) | ((value << Rxf0Putget3::RXF0_PUTGET3_OFFSET) & Rxf0Putget3::RXF0_PUTGET3_MASK)
         }
     }
-
 }
 
 impl Default for Rxf0Putget3Val {
@@ -15339,7 +14506,6 @@ impl Rxf0Putget3 {
     pub fn modify_val<F: FnOnce(Rxf0Putget3Val) -> Rxf0Putget3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// RXF1_PUTGET0 Register
@@ -15386,7 +14552,6 @@ impl Rxf1Putget0 {
     pub fn write_rxf1_putget0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::RXF1_PUTGET0_MASK) | ((value << Self::RXF1_PUTGET0_OFFSET) & Self::RXF1_PUTGET0_MASK));
     }
-
 }
 
 /// RXF1_PUTGET0 value type for batch read/modify/write operations
@@ -15430,7 +14595,6 @@ impl Rxf1Putget0Val {
             bits: (self.bits & !Rxf1Putget0::RXF1_PUTGET0_MASK) | ((value << Rxf1Putget0::RXF1_PUTGET0_OFFSET) & Rxf1Putget0::RXF1_PUTGET0_MASK)
         }
     }
-
 }
 
 impl Default for Rxf1Putget0Val {
@@ -15457,7 +14621,6 @@ impl Rxf1Putget0 {
     pub fn modify_val<F: FnOnce(Rxf1Putget0Val) -> Rxf1Putget0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// RXF1_PUTGET1 Register
@@ -15504,7 +14667,6 @@ impl Rxf1Putget1 {
     pub fn write_rxf1_putget1(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::RXF1_PUTGET1_MASK) | ((value << Self::RXF1_PUTGET1_OFFSET) & Self::RXF1_PUTGET1_MASK));
     }
-
 }
 
 /// RXF1_PUTGET1 value type for batch read/modify/write operations
@@ -15548,7 +14710,6 @@ impl Rxf1Putget1Val {
             bits: (self.bits & !Rxf1Putget1::RXF1_PUTGET1_MASK) | ((value << Rxf1Putget1::RXF1_PUTGET1_OFFSET) & Rxf1Putget1::RXF1_PUTGET1_MASK)
         }
     }
-
 }
 
 impl Default for Rxf1Putget1Val {
@@ -15575,7 +14736,6 @@ impl Rxf1Putget1 {
     pub fn modify_val<F: FnOnce(Rxf1Putget1Val) -> Rxf1Putget1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// RXF1_PUTGET2 Register
@@ -15622,7 +14782,6 @@ impl Rxf1Putget2 {
     pub fn write_rxf1_putget2(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::RXF1_PUTGET2_MASK) | ((value << Self::RXF1_PUTGET2_OFFSET) & Self::RXF1_PUTGET2_MASK));
     }
-
 }
 
 /// RXF1_PUTGET2 value type for batch read/modify/write operations
@@ -15666,7 +14825,6 @@ impl Rxf1Putget2Val {
             bits: (self.bits & !Rxf1Putget2::RXF1_PUTGET2_MASK) | ((value << Rxf1Putget2::RXF1_PUTGET2_OFFSET) & Rxf1Putget2::RXF1_PUTGET2_MASK)
         }
     }
-
 }
 
 impl Default for Rxf1Putget2Val {
@@ -15693,7 +14851,6 @@ impl Rxf1Putget2 {
     pub fn modify_val<F: FnOnce(Rxf1Putget2Val) -> Rxf1Putget2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// RXF1_PUTGET3 Register
@@ -15740,7 +14897,6 @@ impl Rxf1Putget3 {
     pub fn write_rxf1_putget3(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::RXF1_PUTGET3_MASK) | ((value << Self::RXF1_PUTGET3_OFFSET) & Self::RXF1_PUTGET3_MASK));
     }
-
 }
 
 /// RXF1_PUTGET3 value type for batch read/modify/write operations
@@ -15784,7 +14940,6 @@ impl Rxf1Putget3Val {
             bits: (self.bits & !Rxf1Putget3::RXF1_PUTGET3_MASK) | ((value << Rxf1Putget3::RXF1_PUTGET3_OFFSET) & Rxf1Putget3::RXF1_PUTGET3_MASK)
         }
     }
-
 }
 
 impl Default for Rxf1Putget3Val {
@@ -15811,7 +14966,6 @@ impl Rxf1Putget3 {
     pub fn modify_val<F: FnOnce(Rxf1Putget3Val) -> Rxf1Putget3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// RXF2_PUTGET0 Register
@@ -15858,7 +15012,6 @@ impl Rxf2Putget0 {
     pub fn write_rxf2_putget0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::RXF2_PUTGET0_MASK) | ((value << Self::RXF2_PUTGET0_OFFSET) & Self::RXF2_PUTGET0_MASK));
     }
-
 }
 
 /// RXF2_PUTGET0 value type for batch read/modify/write operations
@@ -15902,7 +15055,6 @@ impl Rxf2Putget0Val {
             bits: (self.bits & !Rxf2Putget0::RXF2_PUTGET0_MASK) | ((value << Rxf2Putget0::RXF2_PUTGET0_OFFSET) & Rxf2Putget0::RXF2_PUTGET0_MASK)
         }
     }
-
 }
 
 impl Default for Rxf2Putget0Val {
@@ -15929,7 +15081,6 @@ impl Rxf2Putget0 {
     pub fn modify_val<F: FnOnce(Rxf2Putget0Val) -> Rxf2Putget0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// RXF2_PUTGET1 Register
@@ -15976,7 +15127,6 @@ impl Rxf2Putget1 {
     pub fn write_rxf2_putget1(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::RXF2_PUTGET1_MASK) | ((value << Self::RXF2_PUTGET1_OFFSET) & Self::RXF2_PUTGET1_MASK));
     }
-
 }
 
 /// RXF2_PUTGET1 value type for batch read/modify/write operations
@@ -16020,7 +15170,6 @@ impl Rxf2Putget1Val {
             bits: (self.bits & !Rxf2Putget1::RXF2_PUTGET1_MASK) | ((value << Rxf2Putget1::RXF2_PUTGET1_OFFSET) & Rxf2Putget1::RXF2_PUTGET1_MASK)
         }
     }
-
 }
 
 impl Default for Rxf2Putget1Val {
@@ -16047,7 +15196,6 @@ impl Rxf2Putget1 {
     pub fn modify_val<F: FnOnce(Rxf2Putget1Val) -> Rxf2Putget1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// RXF2_PUTGET2 Register
@@ -16094,7 +15242,6 @@ impl Rxf2Putget2 {
     pub fn write_rxf2_putget2(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::RXF2_PUTGET2_MASK) | ((value << Self::RXF2_PUTGET2_OFFSET) & Self::RXF2_PUTGET2_MASK));
     }
-
 }
 
 /// RXF2_PUTGET2 value type for batch read/modify/write operations
@@ -16138,7 +15285,6 @@ impl Rxf2Putget2Val {
             bits: (self.bits & !Rxf2Putget2::RXF2_PUTGET2_MASK) | ((value << Rxf2Putget2::RXF2_PUTGET2_OFFSET) & Rxf2Putget2::RXF2_PUTGET2_MASK)
         }
     }
-
 }
 
 impl Default for Rxf2Putget2Val {
@@ -16165,7 +15311,6 @@ impl Rxf2Putget2 {
     pub fn modify_val<F: FnOnce(Rxf2Putget2Val) -> Rxf2Putget2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// RXF2_PUTGET3 Register
@@ -16212,7 +15357,6 @@ impl Rxf2Putget3 {
     pub fn write_rxf2_putget3(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::RXF2_PUTGET3_MASK) | ((value << Self::RXF2_PUTGET3_OFFSET) & Self::RXF2_PUTGET3_MASK));
     }
-
 }
 
 /// RXF2_PUTGET3 value type for batch read/modify/write operations
@@ -16256,7 +15400,6 @@ impl Rxf2Putget3Val {
             bits: (self.bits & !Rxf2Putget3::RXF2_PUTGET3_MASK) | ((value << Rxf2Putget3::RXF2_PUTGET3_OFFSET) & Rxf2Putget3::RXF2_PUTGET3_MASK)
         }
     }
-
 }
 
 impl Default for Rxf2Putget3Val {
@@ -16283,7 +15426,6 @@ impl Rxf2Putget3 {
     pub fn modify_val<F: FnOnce(Rxf2Putget3Val) -> Rxf2Putget3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// RXF3_PUTGET0 Register
@@ -16330,7 +15472,6 @@ impl Rxf3Putget0 {
     pub fn write_rxf3_putget0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::RXF3_PUTGET0_MASK) | ((value << Self::RXF3_PUTGET0_OFFSET) & Self::RXF3_PUTGET0_MASK));
     }
-
 }
 
 /// RXF3_PUTGET0 value type for batch read/modify/write operations
@@ -16374,7 +15515,6 @@ impl Rxf3Putget0Val {
             bits: (self.bits & !Rxf3Putget0::RXF3_PUTGET0_MASK) | ((value << Rxf3Putget0::RXF3_PUTGET0_OFFSET) & Rxf3Putget0::RXF3_PUTGET0_MASK)
         }
     }
-
 }
 
 impl Default for Rxf3Putget0Val {
@@ -16401,7 +15541,6 @@ impl Rxf3Putget0 {
     pub fn modify_val<F: FnOnce(Rxf3Putget0Val) -> Rxf3Putget0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// RXF3_PUTGET1 Register
@@ -16448,7 +15587,6 @@ impl Rxf3Putget1 {
     pub fn write_rxf3_putget1(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::RXF3_PUTGET1_MASK) | ((value << Self::RXF3_PUTGET1_OFFSET) & Self::RXF3_PUTGET1_MASK));
     }
-
 }
 
 /// RXF3_PUTGET1 value type for batch read/modify/write operations
@@ -16492,7 +15630,6 @@ impl Rxf3Putget1Val {
             bits: (self.bits & !Rxf3Putget1::RXF3_PUTGET1_MASK) | ((value << Rxf3Putget1::RXF3_PUTGET1_OFFSET) & Rxf3Putget1::RXF3_PUTGET1_MASK)
         }
     }
-
 }
 
 impl Default for Rxf3Putget1Val {
@@ -16519,7 +15656,6 @@ impl Rxf3Putget1 {
     pub fn modify_val<F: FnOnce(Rxf3Putget1Val) -> Rxf3Putget1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// RXF3_PUTGET2 Register
@@ -16566,7 +15702,6 @@ impl Rxf3Putget2 {
     pub fn write_rxf3_putget2(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::RXF3_PUTGET2_MASK) | ((value << Self::RXF3_PUTGET2_OFFSET) & Self::RXF3_PUTGET2_MASK));
     }
-
 }
 
 /// RXF3_PUTGET2 value type for batch read/modify/write operations
@@ -16610,7 +15745,6 @@ impl Rxf3Putget2Val {
             bits: (self.bits & !Rxf3Putget2::RXF3_PUTGET2_MASK) | ((value << Rxf3Putget2::RXF3_PUTGET2_OFFSET) & Rxf3Putget2::RXF3_PUTGET2_MASK)
         }
     }
-
 }
 
 impl Default for Rxf3Putget2Val {
@@ -16637,7 +15771,6 @@ impl Rxf3Putget2 {
     pub fn modify_val<F: FnOnce(Rxf3Putget2Val) -> Rxf3Putget2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// RXF3_PUTGET3 Register
@@ -16684,7 +15817,6 @@ impl Rxf3Putget3 {
     pub fn write_rxf3_putget3(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::RXF3_PUTGET3_MASK) | ((value << Self::RXF3_PUTGET3_OFFSET) & Self::RXF3_PUTGET3_MASK));
     }
-
 }
 
 /// RXF3_PUTGET3 value type for batch read/modify/write operations
@@ -16728,7 +15860,6 @@ impl Rxf3Putget3Val {
             bits: (self.bits & !Rxf3Putget3::RXF3_PUTGET3_MASK) | ((value << Rxf3Putget3::RXF3_PUTGET3_OFFSET) & Rxf3Putget3::RXF3_PUTGET3_MASK)
         }
     }
-
 }
 
 impl Default for Rxf3Putget3Val {
@@ -16755,7 +15886,6 @@ impl Rxf3Putget3 {
     pub fn modify_val<F: FnOnce(Rxf3Putget3Val) -> Rxf3Putget3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// GPIOBASE Register
@@ -16810,7 +15940,6 @@ impl Gpiobase {
     pub fn clr_gpiobase(&self) {
         self.clr_bits(Self::GPIOBASE_MASK);
     }
-
 }
 
 /// GPIOBASE value type for batch read/modify/write operations
@@ -16858,7 +15987,6 @@ impl GpiobaseVal {
             }
         }
     }
-
 }
 
 impl Default for GpiobaseVal {
@@ -16885,7 +16013,6 @@ impl Gpiobase {
     pub fn modify_val<F: FnOnce(GpiobaseVal) -> GpiobaseVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// INTR Register
@@ -17137,7 +16264,6 @@ impl Intr {
     pub fn sm0_rxnempty(&self) -> bool {
         (self.value.read_bits() & Self::SM0_RXNEMPTY_MASK) != 0
     }
-
 }
 
 /// INTR value type for batch read/modify/write operations
@@ -17263,7 +16389,6 @@ impl IntrVal {
     pub const fn sm0_rxnempty(&self) -> bool {
         (self.bits & Intr::SM0_RXNEMPTY_MASK) != 0
     }
-
 }
 
 impl Default for IntrVal {
@@ -17278,19 +16403,6 @@ impl Intr {
     pub fn read_val(&self) -> IntrVal {
         IntrVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: IntrVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(IntrVal) -> IntrVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IRQ0_INTE Register
@@ -17734,7 +16846,6 @@ impl Irq0Inte {
     pub fn clr_sm0_rxnempty(&self) {
         self.clr_bits(Self::SM0_RXNEMPTY_MASK);
     }
-
 }
 
 /// IRQ0_INTE value type for batch read/modify/write operations
@@ -18052,7 +17163,6 @@ impl Irq0InteVal {
             }
         }
     }
-
 }
 
 impl Default for Irq0InteVal {
@@ -18079,7 +17189,6 @@ impl Irq0Inte {
     pub fn modify_val<F: FnOnce(Irq0InteVal) -> Irq0InteVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IRQ0_INTF Register
@@ -18523,7 +17632,6 @@ impl Irq0Intf {
     pub fn clr_sm0_rxnempty(&self) {
         self.clr_bits(Self::SM0_RXNEMPTY_MASK);
     }
-
 }
 
 /// IRQ0_INTF value type for batch read/modify/write operations
@@ -18841,7 +17949,6 @@ impl Irq0IntfVal {
             }
         }
     }
-
 }
 
 impl Default for Irq0IntfVal {
@@ -18868,7 +17975,6 @@ impl Irq0Intf {
     pub fn modify_val<F: FnOnce(Irq0IntfVal) -> Irq0IntfVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IRQ0_INTS Register
@@ -19120,7 +18226,6 @@ impl Irq0Ints {
     pub fn sm0_rxnempty(&self) -> bool {
         (self.value.read_bits() & Self::SM0_RXNEMPTY_MASK) != 0
     }
-
 }
 
 /// IRQ0_INTS value type for batch read/modify/write operations
@@ -19246,7 +18351,6 @@ impl Irq0IntsVal {
     pub const fn sm0_rxnempty(&self) -> bool {
         (self.bits & Irq0Ints::SM0_RXNEMPTY_MASK) != 0
     }
-
 }
 
 impl Default for Irq0IntsVal {
@@ -19261,19 +18365,6 @@ impl Irq0Ints {
     pub fn read_val(&self) -> Irq0IntsVal {
         Irq0IntsVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Irq0IntsVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Irq0IntsVal) -> Irq0IntsVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// IRQ1_INTE Register
@@ -19717,7 +18808,6 @@ impl Irq1Inte {
     pub fn clr_sm0_rxnempty(&self) {
         self.clr_bits(Self::SM0_RXNEMPTY_MASK);
     }
-
 }
 
 /// IRQ1_INTE value type for batch read/modify/write operations
@@ -20035,7 +19125,6 @@ impl Irq1InteVal {
             }
         }
     }
-
 }
 
 impl Default for Irq1InteVal {
@@ -20062,7 +19151,6 @@ impl Irq1Inte {
     pub fn modify_val<F: FnOnce(Irq1InteVal) -> Irq1InteVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IRQ1_INTF Register
@@ -20506,7 +19594,6 @@ impl Irq1Intf {
     pub fn clr_sm0_rxnempty(&self) {
         self.clr_bits(Self::SM0_RXNEMPTY_MASK);
     }
-
 }
 
 /// IRQ1_INTF value type for batch read/modify/write operations
@@ -20824,7 +19911,6 @@ impl Irq1IntfVal {
             }
         }
     }
-
 }
 
 impl Default for Irq1IntfVal {
@@ -20851,7 +19937,6 @@ impl Irq1Intf {
     pub fn modify_val<F: FnOnce(Irq1IntfVal) -> Irq1IntfVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// IRQ1_INTS Register
@@ -21103,7 +20188,6 @@ impl Irq1Ints {
     pub fn sm0_rxnempty(&self) -> bool {
         (self.value.read_bits() & Self::SM0_RXNEMPTY_MASK) != 0
     }
-
 }
 
 /// IRQ1_INTS value type for batch read/modify/write operations
@@ -21229,7 +20313,6 @@ impl Irq1IntsVal {
     pub const fn sm0_rxnempty(&self) -> bool {
         (self.bits & Irq1Ints::SM0_RXNEMPTY_MASK) != 0
     }
-
 }
 
 impl Default for Irq1IntsVal {
@@ -21244,19 +20327,6 @@ impl Irq1Ints {
     pub fn read_val(&self) -> Irq1IntsVal {
         Irq1IntsVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: Irq1IntsVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(Irq1IntsVal) -> Irq1IntsVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// Register block

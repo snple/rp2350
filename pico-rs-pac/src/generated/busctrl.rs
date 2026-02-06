@@ -164,7 +164,6 @@ impl BusPriority {
     pub fn clr_proc0(&self) {
         self.clr_bits(Self::PROC0_MASK);
     }
-
 }
 
 /// BUS_PRIORITY value type for batch read/modify/write operations
@@ -282,7 +281,6 @@ impl BusPriorityVal {
             }
         }
     }
-
 }
 
 impl Default for BusPriorityVal {
@@ -309,7 +307,6 @@ impl BusPriority {
     pub fn modify_val<F: FnOnce(BusPriorityVal) -> BusPriorityVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// BUS_PRIORITY_ACK Register
@@ -364,7 +361,6 @@ impl BusPriorityAck {
     pub fn bus_priority_ack(&self) -> bool {
         (self.value.read_bits() & Self::BUS_PRIORITY_ACK_MASK) != 0
     }
-
 }
 
 /// BUS_PRIORITY_ACK value type for batch read/modify/write operations
@@ -404,7 +400,6 @@ impl BusPriorityAckVal {
     pub const fn bus_priority_ack(&self) -> bool {
         (self.bits & BusPriorityAck::BUS_PRIORITY_ACK_MASK) != 0
     }
-
 }
 
 impl Default for BusPriorityAckVal {
@@ -419,19 +414,6 @@ impl BusPriorityAck {
     pub fn read_val(&self) -> BusPriorityAckVal {
         BusPriorityAckVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: BusPriorityAckVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(BusPriorityAckVal) -> BusPriorityAckVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// PERFCTR_EN Register
@@ -486,7 +468,6 @@ impl PerfctrEn {
     pub fn clr_perfctr_en(&self) {
         self.clr_bits(Self::PERFCTR_EN_MASK);
     }
-
 }
 
 /// PERFCTR_EN value type for batch read/modify/write operations
@@ -534,7 +515,6 @@ impl PerfctrEnVal {
             }
         }
     }
-
 }
 
 impl Default for PerfctrEnVal {
@@ -561,7 +541,6 @@ impl PerfctrEn {
     pub fn modify_val<F: FnOnce(PerfctrEnVal) -> PerfctrEnVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PERFCTR0 Register
@@ -625,7 +604,6 @@ impl Perfctr0 {
     pub fn write_perfctr0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PERFCTR0_MASK) | ((value << Self::PERFCTR0_OFFSET) & Self::PERFCTR0_MASK));
     }
-
 }
 
 /// PERFCTR0 value type for batch read/modify/write operations
@@ -677,7 +655,6 @@ impl Perfctr0Val {
             bits: (self.bits & !Perfctr0::PERFCTR0_MASK) | ((value << Perfctr0::PERFCTR0_OFFSET) & Perfctr0::PERFCTR0_MASK)
         }
     }
-
 }
 
 impl Default for Perfctr0Val {
@@ -704,7 +681,6 @@ impl Perfctr0 {
     pub fn modify_val<F: FnOnce(Perfctr0Val) -> Perfctr0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PERFSEL0 Register
@@ -896,7 +872,6 @@ impl Perfsel0 {
     pub fn write_perfsel0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PERFSEL0_MASK) | ((value << Self::PERFSEL0_OFFSET) & Self::PERFSEL0_MASK));
     }
-
 }
 
 /// PERFSEL0 value type for batch read/modify/write operations
@@ -944,7 +919,6 @@ impl Perfsel0Val {
             bits: (self.bits & !Perfsel0::PERFSEL0_MASK) | ((value << Perfsel0::PERFSEL0_OFFSET) & Perfsel0::PERFSEL0_MASK)
         }
     }
-
 }
 
 impl Default for Perfsel0Val {
@@ -971,7 +945,6 @@ impl Perfsel0 {
     pub fn modify_val<F: FnOnce(Perfsel0Val) -> Perfsel0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PERFCTR1 Register
@@ -1035,7 +1008,6 @@ impl Perfctr1 {
     pub fn write_perfctr1(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PERFCTR1_MASK) | ((value << Self::PERFCTR1_OFFSET) & Self::PERFCTR1_MASK));
     }
-
 }
 
 /// PERFCTR1 value type for batch read/modify/write operations
@@ -1087,7 +1059,6 @@ impl Perfctr1Val {
             bits: (self.bits & !Perfctr1::PERFCTR1_MASK) | ((value << Perfctr1::PERFCTR1_OFFSET) & Perfctr1::PERFCTR1_MASK)
         }
     }
-
 }
 
 impl Default for Perfctr1Val {
@@ -1114,7 +1085,6 @@ impl Perfctr1 {
     pub fn modify_val<F: FnOnce(Perfctr1Val) -> Perfctr1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PERFSEL1 Register
@@ -1306,7 +1276,6 @@ impl Perfsel1 {
     pub fn write_perfsel1(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PERFSEL1_MASK) | ((value << Self::PERFSEL1_OFFSET) & Self::PERFSEL1_MASK));
     }
-
 }
 
 /// PERFSEL1 value type for batch read/modify/write operations
@@ -1354,7 +1323,6 @@ impl Perfsel1Val {
             bits: (self.bits & !Perfsel1::PERFSEL1_MASK) | ((value << Perfsel1::PERFSEL1_OFFSET) & Perfsel1::PERFSEL1_MASK)
         }
     }
-
 }
 
 impl Default for Perfsel1Val {
@@ -1381,7 +1349,6 @@ impl Perfsel1 {
     pub fn modify_val<F: FnOnce(Perfsel1Val) -> Perfsel1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PERFCTR2 Register
@@ -1445,7 +1412,6 @@ impl Perfctr2 {
     pub fn write_perfctr2(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PERFCTR2_MASK) | ((value << Self::PERFCTR2_OFFSET) & Self::PERFCTR2_MASK));
     }
-
 }
 
 /// PERFCTR2 value type for batch read/modify/write operations
@@ -1497,7 +1463,6 @@ impl Perfctr2Val {
             bits: (self.bits & !Perfctr2::PERFCTR2_MASK) | ((value << Perfctr2::PERFCTR2_OFFSET) & Perfctr2::PERFCTR2_MASK)
         }
     }
-
 }
 
 impl Default for Perfctr2Val {
@@ -1524,7 +1489,6 @@ impl Perfctr2 {
     pub fn modify_val<F: FnOnce(Perfctr2Val) -> Perfctr2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PERFSEL2 Register
@@ -1716,7 +1680,6 @@ impl Perfsel2 {
     pub fn write_perfsel2(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PERFSEL2_MASK) | ((value << Self::PERFSEL2_OFFSET) & Self::PERFSEL2_MASK));
     }
-
 }
 
 /// PERFSEL2 value type for batch read/modify/write operations
@@ -1764,7 +1727,6 @@ impl Perfsel2Val {
             bits: (self.bits & !Perfsel2::PERFSEL2_MASK) | ((value << Perfsel2::PERFSEL2_OFFSET) & Perfsel2::PERFSEL2_MASK)
         }
     }
-
 }
 
 impl Default for Perfsel2Val {
@@ -1791,7 +1753,6 @@ impl Perfsel2 {
     pub fn modify_val<F: FnOnce(Perfsel2Val) -> Perfsel2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PERFCTR3 Register
@@ -1855,7 +1816,6 @@ impl Perfctr3 {
     pub fn write_perfctr3(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PERFCTR3_MASK) | ((value << Self::PERFCTR3_OFFSET) & Self::PERFCTR3_MASK));
     }
-
 }
 
 /// PERFCTR3 value type for batch read/modify/write operations
@@ -1907,7 +1867,6 @@ impl Perfctr3Val {
             bits: (self.bits & !Perfctr3::PERFCTR3_MASK) | ((value << Perfctr3::PERFCTR3_OFFSET) & Perfctr3::PERFCTR3_MASK)
         }
     }
-
 }
 
 impl Default for Perfctr3Val {
@@ -1934,7 +1893,6 @@ impl Perfctr3 {
     pub fn modify_val<F: FnOnce(Perfctr3Val) -> Perfctr3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// PERFSEL3 Register
@@ -2126,7 +2084,6 @@ impl Perfsel3 {
     pub fn write_perfsel3(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::PERFSEL3_MASK) | ((value << Self::PERFSEL3_OFFSET) & Self::PERFSEL3_MASK));
     }
-
 }
 
 /// PERFSEL3 value type for batch read/modify/write operations
@@ -2174,7 +2131,6 @@ impl Perfsel3Val {
             bits: (self.bits & !Perfsel3::PERFSEL3_MASK) | ((value << Perfsel3::PERFSEL3_OFFSET) & Perfsel3::PERFSEL3_MASK)
         }
     }
-
 }
 
 impl Default for Perfsel3Val {
@@ -2201,7 +2157,6 @@ impl Perfsel3 {
     pub fn modify_val<F: FnOnce(Perfsel3Val) -> Perfsel3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// Register block

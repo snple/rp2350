@@ -51,7 +51,6 @@ impl WriteOnce0 {
     pub fn write_write_once0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::WRITE_ONCE0_MASK) | ((value << Self::WRITE_ONCE0_OFFSET) & Self::WRITE_ONCE0_MASK));
     }
-
 }
 
 /// WRITE_ONCE0 value type for batch read/modify/write operations
@@ -95,7 +94,6 @@ impl WriteOnce0Val {
             bits: (self.bits & !WriteOnce0::WRITE_ONCE0_MASK) | ((value << WriteOnce0::WRITE_ONCE0_OFFSET) & WriteOnce0::WRITE_ONCE0_MASK)
         }
     }
-
 }
 
 impl Default for WriteOnce0Val {
@@ -122,7 +120,6 @@ impl WriteOnce0 {
     pub fn modify_val<F: FnOnce(WriteOnce0Val) -> WriteOnce0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// WRITE_ONCE1 Register
@@ -169,7 +166,6 @@ impl WriteOnce1 {
     pub fn write_write_once1(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::WRITE_ONCE1_MASK) | ((value << Self::WRITE_ONCE1_OFFSET) & Self::WRITE_ONCE1_MASK));
     }
-
 }
 
 /// WRITE_ONCE1 value type for batch read/modify/write operations
@@ -213,7 +209,6 @@ impl WriteOnce1Val {
             bits: (self.bits & !WriteOnce1::WRITE_ONCE1_MASK) | ((value << WriteOnce1::WRITE_ONCE1_OFFSET) & WriteOnce1::WRITE_ONCE1_MASK)
         }
     }
-
 }
 
 impl Default for WriteOnce1Val {
@@ -240,7 +235,6 @@ impl WriteOnce1 {
     pub fn modify_val<F: FnOnce(WriteOnce1Val) -> WriteOnce1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// BOOTLOCK_STAT Register
@@ -287,7 +281,6 @@ impl BootlockStat {
     pub fn write_bootlock_stat(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BOOTLOCK_STAT_MASK) | ((value << Self::BOOTLOCK_STAT_OFFSET) & Self::BOOTLOCK_STAT_MASK));
     }
-
 }
 
 /// BOOTLOCK_STAT value type for batch read/modify/write operations
@@ -331,7 +324,6 @@ impl BootlockStatVal {
             bits: (self.bits & !BootlockStat::BOOTLOCK_STAT_MASK) | ((value << BootlockStat::BOOTLOCK_STAT_OFFSET) & BootlockStat::BOOTLOCK_STAT_MASK)
         }
     }
-
 }
 
 impl Default for BootlockStatVal {
@@ -358,7 +350,6 @@ impl BootlockStat {
     pub fn modify_val<F: FnOnce(BootlockStatVal) -> BootlockStatVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// BOOTLOCK0 Register
@@ -405,7 +396,6 @@ impl Bootlock0 {
     pub fn write_bootlock0(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BOOTLOCK0_MASK) | ((value << Self::BOOTLOCK0_OFFSET) & Self::BOOTLOCK0_MASK));
     }
-
 }
 
 /// BOOTLOCK0 value type for batch read/modify/write operations
@@ -449,7 +439,6 @@ impl Bootlock0Val {
             bits: (self.bits & !Bootlock0::BOOTLOCK0_MASK) | ((value << Bootlock0::BOOTLOCK0_OFFSET) & Bootlock0::BOOTLOCK0_MASK)
         }
     }
-
 }
 
 impl Default for Bootlock0Val {
@@ -476,7 +465,6 @@ impl Bootlock0 {
     pub fn modify_val<F: FnOnce(Bootlock0Val) -> Bootlock0Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// BOOTLOCK1 Register
@@ -523,7 +511,6 @@ impl Bootlock1 {
     pub fn write_bootlock1(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BOOTLOCK1_MASK) | ((value << Self::BOOTLOCK1_OFFSET) & Self::BOOTLOCK1_MASK));
     }
-
 }
 
 /// BOOTLOCK1 value type for batch read/modify/write operations
@@ -567,7 +554,6 @@ impl Bootlock1Val {
             bits: (self.bits & !Bootlock1::BOOTLOCK1_MASK) | ((value << Bootlock1::BOOTLOCK1_OFFSET) & Bootlock1::BOOTLOCK1_MASK)
         }
     }
-
 }
 
 impl Default for Bootlock1Val {
@@ -594,7 +580,6 @@ impl Bootlock1 {
     pub fn modify_val<F: FnOnce(Bootlock1Val) -> Bootlock1Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// BOOTLOCK2 Register
@@ -641,7 +626,6 @@ impl Bootlock2 {
     pub fn write_bootlock2(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BOOTLOCK2_MASK) | ((value << Self::BOOTLOCK2_OFFSET) & Self::BOOTLOCK2_MASK));
     }
-
 }
 
 /// BOOTLOCK2 value type for batch read/modify/write operations
@@ -685,7 +669,6 @@ impl Bootlock2Val {
             bits: (self.bits & !Bootlock2::BOOTLOCK2_MASK) | ((value << Bootlock2::BOOTLOCK2_OFFSET) & Bootlock2::BOOTLOCK2_MASK)
         }
     }
-
 }
 
 impl Default for Bootlock2Val {
@@ -712,7 +695,6 @@ impl Bootlock2 {
     pub fn modify_val<F: FnOnce(Bootlock2Val) -> Bootlock2Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// BOOTLOCK3 Register
@@ -759,7 +741,6 @@ impl Bootlock3 {
     pub fn write_bootlock3(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BOOTLOCK3_MASK) | ((value << Self::BOOTLOCK3_OFFSET) & Self::BOOTLOCK3_MASK));
     }
-
 }
 
 /// BOOTLOCK3 value type for batch read/modify/write operations
@@ -803,7 +784,6 @@ impl Bootlock3Val {
             bits: (self.bits & !Bootlock3::BOOTLOCK3_MASK) | ((value << Bootlock3::BOOTLOCK3_OFFSET) & Bootlock3::BOOTLOCK3_MASK)
         }
     }
-
 }
 
 impl Default for Bootlock3Val {
@@ -830,7 +810,6 @@ impl Bootlock3 {
     pub fn modify_val<F: FnOnce(Bootlock3Val) -> Bootlock3Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// BOOTLOCK4 Register
@@ -877,7 +856,6 @@ impl Bootlock4 {
     pub fn write_bootlock4(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BOOTLOCK4_MASK) | ((value << Self::BOOTLOCK4_OFFSET) & Self::BOOTLOCK4_MASK));
     }
-
 }
 
 /// BOOTLOCK4 value type for batch read/modify/write operations
@@ -921,7 +899,6 @@ impl Bootlock4Val {
             bits: (self.bits & !Bootlock4::BOOTLOCK4_MASK) | ((value << Bootlock4::BOOTLOCK4_OFFSET) & Bootlock4::BOOTLOCK4_MASK)
         }
     }
-
 }
 
 impl Default for Bootlock4Val {
@@ -948,7 +925,6 @@ impl Bootlock4 {
     pub fn modify_val<F: FnOnce(Bootlock4Val) -> Bootlock4Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// BOOTLOCK5 Register
@@ -995,7 +971,6 @@ impl Bootlock5 {
     pub fn write_bootlock5(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BOOTLOCK5_MASK) | ((value << Self::BOOTLOCK5_OFFSET) & Self::BOOTLOCK5_MASK));
     }
-
 }
 
 /// BOOTLOCK5 value type for batch read/modify/write operations
@@ -1039,7 +1014,6 @@ impl Bootlock5Val {
             bits: (self.bits & !Bootlock5::BOOTLOCK5_MASK) | ((value << Bootlock5::BOOTLOCK5_OFFSET) & Bootlock5::BOOTLOCK5_MASK)
         }
     }
-
 }
 
 impl Default for Bootlock5Val {
@@ -1066,7 +1040,6 @@ impl Bootlock5 {
     pub fn modify_val<F: FnOnce(Bootlock5Val) -> Bootlock5Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// BOOTLOCK6 Register
@@ -1113,7 +1086,6 @@ impl Bootlock6 {
     pub fn write_bootlock6(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BOOTLOCK6_MASK) | ((value << Self::BOOTLOCK6_OFFSET) & Self::BOOTLOCK6_MASK));
     }
-
 }
 
 /// BOOTLOCK6 value type for batch read/modify/write operations
@@ -1157,7 +1129,6 @@ impl Bootlock6Val {
             bits: (self.bits & !Bootlock6::BOOTLOCK6_MASK) | ((value << Bootlock6::BOOTLOCK6_OFFSET) & Bootlock6::BOOTLOCK6_MASK)
         }
     }
-
 }
 
 impl Default for Bootlock6Val {
@@ -1184,7 +1155,6 @@ impl Bootlock6 {
     pub fn modify_val<F: FnOnce(Bootlock6Val) -> Bootlock6Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// BOOTLOCK7 Register
@@ -1231,7 +1201,6 @@ impl Bootlock7 {
     pub fn write_bootlock7(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::BOOTLOCK7_MASK) | ((value << Self::BOOTLOCK7_OFFSET) & Self::BOOTLOCK7_MASK));
     }
-
 }
 
 /// BOOTLOCK7 value type for batch read/modify/write operations
@@ -1275,7 +1244,6 @@ impl Bootlock7Val {
             bits: (self.bits & !Bootlock7::BOOTLOCK7_MASK) | ((value << Bootlock7::BOOTLOCK7_OFFSET) & Bootlock7::BOOTLOCK7_MASK)
         }
     }
-
 }
 
 impl Default for Bootlock7Val {
@@ -1302,7 +1270,6 @@ impl Bootlock7 {
     pub fn modify_val<F: FnOnce(Bootlock7Val) -> Bootlock7Val>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// Register block

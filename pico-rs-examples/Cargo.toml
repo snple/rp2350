@@ -4,6 +4,7 @@ version.workspace = true
 edition.workspace = true
 license.workspace = true
 description = "Examples for pico-rs"
+autobins = false
 
 [features]
 default = []
@@ -26,10 +27,6 @@ name = "reset_demo"
 path = "src/bin/reset_demo.rs"
 
 [[bin]]
-name = "pio_blink"
-path = "src/bin/pio_blink.rs"
-
-[[bin]]
 name = "sio_example"
 path = "src/bin/sio_example.rs"
 
@@ -38,48 +35,16 @@ name = "gpio_example"
 path = "src/bin/gpio_example.rs"
 
 [[bin]]
-name = "gpio_test"
-path = "src/bin/gpio_test.rs"
-
-[[bin]]
-name = "gpio_interrupt"
-path = "src/bin/gpio_interrupt.rs"
-
-[[bin]]
 name = "timer_interrupt"
 path = "src/bin/timer_interrupt.rs"
-
-[[bin]]
-name = "pio_blink_advanced"
-path = "src/bin/pio_blink_advanced.rs"
-
-[[bin]]
-name = "multicore_example"
-path = "src/bin/multicore_example.rs"
 
 [[bin]]
 name = "clock_config"
 path = "src/bin/clock_config.rs"
 
 [[bin]]
-name = "clock_advanced"
-path = "src/bin/clock_advanced.rs"
-
-[[bin]]
 name = "adc_example"
 path = "src/bin/adc_example.rs"
-
-[[bin]]
-name = "watchdog_example"
-path = "src/bin/watchdog_example.rs"
-
-[[bin]]
-name = "timer_delay"
-path = "src/bin/timer_delay.rs"
-
-[[bin]]
-name = "bind_example"
-path = "src/bin/bind_example.rs"
 
 [[bin]]
 name = "usb_cdc_acm"
@@ -90,13 +55,5 @@ name = "usb_cdc_acm_interrupt"
 path = "src/bin/usb_cdc_acm_interrupt.rs"
 
 [[bin]]
-name = "usb_cdc_ecm"
-path = "src/bin/usb_cdc_ecm.rs"
-
-[[bin]]
-name = "usb_webusb"
-path = "src/bin/usb_webusb.rs"
-
-[[bin]]
-name = "usb_hid_keyboard"
-path = "src/bin/usb_hid_keyboard.rs"
+name = "gpio_interrupt"
+path = "src/bin/gpio_interrupt.rs"

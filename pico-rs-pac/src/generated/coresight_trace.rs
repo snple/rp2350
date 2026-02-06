@@ -104,7 +104,6 @@ impl CtrlStatus {
     pub fn clr_trace_capture_fifo_flush(&self) {
         self.clr_bits(Self::TRACE_CAPTURE_FIFO_FLUSH_MASK);
     }
-
 }
 
 /// CTRL_STATUS value type for batch read/modify/write operations
@@ -182,7 +181,6 @@ impl CtrlStatusVal {
             }
         }
     }
-
 }
 
 impl Default for CtrlStatusVal {
@@ -209,7 +207,6 @@ impl CtrlStatus {
     pub fn modify_val<F: FnOnce(CtrlStatusVal) -> CtrlStatusVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// TRACE_CAPTURE_FIFO Register
@@ -272,7 +269,6 @@ impl TraceCaptureFifo {
     pub fn rdata(&self) -> u32 {
         (self.value.read_bits() & Self::RDATA_MASK) >> Self::RDATA_OFFSET
     }
-
 }
 
 /// TRACE_CAPTURE_FIFO value type for batch read/modify/write operations
@@ -315,7 +311,6 @@ impl TraceCaptureFifoVal {
     pub const fn rdata(&self) -> u32 {
         (self.bits & TraceCaptureFifo::RDATA_MASK) >> TraceCaptureFifo::RDATA_OFFSET
     }
-
 }
 
 impl Default for TraceCaptureFifoVal {
@@ -330,19 +325,6 @@ impl TraceCaptureFifo {
     pub fn read_val(&self) -> TraceCaptureFifoVal {
         TraceCaptureFifoVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: TraceCaptureFifoVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(TraceCaptureFifoVal) -> TraceCaptureFifoVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// Register block

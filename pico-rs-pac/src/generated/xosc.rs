@@ -108,7 +108,6 @@ impl Ctrl {
     pub fn write_freq_range(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::FREQ_RANGE_MASK) | ((value << Self::FREQ_RANGE_OFFSET) & Self::FREQ_RANGE_MASK));
     }
-
 }
 
 /// CTRL value type for batch read/modify/write operations
@@ -178,7 +177,6 @@ impl CtrlVal {
             bits: (self.bits & !Ctrl::FREQ_RANGE_MASK) | ((value << Ctrl::FREQ_RANGE_OFFSET) & Ctrl::FREQ_RANGE_MASK)
         }
     }
-
 }
 
 impl Default for CtrlVal {
@@ -205,7 +203,6 @@ impl Ctrl {
     pub fn modify_val<F: FnOnce(CtrlVal) -> CtrlVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// STATUS Register
@@ -336,7 +333,6 @@ impl Status {
     pub fn freq_range(&self) -> u32 {
         (self.value.read_bits() & Self::FREQ_RANGE_MASK) >> Self::FREQ_RANGE_OFFSET
     }
-
 }
 
 /// STATUS value type for batch read/modify/write operations
@@ -412,7 +408,6 @@ impl StatusVal {
             }
         }
     }
-
 }
 
 impl Default for StatusVal {
@@ -439,7 +434,6 @@ impl Status {
     pub fn modify_val<F: FnOnce(StatusVal) -> StatusVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// DORMANT Register
@@ -514,7 +508,6 @@ impl Dormant {
     pub fn write_dormant(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::DORMANT_MASK) | ((value << Self::DORMANT_OFFSET) & Self::DORMANT_MASK));
     }
-
 }
 
 /// DORMANT value type for batch read/modify/write operations
@@ -564,7 +557,6 @@ impl DormantVal {
             bits: (self.bits & !Dormant::DORMANT_MASK) | ((value << Dormant::DORMANT_OFFSET) & Dormant::DORMANT_MASK)
         }
     }
-
 }
 
 impl Default for DormantVal {
@@ -591,7 +583,6 @@ impl Dormant {
     pub fn modify_val<F: FnOnce(DormantVal) -> DormantVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// STARTUP Register
@@ -680,7 +671,6 @@ impl Startup {
     pub fn write_delay(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::DELAY_MASK) | ((value << Self::DELAY_OFFSET) & Self::DELAY_MASK));
     }
-
 }
 
 /// STARTUP value type for batch read/modify/write operations
@@ -750,7 +740,6 @@ impl StartupVal {
             bits: (self.bits & !Startup::DELAY_MASK) | ((value << Startup::DELAY_OFFSET) & Startup::DELAY_MASK)
         }
     }
-
 }
 
 impl Default for StartupVal {
@@ -777,7 +766,6 @@ impl Startup {
     pub fn modify_val<F: FnOnce(StartupVal) -> StartupVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// COUNT Register
@@ -828,7 +816,6 @@ impl Count {
     pub fn write_count(&self, value: u32) {
         self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
     }
-
 }
 
 /// COUNT value type for batch read/modify/write operations
@@ -872,7 +859,6 @@ impl CountVal {
             bits: (self.bits & !Count::COUNT_MASK) | ((value << Count::COUNT_OFFSET) & Count::COUNT_MASK)
         }
     }
-
 }
 
 impl Default for CountVal {
@@ -899,7 +885,6 @@ impl Count {
     pub fn modify_val<F: FnOnce(CountVal) -> CountVal>(&self, f: F) {
         self.write_val(f(self.read_val()))
     }
-
 }
 
 /// Register block

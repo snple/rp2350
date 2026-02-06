@@ -24,6 +24,8 @@ use panic_probe as _;
 use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
+use pico_rs::pac::Peripherals;
+use pico_rs::pico_rs_rt::peripheral::Peripherals as CorePeripherals;
 use pico_rs::systick::Delay;
 
 use pico_rs_usb::bus::UsbBus;
@@ -42,8 +44,11 @@ const SYS_CLK_HZ: u32 = 150_000_000;
 fn main() -> ! {
     info!("USB CDC Serial Example starting...");
 
+    // Take device peripherals
+    let dp = Peripherals::take().unwrap();
+
     // Initialize clock system (150 MHz sys, 48 MHz USB)
-    let clocks = ClockBuilder::new().enable_usb().build();
+    let clocks = ClockBuilder::new().enable_usb().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
     info!(
         "Clock system initialized: sys={} Hz, usb={} Hz",
         clocks.sys_freq(),
@@ -75,7 +80,10 @@ fn main() -> ! {
     usb_bus.connect();
     info!("USB connected, waiting for enumeration...");
 
-    let mut delay = Delay::new(SYS_CLK_HZ);
+    // Take core peripherals for Delay
+    let core_peripherals = CorePeripherals::take().unwrap();
+
+    let mut delay = Delay::new(core_peripherals.SYST, SYS_CLK_HZ);
     let mut read_buf = [0u8; 64];
     let mut counter: u32 = 0;
     let mut last_send = 0u32;

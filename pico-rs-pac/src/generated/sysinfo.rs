@@ -84,7 +84,6 @@ impl ChipId {
     pub fn stop_bit(&self) -> bool {
         (self.value.read_bits() & Self::STOP_BIT_MASK) != 0
     }
-
 }
 
 /// CHIP_ID value type for batch read/modify/write operations
@@ -138,7 +137,6 @@ impl ChipIdVal {
     pub const fn stop_bit(&self) -> bool {
         (self.bits & ChipId::STOP_BIT_MASK) != 0
     }
-
 }
 
 impl Default for ChipIdVal {
@@ -153,19 +151,6 @@ impl ChipId {
     pub fn read_val(&self) -> ChipIdVal {
         ChipIdVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: ChipIdVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(ChipIdVal) -> ChipIdVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// PACKAGE_SEL Register
@@ -205,7 +190,6 @@ impl PackageSel {
     pub fn package_sel(&self) -> bool {
         (self.value.read_bits() & Self::PACKAGE_SEL_MASK) != 0
     }
-
 }
 
 /// PACKAGE_SEL value type for batch read/modify/write operations
@@ -241,7 +225,6 @@ impl PackageSelVal {
     pub const fn package_sel(&self) -> bool {
         (self.bits & PackageSel::PACKAGE_SEL_MASK) != 0
     }
-
 }
 
 impl Default for PackageSelVal {
@@ -256,19 +239,6 @@ impl PackageSel {
     pub fn read_val(&self) -> PackageSelVal {
         PackageSelVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: PackageSelVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(PackageSelVal) -> PackageSelVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// PLATFORM Register
@@ -366,7 +336,6 @@ impl Platform {
     pub fn fpga(&self) -> bool {
         (self.value.read_bits() & Self::FPGA_MASK) != 0
     }
-
 }
 
 /// PLATFORM value type for batch read/modify/write operations
@@ -426,7 +395,6 @@ impl PlatformVal {
     pub const fn fpga(&self) -> bool {
         (self.bits & Platform::FPGA_MASK) != 0
     }
-
 }
 
 impl Default for PlatformVal {
@@ -441,19 +409,6 @@ impl Platform {
     pub fn read_val(&self) -> PlatformVal {
         PlatformVal::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: PlatformVal) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(PlatformVal) -> PlatformVal>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// GITREF_RP2350 Register
@@ -493,7 +448,6 @@ impl GitrefRp2350 {
     pub fn gitref_rp2350(&self) -> u32 {
         (self.value.read_bits() & Self::GITREF_RP2350_MASK) >> Self::GITREF_RP2350_OFFSET
     }
-
 }
 
 /// GITREF_RP2350 value type for batch read/modify/write operations
@@ -523,7 +477,6 @@ impl GitrefRp2350Val {
     pub const fn gitref_rp2350(&self) -> u32 {
         (self.bits & GitrefRp2350::GITREF_RP2350_MASK) >> GitrefRp2350::GITREF_RP2350_OFFSET
     }
-
 }
 
 impl Default for GitrefRp2350Val {
@@ -538,19 +491,6 @@ impl GitrefRp2350 {
     pub fn read_val(&self) -> GitrefRp2350Val {
         GitrefRp2350Val::from_bits(self.value.read_bits())
     }
-
-    /// Write a value struct to the register
-    #[inline(always)]
-    pub fn write_val(&self, val: GitrefRp2350Val) {
-        self.value.write_bits(val.bits())
-    }
-
-    /// Modify the register using a value struct
-    #[inline(always)]
-    pub fn modify_val<F: FnOnce(GitrefRp2350Val) -> GitrefRp2350Val>(&self, f: F) {
-        self.write_val(f(self.read_val()))
-    }
-
 }
 
 /// Register block

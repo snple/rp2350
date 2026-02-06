@@ -89,6 +89,29 @@ fn parse_peripheral(node: &Node) -> Result<Peripheral> {
     })
 }
 
+/// Infer register-level access from its fields.
+///
+/// When the SVD file does not specify register-level `<access>`, we infer it:
+/// - All fields RO → register is RO
+/// - All fields WO → register is WO
+/// - Mixed or no fields → default to RW
+fn infer_register_access(fields: &[Field]) -> Access {
+    if fields.is_empty() {
+        return Access::ReadWrite;
+    }
+
+    let all_ro = fields.iter().all(|f| matches!(f.access, Access::ReadOnly));
+    let all_wo = fields.iter().all(|f| matches!(f.access, Access::WriteOnly));
+
+    if all_ro {
+        Access::ReadOnly
+    } else if all_wo {
+        Access::WriteOnly
+    } else {
+        Access::ReadWrite
+    }
+}
+
 fn parse_register(node: &Node) -> Result<Register> {
     let name =
         get_child_text(node, "name").ok_or_else(|| anyhow::anyhow!("Register missing name"))?;
@@ -103,9 +126,7 @@ fn parse_register(node: &Node) -> Result<Register> {
 
     let reset_value = get_child_text(node, "resetValue").and_then(|s| parse_number(&s));
 
-    let access = get_child_text(node, "access")
-        .map(|s| Access::from_str(&s))
-        .unwrap_or(Access::ReadWrite);
+    let explicit_access = get_child_text(node, "access").map(|s| Access::from_str(&s));
 
     let mut fields = Vec::new();
 
@@ -120,6 +141,13 @@ fn parse_register(node: &Node) -> Result<Register> {
 
     // Sort fields by LSB position (highest bit first for better readability)
     fields.sort_by(|a, b| b.lsb.cmp(&a.lsb));
+
+    // Determine register access: use explicit SVD value if present,
+    // otherwise infer from field access types.
+    // If all fields are RO -> register is RO
+    // If all fields are WO -> register is WO
+    // Otherwise -> ReadWrite
+    let access = explicit_access.unwrap_or_else(|| infer_register_access(&fields));
 
     Ok(Register {
         name,
