@@ -20,7 +20,7 @@ use panic_probe as _;
 
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
-use pico_rs::gpio::{EdgeLevel, Interrupt as GpioInterrupt, Pins};
+use pico_rs::gpio::{EdgeLevel, IoBank0, Pins};
 use pico_rs::interrupt;
 use pico_rs::pac::{Interrupt, Peripherals};
 
@@ -95,10 +95,10 @@ fn main() -> ! {
 #[allow(non_snake_case)]
 #[unsafe(no_mangle)]
 extern "C" fn IO_IRQ_BANK0() {
-    let irq = GpioInterrupt::new();
+    let io_bank0 = IoBank0::new();
 
     // Check and clear GPIO15 falling edge interrupt in one call
-    if irq.check_and_clear(BUTTON_PIN, EdgeLevel::EdgeLow) {
+    if io_bank0.check_and_clear(BUTTON_PIN, EdgeLevel::EdgeLow) {
         // Signal to main loop that button was pressed
         BUTTON_PRESSED.store(true, Ordering::Relaxed);
     }

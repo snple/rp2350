@@ -79,6 +79,7 @@
 
 use paste::paste;
 
+use crate::clocks::Clocks;
 use crate::gpio::{I2c0SclPin, I2c0SdaPin, I2c1SclPin, I2c1SdaPin};
 use crate::reset::{self, Peripheral};
 
@@ -122,6 +123,29 @@ pub enum Mode {
     Master,
     /// Slave mode
     Slave,
+}
+
+/// Abstract I2C bus trait for driver implementations.
+///
+/// This keeps drivers decoupled from concrete I2C types while preserving
+/// the HAL error type.
+pub trait I2cBus {
+    /// Error type returned by the bus.
+    type Error;
+
+    /// Write data to a 7-bit I2C address.
+    fn write(&self, addr: u8, data: &[u8]) -> Result<(), Self::Error>;
+
+    /// Read data from a 7-bit I2C address.
+    fn read(&self, addr: u8, buffer: &mut [u8]) -> Result<(), Self::Error>;
+
+    /// Write then read with a repeated start.
+    fn write_read(
+        &self,
+        addr: u8,
+        write_data: &[u8],
+        read_buffer: &mut [u8],
+    ) -> Result<(), Self::Error>;
 }
 
 // ============================================================================
@@ -207,7 +231,7 @@ macro_rules! impl_i2c {
                 ///     150_000_000,  // System clock
                 /// );
                 /// ```
-                pub fn new(i2c: $I2cType, sda: SDA, scl: SCL, baudrate: u32, sys_clk: u32) -> Self {
+                pub fn new(i2c: $I2cType, sda: SDA, scl: SCL, baudrate: u32, clocks: &Clocks) -> Self {
                     // Configure pins for I2C function (includes pull-up)
                     sda.[<configure_i2c $i2c_num _sda>]();
                     scl.[<configure_i2c $i2c_num _scl>]();
@@ -234,7 +258,7 @@ macro_rules! impl_i2c {
                     i2c_dev.i2c.ic_con.set_tx_empty_ctrl();
 
                     // Set baudrate (also configures speed mode in IC_CON)
-                    i2c_dev.configure_baudrate(baudrate, sys_clk);
+                    i2c_dev.configure_baudrate(baudrate, clocks.sys_freq());
 
                     // Set FIFO thresholds
                     i2c_dev.i2c.ic_tx_tl.write_tx_tl(0);
@@ -1029,6 +1053,34 @@ macro_rules! impl_i2c {
                 #[inline]
                 pub fn clear_restart_det_interrupt(&self) {
                     let _ = self.i2c.ic_clr_restart_det.read_bits();
+                }
+            }
+
+            impl<SDA, SCL> I2cBus for $I2cName<SDA, SCL>
+            where
+                SDA: $SdaTrait,
+                SCL: $SclTrait,
+            {
+                type Error = Error;
+
+                #[inline]
+                fn write(&self, addr: u8, data: &[u8]) -> Result<(), Self::Error> {
+                    Self::write(self, addr, data)
+                }
+
+                #[inline]
+                fn read(&self, addr: u8, buffer: &mut [u8]) -> Result<(), Self::Error> {
+                    Self::read(self, addr, buffer)
+                }
+
+                #[inline]
+                fn write_read(
+                    &self,
+                    addr: u8,
+                    write_data: &[u8],
+                    read_buffer: &mut [u8],
+                ) -> Result<(), Self::Error> {
+                    Self::write_read(self, addr, write_data, read_buffer)
                 }
             }
         }

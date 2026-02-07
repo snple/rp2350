@@ -23,6 +23,14 @@ name = "blink"
 path = "src/bin/blink.rs"
 
 [[bin]]
+name = "sht3x"
+path = "src/bin/i2c/sht3x.rs"
+
+[[bin]]
+name = "dormant"
+path = "src/bin/clocks/dormant.rs"
+
+[[bin]]
 name = "reset_demo"
 path = "src/bin/reset_demo.rs"
 

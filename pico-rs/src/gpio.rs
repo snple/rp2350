@@ -2145,38 +2145,38 @@ pub type Pin46 = Pin<46>;
 pub type Pin47 = Pin<47>;
 
 // ============================================================================
-// GPIO Interrupt Helper (no ownership required)
+// IoBank0 (no ownership required)
 // ============================================================================
 
-/// GPIO interrupt helper for use in interrupt handlers.
+/// IoBank0 helper for use in interrupt handlers.
 ///
 /// In ISR context, `Pin<N>` instances are typically owned by `main()` and
-/// cannot be accessed. `GpioInterrupt` provides the same interrupt
+/// cannot be accessed. `IoBank0` provides the same interrupt
 /// status / clear / enable / disable operations using runtime pin numbers,
 /// without requiring any ownership.
 ///
 /// # Example
 ///
 /// ```ignore
-/// use pico_rs::gpio::{GpioInterrupt, EdgeLevel};
+/// use pico_rs::gpio::{IoBank0, EdgeLevel};
 ///
 /// #[unsafe(no_mangle)]
 /// extern "C" fn IO_IRQ_BANK0() {
-///     let irq = GpioInterrupt::new();
+///     let io_bank0 = IoBank0::new();
 ///
-///     if irq.is_pending(15, EdgeLevel::EdgeLow) {
-///         irq.clear(15, EdgeLevel::EdgeLow);
+///     if io_bank0.is_pending(15, EdgeLevel::EdgeLow) {
+///         io_bank0.clear(15, EdgeLevel::EdgeLow);
 ///         // Handle the button press...
 ///     }
 /// }
 /// ```
 #[derive(Copy, Clone, Default, Debug)]
-pub struct Interrupt {
+pub struct IoBank0 {
     _marker: core::marker::PhantomData<*const ()>,
 }
 
-impl Interrupt {
-    /// Create a new GPIO interrupt helper.
+impl IoBank0 {
+    /// Create a new IoBank0.
     #[inline]
     pub const fn new() -> Self {
         Self {

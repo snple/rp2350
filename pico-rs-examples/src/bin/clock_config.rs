@@ -72,12 +72,12 @@ fn main() -> ! {
     // Configure ref clock from XOSC first
     clocks.configure_ref_src(ClkRefSrc::Xosc, XOSC_HZ);
 
-    info!("Reference clock: {} Hz", clocks.get_ref_freq());
+    info!("Reference clock: {} Hz", clocks.ref_freq());
 
     // Switch sys clock from ROSC to ref clock for stable operation
     info!("Switching sys clock to ref...");
     clocks.configure_sys_from_ref();
-    info!("System clock now: {} Hz", clocks.get_sys_freq());
+    info!("System clock now: {} Hz", clocks.sys_freq());
 
     // ========================================================================
     // Step 3: Configure PLL_SYS for 150 MHz
@@ -157,7 +157,7 @@ fn main() -> ! {
 
     clocks.configure_sys_aux(ClkSysAuxSrc::PllSys, SYS_CLK_HZ, SYS_CLK_HZ);
 
-    let actual_sys_freq = clocks.get_sys_freq();
+    let actual_sys_freq = clocks.sys_freq();
     info!("System clock: {} Hz", actual_sys_freq);
     if actual_sys_freq != SYS_CLK_HZ {
         warn!(
@@ -173,15 +173,15 @@ fn main() -> ! {
 
     // Peripheral clock from system clock
     clocks.configure_peri(ClkPeriAuxSrc::ClkSys, SYS_CLK_HZ);
-    info!("  CLK_PERI: {} Hz", clocks.get_peri_freq());
+    info!("  CLK_PERI: {} Hz", clocks.peri_freq());
 
     // USB clock from PLL_USB (48 MHz required)
     clocks.configure_usb(ClkUsbAuxSrc::PllUsb, USB_CLK_HZ);
-    info!("  CLK_USB: {} Hz", clocks.get_usb_freq());
+    info!("  CLK_USB: {} Hz", clocks.usb_freq());
 
     // ADC clock from PLL_USB (48 MHz recommended)
     clocks.configure_adc(ClkAdcAuxSrc::PllUsb, USB_CLK_HZ);
-    info!("  CLK_ADC: {} Hz", clocks.get_adc_freq());
+    info!("  CLK_ADC: {} Hz", clocks.adc_freq());
 
     info!("=== Clock configuration complete! ===");
 

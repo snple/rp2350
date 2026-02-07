@@ -674,7 +674,7 @@ impl Clocks {
 
     /// Get the current reference clock frequency
     #[inline]
-    pub fn get_ref_freq(&self) -> u32 {
+    pub fn ref_freq(&self) -> u32 {
         self.frequencies.ref_clk
     }
 
@@ -768,12 +768,6 @@ impl Clocks {
         self.clocks.clk_sys_div.write_frac(frac_div as u32);
     }
 
-    /// Get the current system clock frequency
-    #[inline]
-    pub fn get_sys_freq(&self) -> u32 {
-        self.frequencies.sys_clk
-    }
-
     /// Get the current system clock frequency (alias for [`get_sys_freq`](Self::get_sys_freq))
     #[inline]
     pub fn sys_freq(&self) -> u32 {
@@ -833,7 +827,7 @@ impl Clocks {
 
     /// Get the current peripheral clock frequency
     #[inline]
-    pub fn get_peri_freq(&self) -> u32 {
+    pub fn peri_freq(&self) -> u32 {
         self.frequencies.peri_clk
     }
 
@@ -880,12 +874,6 @@ impl Clocks {
     }
 
     /// Get the current USB clock frequency
-    #[inline]
-    pub fn get_usb_freq(&self) -> u32 {
-        self.frequencies.usb_clk
-    }
-
-    /// Get the current USB clock frequency (alias for [`get_usb_freq`](Self::get_usb_freq))
     #[inline]
     pub fn usb_freq(&self) -> u32 {
         self.frequencies.usb_clk
@@ -934,7 +922,7 @@ impl Clocks {
 
     /// Get the current ADC clock frequency
     #[inline]
-    pub fn get_adc_freq(&self) -> u32 {
+    pub fn adc_freq(&self) -> u32 {
         self.frequencies.adc_clk
     }
 
@@ -973,7 +961,7 @@ impl Clocks {
 
     /// Get the current HSTX clock frequency
     #[inline]
-    pub fn get_hstx_freq(&self) -> u32 {
+    pub fn hstx_freq(&self) -> u32 {
         self.frequencies.hstx_clk
     }
 
@@ -1204,7 +1192,7 @@ impl Clocks {
 
     /// Get the frequency of a specific clock
     #[inline]
-    pub fn get_freq(&self, clock: ClockId) -> u32 {
+    pub fn freq(&self, clock: ClockId) -> u32 {
         match clock {
             ClockId::GpOut0 => self.frequencies.gpout0,
             ClockId::GpOut1 => self.frequencies.gpout1,
