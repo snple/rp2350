@@ -19,7 +19,7 @@ use pico_rs::reset::{self, Peripheral};
 /// RP2350 Boot Block - tells the Boot ROM this is a valid ARM executable
 #[unsafe(link_section = ".start_block")]
 #[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::secure_exe();
+pub static IMAGE_DEF: ImageDef = ImageDef::exe();
 
 /// RP2350 default boot clock frequency
 const CLOCK_FREQ_HZ: u32 = 12_000_000;

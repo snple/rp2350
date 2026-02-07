@@ -30,7 +30,7 @@ use pico_rs::pico_rs_rt::peripheral::Peripherals as CorePeripherals;
 /// RP2350 Boot Block
 #[unsafe(link_section = ".start_block")]
 #[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::secure_exe();
+pub static IMAGE_DEF: ImageDef = ImageDef::exe();
 
 #[entry]
 fn main() -> ! {
@@ -41,7 +41,6 @@ fn main() -> ! {
 
     // Initialize clocks (150 MHz sys by default)
     let mut clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
-    let sys_freq = clocks.sys_freq();
 
     // Initialize GPIO pins
     let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
@@ -56,7 +55,7 @@ fn main() -> ! {
 
     // Initialize delay
     let core = CorePeripherals::take().unwrap();
-    let mut delay = Delay::new(core.SYST, sys_freq);
+    let mut delay = Delay::new(core.SYST, clocks.sys_freq());
 
     let mut wake_count: u32 = 0;
 

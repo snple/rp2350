@@ -27,6 +27,7 @@ use pico_rs::block::ImageDef;
 use pico_rs::entry;
 use pico_rs::gpio::{self, Pin25};
 use pico_rs::watchdog::{self, Watchdog};
+use pico_rs_pac::WATCHDOG;
 
 // Binary info declarations
 pico_rs::bi_program_name!("Watchdog Example");
@@ -40,7 +41,7 @@ pico_rs::bi_pin_with_name!(25, "LED");
 /// RP2350 Boot Block - tells the Boot ROM this is a valid ARM executable
 #[unsafe(link_section = ".start_block")]
 #[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::secure_exe();
+pub static IMAGE_DEF: ImageDef = ImageDef::exe();
 
 /// RP2350 default boot clock frequency (ROSC ~12 MHz)
 const CLOCK_FREQ_HZ: u32 = 12_000_000;
@@ -63,7 +64,7 @@ fn main() -> ! {
     let mut delay = Delay::new(CLOCK_FREQ_HZ);
 
     // Create watchdog instance to check reset reason
-    let wd = Watchdog::new();
+    let wd = Watchdog::new(unsafe { WATCHDOG::steal() });
 
     // Check reset reason and scratch register
     let reset_reason = wd.reset_reason();

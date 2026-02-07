@@ -35,7 +35,7 @@ use pico_rs_usb::device::UsbDeviceBuilder;
 /// RP2350 Boot Block
 #[unsafe(link_section = ".start_block")]
 #[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::secure_exe();
+pub static IMAGE_DEF: ImageDef = ImageDef::exe();
 
 /// Target system clock frequency (150 MHz)
 const SYS_CLK_HZ: u32 = 150_000_000;
@@ -48,7 +48,9 @@ fn main() -> ! {
     let dp = Peripherals::take().unwrap();
 
     // Initialize clock system (150 MHz sys, 48 MHz USB)
-    let clocks = ClockBuilder::new().enable_usb().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
+    let clocks = ClockBuilder::new()
+        .enable_usb()
+        .build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
     info!(
         "Clock system initialized: sys={} Hz, usb={} Hz",
         clocks.sys_freq(),

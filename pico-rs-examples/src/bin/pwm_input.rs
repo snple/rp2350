@@ -36,7 +36,7 @@ use pico_rs::timer::Timer0;
 /// RP2350 Boot Block - tells the Boot ROM this is a valid ARM executable
 #[unsafe(link_section = ".start_block")]
 #[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::secure_exe();
+pub static IMAGE_DEF: ImageDef = ImageDef::exe();
 
 #[entry]
 fn main() -> ! {

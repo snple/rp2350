@@ -26,7 +26,7 @@ use pico_rs::timer::Timer0;
 /// RP2350 Boot Block
 #[unsafe(link_section = ".start_block")]
 #[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::secure_exe();
+pub static IMAGE_DEF: ImageDef = ImageDef::exe();
 
 // Shared state protected by a mutex
 static TIMER: Mutex<RefCell<Option<Timer0>>> = Mutex::new(RefCell::new(None));

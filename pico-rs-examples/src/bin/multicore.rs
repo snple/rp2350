@@ -23,14 +23,17 @@ use defmt_rtt as _;
 use panic_probe as _;
 use pico_rs::Delay;
 use pico_rs::block::ImageDef;
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
 use pico_rs::multicore::{self, Fifo, Multicore, Stack};
+use pico_rs::pac::Peripherals;
+use pico_rs::pico_rs_rt::peripheral::Peripherals as CorePeripherals;
 use pico_rs::sio::Spinlock;
 
 /// RP2350 Boot Block
 #[unsafe(link_section = ".start_block")]
 #[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::secure_exe();
+pub static IMAGE_DEF: ImageDef = ImageDef::exe();
 
 // Stack for Core 1 - 4KB should be sufficient for this example
 static mut CORE1_STACK: Stack<4096> = Stack::new();
@@ -90,7 +93,15 @@ fn main() -> ! {
     info!("Multicore Example");
     info!("==================");
 
-    let mut delay = Delay::new(150_000_000);
+    // Take device peripherals
+    let dp = Peripherals::take().unwrap();
+
+    // Initialize clocks (150 MHz sys by default)
+    let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
+
+    // Initialize delay
+    let core = CorePeripherals::take().unwrap();
+    let mut delay = Delay::new(core.SYST, clocks.sys_freq());
 
     // Print Core 0 info
     let core_id = multicore::core_id();
@@ -103,7 +114,7 @@ fn main() -> ! {
     fifo.drain();
 
     // Get multicore controller
-    let mut mc = Multicore::new();
+    let mut mc = Multicore::new(dp.PSM, dp.PPB);
 
     // Reset Core 1 first to ensure it's in a known state
     info!("[Core 0] Resetting Core 1...");

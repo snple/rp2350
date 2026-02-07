@@ -21,7 +21,7 @@ use pico_rs::timer::Timer0;
 /// RP2350 Boot Block
 #[unsafe(link_section = ".start_block")]
 #[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::secure_exe();
+pub static IMAGE_DEF: ImageDef = ImageDef::exe();
 
 #[entry]
 fn main() -> ! {

@@ -14,8 +14,9 @@
 //! - **SIO** (`0xd000_0000`): Secure access — full control of all GPIOs
 //! - **SIO_NS** (`0xd002_0000`): Non-Secure access — Secure-only GPIOs are hidden
 //!
-//! The module defaults to Secure mode. Call [`init_non_secure()`] early in
-//! `main()` when using [`ImageDef::non_secure_exe()`](crate::block::ImageDef::non_secure_exe).
+//! The module defaults to Secure mode. Enable the `non-secure` Cargo feature
+//! when building a Non-Secure image with
+//! [`ImageDef::exe()`](crate::block::ImageDef::exe).
 //!
 //! ## Usage
 //!
@@ -56,7 +57,6 @@
 
 #![allow(clippy::identity_op)]
 
-use core::sync::atomic::{AtomicU32, Ordering};
 use paste::paste;
 use pico_rs_pac::sio::RegisterBlock;
 
@@ -70,45 +70,28 @@ pub const GPIO_PIN_MAX: u8 = 47;
 // Security Mode / Register Base
 // ============================================================================
 
-/// SIO base address — defaults to Secure SIO (`0xd000_0000`).
+/// SIO base address — determined at compile time by the `non-secure` feature.
 ///
-/// Updated by [`init_secure()`] / [`init_non_secure()`].
+/// - Default (Secure): `0xd000_0000` — full control of all GPIOs
+/// - `non-secure` feature: `0xd002_0000` — Secure-only GPIOs are hidden
+///
 /// Both `sio::RegisterBlock` and `sio_ns::RegisterBlock` have identical memory
 /// layouts, so we cast the Non-Secure address to the same type.
-static SIO_BASE: AtomicU32 = AtomicU32::new(pico_rs_pac::sio::BASE);
+#[cfg(not(feature = "non-secure"))]
+const SIO_BASE: u32 = pico_rs_pac::sio::BASE;
+#[cfg(feature = "non-secure")]
+const SIO_BASE: u32 = pico_rs_pac::sio_ns::BASE;
 
-/// Initialize SIO for Secure mode (default).
-///
-/// Uses SIO at `0xd000_0000` with full GPIO access.
-/// This is the default — calling this is only needed to revert after
-/// [`init_non_secure()`].
+/// Check if SIO is configured for Secure mode (compile-time constant).
 #[inline]
-pub fn init_secure() {
-    SIO_BASE.store(pico_rs_pac::sio::BASE, Ordering::Relaxed);
-}
-
-/// Initialize SIO for Non-Secure mode.
-///
-/// Uses SIO_NS at `0xd002_0000`. Secure-only GPIOs (per ACCESSCTRL)
-/// will appear as zero on reads and ignore writes.
-///
-/// Call this early in `main()` when using
-/// [`ImageDef::non_secure_exe()`](crate::block::ImageDef::non_secure_exe).
-#[inline]
-pub fn init_non_secure() {
-    SIO_BASE.store(pico_rs_pac::sio_ns::BASE, Ordering::Relaxed);
-}
-
-/// Check if SIO is configured for Secure mode.
-#[inline]
-pub fn is_secure() -> bool {
-    SIO_BASE.load(Ordering::Relaxed) == pico_rs_pac::sio::BASE
+pub const fn is_secure() -> bool {
+    cfg!(not(feature = "non-secure"))
 }
 
 /// Get the SIO register block reference.
 ///
 /// This is the central access point for all SIO operations.
-/// Uses the base address configured by [`init_secure()`] / [`init_non_secure()`].
+/// Uses the base address selected at compile time by the `non-secure` feature.
 ///
 /// # Safety
 ///
@@ -116,8 +99,8 @@ pub fn is_secure() -> bool {
 /// layouts (verified from SVD). The cast from SIO_NS address to
 /// `sio::RegisterBlock` is safe due to layout equivalence.
 #[inline(always)]
-pub(crate) fn regs() -> &'static RegisterBlock {
-    unsafe { &*(SIO_BASE.load(Ordering::Relaxed) as *const RegisterBlock) }
+pub(crate) const fn regs() -> &'static RegisterBlock {
+    unsafe { &*(SIO_BASE as *const RegisterBlock) }
 }
 
 // ============================================================================
@@ -170,18 +153,6 @@ impl Sio {
     #[inline]
     pub const fn gpio(&self) -> SioGpio<'_> {
         SioGpio {
-            _marker: core::marker::PhantomData,
-        }
-    }
-
-    // ========================================================================
-    // FIFO Access
-    // ========================================================================
-
-    /// Get the inter-core FIFO controller.
-    #[inline]
-    pub const fn fifo(&self) -> SioFifo<'_> {
-        SioFifo {
             _marker: core::marker::PhantomData,
         }
     }
@@ -496,101 +467,6 @@ impl<'a> SioGpio<'a> {
     #[inline]
     pub fn oe_xor_high(&self, mask: u32) {
         regs().gpio_hi_oe_xor.write_gpio(mask);
-    }
-}
-
-// ============================================================================
-// Inter-core FIFO
-// ============================================================================
-
-/// SIO FIFO controller for inter-core communication.
-///
-/// Each core has a separate view: writing goes to the TX FIFO (sent to the
-/// other core), reading comes from the RX FIFO (received from the other core).
-///
-/// The `_private` field prevents external construction — obtain via
-/// [`Sio::fifo()`].
-pub struct SioFifo<'a> {
-    _marker: core::marker::PhantomData<*const &'a ()>,
-}
-
-impl<'a> SioFifo<'a> {
-    // ========================================================================
-    // Status
-    // ========================================================================
-
-    /// Check if the RX FIFO has data available (VLD bit).
-    #[inline]
-    pub fn is_read_ready(&self) -> bool {
-        regs().fifo_st.vld()
-    }
-
-    /// Check if the TX FIFO has space for writing (RDY bit).
-    #[inline]
-    pub fn is_write_ready(&self) -> bool {
-        regs().fifo_st.rdy()
-    }
-
-    /// Check if a read-on-empty error occurred (ROE bit).
-    #[inline]
-    pub fn read_error(&self) -> bool {
-        regs().fifo_st.roe()
-    }
-
-    /// Check if a write-on-full error occurred (WOF bit).
-    #[inline]
-    pub fn write_error(&self) -> bool {
-        regs().fifo_st.wof()
-    }
-
-    /// Clear the read-on-empty error flag.
-    #[inline]
-    pub fn clear_read_error(&self) {
-        regs().fifo_st.set_roe();
-    }
-
-    /// Clear the write-on-full error flag.
-    #[inline]
-    pub fn clear_write_error(&self) {
-        regs().fifo_st.set_wof();
-    }
-
-    /// Clear all FIFO error flags.
-    #[inline]
-    pub fn clear_errors(&self) {
-        let r = regs();
-        r.fifo_st.set_roe();
-        r.fifo_st.set_wof();
-    }
-
-    // ========================================================================
-    // Read / Write
-    // ========================================================================
-
-    /// Write a value to the TX FIFO (sent to the other core).
-    ///
-    /// Caller must check [`is_write_ready()`](Self::is_write_ready) first
-    /// or use the blocking wrappers in [`multicore::Fifo`](crate::multicore::Fifo).
-    #[inline]
-    pub fn write(&self, value: u32) {
-        regs().fifo_wr.write_fifo_wr(value);
-    }
-
-    /// Read a value from the RX FIFO (received from the other core).
-    ///
-    /// Caller must check [`is_read_ready()`](Self::is_read_ready) first
-    /// or use the blocking wrappers in [`multicore::Fifo`](crate::multicore::Fifo).
-    #[inline]
-    pub fn read(&self) -> u32 {
-        regs().fifo_rd.fifo_rd()
-    }
-
-    /// Drain the RX FIFO, discarding all values.
-    #[inline]
-    pub fn drain(&self) {
-        while self.is_read_ready() {
-            let _ = self.read();
-        }
     }
 }
 

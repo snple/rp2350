@@ -45,7 +45,7 @@ use pico_rs_usb::device::{UsbDevice, UsbDeviceBuilder};
 /// RP2350 Boot Block
 #[unsafe(link_section = ".start_block")]
 #[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::secure_exe();
+pub static IMAGE_DEF: ImageDef = ImageDef::exe();
 
 // ============================================================================
 // Constants

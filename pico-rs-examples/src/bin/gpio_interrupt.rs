@@ -27,7 +27,7 @@ use pico_rs::pac::{Interrupt, Peripherals};
 /// RP2350 Boot Block
 #[unsafe(link_section = ".start_block")]
 #[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::secure_exe();
+pub static IMAGE_DEF: ImageDef = ImageDef::exe();
 
 // Atomic flag for LED state
 static LED_STATE: AtomicBool = AtomicBool::new(false);

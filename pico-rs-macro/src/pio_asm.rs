@@ -1,13 +1,21 @@
-//! PIO Assembly compiler
+//! PIO Assembly compiler for RP2350 (PIO v1)
 //!
 //! Compiles PIO assembly source code into 16-bit machine code instructions.
 //! Supports pico-sdk compatible syntax including:
 //! - Labels (inline and standalone): `label:`, `public label:`
-//! - Directives: `.program`, `.wrap_target`, `.wrap`, `.side_set`, `.origin`, `.define`
+//! - Directives: `.program`, `.wrap_target`, `.wrap`, `.side_set`, `.origin`, `.define`, `.word`
 //! - All PIO instructions: JMP, WAIT, IN, OUT, PUSH, PULL, MOV, IRQ, SET, NOP
 //! - Delay with expressions: `[31]`, `[T1 - 1]`
 //! - Side-set: `side 0`, `side 1`
 //! - Comments: `;` and `//`
+//!
+//! ## RP2350 Enhancements (PIO v1)
+//!
+//! - IRQ `prev`/`next` modifiers for cross-PIO-block communication
+//! - `WAIT JMPPIN [+ N]` source
+//! - `MOV rxfifo[y], isr` / `MOV osr, rxfifo[y]` FIFO random access
+//! - `MOV pindirs, <src>` destination
+//! - `.word` directive for raw instruction words
 //!
 //! ## Usage
 //!
@@ -40,7 +48,7 @@ impl Parse for PioAsmInput {
     }
 }
 
-/// Compiled PIO program
+/// Compiled PIO program (internal representation during macro expansion)
 #[derive(Debug)]
 struct CompiledProgram {
     instructions: Vec<u16>,
@@ -158,46 +166,33 @@ pub fn pio_asm_impl(input: TokenStream) -> TokenStream {
     match compile_program(&input.lines) {
         Ok(program) => {
             let instructions = &program.instructions;
-            let len = instructions.len();
 
-            let wrap_target = program.wrap_target.unwrap_or(0);
-            let wrap = program.wrap.unwrap_or(len.saturating_sub(1));
+            let wrap_target = program.wrap_target.unwrap_or(0) as u8;
+            let wrap = program
+                .wrap
+                .unwrap_or(program.instructions.len().saturating_sub(1))
+                as u8;
             let origin = program.origin;
-            let side_set = program.side_set_count;
+            let side_set = program.side_set_count as u8;
             let side_set_opt = program.side_set_opt;
             let side_set_pindirs = program.side_set_pindirs;
 
             let origin_field = if let Some(orig) = origin {
+                let orig = orig as u8;
                 quote! { Some(#orig) }
             } else {
                 quote! { None }
             };
 
             quote! {
-                {
-                    const PROGRAM: &[u16] = &[#(#instructions),*];
-                    const WRAP_TARGET: usize = #wrap_target;
-                    const WRAP: usize = #wrap;
-
-                    struct PioProgram {
-                        pub instructions: &'static [u16],
-                        pub wrap_target: usize,
-                        pub wrap: usize,
-                        pub origin: Option<usize>,
-                        pub side_set_count: u32,
-                        pub side_set_opt: bool,
-                        pub side_set_pindirs: bool,
-                    }
-
-                    PioProgram {
-                        instructions: PROGRAM,
-                        wrap_target: WRAP_TARGET,
-                        wrap: WRAP,
-                        origin: #origin_field,
-                        side_set_count: #side_set,
-                        side_set_opt: #side_set_opt,
-                        side_set_pindirs: #side_set_pindirs,
-                    }
+                ::pico_rs::pio::PioProgram {
+                    instructions: &[#(#instructions),*],
+                    wrap_target: #wrap_target,
+                    wrap: #wrap,
+                    origin: #origin_field,
+                    side_set_count: #side_set,
+                    side_set_opt: #side_set_opt,
+                    side_set_pindirs: #side_set_pindirs,
                 }
             }
             .into()
@@ -276,6 +271,10 @@ fn compile_program(lines: &[String]) -> Result<CompiledProgram, String> {
 
         // Handle directives first
         if line.starts_with('.') {
+            // .word counts as an instruction
+            if line.to_lowercase().starts_with(".word") {
+                instruction_count += 1;
+            }
             parse_directive(
                 line,
                 instruction_count,
@@ -320,7 +319,21 @@ fn compile_program(lines: &[String]) -> Result<CompiledProgram, String> {
     for line in lines {
         let line = strip_comments(line).trim();
 
-        if line.is_empty() || line.starts_with('.') {
+        if line.is_empty() {
+            continue;
+        }
+
+        if line.starts_with('.') {
+            // Handle .word directive (emits raw instruction word)
+            if line.to_lowercase().starts_with(".word") {
+                let parts: Vec<&str> = line.split_whitespace().collect();
+                if parts.len() >= 2 {
+                    let value_str: String = parts[1..].join(" ");
+                    let value = eval_simple_expr(&value_str, &ctx.defines)
+                        .map_err(|e| format!(".word error: {}", e))?;
+                    instructions.push(value as u16);
+                }
+            }
             continue;
         }
 
@@ -420,9 +433,9 @@ fn parse_directive(
                 }
             }
         }
-        ".pio_version" | ".lang_opt" | ".word" | ".fifo" | ".out" | ".in" | ".mov_status"
-        | ".clock_div" | ".set" => {
-            // Ignore these directives for now
+        ".pio_version" | ".lang_opt" | ".fifo" | ".out" | ".in" | ".mov_status" | ".clock_div"
+        | ".set" | ".word" => {
+            // These directives are handled elsewhere or ignored
         }
         _ => {
             // Unknown directive, ignore
@@ -646,6 +659,10 @@ fn parse_delay_and_sideset(
 
     // Parse delay [n] or [expr]
     while let Some(delay_start) = result.find('[') {
+        // Don't parse rxfifo[...] as delay
+        if delay_start >= 6 && result[..delay_start].to_lowercase().ends_with("rxfifo") {
+            break;
+        }
         if let Some(delay_end) = result.find(']') {
             let delay_expr = &result[delay_start + 1..delay_end].trim();
             let delay_value =
@@ -763,61 +780,54 @@ fn encode_wait(args: &[&str], defines: &HashMap<String, i32>) -> Result<u16, Str
     let source_str = args[1].to_lowercase();
     let source_str = source_str.trim_end_matches(',');
 
-    let (source, index, rel) = match source_str {
+    let (source, arg2) = match source_str {
         "gpio" => {
             if args.len() < 3 {
                 return Err("WAIT gpio requires index".to_string());
             }
             let idx = eval_simple_expr(args[2].trim_end_matches(','), defines)
-                .map_err(|_| "Invalid GPIO index")?;
-            (WaitSource::Gpio, idx as u16, false)
+                .map_err(|_| "Invalid GPIO index".to_string())?;
+            (WaitSource::Gpio, (idx as u16) & 0x1F)
         }
         "pin" => {
             if args.len() < 3 {
                 return Err("WAIT pin requires index".to_string());
             }
             let idx = eval_simple_expr(args[2].trim_end_matches(','), defines)
-                .map_err(|_| "Invalid pin index")?;
-            (WaitSource::Pin, idx as u16, false)
+                .map_err(|_| "Invalid pin index".to_string())?;
+            (WaitSource::Pin, (idx as u16) & 0x1F)
         }
         "irq" => {
             if args.len() < 3 {
                 return Err("WAIT irq requires index".to_string());
             }
-            // Check for rel modifier
-            let mut idx_str = args[2].trim_end_matches(',');
-            let mut is_rel = false;
-
-            // Handle "next" and "prev" modifiers (PIO v1)
-            if idx_str == "next" || idx_str == "prev" {
-                if args.len() < 4 {
-                    return Err("WAIT irq next/prev requires index".to_string());
-                }
-                idx_str = args[3].trim_end_matches(',');
-            }
-
-            // Check for "rel" at the end
-            if args.len() > 3 && args.last().map(|s| s.to_lowercase()) == Some("rel".to_string()) {
-                is_rel = true;
-            }
-
-            let idx = eval_simple_expr(idx_str, defines).map_err(|_| "Invalid IRQ index")?;
-            (WaitSource::Irq, idx as u16, is_rel)
+            // RP2350: arg2 bits [4:3] = irq_type (0=abs, 1=prev, 2=rel, 3=next)
+            //         arg2 bits [2:0] = irq index (0-7)
+            let (irq_type, idx) = parse_irq_modifier_and_index(&args[2..], defines)?;
+            (WaitSource::Irq, ((irq_type as u16) << 3) | (idx & 0x07))
         }
         "jmppin" => {
-            // PIO v1 feature
-            (WaitSource::Jmppin, 0, false)
+            // RP2350: wait P jmppin [+ N]  (N = 0-3)
+            let offset = if args.len() > 2 && args[2] == "+" {
+                if args.len() < 4 {
+                    return Err("WAIT jmppin + requires offset".to_string());
+                }
+                eval_simple_expr(args[3].trim_end_matches(','), defines)
+                    .map_err(|_| "Invalid jmppin offset".to_string())?
+            } else if args.len() > 2 {
+                eval_simple_expr(args[2].trim_end_matches(','), defines).unwrap_or(0)
+            } else {
+                0
+            };
+            if !(0..=3).contains(&offset) {
+                return Err(format!("JMPPIN offset {} must be 0-3", offset));
+            }
+            (WaitSource::Jmppin, offset as u16)
         }
         _ => return Err(format!("Unknown WAIT source: {}", source_str)),
     };
 
-    let rel_bit = if rel { 1 << 4 } else { 0 };
-
-    Ok(((Opcode::Wait as u16) << 13)
-        | (polarity << 7)
-        | ((source as u16) << 5)
-        | rel_bit
-        | (index & 0x1F))
+    Ok(((Opcode::Wait as u16) << 13) | (polarity << 7) | ((source as u16) << 5) | (arg2 & 0x1F))
 }
 
 fn encode_in(args: &[&str], defines: &HashMap<String, i32>) -> Result<u16, String> {
@@ -913,7 +923,25 @@ fn encode_mov_instr(args: &[&str]) -> Result<u16, String> {
     // Filter out commas
     let args: Vec<&str> = args.iter().filter(|&&s| s != ",").copied().collect();
 
-    let dest = parse_mov_dest(args[0].trim_end_matches(','))?;
+    let dest_str = args[0].trim_end_matches(',');
+
+    // RP2350: MOV RXFIFO[...], ISR  (encoded as PUSH/PULL opcode)
+    if let Some((is_y, idx)) = parse_fifo_access(dest_str) {
+        let fifo_idx = if is_y { 0u16 } else { 0x08 | idx as u16 };
+        let arg2 = 0x10 | fifo_idx;
+        return Ok(((Opcode::PushPull as u16) << 13) | (arg2 & 0x1F));
+    }
+
+    // RP2350: MOV <dest>, RXFIFO[...]  (encoded as PUSH/PULL opcode)
+    if let Some(src) = args.get(1).map(|s| s.trim_end_matches(','))
+        && let Some((is_y, idx)) = parse_fifo_access(src)
+    {
+        let fifo_idx = if is_y { 0u16 } else { 0x08 | idx as u16 };
+        let arg2 = 0x10 | fifo_idx;
+        return Ok(((Opcode::PushPull as u16) << 13) | (0b100 << 5) | (arg2 & 0x1F));
+    }
+
+    let dest = parse_mov_dest(dest_str)?;
 
     // Check for operation prefix on source: ~, ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,, ::
     let source_idx = 1;
@@ -956,7 +984,7 @@ fn encode_irq(args: &[&str], defines: &HashMap<String, i32>) -> Result<u16, Stri
 
     let mut clear = false;
     let mut wait = false;
-    let mut rel = false;
+    let mut irq_type: u8 = 0; // 0=abs, 1=prev, 2=rel, 3=next
     let mut index_value: Option<i32> = None;
 
     for arg in &args {
@@ -964,25 +992,13 @@ fn encode_irq(args: &[&str], defines: &HashMap<String, i32>) -> Result<u16, Stri
         let arg_lower = arg_lower.trim_end_matches(',');
 
         match arg_lower {
-            "clear" | "clr" => {
-                clear = true;
-            }
-            "wait" => {
-                wait = true;
-            }
-            "set" => {
-                // Default behavior, nothing to do
-            }
-            "nowait" => {
-                wait = false;
-            }
-            "rel" => {
-                rel = true;
-            }
-            "next" | "prev" => {
-                // PIO v1 features, handle differently
-                rel = true;
-            }
+            "clear" | "clr" => clear = true,
+            "wait" => wait = true,
+            "set" => {} // default behavior
+            "nowait" => wait = false,
+            "rel" => irq_type = 2,
+            "prev" => irq_type = 1,
+            "next" => irq_type = 3,
             _ => {
                 // Try to parse as index
                 if let Ok(idx) = eval_simple_expr(arg.trim_end_matches(','), defines) {
@@ -998,13 +1014,14 @@ fn encode_irq(args: &[&str], defines: &HashMap<String, i32>) -> Result<u16, Stri
         return Err("IRQ index must be 0-7".to_string());
     }
 
-    // Encoding:
+    // RP2350 encoding:
     // Bit 6: clear (1) vs set (0)
     // Bit 5: wait
-    // Bits 4:0: index (with rel in bit 4)
-    let idx_with_rel = if rel { index | 0x10 } else { index };
+    // Bits 4:3: irq_type (0=abs, 1=prev, 2=rel, 3=next)
+    // Bits 2:0: irq index (0-7)
+    let arg2 = ((irq_type as u16) << 3) | (index & 0x07);
 
-    Ok(((Opcode::Irq as u16) << 13) | ((clear as u16) << 6) | ((wait as u16) << 5) | idx_with_rel)
+    Ok(((Opcode::Irq as u16) << 13) | ((clear as u16) << 6) | ((wait as u16) << 5) | arg2)
 }
 
 fn encode_set(args: &[&str], defines: &HashMap<String, i32>) -> Result<u16, String> {
@@ -1075,6 +1092,59 @@ fn parse_set_dest(s: &str) -> Result<SetDest, String> {
         "y" => Ok(SetDest::Y),
         "pindirs" => Ok(SetDest::Pindirs),
         _ => Err(format!("Unknown SET destination: {}", s)),
+    }
+}
+
+/// Parse IRQ modifier and index from arguments
+///
+/// RP2350 encoding: arg2 bits [4:3] = irq_type, bits [2:0] = index
+/// Supports: `N`, `N rel`, `prev N`, `next N`
+fn parse_irq_modifier_and_index(
+    args: &[&str],
+    defines: &HashMap<String, i32>,
+) -> Result<(u8, u16), String> {
+    let mut irq_type: u8 = 0; // 0=abs, 1=prev, 2=rel, 3=next
+    let mut index_value: Option<i32> = None;
+
+    for arg in args {
+        let lower = arg.to_lowercase();
+        let lower = lower.trim_end_matches(',');
+        match lower {
+            "rel" => irq_type = 2,
+            "prev" => irq_type = 1,
+            "next" => irq_type = 3,
+            _ => {
+                if let Ok(idx) = eval_simple_expr(arg.trim_end_matches(','), defines) {
+                    index_value = Some(idx);
+                }
+            }
+        }
+    }
+
+    let index = index_value.ok_or("IRQ modifier requires an index")? as u16;
+    if index > 7 {
+        return Err("IRQ index must be 0-7".to_string());
+    }
+
+    Ok((irq_type, index))
+}
+
+/// Parse FIFO random access syntax for RP2350: `rxfifo[y]` or `rxfifo[N]`
+///
+/// Returns `Some((is_y_indexed, index))` or `None` if not a FIFO access.
+fn parse_fifo_access(s: &str) -> Option<(bool, u8)> {
+    let lower = s.to_lowercase();
+    if lower.starts_with("rxfifo[") && lower.ends_with(']') {
+        let inner = &lower[7..lower.len() - 1];
+        if inner == "y" {
+            Some((true, 0))
+        } else if let Ok(n) = inner.parse::<u8>() {
+            if n <= 7 { Some((false, n)) } else { None }
+        } else {
+            None
+        }
+    } else {
+        None
     }
 }
 
@@ -1173,5 +1243,118 @@ mod tests {
 
         let program = compile_program(&lines).unwrap();
         assert_eq!(program.instructions.len(), 2);
+    }
+
+    #[test]
+    fn test_irq_prev_next() {
+        let source = r#"
+            irq set 3
+            irq wait 3 rel
+            irq prev 2
+            irq next 5
+        "#;
+        let lines: Vec<String> = source.lines().map(|s| s.to_string()).collect();
+        let program = compile_program(&lines).unwrap();
+        assert_eq!(program.instructions.len(), 4);
+
+        // irq set 3: arg2 = (0<<3)|3 = 3
+        assert_eq!(program.instructions[0] & 0xE000, 0xC000);
+        assert_eq!(program.instructions[0] & 0x1F, 3);
+
+        // irq wait 3 rel: arg2 = (2<<3)|3 = 19
+        assert_eq!(program.instructions[1] & 0x1F, 19);
+
+        // irq prev 2: arg2 = (1<<3)|2 = 10
+        assert_eq!(program.instructions[2] & 0x1F, 10);
+
+        // irq next 5: arg2 = (3<<3)|5 = 29
+        assert_eq!(program.instructions[3] & 0x1F, 29);
+    }
+
+    #[test]
+    fn test_word_directive() {
+        let source = r#"
+            .word 0xE001
+            .word 0x0042
+        "#;
+        let lines: Vec<String> = source.lines().map(|s| s.to_string()).collect();
+        let program = compile_program(&lines).unwrap();
+        assert_eq!(program.instructions.len(), 2);
+        assert_eq!(program.instructions[0], 0xE001);
+        assert_eq!(program.instructions[1], 0x0042);
+    }
+
+    #[test]
+    fn test_mov_rxfifo() {
+        let source = r#"
+            mov rxfifo[y], isr
+            mov osr, rxfifo[y]
+            mov rxfifo[3], isr
+            mov osr, rxfifo[3]
+        "#;
+        let lines: Vec<String> = source.lines().map(|s| s.to_string()).collect();
+        let program = compile_program(&lines).unwrap();
+        assert_eq!(program.instructions.len(), 4);
+
+        // mov rxfifo[y], isr: opcode=0b100, arg1=0b000, arg2=0x10
+        assert_eq!(program.instructions[0], (0b100 << 13) | 0x10);
+
+        // mov osr, rxfifo[y]: opcode=0b100, arg1=0b100, arg2=0x10
+        assert_eq!(program.instructions[1], (0b100 << 13) | (0b100 << 5) | 0x10);
+
+        // mov rxfifo[3], isr: opcode=0b100, arg1=0b000, arg2=0x1B
+        assert_eq!(program.instructions[2], (0b100 << 13) | 0x1B);
+
+        // mov osr, rxfifo[3]: opcode=0b100, arg1=0b100, arg2=0x1B
+        assert_eq!(program.instructions[3], (0b100 << 13) | (0b100 << 5) | 0x1B);
+    }
+
+    #[test]
+    fn test_wait_jmppin() {
+        let source = r#"
+            wait 1 jmppin
+            wait 0 jmppin + 2
+        "#;
+        let lines: Vec<String> = source.lines().map(|s| s.to_string()).collect();
+        let program = compile_program(&lines).unwrap();
+        assert_eq!(program.instructions.len(), 2);
+
+        // wait 1 jmppin: opcode=0b001, polarity=1, source=0b11, arg2=0
+        let i0 = program.instructions[0];
+        assert_eq!(i0 & 0xE000, 0x2000); // WAIT opcode
+        assert_eq!((i0 >> 7) & 1, 1); // polarity=1
+        assert_eq!((i0 >> 5) & 3, 3); // source=jmppin
+        assert_eq!(i0 & 0x1F, 0); // offset=0
+
+        // wait 0 jmppin + 2: polarity=0, source=0b11, arg2=2
+        let i1 = program.instructions[1];
+        assert_eq!((i1 >> 7) & 1, 0); // polarity=0
+        assert_eq!((i1 >> 5) & 3, 3); // source=jmppin
+        assert_eq!(i1 & 0x1F, 2); // offset=2
+    }
+
+    #[test]
+    fn test_wait_irq_types() {
+        let source = r#"
+            wait 1 irq 3
+            wait 1 irq 3 rel
+            wait 0 irq prev 2
+            wait 1 irq next 5
+        "#;
+        let lines: Vec<String> = source.lines().map(|s| s.to_string()).collect();
+        let program = compile_program(&lines).unwrap();
+        assert_eq!(program.instructions.len(), 4);
+
+        // wait 1 irq 3: source=irq, irq_type=0, index=3, arg2=3
+        assert_eq!(program.instructions[0] & 0x1F, 3);
+
+        // wait 1 irq 3 rel: irq_type=2, index=3, arg2=(2<<3)|3=19
+        assert_eq!(program.instructions[1] & 0x1F, 19);
+
+        // wait 0 irq prev 2: irq_type=1, index=2, arg2=(1<<3)|2=10
+        assert_eq!(program.instructions[2] & 0x1F, 10);
+
+        // wait 1 irq next 5: irq_type=3, index=5, arg2=(3<<3)|5=29
+        assert_eq!(program.instructions[3] & 0x1F, 29);
     }
 }

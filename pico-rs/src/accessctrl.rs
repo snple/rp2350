@@ -13,8 +13,10 @@
 //!
 //! ```ignore
 //! use pico_rs::accessctrl::Accessctrl;
+//! use pico_rs_pac::ACCESSCTRL;
 //!
-//! let accessctrl = Accessctrl::new();
+//! let accessctrl_pac = unsafe { ACCESSCTRL::steal() };
+//! let accessctrl = Accessctrl::new(accessctrl_pac);
 //!
 //! // Lock core0 from modifying access control
 //! accessctrl.lock_core0();
@@ -24,8 +26,6 @@
 //!     // DMA cannot modify access control
 //! }
 //! ```
-
-use pico_rs_pac::ACCESSCTRL;
 
 /// Security/Privilege level for peripheral access
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
@@ -44,23 +44,35 @@ pub enum AccessLevel {
 /// ACCESSCTRL peripheral wrapper
 ///
 /// Provides access to hardware access control configuration.
+/// Owns the PAC ACCESSCTRL peripheral to enforce proper ownership semantics.
 pub struct Accessctrl {
-    regs: &'static pico_rs_pac::accessctrl::RegisterBlock,
+    accessctrl: pico_rs_pac::ACCESSCTRL,
 }
 
 impl Accessctrl {
     /// Create a new Accessctrl instance
+    ///
+    /// # Arguments
+    /// * `accessctrl` - The ACCESSCTRL peripheral from PAC
     #[inline]
-    pub fn new() -> Self {
-        Self {
-            regs: unsafe { &*ACCESSCTRL::PTR },
-        }
+    pub fn new(accessctrl: pico_rs_pac::ACCESSCTRL) -> Self {
+        Self { accessctrl }
     }
 
-    /// Get reference to the register block
+    /// Get reference to the underlying register block
+    ///
+    /// # Safety
+    /// Direct register access can bypass the HAL's safety guarantees.
+    /// The caller must ensure operations do not conflict with the HAL state.
     #[inline]
-    pub fn regs(&self) -> &pico_rs_pac::accessctrl::RegisterBlock {
-        self.regs
+    pub unsafe fn regs(&self) -> &pico_rs_pac::accessctrl::RegisterBlock {
+        &self.accessctrl
+    }
+
+    /// Release the ACCESSCTRL peripheral
+    #[inline]
+    pub fn release(self) -> pico_rs_pac::ACCESSCTRL {
+        self.accessctrl
     }
 
     // ========================================================================
@@ -72,7 +84,7 @@ impl Accessctrl {
     /// Once locked, core 0 cannot modify ACCESSCTRL registers until reset.
     #[inline]
     pub fn lock_core0(&self) {
-        self.regs.lock.set_core0();
+        self.accessctrl.lock.set_core0();
     }
 
     /// Lock core 1 from modifying access control
@@ -80,7 +92,7 @@ impl Accessctrl {
     /// Once locked, core 1 cannot modify ACCESSCTRL registers until reset.
     #[inline]
     pub fn lock_core1(&self) {
-        self.regs.lock.set_core1();
+        self.accessctrl.lock.set_core1();
     }
 
     /// Lock debugger from modifying access control
@@ -88,37 +100,37 @@ impl Accessctrl {
     /// Once locked, debugger cannot modify ACCESSCTRL registers until reset.
     #[inline]
     pub fn lock_debug(&self) {
-        self.regs.lock.set_debug();
+        self.accessctrl.lock.set_debug();
     }
 
     /// Check if core 0 is locked from modifying access control
     #[inline]
     pub fn is_core0_locked(&self) -> bool {
-        self.regs.lock.core0()
+        self.accessctrl.lock.core0()
     }
 
     /// Check if core 1 is locked from modifying access control
     #[inline]
     pub fn is_core1_locked(&self) -> bool {
-        self.regs.lock.core1()
+        self.accessctrl.lock.core1()
     }
 
     /// Check if DMA is locked (always locked, read-only)
     #[inline]
     pub fn is_dma_locked(&self) -> bool {
-        self.regs.lock.dma()
+        self.accessctrl.lock.dma()
     }
 
     /// Check if debugger is locked from modifying access control
     #[inline]
     pub fn is_debug_locked(&self) -> bool {
-        self.regs.lock.debug()
+        self.accessctrl.lock.debug()
     }
 
     /// Get the raw lock register value
     #[inline]
     pub fn lock_status(&self) -> u32 {
-        self.regs.lock.read_bits()
+        self.accessctrl.lock.read_bits()
     }
 
     // ========================================================================
@@ -129,9 +141,9 @@ impl Accessctrl {
     #[inline]
     pub fn set_io_bank0_core0_ns(&self, non_secure: bool) {
         if non_secure {
-            self.regs.io_bank0.set_nsu();
+            self.accessctrl.io_bank0.set_nsu();
         } else {
-            self.regs.io_bank0.clr_nsu();
+            self.accessctrl.io_bank0.clr_nsu();
         }
     }
 
@@ -139,9 +151,9 @@ impl Accessctrl {
     #[inline]
     pub fn set_io_bank0_core0_su(&self, secure_unprivileged: bool) {
         if secure_unprivileged {
-            self.regs.io_bank0.set_su();
+            self.accessctrl.io_bank0.set_su();
         } else {
-            self.regs.io_bank0.clr_su();
+            self.accessctrl.io_bank0.clr_su();
         }
     }
 
@@ -152,13 +164,13 @@ impl Accessctrl {
     /// Check if password is required for CFGRESET
     #[inline]
     pub fn cfgreset_requires_password(&self) -> bool {
-        self.regs.cfgreset.read_bits() != 0
+        self.accessctrl.cfgreset.read_bits() != 0
     }
 
     /// Write password for CFGRESET (if required)
     #[inline]
     pub fn write_cfgreset_password(&self, password: u32) {
-        self.regs.cfgreset.write_bits(password);
+        self.accessctrl.cfgreset.write_bits(password);
     }
 
     // ========================================================================
@@ -168,168 +180,162 @@ impl Accessctrl {
     /// Get ROM access control register value
     #[inline]
     pub fn rom_access(&self) -> u32 {
-        self.regs.rom.read_bits()
+        self.accessctrl.rom.read_bits()
     }
 
     /// Get XIP main access control register value
     #[inline]
     pub fn xip_main_access(&self) -> u32 {
-        self.regs.xip_main.read_bits()
+        self.accessctrl.xip_main.read_bits()
     }
 
     /// Get SRAM0 access control register value
     #[inline]
     pub fn sram0_access(&self) -> u32 {
-        self.regs.sram0.read_bits()
+        self.accessctrl.sram0.read_bits()
     }
 
     /// Get DMA access control register value
     #[inline]
     pub fn dma_access(&self) -> u32 {
-        self.regs.dma.read_bits()
+        self.accessctrl.dma.read_bits()
     }
 
     /// Get UART0 access control register value
     #[inline]
     pub fn uart0_access(&self) -> u32 {
-        self.regs.uart0.read_bits()
+        self.accessctrl.uart0.read_bits()
     }
 
     /// Get UART1 access control register value
     #[inline]
     pub fn uart1_access(&self) -> u32 {
-        self.regs.uart1.read_bits()
+        self.accessctrl.uart1.read_bits()
     }
 
     /// Get SPI0 access control register value
     #[inline]
     pub fn spi0_access(&self) -> u32 {
-        self.regs.spi0.read_bits()
+        self.accessctrl.spi0.read_bits()
     }
 
     /// Get SPI1 access control register value
     #[inline]
     pub fn spi1_access(&self) -> u32 {
-        self.regs.spi1.read_bits()
+        self.accessctrl.spi1.read_bits()
     }
 
     /// Get I2C0 access control register value
     #[inline]
     pub fn i2c0_access(&self) -> u32 {
-        self.regs.i2c0.read_bits()
+        self.accessctrl.i2c0.read_bits()
     }
 
     /// Get I2C1 access control register value
     #[inline]
     pub fn i2c1_access(&self) -> u32 {
-        self.regs.i2c1.read_bits()
+        self.accessctrl.i2c1.read_bits()
     }
 
     /// Get PWM access control register value
     #[inline]
     pub fn pwm_access(&self) -> u32 {
-        self.regs.pwm.read_bits()
+        self.accessctrl.pwm.read_bits()
     }
 
     /// Get PIO0 access control register value
     #[inline]
     pub fn pio0_access(&self) -> u32 {
-        self.regs.pio0.read_bits()
+        self.accessctrl.pio0.read_bits()
     }
 
     /// Get PIO1 access control register value
     #[inline]
     pub fn pio1_access(&self) -> u32 {
-        self.regs.pio1.read_bits()
+        self.accessctrl.pio1.read_bits()
     }
 
     /// Get PIO2 access control register value
     #[inline]
     pub fn pio2_access(&self) -> u32 {
-        self.regs.pio2.read_bits()
+        self.accessctrl.pio2.read_bits()
     }
 
     /// Get ADC access control register value
     #[inline]
     pub fn adc0_access(&self) -> u32 {
-        self.regs.adc0.read_bits()
+        self.accessctrl.adc0.read_bits()
     }
 
     /// Get HSTX access control register value
     #[inline]
     pub fn hstx_access(&self) -> u32 {
-        self.regs.hstx.read_bits()
+        self.accessctrl.hstx.read_bits()
     }
 
     /// Get TIMER0 access control register value
     #[inline]
     pub fn timer0_access(&self) -> u32 {
-        self.regs.timer0.read_bits()
+        self.accessctrl.timer0.read_bits()
     }
 
     /// Get TIMER1 access control register value
     #[inline]
     pub fn timer1_access(&self) -> u32 {
-        self.regs.timer1.read_bits()
+        self.accessctrl.timer1.read_bits()
     }
 
     /// Get WATCHDOG access control register value
     #[inline]
     pub fn watchdog_access(&self) -> u32 {
-        self.regs.watchdog.read_bits()
+        self.accessctrl.watchdog.read_bits()
     }
 
     /// Get TRNG access control register value
     #[inline]
     pub fn trng_access(&self) -> u32 {
-        self.regs.trng.read_bits()
+        self.accessctrl.trng.read_bits()
     }
 
     /// Get SHA256 access control register value
     #[inline]
     pub fn sha256_access(&self) -> u32 {
-        self.regs.sha256.read_bits()
+        self.accessctrl.sha256.read_bits()
     }
 
     /// Get CLOCKS access control register value
     #[inline]
     pub fn clocks_access(&self) -> u32 {
-        self.regs.clocks.read_bits()
+        self.accessctrl.clocks.read_bits()
     }
 
     /// Get XOSC access control register value
     #[inline]
     pub fn xosc_access(&self) -> u32 {
-        self.regs.xosc.read_bits()
+        self.accessctrl.xosc.read_bits()
     }
 
     /// Get ROSC access control register value
     #[inline]
     pub fn rosc_access(&self) -> u32 {
-        self.regs.rosc.read_bits()
+        self.accessctrl.rosc.read_bits()
     }
 
     /// Get PLL_SYS access control register value
     #[inline]
     pub fn pll_sys_access(&self) -> u32 {
-        self.regs.pll_sys.read_bits()
+        self.accessctrl.pll_sys.read_bits()
     }
 
     /// Get PLL_USB access control register value
     #[inline]
     pub fn pll_usb_access(&self) -> u32 {
-        self.regs.pll_usb.read_bits()
+        self.accessctrl.pll_usb.read_bits()
     }
 
     /// Get OTP access control register value
     #[inline]
     pub fn otp_access(&self) -> u32 {
-        self.regs.otp.read_bits()
-    }
-}
-
-impl Default for Accessctrl {
-    fn default() -> Self {
-        Self::new()
+        self.accessctrl.otp.read_bits()
     }
 }

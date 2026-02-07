@@ -33,7 +33,7 @@ use pico_rs::systick::Delay;
 /// RP2350 Boot Block
 #[unsafe(link_section = ".start_block")]
 #[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::secure_exe();
+pub static IMAGE_DEF: ImageDef = ImageDef::exe();
 
 /// Target system clock frequency
 const SYS_CLK_HZ: u32 = 150_000_000;

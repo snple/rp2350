@@ -49,7 +49,6 @@
 //! let value = fifo.read();  // Receive from Core 0
 //! ```
 
-use crate::pac::{PPB, PSM};
 use core::sync::atomic::{Ordering, compiler_fence};
 
 // ============================================================================
@@ -377,20 +376,17 @@ impl Default for Doorbell {
 /// This struct provides methods for launching code on Core 1 and
 /// resetting the core.
 pub struct Multicore {
-    psm: &'static pico_rs_pac::psm::RegisterBlock,
-    ppb: &'static pico_rs_pac::ppb::RegisterBlock,
+    psm: pico_rs_pac::PSM,
+    ppb: pico_rs_pac::PPB,
 }
 
 impl Multicore {
     /// Create a new Multicore instance
     ///
     /// Should only be called from Core 0.
-    pub fn new() -> Self {
+    pub fn new(psm: pico_rs_pac::PSM, ppb: pico_rs_pac::PPB) -> Self {
         debug_assert!(is_core0(), "Multicore should be created on Core 0");
-        Self {
-            psm: unsafe { &*PSM::PTR },
-            ppb: unsafe { &*PPB::PTR },
-        }
+        Self { psm, ppb }
     }
 
     /// Launch code on Core 1
@@ -420,7 +416,7 @@ impl Multicore {
     ///     }
     /// }
     ///
-    /// let mut mc = Multicore::new();
+    /// let mut mc = Multicore::new(psm, ppb);
     /// unsafe {
     ///     mc.launch_core1(core1_entry, &raw mut CORE1_STACK);
     /// }
@@ -537,12 +533,6 @@ impl Multicore {
     }
 }
 
-impl Default for Multicore {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
 // ============================================================================
 // Spinlock Re-export
 // ============================================================================
@@ -579,41 +569,4 @@ where
 {
     let _guard = Spinlock::<N>::acquire();
     f()
-}
-
-/// Send a value to the other core via FIFO
-///
-/// Convenience function for simple inter-core communication.
-#[inline]
-pub fn send(value: u32) {
-    Fifo::new().write(value);
-}
-
-/// Receive a value from the other core via FIFO
-///
-/// Convenience function for simple inter-core communication.
-/// Blocks until a value is available.
-#[inline]
-pub fn recv() -> u32 {
-    Fifo::new().read()
-}
-
-/// Try to receive a value from the other core via FIFO
-///
-/// Returns `None` if no value is available.
-#[inline]
-pub fn try_recv() -> Option<u32> {
-    Fifo::new().try_read()
-}
-
-/// Signal the other core using doorbell 0
-#[inline]
-pub fn signal_other() {
-    Doorbell::new().signal();
-}
-
-/// Wait for a signal from the other core (doorbell 0)
-#[inline]
-pub fn wait_for_signal() {
-    Doorbell::new().wait();
 }

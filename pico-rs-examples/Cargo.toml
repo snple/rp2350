@@ -31,6 +31,18 @@ name = "dormant"
 path = "src/bin/clocks/dormant.rs"
 
 [[bin]]
+name = "multicore"
+path = "src/bin/multicore.rs"
+
+[[bin]]
+name = "pio_blink"
+path = "src/bin/pio/pio_blink.rs"
+
+[[bin]]
+name = "pio_blink_advanced"
+path = "src/bin/pio/pio_blink_advanced.rs"
+
+[[bin]]
 name = "reset_demo"
 path = "src/bin/reset_demo.rs"
 

@@ -463,21 +463,21 @@ impl Pwm {
 // ============================================================================
 
 macro_rules! impl_pwm_slice {
-    ($SliceToken:ident, $PwmSlice:ident, $slice_num:literal) => {
+    ($Slice:ident, $PwmSlice:ident, $slice_num:literal) => {
         paste! {
             // ================================================================
-            // Slice Token
+            // PWM slice
             // ================================================================
 
             #[doc = concat!("PWM slice ", $slice_num, " token.")]
             ///
             /// This token is consumed when creating a configured PWM slice,
             /// ensuring each slice can only be created once.
-            pub struct $SliceToken {
+            pub struct $Slice {
                 _marker: core::marker::PhantomData<*const ()>,
             }
 
-            impl $SliceToken {
+            impl $Slice {
                 #[inline]
                 const fn new() -> Self {
                     Self { _marker: core::marker::PhantomData }

@@ -21,7 +21,7 @@ use pico_rs::task::{Event, EventQueue};
 // Boot block
 #[unsafe(link_section = ".start_block")]
 #[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::secure_exe();
+pub static IMAGE_DEF: ImageDef = ImageDef::exe();
 
 // ============================================================================
 // 事件定义

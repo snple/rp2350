@@ -14,8 +14,10 @@
 //!
 //! ```ignore
 //! use pico_rs::sysinfo::Sysinfo;
+//! use pico_rs_pac::SYSINFO;
 //!
-//! let sysinfo = Sysinfo::new();
+//! let sysinfo_pac = unsafe { SYSINFO::steal() };
+//! let sysinfo = Sysinfo::init(sysinfo_pac);
 //!
 //! // Get chip ID information
 //! let chip_id = sysinfo.chip_id();
@@ -28,28 +30,51 @@
 //! }
 //! ```
 
-use pico_rs_pac::SYSINFO;
+use crate::reset::{self, Peripheral};
 
 /// SYSINFO peripheral wrapper
 ///
 /// Provides read-only access to system information registers.
+/// Owns the PAC SYSINFO peripheral to enforce proper ownership semantics.
 pub struct Sysinfo {
-    regs: &'static pico_rs_pac::sysinfo::RegisterBlock,
+    sysinfo: pico_rs_pac::SYSINFO,
 }
 
 impl Sysinfo {
-    /// Create a new Sysinfo instance
+    /// Create a new Sysinfo instance without initialization
+    ///
+    /// # Arguments
+    /// * `sysinfo` - The SYSINFO peripheral from PAC
     #[inline]
-    pub fn new() -> Self {
-        Self {
-            regs: unsafe { &*SYSINFO::PTR },
-        }
+    pub fn new(sysinfo: pico_rs_pac::SYSINFO) -> Self {
+        Self { sysinfo }
     }
 
-    /// Get reference to the register block
+    /// Initialize the SYSINFO peripheral
+    ///
+    /// This brings the SYSINFO peripheral out of reset.
+    ///
+    /// # Arguments
+    /// * `sysinfo` - The SYSINFO peripheral from PAC
+    pub fn init(sysinfo: pico_rs_pac::SYSINFO) -> Self {
+        reset::unreset_block_wait(Peripheral::SYSINFO);
+        Self::new(sysinfo)
+    }
+
+    /// Get reference to the underlying register block
+    ///
+    /// # Safety
+    /// Direct register access can bypass the HAL's safety guarantees.
+    /// The caller must ensure operations do not conflict with the HAL state.
     #[inline]
-    pub fn regs(&self) -> &pico_rs_pac::sysinfo::RegisterBlock {
-        self.regs
+    pub unsafe fn regs(&self) -> &pico_rs_pac::sysinfo::RegisterBlock {
+        &self.sysinfo
+    }
+
+    /// Release the SYSINFO peripheral
+    #[inline]
+    pub fn release(self) -> pico_rs_pac::SYSINFO {
+        self.sysinfo
     }
 
     // ========================================================================
@@ -59,25 +84,25 @@ impl Sysinfo {
     /// Get the raw chip ID register value
     #[inline]
     pub fn chip_id(&self) -> u32 {
-        self.regs.chip_id.read_bits()
+        self.sysinfo.chip_id.read_bits()
     }
 
     /// Get the chip revision (bits 31:28)
     #[inline]
     pub fn revision(&self) -> u8 {
-        self.regs.chip_id.revision() as u8
+        self.sysinfo.chip_id.revision() as u8
     }
 
     /// Get the chip part number (bits 27:12)
     #[inline]
     pub fn part(&self) -> u16 {
-        self.regs.chip_id.part() as u16
+        self.sysinfo.chip_id.part() as u16
     }
 
     /// Get the manufacturer ID (bits 11:1)
     #[inline]
     pub fn manufacturer(&self) -> u16 {
-        self.regs.chip_id.manufacturer() as u16
+        self.sysinfo.chip_id.manufacturer() as u16
     }
 
     // ========================================================================
@@ -87,7 +112,7 @@ impl Sysinfo {
     /// Get the raw package selection register value
     #[inline]
     pub fn package_sel(&self) -> u32 {
-        self.regs.package_sel.read_bits()
+        self.sysinfo.package_sel.read_bits()
     }
 
     // ========================================================================
@@ -97,25 +122,25 @@ impl Sysinfo {
     /// Get the raw platform register value
     #[inline]
     pub fn platform(&self) -> u32 {
-        self.regs.platform.read_bits()
+        self.sysinfo.platform.read_bits()
     }
 
     /// Check if running on an ASIC (real chip)
     #[inline]
     pub fn is_asic(&self) -> bool {
-        self.regs.platform.asic()
+        self.sysinfo.platform.asic()
     }
 
     /// Check if running on an FPGA
     #[inline]
     pub fn is_fpga(&self) -> bool {
-        self.regs.platform.fpga()
+        self.sysinfo.platform.fpga()
     }
 
     /// Check if running in HDL simulation
     #[inline]
     pub fn is_hdl_sim(&self) -> bool {
-        self.regs.platform.hdlsim()
+        self.sysinfo.platform.hdlsim()
     }
 
     // ========================================================================
@@ -127,12 +152,6 @@ impl Sysinfo {
     /// This is used to identify the chip version.
     #[inline]
     pub fn gitref(&self) -> u32 {
-        self.regs.gitref_rp2350.read_bits()
-    }
-}
-
-impl Default for Sysinfo {
-    fn default() -> Self {
-        Self::new()
+        self.sysinfo.gitref_rp2350.read_bits()
     }
 }

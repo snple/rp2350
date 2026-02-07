@@ -2393,6 +2393,10 @@ pub use pins::{
     I2c0SdaPin,
     I2c1SclPin,
     I2c1SdaPin,
+    // PIO traits
+    Pio0Pin,
+    Pio1Pin,
+    Pio2Pin,
     // PWM traits
     PwmAPin,
     PwmBPin,

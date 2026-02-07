@@ -718,23 +718,26 @@ pub fn exception(args: TokenStream, input: TokenStream) -> TokenStream {
     handler.into()
 }
 
-/// Compile PIO assembly code into machine code
+/// Compile PIO assembly code into a `PioProgram`
 ///
-/// This macro takes PIO assembly source code and compiles it into an array
-/// of 16-bit instruction words that can be loaded into PIO instruction memory.
+/// Takes PIO assembly source code as a raw string and compiles it at build time
+/// into a `pico_rs::pio::PioProgram` containing instruction words and metadata
+/// (wrap, origin, side-set configuration).
 ///
 /// # Example
 ///
 /// ```ignore
 /// use pico_rs::pio_asm;
 ///
-/// let program = pio_asm!(
-///     "set pindirs, 1",
-///     ".wrap_target",
-///     "set pins, 1 [31]",
-///     "set pins, 0 [31]",
-///     ".wrap"
-/// );
+/// let program = pio_asm!(r#"
+///     .program blink
+///     set pindirs, 1
+///     .wrap_target
+///     set pins, 1 [31]
+///     set pins, 0 [31]
+///     .wrap
+/// "#);
+/// // program.instructions, program.wrap_target, program.wrap, etc.
 /// ```
 #[proc_macro]
 pub fn pio_asm(input: TokenStream) -> TokenStream {

@@ -35,7 +35,7 @@ use pico_rs_usb::device::UsbDeviceBuilder;
 /// RP2350 Boot Block
 #[unsafe(link_section = ".start_block")]
 #[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::secure_exe();
+pub static IMAGE_DEF: ImageDef = ImageDef::exe();
 
 /// Type a string by sending individual key reports
 fn type_string(hid: &mut HidClass, text: &str, delay: &mut Delay) {

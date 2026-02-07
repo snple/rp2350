@@ -30,7 +30,6 @@
 
 pub mod accessctrl;
 pub mod adc;
-pub mod aon_timer;
 pub mod binary_info;
 pub mod block;
 pub mod busctrl;
@@ -89,7 +88,6 @@ pub use paste;
 // Re-export commonly used types
 pub use accessctrl::Accessctrl;
 pub use adc::Adc;
-pub use aon_timer::AonTimer;
 pub use busctrl::Busctrl;
 pub use clocks::Clocks;
 pub use dma::Dma;
@@ -97,7 +95,7 @@ pub use eppb::Eppb;
 pub use gpio::Pins;
 pub use i2c::{I2c0, I2c1};
 pub use multicore::{Fifo, Multicore, Stack};
-pub use powman::Powman;
+pub use powman::{AonTimer, Powman, Timespec};
 pub use pwm::Pwm;
 pub use sha256::Sha256;
 pub use spi::{Spi0, Spi1};

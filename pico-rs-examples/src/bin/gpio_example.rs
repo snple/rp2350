@@ -29,7 +29,7 @@ use pico_rs::sio::Sio;
 /// RP2350 Boot Block
 #[unsafe(link_section = ".start_block")]
 #[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::secure_exe();
+pub static IMAGE_DEF: ImageDef = ImageDef::exe();
 
 const CLOCK_FREQ_HZ: u32 = 12_000_000;
 

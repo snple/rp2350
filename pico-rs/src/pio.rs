@@ -1,257 +1,587 @@
 //! Programmable I/O (PIO) driver for RP2350
 //!
-//! The PIO is a versatile hardware block that can emulate a variety of IO
-//! standards and protocols. It provides 3 PIO blocks (PIO0, PIO1, PIO2),
-//! each with 4 state machines and 32 instruction words of program memory.
+//! The RP2350 has 3 PIO blocks (PIO0, PIO1, PIO2), each with 4 state machines
+//! and 32 instruction words of shared program memory.
 //!
-//! This implementation uses the `paste` crate to generate dedicated types
-//! for each PIO block and state machine combination, avoiding type casts.
+//! ## RP2350 Enhancements over RP2040
 //!
-//! ## Example
+//! - 3 PIO blocks (vs 2)
+//! - GPIO Base: address pins 0-31 or 16-47
+//! - Extended FIFO (PUTGET) modes for direct random access
+//! - IN pin count: limit pins read by IN instruction
+//! - MOV STATUS IRQ source
+//! - Cross-PIO synchronization
+//! - 8 IRQ flags (vs 4)
+//! - MOV to PINDIRS destination
+//!
+//! ## Quick Start
 //!
 //! ```ignore
-//! use pico_rs::pio::{self, Pio0};
+//! use pico_rs::gpio::{Pins, Pio0Pin};
+//! use pico_rs::pio::{self, Pio0, FifoJoin};
 //!
-//! // Take PIO0 (this also unresets it)
-//! let mut pio = Pio0::take();
+//! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+//! let mut pio0 = Pio0::take();
 //!
-//! // Install a program using the pio_asm! macro
-//! let program = pio_asm!(
-//!     r#"
-//!     set pindirs, 1      ; Set pin as output
+//! // Claim GPIO pin (takes ownership, configures for PIO0)
+//! pio0.claim_pin(pins.p25);
+//!
+//! // Install program
+//! let program = pio_asm!(r#"
+//!     set pindirs, 1
 //!     .wrap_target
-//!     set pins, 1 [31]    ; Set pin high
-//!     set pins, 0 [31]    ; Set pin low
+//!     set pins, 1 [31]
+//!     set pins, 0 [31]
 //!     .wrap
-//!     "#
-//! );
+//! "#);
+//! let installed = pio0.install_program(&program).unwrap();
 //!
-//! let installed = pio.install_program(program.instructions, None).unwrap();
-//!
-//! // Configure and start state machine 0
-//! let sm = pio.sm0();
-//! sm.set_clock_divisor(256, 0);
-//! sm.set_wrap(
-//!     installed.offset + program.wrap_target as u8,
-//!     installed.offset + program.wrap as u8,
-//! );
-//! sm.set_set_pins(LED_PIN, 1);
-//! sm.set_consecutive_pindirs(LED_PIN, 1, true);
-//! sm.restart();
-//! sm.exec(pio::encode_jmp(installed.offset));
-//! sm.set_enabled(true);
+//! // Configure and start SM using builder pattern
+//! pio0.sm0()
+//!     .apply_program(&installed)  // sets wrap + side-set from program
+//!     .set_clkdiv(256, 0)
+//!     .set_set_pins(25, 1)
+//!     .set_consecutive_pindirs(25, 1, true)
+//!     .init(installed.offset);
 //! ```
-
-#![allow(clippy::identity_op)]
 
 use paste::paste;
 
-// Re-export the pio_asm! macro
 pub use pico_rs_macro::pio_asm;
 
+use crate::gpio;
 use crate::reset::{self, Peripheral};
 
-/// Maximum number of instructions in PIO program memory
+// ============================================================================
+// Constants
+// ============================================================================
+
+/// Number of instruction slots in PIO program memory
 pub const PIO_INSTRUCTION_COUNT: usize = 32;
+
+// CTRL register bit positions (for atomic set/clr operations)
+const CTRL_SM_ENABLE_LSB: u32 = 0;
+const CTRL_SM_RESTART_LSB: u32 = 4;
+const CTRL_CLKDIV_RESTART_LSB: u32 = 8;
+
+// ============================================================================
+// Error Types
+// ============================================================================
 
 /// Errors that can occur when installing a PIO program
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum InstallError {
-    /// Program is too large for instruction memory
+    /// Not enough contiguous free instruction memory
     NoSpace,
-    /// Invalid program origin
+    /// Requested origin address is invalid or overlaps
     InvalidOrigin,
 }
 
-/// A handle to an installed PIO program
-#[derive(Debug, Clone, Copy)]
-pub struct InstalledProgram {
-    /// Offset in instruction memory where the program is installed
-    pub offset: u8,
-    /// Length of the program in instructions
-    pub length: u8,
+// ============================================================================
+// Enums
+// ============================================================================
+
+/// FIFO join modes
+///
+/// Controls how the TX and RX FIFOs are combined. Each SM normally has
+/// 4-entry TX and 4-entry RX FIFOs.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+pub enum FifoJoin {
+    /// Separate TX and RX FIFOs (4 entries each)
+    None = 0,
+    /// TX steals RX storage (8 TX, 0 RX)
+    Tx = 1,
+    /// RX steals TX storage (0 TX, 8 RX)
+    Rx = 2,
+    /// (RP2350) Extended joined FIFO, no direct access
+    PutGet0 = 3,
+    /// (RP2350) Extended FIFO with direct put
+    PutGet1 = 7,
+    /// (RP2350) Extended FIFO with direct get
+    PutGet2 = 11,
+    /// (RP2350) Extended FIFO with direct put and get
+    PutGet3 = 15,
+}
+
+/// MOV STATUS source selection
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+pub enum MovStatusType {
+    /// STATUS is all-ones if TX FIFO level < N
+    TxLessThan = 0,
+    /// STATUS is all-ones if RX FIFO level < N
+    RxLessThan = 1,
+    /// (RP2350) STATUS is all-ones if IRQ flag N is set
+    IrqSet = 2,
 }
 
 // ============================================================================
-// Macro for generating State Machine implementations
+// InstalledProgram
+// ============================================================================
+
+/// A compiled PIO program produced by the `pio_asm!` macro
+///
+/// Contains instruction words and metadata (wrap, origin, side-set).
+#[derive(Debug, Clone, Copy)]
+pub struct PioProgram {
+    /// Machine-code instructions
+    pub instructions: &'static [u16],
+    /// Wrap target (bottom) offset within the program
+    pub wrap_target: u8,
+    /// Wrap top offset within the program
+    pub wrap: u8,
+    /// Fixed origin address, or `None` for automatic placement
+    pub origin: Option<u8>,
+    /// Number of side-set bits (0-5)
+    pub side_set_count: u8,
+    /// Whether the MSB of side-set is an enable flag
+    pub side_set_opt: bool,
+    /// Whether side-set affects pin directions instead of values
+    pub side_set_pindirs: bool,
+}
+
+/// Handle to a program installed in PIO instruction memory
+///
+/// Contains relocated addresses ready for SM configuration.
+#[derive(Debug, Clone, Copy)]
+pub struct InstalledProgram {
+    /// Offset in instruction memory where the program starts
+    pub offset: u8,
+    /// Number of instructions
+    pub length: u8,
+    /// Relocated wrap bottom (wrap_target + offset)
+    pub wrap_bottom: u8,
+    /// Relocated wrap top (wrap + offset)
+    pub wrap_top: u8,
+    /// Number of side-set bits
+    pub side_set_count: u8,
+    /// Whether side-set is optional
+    pub side_set_opt: bool,
+    /// Whether side-set affects pin directions
+    pub side_set_pindirs: bool,
+}
+
+// ============================================================================
+// Source/Destination Constants for Instruction Encoding
+// ============================================================================
+
+/// MOV source register indices
+pub mod mov_src {
+    pub const PINS: u8 = 0;
+    pub const X: u8 = 1;
+    pub const Y: u8 = 2;
+    pub const NULL: u8 = 3;
+    pub const STATUS: u8 = 5;
+    pub const ISR: u8 = 6;
+    pub const OSR: u8 = 7;
+}
+
+/// MOV destination register indices
+pub mod mov_dest {
+    pub const PINS: u8 = 0;
+    pub const X: u8 = 1;
+    pub const Y: u8 = 2;
+    /// RP2350: MOV to pin directions
+    pub const PINDIRS: u8 = 3;
+    pub const EXEC: u8 = 4;
+    pub const PC: u8 = 5;
+    pub const ISR: u8 = 6;
+    pub const OSR: u8 = 7;
+}
+
+/// IN source register indices
+pub mod in_src {
+    pub const PINS: u8 = 0;
+    pub const X: u8 = 1;
+    pub const Y: u8 = 2;
+    pub const NULL: u8 = 3;
+    pub const ISR: u8 = 6;
+    pub const OSR: u8 = 7;
+}
+
+/// OUT destination register indices
+pub mod out_dest {
+    pub const PINS: u8 = 0;
+    pub const X: u8 = 1;
+    pub const Y: u8 = 2;
+    pub const NULL: u8 = 3;
+    pub const PINDIRS: u8 = 4;
+    pub const PC: u8 = 5;
+    pub const ISR: u8 = 6;
+    pub const EXEC: u8 = 7;
+}
+
+/// SET destination register indices
+pub mod set_dest {
+    pub const PINS: u8 = 0;
+    pub const X: u8 = 1;
+    pub const Y: u8 = 2;
+    pub const PINDIRS: u8 = 4;
+}
+
+// ============================================================================
+// State Machine Implementation Macro
 // ============================================================================
 
 macro_rules! impl_state_machine {
-    ($SmName:ident, $pio_mod:ident, $sm_index:expr,
-     $clkdiv:ident, $execctrl:ident, $shiftctrl:ident, $addr:ident, $instr:ident, $pinctrl:ident,
-     $txf:ident, $rxf:ident) => {
+    ($SmName:ident, $sm_index:literal) => {
+        paste! {
         impl $SmName<'_> {
             /// State machine index (0-3)
             pub const INDEX: u8 = $sm_index;
 
             // ================================================================
-            // Control Methods
+            // Initialization
+            // ================================================================
+
+            /// Initialize the state machine
+            ///
+            /// Disables the SM, clears FIFOs, resets internal state, and
+            /// jumps to `initial_pc`. The SM is left **disabled**.
+            pub fn init(&self, initial_pc: u8) -> &Self {
+                self.set_enabled(false);
+                self.clear_fifos();
+                self.restart();
+                self.restart_clock_divider();
+                self.exec(encode_jmp(initial_pc));
+                self
+            }
+
+            // ================================================================
+            // Control
             // ================================================================
 
             /// Enable or disable the state machine
             #[inline]
-            pub fn set_enabled(&self, enabled: bool) {
+            pub fn set_enabled(&self, enabled: bool) -> &Self {
                 let mask = 1u32 << $sm_index;
                 if enabled {
                     self.pio.ctrl.set_bits(mask);
                 } else {
                     self.pio.ctrl.clr_bits(mask);
                 }
+                self
             }
 
-            /// Restart the state machine
+            /// Check if the state machine is enabled
             #[inline]
-            pub fn restart(&self) {
-                // SM_RESTART is bits [7:4]
-                self.pio.ctrl.set_bits(1u32 << ($sm_index + 4));
+            pub fn is_enabled(&self) -> bool {
+                (self.pio.ctrl.sm_enable() & (1u32 << $sm_index)) != 0
             }
 
-            /// Restart the state machine's clock divider
+            /// Restart the state machine (clears ISR, shift counters, etc.)
             #[inline]
-            pub fn restart_clock_divider(&self) {
-                // CLKDIV_RESTART is bits [11:8]
-                self.pio.ctrl.set_bits(1u32 << ($sm_index + 8));
+            pub fn restart(&self) -> &Self {
+                self.pio
+                    .ctrl
+                    .set_bits(1u32 << (CTRL_SM_RESTART_LSB + $sm_index));
+                self
             }
 
-            /// Get the current program counter (instruction address)
+            /// Restart the clock divider from phase 0
+            #[inline]
+            pub fn restart_clock_divider(&self) -> &Self {
+                self.pio
+                    .ctrl
+                    .set_bits(1u32 << (CTRL_CLKDIV_RESTART_LSB + $sm_index));
+                self
+            }
+
+            /// Get the current program counter
             #[inline]
             pub fn get_pc(&self) -> u8 {
-                (self.pio.$addr.read_bits() & 0x1F) as u8
+                self.pio.[<sm $sm_index _addr>].read_bits() as u8 & 0x1F
             }
 
             // ================================================================
-            // Clock Configuration
+            // Clock Configuration (Builder)
             // ================================================================
 
-            /// Set the clock divisor for the state machine
+            /// Set clock divider
             ///
-            /// # Arguments
-            /// * `int` - Integer part of divisor (16 bits)
-            /// * `frac` - Fractional part of divisor (8 bits, in units of 1/256)
-            #[inline]
-            pub fn set_clock_divisor(&self, int: u16, frac: u8) {
-                self.pio.$clkdiv.write_int(int as u32);
-                self.pio.$clkdiv.write_frac(frac as u32);
+            /// SM runs at `sysclk / (int_div + frac_div/256)`.
+            /// - `int_div`: 1-65535 (0 means 65536)
+            /// - `frac_div`: 0-255
+            pub fn set_clkdiv(&self, int_div: u16, frac_div: u8) -> &Self {
+                self.pio.[<sm $sm_index _clkdiv>].write_int(int_div as u32);
+                self.pio.[<sm $sm_index _clkdiv>].write_frac(frac_div as u32);
+                self
             }
 
             // ================================================================
-            // Wrap Configuration
+            // Program Configuration (Builder)
             // ================================================================
 
-            /// Set wrap addresses for the program
+            /// Apply an installed program's wrap and side-set configuration
             ///
-            /// # Arguments
-            /// * `wrap_target` - Address to wrap to (bottom, entry point)
-            /// * `wrap` - Address to wrap from (top, last instruction)
-            #[inline]
-            pub fn set_wrap(&self, wrap_target: u8, wrap: u8) {
-                self.pio.$execctrl.write_wrap_bottom(wrap_target as u32);
-                self.pio.$execctrl.write_wrap_top(wrap as u32);
+            /// Sets wrap addresses and side-set parameters from `InstalledProgram`.
+            /// Does not set pin-base — call `set_sideset_pins()` separately.
+            pub fn apply_program(&self, prog: &InstalledProgram) -> &Self {
+                self.set_wrap(prog.wrap_bottom, prog.wrap_top);
+                if prog.side_set_count > 0 {
+                    self.pio.[<sm $sm_index _pinctrl>].write_sideset_count(prog.side_set_count as u32);
+                    if prog.side_set_opt {
+                        self.pio.[<sm $sm_index _execctrl>].set_side_en();
+                    } else {
+                        self.pio.[<sm $sm_index _execctrl>].clr_side_en();
+                    }
+                    if prog.side_set_pindirs {
+                        self.pio.[<sm $sm_index _execctrl>].set_side_pindir();
+                    } else {
+                        self.pio.[<sm $sm_index _execctrl>].clr_side_pindir();
+                    }
+                }
+                self
             }
 
             // ================================================================
-            // Pin Configuration
+            // Wrap Configuration (Builder)
             // ================================================================
 
-            /// Configure SET pins
+            /// Set program wrap addresses
             ///
-            /// # Arguments
-            /// * `base` - The lowest-numbered pin that will be affected by SET instructions
-            /// * `count` - The number of pins (1-5)
-            #[inline]
-            pub fn set_set_pins(&self, base: u8, count: u8) {
-                assert!(count > 0 && count <= 5, "SET pin count must be 1-5");
-                self.pio.$pinctrl.write_set_base(base as u32);
-                self.pio.$pinctrl.write_set_count(count as u32);
+            /// When PC reaches `wrap_top`, it wraps to `wrap_target` next cycle.
+            pub fn set_wrap(&self, wrap_target: u8, wrap_top: u8) -> &Self {
+                self.pio.[<sm $sm_index _execctrl>].write_wrap_bottom(wrap_target as u32);
+                self.pio.[<sm $sm_index _execctrl>].write_wrap_top(wrap_top as u32);
+                self
             }
 
-            /// Configure OUT pins
-            ///
-            /// # Arguments
-            /// * `base` - The lowest-numbered pin for OUT instructions
-            /// * `count` - The number of pins (0-32)
-            #[inline]
-            pub fn set_out_pins(&self, base: u8, count: u8) {
-                self.pio.$pinctrl.write_out_base(base as u32);
-                self.pio.$pinctrl.write_out_count(count as u32);
+            // ================================================================
+            // Pin Configuration (Builder)
+            // ================================================================
+
+            /// Set OUT pin base and count
+            pub fn set_out_pins(&self, base: u8, count: u8) -> &Self {
+                self.pio.[<sm $sm_index _pinctrl>].write_out_base((base & 31) as u32);
+                self.pio.[<sm $sm_index _pinctrl>].write_out_count(count as u32);
+                self
             }
 
-            /// Configure IN pins
-            ///
-            /// # Arguments
-            /// * `base` - The pin to use as the first IN pin
-            #[inline]
-            pub fn set_in_pins(&self, base: u8) {
-                self.pio.$pinctrl.write_in_base(base as u32);
+            /// Set SET pin base and count (count must be 0-5)
+            pub fn set_set_pins(&self, base: u8, count: u8) -> &Self {
+                self.pio.[<sm $sm_index _pinctrl>].write_set_base((base & 31) as u32);
+                self.pio.[<sm $sm_index _pinctrl>].write_set_count(count as u32);
+                self
             }
 
-            /// Configure side-set pins
+            /// Set IN pin base
+            pub fn set_in_pins(&self, base: u8) -> &Self {
+                self.pio.[<sm $sm_index _pinctrl>].write_in_base((base & 31) as u32);
+                self
+            }
+
+            /// (RP2350) Set IN pin count
             ///
-            /// # Arguments
-            /// * `base` - The lowest-numbered pin for side-set
-            /// * `count` - The number of bits used for side-set (0-5)
-            /// * `optional` - If true, MSB of delay/sideset enables side-set
-            /// * `pindirs` - If true, side-set affects pin directions instead of values
-            #[inline]
-            pub fn set_sideset_pins(&self, base: u8, count: u8, optional: bool, pindirs: bool) {
-                assert!(count <= 5, "Side-set count must be 0-5");
-                self.pio.$pinctrl.write_sideset_base(base as u32);
-                self.pio.$pinctrl.write_sideset_count(count as u32);
+            /// Limits the number of pins read by IN instruction. 0 means 32.
+            pub fn set_in_pin_count(&self, count: u8) -> &Self {
+                self.pio.[<sm $sm_index _shiftctrl>].write_in_count((count & 31) as u32);
+                self
+            }
+
+            /// Set sideset configuration
+            ///
+            /// - `base`: first sideset pin
+            /// - `bit_count`: number of sideset bits (0-5)
+            /// - `optional`: MSB acts as enable flag
+            /// - `pindirs`: sideset affects pin directions
+            pub fn set_sideset(
+                &self,
+                base: u8,
+                bit_count: u8,
+                optional: bool,
+                pindirs: bool,
+            ) -> &Self {
+                self.pio.[<sm $sm_index _pinctrl>].write_sideset_base((base & 31) as u32);
+                self.pio.[<sm $sm_index _pinctrl>].write_sideset_count(bit_count as u32);
                 if optional {
-                    self.pio.$execctrl.set_side_en();
+                    self.pio.[<sm $sm_index _execctrl>].set_side_en();
                 } else {
-                    self.pio.$execctrl.clr_side_en();
+                    self.pio.[<sm $sm_index _execctrl>].clr_side_en();
                 }
                 if pindirs {
-                    self.pio.$execctrl.set_side_pindir();
+                    self.pio.[<sm $sm_index _execctrl>].set_side_pindir();
                 } else {
-                    self.pio.$execctrl.clr_side_pindir();
+                    self.pio.[<sm $sm_index _execctrl>].clr_side_pindir();
                 }
+                self
             }
 
-            /// Set consecutive pin directions using the state machine
+            /// Set JMP PIN source
+            pub fn set_jmp_pin(&self, pin: u8) -> &Self {
+                self.pio.[<sm $sm_index _execctrl>].write_jmp_pin((pin & 31) as u32);
+                self
+            }
+
+            /// Set consecutive pin directions using the PIO hardware
             ///
-            /// This is equivalent to pico-sdk's pio_sm_set_consecutive_pindirs().
-            /// It temporarily modifies SET_BASE and SET_COUNT to execute SET PINDIRS
-            /// instructions that configure the pin directions.
-            ///
-            /// # Arguments
-            /// * `pin_base` - The first pin to set
-            /// * `pin_count` - Number of consecutive pins
-            /// * `is_out` - true for output, false for input
-            pub fn set_consecutive_pindirs(&self, pin_base: u8, pin_count: u8, is_out: bool) {
-                let pindir_val: u8 = if is_out { 0x1f } else { 0 };
+            /// Temporarily modifies SET configuration to execute `SET PINDIRS`
+            /// instructions. Restores original configuration afterward.
+            pub fn set_consecutive_pindirs(
+                &self,
+                pin_base: u8,
+                pin_count: u8,
+                is_out: bool,
+            ) -> &Self {
+                let pindir_val = if is_out { 0x1F } else { 0 };
 
-                // Save current state
-                let pinctrl_saved = self.pio.$pinctrl.read_bits();
-                let execctrl_saved = self.pio.$execctrl.read_bits();
+                // Save current register values
+                let pinctrl_saved = self.pio.[<sm $sm_index _pinctrl>].read_bits();
+                let execctrl_saved = self.pio.[<sm $sm_index _execctrl>].read_bits();
 
-                // Clear OUT_STICKY bit in EXECCTRL
-                self.pio.$execctrl.clr_out_sticky();
+                // Clear OUT_STICKY to avoid side effects
+                self.pio.[<sm $sm_index _execctrl>].clr_out_sticky();
 
-                // Process pins in chunks of up to 5 (SET instruction limit)
                 let mut remaining = pin_count;
                 let mut pin = pin_base;
 
                 while remaining > 5 {
-                    self.pio.$pinctrl.write_set_base(pin as u32);
-                    self.pio.$pinctrl.write_set_count(5);
+                    self.pio.[<sm $sm_index _pinctrl>].write_set_base((pin & 31) as u32);
+                    self.pio.[<sm $sm_index _pinctrl>].write_set_count(5);
                     self.exec(encode_set_pindirs(pindir_val));
                     remaining -= 5;
-                    pin = (pin + 5) & 0x1f;
+                    pin = pin.wrapping_add(5) & 0x1F;
                 }
 
-                // Handle remaining pins (1-5)
                 if remaining > 0 {
-                    self.pio.$pinctrl.write_set_base(pin as u32);
-                    self.pio.$pinctrl.write_set_count(remaining as u32);
+                    self.pio.[<sm $sm_index _pinctrl>].write_set_base((pin & 31) as u32);
+                    self.pio.[<sm $sm_index _pinctrl>].write_set_count(remaining as u32);
                     self.exec(encode_set_pindirs(pindir_val));
                 }
 
-                // Restore saved state
-                self.pio.$pinctrl.write_bits(pinctrl_saved);
-                self.pio.$execctrl.write_bits(execctrl_saved);
+                // Restore
+                self.pio.[<sm $sm_index _pinctrl>].write_bits(pinctrl_saved);
+                self.pio.[<sm $sm_index _execctrl>].write_bits(execctrl_saved);
+                self
+            }
+
+            // ================================================================
+            // Shift Configuration (Builder)
+            // ================================================================
+
+            /// Configure IN shifting
+            ///
+            /// - `shift_right`: true = right, false = left
+            /// - `autopush`: push ISR when threshold reached
+            /// - `push_threshold`: bits before push (1-32; 32 encoded as 0)
+            pub fn set_in_shift(
+                &self,
+                shift_right: bool,
+                autopush: bool,
+                push_threshold: u8,
+            ) -> &Self {
+                if shift_right {
+                    self.pio.[<sm $sm_index _shiftctrl>].set_in_shiftdir();
+                } else {
+                    self.pio.[<sm $sm_index _shiftctrl>].clr_in_shiftdir();
+                }
+                if autopush {
+                    self.pio.[<sm $sm_index _shiftctrl>].set_autopush();
+                } else {
+                    self.pio.[<sm $sm_index _shiftctrl>].clr_autopush();
+                }
+                self.pio.[<sm $sm_index _shiftctrl>]
+                    .write_push_thresh((push_threshold & 0x1F) as u32);
+                self
+            }
+
+            /// Configure OUT shifting
+            ///
+            /// - `shift_right`: true = right, false = left
+            /// - `autopull`: pull OSR when threshold reached
+            /// - `pull_threshold`: bits before pull (1-32; 32 encoded as 0)
+            pub fn set_out_shift(
+                &self,
+                shift_right: bool,
+                autopull: bool,
+                pull_threshold: u8,
+            ) -> &Self {
+                if shift_right {
+                    self.pio.[<sm $sm_index _shiftctrl>].set_out_shiftdir();
+                } else {
+                    self.pio.[<sm $sm_index _shiftctrl>].clr_out_shiftdir();
+                }
+                if autopull {
+                    self.pio.[<sm $sm_index _shiftctrl>].set_autopull();
+                } else {
+                    self.pio.[<sm $sm_index _shiftctrl>].clr_autopull();
+                }
+                self.pio.[<sm $sm_index _shiftctrl>]
+                    .write_pull_thresh((pull_threshold & 0x1F) as u32);
+                self
+            }
+
+            // ================================================================
+            // FIFO Configuration (Builder)
+            // ================================================================
+
+            /// Set FIFO join mode
+            pub fn set_fifo_join(&self, join: FifoJoin) -> &Self {
+                let join_val = join as u32;
+
+                // Clear all join bits
+                self.pio.[<sm $sm_index _shiftctrl>].clr_fjoin_tx();
+                self.pio.[<sm $sm_index _shiftctrl>].clr_fjoin_rx();
+                self.pio.[<sm $sm_index _shiftctrl>].clr_fjoin_rx_put();
+                self.pio.[<sm $sm_index _shiftctrl>].clr_fjoin_rx_get();
+
+                // Set appropriate bits based on encoding:
+                // bits [1:0] → FJOIN_TX (bit 30), FJOIN_RX (bit 31)
+                // bits [3:2] → FJOIN_RX_PUT (bit 15), FJOIN_RX_GET (bit 14)
+                if join_val & 1 != 0 {
+                    self.pio.[<sm $sm_index _shiftctrl>].set_fjoin_tx();
+                }
+                if join_val & 2 != 0 {
+                    self.pio.[<sm $sm_index _shiftctrl>].set_fjoin_rx();
+                }
+                if join_val & 4 != 0 {
+                    self.pio.[<sm $sm_index _shiftctrl>].set_fjoin_rx_put();
+                }
+                if join_val & 8 != 0 {
+                    self.pio.[<sm $sm_index _shiftctrl>].set_fjoin_rx_get();
+                }
+                self
+            }
+
+            // ================================================================
+            // Special Configuration (Builder)
+            // ================================================================
+
+            /// Set OUT special features
+            ///
+            /// - `sticky`: re-assert last OUT/SET pin values continuously
+            /// - `has_enable_pin`: use an OUT data bit as output enable
+            /// - `enable_bit_index`: which OUT data bit is the enable (0-31)
+            pub fn set_out_special(
+                &self,
+                sticky: bool,
+                has_enable_pin: bool,
+                enable_bit_index: u8,
+            ) -> &Self {
+                if sticky {
+                    self.pio.[<sm $sm_index _execctrl>].set_out_sticky();
+                } else {
+                    self.pio.[<sm $sm_index _execctrl>].clr_out_sticky();
+                }
+                if has_enable_pin {
+                    self.pio.[<sm $sm_index _execctrl>].set_inline_out_en();
+                } else {
+                    self.pio.[<sm $sm_index _execctrl>].clr_inline_out_en();
+                }
+                self.pio.[<sm $sm_index _execctrl>].write_out_en_sel(enable_bit_index as u32);
+                self
+            }
+
+            /// Set MOV STATUS configuration
+            ///
+            /// - `status_sel`: which condition to monitor
+            /// - `status_n`: comparison level or IRQ index
+            pub fn set_mov_status(&self, status_sel: MovStatusType, status_n: u8) -> &Self {
+                self.pio.[<sm $sm_index _execctrl>].write_status_sel(status_sel as u32);
+                self.pio.[<sm $sm_index _execctrl>].write_status_n(status_n as u32);
+                self
             }
 
             // ================================================================
@@ -260,8 +590,24 @@ macro_rules! impl_state_machine {
 
             /// Execute an instruction immediately
             #[inline]
-            pub fn exec(&self, instr: u16) {
-                self.pio.$instr.write_bits(instr as u32);
+            pub fn exec(&self, instr: u16) -> &Self {
+                self.pio.[<sm $sm_index _instr>].write_bits(instr as u32);
+                self
+            }
+
+            /// Execute an instruction and wait for completion
+            pub fn exec_wait_blocking(&self, instr: u16) -> &Self {
+                self.exec(instr);
+                while self.is_exec_stalled() {
+                    core::hint::spin_loop();
+                }
+                self
+            }
+
+            /// Check if executed instruction is stalled
+            #[inline]
+            pub fn is_exec_stalled(&self) -> bool {
+                self.pio.[<sm $sm_index _execctrl>].exec_stalled()
             }
 
             // ================================================================
@@ -292,21 +638,41 @@ macro_rules! impl_state_machine {
                 (self.pio.fstat.rxempty() & (1 << $sm_index)) != 0
             }
 
+            /// Get TX FIFO level
+            #[inline]
+            pub fn get_tx_fifo_level(&self) -> u8 {
+                self.pio.flevel.[<tx $sm_index>]() as u8
+            }
+
+            /// Get RX FIFO level
+            #[inline]
+            pub fn get_rx_fifo_level(&self) -> u8 {
+                self.pio.flevel.[<rx $sm_index>]() as u8
+            }
+
             /// Write to TX FIFO (blocking)
             pub fn tx_fifo_write(&self, data: u32) {
                 while self.tx_fifo_is_full() {
                     core::hint::spin_loop();
                 }
-                self.pio.$txf.write_bits(data);
+                self.pio.[<txf $sm_index>].write_bits(data);
             }
 
             /// Try to write to TX FIFO (non-blocking)
+            ///
+            /// Returns `true` if written, `false` if FIFO was full.
             pub fn tx_fifo_try_write(&self, data: u32) -> bool {
                 if self.tx_fifo_is_full() {
                     return false;
                 }
-                self.pio.$txf.write_bits(data);
+                self.pio.[<txf $sm_index>].write_bits(data);
                 true
+            }
+
+            /// Write to TX FIFO without checking
+            #[inline]
+            pub fn tx_fifo_put(&self, data: u32) {
+                self.pio.[<txf $sm_index>].write_bits(data);
             }
 
             /// Read from RX FIFO (blocking)
@@ -314,7 +680,7 @@ macro_rules! impl_state_machine {
                 while self.rx_fifo_is_empty() {
                     core::hint::spin_loop();
                 }
-                self.pio.$rxf.read_bits()
+                self.pio.[<rxf $sm_index>].read_bits()
             }
 
             /// Try to read from RX FIFO (non-blocking)
@@ -322,142 +688,219 @@ macro_rules! impl_state_machine {
                 if self.rx_fifo_is_empty() {
                     return None;
                 }
-                Some(self.pio.$rxf.read_bits())
+                Some(self.pio.[<rxf $sm_index>].read_bits())
+            }
+
+            /// Read from RX FIFO without checking
+            #[inline]
+            pub fn rx_fifo_get(&self) -> u32 {
+                self.pio.[<rxf $sm_index>].read_bits()
             }
 
             /// Clear both TX and RX FIFOs
-            pub fn clear_fifos(&self) {
-                let shiftctrl = self.pio.$shiftctrl.read_bits();
-                // Set FJOIN_RX and FJOIN_TX temporarily to flush
-                let flush = shiftctrl | (1 << 31) | (1 << 30);
-                self.pio.$shiftctrl.write_bits(flush);
-                self.pio.$shiftctrl.write_bits(flush);
-                // Restore original
-                self.pio.$shiftctrl.write_bits(shiftctrl);
+            ///
+            /// XOR-toggles `FJOIN_RX` twice to flush both FIFOs.
+            pub fn clear_fifos(&self) -> &Self {
+                // Toggle FJOIN_RX bit: this clears both FIFOs
+                // FJOIN_RX is bit 31 of SHIFTCTRL
+                self.pio.[<sm $sm_index _shiftctrl>].xor_bits(1 << 31);
+                self.pio.[<sm $sm_index _shiftctrl>].xor_bits(1 << 31);
+                self
+            }
+
+            /// Drain the TX FIFO
+            ///
+            /// Consumes all TX FIFO entries. Disturbs OSR contents.
+            pub fn drain_tx_fifo(&self) {
+                let autopull = self.pio.[<sm $sm_index _shiftctrl>].autopull();
+                let instr = if autopull {
+                    encode_out(out_dest::NULL, 32)
+                } else {
+                    encode_pull(false, false)
+                };
+                while !self.tx_fifo_is_empty() {
+                    self.exec(instr);
+                }
+            }
+
+            // ================================================================
+            // PUTGET FIFO Access (RP2350)
+            // ================================================================
+
+            /// (RP2350) Read directly from FIFO entry via PUTGET register
+            ///
+            /// Requires FJOIN\_RX\_GET to be set (see [`FifoJoin::PutGet2`]/[`FifoJoin::PutGet3`]).
+            /// `index`: 0-3
+            pub fn putget_read(&self, index: u8) -> u32 {
+                assert!(index < 4, "PUTGET index must be 0-3");
+                let base = self.pio as *const _ as usize;
+                let offset = 0x128 + ($sm_index as usize * 0x10) + (index as usize * 4);
+                unsafe { core::ptr::read_volatile((base + offset) as *const u32) }
+            }
+
+            /// (RP2350) Write directly to FIFO entry via PUTGET register
+            ///
+            /// Requires FJOIN\_RX\_PUT to be set (see [`FifoJoin::PutGet1`]/[`FifoJoin::PutGet3`]).
+            /// `index`: 0-3
+            pub fn putget_write(&self, index: u8, data: u32) {
+                assert!(index < 4, "PUTGET index must be 0-3");
+                let base = self.pio as *const _ as usize;
+                let offset = 0x128 + ($sm_index as usize * 0x10) + (index as usize * 4);
+                unsafe { core::ptr::write_volatile((base + offset) as *mut u32, data) }
             }
         }
+        } // paste!
     };
 }
 
 // ============================================================================
-// Macro for generating PIO block and its state machines
+// PIO Block Implementation Macro
 // ============================================================================
 
 macro_rules! impl_pio_block {
-    ($pio_num:literal, $PioName:ident, $PioType:ty, $pio_mod:ident, $reset_peripheral:expr) => {
+    ($PioName:ident, $pio_num:literal) => {
         paste! {
-            // ================================================================
-            // State Machine types for this PIO block
-            // ================================================================
-
+            // State machine types
             /// State machine 0 for $PioName
             pub struct [<$PioName Sm0>]<'a> {
-                pio: &'a pico_rs_pac::$pio_mod::RegisterBlock,
+                pio: &'a pico_rs_pac::[<pio $pio_num>]::RegisterBlock,
             }
-
             /// State machine 1 for $PioName
             pub struct [<$PioName Sm1>]<'a> {
-                pio: &'a pico_rs_pac::$pio_mod::RegisterBlock,
+                pio: &'a pico_rs_pac::[<pio $pio_num>]::RegisterBlock,
             }
-
             /// State machine 2 for $PioName
             pub struct [<$PioName Sm2>]<'a> {
-                pio: &'a pico_rs_pac::$pio_mod::RegisterBlock,
+                pio: &'a pico_rs_pac::[<pio $pio_num>]::RegisterBlock,
             }
-
             /// State machine 3 for $PioName
             pub struct [<$PioName Sm3>]<'a> {
-                pio: &'a pico_rs_pac::$pio_mod::RegisterBlock,
+                pio: &'a pico_rs_pac::[<pio $pio_num>]::RegisterBlock,
             }
 
-            // Implement state machine methods for each SM
-            impl_state_machine!([<$PioName Sm0>], $pio_mod, 0,
-                sm0_clkdiv, sm0_execctrl, sm0_shiftctrl, sm0_addr, sm0_instr, sm0_pinctrl,
-                txf0, rxf0);
-            impl_state_machine!([<$PioName Sm1>], $pio_mod, 1,
-                sm1_clkdiv, sm1_execctrl, sm1_shiftctrl, sm1_addr, sm1_instr, sm1_pinctrl,
-                txf1, rxf1);
-            impl_state_machine!([<$PioName Sm2>], $pio_mod, 2,
-                sm2_clkdiv, sm2_execctrl, sm2_shiftctrl, sm2_addr, sm2_instr, sm2_pinctrl,
-                txf2, rxf2);
-            impl_state_machine!([<$PioName Sm3>], $pio_mod, 3,
-                sm3_clkdiv, sm3_execctrl, sm3_shiftctrl, sm3_addr, sm3_instr, sm3_pinctrl,
-                txf3, rxf3);
+            impl_state_machine!([<$PioName Sm0>], 0);
+            impl_state_machine!([<$PioName Sm1>], 1);
+            impl_state_machine!([<$PioName Sm2>], 2);
+            impl_state_machine!([<$PioName Sm3>], 3);
 
-            // ================================================================
-            // PIO block struct
-            // ================================================================
-
-            /// PIO block $pio_num wrapper
+            // PIO block
             pub struct $PioName {
-                pio: $PioType,
+                pio: pico_rs_pac::[<PIO $pio_num>],
                 used_instruction_space: u32,
             }
 
             impl $PioName {
-                /// PIO block ID
+                /// PIO block index (0, 1, or 2)
                 pub const ID: u8 = $pio_num;
 
-                pub fn id() -> u8 {
-                    $pio_num
-                }
-
-                /// Take ownership of this PIO block (unresets it automatically)
+                /// Take ownership of this PIO block
+                ///
+                /// Unresets the PIO peripheral. Call once per PIO block.
                 pub fn take() -> Self {
-                    reset::unreset_block_wait($reset_peripheral);
+                    reset::unreset_block_wait(Peripheral::[<PIO $pio_num>]);
                     Self {
-                        pio: unsafe { <$PioType>::steal() },
+                        pio: unsafe { pico_rs_pac::[<PIO $pio_num>]::steal() },
                         used_instruction_space: 0,
                     }
                 }
 
-                /// Get access to state machine 0
+                // ============================================================
+                // State Machine Access
+                // ============================================================
+
+                /// Get state machine 0
                 #[inline]
                 pub fn sm0(&self) -> [<$PioName Sm0>]<'_> {
-                    [<$PioName Sm0>] { pio: &self.pio }
+                    [<$PioName Sm0>] { pio: &*self.pio }
                 }
 
-                /// Get access to state machine 1
+                /// Get state machine 1
                 #[inline]
                 pub fn sm1(&self) -> [<$PioName Sm1>]<'_> {
-                    [<$PioName Sm1>] { pio: &self.pio }
+                    [<$PioName Sm1>] { pio: &*self.pio }
                 }
 
-                /// Get access to state machine 2
+                /// Get state machine 2
                 #[inline]
                 pub fn sm2(&self) -> [<$PioName Sm2>]<'_> {
-                    [<$PioName Sm2>] { pio: &self.pio }
+                    [<$PioName Sm2>] { pio: &*self.pio }
                 }
 
-                /// Get access to state machine 3
+                /// Get state machine 3
                 #[inline]
                 pub fn sm3(&self) -> [<$PioName Sm3>]<'_> {
-                    [<$PioName Sm3>] { pio: &self.pio }
+                    [<$PioName Sm3>] { pio: &*self.pio }
                 }
+
+                // ============================================================
+                // GPIO Pin Ownership
+                // ============================================================
+
+                /// Claim a GPIO pin for this PIO block
+                ///
+                /// Takes ownership of the pin and configures it for this PIO
+                /// instance (sets funcsel and pad configuration). The pin
+                /// cannot be used by other peripherals after this call.
+                ///
+                /// ```ignore
+                /// pio0.claim_pin(pins.p25);
+                /// // pins.p25 is consumed — compile error if reused
+                /// ```
+                pub fn claim_pin<P: gpio::[<Pio $pio_num Pin>]>(&self, pin: P) {
+                    pin.[<configure_pio $pio_num>]();
+                    // pin is dropped — ownership transferred, ZST has no cost
+                    let _ = pin;
+                }
+
+                // ============================================================
+                // GPIO Base (RP2350)
+                // ============================================================
+
+                /// (RP2350) Set GPIO base for this PIO instance
+                ///
+                /// - `false` / clear: address pins 0-31
+                /// - `true` / set: address pins 16-47 (RP2350B with 48 GPIOs)
+                pub fn set_gpio_base(&self, high: bool) {
+                    if high {
+                        self.pio.gpiobase.set_gpiobase();
+                    } else {
+                        self.pio.gpiobase.clr_gpiobase();
+                    }
+                }
+
+                /// (RP2350) Get current GPIO base
+                pub fn get_gpio_base(&self) -> bool {
+                    self.pio.gpiobase.gpiobase()
+                }
+
+                /// Set input synchroniser bypass for specified pins
+                pub fn set_input_sync_bypass(&self, pin_mask: u32) {
+                    self.pio.input_sync_bypass.write_input_sync_bypass(pin_mask);
+                }
+
+                // ============================================================
+                // Program Management
+                // ============================================================
 
                 /// Install a program into instruction memory
                 ///
-                /// # Arguments
-                /// * `program` - Array of 16-bit instruction words
-                /// * `origin` - Optional fixed origin. If None, finds first available space
-                ///
-                /// # Returns
-                /// Ok(InstalledProgram) with offset and length, or Err(InstallError)
+                /// JMP instructions are automatically relocated.
+                /// The returned `InstalledProgram` contains relocated wrap addresses
+                /// and side-set configuration, ready for `apply_program()`.
                 pub fn install_program(
                     &mut self,
-                    program: &[u16],
-                    origin: Option<u8>,
+                    program: &PioProgram,
                 ) -> Result<InstalledProgram, InstallError> {
-                    if program.len() > PIO_INSTRUCTION_COUNT {
+                    let instructions = program.instructions;
+                    if instructions.is_empty() || instructions.len() > PIO_INSTRUCTION_COUNT {
                         return Err(InstallError::NoSpace);
                     }
 
-                    let length = program.len() as u8;
+                    let length = instructions.len() as u8;
                     let program_mask = (1u32 << length) - 1;
 
-                    // Find offset for program
-                    let offset = if let Some(orig) = origin {
-                        if orig as usize + program.len() > PIO_INSTRUCTION_COUNT {
+                    let offset = if let Some(orig) = program.origin {
+                        if orig as usize + instructions.len() > PIO_INSTRUCTION_COUNT {
                             return Err(InstallError::InvalidOrigin);
                         }
                         if (self.used_instruction_space & (program_mask << orig)) != 0 {
@@ -465,9 +908,8 @@ macro_rules! impl_pio_block {
                         }
                         orig
                     } else {
-                        // Find first available space, working down from top
                         let mut found = None;
-                        for i in (0..=(PIO_INSTRUCTION_COUNT - program.len())).rev() {
+                        for i in (0..=(PIO_INSTRUCTION_COUNT - instructions.len())).rev() {
                             if (self.used_instruction_space & (program_mask << i)) == 0 {
                                 found = Some(i as u8);
                                 break;
@@ -476,32 +918,32 @@ macro_rules! impl_pio_block {
                         found.ok_or(InstallError::NoSpace)?
                     };
 
-                    // Disable ALL state machines before writing INSTR_MEM
-                    let ctrl_saved = self.pio.ctrl.read_bits();
-                    self.pio.ctrl.clr_bits(0xF); // Clear SM_ENABLE bits
-
-                    for (i, &instr) in program.iter().enumerate() {
-                        // Relocate JMP instructions
-                        let relocated_instr = if (instr >> 13) == 0b000 {
-                            let jmp_addr = (instr & 0x1F) as u8;
-                            let relocated_addr = (offset + jmp_addr) & 0x1F;
-                            (instr & !0x1F) | (relocated_addr as u16)
+                    for (i, &instr) in instructions.iter().enumerate() {
+                        let relocated = if (instr >> 13) == 0b000 {
+                            // JMP: relocate address in bits [4:0]
+                            let addr = instr & 0x1F;
+                            let new_addr = (addr + offset as u16) & 0x1F;
+                            (instr & !0x1F) | new_addr
                         } else {
                             instr
                         };
-                        self.write_instruction(offset + i as u8, relocated_instr);
+                        self.write_instruction(offset + i as u8, relocated);
                     }
 
-                    // Restore CTRL register
-                    self.pio.ctrl.write_bits(ctrl_saved);
-
-                    // Mark space as used
                     self.used_instruction_space |= program_mask << offset;
 
-                    Ok(InstalledProgram { offset, length })
+                    Ok(InstalledProgram {
+                        offset,
+                        length,
+                        wrap_bottom: offset + program.wrap_target,
+                        wrap_top: offset + program.wrap,
+                        side_set_count: program.side_set_count,
+                        side_set_opt: program.side_set_opt,
+                        side_set_pindirs: program.side_set_pindirs,
+                    })
                 }
 
-                /// Uninstall a program, freeing instruction memory
+                /// Uninstall a program, freeing its instruction memory
                 pub fn uninstall_program(&mut self, program: InstalledProgram) {
                     let program_mask = (1u32 << program.length) - 1;
                     self.used_instruction_space &= !(program_mask << program.offset);
@@ -509,22 +951,94 @@ macro_rules! impl_pio_block {
 
                 /// Write a single instruction to instruction memory
                 fn write_instruction(&self, addr: u8, instr: u16) {
-                    assert!(addr < PIO_INSTRUCTION_COUNT as u8);
-                    // INSTR_MEM is at offset 0x48 from base, each register is 4 bytes
-                    let instr_mem_base = &self.pio.instr_mem0 as *const _ as usize;
-                    let instr_addr = (instr_mem_base + (addr as usize * 4)) as *mut u32;
-                    unsafe {
-                        core::ptr::write_volatile(instr_addr, instr as u32);
-                    }
+                    assert!((addr as usize) < PIO_INSTRUCTION_COUNT);
+                    let base = &self.pio.instr_mem0 as *const _ as usize;
+                    let target = (base + (addr as usize * 4)) as *mut u32;
+                    unsafe { core::ptr::write_volatile(target, instr as u32); }
                 }
 
                 /// Clear all instruction memory
                 pub fn clear_instruction_memory(&mut self) {
                     for i in 0..PIO_INSTRUCTION_COUNT as u8 {
-                        self.write_instruction(i, encode_jmp(i));
+                        self.write_instruction(i, 0);
                     }
                     self.used_instruction_space = 0;
                 }
+
+                // ============================================================
+                // Multi-SM Control
+                // ============================================================
+
+                /// Enable/disable multiple state machines simultaneously
+                pub fn set_sm_mask_enabled(&self, mask: u32, enabled: bool) {
+                    let mask = mask & 0xF;
+                    if enabled {
+                        self.pio.ctrl.set_bits(mask << CTRL_SM_ENABLE_LSB);
+                    } else {
+                        self.pio.ctrl.clr_bits(mask << CTRL_SM_ENABLE_LSB);
+                    }
+                }
+
+                /// Restart multiple state machines simultaneously
+                pub fn restart_sm_mask(&self, mask: u32) {
+                    self.pio.ctrl.set_bits((mask & 0xF) << CTRL_SM_RESTART_LSB);
+                }
+
+                /// Restart clock dividers for multiple state machines
+                pub fn clkdiv_restart_sm_mask(&self, mask: u32) {
+                    self.pio.ctrl.set_bits((mask & 0xF) << CTRL_CLKDIV_RESTART_LSB);
+                }
+
+                /// Enable multiple state machines with synchronized clocks
+                pub fn enable_sm_mask_in_sync(&self, mask: u32) {
+                    let mask = mask & 0xF;
+                    self.pio.ctrl.set_bits(
+                        (mask << CTRL_CLKDIV_RESTART_LSB)
+                        | (mask << CTRL_SM_ENABLE_LSB)
+                    );
+                }
+
+                /// (RP2350) Enable/disable SMs across neighboring PIO blocks
+                pub fn set_sm_multi_mask_enabled(
+                    &self,
+                    mask_prev: u32,
+                    mask: u32,
+                    mask_next: u32,
+                    enabled: bool,
+                ) {
+                    self.pio.ctrl.modify_val(|v| {
+                        let v = v
+                            .with_sm_enable(if enabled { mask & 0xF } else { 0 })
+                            .with_prev_pio_mask(mask_prev & 0xF)
+                            .with_next_pio_mask(mask_next & 0xF);
+                        if enabled {
+                            v.with_nextprev_sm_enable(true)
+                        } else {
+                            v.with_nextprev_sm_disable(true)
+                        }
+                    });
+                }
+
+                /// (RP2350) Enable SMs across multiple PIOs with synchronized clocks
+                pub fn enable_sm_multi_mask_in_sync(
+                    &self,
+                    mask_prev: u32,
+                    mask: u32,
+                    mask_next: u32,
+                ) {
+                    self.pio.ctrl.modify_val(|v| {
+                        v.with_sm_enable(mask & 0xF)
+                            .with_clkdiv_restart(mask & 0xF)
+                            .with_prev_pio_mask(mask_prev & 0xF)
+                            .with_next_pio_mask(mask_next & 0xF)
+                            .with_nextprev_clkdiv_restart(true)
+                            .with_nextprev_sm_enable(true)
+                    });
+                }
+
+                // ============================================================
+                // IRQ Management
+                // ============================================================
 
                 /// Get raw IRQ flags (8 bits)
                 #[inline]
@@ -532,16 +1046,56 @@ macro_rules! impl_pio_block {
                     self.pio.irq.irq() as u8
                 }
 
-                /// Clear IRQ flags
+                /// Check if a PIO interrupt flag is set (0-7)
                 #[inline]
-                pub fn clear_irq(&self, flags: u8) {
+                pub fn interrupt_get(&self, irq_num: u8) -> bool {
+                    (self.pio.irq.irq() & (1 << irq_num)) != 0
+                }
+
+                /// Clear PIO interrupt flags (bitmask, W1C)
+                #[inline]
+                pub fn interrupt_clear(&self, flags: u8) {
                     self.pio.irq.write_irq(flags as u32);
                 }
 
-                /// Force IRQ flags
+                /// Force PIO interrupt flags (for testing)
                 #[inline]
                 pub fn force_irq(&self, flags: u8) {
                     self.pio.irq_force.write_irq_force(flags as u32);
+                }
+
+                /// Enable/disable an interrupt source on IRQ0
+                pub fn set_irq0_source_enabled(&self, source: u32, enabled: bool) {
+                    if enabled {
+                        self.pio.irq0_inte.set_bits(1 << source);
+                    } else {
+                        self.pio.irq0_inte.clr_bits(1 << source);
+                    }
+                }
+
+                /// Enable/disable an interrupt source on IRQ1
+                pub fn set_irq1_source_enabled(&self, source: u32, enabled: bool) {
+                    if enabled {
+                        self.pio.irq1_inte.set_bits(1 << source);
+                    } else {
+                        self.pio.irq1_inte.clr_bits(1 << source);
+                    }
+                }
+
+                // ============================================================
+                // Debug
+                // ============================================================
+
+                /// Get current PIO-driven GPIO output values
+                #[inline]
+                pub fn get_dbg_padout(&self) -> u32 {
+                    self.pio.dbg_padout.read_bits()
+                }
+
+                /// Get current PIO-driven GPIO output enables
+                #[inline]
+                pub fn get_dbg_padoe(&self) -> u32 {
+                    self.pio.dbg_padoe.read_bits()
                 }
             }
         }
@@ -549,85 +1103,219 @@ macro_rules! impl_pio_block {
 }
 
 // ============================================================================
-// Generate PIO0, PIO1, PIO2 with their state machines
+// Generate PIO0, PIO1, PIO2
 // ============================================================================
 
-impl_pio_block!(0, Pio0, pico_rs_pac::PIO0, pio0, Peripheral::PIO0);
-impl_pio_block!(1, Pio1, pico_rs_pac::PIO1, pio1, Peripheral::PIO1);
-impl_pio_block!(2, Pio2, pico_rs_pac::PIO2, pio2, Peripheral::PIO2);
+impl_pio_block!(Pio0, 0);
+impl_pio_block!(Pio1, 1);
+impl_pio_block!(Pio2, 2);
 
 // ============================================================================
-// PIO Instruction Encoding Helpers
+// PIO Instruction Encoding
 // ============================================================================
 
-/// Encode a JMP instruction
+// --- Delay / Side-set ---
+
+/// Encode delay cycles (OR with any instruction)
+#[inline]
+pub const fn encode_delay(cycles: u8) -> u16 {
+    ((cycles as u16) & 0x1F) << 8
+}
+
+/// Encode sideset value (non-optional mode)
+#[inline]
+pub const fn encode_sideset(bit_count: u8, value: u8) -> u16 {
+    (value as u16) << (13 - bit_count)
+}
+
+/// Encode sideset value (optional mode, sets enable bit)
+#[inline]
+pub const fn encode_sideset_opt(bit_count: u8, value: u8) -> u16 {
+    0x1000 | ((value as u16) << (13 - bit_count))
+}
+
+// --- JMP (opcode 000) ---
+
+/// Encode unconditional `JMP addr`
 #[inline]
 pub const fn encode_jmp(addr: u8) -> u16 {
-    0x0000 | (addr as u16 & 0x1F)
+    (addr as u16) & 0x1F
 }
 
-/// Encode a JMP instruction with condition
+/// Encode `JMP cond, addr`
 #[inline]
 pub const fn encode_jmp_cond(cond: u8, addr: u8) -> u16 {
-    0x0000 | ((cond as u16 & 0x7) << 5) | (addr as u16 & 0x1F)
+    ((cond as u16 & 7) << 5) | (addr as u16 & 0x1F)
 }
 
-/// Encode a WAIT instruction (wait for GPIO pin)
+/// Encode `JMP !X, addr`
 #[inline]
-pub const fn encode_wait_gpio(pin: u8, polarity: bool) -> u16 {
-    let pol = if polarity { 1 } else { 0 };
-    0x2000 | (pol << 7) | (1 << 5) | (pin as u16 & 0x1F)
+pub const fn encode_jmp_not_x(addr: u8) -> u16 {
+    encode_jmp_cond(1, addr)
 }
-
-/// Encode a WAIT instruction (wait for pin mapped via IN)
+/// Encode `JMP X--, addr`
 #[inline]
-pub const fn encode_wait_pin(pin: u8, polarity: bool) -> u16 {
-    let pol = if polarity { 1 } else { 0 };
-    0x2000 | (pol << 7) | (pin as u16 & 0x1F)
+pub const fn encode_jmp_x_dec(addr: u8) -> u16 {
+    encode_jmp_cond(2, addr)
 }
-
-/// Encode a SET pins instruction
+/// Encode `JMP !Y, addr`
 #[inline]
-pub const fn encode_set_pins(value: u8) -> u16 {
-    0xE000 | (value as u16 & 0x1F)
+pub const fn encode_jmp_not_y(addr: u8) -> u16 {
+    encode_jmp_cond(3, addr)
 }
-
-/// Encode a SET pindirs instruction
+/// Encode `JMP Y--, addr`
 #[inline]
-pub const fn encode_set_pindirs(value: u8) -> u16 {
-    0xE080 | (value as u16 & 0x1F)
+pub const fn encode_jmp_y_dec(addr: u8) -> u16 {
+    encode_jmp_cond(4, addr)
 }
-
-/// Encode an OUT pins instruction
+/// Encode `JMP X!=Y, addr`
 #[inline]
-pub const fn encode_out_pins(bit_count: u8) -> u16 {
-    0x6000 | (bit_count as u16 & 0x1F)
+pub const fn encode_jmp_x_ne_y(addr: u8) -> u16 {
+    encode_jmp_cond(5, addr)
 }
-
-/// Encode an IN pins instruction
+/// Encode `JMP PIN, addr`
 #[inline]
-pub const fn encode_in_pins(bit_count: u8) -> u16 {
-    0x4000 | (bit_count as u16 & 0x1F)
+pub const fn encode_jmp_pin(addr: u8) -> u16 {
+    encode_jmp_cond(6, addr)
+}
+/// Encode `JMP !OSRE, addr`
+#[inline]
+pub const fn encode_jmp_not_osre(addr: u8) -> u16 {
+    encode_jmp_cond(7, addr)
 }
 
-/// Encode a PUSH instruction
+// --- WAIT (opcode 001) ---
+
+/// Encode `WAIT polarity GPIO pin`
+#[inline]
+pub const fn encode_wait_gpio(polarity: bool, pin: u8) -> u16 {
+    let pol = if polarity { 4u16 } else { 0 };
+    0x2000 | (pol << 5) | (pin as u16 & 0x1F)
+}
+
+/// Encode `WAIT polarity PIN pin`
+#[inline]
+pub const fn encode_wait_pin(polarity: bool, pin: u8) -> u16 {
+    let pol = if polarity { 4u16 } else { 0 };
+    0x2000 | ((pol | 1) << 5) | (pin as u16 & 0x1F)
+}
+
+/// Encode `WAIT polarity IRQ irq [rel]`
+#[inline]
+pub const fn encode_wait_irq(polarity: bool, relative: bool, irq: u8) -> u16 {
+    let pol = if polarity { 4u16 } else { 0 };
+    let rel = if relative { 0x10u16 } else { 0 };
+    0x2000 | ((pol | 2) << 5) | rel | (irq as u16 & 0x07)
+}
+
+// --- IN (opcode 010) ---
+
+/// Encode `IN src, bit_count` (bit_count: 1-32, 32 encoded as 0)
+#[inline]
+pub const fn encode_in(src: u8, bit_count: u8) -> u16 {
+    0x4000 | ((src as u16 & 7) << 5) | (bit_count as u16 & 0x1F)
+}
+
+// --- OUT (opcode 011) ---
+
+/// Encode `OUT dest, bit_count` (bit_count: 1-32, 32 encoded as 0)
+#[inline]
+pub const fn encode_out(dest: u8, bit_count: u8) -> u16 {
+    0x6000 | ((dest as u16 & 7) << 5) | (bit_count as u16 & 0x1F)
+}
+
+// --- PUSH / PULL (opcode 100) ---
+
+/// Encode `PUSH [iffull] [block]`
 #[inline]
 pub const fn encode_push(if_full: bool, block: bool) -> u16 {
-    let iffull = if if_full { 1 } else { 0 };
-    let blk = if block { 1 } else { 0 };
-    0x8000 | (iffull << 6) | (blk << 5)
+    let iffull = if if_full { 1u16 << 6 } else { 0 };
+    let blk = if block { 1u16 << 5 } else { 0 };
+    0x8000 | iffull | blk
 }
 
-/// Encode a PULL instruction
+/// Encode `PULL [ifempty] [block]`
 #[inline]
 pub const fn encode_pull(if_empty: bool, block: bool) -> u16 {
-    let ifempty = if if_empty { 1 } else { 0 };
-    let blk = if block { 1 } else { 0 };
-    0x8080 | (ifempty << 6) | (blk << 5)
+    let ifempty = if if_empty { 1u16 << 6 } else { 0 };
+    let blk = if block { 1u16 << 5 } else { 0 };
+    0x8080 | ifempty | blk
 }
 
-/// Encode a NOP instruction (MOV y, y)
+// --- MOV (opcode 101) ---
+
+/// Encode `MOV dest, src`
+#[inline]
+pub const fn encode_mov(dest: u8, src: u8) -> u16 {
+    0xA000 | ((dest as u16 & 7) << 5) | (src as u16 & 7)
+}
+
+/// Encode `MOV dest, ~src` (bit-invert)
+#[inline]
+pub const fn encode_mov_not(dest: u8, src: u8) -> u16 {
+    0xA000 | ((dest as u16 & 7) << 5) | (1 << 3) | (src as u16 & 7)
+}
+
+/// Encode `MOV dest, ::src` (bit-reverse)
+#[inline]
+pub const fn encode_mov_reverse(dest: u8, src: u8) -> u16 {
+    0xA000 | ((dest as u16 & 7) << 5) | (2 << 3) | (src as u16 & 7)
+}
+
+/// Encode `NOP`
 #[inline]
 pub const fn encode_nop() -> u16 {
-    0xA042
+    encode_mov(mov_dest::Y, mov_src::Y)
+}
+
+// --- IRQ (opcode 110) ---
+
+/// Encode `IRQ SET irq [rel]`
+#[inline]
+pub const fn encode_irq_set(relative: bool, irq: u8) -> u16 {
+    let rel = if relative { 0x10u16 } else { 0 };
+    0xC000 | rel | (irq as u16 & 0x07)
+}
+
+/// Encode `IRQ WAIT irq [rel]`
+#[inline]
+pub const fn encode_irq_wait(relative: bool, irq: u8) -> u16 {
+    let rel = if relative { 0x10u16 } else { 0 };
+    0xC000 | (1 << 5) | rel | (irq as u16 & 0x07)
+}
+
+/// Encode `IRQ CLEAR irq [rel]`
+#[inline]
+pub const fn encode_irq_clear(relative: bool, irq: u8) -> u16 {
+    let rel = if relative { 0x10u16 } else { 0 };
+    0xC000 | (2 << 5) | rel | (irq as u16 & 0x07)
+}
+
+// --- SET (opcode 111) ---
+
+/// Encode `SET dest, value` (value: 0-31)
+#[inline]
+pub const fn encode_set(dest: u8, value: u8) -> u16 {
+    0xE000 | ((dest as u16 & 7) << 5) | (value as u16 & 0x1F)
+}
+
+/// Encode `SET PINS, value`
+#[inline]
+pub const fn encode_set_pins(value: u8) -> u16 {
+    encode_set(set_dest::PINS, value)
+}
+/// Encode `SET X, value`
+#[inline]
+pub const fn encode_set_x(value: u8) -> u16 {
+    encode_set(set_dest::X, value)
+}
+/// Encode `SET Y, value`
+#[inline]
+pub const fn encode_set_y(value: u8) -> u16 {
+    encode_set(set_dest::Y, value)
+}
+/// Encode `SET PINDIRS, value`
+#[inline]
+pub const fn encode_set_pindirs(value: u8) -> u16 {
+    encode_set(set_dest::PINDIRS, value)
 }
