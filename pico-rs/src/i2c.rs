@@ -83,6 +83,29 @@ use crate::clocks::Clocks;
 use crate::gpio::{I2c0SclPin, I2c0SdaPin, I2c1SclPin, I2c1SdaPin};
 use crate::reset::{self, Peripheral};
 
+/// Abstract I2C bus trait for driver implementations.
+///
+/// This keeps drivers decoupled from concrete I2C types while preserving
+/// the HAL error type.
+pub trait I2cBus {
+    /// Error type returned by the bus.
+    type Error;
+
+    /// Write data to a 7-bit I2C address.
+    fn write(&self, addr: u8, data: &[u8]) -> Result<(), Self::Error>;
+
+    /// Read data from a 7-bit I2C address.
+    fn read(&self, addr: u8, buffer: &mut [u8]) -> Result<(), Self::Error>;
+
+    /// Write then read with a repeated start.
+    fn write_read(
+        &self,
+        addr: u8,
+        write_data: &[u8],
+        read_buffer: &mut [u8],
+    ) -> Result<(), Self::Error>;
+}
+
 /// I2C speed mode
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[repr(u32)]
@@ -123,29 +146,6 @@ pub enum Mode {
     Master,
     /// Slave mode
     Slave,
-}
-
-/// Abstract I2C bus trait for driver implementations.
-///
-/// This keeps drivers decoupled from concrete I2C types while preserving
-/// the HAL error type.
-pub trait I2cBus {
-    /// Error type returned by the bus.
-    type Error;
-
-    /// Write data to a 7-bit I2C address.
-    fn write(&self, addr: u8, data: &[u8]) -> Result<(), Self::Error>;
-
-    /// Read data from a 7-bit I2C address.
-    fn read(&self, addr: u8, buffer: &mut [u8]) -> Result<(), Self::Error>;
-
-    /// Write then read with a repeated start.
-    fn write_read(
-        &self,
-        addr: u8,
-        write_data: &[u8],
-        read_buffer: &mut [u8],
-    ) -> Result<(), Self::Error>;
 }
 
 // ============================================================================

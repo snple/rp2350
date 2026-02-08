@@ -61,6 +61,9 @@ pub mod task;
 
 mod critical_section_impl;
 
+// Re-export pico-rs-rt for convenience
+pub use pico_rs_rt as rt;
+
 // Re-export pico-rs-pac
 pub use pico_rs_pac as pac;
 pub use pico_rs_pac::__INTERRUPTS;
@@ -108,9 +111,6 @@ pub use timer::{Timer0, Timer1};
 pub use trng::Trng;
 pub use uart::{Uart0, Uart1};
 pub use watchdog::Watchdog;
-
-// Re-export pico-rs-rt for convenience
-pub use pico_rs_rt;
 
 #[cfg(feature = "defmt")]
 pub use defmt;

@@ -27,7 +27,7 @@ use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
 use pico_rs::multicore::{self, Fifo, Multicore, Stack};
 use pico_rs::pac::Peripherals;
-use pico_rs::pico_rs_rt::peripheral::Peripherals as CorePeripherals;
+use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 use pico_rs::sio::Spinlock;
 
 /// RP2350 Boot Block

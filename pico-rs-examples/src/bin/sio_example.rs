@@ -17,7 +17,7 @@ use panic_probe as _;
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
 use pico_rs::pac::Peripherals;
-use pico_rs::pico_rs_rt::peripheral::Peripherals as CorePeripherals;
+use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 use pico_rs::sio::{Sio, Spinlock};
 use pico_rs::systick::Delay;
 

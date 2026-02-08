@@ -23,7 +23,7 @@ use pico_rs::block::ImageDef;
 use pico_rs::entry;
 use pico_rs::gpio::{DriveStrength, Pin, Pins, Pull, SlewRate};
 use pico_rs::pac::Peripherals;
-use pico_rs::pico_rs_rt::peripheral::Peripherals as CorePeripherals;
+use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 use pico_rs::sio::Sio;
 
 /// RP2350 Boot Block

@@ -26,7 +26,7 @@ use pico_rs::clocks::{
 use pico_rs::entry;
 use pico_rs::gpio::Pins;
 use pico_rs::pac::Peripherals;
-use pico_rs::pico_rs_rt::peripheral::Peripherals as CorePeripherals;
+use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 use pico_rs::reset::{self, Peripheral};
 use pico_rs::systick::Delay;
 

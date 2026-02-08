@@ -159,7 +159,7 @@ fn USBCTRL_IRQ() {
 
 fn setup_systick(reload_value: u32) {
     // Access SysTick using raw pointer
-    let syst = unsafe { &*pico_rs::pico_rs_rt::peripheral::SYST::PTR };
+    let syst = unsafe { &*pico_rs::rt::peripheral::SYST::PTR };
 
     // Configure SysTick
 
@@ -342,7 +342,7 @@ fn main() -> ! {
         }
 
         // Wait for interrupt (low power)
-        pico_rs::pico_rs_rt::asm::wfi();
+        pico_rs::rt::asm::wfi();
         // delay.delay_us(10);
     }
 }

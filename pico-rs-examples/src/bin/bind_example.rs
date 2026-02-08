@@ -119,6 +119,6 @@ fn main() -> ! {
         }
 
         // 短暂延迟
-        pico_rs::pico_rs_rt::asm::nop();
+        pico_rs::rt::asm::nop();
     }
 }
