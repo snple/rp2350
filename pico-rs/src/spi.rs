@@ -40,9 +40,9 @@
 //! // Initialize SPI0 at 1 MHz, consuming pins
 //! let mut spi = Spi0::new(
 //!     dp.SPI0,
-//!     pins.p2,      // SCK pin - ownership transferred
-//!     pins.p3,      // TX (MOSI) pin - ownership transferred
-//!     pins.p0,      // RX (MISO) pin - ownership transferred
+//!     pins.pin::<2>(),      // SCK pin - ownership transferred
+//!     pins.pin::<3>(),      // TX (MOSI) pin - ownership transferred
+//!     pins.pin::<0>(),      // RX (MISO) pin - ownership transferred
 //!     1_000_000,    // 1 MHz
 //!     150_000_000,  // System clock
 //! );
@@ -57,8 +57,8 @@
 //! let mut buf = [0u8; 3];
 //! spi.transfer(&mut buf, &[0x01, 0x02, 0x03]);
 //!
-//! // Compile error: pins.p2 already moved!
-//! // pins.p2.into_output();
+//! // Compile error: pins.pin::<2>() already moved!
+//! // pins.pin::<2>().into_output();
 //! ```
 //!
 //! # Example (Master Mode with Chip Select)
@@ -73,10 +73,10 @@
 //! // Initialize SPI0 with hardware chip select
 //! let mut spi = Spi0::new_with_cs(
 //!     dp.SPI0,
-//!     pins.p2,      // SCK
-//!     pins.p3,      // TX (MOSI)
-//!     pins.p0,      // RX (MISO)
-//!     pins.p1,      // CSn (hardware chip select)
+//!     pins.pin::<2>(),      // SCK
+//!     pins.pin::<3>(),      // TX (MOSI)
+//!     pins.pin::<0>(),      // RX (MISO)
+//!     pins.pin::<1>(),      // CSn (hardware chip select)
 //!     1_000_000,
 //!     150_000_000,
 //! );
@@ -94,10 +94,10 @@
 //! // Initialize SPI0 as slave (requires CSn pin)
 //! let mut spi = Spi0::new_slave(
 //!     dp.SPI0,
-//!     pins.p2,      // SCK
-//!     pins.p3,      // TX (MOSI from slave perspective)
-//!     pins.p0,      // RX (MISO from slave perspective)
-//!     pins.p1,      // CSn
+//!     pins.pin::<2>(),      // SCK
+//!     pins.pin::<3>(),      // TX (MOSI from slave perspective)
+//!     pins.pin::<0>(),      // RX (MISO from slave perspective)
+//!     pins.pin::<1>(),      // CSn
 //!     150_000_000,
 //! );
 //! ```
@@ -235,9 +235,9 @@ macro_rules! impl_spi {
                 /// ```ignore
                 #[doc = concat!("let spi = ", stringify!($SpiName), "::new(")]
                 #[doc = concat!("    dp.SPI", $spi_num, ",")]
-                ///     pins.p2,      // SCK
-                ///     pins.p3,      // TX (MOSI)
-                ///     pins.p0,      // RX (MISO)
+                ///     pins.pin::<2>(),      // SCK
+                ///     pins.pin::<3>(),      // TX (MOSI)
+                ///     pins.pin::<0>(),      // RX (MISO)
                 ///     1_000_000,    // 1 MHz
                 ///     150_000_000,  // System clock
                 /// );
@@ -701,6 +701,12 @@ macro_rules! impl_spi {
                 // DMA
                 // ================================================================
 
+                /// DREQ selection for transmitting data via DMA.
+                pub const TX_DREQ: crate::dma::TreqSel = crate::dma::TreqSel::[<Spi $spi_num Tx>];
+
+                /// DREQ selection for receiving data via DMA.
+                pub const RX_DREQ: crate::dma::TreqSel = crate::dma::TreqSel::[<Spi $spi_num Rx>];
+
                 /// Enable DMA for transmit
                 #[inline]
                 pub fn enable_dma_tx(&self) {
@@ -782,10 +788,10 @@ macro_rules! impl_spi {
             /// ```ignore
             #[doc = concat!("let spi = ", stringify!($SpiName), "WithCs::new(")]
             #[doc = concat!("    dp.SPI", $spi_num, ",")]
-            ///     pins.p2,      // SCK
-            ///     pins.p3,      // TX (MOSI)
-            ///     pins.p0,      // RX (MISO)
-            ///     pins.p1,      // CSn
+            ///     pins.pin::<2>(),      // SCK
+            ///     pins.pin::<3>(),      // TX (MOSI)
+            ///     pins.pin::<0>(),      // RX (MISO)
+            ///     pins.pin::<1>(),      // CSn
             ///     1_000_000,    // 1 MHz
             ///     150_000_000,  // System clock
             /// );
@@ -796,10 +802,10 @@ macro_rules! impl_spi {
             /// ```ignore
             #[doc = concat!("let spi = ", stringify!($SpiName), "WithCs::new_slave(")]
             #[doc = concat!("    dp.SPI", $spi_num, ",")]
-            ///     pins.p2,      // SCK (input from master)
-            ///     pins.p3,      // TX (MISO - output to master)
-            ///     pins.p0,      // RX (MOSI - input from master)
-            ///     pins.p1,      // CSn (chip select from master)
+            ///     pins.pin::<2>(),      // SCK (input from master)
+            ///     pins.pin::<3>(),      // TX (MISO - output to master)
+            ///     pins.pin::<0>(),      // RX (MOSI - input from master)
+            ///     pins.pin::<1>(),      // CSn (chip select from master)
             ///     150_000_000,  // System clock
             /// );
             ///
@@ -1203,6 +1209,12 @@ macro_rules! impl_spi {
                 pub fn data_register_address(&self) -> u32 {
                     <$SpiType>::PTR as u32 + 0x08
                 }
+
+                /// DREQ selection for transmitting data via DMA.
+                pub const TX_DREQ: crate::dma::TreqSel = crate::dma::TreqSel::[<Spi $spi_num Tx>];
+
+                /// DREQ selection for receiving data via DMA.
+                pub const RX_DREQ: crate::dma::TreqSel = crate::dma::TreqSel::[<Spi $spi_num Rx>];
 
                 // ================================================================
                 // Status (additional methods)

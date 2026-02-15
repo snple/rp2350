@@ -51,10 +51,10 @@ fn main() -> ! {
     let mut delay = Delay::new(core_peripherals.SYST, CLOCK_FREQ_HZ);
 
     // Get individual pins from the Pins struct
-    let led = pins.p25;
-    let pin0 = pins.p0;
-    let pin1 = pins.p1;
-    let pin2 = pins.p2;
+    let led = pins.pin::<25>();
+    let pin0 = pins.pin::<0>();
+    let pin1 = pins.pin::<1>();
+    let pin2 = pins.pin::<2>();
 
     // ========================================================================
     // Example 1: Basic LED Blink
@@ -150,13 +150,13 @@ fn main() -> ! {
     // ========================================================================
     info!("--- Example 5: PIO Function Select ---");
 
-    let pin3 = pins.p3;
+    let pin3 = pins.pin::<3>();
     pin3.init_pad();
     pin3.set_function_pio0();
     info!("Pin3 configured for PIO0");
     info!("Pin3 function: {:?}", pin3.function());
 
-    let pin4 = pins.p4;
+    let pin4 = pins.pin::<4>();
     pin4.into_pio1();
     info!("Pin4 configured for PIO1");
     info!("Pin4 function: {:?}", pin4.function());

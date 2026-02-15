@@ -40,7 +40,7 @@ fn main() -> ! {
     let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
 
     // Initialize I2C0 on GPIO 4 (SDA) and GPIO 5 (SCL)
-    let i2c = I2c0::new(dp.I2C0, pins.p4, pins.p5, 400_000, &clocks);
+    let i2c = I2c0::new(dp.I2C0, pins.pin::<4>(), pins.pin::<5>(), 400_000, &clocks);
 
     // Take core peripherals (NVIC, SCB, SYST, MPU, FPU, SAU)
     let core_peripherals = CorePeripherals::take().unwrap();

@@ -44,7 +44,7 @@ fn main() -> ! {
     let mut pio0 = pio::Pio0::take();
 
     // Claim GPIO 25 for PIO0 (takes ownership, configures pad + funcsel)
-    pio0.claim_pin(pins.p25);
+    pio0.claim_pin(pins.pin::<25>());
 
     // Simple blink program: toggles pin with 32-cycle delays
     let program = pio_asm!(

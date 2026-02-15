@@ -1266,8 +1266,8 @@ impl Clocks {
     /// use pico_rs::gpio::EdgeLevel;
     ///
     /// // Configure GPIO wake source BEFORE entering dormant
-    /// pins.p0.into_input_pullup();
-    /// pins.p0.set_dormant_wake(EdgeLevel::EdgeLow);
+    /// pins.pin::<0>().into_input_pullup();
+    /// pins.pin::<0>().set_dormant_wake(EdgeLevel::EdgeLow);
     ///
     /// // Enter dormant mode - CPU stops here until wake interrupt
     /// clocks.dormant();

@@ -20,7 +20,7 @@ use panic_probe as _;
 
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
-use pico_rs::gpio::{EdgeLevel, IoBank0, Pins};
+use pico_rs::gpio::{EdgeLevel, Pin, Pins};
 use pico_rs::interrupt;
 use pico_rs::pac::{Interrupt, Peripherals};
 
@@ -48,12 +48,12 @@ fn main() -> ! {
     let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
 
     // Configure LED as output
-    let led = pins.p25;
+    let led = pins.pin::<25>();
     led.into_output();
     led.set_low();
 
     // Configure button as input with pull-up
-    let button = pins.p15;
+    let button = pins.pin::<15>();
     button.into_input_pullup();
 
     // Enable falling edge interrupt on button (button press = falling edge with pull-up)
@@ -91,14 +91,16 @@ fn main() -> ! {
 /// GPIO Bank0 interrupt handler
 ///
 /// This replaces the default weak interrupt handler defined in the vector table.
-/// Uses `GpioInterrupt` for safe register access without needing Pin ownership.
+/// Uses `Pin::new()` for safe register access without needing Pin ownership.
 #[allow(non_snake_case)]
 #[unsafe(no_mangle)]
 extern "C" fn IO_IRQ_BANK0() {
-    let io_bank0 = IoBank0::new();
+    // SAFETY: GPIO subsystem was initialised in main() via Pins::new().
+    // Only interrupt-status registers are accessed here — no reconfiguration.
+    let button = unsafe { Pin::<BUTTON_PIN>::new() };
 
     // Check and clear GPIO15 falling edge interrupt in one call
-    if io_bank0.check_and_clear(BUTTON_PIN, EdgeLevel::EdgeLow) {
+    if button.check_and_clear(EdgeLevel::EdgeLow) {
         // Signal to main loop that button was pressed
         BUTTON_PRESSED.store(true, Ordering::Relaxed);
     }

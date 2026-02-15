@@ -24,7 +24,7 @@
 //! let mut pio0 = Pio0::take();
 //!
 //! // Claim GPIO pin (takes ownership, configures for PIO0)
-//! pio0.claim_pin(pins.p25);
+//! pio0.claim_pin(pins.pin::<25>());
 //!
 //! // Install program
 //! let program = pio_asm!(r#"
@@ -226,7 +226,7 @@ pub mod set_dest {
 // ============================================================================
 
 macro_rules! impl_state_machine {
-    ($SmName:ident, $sm_index:literal) => {
+    ($SmName:ident, $sm_index:literal, $pio_num:literal) => {
         paste! {
         impl $SmName<'_> {
             /// State machine index (0-3)
@@ -748,6 +748,34 @@ macro_rules! impl_state_machine {
                 let offset = 0x128 + ($sm_index as usize * 0x10) + (index as usize * 4);
                 unsafe { core::ptr::write_volatile((base + offset) as *mut u32, data) }
             }
+
+            // ================================================================
+            // DMA Support
+            // ================================================================
+
+            /// DREQ selection for writing to TX FIFO via DMA.
+            pub const TX_DREQ: crate::dma::TreqSel = crate::dma::TreqSel::[<Pio $pio_num Tx $sm_index>];
+
+            /// DREQ selection for reading from RX FIFO via DMA.
+            pub const RX_DREQ: crate::dma::TreqSel = crate::dma::TreqSel::[<Pio $pio_num Rx $sm_index>];
+
+            /// Get the TX FIFO register address for DMA writes.
+            ///
+            /// DMA should write 32-bit words to this address to push data
+            /// into the state machine's TX FIFO.
+            #[inline]
+            pub fn tx_fifo_address(&self) -> u32 {
+                &self.pio.[<txf $sm_index>] as *const _ as u32
+            }
+
+            /// Get the RX FIFO register address for DMA reads.
+            ///
+            /// DMA should read 32-bit words from this address to pull data
+            /// from the state machine's RX FIFO.
+            #[inline]
+            pub fn rx_fifo_address(&self) -> u32 {
+                &self.pio.[<rxf $sm_index>] as *const _ as u32
+            }
         }
         } // paste!
     };
@@ -778,10 +806,10 @@ macro_rules! impl_pio_block {
                 pio: &'a pico_rs_pac::[<pio $pio_num>]::RegisterBlock,
             }
 
-            impl_state_machine!([<$PioName Sm0>], 0);
-            impl_state_machine!([<$PioName Sm1>], 1);
-            impl_state_machine!([<$PioName Sm2>], 2);
-            impl_state_machine!([<$PioName Sm3>], 3);
+            impl_state_machine!([<$PioName Sm0>], 0, $pio_num);
+            impl_state_machine!([<$PioName Sm1>], 1, $pio_num);
+            impl_state_machine!([<$PioName Sm2>], 2, $pio_num);
+            impl_state_machine!([<$PioName Sm3>], 3, $pio_num);
 
             // PIO block
             pub struct $PioName {
@@ -843,8 +871,8 @@ macro_rules! impl_pio_block {
                 /// cannot be used by other peripherals after this call.
                 ///
                 /// ```ignore
-                /// pio0.claim_pin(pins.p25);
-                /// // pins.p25 is consumed — compile error if reused
+                /// pio0.claim_pin(pins.pin::<25>());
+                /// // pins.pin::<25>() is consumed — compile error if reused
                 /// ```
                 pub fn claim_pin<P: gpio::[<Pio $pio_num Pin>]>(&self, pin: P) {
                     pin.[<configure_pio $pio_num>]();

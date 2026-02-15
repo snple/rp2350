@@ -93,7 +93,7 @@ pub use accessctrl::Accessctrl;
 pub use adc::Adc;
 pub use busctrl::Busctrl;
 pub use clocks::Clocks;
-pub use dma::Dma;
+pub use dma::{Channel, Dma};
 pub use eppb::Eppb;
 pub use gpio::Pins;
 pub use i2c::{I2c0, I2c1};

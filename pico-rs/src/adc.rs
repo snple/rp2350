@@ -40,14 +40,14 @@
 //! let mut adc = Adc::new(dp.ADC);
 //!
 //! // Configure pin for ADC - consumes the pin, returns AdcInput
-//! let input0 = pins.p26.into_adc_input();
+//! let input0 = pins.pin::<26>().into_adc_input();
 //!
 //! // Read from the configured input
 //! let value = adc.read(&input0);
 //! let voltage_mv = Adc::to_millivolts(value);
 //!
-//! // Compile error: pins.p26 already moved!
-//! // pins.p26.into_output();
+//! // Compile error: pins.pin::<26>() already moved!
+//! // pins.pin::<26>().into_output();
 //! ```
 //!
 //! # Example (Temperature Sensor)
@@ -66,8 +66,8 @@
 //! let mut adc = Adc::new(dp.ADC);
 //!
 //! // Configure pins - ownership transferred
-//! let input0 = pins.p26.into_adc_input();
-//! let input1 = pins.p27.into_adc_input();
+//! let input0 = pins.pin::<26>().into_adc_input();
+//! let input1 = pins.pin::<27>().into_adc_input();
 //!
 //! // Setup FIFO
 //! adc.fifo_setup(true, false, 1, false, false);
@@ -121,7 +121,7 @@ pub const ADC_VREF: f32 = 3.3;
 pub const ADC_MAX: u16 = 4095;
 
 /// DMA DREQ number for ADC
-pub const ADC_DREQ: u8 = 36;
+pub const ADC_DREQ: u8 = 48;
 
 // ============================================================================
 // Error Types
@@ -197,7 +197,7 @@ pub trait AdcPin: Sized {
     /// # Example
     ///
     /// ```ignore
-    /// let input = pins.p26.into_adc_input();
+    /// let input = pins.pin::<26>().into_adc_input();
     /// let value = adc.read(&input);
     /// ```
     fn into_adc_input(self) -> Self::Input;
@@ -263,7 +263,7 @@ mod pin_impls {
 /// let mut adc = Adc::new(dp.ADC);
 ///
 /// // Configure pin for ADC - ownership transferred
-/// let input = pins.p26.into_adc_input();
+/// let input = pins.pin::<26>().into_adc_input();
 ///
 /// // Read from the input
 /// let value = adc.read(&input);
@@ -325,7 +325,7 @@ impl Adc {
     /// # Example
     ///
     /// ```ignore
-    /// let input = pins.p26.into_adc_input();
+    /// let input = pins.pin::<26>().into_adc_input();
     /// let value = adc.read(&input);
     /// let voltage_mv = Adc::to_millivolts(value);
     /// ```
@@ -473,8 +473,8 @@ impl Adc {
     /// # Example
     ///
     /// ```ignore
-    /// let input0 = pins.p26.into_adc_input();
-    /// let input1 = pins.p27.into_adc_input();
+    /// let input0 = pins.pin::<26>().into_adc_input();
+    /// let input1 = pins.pin::<27>().into_adc_input();
     ///
     /// // Sample channels 0, 1, and temperature sensor
     /// adc.set_round_robin(input0.mask() | input1.mask() | (1 << TEMPERATURE_CHANNEL));
@@ -679,6 +679,18 @@ impl Adc {
     pub fn fifo_address(&self) -> *const u32 {
         &self.adc.fifo as *const _ as *const u32
     }
+
+    /// Get the FIFO register address as u32 for DMA configuration.
+    #[inline]
+    pub fn fifo_dma_address(&self) -> u32 {
+        &self.adc.fifo as *const _ as u32
+    }
+
+    /// DREQ selection for ADC DMA transfers.
+    ///
+    /// Use this with a DMA channel's `treq_sel` to pace reads
+    /// from the ADC FIFO.
+    pub const DREQ: crate::dma::TreqSel = crate::dma::TreqSel::Adc;
 
     /// Get the DMA DREQ number for ADC.
     #[inline]

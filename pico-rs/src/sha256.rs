@@ -144,6 +144,21 @@ impl Sha256 {
         }
     }
 
+    /// DREQ selection for SHA-256 DMA transfers.
+    ///
+    /// Use this with a DMA channel's `treq_sel` to pace writes
+    /// to the SHA-256 engine's data register.
+    pub const DREQ: crate::dma::TreqSel = crate::dma::TreqSel::Sha256;
+
+    /// Get the write data register address for DMA.
+    ///
+    /// DMA should write data to this address (WDATA register).
+    /// Configure the DMA data size to match [`set_dma_size()`](Self::set_dma_size).
+    #[inline]
+    pub fn wdata_address(&self) -> u32 {
+        pico_rs_pac::SHA256::PTR as u32 + 0x04
+    }
+
     // ========================================================================
     // Data Writing
     // ========================================================================

@@ -34,8 +34,8 @@
 //! // Initialize I2C0 at 400 kHz, consuming pins p4 (SDA) and p5 (SCL)
 //! let i2c = I2c0::new(
 //!     dp.I2C0,
-//!     pins.p4,      // SDA pin - ownership transferred
-//!     pins.p5,      // SCL pin - ownership transferred
+//!     pins.pin::<4>(),      // SDA pin - ownership transferred
+//!     pins.pin::<5>(),      // SCL pin - ownership transferred
 //!     400_000,      // 400 kHz
 //!     150_000_000,  // System clock
 //! );
@@ -47,8 +47,8 @@
 //! let mut buf = [0u8; 4];
 //! i2c.read(0x50, &mut buf).unwrap();
 //!
-//! // Compile error: pins.p4 already moved!
-//! // pins.p4.into_output();
+//! // Compile error: pins.pin::<4>() already moved!
+//! // pins.pin::<4>().into_output();
 //! ```
 //!
 //! # Example (Slave Mode)
@@ -63,8 +63,8 @@
 //! // Initialize I2C0 as slave with address 0x55
 //! let i2c = I2c0::new_slave(
 //!     dp.I2C0,
-//!     pins.p4,
-//!     pins.p5,
+//!     pins.pin::<4>(),
+//!     pins.pin::<5>(),
 //!     0x55,
 //!     150_000_000,
 //! );
@@ -225,8 +225,8 @@ macro_rules! impl_i2c {
                 /// ```ignore
                 #[doc = concat!("let i2c = ", stringify!($I2cName), "::new(")]
                 #[doc = concat!("    dp.I2C", $i2c_num, ",")]
-                ///     pins.p4,      // SDA
-                ///     pins.p5,      // SCL
+                ///     pins.pin::<4>(),      // SDA
+                ///     pins.pin::<5>(),      // SCL
                 ///     400_000,      // 400 kHz
                 ///     150_000_000,  // System clock
                 /// );
@@ -286,8 +286,8 @@ macro_rules! impl_i2c {
                 /// ```ignore
                 #[doc = concat!("let i2c = ", stringify!($I2cName), "::new_slave(")]
                 #[doc = concat!("    dp.I2C", $i2c_num, ",")]
-                ///     pins.p4,      // SDA
-                ///     pins.p5,      // SCL
+                ///     pins.pin::<4>(),      // SDA
+                ///     pins.pin::<5>(),      // SCL
                 ///     0x55,         // Slave address
                 ///     150_000_000,  // System clock
                 /// );
@@ -1053,6 +1053,68 @@ macro_rules! impl_i2c {
                 #[inline]
                 pub fn clear_restart_det_interrupt(&self) {
                     let _ = self.i2c.ic_clr_restart_det.read_bits();
+                }
+
+                // ================================================================
+                // DMA Support
+                // ================================================================
+
+                /// DREQ selection for transmitting data via DMA.
+                pub const TX_DREQ: crate::dma::TreqSel = crate::dma::TreqSel::[<I2c $i2c_num Tx>];
+
+                /// DREQ selection for receiving data via DMA.
+                pub const RX_DREQ: crate::dma::TreqSel = crate::dma::TreqSel::[<I2c $i2c_num Rx>];
+
+                /// Get the I2C data/command register (IC_DATA_CMD) address for DMA transfers.
+                ///
+                /// IC_DATA_CMD is at offset `0x10` from the I2C base address.
+                #[inline]
+                pub fn data_register_address(&self) -> u32 {
+                    <$I2cType>::PTR as u32 + 0x10
+                }
+
+                /// Enable DMA requests for the transmit FIFO.
+                #[inline]
+                pub fn enable_dma_tx(&self) {
+                    self.i2c.ic_dma_cr.set_tdmae();
+                }
+
+                /// Disable DMA requests for the transmit FIFO.
+                #[inline]
+                pub fn disable_dma_tx(&self) {
+                    self.i2c.ic_dma_cr.clr_tdmae();
+                }
+
+                /// Enable DMA requests for the receive FIFO.
+                #[inline]
+                pub fn enable_dma_rx(&self) {
+                    self.i2c.ic_dma_cr.set_rdmae();
+                }
+
+                /// Disable DMA requests for the receive FIFO.
+                #[inline]
+                pub fn disable_dma_rx(&self) {
+                    self.i2c.ic_dma_cr.clr_rdmae();
+                }
+
+                /// Set the DMA transmit data level.
+                ///
+                /// Controls the level at which a DMA request is generated for TX.
+                /// The DMA TX request fires when the number of entries in the
+                /// TX FIFO is at or below this threshold.
+                #[inline]
+                pub fn set_dma_tx_data_level(&self, level: u8) {
+                    self.i2c.ic_dma_tdlr.write_dmatdl(level as u32);
+                }
+
+                /// Set the DMA receive data level.
+                ///
+                /// Controls the level at which a DMA request is generated for RX.
+                /// The DMA RX request fires when the number of entries in the
+                /// RX FIFO is at or above this threshold + 1.
+                #[inline]
+                pub fn set_dma_rx_data_level(&self, level: u8) {
+                    self.i2c.ic_dma_rdlr.write_dmardl(level as u32);
                 }
             }
 

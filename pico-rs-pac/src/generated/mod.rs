@@ -81,58 +81,146 @@ pub union Vector {
 #[unsafe(link_section = ".vector_table.interrupts")]
 #[unsafe(no_mangle)]
 pub static __INTERRUPTS: [Vector; 52] = [
-    Vector { _handler: TIMER0_IRQ_0 },
-    Vector { _handler: TIMER0_IRQ_1 },
-    Vector { _handler: TIMER0_IRQ_2 },
-    Vector { _handler: TIMER0_IRQ_3 },
-    Vector { _handler: TIMER1_IRQ_0 },
-    Vector { _handler: TIMER1_IRQ_1 },
-    Vector { _handler: TIMER1_IRQ_2 },
-    Vector { _handler: TIMER1_IRQ_3 },
-    Vector { _handler: PWM_IRQ_WRAP_0 },
-    Vector { _handler: PWM_IRQ_WRAP_1 },
-    Vector { _handler: DMA_IRQ_0 },
-    Vector { _handler: DMA_IRQ_1 },
-    Vector { _handler: DMA_IRQ_2 },
-    Vector { _handler: DMA_IRQ_3 },
-    Vector { _handler: USBCTRL_IRQ },
-    Vector { _handler: PIO0_IRQ_0 },
-    Vector { _handler: PIO0_IRQ_1 },
-    Vector { _handler: PIO1_IRQ_0 },
-    Vector { _handler: PIO1_IRQ_1 },
-    Vector { _handler: PIO2_IRQ_0 },
-    Vector { _handler: PIO2_IRQ_1 },
-    Vector { _handler: IO_IRQ_BANK0 },
-    Vector { _handler: IO_IRQ_BANK0_NS },
-    Vector { _handler: IO_IRQ_QSPI },
-    Vector { _handler: IO_IRQ_QSPI_NS },
-    Vector { _handler: SIO_IRQ_FIFO },
-    Vector { _handler: SIO_IRQ_BELL },
-    Vector { _handler: SIO_IRQ_FIFO_NS },
-    Vector { _handler: SIO_IRQ_BELL_NS },
-    Vector { _handler: SIO_IRQ_MTIMECMP },
-    Vector { _handler: CLOCKS_IRQ },
+    Vector {
+        _handler: TIMER0_IRQ_0,
+    },
+    Vector {
+        _handler: TIMER0_IRQ_1,
+    },
+    Vector {
+        _handler: TIMER0_IRQ_2,
+    },
+    Vector {
+        _handler: TIMER0_IRQ_3,
+    },
+    Vector {
+        _handler: TIMER1_IRQ_0,
+    },
+    Vector {
+        _handler: TIMER1_IRQ_1,
+    },
+    Vector {
+        _handler: TIMER1_IRQ_2,
+    },
+    Vector {
+        _handler: TIMER1_IRQ_3,
+    },
+    Vector {
+        _handler: PWM_IRQ_WRAP_0,
+    },
+    Vector {
+        _handler: PWM_IRQ_WRAP_1,
+    },
+    Vector {
+        _handler: DMA_IRQ_0,
+    },
+    Vector {
+        _handler: DMA_IRQ_1,
+    },
+    Vector {
+        _handler: DMA_IRQ_2,
+    },
+    Vector {
+        _handler: DMA_IRQ_3,
+    },
+    Vector {
+        _handler: USBCTRL_IRQ,
+    },
+    Vector {
+        _handler: PIO0_IRQ_0,
+    },
+    Vector {
+        _handler: PIO0_IRQ_1,
+    },
+    Vector {
+        _handler: PIO1_IRQ_0,
+    },
+    Vector {
+        _handler: PIO1_IRQ_1,
+    },
+    Vector {
+        _handler: PIO2_IRQ_0,
+    },
+    Vector {
+        _handler: PIO2_IRQ_1,
+    },
+    Vector {
+        _handler: IO_IRQ_BANK0,
+    },
+    Vector {
+        _handler: IO_IRQ_BANK0_NS,
+    },
+    Vector {
+        _handler: IO_IRQ_QSPI,
+    },
+    Vector {
+        _handler: IO_IRQ_QSPI_NS,
+    },
+    Vector {
+        _handler: SIO_IRQ_FIFO,
+    },
+    Vector {
+        _handler: SIO_IRQ_BELL,
+    },
+    Vector {
+        _handler: SIO_IRQ_FIFO_NS,
+    },
+    Vector {
+        _handler: SIO_IRQ_BELL_NS,
+    },
+    Vector {
+        _handler: SIO_IRQ_MTIMECMP,
+    },
+    Vector {
+        _handler: CLOCKS_IRQ,
+    },
     Vector { _handler: SPI0_IRQ },
     Vector { _handler: SPI1_IRQ },
-    Vector { _handler: UART0_IRQ },
-    Vector { _handler: UART1_IRQ },
-    Vector { _handler: ADC_IRQ_FIFO },
+    Vector {
+        _handler: UART0_IRQ,
+    },
+    Vector {
+        _handler: UART1_IRQ,
+    },
+    Vector {
+        _handler: ADC_IRQ_FIFO,
+    },
     Vector { _handler: I2C0_IRQ },
     Vector { _handler: I2C1_IRQ },
     Vector { _handler: OTP_IRQ },
     Vector { _handler: TRNG_IRQ },
     Vector { _reserved: 0 }, // Reserved
     Vector { _reserved: 0 }, // Reserved
-    Vector { _handler: PLL_SYS_IRQ },
-    Vector { _handler: PLL_USB_IRQ },
-    Vector { _handler: POWMAN_IRQ_POW },
-    Vector { _handler: POWMAN_IRQ_TIMER },
-    Vector { _handler: SPARE_IRQ_0 },
-    Vector { _handler: SPARE_IRQ_1 },
-    Vector { _handler: SPARE_IRQ_2 },
-    Vector { _handler: SPARE_IRQ_3 },
-    Vector { _handler: SPARE_IRQ_4 },
-    Vector { _handler: SPARE_IRQ_5 },
+    Vector {
+        _handler: PLL_SYS_IRQ,
+    },
+    Vector {
+        _handler: PLL_USB_IRQ,
+    },
+    Vector {
+        _handler: POWMAN_IRQ_POW,
+    },
+    Vector {
+        _handler: POWMAN_IRQ_TIMER,
+    },
+    Vector {
+        _handler: SPARE_IRQ_0,
+    },
+    Vector {
+        _handler: SPARE_IRQ_1,
+    },
+    Vector {
+        _handler: SPARE_IRQ_2,
+    },
+    Vector {
+        _handler: SPARE_IRQ_3,
+    },
+    Vector {
+        _handler: SPARE_IRQ_4,
+    },
+    Vector {
+        _handler: SPARE_IRQ_5,
+    },
 ];
 
 /// RP2350 Interrupt enumeration

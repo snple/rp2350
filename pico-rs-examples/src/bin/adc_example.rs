@@ -68,14 +68,14 @@ fn main() -> ! {
 
     // Configure pin for ADC - this consumes the pin!
     // The pin cannot be used for other purposes while AdcInput exists.
-    let input0 = pins.p26.into_adc_input();
+    let input0 = pins.pin::<26>().into_adc_input();
     info!(
         "Configured GPIO 26 as ADC input (channel {})",
         input0.channel()
     );
 
-    // Trying to use pins.p26 again would be a compile error:
-    // pins.p26.into_output();  // ERROR: use of moved value
+    // Trying to use pins.pin::<26>() again would be a compile error:
+    // pins.pin::<26>().into_output();  // ERROR: use of moved value
 
     info!("Starting readings...");
 

@@ -65,8 +65,8 @@
 //! 1. **`Pins` struct**: Created by consuming `IO_BANK0` and `PADS_BANK0`
 //!    peripherals. This initializes the GPIO subsystem.
 //!
-//! 2. **`Pin<N>` struct**: Each GPIO pin is represented by a unique type.
-//!    Pins can be moved out of `Pins` and consumed by peripheral drivers.
+//! 2. **`Pin<N>` struct**: Obtained via [`Pins::pin()`]. Each GPIO pin is
+//!    represented by a unique type. Pins can be consumed by peripheral drivers.
 //!
 //! 3. **Peripheral ownership**: Drivers like I2C or SPI can consume pins,
 //!    making them unavailable for other uses (enforced at compile time).
@@ -76,15 +76,15 @@
 //!       │
 //!       ├── IO_BANK0 ──┐
 //!       │              │
-//!       ├── PADS_BANK0 ┼──► Pins::new() ──► Pins { p0, p1, ..., p29 }
+//!       ├── PADS_BANK0 ┼──► Pins::new() ──► pins.pin::<N>()
 //!       │              │                          │
-//!       ├── I2C0 ──────┼──────────────────────────┼──► I2c0::new(i2c0, p4, p5, ...)
+//!       ├── I2C0 ──────┼──────────────────────────┼──► I2c0::new(i2c0, pin4, pin5, ...)
 //!       │              │                          │         ▲
-//!       └── ...        │                          │    p4, p5 consumed!
+//!       └── ...        │                          │    pin4, pin5 consumed!
 //!                      │                          │
-//!                      │                          └──► led = pins.p25
-//!                      │                                led.into_output()
-//!                      │                                led.set_high()
+//!                      │                          └──► let led = pins.pin::<25>();
+//!                      │                                led.into_output();
+//!                      │                                led.set_high();
 //! ```
 //!
 //! # Function Selection
@@ -117,11 +117,11 @@
 //! // Take device peripherals (singleton)
 //! let dp = Peripherals::take().unwrap();
 //!
-//! // Create GPIO pins by consuming IO_BANK0 and PADS_BANK0
+//! // Create GPIO controller by consuming IO_BANK0 and PADS_BANK0
 //! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
 //!
 //! // Configure pin 25 (on-board LED) as output
-//! let led = pins.p25;
+//! let led = pins.pin::<25>();
 //! led.into_output();
 //!
 //! loop {
@@ -139,7 +139,7 @@
 //! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
 //!
 //! // Configure pin 14 as input with internal pull-up
-//! let button = pins.p14;
+//! let button = pins.pin::<14>();
 //! button.into_input_pullup();
 //!
 //! // Button is active-low (pressed = low)
@@ -158,17 +158,13 @@
 //! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
 //!
 //! // Initialize I2C, consuming the SDA and SCL pins
-//! // After this, pins.p4 and pins.p5 cannot be used elsewhere
 //! let i2c = I2c0::new(
 //!     dp.I2C0,
-//!     pins.p4,  // SDA - ownership transferred
-//!     pins.p5,  // SCL - ownership transferred
+//!     pins.pin::<4>(),  // SDA - ownership transferred
+//!     pins.pin::<5>(),  // SCL - ownership transferred
 //!     400_000,
 //!     sys_clk,
 //! );
-//!
-//! // Compile error: pins.p4 already moved!
-//! // pins.p4.into_output();
 //! ```
 //!
 //! ## PWM Output
@@ -177,7 +173,7 @@
 //! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
 //!
 //! // Configure pin for PWM function
-//! let pwm_pin = pins.p16;
+//! let pwm_pin = pins.pin::<16>();
 //! pwm_pin.into_pwm();
 //!
 //! // Now configure the PWM peripheral...
@@ -189,10 +185,27 @@
 //! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
 //!
 //! // Configure pins for PIO0
-//! pins.p0.into_pio0();
-//! pins.p1.into_pio0();
+//! pins.pin::<0>().into_pio0();
+//! pins.pin::<1>().into_pio0();
 //!
 //! // Load and run PIO program...
+//! ```
+//!
+//! ## Interrupt Handling (ISR)
+//!
+//! In ISR context, `Pin<N>` can be created via `unsafe { Pin::<N>::new() }`
+//! without ownership, since the GPIO subsystem was already initialised:
+//!
+//! ```ignore
+//! use pico_rs::gpio::{Pin, EdgeLevel};
+//!
+//! #[unsafe(no_mangle)]
+//! extern "C" fn IO_IRQ_BANK0() {
+//!     let button = unsafe { Pin::<15>::new() };
+//!     if button.check_and_clear(EdgeLevel::EdgeLow) {
+//!         // Handle button press...
+//!     }
+//! }
 //! ```
 //!
 //! # SIO (Single-cycle I/O) Details
@@ -458,9 +471,20 @@ macro_rules! impl_pin {
                 /// Bit mask for this pin in the 32-bit GPIO registers
                 pub const MASK: u32 = 1u32 << $n;
 
-                /// Create a new pin instance (internal use only)
+                /// Create a new `Pin<N>` instance without ownership checks.
+                ///
+                /// This is useful in ISR context where pin ownership is held
+                /// by `main()` and not accessible.
+                ///
+                /// # Safety
+                ///
+                /// The caller must ensure that:
+                /// - The GPIO subsystem (IO_BANK0, PADS_BANK0) has been initialised
+                ///   (e.g. via [`Pins::new()`]).
+                /// - No data races occur — i.e. the same pin is not being
+                ///   concurrently reconfigured from another context.
                 #[inline]
-                const fn new() -> Self {
+                pub const unsafe fn new() -> Self {
                     Self { _marker: core::marker::PhantomData }
                 }
 
@@ -925,7 +949,7 @@ macro_rules! impl_pin {
                 /// use pico_rs::pac::Interrupt;
                 ///
                 /// let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
-                /// let button = pins.p15;
+                /// let button = pins.pin::<15>();
                 /// button.into_input_pullup();
                 /// button.enable_interrupt(EdgeLevel::EdgeLow);
                 ///
@@ -1079,6 +1103,69 @@ macro_rules! impl_pin {
                     }
                 }
 
+                /// Get the raw masked interrupt status (all 4 conditions).
+                ///
+                /// Returns bits `[3:0]` = `EDGE_HIGH | EDGE_LOW | LEVEL_HIGH | LEVEL_LOW`.
+                #[inline]
+                pub fn pending_flags(&self) -> u32 {
+                    const REG_IDX: usize = $n / 8;
+                    const BIT_OFFSET: u32 = (($n % 8) * 4) as u32;
+
+                    let io = self.io_bank();
+                    let raw = match REG_IDX {
+                        0 => io.proc0_ints0.read_bits(),
+                        1 => io.proc0_ints1.read_bits(),
+                        2 => io.proc0_ints2.read_bits(),
+                        3 => io.proc0_ints3.read_bits(),
+                        _ => 0,
+                    };
+                    (raw >> BIT_OFFSET) & 0xF
+                }
+
+                /// Clear all pending edge interrupts for this pin.
+                ///
+                /// Writes to the raw interrupt register (`INTR`) which is W1C.
+                /// Level-triggered bits are read-only and unaffected.
+                #[inline]
+                pub fn clear_all_interrupts(&self) {
+                    const REG_IDX: usize = $n / 8;
+                    const BIT_OFFSET: u32 = (($n % 8) * 4) as u32;
+                    const MASK: u32 = 0xF << BIT_OFFSET;
+
+                    let io = self.io_bank();
+                    match REG_IDX {
+                        0 => io.intr0.write_bits(MASK),
+                        1 => io.intr1.write_bits(MASK),
+                        2 => io.intr2.write_bits(MASK),
+                        3 => io.intr3.write_bits(MASK),
+                        _ => {}
+                    }
+                }
+
+                /// Check and clear an edge interrupt in one call.
+                ///
+                /// Returns `true` if the interrupt was pending (and is now cleared).
+                /// This is the typical pattern for edge-triggered interrupt handlers.
+                ///
+                /// # Example
+                ///
+                /// ```ignore
+                /// // In the IO_IRQ_BANK0 interrupt handler:
+                /// let button = unsafe { Pin::<15>::new() };
+                /// if button.check_and_clear(EdgeLevel::EdgeLow) {
+                ///     // Handle the button press...
+                /// }
+                /// ```
+                #[inline]
+                pub fn check_and_clear(&self, edge: EdgeLevel) -> bool {
+                    if self.interrupt_status(edge) {
+                        self.clear_interrupt(edge);
+                        true
+                    } else {
+                        false
+                    }
+                }
+
                 // ================================================================
                 // Dormant Wake Configuration
                 // ================================================================
@@ -1096,8 +1183,9 @@ macro_rules! impl_pin {
                 ///
                 /// ```ignore
                 /// // Configure pin 0 to wake on falling edge (button press)
-                /// pins.p0.into_input_pullup();
-                /// pins.p0.set_dormant_wake(EdgeLevel::EdgeLow);
+                /// let p0 = pins.pin::<0>();
+                /// p0.into_input_pullup();
+                /// p0.set_dormant_wake(EdgeLevel::EdgeLow);
                 ///
                 /// // Enter dormant mode...
                 /// clocks.dormant(DormantSource::Xosc, &xosc);
@@ -1168,9 +1256,20 @@ macro_rules! impl_pin {
                 /// Bit mask for this pin in the high GPIO registers (32-47 → bits 0-15)
                 pub const MASK: u32 = 1u32 << ($n - 32);
 
-                /// Create a new pin instance (internal use only)
+                /// Create a new `Pin<N>` instance without ownership checks.
+                ///
+                /// This is useful in ISR context where pin ownership is held
+                /// by `main()` and not accessible.
+                ///
+                /// # Safety
+                ///
+                /// The caller must ensure that:
+                /// - The GPIO subsystem (IO_BANK0, PADS_BANK0) has been initialised
+                ///   (e.g. via [`Pins::new()`]).
+                /// - No data races occur — i.e. the same pin is not being
+                ///   concurrently reconfigured from another context.
                 #[inline]
-                const fn new() -> Self {
+                pub const unsafe fn new() -> Self {
                     Self { _marker: core::marker::PhantomData<*const ()> }
                 }
 
@@ -1573,6 +1672,54 @@ macro_rules! impl_pin {
                     }
                 }
 
+                /// Get the raw masked interrupt status (all 4 conditions).
+                ///
+                /// Returns bits `[3:0]` = `EDGE_HIGH | EDGE_LOW | LEVEL_HIGH | LEVEL_LOW`.
+                #[inline]
+                pub fn pending_flags(&self) -> u32 {
+                    const REG_IDX: usize = $n / 8;
+                    const BIT_OFFSET: u32 = (($n % 8) * 4) as u32;
+
+                    let io = self.io_bank();
+                    let raw = match REG_IDX {
+                        4 => io.proc0_ints4.read_bits(),
+                        5 => io.proc0_ints5.read_bits(),
+                        _ => 0,
+                    };
+                    (raw >> BIT_OFFSET) & 0xF
+                }
+
+                /// Clear all pending edge interrupts for this pin.
+                ///
+                /// Writes to the raw interrupt register (`INTR`) which is W1C.
+                /// Level-triggered bits are read-only and unaffected.
+                #[inline]
+                pub fn clear_all_interrupts(&self) {
+                    const REG_IDX: usize = $n / 8;
+                    const BIT_OFFSET: u32 = (($n % 8) * 4) as u32;
+                    const MASK: u32 = 0xF << BIT_OFFSET;
+
+                    let io = self.io_bank();
+                    match REG_IDX {
+                        4 => io.intr4.write_bits(MASK),
+                        5 => io.intr5.write_bits(MASK),
+                        _ => {}
+                    }
+                }
+
+                /// Check and clear an edge interrupt in one call.
+                ///
+                /// Returns `true` if the interrupt was pending (and is now cleared).
+                #[inline]
+                pub fn check_and_clear(&self, edge: EdgeLevel) -> bool {
+                    if self.interrupt_status(edge) {
+                        self.clear_interrupt(edge);
+                        true
+                    } else {
+                        false
+                    }
+                }
+
                 // ================================================================
                 // Dormant Wake Configuration
                 // ================================================================
@@ -1640,24 +1787,19 @@ macro_rules! impl_pin {
 /// The pin number `N` is a const generic parameter, allowing the compiler
 /// to generate optimal code with hardcoded register addresses.
 ///
-/// # Ownership
+/// # Obtaining a Pin
 ///
-/// `Pin<N>` instances can only be obtained from the `Pins` struct,
-/// which ensures the GPIO subsystem is properly initialized.
-/// Pins can be moved (consumed) by peripheral drivers to enforce
-/// exclusive access at compile time.
-///
-/// # Example
+/// Pins are normally obtained from [`Pins::pin()`]:
 ///
 /// ```ignore
-/// let dp = Peripherals::take().unwrap();
 /// let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
-///
-/// // led has type Pin<25>
-/// let led = pins.p25;
+/// let led = pins.pin::<25>();
 /// led.into_output();
 /// led.set_high();
 /// ```
+///
+/// In ISR context, a pin handle can be created via `unsafe { Pin::<N>::new() }`,
+/// provided the GPIO subsystem has already been initialised.
 pub struct Pin<const N: u8> {
     _marker: core::marker::PhantomData<*const ()>,
 }
@@ -1742,14 +1884,10 @@ impl_pin!(47, high);
 // Pins Container
 // ============================================================================
 
-/// Container for all GPIO pins.
+/// GPIO controller, owning the PAC peripherals.
 ///
-/// This struct is created by consuming `IO_BANK0` and `PADS_BANK0` peripherals
-/// from the PAC. This ensures:
-///
-/// 1. The GPIO subsystem is properly initialized (reset and unreset)
-/// 2. Only one `Pins` instance can exist (enforced by PAC singleton)
-/// 3. Each pin can only be used once (Rust ownership rules)
+/// Create once via [`Pins::new()`], then obtain individual [`Pin`] handles
+/// via [`Pins::pin()`]. This mirrors the pattern used by [`Dma::channel()`].
 ///
 /// # Example
 ///
@@ -1757,162 +1895,31 @@ impl_pin!(47, high);
 /// use pico_rs::gpio::Pins;
 /// use pico_rs::Peripherals;
 ///
-/// // Take device peripherals (singleton)
 /// let dp = Peripherals::take().unwrap();
-///
-/// // Create Pins, consuming IO_BANK0 and PADS_BANK0
 /// let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
 ///
-/// // Use individual pins
-/// let led = pins.p25;    // Move pin 25 out
-/// let button = pins.p14; // Move pin 14 out
-///
-/// // Configure and use
+/// let led = pins.pin::<25>();
 /// led.into_output();
+/// led.set_high();
+///
+/// let button = pins.pin::<14>();
 /// button.into_input_pullup();
 /// ```
-///
-/// # Pin Naming
-///
-/// Pins are named `p0` through `p29` (RP2350A) or `p0` through `p47` (RP2350B).
-/// Common pins on Raspberry Pi Pico 2:
-///
-/// - `p25`: On-board LED
-/// - `p26-p29`: ADC capable pins
-/// - `p0-p1`: Default UART0 TX/RX
-/// - `p4-p5`: Default I2C0 SDA/SCL
-#[allow(non_snake_case)]
 pub struct Pins {
-    /// GPIO Pin 0 (UART0 TX, SPI0 RX, I2C0 SDA)
-    pub p0: Pin<0>,
-    /// GPIO Pin 1 (UART0 RX, SPI0 CSn, I2C0 SCL)
-    pub p1: Pin<1>,
-    /// GPIO Pin 2 (UART0 CTS, SPI0 SCK, I2C1 SDA)
-    pub p2: Pin<2>,
-    /// GPIO Pin 3 (UART0 RTS, SPI0 TX, I2C1 SCL)
-    pub p3: Pin<3>,
-    /// GPIO Pin 4 (UART1 TX, SPI0 RX, I2C0 SDA)
-    pub p4: Pin<4>,
-    /// GPIO Pin 5 (UART1 RX, SPI0 CSn, I2C0 SCL)
-    pub p5: Pin<5>,
-    /// GPIO Pin 6 (UART1 CTS, SPI0 SCK, I2C1 SDA)
-    pub p6: Pin<6>,
-    /// GPIO Pin 7 (UART1 RTS, SPI0 TX, I2C1 SCL)
-    pub p7: Pin<7>,
-    /// GPIO Pin 8 (UART1 TX, SPI1 RX, I2C0 SDA)
-    pub p8: Pin<8>,
-    /// GPIO Pin 9 (UART1 RX, SPI1 CSn, I2C0 SCL)
-    pub p9: Pin<9>,
-    /// GPIO Pin 10 (UART1 CTS, SPI1 SCK, I2C1 SDA)
-    pub p10: Pin<10>,
-    /// GPIO Pin 11 (UART1 RTS, SPI1 TX, I2C1 SCL)
-    pub p11: Pin<11>,
-    /// GPIO Pin 12 (UART0 TX, SPI1 RX, I2C0 SDA)
-    pub p12: Pin<12>,
-    /// GPIO Pin 13 (UART0 RX, SPI1 CSn, I2C0 SCL)
-    pub p13: Pin<13>,
-    /// GPIO Pin 14 (UART0 CTS, SPI1 SCK, I2C1 SDA)
-    pub p14: Pin<14>,
-    /// GPIO Pin 15 (UART0 RTS, SPI1 TX, I2C1 SCL)
-    pub p15: Pin<15>,
-    /// GPIO Pin 16 (UART0 TX, SPI0 RX, I2C0 SDA)
-    pub p16: Pin<16>,
-    /// GPIO Pin 17 (UART0 RX, SPI0 CSn, I2C0 SCL)
-    pub p17: Pin<17>,
-    /// GPIO Pin 18 (UART0 CTS, SPI0 SCK, I2C1 SDA)
-    pub p18: Pin<18>,
-    /// GPIO Pin 19 (UART0 RTS, SPI0 TX, I2C1 SCL)
-    pub p19: Pin<19>,
-    /// GPIO Pin 20 (UART1 TX, SPI0 RX, I2C0 SDA)
-    pub p20: Pin<20>,
-    /// GPIO Pin 21 (UART1 RX, SPI0 CSn, I2C0 SCL)
-    pub p21: Pin<21>,
-    /// GPIO Pin 22 (UART1 CTS, SPI0 SCK, I2C1 SDA)
-    pub p22: Pin<22>,
-    /// GPIO Pin 23 (UART1 RTS, SPI0 TX, I2C1 SCL)
-    pub p23: Pin<23>,
-    /// GPIO Pin 24 (UART1 TX, SPI1 RX, I2C0 SDA)
-    pub p24: Pin<24>,
-    /// GPIO Pin 25 - **On-board LED** on Raspberry Pi Pico 2
-    pub p25: Pin<25>,
-    /// GPIO Pin 26 - **ADC0** capable
-    pub p26: Pin<26>,
-    /// GPIO Pin 27 - **ADC1** capable
-    pub p27: Pin<27>,
-    /// GPIO Pin 28 - **ADC2** capable
-    pub p28: Pin<28>,
-    /// GPIO Pin 29 - **ADC3** capable (also VSYS/3 voltage sense on Pico 2)
-    pub p29: Pin<29>,
-
-    // RP2350B additional pins (30-47)
-    #[cfg(feature = "rp2350b")]
-    /// GPIO Pin 30
-    pub p30: Pin<30>,
-    #[cfg(feature = "rp2350b")]
-    /// GPIO Pin 31
-    pub p31: Pin<31>,
-    #[cfg(feature = "rp2350b")]
-    /// GPIO Pin 32
-    pub p32: Pin<32>,
-    #[cfg(feature = "rp2350b")]
-    /// GPIO Pin 33
-    pub p33: Pin<33>,
-    #[cfg(feature = "rp2350b")]
-    /// GPIO Pin 34
-    pub p34: Pin<34>,
-    #[cfg(feature = "rp2350b")]
-    /// GPIO Pin 35
-    pub p35: Pin<35>,
-    #[cfg(feature = "rp2350b")]
-    /// GPIO Pin 36
-    pub p36: Pin<36>,
-    #[cfg(feature = "rp2350b")]
-    /// GPIO Pin 37
-    pub p37: Pin<37>,
-    #[cfg(feature = "rp2350b")]
-    /// GPIO Pin 38
-    pub p38: Pin<38>,
-    #[cfg(feature = "rp2350b")]
-    /// GPIO Pin 39
-    pub p39: Pin<39>,
-    #[cfg(feature = "rp2350b")]
-    /// GPIO Pin 40
-    pub p40: Pin<40>,
-    #[cfg(feature = "rp2350b")]
-    /// GPIO Pin 41
-    pub p41: Pin<41>,
-    #[cfg(feature = "rp2350b")]
-    /// GPIO Pin 42
-    pub p42: Pin<42>,
-    #[cfg(feature = "rp2350b")]
-    /// GPIO Pin 43
-    pub p43: Pin<43>,
-    #[cfg(feature = "rp2350b")]
-    /// GPIO Pin 44
-    pub p44: Pin<44>,
-    #[cfg(feature = "rp2350b")]
-    /// GPIO Pin 45
-    pub p45: Pin<45>,
-    #[cfg(feature = "rp2350b")]
-    /// GPIO Pin 46
-    pub p46: Pin<46>,
-    #[cfg(feature = "rp2350b")]
-    /// GPIO Pin 47
-    pub p47: Pin<47>,
+    _io_bank0: IO_BANK0,
+    _pads_bank0: PADS_BANK0,
 }
 
 impl Pins {
-    /// Create a new `Pins` container by consuming GPIO peripherals.
+    /// Create a new `Pins` controller by consuming GPIO peripherals.
     ///
-    /// This function:
-    /// 1. Takes ownership of `IO_BANK0` and `PADS_BANK0`
-    /// 2. Resets and initializes the GPIO subsystem
-    /// 3. Returns all GPIO pins ready for use
+    /// This brings IO_BANK0 and PADS_BANK0 out of reset and returns a
+    /// controller from which individual [`Pin`] handles can be obtained.
     ///
     /// # Arguments
     ///
-    /// * `_io_bank0` - IO_BANK0 peripheral (consumed)
-    /// * `_pads_bank0` - PADS_BANK0 peripheral (consumed)
+    /// * `io_bank0`   — IO_BANK0 peripheral (consumed)
+    /// * `pads_bank0` — PADS_BANK0 peripheral (consumed)
     ///
     /// # Example
     ///
@@ -1923,13 +1930,8 @@ impl Pins {
     /// let dp = Peripherals::take().unwrap();
     /// let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
     /// ```
-    ///
-    /// # Panics
-    ///
-    /// This function does not panic. The reset sequence is synchronous
-    /// and waits for completion.
     #[inline]
-    pub fn new(_io_bank0: IO_BANK0, _pads_bank0: PADS_BANK0) -> Self {
+    pub fn new(io_bank0: IO_BANK0, pads_bank0: PADS_BANK0) -> Self {
         // Initialize GPIO subsystem: reset and unreset peripherals
         let mask = Peripheral::IO_BANK0.mask() | Peripheral::PADS_BANK0.mask();
         reset::reset_block_mask(mask);
@@ -1937,72 +1939,40 @@ impl Pins {
         reset::unreset_wait_mask(mask);
 
         Self {
-            p0: Pin::<0>::new(),
-            p1: Pin::<1>::new(),
-            p2: Pin::<2>::new(),
-            p3: Pin::<3>::new(),
-            p4: Pin::<4>::new(),
-            p5: Pin::<5>::new(),
-            p6: Pin::<6>::new(),
-            p7: Pin::<7>::new(),
-            p8: Pin::<8>::new(),
-            p9: Pin::<9>::new(),
-            p10: Pin::<10>::new(),
-            p11: Pin::<11>::new(),
-            p12: Pin::<12>::new(),
-            p13: Pin::<13>::new(),
-            p14: Pin::<14>::new(),
-            p15: Pin::<15>::new(),
-            p16: Pin::<16>::new(),
-            p17: Pin::<17>::new(),
-            p18: Pin::<18>::new(),
-            p19: Pin::<19>::new(),
-            p20: Pin::<20>::new(),
-            p21: Pin::<21>::new(),
-            p22: Pin::<22>::new(),
-            p23: Pin::<23>::new(),
-            p24: Pin::<24>::new(),
-            p25: Pin::<25>::new(),
-            p26: Pin::<26>::new(),
-            p27: Pin::<27>::new(),
-            p28: Pin::<28>::new(),
-            p29: Pin::<29>::new(),
-            #[cfg(feature = "rp2350b")]
-            p30: Pin::<30>::new(),
-            #[cfg(feature = "rp2350b")]
-            p31: Pin::<31>::new(),
-            #[cfg(feature = "rp2350b")]
-            p32: Pin::<32>::new(),
-            #[cfg(feature = "rp2350b")]
-            p33: Pin::<33>::new(),
-            #[cfg(feature = "rp2350b")]
-            p34: Pin::<34>::new(),
-            #[cfg(feature = "rp2350b")]
-            p35: Pin::<35>::new(),
-            #[cfg(feature = "rp2350b")]
-            p36: Pin::<36>::new(),
-            #[cfg(feature = "rp2350b")]
-            p37: Pin::<37>::new(),
-            #[cfg(feature = "rp2350b")]
-            p38: Pin::<38>::new(),
-            #[cfg(feature = "rp2350b")]
-            p39: Pin::<39>::new(),
-            #[cfg(feature = "rp2350b")]
-            p40: Pin::<40>::new(),
-            #[cfg(feature = "rp2350b")]
-            p41: Pin::<41>::new(),
-            #[cfg(feature = "rp2350b")]
-            p42: Pin::<42>::new(),
-            #[cfg(feature = "rp2350b")]
-            p43: Pin::<43>::new(),
-            #[cfg(feature = "rp2350b")]
-            p44: Pin::<44>::new(),
-            #[cfg(feature = "rp2350b")]
-            p45: Pin::<45>::new(),
-            #[cfg(feature = "rp2350b")]
-            p46: Pin::<46>::new(),
-            #[cfg(feature = "rp2350b")]
-            p47: Pin::<47>::new(),
+            _io_bank0: io_bank0,
+            _pads_bank0: pads_bank0,
+        }
+    }
+
+    /// Obtain a handle to GPIO pin `N`.
+    ///
+    /// The returned [`Pin`] is a zero-sized type that accesses the
+    /// hardware registers directly. Multiple pins can coexist
+    /// simultaneously.
+    ///
+    /// # Pin Ranges
+    ///
+    /// - RP2350A: `N` must be 0–29
+    /// - RP2350B (feature `rp2350b`): `N` must be 0–47
+    ///
+    /// # Panics
+    ///
+    /// Compile-time error if `N` is out of range.
+    #[inline]
+    pub fn pin<const N: u8>(&self) -> Pin<N> {
+        #[cfg(not(feature = "rp2350b"))]
+        const {
+            assert!(N < 30, "GPIO pin number must be 0-29 (RP2350A)")
+        };
+        #[cfg(feature = "rp2350b")]
+        const {
+            assert!(N < 48, "GPIO pin number must be 0-47 (RP2350B)")
+        };
+
+        // SAFETY: `Pins::new()` guarantees the GPIO subsystem is initialised.
+        // The const assert above ensures N is in the valid range.
+        Pin {
+            _marker: core::marker::PhantomData,
         }
     }
 }
@@ -2022,362 +1992,6 @@ pub trait GpioPin {
 
 impl<const N: u8> GpioPin for Pin<N> {
     const PIN: u8 = N;
-}
-
-// ============================================================================
-// Type Aliases for Convenience
-// ============================================================================
-
-/// Type alias for Pin 0
-pub type Pin0 = Pin<0>;
-/// Type alias for Pin 1
-pub type Pin1 = Pin<1>;
-/// Type alias for Pin 2
-pub type Pin2 = Pin<2>;
-/// Type alias for Pin 3
-pub type Pin3 = Pin<3>;
-/// Type alias for Pin 4
-pub type Pin4 = Pin<4>;
-/// Type alias for Pin 5
-pub type Pin5 = Pin<5>;
-/// Type alias for Pin 6
-pub type Pin6 = Pin<6>;
-/// Type alias for Pin 7
-pub type Pin7 = Pin<7>;
-/// Type alias for Pin 8
-pub type Pin8 = Pin<8>;
-/// Type alias for Pin 9
-pub type Pin9 = Pin<9>;
-/// Type alias for Pin 10
-pub type Pin10 = Pin<10>;
-/// Type alias for Pin 11
-pub type Pin11 = Pin<11>;
-/// Type alias for Pin 12
-pub type Pin12 = Pin<12>;
-/// Type alias for Pin 13
-pub type Pin13 = Pin<13>;
-/// Type alias for Pin 14
-pub type Pin14 = Pin<14>;
-/// Type alias for Pin 15
-pub type Pin15 = Pin<15>;
-/// Type alias for Pin 16
-pub type Pin16 = Pin<16>;
-/// Type alias for Pin 17
-pub type Pin17 = Pin<17>;
-/// Type alias for Pin 18
-pub type Pin18 = Pin<18>;
-/// Type alias for Pin 19
-pub type Pin19 = Pin<19>;
-/// Type alias for Pin 20
-pub type Pin20 = Pin<20>;
-/// Type alias for Pin 21
-pub type Pin21 = Pin<21>;
-/// Type alias for Pin 22
-pub type Pin22 = Pin<22>;
-/// Type alias for Pin 23
-pub type Pin23 = Pin<23>;
-/// Type alias for Pin 24
-pub type Pin24 = Pin<24>;
-/// Type alias for Pin 25 (LED on Pico 2)
-pub type Pin25 = Pin<25>;
-/// Type alias for Pin 26 (ADC0)
-pub type Pin26 = Pin<26>;
-/// Type alias for Pin 27 (ADC1)
-pub type Pin27 = Pin<27>;
-/// Type alias for Pin 28 (ADC2)
-pub type Pin28 = Pin<28>;
-/// Type alias for Pin 29 (ADC3)
-pub type Pin29 = Pin<29>;
-
-#[cfg(feature = "rp2350b")]
-/// Type alias for Pin 30
-pub type Pin30 = Pin<30>;
-#[cfg(feature = "rp2350b")]
-/// Type alias for Pin 31
-pub type Pin31 = Pin<31>;
-#[cfg(feature = "rp2350b")]
-/// Type alias for Pin 32
-pub type Pin32 = Pin<32>;
-#[cfg(feature = "rp2350b")]
-/// Type alias for Pin 33
-pub type Pin33 = Pin<33>;
-#[cfg(feature = "rp2350b")]
-/// Type alias for Pin 34
-pub type Pin34 = Pin<34>;
-#[cfg(feature = "rp2350b")]
-/// Type alias for Pin 35
-pub type Pin35 = Pin<35>;
-#[cfg(feature = "rp2350b")]
-/// Type alias for Pin 36
-pub type Pin36 = Pin<36>;
-#[cfg(feature = "rp2350b")]
-/// Type alias for Pin 37
-pub type Pin37 = Pin<37>;
-#[cfg(feature = "rp2350b")]
-/// Type alias for Pin 38
-pub type Pin38 = Pin<38>;
-#[cfg(feature = "rp2350b")]
-/// Type alias for Pin 39
-pub type Pin39 = Pin<39>;
-#[cfg(feature = "rp2350b")]
-/// Type alias for Pin 40
-pub type Pin40 = Pin<40>;
-#[cfg(feature = "rp2350b")]
-/// Type alias for Pin 41
-pub type Pin41 = Pin<41>;
-#[cfg(feature = "rp2350b")]
-/// Type alias for Pin 42
-pub type Pin42 = Pin<42>;
-#[cfg(feature = "rp2350b")]
-/// Type alias for Pin 43
-pub type Pin43 = Pin<43>;
-#[cfg(feature = "rp2350b")]
-/// Type alias for Pin 44
-pub type Pin44 = Pin<44>;
-#[cfg(feature = "rp2350b")]
-/// Type alias for Pin 45
-pub type Pin45 = Pin<45>;
-#[cfg(feature = "rp2350b")]
-/// Type alias for Pin 46
-pub type Pin46 = Pin<46>;
-#[cfg(feature = "rp2350b")]
-/// Type alias for Pin 47
-pub type Pin47 = Pin<47>;
-
-// ============================================================================
-// IoBank0 (no ownership required)
-// ============================================================================
-
-/// IoBank0 helper for use in interrupt handlers.
-///
-/// In ISR context, `Pin<N>` instances are typically owned by `main()` and
-/// cannot be accessed. `IoBank0` provides the same interrupt
-/// status / clear / enable / disable operations using runtime pin numbers,
-/// without requiring any ownership.
-///
-/// # Example
-///
-/// ```ignore
-/// use pico_rs::gpio::{IoBank0, EdgeLevel};
-///
-/// #[unsafe(no_mangle)]
-/// extern "C" fn IO_IRQ_BANK0() {
-///     let io_bank0 = IoBank0::new();
-///
-///     if io_bank0.is_pending(15, EdgeLevel::EdgeLow) {
-///         io_bank0.clear(15, EdgeLevel::EdgeLow);
-///         // Handle the button press...
-///     }
-/// }
-/// ```
-#[derive(Copy, Clone, Default, Debug)]
-pub struct IoBank0 {
-    _marker: core::marker::PhantomData<*const ()>,
-}
-
-impl IoBank0 {
-    /// Create a new IoBank0.
-    #[inline]
-    pub const fn new() -> Self {
-        Self {
-            _marker: core::marker::PhantomData,
-        }
-    }
-
-    /// Get the IO_BANK0 register block.
-    #[inline(always)]
-    fn io(&self) -> pico_rs_pac::IO_BANK0 {
-        unsafe { IO_BANK0::steal() }
-    }
-
-    /// Compute the bit mask for a given pin and edge/level condition.
-    #[inline]
-    const fn bit_mask(pin: u8, edge: EdgeLevel) -> u32 {
-        let bit_offset = (pin % 8) as u32 * 4;
-        match edge {
-            EdgeLevel::LevelLow => 1 << (bit_offset + 0),
-            EdgeLevel::LevelHigh => 1 << (bit_offset + 1),
-            EdgeLevel::EdgeLow => 1 << (bit_offset + 2),
-            EdgeLevel::EdgeHigh => 1 << (bit_offset + 3),
-        }
-    }
-
-    /// Compute the 4-bit mask covering all conditions for a pin.
-    #[inline]
-    const fn pin_mask(pin: u8) -> u32 {
-        0xF << ((pin % 8) as u32 * 4)
-    }
-
-    // ========================================================================
-    // Interrupt Status (proc0)
-    // ========================================================================
-
-    /// Check if an interrupt is pending for the given pin and condition.
-    ///
-    /// Reads the masked interrupt status register (`proc0_ints`).
-    /// Returns `true` if the condition is both active and enabled.
-    #[inline]
-    pub fn is_pending(&self, pin: u8, edge: EdgeLevel) -> bool {
-        let mask = Self::bit_mask(pin, edge);
-        let io = self.io();
-        let status = match pin / 8 {
-            0 => io.proc0_ints0.read_bits(),
-            1 => io.proc0_ints1.read_bits(),
-            2 => io.proc0_ints2.read_bits(),
-            3 => io.proc0_ints3.read_bits(),
-            4 => io.proc0_ints4.read_bits(),
-            5 => io.proc0_ints5.read_bits(),
-            _ => 0,
-        };
-        (status & mask) != 0
-    }
-
-    /// Get the raw masked interrupt status for a pin (all 4 conditions).
-    ///
-    /// Returns bits `[3:0]` = `EDGE_HIGH | EDGE_LOW | LEVEL_HIGH | LEVEL_LOW`.
-    #[inline]
-    pub fn pending_flags(&self, pin: u8) -> u32 {
-        let shift = (pin % 8) as u32 * 4;
-        let io = self.io();
-        let raw = match pin / 8 {
-            0 => io.proc0_ints0.read_bits(),
-            1 => io.proc0_ints1.read_bits(),
-            2 => io.proc0_ints2.read_bits(),
-            3 => io.proc0_ints3.read_bits(),
-            4 => io.proc0_ints4.read_bits(),
-            5 => io.proc0_ints5.read_bits(),
-            _ => 0,
-        };
-        (raw >> shift) & 0xF
-    }
-
-    // ========================================================================
-    // Clear (acknowledge) Edge Interrupts
-    // ========================================================================
-
-    /// Clear (acknowledge) an edge interrupt for the given pin and condition.
-    ///
-    /// Writes to the raw interrupt register (`INTR`) which is **W1C**
-    /// (Write-1-to-Clear). Only edge interrupts need explicit clearing;
-    /// level interrupts clear automatically when the level condition ends.
-    ///
-    /// # Important
-    ///
-    /// Uses `write_bits()` (direct write) — **not** `set_bits()` (SET alias).
-    /// The RP2350 atomic SET alias (`+0x2000`) has undefined behaviour on
-    /// W1C registers.
-    #[inline]
-    pub fn clear(&self, pin: u8, edge: EdgeLevel) {
-        let mask = Self::bit_mask(pin, edge);
-        let io = self.io();
-        match pin / 8 {
-            0 => io.intr0.write_bits(mask),
-            1 => io.intr1.write_bits(mask),
-            2 => io.intr2.write_bits(mask),
-            3 => io.intr3.write_bits(mask),
-            4 => io.intr4.write_bits(mask),
-            5 => io.intr5.write_bits(mask),
-            _ => {}
-        }
-    }
-
-    /// Clear all pending edge interrupts for a pin.
-    ///
-    /// Clears all four interrupt conditions (level_low, level_high,
-    /// edge_low, edge_high). Level bits are RO and unaffected by the write.
-    #[inline]
-    pub fn clear_all(&self, pin: u8) {
-        let mask = Self::pin_mask(pin);
-        let io = self.io();
-        match pin / 8 {
-            0 => io.intr0.write_bits(mask),
-            1 => io.intr1.write_bits(mask),
-            2 => io.intr2.write_bits(mask),
-            3 => io.intr3.write_bits(mask),
-            4 => io.intr4.write_bits(mask),
-            5 => io.intr5.write_bits(mask),
-            _ => {}
-        }
-    }
-
-    // ========================================================================
-    // Interrupt Enable / Disable (proc0)
-    // ========================================================================
-
-    /// Enable an interrupt for the given pin and condition (proc0).
-    #[inline]
-    pub fn enable(&self, pin: u8, edge: EdgeLevel) {
-        let mask = Self::bit_mask(pin, edge);
-        let io = self.io();
-        match pin / 8 {
-            0 => io.proc0_inte0.set_bits(mask),
-            1 => io.proc0_inte1.set_bits(mask),
-            2 => io.proc0_inte2.set_bits(mask),
-            3 => io.proc0_inte3.set_bits(mask),
-            4 => io.proc0_inte4.set_bits(mask),
-            5 => io.proc0_inte5.set_bits(mask),
-            _ => {}
-        }
-    }
-
-    /// Disable an interrupt for the given pin and condition (proc0).
-    #[inline]
-    pub fn disable(&self, pin: u8, edge: EdgeLevel) {
-        let mask = Self::bit_mask(pin, edge);
-        let io = self.io();
-        match pin / 8 {
-            0 => io.proc0_inte0.clr_bits(mask),
-            1 => io.proc0_inte1.clr_bits(mask),
-            2 => io.proc0_inte2.clr_bits(mask),
-            3 => io.proc0_inte3.clr_bits(mask),
-            4 => io.proc0_inte4.clr_bits(mask),
-            5 => io.proc0_inte5.clr_bits(mask),
-            _ => {}
-        }
-    }
-
-    /// Disable all interrupt conditions for a pin (proc0).
-    #[inline]
-    pub fn disable_all(&self, pin: u8) {
-        let mask = Self::pin_mask(pin);
-        let io = self.io();
-        match pin / 8 {
-            0 => io.proc0_inte0.clr_bits(mask),
-            1 => io.proc0_inte1.clr_bits(mask),
-            2 => io.proc0_inte2.clr_bits(mask),
-            3 => io.proc0_inte3.clr_bits(mask),
-            4 => io.proc0_inte4.clr_bits(mask),
-            5 => io.proc0_inte5.clr_bits(mask),
-            _ => {}
-        }
-    }
-
-    // ========================================================================
-    // Convenience: check-and-clear
-    // ========================================================================
-
-    /// Check and clear an edge interrupt in one call.
-    ///
-    /// Returns `true` if the interrupt was pending (and is now cleared).
-    /// This is the typical pattern for edge-triggered interrupt handlers.
-    ///
-    /// # Example
-    ///
-    /// ```ignore
-    /// let irq = GpioInterrupt::new();
-    /// if irq.check_and_clear(15, EdgeLevel::EdgeLow) {
-    ///     // Button was pressed
-    /// }
-    /// ```
-    #[inline]
-    pub fn check_and_clear(&self, pin: u8, edge: EdgeLevel) -> bool {
-        if self.is_pending(pin, edge) {
-            self.clear(pin, edge);
-            true
-        } else {
-            false
-        }
-    }
 }
 
 // ============================================================================

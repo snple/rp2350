@@ -43,27 +43,27 @@
 //! # Architecture
 //!
 //! ```text
-//! ┌─────────────────────────────────────────────────────────────────┐
-//! │                    PWM Ownership Model                          │
-//! ├─────────────────────────────────────────────────────────────────┤
-//! │                                                                 │
-//! │  Peripherals::take()                                            │
-//! │        │                                                        │
-//! │        └── PWM ──► Pwm::new(pwm)                                │
-//! │                          │                                      │
-//! │                          ├── slice0: Slice0 ──► .output_a(pin)  │
-//! │                          │                          │           │
-//! │                          │                    PwmSlice0<A, NoPin>│
-//! │                          │                   (token consumed)   │
-//! │                          │                                      │
-//! │                          ├── slice1: Slice1 ──► .output_ab(...) │
-//! │                          │                          │           │
-//! │                          │                    PwmSlice1<A, B>   │
-//! │                          │                   (token consumed)   │
-//! │                          │                                      │
-//! │                          └── ...                                │
-//! │                                                                 │
-//! └─────────────────────────────────────────────────────────────────┘
+//! ┌──────────────────────────────────────────────────────────────────┐
+//! │                     PWM Ownership Model                          │
+//! ├──────────────────────────────────────────────────────────────────┤
+//! │                                                                  │
+//! │  Peripherals::take()                                             │
+//! │        │                                                         │
+//! │        └── PWM ──► Pwm::new(pwm)                                 │
+//! │                          │                                       │
+//! │                          ├── pwm.slice::<0>()                    │
+//! │                          │        ──► Slice<0>                   │
+//! │                          │        .output_a(pin)                 │
+//! │                          │              └──► Slice<0, A, NoPin>  │
+//! │                          │                                       │
+//! │                          ├── pwm.slice::<1>()                    │
+//! │                          │        ──► Slice<1>                   │
+//! │                          │        .output_ab(pin_a, pin_b)       │
+//! │                          │              └──► Slice<1, A, B>      │
+//! │                          │                                       │
+//! │                          └── ...                                 │
+//! │                                                                  │
+//! └──────────────────────────────────────────────────────────────────┘
 //! ```
 //!
 //! # Example (Output Mode with Pin Ownership)
@@ -76,11 +76,11 @@
 //! let dp = Peripherals::take().unwrap();
 //! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
 //!
-//! // Create PWM controller (owns the PWM peripheral and slice tokens)
+//! // Create PWM controller (owns the PWM peripheral)
 //! let pwm = Pwm::new(dp.PWM);
 //!
-//! // Create slice 0 with output on channel A - consumes pwm.slice0 token
-//! let slice0 = pwm.slice0.output_a(pins.p0, 150_000_000);
+//! // Create slice 0 with output on channel A
+//! let slice0 = pwm.slice::<0>().output_a(pins.pin::<0>(), 150_000_000);
 //!
 //! // Configure for 1 kHz PWM
 //! slice0.set_wrap(65535);
@@ -88,13 +88,10 @@
 //! slice0.set_duty_a(32768);  // 50% duty cycle
 //! slice0.enable();
 //!
-//! // Create another slice - consumes pwm.slice1 token
-//! let slice1 = pwm.slice1.output_ab(pins.p2, pins.p3, 150_000_000);
+//! // Create another slice
+//! let slice1 = pwm.slice::<1>().output_ab(pins.pin::<2>(), pins.pin::<3>(), 150_000_000);
 //! slice1.set_wrap(1000);
 //! slice1.enable();
-//!
-//! // This would fail to compile - pwm.slice0 already consumed:
-//! // let slice0_again = pwm.slice0.output_a(pins.p16, 150_000_000);
 //! ```
 //!
 //! # Example (Input Mode)
@@ -104,8 +101,8 @@
 //!
 //! let pwm = Pwm::new(dp.PWM);
 //!
-//! // Initialize PWM slice 0 for input measurement - consumes pwm.slice0 token
-//! let slice0 = pwm.slice0.input(pins.p1, InputMode::RisingEdge, 150_000_000);
+//! // Initialize PWM slice 0 for input measurement
+//! let slice0 = pwm.slice::<0>().input(pins.pin::<1>(), InputMode::RisingEdge, 150_000_000);
 //!
 //! // Measure frequency
 //! slice0.start_measurement();
@@ -196,71 +193,69 @@ pub enum Mode {
 }
 
 // ============================================================================
+// PWM Slice
+// ============================================================================
+
+/// PWM slice with type-safe pin ownership.
+///
+/// Obtained from [`Pwm::slice()`] in an unconfigured state
+/// (`Slice<N, NoPin, NoPin>`). Call builder methods like
+/// [`output_a()`](Slice::output_a) to configure the slice and bind
+/// GPIO pins.
+///
+/// The const parameter `N` identifies which hardware PWM slice
+/// (0–7 on RP2350A, 0–11 on RP2350B) this instance controls.
+///
+/// # ISR Usage
+///
+/// In interrupt context, a `Slice` can be created directly
+/// via `unsafe { Slice::<N, NoPin, NoPin>::new() }` without going
+/// through [`Pwm`].
+pub struct Slice<const N: u8, A = NoPin, B = NoPin> {
+    _pin_a: A,
+    _pin_b: B,
+    mode: Mode,
+}
+
+impl<const N: u8, A, B> Slice<N, A, B> {
+    /// Create a PWM slice handle without going through [`Pwm`].
+    ///
+    /// # Safety
+    ///
+    /// The caller must ensure the PWM peripheral has been initialised
+    /// (i.e. taken out of reset) before using the returned handle.
+    #[inline]
+    pub const unsafe fn new() -> Slice<N, NoPin, NoPin> {
+        Slice {
+            _pin_a: NoPin,
+            _pin_b: NoPin,
+            mode: Mode::OutputA,
+        }
+    }
+}
+
+// ============================================================================
 // PWM Global Controller
 // ============================================================================
 
 /// PWM peripheral controller.
 ///
-/// This struct owns the PWM peripheral and provides slice tokens as public fields.
-/// Each slice token can be consumed to create a configured PWM slice, ensuring
-/// that each slice can only be created once.
-///
-/// # Ownership Model
-///
-/// ```text
-/// Pwm::new(dp.PWM)
-///     │
-///     ├── slice0: Slice0  ──► pwm.slice0.output_a(pin) ──► PwmSlice0<A, NoPin>
-///     │                           (token consumed)
-///     ├── slice1: Slice1  ──► pwm.slice1.output_ab(pin_a, pin_b) ──► PwmSlice1<A, B>
-///     │                           (token consumed)
-///     └── ...
-/// ```
+/// Owns the PWM peripheral and provides [`Slice`] handles via the
+/// [`slice()`](Pwm::slice) method.
 ///
 /// # Example
 ///
 /// ```ignore
 /// let pwm = Pwm::new(dp.PWM);
 ///
-/// // Create slice 0 - consumes pwm.slice0 token
-/// let slice0 = pwm.slice0.output_a(pins.p0, sys_clk);
+/// // Get an unconfigured slice, then bind a pin
+/// let slice0 = pwm.slice::<0>().output_a(pins.pin::<0>(), sys_clk);
 ///
-/// // Create slice 1 - consumes pwm.slice1 token
-/// let slice1 = pwm.slice1.output_ab(pins.p2, pins.p3, sys_clk);
-///
-/// // This would fail to compile - pwm.slice0 already consumed:
-/// // let slice0_again = pwm.slice0.output_a(pins.p16, sys_clk);
+/// // Create slice 1
+/// let slice1 = pwm.slice::<1>().output_ab(pins.pin::<2>(), pins.pin::<3>(), sys_clk);
 /// ```
 pub struct Pwm {
     _pwm: pico_rs_pac::PWM,
-    /// PWM slice 0 token
-    pub slice0: Slice0,
-    /// PWM slice 1 token
-    pub slice1: Slice1,
-    /// PWM slice 2 token
-    pub slice2: Slice2,
-    /// PWM slice 3 token
-    pub slice3: Slice3,
-    /// PWM slice 4 token
-    pub slice4: Slice4,
-    /// PWM slice 5 token
-    pub slice5: Slice5,
-    /// PWM slice 6 token
-    pub slice6: Slice6,
-    /// PWM slice 7 token
-    pub slice7: Slice7,
-    #[cfg(feature = "rp2350b")]
-    /// PWM slice 8 token (RP2350B only)
-    pub slice8: Slice8,
-    #[cfg(feature = "rp2350b")]
-    /// PWM slice 9 token (RP2350B only)
-    pub slice9: Slice9,
-    #[cfg(feature = "rp2350b")]
-    /// PWM slice 10 token (RP2350B only)
-    pub slice10: Slice10,
-    #[cfg(feature = "rp2350b")]
-    /// PWM slice 11 token (RP2350B only)
-    pub slice11: Slice11,
 }
 
 impl Pwm {
@@ -268,27 +263,39 @@ impl Pwm {
     ///
     /// This initializes the PWM subsystem by taking it out of reset.
     /// The peripheral is consumed to ensure only one `Pwm` instance exists.
-    /// All slice tokens are created and can be consumed to create individual slices.
     pub fn new(pwm: pico_rs_pac::PWM) -> Self {
         reset::unreset_block_wait(Peripheral::PWM);
-        Self {
-            _pwm: pwm,
-            slice0: Slice0::new(),
-            slice1: Slice1::new(),
-            slice2: Slice2::new(),
-            slice3: Slice3::new(),
-            slice4: Slice4::new(),
-            slice5: Slice5::new(),
-            slice6: Slice6::new(),
-            slice7: Slice7::new(),
-            #[cfg(feature = "rp2350b")]
-            slice8: Slice8::new(),
-            #[cfg(feature = "rp2350b")]
-            slice9: Slice9::new(),
-            #[cfg(feature = "rp2350b")]
-            slice10: Slice10::new(),
-            #[cfg(feature = "rp2350b")]
-            slice11: Slice11::new(),
+        Self { _pwm: pwm }
+    }
+
+    /// Obtain an unconfigured [`Slice`] for PWM slice `N`.
+    ///
+    /// Call builder methods like [`output_a()`](Slice::output_a)
+    /// on the returned value to configure the slice and bind pins.
+    ///
+    /// # Slice Ranges
+    ///
+    /// - RP2350A: `N` must be 0–7
+    /// - RP2350B (feature `rp2350b`): `N` must be 0–11
+    ///
+    /// # Panics
+    ///
+    /// Compile-time error if `N` is out of range.
+    #[inline]
+    pub fn slice<const N: u8>(&self) -> Slice<N> {
+        #[cfg(not(feature = "rp2350b"))]
+        const {
+            assert!(N < 8, "PWM slice number must be 0-7 (RP2350A)")
+        };
+        #[cfg(feature = "rp2350b")]
+        const {
+            assert!(N < 12, "PWM slice number must be 0-11 (RP2350B)")
+        };
+
+        Slice {
+            _pin_a: NoPin,
+            _pin_b: NoPin,
+            mode: Mode::OutputA,
         }
     }
 
@@ -459,72 +466,61 @@ impl Pwm {
 }
 
 // ============================================================================
-// Macro for generating PWM slice implementations and token constructors
+// Macro for generating PWM slice implementations
 // ============================================================================
 
 macro_rules! impl_pwm_slice {
-    ($Slice:ident, $PwmSlice:ident, $slice_num:literal) => {
+    ($slice_num:literal) => {
         paste! {
             // ================================================================
-            // PWM slice
+            // Slice<N, NoPin, NoPin> builder methods
             // ================================================================
 
-            #[doc = concat!("PWM slice ", $slice_num, " token.")]
-            ///
-            /// This token is consumed when creating a configured PWM slice,
-            /// ensuring each slice can only be created once.
-            pub struct $Slice {
-                _marker: core::marker::PhantomData<*const ()>,
-            }
-
-            impl $Slice {
-                #[inline]
-                const fn new() -> Self {
-                    Self { _marker: core::marker::PhantomData }
-                }
-
+            impl Slice<$slice_num, NoPin, NoPin> {
                 #[doc = concat!("Create PWM slice ", $slice_num, " with output on channel A only.")]
                 ///
-                /// Consumes this token, ensuring the slice can only be created once.
+                /// Consumes this unconfigured slice. The pin is configured
+                /// for PWM automatically.
                 ///
                 /// # Arguments
                 ///
                 /// * `pin_a` - Channel A pin (must be for this slice)
                 /// * `_sys_clk` - System clock frequency in Hz (for reference)
-                pub fn output_a<A: PwmAPin>(self, pin_a: A, _sys_clk: u32) -> $PwmSlice<A, NoPin> {
+                pub fn output_a<A: PwmAPin>(self, pin_a: A, _sys_clk: u32) -> Slice<$slice_num, A, NoPin> {
                     // Verify the pin is for this slice
                     assert_eq!(A::PWM_SLICE, $slice_num, "Pin must be for PWM slice {}", $slice_num);
 
                     // Configure pin for PWM function
                     PwmAPin::configure_pwm_a(&pin_a);
 
-                    let instance = $PwmSlice {
+                    // Initialize via direct register access (avoids const-generic
+                    // method resolution ambiguity)
+                    let pwm = unsafe { &*pico_rs_pac::PWM::PTR };
+                    pwm.[<ch $slice_num _csr>].clr_en();
+                    pwm.[<ch $slice_num _top>].write_bits(0xffff);
+                    pwm.[<ch $slice_num _div>].write_bits(1u32 << 4);
+                    pwm.[<ch $slice_num _cc>].write_a(0);
+                    pwm.intr.write_bits(1 << $slice_num);
+                    pwm.[<ch $slice_num _csr>].write_divmode(DivMode::FreeRunning as u32);
+
+                    Slice {
                         _pin_a: pin_a,
                         _pin_b: NoPin,
                         mode: Mode::OutputA,
-                    };
-
-                    // Initialize with sensible defaults
-                    instance.disable();
-                    instance.set_wrap(0xffff);
-                    instance.set_div(1, 0);
-                    instance.set_duty_a(0);
-                    instance.clear_interrupt();
-                    instance.set_div_mode(DivMode::FreeRunning);
-
-                    instance
+                    }
                 }
 
                 #[doc = concat!("Create PWM slice ", $slice_num, " with output on both channels A and B.")]
                 ///
-                /// Consumes this token, ensuring the slice can only be created once.
+                /// Consumes this unconfigured slice. Both pins are configured
+                /// for PWM automatically.
                 ///
                 /// # Arguments
                 ///
                 /// * `pin_a` - Channel A pin
                 /// * `pin_b` - Channel B pin
                 /// * `_sys_clk` - System clock frequency in Hz
-                pub fn output_ab<A: PwmAPin, B: PwmBPin>(self, pin_a: A, pin_b: B, _sys_clk: u32) -> $PwmSlice<A, B> {
+                pub fn output_ab<A: PwmAPin, B: PwmBPin>(self, pin_a: A, pin_b: B, _sys_clk: u32) -> Slice<$slice_num, A, B> {
                     // Verify pins are for this slice
                     assert_eq!(A::PWM_SLICE, $slice_num, "Pin A must be for PWM slice {}", $slice_num);
                     assert_eq!(B::PWM_SLICE, $slice_num, "Pin B must be for PWM slice {}", $slice_num);
@@ -533,60 +529,60 @@ macro_rules! impl_pwm_slice {
                     PwmAPin::configure_pwm_a(&pin_a);
                     PwmBPin::configure_pwm_b(&pin_b);
 
-                    let instance = $PwmSlice {
+                    // Initialize via direct register access
+                    let pwm = unsafe { &*pico_rs_pac::PWM::PTR };
+                    pwm.[<ch $slice_num _csr>].clr_en();
+                    pwm.[<ch $slice_num _top>].write_bits(0xffff);
+                    pwm.[<ch $slice_num _div>].write_bits(1u32 << 4);
+                    pwm.[<ch $slice_num _cc>].write_a(0);
+                    pwm.[<ch $slice_num _cc>].write_b(0);
+                    pwm.intr.write_bits(1 << $slice_num);
+                    pwm.[<ch $slice_num _csr>].write_divmode(DivMode::FreeRunning as u32);
+
+                    Slice {
                         _pin_a: pin_a,
                         _pin_b: pin_b,
                         mode: Mode::OutputAB,
-                    };
-
-                    // Initialize with sensible defaults
-                    instance.disable();
-                    instance.set_wrap(0xffff);
-                    instance.set_div(1, 0);
-                    instance.set_duty_a(0);
-                    instance.set_duty_b(0);
-                    instance.clear_interrupt();
-                    instance.set_div_mode(DivMode::FreeRunning);
-
-                    instance
+                    }
                 }
 
                 #[doc = concat!("Create PWM slice ", $slice_num, " for input measurement using channel B.")]
                 ///
-                /// Consumes this token, ensuring the slice can only be created once.
+                /// Consumes this unconfigured slice. The pin is configured
+                /// for PWM automatically.
                 ///
                 /// # Arguments
                 ///
                 /// * `pin_b` - Channel B pin for input
                 /// * `mode` - Input mode (GatedByB, RisingEdge, FallingEdge)
                 /// * `_sys_clk` - System clock frequency in Hz
-                pub fn input<B: PwmBPin>(self, pin_b: B, mode: InputMode, _sys_clk: u32) -> $PwmSlice<NoPin, B> {
+                pub fn input<B: PwmBPin>(self, pin_b: B, mode: InputMode, _sys_clk: u32) -> Slice<$slice_num, NoPin, B> {
                     // Verify pin is for this slice
                     assert_eq!(B::PWM_SLICE, $slice_num, "Pin B must be for PWM slice {}", $slice_num);
 
                     // Configure pin for PWM function
                     PwmBPin::configure_pwm_b(&pin_b);
 
-                    let instance = $PwmSlice {
+                    // Initialize for input via direct register access
+                    let pwm = unsafe { &*pico_rs_pac::PWM::PTR };
+                    pwm.[<ch $slice_num _csr>].clr_en();
+                    pwm.[<ch $slice_num _top>].write_bits(0xffff);
+                    pwm.[<ch $slice_num _div>].write_bits(1u32 << 4);
+                    pwm.[<ch $slice_num _ctr>].write_bits(0);
+                    pwm.intr.write_bits(1 << $slice_num);
+                    pwm.[<ch $slice_num _csr>].write_divmode(DivMode::from(mode) as u32);
+
+                    Slice {
                         _pin_a: NoPin,
                         _pin_b: pin_b,
                         mode: Mode::Input,
-                    };
-
-                    // Initialize for input mode
-                    instance.disable();
-                    instance.set_wrap(0xffff);
-                    instance.set_div(1, 0);
-                    instance.reset_counter();
-                    instance.clear_interrupt();
-                    instance.set_div_mode(mode.into());
-
-                    instance
+                    }
                 }
 
                 #[doc = concat!("Create PWM slice ", $slice_num, " with output on A and input on B.")]
                 ///
-                /// Consumes this token, ensuring the slice can only be created once.
+                /// Consumes this unconfigured slice. Both pins are configured
+                /// automatically.
                 ///
                 /// # Arguments
                 ///
@@ -600,7 +596,7 @@ macro_rules! impl_pwm_slice {
                     pin_b: B,
                     mode: InputMode,
                     _sys_clk: u32,
-                ) -> $PwmSlice<A, B> {
+                ) -> Slice<$slice_num, A, B> {
                     // Verify pins are for this slice
                     assert_eq!(A::PWM_SLICE, $slice_num, "Pin A must be for PWM slice {}", $slice_num);
                     assert_eq!(B::PWM_SLICE, $slice_num, "Pin B must be for PWM slice {}", $slice_num);
@@ -609,49 +605,35 @@ macro_rules! impl_pwm_slice {
                     PwmAPin::configure_pwm_a(&pin_a);
                     PwmBPin::configure_pwm_b(&pin_b);
 
-                    let instance = $PwmSlice {
+                    // Initialize via direct register access
+                    let pwm = unsafe { &*pico_rs_pac::PWM::PTR };
+                    pwm.[<ch $slice_num _csr>].clr_en();
+                    pwm.[<ch $slice_num _top>].write_bits(0xffff);
+                    pwm.[<ch $slice_num _div>].write_bits(1u32 << 4);
+                    pwm.[<ch $slice_num _cc>].write_a(0);
+                    pwm.[<ch $slice_num _ctr>].write_bits(0);
+                    pwm.intr.write_bits(1 << $slice_num);
+                    pwm.[<ch $slice_num _csr>].write_divmode(DivMode::from(mode) as u32);
+
+                    Slice {
                         _pin_a: pin_a,
                         _pin_b: pin_b,
                         mode: Mode::OutputAWithInput,
-                    };
-
-                    // Initialize
-                    instance.disable();
-                    instance.set_wrap(0xffff);
-                    instance.set_div(1, 0);
-                    instance.set_duty_a(0);
-                    instance.reset_counter();
-                    instance.clear_interrupt();
-                    instance.set_div_mode(mode.into());
-
-                    instance
+                    }
                 }
             }
 
             // ================================================================
-            // PWM Slice Struct
+            // Slice<N, A, B> register-access methods
             // ================================================================
 
-            /// PWM slice wrapper with type-safe pin ownership.
-            ///
-            /// This struct holds references to the GPIO pins used for output/input.
-            /// The pins are configured automatically when the slice is created,
-            /// and their ownership prevents them from being used for other purposes.
-            ///
-            #[doc = concat!("# PWM Slice ", $slice_num)]
-            pub struct $PwmSlice<A, B> {
-                _pin_a: A,
-                _pin_b: B,
-                mode: Mode,
-            }
-
-            impl<A, B> $PwmSlice<A, B> {
-                /// PWM slice number
+            impl<A, B> Slice<$slice_num, A, B> {
+                /// PWM slice number.
                 pub const SLICE: u8 = $slice_num;
 
-                // ================================================================
+                // ============================================================
                 // Private register accessors
-                // ================================================================
+                // ============================================================
 
                 #[inline]
                 fn pwm(&self) -> &pico_rs_pac::pwm::RegisterBlock {
@@ -685,9 +667,9 @@ macro_rules! impl_pwm_slice {
                     &self.pwm().[<ch $slice_num _top>]
                 }
 
-                // ================================================================
+                // ============================================================
                 // Enable/Disable
-                // ================================================================
+                // ============================================================
 
                 /// Enable this PWM slice.
                 #[inline]
@@ -707,9 +689,9 @@ macro_rules! impl_pwm_slice {
                     self.csr().en()
                 }
 
-                // ================================================================
+                // ============================================================
                 // Configuration
-                // ================================================================
+                // ============================================================
 
                 /// Set phase-correct mode.
                 ///
@@ -748,9 +730,9 @@ macro_rules! impl_pwm_slice {
                     }
                 }
 
-                // ================================================================
+                // ============================================================
                 // Clock Divider
-                // ================================================================
+                // ============================================================
 
                 /// Set the integer part of the clock divider (1-255).
                 ///
@@ -780,9 +762,9 @@ macro_rules! impl_pwm_slice {
                     (int_part, frac_part)
                 }
 
-                // ================================================================
+                // ============================================================
                 // Counter and Wrap
-                // ================================================================
+                // ============================================================
 
                 /// Set the wrap (TOP) value.
                 ///
@@ -817,9 +799,9 @@ macro_rules! impl_pwm_slice {
                     self.ctr().write_bits(0);
                 }
 
-                // ================================================================
+                // ============================================================
                 // Phase Control
-                // ================================================================
+                // ============================================================
 
                 /// Advance phase by one count.
                 ///
@@ -837,9 +819,9 @@ macro_rules! impl_pwm_slice {
                     self.csr().trigger_ph_ret();
                 }
 
-                // ================================================================
+                // ============================================================
                 // Channel A (Output)
-                // ================================================================
+                // ============================================================
 
                 /// Set duty cycle for channel A.
                 ///
@@ -871,9 +853,9 @@ macro_rules! impl_pwm_slice {
                     self.csr().a_inv()
                 }
 
-                // ================================================================
+                // ============================================================
                 // Channel B (Output/Input)
-                // ================================================================
+                // ============================================================
 
                 /// Set duty cycle for channel B.
                 ///
@@ -911,9 +893,9 @@ macro_rules! impl_pwm_slice {
                     self.cc().write_bits((a as u32) | ((b as u32) << 16));
                 }
 
-                // ================================================================
+                // ============================================================
                 // Interrupt Support
-                // ================================================================
+                // ============================================================
 
                 /// Enable interrupt for this slice (IRQ0).
                 #[inline]
@@ -969,9 +951,9 @@ macro_rules! impl_pwm_slice {
                     self.is_interrupt_raw()
                 }
 
-                // ================================================================
+                // ============================================================
                 // Status and Mode
-                // ================================================================
+                // ============================================================
 
                 /// Get the current mode.
                 #[inline]
@@ -985,9 +967,9 @@ macro_rules! impl_pwm_slice {
                     Self::SLICE
                 }
 
-                // ================================================================
+                // ============================================================
                 // Input Mode Helpers
-                // ================================================================
+                // ============================================================
 
                 /// Start a measurement (resets counter and enables).
                 #[inline]
@@ -1013,8 +995,6 @@ macro_rules! impl_pwm_slice {
                 /// Release the pins.
                 ///
                 /// Returns a tuple of (channel A pin, channel B pin).
-                /// Note: The slice token is not returned - creating a new slice
-                /// for this slice number is no longer possible.
                 pub fn release(self) -> (A, B) {
                     self.disable();
                     (self._pin_a, self._pin_b)
@@ -1028,68 +1008,63 @@ macro_rules! impl_pwm_slice {
                 pub unsafe fn regs(&self) -> &pico_rs_pac::pwm::RegisterBlock {
                     self.pwm()
                 }
+
+                // ============================================================
+                // DMA Support
+                // ============================================================
+
+                /// DREQ selection for PWM wrap event DMA pacing.
+                ///
+                /// The PWM DREQ fires once per counter wrap, allowing DMA
+                /// to update duty cycle / TOP values at the PWM frequency.
+                pub const WRAP_DREQ: crate::dma::TreqSel = crate::dma::TreqSel::[<PwmWrap $slice_num>];
+
+                /// Get the CC (counter compare) register address for DMA.
+                ///
+                /// DMA can write 32-bit values here to update both channel A
+                /// (low 16 bits) and channel B (high 16 bits) duty in one transfer.
+                #[inline]
+                pub fn cc_address(&self) -> u32 {
+                    let pwm = self.pwm();
+                    &pwm.[<ch $slice_num _cc>] as *const _ as u32
+                }
+
+                /// Get the TOP register address for DMA.
+                ///
+                /// DMA can write here to update the wrap value (period).
+                #[inline]
+                pub fn top_address(&self) -> u32 {
+                    let pwm = self.pwm();
+                    &pwm.[<ch $slice_num _top>] as *const _ as u32
+                }
             }
         }
     };
 }
 
 // ============================================================================
-// Generate PWM slices
+// Generate PWM slice implementations
 // ============================================================================
 
 // Slices 0-7 are available on both RP2350A and RP2350B
-impl_pwm_slice!(Slice0, PwmSlice0, 0);
-impl_pwm_slice!(Slice1, PwmSlice1, 1);
-impl_pwm_slice!(Slice2, PwmSlice2, 2);
-impl_pwm_slice!(Slice3, PwmSlice3, 3);
-impl_pwm_slice!(Slice4, PwmSlice4, 4);
-impl_pwm_slice!(Slice5, PwmSlice5, 5);
-impl_pwm_slice!(Slice6, PwmSlice6, 6);
-impl_pwm_slice!(Slice7, PwmSlice7, 7);
+impl_pwm_slice!(0);
+impl_pwm_slice!(1);
+impl_pwm_slice!(2);
+impl_pwm_slice!(3);
+impl_pwm_slice!(4);
+impl_pwm_slice!(5);
+impl_pwm_slice!(6);
+impl_pwm_slice!(7);
 
 // Slices 8-11 are only available on RP2350B
 #[cfg(feature = "rp2350b")]
-impl_pwm_slice!(Slice8, PwmSlice8, 8);
+impl_pwm_slice!(8);
 #[cfg(feature = "rp2350b")]
-impl_pwm_slice!(Slice9, PwmSlice9, 9);
+impl_pwm_slice!(9);
 #[cfg(feature = "rp2350b")]
-impl_pwm_slice!(Slice10, PwmSlice10, 10);
+impl_pwm_slice!(10);
 #[cfg(feature = "rp2350b")]
-impl_pwm_slice!(Slice11, PwmSlice11, 11);
-
-// ============================================================================
-// Type Aliases for backward compatibility
-// ============================================================================
-
-/// Type alias for PwmSlice0
-pub type Pwm0<A, B> = PwmSlice0<A, B>;
-/// Type alias for PwmSlice1
-pub type Pwm1<A, B> = PwmSlice1<A, B>;
-/// Type alias for PwmSlice2
-pub type Pwm2<A, B> = PwmSlice2<A, B>;
-/// Type alias for PwmSlice3
-pub type Pwm3<A, B> = PwmSlice3<A, B>;
-/// Type alias for PwmSlice4
-pub type Pwm4<A, B> = PwmSlice4<A, B>;
-/// Type alias for PwmSlice5
-pub type Pwm5<A, B> = PwmSlice5<A, B>;
-/// Type alias for PwmSlice6
-pub type Pwm6<A, B> = PwmSlice6<A, B>;
-/// Type alias for PwmSlice7
-pub type Pwm7<A, B> = PwmSlice7<A, B>;
-
-#[cfg(feature = "rp2350b")]
-/// Type alias for PwmSlice8
-pub type Pwm8<A, B> = PwmSlice8<A, B>;
-#[cfg(feature = "rp2350b")]
-/// Type alias for PwmSlice9
-pub type Pwm9<A, B> = PwmSlice9<A, B>;
-#[cfg(feature = "rp2350b")]
-/// Type alias for PwmSlice10
-pub type Pwm10<A, B> = PwmSlice10<A, B>;
-#[cfg(feature = "rp2350b")]
-/// Type alias for PwmSlice11
-pub type Pwm11<A, B> = PwmSlice11<A, B>;
+impl_pwm_slice!(11);
 
 // ============================================================================
 // Utility Functions

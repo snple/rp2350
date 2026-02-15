@@ -50,13 +50,13 @@
 //!
 //! // I2C0::new requires pins that implement I2c0SdaPin and I2c0SclPin
 //! // Pin<4> implements I2c0SdaPin, Pin<5> implements I2c0SclPin
-//! let i2c = I2c0::new(dp.I2C0, pins.p4, pins.p5, 400_000, sys_clk);
+//! let i2c = I2c0::new(dp.I2C0, pins.pin::<4>(), pins.pin::<5>(), 400_000, sys_clk);
 //!
 //! // Compile error: Pin<3> does not implement I2c0SdaPin!
-//! // let i2c = I2c0::new(dp.I2C0, pins.p3, pins.p5, 400_000, sys_clk);
+//! // let i2c = I2c0::new(dp.I2C0, pins.pin::<3>(), pins.pin::<5>(), 400_000, sys_clk);
 //!
-//! // Compile error: pins.p4 already moved!
-//! // pins.p4.into_output();
+//! // Compile error: pins.pin::<4>() already moved!
+//! // pins.pin::<4>().into_output();
 //! ```
 
 use super::{Function, Pin};

@@ -44,7 +44,7 @@ fn main() -> ! {
 
     // Initialize GPIO
     let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
-    let led = pins.p25;
+    let led = pins.pin::<25>();
     led.into_output();
     led.set_low();
     info!("LED configured on GPIO25");

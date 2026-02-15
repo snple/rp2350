@@ -45,7 +45,7 @@ fn main() -> ! {
     let mut pio0 = pio::Pio0::take();
 
     // Claim GPIO 25 for PIO0 (takes ownership)
-    pio0.claim_pin(pins.p25);
+    pio0.claim_pin(pins.pin::<25>());
 
     // PIO program: delay is read from FIFO for runtime control
     let program = pio_asm!(

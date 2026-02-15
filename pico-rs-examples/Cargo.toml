@@ -52,7 +52,11 @@ path = "src/bin/sio_example.rs"
 
 [[bin]]
 name = "gpio_example"
-path = "src/bin/gpio_example.rs"
+path = "src/bin/gpio/gpio_example.rs"
+
+[[bin]]
+name = "gpio_interrupt"
+path = "src/bin/gpio/gpio_interrupt.rs"
 
 [[bin]]
 name = "timer_interrupt"
@@ -75,5 +79,29 @@ name = "usb_cdc_acm_interrupt"
 path = "src/bin/usb_cdc_acm_interrupt.rs"
 
 [[bin]]
-name = "gpio_interrupt"
-path = "src/bin/gpio_interrupt.rs"
+name = "uart_dma"
+path = "src/bin/dma/uart_dma.rs"
+
+[[bin]]
+name = "spi_dma"
+path = "src/bin/dma/spi_dma.rs"
+
+[[bin]]
+name = "i2c_dma"
+path = "src/bin/dma/i2c_dma.rs"
+
+[[bin]]
+name = "adc_dma"
+path = "src/bin/dma/adc_dma.rs"
+
+[[bin]]
+name = "pwm_dma"
+path = "src/bin/dma/pwm_dma.rs"
+
+[[bin]]
+name = "pio_dma"
+path = "src/bin/dma/pio_dma.rs"
+
+[[bin]]
+name = "sha256_dma"
+path = "src/bin/dma/sha256_dma.rs"

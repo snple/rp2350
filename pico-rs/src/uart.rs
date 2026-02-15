@@ -40,8 +40,8 @@
 //! // Initialize UART0 at 115200 baud, consuming pins p0 (TX) and p1 (RX)
 //! let mut uart = Uart0::new(
 //!     dp.UART0,
-//!     pins.p0,      // TX pin - ownership transferred
-//!     pins.p1,      // RX pin - ownership transferred
+//!     pins.pin::<0>(),      // TX pin - ownership transferred
+//!     pins.pin::<1>(),      // RX pin - ownership transferred
 //!     115200,
 //!     150_000_000,
 //! );
@@ -57,8 +57,8 @@
 //!     // Process received byte
 //! }
 //!
-//! // Compile error: pins.p0 already moved!
-//! // pins.p0.into_output();
+//! // Compile error: pins.pin::<0>() already moved!
+//! // pins.pin::<0>().into_output();
 //! ```
 //!
 //! # Example (UART with Hardware Flow Control)
@@ -73,10 +73,10 @@
 //! // Initialize UART0 with CTS/RTS flow control
 //! let mut uart = Uart0::new_with_flow_control(
 //!     dp.UART0,
-//!     pins.p0,      // TX
-//!     pins.p1,      // RX
-//!     pins.p2,      // CTS
-//!     pins.p3,      // RTS
+//!     pins.pin::<0>(),      // TX
+//!     pins.pin::<1>(),      // RX
+//!     pins.pin::<2>(),      // CTS
+//!     pins.pin::<3>(),      // RTS
 //!     115200,
 //!     150_000_000,
 //! );
@@ -217,8 +217,8 @@ macro_rules! impl_uart {
                 /// ```ignore
                 #[doc = concat!("let uart = ", stringify!($UartName), "::new(")]
                 #[doc = concat!("    dp.UART", $uart_num, ",")]
-                ///     pins.p0,      // TX
-                ///     pins.p1,      // RX
+                ///     pins.pin::<0>(),      // TX
+                ///     pins.pin::<1>(),      // RX
                 ///     115200,       // Baud rate
                 ///     150_000_000,  // System clock
                 /// );
@@ -764,6 +764,49 @@ macro_rules! impl_uart {
                 #[inline]
                 pub fn clear_all_interrupts(&self) {
                     self.uart.uarticr.set_bits(0x7ff);
+                }
+
+                // ================================================================
+                // DMA Support
+                // ================================================================
+
+                /// DREQ selection for transmitting data via DMA.
+                pub const TX_DREQ: crate::dma::TreqSel = crate::dma::TreqSel::[<Uart $uart_num Tx>];
+
+                /// DREQ selection for receiving data via DMA.
+                pub const RX_DREQ: crate::dma::TreqSel = crate::dma::TreqSel::[<Uart $uart_num Rx>];
+
+                /// Get the UART data register (UARTDR) address for DMA transfers.
+                ///
+                /// UARTDR sits at offset 0x00 from the UART base address, so
+                /// this returns the peripheral base address directly.
+                #[inline]
+                pub fn data_register_address(&self) -> u32 {
+                    <$UartType>::PTR as u32
+                }
+
+                /// Enable DMA requests for the transmit FIFO.
+                #[inline]
+                pub fn enable_dma_tx(&self) {
+                    self.uart.uartdmacr.set_txdmae();
+                }
+
+                /// Disable DMA requests for the transmit FIFO.
+                #[inline]
+                pub fn disable_dma_tx(&self) {
+                    self.uart.uartdmacr.clr_txdmae();
+                }
+
+                /// Enable DMA requests for the receive FIFO.
+                #[inline]
+                pub fn enable_dma_rx(&self) {
+                    self.uart.uartdmacr.set_rxdmae();
+                }
+
+                /// Disable DMA requests for the receive FIFO.
+                #[inline]
+                pub fn disable_dma_rx(&self) {
+                    self.uart.uartdmacr.clr_rxdmae();
                 }
             }
 
