@@ -162,7 +162,7 @@ impl SysTick {
     }
 
     /// Delay for a duration
-    pub fn delay(&mut self, duration: Duration) {
+    pub fn delay(&self, duration: Duration) {
         let total_us = duration.as_micros();
         if total_us == 0 {
             return;
@@ -181,13 +181,13 @@ impl SysTick {
 
     /// Delay for a number of milliseconds
     #[inline]
-    pub fn delay_ms(&mut self, ms: u32) {
+    pub fn delay_ms(&self, ms: u32) {
         self.delay(Duration::from_millis(ms as u64));
     }
 
     /// Delay for a number of microseconds
     #[inline]
-    pub fn delay_us(&mut self, us: u32) {
+    pub fn delay_us(&self, us: u32) {
         if us == 0 {
             return;
         }
@@ -195,7 +195,7 @@ impl SysTick {
     }
 
     /// Internal delay implementation for up to max reload ticks
-    fn delay_us_internal(&mut self, us: u32) {
+    fn delay_us_internal(&self, us: u32) {
         let ticks = us.saturating_mul(self.ticks_per_us);
         if ticks == 0 {
             return;
@@ -276,7 +276,7 @@ impl Delay {
 
     /// Delay for nanoseconds (rounded to microseconds)
     #[inline]
-    pub fn delay_ns(&mut self, ns: u32) {
+    pub fn delay_ns(&self, ns: u32) {
         // Round up to microseconds
         let us = ns.div_ceil(1000);
         if us > 0 {
@@ -286,13 +286,13 @@ impl Delay {
 
     /// Delay for microseconds
     #[inline]
-    pub fn delay_us(&mut self, us: u32) {
+    pub fn delay_us(&self, us: u32) {
         self.systick.delay_us(us);
     }
 
     /// Delay for milliseconds
     #[inline]
-    pub fn delay_ms(&mut self, ms: u32) {
+    pub fn delay_ms(&self, ms: u32) {
         self.systick.delay_ms(ms);
     }
 
