@@ -387,6 +387,14 @@ macro_rules! impl_timer {
                 }
             }
         }
+
+        impl crate::delay::DelayUs for $TimerName {
+            /// 忙等待延时（微秒），使用硬件定时器，精度高于 SysTick
+            #[inline]
+            fn delay_us(&self, us: u32) {
+                $TimerName::delay_us(self, us as u64);
+            }
+        }
     };
 }
 

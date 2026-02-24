@@ -35,12 +35,29 @@ pub use sau::SAU;
 pub use scb::SCB;
 pub use syst::SYST;
 
-/// Guard to ensure peripherals are taken only once
-static TAKEN: AtomicBool = AtomicBool::new(false);
+/// Per-core guard: index 0 = Core0，index 1 = Core1。
+///
+/// SIO CPUID 寄存器（偏移 0，位于 SIO 基址 0xD000_0000）在哪个核心
+/// 上读取就返回该核心的编号（0 或 1），因此可直接用它做索引。
+static TAKEN: [AtomicBool; 2] = [AtomicBool::new(false), AtomicBool::new(false)];
+
+/// 读取当前执行核心的编号（0 = Core0，1 = Core1）。
+///
+/// 直接读取 SIO CPUID 寄存器（地址 0xD000_0000，只读，无副作用）。
+/// 该寄存器在 RP2350 Secure/Non-Secure 两种映射下地址相同。
+#[inline(always)]
+fn core_id() -> usize {
+    // SIO base = 0xD000_0000，CPUID 在偏移 0 处，返回值为 0 或 1。
+    // SAFETY: 该地址在 RP2350 上始终有效，且此为只读寄存器。
+    unsafe { core::ptr::read_volatile(0xD000_0000usize as *const u32) as usize }
+}
 
 /// Core Peripherals container
 ///
-/// This struct provides singleton access to all core peripherals.
+/// 每个核心各持有独立的 PPB（Private Peripheral Bus），因此本结构体
+/// 的 singleton 是**按核心**独立跟踪的：Core0 和 Core1 可以各自
+/// 调用 [`Peripherals::take()`] 一次，互不干扰。
+///
 /// Use `Peripherals::take()` to get ownership.
 #[allow(non_snake_case)]
 pub struct Peripherals {
@@ -59,20 +76,23 @@ pub struct Peripherals {
 }
 
 impl Peripherals {
-    /// Take the core peripherals singleton
+    /// Take the core peripherals singleton for the **calling core**.
     ///
-    /// Returns `Some(Peripherals)` on the first call, `None` on subsequent calls.
-    /// This ensures that only one instance of the peripherals exists.
+    /// 由于 RP2350 每个 Cortex-M33 核心拥有独立的 PPB，Core0 和 Core1
+    /// 可以各自成功调用本方法一次。同一核心的第二次调用将返回 `None`。
+    ///
+    /// Returns `Some(Peripherals)` on the first call per core, `None` on subsequent calls.
     ///
     /// # Example
     ///
     /// ```ignore
+    /// // Core0 和 Core1 均可独立执行：
     /// let peripherals = Peripherals::take().unwrap();
     /// peripherals.SYST.set_reload(1000);
     /// ```
     #[inline]
     pub fn take() -> Option<Self> {
-        if TAKEN.swap(true, Ordering::AcqRel) {
+        if TAKEN[core_id()].swap(true, Ordering::AcqRel) {
             None
         } else {
             Some(unsafe { Self::steal() })
@@ -97,12 +117,12 @@ impl Peripherals {
         }
     }
 
-    /// Release the peripherals back to the pool
+    /// Release the peripherals back to the pool for the **calling core**.
     ///
-    /// After calling this, `take()` will succeed again.
+    /// After calling this, `take()` will succeed again for this core.
     #[inline]
     pub fn release(self) {
-        TAKEN.store(false, Ordering::Release);
+        TAKEN[core_id()].store(false, Ordering::Release);
     }
 }
 

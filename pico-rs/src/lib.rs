@@ -34,6 +34,7 @@ pub mod binary_info;
 pub mod block;
 pub mod busctrl;
 pub mod clocks;
+pub mod delay;
 pub mod dma;
 pub mod eppb;
 pub mod gpio;
