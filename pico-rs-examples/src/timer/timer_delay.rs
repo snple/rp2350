@@ -15,7 +15,8 @@ use panic_probe as _;
 
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
-use pico_rs::gpio::{self, Pin25};
+use pico_rs::gpio::Pins;
+use pico_rs::pac::Peripherals;
 use pico_rs::timer::Timer0;
 
 /// RP2350 Boot Block
@@ -27,8 +28,11 @@ pub static IMAGE_DEF: ImageDef = ImageDef::exe();
 fn main() -> ! {
     info!("=== Timer Delay Test ===");
 
+    // Take device peripherals
+    let dp = Peripherals::take().unwrap();
+
     // Initialize the hardware timer
-    let timer = Timer0::init();
+    let timer = Timer0::init(dp.TIMER0);
     info!("Timer0 initialized");
 
     // Show initial timer value
@@ -36,8 +40,8 @@ fn main() -> ! {
     info!("Initial timer value: {} us", start_time);
 
     // Initialize GPIO for LED
-    gpio::init_gpio();
-    let led = Pin25::new();
+    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let led = pins.pin::<25>();
     led.into_output();
     info!("LED configured on GPIO 25");
 

@@ -26,7 +26,9 @@ use pico_rs::Delay;
 use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
-use pico_rs::gpio::{self, Pin15, Pin25};
+use pico_rs::gpio::Pins;
+use pico_rs::pac::Peripherals;
+use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 
 use pico_rs_usb::bus::UsbBus;
 use pico_rs_usb::class::hid::{HidClass, KeyboardReport, keycode, modifier};
@@ -76,8 +78,14 @@ fn char_to_keycode(ch: char) -> (u8, bool) {
 fn main() -> ! {
     info!("USB HID Keyboard Example starting...");
 
+    // Take peripherals
+    let dp = Peripherals::take().unwrap();
+    let cp = CorePeripherals::take().unwrap();
+
     // Initialize clocks using the convenient API (150 MHz sys, 48 MHz USB)
-    let clocks = ClockBuilder::new().enable_usb().build();
+    let clocks = ClockBuilder::new()
+        .enable_usb()
+        .build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
     info!(
         "Clock system initialized: sys={} Hz, usb={} Hz",
         clocks.sys_freq(),
@@ -85,15 +93,15 @@ fn main() -> ! {
     );
 
     // Initialize GPIO
-    gpio::init_gpio();
+    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
 
     // LED on GPIO 25
-    let led = Pin25::new();
+    let led = pins.pin::<25>();
     led.into_output();
     led.set_low();
 
     // Button on GPIO 15 with pull-up
-    let button = Pin15::new();
+    let button = pins.pin::<15>();
     button.into_input_pullup();
 
     // Initialize USB bus
@@ -121,7 +129,7 @@ fn main() -> ! {
     usb_bus.connect();
     info!("USB connected, waiting for enumeration...");
 
-    let delay = Delay::new(clocks.sys_freq());
+    let mut delay = Delay::new(cp.SYST, clocks.sys_freq());
     let mut button_prev = true; // Pull-up, so high when not pressed
     let mut configured = false;
 

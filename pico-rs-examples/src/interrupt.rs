@@ -14,8 +14,9 @@ use panic_probe as _;
 use pico_rs::bind;
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
-use pico_rs::gpio::{self, Pin25};
+use pico_rs::gpio::Pins;
 use pico_rs::interrupt::{self, spare};
+use pico_rs::pac::Peripherals;
 use pico_rs::task::{Event, EventQueue};
 
 // Boot block
@@ -68,13 +69,14 @@ fn low_priority_task() {
 fn main() -> ! {
     info!("Bind macro example starting...");
 
+    // Take device peripherals
+    let dp = Peripherals::take().unwrap();
+
     // 初始化 GPIO
-    gpio::init_gpio();
+    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
 
-    // 获取 LED 引脚 (GPIO 25)
-    let led = Pin25::new();
-
-    // 配置为输出
+    // 获取 LED 引脚 (GPIO 25) 并配置为输出
+    let led = pins.pin::<25>();
     led.into_output();
 
     // 初始化 spare IRQs

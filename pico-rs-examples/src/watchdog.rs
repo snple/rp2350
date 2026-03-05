@@ -25,9 +25,11 @@ use panic_probe as _;
 use pico_rs::Delay;
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
-use pico_rs::gpio::{self, Pin25};
+use pico_rs::gpio::Pins;
+use pico_rs::pac::Peripherals;
+use pico_rs::pac::WATCHDOG;
+use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 use pico_rs::watchdog::{self, Watchdog};
-use pico_rs_pac::WATCHDOG;
 
 // Binary info declarations
 pico_rs::bi_program_name!("Watchdog Example");
@@ -56,12 +58,14 @@ fn main() -> ! {
     info!("====================================");
 
     // Initialize GPIO and LED
-    gpio::init_gpio();
-    let led = Pin25::new();
+    let dp = Peripherals::take().unwrap();
+    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let led = pins.pin::<25>();
     led.into_output();
 
-    // Initialize delay
-    let delay = Delay::new(CLOCK_FREQ_HZ);
+    // Initialize delay (requires SYST peripheral)
+    let cp = CorePeripherals::take().unwrap();
+    let delay = Delay::new(cp.SYST, CLOCK_FREQ_HZ);
 
     // Create watchdog instance to check reset reason
     let wd = Watchdog::new(unsafe { WATCHDOG::steal() });

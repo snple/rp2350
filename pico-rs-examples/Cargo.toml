@@ -20,88 +20,108 @@ panic-probe.workspace = true
 
 [[bin]]
 name = "blink"
-path = "src/bin/blink.rs"
+path = "src/blink.rs"
 
 [[bin]]
-name = "sht3x"
-path = "src/bin/i2c/sht3x.rs"
-
-[[bin]]
-name = "dormant"
-path = "src/bin/clocks/dormant.rs"
+name = "interrupt"
+path = "src/interrupt.rs"
 
 [[bin]]
 name = "multicore"
-path = "src/bin/multicore.rs"
+path = "src/multicore.rs"
 
 [[bin]]
-name = "pio_blink"
-path = "src/bin/pio/pio_blink.rs"
+name = "reset"
+path = "src/reset.rs"
 
 [[bin]]
-name = "pio_blink_advanced"
-path = "src/bin/pio/pio_blink_advanced.rs"
+name = "sio"
+path = "src/sio.rs"
 
 [[bin]]
-name = "reset_demo"
-path = "src/bin/reset_demo.rs"
+name = "watchdog"
+path = "src/watchdog.rs"
 
 [[bin]]
-name = "sio_example"
-path = "src/bin/sio_example.rs"
-
-[[bin]]
-name = "gpio_example"
-path = "src/bin/gpio/gpio_example.rs"
-
-[[bin]]
-name = "gpio_interrupt"
-path = "src/bin/gpio/gpio_interrupt.rs"
-
-[[bin]]
-name = "timer_interrupt"
-path = "src/bin/timer_interrupt.rs"
+name = "adc"
+path = "src/adc/adc.rs"
 
 [[bin]]
 name = "clock_config"
-path = "src/bin/clock_config.rs"
+path = "src/clocks/clock_config.rs"
 
 [[bin]]
-name = "adc_example"
-path = "src/bin/adc_example.rs"
-
-[[bin]]
-name = "usb_cdc_acm"
-path = "src/bin/usb_cdc_acm.rs"
-
-[[bin]]
-name = "usb_cdc_acm_interrupt"
-path = "src/bin/usb_cdc_acm_interrupt.rs"
-
-[[bin]]
-name = "uart_dma"
-path = "src/bin/dma/uart_dma.rs"
-
-[[bin]]
-name = "spi_dma"
-path = "src/bin/dma/spi_dma.rs"
-
-[[bin]]
-name = "i2c_dma"
-path = "src/bin/dma/i2c_dma.rs"
+name = "dormant"
+path = "src/clocks/dormant.rs"
 
 [[bin]]
 name = "adc_dma"
-path = "src/bin/dma/adc_dma.rs"
+path = "src/dma/adc_dma.rs"
 
 [[bin]]
-name = "pwm_dma"
-path = "src/bin/dma/pwm_dma.rs"
+name = "i2c_dma"
+path = "src/dma/i2c_dma.rs"
 
 [[bin]]
 name = "pio_dma"
-path = "src/bin/dma/pio_dma.rs"
+path = "src/dma/pio_dma.rs"
+
+[[bin]]
+name = "pwm_dma"
+path = "src/dma/pwm_dma.rs"
 
 [[bin]]
 name = "sha256_dma"
-path = "src/bin/dma/sha256_dma.rs"
+path = "src/dma/sha256_dma.rs"
+
+[[bin]]
+name = "spi_dma"
+path = "src/dma/spi_dma.rs"
+
+[[bin]]
+name = "uart_dma"
+path = "src/dma/uart_dma.rs"
+
+[[bin]]
+name = "gpio"
+path = "src/gpio/gpio.rs"
+
+[[bin]]
+name = "gpio_interrupt"
+path = "src/gpio/gpio_interrupt.rs"
+
+[[bin]]
+name = "sht3x"
+path = "src/i2c/sht3x.rs"
+
+[[bin]]
+name = "pio_blink"
+path = "src/pio/pio_blink.rs"
+
+[[bin]]
+name = "pio_blink_advanced"
+path = "src/pio/pio_blink_advanced.rs"
+
+[[bin]]
+name = "pwm_input"
+path = "src/pwm/pwm_input.rs"
+
+[[bin]]
+name = "timer_delay"
+path = "src/timer/timer_delay.rs"
+
+[[bin]]
+name = "timer_interrupt"
+path = "src/timer/timer_interrupt.rs"
+
+[[bin]]
+name = "usb_cdc_acm"
+path = "src/usb_cdc/usb_cdc_acm.rs"
+
+[[bin]]
+name = "usb_cdc_acm_interrupt"
+path = "src/usb_cdc/usb_cdc_acm_interrupt.rs"
+
+[[bin]]
+name = "usb_hid_keyboard"
+path = "src/usb_hid/usb_hid_keyboard.rs"
