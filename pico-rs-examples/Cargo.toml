@@ -155,6 +155,14 @@ name = "pwm_input"
 path = "src/pwm/pwm_input.rs"
 
 [[bin]]
+name = "stepper"
+path = "src/stepper/stepper.rs"
+
+[[bin]]
+name = "stepper_closed"
+path = "src/stepper/stepper_closed.rs"
+
+[[bin]]
 name = "timer_delay"
 path = "src/timer/timer_delay.rs"
 
