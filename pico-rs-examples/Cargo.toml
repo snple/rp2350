@@ -47,6 +47,42 @@ name = "adc"
 path = "src/adc/adc.rs"
 
 [[bin]]
+name = "bldc"
+path = "src/bldc/bldc.rs"
+
+[[bin]]
+name = "bldc_speed_ctrl"
+path = "src/bldc/bldc_speed_ctrl.rs"
+
+[[bin]]
+name = "bldc_hall"
+path = "src/bldc/bldc_hall.rs"
+
+[[bin]]
+name = "bldc_foc"
+path = "src/bldc/bldc_foc.rs"
+
+[[bin]]
+name = "bldc_foc_current"
+path = "src/bldc/bldc_foc_current.rs"
+
+[[bin]]
+name = "bldc_servo"
+path = "src/bldc/bldc_servo.rs"
+
+[[bin]]
+name = "bldc_servo_current"
+path = "src/bldc/bldc_servo_current.rs"
+
+[[bin]]
+name = "bldc_servo_i2c"
+path = "src/bldc/bldc_servo_i2c.rs"
+
+[[bin]]
+name = "bldc_servo_spi"
+path = "src/bldc/bldc_servo_spi.rs"
+
+[[bin]]
 name = "clock_config"
 path = "src/clocks/clock_config.rs"
 

@@ -44,6 +44,7 @@ pub mod multicore;
 pub mod pio;
 pub mod powman;
 pub mod pwm;
+pub mod qspi;
 pub mod reset;
 pub mod sha256;
 pub mod sio;
