@@ -47,7 +47,7 @@ fn main() -> ! {
     let core_peripherals = CorePeripherals::take().unwrap();
 
     // Initialize delay
-    let mut delay = Delay::new(core_peripherals.SYST, CLOCK_FREQ_HZ);
+    let delay = Delay::new(core_peripherals.SYST, CLOCK_FREQ_HZ);
 
     // Configure GPIO 25 (LED) as output via SIO
     // First need to set up the GPIO pad and function

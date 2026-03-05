@@ -61,7 +61,7 @@ fn main() -> ! {
     led.into_output();
 
     // Initialize delay
-    let mut delay = Delay::new(CLOCK_FREQ_HZ);
+    let delay = Delay::new(CLOCK_FREQ_HZ);
 
     // Create watchdog instance to check reset reason
     let wd = Watchdog::new(unsafe { WATCHDOG::steal() });

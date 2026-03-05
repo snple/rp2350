@@ -85,7 +85,7 @@ fn main() -> ! {
     // Take core peripherals for Delay
     let core_peripherals = CorePeripherals::take().unwrap();
 
-    let mut delay = Delay::new(core_peripherals.SYST, SYS_CLK_HZ);
+    let delay = Delay::new(core_peripherals.SYST, SYS_CLK_HZ);
     let mut read_buf = [0u8; 64];
     let mut counter: u32 = 0;
     let mut last_send = 0u32;

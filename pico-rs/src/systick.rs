@@ -265,7 +265,7 @@ impl Delay {
     /// use pico_rs::systick::Delay;
     ///
     /// let cp = Peripherals::take().unwrap();
-    /// let mut delay = Delay::new(cp.SYST, 150_000_000);
+    /// let delay = Delay::new(cp.SYST, 150_000_000);
     /// delay.delay_ms(500);
     /// ```
     pub fn new(syst: SYST, freq_hz: u32) -> Self {

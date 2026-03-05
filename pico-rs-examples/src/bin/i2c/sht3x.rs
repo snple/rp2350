@@ -46,10 +46,10 @@ fn main() -> ! {
     let core_peripherals = CorePeripherals::take().unwrap();
 
     // Initialize SysTick-based delay
-    let mut delay = Delay::new(core_peripherals.SYST, clocks.sys_freq());
+    let delay = Delay::new(core_peripherals.SYST, clocks.sys_freq());
 
     loop {
-        match sht30_read(&i2c, &mut delay) {
+        match sht30_read(&i2c, &delay) {
             Ok((temp_c_x100, rh_pct_x100)) => {
                 info!("Temp x100: {} C, RH x100: {} %", temp_c_x100, rh_pct_x100);
             }
@@ -65,7 +65,7 @@ fn main() -> ! {
 const SHT30_ADDR: u8 = 0x44;
 const SHT30_CMD_MEAS_HIGHREP: [u8; 2] = [0x24, 0x00];
 
-fn sht30_read<B>(i2c: &B, delay: &mut Delay) -> Result<(i32, i32), Error>
+fn sht30_read<B>(i2c: &B, delay: &Delay) -> Result<(i32, i32), Error>
 where
     B: I2cBus<Error = Error>,
 {

@@ -26,8 +26,8 @@ use pico_rs::clocks::{
 use pico_rs::entry;
 use pico_rs::gpio::Pins;
 use pico_rs::pac::Peripherals;
-use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 use pico_rs::reset::{self, Peripheral};
+use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 use pico_rs::systick::Delay;
 
 /// RP2350 Boot Block
@@ -200,7 +200,7 @@ fn main() -> ! {
     let core_peripherals = CorePeripherals::take().unwrap();
 
     // Create delay using the new system clock frequency
-    let mut delay = Delay::new(core_peripherals.SYST, SYS_CLK_HZ);
+    let delay = Delay::new(core_peripherals.SYST, SYS_CLK_HZ);
     info!("Delay initialized with {} Hz", SYS_CLK_HZ);
     info!(
         "Delay ticks_per_us: {} (should be {})",

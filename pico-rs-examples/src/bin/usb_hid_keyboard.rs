@@ -121,7 +121,7 @@ fn main() -> ! {
     usb_bus.connect();
     info!("USB connected, waiting for enumeration...");
 
-    let mut delay = Delay::new(clocks.sys_freq());
+    let delay = Delay::new(clocks.sys_freq());
     let mut button_prev = true; // Pull-up, so high when not pressed
     let mut configured = false;
 

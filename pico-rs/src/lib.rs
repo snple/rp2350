@@ -19,7 +19,7 @@
 //!
 //! #[entry]
 //! fn main() -> ! {
-//!     let mut delay = Delay::new(150_000_000); // 150 MHz
+//!     let delay = Delay::new(150_000_000); // 150 MHz
 //!     loop {
 //!         delay.delay_ms(500);
 //!     }

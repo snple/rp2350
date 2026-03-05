@@ -101,7 +101,7 @@ fn main() -> ! {
 
     // Initialize delay
     let core = CorePeripherals::take().unwrap();
-    let mut delay = Delay::new(core.SYST, clocks.sys_freq());
+    let delay = Delay::new(core.SYST, clocks.sys_freq());
 
     // Print Core 0 info
     let core_id = multicore::core_id();

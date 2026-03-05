@@ -48,7 +48,7 @@ fn main() -> ! {
     let core_peripherals = CorePeripherals::take().unwrap();
 
     // Initialize delay (12MHz)
-    let mut delay = Delay::new(core_peripherals.SYST, CLOCK_FREQ_HZ);
+    let delay = Delay::new(core_peripherals.SYST, CLOCK_FREQ_HZ);
 
     // Get individual pins from the Pins struct
     let led = pins.pin::<25>();
