@@ -99,6 +99,18 @@ name = "i2c_dma"
 path = "src/dma/i2c_dma.rs"
 
 [[bin]]
+name = "ws2812"
+path = "src/led/ws2812.rs"
+
+[[bin]]
+name = "sk9822_spi"
+path = "src/led/sk9822_spi.rs"
+
+[[bin]]
+name = "sk9822_pio"
+path = "src/led/sk9822_pio.rs"
+
+[[bin]]
 name = "pio_dma"
 path = "src/dma/pio_dma.rs"
 

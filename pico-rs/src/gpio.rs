@@ -2007,6 +2007,8 @@ pub use pins::{
     I2c0SdaPin,
     I2c1SclPin,
     I2c1SdaPin,
+    // Placeholder for unused pins
+    NoPin,
     // PIO traits
     Pio0Pin,
     Pio1Pin,

@@ -501,26 +501,6 @@ pub trait PwmBPin: super::GpioPin {
     fn configure_pwm_b(&self);
 }
 
-/// NoPin - a placeholder for unused PWM pins.
-///
-/// This type can be used when you only need one channel of a PWM slice.
-/// For example, if you only want to use channel A, pass NoPin for channel B.
-pub struct NoPin;
-
-impl super::GpioPin for NoPin {
-    const PIN: u8 = 255;
-}
-
-impl PwmAPin for NoPin {
-    const PWM_SLICE: u8 = 255;
-    fn configure_pwm_a(&self) {}
-}
-
-impl PwmBPin for NoPin {
-    const PWM_SLICE: u8 = 255;
-    fn configure_pwm_b(&self) {}
-}
-
 /// Macro for implementing PWM pin traits
 macro_rules! impl_pwm_pins {
     (pwm_a: $slice:literal, $($n:literal),+ $(,)?) => {
@@ -739,4 +719,58 @@ mod rp2350b_pins {
                          40, 41, 42, 43, 44, 45, 46, 47);
     impl_pio_pins!(pio2: 30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
                          40, 41, 42, 43, 44, 45, 46, 47);
+}
+
+/// NoPin - a placeholder for unused peripheral pins.
+///
+/// Use `NoPin` when a peripheral API requires a pin you don't need.
+/// For example:
+/// - PWM: only one channel → pass `NoPin` for the other
+/// - SPI TX-only: no RX needed → pass `NoPin` for RX
+/// - SPI RX-only: no TX needed → pass `NoPin` for TX
+///
+/// ```ignore
+/// use pico_rs::gpio::pins::NoPin;
+/// use pico_rs::spi::Spi0;
+///
+/// // TX-only SPI: no MISO pin needed
+/// let spi = Spi0::new(dp.SPI0, sck_pin, tx_pin, NoPin, 1_000_000, sys_clk);
+/// ```
+pub struct NoPin;
+
+impl super::GpioPin for NoPin {
+    const PIN: u8 = 255;
+}
+
+// PWM
+impl PwmAPin for NoPin {
+    const PWM_SLICE: u8 = 255;
+    fn configure_pwm_a(&self) {}
+}
+
+impl PwmBPin for NoPin {
+    const PWM_SLICE: u8 = 255;
+    fn configure_pwm_b(&self) {}
+}
+
+// SPI0
+impl Spi0RxPin for NoPin {
+    fn configure_spi0_rx(&self) {}
+}
+impl Spi0TxPin for NoPin {
+    fn configure_spi0_tx(&self) {}
+}
+impl Spi0CsnPin for NoPin {
+    fn configure_spi0_csn(&self) {}
+}
+
+// SPI1
+impl Spi1RxPin for NoPin {
+    fn configure_spi1_rx(&self) {}
+}
+impl Spi1TxPin for NoPin {
+    fn configure_spi1_tx(&self) {}
+}
+impl Spi1CsnPin for NoPin {
+    fn configure_spi1_csn(&self) {}
 }
