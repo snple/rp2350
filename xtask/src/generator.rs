@@ -241,7 +241,7 @@ fn generate_mod_rs(peripherals: &[&Peripheral]) -> String {
     )
     .unwrap();
     writeln!(out, "            #[inline]").unwrap();
-    writeln!(out, "            pub unsafe fn steal() -> Self {{").unwrap();
+    writeln!(out, "            pub const unsafe fn steal() -> Self {{").unwrap();
     writeln!(out, "                Self {{").unwrap();
     writeln!(out, "                    _marker: PhantomData,").unwrap();
     writeln!(out, "                }}").unwrap();
