@@ -7,7 +7,6 @@ description = "USB Device Stack for RP2350 microcontrollers"
 repository.workspace = true
 
 [dependencies]
-portable-atomic = { workspace = true, features = ["require-cas"] }
 defmt = { workspace = true, optional = true }
 cfg-if.workspace = true
 pico-rs-pac.workspace = true

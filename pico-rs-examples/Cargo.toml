@@ -28,7 +28,11 @@ path = "src/interrupt.rs"
 
 [[bin]]
 name = "multicore"
-path = "src/multicore.rs"
+path = "src/multicore/multicore.rs"
+
+[[bin]]
+name = "multicore_shared"
+path = "src/multicore/multicore_shared.rs"
 
 [[bin]]
 name = "reset"
@@ -99,6 +103,10 @@ name = "i2c_dma"
 path = "src/dma/i2c_dma.rs"
 
 [[bin]]
+name = "i2c_scan"
+path = "src/i2c/i2c_scan.rs"
+
+[[bin]]
 name = "ws2812"
 path = "src/led/ws2812.rs"
 
@@ -127,8 +135,16 @@ name = "spi_dma"
 path = "src/dma/spi_dma.rs"
 
 [[bin]]
+name = "spi_master"
+path = "src/spi/spi_master.rs"
+
+[[bin]]
 name = "uart_dma"
 path = "src/dma/uart_dma.rs"
+
+[[bin]]
+name = "encoder"
+path = "src/gpio/encoder.rs"
 
 [[bin]]
 name = "gpio"
@@ -155,6 +171,10 @@ name = "pwm_input"
 path = "src/pwm/pwm_input.rs"
 
 [[bin]]
+name = "pwm_output"
+path = "src/pwm/pwm_output.rs"
+
+[[bin]]
 name = "stepper"
 path = "src/stepper/stepper.rs"
 
@@ -169,6 +189,14 @@ path = "src/timer/timer_delay.rs"
 [[bin]]
 name = "timer_interrupt"
 path = "src/timer/timer_interrupt.rs"
+
+[[bin]]
+name = "trng"
+path = "src/trng/trng.rs"
+
+[[bin]]
+name = "uart_echo"
+path = "src/uart/uart_echo.rs"
 
 [[bin]]
 name = "usb_cdc_acm"
