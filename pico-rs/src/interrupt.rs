@@ -4,6 +4,68 @@
 //! microcontroller. It wraps the Cortex-M33 NVIC (Nested Vectored Interrupt Controller)
 //! and provides additional utilities for RP2350-specific interrupt handling.
 //!
+//! ## Dual-Core Interrupt Architecture
+//!
+//! RP2350 has two Cortex-M33 cores, each with its own **independent NVIC**. The NVIC
+//! registers reside on the Private Peripheral Bus (PPB), so reads and writes to
+//! `0xE000_E100` always access the *current core's* NVIC — there is no way to
+//! directly poke another core's NVIC from software.
+//!
+//! **Key implications:**
+//!
+//! - `enable()` / `disable()` / `set_priority()` etc. only affect the **calling core**。
+//! - 中断在哪个核心触发，取决于哪个核心的 NVIC 启用了该中断。
+//! - 如果两个核心启用相同 IRQ，则两个核心都会收到（电平触发时先应答者获胜）。
+//! - 要将中断独占路由到某一核心，只需在该核心上启用，另一个核心上不启用即可。
+//!
+//! ## 推荐的双核中断模式
+//!
+//! 每个核心在自己的初始化代码中配置自己的 NVIC：
+//!
+//! ```ignore
+//! // Core 0 main — 处理 USB 和 UART
+//! #[entry]
+//! fn main() -> ! {
+//!     unsafe {
+//!         interrupt::enable(Interrupt::USBCTRL_IRQ);
+//!         interrupt::enable(Interrupt::UART0_IRQ);
+//!     }
+//!     // launch Core 1...
+//! }
+//!
+//! // Core 1 entry — 处理 DMA 和 PIO
+//! fn core1_main() -> ! {
+//!     unsafe {
+//!         interrupt::enable(Interrupt::DMA_IRQ_0);
+//!         interrupt::enable(Interrupt::PIO0_IRQ_0);
+//!     }
+//!     loop { pico_rs_rt::asm::wfe(); }
+//! }
+//! ```
+//!
+//! ## 跨核触发中断
+//!
+//! 无需远程操作另一个核心的 NVIC。要触发另一个核心的中断，使用硬件机制：
+//!
+//! - **Doorbell**（`SIO_IRQ_BELL`）：8 bit 标志位，写入即触发对方核心中断
+//! - **FIFO**（`SIO_IRQ_FIFO`）：发送数据同时触发对方核心中断
+//! - **Spare IRQ**：6 个软件中断，用 `pend()` 触发当前核心
+//!
+//! ```ignore
+//! use pico_rs::multicore::Doorbell;
+//!
+//! // Core 0: 通知 Core 1 有工作要处理
+//! Doorbell::new().signal();
+//!
+//! // Core 1: 在 SIO_IRQ_BELL handler 中处理
+//! #[unsafe(no_mangle)]
+//! fn SIO_IRQ_BELL() {
+//!     let db = Doorbell::new();
+//!     db.clear_local(1);
+//!     // 处理来自 Core 0 的请求...
+//! }
+//! ```
+//!
 //! ## Features
 //!
 //! - NVIC control (enable, disable, pend, clear, priority)
@@ -16,7 +78,7 @@
 //! use pico_rs::interrupt::{self, Interrupt};
 //! use pico_rs::pac::Interrupt as IrqNum;
 //!
-//! // Enable a specific interrupt
+//! // Enable a specific interrupt (on the current core)
 //! interrupt::enable(IrqNum::TIMER0_IRQ_0);
 //!
 //! // Set interrupt priority (0 = highest, 255 = lowest)
@@ -52,10 +114,11 @@ use pico_rs_rt::register::primask;
 // NVIC Operations
 // ============================================================================
 
-/// Enable an interrupt in the NVIC
+/// Enable an interrupt in the **current core's** NVIC
 ///
-/// This allows the interrupt to be triggered. Note that the peripheral
-/// must also have its interrupt enabled (e.g., timer alarm interrupt).
+/// This allows the interrupt to be triggered on the calling core only.
+/// Note that the peripheral must also have its interrupt enabled
+/// (e.g., timer alarm interrupt).
 ///
 /// # Safety
 /// Enabling an interrupt can cause the interrupt handler to run at any time.
@@ -66,7 +129,7 @@ use pico_rs_rt::register::primask;
 /// use pico_rs::interrupt::{self, Interrupt};
 /// use pico_rs::pac::Interrupt as IrqNum;
 ///
-/// // Enable timer0 alarm 0 interrupt
+/// // Enable timer0 alarm 0 interrupt on whichever core calls this
 /// unsafe { interrupt::enable(IrqNum::TIMER0_IRQ_0); }
 /// ```
 #[inline]
@@ -76,10 +139,10 @@ pub unsafe fn enable(interrupt: Interrupt) {
     }
 }
 
-/// Disable an interrupt in the NVIC
+/// Disable an interrupt in the **current core's** NVIC
 ///
-/// This prevents the interrupt from triggering. The interrupt remains
-/// pending if it was triggered while disabled.
+/// This prevents the interrupt from triggering on the calling core.
+/// The interrupt remains pending if it was triggered while disabled.
 ///
 /// # Example
 /// ```ignore
@@ -93,19 +156,19 @@ pub fn disable(interrupt: Interrupt) {
     NVIC::disable(interrupt as u16);
 }
 
-/// Check if an interrupt is enabled in the NVIC
+/// Check if an interrupt is enabled in the **current core's** NVIC
 #[inline]
 pub fn is_enabled(interrupt: Interrupt) -> bool {
     NVIC::is_enabled(interrupt as u16)
 }
 
-/// Check if an interrupt is pending
+/// Check if an interrupt is pending in the **current core's** NVIC
 #[inline]
 pub fn is_pending(interrupt: Interrupt) -> bool {
     NVIC::is_pending(interrupt as u16)
 }
 
-/// Set an interrupt as pending
+/// Set an interrupt as pending in the **current core's** NVIC
 ///
 /// This will cause the interrupt handler to run when the interrupt
 /// is enabled and has higher priority than the current execution.
@@ -114,13 +177,13 @@ pub fn pend(interrupt: Interrupt) {
     NVIC::pend(interrupt as u16);
 }
 
-/// Clear a pending interrupt
+/// Clear a pending interrupt in the **current core's** NVIC
 #[inline]
 pub fn unpend(interrupt: Interrupt) {
     NVIC::unpend(interrupt as u16);
 }
 
-/// Set the priority of an interrupt
+/// Set the priority of an interrupt in the **current core's** NVIC
 ///
 /// Lower numbers mean higher priority. On Cortex-M33 (RP2350), priorities
 /// are 0-255, but only the top 4 bits are implemented (0, 16, 32, ..., 240).
@@ -144,7 +207,7 @@ pub fn set_priority(interrupt: Interrupt, priority: u8) {
     }
 }
 
-/// Get the priority of an interrupt
+/// Get the priority of an interrupt from the **current core's** NVIC
 #[inline]
 pub fn get_priority(interrupt: Interrupt) -> u8 {
     NVIC::get_priority(interrupt as u16)
@@ -491,14 +554,12 @@ impl Drop for InterruptGuard {
 // Processor ID Detection
 // ============================================================================
 
-/// Get the current processor ID (0 or 1)
+/// 获取当前执行核心的 ID
 ///
-/// This is useful for determining which core is executing the current code,
-/// especially in interrupt handlers.
+/// 在中断处理程序中可用来确定当前代码在哪个核心上运行。
 #[inline]
-pub fn current_core() -> u32 {
-    // Read CPUID from SIO
-    crate::sio::regs().cpuid.cpuid()
+pub fn current_core() -> crate::multicore::CoreId {
+    crate::multicore::core_id()
 }
 
 /// Token proving code is running in a critical section (interrupts disabled)
@@ -596,8 +657,7 @@ static NESTING: [AtomicU8; 2] = [AtomicU8::new(0), AtomicU8::new(0)];
 /// 获取当前核 ID (0 或 1)
 #[inline]
 fn core_id() -> usize {
-    // SIO CPUID 寄存器返回当前核的 ID
-    crate::sio::regs().cpuid.cpuid() as usize
+    crate::multicore::core_id().as_index()
 }
 
 /// 尝试获取 spinlock（非阻塞）

@@ -29,31 +29,31 @@
 
 use core::marker::PhantomData;
 
-use super::{NVIC_BASE, Reg8, Reg32, peripheral};
+use super::{NVIC_BASE, VolatileCell, peripheral};
 
 /// NVIC Register Block
 #[repr(C)]
 pub struct RegisterBlock {
     /// Interrupt Set-Enable Registers (16 x 32-bit = 512 interrupts max)
-    pub iser: [Reg32; 16],
+    pub iser: [VolatileCell<u32>; 16],
     _reserved0: [u32; 16],
     /// Interrupt Clear-Enable Registers
-    pub icer: [Reg32; 16],
+    pub icer: [VolatileCell<u32>; 16],
     _reserved1: [u32; 16],
     /// Interrupt Set-Pending Registers
-    pub ispr: [Reg32; 16],
+    pub ispr: [VolatileCell<u32>; 16],
     _reserved2: [u32; 16],
     /// Interrupt Clear-Pending Registers
-    pub icpr: [Reg32; 16],
+    pub icpr: [VolatileCell<u32>; 16],
     _reserved3: [u32; 16],
     /// Interrupt Active Bit Registers (read-only)
-    pub iabr: [Reg32; 16],
+    pub iabr: [VolatileCell<u32>; 16],
     _reserved4: [u32; 16],
     /// Interrupt Target Non-Secure Registers (ARMv8-M)
-    pub itns: [Reg32; 16],
+    pub itns: [VolatileCell<u32>; 16],
     _reserved5: [u32; 16],
     /// Interrupt Priority Registers (8-bit each, 496 total)
-    pub ipr: [Reg8; 496],
+    pub ipr: [VolatileCell<u8>; 496],
 }
 
 /// NVIC peripheral
@@ -80,7 +80,7 @@ impl NVIC {
         let bit = nr % 32;
 
         unsafe {
-            (*Self::PTR).iser[reg].write(1 << bit);
+            (*Self::PTR).iser[reg].write_bits(1 << bit);
         }
     }
 
@@ -92,7 +92,7 @@ impl NVIC {
         let bit = nr % 32;
 
         unsafe {
-            (*Self::PTR).icer[reg].write(1 << bit);
+            (*Self::PTR).icer[reg].write_bits(1 << bit);
         }
     }
 
@@ -103,7 +103,7 @@ impl NVIC {
         let reg = nr / 32;
         let bit = nr % 32;
 
-        unsafe { (*Self::PTR).iser[reg].read() & (1 << bit) != 0 }
+        unsafe { (*Self::PTR).iser[reg].read_bits() & (1 << bit) != 0 }
     }
 
     /// Set an interrupt as pending
@@ -114,7 +114,7 @@ impl NVIC {
         let bit = nr % 32;
 
         unsafe {
-            (*Self::PTR).ispr[reg].write(1 << bit);
+            (*Self::PTR).ispr[reg].write_bits(1 << bit);
         }
     }
 
@@ -126,7 +126,7 @@ impl NVIC {
         let bit = nr % 32;
 
         unsafe {
-            (*Self::PTR).icpr[reg].write(1 << bit);
+            (*Self::PTR).icpr[reg].write_bits(1 << bit);
         }
     }
 
@@ -137,7 +137,7 @@ impl NVIC {
         let reg = nr / 32;
         let bit = nr % 32;
 
-        unsafe { (*Self::PTR).ispr[reg].read() & (1 << bit) != 0 }
+        unsafe { (*Self::PTR).ispr[reg].read_bits() & (1 << bit) != 0 }
     }
 
     /// Check if an interrupt is active (currently being handled)
@@ -147,7 +147,7 @@ impl NVIC {
         let reg = nr / 32;
         let bit = nr % 32;
 
-        unsafe { (*Self::PTR).iabr[reg].read() & (1 << bit) != 0 }
+        unsafe { (*Self::PTR).iabr[reg].read_bits() & (1 << bit) != 0 }
     }
 
     /// Set the priority of an interrupt
@@ -161,14 +161,14 @@ impl NVIC {
     #[inline]
     pub unsafe fn set_priority(irq: u16, priority: u8) {
         unsafe {
-            (*Self::PTR).ipr[irq as usize].write(priority);
+            (*Self::PTR).ipr[irq as usize].write_bits(priority);
         }
     }
 
     /// Get the priority of an interrupt
     #[inline]
     pub fn get_priority(irq: u16) -> u8 {
-        unsafe { (*Self::PTR).ipr[irq as usize].read() }
+        unsafe { (*Self::PTR).ipr[irq as usize].read_bits() }
     }
 
     /// Software-trigger an interrupt (writes to STIR)

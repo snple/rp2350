@@ -224,7 +224,7 @@ fn main() -> ! {
     let _clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
     let timer = Timer0::init(dp.TIMER0);
 
-    info!("[Core 0] Core ID: {}", multicore::core_id());
+    info!("[Core 0] {}", multicore::core_id());
 
     // ------------------------------------------------------------------
     // 2. 启动 Core 1
@@ -445,7 +445,7 @@ fn main() -> ! {
         info!("  Total atomic counter: {}", total_atomic);
         info!("  Total shared sum:     {}", total_sum);
         info!("  Total shared count:   {}", total_count);
-        info!("  Core 0 ID: {}", multicore::core_id());
+        info!("  {}", multicore::core_id());
     }
 
     // ------------------------------------------------------------------
