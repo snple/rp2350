@@ -52,14 +52,55 @@
 use core::sync::atomic::{Ordering, compiler_fence};
 
 // ============================================================================
-// Constants
+// Core ID
 // ============================================================================
 
-/// Core ID for Core 0
-pub const CORE0: u32 = 0;
+/// RP2350 核心标识
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+#[repr(u32)]
+pub enum CoreId {
+    /// Core 0 (默认启动核心)
+    Core0 = 0,
+    /// Core 1 (需要手动启动)
+    Core1 = 1,
+}
 
-/// Core ID for Core 1
-pub const CORE1: u32 = 1;
+impl CoreId {
+    /// 从原始值转换，非 0/1 时返回 `None`
+    #[inline]
+    pub const fn from_raw(val: u32) -> Option<Self> {
+        match val {
+            0 => Some(Self::Core0),
+            1 => Some(Self::Core1),
+            _ => None,
+        }
+    }
+
+    /// 转为 `usize`，适用于数组索引
+    #[inline]
+    pub const fn as_index(self) -> usize {
+        self as usize
+    }
+
+    /// 返回另一个核心
+    #[inline]
+    pub const fn other(self) -> Self {
+        match self {
+            Self::Core0 => Self::Core1,
+            Self::Core1 => Self::Core0,
+        }
+    }
+}
+
+impl core::fmt::Display for CoreId {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        match self {
+            Self::Core0 => write!(f, "Core 0"),
+            Self::Core1 => write!(f, "Core 1"),
+        }
+    }
+}
 
 // ============================================================================
 // Stack Definition
@@ -107,22 +148,25 @@ impl<const N: usize> Default for Stack<N> {
 // Core Identification
 // ============================================================================
 
-/// Get the current core's ID (0 or 1)
+/// 获取当前核心的 ID
 #[inline]
-pub fn core_id() -> u32 {
-    crate::sio::regs().cpuid.cpuid()
+pub fn core_id() -> CoreId {
+    match crate::sio::regs().cpuid.cpuid() {
+        0 => CoreId::Core0,
+        _ => CoreId::Core1,
+    }
 }
 
-/// Returns `true` if running on Core 0
+/// 当前是否在 Core 0 上运行
 #[inline]
 pub fn is_core0() -> bool {
-    core_id() == CORE0
+    core_id() == CoreId::Core0
 }
 
-/// Returns `true` if running on Core 1
+/// 当前是否在 Core 1 上运行
 #[inline]
 pub fn is_core1() -> bool {
-    core_id() == CORE1
+    core_id() == CoreId::Core1
 }
 
 // ============================================================================

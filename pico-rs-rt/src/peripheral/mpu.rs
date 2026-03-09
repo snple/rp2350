@@ -18,7 +18,7 @@
 
 use core::marker::PhantomData;
 
-use super::{Reg32, peripheral};
+use super::{VolatileCell, peripheral};
 
 /// MPU base address
 const MPU_BASE: u32 = 0xE000_ED90;
@@ -27,32 +27,32 @@ const MPU_BASE: u32 = 0xE000_ED90;
 #[repr(C)]
 pub struct RegisterBlock {
     /// MPU Type Register (read-only)
-    pub type_: Reg32,
+    pub type_: VolatileCell<u32>,
     /// MPU Control Register
-    pub ctrl: Reg32,
+    pub ctrl: VolatileCell<u32>,
     /// MPU Region Number Register
-    pub rnr: Reg32,
+    pub rnr: VolatileCell<u32>,
     /// MPU Region Base Address Register
-    pub rbar: Reg32,
+    pub rbar: VolatileCell<u32>,
     /// MPU Region Limit Address Register
-    pub rlar: Reg32,
+    pub rlar: VolatileCell<u32>,
     /// MPU Region Base Address Register Alias 1
-    pub rbar_a1: Reg32,
+    pub rbar_a1: VolatileCell<u32>,
     /// MPU Region Limit Address Register Alias 1
-    pub rlar_a1: Reg32,
+    pub rlar_a1: VolatileCell<u32>,
     /// MPU Region Base Address Register Alias 2
-    pub rbar_a2: Reg32,
+    pub rbar_a2: VolatileCell<u32>,
     /// MPU Region Limit Address Register Alias 2
-    pub rlar_a2: Reg32,
+    pub rlar_a2: VolatileCell<u32>,
     /// MPU Region Base Address Register Alias 3
-    pub rbar_a3: Reg32,
+    pub rbar_a3: VolatileCell<u32>,
     /// MPU Region Limit Address Register Alias 3
-    pub rlar_a3: Reg32,
+    pub rlar_a3: VolatileCell<u32>,
     _reserved: u32,
     /// MPU Memory Attribute Indirection Register 0
-    pub mair0: Reg32,
+    pub mair0: VolatileCell<u32>,
     /// MPU Memory Attribute Indirection Register 1
-    pub mair1: Reg32,
+    pub mair1: VolatileCell<u32>,
 }
 
 /// MPU Control Register bits
@@ -193,7 +193,7 @@ impl MPU {
             ctrl_val |= ctrl::PRIVDEFENA;
         }
         unsafe {
-            (*Self::PTR).ctrl.write(ctrl_val);
+            (*Self::PTR).ctrl.write_bits(ctrl_val);
         }
         crate::asm::dsb();
         crate::asm::isb();
@@ -203,7 +203,7 @@ impl MPU {
     #[inline]
     pub fn disable(&mut self) {
         unsafe {
-            (*Self::PTR).ctrl.write(0);
+            (*Self::PTR).ctrl.write_bits(0);
         }
         crate::asm::dsb();
         crate::asm::isb();
@@ -212,14 +212,14 @@ impl MPU {
     /// Check if MPU is enabled
     #[inline]
     pub fn is_enabled(&self) -> bool {
-        unsafe { (*Self::PTR).ctrl.read() & ctrl::ENABLE != 0 }
+        unsafe { (*Self::PTR).ctrl.read_bits() & ctrl::ENABLE != 0 }
     }
 
     /// Get the number of MPU regions supported
     #[inline]
     pub fn num_regions(&self) -> u8 {
         // DREGION field in MPU_TYPE[15:8]
-        ((unsafe { (*Self::PTR).type_.read() } >> 8) & 0xFF) as u8
+        ((unsafe { (*Self::PTR).type_.read_bits() } >> 8) & 0xFF) as u8
     }
 
     /// Set a memory attribute in MAIR registers
@@ -237,11 +237,11 @@ impl MPU {
             if idx < 4 {
                 (*Self::PTR)
                     .mair0
-                    .modify(|v| (v & !(0xFF << shift)) | ((attr.0 as u32) << shift));
+                    .modify_bits(|v| (v & !(0xFF << shift)) | ((attr.0 as u32) << shift));
             } else {
                 (*Self::PTR)
                     .mair1
-                    .modify(|v| (v & !(0xFF << shift)) | ((attr.0 as u32) << shift));
+                    .modify_bits(|v| (v & !(0xFF << shift)) | ((attr.0 as u32) << shift));
             }
         }
     }
@@ -272,7 +272,7 @@ impl MPU {
 
         unsafe {
             // Select region
-            (*Self::PTR).rnr.write(config.region as u32);
+            (*Self::PTR).rnr.write_bits(config.region as u32);
 
             // Build RBAR value
             // [31:5] = Base address
@@ -285,7 +285,7 @@ impl MPU {
             if config.execute_never {
                 rbar_val |= 1;
             }
-            (*Self::PTR).rbar.write(rbar_val);
+            (*Self::PTR).rbar.write_bits(rbar_val);
 
             // Build RLAR value
             // [31:5] = Limit address
@@ -297,7 +297,7 @@ impl MPU {
             if config.enable {
                 rlar_val |= 1;
             }
-            (*Self::PTR).rlar.write(rlar_val);
+            (*Self::PTR).rlar.write_bits(rlar_val);
         }
 
         crate::asm::dsb();
@@ -310,8 +310,8 @@ impl MPU {
         assert!(region < self.num_regions(), "Invalid MPU region number");
 
         unsafe {
-            (*Self::PTR).rnr.write(region as u32);
-            (*Self::PTR).rlar.modify(|v| v & !1);
+            (*Self::PTR).rnr.write_bits(region as u32);
+            (*Self::PTR).rlar.modify_bits(|v| v & !1);
         }
 
         crate::asm::dsb();
@@ -340,7 +340,7 @@ impl MPU {
 
         unsafe {
             // Select starting region
-            (*Self::PTR).rnr.write(start_region as u32);
+            (*Self::PTR).rnr.write_bits(start_region as u32);
 
             // Configure each region using the alias registers
             for (i, config) in configs.iter().enumerate() {
@@ -364,20 +364,20 @@ impl MPU {
 
                 match i {
                     0 => {
-                        (*Self::PTR).rbar.write(rbar_val);
-                        (*Self::PTR).rlar.write(rlar_val);
+                        (*Self::PTR).rbar.write_bits(rbar_val);
+                        (*Self::PTR).rlar.write_bits(rlar_val);
                     }
                     1 => {
-                        (*Self::PTR).rbar_a1.write(rbar_val);
-                        (*Self::PTR).rlar_a1.write(rlar_val);
+                        (*Self::PTR).rbar_a1.write_bits(rbar_val);
+                        (*Self::PTR).rlar_a1.write_bits(rlar_val);
                     }
                     2 => {
-                        (*Self::PTR).rbar_a2.write(rbar_val);
-                        (*Self::PTR).rlar_a2.write(rlar_val);
+                        (*Self::PTR).rbar_a2.write_bits(rbar_val);
+                        (*Self::PTR).rlar_a2.write_bits(rlar_val);
                     }
                     3 => {
-                        (*Self::PTR).rbar_a3.write(rbar_val);
-                        (*Self::PTR).rlar_a3.write(rlar_val);
+                        (*Self::PTR).rbar_a3.write_bits(rbar_val);
+                        (*Self::PTR).rlar_a3.write_bits(rlar_val);
                     }
                     _ => unreachable!(),
                 }

@@ -33,22 +33,22 @@ impl<T> VolatileCell<T> {
     }
 }
 
-impl VolatileCell<u32> {
+impl<T: Copy> VolatileCell<T> {
     /// Read the value with volatile semantics
     #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
+    pub fn read_bits(&self) -> T {
         unsafe { read_volatile(self.value.get()) }
     }
 
     /// Write the value with volatile semantics
     #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
+    pub fn write_bits(&self, value: T) {
         unsafe { write_volatile(self.value.get(), value) }
     }
 
     /// Modify the value using a closure
     #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
+    pub fn modify_bits<F: FnOnce(T) -> T>(&self, f: F) {
         self.write_bits(f(self.read_bits()));
     }
 }
@@ -86,25 +86,27 @@ impl<T> AtomicCell<T> {
     }
 }
 
-impl AtomicCell<u32> {
+impl<T: Copy> AtomicCell<T> {
     /// Read the value with volatile semantics
     #[inline(always)]
-    pub fn read_bits(&self) -> u32 {
+    pub fn read_bits(&self) -> T {
         unsafe { read_volatile(self.value.get()) }
     }
 
     /// Write the value with volatile semantics
     #[inline(always)]
-    pub fn write_bits(&self, value: u32) {
+    pub fn write_bits(&self, value: T) {
         unsafe { write_volatile(self.value.get(), value) }
     }
 
     /// Modify the value using a closure
     #[inline(always)]
-    pub fn modify_bits<F: FnOnce(u32) -> u32>(&self, f: F) {
+    pub fn modify_bits<F: FnOnce(T) -> T>(&self, f: F) {
         self.write_bits(f(self.read_bits()));
     }
+}
 
+impl AtomicCell<u32> {
     /// Atomic SET - sets bits that are 1 (RP2350 hardware alias at +0x2000)
     ///
     /// This is a single-cycle atomic operation that only affects bits set to 1.

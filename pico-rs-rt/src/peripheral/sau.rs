@@ -18,7 +18,7 @@
 
 use core::marker::PhantomData;
 
-use super::{Reg32, peripheral};
+use super::{VolatileCell, peripheral};
 
 /// SAU base address
 const SAU_BASE: u32 = 0xE000_EDD0;
@@ -27,19 +27,19 @@ const SAU_BASE: u32 = 0xE000_EDD0;
 #[repr(C)]
 pub struct RegisterBlock {
     /// SAU Control Register
-    pub ctrl: Reg32,
+    pub ctrl: VolatileCell<u32>,
     /// SAU Type Register (read-only)
-    pub type_: Reg32,
+    pub type_: VolatileCell<u32>,
     /// SAU Region Number Register
-    pub rnr: Reg32,
+    pub rnr: VolatileCell<u32>,
     /// SAU Region Base Address Register
-    pub rbar: Reg32,
+    pub rbar: VolatileCell<u32>,
     /// SAU Region Limit Address Register
-    pub rlar: Reg32,
+    pub rlar: VolatileCell<u32>,
     /// Secure Fault Status Register
-    pub sfsr: Reg32,
+    pub sfsr: VolatileCell<u32>,
     /// Secure Fault Address Register
-    pub sfar: Reg32,
+    pub sfar: VolatileCell<u32>,
 }
 
 /// SAU Control Register bits
@@ -83,7 +83,7 @@ impl SAU {
     #[inline]
     pub fn enable(&mut self) {
         unsafe {
-            (*Self::PTR).ctrl.modify(|v| v | ctrl::ENABLE);
+            (*Self::PTR).ctrl.modify_bits(|v| v | ctrl::ENABLE);
         }
         crate::asm::dsb();
         crate::asm::isb();
@@ -96,7 +96,7 @@ impl SAU {
     #[inline]
     pub fn disable(&mut self) {
         unsafe {
-            (*Self::PTR).ctrl.modify(|v| v & !ctrl::ENABLE);
+            (*Self::PTR).ctrl.modify_bits(|v| v & !ctrl::ENABLE);
         }
         crate::asm::dsb();
         crate::asm::isb();
@@ -105,7 +105,7 @@ impl SAU {
     /// Check if SAU is enabled
     #[inline]
     pub fn is_enabled(&self) -> bool {
-        unsafe { (*Self::PTR).ctrl.read() & ctrl::ENABLE != 0 }
+        unsafe { (*Self::PTR).ctrl.read_bits() & ctrl::ENABLE != 0 }
     }
 
     /// Set the ALLNS (All Non-Secure) bit
@@ -115,9 +115,9 @@ impl SAU {
     pub fn set_all_non_secure(&mut self, enable: bool) {
         unsafe {
             if enable {
-                (*Self::PTR).ctrl.modify(|v| v | ctrl::ALLNS);
+                (*Self::PTR).ctrl.modify_bits(|v| v | ctrl::ALLNS);
             } else {
-                (*Self::PTR).ctrl.modify(|v| v & !ctrl::ALLNS);
+                (*Self::PTR).ctrl.modify_bits(|v| v & !ctrl::ALLNS);
             }
         }
     }
@@ -126,7 +126,7 @@ impl SAU {
     #[inline]
     pub fn num_regions(&self) -> u8 {
         // SREGION field in SAU_TYPE[7:0]
-        (unsafe { (*Self::PTR).type_.read() } & 0xFF) as u8
+        (unsafe { (*Self::PTR).type_.read_bits() } & 0xFF) as u8
     }
 
     /// Configure an SAU region
@@ -157,10 +157,10 @@ impl SAU {
 
         unsafe {
             // Select region
-            (*Self::PTR).rnr.write(region as u32);
+            (*Self::PTR).rnr.write_bits(region as u32);
 
             // Set base address (bits [31:5])
-            (*Self::PTR).rbar.write(base & !0x1F);
+            (*Self::PTR).rbar.write_bits(base & !0x1F);
 
             // Set limit address and attributes
             let mut rlar_val = limit & !0x1F;
@@ -170,7 +170,7 @@ impl SAU {
             if attr == SecurityAttribute::NonSecureCallable {
                 rlar_val |= rlar::NSC;
             }
-            (*Self::PTR).rlar.write(rlar_val);
+            (*Self::PTR).rlar.write_bits(rlar_val);
         }
 
         crate::asm::dsb();
@@ -183,8 +183,8 @@ impl SAU {
         assert!(region < self.num_regions(), "Invalid SAU region number");
 
         unsafe {
-            (*Self::PTR).rnr.write(region as u32);
-            (*Self::PTR).rlar.modify(|v| v & !rlar::ENABLE);
+            (*Self::PTR).rnr.write_bits(region as u32);
+            (*Self::PTR).rlar.modify_bits(|v| v & !rlar::ENABLE);
         }
 
         crate::asm::dsb();
@@ -196,7 +196,7 @@ impl SAU {
     /// This register contains information about secure faults.
     #[inline]
     pub fn fault_status(&self) -> SecureFaultStatus {
-        SecureFaultStatus(unsafe { (*Self::PTR).sfsr.read() })
+        SecureFaultStatus(unsafe { (*Self::PTR).sfsr.read_bits() })
     }
 
     /// Clear secure fault status bits
@@ -204,7 +204,7 @@ impl SAU {
     /// Write 1 to clear the corresponding bit.
     #[inline]
     pub fn clear_fault_status(&mut self, bits: u32) {
-        unsafe { (*Self::PTR).sfsr.write(bits) };
+        unsafe { (*Self::PTR).sfsr.write_bits(bits) };
     }
 
     /// Read the Secure Fault Address Register
@@ -212,7 +212,7 @@ impl SAU {
     /// Contains the address that caused a secure fault (if SFARVALID is set).
     #[inline]
     pub fn fault_address(&self) -> u32 {
-        unsafe { (*Self::PTR).sfar.read() }
+        unsafe { (*Self::PTR).sfar.read_bits() }
     }
 }
 

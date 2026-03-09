@@ -22,7 +22,7 @@
 
 use core::marker::PhantomData;
 
-use super::{Reg32, peripheral};
+use super::{VolatileCell, peripheral};
 
 /// FPU base address (in System Control Space)
 const FPU_BASE: u32 = 0xE000_EF34;
@@ -34,17 +34,17 @@ const CPACR: *mut u32 = 0xE000_ED88 as *mut u32;
 #[repr(C)]
 pub struct RegisterBlock {
     /// Floating-point Context Control Register
-    pub fpccr: Reg32,
+    pub fpccr: VolatileCell<u32>,
     /// Floating-point Context Address Register
-    pub fpcar: Reg32,
+    pub fpcar: VolatileCell<u32>,
     /// Floating-point Default Status Control Register
-    pub fpdscr: Reg32,
+    pub fpdscr: VolatileCell<u32>,
     /// Media and VFP Feature Register 0 (read-only)
-    pub mvfr0: Reg32,
+    pub mvfr0: VolatileCell<u32>,
     /// Media and VFP Feature Register 1 (read-only)
-    pub mvfr1: Reg32,
+    pub mvfr1: VolatileCell<u32>,
     /// Media and VFP Feature Register 2 (read-only)
-    pub mvfr2: Reg32,
+    pub mvfr2: VolatileCell<u32>,
 }
 
 /// FPCCR (Floating-point Context Control Register) bits
@@ -201,7 +201,7 @@ impl FPU {
         unsafe {
             (*Self::PTR)
                 .fpccr
-                .modify(|v| v | fpccr::LSPEN | fpccr::ASPEN);
+                .modify_bits(|v| v | fpccr::LSPEN | fpccr::ASPEN);
         }
     }
 
@@ -213,14 +213,14 @@ impl FPU {
         unsafe {
             (*Self::PTR)
                 .fpccr
-                .modify(|v| v & !(fpccr::LSPEN | fpccr::ASPEN));
+                .modify_bits(|v| v & !(fpccr::LSPEN | fpccr::ASPEN));
         }
     }
 
     /// Check if lazy stacking is enabled
     #[inline]
     pub fn is_lazy_stacking_enabled(&self) -> bool {
-        unsafe { (*Self::PTR).fpccr.read() & (fpccr::LSPEN | fpccr::ASPEN) != 0 }
+        unsafe { (*Self::PTR).fpccr.read_bits() & (fpccr::LSPEN | fpccr::ASPEN) != 0 }
     }
 
     /// Read the FPSCR (Floating-point Status and Control Register)
@@ -336,13 +336,13 @@ impl FPU {
     /// Describes the features of the FPU.
     #[inline]
     pub fn mvfr0(&self) -> u32 {
-        unsafe { (*Self::PTR).mvfr0.read() }
+        unsafe { (*Self::PTR).mvfr0.read_bits() }
     }
 
     /// Get MVFR1 (Media and VFP Feature Register 1)
     #[inline]
     pub fn mvfr1(&self) -> u32 {
-        unsafe { (*Self::PTR).mvfr1.read() }
+        unsafe { (*Self::PTR).mvfr1.read_bits() }
     }
 
     /// Get MVFR2 (Media and VFP Feature Register 2)
@@ -350,7 +350,7 @@ impl FPU {
     /// ARMv8-M: Contains information about half-precision support.
     #[inline]
     pub fn mvfr2(&self) -> u32 {
-        unsafe { (*Self::PTR).mvfr2.read() }
+        unsafe { (*Self::PTR).mvfr2.read_bits() }
     }
 
     /// Check if half-precision (FP16) is supported

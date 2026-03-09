@@ -12,40 +12,40 @@
 
 use core::marker::PhantomData;
 
-use super::{Reg8, Reg32, SCB_BASE, peripheral};
+use super::{SCB_BASE, VolatileCell, peripheral};
 
 /// SCB Register Block
 #[repr(C)]
 pub struct RegisterBlock {
     /// Interrupt Control and State Register
-    pub icsr: Reg32,
+    pub icsr: VolatileCell<u32>,
     /// Vector Table Offset Register
-    pub vtor: Reg32,
+    pub vtor: VolatileCell<u32>,
     /// Application Interrupt and Reset Control Register
-    pub aircr: Reg32,
+    pub aircr: VolatileCell<u32>,
     /// System Control Register
-    pub scr: Reg32,
+    pub scr: VolatileCell<u32>,
     /// Configuration and Control Register
-    pub ccr: Reg32,
+    pub ccr: VolatileCell<u32>,
     /// System Handler Priority Registers (12 bytes for handlers 4-15)
-    pub shpr: [Reg8; 12],
+    pub shpr: [VolatileCell<u8>; 12],
     /// System Handler Control and State Register
-    pub shcsr: Reg32,
+    pub shcsr: VolatileCell<u32>,
     /// Configurable Fault Status Register
-    pub cfsr: Reg32,
+    pub cfsr: VolatileCell<u32>,
     /// HardFault Status Register
-    pub hfsr: Reg32,
+    pub hfsr: VolatileCell<u32>,
     /// Debug Fault Status Register
-    pub dfsr: Reg32,
+    pub dfsr: VolatileCell<u32>,
     /// MemManage Fault Address Register
-    pub mmfar: Reg32,
+    pub mmfar: VolatileCell<u32>,
     /// BusFault Address Register
-    pub bfar: Reg32,
+    pub bfar: VolatileCell<u32>,
     /// Auxiliary Fault Status Register
-    pub afsr: Reg32,
+    pub afsr: VolatileCell<u32>,
     _reserved: [u32; 18],
     /// Coprocessor Access Control Register
-    pub cpacr: Reg32,
+    pub cpacr: VolatileCell<u32>,
 }
 
 /// System Control Block peripheral
@@ -92,7 +92,7 @@ impl SCB {
         unsafe {
             (*Self::PTR)
                 .aircr
-                .write(AIRCR_VECTKEY | AIRCR_SYSRESETREQ | (*Self::PTR).aircr.read());
+                .write_bits(AIRCR_VECTKEY | AIRCR_SYSRESETREQ | (*Self::PTR).aircr.read_bits());
         }
 
         crate::asm::dsb();
@@ -110,13 +110,13 @@ impl SCB {
     /// Typically must be aligned to at least 128 bytes (depends on number of interrupts).
     #[inline]
     pub unsafe fn set_vector_table(&mut self, addr: u32) {
-        unsafe { (*Self::PTR).vtor.write(addr) };
+        unsafe { (*Self::PTR).vtor.write_bits(addr) };
     }
 
     /// Get the current vector table address
     #[inline]
     pub fn vector_table(&self) -> u32 {
-        unsafe { (*Self::PTR).vtor.read() }
+        unsafe { (*Self::PTR).vtor.read_bits() }
     }
 
     /// Enable deep sleep mode
@@ -126,7 +126,7 @@ impl SCB {
     #[inline]
     pub fn enable_deep_sleep(&mut self) {
         unsafe {
-            (*Self::PTR).scr.modify(|v| v | SCR_SLEEPDEEP);
+            (*Self::PTR).scr.modify_bits(|v| v | SCR_SLEEPDEEP);
         }
     }
 
@@ -134,7 +134,7 @@ impl SCB {
     #[inline]
     pub fn disable_deep_sleep(&mut self) {
         unsafe {
-            (*Self::PTR).scr.modify(|v| v & !SCR_SLEEPDEEP);
+            (*Self::PTR).scr.modify_bits(|v| v & !SCR_SLEEPDEEP);
         }
     }
 
@@ -145,7 +145,7 @@ impl SCB {
     #[inline]
     pub fn enable_sleep_on_exit(&mut self) {
         unsafe {
-            (*Self::PTR).scr.modify(|v| v | SCR_SLEEPONEXIT);
+            (*Self::PTR).scr.modify_bits(|v| v | SCR_SLEEPONEXIT);
         }
     }
 
@@ -153,7 +153,7 @@ impl SCB {
     #[inline]
     pub fn disable_sleep_on_exit(&mut self) {
         unsafe {
-            (*Self::PTR).scr.modify(|v| v & !SCR_SLEEPONEXIT);
+            (*Self::PTR).scr.modify_bits(|v| v & !SCR_SLEEPONEXIT);
         }
     }
 
@@ -164,7 +164,7 @@ impl SCB {
     #[inline]
     pub fn enable_fpu(&mut self) {
         unsafe {
-            (*Self::PTR).cpacr.modify(|v| v | CPACR_FPU_ENABLE);
+            (*Self::PTR).cpacr.modify_bits(|v| v | CPACR_FPU_ENABLE);
         }
         // ISB to ensure FPU is enabled before any FP instructions
         crate::asm::dsb();
@@ -175,14 +175,14 @@ impl SCB {
     #[inline]
     pub fn disable_fpu(&mut self) {
         unsafe {
-            (*Self::PTR).cpacr.modify(|v| v & !CPACR_FPU_MASK);
+            (*Self::PTR).cpacr.modify_bits(|v| v & !CPACR_FPU_MASK);
         }
     }
 
     /// Check if FPU is enabled
     #[inline]
     pub fn is_fpu_enabled(&self) -> bool {
-        unsafe { ((*Self::PTR).cpacr.read() & CPACR_FPU_MASK) == CPACR_FPU_ENABLE }
+        unsafe { ((*Self::PTR).cpacr.read_bits() & CPACR_FPU_MASK) == CPACR_FPU_ENABLE }
     }
 
     /// Set the priority of a system handler
@@ -197,7 +197,7 @@ impl SCB {
     pub fn set_handler_priority(&mut self, handler: u8, priority: u8) {
         assert!((4..=15).contains(&handler));
         unsafe {
-            (*Self::PTR).shpr[(handler - 4) as usize].write(priority);
+            (*Self::PTR).shpr[(handler - 4) as usize].write_bits(priority);
         }
     }
 
@@ -205,7 +205,7 @@ impl SCB {
     #[inline]
     pub fn handler_priority(&self, handler: u8) -> u8 {
         assert!((4..=15).contains(&handler));
-        unsafe { (*Self::PTR).shpr[(handler - 4) as usize].read() }
+        unsafe { (*Self::PTR).shpr[(handler - 4) as usize].read_bits() }
     }
 
     /// Set PendSV pending (commonly used for context switching)
@@ -213,7 +213,7 @@ impl SCB {
     pub fn set_pendsv() {
         const ICSR_PENDSVSET: u32 = 1 << 28;
         unsafe {
-            (*Self::PTR).icsr.write(ICSR_PENDSVSET);
+            (*Self::PTR).icsr.write_bits(ICSR_PENDSVSET);
         }
     }
 
@@ -222,7 +222,7 @@ impl SCB {
     pub fn clear_pendsv() {
         const ICSR_PENDSVCLR: u32 = 1 << 27;
         unsafe {
-            (*Self::PTR).icsr.write(ICSR_PENDSVCLR);
+            (*Self::PTR).icsr.write_bits(ICSR_PENDSVCLR);
         }
     }
 
@@ -230,7 +230,7 @@ impl SCB {
     #[inline]
     pub fn is_pendsv_pending() -> bool {
         const ICSR_PENDSVSET: u32 = 1 << 28;
-        unsafe { (*Self::PTR).icsr.read() & ICSR_PENDSVSET != 0 }
+        unsafe { (*Self::PTR).icsr.read_bits() & ICSR_PENDSVSET != 0 }
     }
 
     /// Set SysTick pending
@@ -238,7 +238,7 @@ impl SCB {
     pub fn set_pendst() {
         const ICSR_PENDSTSET: u32 = 1 << 26;
         unsafe {
-            (*Self::PTR).icsr.write(ICSR_PENDSTSET);
+            (*Self::PTR).icsr.write_bits(ICSR_PENDSTSET);
         }
     }
 
@@ -247,7 +247,7 @@ impl SCB {
     pub fn clear_pendst() {
         const ICSR_PENDSTCLR: u32 = 1 << 25;
         unsafe {
-            (*Self::PTR).icsr.write(ICSR_PENDSTCLR);
+            (*Self::PTR).icsr.write_bits(ICSR_PENDSTCLR);
         }
     }
 }

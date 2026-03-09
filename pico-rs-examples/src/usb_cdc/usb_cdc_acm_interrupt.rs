@@ -158,20 +158,14 @@ fn USBCTRL_IRQ() {
 // ============================================================================
 
 fn setup_systick(reload_value: u32) {
-    // Access SysTick using raw pointer
-    let syst = unsafe { &*pico_rs::rt::peripheral::SYST::PTR };
+    let mut syst = unsafe { pico_rs::rt::peripheral::SYST::steal() };
 
-    // Configure SysTick
-
-    // Disable first
-    syst.csr.write(0);
-    // Set reload value (24-bit max)
-    syst.rvr.write(reload_value & 0x00FF_FFFF);
-    // Clear current value
-    syst.cvr.write(0);
-    // Enable with processor clock source and interrupt
-    // Bit 0: ENABLE, Bit 1: TICKINT, Bit 2: CLKSOURCE
-    syst.csr.write(0b111);
+    syst.disable_counter();
+    syst.set_reload(reload_value);
+    syst.clear_current();
+    syst.set_clock_source(pico_rs::rt::peripheral::syst::SystClkSource::Core);
+    syst.enable_interrupt();
+    syst.enable_counter();
 }
 
 /// SysTick exception handler

@@ -208,52 +208,47 @@ pub(crate) use peripheral;
 // Common Register Types
 // =============================================================================
 
-/// 32-bit read/write register
+/// A volatile cell for memory-mapped register access.
+///
+/// Provides volatile read/write access to a memory location with proper
+/// semantics for hardware registers.
 #[repr(transparent)]
-pub struct Reg32 {
-    value: core::cell::UnsafeCell<u32>,
+pub struct VolatileCell<T> {
+    value: core::cell::UnsafeCell<T>,
 }
 
-impl Reg32 {
-    /// Read the register
+impl<T> VolatileCell<T> {
+    /// Create a new VolatileCell
     #[inline(always)]
-    pub fn read(&self) -> u32 {
+    pub const fn new(value: T) -> Self {
+        Self {
+            value: core::cell::UnsafeCell::new(value),
+        }
+    }
+
+    /// Get a raw pointer to the underlying value
+    #[inline(always)]
+    pub const fn as_ptr(&self) -> *mut T {
+        self.value.get()
+    }
+}
+
+impl<T: Copy> VolatileCell<T> {
+    /// Read the value with volatile semantics
+    #[inline(always)]
+    pub fn read_bits(&self) -> T {
         unsafe { core::ptr::read_volatile(self.value.get()) }
     }
 
-    /// Write the register
+    /// Write the value with volatile semantics
     #[inline(always)]
-    pub fn write(&self, value: u32) {
+    pub fn write_bits(&self, value: T) {
         unsafe { core::ptr::write_volatile(self.value.get(), value) }
     }
 
-    /// Modify the register with a closure
+    /// Modify the value using a closure
     #[inline(always)]
-    pub fn modify<F>(&self, f: F)
-    where
-        F: FnOnce(u32) -> u32,
-    {
-        let old = self.read();
-        self.write(f(old));
-    }
-}
-
-/// 8-bit read/write register
-#[repr(transparent)]
-pub struct Reg8 {
-    value: core::cell::UnsafeCell<u8>,
-}
-
-impl Reg8 {
-    /// Read the register
-    #[inline(always)]
-    pub fn read(&self) -> u8 {
-        unsafe { core::ptr::read_volatile(self.value.get()) }
-    }
-
-    /// Write the register
-    #[inline(always)]
-    pub fn write(&self, value: u8) {
-        unsafe { core::ptr::write_volatile(self.value.get(), value) }
+    pub fn modify_bits<F: FnOnce(T) -> T>(&self, f: F) {
+        self.write_bits(f(self.read_bits()));
     }
 }

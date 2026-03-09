@@ -105,7 +105,7 @@ fn main() -> ! {
 
     // Print Core 0 info
     let core_id = multicore::core_id();
-    info!("[Core 0] Running on core {}", core_id);
+    info!("[Core 0] Running on {}", core_id);
 
     // Get FIFO interface for Core 0
     let fifo = Fifo::new();

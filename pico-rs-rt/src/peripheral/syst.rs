@@ -25,19 +25,19 @@
 
 use core::marker::PhantomData;
 
-use super::{Reg32, SYST_BASE, peripheral};
+use super::{SYST_BASE, VolatileCell, peripheral};
 
 /// SysTick Register Block
 #[repr(C)]
 pub struct RegisterBlock {
     /// Control and Status Register
-    pub csr: Reg32,
+    pub csr: VolatileCell<u32>,
     /// Reload Value Register
-    pub rvr: Reg32,
+    pub rvr: VolatileCell<u32>,
     /// Current Value Register
-    pub cvr: Reg32,
+    pub cvr: VolatileCell<u32>,
     /// Calibration Value Register (read-only)
-    pub calib: Reg32,
+    pub calib: VolatileCell<u32>,
 }
 
 /// SysTick Timer peripheral
@@ -92,7 +92,7 @@ impl SYST {
     #[inline]
     pub fn enable_counter(&mut self) {
         unsafe {
-            (*Self::PTR).csr.modify(|v| v | CSR_ENABLE);
+            (*Self::PTR).csr.modify_bits(|v| v | CSR_ENABLE);
         }
     }
 
@@ -100,21 +100,21 @@ impl SYST {
     #[inline]
     pub fn disable_counter(&mut self) {
         unsafe {
-            (*Self::PTR).csr.modify(|v| v & !CSR_ENABLE);
+            (*Self::PTR).csr.modify_bits(|v| v & !CSR_ENABLE);
         }
     }
 
     /// Check if the counter is enabled
     #[inline]
     pub fn is_counter_enabled(&self) -> bool {
-        unsafe { (*Self::PTR).csr.read() & CSR_ENABLE != 0 }
+        unsafe { (*Self::PTR).csr.read_bits() & CSR_ENABLE != 0 }
     }
 
     /// Enable the SysTick interrupt
     #[inline]
     pub fn enable_interrupt(&mut self) {
         unsafe {
-            (*Self::PTR).csr.modify(|v| v | CSR_TICKINT);
+            (*Self::PTR).csr.modify_bits(|v| v | CSR_TICKINT);
         }
     }
 
@@ -122,14 +122,14 @@ impl SYST {
     #[inline]
     pub fn disable_interrupt(&mut self) {
         unsafe {
-            (*Self::PTR).csr.modify(|v| v & !CSR_TICKINT);
+            (*Self::PTR).csr.modify_bits(|v| v & !CSR_TICKINT);
         }
     }
 
     /// Check if the interrupt is enabled
     #[inline]
     pub fn is_interrupt_enabled(&self) -> bool {
-        unsafe { (*Self::PTR).csr.read() & CSR_TICKINT != 0 }
+        unsafe { (*Self::PTR).csr.read_bits() & CSR_TICKINT != 0 }
     }
 
     /// Set the clock source
@@ -137,8 +137,8 @@ impl SYST {
     pub fn set_clock_source(&mut self, source: SystClkSource) {
         unsafe {
             match source {
-                SystClkSource::Core => (*Self::PTR).csr.modify(|v| v | CSR_CLKSOURCE),
-                SystClkSource::External => (*Self::PTR).csr.modify(|v| v & !CSR_CLKSOURCE),
+                SystClkSource::Core => (*Self::PTR).csr.modify_bits(|v| v | CSR_CLKSOURCE),
+                SystClkSource::External => (*Self::PTR).csr.modify_bits(|v| v & !CSR_CLKSOURCE),
             }
         }
     }
@@ -146,7 +146,7 @@ impl SYST {
     /// Get the current clock source
     #[inline]
     pub fn clock_source(&self) -> SystClkSource {
-        if unsafe { (*Self::PTR).csr.read() & CSR_CLKSOURCE != 0 } {
+        if unsafe { (*Self::PTR).csr.read_bits() & CSR_CLKSOURCE != 0 } {
             SystClkSource::Core
         } else {
             SystClkSource::External
@@ -159,13 +159,13 @@ impl SYST {
     /// Maximum value is 0x00FFFFFF (24-bit).
     #[inline]
     pub fn set_reload(&mut self, value: u32) {
-        unsafe { (*Self::PTR).rvr.write(value.min(MAX_RELOAD)) };
+        unsafe { (*Self::PTR).rvr.write_bits(value.min(MAX_RELOAD)) };
     }
 
     /// Get the reload value
     #[inline]
     pub fn get_reload() -> u32 {
-        unsafe { (*Self::PTR).rvr.read() & MAX_RELOAD }
+        unsafe { (*Self::PTR).rvr.read_bits() & MAX_RELOAD }
     }
 
     /// Clear the current value
@@ -173,13 +173,13 @@ impl SYST {
     /// Writing any value to CVR clears it to zero and clears the COUNTFLAG.
     #[inline]
     pub fn clear_current(&mut self) {
-        unsafe { (*Self::PTR).cvr.write(0) };
+        unsafe { (*Self::PTR).cvr.write_bits(0) };
     }
 
     /// Get the current counter value
     #[inline]
     pub fn get_current() -> u32 {
-        unsafe { (*Self::PTR).cvr.read() & MAX_RELOAD }
+        unsafe { (*Self::PTR).cvr.read_bits() & MAX_RELOAD }
     }
 
     /// Check if the counter has wrapped (reached zero) since last read
@@ -187,7 +187,7 @@ impl SYST {
     /// Reading this flag clears it.
     #[inline]
     pub fn has_wrapped(&mut self) -> bool {
-        unsafe { (*Self::PTR).csr.read() & CSR_COUNTFLAG != 0 }
+        unsafe { (*Self::PTR).csr.read_bits() & CSR_COUNTFLAG != 0 }
     }
 
     /// Get the calibration value (ticks per 10ms, if available)
@@ -195,7 +195,7 @@ impl SYST {
     /// Returns `None` if the calibration value is not available or not accurate.
     #[inline]
     pub fn get_ticks_per_10ms() -> Option<u32> {
-        let calib = unsafe { (*Self::PTR).calib.read() };
+        let calib = unsafe { (*Self::PTR).calib.read_bits() };
         let tenms = calib & 0x00FF_FFFF;
 
         if tenms == 0 || calib & CALIB_NOREF != 0 {
@@ -210,12 +210,12 @@ impl SYST {
     /// If `false`, the calibration value might be slightly off.
     #[inline]
     pub fn is_calibration_precise() -> bool {
-        unsafe { (*Self::PTR).calib.read() & CALIB_SKEW == 0 }
+        unsafe { (*Self::PTR).calib.read_bits() & CALIB_SKEW == 0 }
     }
 
     /// Check if external reference clock is available
     #[inline]
     pub fn has_reference_clock() -> bool {
-        unsafe { (*Self::PTR).calib.read() & CALIB_NOREF == 0 }
+        unsafe { (*Self::PTR).calib.read_bits() & CALIB_NOREF == 0 }
     }
 }
