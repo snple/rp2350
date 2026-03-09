@@ -209,3 +209,7 @@ path = "src/usb_cdc/usb_cdc_acm_interrupt.rs"
 [[bin]]
 name = "usb_hid_keyboard"
 path = "src/usb_hid/usb_hid_keyboard.rs"
+
+[[bin]]
+name = "tcan4550"
+path = "src/can/tcan4550.rs"

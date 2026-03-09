@@ -30,7 +30,7 @@
 //! }
 //! ```
 
-use crate::reset::{self, Peripheral};
+use crate::reset::Resettable;
 
 /// SYSINFO peripheral wrapper
 ///
@@ -57,7 +57,7 @@ impl Sysinfo {
     /// # Arguments
     /// * `sysinfo` - The SYSINFO peripheral from PAC
     pub fn init(sysinfo: pico_rs_pac::SYSINFO) -> Self {
-        reset::unreset_block_wait(Peripheral::SYSINFO);
+        pico_rs_pac::SYSINFO::unreset();
         Self::new(sysinfo)
     }
 

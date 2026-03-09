@@ -88,7 +88,7 @@ use crate::gpio::{
     Uart0CtsPin, Uart0RtsPin, Uart0RxPin, Uart0TxPin, Uart1CtsPin, Uart1RtsPin, Uart1RxPin,
     Uart1TxPin,
 };
-use crate::reset::{self, Peripheral};
+use crate::reset::Resettable;
 
 /// Number of data bits
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
@@ -146,7 +146,7 @@ pub enum Error {
 // ============================================================================
 
 macro_rules! impl_uart {
-    ($UartName:ident, $uart_num:literal, $UartType:ty, $uart_mod:ident, $reset_peripheral:expr, $TxTrait:ident, $RxTrait:ident, $CtsTrait:ident, $RtsTrait:ident) => {
+    ($UartName:ident, $uart_num:literal, $UartType:ty, $uart_mod:ident, $TxTrait:ident, $RxTrait:ident, $CtsTrait:ident, $RtsTrait:ident) => {
         paste! {
             /// UART peripheral wrapper with type-safe pin ownership.
             ///
@@ -228,8 +228,8 @@ macro_rules! impl_uart {
                     tx.[<configure_uart $uart_num _tx>]();
                     rx.[<configure_uart $uart_num _rx>]();
 
-                    // Bring UART out of reset
-                    reset::unreset_block_wait($reset_peripheral);
+                    // Reset peripheral to ensure clean register state
+                    <$UartType as Resettable>::reset_init();
 
                     let mut uart_dev = Self {
                         uart,
@@ -890,8 +890,8 @@ macro_rules! impl_uart {
                     cts.[<configure_uart $uart_num _cts>]();
                     rts.[<configure_uart $uart_num _rts>]();
 
-                    // Bring UART out of reset
-                    reset::unreset_block_wait($reset_peripheral);
+                    // Reset peripheral to ensure clean register state
+                    <$UartType as Resettable>::reset_init();
 
                     let mut uart_dev = Self {
                         uart,
@@ -1081,7 +1081,6 @@ impl_uart!(
     0,
     pico_rs_pac::UART0,
     uart0,
-    Peripheral::UART0,
     Uart0TxPin,
     Uart0RxPin,
     Uart0CtsPin,
@@ -1092,7 +1091,6 @@ impl_uart!(
     1,
     pico_rs_pac::UART1,
     uart1,
-    Peripheral::UART1,
     Uart1TxPin,
     Uart1RxPin,
     Uart1CtsPin,

@@ -24,7 +24,7 @@
 //! syscfg.set_sram_power_down(5, true);
 //! ```
 
-use crate::reset::{self, Peripheral};
+use crate::reset::Resettable;
 use pico_rs_pac::syscfg::Mempowerdown;
 
 /// Memory bank identifiers for power control
@@ -81,7 +81,7 @@ impl Syscfg {
     /// * `syscfg` - The SYSCFG peripheral from PAC
     #[inline]
     pub fn new(syscfg: pico_rs_pac::SYSCFG) -> Self {
-        reset::unreset_block_wait(Peripheral::SYSCFG);
+        pico_rs_pac::SYSCFG::unreset();
         Self { syscfg }
     }
 

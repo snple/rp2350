@@ -1,263 +1,131 @@
-//! Reset subsystem driver for RP2350
+//! Reset subsystem for RP2350
 //!
-//! This module provides a safe interface for managing peripheral resets
-//! using the PAC register access methods.
+//! Provides a [`Resettable`] trait implemented for each PAC peripheral type,
+//! so peripherals know how to reset themselves.
 //!
-//! ## Example
+//! # Example
 //!
 //! ```ignore
-//! use pico_rs::reset::{self, Peripheral};
+//! use pico_rs::reset::Resettable;
 //!
-//! // Reset and unreset a single peripheral
-//! reset::reset_block(Peripheral::UART0);
-//! reset::unreset_block_wait(Peripheral::UART0);
+//! // Standard init: reset + unreset (guarantees clean register state)
+//! pico_rs_pac::SPI0::reset_init();
 //!
-//! // Reset multiple peripherals
-//! reset::reset_block_mask(Peripheral::UART0 | Peripheral::UART1);
-//! reset::unreset_block_wait_mask(Peripheral::UART0 | Peripheral::UART1);
+//! // Unreset only (peripheral already in reset at first boot)
+//! pico_rs_pac::UART0::unreset();
 //!
-//! // Check if a peripheral is in reset
-//! if reset::is_in_reset(Peripheral::I2C0) {
-//!     reset::unreset_block_wait(Peripheral::I2C0);
+//! // Batch operations (unsafe: caller must ensure mask is valid)
+//! use pico_rs::reset;
+//! unsafe {
+//!     reset::reset(pico_rs_pac::IO_BANK0::RESET_MASK | pico_rs_pac::PADS_BANK0::RESET_MASK);
+//!     reset::unreset(pico_rs_pac::IO_BANK0::RESET_MASK | pico_rs_pac::PADS_BANK0::RESET_MASK);
 //! }
-//!
-//! // Use individual peripheral methods
-//! reset::reset_uart0();
-//! reset::unreset_uart0_wait();
 //! ```
 
 use pico_rs_pac::RESETS;
 
-/// Peripheral blocks that can be reset
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
-#[repr(u32)]
-#[allow(non_camel_case_types)]
-#[cfg_attr(feature = "defmt", derive(defmt::Format))]
-pub enum Peripheral {
-    ADC = 1 << 0,
-    BUSCTRL = 1 << 1,
-    DMA = 1 << 2,
-    HSTX = 1 << 3,
-    I2C0 = 1 << 4,
-    I2C1 = 1 << 5,
-    IO_BANK0 = 1 << 6,
-    IO_QSPI = 1 << 7,
-    JTAG = 1 << 8,
-    PADS_BANK0 = 1 << 9,
-    PADS_QSPI = 1 << 10,
-    PIO0 = 1 << 11,
-    PIO1 = 1 << 12,
-    PIO2 = 1 << 13,
-    PLL_SYS = 1 << 14,
-    PLL_USB = 1 << 15,
-    PWM = 1 << 16,
-    SHA256 = 1 << 17,
-    SPI0 = 1 << 18,
-    SPI1 = 1 << 19,
-    SYSCFG = 1 << 20,
-    SYSINFO = 1 << 21,
-    TBMAN = 1 << 22,
-    TIMER0 = 1 << 23,
-    TIMER1 = 1 << 24,
-    TRNG = 1 << 25,
-    UART0 = 1 << 26,
-    UART1 = 1 << 27,
-    USBCTRL = 1 << 28,
-}
-
-impl Peripheral {
-    /// Get the bit mask for this peripheral
-    #[inline]
-    pub const fn mask(self) -> u32 {
-        self as u32
-    }
-
-    /// Combine multiple peripherals into a bitmask
-    #[inline]
-    pub const fn or(self, other: Self) -> u32 {
-        self.mask() | other.mask()
-    }
-}
-
-impl core::ops::BitOr for Peripheral {
-    type Output = u32;
-
-    #[inline]
-    fn bitor(self, rhs: Self) -> Self::Output {
-        self.mask() | rhs.mask()
-    }
-}
-
-impl core::ops::BitOr<u32> for Peripheral {
-    type Output = u32;
-
-    #[inline]
-    fn bitor(self, rhs: u32) -> Self::Output {
-        self.mask() | rhs
-    }
-}
-
-impl core::ops::BitOr<Peripheral> for u32 {
-    type Output = u32;
-
-    #[inline]
-    fn bitor(self, rhs: Peripheral) -> Self::Output {
-        self | rhs.mask()
-    }
-}
-
-// ============================================================================
-// Mask-based operations (for multiple peripherals)
-// ============================================================================
-
-/// Put peripheral(s) into reset state
+/// Trait for peripherals that can be reset via the RESETS controller.
 ///
-/// # Arguments
-/// * `bits` - Bitmask of peripherals to reset
-#[inline]
-pub fn reset_block_mask(bits: u32) {
-    let resets = unsafe { &*RESETS::PTR };
-    resets.reset.set_bits(bits);
+/// Implemented automatically for all PAC peripheral types that have a
+/// corresponding bit in the RESETS register.
+pub trait Resettable {
+    /// Bitmask for this peripheral in the RESETS register.
+    const RESET_MASK: u32;
+
+    /// Reset + unreset. Guarantees all registers return to hardware defaults.
+    #[inline]
+    fn reset_init() {
+        // SAFETY: RESET_MASK is set by impl_resettable! and always valid.
+        unsafe {
+            reset(Self::RESET_MASK);
+            unreset(Self::RESET_MASK);
+        }
+    }
+
+    /// Put this peripheral into reset state.
+    #[inline]
+    fn reset() {
+        // SAFETY: RESET_MASK is set by impl_resettable! and always valid.
+        unsafe { reset(Self::RESET_MASK) }
+    }
+
+    /// Bring this peripheral out of reset and wait for completion.
+    #[inline]
+    fn unreset() {
+        // SAFETY: RESET_MASK is set by impl_resettable! and always valid.
+        unsafe { unreset(Self::RESET_MASK) }
+    }
 }
 
-/// Put a single peripheral into reset state
+/// Put peripheral(s) into reset (raw mask).
+///
+/// # Safety
+///
+/// `mask` must only contain valid RESETS register bits (bits 0..=28).
+/// Prefer [`Resettable::reset()`] for type-safe single-peripheral reset.
 #[inline]
-pub fn reset_block(peripheral: Peripheral) {
-    reset_block_mask(peripheral.mask());
+pub unsafe fn reset(mask: u32) {
+    let resets = unsafe { RESETS::steal() };
+    resets.reset.set_bits(mask);
 }
 
-/// Bring peripheral(s) out of reset (without waiting)
+/// Bring peripheral(s) out of reset and wait (raw mask).
+///
+/// # Safety
+///
+/// `mask` must only contain valid RESETS register bits (bits 0..=28).
+/// Prefer [`Resettable::unreset()`] for type-safe single-peripheral unreset.
 #[inline]
-pub fn unreset_block_mask(bits: u32) {
-    let resets = unsafe { &*RESETS::PTR };
-    resets.reset.clr_bits(bits);
-}
-
-/// Bring a single peripheral out of reset (without waiting)
-#[inline]
-pub fn unreset_block(peripheral: Peripheral) {
-    unreset_block_mask(peripheral.mask());
-}
-
-/// Wait for peripheral(s) to complete reset
-#[inline]
-pub fn unreset_wait_mask(bits: u32) {
-    let resets = unsafe { &*RESETS::PTR };
-    while (resets.reset_done.read_bits() & bits) != bits {
+pub unsafe fn unreset(mask: u32) {
+    let resets = unsafe { RESETS::steal() };
+    resets.reset.clr_bits(mask);
+    while (resets.reset_done.read_bits() & mask) != mask {
         core::hint::spin_loop();
     }
 }
 
-/// Wait for a single peripheral to complete reset
-#[inline]
-pub fn unreset_wait(peripheral: Peripheral) {
-    unreset_wait_mask(peripheral.mask());
-}
-
-/// Bring peripheral(s) out of reset and wait for completion
-#[inline]
-pub fn unreset_block_wait_mask(bits: u32) {
-    unreset_block_mask(bits);
-    unreset_wait_mask(bits);
-}
-
-/// Bring a single peripheral out of reset and wait for completion
-#[inline]
-pub fn unreset_block_wait(peripheral: Peripheral) {
-    unreset_block_wait_mask(peripheral.mask());
-}
-
-/// Check if peripheral(s) are in reset
-#[inline]
-pub fn is_in_reset_mask(bits: u32) -> bool {
-    let resets = unsafe { &*RESETS::PTR };
-    (resets.reset.read_bits() & bits) == bits
-}
-
-/// Check if a single peripheral is in reset
-#[inline]
-pub fn is_in_reset(peripheral: Peripheral) -> bool {
-    is_in_reset_mask(peripheral.mask())
-}
-
-/// Check if peripheral(s) have completed reset
-#[inline]
-pub fn is_reset_done_mask(bits: u32) -> bool {
-    let resets = unsafe { &*RESETS::PTR };
-    (resets.reset_done.read_bits() & bits) == bits
-}
-
-/// Check if a single peripheral has completed reset
-#[inline]
-pub fn is_reset_done(peripheral: Peripheral) -> bool {
-    is_reset_done_mask(peripheral.mask())
-}
-
-/// Reset all peripherals
-#[inline]
-pub fn reset_all() {
-    let resets = unsafe { &*RESETS::PTR };
-    resets.reset.write_bits(0x1fffffff);
-}
-
-/// Unreset all peripherals and wait
-#[inline]
-pub fn unreset_all_wait() {
-    unreset_block_wait_mask(0x1fffffff);
-}
-
 // ============================================================================
-// Individual peripheral reset functions using PAC methods
+// Implement Resettable for each PAC peripheral type
 // ============================================================================
 
-macro_rules! impl_peripheral_reset {
-    ($($name:ident),+ $(,)?) => {
-        paste::paste! {
-            $(
-                #[doc = "Put " $name " into reset state"]
-                #[inline]
-                pub fn [<reset_ $name:lower>]() {
-                    let resets = unsafe { &*RESETS::PTR };
-                    resets.reset.[<set_ $name:lower>]();
-                }
-
-                #[doc = "Bring " $name " out of reset (without waiting)"]
-                #[inline]
-                pub fn [<unreset_ $name:lower>]() {
-                    let resets = unsafe { &*RESETS::PTR };
-                    resets.reset.[<clr_ $name:lower>]();
-                }
-
-                #[doc = "Wait for " $name " to complete reset"]
-                #[inline]
-                pub fn [<unreset_ $name:lower _wait>]() {
-                    let resets = unsafe { &*RESETS::PTR };
-                    resets.reset.[<clr_ $name:lower>]();
-                    while !resets.reset_done.[<$name:lower>]() {
-                        core::hint::spin_loop();
-                    }
-                }
-
-                #[doc = "Check if " $name " is in reset"]
-                #[inline]
-                pub fn [<is_ $name:lower _in_reset>]() -> bool {
-                    let resets = unsafe { &*RESETS::PTR };
-                    resets.reset.[<$name:lower>]()
-                }
-
-                #[doc = "Check if " $name " has completed reset"]
-                #[inline]
-                pub fn [<is_ $name:lower _reset_done>]() -> bool {
-                    let resets = unsafe { &*RESETS::PTR };
-                    resets.reset_done.[<$name:lower>]()
-                }
-            )+
-        }
+macro_rules! impl_resettable {
+    ($($pac_type:ty => $bit:literal),+ $(,)?) => {
+        $(
+            impl Resettable for $pac_type {
+                const RESET_MASK: u32 = 1 << $bit;
+            }
+        )+
     };
 }
 
-impl_peripheral_reset!(
-    adc, busctrl, dma, hstx, i2c0, i2c1, io_bank0, io_qspi, jtag, pads_bank0, pads_qspi, pio0,
-    pio1, pio2, pll_sys, pll_usb, pwm, sha256, spi0, spi1, syscfg, sysinfo, tbman, timer0, timer1,
-    trng, uart0, uart1, usbctrl,
+impl_resettable!(
+    pico_rs_pac::ADC       => 0,
+    pico_rs_pac::BUSCTRL   => 1,
+    pico_rs_pac::DMA       => 2,
+    pico_rs_pac::HSTX_CTRL => 3,
+    pico_rs_pac::I2C0      => 4,
+    pico_rs_pac::I2C1      => 5,
+    pico_rs_pac::IO_BANK0  => 6,
+    pico_rs_pac::IO_QSPI   => 7,
+    // Bit 8 = JTAG (no PAC type)
+    pico_rs_pac::PADS_BANK0 => 9,
+    pico_rs_pac::PADS_QSPI  => 10,
+    pico_rs_pac::PIO0      => 11,
+    pico_rs_pac::PIO1      => 12,
+    pico_rs_pac::PIO2      => 13,
+    pico_rs_pac::PLL_SYS   => 14,
+    pico_rs_pac::PLL_USB   => 15,
+    pico_rs_pac::PWM       => 16,
+    pico_rs_pac::SHA256    => 17,
+    pico_rs_pac::SPI0      => 18,
+    pico_rs_pac::SPI1      => 19,
+    pico_rs_pac::SYSCFG    => 20,
+    pico_rs_pac::SYSINFO   => 21,
+    pico_rs_pac::TBMAN     => 22,
+    pico_rs_pac::TIMER0    => 23,
+    pico_rs_pac::TIMER1    => 24,
+    pico_rs_pac::TRNG      => 25,
+    pico_rs_pac::UART0     => 26,
+    pico_rs_pac::UART1     => 27,
+    pico_rs_pac::USB       => 28,
 );

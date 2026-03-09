@@ -105,7 +105,7 @@ pub enum PerfEvent {
 ///
 /// Provides access to bus fabric control and performance counters.
 pub struct Busctrl {
-    regs: &'static pico_rs_pac::busctrl::RegisterBlock,
+    regs: pico_rs_pac::BUSCTRL,
 }
 
 impl Busctrl {
@@ -113,14 +113,14 @@ impl Busctrl {
     #[inline]
     pub fn new() -> Self {
         Self {
-            regs: unsafe { &*BUSCTRL::PTR },
+            regs: unsafe { BUSCTRL::steal() },
         }
     }
 
     /// Get reference to the register block
     #[inline]
     pub fn regs(&self) -> &pico_rs_pac::busctrl::RegisterBlock {
-        self.regs
+        &self.regs
     }
 
     // ========================================================================

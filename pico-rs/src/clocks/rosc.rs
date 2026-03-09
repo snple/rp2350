@@ -97,7 +97,7 @@ const ROSC_DORMANT_VALUE: u32 = 0x636f6d61;
 
 /// Ring Oscillator driver
 pub struct Rosc {
-    _marker: core::marker::PhantomData<*const ()>,
+    rosc: pico_rs_pac::ROSC,
 }
 
 impl Rosc {
@@ -108,14 +108,14 @@ impl Rosc {
     #[inline]
     pub fn new() -> Self {
         Self {
-            _marker: core::marker::PhantomData,
+            rosc: unsafe { ROSC::steal() },
         }
     }
 
     /// Get a reference to the ROSC registers
     #[inline]
     fn regs(&self) -> &pico_rs_pac::rosc::RegisterBlock {
-        unsafe { &*ROSC::PTR }
+        &self.rosc
     }
 
     // ========================================================================

@@ -139,7 +139,7 @@ pub mod pll;
 pub mod rosc;
 pub mod xosc;
 
-use crate::reset::{self, Peripheral};
+use crate::reset::Resettable;
 pub use pll::{PllConfig, PllSys, PllUsb};
 pub use rosc::Rosc;
 pub use xosc::Xosc;
@@ -1356,8 +1356,7 @@ impl Clocks {
     fn restore_plls(&mut self, sys_freq: u32) {
         unsafe {
             // Reset and reconfigure PLL_SYS
-            reset::reset_block(Peripheral::PLL_SYS);
-            reset::unreset_block_wait(Peripheral::PLL_SYS);
+            pico_rs_pac::PLL_SYS::reset_init();
 
             let pll_sys = PllSys::new(pico_rs_pac::PLL_SYS::steal());
             let config = match sys_freq {
@@ -1374,8 +1373,7 @@ impl Clocks {
             pll_sys.wait_lock();
 
             // Reset and reconfigure PLL_USB
-            reset::reset_block(Peripheral::PLL_USB);
-            reset::unreset_block_wait(Peripheral::PLL_USB);
+            pico_rs_pac::PLL_USB::reset_init();
 
             let pll_usb = PllUsb::new(pico_rs_pac::PLL_USB::steal());
             let usb_config = pll::PllConfig::usb_48mhz();
@@ -1777,8 +1775,7 @@ impl ClockBuilder {
 
         if use_pll_sys {
             // Configure PLL_SYS for requested frequency
-            reset::reset_block(Peripheral::PLL_SYS);
-            reset::unreset_block_wait(Peripheral::PLL_SYS);
+            pico_rs_pac::PLL_SYS::reset_init();
 
             let pll_sys = PllSys::new(pll_sys);
             let sys_config = Self::get_pll_config_for_freq(self.sys_freq);
@@ -1795,8 +1792,7 @@ impl ClockBuilder {
         // Step 5: Configure PLL_USB (48 MHz for USB/ADC)
         // ====================================================================
         // Always configure PLL_USB - needed for USB, ADC, or low-power sys clock
-        reset::reset_block(Peripheral::PLL_USB);
-        reset::unreset_block_wait(Peripheral::PLL_USB);
+        pico_rs_pac::PLL_USB::reset_init();
 
         let pll_usb = PllUsb::new(pll_usb);
         let usb_config = PllConfig::usb_48mhz();

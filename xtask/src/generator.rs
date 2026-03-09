@@ -246,16 +246,6 @@ fn generate_mod_rs(peripherals: &[&Peripheral]) -> String {
     writeln!(out, "                    _marker: PhantomData,").unwrap();
     writeln!(out, "                }}").unwrap();
     writeln!(out, "            }}").unwrap();
-    writeln!(out).unwrap();
-    writeln!(
-        out,
-        "            /// Returns a raw pointer to the register block"
-    )
-    .unwrap();
-    writeln!(out, "            #[inline(always)]").unwrap();
-    writeln!(out, "            pub const fn ptr() -> *const $reg {{").unwrap();
-    writeln!(out, "                Self::PTR").unwrap();
-    writeln!(out, "            }}").unwrap();
     writeln!(out, "        }}").unwrap();
     writeln!(out).unwrap();
     writeln!(out, "        impl Deref for $name {{").unwrap();

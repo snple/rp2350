@@ -30,14 +30,14 @@
 //! timer.enable_alarm_interrupt(0);
 //! ```
 
-use crate::reset::{self, Peripheral};
+use crate::reset::Resettable;
 
 /// Number of alarms per timer
 pub const ALARM_COUNT: usize = 4;
 
 /// Macro to generate Timer types for both TIMER0 and TIMER1
 macro_rules! impl_timer {
-    ($TimerName:ident, $timer_mod:ident, $TIMER:ident, $reset_peripheral:expr) => {
+    ($TimerName:ident, $timer_mod:ident, $TIMER:ident) => {
         /// Timer peripheral wrapper
         pub struct $TimerName {
             timer: pico_rs_pac::$TIMER,
@@ -71,7 +71,7 @@ macro_rules! impl_timer {
             /// * `timer` - The Timer peripheral from PAC
             pub fn init(timer: pico_rs_pac::$TIMER) -> Self {
                 // Bring timer out of reset
-                reset::unreset_block_wait($reset_peripheral);
+                <pico_rs_pac::$TIMER as Resettable>::unreset();
                 Self::new(timer)
             }
 
@@ -399,5 +399,5 @@ macro_rules! impl_timer {
 }
 
 // Generate Timer0 and Timer1 types
-impl_timer!(Timer0, timer0, TIMER0, Peripheral::TIMER0);
-impl_timer!(Timer1, timer1, TIMER1, Peripheral::TIMER1);
+impl_timer!(Timer0, timer0, TIMER0);
+impl_timer!(Timer1, timer1, TIMER1);

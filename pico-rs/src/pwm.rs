@@ -114,7 +114,7 @@
 use paste::paste;
 
 use crate::gpio::pins::{NoPin, PwmAPin, PwmBPin};
-use crate::reset::{self, Peripheral};
+use crate::reset::Resettable;
 
 /// Number of PWM slices for RP2350A
 #[cfg(not(feature = "rp2350b"))]
@@ -212,6 +212,7 @@ pub enum Mode {
 /// via `unsafe { Slice::<N, NoPin, NoPin>::new() }` without going
 /// through [`Pwm`].
 pub struct Slice<const N: u8, A = NoPin, B = NoPin> {
+    pwm: pico_rs_pac::PWM,
     _pin_a: A,
     _pin_b: B,
     mode: Mode,
@@ -227,6 +228,7 @@ impl<const N: u8, A, B> Slice<N, A, B> {
     #[inline]
     pub const unsafe fn new() -> Slice<N, NoPin, NoPin> {
         Slice {
+            pwm: unsafe { pico_rs_pac::PWM::steal() },
             _pin_a: NoPin,
             _pin_b: NoPin,
             mode: Mode::OutputA,
@@ -264,7 +266,7 @@ impl Pwm {
     /// This initializes the PWM subsystem by taking it out of reset.
     /// The peripheral is consumed to ensure only one `Pwm` instance exists.
     pub fn new(pwm: pico_rs_pac::PWM) -> Self {
-        reset::unreset_block_wait(Peripheral::PWM);
+        pico_rs_pac::PWM::unreset();
         Self { _pwm: pwm }
     }
 
@@ -293,6 +295,7 @@ impl Pwm {
         };
 
         Slice {
+            pwm: unsafe { pico_rs_pac::PWM::steal() },
             _pin_a: NoPin,
             _pin_b: NoPin,
             mode: Mode::OutputA,
@@ -301,8 +304,7 @@ impl Pwm {
 
     #[inline]
     fn regs(&self) -> &pico_rs_pac::pwm::RegisterBlock {
-        // Safety: We own the PWM peripheral
-        unsafe { &*pico_rs_pac::PWM::PTR }
+        &self._pwm
     }
 
     // ========================================================================
@@ -495,7 +497,7 @@ macro_rules! impl_pwm_slice {
 
                     // Initialize via direct register access (avoids const-generic
                     // method resolution ambiguity)
-                    let pwm = unsafe { &*pico_rs_pac::PWM::PTR };
+                    let pwm = unsafe { pico_rs_pac::PWM::steal() };
                     pwm.[<ch $slice_num _csr>].clr_en();
                     pwm.[<ch $slice_num _top>].write_bits(0xffff);
                     pwm.[<ch $slice_num _div>].write_bits(1u32 << 4);
@@ -504,6 +506,7 @@ macro_rules! impl_pwm_slice {
                     pwm.[<ch $slice_num _csr>].write_divmode(DivMode::FreeRunning as u32);
 
                     Slice {
+                        pwm,
                         _pin_a: pin_a,
                         _pin_b: NoPin,
                         mode: Mode::OutputA,
@@ -530,7 +533,7 @@ macro_rules! impl_pwm_slice {
                     PwmBPin::configure_pwm_b(&pin_b);
 
                     // Initialize via direct register access
-                    let pwm = unsafe { &*pico_rs_pac::PWM::PTR };
+                    let pwm = unsafe { pico_rs_pac::PWM::steal() };
                     pwm.[<ch $slice_num _csr>].clr_en();
                     pwm.[<ch $slice_num _top>].write_bits(0xffff);
                     pwm.[<ch $slice_num _div>].write_bits(1u32 << 4);
@@ -540,6 +543,7 @@ macro_rules! impl_pwm_slice {
                     pwm.[<ch $slice_num _csr>].write_divmode(DivMode::FreeRunning as u32);
 
                     Slice {
+                        pwm,
                         _pin_a: pin_a,
                         _pin_b: pin_b,
                         mode: Mode::OutputAB,
@@ -564,7 +568,7 @@ macro_rules! impl_pwm_slice {
                     PwmBPin::configure_pwm_b(&pin_b);
 
                     // Initialize for input via direct register access
-                    let pwm = unsafe { &*pico_rs_pac::PWM::PTR };
+                    let pwm = unsafe { pico_rs_pac::PWM::steal() };
                     pwm.[<ch $slice_num _csr>].clr_en();
                     pwm.[<ch $slice_num _top>].write_bits(0xffff);
                     pwm.[<ch $slice_num _div>].write_bits(1u32 << 4);
@@ -573,6 +577,7 @@ macro_rules! impl_pwm_slice {
                     pwm.[<ch $slice_num _csr>].write_divmode(DivMode::from(mode) as u32);
 
                     Slice {
+                        pwm,
                         _pin_a: NoPin,
                         _pin_b: pin_b,
                         mode: Mode::Input,
@@ -606,7 +611,7 @@ macro_rules! impl_pwm_slice {
                     PwmBPin::configure_pwm_b(&pin_b);
 
                     // Initialize via direct register access
-                    let pwm = unsafe { &*pico_rs_pac::PWM::PTR };
+                    let pwm = unsafe { pico_rs_pac::PWM::steal() };
                     pwm.[<ch $slice_num _csr>].clr_en();
                     pwm.[<ch $slice_num _top>].write_bits(0xffff);
                     pwm.[<ch $slice_num _div>].write_bits(1u32 << 4);
@@ -616,6 +621,7 @@ macro_rules! impl_pwm_slice {
                     pwm.[<ch $slice_num _csr>].write_divmode(DivMode::from(mode) as u32);
 
                     Slice {
+                        pwm,
                         _pin_a: pin_a,
                         _pin_b: pin_b,
                         mode: Mode::OutputAWithInput,
@@ -637,9 +643,7 @@ macro_rules! impl_pwm_slice {
 
                 #[inline]
                 fn pwm(&self) -> &pico_rs_pac::pwm::RegisterBlock {
-                    // Safety: PWM peripheral is owned by Pwm struct,
-                    // and slices are created from Pwm methods
-                    unsafe { &*pico_rs_pac::PWM::PTR }
+                    &self.pwm
                 }
 
                 #[inline]

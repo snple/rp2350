@@ -26,7 +26,7 @@
 //! trng.fill_random(&mut buffer);
 //! ```
 
-use crate::reset::{self, Peripheral};
+use crate::reset::Resettable;
 use pico_rs_pac::TRNG;
 
 /// TRNG error types
@@ -70,8 +70,8 @@ impl Trng {
 
     /// Initialize the TRNG peripheral
     pub fn init() -> Self {
-        // Bring TRNG out of reset
-        reset::unreset_block_wait(Peripheral::TRNG);
+        // Reset peripheral to ensure clean register state
+        pico_rs_pac::TRNG::reset_init();
 
         let trng = Self::new();
 

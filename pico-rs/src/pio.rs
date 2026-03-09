@@ -50,7 +50,7 @@ use paste::paste;
 pub use pico_rs_macro::pio_asm;
 
 use crate::gpio;
-use crate::reset::{self, Peripheral};
+use crate::reset::Resettable;
 
 // ============================================================================
 // Constants
@@ -825,7 +825,7 @@ macro_rules! impl_pio_block {
                 ///
                 /// Unresets the PIO peripheral. Call once per PIO block.
                 pub fn take() -> Self {
-                    reset::unreset_block_wait(Peripheral::[<PIO $pio_num>]);
+                    <pico_rs_pac::[<PIO $pio_num>] as Resettable>::unreset();
                     Self {
                         pio: unsafe { pico_rs_pac::[<PIO $pio_num>]::steal() },
                         used_instruction_space: 0,

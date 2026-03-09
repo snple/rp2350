@@ -94,7 +94,7 @@ use core::marker::PhantomData;
 use paste::paste;
 use pico_rs_pac::DMA;
 
-use crate::reset::{self, Peripheral};
+use crate::reset::Resettable;
 
 /// Total number of DMA channels available on RP2350.
 pub const NUM_CHANNELS: usize = 16;
@@ -301,7 +301,7 @@ impl Dma {
     ///
     /// * `dma` — The DMA peripheral from `Peripherals::take()`
     pub fn new(dma: pico_rs_pac::DMA) -> Self {
-        reset::unreset_block_wait(Peripheral::DMA);
+        pico_rs_pac::DMA::unreset();
         Self { dma }
     }
 
@@ -567,8 +567,8 @@ pub struct Channel<const N: u8> {
 
 /// Internal helper — shared register-block accessor.
 #[inline(always)]
-fn dma_regs() -> &'static pico_rs_pac::dma::RegisterBlock {
-    unsafe { &*DMA::PTR }
+fn dma_regs() -> pico_rs_pac::DMA {
+    unsafe { DMA::steal() }
 }
 
 // Generate per-channel implementations for all 16 channels.

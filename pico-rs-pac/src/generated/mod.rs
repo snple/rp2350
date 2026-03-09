@@ -271,12 +271,6 @@ macro_rules! peripheral {
                     _marker: PhantomData,
                 }
             }
-
-            /// Returns a raw pointer to the register block
-            #[inline(always)]
-            pub const fn ptr() -> *const $reg {
-                Self::PTR
-            }
         }
 
         impl Deref for $name {

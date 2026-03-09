@@ -23,7 +23,7 @@
 //! }
 //! ```
 
-use crate::reset;
+use crate::reset::Resettable;
 use pico_rs_pac::SHA256;
 
 /// SHA-256 block size in bytes
@@ -56,8 +56,8 @@ impl Sha256 {
     /// This will bring the SHA-256 peripheral out of reset.
     #[inline]
     pub fn new() -> Self {
-        // Unreset the SHA256 peripheral
-        reset::unreset_sha256_wait();
+        // Bring SHA256 out of reset
+        pico_rs_pac::SHA256::unreset();
 
         Self {
             sha256: unsafe { SHA256::steal() },

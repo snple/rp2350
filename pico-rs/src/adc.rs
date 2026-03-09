@@ -85,7 +85,7 @@
 //! ```
 
 use crate::gpio::{Function, Pin, Pull};
-use crate::reset::{self, Peripheral};
+use crate::reset::Resettable;
 use pico_rs_pac::ADC;
 
 // ============================================================================
@@ -284,9 +284,8 @@ impl Adc {
     /// let mut adc = Adc::new(dp.ADC);
     /// ```
     pub fn new(adc: ADC) -> Self {
-        // Reset and unreset ADC block
-        reset::reset_block(Peripheral::ADC);
-        reset::unreset_block_wait(Peripheral::ADC);
+        // Reset peripheral to ensure clean register state
+        pico_rs_pac::ADC::reset_init();
 
         // Enable ADC
         adc.cs.set_en();

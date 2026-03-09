@@ -107,7 +107,7 @@ use paste::paste;
 use crate::gpio::{
     Spi0CsnPin, Spi0RxPin, Spi0SckPin, Spi0TxPin, Spi1CsnPin, Spi1RxPin, Spi1SckPin, Spi1TxPin,
 };
-use crate::reset::{self, Peripheral};
+use crate::reset::Resettable;
 
 /// SPI mode (clock polarity and phase)
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
@@ -159,12 +159,52 @@ pub enum Error {
     Timeout,
 }
 
+/// Abstract SPI bus trait for driver implementations.
+///
+/// This keeps drivers decoupled from concrete SPI types while preserving
+/// the HAL's type-safe pin ownership model. A driver only needs
+/// `impl SpiBus` instead of carrying the full generic parameters of
+/// [`Spi0`]/[`Spi1`].
+///
+/// # Example
+///
+/// ```ignore
+/// use pico_rs::spi::SpiBus;
+///
+/// fn read_register(spi: &impl SpiBus, cs: &impl GpioPin, reg: u8) -> u8 {
+///     cs.set_low();
+///     spi.write(&[reg]);
+///     let mut buf = [0u8; 1];
+///     spi.read(&mut buf);
+///     cs.set_high();
+///     buf[0]
+/// }
+/// ```
+pub trait SpiBus {
+    /// Write multiple bytes to the SPI bus (8-bit mode).
+    fn write(&self, data: &[u8]);
+
+    /// Read multiple bytes from the SPI bus by sending dummy bytes (8-bit mode).
+    fn read(&self, data: &mut [u8]);
+
+    /// Full-duplex transfer: write and read simultaneously (8-bit mode).
+    ///
+    /// The transfer length is `min(read.len(), write.len())`.
+    fn transfer(&self, read: &mut [u8], write: &[u8]);
+
+    /// Full-duplex transfer in-place: the same buffer is used for TX and RX.
+    fn transfer_in_place(&self, data: &mut [u8]);
+
+    /// Block until all pending transfers are complete.
+    fn flush(&self);
+}
+
 // ============================================================================
 // Macro for generating SPI implementations
 // ============================================================================
 
 macro_rules! impl_spi {
-    ($SpiName:ident, $spi_num:literal, $SpiType:ty, $spi_mod:ident, $reset_peripheral:expr, $SckTrait:ident, $TxTrait:ident, $RxTrait:ident, $CsnTrait:ident) => {
+    ($SpiName:ident, $spi_num:literal, $SpiType:ty, $spi_mod:ident, $SckTrait:ident, $TxTrait:ident, $RxTrait:ident, $CsnTrait:ident) => {
         paste! {
             /// SPI peripheral wrapper with type-safe pin ownership.
             ///
@@ -255,8 +295,8 @@ macro_rules! impl_spi {
                     tx.[<configure_spi $spi_num _tx>]();
                     rx.[<configure_spi $spi_num _rx>]();
 
-                    // Bring SPI out of reset
-                    reset::unreset_block_wait($reset_peripheral);
+                    // Reset peripheral to ensure clean register state
+                    <$SpiType as Resettable>::reset_init();
 
                     let mut spi_dev = Self {
                         spi,
@@ -276,7 +316,7 @@ macro_rules! impl_spi {
                     spi_dev.set_format(8, Mode::Mode0, FrameFormat::MotorolaSpi);
 
                     // Configure as master (MS=0), no loopback
-                    spi_dev.spi.sspcr1.write_bits(0);
+                    spi_dev.spi.sspcr1.clr_ms();
 
                     // Enable
                     spi_dev.spi.sspcr1.set_sse();
@@ -754,6 +794,38 @@ macro_rules! impl_spi {
                 }
             }
 
+            impl<SCK, TX, RX> SpiBus for $SpiName<SCK, TX, RX>
+            where
+                SCK: $SckTrait,
+                TX: $TxTrait,
+                RX: $RxTrait,
+            {
+                #[inline]
+                fn write(&self, data: &[u8]) {
+                    Self::write(self, data);
+                }
+
+                #[inline]
+                fn read(&self, data: &mut [u8]) {
+                    Self::read(self, data);
+                }
+
+                #[inline]
+                fn transfer(&self, read: &mut [u8], write: &[u8]) {
+                    Self::transfer(self, read, write);
+                }
+
+                #[inline]
+                fn transfer_in_place(&self, data: &mut [u8]) {
+                    Self::transfer_in_place(self, data);
+                }
+
+                #[inline]
+                fn flush(&self) {
+                    Self::flush(self);
+                }
+            }
+
             // ================================================================
             // SPI with hardware chip select (Master/Slave modes)
             // ================================================================
@@ -877,8 +949,8 @@ macro_rules! impl_spi {
                     rx.[<configure_spi $spi_num _rx>]();
                     csn.[<configure_spi $spi_num _csn>]();
 
-                    // Bring SPI out of reset
-                    reset::unreset_block_wait($reset_peripheral);
+                    // Reset peripheral to ensure clean register state
+                    <$SpiType as Resettable>::reset_init();
 
                     let mut spi_dev = Self {
                         spi,
@@ -899,7 +971,7 @@ macro_rules! impl_spi {
                     spi_dev.set_format(8, Mode::Mode0, FrameFormat::MotorolaSpi);
 
                     // Configure as master (MS=0)
-                    spi_dev.spi.sspcr1.write_bits(0);
+                    spi_dev.spi.sspcr1.clr_ms();
 
                     // Enable
                     spi_dev.spi.sspcr1.set_sse();
@@ -934,8 +1006,8 @@ macro_rules! impl_spi {
                     rx.[<configure_spi $spi_num _rx>]();
                     csn.[<configure_spi $spi_num _csn>]();
 
-                    // Bring SPI out of reset
-                    reset::unreset_block_wait($reset_peripheral);
+                    // Reset peripheral to ensure clean register state
+                    <$SpiType as Resettable>::reset_init();
 
                     let mut spi_dev = Self {
                         spi,
@@ -1392,6 +1464,39 @@ macro_rules! impl_spi {
                     self.spi.sspcr1.sod()
                 }
             }
+
+            impl<SCK, TX, RX, CSN> SpiBus for [<$SpiName WithCs>]<SCK, TX, RX, CSN>
+            where
+                SCK: $SckTrait,
+                TX: $TxTrait,
+                RX: $RxTrait,
+                CSN: $CsnTrait,
+            {
+                #[inline]
+                fn write(&self, data: &[u8]) {
+                    Self::write(self, data);
+                }
+
+                #[inline]
+                fn read(&self, data: &mut [u8]) {
+                    Self::read(self, data);
+                }
+
+                #[inline]
+                fn transfer(&self, read: &mut [u8], write: &[u8]) {
+                    Self::transfer(self, read, write);
+                }
+
+                #[inline]
+                fn transfer_in_place(&self, data: &mut [u8]) {
+                    Self::transfer_in_place(self, data);
+                }
+
+                #[inline]
+                fn flush(&self) {
+                    Self::flush(self);
+                }
+            }
         }
     };
 }
@@ -1405,7 +1510,6 @@ impl_spi!(
     0,
     pico_rs_pac::SPI0,
     spi0,
-    Peripheral::SPI0,
     Spi0SckPin,
     Spi0TxPin,
     Spi0RxPin,
@@ -1416,7 +1520,6 @@ impl_spi!(
     1,
     pico_rs_pac::SPI1,
     spi1,
-    Peripheral::SPI1,
     Spi1SckPin,
     Spi1TxPin,
     Spi1RxPin,

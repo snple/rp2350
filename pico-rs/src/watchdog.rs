@@ -440,9 +440,7 @@ impl Watchdog {
     /// * `delay_ms` - Timeout in milliseconds (max ~8300ms)
     /// * `pause_on_debug` - Whether to pause the watchdog during debug
     pub fn enable_watchdog(&self, delay_ms: u32, pause_on_debug: bool) {
-        self.watchdog
-            .scratch4
-            .write_bits(WATCHDOG_NON_REBOOT_MAGIC);
+        self.watchdog.scratch4.write_bits(WATCHDOG_NON_REBOOT_MAGIC);
 
         self.configure_watchdog_reset(delay_ms, pause_on_debug);
     }
@@ -477,9 +475,12 @@ impl Watchdog {
     /// * `sp` - Stack pointer value to set before jumping
     /// * `delay_ms` - Delay in milliseconds before reset (0 = immediate)
     ///
-    /// # Note
-    /// This function does not return.
-    pub fn reboot_to_address(&self, pc: u32, sp: u32, delay_ms: u32) -> ! {
+    /// # Safety
+    ///
+    /// `pc` must be a valid, aligned code address and `sp` must point to
+    /// a valid stack region. Invalid values cause undefined behaviour
+    /// after reset.
+    pub unsafe fn reboot_to_address(&self, pc: u32, sp: u32, delay_ms: u32) -> ! {
         self.watchdog.ctrl.clr_enable();
 
         let pc_thumb = pc | 1;
@@ -503,7 +504,7 @@ impl Watchdog {
 
     /// Configure watchdog for system reset (internal helper)
     fn configure_watchdog_reset(&self, delay_ms: u32, pause_on_debug: bool) {
-        let psm = unsafe { &*PSM::PTR };
+        let psm = unsafe { PSM::steal() };
 
         self.watchdog.ctrl.clr_enable();
         psm.wdsel.set_bits(PSM_WDSEL_RESET_BITS);
@@ -552,8 +553,8 @@ impl Watchdog {
 /// watchdog::reboot(10);
 /// ```
 pub fn reboot(delay_ms: u32) -> ! {
-    let watchdog = unsafe { &*WATCHDOG::PTR };
-    let psm = unsafe { &*PSM::PTR };
+    let watchdog = unsafe { WATCHDOG::steal() };
+    let psm = unsafe { PSM::steal() };
 
     watchdog.scratch4.write_bits(0);
     watchdog.ctrl.clr_enable();
@@ -583,11 +584,14 @@ pub fn reboot(delay_ms: u32) -> ! {
 /// * `sp` - Stack pointer value to set before jumping
 /// * `delay_ms` - Delay in milliseconds before reset (0 = immediate)
 ///
-/// # Note
-/// This function does not return.
-pub fn reboot_to_address(pc: u32, sp: u32, delay_ms: u32) -> ! {
-    let watchdog = unsafe { &*WATCHDOG::PTR };
-    let psm = unsafe { &*PSM::PTR };
+/// # Safety
+///
+/// `pc` must be a valid, aligned code address and `sp` must point to
+/// a valid stack region. Invalid values cause undefined behaviour
+/// after reset.
+pub unsafe fn reboot_to_address(pc: u32, sp: u32, delay_ms: u32) -> ! {
+    let watchdog = unsafe { WATCHDOG::steal() };
+    let psm = unsafe { PSM::steal() };
 
     watchdog.ctrl.clr_enable();
 
@@ -620,13 +624,13 @@ pub fn reboot_to_address(pc: u32, sp: u32, delay_ms: u32) -> ! {
 /// Check if the last reset was caused by the watchdog (module-level convenience)
 #[inline]
 pub fn caused_reboot() -> bool {
-    let watchdog = unsafe { &*WATCHDOG::PTR };
+    let watchdog = unsafe { WATCHDOG::steal() };
     watchdog.reason.read_bits() != 0
 }
 
 /// Check if the last reset was caused by `enable_watchdog()` (module-level convenience)
 #[inline]
 pub fn enable_caused_reboot() -> bool {
-    let watchdog = unsafe { &*WATCHDOG::PTR };
+    let watchdog = unsafe { WATCHDOG::steal() };
     watchdog.reason.read_bits() != 0 && watchdog.scratch4.read_bits() == WATCHDOG_NON_REBOOT_MAGIC
 }

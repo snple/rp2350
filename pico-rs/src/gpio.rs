@@ -235,7 +235,7 @@ use paste::paste;
 use pico_rs_pac::sio::RegisterBlock as SioRegisterBlock;
 use pico_rs_pac::{IO_BANK0, PADS_BANK0};
 
-use crate::reset::{self, Peripheral};
+use crate::reset::{self, Resettable};
 
 // ============================================================================
 // Function Select Values (from RP2350 datasheet Table 294)
@@ -1933,10 +1933,12 @@ impl Pins {
     #[inline]
     pub fn new(io_bank0: IO_BANK0, pads_bank0: PADS_BANK0) -> Self {
         // Initialize GPIO subsystem: reset and unreset peripherals
-        let mask = Peripheral::IO_BANK0.mask() | Peripheral::PADS_BANK0.mask();
-        reset::reset_block_mask(mask);
-        reset::unreset_block_mask(mask);
-        reset::unreset_wait_mask(mask);
+        let mask = pico_rs_pac::IO_BANK0::RESET_MASK | pico_rs_pac::PADS_BANK0::RESET_MASK;
+        // SAFETY: mask is composed from valid Resettable::RESET_MASK constants.
+        unsafe {
+            reset::reset(mask);
+            reset::unreset(mask);
+        }
 
         Self {
             _io_bank0: io_bank0,

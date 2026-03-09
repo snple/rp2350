@@ -81,7 +81,7 @@ use paste::paste;
 
 use crate::clocks::Clocks;
 use crate::gpio::{I2c0SclPin, I2c0SdaPin, I2c1SclPin, I2c1SdaPin};
-use crate::reset::{self, Peripheral};
+use crate::reset::Resettable;
 
 /// Abstract I2C bus trait for driver implementations.
 ///
@@ -153,7 +153,7 @@ pub enum Mode {
 // ============================================================================
 
 macro_rules! impl_i2c {
-    ($I2cName:ident, $i2c_num:literal, $I2cType:ty, $i2c_mod:ident, $reset_peripheral:expr, $SdaTrait:ident, $SclTrait:ident) => {
+    ($I2cName:ident, $i2c_num:literal, $I2cType:ty, $i2c_mod:ident, $SdaTrait:ident, $SclTrait:ident) => {
         paste! {
             /// I2C peripheral wrapper with type-safe pin ownership.
             ///
@@ -236,8 +236,8 @@ macro_rules! impl_i2c {
                     sda.[<configure_i2c $i2c_num _sda>]();
                     scl.[<configure_i2c $i2c_num _scl>]();
 
-                    // Bring I2C out of reset
-                    reset::unreset_block_wait($reset_peripheral);
+                    // Reset peripheral to ensure clean register state
+                    <$I2cType as Resettable>::reset_init();
 
                     let mut i2c_dev = Self {
                         i2c,
@@ -249,6 +249,10 @@ macro_rules! impl_i2c {
 
                     // Disable I2C to configure
                     i2c_dev.i2c.ic_enable.clr_enable();
+
+                    // Disable all interrupts and clear pending
+                    i2c_dev.i2c.ic_intr_mask.write_bits(0);
+                    let _ = i2c_dev.i2c.ic_clr_intr.read_bits();
 
                     // Configure as master: clear all, then set required bits
                     i2c_dev.i2c.ic_con.write_bits(0);
@@ -297,8 +301,8 @@ macro_rules! impl_i2c {
                     sda.[<configure_i2c $i2c_num _sda>]();
                     scl.[<configure_i2c $i2c_num _scl>]();
 
-                    // Bring I2C out of reset
-                    reset::unreset_block_wait($reset_peripheral);
+                    // Reset peripheral to ensure clean register state
+                    <$I2cType as Resettable>::reset_init();
 
                     let i2c_dev = Self {
                         i2c,
@@ -310,6 +314,10 @@ macro_rules! impl_i2c {
 
                     // Disable I2C to configure
                     i2c_dev.i2c.ic_enable.clr_enable();
+
+                    // Disable all interrupts and clear pending
+                    i2c_dev.i2c.ic_intr_mask.write_bits(0);
+                    let _ = i2c_dev.i2c.ic_clr_intr.read_bits();
 
                     // Configure as slave: clear all, then set required bits
                     i2c_dev.i2c.ic_con.write_bits(0);
@@ -349,8 +357,8 @@ macro_rules! impl_i2c {
                     sda.[<configure_i2c $i2c_num _sda>]();
                     scl.[<configure_i2c $i2c_num _scl>]();
 
-                    // Bring I2C out of reset
-                    reset::unreset_block_wait($reset_peripheral);
+                    // Reset peripheral to ensure clean register state
+                    <$I2cType as Resettable>::reset_init();
 
                     let i2c_dev = Self {
                         i2c,
@@ -362,6 +370,10 @@ macro_rules! impl_i2c {
 
                     // Disable I2C to configure
                     i2c_dev.i2c.ic_enable.clr_enable();
+
+                    // Disable all interrupts and clear pending
+                    i2c_dev.i2c.ic_intr_mask.write_bits(0);
+                    let _ = i2c_dev.i2c.ic_clr_intr.read_bits();
 
                     // Configure as slave with 10-bit addressing
                     i2c_dev.i2c.ic_con.write_bits(0);
@@ -1153,21 +1165,5 @@ macro_rules! impl_i2c {
 // Generate I2C0 and I2C1
 // ============================================================================
 
-impl_i2c!(
-    I2c0,
-    0,
-    pico_rs_pac::I2C0,
-    i2c0,
-    Peripheral::I2C0,
-    I2c0SdaPin,
-    I2c0SclPin
-);
-impl_i2c!(
-    I2c1,
-    1,
-    pico_rs_pac::I2C1,
-    i2c1,
-    Peripheral::I2C1,
-    I2c1SdaPin,
-    I2c1SclPin
-);
+impl_i2c!(I2c0, 0, pico_rs_pac::I2C0, i2c0, I2c0SdaPin, I2c0SclPin);
+impl_i2c!(I2c1, 1, pico_rs_pac::I2C1, i2c1, I2c1SdaPin, I2c1SclPin);
