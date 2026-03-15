@@ -1,34 +1,36 @@
 //! TICKS (Tick Generator) HAL for RP2350
 //!
 //! This module provides access to the tick generators for various system
-//! components including processors, timers, watchdog, and RISC-V.
+//! components including processors, timers, and watchdog.
 //!
 //! The tick generators derive a 1µs tick from the reference clock for use
-//! by timers and the watchdog.
+//! by timers and the watchdog. The reference clock frequency is obtained
+//! from the [`Clocks`](crate::clocks::Clocks) peripheral after initialization,
+//! so the correct cycles-per-tick value is always used regardless of which
+//! clock source (XOSC, ROSC, etc.) feeds `clk_ref`.
 //!
 //! ## Features
 //!
-//! - Per-component tick generators (PROC0, PROC1, TIMER0, TIMER1, WATCHDOG, RISCV)
-//! - Configurable cycles per tick
-//! - Enable/disable control
+//! - Per-component tick generators (PROC0, PROC1, TIMER0, TIMER1, WATCHDOG)
+//! - Configurable cycles per tick (auto-computed from `clk_ref`)
 //! - Running status
 //!
 //! ## Example
 //!
 //! ```ignore
+//! use pico_rs::clocks::ClockBuilder;
 //! use pico_rs::ticks::Ticks;
-//! use pico_rs_pac::TICKS;
 //!
-//! let ticks_pac = unsafe { TICKS::steal() };
-//! let ticks = Ticks::new(ticks_pac);
+//! let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
+//! let ticks = Ticks::new(dp.TICKS, &clocks);
 //!
-//! // Configure all tick generators for 12 MHz reference clock
-//! // 12 cycles per tick = 1µs tick period
-//! ticks.init(12_000_000);
+//! // Initialize only the tick generators you need
+//! ticks.init_timer0();
+//! ticks.init_watchdog();
 //!
-//! // Or configure individual generators
-//! ticks.set_timer0_cycles(12);
-//! ticks.enable_timer0();
+//! // Low-level control is also available
+//! ticks.set_timer1_cycles(24);
+//! ticks.enable_timer1();
 //!
 //! // Check if running
 //! if ticks.timer0_running() {
@@ -36,40 +38,40 @@
 //! }
 //! ```
 
-/// Tick generator target
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
-#[cfg_attr(feature = "defmt", derive(defmt::Format))]
-pub enum TickTarget {
-    /// Processor 0
-    Proc0,
-    /// Processor 1
-    Proc1,
-    /// Timer 0
-    Timer0,
-    /// Timer 1
-    Timer1,
-    /// Watchdog
-    Watchdog,
-    /// RISC-V
-    Riscv,
-}
+use crate::clocks::Clocks;
 
 /// TICKS peripheral wrapper
 ///
 /// Provides access to tick generator configuration and control.
-/// Owns the PAC TICKS peripheral to enforce proper ownership semantics.
+/// The cycles-per-tick value is computed from `clk_ref` at construction time.
 pub struct Ticks {
     ticks: pico_rs_pac::TICKS,
+    /// Pre-computed cycles per 1µs tick, derived from `clk_ref`
+    cycles_per_tick: u16,
 }
 
 impl Ticks {
     /// Create a new Ticks instance
     ///
+    /// Computes the correct cycles-per-tick value from the reference clock
+    /// frequency tracked by `clocks`.
+    ///
     /// # Arguments
     /// * `ticks` - The TICKS peripheral from PAC
+    /// * `clocks` - Reference to the initialized clock system
     #[inline]
-    pub fn new(ticks: pico_rs_pac::TICKS) -> Self {
-        Self { ticks }
+    pub fn new(ticks: pico_rs_pac::TICKS, clocks: &Clocks) -> Self {
+        let cycles_per_tick = (clocks.ref_freq() / 1_000_000) as u16;
+        Self {
+            ticks,
+            cycles_per_tick,
+        }
+    }
+
+    /// Get the configured cycles per tick
+    #[inline]
+    pub fn cycles_per_tick(&self) -> u16 {
+        self.cycles_per_tick
     }
 
     /// Get reference to the underlying register block
@@ -321,89 +323,46 @@ impl Ticks {
     }
 
     // ========================================================================
-    // RISCV
+    // Per-Generator Init (disable → configure → enable)
     // ========================================================================
 
-    /// Enable RISCV tick generator
+    /// Initialize PROC0 tick generator (disable, set cycles, enable)
     #[inline]
-    pub fn enable_riscv(&self) {
-        self.ticks.riscv_ctrl.set_enable();
-    }
-
-    /// Disable RISCV tick generator
-    #[inline]
-    pub fn disable_riscv(&self) {
-        self.ticks.riscv_ctrl.clr_enable();
-    }
-
-    /// Check if RISCV tick generator is running
-    #[inline]
-    pub fn riscv_running(&self) -> bool {
-        self.ticks.riscv_ctrl.running()
-    }
-
-    /// Check if RISCV tick generator is enabled
-    #[inline]
-    pub fn riscv_enabled(&self) -> bool {
-        self.ticks.riscv_ctrl.enable()
-    }
-
-    /// Set RISCV cycles per tick
-    #[inline]
-    pub fn set_riscv_cycles(&self, cycles: u16) {
-        self.ticks.riscv_cycles.write_riscv_cycles(cycles as u32);
-    }
-
-    /// Get RISCV cycles per tick
-    #[inline]
-    pub fn riscv_cycles(&self) -> u16 {
-        self.ticks.riscv_cycles.riscv_cycles() as u16
-    }
-
-    /// Get RISCV tick count
-    #[inline]
-    pub fn riscv_count(&self) -> u16 {
-        self.ticks.riscv_count.riscv_count() as u16
-    }
-
-    // ========================================================================
-    // Generic Operations
-    // ========================================================================
-
-    /// Initialize all tick generators for a given reference clock frequency
-    ///
-    /// This sets up all tick generators to produce 1µs ticks.
-    ///
-    /// # Arguments
-    /// * `ref_clk_hz` - Reference clock frequency in Hz
-    pub fn init(&self, ref_clk_hz: u32) {
-        let cycles = (ref_clk_hz / 1_000_000) as u16;
-
-        self.set_proc0_cycles(cycles);
-        self.set_proc1_cycles(cycles);
-        self.set_timer0_cycles(cycles);
-        self.set_timer1_cycles(cycles);
-        self.set_watchdog_cycles(cycles);
-        self.set_riscv_cycles(cycles);
-    }
-
-    /// Enable all tick generators
-    pub fn enable_all(&self) {
-        self.enable_proc0();
-        self.enable_proc1();
-        self.enable_timer0();
-        self.enable_timer1();
-        self.enable_watchdog();
-        self.enable_riscv();
-    }
-
-    /// Disable all tick generators
-    pub fn disable_all(&self) {
+    pub fn init_proc0(&self) {
         self.disable_proc0();
+        self.set_proc0_cycles(self.cycles_per_tick);
+        self.enable_proc0();
+    }
+
+    /// Initialize PROC1 tick generator (disable, set cycles, enable)
+    #[inline]
+    pub fn init_proc1(&self) {
         self.disable_proc1();
+        self.set_proc1_cycles(self.cycles_per_tick);
+        self.enable_proc1();
+    }
+
+    /// Initialize TIMER0 tick generator (disable, set cycles, enable)
+    #[inline]
+    pub fn init_timer0(&self) {
         self.disable_timer0();
+        self.set_timer0_cycles(self.cycles_per_tick);
+        self.enable_timer0();
+    }
+
+    /// Initialize TIMER1 tick generator (disable, set cycles, enable)
+    #[inline]
+    pub fn init_timer1(&self) {
         self.disable_timer1();
+        self.set_timer1_cycles(self.cycles_per_tick);
+        self.enable_timer1();
+    }
+
+    /// Initialize WATCHDOG tick generator (disable, set cycles, enable)
+    #[inline]
+    pub fn init_watchdog(&self) {
         self.disable_watchdog();
-        self.disable_riscv();
+        self.set_watchdog_cycles(self.cycles_per_tick);
+        self.enable_watchdog();
     }
 }

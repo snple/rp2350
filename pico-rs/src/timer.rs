@@ -65,13 +65,17 @@ macro_rules! impl_timer {
 
             /// Initialize the timer peripheral
             ///
-            /// This brings the timer out of reset and enables it.
+            /// This brings the timer out of reset and returns the timer ready for use.
+            ///
+            /// **Note**: The corresponding tick generator in the TICKS block must be
+            /// configured and enabled before using the timer. For example, call
+            /// [`Ticks::init_timer0()`] or [`Ticks::init_timer1()`] for the
+            /// corresponding timer.
             ///
             /// # Arguments
             /// * `timer` - The Timer peripheral from PAC
             pub fn init(timer: pico_rs_pac::$TIMER) -> Self {
-                // Bring timer out of reset
-                <pico_rs_pac::$TIMER as Resettable>::unreset();
+                <pico_rs_pac::$TIMER as Resettable>::reset_init();
                 Self::new(timer)
             }
 
