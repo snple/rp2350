@@ -44,25 +44,6 @@ macro_rules! impl_timer {
         }
 
         impl $TimerName {
-            /// Create a new Timer instance without initialization
-            ///
-            /// # Arguments
-            /// * `timer` - The Timer peripheral from PAC
-            #[inline]
-            pub fn new(timer: pico_rs_pac::$TIMER) -> Self {
-                Self { timer }
-            }
-
-            /// Get reference to the underlying register block
-            ///
-            /// # Safety
-            /// Direct register access can bypass the HAL's safety guarantees.
-            /// The caller must ensure operations do not conflict with the HAL state.
-            #[inline]
-            pub unsafe fn regs(&self) -> &pico_rs_pac::$timer_mod::RegisterBlock {
-                &self.timer
-            }
-
             /// Initialize the timer peripheral
             ///
             /// This brings the timer out of reset and returns the timer ready for use.
@@ -76,13 +57,43 @@ macro_rules! impl_timer {
             /// * `timer` - The Timer peripheral from PAC
             pub fn init(timer: pico_rs_pac::$TIMER) -> Self {
                 <pico_rs_pac::$TIMER as Resettable>::reset_init();
-                Self::new(timer)
+                Self { timer }
             }
 
             /// Release the Timer peripheral
             #[inline]
             pub fn release(self) -> pico_rs_pac::$TIMER {
                 self.timer
+            }
+
+            /// Create a Timer handle without ownership of the PAC peripheral.
+            ///
+            /// This is analogous to [`Pin::new()`](crate::gpio::Pin::new) —
+            /// it allows ISR or other contexts to access the timer registers
+            /// when the real owner lives elsewhere (e.g. in `main`).
+            ///
+            /// # Safety
+            ///
+            /// The caller must ensure that:
+            /// - The timer has already been initialised (via [`init()`](Self::init)
+            ///   or equivalent).
+            /// - No conflicting ownership exists — i.e. the stolen handle is not
+            ///   used to release or re-initialise the peripheral.
+            #[inline]
+            pub unsafe fn steal() -> Self {
+                Self {
+                    timer: unsafe { pico_rs_pac::$TIMER::steal() },
+                }
+            }
+
+            /// Get reference to the underlying register block
+            ///
+            /// # Safety
+            /// Direct register access can bypass the HAL's safety guarantees.
+            /// The caller must ensure operations do not conflict with the HAL state.
+            #[inline]
+            pub unsafe fn regs(&self) -> &pico_rs_pac::$timer_mod::RegisterBlock {
+                &self.timer
             }
 
             // ========================================================================
@@ -154,6 +165,46 @@ macro_rules! impl_timer {
                     2 => self.timer.alarm2.write_alarm2(time),
                     3 => self.timer.alarm3.write_alarm3(time),
                     _ => unreachable!(),
+                }
+            }
+
+            /// Set an alarm with race-condition protection
+            ///
+            /// RP2350 timer alarms fire on exact match: when `TIMERAWL == ALARM`.
+            /// If the target time has already passed by the time the alarm register
+            /// is written, the alarm will never fire (it would take ~71 minutes for
+            /// the 32-bit counter to wrap around and match again).
+            ///
+            /// This method writes the alarm and then immediately checks whether the
+            /// target was missed:
+            /// - If the target is still in the future → normal, hardware will fire.
+            /// - If the target is in the past and the alarm is still armed →
+            ///   disarms the stale alarm and forces an interrupt via INTF.
+            ///
+            /// **Note**: The corresponding ISR must clear both INTR and INTF at
+            /// entry to prevent infinite re-entry from the forced interrupt:
+            /// ```ignore
+            /// timer.clear_alarm_interrupt(n);
+            /// timer.clear_forced_alarm_interrupt(n);
+            /// ```
+            ///
+            /// The "past vs future" check uses unsigned wrapping subtraction:
+            /// `now.wrapping_sub(target) < 0x8000_0000` is true when `target` is
+            /// in the past half of the 32-bit number circle (within ~35 minutes).
+            /// This is safe for any interval shorter than ~35 minutes.
+            ///
+            /// # Arguments
+            /// * `alarm` - Alarm number (0-3)
+            /// * `time`  - Target time in microseconds (low 32 bits)
+            #[inline]
+            pub fn set_alarm_safe(&self, alarm: u8, time: u32) {
+                self.set_alarm(alarm, time);
+                let now = self.get_time_us_32();
+                if now.wrapping_sub(time) < 0x8000_0000 {
+                    if self.is_alarm_armed(alarm) {
+                        self.disarm_alarm(alarm);
+                        self.force_alarm_interrupt(alarm);
+                    }
                 }
             }
 

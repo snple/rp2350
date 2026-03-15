@@ -143,9 +143,10 @@ use panic_probe as _;
 use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
-use pico_rs::gpio::Pins;
+use pico_rs::gpio::{Pin, Pins};
 use pico_rs::interrupt::{self, Mutex};
 use pico_rs::pac::{Interrupt, Peripherals};
+use pico_rs::sio::Sio;
 use pico_rs::timer::Timer0;
 
 #[unsafe(link_section = ".start_block")]
@@ -376,22 +377,23 @@ static MOTION_DONE: AtomicBool = AtomicBool::new(true);
 ///
 /// speed_ref: 速度参考 (RPM × 10)，正值=正转，负值=反转
 fn update_step_speed(speed_ref: i32) {
-    let sio = unsafe { pico_rs::pac::SIO::steal() };
+    let sio = Sio::new();
+    let gpio = sio.gpio();
 
     if speed_ref.abs() < 5 {
         // 速度太低 → 停止脉冲
         STEP_INTERVAL_US.store(0, Ordering::Relaxed);
         STEPPER_RUNNING.store(false, Ordering::Relaxed);
-        sio.gpio_out_clr.write_bits(1 << PIN_STEP);
+        gpio.pin_clr(PIN_STEP as u8);
         return;
     }
 
     // 设置方向
     if speed_ref >= 0 {
-        sio.gpio_out_clr.write_bits(1 << PIN_DIR);
+        gpio.pin_clr(PIN_DIR as u8);
         STEP_DIRECTION.store(0, Ordering::Relaxed);
     } else {
-        sio.gpio_out_set.write_bits(1 << PIN_DIR);
+        gpio.pin_set(PIN_DIR as u8);
         STEP_DIRECTION.store(1, Ordering::Relaxed);
     }
 
@@ -414,7 +416,7 @@ fn update_step_speed(speed_ref: i32) {
         interrupt::free(|cs| {
             if let Some(ref timer) = *TIMER.borrow(cs).borrow() {
                 let now = timer.get_time_us_32();
-                timer.set_alarm(1, now.wrapping_add(interval_us));
+                timer.set_alarm_safe(1, now.wrapping_add(interval_us));
                 timer.enable_alarm_interrupt(1);
             }
         });
@@ -493,7 +495,7 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     {
         let now = timer.get_time_us_32();
-        timer.set_alarm(0, now.wrapping_add(CONTROL_INTERVAL_US));
+        timer.set_alarm_safe(0, now.wrapping_add(CONTROL_INTERVAL_US));
         timer.enable_alarm_interrupt(0);
 
         interrupt::free(|cs| {
@@ -742,8 +744,7 @@ fn main() -> ! {
                     pi_speed.reset();
 
                     // LED 快闪指示
-                    let sio = unsafe { pico_rs::pac::SIO::steal() };
-                    sio.gpio_out_xor.write_bits(1 << PIN_LED);
+                    unsafe { Pin::<{ PIN_LED as u8 }>::new() }.toggle();
 
                     warn!(
                         "STALL! cmd={} enc_ustep={} err={} cnt={}",
@@ -753,8 +754,7 @@ fn main() -> ! {
             } else {
                 stall_counter = 0;
                 // 堵转恢复后关闭 LED
-                let sio = unsafe { pico_rs::pac::SIO::steal() };
-                sio.gpio_out_clr.write_bits(1 << PIN_LED);
+                unsafe { Pin::<{ PIN_LED as u8 }>::new() }.set_low();
             }
 
             // ---- 日志 (~2Hz) ----
@@ -810,9 +810,10 @@ fn TIMER0_IRQ_0() {
     interrupt::free(|cs| {
         if let Some(ref timer) = *TIMER.borrow(cs).borrow() {
             timer.clear_alarm_interrupt(0);
+            timer.clear_forced_alarm_interrupt(0);
             CONTROL_TICK.store(true, Ordering::Relaxed);
             let now = timer.get_time_us_32();
-            timer.set_alarm(0, now.wrapping_add(CONTROL_INTERVAL_US));
+            timer.set_alarm_safe(0, now.wrapping_add(CONTROL_INTERVAL_US));
         }
     });
 }
@@ -827,6 +828,7 @@ fn TIMER0_IRQ_1() {
     interrupt::free(|cs| {
         if let Some(ref timer) = *TIMER.borrow(cs).borrow() {
             timer.clear_alarm_interrupt(1);
+            timer.clear_forced_alarm_interrupt(1);
 
             let interval = STEP_INTERVAL_US.load(Ordering::Relaxed);
             if interval == 0 {
@@ -834,21 +836,21 @@ fn TIMER0_IRQ_1() {
                 return;
             }
 
-            let sio = unsafe { pico_rs::pac::SIO::steal() };
+            let step_pin = unsafe { Pin::<{ PIN_STEP as u8 }>::new() };
             let pulse_high = PULSE_STATE.load(Ordering::Relaxed);
 
             if !pulse_high {
                 // 上升沿
-                sio.gpio_out_set.write_bits(1 << PIN_STEP);
+                step_pin.set_high();
                 PULSE_STATE.store(true, Ordering::Relaxed);
 
                 let now = timer.get_time_us_32();
-                timer.set_alarm(1, now.wrapping_add(STEP_PULSE_US));
+                timer.set_alarm_safe(1, now.wrapping_add(STEP_PULSE_US));
                 return;
             }
 
             // 下降沿
-            sio.gpio_out_clr.write_bits(1 << PIN_STEP);
+            step_pin.set_low();
             PULSE_STATE.store(false, Ordering::Relaxed);
 
             // 更新指令位置
@@ -867,7 +869,7 @@ fn TIMER0_IRQ_1() {
             }
 
             let now = timer.get_time_us_32();
-            timer.set_alarm(1, now.wrapping_add(interval));
+            timer.set_alarm_safe(1, now.wrapping_add(interval));
         }
     });
 }

@@ -170,9 +170,10 @@ use panic_probe as _;
 use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
-use pico_rs::gpio::{Pins, Uart1RxPin, Uart1TxPin};
+use pico_rs::gpio::{Pin, Pins, Uart1RxPin, Uart1TxPin};
 use pico_rs::interrupt::{self, Mutex};
 use pico_rs::pac::{Interrupt, Peripherals};
+use pico_rs::sio::Sio;
 use pico_rs::timer::Timer0;
 use pico_rs::uart::{DataBits, Parity, StopBits, Uart1};
 
@@ -865,12 +866,7 @@ fn start_trapezoidal_move(steps: u32, dir: u32) {
     DECEL_START_STEP.store(decel_start, Ordering::Relaxed);
 
     // 设置方向引脚 (DIR)
-    let sio = unsafe { pico_rs::pac::SIO::steal() };
-    if dir == 0 {
-        sio.gpio_out_clr.write_bits(1 << PIN_DIR);
-    } else {
-        sio.gpio_out_set.write_bits(1 << PIN_DIR);
-    }
+    Sio::new().gpio().pin_write(PIN_DIR as u8, dir != 0);
 
     // 从"加速"阶段开始
     MOTION_PHASE.store(phase_to_u32(MotionPhase::Accelerating), Ordering::Relaxed);
@@ -883,7 +879,7 @@ fn start_trapezoidal_move(steps: u32, dir: u32) {
     interrupt::free(|cs| {
         if let Some(ref timer) = *TIMER.borrow(cs).borrow() {
             let now = timer.get_time_us_32();
-            timer.set_alarm(0, now.wrapping_add(interval));
+            timer.set_alarm_safe(0, now.wrapping_add(interval));
             timer.enable_alarm_interrupt(0);
         }
     });
@@ -904,12 +900,7 @@ fn start_continuous_run(dir: u32, speed_hz: u32) {
     DIRECTION.store(dir, Ordering::Relaxed);
     PULSE_STATE.store(false, Ordering::Relaxed);
 
-    let sio = unsafe { pico_rs::pac::SIO::steal() };
-    if dir == 0 {
-        sio.gpio_out_clr.write_bits(1 << PIN_DIR);
-    } else {
-        sio.gpio_out_set.write_bits(1 << PIN_DIR);
-    }
+    Sio::new().gpio().pin_write(PIN_DIR as u8, dir != 0);
 
     MOTION_PHASE.store(phase_to_u32(MotionPhase::Running), Ordering::Relaxed);
 
@@ -919,7 +910,7 @@ fn start_continuous_run(dir: u32, speed_hz: u32) {
     interrupt::free(|cs| {
         if let Some(ref timer) = *TIMER.borrow(cs).borrow() {
             let now = timer.get_time_us_32();
-            timer.set_alarm(0, now.wrapping_add(interval));
+            timer.set_alarm_safe(0, now.wrapping_add(interval));
             timer.enable_alarm_interrupt(0);
         }
     });
@@ -934,8 +925,7 @@ fn stop_motion() {
     MOTION_DONE.store(true, Ordering::Relaxed);
 
     // 确保 STEP 引脚为低电平
-    let sio = unsafe { pico_rs::pac::SIO::steal() };
-    sio.gpio_out_clr.write_bits(1 << PIN_STEP);
+    Sio::new().gpio().pin_clr(PIN_STEP as u8);
 }
 
 /// 阻塞等待当前运动完成
@@ -1040,8 +1030,7 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     // 6. 使能 TMC2209 驱动器 (ENN 拉低)
     // ------------------------------------------------------------------
-    let sio = unsafe { pico_rs::pac::SIO::steal() };
-    sio.gpio_out_clr.write_bits(1 << PIN_ENABLE);
+    Sio::new().gpio().pin_clr(PIN_ENABLE as u8);
     info!("TMC2209 enabled (ENN=LOW)");
     delay_ms(100);
 
@@ -1196,30 +1185,31 @@ fn main() -> ! {
 fn TIMER0_IRQ_0() {
     interrupt::free(|cs| {
         if let Some(ref timer) = *TIMER.borrow(cs).borrow() {
-            // 清除中断标志 (必须在处理前清除，否则会重复触发)
+            // 清除中断标志: 同时清除自然中断 (INTR) 和强制中断 (INTF)
             timer.clear_alarm_interrupt(0);
+            timer.clear_forced_alarm_interrupt(0);
 
             let phase = phase_from_u32(MOTION_PHASE.load(Ordering::Relaxed));
             if phase == MotionPhase::Idle {
                 return; // 空闲状态，不处理
             }
 
-            let sio = unsafe { pico_rs::pac::SIO::steal() };
+            let step_pin = unsafe { Pin::<{ PIN_STEP as u8 }>::new() };
             let pulse_high = PULSE_STATE.load(Ordering::Relaxed);
 
             if !pulse_high {
                 // ---- 第 1 阶段: 产生 STEP 上升沿 ----
-                sio.gpio_out_set.write_bits(1 << PIN_STEP);
+                step_pin.set_high();
                 PULSE_STATE.store(true, Ordering::Relaxed);
 
                 // 设置 alarm: STEP_PULSE_US 后执行第 2 阶段 (拉低)
                 let now = timer.get_time_us_32();
-                timer.set_alarm(0, now.wrapping_add(STEP_PULSE_US));
+                timer.set_alarm_safe(0, now.wrapping_add(STEP_PULSE_US));
                 return;
             }
 
             // ---- 第 2 阶段: STEP 下降沿 + 更新运动状态 ----
-            sio.gpio_out_clr.write_bits(1 << PIN_STEP);
+            step_pin.set_low();
             PULSE_STATE.store(false, Ordering::Relaxed);
 
             // 计步 (fetch_add 返回旧值，所以 +1 得到当前步数)
@@ -1238,7 +1228,7 @@ fn TIMER0_IRQ_0() {
             if phase == MotionPhase::Running {
                 let interval = STEP_INTERVAL_US.load(Ordering::Relaxed);
                 let now = timer.get_time_us_32();
-                timer.set_alarm(0, now.wrapping_add(interval));
+                timer.set_alarm_safe(0, now.wrapping_add(interval));
                 return;
             }
 
@@ -1246,7 +1236,7 @@ fn TIMER0_IRQ_0() {
             if total > 0 && step >= total {
                 MOTION_PHASE.store(phase_to_u32(MotionPhase::Idle), Ordering::Relaxed);
                 MOTION_DONE.store(true, Ordering::Relaxed);
-                sio.gpio_out_clr.write_bits(1 << PIN_STEP);
+                step_pin.set_low();
                 return;
             }
 
@@ -1267,7 +1257,7 @@ fn TIMER0_IRQ_0() {
             STEP_INTERVAL_US.store(interval, Ordering::Relaxed);
 
             let now = timer.get_time_us_32();
-            timer.set_alarm(0, now.wrapping_add(interval));
+            timer.set_alarm_safe(0, now.wrapping_add(interval));
         }
     });
 }

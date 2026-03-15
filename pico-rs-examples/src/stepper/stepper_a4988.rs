@@ -201,8 +201,9 @@
 #![no_std]
 #![no_main]
 
-use core::cell::RefCell;
-use core::sync::atomic::{AtomicBool, AtomicI32, AtomicU32, Ordering};
+#[path = "stepper_common.rs"]
+mod stepper_common;
+use stepper_common::{AxisConfig, AxisState, Direction};
 
 use defmt::*;
 use defmt_rtt as _;
@@ -212,8 +213,9 @@ use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
 use pico_rs::gpio::Pins;
-use pico_rs::interrupt::{self, Mutex};
+use pico_rs::interrupt;
 use pico_rs::pac::{Interrupt, Peripherals};
+use pico_rs::sio::Sio;
 use pico_rs::ticks::Ticks;
 use pico_rs::timer::Timer0;
 
@@ -253,14 +255,6 @@ const MOTOR_STEPS_PER_REV: u32 = 200;
 /// 微步越高: 运动越平滑、噪声越低，但可用扭矩下降、最大速度降低
 const MICROSTEPPING: u32 = 16;
 
-/// 将步进频率 (Hz) 转换为步进间隔 (μs)
-///
-/// Timer 中断以此间隔触发，每次中断产生一个 STEP 脉冲。
-/// 当 hz=0 时返回一个大值 (1 秒) 作为安全兜底。
-const fn speed_to_interval_us(hz: u32) -> u32 {
-    if hz == 0 { 1_000_000 } else { 1_000_000 / hz }
-}
-
 // ============================================================================
 // GPIO 引脚分配
 // ============================================================================
@@ -299,61 +293,11 @@ const PIN_RESET: u32 = 8;
 const PIN_SLEEP: u32 = 9;
 
 // ============================================================================
-// 运动控制 — 步进状态机
+// 全局共享状态
 // ============================================================================
 
-/// 运动阶段枚举
-///
-/// 梯形加减速的状态机:
-/// ```text
-///   Idle → Accelerating → Cruising → Decelerating → Idle
-///                           ↑                        ↑
-///                      (步数不够时直接跳到减速)       |
-///   Idle → Running ──────────────────────────────────┘
-///          (连续运转模式, 外部调用 stop_motion() 退出)
-/// ```
-#[derive(Clone, Copy, PartialEq)]
-enum MotionPhase {
-    /// 空闲 — 电机静止，Timer 中断不产生脉冲
-    Idle,
-    /// 加速中 — 步进间隔逐步缩短 (频率增大)
-    Accelerating,
-    /// 匀速 — 保持最大步进频率
-    Cruising,
-    /// 减速中 — 步进间隔逐步增大 (频率降低)
-    Decelerating,
-    /// 连续运转 — 恒速运行直到外部调用 stop_motion()
-    Running,
-}
-
-// ============================================================================
-// 全局共享状态 — Timer 中断与主循环之间的通信
-// ============================================================================
-// 所有状态使用原子类型，Timer ISR 和 main 线程通过原子操作无锁通信。
-// Timer0 外设放在 Mutex<RefCell> 中，通过 interrupt::free() 临界区访问。
-
-/// Timer0 外设 — 在 main 中初始化，移入全局供 ISR 使用
-static TIMER: Mutex<RefCell<Option<Timer0>>> = Mutex::new(RefCell::new(None));
-
-/// 当前运动阶段 (MotionPhase 编码为 u32: 0=Idle, 1=Accel, 2=Cruise, 3=Decel, 4=Run)
-static MOTION_PHASE: AtomicU32 = AtomicU32::new(0);
-/// 当前步进间隔 (μs) — ISR 用此值设置下一次 alarm
-static STEP_INTERVAL_US: AtomicU32 = AtomicU32::new(0);
-/// 已完成步数计数器 — ISR 每步 +1
-static STEPS_DONE: AtomicU32 = AtomicU32::new(0);
-/// 目标步数 — 0 表示连续运转模式
-static STEPS_TARGET: AtomicU32 = AtomicU32::new(0);
-/// 减速起始步数 — 到达此步数时从匀速切换到减速
-static DECEL_START_STEP: AtomicU32 = AtomicU32::new(0);
-/// 运动方向 — 0=正转 (DIR 低电平), 1=反转 (DIR 高电平)
-static DIRECTION: AtomicU32 = AtomicU32::new(0);
-/// 绝对位置 (带符号步数) — 正转 +1, 反转 -1
-static POSITION: AtomicI32 = AtomicI32::new(0);
-/// 运动完成标志 — main 轮询此标志等待运动结束
-static MOTION_DONE: AtomicBool = AtomicBool::new(true);
-/// STEP 脉冲状态 — true=高电平阶段, false=低电平阶段
-/// ISR 两段式脉冲: 第一次中断拉高 STEP，STEP_PULSE_US 后第二次中断拉低
-static PULSE_STATE: AtomicBool = AtomicBool::new(false);
+/// 步进轴状态 — 使用 pico_rs::stepper 公共模块
+static AXIS: AxisState = AxisState::new();
 
 // ============================================================================
 // A4988 微步配置
@@ -375,7 +319,8 @@ static PULSE_STATE: AtomicBool = AtomicBool::new(false);
 /// # 参数
 /// - `microsteps`: 微步倍数 (1, 2, 4, 8, 16)
 fn set_microstepping(microsteps: u32) {
-    let sio = unsafe { pico_rs::pac::SIO::steal() };
+    let sio = Sio::new();
+    let gpio = sio.gpio();
 
     // 根据微步倍数确定 MS1/MS2/MS3 的电平
     let (ms1, ms2, ms3) = match microsteps {
@@ -391,25 +336,13 @@ fn set_microstepping(microsteps: u32) {
     };
 
     // 设置 MS1 (GP5)
-    if ms1 {
-        sio.gpio_out_set.write_bits(1 << PIN_MS1);
-    } else {
-        sio.gpio_out_clr.write_bits(1 << PIN_MS1);
-    }
+    gpio.pin_write(PIN_MS1 as u8, ms1);
 
     // 设置 MS2 (GP6)
-    if ms2 {
-        sio.gpio_out_set.write_bits(1 << PIN_MS2);
-    } else {
-        sio.gpio_out_clr.write_bits(1 << PIN_MS2);
-    }
+    gpio.pin_write(PIN_MS2 as u8, ms2);
 
     // 设置 MS3 (GP7)
-    if ms3 {
-        sio.gpio_out_set.write_bits(1 << PIN_MS3);
-    } else {
-        sio.gpio_out_clr.write_bits(1 << PIN_MS3);
-    }
+    gpio.pin_write(PIN_MS3 as u8, ms3);
 
     info!(
         "A4988 microstepping: 1/{} (MS1={} MS2={} MS3={})",
@@ -423,8 +356,7 @@ fn set_microstepping(microsteps: u32) {
 /// - LOW  = 输出 FET 使能，电机通电 (有保持力矩)
 /// - HIGH = 输出 FET 关闭，电机可自由转动 (无保持力矩)
 fn enable_driver() {
-    let sio = unsafe { pico_rs::pac::SIO::steal() };
-    sio.gpio_out_clr.write_bits(1 << PIN_ENABLE);
+    Sio::new().gpio().pin_clr(PIN_ENABLE as u8);
     info!("A4988 enabled (ENABLE=LOW)");
 }
 
@@ -434,8 +366,7 @@ fn enable_driver() {
 /// 适用于不需要定位保持的场景 (例如手动调节)。
 #[allow(dead_code)]
 fn disable_driver() {
-    let sio = unsafe { pico_rs::pac::SIO::steal() };
-    sio.gpio_out_set.write_bits(1 << PIN_ENABLE);
+    Sio::new().gpio().pin_set(PIN_ENABLE as u8);
     info!("A4988 disabled (ENABLE=HIGH)");
 }
 
@@ -449,10 +380,11 @@ fn disable_driver() {
 /// 使用场景: 微步位置可能错乱时，通过复位恢复已知状态
 #[allow(dead_code)]
 fn reset_driver() {
-    let sio = unsafe { pico_rs::pac::SIO::steal() };
+    let sio = Sio::new();
+    let gpio = sio.gpio();
 
     // 拉低 RESET，保持一段时间
-    sio.gpio_out_clr.write_bits(1 << PIN_RESET);
+    gpio.pin_clr(PIN_RESET as u8);
 
     // 等待至少 1μs (数据手册要求)
     // 使用 spin_loop 自旋等待
@@ -461,7 +393,7 @@ fn reset_driver() {
     }
 
     // 释放 RESET
-    sio.gpio_out_set.write_bits(1 << PIN_RESET);
+    gpio.pin_set(PIN_RESET as u8);
     info!("A4988 reset complete");
 }
 
@@ -474,8 +406,7 @@ fn reset_driver() {
 ///
 /// 使用场景: 长时间不运转时降低功耗和发热
 fn sleep_driver() {
-    let sio = unsafe { pico_rs::pac::SIO::steal() };
-    sio.gpio_out_clr.write_bits(1 << PIN_SLEEP);
+    Sio::new().gpio().pin_clr(PIN_SLEEP as u8);
     info!("A4988 entering sleep mode (SLEEP=LOW)");
 }
 
@@ -484,207 +415,44 @@ fn sleep_driver() {
 /// 唤醒后内部稳压器需要 ~1ms 才能稳定输出电压，
 /// 在此期间不应发送 STEP 脉冲。
 fn wake_driver() {
-    let sio = unsafe { pico_rs::pac::SIO::steal() };
-    sio.gpio_out_set.write_bits(1 << PIN_SLEEP);
+    Sio::new().gpio().pin_set(PIN_SLEEP as u8);
     info!("A4988 awake (SLEEP=HIGH), waiting 1ms for regulator");
 }
 
 // ============================================================================
-// 梯形加减速核心算法
-// ============================================================================
-
-/// 根据当前步数和运动阶段计算步进间隔 (μs)
-///
-/// 梯形速度规划原理:
-///
-/// ```text
-///   间隔(μs)
-///     ↑  start_interval (100Hz → 10000μs)
-///     │  ╲
-///     │   ╲  加速段: 间隔线性减小 → 速度线性增大
-///     │    ╲
-///     │     └─────────────────────┐ max_interval (2000Hz → 500μs)
-///     │                           │ 匀速段: 保持最小间隔
-///     │                           ├─────────────┐
-///     │                           │  减速段:    ╱
-///     │                           │ 间隔增大  ╱
-///     │                           │         ╱
-///     └───────────────────────────┴────────→ 步数
-/// ```
-fn compute_interval(step: u32, total_steps: u32) -> u32 {
-    let phase = phase_from_u32(MOTION_PHASE.load(Ordering::Relaxed));
-
-    // 起步间隔 (低速) 和 最大速度间隔 (高速)
-    let start_interval = speed_to_interval_us(START_SPEED_HZ); // 10000μs @ 100Hz
-    let max_interval = speed_to_interval_us(MAX_SPEED_HZ); //   500μs @ 2000Hz
-
-    match phase {
-        MotionPhase::Accelerating => {
-            // 线性插值: start_interval → max_interval
-            // 间隔越小速度越快，所以是"减小间隔"
-            if ACCEL_STEPS == 0 {
-                return max_interval;
-            }
-            let progress = step.min(ACCEL_STEPS);
-            start_interval
-                - ((start_interval - max_interval) as u64 * progress as u64 / ACCEL_STEPS as u64)
-                    as u32
-        }
-        MotionPhase::Cruising | MotionPhase::Running => {
-            // 匀速或连续运转: 保持最高速度
-            max_interval
-        }
-        MotionPhase::Decelerating => {
-            // 与加速段对称: max_interval → start_interval
-            let decel_start = DECEL_START_STEP.load(Ordering::Relaxed);
-            let steps_into_decel = step.saturating_sub(decel_start);
-            let decel_steps = total_steps.saturating_sub(decel_start);
-            if decel_steps == 0 {
-                return start_interval;
-            }
-            let progress = steps_into_decel.min(decel_steps);
-            max_interval
-                + ((start_interval - max_interval) as u64 * progress as u64 / decel_steps as u64)
-                    as u32
-        }
-        MotionPhase::Idle => start_interval,
-    }
-}
-
-/// MotionPhase → u32 编码 (用于原子存储)
-fn phase_to_u32(phase: MotionPhase) -> u32 {
-    match phase {
-        MotionPhase::Idle => 0,
-        MotionPhase::Accelerating => 1,
-        MotionPhase::Cruising => 2,
-        MotionPhase::Decelerating => 3,
-        MotionPhase::Running => 4,
-    }
-}
-
-/// u32 → MotionPhase 解码
-fn phase_from_u32(val: u32) -> MotionPhase {
-    match val {
-        1 => MotionPhase::Accelerating,
-        2 => MotionPhase::Cruising,
-        3 => MotionPhase::Decelerating,
-        4 => MotionPhase::Running,
-        _ => MotionPhase::Idle,
-    }
-}
-
-// ============================================================================
-// STEP/DIR 运动控制函数
+// 运动控制辅助函数 — 封装对 AXIS 的调用
 // ============================================================================
 
 /// 启动梯形加减速运动
-///
-/// 设置运动参数并启动 Timer 中断，ISR 会自动执行 加速→匀速→减速→停止 的完整过程。
-///
-/// # 参数
-/// - `steps`: 目标步数 (微步)
-/// - `dir`: 方向，0=正转 (DIR 低), 1=反转 (DIR 高)
 fn start_trapezoidal_move(steps: u32, dir: u32) {
-    if steps == 0 {
-        return;
-    }
-
-    // 初始化运动状态
-    MOTION_DONE.store(false, Ordering::Relaxed);
-    STEPS_DONE.store(0, Ordering::Relaxed);
-    STEPS_TARGET.store(steps, Ordering::Relaxed);
-    DIRECTION.store(dir, Ordering::Relaxed);
-    PULSE_STATE.store(false, Ordering::Relaxed);
-
-    // 计算减速起始点:
-    //   加/减速各占一半步数，如果总步数不够则 accel=decel=steps/2
-    //   decel_start = steps - decel_steps
-    let accel_steps = ACCEL_STEPS.min(steps / 2);
-    let decel_start = steps - accel_steps;
-    DECEL_START_STEP.store(decel_start, Ordering::Relaxed);
-
-    // 设置方向引脚 (DIR)
-    // A4988: DIR 在 STEP 上升沿时锁存，提前设置即可
-    let sio = unsafe { pico_rs::pac::SIO::steal() };
-    if dir == 0 {
-        sio.gpio_out_clr.write_bits(1 << PIN_DIR);
+    let direction = if dir == 0 {
+        Direction::Forward
     } else {
-        sio.gpio_out_set.write_bits(1 << PIN_DIR);
-    }
-
-    // 从"加速"阶段开始
-    MOTION_PHASE.store(phase_to_u32(MotionPhase::Accelerating), Ordering::Relaxed);
-
-    // 初始间隔 = 起步频率对应的间隔
-    let interval = speed_to_interval_us(START_SPEED_HZ);
-    STEP_INTERVAL_US.store(interval, Ordering::Relaxed);
-
-    // 启动 Timer alarm — 第一次中断将产生第一个 STEP 脉冲
-    interrupt::free(|cs| {
-        if let Some(ref timer) = *TIMER.borrow(cs).borrow() {
-            let now = timer.get_time_us_32();
-            timer.set_alarm(0, now.wrapping_add(interval));
-            timer.enable_alarm_interrupt(0);
-        }
-    });
+        Direction::Reverse
+    };
+    let timer = unsafe { Timer0::steal() };
+    AXIS.start_move(&timer, steps, direction, MAX_SPEED_HZ);
 }
 
 /// 启动连续运转模式
-///
-/// 以指定速度持续运行，直到调用 `stop_motion()` 停止。
-/// 不使用梯形加减速，直接以目标频率启动 (适用于低速或允许急起急停的场景)。
-///
-/// # 参数
-/// - `dir`: 方向，0=正转, 1=反转
-/// - `speed_hz`: 步进频率 (Hz)
 fn start_continuous_run(dir: u32, speed_hz: u32) {
-    MOTION_DONE.store(false, Ordering::Relaxed);
-    STEPS_DONE.store(0, Ordering::Relaxed);
-    STEPS_TARGET.store(0, Ordering::Relaxed); // 0 = 无限步数
-    DIRECTION.store(dir, Ordering::Relaxed);
-    PULSE_STATE.store(false, Ordering::Relaxed);
-
-    let sio = unsafe { pico_rs::pac::SIO::steal() };
-    if dir == 0 {
-        sio.gpio_out_clr.write_bits(1 << PIN_DIR);
+    let direction = if dir == 0 {
+        Direction::Forward
     } else {
-        sio.gpio_out_set.write_bits(1 << PIN_DIR);
-    }
-
-    MOTION_PHASE.store(phase_to_u32(MotionPhase::Running), Ordering::Relaxed);
-
-    let interval = speed_to_interval_us(speed_hz);
-    STEP_INTERVAL_US.store(interval, Ordering::Relaxed);
-
-    interrupt::free(|cs| {
-        if let Some(ref timer) = *TIMER.borrow(cs).borrow() {
-            let now = timer.get_time_us_32();
-            timer.set_alarm(0, now.wrapping_add(interval));
-            timer.enable_alarm_interrupt(0);
-        }
-    });
+        Direction::Reverse
+    };
+    let timer = unsafe { Timer0::steal() };
+    AXIS.start_continuous(&timer, direction, speed_hz);
 }
 
-/// 立即停止运动 (急停)
-///
-/// 将状态机置为 Idle 并拉低 STEP 引脚。
-/// 注意: 这是急停，不会执行减速过程。高速运行时急停可能导致丢步。
+/// 立即停止运动
 fn stop_motion() {
-    MOTION_PHASE.store(phase_to_u32(MotionPhase::Idle), Ordering::Relaxed);
-    MOTION_DONE.store(true, Ordering::Relaxed);
-
-    // 确保 STEP 引脚为低电平
-    let sio = unsafe { pico_rs::pac::SIO::steal() };
-    sio.gpio_out_clr.write_bits(1 << PIN_STEP);
+    AXIS.stop();
 }
 
-/// 阻塞等待当前运动完成
-///
-/// 使用 WFI (Wait For Interrupt) 降低 CPU 功耗，每次中断唤醒后检查完成标志。
+/// 阻塞等待运动完成
 fn wait_motion_done() {
-    while !MOTION_DONE.load(Ordering::Relaxed) {
-        pico_rs_rt::asm::wfi();
-    }
+    AXIS.wait_done();
 }
 
 // ============================================================================
@@ -793,8 +561,7 @@ fn main() -> ! {
     timer.delay_ms(2); // 等待内部稳压器稳定 (数据手册: ~1ms)
 
     // 解除复位: RESET 拉高
-    let sio = unsafe { pico_rs::pac::SIO::steal() };
-    sio.gpio_out_set.write_bits(1 << PIN_RESET);
+    Sio::new().gpio().pin_set(PIN_RESET as u8);
     info!("A4988 RESET released (HIGH)");
     timer.delay_ms(1);
 
@@ -813,24 +580,28 @@ fn main() -> ! {
     );
 
     // ------------------------------------------------------------------
-    // 7. Timer0 中断配置 — 用于 STEP 脉冲生成
+    // 7. 配置步进轴
     // ------------------------------------------------------------------
-    // 将 timer 所有权移入全局 Mutex，供 ISR 使用
-    interrupt::free(|cs| {
-        TIMER.borrow(cs).replace(Some(timer));
+    AXIS.configure(&AxisConfig {
+        pin_step: PIN_STEP as u8,
+        pin_dir: PIN_DIR as u8,
+        alarm: 0,
+        start_speed_hz: START_SPEED_HZ,
+        accel_steps: ACCEL_STEPS,
+        step_pulse_us: STEP_PULSE_US,
     });
+
+    // ------------------------------------------------------------------
+    // 8. Timer0 中断配置 — 用于 STEP 脉冲生成
+    // ------------------------------------------------------------------
     // 使能 Timer0 Alarm0 中断 (NVIC)
     unsafe {
         interrupt::enable(Interrupt::TIMER0_IRQ_0);
     }
 
-    // 延时辅助闭包 — 在临界区内访问 TIMER，确保与 ISR 不冲突
+    // 延时辅助闭包
     let delay_ms = |ms: u32| {
-        interrupt::free(|cs| {
-            if let Some(ref t) = *TIMER.borrow(cs).borrow() {
-                t.delay_ms(ms);
-            }
-        });
+        timer.delay_ms(ms);
     };
 
     // ------------------------------------------------------------------
@@ -850,10 +621,7 @@ fn main() -> ! {
     start_trapezoidal_move(steps_per_rev, 0);
     wait_motion_done();
 
-    info!(
-        "Demo 1 done. Position: {} steps",
-        POSITION.load(Ordering::Relaxed)
-    );
+    info!("Demo 1 done. Position: {} steps", AXIS.position());
     delay_ms(1000);
 
     // ======================================================================
@@ -864,10 +632,7 @@ fn main() -> ! {
     start_trapezoidal_move(steps_per_rev, 1);
     wait_motion_done();
 
-    info!(
-        "Demo 2 done. Position: {} steps",
-        POSITION.load(Ordering::Relaxed)
-    );
+    info!("Demo 2 done. Position: {} steps", AXIS.position());
     delay_ms(1000);
 
     // ======================================================================
@@ -891,10 +656,7 @@ fn main() -> ! {
     // 全步模式下 200 步 = 1 整圈
     start_trapezoidal_move(200, 0);
     wait_motion_done();
-    info!(
-        "Full-step 200 steps done. Position: {}",
-        POSITION.load(Ordering::Relaxed)
-    );
+    info!("Full-step 200 steps done. Position: {}", AXIS.position());
     delay_ms(500);
 
     // ---- 1/4 步模式 ----
@@ -905,10 +667,7 @@ fn main() -> ! {
     // 1/4 步模式下 200 步 = 200/(200*4) = 1/4 圈
     start_trapezoidal_move(200, 0);
     wait_motion_done();
-    info!(
-        "Quarter-step 200 steps done. Position: {}",
-        POSITION.load(Ordering::Relaxed)
-    );
+    info!("Quarter-step 200 steps done. Position: {}", AXIS.position());
     delay_ms(500);
 
     // ---- 恢复 1/16 步模式 ----
@@ -922,10 +681,7 @@ fn main() -> ! {
     info!("Returning to origin: {} microsteps", return_steps);
     start_trapezoidal_move(return_steps, 1);
     wait_motion_done();
-    info!(
-        "Demo 3 done. Position: {}",
-        POSITION.load(Ordering::Relaxed)
-    );
+    info!("Demo 3 done. Position: {}", AXIS.position());
     delay_ms(1000);
 
     // ======================================================================
@@ -942,10 +698,7 @@ fn main() -> ! {
 
     start_trapezoidal_move(steps_per_rev / 2, 0);
     wait_motion_done();
-    info!(
-        "Moved half revolution. Position: {}",
-        POSITION.load(Ordering::Relaxed)
-    );
+    info!("Moved half revolution. Position: {}", AXIS.position());
 
     // 进入休眠
     sleep_driver();
@@ -959,10 +712,7 @@ fn main() -> ! {
     // 反转半圈回原位
     start_trapezoidal_move(steps_per_rev / 2, 1);
     wait_motion_done();
-    info!(
-        "Demo 4 done. Position: {}",
-        POSITION.load(Ordering::Relaxed)
-    );
+    info!("Demo 4 done. Position: {}", AXIS.position());
     delay_ms(1000);
 
     // ======================================================================
@@ -977,12 +727,12 @@ fn main() -> ! {
 
     stop_motion();
 
-    let steps_run = STEPS_DONE.load(Ordering::Relaxed);
+    let steps_run = AXIS.steps_done();
     info!(
         "Demo 5 done. Ran {} steps in 3s (~{} Hz). Position: {}",
         steps_run,
         steps_run / 3,
-        POSITION.load(Ordering::Relaxed)
+        AXIS.position()
     );
     delay_ms(1000);
 
@@ -991,7 +741,7 @@ fn main() -> ! {
     // ======================================================================
     info!("=== Loop: alternating forward/reverse ===");
 
-    POSITION.store(0, Ordering::Relaxed);
+    AXIS.set_position(0);
 
     let mut forward = true;
     loop {
@@ -1002,7 +752,7 @@ fn main() -> ! {
         start_trapezoidal_move(steps_per_rev / 2, dir);
         wait_motion_done();
 
-        info!("[loop] pos={} steps", POSITION.load(Ordering::Relaxed));
+        info!("[loop] pos={} steps", AXIS.position());
 
         delay_ms(500);
         forward = !forward;
@@ -1032,81 +782,6 @@ fn main() -> ! {
 #[unsafe(no_mangle)]
 #[allow(non_snake_case)]
 fn TIMER0_IRQ_0() {
-    interrupt::free(|cs| {
-        if let Some(ref timer) = *TIMER.borrow(cs).borrow() {
-            // 清除中断标志 (必须在处理前清除，否则会重复触发)
-            timer.clear_alarm_interrupt(0);
-
-            let phase = phase_from_u32(MOTION_PHASE.load(Ordering::Relaxed));
-            if phase == MotionPhase::Idle {
-                return; // 空闲状态，不处理
-            }
-
-            let sio = unsafe { pico_rs::pac::SIO::steal() };
-            let pulse_high = PULSE_STATE.load(Ordering::Relaxed);
-
-            if !pulse_high {
-                // ---- 第 1 阶段: 产生 STEP 上升沿 ----
-                // A4988 在上升沿锁存 DIR 并推进一个微步
-                sio.gpio_out_set.write_bits(1 << PIN_STEP);
-                PULSE_STATE.store(true, Ordering::Relaxed);
-
-                // 设置 alarm: STEP_PULSE_US 后执行第 2 阶段 (拉低)
-                let now = timer.get_time_us_32();
-                timer.set_alarm(0, now.wrapping_add(STEP_PULSE_US));
-                return;
-            }
-
-            // ---- 第 2 阶段: STEP 下降沿 + 更新运动状态 ----
-            sio.gpio_out_clr.write_bits(1 << PIN_STEP);
-            PULSE_STATE.store(false, Ordering::Relaxed);
-
-            // 计步 (fetch_add 返回旧值，所以 +1 得到当前步数)
-            let step = STEPS_DONE.fetch_add(1, Ordering::Relaxed) + 1;
-            let total = STEPS_TARGET.load(Ordering::Relaxed);
-            let dir = DIRECTION.load(Ordering::Relaxed);
-
-            // 更新绝对位置
-            if dir == 0 {
-                POSITION.fetch_add(1, Ordering::Relaxed);
-            } else {
-                POSITION.fetch_sub(1, Ordering::Relaxed);
-            }
-
-            // ---- 连续运转模式: 不检查步数，直接设置下一步 alarm ----
-            if phase == MotionPhase::Running {
-                let interval = STEP_INTERVAL_US.load(Ordering::Relaxed);
-                let now = timer.get_time_us_32();
-                timer.set_alarm(0, now.wrapping_add(interval));
-                return;
-            }
-
-            // ---- 梯形模式: 检查是否到达目标 ----
-            if total > 0 && step >= total {
-                MOTION_PHASE.store(phase_to_u32(MotionPhase::Idle), Ordering::Relaxed);
-                MOTION_DONE.store(true, Ordering::Relaxed);
-                sio.gpio_out_clr.write_bits(1 << PIN_STEP);
-                return;
-            }
-
-            // ---- 梯形模式: 根据当前步数决定运动阶段 ----
-            let decel_start = DECEL_START_STEP.load(Ordering::Relaxed);
-            let new_phase = if step < ACCEL_STEPS.min(decel_start) {
-                MotionPhase::Accelerating // 还未达到加速目标
-            } else if step >= decel_start {
-                MotionPhase::Decelerating // 进入减速区间
-            } else {
-                MotionPhase::Cruising // 加速完成，匀速运行
-            };
-
-            MOTION_PHASE.store(phase_to_u32(new_phase), Ordering::Relaxed);
-
-            // 根据阶段计算本步间隔并设置 alarm
-            let interval = compute_interval(step, total);
-            STEP_INTERVAL_US.store(interval, Ordering::Relaxed);
-
-            let now = timer.get_time_us_32();
-            timer.set_alarm(0, now.wrapping_add(interval));
-        }
-    });
+    let timer = unsafe { Timer0::steal() };
+    AXIS.handle_alarm_isr(&timer);
 }

@@ -183,6 +183,10 @@ name = "stepper_a4988"
 path = "src/stepper/stepper_a4988.rs"
 
 [[bin]]
+name = "stepper_a4988_bench"
+path = "src/stepper/stepper_a4988_bench.rs"
+
+[[bin]]
 name = "stepper_closed"
 path = "src/stepper/stepper_closed.rs"
 
