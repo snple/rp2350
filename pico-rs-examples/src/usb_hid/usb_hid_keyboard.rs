@@ -145,8 +145,8 @@ fn main() -> ! {
         }
 
         if configured {
-            // Read button state (low = pressed due to pull-up)
-            let button_now = button.read();
+            // Get button state (low = pressed due to pull-up)
+            let button_now = button.get();
 
             // Detect falling edge (button press)
             if button_prev && !button_now {

@@ -226,8 +226,8 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     // 3. 读取初始 A/B 状态
     // ------------------------------------------------------------------
-    let init_a = pin_a.read() as i32;
-    let init_b = pin_b.read() as i32;
+    let init_a = pin_a.get() as i32;
+    let init_b = pin_b.get() as i32;
     let init_state = (init_a << 1) | init_b;
     LAST_AB.store(init_state, Ordering::Relaxed);
     info!(
@@ -336,8 +336,8 @@ extern "C" fn IO_IRQ_BANK0() {
 
     if a_fired || b_fired {
         // 读取当前 A、B 电平
-        let cur_a = a.read() as i32;
-        let cur_b = b.read() as i32;
+        let cur_a = a.get() as i32;
+        let cur_b = b.get() as i32;
         let new_state = (cur_a << 1) | cur_b;
 
         // 获取上一次状态

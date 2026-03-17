@@ -24,7 +24,13 @@
 //! require ownership — you can create instances anywhere, anytime:
 //!
 //! ```ignore
+//! use pico_rs::gpio::{Gpio, Pins};
+//! use pico_rs::Peripherals;
 //! use pico_rs::sio::{Sio, Spinlock};
+//!
+//! let dp = Peripherals::take().unwrap();
+//! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+//! pins.pin::<25>().into_output();
 //!
 //! // Create SIO instance (zero-cost, no ownership required)
 //! let sio = Sio::new();
@@ -32,17 +38,15 @@
 //! // Read current core ID
 //! let core = sio.core_id();
 //!
-//! // GPIO operations via SIO
-//! let gpio = sio.gpio();
-//! gpio.pin_set(25);       // Set GPIO 25 high
-//! gpio.pin_clr(25);       // Set GPIO 25 low
-//! let input = gpio.pin_read(25);
-//!
-//! // High GPIO (32-47) also via the same controller
-//! gpio.pin_set(32);       // Set GPIO 32 high
+//! // GPIO operations use the runtime-indexed GPIO accessor.
+//! // SAFETY: GPIO 25 was configured for SIO output above.
+//! let gpio = unsafe { Gpio::new() };
+//! gpio.set_high(25);      // Set GPIO 25 high
+//! gpio.set_low(25);       // Set GPIO 25 low
+//! let input = gpio.get(25);
 //!
 //! // Mask-level operations for batch control
-//! gpio.set_low(1 << 25);  // Set GPIO 25 high (low bank mask)
+//! gpio.set_mask_low(1 << 25); // Set GPIO 25 high (low bank mask)
 //!
 //! // Spinlock (static, no Sio instance needed)
 //! {
@@ -62,9 +66,6 @@ use pico_rs_pac::sio::RegisterBlock;
 
 /// Number of hardware spinlocks
 pub const SPINLOCK_COUNT: usize = 32;
-
-/// Maximum GPIO pin number (0–47)
-pub const GPIO_PIN_MAX: u8 = 47;
 
 // ============================================================================
 // Security Mode / Register Base
@@ -143,21 +144,6 @@ impl Sio {
     }
 
     // ========================================================================
-    // GPIO Access
-    // ========================================================================
-
-    /// Get the GPIO controller for pins 0–47.
-    ///
-    /// GPIO operations accept a pin number and automatically route to
-    /// the correct register bank (low 0–31 or high 32–47).
-    #[inline]
-    pub const fn gpio(&self) -> SioGpio<'_> {
-        SioGpio {
-            _marker: core::marker::PhantomData,
-        }
-    }
-
-    // ========================================================================
     // Spinlock State
     // ========================================================================
 
@@ -198,275 +184,6 @@ impl Sio {
         Interp1 {
             _marker: core::marker::PhantomData,
         }
-    }
-}
-
-// ============================================================================
-// GPIO (Pins 0–47)
-// ============================================================================
-
-/// SIO GPIO controller for pins 0–47.
-///
-/// Provides direct CPU control of GPIO output, output enable, and input
-/// with atomic set/clear/xor operations.
-///
-/// Pin-level methods accept a pin number (0–47) and automatically route
-/// to the correct register bank:
-/// - Pins 0–31: `GPIO_OUT` / `GPIO_OE` / `GPIO_IN`
-/// - Pins 32–47: `GPIO_HI_OUT` / `GPIO_HI_OE` / `GPIO_HI_IN`
-///
-/// The `_private` field prevents external construction — obtain via
-/// [`Sio::gpio()`].
-pub struct SioGpio<'a> {
-    _marker: core::marker::PhantomData<*const &'a ()>,
-}
-
-impl<'a> SioGpio<'a> {
-    // ========================================================================
-    // Pin-level operations (auto-routing by pin number)
-    // ========================================================================
-
-    /// Get the input value of a single pin (0–47).
-    ///
-    /// Returns `true` if the pin is high.
-    #[inline]
-    pub fn pin_get(&self, pin: u8) -> bool {
-        debug_assert!(pin <= GPIO_PIN_MAX);
-        if pin < 32 {
-            (regs().gpio_in.gpio_in() & (1 << pin)) != 0
-        } else {
-            (regs().gpio_hi_in.gpio() & (1 << (pin - 32))) != 0
-        }
-    }
-
-    /// Set a single pin (0–47) output high.
-    #[inline]
-    pub fn pin_set(&self, pin: u8) {
-        debug_assert!(pin <= GPIO_PIN_MAX);
-        if pin < 32 {
-            regs().gpio_out_set.write_gpio_out_set(1 << pin);
-        } else {
-            regs().gpio_hi_out_set.write_gpio(1 << (pin - 32));
-        }
-    }
-
-    /// Set a single pin (0–47) output low.
-    #[inline]
-    pub fn pin_clr(&self, pin: u8) {
-        debug_assert!(pin <= GPIO_PIN_MAX);
-        if pin < 32 {
-            regs().gpio_out_clr.write_gpio_out_clr(1 << pin);
-        } else {
-            regs().gpio_hi_out_clr.write_gpio(1 << (pin - 32));
-        }
-    }
-
-    /// Toggle a single pin (0–47) output.
-    #[inline]
-    pub fn pin_toggle(&self, pin: u8) {
-        debug_assert!(pin <= GPIO_PIN_MAX);
-        if pin < 32 {
-            regs().gpio_out_xor.write_gpio_out_xor(1 << pin);
-        } else {
-            regs().gpio_hi_out_xor.write_gpio(1 << (pin - 32));
-        }
-    }
-
-    /// Set a single pin (0–47) output to a specific value.
-    #[inline]
-    pub fn pin_write(&self, pin: u8, high: bool) {
-        if high {
-            self.pin_set(pin);
-        } else {
-            self.pin_clr(pin);
-        }
-    }
-
-    /// Read the current output level of a single pin (0–47).
-    ///
-    /// This reads the output register, not the actual pin state.
-    /// Use [`pin_read()`](Self::pin_read) for the actual pin input value.
-    #[inline]
-    pub fn pin_output(&self, pin: u8) -> bool {
-        debug_assert!(pin <= GPIO_PIN_MAX);
-        if pin < 32 {
-            (regs().gpio_out.gpio_out() & (1 << pin)) != 0
-        } else {
-            (regs().gpio_hi_out.gpio() & (1 << (pin - 32))) != 0
-        }
-    }
-
-    /// Enable output for a single pin (0–47).
-    #[inline]
-    pub fn pin_oe_set(&self, pin: u8) {
-        debug_assert!(pin <= GPIO_PIN_MAX);
-        if pin < 32 {
-            regs().gpio_oe_set.write_gpio_oe_set(1 << pin);
-        } else {
-            regs().gpio_hi_oe_set.write_gpio(1 << (pin - 32));
-        }
-    }
-
-    /// Disable output for a single pin (0–47).
-    #[inline]
-    pub fn pin_oe_clr(&self, pin: u8) {
-        debug_assert!(pin <= GPIO_PIN_MAX);
-        if pin < 32 {
-            regs().gpio_oe_clr.write_gpio_oe_clr(1 << pin);
-        } else {
-            regs().gpio_hi_oe_clr.write_gpio(1 << (pin - 32));
-        }
-    }
-
-    /// Check if output is enabled for a single pin (0–47).
-    #[inline]
-    pub fn pin_is_output(&self, pin: u8) -> bool {
-        debug_assert!(pin <= GPIO_PIN_MAX);
-        if pin < 32 {
-            (regs().gpio_oe.gpio_oe() & (1 << pin)) != 0
-        } else {
-            (regs().gpio_hi_oe.gpio() & (1 << (pin - 32))) != 0
-        }
-    }
-
-    // ========================================================================
-    // Mask-level operations — Low bank (pins 0–31)
-    // ========================================================================
-
-    /// Read all GPIO 0–31 input values as a bitmask.
-    #[inline]
-    pub fn input_low(&self) -> u32 {
-        regs().gpio_in.gpio_in()
-    }
-
-    /// Read current GPIO 0–31 output value (last written, not pin state).
-    #[inline]
-    pub fn output_low(&self) -> u32 {
-        regs().gpio_out.gpio_out()
-    }
-
-    /// Write GPIO 0–31 output value (replaces all 32 bits).
-    #[inline]
-    pub fn write_output_low(&self, value: u32) {
-        regs().gpio_out.write_gpio_out(value);
-    }
-
-    /// Atomically set bits in GPIO 0–31 output (OR).
-    #[inline]
-    pub fn set_low(&self, mask: u32) {
-        regs().gpio_out_set.write_gpio_out_set(mask);
-    }
-
-    /// Atomically clear bits in GPIO 0–31 output (AND NOT).
-    #[inline]
-    pub fn clr_low(&self, mask: u32) {
-        regs().gpio_out_clr.write_gpio_out_clr(mask);
-    }
-
-    /// Atomically toggle bits in GPIO 0–31 output (XOR).
-    #[inline]
-    pub fn xor_low(&self, mask: u32) {
-        regs().gpio_out_xor.write_gpio_out_xor(mask);
-    }
-
-    /// Read GPIO 0–31 output enable bitmask.
-    #[inline]
-    pub fn oe_low(&self) -> u32 {
-        regs().gpio_oe.gpio_oe()
-    }
-
-    /// Write GPIO 0–31 output enable (replaces all 32 bits).
-    #[inline]
-    pub fn write_oe_low(&self, value: u32) {
-        regs().gpio_oe.write_gpio_oe(value);
-    }
-
-    /// Atomically set bits in GPIO 0–31 output enable.
-    #[inline]
-    pub fn oe_set_low(&self, mask: u32) {
-        regs().gpio_oe_set.write_gpio_oe_set(mask);
-    }
-
-    /// Atomically clear bits in GPIO 0–31 output enable.
-    #[inline]
-    pub fn oe_clr_low(&self, mask: u32) {
-        regs().gpio_oe_clr.write_gpio_oe_clr(mask);
-    }
-
-    /// Atomically toggle bits in GPIO 0–31 output enable.
-    #[inline]
-    pub fn oe_xor_low(&self, mask: u32) {
-        regs().gpio_oe_xor.write_gpio_oe_xor(mask);
-    }
-
-    // ========================================================================
-    // Mask-level operations — High bank (pins 32–47)
-    // ========================================================================
-
-    /// Read all GPIO 32–47 input values as a bitmask (bits 0–15).
-    #[inline]
-    pub fn input_high(&self) -> u32 {
-        regs().gpio_hi_in.gpio()
-    }
-
-    /// Read current GPIO 32–47 output value.
-    #[inline]
-    pub fn output_high(&self) -> u32 {
-        regs().gpio_hi_out.gpio()
-    }
-
-    /// Write GPIO 32–47 output value.
-    #[inline]
-    pub fn write_output_high(&self, value: u32) {
-        regs().gpio_hi_out.write_gpio(value);
-    }
-
-    /// Atomically set bits in GPIO 32–47 output.
-    #[inline]
-    pub fn set_high(&self, mask: u32) {
-        regs().gpio_hi_out_set.write_gpio(mask);
-    }
-
-    /// Atomically clear bits in GPIO 32–47 output.
-    #[inline]
-    pub fn clr_high(&self, mask: u32) {
-        regs().gpio_hi_out_clr.write_gpio(mask);
-    }
-
-    /// Atomically toggle bits in GPIO 32–47 output.
-    #[inline]
-    pub fn xor_high(&self, mask: u32) {
-        regs().gpio_hi_out_xor.write_gpio(mask);
-    }
-
-    /// Read GPIO 32–47 output enable bitmask.
-    #[inline]
-    pub fn oe_high(&self) -> u32 {
-        regs().gpio_hi_oe.gpio()
-    }
-
-    /// Write GPIO 32–47 output enable.
-    #[inline]
-    pub fn write_oe_high(&self, value: u32) {
-        regs().gpio_hi_oe.write_gpio(value);
-    }
-
-    /// Atomically set bits in GPIO 32–47 output enable.
-    #[inline]
-    pub fn oe_set_high(&self, mask: u32) {
-        regs().gpio_hi_oe_set.write_gpio(mask);
-    }
-
-    /// Atomically clear bits in GPIO 32–47 output enable.
-    #[inline]
-    pub fn oe_clr_high(&self, mask: u32) {
-        regs().gpio_hi_oe_clr.write_gpio(mask);
-    }
-
-    /// Atomically toggle bits in GPIO 32–47 output enable.
-    #[inline]
-    pub fn oe_xor_high(&self, mask: u32) {
-        regs().gpio_hi_oe_xor.write_gpio(mask);
     }
 }
 

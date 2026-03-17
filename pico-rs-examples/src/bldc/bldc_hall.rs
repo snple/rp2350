@@ -544,9 +544,9 @@ fn main() -> ! {
     // 读取当前霍尔状态并执行首次换向
     // ------------------------------------------------------------------
     let read_hall = || -> u8 {
-        let ha = hall_a.read() as u8;
-        let hb = hall_b.read() as u8;
-        let hc = hall_c.read() as u8;
+        let ha = hall_a.get() as u8;
+        let hb = hall_b.get() as u8;
+        let hc = hall_c.get() as u8;
         (ha << 2) | (hb << 1) | hc
     };
 
@@ -735,7 +735,7 @@ fn IO_IRQ_BANK0() {
     hc.clear_all_interrupts();
 
     // 读取当前霍尔状态
-    let hall_state = ((ha.read() as u8) << 2) | ((hb.read() as u8) << 1) | (hc.read() as u8);
+    let hall_state = ((ha.get() as u8) << 2) | ((hb.get() as u8) << 1) | (hc.get() as u8);
     HALL_STATE.store(hall_state, Ordering::Relaxed);
 
     // 查表获取换向步

@@ -212,10 +212,9 @@ use panic_probe as _;
 use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
-use pico_rs::gpio::Pins;
+use pico_rs::gpio::{Gpio, Pins};
 use pico_rs::interrupt;
 use pico_rs::pac::{Interrupt, Peripherals};
-use pico_rs::sio::Sio;
 use pico_rs::ticks::Ticks;
 use pico_rs::timer::Timer0;
 
@@ -299,6 +298,13 @@ const PIN_SLEEP: u32 = 9;
 /// 步进轴状态 — 使用 pico_rs::stepper 公共模块
 static AXIS: AxisState = AxisState::new();
 
+#[inline(always)]
+fn gpio() -> Gpio {
+    // SAFETY: all stepper control pins are configured through `Pins` before any
+    // runtime SIO access happens.
+    unsafe { Gpio::new() }
+}
+
 // ============================================================================
 // A4988 微步配置
 // ============================================================================
@@ -319,8 +325,7 @@ static AXIS: AxisState = AxisState::new();
 /// # 参数
 /// - `microsteps`: 微步倍数 (1, 2, 4, 8, 16)
 fn set_microstepping(microsteps: u32) {
-    let sio = Sio::new();
-    let gpio = sio.gpio();
+    let gpio = gpio();
 
     // 根据微步倍数确定 MS1/MS2/MS3 的电平
     let (ms1, ms2, ms3) = match microsteps {
@@ -336,13 +341,13 @@ fn set_microstepping(microsteps: u32) {
     };
 
     // 设置 MS1 (GP5)
-    gpio.pin_write(PIN_MS1 as u8, ms1);
+    gpio.set(PIN_MS1 as u8, ms1);
 
     // 设置 MS2 (GP6)
-    gpio.pin_write(PIN_MS2 as u8, ms2);
+    gpio.set(PIN_MS2 as u8, ms2);
 
     // 设置 MS3 (GP7)
-    gpio.pin_write(PIN_MS3 as u8, ms3);
+    gpio.set(PIN_MS3 as u8, ms3);
 
     info!(
         "A4988 microstepping: 1/{} (MS1={} MS2={} MS3={})",
@@ -356,7 +361,7 @@ fn set_microstepping(microsteps: u32) {
 /// - LOW  = 输出 FET 使能，电机通电 (有保持力矩)
 /// - HIGH = 输出 FET 关闭，电机可自由转动 (无保持力矩)
 fn enable_driver() {
-    Sio::new().gpio().pin_clr(PIN_ENABLE as u8);
+    gpio().set_low(PIN_ENABLE as u8);
     info!("A4988 enabled (ENABLE=LOW)");
 }
 
@@ -366,7 +371,7 @@ fn enable_driver() {
 /// 适用于不需要定位保持的场景 (例如手动调节)。
 #[allow(dead_code)]
 fn disable_driver() {
-    Sio::new().gpio().pin_set(PIN_ENABLE as u8);
+    gpio().set_high(PIN_ENABLE as u8);
     info!("A4988 disabled (ENABLE=HIGH)");
 }
 
@@ -380,11 +385,10 @@ fn disable_driver() {
 /// 使用场景: 微步位置可能错乱时，通过复位恢复已知状态
 #[allow(dead_code)]
 fn reset_driver() {
-    let sio = Sio::new();
-    let gpio = sio.gpio();
+    let gpio = gpio();
 
     // 拉低 RESET，保持一段时间
-    gpio.pin_clr(PIN_RESET as u8);
+    gpio.set_low(PIN_RESET as u8);
 
     // 等待至少 1μs (数据手册要求)
     // 使用 spin_loop 自旋等待
@@ -393,7 +397,7 @@ fn reset_driver() {
     }
 
     // 释放 RESET
-    gpio.pin_set(PIN_RESET as u8);
+    gpio.set_high(PIN_RESET as u8);
     info!("A4988 reset complete");
 }
 
@@ -406,7 +410,7 @@ fn reset_driver() {
 ///
 /// 使用场景: 长时间不运转时降低功耗和发热
 fn sleep_driver() {
-    Sio::new().gpio().pin_clr(PIN_SLEEP as u8);
+    gpio().set_low(PIN_SLEEP as u8);
     info!("A4988 entering sleep mode (SLEEP=LOW)");
 }
 
@@ -415,7 +419,7 @@ fn sleep_driver() {
 /// 唤醒后内部稳压器需要 ~1ms 才能稳定输出电压，
 /// 在此期间不应发送 STEP 脉冲。
 fn wake_driver() {
-    Sio::new().gpio().pin_set(PIN_SLEEP as u8);
+    gpio().set_high(PIN_SLEEP as u8);
     info!("A4988 awake (SLEEP=HIGH), waiting 1ms for regulator");
 }
 
@@ -561,7 +565,7 @@ fn main() -> ! {
     timer.delay_ms(2); // 等待内部稳压器稳定 (数据手册: ~1ms)
 
     // 解除复位: RESET 拉高
-    Sio::new().gpio().pin_set(PIN_RESET as u8);
+    gpio().set_high(PIN_RESET as u8);
     info!("A4988 RESET released (HIGH)");
     timer.delay_ms(1);
 

@@ -16,6 +16,7 @@ use defmt_rtt as _;
 use panic_probe as _;
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
+use pico_rs::gpio::{Gpio, Pins};
 use pico_rs::pac::Peripherals;
 use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 use pico_rs::sio::{Sio, Spinlock};
@@ -49,33 +50,17 @@ fn main() -> ! {
     // Initialize delay
     let delay = Delay::new(core_peripherals.SYST, CLOCK_FREQ_HZ);
 
-    // Configure GPIO 25 (LED) as output via SIO
-    // First need to set up the GPIO pad and function
-    let io_bank0 = dp.IO_BANK0;
-    let pads_bank0 = dp.PADS_BANK0;
-
-    // Configure pad
-    pads_bank0.gpio25.write_bits(
-        (1 << 6) |  // IE (input enable)
-        (0 << 4) |  // OD (output disable = 0, output enabled)
-        (1 << 3) |  // PUE (pull-up enable, not strictly needed)
-        (0 << 2) |  // PDE (pull-down enable)
-        (1 << 1) |  // SCHMITT (Schmitt trigger)
-        (1 << 0), // SLEWFAST
-    );
-
-    // Set GPIO function to SIO (function 5)
-    io_bank0.gpio25_ctrl.write_bits(5);
-
-    // Enable output via SIO
-    sio.gpio().pin_oe_set(LED_PIN);
+    // Configure GPIO 25 (LED) as SIO output through the safe GPIO API.
+    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let led = pins.pin::<25>();
+    led.into_output();
 
     info!("GPIO {} configured as SIO output", LED_PIN);
 
     // Demonstrate spinlock usage
     info!("Testing spinlock...");
     {
-        let _guard = Spinlock::<0>::acquire();
+        let _lock = Spinlock::<0>::acquire();
         info!("  Spinlock 0 acquired");
         // Critical section protected by spinlock 0
         info!("  Spinlock 0 is_locked: {}", Spinlock::<0>::is_locked());
@@ -83,11 +68,9 @@ fn main() -> ! {
     info!("  Spinlock 0 released");
     info!("  Spinlock 0 is_locked: {}", Spinlock::<0>::is_locked());
 
-    // Demonstrate interpolator usage for byte extraction
     info!("Testing interpolator 0 (byte extraction)...");
     {
         let interp = sio.interp0();
-
         // Configure for simple shift-and-mask
         // Extract bits 8-15 (second byte) from a 32-bit value
         interp.config_lane0(8, 0, 7, false); // shift=8, mask bits 0-7, unsigned
@@ -142,25 +125,26 @@ fn main() -> ! {
 
     info!("Starting LED blink via SIO...");
 
-    let gpio = sio.gpio();
+    // SAFETY: GPIO 25 was configured for SIO output above.
+    let gpio = unsafe { Gpio::new() };
 
     loop {
         // Turn LED on using atomic set
-        gpio.pin_set(LED_PIN);
+        gpio.set_high(LED_PIN);
         info!("LED ON");
         delay.delay_ms(250);
 
         // Turn LED off using atomic clear
-        gpio.pin_clr(LED_PIN);
+        gpio.set_low(LED_PIN);
         info!("LED OFF");
         delay.delay_ms(250);
 
         // Toggle LED using atomic XOR
-        gpio.pin_toggle(LED_PIN);
+        gpio.toggle(LED_PIN);
         info!("LED TOGGLE (ON)");
         delay.delay_ms(250);
 
-        gpio.pin_toggle(LED_PIN);
+        gpio.toggle(LED_PIN);
         info!("LED TOGGLE (OFF)");
         delay.delay_ms(250);
     }

@@ -81,10 +81,9 @@ use panic_probe as _;
 use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
-use pico_rs::gpio::Pins;
+use pico_rs::gpio::{Gpio, Pins};
 use pico_rs::interrupt;
 use pico_rs::pac::{Interrupt, Peripherals};
-use pico_rs::sio::Sio;
 use pico_rs::ticks::Ticks;
 use pico_rs::timer::Timer0;
 
@@ -152,13 +151,19 @@ const PIN_SLEEP: u32 = 9;
 /// 步进轴状态
 static AXIS: AxisState = AxisState::new();
 
+#[inline(always)]
+fn gpio() -> Gpio {
+    // SAFETY: all used pins are configured through `Pins` before runtime SIO
+    // access. This helper only touches SIO data registers.
+    unsafe { Gpio::new() }
+}
+
 // ============================================================================
 // A4988 微步配置
 // ============================================================================
 
 fn set_microstepping(microsteps: u32) {
-    let sio = Sio::new();
-    let gpio = sio.gpio();
+    let gpio = gpio();
     let (ms1, ms2, ms3) = match microsteps {
         1 => (false, false, false),
         2 => (true, false, false),
@@ -170,9 +175,9 @@ fn set_microstepping(microsteps: u32) {
             (false, false, false)
         }
     };
-    gpio.pin_write(PIN_MS1 as u8, ms1);
-    gpio.pin_write(PIN_MS2 as u8, ms2);
-    gpio.pin_write(PIN_MS3 as u8, ms3);
+    gpio.set(PIN_MS1 as u8, ms1);
+    gpio.set(PIN_MS2 as u8, ms2);
+    gpio.set(PIN_MS3 as u8, ms3);
     info!("微步: 1/{}", microsteps);
 }
 
@@ -253,11 +258,11 @@ fn main() -> ! {
     // A4988 上电序列
     // ------------------------------------------------------------------
     // SLEEP → HIGH (唤醒)
-    Sio::new().gpio().pin_set(PIN_SLEEP as u8);
+        gpio().set_high(PIN_SLEEP as u8);
     timer.delay_ms(2);
 
     // RESET → HIGH (解除复位)
-    Sio::new().gpio().pin_set(PIN_RESET as u8);
+        gpio().set_high(PIN_RESET as u8);
     timer.delay_ms(1);
 
     // 微步配置
@@ -289,7 +294,7 @@ fn main() -> ! {
     let now_us = || -> u32 { timer.get_time_us_32() };
 
     // 使能 A4988
-    Sio::new().gpio().pin_clr(PIN_ENABLE as u8);
+        gpio().set_low(PIN_ENABLE as u8);
     info!("A4988 已使能");
     delay_ms(100);
 

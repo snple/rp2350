@@ -143,10 +143,9 @@ use panic_probe as _;
 use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
-use pico_rs::gpio::{Pin, Pins};
+use pico_rs::gpio::{Gpio, Pin, Pins};
 use pico_rs::interrupt::{self, Mutex};
 use pico_rs::pac::{Interrupt, Peripherals};
-use pico_rs::sio::Sio;
 use pico_rs::timer::Timer0;
 
 #[unsafe(link_section = ".start_block")]
@@ -369,6 +368,13 @@ static STALL_DETECTED: AtomicBool = AtomicBool::new(false);
 /// 运动完成标志
 static MOTION_DONE: AtomicBool = AtomicBool::new(true);
 
+#[inline(always)]
+fn gpio() -> Gpio {
+    // SAFETY: the example configures STEP/DIR/ENABLE through `Pins` before
+    // any runtime SIO access. This helper only performs SIO data-path IO.
+    unsafe { Gpio::new() }
+}
+
 // ============================================================================
 // 步进脉冲控制
 // ============================================================================
@@ -377,23 +383,22 @@ static MOTION_DONE: AtomicBool = AtomicBool::new(true);
 ///
 /// speed_ref: 速度参考 (RPM × 10)，正值=正转，负值=反转
 fn update_step_speed(speed_ref: i32) {
-    let sio = Sio::new();
-    let gpio = sio.gpio();
+    let gpio = gpio();
 
     if speed_ref.abs() < 5 {
         // 速度太低 → 停止脉冲
         STEP_INTERVAL_US.store(0, Ordering::Relaxed);
         STEPPER_RUNNING.store(false, Ordering::Relaxed);
-        gpio.pin_clr(PIN_STEP as u8);
+            gpio.set_low(PIN_STEP as u8);
         return;
     }
 
     // 设置方向
     if speed_ref >= 0 {
-        gpio.pin_clr(PIN_DIR as u8);
+            gpio.set_low(PIN_DIR as u8);
         STEP_DIRECTION.store(0, Ordering::Relaxed);
     } else {
-        gpio.pin_set(PIN_DIR as u8);
+            gpio.set_high(PIN_DIR as u8);
         STEP_DIRECTION.store(1, Ordering::Relaxed);
     }
 
@@ -478,8 +483,8 @@ fn main() -> ! {
     enc_b.enable_interrupt(pico_rs::gpio::EdgeLevel::EdgeHigh);
     enc_b.enable_interrupt(pico_rs::gpio::EdgeLevel::EdgeLow);
 
-    let init_a = enc_a.read();
-    let init_b = enc_b.read();
+    let init_a = enc_a.get();
+    let init_b = enc_b.get();
     let init_ab = ((init_a as u32) << 1) | (init_b as u32);
     ENCODER_LAST_AB.store(init_ab, Ordering::Relaxed);
 
@@ -786,8 +791,8 @@ fn IO_IRQ_BANK0() {
     pin_a.clear_all_interrupts();
     pin_b.clear_all_interrupts();
 
-    let a = pin_a.read() as u32;
-    let b = pin_b.read() as u32;
+    let a = pin_a.get() as u32;
+    let b = pin_b.get() as u32;
     let curr_ab = (a << 1) | b;
 
     let prev_ab = ENCODER_LAST_AB.swap(curr_ab, Ordering::Relaxed);

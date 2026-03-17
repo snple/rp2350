@@ -70,9 +70,16 @@
 //! }
 //! ```
 
-use core::sync::atomic::{AtomicBool, AtomicI32, AtomicU32, AtomicU8, Ordering};
+use core::sync::atomic::{AtomicBool, AtomicI32, AtomicU8, AtomicU32, Ordering};
 
-use pico_rs::sio::Sio;
+use pico_rs::gpio::Gpio;
+
+#[inline(always)]
+fn gpio() -> Gpio {
+    // SAFETY: these examples configure GPIO direction and function once during
+    // initialization, then use `Gpio` only for runtime SIO data-path access.
+    unsafe { Gpio::new() }
+}
 
 // ============================================================================
 // Timer 抽象 — 统一 Timer0 / Timer1 接口
@@ -180,11 +187,7 @@ pub struct AxisConfig {
 /// Hz → μs 间隔转换
 #[inline]
 pub const fn speed_to_interval_us(hz: u32) -> u32 {
-    if hz == 0 {
-        1_000_000
-    } else {
-        1_000_000 / hz
-    }
+    if hz == 0 { 1_000_000 } else { 1_000_000 / hz }
 }
 
 // ============================================================================
@@ -338,8 +341,8 @@ impl AxisState {
         self.decel_start_step.store(decel_start, Ordering::Relaxed);
 
         // 设置方向引脚
-        let sio = Sio::new();
-        sio.gpio().pin_write(pin_dir, dir as u32 != 0);
+        let gpio = gpio();
+        gpio.set(pin_dir, dir as u32 != 0);
 
         self.motion_phase
             .store(MotionPhase::Accelerating as u32, Ordering::Relaxed);
@@ -361,12 +364,7 @@ impl AxisState {
     /// - `timer`: Timer 外设引用
     /// - `dir`: 运动方向
     /// - `speed_hz`: 步进频率 (Hz)
-    pub fn start_continuous<T: StepperTimer>(
-        &self,
-        timer: &T,
-        dir: Direction,
-        speed_hz: u32,
-    ) {
+    pub fn start_continuous<T: StepperTimer>(&self, timer: &T, dir: Direction, speed_hz: u32) {
         let alarm = self.alarm.load(Ordering::Relaxed);
         let pin_dir = self.pin_dir.load(Ordering::Relaxed);
 
@@ -376,8 +374,8 @@ impl AxisState {
         self.direction.store(dir as u32, Ordering::Relaxed);
         self.pulse_state.store(false, Ordering::Relaxed);
 
-        let sio = Sio::new();
-        sio.gpio().pin_write(pin_dir, dir as u32 != 0);
+        let gpio = gpio();
+        gpio.set(pin_dir, dir as u32 != 0);
 
         self.motion_phase
             .store(MotionPhase::Running as u32, Ordering::Relaxed);
@@ -399,9 +397,7 @@ impl AxisState {
             .store(MotionPhase::Idle as u32, Ordering::Relaxed);
         self.motion_done.store(true, Ordering::Relaxed);
 
-        let sio = Sio::new();
-        sio.gpio()
-            .pin_clr(self.pin_step.load(Ordering::Relaxed));
+        gpio().set_low(self.pin_step.load(Ordering::Relaxed));
     }
 
     /// 阻塞等待运动完成 (使用 WFI 省电)
@@ -444,14 +440,13 @@ impl AxisState {
         }
 
         let pin_step = self.pin_step.load(Ordering::Relaxed);
-        let sio = Sio::new();
-        let gpio = sio.gpio();
+        let gpio = gpio();
 
         let pulse_high = self.pulse_state.load(Ordering::Relaxed);
 
         if !pulse_high {
             // ---- 第 1 阶段: STEP 上升沿 ----
-            gpio.pin_set(pin_step);
+            gpio.set_high(pin_step);
             self.pulse_state.store(true, Ordering::Relaxed);
 
             let pulse_us = self.step_pulse_us.load(Ordering::Relaxed);
@@ -461,7 +456,7 @@ impl AxisState {
         }
 
         // ---- 第 2 阶段: STEP 下降沿 + 状态更新 ----
-        gpio.pin_clr(pin_step);
+        gpio.set_low(pin_step);
         self.pulse_state.store(false, Ordering::Relaxed);
 
         let step = self.steps_done.fetch_add(1, Ordering::Relaxed) + 1;
@@ -502,8 +497,7 @@ impl AxisState {
         } else {
             MotionPhase::Cruising
         };
-        self.motion_phase
-            .store(new_phase as u32, Ordering::Relaxed);
+        self.motion_phase.store(new_phase as u32, Ordering::Relaxed);
 
         // 计算下一步间隔
         let interval = self.compute_interval(step, total, new_phase);

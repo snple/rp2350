@@ -21,10 +21,9 @@ use panic_probe as _;
 use pico_rs::Delay;
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
-use pico_rs::gpio::{DriveStrength, Pin, Pins, Pull, SlewRate};
+use pico_rs::gpio::{DriveStrength, Gpio, Pin, Pins, Pull, SlewRate};
 use pico_rs::pac::Peripherals;
 use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
-use pico_rs::sio::Sio;
 
 /// RP2350 Boot Block
 #[unsafe(link_section = ".start_block")]
@@ -90,15 +89,15 @@ fn main() -> ! {
     pin0.into_input_pullup();
     info!("Pin0 configured as input with pull-up");
 
-    // Read input value
-    let value = pin0.read();
+    // Get input value
+    let value = pin0.get();
     info!("Pin0 input value: {} (expected true with pull-up)", value);
 
     // Configure pin1 as input with pull-down
     pin1.into_input_pulldown();
     info!("Pin1 configured as input with pull-down");
 
-    let value = pin1.read();
+    let value = pin1.get();
     info!(
         "Pin1 input value: {} (expected false with pull-down)",
         value
@@ -162,23 +161,24 @@ fn main() -> ! {
     info!("Pin4 function: {:?}", pin4.function());
 
     // ========================================================================
-    // Example 6: Direct SIO Access (via SIO HAL)
+    // Example 6: Direct runtime-indexed GPIO access
     // ========================================================================
-    info!("--- Example 6: Direct SIO Access ---");
+    info!("--- Example 6: Direct runtime-indexed GPIO access ---");
 
-    let sio = Sio::new();
+    // SAFETY: the GPIO bank is initialized above, and all accessed pins are
+    // configured through `Pin<N>` before raw SIO access.
+    let gpio = unsafe { Gpio::new() };
 
     // Read GPIO input for low bank (pins 0-31)
-    let gpio = sio.gpio();
-    let gpio_in = gpio.input_low();
+    let gpio_in = gpio.mask_input_low();
     info!("GPIO IN (0-31): {:#010X}", gpio_in);
 
     // Read GPIO output for low bank
-    let gpio_out = gpio.output_low();
+    let gpio_out = gpio.mask_output_low();
     info!("GPIO OUT (0-31): {:#010X}", gpio_out);
 
     // Read GPIO OE for low bank
-    let gpio_oe = gpio.oe_low();
+    let gpio_oe = gpio.mask_oe_low();
     info!("GPIO OE (0-31): {:#010X}", gpio_oe);
 
     // ========================================================================

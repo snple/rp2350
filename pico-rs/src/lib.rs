@@ -97,7 +97,7 @@ pub use busctrl::Busctrl;
 pub use clocks::Clocks;
 pub use dma::{Channel, Dma};
 pub use eppb::Eppb;
-pub use gpio::Pins;
+pub use gpio::{Gpio, Pins};
 pub use i2c::{I2c0, I2c1};
 pub use multicore::{Fifo, Multicore, Stack};
 pub use powman::{AonTimer, Powman, Timespec};

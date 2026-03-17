@@ -535,9 +535,9 @@ fn main() -> ! {
 
     // 读取初始霍尔状态
     let read_hall = || -> u32 {
-        let ha = hall_a.read() as u32;
-        let hb = hall_b.read() as u32;
-        let hc = hall_c.read() as u32;
+        let ha = hall_a.get() as u32;
+        let hb = hall_b.get() as u32;
+        let hc = hall_c.get() as u32;
         (ha << 2) | (hb << 1) | hc
     };
 
@@ -748,7 +748,7 @@ fn IO_IRQ_BANK0() {
     hc.clear_all_interrupts();
 
     // 读取霍尔状态
-    let hall = ((ha.read() as u32) << 2) | ((hb.read() as u32) << 1) | (hc.read() as u32);
+    let hall = ((ha.get() as u32) << 2) | ((hb.get() as u32) << 1) | (hc.get() as u32);
     HALL_STATE.store(hall, Ordering::Relaxed);
 
     // 更新角度基准

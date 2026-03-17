@@ -999,8 +999,8 @@ fn main() -> ! {
     enc_b.enable_interrupt(pico_rs::gpio::EdgeLevel::EdgeHigh);
     enc_b.enable_interrupt(pico_rs::gpio::EdgeLevel::EdgeLow);
 
-    let init_a = enc_a.read();
-    let init_b = enc_b.read();
+    let init_a = enc_a.get();
+    let init_b = enc_b.get();
     info!("Encoder init: A={}, B={}", init_a, init_b);
 
     let init_ab = ((init_a as u32) << 1) | (init_b as u32);
@@ -1308,8 +1308,8 @@ fn IO_IRQ_BANK0() {
     pin_a.clear_all_interrupts();
     pin_b.clear_all_interrupts();
 
-    let a = pin_a.read() as u32;
-    let b = pin_b.read() as u32;
+    let a = pin_a.get() as u32;
+    let b = pin_b.get() as u32;
     let curr_ab = (a << 1) | b;
 
     let prev_ab = ENCODER_LAST_AB.swap(curr_ab, Ordering::Relaxed);

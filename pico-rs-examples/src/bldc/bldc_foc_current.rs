@@ -635,8 +635,8 @@ fn main() -> ! {
     enc_b.enable_interrupt(pico_rs::gpio::EdgeLevel::EdgeLow);
 
     // 读取初始编码器状态
-    let init_a = enc_a.read();
-    let init_b = enc_b.read();
+    let init_a = enc_a.get();
+    let init_b = enc_b.get();
     info!("Encoder init: A={}, B={}", init_a, init_b);
 
     // 存储上次 AB 状态用于 4 倍频解码
@@ -873,8 +873,8 @@ fn IO_IRQ_BANK0() {
     pin_b.clear_all_interrupts();
 
     // 读取当前 AB 状态
-    let a = pin_a.read() as u32;
-    let b = pin_b.read() as u32;
+    let a = pin_a.get() as u32;
+    let b = pin_b.get() as u32;
     let curr_ab = (a << 1) | b;
 
     // 查表获取方向

@@ -170,10 +170,9 @@ use panic_probe as _;
 use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
-use pico_rs::gpio::{Pin, Pins, Uart1RxPin, Uart1TxPin};
+use pico_rs::gpio::{Gpio, Pin, Pins, Uart1RxPin, Uart1TxPin};
 use pico_rs::interrupt::{self, Mutex};
 use pico_rs::pac::{Interrupt, Peripherals};
-use pico_rs::sio::Sio;
 use pico_rs::timer::Timer0;
 use pico_rs::uart::{DataBits, Parity, StopBits, Uart1};
 
@@ -731,6 +730,13 @@ enum MotionPhase {
 /// Timer0 外设 — 在 main 中初始化，移入全局供 ISR 使用
 static TIMER: Mutex<RefCell<Option<Timer0>>> = Mutex::new(RefCell::new(None));
 
+#[inline(always)]
+fn gpio() -> Gpio {
+    // SAFETY: GPIOs are configured through `Pins` during startup. After that,
+    // this helper only performs SIO data register access.
+    unsafe { Gpio::new() }
+}
+
 /// 当前运动阶段 (MotionPhase 编码为 u32: 0=Idle, 1=Accel, 2=Cruise, 3=Decel, 4=Run)
 static MOTION_PHASE: AtomicU32 = AtomicU32::new(0);
 /// 当前步进间隔 (μs) — ISR 用此值设置下一次 alarm
@@ -866,7 +872,8 @@ fn start_trapezoidal_move(steps: u32, dir: u32) {
     DECEL_START_STEP.store(decel_start, Ordering::Relaxed);
 
     // 设置方向引脚 (DIR)
-    Sio::new().gpio().pin_write(PIN_DIR as u8, dir != 0);
+    let gpio = gpio();
+    gpio.set(PIN_DIR as u8, dir != 0);
 
     // 从"加速"阶段开始
     MOTION_PHASE.store(phase_to_u32(MotionPhase::Accelerating), Ordering::Relaxed);
@@ -900,7 +907,8 @@ fn start_continuous_run(dir: u32, speed_hz: u32) {
     DIRECTION.store(dir, Ordering::Relaxed);
     PULSE_STATE.store(false, Ordering::Relaxed);
 
-    Sio::new().gpio().pin_write(PIN_DIR as u8, dir != 0);
+    let gpio = gpio();
+    gpio.set(PIN_DIR as u8, dir != 0);
 
     MOTION_PHASE.store(phase_to_u32(MotionPhase::Running), Ordering::Relaxed);
 
@@ -925,7 +933,7 @@ fn stop_motion() {
     MOTION_DONE.store(true, Ordering::Relaxed);
 
     // 确保 STEP 引脚为低电平
-    Sio::new().gpio().pin_clr(PIN_STEP as u8);
+    gpio().set_low(PIN_STEP as u8);
 }
 
 /// 阻塞等待当前运动完成
@@ -1030,7 +1038,7 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     // 6. 使能 TMC2209 驱动器 (ENN 拉低)
     // ------------------------------------------------------------------
-    Sio::new().gpio().pin_clr(PIN_ENABLE as u8);
+    gpio().set_low(PIN_ENABLE as u8);
     info!("TMC2209 enabled (ENN=LOW)");
     delay_ms(100);
 

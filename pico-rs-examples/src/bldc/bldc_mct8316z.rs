@@ -1290,7 +1290,7 @@ fn main() -> ! {
     info!("Drive enabled, DRVOFF=LOW");
 
     // 检查 nFAULT
-    if !nfault.read() {
+    if !nfault.get() {
         error!("nFAULT LOW immediately after enable — check hardware!");
         mct.check_faults();
     }
@@ -1312,7 +1312,7 @@ fn main() -> ! {
         // ==============================================================
         // 1. 检查 nFAULT 引脚 (快速故障检测)
         // ==============================================================
-        if !nfault.read() {
+        if !nfault.get() {
             warn!("nFAULT LOW detected!");
             mct.check_faults();
 
@@ -1354,7 +1354,7 @@ fn main() -> ! {
                         state
                     ),
                     bus_current,
-                    nfault.read()
+                    nfault.get()
                 );
             }
         }

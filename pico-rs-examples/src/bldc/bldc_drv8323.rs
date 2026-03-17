@@ -1149,7 +1149,7 @@ fn main() -> ! {
     info!("CSA Control readback: 0x{:03x}", csa_readback);
 
     // 检查 nFAULT: 高 = 正常, 低 = 有故障
-    if !nfault.read() {
+    if !nfault.get() {
         error!("nFAULT is LOW after configuration — check hardware!");
         drv.check_faults();
     } else {
@@ -1230,8 +1230,8 @@ fn main() -> ! {
     enc_b.enable_interrupt(pico_rs::gpio::EdgeLevel::EdgeLow);
 
     // 读取初始编码器状态
-    let init_a = enc_a.read();
-    let init_b = enc_b.read();
+    let init_a = enc_a.get();
+    let init_b = enc_b.get();
     let init_ab = ((init_a as u32) << 1) | (init_b as u32);
     ENCODER_LAST_AB.store(init_ab, Ordering::Relaxed);
     info!("Encoder init: A={}, B={}", init_a, init_b);
@@ -1397,7 +1397,7 @@ fn main() -> ! {
             fault_check_counter += 1;
             if fault_check_counter % 100 == 0 {
                 // 通过 nFAULT 引脚快速检查
-                if !nfault.read() {
+                if !nfault.get() {
                     warn!("nFAULT LOW — DRV8323 fault detected!");
                     // 可在此通过 SPI 读取详细故障信息
                     // 此处需要重新获取 SPI 访问权
@@ -1434,8 +1434,8 @@ fn IO_IRQ_BANK0() {
     pin_b.clear_all_interrupts();
 
     // 读取当前 AB 状态
-    let a = pin_a.read() as u32;
-    let b = pin_b.read() as u32;
+    let a = pin_a.get() as u32;
+    let b = pin_b.get() as u32;
     let curr_ab = (a << 1) | b;
 
     // 查表获取方向
