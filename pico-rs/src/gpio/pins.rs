@@ -69,7 +69,7 @@ use super::{Function, Pin};
 ///
 /// Valid pins: 0, 4, 8, 12, 16, 20, 24, 28 (RP2350A)
 /// Additional: 32, 36, 40, 44 (RP2350B)
-pub trait I2c0SdaPin: super::GpioPin {
+pub trait I2c0SdaPin {
     /// Configure this pin for I2C0 SDA function
     fn configure_i2c0_sda(&self);
 }
@@ -78,7 +78,7 @@ pub trait I2c0SdaPin: super::GpioPin {
 ///
 /// Valid pins: 1, 5, 9, 13, 17, 21, 25, 29 (RP2350A)
 /// Additional: 33, 37, 41, 45 (RP2350B)
-pub trait I2c0SclPin: super::GpioPin {
+pub trait I2c0SclPin {
     /// Configure this pin for I2C0 SCL function
     fn configure_i2c0_scl(&self);
 }
@@ -87,7 +87,7 @@ pub trait I2c0SclPin: super::GpioPin {
 ///
 /// Valid pins: 2, 6, 10, 14, 18, 22, 26 (RP2350A)
 /// Additional: 30, 34, 38, 42, 46 (RP2350B)
-pub trait I2c1SdaPin: super::GpioPin {
+pub trait I2c1SdaPin {
     /// Configure this pin for I2C1 SDA function
     fn configure_i2c1_sda(&self);
 }
@@ -96,7 +96,7 @@ pub trait I2c1SdaPin: super::GpioPin {
 ///
 /// Valid pins: 3, 7, 11, 15, 19, 23, 27 (RP2350A)
 /// Additional: 31, 35, 39, 43, 47 (RP2350B)
-pub trait I2c1SclPin: super::GpioPin {
+pub trait I2c1SclPin {
     /// Configure this pin for I2C1 SCL function
     fn configure_i2c1_scl(&self);
 }
@@ -164,7 +164,7 @@ macro_rules! impl_i2c_pins {
 /// Marker trait for pins that can be used as UART0 TX.
 ///
 /// Valid pins: 0, 12, 16, 28 (RP2350A)
-pub trait Uart0TxPin: super::GpioPin {
+pub trait Uart0TxPin {
     /// Configure this pin for UART0 TX function
     fn configure_uart0_tx(&self);
 }
@@ -172,7 +172,7 @@ pub trait Uart0TxPin: super::GpioPin {
 /// Marker trait for pins that can be used as UART0 RX.
 ///
 /// Valid pins: 1, 13, 17, 29 (RP2350A)
-pub trait Uart0RxPin: super::GpioPin {
+pub trait Uart0RxPin {
     /// Configure this pin for UART0 RX function
     fn configure_uart0_rx(&self);
 }
@@ -180,7 +180,7 @@ pub trait Uart0RxPin: super::GpioPin {
 /// Marker trait for pins that can be used as UART0 CTS.
 ///
 /// Valid pins: 2, 14, 18 (RP2350A)
-pub trait Uart0CtsPin: super::GpioPin {
+pub trait Uart0CtsPin {
     /// Configure this pin for UART0 CTS function
     fn configure_uart0_cts(&self);
 }
@@ -188,7 +188,7 @@ pub trait Uart0CtsPin: super::GpioPin {
 /// Marker trait for pins that can be used as UART0 RTS.
 ///
 /// Valid pins: 3, 15, 19 (RP2350A)
-pub trait Uart0RtsPin: super::GpioPin {
+pub trait Uart0RtsPin {
     /// Configure this pin for UART0 RTS function
     fn configure_uart0_rts(&self);
 }
@@ -196,7 +196,7 @@ pub trait Uart0RtsPin: super::GpioPin {
 /// Marker trait for pins that can be used as UART1 TX.
 ///
 /// Valid pins: 4, 8, 20, 24 (RP2350A)
-pub trait Uart1TxPin: super::GpioPin {
+pub trait Uart1TxPin {
     /// Configure this pin for UART1 TX function
     fn configure_uart1_tx(&self);
 }
@@ -204,7 +204,7 @@ pub trait Uart1TxPin: super::GpioPin {
 /// Marker trait for pins that can be used as UART1 RX.
 ///
 /// Valid pins: 5, 9, 21, 25 (RP2350A)
-pub trait Uart1RxPin: super::GpioPin {
+pub trait Uart1RxPin {
     /// Configure this pin for UART1 RX function
     fn configure_uart1_rx(&self);
 }
@@ -212,7 +212,7 @@ pub trait Uart1RxPin: super::GpioPin {
 /// Marker trait for pins that can be used as UART1 CTS.
 ///
 /// Valid pins: 6, 10, 22, 26 (RP2350A)
-pub trait Uart1CtsPin: super::GpioPin {
+pub trait Uart1CtsPin {
     /// Configure this pin for UART1 CTS function
     fn configure_uart1_cts(&self);
 }
@@ -220,7 +220,7 @@ pub trait Uart1CtsPin: super::GpioPin {
 /// Marker trait for pins that can be used as UART1 RTS.
 ///
 /// Valid pins: 7, 11, 23, 27 (RP2350A)
-pub trait Uart1RtsPin: super::GpioPin {
+pub trait Uart1RtsPin {
     /// Configure this pin for UART1 RTS function
     fn configure_uart1_rts(&self);
 }
@@ -324,7 +324,7 @@ macro_rules! impl_uart_pins {
 /// Marker trait for pins that can be used as SPI0 RX (MISO).
 ///
 /// Valid pins: 0, 4, 16, 20 (RP2350A)
-pub trait Spi0RxPin: super::GpioPin {
+pub trait Spi0RxPin {
     /// Configure this pin for SPI0 RX function
     fn configure_spi0_rx(&self);
 }
@@ -332,7 +332,7 @@ pub trait Spi0RxPin: super::GpioPin {
 /// Marker trait for pins that can be used as SPI0 CSn (Chip Select).
 ///
 /// Valid pins: 1, 5, 17, 21 (RP2350A)
-pub trait Spi0CsnPin: super::GpioPin {
+pub trait Spi0CsnPin {
     /// Configure this pin for SPI0 CSn function
     fn configure_spi0_csn(&self);
 }
@@ -340,7 +340,7 @@ pub trait Spi0CsnPin: super::GpioPin {
 /// Marker trait for pins that can be used as SPI0 SCK (Clock).
 ///
 /// Valid pins: 2, 6, 18, 22 (RP2350A)
-pub trait Spi0SckPin: super::GpioPin {
+pub trait Spi0SckPin {
     /// Configure this pin for SPI0 SCK function
     fn configure_spi0_sck(&self);
 }
@@ -348,7 +348,7 @@ pub trait Spi0SckPin: super::GpioPin {
 /// Marker trait for pins that can be used as SPI0 TX (MOSI).
 ///
 /// Valid pins: 3, 7, 19, 23 (RP2350A)
-pub trait Spi0TxPin: super::GpioPin {
+pub trait Spi0TxPin {
     /// Configure this pin for SPI0 TX function
     fn configure_spi0_tx(&self);
 }
@@ -356,7 +356,7 @@ pub trait Spi0TxPin: super::GpioPin {
 /// Marker trait for pins that can be used as SPI1 RX (MISO).
 ///
 /// Valid pins: 8, 12, 24, 28 (RP2350A)
-pub trait Spi1RxPin: super::GpioPin {
+pub trait Spi1RxPin {
     /// Configure this pin for SPI1 RX function
     fn configure_spi1_rx(&self);
 }
@@ -364,7 +364,7 @@ pub trait Spi1RxPin: super::GpioPin {
 /// Marker trait for pins that can be used as SPI1 CSn (Chip Select).
 ///
 /// Valid pins: 9, 13, 25, 29 (RP2350A)
-pub trait Spi1CsnPin: super::GpioPin {
+pub trait Spi1CsnPin {
     /// Configure this pin for SPI1 CSn function
     fn configure_spi1_csn(&self);
 }
@@ -372,7 +372,7 @@ pub trait Spi1CsnPin: super::GpioPin {
 /// Marker trait for pins that can be used as SPI1 SCK (Clock).
 ///
 /// Valid pins: 10, 14, 26 (RP2350A)
-pub trait Spi1SckPin: super::GpioPin {
+pub trait Spi1SckPin {
     /// Configure this pin for SPI1 SCK function
     fn configure_spi1_sck(&self);
 }
@@ -380,7 +380,7 @@ pub trait Spi1SckPin: super::GpioPin {
 /// Marker trait for pins that can be used as SPI1 TX (MOSI).
 ///
 /// Valid pins: 11, 15, 27 (RP2350A)
-pub trait Spi1TxPin: super::GpioPin {
+pub trait Spi1TxPin {
     /// Configure this pin for SPI1 TX function
     fn configure_spi1_tx(&self);
 }
@@ -484,7 +484,7 @@ macro_rules! impl_spi_pins {
 /// Marker trait for pins that can be used as PWM channel A.
 ///
 /// The `SLICE` const parameter indicates the PWM slice number (0-11).
-pub trait PwmAPin: super::GpioPin {
+pub trait PwmAPin {
     /// The PWM slice number (0-11)
     const PWM_SLICE: u8;
     /// Configure this pin for PWM channel A function
@@ -494,7 +494,7 @@ pub trait PwmAPin: super::GpioPin {
 /// Marker trait for pins that can be used as PWM channel B.
 ///
 /// The `SLICE` const parameter indicates the PWM slice number (0-11).
-pub trait PwmBPin: super::GpioPin {
+pub trait PwmBPin {
     /// The PWM slice number (0-11)
     const PWM_SLICE: u8;
     /// Configure this pin for PWM channel B function
@@ -537,19 +537,19 @@ macro_rules! impl_pwm_pins {
 ///
 /// All GPIO pins support PIO. On RP2350A, pins 0-29 are available.
 /// On RP2350B, pins 0-47 are available.
-pub trait Pio0Pin: super::GpioPin {
+pub trait Pio0Pin {
     /// Configure this pin for PIO0 function
     fn configure_pio0(&self);
 }
 
 /// Marker trait for pins that can be used with PIO1.
-pub trait Pio1Pin: super::GpioPin {
+pub trait Pio1Pin {
     /// Configure this pin for PIO1 function
     fn configure_pio1(&self);
 }
 
 /// Marker trait for pins that can be used with PIO2.
-pub trait Pio2Pin: super::GpioPin {
+pub trait Pio2Pin {
     /// Configure this pin for PIO2 function
     fn configure_pio2(&self);
 }
@@ -737,10 +737,6 @@ mod rp2350b_pins {
 /// let spi = Spi0::new(dp.SPI0, sck_pin, tx_pin, NoPin, 1_000_000, sys_clk);
 /// ```
 pub struct NoPin;
-
-impl super::GpioPin for NoPin {
-    const PIN: u8 = 255;
-}
 
 // PWM
 impl PwmAPin for NoPin {

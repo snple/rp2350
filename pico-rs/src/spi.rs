@@ -204,7 +204,7 @@ pub trait SpiBus {
 // ============================================================================
 
 macro_rules! impl_spi {
-    ($SpiName:ident, $spi_num:literal, $SpiType:ty, $spi_mod:ident, $SckTrait:ident, $TxTrait:ident, $RxTrait:ident, $CsnTrait:ident) => {
+    ($SpiName:ident, $spi_num:literal, $SpiType:ty, $spi_mod:ident, $SckPin:ident, $TxPin:ident, $RxPin:ident, $CsnPin:ident) => {
         paste! {
             /// SPI peripheral wrapper with type-safe pin ownership.
             ///
@@ -214,16 +214,16 @@ macro_rules! impl_spi {
             ///
             #[doc = concat!("# SPI", $spi_num, " Pin Mapping")]
             ///
-            #[doc = concat!("See [`", stringify!($SckTrait), "`] for valid SCK pins.")]
+            #[doc = concat!("See [`", stringify!($SckPin), "`] for valid SCK pins.")]
             ///
-            #[doc = concat!("See [`", stringify!($TxTrait), "`] for valid TX (MOSI) pins.")]
+            #[doc = concat!("See [`", stringify!($TxPin), "`] for valid TX (MOSI) pins.")]
             ///
-            #[doc = concat!("See [`", stringify!($RxTrait), "`] for valid RX (MISO) pins.")]
+            #[doc = concat!("See [`", stringify!($RxPin), "`] for valid RX (MISO) pins.")]
             pub struct $SpiName<SCK, TX, RX>
             where
-                SCK: $SckTrait,
-                TX: $TxTrait,
-                RX: $RxTrait,
+                SCK: $SckPin,
+                TX: $TxPin,
+                RX: $RxPin,
             {
                 spi: $SpiType,
                 _sck: SCK,
@@ -234,9 +234,9 @@ macro_rules! impl_spi {
 
             impl<SCK, TX, RX> $SpiName<SCK, TX, RX>
             where
-                SCK: $SckTrait,
-                TX: $TxTrait,
-                RX: $RxTrait,
+                SCK: $SckPin,
+                TX: $TxPin,
+                RX: $RxPin,
             {
                 /// SPI peripheral number
                 pub const NUM: u8 = $spi_num;
@@ -796,9 +796,9 @@ macro_rules! impl_spi {
 
             impl<SCK, TX, RX> SpiBus for $SpiName<SCK, TX, RX>
             where
-                SCK: $SckTrait,
-                TX: $TxTrait,
-                RX: $RxTrait,
+                SCK: $SckPin,
+                TX: $TxPin,
+                RX: $RxPin,
             {
                 #[inline]
                 fn write(&self, data: &[u8]) {
@@ -847,13 +847,13 @@ macro_rules! impl_spi {
             ///
             #[doc = concat!("# SPI", $spi_num, " Pin Mapping")]
             ///
-            #[doc = concat!("See [`", stringify!($SckTrait), "`] for valid SCK pins.")]
+            #[doc = concat!("See [`", stringify!($SckPin), "`] for valid SCK pins.")]
             ///
-            #[doc = concat!("See [`", stringify!($TxTrait), "`] for valid TX pins.")]
+            #[doc = concat!("See [`", stringify!($TxPin), "`] for valid TX pins.")]
             ///
-            #[doc = concat!("See [`", stringify!($RxTrait), "`] for valid RX pins.")]
+            #[doc = concat!("See [`", stringify!($RxPin), "`] for valid RX pins.")]
             ///
-            #[doc = concat!("See [`", stringify!($CsnTrait), "`] for valid CSn pins.")]
+            #[doc = concat!("See [`", stringify!($CsnPin), "`] for valid CSn pins.")]
             ///
             /// # Example (Master Mode)
             ///
@@ -890,10 +890,10 @@ macro_rules! impl_spi {
             /// ```
             pub struct [<$SpiName WithCs>]<SCK, TX, RX, CSN>
             where
-                SCK: $SckTrait,
-                TX: $TxTrait,
-                RX: $RxTrait,
-                CSN: $CsnTrait,
+                SCK: $SckPin,
+                TX: $TxPin,
+                RX: $RxPin,
+                CSN: $CsnPin,
             {
                 spi: $SpiType,
                 _sck: SCK,
@@ -905,10 +905,10 @@ macro_rules! impl_spi {
 
             impl<SCK, TX, RX, CSN> [<$SpiName WithCs>]<SCK, TX, RX, CSN>
             where
-                SCK: $SckTrait,
-                TX: $TxTrait,
-                RX: $RxTrait,
-                CSN: $CsnTrait,
+                SCK: $SckPin,
+                TX: $TxPin,
+                RX: $RxPin,
+                CSN: $CsnPin,
             {
                 /// SPI peripheral number
                 pub const NUM: u8 = $spi_num;
@@ -1467,10 +1467,10 @@ macro_rules! impl_spi {
 
             impl<SCK, TX, RX, CSN> SpiBus for [<$SpiName WithCs>]<SCK, TX, RX, CSN>
             where
-                SCK: $SckTrait,
-                TX: $TxTrait,
-                RX: $RxTrait,
-                CSN: $CsnTrait,
+                SCK: $SckPin,
+                TX: $TxPin,
+                RX: $RxPin,
+                CSN: $CsnPin,
             {
                 #[inline]
                 fn write(&self, data: &[u8]) {

@@ -146,7 +146,7 @@ pub enum Error {
 // ============================================================================
 
 macro_rules! impl_uart {
-    ($UartName:ident, $uart_num:literal, $UartType:ty, $uart_mod:ident, $TxTrait:ident, $RxTrait:ident, $CtsTrait:ident, $RtsTrait:ident) => {
+    ($UartName:ident, $uart_num:literal, $UartType:ty, $uart_mod:ident, $TxPin:ident, $RxPin:ident, $CtsPin:ident, $RtsPin:ident) => {
         paste! {
             /// UART peripheral wrapper with type-safe pin ownership.
             ///
@@ -157,13 +157,13 @@ macro_rules! impl_uart {
             ///
             #[doc = concat!("# UART", $uart_num, " Pin Mapping")]
             ///
-            #[doc = concat!("See [`", stringify!($TxTrait), "`] for valid TX pins.")]
+            #[doc = concat!("See [`", stringify!($TxPin), "`] for valid TX pins.")]
             ///
-            #[doc = concat!("See [`", stringify!($RxTrait), "`] for valid RX pins.")]
+            #[doc = concat!("See [`", stringify!($RxPin), "`] for valid RX pins.")]
             pub struct $UartName<TX, RX>
             where
-                TX: $TxTrait,
-                RX: $RxTrait,
+                TX: $TxPin,
+                RX: $RxPin,
             {
                 uart: $UartType,
                 _tx: TX,
@@ -173,8 +173,8 @@ macro_rules! impl_uart {
 
             impl<TX, RX> $UartName<TX, RX>
             where
-                TX: $TxTrait,
-                RX: $RxTrait,
+                TX: $TxPin,
+                RX: $RxPin,
             {
                 /// UART peripheral number
                 pub const NUM: u8 = $uart_num;
@@ -209,8 +209,8 @@ macro_rules! impl_uart {
                 /// # Type Safety
                 ///
                 /// Only pins that implement the correct trait can be used:
-                #[doc = concat!("- TX must implement [`", stringify!($TxTrait), "`]")]
-                #[doc = concat!("- RX must implement [`", stringify!($RxTrait), "`]")]
+                #[doc = concat!("- TX must implement [`", stringify!($TxPin), "`]")]
+                #[doc = concat!("- RX must implement [`", stringify!($RxPin), "`]")]
                 ///
                 /// # Example
                 ///
@@ -812,8 +812,8 @@ macro_rules! impl_uart {
 
             impl<TX, RX> core::fmt::Write for $UartName<TX, RX>
             where
-                TX: $TxTrait,
-                RX: $RxTrait,
+                TX: $TxPin,
+                RX: $RxPin,
             {
                 fn write_str(&mut self, s: &str) -> core::fmt::Result {
                     self.write(s.as_bytes());
@@ -831,10 +831,10 @@ macro_rules! impl_uart {
             #[doc = concat!("# UART", $uart_num, " with Flow Control")]
             pub struct [<$UartName WithFlowControl>]<TX, RX, CTS, RTS>
             where
-                TX: $TxTrait,
-                RX: $RxTrait,
-                CTS: $CtsTrait,
-                RTS: $RtsTrait,
+                TX: $TxPin,
+                RX: $RxPin,
+                CTS: $CtsPin,
+                RTS: $RtsPin,
             {
                 uart: $UartType,
                 _tx: TX,
@@ -846,10 +846,10 @@ macro_rules! impl_uart {
 
             impl<TX, RX, CTS, RTS> [<$UartName WithFlowControl>]<TX, RX, CTS, RTS>
             where
-                TX: $TxTrait,
-                RX: $RxTrait,
-                CTS: $CtsTrait,
-                RTS: $RtsTrait,
+                TX: $TxPin,
+                RX: $RxPin,
+                CTS: $CtsPin,
+                RTS: $RtsPin,
             {
                 /// UART peripheral number
                 pub const NUM: u8 = $uart_num;
@@ -1058,10 +1058,10 @@ macro_rules! impl_uart {
 
             impl<TX, RX, CTS, RTS> core::fmt::Write for [<$UartName WithFlowControl>]<TX, RX, CTS, RTS>
             where
-                TX: $TxTrait,
-                RX: $RxTrait,
-                CTS: $CtsTrait,
-                RTS: $RtsTrait,
+                TX: $TxPin,
+                RX: $RxPin,
+                CTS: $CtsPin,
+                RTS: $RtsPin,
             {
                 fn write_str(&mut self, s: &str) -> core::fmt::Result {
                     self.write(s.as_bytes());

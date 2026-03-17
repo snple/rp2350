@@ -153,7 +153,7 @@ pub enum Mode {
 // ============================================================================
 
 macro_rules! impl_i2c {
-    ($I2cName:ident, $i2c_num:literal, $I2cType:ty, $i2c_mod:ident, $SdaTrait:ident, $SclTrait:ident) => {
+    ($I2cName:ident, $i2c_num:literal, $I2cType:ty, $i2c_mod:ident, $SdaPin:ident, $SclPin:ident) => {
         paste! {
             /// I2C peripheral wrapper with type-safe pin ownership.
             ///
@@ -164,13 +164,13 @@ macro_rules! impl_i2c {
             ///
             #[doc = concat!("# I2C", $i2c_num, " Pin Mapping")]
             ///
-            #[doc = concat!("See [`", stringify!($SdaTrait), "`] for valid SDA pins.")]
+            #[doc = concat!("See [`", stringify!($SdaPin), "`] for valid SDA pins.")]
             ///
-            #[doc = concat!("See [`", stringify!($SclTrait), "`] for valid SCL pins.")]
+            #[doc = concat!("See [`", stringify!($SclPin), "`] for valid SCL pins.")]
             pub struct $I2cName<SDA, SCL>
             where
-                SDA: $SdaTrait,
-                SCL: $SclTrait,
+                SDA: $SdaPin,
+                SCL: $SclPin,
             {
                 i2c: $I2cType,
                 _sda: SDA,
@@ -181,8 +181,8 @@ macro_rules! impl_i2c {
 
             impl<SDA, SCL> $I2cName<SDA, SCL>
             where
-                SDA: $SdaTrait,
-                SCL: $SclTrait,
+                SDA: $SdaPin,
+                SCL: $SclPin,
             {
                 /// I2C peripheral number
                 pub const NUM: u8 = $i2c_num;
@@ -217,8 +217,8 @@ macro_rules! impl_i2c {
                 /// # Type Safety
                 ///
                 /// Only pins that implement the correct trait can be used:
-                #[doc = concat!("- SDA must implement [`", stringify!($SdaTrait), "`]")]
-                #[doc = concat!("- SCL must implement [`", stringify!($SclTrait), "`]")]
+                #[doc = concat!("- SDA must implement [`", stringify!($SdaPin), "`]")]
+                #[doc = concat!("- SCL must implement [`", stringify!($SclPin), "`]")]
                 ///
                 /// # Example
                 ///
@@ -1132,8 +1132,8 @@ macro_rules! impl_i2c {
 
             impl<SDA, SCL> I2cBus for $I2cName<SDA, SCL>
             where
-                SDA: $SdaTrait,
-                SCL: $SclTrait,
+                SDA: $SdaPin,
+                SCL: $SclPin,
             {
                 type Error = Error;
 

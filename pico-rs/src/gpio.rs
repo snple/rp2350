@@ -1980,23 +1980,6 @@ impl Pins {
 }
 
 // ============================================================================
-// Pin Traits for Peripheral Compatibility
-// ============================================================================
-
-/// Marker trait for any GPIO pin.
-///
-/// This trait is implemented for all `Pin<N>` types and provides
-/// a way to work with pins generically when needed.
-pub trait GpioPin {
-    /// The pin number (0-47)
-    const PIN: u8;
-}
-
-impl<const N: u8> GpioPin for Pin<N> {
-    const PIN: u8 = N;
-}
-
-// ============================================================================
 // Pin function mapping submodule
 // ============================================================================
 
