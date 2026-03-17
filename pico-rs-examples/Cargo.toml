@@ -108,7 +108,7 @@ path = "src/i2c/i2c_scan.rs"
 
 [[bin]]
 name = "tc358870xbg"
-path = "src/i2c/TC358870XBG.rs"
+path = "src/i2c/tc358870xbg.rs"
 
 [[bin]]
 name = "ws2812"
