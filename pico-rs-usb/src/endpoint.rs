@@ -307,21 +307,28 @@ pub struct EndpointAllocator {
 }
 
 impl EndpointAllocator {
-    /// Size reserved for SETUP packet at the beginning of DPRAM
-    const SETUP_PACKET_OFFSET: u16 = 0x100;
+    /// First byte in DPRAM available for endpoint payload buffers.
+    const EP_BUFFER_OFFSET: u16 = 0x100;
+
+    /// EP0 uses dedicated fixed IN/OUT buffers at the start of endpoint DPRAM.
+    const RESERVED_EP0_BYTES: u16 = crate::CONTROL_MAX_PACKET_SIZE * 2;
+
+    /// First offset available for dynamically allocated non-EP0 endpoint buffers.
+    const FIRST_DYNAMIC_OFFSET: u16 = Self::EP_BUFFER_OFFSET + Self::RESERVED_EP0_BYTES;
 
     /// Create a new endpoint allocator
     pub const fn new() -> Self {
         Self {
-            // Start after the endpoint control registers and setup packet
-            next_offset: Self::SETUP_PACKET_OFFSET,
+            // Reserve EP0 IN/OUT buffers so dynamically allocated endpoints do
+            // not overlap control transfer memory.
+            next_offset: Self::FIRST_DYNAMIC_OFFSET,
             total_size: crate::DPRAM_SIZE as u16,
         }
     }
 
     /// Reset the allocator
     pub fn reset(&mut self) {
-        self.next_offset = Self::SETUP_PACKET_OFFSET;
+        self.next_offset = Self::FIRST_DYNAMIC_OFFSET;
     }
 
     /// Allocate buffer space for an endpoint

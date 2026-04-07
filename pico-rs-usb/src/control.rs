@@ -2,6 +2,7 @@
 //!
 //! This module handles USB control requests and responses.
 
+use crate::CONTROL_TRANSFER_BUFFER_SIZE;
 use crate::error::{UsbError, UsbResult};
 use crate::types::{DescriptorType, Direction, Recipient, RequestType, StandardRequest};
 
@@ -149,7 +150,7 @@ pub struct ControlPipe {
     /// Current setup packet
     setup: Option<SetupPacket>,
     /// Buffer for data stage
-    buffer: [u8; 256],
+    buffer: [u8; CONTROL_TRANSFER_BUFFER_SIZE],
     /// Amount of data in buffer
     buffer_len: usize,
     /// Amount of data already sent/received
@@ -164,7 +165,7 @@ impl ControlPipe {
         Self {
             state: ControlState::Idle,
             setup: None,
-            buffer: [0u8; 256],
+            buffer: [0u8; CONTROL_TRANSFER_BUFFER_SIZE],
             buffer_len: 0,
             buffer_offset: 0,
             expected_len: 0,

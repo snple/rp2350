@@ -135,7 +135,7 @@ fn main() -> ! {
 
     loop {
         // Poll USB
-        usb_dev.poll(&mut [&mut hid]);
+        usb_dev.poll(&mut [&mut hid as &mut dyn pico_rs_usb::device::UsbClass]);
 
         // Check if configured
         if hid.is_configured() && !configured {

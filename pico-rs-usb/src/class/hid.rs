@@ -33,6 +33,16 @@ use crate::device::UsbClass;
 use crate::endpoint::{EndpointAddress, EndpointType};
 use crate::error::{UsbError, UsbResult};
 use crate::types::{Recipient, RequestType};
+use crate::{BULK_MAX_PACKET_SIZE, CONTROL_TRANSFER_BUFFER_SIZE};
+
+const HID_REPORT_BUFFER_SIZE: usize = BULK_MAX_PACKET_SIZE as usize;
+
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+enum PendingControlIn {
+    HidRequest(HidRequest),
+    ReportDescriptor { requested_len: usize },
+}
 
 /// HID class code
 pub const HID_CLASS: u8 = class_code::HID;
@@ -1095,6 +1105,14 @@ pub struct HidConfig {
 }
 
 impl HidConfig {
+    const fn clamp_report_size(size: usize) -> usize {
+        if size > HID_REPORT_BUFFER_SIZE {
+            HID_REPORT_BUFFER_SIZE
+        } else {
+            size
+        }
+    }
+
     /// Create a new custom HID configuration builder
     pub const fn new(report_descriptor: &'static [u8]) -> Self {
         Self {
@@ -1221,7 +1239,7 @@ impl HidConfig {
             report_descriptor,
             subclass: hid_subclass::NONE,
             protocol: hid_protocol::NONE,
-            in_report_size: report_size,
+            in_report_size: Self::clamp_report_size(report_size),
             out_report_size: 0,
             poll_interval: 10,
             use_out_endpoint: false,
@@ -1244,13 +1262,13 @@ impl HidConfig {
 
     /// Set input report size
     pub const fn in_report_size(mut self, size: usize) -> Self {
-        self.in_report_size = size;
+        self.in_report_size = Self::clamp_report_size(size);
         self
     }
 
     /// Set output report size
     pub const fn out_report_size(mut self, size: usize) -> Self {
-        self.out_report_size = size;
+        self.out_report_size = Self::clamp_report_size(size);
         self
     }
 
@@ -1312,11 +1330,35 @@ pub struct HidClass<'a> {
     out_report_available: bool,
     /// Configured flag
     configured: bool,
+    /// Pending HID control IN request, if any.
+    pending_control_in: Option<PendingControlIn>,
+    /// Waiting for SET_REPORT OUT data.
+    set_report_pending: bool,
 }
 
 impl<'a> HidClass<'a> {
     /// Create a new HID class with custom configuration
     pub fn new(bus: &'a UsbBus, config: HidConfig) -> Self {
+        let mut config = config;
+        if config.in_report_size > HID_REPORT_BUFFER_SIZE {
+            #[cfg(feature = "defmt")]
+            defmt::warn!(
+                "HID: Clamping input report size {} to {}",
+                config.in_report_size,
+                HID_REPORT_BUFFER_SIZE
+            );
+            config.in_report_size = HID_REPORT_BUFFER_SIZE;
+        }
+        if config.out_report_size > HID_REPORT_BUFFER_SIZE {
+            #[cfg(feature = "defmt")]
+            defmt::warn!(
+                "HID: Clamping output report size {} to {}",
+                config.out_report_size,
+                HID_REPORT_BUFFER_SIZE
+            );
+            config.out_report_size = HID_REPORT_BUFFER_SIZE;
+        }
+
         let int_out_ep = if config.use_out_endpoint && config.out_report_size > 0 {
             Some(EndpointAddress::out(3))
         } else {
@@ -1337,6 +1379,8 @@ impl<'a> HidClass<'a> {
             report_pending: false,
             out_report_available: false,
             configured: false,
+            pending_control_in: None,
+            set_report_pending: false,
         }
     }
 
@@ -1490,33 +1534,26 @@ impl<'a> HidClass<'a> {
 
         match request {
             HidRequest::GetReport => {
-                // Send current input report
-                let len = core::cmp::min(self.config.in_report_size, setup.w_length as usize);
-                self.bus
-                    .ep0_write_and_start(&self.in_report_buf[..len], true);
-                #[cfg(feature = "defmt")]
-                defmt::debug!("HID: GET_REPORT sent {} bytes", len);
+                self.pending_control_in = Some(PendingControlIn::HidRequest(HidRequest::GetReport));
                 true
             }
             HidRequest::GetIdle => {
-                // Send idle rate (1 byte)
-                self.bus.ep0_write_and_start(&[self.idle_rate], true);
-                #[cfg(feature = "defmt")]
-                defmt::debug!("HID: GET_IDLE = {}", self.idle_rate);
+                self.pending_control_in = Some(PendingControlIn::HidRequest(HidRequest::GetIdle));
                 true
             }
             HidRequest::GetProtocol => {
-                // Send protocol (1 byte)
-                self.bus.ep0_write_and_start(&[self.protocol], true);
-                #[cfg(feature = "defmt")]
-                defmt::debug!("HID: GET_PROTOCOL = {}", self.protocol);
+                self.pending_control_in =
+                    Some(PendingControlIn::HidRequest(HidRequest::GetProtocol));
                 true
             }
             HidRequest::SetReport => {
-                // Will be handled in control_out
+                self.pending_control_in = None;
+                self.set_report_pending = true;
                 true
             }
             HidRequest::SetIdle => {
+                self.pending_control_in = None;
+                self.set_report_pending = false;
                 self.idle_rate = (setup.w_value >> 8) as u8;
                 self.bus.ep0_send_zlp();
                 #[cfg(feature = "defmt")]
@@ -1524,6 +1561,8 @@ impl<'a> HidClass<'a> {
                 true
             }
             HidRequest::SetProtocol => {
+                self.pending_control_in = None;
+                self.set_report_pending = false;
                 self.protocol = setup.w_value as u8;
                 self.bus.ep0_send_zlp();
                 #[cfg(feature = "defmt")]
@@ -1573,24 +1612,14 @@ impl<'a> UsbClass for HidClass<'a> {
                         return true;
                     }
                     hid_descriptor_type::REPORT => {
-                        // Return report descriptor
-                        // Need to handle multi-packet transfer for large descriptors
-                        let report_desc = self.config.report_descriptor;
-                        let total_len = report_desc.len();
-                        let requested_len = setup.w_length as usize;
-                        let send_len = core::cmp::min(total_len, requested_len);
-
-                        // For now, send up to 64 bytes (max packet size for control EP)
-                        // Larger descriptors will need multi-packet support
-                        let chunk_len = core::cmp::min(send_len, 64);
-                        let is_last = chunk_len >= send_len;
-                        self.bus
-                            .ep0_write_and_start(&report_desc[..chunk_len], is_last);
+                        self.pending_control_in = Some(PendingControlIn::ReportDescriptor {
+                            requested_len: setup.w_length as usize,
+                        });
                         #[cfg(feature = "defmt")]
                         defmt::debug!(
-                            "HID: Sent Report descriptor, len={}/{}",
-                            chunk_len,
-                            total_len
+                            "HID: Prepared Report descriptor, total_len={} requested_len={}",
+                            self.config.report_descriptor.len(),
+                            setup.w_length as usize
                         );
                         return true;
                     }
@@ -1611,19 +1640,60 @@ impl<'a> UsbClass for HidClass<'a> {
     }
 
     fn control_in(&mut self, buf: &mut [u8]) -> UsbResult<usize> {
-        // This would be called for GET_REPORT, GET_IDLE, GET_PROTOCOL
-        // For now, return the current report or appropriate data
-        let len = core::cmp::min(buf.len(), self.config.in_report_size);
-        buf[..len].copy_from_slice(&self.in_report_buf[..len]);
-        Ok(len)
+        let response_len = match self.pending_control_in.take() {
+            Some(PendingControlIn::HidRequest(HidRequest::GetReport)) => {
+                let len = core::cmp::min(buf.len(), self.config.in_report_size);
+                buf[..len].copy_from_slice(&self.in_report_buf[..len]);
+                #[cfg(feature = "defmt")]
+                defmt::debug!("HID: GET_REPORT prepared {} bytes", len);
+                len
+            }
+            Some(PendingControlIn::HidRequest(HidRequest::GetIdle)) => {
+                if buf.is_empty() {
+                    return Err(UsbError::BufferOverflow);
+                }
+                buf[0] = self.idle_rate;
+                #[cfg(feature = "defmt")]
+                defmt::debug!("HID: GET_IDLE = {}", self.idle_rate);
+                1
+            }
+            Some(PendingControlIn::HidRequest(HidRequest::GetProtocol)) => {
+                if buf.is_empty() {
+                    return Err(UsbError::BufferOverflow);
+                }
+                buf[0] = self.protocol;
+                #[cfg(feature = "defmt")]
+                defmt::debug!("HID: GET_PROTOCOL = {}", self.protocol);
+                1
+            }
+            Some(PendingControlIn::ReportDescriptor { requested_len }) => {
+                let report_desc = self.config.report_descriptor;
+                let len = core::cmp::min(report_desc.len(), requested_len);
+                if len > buf.len() || len > CONTROL_TRANSFER_BUFFER_SIZE {
+                    return Err(UsbError::BufferOverflow);
+                }
+                buf[..len].copy_from_slice(&report_desc[..len]);
+                #[cfg(feature = "defmt")]
+                defmt::debug!("HID: Prepared report descriptor len={}", len);
+                len
+            }
+            _ => return Err(UsbError::Unsupported),
+        };
+
+        Ok(response_len)
     }
 
     fn control_out(&mut self, data: &[u8]) -> UsbResult<()> {
+        if !self.set_report_pending {
+            return Err(UsbError::Unsupported);
+        }
+
         // Handle SET_REPORT (e.g., keyboard LEDs)
         let len = core::cmp::min(data.len(), self.out_report_buf.len());
         self.out_report_buf[..len].copy_from_slice(&data[..len]);
         self.out_report_len = len;
         self.out_report_available = true;
+        self.set_report_pending = false;
 
         #[cfg(feature = "defmt")]
         defmt::debug!("HID: Received output report: {:02x}", data);
@@ -1713,6 +1783,8 @@ impl<'a> UsbClass for HidClass<'a> {
     fn reset(&mut self) {
         self.configured = false;
         self.report_pending = false;
+        self.pending_control_in = None;
+        self.set_report_pending = false;
         self.out_report_available = false;
         self.out_report_len = 0;
         self.idle_rate = 0;

@@ -82,6 +82,9 @@ pub const MAX_ENDPOINTS: usize = 16;
 /// USB Full-Speed maximum packet size for control endpoints
 pub const CONTROL_MAX_PACKET_SIZE: u16 = 64;
 
+/// Maximum staged payload size for a control transfer response or request body.
+pub const CONTROL_TRANSFER_BUFFER_SIZE: usize = 1024;
+
 /// USB Full-Speed maximum packet size for bulk/interrupt endpoints
 pub const BULK_MAX_PACKET_SIZE: u16 = 64;
 

@@ -2,7 +2,6 @@
 //!
 //! This module provides the high-level USB device abstraction.
 
-use crate::CONTROL_MAX_PACKET_SIZE;
 use crate::bus::UsbBus;
 use crate::control::{ControlPipe, ControlState, SetupPacket};
 use crate::descriptor::{
@@ -11,6 +10,7 @@ use crate::descriptor::{
 use crate::endpoint::EndpointAddress;
 use crate::error::{UsbError, UsbResult};
 use crate::types::{DescriptorType, DeviceState, Feature, Recipient, StandardRequest};
+use crate::{CONTROL_MAX_PACKET_SIZE, CONTROL_TRANSFER_BUFFER_SIZE};
 
 /// USB class trait
 ///
@@ -209,10 +209,12 @@ impl<'a> UsbDeviceBuilder<'a> {
             config_desc,
             strings,
             control: ControlPipe::new(),
+            control_buffer: [0u8; CONTROL_TRANSFER_BUFFER_SIZE],
             pending_address: None,
             configuration: 0,
             remote_wakeup_enabled: false,
             ep0_in_pending: false,
+            active_class: None,
         }
     }
 }
@@ -231,6 +233,8 @@ pub struct UsbDevice<'a> {
     strings: StringDescriptors<'a>,
     /// Control transfer pipe
     control: ControlPipe,
+    /// Scratch buffer used to stage control responses before chunking on EP0.
+    control_buffer: [u8; CONTROL_TRANSFER_BUFFER_SIZE],
     /// Pending address to set after status stage
     pending_address: Option<u8>,
     /// Current configuration value
@@ -239,6 +243,8 @@ pub struct UsbDevice<'a> {
     remote_wakeup_enabled: bool,
     /// EP0 IN transfer in progress (waiting for completion)
     ep0_in_pending: bool,
+    /// Index of the class currently owning the active control transfer, if any.
+    active_class: Option<usize>,
 }
 
 impl<'a> UsbDevice<'a> {
@@ -268,7 +274,7 @@ impl<'a> UsbDevice<'a> {
     /// Poll for USB events and handle them
     ///
     /// Returns `true` if an event was handled.
-    pub fn poll<C: UsbClass>(&mut self, classes: &mut [&mut C]) -> bool {
+    pub fn poll(&mut self, classes: &mut [&mut dyn UsbClass]) -> bool {
         let mut handled = false;
 
         // CRITICAL: Clear all IN complete bits at the start of poll.
@@ -320,12 +326,14 @@ impl<'a> UsbDevice<'a> {
     }
 
     /// Handle bus reset
-    fn handle_reset<C: UsbClass>(&mut self, classes: &mut [&mut C]) {
+    fn handle_reset(&mut self, classes: &mut [&mut dyn UsbClass]) {
         self.state = DeviceState::Default;
         self.configuration = 0;
         self.pending_address = None;
         self.ep0_in_pending = false;
+        self.active_class = None;
         self.control.reset();
+        self.bus.reset_non_control_endpoints();
 
         for class in classes.iter_mut() {
             class.reset();
@@ -361,7 +369,7 @@ impl<'a> UsbDevice<'a> {
     }
 
     /// Handle setup packet
-    fn handle_setup<C: UsbClass>(&mut self, classes: &mut [&mut C]) {
+    fn handle_setup(&mut self, classes: &mut [&mut dyn UsbClass]) {
         let setup_data = self.bus.read_setup();
         let setup = self.control.handle_setup(&setup_data);
 
@@ -379,9 +387,13 @@ impl<'a> UsbDevice<'a> {
             setup_copy.w_length
         );
 
+        self.active_class = None;
+
         // Try class handlers first
-        for class in classes.iter_mut() {
+        for (class_index, class) in classes.iter_mut().enumerate() {
             if class.control_setup(&setup_copy) {
+                self.active_class = Some(class_index);
+
                 // If this is a DataOut request, prepare EP0 OUT to receive data
                 if ctrl_state == ControlState::DataOut {
                     let expected_len = setup_copy.w_length as usize;
@@ -389,13 +401,36 @@ impl<'a> UsbDevice<'a> {
                     #[cfg(feature = "defmt")]
                     defmt::debug!("USB: Prepared EP0 OUT for {} bytes data", expected_len);
                 } else if ctrl_state == ControlState::DataIn {
-                    // Class handled DataIn request (sent data directly)
-                    // Prepare EP0 OUT for status stage ZLP
-                    self.bus.ep0_expect_out(0);
-                    // Mark control state as StatusIn to handle the ZLP
-                    self.control.set_status_in();
-                    #[cfg(feature = "defmt")]
-                    defmt::debug!("USB: Class sent DataIn, prepared for status ZLP");
+                    let response_len =
+                        core::cmp::min(self.control_buffer.len(), setup_copy.w_length as usize);
+
+                    let response_result =
+                        class.control_in(&mut self.control_buffer[..response_len]);
+
+                    match response_result {
+                        Ok(len) => {
+                            if !self.stage_control_buffer_response(len) {
+                                self.active_class = None;
+                                self.bus.ep0_stall();
+                            }
+                        }
+                        Err(UsbError::Unsupported) => {
+                            // Some classes still drive EP0 directly for bespoke
+                            // responses, so we only need to arm the status stage.
+                            self.bus.ep0_expect_out(0);
+                            self.control.set_status_in();
+                            #[cfg(feature = "defmt")]
+                            defmt::debug!(
+                                "USB: Class sent DataIn directly, prepared for status ZLP"
+                            );
+                        }
+                        Err(err) => {
+                            self.active_class = None;
+                            self.bus.ep0_stall();
+                            #[cfg(feature = "defmt")]
+                            defmt::warn!("USB: Class control_in failed: {:?}", err);
+                        }
+                    }
                 }
                 return;
             }
@@ -404,9 +439,19 @@ impl<'a> UsbDevice<'a> {
         // Handle standard requests
         if setup_copy.is_standard() {
             if !self.handle_standard_request(&setup_copy, classes) {
-                self.bus.ep0_stall();
                 #[cfg(feature = "defmt")]
-                defmt::warn!("USB: EP0 stalled");
+                if Self::is_expected_unsupported_descriptor(&setup_copy) {
+                    self.bus.ep0_stall_silent();
+                    defmt::debug!(
+                        "USB: EP0 stalled for unsupported full-speed-only descriptor {:?}",
+                        setup_copy.descriptor_type()
+                    );
+                } else {
+                    self.bus.ep0_stall();
+                    defmt::warn!("USB: EP0 stalled");
+                }
+                #[cfg(not(feature = "defmt"))]
+                self.bus.ep0_stall();
             }
         } else {
             // Unknown request, stall
@@ -417,10 +462,10 @@ impl<'a> UsbDevice<'a> {
     }
 
     /// Handle standard USB requests
-    fn handle_standard_request<C: UsbClass>(
+    fn handle_standard_request(
         &mut self,
         setup: &SetupPacket,
-        classes: &mut [&mut C],
+        classes: &mut [&mut dyn UsbClass],
     ) -> bool {
         match setup.as_standard_request() {
             Some(StandardRequest::GetDescriptor) => self.handle_get_descriptor(setup, classes),
@@ -436,14 +481,22 @@ impl<'a> UsbDevice<'a> {
         }
     }
 
+    fn is_expected_unsupported_descriptor(setup: &SetupPacket) -> bool {
+        matches!(
+            setup.as_standard_request(),
+            Some(StandardRequest::GetDescriptor)
+        ) && matches!(
+            setup.descriptor_type(),
+            Some(DescriptorType::DeviceQualifier | DescriptorType::OtherSpeedConfiguration)
+        )
+    }
+
     /// Handle GET_DESCRIPTOR request
-    fn handle_get_descriptor<C: UsbClass>(
+    fn handle_get_descriptor(
         &mut self,
         setup: &SetupPacket,
-        classes: &mut [&mut C],
+        classes: &mut [&mut dyn UsbClass],
     ) -> bool {
-        let mut buf = [0u8; 256];
-
         let desc_type = setup.descriptor_type();
         let desc_index = setup.descriptor_index();
 
@@ -454,30 +507,40 @@ impl<'a> UsbDevice<'a> {
             desc_index
         );
 
+        let requested_len = setup.w_length as usize;
+
         let len = match desc_type {
             Some(DescriptorType::Device) => {
                 let desc = self.device_desc.to_bytes();
-                let len = core::cmp::min(desc.len(), setup.w_length as usize);
-                buf[..len].copy_from_slice(&desc[..len]);
+                let len = core::cmp::min(desc.len(), requested_len);
+                self.control_buffer[..len].copy_from_slice(&desc[..len]);
                 #[cfg(feature = "defmt")]
                 defmt::debug!("USB: Device descriptor len={}", len);
                 len
             }
             Some(DescriptorType::Configuration) => {
-                // Build configuration descriptor with class descriptors
-                let len = self.build_config_descriptor(&mut buf, setup.w_length as usize, classes);
+                let control_buffer_len = self.control_buffer.len();
+                let total_len = Self::build_config_descriptor(
+                    self.config_desc,
+                    &mut self.control_buffer,
+                    control_buffer_len,
+                    classes,
+                );
+                let len = core::cmp::min(total_len, requested_len);
                 #[cfg(feature = "defmt")]
-                defmt::debug!("USB: Config descriptor len={}", len);
+                defmt::debug!("USB: Config descriptor len={} total={}", len, total_len);
                 len
             }
             Some(DescriptorType::String) => {
                 if desc_index == 0 {
-                    let len = self.strings.build_lang_ids(&mut buf);
+                    let len = self.strings.build_lang_ids(&mut self.control_buffer);
+                    let len = core::cmp::min(len, requested_len);
                     #[cfg(feature = "defmt")]
                     defmt::debug!("USB: String lang IDs len={}", len);
                     len
                 } else if let Some(s) = self.strings.get(desc_index) {
-                    let len = StringDescriptors::build_string(s, &mut buf);
+                    let len = StringDescriptors::build_string(s, &mut self.control_buffer);
+                    let len = core::cmp::min(len, requested_len);
                     #[cfg(feature = "defmt")]
                     defmt::debug!("USB: String {} len={}", desc_index, len);
                     len
@@ -488,34 +551,30 @@ impl<'a> UsbDevice<'a> {
                 }
             }
             _ => {
-                #[cfg(feature = "defmt")]
-                defmt::warn!("USB: Unknown descriptor type");
                 return false;
             }
         };
 
         if len > 0 {
-            let _ = self.control.set_response(&buf[..len]);
             #[cfg(feature = "defmt")]
             defmt::debug!("USB: Sending descriptor response len={}", len);
-            self.send_control_data();
-            true
+            self.stage_control_buffer_response(len)
         } else {
             false
         }
     }
 
     /// Build configuration descriptor with all interfaces
-    fn build_config_descriptor<C: UsbClass>(
-        &self,
+    fn build_config_descriptor(
+        config_desc: ConfigurationDescriptor,
         buf: &mut [u8],
         max_len: usize,
-        classes: &mut [&mut C],
+        classes: &mut [&mut dyn UsbClass],
     ) -> usize {
         let mut writer = DescriptorWriter::new(buf);
 
         // Write configuration header
-        let config_pos = match writer.write_configuration(&self.config_desc) {
+        let config_pos = match writer.write_configuration(&config_desc) {
             Some(pos) => pos,
             None => return 0,
         };
@@ -525,6 +584,7 @@ impl<'a> UsbDevice<'a> {
             if !class.get_descriptors(&mut writer) {
                 #[cfg(feature = "defmt")]
                 defmt::warn!("USB: Failed to write class descriptors");
+                return 0;
             }
         }
 
@@ -567,19 +627,24 @@ impl<'a> UsbDevice<'a> {
     }
 
     /// Handle SET_CONFIGURATION request
-    fn handle_set_configuration<C: UsbClass>(
+    fn handle_set_configuration(
         &mut self,
         setup: &SetupPacket,
-        classes: &mut [&mut C],
+        classes: &mut [&mut dyn UsbClass],
     ) -> bool {
         let config = setup.w_value as u8;
 
         if config == 0 {
             // Deconfigured
+            self.bus.reset_non_control_endpoints();
             self.configuration = 0;
             self.state = DeviceState::Addressed;
+            for class in classes.iter_mut() {
+                class.reset();
+            }
         } else if config == 1 {
             // Configured
+            self.bus.reset_non_control_endpoints();
             self.configuration = config;
             self.state = DeviceState::Configured;
 
@@ -603,9 +668,7 @@ impl<'a> UsbDevice<'a> {
 
     /// Handle GET_CONFIGURATION request
     fn handle_get_configuration(&mut self) -> bool {
-        let _ = self.control.set_response(&[self.configuration]);
-        self.send_control_data();
-        true
+        self.stage_control_response(&[self.configuration])
     }
 
     /// Handle GET_STATUS request
@@ -629,9 +692,40 @@ impl<'a> UsbDevice<'a> {
             _ => return false,
         };
 
-        let _ = self.control.set_response(&status.to_le_bytes());
-        self.send_control_data();
-        true
+        self.stage_control_response(&status.to_le_bytes())
+    }
+
+    fn stage_control_response(&mut self, data: &[u8]) -> bool {
+        match self.control.set_response(data) {
+            Ok(()) => {
+                self.send_control_data();
+                true
+            }
+            Err(err) => {
+                #[cfg(feature = "defmt")]
+                defmt::warn!("USB: Failed to stage control response: {:?}", err);
+                false
+            }
+        }
+    }
+
+    fn stage_control_buffer_response(&mut self, len: usize) -> bool {
+        let staged = {
+            let (control, control_buffer) = (&mut self.control, &self.control_buffer);
+            control.set_response(&control_buffer[..len])
+        };
+
+        match staged {
+            Ok(()) => {
+                self.send_control_data();
+                true
+            }
+            Err(err) => {
+                #[cfg(feature = "defmt")]
+                defmt::warn!("USB: Failed to stage control response: {:?}", err);
+                false
+            }
+        }
     }
 
     /// Handle CLEAR_FEATURE request
@@ -737,7 +831,7 @@ impl<'a> UsbDevice<'a> {
     }
 
     /// Handle ongoing control transfers
-    fn handle_control<C: UsbClass>(&mut self, classes: &mut [&mut C]) {
+    fn handle_control(&mut self, classes: &mut [&mut dyn UsbClass]) {
         let status = self.bus.buffer_status();
         let ctrl_state = self.control.state();
 
@@ -773,17 +867,29 @@ impl<'a> UsbDevice<'a> {
                     let mut buf = [0u8; 64];
                     if let Ok(len) = self.bus.ep0_read(&mut buf) {
                         // Accept the data into control pipe
-                        let _ = self.control.accept_out_data(&buf[..len]);
-                        #[cfg(feature = "defmt")]
-                        defmt::debug!("USB: Received {} bytes control OUT data", len);
+                        match self.control.accept_out_data(&buf[..len]) {
+                            Ok(()) => {
+                                #[cfg(feature = "defmt")]
+                                defmt::debug!("USB: Received {} bytes control OUT data", len);
+                            }
+                            Err(err) => {
+                                self.control.set_error();
+                                self.active_class = None;
+                                self.bus.ep0_stall();
+                                #[cfg(feature = "defmt")]
+                                defmt::warn!("USB: Control OUT overflow/state error: {:?}", err);
+                                return;
+                            }
+                        }
                     }
 
                     // If all data received, state moves to StatusOut
                     if self.control.state() == ControlState::StatusOut {
-                        // Call class control_out with received data
+                        // Route control OUT data only to the class that claimed
+                        // the SETUP request.
                         let out_data = self.control.out_data();
-                        for class in classes.iter_mut() {
-                            let _ = class.control_out(out_data);
+                        if let Some(class_index) = self.active_class {
+                            let _ = classes[class_index].control_out(out_data);
                         }
                         // Send status ZLP
                         self.bus.ep0_send_zlp();
@@ -804,6 +910,7 @@ impl<'a> UsbDevice<'a> {
                     #[cfg(feature = "defmt")]
                     defmt::trace!("USB: Status IN complete (ZLP OUT received)");
                     self.control.complete_status();
+                    self.active_class = None;
                 }
             }
             ControlState::StatusOut => {
@@ -814,6 +921,7 @@ impl<'a> UsbDevice<'a> {
                     #[cfg(feature = "defmt")]
                     defmt::trace!("USB: Status OUT complete (ZLP IN sent)");
                     self.control.complete_status();
+                    self.active_class = None;
 
                     // Apply pending address
                     if let Some(addr) = self.pending_address.take() {

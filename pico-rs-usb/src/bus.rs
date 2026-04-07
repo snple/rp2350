@@ -140,9 +140,14 @@ impl UsbBus {
             .usb_muxing
             .write_bits(pico_rs_pac::usb::UsbMuxing::TO_PHY | pico_rs_pac::usb::UsbMuxing::SOFTCON);
 
-        // Configure USB power - enable VBUS detect
-        self.usb.usb_pwr.write_bits(
-            pico_rs_pac::usb::UsbPwr::VBUS_DETECT
+        // If the board does not route USB VBUS signals to GPIOs, we must
+        // override both VBUS_DETECT and VBUS_EN. Program the value bits first,
+        // then enable the override bits as required by the RP2350 register docs.
+        self.usb
+            .usb_pwr
+            .write_bits(pico_rs_pac::usb::UsbPwr::VBUS_EN | pico_rs_pac::usb::UsbPwr::VBUS_DETECT);
+        self.usb.usb_pwr.set_bits(
+            pico_rs_pac::usb::UsbPwr::VBUS_EN_OVERRIDE_EN
                 | pico_rs_pac::usb::UsbPwr::VBUS_DETECT_OVERRIDE_EN,
         );
 
@@ -389,12 +394,16 @@ impl UsbBus {
             return Ok(()); // EP0 is configured separately
         }
 
+        let idx = self.ep_buffer_index(ep_addr);
+        let buffers = unsafe { &mut *self.ep_buffers.get() };
+        if buffers[idx].is_some() {
+            return Err(UsbError::EndpointAllocated);
+        }
+
         let allocator = unsafe { &mut *self.allocator.get() };
         let buffer = allocator.allocate(max_packet_size)?;
 
         // Store the buffer
-        let idx = self.ep_buffer_index(ep_addr);
-        let buffers = unsafe { &mut *self.ep_buffers.get() };
         buffers[idx] = Some(buffer);
 
         // Reset data toggle
@@ -423,6 +432,30 @@ impl UsbBus {
         Ok(())
     }
 
+    /// Reset all dynamically configured non-control endpoints.
+    pub fn reset_non_control_endpoints(&self) {
+        unsafe {
+            (*self.allocator.get()).reset();
+        }
+
+        let buffers = unsafe { &mut *self.ep_buffers.get() };
+        for slot in buffers.iter_mut() {
+            *slot = None;
+        }
+
+        for toggle in &self.ep_data_toggles {
+            toggle.store(false, Ordering::SeqCst);
+        }
+
+        let ep_ctrl = EndpointControlAccess::new(self.dpram);
+        for ep_num in 1..=15 {
+            ep_ctrl.disable(EndpointAddress::in_(ep_num));
+            ep_ctrl.disable(EndpointAddress::out(ep_num));
+        }
+
+        self.clear_all_buffer_status();
+    }
+
     /// Reset data toggle for an endpoint (used after CLEAR_FEATURE HALT)
     pub fn reset_ep_data_toggle(&self, ep_addr: EndpointAddress) {
         if ep_addr.number() == 0 {
@@ -439,28 +472,18 @@ impl UsbBus {
         direction: EndpointDirection,
         config: &EndpointConfig,
     ) -> UsbResult<EndpointAddress> {
-        let allocator = unsafe { &mut *self.allocator.get() };
+        let buffers = unsafe { &*self.ep_buffers.get() };
+        let ep_number = (1..=15)
+            .find(|&ep_num| {
+                let ep_addr = EndpointAddress::new(ep_num, direction);
+                let idx = self.ep_buffer_index(ep_addr);
+                buffers[idx].is_none()
+            })
+            .ok_or(UsbError::NoEndpointAvailable)?;
 
-        // Find a free endpoint number (1-15, 0 is reserved for control)
-        // For simplicity, we'll just allocate sequentially
-        // In a real implementation, you'd track which endpoints are in use
-
-        // Allocate buffer space
-        let buffer = allocator.allocate(config.max_packet_size)?;
-
-        // For this implementation, we'll use a simple scheme:
-        // odd endpoints for IN, even for OUT (except EP0)
-        // This is just an example - real implementations may differ
-
-        #[cfg(feature = "defmt")]
-        defmt::debug!(
-            "USB: Allocated endpoint buffer at offset {:#x}, size {}",
-            buffer.offset,
-            buffer.size
-        );
-
-        // Return a placeholder - real implementation would track endpoints
-        Ok(EndpointAddress::new(1, direction))
+        let ep_addr = EndpointAddress::new(ep_number, direction);
+        self.configure_ep(ep_addr, config.ep_type, config.max_packet_size)?;
+        Ok(ep_addr)
     }
 
     /// Configure an endpoint's buffer control
@@ -722,8 +745,7 @@ impl UsbBus {
         self.ep0_start_in(0, true);
     }
 
-    /// Stall endpoint 0
-    pub fn ep0_stall(&self) {
+    fn ep0_stall_impl(&self, log_warning: bool) {
         self.usb.ep_stall_arm.write_bits(
             pico_rs_pac::usb::EpStallArm::EP0_IN | pico_rs_pac::usb::EpStallArm::EP0_OUT,
         );
@@ -737,7 +759,19 @@ impl UsbBus {
             .write_bits(pico_rs_pac::usb_dpram::Ep0OutBufferControl::STALL);
 
         #[cfg(feature = "defmt")]
-        defmt::warn!("USB: EP0 stalled");
+        if log_warning {
+            defmt::warn!("USB: EP0 stalled");
+        }
+    }
+
+    /// Stall endpoint 0 and emit a warning log.
+    pub fn ep0_stall(&self) {
+        self.ep0_stall_impl(true);
+    }
+
+    /// Stall endpoint 0 without emitting a warning log.
+    pub fn ep0_stall_silent(&self) {
+        self.ep0_stall_impl(false);
     }
 
     /// Stall an endpoint

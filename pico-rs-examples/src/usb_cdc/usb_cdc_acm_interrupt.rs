@@ -107,7 +107,7 @@ fn USBCTRL_IRQ() {
 
         if let (Some(dev), Some(cdc)) = (dev_ref.as_mut(), cdc_ref.as_mut()) {
             // Poll USB - this handles all USB protocol stuff
-            dev.poll(&mut [cdc]);
+            dev.poll(&mut [cdc as &mut dyn pico_rs_usb::device::UsbClass]);
 
             let mut buf = [0u8; 64];
             if let Ok(count) = cdc.read(&mut buf) {

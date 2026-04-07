@@ -92,7 +92,7 @@ fn main() -> ! {
 
     loop {
         // Poll USB
-        usb_dev.poll(&mut [&mut cdc]);
+        usb_dev.poll(&mut [&mut cdc as &mut dyn pico_rs_usb::device::UsbClass]);
 
         // Check if port is open
         if cdc.port_open() {

@@ -213,6 +213,10 @@ pub struct CdcAcm<'a> {
     port_open: bool,
     /// Configured flag
     configured: bool,
+    /// Waiting for GET_LINE_CODING data stage.
+    get_line_coding_pending: bool,
+    /// Waiting for SET_LINE_CODING OUT data.
+    set_line_coding_pending: bool,
 }
 
 impl<'a> CdcAcm<'a> {
@@ -234,6 +238,8 @@ impl<'a> CdcAcm<'a> {
             dtr_changed: false,
             port_open: false,
             configured: false,
+            get_line_coding_pending: false,
+            set_line_coding_pending: false,
         }
     }
 
@@ -273,6 +279,12 @@ impl<'a> CdcAcm<'a> {
             return Err(UsbError::NotReady);
         }
 
+        // 如果内部缓冲已满，先尝试把已有数据推出去，避免把同一批待发
+        // 数据在 write_all 重试时重复追加进缓冲区。
+        if self.write_len == self.write_buf.len() {
+            self.flush_write()?;
+        }
+
         // Copy data to write buffer
         let space = self.write_buf.len() - self.write_len;
         let len = core::cmp::min(data.len(), space);
@@ -284,8 +296,12 @@ impl<'a> CdcAcm<'a> {
         self.write_buf[self.write_len..self.write_len + len].copy_from_slice(&data[..len]);
         self.write_len += len;
 
-        // Try to send
-        self.flush_write()?;
+        // 尝试立即发送；若端点暂时忙，则保留在软件缓冲区里，后续由 poll()
+        // 或下一次 write() 继续推出。
+        match self.flush_write() {
+            Ok(()) | Err(UsbError::WouldBlock) => {}
+            Err(e) => return Err(e),
+        }
 
         Ok(len)
     }
@@ -374,14 +390,18 @@ impl<'a> CdcAcm<'a> {
 
         match request {
             CdcRequest::GetLineCoding => {
-                // Will be handled in control_in
+                self.get_line_coding_pending = true;
+                self.set_line_coding_pending = false;
                 true
             }
             CdcRequest::SetLineCoding => {
-                // Will be handled in control_out
+                self.get_line_coding_pending = false;
+                self.set_line_coding_pending = true;
                 true
             }
             CdcRequest::SetControlLineState => {
+                self.get_line_coding_pending = false;
+                self.set_line_coding_pending = false;
                 let old_dtr = self.control_line_state.dtr;
                 self.control_line_state = ControlLineState::from_raw(setup.w_value);
 
@@ -402,6 +422,8 @@ impl<'a> CdcAcm<'a> {
                 true
             }
             CdcRequest::SendBreak => {
+                self.get_line_coding_pending = false;
+                self.set_line_coding_pending = false;
                 // Acknowledge break signal
                 self.bus.ep0_send_zlp();
                 true
@@ -424,14 +446,23 @@ impl<'a> UsbClass for CdcAcm<'a> {
     }
 
     fn control_in(&mut self, buf: &mut [u8]) -> UsbResult<usize> {
+        if !self.get_line_coding_pending {
+            return Err(UsbError::Unsupported);
+        }
+
         // GET_LINE_CODING response
         let coding = self.line_coding.to_bytes();
         let len = core::cmp::min(buf.len(), coding.len());
         buf[..len].copy_from_slice(&coding[..len]);
+        self.get_line_coding_pending = false;
         Ok(len)
     }
 
     fn control_out(&mut self, data: &[u8]) -> UsbResult<()> {
+        if !self.set_line_coding_pending {
+            return Err(UsbError::Unsupported);
+        }
+
         // SET_LINE_CODING data
         if let Some(coding) = LineCoding::from_bytes(data) {
             #[cfg(feature = "defmt")]
@@ -442,6 +473,7 @@ impl<'a> UsbClass for CdcAcm<'a> {
             );
             self.line_coding = coding;
         }
+        self.set_line_coding_pending = false;
         Ok(())
     }
 
@@ -589,6 +621,8 @@ impl<'a> UsbClass for CdcAcm<'a> {
         self.port_open = false;
         self.read_available = 0;
         self.write_len = 0;
+        self.get_line_coding_pending = false;
+        self.set_line_coding_pending = false;
         #[cfg(feature = "defmt")]
         defmt::info!("CDC: Reset");
     }
