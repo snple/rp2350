@@ -1,705 +1,342 @@
-//! CDC ACM (Communication Device Class - Abstract Control Model) implementation
+//! CDC ACM (USB Communication Device Class – Abstract Control Model).
 //!
-//! This module provides a USB CDC ACM class for serial communication over USB.
+//! Creates a virtual serial port visible to the host operating system.
 //!
-//! CDC ACM creates a virtual serial port that can be accessed from a host computer.
-//!
-//! ## Example
+//! # Example
 //!
 //! ```ignore
-//! use pico_rs_usb::{UsbDevice, UsbBus};
-//! use pico_rs_usb::class::cdc::CdcAcm;
+//! use pico_rs_usb::{UsbBusAllocator, UsbDeviceBuilder};
+//! use pico_rs_usb::class::cdc_acm::CdcAcm;
+//! use pico_rs_usb::rp2350::Rp2350Bus;
 //!
-//! let usb_bus = UsbBus::new();
-//! let mut serial = CdcAcm::new(&usb_bus);
-//!
-//! let mut usb_dev = UsbDevice::builder(&usb_bus)
-//!     .vendor_id(0x1234)
-//!     .product_id(0x5678)
+//! let alloc = UsbBusAllocator::new(Rp2350Bus::new());
+//! let mut serial = CdcAcm::new(&alloc);
+//! let mut dev = UsbDeviceBuilder::new(&alloc, 0x1234, 0x5678)
+//!     .product("CDC Serial")
+//!     .composite_with_iads()
 //!     .build();
 //!
 //! loop {
-//!     if usb_dev.poll(&mut [&mut serial]) {
-//!         let mut buf = [0u8; 64];
-//!         if let Ok(count) = serial.read(&mut buf) {
-//!             // Echo data back
-//!             let _ = serial.write(&buf[..count]);
-//!         }
+//!     dev.poll(&mut [&mut serial]);
+//!     let mut buf = [0u8; 64];
+//!     if let Ok(n) = serial.read(&mut buf) {
+//!         let _ = serial.write(&buf[..n]);
 //!     }
 //! }
 //! ```
 
-use crate::BULK_MAX_PACKET_SIZE;
-use crate::bus::UsbBus;
-use crate::control::SetupPacket;
-use crate::descriptor::{
-    DescriptorWriter, EndpointDescriptor, InterfaceDescriptor, cdc_descriptor, cdc_protocol,
-    cdc_subclass, class_code,
-};
-use crate::device::UsbClass;
-use crate::endpoint::{EndpointAddress, EndpointType};
+use crate::bus::{InterfaceNumber, UsbBus, UsbBusAllocator};
+use crate::class::UsbClass;
+use crate::control::{ControlIn, ControlOut, Recipient, RequestType};
+use crate::descriptor::{DescriptorWriter, cdc_descriptor, cdc_protocol, cdc_subclass, class_code};
+use crate::endpoint::{EndpointIn, EndpointOut};
 use crate::error::{UsbError, UsbResult};
-use crate::types::{Recipient, RequestType};
 
-/// CDC class-specific request codes
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
-#[cfg_attr(feature = "defmt", derive(defmt::Format))]
-#[repr(u8)]
-pub enum CdcRequest {
-    /// Send Encapsulated Command
-    SendEncapsulatedCommand = 0x00,
-    /// Get Encapsulated Response
-    GetEncapsulatedResponse = 0x01,
-    /// Set Comm Feature
-    SetCommFeature = 0x02,
-    /// Get Comm Feature
-    GetCommFeature = 0x03,
-    /// Clear Comm Feature
-    ClearCommFeature = 0x04,
-    /// Set Line Coding
-    SetLineCoding = 0x20,
-    /// Get Line Coding
-    GetLineCoding = 0x21,
-    /// Set Control Line State
-    SetControlLineState = 0x22,
-    /// Send Break
-    SendBreak = 0x23,
+// ─── CDC-ACM request codes ────────────────────────────────────────────────────
+
+mod req {
+    pub const SET_LINE_CODING: u8 = 0x20;
+    pub const GET_LINE_CODING: u8 = 0x21;
+    pub const SET_CONTROL_LINE_STATE: u8 = 0x22;
+    pub const SEND_BREAK: u8 = 0x23;
 }
 
-impl TryFrom<u8> for CdcRequest {
-    type Error = u8;
+// ─── LineCoding ───────────────────────────────────────────────────────────────
 
-    fn try_from(value: u8) -> Result<Self, Self::Error> {
-        match value {
-            0x00 => Ok(CdcRequest::SendEncapsulatedCommand),
-            0x01 => Ok(CdcRequest::GetEncapsulatedResponse),
-            0x02 => Ok(CdcRequest::SetCommFeature),
-            0x03 => Ok(CdcRequest::GetCommFeature),
-            0x04 => Ok(CdcRequest::ClearCommFeature),
-            0x20 => Ok(CdcRequest::SetLineCoding),
-            0x21 => Ok(CdcRequest::GetLineCoding),
-            0x22 => Ok(CdcRequest::SetControlLineState),
-            0x23 => Ok(CdcRequest::SendBreak),
-            v => Err(v),
-        }
-    }
-}
-
-/// Line coding structure (7 bytes)
-#[derive(Clone, Copy, Debug, Default)]
+/// Serial port line-coding parameters (7-byte CDC structure).
+#[derive(Clone, Copy, Debug)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct LineCoding {
-    /// Data terminal rate in bits per second
-    dw_dte_rate: u32,
-    /// Stop bits: 0=1, 1=1.5, 2=2
-    b_char_format: u8,
-    /// Parity: 0=None, 1=Odd, 2=Even, 3=Mark, 4=Space
-    b_parity_type: u8,
-    /// Data bits: 5, 6, 7, 8, or 16
-    b_data_bits: u8,
+    /// Data terminal rate in bits per second.
+    pub baud_rate: u32,
+    /// Stop bits: 0 = 1 bit, 1 = 1.5 bits, 2 = 2 bits.
+    pub stop_bits: u8,
+    /// Parity: 0 = None, 1 = Odd, 2 = Even, 3 = Mark, 4 = Space.
+    pub parity: u8,
+    /// Data bits: 5, 6, 7, 8, or 16.
+    pub data_bits: u8,
+}
+
+impl Default for LineCoding {
+    fn default() -> Self {
+        Self {
+            baud_rate: 115_200,
+            stop_bits: 0,
+            parity: 0,
+            data_bits: 8,
+        }
+    }
 }
 
 impl LineCoding {
-    /// Size of line coding structure
-    pub const SIZE: usize = 7;
-
-    /// Create a new line coding with default settings (115200 8N1)
-    pub const fn new() -> Self {
-        Self {
-            dw_dte_rate: 115200,
-            b_char_format: 0, // 1 stop bit
-            b_parity_type: 0, // No parity
-            b_data_bits: 8,
-        }
-    }
-
-    /// Get the baud rate
-    pub fn baud_rate(&self) -> u32 {
-        self.dw_dte_rate
-    }
-
-    /// Get the number of data bits
-    pub fn data_bits(&self) -> u8 {
-        self.b_data_bits
-    }
-
-    /// Get the stop bits setting
-    pub fn stop_bits(&self) -> u8 {
-        self.b_char_format
-    }
-
-    /// Get the parity setting
-    pub fn parity(&self) -> u8 {
-        self.b_parity_type
-    }
-
-    /// Convert to bytes
-    pub fn to_bytes(&self) -> [u8; Self::SIZE] {
-        let rate_bytes = self.dw_dte_rate.to_le_bytes();
+    fn to_bytes(self) -> [u8; 7] {
+        let b = self.baud_rate.to_le_bytes();
         [
-            rate_bytes[0],
-            rate_bytes[1],
-            rate_bytes[2],
-            rate_bytes[3],
-            self.b_char_format,
-            self.b_parity_type,
-            self.b_data_bits,
+            b[0],
+            b[1],
+            b[2],
+            b[3],
+            self.stop_bits,
+            self.parity,
+            self.data_bits,
         ]
     }
 
-    /// Parse from bytes
-    pub fn from_bytes(data: &[u8]) -> Option<Self> {
-        if data.len() < Self::SIZE {
+    fn from_bytes(b: &[u8]) -> Option<Self> {
+        if b.len() < 7 {
             return None;
         }
         Some(Self {
-            dw_dte_rate: u32::from_le_bytes([data[0], data[1], data[2], data[3]]),
-            b_char_format: data[4],
-            b_parity_type: data[5],
-            b_data_bits: data[6],
+            baud_rate: u32::from_le_bytes([b[0], b[1], b[2], b[3]]),
+            stop_bits: b[4],
+            parity: b[5],
+            data_bits: b[6],
         })
     }
 }
 
-/// Control line state flags
-#[derive(Clone, Copy, Debug, Default)]
-#[cfg_attr(feature = "defmt", derive(defmt::Format))]
-pub struct ControlLineState {
-    /// DTR (Data Terminal Ready)
-    pub dtr: bool,
-    /// RTS (Request To Send)
-    pub rts: bool,
-}
+// ─── CdcAcm ───────────────────────────────────────────────────────────────────
 
-impl ControlLineState {
-    /// Create from raw value
-    pub fn from_raw(value: u16) -> Self {
-        Self {
-            dtr: value & 0x01 != 0,
-            rts: value & 0x02 != 0,
-        }
-    }
-}
-
-/// CDC ACM serial port
-pub struct CdcAcm<'a> {
-    /// USB bus reference
-    bus: &'a UsbBus,
-    /// Communication interface number
-    comm_if: u8,
-    /// Data interface number
-    data_if: u8,
-    /// Interrupt IN endpoint address
-    int_ep: EndpointAddress,
-    /// Bulk IN endpoint address
-    bulk_in_ep: EndpointAddress,
-    /// Bulk OUT endpoint address
-    bulk_out_ep: EndpointAddress,
-    /// Current line coding
+/// CDC ACM virtual serial port class.
+///
+/// Construct with [`CdcAcm::new`], passing the [`UsbBusAllocator`].
+pub struct CdcAcm<'a, B: UsbBus> {
+    comm_if: InterfaceNumber,
+    data_if: InterfaceNumber,
+    int_in: EndpointIn<'a, B>,
+    bulk_in: EndpointIn<'a, B>,
+    bulk_out: EndpointOut<'a, B>,
     line_coding: LineCoding,
-    /// Control line state
-    control_line_state: ControlLineState,
-    /// Read buffer
-    read_buf: [u8; 64],
-    /// Bytes available in read buffer
-    read_available: usize,
-    /// Write buffer
-    write_buf: [u8; 64],
-    /// Bytes in write buffer
-    write_len: usize,
-    /// DTR changed flag
-    dtr_changed: bool,
-    /// Port is open (DTR is set)
+    dtr: bool,
+    rts: bool,
+    /// `true` when the host has set DTR (port is "open").
     port_open: bool,
-    /// Configured flag
     configured: bool,
-    /// Waiting for GET_LINE_CODING data stage.
-    get_line_coding_pending: bool,
-    /// Waiting for SET_LINE_CODING OUT data.
-    set_line_coding_pending: bool,
-    /// Pending OUT endpoint re-arm.
-    ///
-    /// Set when the software RX buffer drains to 0.  The actual re-arm is
-    /// deferred: `poll()` performs it automatically when called from a
-    /// non-interrupt context (polling mode), while interrupt-driven
-    /// applications call `rearm_rx()` from the main loop.
-    rx_needs_rearm: bool,
 }
 
-impl<'a> CdcAcm<'a> {
-    /// Create a new CDC ACM instance
-    pub fn new(bus: &'a UsbBus) -> Self {
+impl<'a, B: UsbBus> CdcAcm<'a, B> {
+    /// Create a CDC ACM instance, allocating the required endpoints and interfaces.
+    pub fn new(alloc: &'a UsbBusAllocator<B>) -> Self {
+        let comm_if = alloc.interface();
+        let data_if = alloc.interface();
+        let int_in = alloc.interrupt(8, 255);
+        let bulk_in = alloc.bulk(crate::BULK_MAX_PACKET_SIZE);
+        let bulk_out = alloc.bulk(crate::BULK_MAX_PACKET_SIZE);
         Self {
-            bus,
-            comm_if: 0,
-            data_if: 1,
-            int_ep: EndpointAddress::in_(1),
-            bulk_in_ep: EndpointAddress::in_(2),
-            bulk_out_ep: EndpointAddress::out(2),
-            line_coding: LineCoding::new(),
-            control_line_state: ControlLineState::default(),
-            read_buf: [0u8; 64],
-            read_available: 0,
-            write_buf: [0u8; 64],
-            write_len: 0,
-            dtr_changed: false,
+            comm_if,
+            data_if,
+            int_in,
+            bulk_in,
+            bulk_out,
+            line_coding: LineCoding::default(),
+            dtr: false,
+            rts: false,
             port_open: false,
             configured: false,
-            get_line_coding_pending: false,
-            set_line_coding_pending: false,
-            rx_needs_rearm: false,
         }
     }
 
-    /// Get the current line coding
-    pub fn line_coding(&self) -> &LineCoding {
-        &self.line_coding
+    // ── Public API ────────────────────────────────────────────────────────────
+
+    /// Read received bytes from the host into `buf`.
+    ///
+    /// Returns the number of bytes read, or [`UsbError::WouldBlock`] when no
+    /// data is available.
+    pub fn read(&self, buf: &mut [u8]) -> UsbResult<usize> {
+        if !self.configured {
+            return Err(UsbError::InvalidState);
+        }
+        self.bulk_out.read(buf)
     }
 
-    /// Get the control line state
-    pub fn control_line_state(&self) -> &ControlLineState {
-        &self.control_line_state
+    /// Write bytes to the host.
+    ///
+    /// Returns the number of bytes actually written, or [`UsbError::WouldBlock`]
+    /// when the previous packet has not yet been sent.
+    pub fn write(&self, data: &[u8]) -> UsbResult<usize> {
+        if !self.configured {
+            return Err(UsbError::InvalidState);
+        }
+        self.bulk_in.write(data)
     }
 
-    /// Check if DTR changed since last call
-    pub fn dtr_changed(&mut self) -> bool {
-        let changed = self.dtr_changed;
-        self.dtr_changed = false;
-        changed
+    /// `true` if the host has opened the serial port (DTR set).
+    pub fn dtr(&self) -> bool {
+        self.dtr
     }
 
-    /// Check if the port is open (DTR is set by the host)
-    pub fn port_open(&self) -> bool {
-        self.port_open
+    /// `true` if the host has asserted RTS.
+    pub fn rts(&self) -> bool {
+        self.rts
     }
 
-    /// Check if the device is configured
+    /// `true` if the device has been configured by the host.
     pub fn is_configured(&self) -> bool {
         self.configured
     }
 
-    /// Write data to the serial port
-    ///
-    /// Returns the number of bytes written, which may be less than
-    /// the buffer size if the internal buffer is full.
-    pub fn write(&mut self, data: &[u8]) -> UsbResult<usize> {
-        if !self.configured {
-            return Err(UsbError::NotReady);
-        }
-
-        // 如果内部缓冲已满，先尝试把已有数据推出去，避免把同一批待发
-        // 数据在 write_all 重试时重复追加进缓冲区。
-        if self.write_len == self.write_buf.len() {
-            self.flush_write()?;
-        }
-
-        // Copy data to write buffer
-        let space = self.write_buf.len() - self.write_len;
-        let len = core::cmp::min(data.len(), space);
-
-        if len == 0 {
-            return Err(UsbError::WouldBlock);
-        }
-
-        self.write_buf[self.write_len..self.write_len + len].copy_from_slice(&data[..len]);
-        self.write_len += len;
-
-        // 尝试立即发送；若端点暂时忙，则保留在软件缓冲区里，后续由 poll()
-        // 或下一次 write() 继续推出。
-        match self.flush_write() {
-            Ok(()) | Err(UsbError::WouldBlock) => {}
-            Err(e) => return Err(e),
-        }
-
-        Ok(len)
-    }
-
-    /// Write all data, blocking until complete
-    pub fn write_all(&mut self, data: &[u8]) -> UsbResult<()> {
-        let mut offset = 0;
-        while offset < data.len() {
-            match self.write(&data[offset..]) {
-                Ok(n) => offset += n,
-                Err(UsbError::WouldBlock) => continue,
-                Err(e) => return Err(e),
-            }
-        }
-        Ok(())
-    }
-
-    /// Read data from the serial port
-    ///
-    /// Returns the number of bytes read, or `WouldBlock` if no data is available.
-    pub fn read(&mut self, buf: &mut [u8]) -> UsbResult<usize> {
-        if !self.configured {
-            return Err(UsbError::NotReady);
-        }
-
-        if self.read_available == 0 {
-            // Try to receive more data
-            match self.bus.read(self.bulk_out_ep, &mut self.read_buf) {
-                Ok(n) if n > 0 => {
-                    self.read_available = n;
-                }
-                Ok(_) => return Err(UsbError::WouldBlock),
-                Err(e) => return Err(e),
-            }
-        }
-
-        let len = core::cmp::min(buf.len(), self.read_available);
-        buf[..len].copy_from_slice(&self.read_buf[..len]);
-
-        // Shift remaining data
-        if len < self.read_available {
-            self.read_buf.copy_within(len..self.read_available, 0);
-        }
-        self.read_available -= len;
-
-        // When the software buffer is fully drained, mark that a hardware
-        // re-arm is needed.  We do NOT call rearm_out_ep() here because this
-        // function may be invoked from an ISR: re-arming inside the ISR lets
-        // the hardware accept the next packet before the ISR exits, setting
-        // BUFF_STATUS again and causing an infinite interrupt storm.
-        // Re-arm is performed either by poll() (polling mode) or by an
-        // explicit rearm_rx() call from the application main loop.
-        if self.read_available == 0 {
-            self.rx_needs_rearm = true;
-        }
-
-        Ok(len)
-    }
-
-    /// Read a single byte
-    pub fn read_byte(&mut self) -> Option<u8> {
-        let mut buf = [0u8; 1];
-        match self.read(&mut buf) {
-            Ok(1) => Some(buf[0]),
-            _ => None,
-        }
-    }
-
-    /// Flush the write buffer
-    fn flush_write(&mut self) -> UsbResult<()> {
-        if self.write_len == 0 {
-            return Ok(());
-        }
-
-        match self
-            .bus
-            .write(self.bulk_in_ep, &self.write_buf[..self.write_len])
-        {
-            Ok(n) => {
-                // Shift remaining data
-                if n < self.write_len {
-                    self.write_buf.copy_within(n..self.write_len, 0);
-                }
-                self.write_len -= n;
-                Ok(())
-            }
-            Err(e) => Err(e),
-        }
-    }
-
-    /// Handle CDC class requests
-    fn handle_cdc_request(&mut self, setup: &SetupPacket) -> bool {
-        let request = match CdcRequest::try_from(setup.b_request) {
-            Ok(r) => r,
-            Err(_) => return false,
-        };
-
-        match request {
-            CdcRequest::GetLineCoding => {
-                self.get_line_coding_pending = true;
-                self.set_line_coding_pending = false;
-                true
-            }
-            CdcRequest::SetLineCoding => {
-                self.get_line_coding_pending = false;
-                self.set_line_coding_pending = true;
-                true
-            }
-            CdcRequest::SetControlLineState => {
-                self.get_line_coding_pending = false;
-                self.set_line_coding_pending = false;
-                let old_dtr = self.control_line_state.dtr;
-                self.control_line_state = ControlLineState::from_raw(setup.w_value);
-
-                if old_dtr != self.control_line_state.dtr {
-                    self.dtr_changed = true;
-                    self.port_open = self.control_line_state.dtr;
-
-                    #[cfg(feature = "defmt")]
-                    defmt::info!(
-                        "CDC: DTR={}, RTS={}",
-                        self.control_line_state.dtr,
-                        self.control_line_state.rts
-                    );
-                }
-
-                // Send ZLP
-                self.bus.ep0_send_zlp();
-                true
-            }
-            CdcRequest::SendBreak => {
-                self.get_line_coding_pending = false;
-                self.set_line_coding_pending = false;
-                // Acknowledge break signal
-                self.bus.ep0_send_zlp();
-                true
-            }
-            _ => false,
-        }
+    /// Returns the current line coding (baud rate, data bits, etc.).
+    pub fn line_coding(&self) -> LineCoding {
+        self.line_coding
     }
 }
 
-impl<'a> UsbClass for CdcAcm<'a> {
-    fn control_setup(&mut self, setup: &SetupPacket) -> bool {
-        // Check if this is a CDC class request for our interface
-        if setup.request_type() == RequestType::Class
-            && setup.recipient() == Recipient::Interface
-            && setup.interface_number() == self.comm_if
-        {
-            return self.handle_cdc_request(setup);
-        }
-        false
-    }
+// ─── UsbClass<B> implementation ───────────────────────────────────────────────
 
-    fn control_in(&mut self, buf: &mut [u8]) -> UsbResult<usize> {
-        if !self.get_line_coding_pending {
-            return Err(UsbError::Unsupported);
-        }
-
-        // GET_LINE_CODING response
-        let coding = self.line_coding.to_bytes();
-        let len = core::cmp::min(buf.len(), coding.len());
-        buf[..len].copy_from_slice(&coding[..len]);
-        self.get_line_coding_pending = false;
-        Ok(len)
-    }
-
-    fn control_out(&mut self, data: &[u8]) -> UsbResult<()> {
-        if !self.set_line_coding_pending {
-            return Err(UsbError::Unsupported);
-        }
-
-        // SET_LINE_CODING data
-        if let Some(coding) = LineCoding::from_bytes(data) {
-            #[cfg(feature = "defmt")]
-            defmt::info!(
-                "CDC: Line coding: {} baud, {} data bits",
-                coding.baud_rate(),
-                coding.data_bits()
-            );
-            self.line_coding = coding;
-        }
-        self.set_line_coding_pending = false;
-        Ok(())
-    }
-
-    fn get_descriptors(&self, writer: &mut DescriptorWriter) -> bool {
-        // CDC Communication Interface
-        let comm_iface = InterfaceDescriptor::new(
+impl<B: UsbBus> UsbClass<B> for CdcAcm<'_, B> {
+    fn get_configuration_descriptors(&self, w: &mut DescriptorWriter) -> UsbResult<()> {
+        // ── IAD (Interface Association Descriptor) ────────────────────────────
+        w.iad(
             self.comm_if,
+            2, // 2 interfaces
             class_code::CDC,
             cdc_subclass::ACM,
             cdc_protocol::NONE,
-            1, // One interrupt endpoint
-        );
-        if !writer.write_interface(&comm_iface) {
-            return false;
-        }
+        )?;
 
-        // CDC Functional Descriptors
+        // ── Communication Interface ───────────────────────────────────────────
+        w.interface(
+            self.comm_if,
+            1, // 1 endpoint (interrupt IN)
+            class_code::CDC,
+            cdc_subclass::ACM,
+            cdc_protocol::NONE,
+        )?;
 
-        // Header Functional Descriptor
-        if !writer.write(&[
-            5,                      // bLength
-            0x24,                   // bDescriptorType (CS_INTERFACE)
-            cdc_descriptor::HEADER, // bDescriptorSubtype
-            0x10,
-            0x01, // bcdCDC (1.10)
-        ]) {
-            return false;
-        }
+        // Header functional descriptor.
+        w.write(
+            cdc_descriptor::CS_INTERFACE,
+            &[cdc_descriptor::HEADER, 0x10, 0x01], // bcdCDC 1.10
+        )?;
+        // Call Management functional descriptor.
+        w.write(
+            cdc_descriptor::CS_INTERFACE,
+            &[
+                cdc_descriptor::CALL_MANAGEMENT,
+                0x00, // bmCapabilities: no call management
+                self.data_if.into(),
+            ],
+        )?;
+        // ACM functional descriptor.
+        w.write(
+            cdc_descriptor::CS_INTERFACE,
+            &[
+                cdc_descriptor::ABSTRACT_CONTROL_MANAGEMENT,
+                0x02, // bmCapabilities: supports SetLineCoding/GetLineCoding/SetControlLineState
+            ],
+        )?;
+        // Union functional descriptor.
+        w.write(
+            cdc_descriptor::CS_INTERFACE,
+            &[
+                cdc_descriptor::UNION,
+                self.comm_if.into(),
+                self.data_if.into(),
+            ],
+        )?;
+        // Interrupt IN endpoint.
+        w.endpoint(
+            self.int_in.address(),
+            self.int_in.ep_type(),
+            self.int_in.max_packet_size(),
+            255,
+        )?;
 
-        // Call Management Functional Descriptor
-        if !writer.write(&[
-            5,                               // bLength
-            0x24,                            // bDescriptorType (CS_INTERFACE)
-            cdc_descriptor::CALL_MANAGEMENT, // bDescriptorSubtype
-            0x00,                            // bmCapabilities
-            self.data_if,                    // bDataInterface
-        ]) {
-            return false;
-        }
-
-        // ACM Functional Descriptor
-        if !writer.write(&[
-            4,                   // bLength
-            0x24,                // bDescriptorType (CS_INTERFACE)
-            cdc_descriptor::ACM, // bDescriptorSubtype
-            0x02,                // bmCapabilities (line coding + break)
-        ]) {
-            return false;
-        }
-
-        // Union Functional Descriptor
-        if !writer.write(&[
-            5,                     // bLength
-            0x24,                  // bDescriptorType (CS_INTERFACE)
-            cdc_descriptor::UNION, // bDescriptorSubtype
-            self.comm_if,          // bControlInterface
-            self.data_if,          // bSubordinateInterface0
-        ]) {
-            return false;
-        }
-
-        // Interrupt IN endpoint
-        let int_ep_desc = EndpointDescriptor::new(
-            self.int_ep,
-            EndpointType::Interrupt,
-            8,   // Max packet size
-            255, // Polling interval
-        );
-        if !writer.write_endpoint(&int_ep_desc) {
-            return false;
-        }
-
-        // CDC Data Interface
-        let data_iface = InterfaceDescriptor::new(
+        // ── Data Interface ────────────────────────────────────────────────────
+        w.interface(
             self.data_if,
+            2, // 2 endpoints (bulk IN + OUT)
             class_code::CDC_DATA,
+            0x00,
+            0x00,
+        )?;
+        w.endpoint(
+            self.bulk_out.address(),
+            self.bulk_out.ep_type(),
+            self.bulk_out.max_packet_size(),
             0,
+        )?;
+        w.endpoint(
+            self.bulk_in.address(),
+            self.bulk_in.ep_type(),
+            self.bulk_in.max_packet_size(),
             0,
-            2, // Two bulk endpoints
-        );
-        if !writer.write_interface(&data_iface) {
-            return false;
+        )?;
+
+        Ok(())
+    }
+
+    fn control_in(&mut self, xfer: ControlIn<'_, B>) {
+        let req = xfer.request();
+
+        if req.request_type != RequestType::Class || req.recipient != Recipient::Interface {
+            return;
+        }
+        if req.index as u8 != u8::from(self.comm_if) {
+            return;
         }
 
-        // Bulk OUT endpoint
-        let bulk_out_desc = EndpointDescriptor::new(
-            self.bulk_out_ep,
-            EndpointType::Bulk,
-            BULK_MAX_PACKET_SIZE,
-            0,
-        );
-        if !writer.write_endpoint(&bulk_out_desc) {
-            return false;
+        match req.request {
+            req::GET_LINE_CODING => {
+                let bytes = self.line_coding.to_bytes();
+                let _ = xfer.accept_with(&bytes);
+            }
+            _ => {
+                let _ = xfer.reject();
+            }
+        }
+    }
+
+    fn control_out(&mut self, xfer: ControlOut<'_, B>) {
+        let req = xfer.request();
+
+        if req.request_type != RequestType::Class || req.recipient != Recipient::Interface {
+            return;
+        }
+        if req.index as u8 != u8::from(self.comm_if) {
+            return;
         }
 
-        // Bulk IN endpoint
-        let bulk_in_desc =
-            EndpointDescriptor::new(self.bulk_in_ep, EndpointType::Bulk, BULK_MAX_PACKET_SIZE, 0);
-        if !writer.write_endpoint(&bulk_in_desc) {
-            return false;
+        match req.request {
+            req::SET_LINE_CODING => {
+                if let Some(lc) = LineCoding::from_bytes(xfer.data()) {
+                    self.line_coding = lc;
+                    #[cfg(feature = "defmt")]
+                    defmt::debug!("CDC: SET_LINE_CODING baud={}", lc.baud_rate);
+                }
+                let _ = xfer.accept();
+            }
+            req::SET_CONTROL_LINE_STATE => {
+                let value = req.value;
+                self.dtr = value & 0x01 != 0;
+                self.rts = value & 0x02 != 0;
+                self.port_open = self.dtr;
+                #[cfg(feature = "defmt")]
+                defmt::debug!("CDC: control line state dtr={} rts={}", self.dtr, self.rts);
+                let _ = xfer.accept();
+            }
+            req::SEND_BREAK => {
+                // Ignore break signals (no hardware support).
+                let _ = xfer.accept();
+            }
+            _ => {
+                let _ = xfer.reject();
+            }
         }
-
-        true
     }
 
     fn configure(&mut self) {
-        // Configure the CDC endpoints in hardware
-        // Interrupt IN endpoint (EP1 IN)
-        if let Err(e) = self
-            .bus
-            .configure_ep(self.int_ep, EndpointType::Interrupt, 8)
-        {
-            #[cfg(feature = "defmt")]
-            defmt::error!("CDC: Failed to configure interrupt EP: {:?}", e);
-            return;
-        }
-
-        // Bulk IN endpoint (EP2 IN)
-        if let Err(e) =
-            self.bus
-                .configure_ep(self.bulk_in_ep, EndpointType::Bulk, BULK_MAX_PACKET_SIZE)
-        {
-            #[cfg(feature = "defmt")]
-            defmt::error!("CDC: Failed to configure bulk IN EP: {:?}", e);
-            return;
-        }
-
-        // Bulk OUT endpoint (EP2 OUT)
-        if let Err(e) =
-            self.bus
-                .configure_ep(self.bulk_out_ep, EndpointType::Bulk, BULK_MAX_PACKET_SIZE)
-        {
-            #[cfg(feature = "defmt")]
-            defmt::error!("CDC: Failed to configure bulk OUT EP: {:?}", e);
-            return;
-        }
-
         self.configured = true;
-        #[cfg(feature = "defmt")]
-        defmt::info!("CDC: Configured - endpoints initialized");
+    }
+
+    fn deconfigure(&mut self) {
+        self.configured = false;
     }
 
     fn reset(&mut self) {
         self.configured = false;
+        self.dtr = false;
+        self.rts = false;
         self.port_open = false;
-        self.read_available = 0;
-        self.write_len = 0;
-        self.get_line_coding_pending = false;
-        self.set_line_coding_pending = false;
-        self.rx_needs_rearm = false;
-        #[cfg(feature = "defmt")]
-        defmt::info!("CDC: Reset");
     }
-
-    fn poll(&mut self) {
-        if !self.configured {
-            return;
-        }
-
-        // In polling mode (dev.poll called from the main loop), automatically
-        // re-arm the OUT endpoint when the software buffer has been fully
-        // consumed.  We guard with in_interrupt_context() to avoid re-arming
-        // inside an ISR, which would restart the interrupt storm.
-        if self.rx_needs_rearm && self.read_available == 0 && !in_interrupt_context() {
-            self.bus.rearm_out_ep(self.bulk_out_ep);
-            self.rx_needs_rearm = false;
-        }
-
-        // Try to flush write buffer
-        let _ = self.flush_write();
-    }
-}
-
-/// Explicitly re-arm the CDC bulk OUT endpoint so the hardware can accept
-/// the next packet from the host.
-///
-/// Call this from the **main loop** after processing all received data.
-/// It is a no-op when no re-arm is pending or the device is not configured.
-impl<'a> CdcAcm<'a> {
-    /// Re-arm the CDC bulk OUT endpoint so the hardware can accept the next
-    /// packet from the host.
-    ///
-    /// Call this from the **main loop** after processing all received data.
-    /// It is a no-op when no re-arm is pending or the device is not configured.
-    pub fn rearm_rx(&mut self) {
-        if self.rx_needs_rearm && self.configured && self.read_available == 0 {
-            self.bus.rearm_out_ep(self.bulk_out_ep);
-            self.rx_needs_rearm = false;
-        }
-    }
-}
-
-/// Returns `true` when called from an interrupt/exception handler.
-///
-/// Reads the IPSR (Interrupt Program Status Register) on Cortex-M.  If bits
-/// [8:0] are non-zero the core is executing an exception, i.e. an ISR.
-#[inline]
-fn in_interrupt_context() -> bool {
-    let ipsr: u32;
-    // Safety: IPSR is a read-only status register; safe to read at any time.
-    #[allow(asm_sub_register)]
-    unsafe {
-        core::arch::asm!(
-            "mrs {0}, IPSR",
-            out(reg) ipsr,
-            options(nomem, nostack, preserves_flags)
-        );
-    }
-    (ipsr & 0x1FF) != 0
 }

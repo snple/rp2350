@@ -1,360 +1,284 @@
-//! USB endpoint management
+//! USB endpoint types and handles.
 //!
-//! This module provides types and utilities for managing USB endpoints.
+//! [`Endpoint`] (and its type aliases [`EndpointIn`] / [`EndpointOut`]) provide
+//! type-safe access to an individual USB endpoint.  A class constructor receives
+//! a reference to the [`crate::bus::UsbBusAllocator`], which allocates endpoints
+//! and returns handles that borrow from that allocator.  The owned bus inside the
+//! allocator is therefore kept alive for as long as any endpoint handle exists.
 
-use crate::error::{UsbError, UsbResult};
+use core::marker::PhantomData;
 
-/// Endpoint direction
+use crate::bus::UsbBus;
+use crate::error::UsbResult;
+
+// ─── Direction ───────────────────────────────────────────────────────────────
+
+/// Marker trait for endpoint direction.
+pub trait EndpointDir: Sized + 'static {
+    /// The concrete direction value for this marker.
+    const DIRECTION: Direction;
+}
+
+/// Direction marker for device-to-host (IN) endpoints.
+pub struct In;
+impl EndpointDir for In {
+    const DIRECTION: Direction = Direction::In;
+}
+
+/// Direction marker for host-to-device (OUT) endpoints.
+pub struct Out;
+impl EndpointDir for Out {
+    const DIRECTION: Direction = Direction::Out;
+}
+
+/// USB transfer direction (host-centric: IN = device→host, OUT = host→device).
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
-pub enum EndpointDirection {
-    /// OUT endpoint (host to device)
-    Out,
-    /// IN endpoint (device to host)
-    In,
+pub enum Direction {
+    /// Host-to-device.
+    Out = 0x00,
+    /// Device-to-host.
+    In = 0x80,
 }
 
-impl EndpointDirection {
-    /// Returns true if this is an IN endpoint
-    pub const fn is_in(&self) -> bool {
-        matches!(self, EndpointDirection::In)
-    }
-
-    /// Returns true if this is an OUT endpoint
-    pub const fn is_out(&self) -> bool {
-        matches!(self, EndpointDirection::Out)
+impl From<u8> for Direction {
+    #[inline]
+    fn from(v: u8) -> Self {
+        if v & 0x80 != 0 { Direction::In } else { Direction::Out }
     }
 }
 
-/// Endpoint transfer type
+// ─── EndpointType ─────────────────────────────────────────────────────────────
+
+/// USB endpoint transfer type.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum EndpointType {
-    /// Control endpoint
+    /// Control endpoint — only EP0 uses this in practice.
     Control,
-    /// Isochronous endpoint
-    Isochronous,
-    /// Bulk endpoint
+    /// Isochronous endpoint — time-critical, unreliable.
+    Isochronous {
+        synchronization: IsoSynchronization,
+        usage: IsoUsage,
+    },
+    /// Bulk endpoint — large, reliable, best-effort.
     Bulk,
-    /// Interrupt endpoint
+    /// Interrupt endpoint — small, reliable, bounded latency.
     Interrupt,
 }
 
 impl EndpointType {
-    /// Convert to bmAttributes bits
-    pub const fn to_bits(&self) -> u8 {
+    /// Encode this type into the `bmAttributes` transfer-type field (USB 2.0 §9.6.6).
+    pub fn bm_attributes(self) -> u8 {
         match self {
-            EndpointType::Control => 0x00,
-            EndpointType::Isochronous => 0x01,
-            EndpointType::Bulk => 0x02,
-            EndpointType::Interrupt => 0x03,
+            EndpointType::Control => 0b00,
+            EndpointType::Bulk => 0b10,
+            EndpointType::Interrupt => 0b11,
+            EndpointType::Isochronous { synchronization, usage } => {
+                let sync = match synchronization {
+                    IsoSynchronization::None => 0b00,
+                    IsoSynchronization::Asynchronous => 0b01,
+                    IsoSynchronization::Adaptive => 0b10,
+                    IsoSynchronization::Synchronous => 0b11,
+                };
+                let usg = match usage {
+                    IsoUsage::Data => 0b00,
+                    IsoUsage::Feedback => 0b01,
+                    IsoUsage::ImplicitFeedbackData => 0b10,
+                };
+                0b01 | (sync << 2) | (usg << 4)
+            }
         }
     }
 }
 
-/// USB endpoint address
+/// Isochronous synchronization type (USB 2.0 §5.12.4.1).
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+pub enum IsoSynchronization {
+    None,
+    Asynchronous,
+    Adaptive,
+    Synchronous,
+}
+
+/// Isochronous usage type (USB 2.0 §9.6.6).
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+pub enum IsoUsage {
+    Data,
+    Feedback,
+    ImplicitFeedbackData,
+}
+
+// ─── EndpointAddress ──────────────────────────────────────────────────────────
+
+/// Type-safe USB endpoint address (number + direction encoded in one byte).
 #[derive(Clone, Copy, PartialEq, Eq)]
 pub struct EndpointAddress(u8);
 
 impl EndpointAddress {
-    /// Create a new endpoint address
-    pub const fn new(number: u8, direction: EndpointDirection) -> Self {
-        let dir_bit = match direction {
-            EndpointDirection::Out => 0x00,
-            EndpointDirection::In => 0x80,
-        };
-        Self(number | dir_bit)
+    /// EP0 OUT address (control, host→device).
+    pub const EP0_OUT: EndpointAddress = EndpointAddress(0x00);
+    /// EP0 IN address (control, device→host).
+    pub const EP0_IN: EndpointAddress = EndpointAddress(0x80);
+
+    /// Construct from an endpoint number and direction.
+    #[inline]
+    pub const fn new(number: u8, direction: Direction) -> Self {
+        Self((number & 0x0f) | direction as u8)
     }
 
-    /// Create an OUT endpoint address
+    /// Construct an OUT endpoint address.
+    #[inline]
     pub const fn out(number: u8) -> Self {
         Self(number & 0x0f)
     }
 
-    /// Create an IN endpoint address
+    /// Construct an IN endpoint address.
+    #[inline]
     pub const fn in_(number: u8) -> Self {
         Self((number & 0x0f) | 0x80)
     }
 
-    /// Get the raw address byte
-    pub const fn raw(&self) -> u8 {
+    /// Raw address byte.
+    #[inline]
+    pub const fn raw(self) -> u8 {
         self.0
     }
 
-    /// Get the endpoint number (0-15)
-    pub const fn number(&self) -> u8 {
+    /// Endpoint number (0–15).
+    #[inline]
+    pub const fn number(self) -> u8 {
         self.0 & 0x0f
     }
 
-    /// Get the endpoint direction
-    pub const fn direction(&self) -> EndpointDirection {
-        if self.0 & 0x80 != 0 {
-            EndpointDirection::In
-        } else {
-            EndpointDirection::Out
-        }
+    /// Transfer direction.
+    #[inline]
+    pub fn direction(self) -> Direction {
+        Direction::from(self.0)
     }
 
-    /// Returns true if this is control endpoint 0
-    pub const fn is_control(&self) -> bool {
-        self.number() == 0
+    /// `true` if this is an IN (device→host) endpoint.
+    #[inline]
+    pub const fn is_in(self) -> bool {
+        self.0 & 0x80 != 0
     }
 
-    /// Calculate the index for this endpoint in arrays (0-31)
-    /// OUT endpoints: 0-15, IN endpoints: 16-31
-    pub const fn index(&self) -> usize {
-        let num = self.number() as usize;
-        if self.0 & 0x80 != 0 {
-            num + 16 // IN endpoints
-        } else {
-            num // OUT endpoints
-        }
+    /// `true` if this is an OUT (host→device) endpoint.
+    #[inline]
+    pub const fn is_out(self) -> bool {
+        !self.is_in()
     }
+}
+
+impl From<u8> for EndpointAddress {
+    #[inline]
+    fn from(v: u8) -> Self { Self(v) }
+}
+
+impl From<EndpointAddress> for u8 {
+    #[inline]
+    fn from(a: EndpointAddress) -> Self { a.0 }
 }
 
 impl core::fmt::Debug for EndpointAddress {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        write!(
-            f,
-            "EP{} {}",
-            self.number(),
-            if self.direction().is_in() {
-                "IN"
-            } else {
-                "OUT"
-            }
-        )
+        write!(f, "EP{} {}", self.number(), if self.is_in() { "IN" } else { "OUT" })
     }
 }
 
 #[cfg(feature = "defmt")]
 impl defmt::Format for EndpointAddress {
     fn format(&self, f: defmt::Formatter) {
-        defmt::write!(
-            f,
-            "EP{} {}",
-            self.number(),
-            if self.direction().is_in() {
-                "IN"
-            } else {
-                "OUT"
-            }
-        )
+        defmt::write!(f, "EP{} {}", self.number(), if self.is_in() { "IN" } else { "OUT" });
     }
 }
 
-impl From<u8> for EndpointAddress {
-    fn from(val: u8) -> Self {
-        Self(val)
+// ─── Endpoint handle ──────────────────────────────────────────────────────────
+
+/// A handle to a specific USB endpoint.
+///
+/// The lifetime `'a` is tied to the [`crate::bus::UsbBusAllocator`] that produced
+/// this handle, ensuring the underlying bus cannot be dropped or moved while the
+/// handle is alive.
+///
+/// Use the type aliases [`EndpointIn`] and [`EndpointOut`] for convenience.
+pub struct Endpoint<'a, B: UsbBus, D: EndpointDir> {
+    /// Shared reference to the bus — valid for `'a`.
+    bus: &'a B,
+    address: EndpointAddress,
+    ep_type: EndpointType,
+    max_packet_size: u16,
+    interval: u8,
+    _dir: PhantomData<fn() -> D>,
+}
+
+impl<'a, B: UsbBus, D: EndpointDir> Endpoint<'a, B, D> {
+    /// Construct a new endpoint handle (called only by `UsbBusAllocator`).
+    pub(crate) fn new(
+        bus: &'a B,
+        address: EndpointAddress,
+        ep_type: EndpointType,
+        max_packet_size: u16,
+        interval: u8,
+    ) -> Self {
+        Self { bus, address, ep_type, max_packet_size, interval, _dir: PhantomData }
+    }
+
+    /// Endpoint address (number + direction).
+    #[inline]
+    pub fn address(&self) -> EndpointAddress { self.address }
+
+    /// Transfer type of this endpoint.
+    #[inline]
+    pub fn ep_type(&self) -> EndpointType { self.ep_type }
+
+    /// Maximum packet size in bytes.
+    #[inline]
+    pub fn max_packet_size(&self) -> u16 { self.max_packet_size }
+
+    /// Polling interval for interrupt / isochronous endpoints.
+    #[inline]
+    pub fn interval(&self) -> u8 { self.interval }
+
+    /// Stall this endpoint.
+    pub fn stall(&self) {
+        self.bus.set_stalled(self.address, true);
+    }
+
+    /// Clear the stall condition on this endpoint.
+    pub fn unstall(&self) {
+        self.bus.set_stalled(self.address, false);
     }
 }
 
-impl From<EndpointAddress> for u8 {
-    fn from(val: EndpointAddress) -> Self {
-        val.0
+/// A device-to-host (IN) endpoint handle.
+pub type EndpointIn<'a, B> = Endpoint<'a, B, In>;
+/// A host-to-device (OUT) endpoint handle.
+pub type EndpointOut<'a, B> = Endpoint<'a, B, Out>;
+
+impl<B: UsbBus> EndpointIn<'_, B> {
+    /// Write a single packet to this endpoint.
+    ///
+    /// Returns the number of bytes actually written.  If the USB peripheral's
+    /// transmit buffer is still occupied, returns [`UsbError::WouldBlock`].
+    pub fn write(&self, data: &[u8]) -> UsbResult<usize> {
+        self.bus.write(self.address, data)
     }
 }
 
-/// Endpoint configuration
-#[derive(Clone, Copy, Debug)]
-#[cfg_attr(feature = "defmt", derive(defmt::Format))]
-pub struct EndpointConfig {
-    /// Endpoint type
-    pub ep_type: EndpointType,
-    /// Maximum packet size
-    pub max_packet_size: u16,
-    /// Polling interval (for interrupt/isochronous endpoints)
-    pub interval: u8,
-}
-
-impl EndpointConfig {
-    /// Create a control endpoint configuration
-    pub const fn control(max_packet_size: u16) -> Self {
-        Self {
-            ep_type: EndpointType::Control,
-            max_packet_size,
-            interval: 0,
-        }
-    }
-
-    /// Create a bulk endpoint configuration
-    pub const fn bulk(max_packet_size: u16) -> Self {
-        Self {
-            ep_type: EndpointType::Bulk,
-            max_packet_size,
-            interval: 0,
-        }
-    }
-
-    /// Create an interrupt endpoint configuration
-    pub const fn interrupt(max_packet_size: u16, interval: u8) -> Self {
-        Self {
-            ep_type: EndpointType::Interrupt,
-            max_packet_size,
-            interval,
-        }
-    }
-
-    /// Create an isochronous endpoint configuration
-    pub const fn isochronous(max_packet_size: u16, interval: u8) -> Self {
-        Self {
-            ep_type: EndpointType::Isochronous,
-            max_packet_size,
-            interval,
-        }
+impl<B: UsbBus> EndpointOut<'_, B> {
+    /// Read a single packet from this endpoint into `buf`.
+    ///
+    /// Returns the number of bytes read.  Returns [`UsbError::WouldBlock`] when
+    /// no packet is available.
+    pub fn read(&self, buf: &mut [u8]) -> UsbResult<usize> {
+        self.bus.read(self.address, buf)
     }
 }
 
-/// State of an endpoint
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Default)]
-#[cfg_attr(feature = "defmt", derive(defmt::Format))]
-pub enum EndpointState {
-    /// Endpoint is not allocated
-    #[default]
-    Disabled,
-    /// Endpoint is allocated but idle
-    Idle,
-    /// Data transfer in progress
-    DataIn,
-    /// Data transfer in progress
-    DataOut,
-    /// Endpoint is stalled
-    Stalled,
-}
-
-/// Endpoint buffer information
-#[derive(Clone, Copy, Debug)]
-pub struct EndpointBuffer {
-    /// Offset in DPRAM
-    pub offset: u16,
-    /// Buffer size
-    pub size: u16,
-}
-
-impl EndpointBuffer {
-    /// Create a new endpoint buffer
-    pub const fn new(offset: u16, size: u16) -> Self {
-        Self { offset, size }
-    }
-
-    /// Get the DPRAM address for this buffer
-    pub const fn dpram_address(&self) -> u32 {
-        pico_rs_pac::usb_dpram::BASE + self.offset as u32
-    }
-}
-
-/// Endpoint descriptor for the device
-pub struct Endpoint {
-    /// Endpoint address
-    pub address: EndpointAddress,
-    /// Endpoint configuration
-    pub config: EndpointConfig,
-    /// Endpoint state
-    pub state: EndpointState,
-    /// Buffer for this endpoint
-    pub buffer: Option<EndpointBuffer>,
-    /// Current DATA toggle (DATA0/DATA1)
-    pub data_toggle: bool,
-}
-
-impl Endpoint {
-    /// Create a new endpoint
-    pub const fn new(address: EndpointAddress, config: EndpointConfig) -> Self {
-        Self {
-            address,
-            config,
-            state: EndpointState::Disabled,
-            buffer: None,
-            data_toggle: false,
-        }
-    }
-
-    /// Reset the data toggle to DATA0
-    pub fn reset_data_toggle(&mut self) {
-        self.data_toggle = false;
-    }
-
-    /// Toggle the data toggle
-    pub fn toggle_data(&mut self) {
-        self.data_toggle = !self.data_toggle;
-    }
-
-    /// Check if endpoint is stalled
-    pub fn is_stalled(&self) -> bool {
-        self.state == EndpointState::Stalled
-    }
-
-    /// Set endpoint state to stalled
-    pub fn stall(&mut self) {
-        self.state = EndpointState::Stalled;
-    }
-
-    /// Clear stall condition
-    pub fn unstall(&mut self) {
-        if self.state == EndpointState::Stalled {
-            self.state = EndpointState::Idle;
-            self.reset_data_toggle();
-        }
-    }
-}
-
-/// Endpoint allocator for managing DPRAM buffer space
-pub struct EndpointAllocator {
-    /// Next available offset in DPRAM
-    next_offset: u16,
-    /// Total available DPRAM size
-    total_size: u16,
-}
-
-impl EndpointAllocator {
-    /// First byte in DPRAM available for endpoint payload buffers.
-    const EP_BUFFER_OFFSET: u16 = 0x100;
-
-    /// EP0 uses dedicated fixed IN/OUT buffers at the start of endpoint DPRAM.
-    const RESERVED_EP0_BYTES: u16 = crate::CONTROL_MAX_PACKET_SIZE * 2;
-
-    /// First offset available for dynamically allocated non-EP0 endpoint buffers.
-    const FIRST_DYNAMIC_OFFSET: u16 = Self::EP_BUFFER_OFFSET + Self::RESERVED_EP0_BYTES;
-
-    /// Create a new endpoint allocator
-    pub const fn new() -> Self {
-        Self {
-            // Reserve EP0 IN/OUT buffers so dynamically allocated endpoints do
-            // not overlap control transfer memory.
-            next_offset: Self::FIRST_DYNAMIC_OFFSET,
-            total_size: crate::DPRAM_SIZE as u16,
-        }
-    }
-
-    /// Reset the allocator
-    pub fn reset(&mut self) {
-        self.next_offset = Self::FIRST_DYNAMIC_OFFSET;
-    }
-
-    /// Allocate buffer space for an endpoint
-    pub fn allocate(&mut self, size: u16) -> UsbResult<EndpointBuffer> {
-        // Align to 64 bytes for best performance
-        let aligned_offset = (self.next_offset + 63) & !63;
-        let aligned_size = (size + 63) & !63;
-
-        if aligned_offset + aligned_size > self.total_size {
-            return Err(UsbError::BufferMemoryExhausted);
-        }
-
-        let buffer = EndpointBuffer::new(aligned_offset, size);
-        self.next_offset = aligned_offset + aligned_size;
-
-        Ok(buffer)
-    }
-
-    /// Get remaining buffer space
-    pub fn remaining(&self) -> u16 {
-        self.total_size.saturating_sub(self.next_offset)
-    }
-}
-
-impl Default for EndpointAllocator {
-    fn default() -> Self {
-        Self::new()
-    }
-}
+// Safety: Endpoint<'a, B, D> is Send/Sync if B is Send/Sync; the shared &'a B
+// is sound because the bus uses interior mutability for hardware state.
+unsafe impl<B: UsbBus + Sync, D: EndpointDir> Sync for Endpoint<'_, B, D> {}
+unsafe impl<B: UsbBus + Send, D: EndpointDir> Send for Endpoint<'_, B, D> {}

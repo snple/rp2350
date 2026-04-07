@@ -165,7 +165,7 @@ pub trait EndpointControlRegister {
 
         let ep_type_val = match ep_type {
             EndpointType::Control => EP_TYPE_CONTROL,
-            EndpointType::Isochronous => EP_TYPE_ISOCHRONOUS,
+            EndpointType::Isochronous { .. } => EP_TYPE_ISOCHRONOUS,
             EndpointType::Bulk => EP_TYPE_BULK,
             EndpointType::Interrupt => EP_TYPE_INTERRUPT,
         };
@@ -332,7 +332,7 @@ impl<'a> BufferControlAccess<'a> {
     /// Write buffer control with errata handling for any endpoint
     pub fn write_with_errata(&self, ep_addr: EndpointAddress, val: u32) {
         let ep_num = ep_addr.number();
-        let is_in = ep_addr.direction().is_in();
+        let is_in = ep_addr.is_in();
 
         match (ep_num, is_in) {
             (0, true) => self.dpram.ep0_in_buffer_control.write_with_errata(val),
@@ -374,7 +374,7 @@ impl<'a> BufferControlAccess<'a> {
     /// Read buffer control for any endpoint
     pub fn read(&self, ep_addr: EndpointAddress) -> u32 {
         let ep_num = ep_addr.number();
-        let is_in = ep_addr.direction().is_in();
+        let is_in = ep_addr.is_in();
 
         match (ep_num, is_in) {
             (0, true) => self.dpram.ep0_in_buffer_control.read_raw(),
@@ -416,7 +416,7 @@ impl<'a> BufferControlAccess<'a> {
     /// Set stall for any endpoint
     pub fn set_stall(&self, ep_addr: EndpointAddress) {
         let ep_num = ep_addr.number();
-        let is_in = ep_addr.direction().is_in();
+        let is_in = ep_addr.is_in();
 
         match (ep_num, is_in) {
             (0, true) => self.dpram.ep0_in_buffer_control.set_stall(),
@@ -458,7 +458,7 @@ impl<'a> BufferControlAccess<'a> {
     /// Clear stall for any endpoint
     pub fn clear_stall(&self, ep_addr: EndpointAddress) {
         let ep_num = ep_addr.number();
-        let is_in = ep_addr.direction().is_in();
+        let is_in = ep_addr.is_in();
 
         match (ep_num, is_in) {
             (0, true) => self.dpram.ep0_in_buffer_control.clear_stall(),
@@ -500,7 +500,7 @@ impl<'a> BufferControlAccess<'a> {
     /// Check if endpoint is stalled
     pub fn is_stalled(&self, ep_addr: EndpointAddress) -> bool {
         let ep_num = ep_addr.number();
-        let is_in = ep_addr.direction().is_in();
+        let is_in = ep_addr.is_in();
 
         match (ep_num, is_in) {
             (0, true) => self.dpram.ep0_in_buffer_control.is_stalled(),
@@ -554,7 +554,7 @@ impl<'a> EndpointControlAccess<'a> {
     /// Configure an endpoint (EP1-EP15)
     pub fn configure(&self, ep_addr: EndpointAddress, ep_type: EndpointType, buffer_offset: u16) {
         let ep_num = ep_addr.number();
-        let is_in = ep_addr.direction().is_in();
+        let is_in = ep_addr.is_in();
 
         if ep_num == 0 {
             // EP0 doesn't have control registers
@@ -617,7 +617,7 @@ impl<'a> EndpointControlAccess<'a> {
     /// Disable an endpoint (EP1-EP15)
     pub fn disable(&self, ep_addr: EndpointAddress) {
         let ep_num = ep_addr.number();
-        let is_in = ep_addr.direction().is_in();
+        let is_in = ep_addr.is_in();
 
         if ep_num == 0 {
             return;

@@ -226,9 +226,9 @@ path = "src/usb_cdc/usb_cdc_acm.rs"
 name = "usb_cdc_acm_interrupt"
 path = "src/usb_cdc/usb_cdc_acm_interrupt.rs"
 
-[[bin]]
-name = "usb_hid_keyboard"
-path = "src/usb_hid/usb_hid_keyboard.rs"
+# [[bin]]
+# name = "usb_hid_keyboard"
+# path = "src/usb_hid/usb_hid_keyboard.rs"
 
 [[bin]]
 name = "bldc_drv8323"

@@ -1,61 +1,33 @@
 //! # pico-rs-usb
 //!
-//! USB Device Stack for RP2350 microcontrollers (Raspberry Pi Pico 2)
+//! USB Device Stack for RP2350 microcontrollers (Raspberry Pi Pico 2).
 //!
-//! This crate provides a clean, ergonomic USB device implementation for the RP2350.
-//!
-//! ## Features
-//!
-//! - Simple, builder-pattern API for device configuration
-//! - Support for multiple USB classes (CDC, HID, etc.)
-//! - Efficient interrupt-driven operation
-//! - Zero-copy data transfers where possible
-//! - defmt logging support
-//!
-//! ## Architecture
-//!
-//! The USB stack is organized in layers:
-//! - **Bus Layer**: Low-level hardware abstraction (`UsbBus`)
-//! - **Device Layer**: USB device state machine and control transfers (`UsbDevice`)
-//! - **Class Layer**: USB class implementations (CDC, HID, etc.)
-//!
-//! ## Example
+//! ## Quick start
 //!
 //! ```ignore
-//! use pico_rs_usb::{UsbDevice, UsbBus};
-//! use pico_rs_usb::class::cdc::{CdcAcm, CdcAcmClass};
-//! use pico_rs_usb::descriptor::StringDescriptors;
+//! use pico_rs_usb::{UsbBus, UsbBusAllocator, UsbDeviceBuilder};
+//! use pico_rs_usb::class::cdc_acm::CdcAcm;
+//! use pico_rs_usb::rp2350::Rp2350Bus;
 //!
-//! // Create USB bus
-//! let usb_bus = UsbBus::new();
-//!
-//! // Create CDC ACM class (serial port)
-//! let mut serial = CdcAcmClass::new(&usb_bus);
-//!
-//! // Build USB device
-//! let mut usb_dev = UsbDevice::builder(&usb_bus)
-//!     .vendor_id(0x1234)
-//!     .product_id(0x5678)
-//!     .manufacturer("My Company")
-//!     .product("My USB Device")
-//!     .serial_number("001")
+//! let alloc = UsbBusAllocator::new(Rp2350Bus::new());
+//! let mut serial = CdcAcm::new(&alloc);
+//! let mut dev = UsbDeviceBuilder::new(&alloc, 0x1234, 0x5678)
+//!     .product("My Device")
 //!     .build();
 //!
-//! // In main loop or interrupt handler
 //! loop {
-//!     if usb_dev.poll(&mut [&mut serial]) {
-//!         // Handle USB events
+//!     if dev.poll(&mut [&mut serial]) {
 //!         let mut buf = [0u8; 64];
-//!         if let Ok(count) = serial.read(&mut buf) {
-//!             // Echo back received data
-//!             let _ = serial.write(&buf[..count]);
+//!         if let Ok(n) = serial.read(&mut buf) {
+//!             let _ = serial.write(&buf[..n]);
 //!         }
 //!     }
 //! }
 //! ```
 
 #![no_std]
-#![warn(missing_docs)]
+
+// ── Modules ──────────────────────────────────────────────────────────────────
 
 pub mod bus;
 pub mod class;
@@ -66,33 +38,30 @@ pub mod dpram;
 pub mod endpoint;
 pub mod ep_regs;
 pub mod error;
-pub mod types;
+pub mod rp2350;
 
-// Re-exports for convenience
-pub use bus::UsbBus;
-pub use device::{UsbDevice, UsbDeviceBuilder};
-pub use endpoint::{EndpointAddress, EndpointConfig, EndpointDirection, EndpointType};
+// ── Re-exports ────────────────────────────────────────────────────────────────
+
+pub use bus::{InterfaceNumber, PollResult, StringIndex, UsbBus, UsbBusAllocator};
+pub use class::UsbClass;
+pub use descriptor::DescriptorWriter;
+pub use device::{DeviceInfo, DeviceState, UsbDevice, UsbDeviceBuilder};
+pub use endpoint::{
+    Direction, EndpointAddress, EndpointIn, EndpointOut, EndpointType, IsoSynchronization, IsoUsage,
+};
 pub use error::{UsbError, UsbResult};
-pub use types::*;
+pub use rp2350::Rp2350Bus;
 
-/// Maximum number of endpoints supported by RP2350 USB controller
-/// (16 endpoints: EP0-EP15, each can be IN or OUT)
+// ── Crate-level constants ─────────────────────────────────────────────────────
+
+/// Maximum number of endpoints (EP0–EP15, IN and OUT).
 pub const MAX_ENDPOINTS: usize = 16;
 
-/// USB Full-Speed maximum packet size for control endpoints
+/// Maximum packet size for EP0 (full-speed USB 2.0).
 pub const CONTROL_MAX_PACKET_SIZE: u16 = 64;
 
-/// Maximum staged payload size for a control transfer response or request body.
-pub const CONTROL_TRANSFER_BUFFER_SIZE: usize = 1024;
-
-/// USB Full-Speed maximum packet size for bulk/interrupt endpoints
+/// Maximum packet size for bulk/interrupt endpoints (full-speed).
 pub const BULK_MAX_PACKET_SIZE: u16 = 64;
 
-/// USB Full-Speed maximum packet size for isochronous endpoints
-pub const ISO_MAX_PACKET_SIZE: u16 = 1023;
-
-/// Size of the USB DPRAM buffer (4KB)
+/// USB DPRAM size in bytes.
 pub const DPRAM_SIZE: usize = 4096;
-
-/// Size of the SETUP packet buffer
-pub const SETUP_PACKET_SIZE: usize = 8;

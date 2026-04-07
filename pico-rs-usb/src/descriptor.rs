@@ -1,508 +1,298 @@
-//! USB descriptor generation and handling
+//! USB descriptor builder.
 //!
-//! This module provides types and utilities for building USB descriptors.
+//! [`DescriptorWriter`] provides a cursor-based API for writing USB descriptors
+//! into a byte buffer without any unsafe or transmute operations.
 
+use crate::bus::{InterfaceNumber, StringIndex};
 use crate::endpoint::{EndpointAddress, EndpointType};
-use crate::types::{DescriptorType, LangId};
+use crate::error::{UsbError, UsbResult};
 
-/// Device descriptor (18 bytes)
-#[derive(Clone, Copy, Debug)]
-#[repr(C, packed)]
-pub struct DeviceDescriptor {
-    /// Size of this descriptor (18)
-    pub b_length: u8,
-    /// Descriptor type (DEVICE = 1)
-    pub b_descriptor_type: u8,
-    /// USB specification version (BCD)
-    pub bcd_usb: u16,
-    /// Device class code
-    pub b_device_class: u8,
-    /// Device subclass code
-    pub b_device_sub_class: u8,
-    /// Device protocol code
-    pub b_device_protocol: u8,
-    /// Maximum packet size for EP0
-    pub b_max_packet_size0: u8,
-    /// Vendor ID
-    pub id_vendor: u16,
-    /// Product ID
-    pub id_product: u16,
-    /// Device release number (BCD)
-    pub bcd_device: u16,
-    /// Index of manufacturer string
-    pub i_manufacturer: u8,
-    /// Index of product string
-    pub i_product: u8,
-    /// Index of serial number string
-    pub i_serial_number: u8,
-    /// Number of configurations
-    pub b_num_configurations: u8,
+// ─── Standard descriptor type codes ──────────────────────────────────────────
+
+pub mod descriptor_type {
+    pub const DEVICE:        u8 = 1;
+    pub const CONFIGURATION: u8 = 2;
+    pub const STRING:        u8 = 3;
+    pub const INTERFACE:     u8 = 4;
+    pub const ENDPOINT:      u8 = 5;
+    pub const IAD:           u8 = 11;
+    pub const BOS:           u8 = 15;
+    pub const CAPABILITY:    u8 = 16;
 }
 
-impl DeviceDescriptor {
-    /// Size of device descriptor
-    pub const SIZE: usize = 18;
-
-    /// Create a new device descriptor
-    pub const fn new(
-        vendor_id: u16,
-        product_id: u16,
-        device_release: u16,
-        class: u8,
-        subclass: u8,
-        protocol: u8,
-    ) -> Self {
-        Self {
-            b_length: Self::SIZE as u8,
-            b_descriptor_type: DescriptorType::Device as u8,
-            bcd_usb: 0x0200, // USB 2.0
-            b_device_class: class,
-            b_device_sub_class: subclass,
-            b_device_protocol: protocol,
-            b_max_packet_size0: 64,
-            id_vendor: vendor_id,
-            id_product: product_id,
-            bcd_device: device_release,
-            i_manufacturer: 0,
-            i_product: 0,
-            i_serial_number: 0,
-            b_num_configurations: 1,
-        }
-    }
-
-    /// Convert to bytes
-    pub fn to_bytes(&self) -> [u8; Self::SIZE] {
-        unsafe { core::mem::transmute(*self) }
-    }
-
-    /// Set manufacturer string index
-    pub fn set_manufacturer_index(&mut self, index: u8) {
-        self.i_manufacturer = index;
-    }
-
-    /// Set product string index
-    pub fn set_product_index(&mut self, index: u8) {
-        self.i_product = index;
-    }
-
-    /// Set serial number string index
-    pub fn set_serial_number_index(&mut self, index: u8) {
-        self.i_serial_number = index;
-    }
+/// USB language IDs (ISO 639).
+pub mod lang_id {
+    /// English (United States).
+    pub const EN_US: u16 = 0x0409;
 }
 
-/// Configuration descriptor header (9 bytes)
-#[derive(Clone, Copy, Debug)]
-#[repr(C, packed)]
-pub struct ConfigurationDescriptor {
-    /// Size of this descriptor (9)
-    pub b_length: u8,
-    /// Descriptor type (CONFIGURATION = 2)
-    pub b_descriptor_type: u8,
-    /// Total length including all interface/endpoint descriptors
-    pub w_total_length: u16,
-    /// Number of interfaces
-    pub b_num_interfaces: u8,
-    /// Configuration value
-    pub b_configuration_value: u8,
-    /// Index of configuration string
-    pub i_configuration: u8,
-    /// Configuration attributes
-    pub bm_attributes: u8,
-    /// Maximum power (in 2mA units)
-    pub b_max_power: u8,
+// ─── USB class / subclass / protocol constants ────────────────────────────────
+
+pub mod class_code {
+    pub const CDC:      u8 = 0x02;
+    pub const CDC_DATA: u8 = 0x0A;
+    pub const HID:      u8 = 0x03;
+    pub const MISC:     u8 = 0xEF;
+    pub const NONE:     u8 = 0x00;
 }
 
-impl ConfigurationDescriptor {
-    /// Size of configuration descriptor
-    pub const SIZE: usize = 9;
-
-    /// Create a new configuration descriptor
-    pub const fn new(num_interfaces: u8, config_value: u8, max_power_ma: u16) -> Self {
-        Self {
-            b_length: Self::SIZE as u8,
-            b_descriptor_type: DescriptorType::Configuration as u8,
-            w_total_length: Self::SIZE as u16, // Will be updated when building
-            b_num_interfaces: num_interfaces,
-            b_configuration_value: config_value,
-            i_configuration: 0,
-            bm_attributes: 0x80, // Bus-powered
-            b_max_power: (max_power_ma / 2) as u8,
-        }
-    }
-
-    /// Add self-powered attribute
-    pub const fn self_powered(mut self) -> Self {
-        self.bm_attributes |= 0x40;
-        self
-    }
-
-    /// Add remote wakeup attribute
-    pub const fn remote_wakeup(mut self) -> Self {
-        self.bm_attributes |= 0x20;
-        self
-    }
+pub mod cdc_subclass {
+    pub const ACM: u8 = 0x02;
 }
 
-/// Interface descriptor (9 bytes)
-#[derive(Clone, Copy, Debug)]
-#[repr(C, packed)]
-pub struct InterfaceDescriptor {
-    /// Size of this descriptor (9)
-    pub b_length: u8,
-    /// Descriptor type (INTERFACE = 4)
-    pub b_descriptor_type: u8,
-    /// Interface number
-    pub b_interface_number: u8,
-    /// Alternate setting
-    pub b_alternate_setting: u8,
-    /// Number of endpoints (excluding EP0)
-    pub b_num_endpoints: u8,
-    /// Interface class code
-    pub b_interface_class: u8,
-    /// Interface subclass code
-    pub b_interface_sub_class: u8,
-    /// Interface protocol code
-    pub b_interface_protocol: u8,
-    /// Index of interface string
-    pub i_interface: u8,
+pub mod cdc_protocol {
+    pub const AT_COMMANDS: u8 = 0x01;
+    pub const NONE:        u8 = 0x00;
 }
 
-impl InterfaceDescriptor {
-    /// Size of interface descriptor
-    pub const SIZE: usize = 9;
-
-    /// Create a new interface descriptor
-    pub const fn new(
-        interface_number: u8,
-        class: u8,
-        subclass: u8,
-        protocol: u8,
-        num_endpoints: u8,
-    ) -> Self {
-        Self {
-            b_length: Self::SIZE as u8,
-            b_descriptor_type: DescriptorType::Interface as u8,
-            b_interface_number: interface_number,
-            b_alternate_setting: 0,
-            b_num_endpoints: num_endpoints,
-            b_interface_class: class,
-            b_interface_sub_class: subclass,
-            b_interface_protocol: protocol,
-            i_interface: 0,
-        }
-    }
+/// CDC functional descriptors subtypes.
+pub mod cdc_descriptor {
+    /// bDescriptorType for class-specific interface descriptors.
+    pub const CS_INTERFACE:               u8 = 0x24;
+    pub const HEADER:                    u8 = 0x00;
+    pub const CALL_MANAGEMENT:           u8 = 0x01;
+    pub const ACM:                       u8 = 0x02;
+    pub const ABSTRACT_CONTROL_MANAGEMENT: u8 = 0x02;
+    pub const UNION:                     u8 = 0x06;
 }
 
-/// Endpoint descriptor (7 bytes)
-#[derive(Clone, Copy, Debug)]
-#[repr(C, packed)]
-pub struct EndpointDescriptor {
-    /// Size of this descriptor (7)
-    pub b_length: u8,
-    /// Descriptor type (ENDPOINT = 5)
-    pub b_descriptor_type: u8,
-    /// Endpoint address
-    pub b_endpoint_address: u8,
-    /// Endpoint attributes
-    pub bm_attributes: u8,
-    /// Maximum packet size
-    pub w_max_packet_size: u16,
-    /// Polling interval (for interrupt/isochronous)
-    pub b_interval: u8,
-}
+// ─── DescriptorWriter ─────────────────────────────────────────────────────────
 
-impl EndpointDescriptor {
-    /// Size of endpoint descriptor
-    pub const SIZE: usize = 7;
-
-    /// Create a new endpoint descriptor
-    pub const fn new(
-        address: EndpointAddress,
-        ep_type: EndpointType,
-        max_packet_size: u16,
-        interval: u8,
-    ) -> Self {
-        Self {
-            b_length: Self::SIZE as u8,
-            b_descriptor_type: DescriptorType::Endpoint as u8,
-            b_endpoint_address: address.raw(),
-            bm_attributes: ep_type.to_bits(),
-            w_max_packet_size: max_packet_size,
-            b_interval: interval,
-        }
-    }
-}
-
-/// String descriptor index constants
-pub mod string_index {
-    /// Language IDs descriptor (index 0)
-    pub const LANG_IDS: u8 = 0;
-    /// Manufacturer string (index 1)
-    pub const MANUFACTURER: u8 = 1;
-    /// Product string (index 2)
-    pub const PRODUCT: u8 = 2;
-    /// Serial number string (index 3)
-    pub const SERIAL_NUMBER: u8 = 3;
-}
-
-/// String descriptors collection
-pub struct StringDescriptors<'a> {
-    /// Language IDs
-    pub lang_ids: &'a [LangId],
-    /// Manufacturer string
-    pub manufacturer: Option<&'a str>,
-    /// Product string
-    pub product: Option<&'a str>,
-    /// Serial number string
-    pub serial_number: Option<&'a str>,
-    /// Additional strings
-    pub extra: &'a [&'a str],
-}
-
-impl<'a> StringDescriptors<'a> {
-    /// Create new string descriptors with default language (English US)
-    pub const fn new() -> Self {
-        Self {
-            lang_ids: &[LangId::EnglishUS],
-            manufacturer: None,
-            product: None,
-            serial_number: None,
-            extra: &[],
-        }
-    }
-
-    /// Set manufacturer string
-    pub const fn manufacturer(mut self, s: &'a str) -> Self {
-        self.manufacturer = Some(s);
-        self
-    }
-
-    /// Set product string
-    pub const fn product(mut self, s: &'a str) -> Self {
-        self.product = Some(s);
-        self
-    }
-
-    /// Set serial number string
-    pub const fn serial_number(mut self, s: &'a str) -> Self {
-        self.serial_number = Some(s);
-        self
-    }
-
-    /// Get string by index
-    pub fn get(&self, index: u8) -> Option<&'a str> {
-        match index {
-            0 => None, // Language IDs handled separately
-            1 => self.manufacturer,
-            2 => self.product,
-            3 => self.serial_number,
-            i if (i as usize) < 4 + self.extra.len() => Some(self.extra[i as usize - 4]),
-            _ => None,
-        }
-    }
-
-    /// Build language IDs descriptor
-    pub fn build_lang_ids(&self, buf: &mut [u8]) -> usize {
-        let len = 2 + self.lang_ids.len() * 2;
-        if buf.len() < len {
-            return 0;
-        }
-
-        buf[0] = len as u8;
-        buf[1] = DescriptorType::String as u8;
-
-        for (i, lang) in self.lang_ids.iter().enumerate() {
-            let offset = 2 + i * 2;
-            buf[offset..offset + 2].copy_from_slice(&(*lang as u16).to_le_bytes());
-        }
-
-        len
-    }
-
-    /// Build a string descriptor from a UTF-8 string
-    pub fn build_string(s: &str, buf: &mut [u8]) -> usize {
-        // Convert UTF-8 to UTF-16LE
-        let mut len = 2; // Header
-
-        for c in s.chars() {
-            if len + 2 > buf.len() {
-                break;
-            }
-            let code = c as u16;
-            buf[len] = code as u8;
-            buf[len + 1] = (code >> 8) as u8;
-            len += 2;
-        }
-
-        buf[0] = len as u8;
-        buf[1] = DescriptorType::String as u8;
-
-        len
-    }
-}
-
-impl Default for StringDescriptors<'_> {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
-/// Descriptor writer for building composite descriptors
+/// Cursor-based USB descriptor builder.
+///
+/// Wraps a `&mut [u8]` buffer and advances a position pointer as descriptors
+/// are appended.  The configuration-descriptor wTotalLength and bNumInterfaces
+/// fields are back-patched when [`end_configuration`](Self::end_configuration)
+/// is called.
 pub struct DescriptorWriter<'a> {
-    buffer: &'a mut [u8],
-    position: usize,
-    interface_count: u8,
+    buf: &'a mut [u8],
+    pos: usize,
+    /// Byte offset of the wTotalLength field in the current configuration
+    /// descriptor, if one has been opened.
+    config_total_len_pos: Option<usize>,
+    /// Byte offset of the bNumInterfaces field.
+    config_num_ifaces_pos: Option<usize>,
+    /// Running interface count for the current configuration.
+    num_interfaces: u8,
 }
 
 impl<'a> DescriptorWriter<'a> {
-    /// Create a new descriptor writer
-    pub fn new(buffer: &'a mut [u8]) -> Self {
+    /// Create a new writer over `buf`.
+    pub fn new(buf: &'a mut [u8]) -> Self {
         Self {
-            buffer,
-            position: 0,
-            interface_count: 0,
+            buf,
+            pos: 0,
+            config_total_len_pos: None,
+            config_num_ifaces_pos: None,
+            num_interfaces: 0,
         }
     }
 
-    /// Get current position
-    pub fn position(&self) -> usize {
-        self.position
-    }
+    /// Bytes written so far.
+    pub fn position(&self) -> usize { self.pos }
 
-    /// Get remaining capacity
-    pub fn remaining(&self) -> usize {
-        self.buffer.len() - self.position
-    }
+    // ── Low-level primitives ─────────────────────────────────────────────────
 
-    /// Get interface count
-    pub fn interface_count(&self) -> u8 {
-        self.interface_count
-    }
-
-    /// Write raw bytes
-    pub fn write(&mut self, data: &[u8]) -> bool {
-        if data.len() > self.remaining() {
-            return false;
+    /// Append a raw byte sequence preceded by a 2-byte header (bLength, bDescriptorType).
+    ///
+    /// `f` receives a mutable slice of up to 254 bytes (max descriptor body size)
+    /// and should write the descriptor body, returning the body length.
+    pub fn write_with(
+        &mut self,
+        descriptor_type: u8,
+        f: impl FnOnce(&mut [u8]) -> UsbResult<usize>,
+    ) -> UsbResult<()> {
+        if self.pos + 2 > self.buf.len() {
+            return Err(UsbError::BufferOverflow);
         }
-        self.buffer[self.position..self.position + data.len()].copy_from_slice(data);
-        self.position += data.len();
-        true
-    }
-
-    /// Write a configuration descriptor header (placeholder for total length)
-    pub fn write_configuration(&mut self, config: &ConfigurationDescriptor) -> Option<usize> {
-        let pos = self.position;
-        if !self.write(&[
-            config.b_length,
-            config.b_descriptor_type,
-            0,
-            0, // w_total_length placeholder
-            config.b_num_interfaces,
-            config.b_configuration_value,
-            config.i_configuration,
-            config.bm_attributes,
-            config.b_max_power,
-        ]) {
-            return None;
+        let body_start = self.pos + 2;
+        let body_end = self.buf.len().min(body_start + 254);
+        let body_len = f(&mut self.buf[body_start..body_end])?;
+        let total_len = body_len + 2;
+        if self.pos + total_len > self.buf.len() {
+            return Err(UsbError::BufferOverflow);
         }
-        Some(pos)
+        self.buf[self.pos] = total_len as u8;
+        self.buf[self.pos + 1] = descriptor_type;
+        self.pos += total_len;
+        Ok(())
     }
 
-    /// Write an interface descriptor
-    pub fn write_interface(&mut self, iface: &InterfaceDescriptor) -> bool {
-        let result = self.write(&[
-            iface.b_length,
-            iface.b_descriptor_type,
-            iface.b_interface_number,
-            iface.b_alternate_setting,
-            iface.b_num_endpoints,
-            iface.b_interface_class,
-            iface.b_interface_sub_class,
-            iface.b_interface_protocol,
-            iface.i_interface,
-        ]);
-        if result {
-            self.interface_count += 1;
+    /// Append a descriptor with a fixed body slice.
+    pub fn write(&mut self, descriptor_type: u8, body: &[u8]) -> UsbResult<()> {
+        self.write_with(descriptor_type, |buf| {
+            if body.len() > buf.len() {
+                return Err(UsbError::BufferOverflow);
+            }
+            buf[..body.len()].copy_from_slice(body);
+            Ok(body.len())
+        })
+    }
+
+    // ── Configuration descriptor ─────────────────────────────────────────────
+
+    /// Begin a configuration descriptor.  Must be paired with
+    /// [`end_configuration`](Self::end_configuration).
+    pub fn configuration(
+        &mut self,
+        attributes: u8,
+        max_power_ma: u8,
+    ) -> UsbResult<()> {
+        self.config_total_len_pos = Some(self.pos + 2);   // offset of wTotalLength[0]
+        self.config_num_ifaces_pos = Some(self.pos + 4);  // offset of bNumInterfaces
+        self.num_interfaces = 0;
+        self.write(
+            descriptor_type::CONFIGURATION,
+            &[
+                0, 0,  // wTotalLength — patched later
+                0,     // bNumInterfaces — patched later
+                1,     // bConfigurationValue
+                0,     // iConfiguration
+                attributes,
+                max_power_ma,
+            ],
+        )
+    }
+
+    /// Finalise the open configuration descriptor (patch wTotalLength and
+    /// bNumInterfaces).
+    pub fn end_configuration(&mut self) {
+        if let (Some(tl_pos), Some(ni_pos)) =
+            (self.config_total_len_pos, self.config_num_ifaces_pos)
+        {
+            let total = self.pos as u16;
+            self.buf[tl_pos]     = total as u8;
+            self.buf[tl_pos + 1] = (total >> 8) as u8;
+            self.buf[ni_pos] = self.num_interfaces;
         }
-        result
+        self.config_total_len_pos = None;
+        self.config_num_ifaces_pos = None;
     }
 
-    /// Write an endpoint descriptor
-    pub fn write_endpoint(&mut self, ep: &EndpointDescriptor) -> bool {
-        self.write(&[
-            ep.b_length,
-            ep.b_descriptor_type,
-            ep.b_endpoint_address,
-            ep.bm_attributes,
-            ep.w_max_packet_size as u8,
-            (ep.w_max_packet_size >> 8) as u8,
-            ep.b_interval,
-        ])
+    // ── Interface & endpoint ─────────────────────────────────────────────────
+
+    /// Write an Interface Association Descriptor (IAD), if the configuration was
+    /// built with `composite_with_iads = true`.
+    ///
+    /// Always safe to call — if the outer device was not configured for IADs the
+    /// call is a no-op.
+    pub fn iad(
+        &mut self,
+        first_interface: InterfaceNumber,
+        interface_count: u8,
+        function_class: u8,
+        function_subclass: u8,
+        function_protocol: u8,
+    ) -> UsbResult<()> {
+        self.write(
+            descriptor_type::IAD,
+            &[
+                first_interface.into(),
+                interface_count,
+                function_class,
+                function_subclass,
+                function_protocol,
+                0, // iFunction
+            ],
+        )
     }
 
-    /// Finalize configuration descriptor (update w_total_length and b_num_interfaces)
-    pub fn finalize_configuration(&mut self, config_pos: usize) {
-        let total_len = self.position - config_pos;
-        // Update wTotalLength (bytes 2-3)
-        self.buffer[config_pos + 2] = total_len as u8;
-        self.buffer[config_pos + 3] = (total_len >> 8) as u8;
-        // Update bNumInterfaces (byte 4)
-        self.buffer[config_pos + 4] = self.interface_count;
+    /// Write an Interface descriptor and increment the interface count.
+    pub fn interface(
+        &mut self,
+        number: InterfaceNumber,
+        num_endpoints: u8,
+        class: u8,
+        subclass: u8,
+        protocol: u8,
+    ) -> UsbResult<()> {
+        self.interface_with_string(number, num_endpoints, class, subclass, protocol, StringIndex::new(0))
     }
 
-    /// Get the written data
-    pub fn into_bytes(self) -> &'a [u8] {
-        &self.buffer[..self.position]
+    /// Write an Interface descriptor with a string index.
+    pub fn interface_with_string(
+        &mut self,
+        number: InterfaceNumber,
+        num_endpoints: u8,
+        class: u8,
+        subclass: u8,
+        protocol: u8,
+        string: StringIndex,
+    ) -> UsbResult<()> {
+        self.num_interfaces += 1;
+        self.write(
+            descriptor_type::INTERFACE,
+            &[
+                number.into(),
+                0, // bAlternateSetting
+                num_endpoints,
+                class,
+                subclass,
+                protocol,
+                string.into(),
+            ],
+        )
     }
-}
 
-/// USB class codes
-pub mod class_code {
-    /// Use class information in Interface Descriptors
-    pub const MISC: u8 = 0xEF;
-    /// Communications and CDC Control
-    pub const CDC: u8 = 0x02;
-    /// CDC Data
-    pub const CDC_DATA: u8 = 0x0A;
-    /// Human Interface Device
-    pub const HID: u8 = 0x03;
-    /// Mass Storage
-    pub const MASS_STORAGE: u8 = 0x08;
-    /// Vendor Specific
-    pub const VENDOR: u8 = 0xFF;
-}
+    /// Write an Endpoint descriptor.
+    pub fn endpoint(
+        &mut self,
+        addr: EndpointAddress,
+        ep_type: EndpointType,
+        max_packet_size: u16,
+        interval: u8,
+    ) -> UsbResult<()> {
+        self.write(
+            descriptor_type::ENDPOINT,
+            &[
+                addr.raw(),
+                ep_type.bm_attributes(),
+                max_packet_size as u8,
+                (max_packet_size >> 8) as u8,
+                interval,
+            ],
+        )
+    }
 
-/// CDC subclass codes
-pub mod cdc_subclass {
-    /// Abstract Control Model
-    pub const ACM: u8 = 0x02;
-    /// Ethernet Control Model
-    pub const ECM: u8 = 0x06;
-    /// Network Control Model
-    pub const NCM: u8 = 0x0D;
-}
+    // ── String descriptors ───────────────────────────────────────────────────
 
-/// CDC protocol codes
-pub mod cdc_protocol {
-    /// No class specific protocol required
-    pub const NONE: u8 = 0x00;
-    /// AT Commands
-    pub const AT: u8 = 0x01;
-}
+    /// Encode a UTF-8 string as a USB string descriptor (UTF-16LE with header)
+    /// and write it into `buf`.  Returns the number of bytes written.
+    ///
+    /// Call this from the device layer when responding to GET_DESCRIPTOR(String).
+    pub fn write_string(buf: &mut [u8], s: &str) -> UsbResult<usize> {
+        let header_len = 2;
+        let max_chars = (buf.len().saturating_sub(header_len)) / 2;
+        let mut len = 0usize;
+        for (i, c) in s.chars().take(max_chars).enumerate() {
+            let cp = c as u32;
+            let unit = if cp <= 0xFFFF { cp as u16 } else { 0xFFFD };
+            let off = header_len + i * 2;
+            buf[off]     = unit as u8;
+            buf[off + 1] = (unit >> 8) as u8;
+            len = off + 2;
+        }
+        let total = header_len + len;
+        if total > buf.len() {
+            return Err(UsbError::BufferOverflow);
+        }
+        buf[0] = total as u8;
+        buf[1] = descriptor_type::STRING;
+        Ok(total)
+    }
 
-/// CDC functional descriptor types
-pub mod cdc_descriptor {
-    /// Header Functional Descriptor
-    pub const HEADER: u8 = 0x00;
-    /// Call Management Functional Descriptor
-    pub const CALL_MANAGEMENT: u8 = 0x01;
-    /// Abstract Control Management Functional Descriptor
-    pub const ACM: u8 = 0x02;
-    /// Union Functional Descriptor
-    pub const UNION: u8 = 0x06;
-    /// Ethernet Networking Functional Descriptor
-    pub const ETHERNET_NETWORKING: u8 = 0x0F;
-    /// NCM Functional Descriptor
-    pub const NCM: u8 = 0x1A;
+    /// Write the language ID list descriptor (index 0) into `buf`.
+    pub fn write_lang_ids(buf: &mut [u8], lang_ids: &[u16]) -> UsbResult<usize> {
+        let total = 2 + lang_ids.len() * 2;
+        if total > buf.len() {
+            return Err(UsbError::BufferOverflow);
+        }
+        buf[0] = total as u8;
+        buf[1] = descriptor_type::STRING;
+        for (i, &id) in lang_ids.iter().enumerate() {
+            buf[2 + i * 2]     = id as u8;
+            buf[2 + i * 2 + 1] = (id >> 8) as u8;
+        }
+        Ok(total)
+    }
 }

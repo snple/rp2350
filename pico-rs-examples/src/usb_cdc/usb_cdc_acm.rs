@@ -21,16 +21,18 @@ use defmt::*;
 use defmt_rtt as _;
 use panic_probe as _;
 
+use pico_rs::SysTick;
 use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
 use pico_rs::pac::Peripherals;
 use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
-use pico_rs::systick::Delay;
 
-use pico_rs_usb::bus::UsbBus;
+use pico_rs_usb::bus::UsbBusAllocator;
+use pico_rs_usb::class::UsbClass;
 use pico_rs_usb::class::cdc_acm::CdcAcm;
 use pico_rs_usb::device::UsbDeviceBuilder;
+use pico_rs_usb::rp2350::Rp2350Bus;
 
 /// RP2350 Boot Block
 #[unsafe(link_section = ".start_block")]
@@ -44,81 +46,85 @@ const SYS_CLK_HZ: u32 = 150_000_000;
 fn main() -> ! {
     info!("USB CDC Serial Example starting...");
 
-    // Take device peripherals
     let dp = Peripherals::take().unwrap();
+    let cp = CorePeripherals::take().unwrap();
 
     // Initialize clock system (150 MHz sys, 48 MHz USB)
     let clocks = ClockBuilder::new()
         .enable_usb()
         .build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
     info!(
-        "Clock system initialized: sys={} Hz, usb={} Hz",
+        "Clocks: sys={} Hz, usb={} Hz",
         clocks.sys_freq(),
         clocks.usb_freq()
     );
 
-    // Initialize USB bus
-    let usb_bus = UsbBus::new();
-    let _ = usb_bus.init();
-    info!("USB bus initialized");
+    // ── USB setup ────────────────────────────────────────────────────────────
+    //
+    // 1. Create a bus allocator wrapping the RP2350 hardware driver.
+    // 2. Allocate class endpoints (CDC ACM needs 3 endpoints + 2 interfaces).
+    // 3. Build the device — this freezes the allocator and enables the peripheral.
+    // 4. Connect the D+ pull-up to signal presence to the host.
 
-    // Create CDC ACM class
-    let mut cdc = CdcAcm::new(&usb_bus);
-    info!("CDC ACM class created");
+    let alloc = UsbBusAllocator::new(Rp2350Bus::new());
 
-    // Build USB device
-    let mut usb_dev = UsbDeviceBuilder::new(&usb_bus)
-        .vendor_id(0x2E8A) // Raspberry Pi
-        .product_id(0x000A) // Pico SDK CDC
+    let mut cdc = CdcAcm::new(&alloc);
+
+    let mut usb_dev = UsbDeviceBuilder::new(&alloc, 0x2E8A, 0x000A) // Raspberry Pi, Pico SDK CDC
         .device_release(0x0100)
         .manufacturer("Raspberry Pi")
         .product("Pico USB Serial")
         .serial_number("123456")
+        .composite_with_iads()
         .build();
 
-    info!("USB device built, connecting...");
-
-    // Connect to host
-    usb_bus.connect();
+    // Connect D+ pull-up: signals USB presence to the host.
+    usb_dev.bus().connect();
     info!("USB connected, waiting for enumeration...");
 
-    // Take core peripherals for Delay
-    let core_peripherals = CorePeripherals::take().unwrap();
+    // ── Main loop ─────────────────────────────────────────────────────────────
 
-    let delay = Delay::new(core_peripherals.SYST, SYS_CLK_HZ);
+    let systick = SysTick::new(cp.SYST, SYS_CLK_HZ);
     let mut read_buf = [0u8; 64];
     let mut counter: u32 = 0;
-    let mut last_send = 0u32;
+    let mut last_send: u32 = 0;
 
     loop {
-        // Poll USB
-        usb_dev.poll(&mut [&mut cdc as &mut dyn pico_rs_usb::device::UsbClass]);
+        // Drive the USB state machine.  Must be called at ≤ 10 ms intervals.
+        usb_dev.poll(&mut [&mut cdc as &mut dyn UsbClass<Rp2350Bus>]);
 
-        // Check if port is open
-        if cdc.port_open() {
-            // Read any incoming data and echo it back
-            if let Ok(count) = cdc.read(&mut read_buf) {
-                if count > 0 {
-                    info!("Received {} bytes: {:02x}", count, &read_buf[..count]);
+        // Only interact when the host has configured the device and opened the
+        // port (DTR set by the host terminal application).
+        if cdc.is_configured() && cdc.dtr() {
+            // ── Receive and echo ─────────────────────────────────────────────
+            match cdc.read(&mut read_buf) {
+                Ok(n) if n > 0 => {
+                    info!("RX {} bytes: {:02x}", n, &read_buf[..n]);
 
-                    // Echo back
-                    let _ = cdc.write_all(&read_buf[..count]);
+                    // Echo back; write() sends up to one full packet at a time.
+                    let mut sent = 0;
+                    while sent < n {
+                        match cdc.write(&read_buf[sent..n]) {
+                            Ok(written) => sent += written,
+                            Err(_) => break,
+                        }
+                    }
                 }
+                _ => {}
             }
 
-            // Send periodic message
+            // ── Periodic hello ───────────────────────────────────────────────
             counter = counter.wrapping_add(1);
-            if counter.wrapping_sub(last_send) > 100000 {
+            if counter.wrapping_sub(last_send) > 100_000 {
                 last_send = counter;
-                let msg = b"Hello from RP2350 USB CDC!\r\n";
-                match cdc.write_all(msg) {
-                    Ok(_) => info!("Sent message"),
+                match cdc.write(b"Hello from RP2350 USB CDC!\r\n") {
+                    Ok(_) => info!("Sent periodic message"),
                     Err(e) => warn!("Write error: {:?}", e),
                 }
             }
         }
 
-        // Small delay to prevent busy loop
-        delay.delay_us(10);
+        // Yield for ~10 µs to avoid monopolising the CPU.
+        systick.delay_us(10);
     }
 }

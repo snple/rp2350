@@ -1,61 +1,27 @@
-//! USB error types
+//! USB error types.
 
-use core::fmt;
-
-/// USB operation result type
+/// USB operation result type.
 pub type UsbResult<T> = Result<T, UsbError>;
 
-/// USB error types
+/// Errors returned by USB stack operations.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
+#[non_exhaustive]
 pub enum UsbError {
-    /// Buffer too small for the requested operation
-    BufferOverflow,
-    /// Invalid endpoint address
-    InvalidEndpoint,
-    /// Endpoint already allocated
-    EndpointAllocated,
-    /// No free endpoints available
-    NoEndpointAvailable,
-    /// Transfer would block (for non-blocking operations)
+    /// An operation would block — no data available or buffer full.
     WouldBlock,
-    /// Endpoint is stalled
-    Stalled,
-    /// Invalid state for the requested operation
-    InvalidState,
-    /// USB bus not ready
-    NotReady,
-    /// Invalid descriptor
-    InvalidDescriptor,
-    /// Endpoint buffer memory exhausted
-    BufferMemoryExhausted,
-    /// Invalid configuration
-    InvalidConfiguration,
-    /// Unsupported operation
+    /// A buffer was too small for the data to read, or provided data exceeds length constraints.
+    BufferOverflow,
+    /// The endpoint address is invalid or was not previously allocated.
+    InvalidEndpoint,
+    /// All endpoints of the requested type have been allocated.
+    EndpointOverflow,
+    /// The packet buffer memory available to the USB controller has been exhausted.
+    EndpointMemoryOverflow,
+    /// Operation is not supported by this bus implementation.
     Unsupported,
-    /// Parse error in control request
+    /// Operation is not valid in the current state.
+    InvalidState,
+    /// A SETUP packet or descriptor could not be parsed.
     ParseError,
-    /// General I/O error
-    IoError,
-}
-
-impl fmt::Display for UsbError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            UsbError::BufferOverflow => write!(f, "Buffer overflow"),
-            UsbError::InvalidEndpoint => write!(f, "Invalid endpoint"),
-            UsbError::EndpointAllocated => write!(f, "Endpoint already allocated"),
-            UsbError::NoEndpointAvailable => write!(f, "No endpoint available"),
-            UsbError::WouldBlock => write!(f, "Would block"),
-            UsbError::Stalled => write!(f, "Endpoint stalled"),
-            UsbError::InvalidState => write!(f, "Invalid state"),
-            UsbError::NotReady => write!(f, "USB bus not ready"),
-            UsbError::InvalidDescriptor => write!(f, "Invalid descriptor"),
-            UsbError::BufferMemoryExhausted => write!(f, "Buffer memory exhausted"),
-            UsbError::InvalidConfiguration => write!(f, "Invalid configuration"),
-            UsbError::Unsupported => write!(f, "Unsupported operation"),
-            UsbError::ParseError => write!(f, "Parse error"),
-            UsbError::IoError => write!(f, "I/O error"),
-        }
-    }
 }
