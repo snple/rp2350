@@ -141,6 +141,27 @@ pub enum Error {
     BreakError,
 }
 
+/// Abstract UART bus trait for driver implementations.
+///
+/// This keeps drivers decoupled from concrete UART types while preserving
+/// the HAL error type.
+pub trait UartBus {
+    /// Error type returned by the bus.
+    type Error;
+
+    /// Write bytes to the UART.
+    fn write(&self, data: &[u8]) -> Result<(), Self::Error>;
+
+    /// Read bytes from the UART, blocking until the buffer is full.
+    fn read(&self, buffer: &mut [u8]) -> Result<(), Self::Error>;
+
+    /// Read all currently available bytes without blocking.
+    fn read_available(&self, buffer: &mut [u8]) -> Result<usize, Self::Error>;
+
+    /// Block until all pending transfers are complete.
+    fn flush(&self) -> Result<(), Self::Error>;
+}
+
 // ============================================================================
 // Macro for generating UART implementations
 // ============================================================================
@@ -821,6 +842,62 @@ macro_rules! impl_uart {
                 }
             }
 
+            impl<TX, RX> UartBus for $UartName<TX, RX>
+            where
+                TX: $TxPin,
+                RX: $RxPin,
+            {
+                type Error = Error;
+
+                #[inline]
+                fn write(&self, data: &[u8]) -> Result<(), Self::Error> {
+                    self.write(data);
+                    Ok(())
+                }
+
+                #[inline]
+                fn read(&self, buffer: &mut [u8]) -> Result<(), Self::Error> {
+                    for slot in buffer.iter_mut() {
+                        loop {
+                            match self.read_byte_with_error() {
+                                Some(Ok(byte)) => {
+                                    *slot = byte;
+                                    break;
+                                }
+                                Some(Err((_, err))) => return Err(err),
+                                None => {}
+                            }
+                        }
+                    }
+
+                    Ok(())
+                }
+
+                #[inline]
+                fn read_available(&self, buffer: &mut [u8]) -> Result<usize, Self::Error> {
+                    let mut count = 0;
+
+                    for slot in buffer.iter_mut() {
+                        match self.read_byte_with_error() {
+                            Some(Ok(byte)) => {
+                                *slot = byte;
+                                count += 1;
+                            }
+                            Some(Err((_, err))) => return Err(err),
+                            None => break,
+                        }
+                    }
+
+                    Ok(count)
+                }
+
+                #[inline]
+                fn flush(&self) -> Result<(), Self::Error> {
+                    self.flush();
+                    Ok(())
+                }
+            }
+
             // ================================================================
             // UART with hardware flow control
             // ================================================================
@@ -1016,6 +1093,29 @@ macro_rules! impl_uart {
                     Some(self.uart.uartdr.data() as u8)
                 }
 
+                /// Read a single byte with error information.
+                ///
+                /// Returns the byte and any associated error.
+                pub fn read_byte_with_error(&self) -> Option<Result<u8, (u8, Error)>> {
+                    if self.uart.uartfr.rxfe() {
+                        return None;
+                    }
+
+                    let byte = self.uart.uartdr.data() as u8;
+
+                    if self.uart.uartdr.oe() {
+                        Some(Err((byte, Error::Overrun)))
+                    } else if self.uart.uartdr.be() {
+                        Some(Err((byte, Error::BreakError)))
+                    } else if self.uart.uartdr.pe() {
+                        Some(Err((byte, Error::ParityError)))
+                    } else if self.uart.uartdr.fe() {
+                        Some(Err((byte, Error::FramingError)))
+                    } else {
+                        Some(Ok(byte))
+                    }
+                }
+
                 /// Read a single byte (blocking)
                 pub fn read_byte_blocking(&self) -> u8 {
                     loop {
@@ -1065,6 +1165,64 @@ macro_rules! impl_uart {
             {
                 fn write_str(&mut self, s: &str) -> core::fmt::Result {
                     self.write(s.as_bytes());
+                    Ok(())
+                }
+            }
+
+            impl<TX, RX, CTS, RTS> UartBus for [<$UartName WithFlowControl>]<TX, RX, CTS, RTS>
+            where
+                TX: $TxPin,
+                RX: $RxPin,
+                CTS: $CtsPin,
+                RTS: $RtsPin,
+            {
+                type Error = Error;
+
+                #[inline]
+                fn write(&self, data: &[u8]) -> Result<(), Self::Error> {
+                    self.write(data);
+                    Ok(())
+                }
+
+                #[inline]
+                fn read(&self, buffer: &mut [u8]) -> Result<(), Self::Error> {
+                    for slot in buffer.iter_mut() {
+                        loop {
+                            match self.read_byte_with_error() {
+                                Some(Ok(byte)) => {
+                                    *slot = byte;
+                                    break;
+                                }
+                                Some(Err((_, err))) => return Err(err),
+                                None => {}
+                            }
+                        }
+                    }
+
+                    Ok(())
+                }
+
+                #[inline]
+                fn read_available(&self, buffer: &mut [u8]) -> Result<usize, Self::Error> {
+                    let mut count = 0;
+
+                    for slot in buffer.iter_mut() {
+                        match self.read_byte_with_error() {
+                            Some(Ok(byte)) => {
+                                *slot = byte;
+                                count += 1;
+                            }
+                            Some(Err((_, err))) => return Err(err),
+                            None => break,
+                        }
+                    }
+
+                    Ok(count)
+                }
+
+                #[inline]
+                fn flush(&self) -> Result<(), Self::Error> {
+                    self.flush();
                     Ok(())
                 }
             }

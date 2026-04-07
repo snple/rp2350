@@ -35,6 +35,61 @@ use crate::reset::Resettable;
 /// Number of alarms per timer
 pub const ALARM_COUNT: usize = 4;
 
+/// Abstract monotonic timer trait for driver implementations.
+///
+/// This keeps drivers decoupled from concrete timer types when they only need
+/// a free-running microsecond time source for timeout checks or elapsed-time
+/// measurements.
+pub trait MonotonicTimer {
+    /// Get the current 64-bit time value in microseconds.
+    fn get_time_us(&self) -> u64;
+
+    /// Get the current time as the low 32 bits only.
+    fn get_time_us_32(&self) -> u32;
+}
+
+/// Abstract alarm-capable timer trait for driver implementations.
+///
+/// This is intended for code that needs hardware alarm scheduling and alarm
+/// interrupt control without depending on a specific timer peripheral type.
+pub trait AlarmTimer {
+    /// Set an alarm to fire at a specific 32-bit timer value.
+    fn set_alarm(&self, alarm: u8, time: u32);
+
+    /// Set an alarm with race-condition protection.
+    fn set_alarm_safe(&self, alarm: u8, time: u32);
+
+    /// Check if an alarm is currently armed.
+    fn is_alarm_armed(&self, alarm: u8) -> bool;
+
+    /// Disarm an alarm.
+    fn disarm_alarm(&self, alarm: u8);
+
+    /// Enable interrupt delivery for an alarm.
+    fn enable_alarm_interrupt(&self, alarm: u8);
+
+    /// Disable interrupt delivery for an alarm.
+    fn disable_alarm_interrupt(&self, alarm: u8);
+
+    /// Check whether an alarm interrupt is enabled.
+    fn is_alarm_interrupt_enabled(&self, alarm: u8) -> bool;
+
+    /// Check raw alarm interrupt state before masking.
+    fn alarm_interrupt_raw(&self, alarm: u8) -> bool;
+
+    /// Check masked alarm interrupt state.
+    fn alarm_interrupt_status(&self, alarm: u8) -> bool;
+
+    /// Clear an alarm interrupt.
+    fn clear_alarm_interrupt(&self, alarm: u8);
+
+    /// Force an alarm interrupt.
+    fn force_alarm_interrupt(&self, alarm: u8);
+
+    /// Clear a forced alarm interrupt.
+    fn clear_forced_alarm_interrupt(&self, alarm: u8);
+}
+
 /// Macro to generate Timer types for both TIMER0 and TIMER1
 macro_rules! impl_timer {
     ($TimerName:ident, $timer_mod:ident, $TIMER:ident) => {
@@ -448,6 +503,80 @@ macro_rules! impl_timer {
             #[inline]
             fn delay_us(&self, us: u32) {
                 $TimerName::delay_us(self, us as u64);
+            }
+        }
+
+        impl MonotonicTimer for $TimerName {
+            #[inline]
+            fn get_time_us(&self) -> u64 {
+                $TimerName::get_time_us(self)
+            }
+
+            #[inline]
+            fn get_time_us_32(&self) -> u32 {
+                $TimerName::get_time_us_32(self)
+            }
+        }
+
+        impl AlarmTimer for $TimerName {
+            #[inline]
+            fn set_alarm(&self, alarm: u8, time: u32) {
+                $TimerName::set_alarm(self, alarm, time);
+            }
+
+            #[inline]
+            fn set_alarm_safe(&self, alarm: u8, time: u32) {
+                $TimerName::set_alarm_safe(self, alarm, time);
+            }
+
+            #[inline]
+            fn is_alarm_armed(&self, alarm: u8) -> bool {
+                $TimerName::is_alarm_armed(self, alarm)
+            }
+
+            #[inline]
+            fn disarm_alarm(&self, alarm: u8) {
+                $TimerName::disarm_alarm(self, alarm);
+            }
+
+            #[inline]
+            fn enable_alarm_interrupt(&self, alarm: u8) {
+                $TimerName::enable_alarm_interrupt(self, alarm);
+            }
+
+            #[inline]
+            fn disable_alarm_interrupt(&self, alarm: u8) {
+                $TimerName::disable_alarm_interrupt(self, alarm);
+            }
+
+            #[inline]
+            fn is_alarm_interrupt_enabled(&self, alarm: u8) -> bool {
+                $TimerName::is_alarm_interrupt_enabled(self, alarm)
+            }
+
+            #[inline]
+            fn alarm_interrupt_raw(&self, alarm: u8) -> bool {
+                $TimerName::alarm_interrupt_raw(self, alarm)
+            }
+
+            #[inline]
+            fn alarm_interrupt_status(&self, alarm: u8) -> bool {
+                $TimerName::alarm_interrupt_status(self, alarm)
+            }
+
+            #[inline]
+            fn clear_alarm_interrupt(&self, alarm: u8) {
+                $TimerName::clear_alarm_interrupt(self, alarm);
+            }
+
+            #[inline]
+            fn force_alarm_interrupt(&self, alarm: u8) {
+                $TimerName::force_alarm_interrupt(self, alarm);
+            }
+
+            #[inline]
+            fn clear_forced_alarm_interrupt(&self, alarm: u8) {
+                $TimerName::clear_forced_alarm_interrupt(self, alarm);
             }
         }
     };

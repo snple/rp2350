@@ -203,6 +203,14 @@ name = "timer_interrupt"
 path = "src/timer/timer_interrupt.rs"
 
 [[bin]]
+name = "timer_monotonic"
+path = "src/timer/timer_monotonic.rs"
+
+[[bin]]
+name = "timer_alarm"
+path = "src/timer/timer_alarm.rs"
+
+[[bin]]
 name = "trng"
 path = "src/trng/trng.rs"
 

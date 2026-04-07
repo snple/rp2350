@@ -73,6 +73,7 @@
 use core::sync::atomic::{AtomicBool, AtomicI32, AtomicU8, AtomicU32, Ordering};
 
 use pico_rs::gpio::Gpio;
+use pico_rs::timer::{AlarmTimer, MonotonicTimer};
 
 #[inline(always)]
 fn gpio() -> Gpio {
@@ -80,51 +81,6 @@ fn gpio() -> Gpio {
     // initialization, then use `Gpio` only for runtime SIO data-path access.
     unsafe { Gpio::new() }
 }
-
-// ============================================================================
-// Timer 抽象 — 统一 Timer0 / Timer1 接口
-// ============================================================================
-
-/// 步进电机控制所需的 Timer 操作接口
-///
-/// Timer0 和 Timer1 均自动实现此 trait。
-pub trait StepperTimer {
-    fn get_time_us_32(&self) -> u32;
-    fn set_alarm_safe(&self, alarm: u8, time: u32);
-    fn enable_alarm_interrupt(&self, alarm: u8);
-    fn clear_alarm_interrupt(&self, alarm: u8);
-    fn clear_forced_alarm_interrupt(&self, alarm: u8);
-}
-
-macro_rules! impl_stepper_timer {
-    ($Timer:ty) => {
-        impl StepperTimer for $Timer {
-            #[inline]
-            fn get_time_us_32(&self) -> u32 {
-                self.get_time_us_32()
-            }
-            #[inline]
-            fn set_alarm_safe(&self, alarm: u8, time: u32) {
-                self.set_alarm_safe(alarm, time)
-            }
-            #[inline]
-            fn enable_alarm_interrupt(&self, alarm: u8) {
-                self.enable_alarm_interrupt(alarm)
-            }
-            #[inline]
-            fn clear_alarm_interrupt(&self, alarm: u8) {
-                self.clear_alarm_interrupt(alarm)
-            }
-            #[inline]
-            fn clear_forced_alarm_interrupt(&self, alarm: u8) {
-                self.clear_forced_alarm_interrupt(alarm)
-            }
-        }
-    };
-}
-
-impl_stepper_timer!(pico_rs::timer::Timer0);
-impl_stepper_timer!(pico_rs::timer::Timer1);
 
 // ============================================================================
 // 公共类型
@@ -313,7 +269,7 @@ impl AxisState {
     /// - `steps`: 目标步数 (微步)
     /// - `dir`: 运动方向
     /// - `max_speed_hz`: 本次运动的最大步进频率 (Hz)
-    pub fn start_move<T: StepperTimer>(
+    pub fn start_move<T: AlarmTimer + MonotonicTimer>(
         &self,
         timer: &T,
         steps: u32,
@@ -364,7 +320,12 @@ impl AxisState {
     /// - `timer`: Timer 外设引用
     /// - `dir`: 运动方向
     /// - `speed_hz`: 步进频率 (Hz)
-    pub fn start_continuous<T: StepperTimer>(&self, timer: &T, dir: Direction, speed_hz: u32) {
+    pub fn start_continuous<T: AlarmTimer + MonotonicTimer>(
+        &self,
+        timer: &T,
+        dir: Direction,
+        speed_hz: u32,
+    ) {
         let alarm = self.alarm.load(Ordering::Relaxed);
         let pin_dir = self.pin_dir.load(Ordering::Relaxed);
 
@@ -427,7 +388,7 @@ impl AxisState {
     ///
     /// - 第 1 次中断: 拉高 STEP (上升沿驱动电机)，设 alarm = now + 脉宽
     /// - 第 2 次中断: 拉低 STEP，计步，更新速度，设 alarm = now + 间隔
-    pub fn handle_alarm_isr<T: StepperTimer>(&self, timer: &T) {
+    pub fn handle_alarm_isr<T: AlarmTimer + MonotonicTimer>(&self, timer: &T) {
         let alarm = self.alarm.load(Ordering::Relaxed);
 
         // 清除中断 (自然中断 + 强制中断)
