@@ -175,7 +175,6 @@ static PORT_OPEN: AtomicBool = AtomicBool::new(false);
 
 #[bind(USBCTRL_IRQ)]
 fn usbctrl_irq() {
-    info!("USB interrupt");
     interrupt::free(|cs| {
         let mut dev = USB_DEV.borrow(cs).borrow_mut();
         let mut cdc = USB_CDC.borrow(cs).borrow_mut();

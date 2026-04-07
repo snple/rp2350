@@ -61,6 +61,7 @@ pub mod watchdog;
 
 pub mod task;
 
+#[cfg(feature = "critical-section-impl")]
 mod critical_section_impl;
 
 // Re-export pico-rs-rt for convenience

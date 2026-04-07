@@ -102,6 +102,7 @@
 //! ```
 
 use core::cell::UnsafeCell;
+use core::sync::atomic::{AtomicU8, Ordering};
 use pico_rs_rt::peripheral::NVIC;
 
 // Re-export the interrupt enum from PAC for convenience
@@ -645,10 +646,10 @@ impl<T> Mutex<T> {
 /// to all configurable interrupts. After the closure returns, the previous
 /// interrupt state is restored.
 ///
-/// Delegates to `critical_section::with()` so that nesting is tracked by
-/// the canonical `critical_section_impl` (spinlock 31 + per-core NESTING
-/// counter). This prevents deadlocks when code inside the closure (e.g.
-/// `defmt` log calls) re-enters a critical section via the same path.
+/// Implemented directly via the same spinlock-31 and per-core nesting counter
+/// used by `critical_section::Impl`, so nesting between `interrupt::free` and
+/// `critical_section::with` (e.g. from `defmt`) is fully coherent and
+/// deadlock-free.
 ///
 /// # Example
 ///
@@ -670,13 +671,69 @@ pub fn free<F, R>(f: F) -> R
 where
     F: FnOnce(CriticalSection) -> R,
 {
-    // Delegate to the canonical critical-section implementation so that
-    // spinlock-31 nesting is shared with every other caller of
-    // `critical_section::with()` (e.g. defmt-rtt).  A private nesting
-    // counter here caused a deadlock: `interrupt::free` held spinlock 31
-    // while defmt tried to re-acquire it via `critical_section::with`.
-    critical_section::with(|_| {
-        // Safety: we are inside a verified critical section.
-        f(unsafe { CriticalSection::new() })
-    })
+    // 直接调用本模块的底层实现，与 critical_section::Impl（当启用时）
+    // 共享同一套 CS_NESTING 计数器和 spinlock-31，两条路径完全一致，不会死锁。
+    let primask = cs_acquire();
+    let result = f(unsafe { CriticalSection::new() });
+    unsafe { cs_release(primask) };
+    result
+}
+
+// ============================================================================
+// Critical Section Core — spinlock-31 + per-core nesting counter
+//
+// This lives here so that `free()` can call the same logic directly,
+// and `critical_section_impl` (when enabled) is just a thin wrapper that
+// registers the same acquire/release pair as the `critical_section::Impl`.
+// ============================================================================
+
+/// 每个核的临界区嵌套计数器（索引为核 ID 0/1）
+pub(crate) static CS_NESTING: [AtomicU8; 2] = [AtomicU8::new(0), AtomicU8::new(0)];
+
+#[inline]
+fn cs_spinlock_acquire() {
+    // 读 SIO spinlock-31：返回非零表示获取成功（硬件保证原子性）
+    while crate::sio::regs().spinlock31.spinlock31() == 0 {
+        core::hint::spin_loop();
+    }
+}
+
+#[inline]
+fn cs_spinlock_release() {
+    // 写任意值释放 spinlock-31
+    crate::sio::regs().spinlock31.write_spinlock31(1);
+}
+
+/// 进入临界区：禁用本核中断 + 获取 spinlock-31（支持嵌套）
+///
+/// 返回调用前的 PRIMASK 原始值，供 [`cs_release`] 恢复。
+#[inline]
+pub(crate) fn cs_acquire() -> u32 {
+    // 1. 保存当前中断状态
+    let primask = pico_rs_rt::register::primask::read_raw();
+    // 2. 禁用本核中断
+    pico_rs_rt::interrupt::disable();
+    // 3. 更新嵌套计数器，只有从 0 变为 1 时才真正获取 spinlock-31
+    let core = crate::sio::regs().cpuid.cpuid() as usize;
+    let prev = CS_NESTING[core].fetch_add(1, Ordering::Acquire);
+    if prev == 0 {
+        cs_spinlock_acquire();
+    }
+    primask
+}
+
+/// 退出临界区：释放 spinlock-31 + 恢复中断状态（支持嵌套）
+///
+/// # Safety
+/// `primask` 必须是对应 [`cs_acquire`] 调用返回的值。
+#[inline]
+pub(crate) unsafe fn cs_release(primask: u32) {
+    // 1. 更新嵌套计数器，只有从 1 变为 0 时才真正释放 spinlock-31
+    let core = crate::sio::regs().cpuid.cpuid() as usize;
+    let prev = CS_NESTING[core].fetch_sub(1, Ordering::Release);
+    if prev == 1 {
+        cs_spinlock_release();
+    }
+    // 2. 恢复之前的中断状态
+    unsafe { pico_rs_rt::register::primask::write_raw(primask) };
 }
