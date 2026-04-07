@@ -54,7 +54,7 @@ fn main() -> ! {
 
     // Reset + unreset (standard init pattern)
     info!("Reset-init UART0...");
-    pico_rs::pac::UART0::reset_init();
+    <pico_rs::pac::UART0 as Resettable>::init();
     info!("  Done");
 
     delay.delay_ms(1000);

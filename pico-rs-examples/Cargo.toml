@@ -87,8 +87,8 @@ name = "bldc_servo_spi"
 path = "src/bldc/bldc_servo_spi.rs"
 
 [[bin]]
-name = "clock_config"
-path = "src/clocks/clock_config.rs"
+name = "clocks"
+path = "src/clocks/clocks.rs"
 
 [[bin]]
 name = "dormant"
