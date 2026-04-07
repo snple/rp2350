@@ -285,7 +285,7 @@ impl Adc {
     /// ```
     pub fn new(adc: ADC) -> Self {
         // Reset peripheral to ensure clean register state
-        pico_rs_pac::ADC::reset_init();
+        <pico_rs_pac::ADC as Resettable>::init();
 
         // Enable ADC
         adc.cs.set_en();

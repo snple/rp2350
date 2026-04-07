@@ -94,7 +94,7 @@ fn main() -> ! {
     info!("Configuring PLL_SYS for {} MHz...", SYS_CLK_HZ / 1_000_000);
 
     // Reset and then unreset PLL_SYS to ensure clean state
-    pico_rs::pac::PLL_SYS::reset_init();
+    <pico_rs::pac::PLL_SYS as Resettable>::init();
 
     let pll_sys = PllSys::new(dp.PLL_SYS);
 
@@ -134,7 +134,7 @@ fn main() -> ! {
     info!("Configuring PLL_USB for 48 MHz...");
 
     // Reset and then unreset PLL_USB to ensure clean state
-    pico_rs::pac::PLL_USB::reset_init();
+    <pico_rs::pac::PLL_USB as Resettable>::init();
 
     let pll_usb = PllUsb::new(dp.PLL_USB);
     let usb_config = PllConfig::usb_48mhz();

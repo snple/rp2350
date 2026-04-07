@@ -296,7 +296,7 @@ macro_rules! impl_spi {
                     rx.[<configure_spi $spi_num _rx>]();
 
                     // Reset peripheral to ensure clean register state
-                    <$SpiType as Resettable>::reset_init();
+                    <$SpiType as Resettable>::init();
 
                     let mut spi_dev = Self {
                         spi,
@@ -950,7 +950,7 @@ macro_rules! impl_spi {
                     csn.[<configure_spi $spi_num _csn>]();
 
                     // Reset peripheral to ensure clean register state
-                    <$SpiType as Resettable>::reset_init();
+                    <$SpiType as Resettable>::init();
 
                     let mut spi_dev = Self {
                         spi,
@@ -1007,7 +1007,7 @@ macro_rules! impl_spi {
                     csn.[<configure_spi $spi_num _csn>]();
 
                     // Reset peripheral to ensure clean register state
-                    <$SpiType as Resettable>::reset_init();
+                    <$SpiType as Resettable>::init();
 
                     let mut spi_dev = Self {
                         spi,

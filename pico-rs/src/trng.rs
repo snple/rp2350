@@ -71,7 +71,7 @@ impl Trng {
     /// Initialize the TRNG peripheral
     pub fn init() -> Self {
         // Reset peripheral to ensure clean register state
-        pico_rs_pac::TRNG::reset_init();
+        <pico_rs_pac::TRNG as Resettable>::init();
 
         let trng = Self::new();
 

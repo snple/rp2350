@@ -237,7 +237,7 @@ macro_rules! impl_i2c {
                     scl.[<configure_i2c $i2c_num _scl>]();
 
                     // Reset peripheral to ensure clean register state
-                    <$I2cType as Resettable>::reset_init();
+                    <$I2cType as Resettable>::init();
 
                     let mut i2c_dev = Self {
                         i2c,
@@ -302,7 +302,7 @@ macro_rules! impl_i2c {
                     scl.[<configure_i2c $i2c_num _scl>]();
 
                     // Reset peripheral to ensure clean register state
-                    <$I2cType as Resettable>::reset_init();
+                    <$I2cType as Resettable>::init();
 
                     let i2c_dev = Self {
                         i2c,
@@ -358,7 +358,7 @@ macro_rules! impl_i2c {
                     scl.[<configure_i2c $i2c_num _scl>]();
 
                     // Reset peripheral to ensure clean register state
-                    <$I2cType as Resettable>::reset_init();
+                    <$I2cType as Resettable>::init();
 
                     let i2c_dev = Self {
                         i2c,

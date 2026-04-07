@@ -1356,7 +1356,7 @@ impl Clocks {
     fn restore_plls(&mut self, sys_freq: u32) {
         unsafe {
             // Reset and reconfigure PLL_SYS
-            pico_rs_pac::PLL_SYS::reset_init();
+            <pico_rs_pac::PLL_SYS as Resettable>::init();
 
             let pll_sys = PllSys::new(pico_rs_pac::PLL_SYS::steal());
             let config = match sys_freq {
@@ -1373,7 +1373,7 @@ impl Clocks {
             pll_sys.wait_lock();
 
             // Reset and reconfigure PLL_USB
-            pico_rs_pac::PLL_USB::reset_init();
+            <pico_rs_pac::PLL_USB as Resettable>::init();
 
             let pll_usb = PllUsb::new(pico_rs_pac::PLL_USB::steal());
             let usb_config = pll::PllConfig::usb_48mhz();
@@ -1775,7 +1775,7 @@ impl ClockBuilder {
 
         if use_pll_sys {
             // Configure PLL_SYS for requested frequency
-            pico_rs_pac::PLL_SYS::reset_init();
+            <pico_rs_pac::PLL_SYS as Resettable>::init();
 
             let pll_sys = PllSys::new(pll_sys);
             let sys_config = Self::get_pll_config_for_freq(self.sys_freq);
@@ -1792,7 +1792,7 @@ impl ClockBuilder {
         // Step 5: Configure PLL_USB (48 MHz for USB/ADC)
         // ====================================================================
         // Always configure PLL_USB - needed for USB, ADC, or low-power sys clock
-        pico_rs_pac::PLL_USB::reset_init();
+        <pico_rs_pac::PLL_USB as Resettable>::init();
 
         let pll_usb = PllUsb::new(pll_usb);
         let usb_config = PllConfig::usb_48mhz();

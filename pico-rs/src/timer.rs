@@ -111,7 +111,7 @@ macro_rules! impl_timer {
             /// # Arguments
             /// * `timer` - The Timer peripheral from PAC
             pub fn init(timer: pico_rs_pac::$TIMER) -> Self {
-                <pico_rs_pac::$TIMER as Resettable>::reset_init();
+                <pico_rs_pac::$TIMER as Resettable>::init();
                 Self { timer }
             }
 

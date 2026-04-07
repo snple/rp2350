@@ -34,7 +34,7 @@ pub trait Resettable {
 
     /// Reset + unreset. Guarantees all registers return to hardware defaults.
     #[inline]
-    fn reset_init() {
+    fn init() {
         // SAFETY: RESET_MASK is set by impl_resettable! and always valid.
         unsafe {
             reset(Self::RESET_MASK);

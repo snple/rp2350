@@ -250,7 +250,7 @@ macro_rules! impl_uart {
                     rx.[<configure_uart $uart_num _rx>]();
 
                     // Reset peripheral to ensure clean register state
-                    <$UartType as Resettable>::reset_init();
+                    <$UartType as Resettable>::init();
 
                     let mut uart_dev = Self {
                         uart,
@@ -968,7 +968,7 @@ macro_rules! impl_uart {
                     rts.[<configure_uart $uart_num _rts>]();
 
                     // Reset peripheral to ensure clean register state
-                    <$UartType as Resettable>::reset_init();
+                    <$UartType as Resettable>::init();
 
                     let mut uart_dev = Self {
                         uart,
