@@ -570,7 +570,17 @@ impl UsbBus {
         Ok(len)
     }
 
-    /// Read data from an endpoint buffer
+    /// Read data from an endpoint buffer.
+    ///
+    /// Reads one packet's worth of data and clears the BUFF_STATUS bit so the
+    /// interrupt does not re-fire immediately.  **The endpoint is NOT re-armed
+    /// here**; call [`rearm_out_ep`] when the application is ready to receive
+    /// the next packet.  This prevents an interrupt storm where every re-arm
+    /// immediately triggers a new interrupt before the main loop gets a chance
+    /// to run.
+    ///
+    /// For EP0 OUT (control transfers) the re-arm is performed automatically
+    /// because EP0 must always remain armed.
     pub fn read(&self, ep_addr: EndpointAddress, data: &mut [u8]) -> UsbResult<usize> {
         if ep_addr.direction().is_in() && ep_addr.number() != 0 {
             return Err(UsbError::InvalidEndpoint);
@@ -606,33 +616,57 @@ impl UsbBus {
         self.dpram_mem
             .copy_from_buffer(buffer.offset, &mut data[..len]);
 
-        // Toggle data for next transfer
+        // Advance the data toggle so the next re-arm uses the correct PID.
         if ep_addr.number() != 0 {
             let idx = self.ep_buffer_index(ep_addr);
             let toggle = self.ep_data_toggles[idx].load(Ordering::SeqCst);
             self.ep_data_toggles[idx].store(!toggle, Ordering::SeqCst);
         }
 
-        // Re-arm the endpoint to receive more data
-        let toggle = if ep_addr.number() == 0 {
-            true // EP0 always uses DATA1 for OUT after setup
-        } else {
-            let idx = self.ep_buffer_index(ep_addr);
-            self.ep_data_toggles[idx].load(Ordering::SeqCst)
-        };
-
-        let mut new_ctrl = (buffer.size as u32) & buffer_control_bits::LENGTH_0_MASK;
-        if toggle {
-            new_ctrl |= buffer_control_bits::PID_0; // DATA1
+        // For EP0 OUT: always re-arm immediately (control transfers require it).
+        // For non-EP0 OUT: do NOT re-arm here; the caller must call rearm_out_ep()
+        // when it is ready to accept the next packet.  Immediate re-arm would
+        // trigger a new BUFF_STATUS interrupt before the main loop can run.
+        if ep_addr.number() == 0 {
+            let mut new_ctrl = (buffer.size as u32) & buffer_control_bits::LENGTH_0_MASK;
+            new_ctrl |= buffer_control_bits::PID_0; // EP0 OUT uses DATA1 after SETUP
+            buf_ctrl.write_with_errata(ep_addr, new_ctrl);
         }
-
-        // Use errata-safe write for re-arming endpoint
-        buf_ctrl.write_with_errata(ep_addr, new_ctrl);
 
         #[cfg(feature = "defmt")]
         defmt::trace!("USB: read {} bytes from {}", len, ep_addr);
 
         Ok(len)
+    }
+
+    /// Re-arm a non-EP0 OUT endpoint to receive the next packet.
+    ///
+    /// Must be called after [`read`] once the application has consumed the
+    /// packet and is ready to accept another one.  Separating re-arming from
+    /// reading prevents interrupt storms that starve the main loop.
+    pub fn rearm_out_ep(&self, ep_addr: EndpointAddress) {
+        if ep_addr.number() == 0 || ep_addr.direction().is_in() {
+            return; // EP0 is re-armed inside read(); IN endpoints don't apply
+        }
+
+        let idx = self.ep_buffer_index(ep_addr);
+        let buffers = unsafe { &*self.ep_buffers.get() };
+        let buffer = match buffers[idx] {
+            Some(b) => b,
+            None => return,
+        };
+
+        let toggle = self.ep_data_toggles[idx].load(Ordering::SeqCst);
+        let mut new_ctrl = (buffer.size as u32) & buffer_control_bits::LENGTH_0_MASK;
+        if toggle {
+            new_ctrl |= buffer_control_bits::PID_0; // DATA1
+        }
+
+        let buf_ctrl = BufferControlAccess::new(self.dpram);
+        buf_ctrl.write_with_errata(ep_addr, new_ctrl);
+
+        #[cfg(feature = "defmt")]
+        defmt::trace!("USB: re-armed {}", ep_addr);
     }
 
     /// Write data to EP0 IN (for control transfers)

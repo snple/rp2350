@@ -102,13 +102,10 @@
 //! ```
 
 use core::cell::UnsafeCell;
-use core::sync::atomic::{AtomicU8, Ordering};
 use pico_rs_rt::peripheral::NVIC;
 
 // Re-export the interrupt enum from PAC for convenience
 pub use crate::pac::Interrupt;
-
-use pico_rs_rt::register::primask;
 
 // ============================================================================
 // NVIC Operations
@@ -642,51 +639,16 @@ impl<T> Mutex<T> {
     }
 }
 
-/// critical-section 专用的 Spinlock 编号
-///
-/// 使用 Spinlock 31，这是最高编号的 spinlock，
-/// 用户代码应使用 0-30 号 spinlock。
-#[allow(dead_code)]
-const CRITICAL_SECTION_SPINLOCK: u8 = 31;
-
-/// 每个核的嵌套计数器
-///
-/// 使用 2 元素数组，索引为核 ID (0 或 1)
-static NESTING: [AtomicU8; 2] = [AtomicU8::new(0), AtomicU8::new(0)];
-
-/// 获取当前核 ID (0 或 1)
-#[inline]
-fn core_id() -> usize {
-    crate::multicore::core_id().as_index()
-}
-
-/// 尝试获取 spinlock（非阻塞）
-#[inline]
-fn try_acquire_spinlock() -> bool {
-    // 读取 spinlock 寄存器：返回非零表示获取成功
-    crate::sio::regs().spinlock31.spinlock31() != 0
-}
-
-/// 获取 spinlock（阻塞）
-#[inline]
-fn acquire_spinlock() {
-    while !try_acquire_spinlock() {
-        core::hint::spin_loop();
-    }
-}
-
-/// 释放 spinlock
-#[inline]
-fn release_spinlock() {
-    // 写入任意值释放 spinlock
-    crate::sio::regs().spinlock31.write_spinlock31(1);
-}
-
 /// Execute a closure with interrupts disabled
 ///
 /// This is a critical section - the closure runs atomically with respect
 /// to all configurable interrupts. After the closure returns, the previous
 /// interrupt state is restored.
+///
+/// Delegates to `critical_section::with()` so that nesting is tracked by
+/// the canonical `critical_section_impl` (spinlock 31 + per-core NESTING
+/// counter). This prevents deadlocks when code inside the closure (e.g.
+/// `defmt` log calls) re-enters a critical section via the same path.
 ///
 /// # Example
 ///
@@ -708,38 +670,13 @@ pub fn free<F, R>(f: F) -> R
 where
     F: FnOnce(CriticalSection) -> R,
 {
-    // 1. Save current PRIMASK state
-    let primask = primask::read_raw();
-
-    // 2. Disable interrupts
-    pico_rs_rt::interrupt::disable();
-
-    // 3. Get current core ID
-    let core = core_id();
-
-    // 4. Check if already in critical section (nesting)
-    let nesting = NESTING[core].fetch_add(1, Ordering::Acquire);
-
-    // 5. Only acquire spinlock on first entry
-    if nesting == 0 {
-        acquire_spinlock();
-    }
-
-    // 6. Execute the closure
-    let result = f(unsafe { CriticalSection::new() });
-
-    // 7. Decrease nesting count
-    let nesting = NESTING[core].fetch_sub(1, Ordering::Release);
-
-    // 8. Only release spinlock on outermost exit
-    if nesting == 1 {
-        release_spinlock();
-    }
-
-    // 9. Restore previous interrupt state
-    unsafe {
-        primask::write_raw(primask);
-    }
-
-    result
+    // Delegate to the canonical critical-section implementation so that
+    // spinlock-31 nesting is shared with every other caller of
+    // `critical_section::with()` (e.g. defmt-rtt).  A private nesting
+    // counter here caused a deadlock: `interrupt::free` held spinlock 31
+    // while defmt tried to re-acquire it via `critical_section::with`.
+    critical_section::with(|_| {
+        // Safety: we are inside a verified critical section.
+        f(unsafe { CriticalSection::new() })
+    })
 }

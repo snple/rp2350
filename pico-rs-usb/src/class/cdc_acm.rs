@@ -217,6 +217,13 @@ pub struct CdcAcm<'a> {
     get_line_coding_pending: bool,
     /// Waiting for SET_LINE_CODING OUT data.
     set_line_coding_pending: bool,
+    /// Pending OUT endpoint re-arm.
+    ///
+    /// Set when the software RX buffer drains to 0.  The actual re-arm is
+    /// deferred: `poll()` performs it automatically when called from a
+    /// non-interrupt context (polling mode), while interrupt-driven
+    /// applications call `rearm_rx()` from the main loop.
+    rx_needs_rearm: bool,
 }
 
 impl<'a> CdcAcm<'a> {
@@ -240,6 +247,7 @@ impl<'a> CdcAcm<'a> {
             configured: false,
             get_line_coding_pending: false,
             set_line_coding_pending: false,
+            rx_needs_rearm: false,
         }
     }
 
@@ -346,6 +354,17 @@ impl<'a> CdcAcm<'a> {
             self.read_buf.copy_within(len..self.read_available, 0);
         }
         self.read_available -= len;
+
+        // When the software buffer is fully drained, mark that a hardware
+        // re-arm is needed.  We do NOT call rearm_out_ep() here because this
+        // function may be invoked from an ISR: re-arming inside the ISR lets
+        // the hardware accept the next packet before the ISR exits, setting
+        // BUFF_STATUS again and causing an infinite interrupt storm.
+        // Re-arm is performed either by poll() (polling mode) or by an
+        // explicit rearm_rx() call from the application main loop.
+        if self.read_available == 0 {
+            self.rx_needs_rearm = true;
+        }
 
         Ok(len)
     }
@@ -623,6 +642,7 @@ impl<'a> UsbClass for CdcAcm<'a> {
         self.write_len = 0;
         self.get_line_coding_pending = false;
         self.set_line_coding_pending = false;
+        self.rx_needs_rearm = false;
         #[cfg(feature = "defmt")]
         defmt::info!("CDC: Reset");
     }
@@ -632,7 +652,54 @@ impl<'a> UsbClass for CdcAcm<'a> {
             return;
         }
 
+        // In polling mode (dev.poll called from the main loop), automatically
+        // re-arm the OUT endpoint when the software buffer has been fully
+        // consumed.  We guard with in_interrupt_context() to avoid re-arming
+        // inside an ISR, which would restart the interrupt storm.
+        if self.rx_needs_rearm && self.read_available == 0 && !in_interrupt_context() {
+            self.bus.rearm_out_ep(self.bulk_out_ep);
+            self.rx_needs_rearm = false;
+        }
+
         // Try to flush write buffer
         let _ = self.flush_write();
     }
+}
+
+/// Explicitly re-arm the CDC bulk OUT endpoint so the hardware can accept
+/// the next packet from the host.
+///
+/// Call this from the **main loop** after processing all received data.
+/// It is a no-op when no re-arm is pending or the device is not configured.
+impl<'a> CdcAcm<'a> {
+    /// Re-arm the CDC bulk OUT endpoint so the hardware can accept the next
+    /// packet from the host.
+    ///
+    /// Call this from the **main loop** after processing all received data.
+    /// It is a no-op when no re-arm is pending or the device is not configured.
+    pub fn rearm_rx(&mut self) {
+        if self.rx_needs_rearm && self.configured && self.read_available == 0 {
+            self.bus.rearm_out_ep(self.bulk_out_ep);
+            self.rx_needs_rearm = false;
+        }
+    }
+}
+
+/// Returns `true` when called from an interrupt/exception handler.
+///
+/// Reads the IPSR (Interrupt Program Status Register) on Cortex-M.  If bits
+/// [8:0] are non-zero the core is executing an exception, i.e. an ISR.
+#[inline]
+fn in_interrupt_context() -> bool {
+    let ipsr: u32;
+    // Safety: IPSR is a read-only status register; safe to read at any time.
+    #[allow(asm_sub_register)]
+    unsafe {
+        core::arch::asm!(
+            "mrs {0}, IPSR",
+            out(reg) ipsr,
+            options(nomem, nostack, preserves_flags)
+        );
+    }
+    (ipsr & 0x1FF) != 0
 }

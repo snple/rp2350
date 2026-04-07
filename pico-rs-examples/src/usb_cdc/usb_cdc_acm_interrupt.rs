@@ -26,6 +26,9 @@
 #![no_main]
 
 use core::cell::RefCell;
+use core::hint::spin_loop;
+use core::str;
+use core::sync::atomic::{AtomicU32, Ordering};
 
 use defmt::*;
 use defmt_rtt as _;
@@ -35,12 +38,14 @@ use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::interrupt::{self, Interrupt, Mutex};
 use pico_rs::pac::Peripherals;
-use pico_rs::task::{Event, EventQueue};
-use pico_rs::{entry, exception};
+use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
+use pico_rs::task::GenericQueue;
+use pico_rs::{SysTick, bind, entry, exception};
 
 use pico_rs_usb::bus::UsbBus;
 use pico_rs_usb::class::cdc_acm::CdcAcm;
 use pico_rs_usb::device::{UsbDevice, UsbDeviceBuilder};
+use pico_rs_usb::error::UsbError;
 
 /// RP2350 Boot Block
 #[unsafe(link_section = ".start_block")]
@@ -58,23 +63,110 @@ const SYS_CLK_HZ: u32 = 150_000_000;
 // Event Definitions
 // ============================================================================
 
-/// Event ID: USB data received
-const EVT_USB_RX: u16 = 1;
-/// Event ID: USB port opened
-const EVT_USB_CONNECTED: u16 = 2;
-/// Event ID: USB port closed
-const EVT_USB_DISCONNECTED: u16 = 3;
-/// Event ID: Timer tick (for periodic messages)
-const EVT_TIMER_TICK: u16 = 4;
+/// Maximum number of bytes handed from ISR to main loop per event.
+const RX_CHUNK_SIZE: usize = 64;
 
-/// Global event queue
-static EVENTS: EventQueue<16> = EventQueue::new();
+/// Maximum number of queued USB/timer events.
+const EVENT_QUEUE_SIZE: usize = 16;
+
+/// Maximum supported input line length.
+const MAX_LINE_LEN: usize = 96;
+
+#[derive(Clone, Copy)]
+enum UsbEvent {
+    Connected,
+    Disconnected,
+    TimerTick,
+    RxPacket {
+        len: usize,
+        data: [u8; RX_CHUNK_SIZE],
+    },
+}
+
+enum LineFeedResult {
+    None,
+    Ready,
+    Overflow,
+}
+
+struct LineAccumulator {
+    buf: [u8; MAX_LINE_LEN],
+    len: usize,
+    overflow: bool,
+}
+
+impl LineAccumulator {
+    const fn new() -> Self {
+        Self {
+            buf: [0u8; MAX_LINE_LEN],
+            len: 0,
+            overflow: false,
+        }
+    }
+
+    fn reset(&mut self) {
+        self.len = 0;
+        self.overflow = false;
+    }
+
+    fn feed(&mut self, byte: u8) -> LineFeedResult {
+        match byte {
+            b'\n' | b'\r' => {
+                if self.overflow {
+                    self.reset();
+                    LineFeedResult::Overflow
+                } else if self.len == 0 {
+                    LineFeedResult::None
+                } else {
+                    LineFeedResult::Ready
+                }
+            }
+            _ => {
+                if self.len < self.buf.len() {
+                    self.buf[self.len] = byte;
+                    self.len += 1;
+                } else {
+                    self.overflow = true;
+                }
+                LineFeedResult::None
+            }
+        }
+    }
+
+    fn line(&self) -> Result<&str, ()> {
+        str::from_utf8(&self.buf[..self.len])
+            .map(|line| line.trim())
+            .map_err(|_| ())
+    }
+}
+
+struct AppState {
+    line_accumulator: LineAccumulator,
+    periodic_messages_enabled: bool,
+    command_count: u32,
+}
+
+impl AppState {
+    const fn new() -> Self {
+        Self {
+            line_accumulator: LineAccumulator::new(),
+            periodic_messages_enabled: true,
+            command_count: 0,
+        }
+    }
+}
+
+/// Global event queue.
+static EVENTS: GenericQueue<UsbEvent, EVENT_QUEUE_SIZE> = GenericQueue::new();
+
+/// Number of RX packets dropped because the event queue was full.
+static RX_DROPPED_PACKETS: AtomicU32 = AtomicU32::new(0);
 
 // ============================================================================
 // USB Globals (for interrupt access)
 // ============================================================================
 
-/// USB Bus - stored as Option because we initialize it later
+/// USB Bus storage, initialized at runtime before USB interrupts are enabled.
 static USB_BUS: Mutex<RefCell<Option<UsbBus>>> = Mutex::new(RefCell::new(None));
 
 /// USB Device - stored separately for interrupt access
@@ -82,10 +174,6 @@ static USB_DEV: Mutex<RefCell<Option<UsbDevice<'static>>>> = Mutex::new(RefCell:
 
 /// USB CDC Class
 static USB_CDC: Mutex<RefCell<Option<CdcAcm<'static>>>> = Mutex::new(RefCell::new(None));
-
-/// RX Buffer - filled by interrupt, read by main loop
-static RX_BUFFER: Mutex<RefCell<[u8; 256]>> = Mutex::new(RefCell::new([0u8; 256]));
-static RX_LEN: Mutex<RefCell<usize>> = Mutex::new(RefCell::new(0));
 
 /// Track port open state
 static PORT_WAS_OPEN: Mutex<RefCell<bool>> = Mutex::new(RefCell::new(false));
@@ -97,59 +185,101 @@ static PORT_WAS_OPEN: Mutex<RefCell<bool>> = Mutex::new(RefCell::new(false));
 /// USB interrupt handler
 ///
 /// This handles all USB events and posts events to the queue for main loop processing.
-#[allow(non_snake_case)]
-#[unsafe(no_mangle)]
-fn USBCTRL_IRQ() {
+#[bind(USBCTRL_IRQ)]
+fn usbctrl_irq() {
+    debug!("USB interrupt");
     interrupt::free(|cs| {
-        // Get mutable references to USB device and class
         let mut dev_ref = USB_DEV.borrow(cs).borrow_mut();
         let mut cdc_ref = USB_CDC.borrow(cs).borrow_mut();
 
         if let (Some(dev), Some(cdc)) = (dev_ref.as_mut(), cdc_ref.as_mut()) {
-            // Poll USB - this handles all USB protocol stuff
             dev.poll(&mut [cdc as &mut dyn pico_rs_usb::device::UsbClass]);
 
-            let mut buf = [0u8; 64];
-            if let Ok(count) = cdc.read(&mut buf) {
-                if count > 0 {
-                    defmt::debug!("USB RX: {} bytes", count);
-                    cdc.write(&buf[..count]).ok();
-                }
+            let port_open = cdc.port_open() || cdc.is_configured();
+            let was_open = *PORT_WAS_OPEN.borrow(cs).borrow();
+
+            if port_open && !was_open {
+                *PORT_WAS_OPEN.borrow(cs).borrow_mut() = true;
+                let _ = EVENTS.push(UsbEvent::Connected);
+            } else if !port_open && was_open {
+                *PORT_WAS_OPEN.borrow(cs).borrow_mut() = false;
+                let _ = EVENTS.push(UsbEvent::Disconnected);
             }
 
-            // Check for port open/close transitions
-            // Note: Some hosts (Linux cdc-acm) may not send SET_CONTROL_LINE_STATE,
-            // so we also use is_configured() to detect when the port is usable.
-            // let port_open = cdc.port_open() || cdc.is_configured();
-            // let was_open = *PORT_WAS_OPEN.borrow(cs).borrow();
-
-            // if port_open && !was_open {
-            //     EVENTS.push(Event::new(EVT_USB_CONNECTED, 0));
-            //     *PORT_WAS_OPEN.borrow(cs).borrow_mut() = true;
-            // } else if !port_open && was_open {
-            //     EVENTS.push(Event::new(EVT_USB_DISCONNECTED, 0));
-            //     *PORT_WAS_OPEN.borrow(cs).borrow_mut() = false;
-            // }
-
-            // Check for received data if device is configured
-            // (don't wait for DTR, as some hosts don't send SET_CONTROL_LINE_STATE)
-            // if cdc.is_configured() {
-
-            // Store received data in global buffer
-            // let mut rx_buf = RX_BUFFER.borrow(cs).borrow_mut();
-            // let mut rx_len = RX_LEN.borrow(cs).borrow_mut();
-
-            // // Only read if buffer is empty (main loop consumed previous data)
-            // if *rx_len == 0 {
-            //     if let Ok(count) = cdc.read(&mut rx_buf[..64]) {
-            //         if count > 0 {
-            //             *rx_len = count;
-            //             EVENTS.push(Event::new(EVT_USB_RX, count as u16));
-            //         }
-            //     }
-            // }
+            if port_open {
+                loop {
+                    debug!("Polling for RX data...");
+                    let mut rx_buf = [0u8; RX_CHUNK_SIZE];
+                    match cdc.read(&mut rx_buf) {
+                        Ok(count) if count > 0 => {
+                            let event = UsbEvent::RxPacket {
+                                len: count,
+                                data: rx_buf,
+                            };
+                            if !EVENTS.push(event) {
+                                RX_DROPPED_PACKETS.fetch_add(1, Ordering::Relaxed);
+                                break;
+                            }
+                        }
+                        Ok(_) => break,
+                        Err(_) => break,
+                    }
+                }
+            }
         }
-        // }
+    });
+
+    // Re-arm the OUT endpoint in PendSV (lowest-priority exception) rather
+    // than right here in the USB ISR.  This prevents the interrupt storm:
+    // PendSV only fires after all higher-priority exceptions are done, so the
+    // hardware accepts the next host packet only after reaching PendSV context.
+    trigger_pendsv();
+}
+
+// ============================================================================
+// PendSV — deferred (lowest-priority) USB re-arm
+// ============================================================================
+
+/// Set PendSV to the lowest possible exception priority (0xFF).
+///
+/// PendSV must be lower priority than the USB IRQ so that it only runs after
+/// all higher-priority exceptions (including USBCTRL_IRQ) have completed.
+fn configure_pendsv_priority() {
+    unsafe {
+        // SCB.SHPR3 at 0xE000_ED20
+        // Bits [23:16] = PendSV priority (exception 14)
+        let shpr3 = 0xE000_ED20 as *mut u32;
+        let current = shpr3.read_volatile();
+        shpr3.write_volatile((current & !0x00FF_0000) | (0xFF_u32 << 16));
+    }
+}
+
+/// Pend the PendSV exception so it fires after all higher-priority ISRs.
+///
+/// Writing PENDSVSET (bit 28) to SCB.ICSR is idempotent — if PendSV is
+/// already pending it stays pending, so calling this multiple times is safe.
+#[inline]
+fn trigger_pendsv() {
+    unsafe {
+        // SCB.ICSR at 0xE000_ED04, bit 28 = PENDSVSET
+        (0xE000_ED04 as *mut u32).write_volatile(1 << 28);
+    }
+}
+
+/// PendSV exception handler — deferred USB RX endpoint re-arm.
+///
+/// The USB ISR sets PendSV pending instead of re-arming the OUT endpoint
+/// directly.  PendSV has the lowest exception priority and only runs when no
+/// higher-priority exception is active, preventing an interrupt storm: the
+/// hardware cannot accept the next host packet until this handler fires and
+/// calls `rearm_rx()`, giving the main loop at least one opportunity to run
+/// between consecutive host packets.
+#[exception]
+fn PendSV() {
+    interrupt::free(|cs| {
+        if let Some(cdc) = USB_CDC.borrow(cs).borrow_mut().as_mut() {
+            cdc.rearm_rx();
+        }
     });
 }
 
@@ -157,22 +287,17 @@ fn USBCTRL_IRQ() {
 // Timer setup (using SysTick for periodic events)
 // ============================================================================
 
-fn setup_systick(reload_value: u32) {
-    let mut syst = unsafe { pico_rs::rt::peripheral::SYST::steal() };
-
-    syst.disable_counter();
-    syst.set_reload(reload_value);
-    syst.clear_current();
-    syst.set_clock_source(pico_rs::rt::peripheral::syst::SystClkSource::Core);
-    syst.enable_interrupt();
-    syst.enable_counter();
+fn setup_systick(systick: &mut SysTick, reload_value: u32) {
+    systick.disable();
+    systick.set_reload(reload_value);
+    systick.enable_interrupt();
+    systick.enable();
 }
 
 /// SysTick exception handler
 #[exception]
 fn SysTick() {
-    defmt::debug!("SysTick");
-    EVENTS.push(Event::new(EVT_TIMER_TICK, 0));
+    let _ = EVENTS.push(UsbEvent::TimerTick);
 }
 
 // ============================================================================
@@ -185,6 +310,7 @@ fn main() -> ! {
 
     // Take device peripherals
     let dp = Peripherals::take().unwrap();
+    let core = CorePeripherals::take().unwrap();
 
     // Initialize clock system (150 MHz sys, 48 MHz USB)
     let clocks = ClockBuilder::new()
@@ -196,47 +322,43 @@ fn main() -> ! {
         clocks.usb_freq()
     );
 
-    // Initialize USB in a critical section to set up globals
-    interrupt::free(|cs| {
-        // Create USB bus
-        let usb_bus = UsbBus::new();
-        let _ = usb_bus.init();
-        info!("USB bus initialized");
+    let bus_ptr = interrupt::free(|cs| {
+        *USB_BUS.borrow(cs).borrow_mut() = Some(UsbBus::new());
 
-        // Store bus in global (leak it for 'static lifetime)
-        *USB_BUS.borrow(cs).borrow_mut() = Some(usb_bus);
-
-        // Get 'static reference to the bus
-        // Safety: The bus lives in a static and will never be dropped
-        let bus_ref: &'static UsbBus = unsafe {
-            let ptr = USB_BUS.borrow(cs).borrow().as_ref().unwrap() as *const UsbBus;
-            &*ptr
-        };
-
-        // Create CDC ACM class
-        let cdc = CdcAcm::new(bus_ref);
-        *USB_CDC.borrow(cs).borrow_mut() = Some(cdc);
-        info!("CDC ACM class created");
-
-        // Build USB device
-        let usb_dev = UsbDeviceBuilder::new(bus_ref)
-            .vendor_id(0x2E8A) // Raspberry Pi
-            .product_id(0x000A) // Pico SDK CDC
-            .device_release(0x0100)
-            .manufacturer("Pico-RS")
-            .product("USB Serial (Interrupt)")
-            .serial_number("INT001")
-            .build();
-
-        *USB_DEV.borrow(cs).borrow_mut() = Some(usb_dev);
-        info!("USB device built");
-
-        // Connect to host
-        bus_ref.connect();
-        info!("USB connected");
+        let option_ptr = USB_BUS.borrow(cs).as_ptr();
+        unsafe { (*option_ptr).as_ref().unwrap() as *const UsbBus }
     });
+    let bus_ref: &'static UsbBus = unsafe { &*bus_ptr };
+
+    let cdc = CdcAcm::new(bus_ref);
+    info!("CDC ACM class created");
+
+    let mut usb_dev = UsbDeviceBuilder::new(bus_ref)
+        .vendor_id(0x2E8A) // Raspberry Pi
+        .product_id(0x000A) // Pico SDK CDC
+        .device_release(0x0100)
+        .manufacturer("Pico-RS")
+        .product("USB Serial (Interrupt)")
+        .serial_number("INT001")
+        .build();
+
+    match usb_dev.init() {
+        Ok(()) => info!("USB device initialized"),
+        Err(err) => warn!("USB device init failed: {:?}", err),
+    }
+
+    interrupt::free(|cs| {
+        *USB_CDC.borrow(cs).borrow_mut() = Some(cdc);
+        *USB_DEV.borrow(cs).borrow_mut() = Some(usb_dev);
+    });
+    info!("USB device built and connected");
+
+    // Set PendSV to the lowest exception priority so it only runs after the
+    // USB ISR (and any other higher-priority ISRs) have completed.
+    configure_pendsv_priority();
 
     // Enable USB interrupt in NVIC
+    interrupt::unpend(Interrupt::USBCTRL_IRQ);
     unsafe {
         interrupt::enable(Interrupt::USBCTRL_IRQ);
     }
@@ -245,99 +367,200 @@ fn main() -> ! {
     // Setup SysTick for 1 second periodic events
     // SYS_CLK_HZ / 1 = 1 second, but SysTick is 24-bit max (16777215)
     // So we use a shorter interval and count in software
-    setup_systick(SYS_CLK_HZ / 10); // 100ms ticks
+    let mut systick = SysTick::new(core.SYST, clocks.sys_freq());
+    setup_systick(&mut systick, clocks.sys_freq() / 10); // 100ms ticks
     info!("SysTick configured for 100ms ticks");
 
     // Main loop variables
     let mut tick_counter = 0u32;
     let mut message_count = 0u32;
     let mut connected = false;
+    let mut last_reported_drops = 0u32;
+    let mut app = AppState::new();
 
     info!("Entering main loop...");
 
     loop {
-        // Process events from queue
         while let Some(event) = EVENTS.pop() {
-            match event.id {
-                EVT_USB_RX => {
-                    // Data received from USB
-                    let count = event.data as usize;
-                    info!("RX event: {} bytes", count);
+            match event {
+                UsbEvent::RxPacket { len, data } => {
+                    info!("RX event: {} bytes", len);
+                    info!("Data: {:02x}", &data[..len]);
 
-                    // Read data from shared buffer and echo back
-                    interrupt::free(|cs| {
-                        let rx_buf = RX_BUFFER.borrow(cs).borrow();
-                        let mut rx_len = RX_LEN.borrow(cs).borrow_mut();
-                        let len = *rx_len;
-
-                        if len > 0 {
-                            // Log received data
-                            info!("Data: {:02x}", &rx_buf[..len]);
-
-                            // Echo back via CDC
-                            if let Some(cdc) = USB_CDC.borrow(cs).borrow_mut().as_mut() {
-                                let _ = cdc.write_all(&rx_buf[..len]);
+                    for &byte in &data[..len] {
+                        match app.line_accumulator.feed(byte) {
+                            LineFeedResult::None => {}
+                            LineFeedResult::Overflow => {
+                                send_usb_text(b"ERR line too long (max 96 bytes)\r\n");
                             }
-
-                            // Mark buffer as consumed
-                            *rx_len = 0;
+                            LineFeedResult::Ready => {
+                                match app.line_accumulator.line() {
+                                    Ok(line) if !line.is_empty() => {
+                                        let mut line_buf = [0u8; MAX_LINE_LEN];
+                                        let line_len = core::cmp::min(line.len(), line_buf.len());
+                                        line_buf[..line_len]
+                                            .copy_from_slice(&line.as_bytes()[..line_len]);
+                                        app.command_count = app.command_count.wrapping_add(1);
+                                        if let Ok(command_line) =
+                                            str::from_utf8(&line_buf[..line_len])
+                                        {
+                                            handle_command(
+                                                command_line,
+                                                &mut app,
+                                                connected,
+                                                message_count,
+                                                last_reported_drops,
+                                            );
+                                        } else {
+                                            send_usb_text(b"ERR invalid UTF-8\r\n");
+                                        }
+                                    }
+                                    Ok(_) => {}
+                                    Err(()) => {
+                                        send_usb_text(b"ERR invalid UTF-8\r\n");
+                                    }
+                                }
+                                app.line_accumulator.reset();
+                            }
                         }
-                    });
+                    }
                 }
 
-                EVT_USB_CONNECTED => {
+                UsbEvent::Connected => {
                     info!("USB port opened!");
                     connected = true;
+                    app.line_accumulator.reset();
 
-                    // Send welcome message
-                    interrupt::free(|cs| {
-                        if let Some(cdc) = USB_CDC.borrow(cs).borrow_mut().as_mut() {
-                            let _ =
-                                cdc.write_all(b"\r\n=== Pico-RS USB CDC (Interrupt Mode) ===\r\n");
-                            let _ = cdc
-                                .write_all(b"Type something and it will be echoed back.\r\n\r\n");
-                        }
-                    });
+                    send_usb_text(b"\r\n=== Pico-RS USB CDC (Interrupt Mode) ===\r\n");
+                    send_usb_text(b"Commands: HELP, PING, STATS, PERIODIC ON, PERIODIC OFF, ECHO <text>\r\n\r\n");
                 }
 
-                EVT_USB_DISCONNECTED => {
+                UsbEvent::Disconnected => {
                     info!("USB port closed!");
                     connected = false;
+                    app.line_accumulator.reset();
                 }
 
-                EVT_TIMER_TICK => {
+                UsbEvent::TimerTick => {
                     tick_counter += 1;
 
-                    // Every 10 ticks (1 second), send a message if connected
                     if tick_counter >= 10 {
                         tick_counter = 0;
 
-                        if connected {
+                        if connected && app.periodic_messages_enabled {
                             message_count += 1;
 
-                            interrupt::free(|cs| {
-                                if let Some(cdc) = USB_CDC.borrow(cs).borrow_mut().as_mut() {
-                                    // Format message with counter
-                                    let mut buf = [0u8; 64];
-                                    let msg = format_message(&mut buf, message_count);
-                                    let _ = cdc.write_all(msg);
-                                }
-                            });
+                            let mut buf = [0u8; 64];
+                            let msg = format_message(&mut buf, message_count);
+                            send_usb_text(msg);
 
                             info!("Sent periodic message #{}", message_count);
                         }
                     }
                 }
-
-                _ => {
-                    warn!("Unknown event: id={}, data={}", event.id, event.data);
-                }
             }
         }
 
-        // Wait for interrupt (low power)
+        let dropped = RX_DROPPED_PACKETS.load(Ordering::Relaxed);
+        if dropped != last_reported_drops {
+            warn!(
+                "Dropped {} RX packets because the event queue was full",
+                dropped - last_reported_drops
+            );
+            last_reported_drops = dropped;
+        }
+
         pico_rs::rt::asm::wfi();
-        // delay.delay_us(10);
+    }
+}
+
+fn handle_command(
+    line: &str,
+    app: &mut AppState,
+    connected: bool,
+    message_count: u32,
+    dropped_packets: u32,
+) {
+    info!("Command: {}", line);
+
+    if line.eq_ignore_ascii_case("HELP") {
+        send_usb_text(b"OK HELP PING STATS PERIODIC ON PERIODIC OFF ECHO <text>\r\n");
+    } else if line.eq_ignore_ascii_case("PING") {
+        send_usb_text(b"OK PONG\r\n");
+    } else if line.eq_ignore_ascii_case("STATS") {
+        let mut buf = [0u8; 96];
+        let msg = format_stats(
+            &mut buf,
+            connected,
+            app.periodic_messages_enabled,
+            app.command_count,
+            message_count,
+            dropped_packets,
+            EVENTS.len(),
+        );
+        send_usb_text(msg);
+    } else if line.eq_ignore_ascii_case("PERIODIC ON") {
+        app.periodic_messages_enabled = true;
+        send_usb_text(b"OK periodic=on\r\n");
+    } else if line.eq_ignore_ascii_case("PERIODIC OFF") {
+        app.periodic_messages_enabled = false;
+        send_usb_text(b"OK periodic=off\r\n");
+    } else if let Some(payload) = strip_prefix_ascii_case(line, "ECHO ") {
+        let mut buf = [0u8; MAX_LINE_LEN + 16];
+        let msg = format_echo(&mut buf, payload);
+        send_usb_text(msg);
+    } else {
+        send_usb_text(b"ERR unknown command\r\n");
+    }
+}
+
+fn send_usb_text(bytes: &[u8]) {
+    let mut offset = 0;
+    let mut would_block_spins = 0u32;
+
+    while offset < bytes.len() {
+        let write_result = interrupt::free(|cs| {
+            if let Some(cdc) = USB_CDC.borrow(cs).borrow_mut().as_mut() {
+                cdc.write(&bytes[offset..])
+            } else {
+                Err(UsbError::NotReady)
+            }
+        });
+
+        match write_result {
+            Ok(written) if written > 0 => {
+                offset += written;
+                would_block_spins = 0;
+            }
+            Ok(_) | Err(UsbError::WouldBlock) => {
+                would_block_spins = would_block_spins.saturating_add(1);
+                if would_block_spins > 1024 {
+                    warn!("USB write stalled after {} bytes", offset);
+                    break;
+                }
+                spin_loop();
+            }
+            Err(UsbError::NotReady) => {
+                break;
+            }
+            Err(err) => {
+                warn!("USB write error: {:?}", err);
+                break;
+            }
+        }
+    }
+}
+
+fn strip_prefix_ascii_case<'a>(line: &'a str, prefix: &str) -> Option<&'a str> {
+    if line.len() < prefix.len() {
+        return None;
+    }
+
+    let (candidate, rest) = line.split_at(prefix.len());
+    if candidate.eq_ignore_ascii_case(prefix) {
+        Some(rest)
+    } else {
+        None
     }
 }
 
@@ -390,4 +613,82 @@ fn format_message(buf: &mut [u8], count: u32) -> &[u8] {
     }
 
     &buf[..pos]
+}
+
+fn format_stats(
+    buf: &mut [u8],
+    connected: bool,
+    periodic_enabled: bool,
+    command_count: u32,
+    message_count: u32,
+    dropped_packets: u32,
+    queue_depth: usize,
+) -> &[u8] {
+    let mut pos = 0;
+
+    pos += write_bytes(buf, pos, b"OK connected=");
+    pos += write_bool_digit(buf, pos, connected);
+    pos += write_bytes(buf, pos, b" periodic=");
+    pos += write_bool_digit(buf, pos, periodic_enabled);
+    pos += write_bytes(buf, pos, b" commands=");
+    pos += write_u32(buf, pos, command_count);
+    pos += write_bytes(buf, pos, b" messages=");
+    pos += write_u32(buf, pos, message_count);
+    pos += write_bytes(buf, pos, b" dropped=");
+    pos += write_u32(buf, pos, dropped_packets);
+    pos += write_bytes(buf, pos, b" queue=");
+    pos += write_u32(buf, pos, queue_depth as u32);
+    pos += write_bytes(buf, pos, b"\r\n");
+
+    &buf[..pos]
+}
+
+fn format_echo<'a>(buf: &'a mut [u8], payload: &str) -> &'a [u8] {
+    let mut pos = 0;
+    pos += write_bytes(buf, pos, b"OK ");
+    pos += write_bytes(buf, pos, payload.as_bytes());
+    pos += write_bytes(buf, pos, b"\r\n");
+    &buf[..pos]
+}
+
+fn write_bytes(buf: &mut [u8], pos: usize, bytes: &[u8]) -> usize {
+    let len = core::cmp::min(bytes.len(), buf.len().saturating_sub(pos));
+    buf[pos..pos + len].copy_from_slice(&bytes[..len]);
+    len
+}
+
+fn write_bool_digit(buf: &mut [u8], pos: usize, value: bool) -> usize {
+    if pos < buf.len() {
+        buf[pos] = if value { b'1' } else { b'0' };
+        1
+    } else {
+        0
+    }
+}
+
+fn write_u32(buf: &mut [u8], pos: usize, value: u32) -> usize {
+    let mut digits = [0u8; 10];
+    let mut count = 0;
+    let mut number = value;
+
+    if number == 0 {
+        digits[0] = b'0';
+        count = 1;
+    } else {
+        while number > 0 && count < digits.len() {
+            digits[count] = b'0' + (number % 10) as u8;
+            count += 1;
+            number /= 10;
+        }
+    }
+
+    let mut written = 0;
+    for index in (0..count).rev() {
+        if pos + written >= buf.len() {
+            break;
+        }
+        buf[pos + written] = digits[index];
+        written += 1;
+    }
+    written
 }
