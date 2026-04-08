@@ -195,6 +195,10 @@ name = "stepper_closed"
 path = "src/stepper/stepper_closed.rs"
 
 [[bin]]
+name = "stepper_tmc2209"
+path = "src/stepper/stepper_tmc2209.rs"
+
+[[bin]]
 name = "timer_delay"
 path = "src/timer/timer_delay.rs"
 
