@@ -25,7 +25,7 @@
 
 use crate::bus::{InterfaceNumber, UsbBus, UsbBusAllocator};
 use crate::class::UsbClass;
-use crate::control::{ControlIn, ControlOut, Recipient, RequestType};
+use crate::control::{ControlIn, ControlOut, Recipient, RequestType, StandardRequest};
 use crate::descriptor::{DescriptorWriter, class_code};
 use crate::endpoint::{EndpointAddress, EndpointIn, EndpointOut};
 use crate::error::{UsbError, UsbResult};
@@ -208,7 +208,7 @@ pub struct HidConfig {
     /// Report descriptor.  Must be `'static` so it can be returned by reference.
     pub report_descriptor: &'static [u8],
     /// Maximum input report size (≤ 64 bytes for full-speed).
-    pub in_report_size: usize,
+    pub in_report_size: u16,
     /// `true` to allocate an interrupt OUT endpoint for output/feature reports.
     pub use_out_endpoint: bool,
     /// Polling interval in ms for the interrupt IN endpoint.
@@ -221,7 +221,7 @@ impl HidConfig {
             subclass: hid_subclass::BOOT,
             protocol: hid_protocol::KEYBOARD,
             report_descriptor: KEYBOARD_REPORT_DESCRIPTOR,
-            in_report_size: 8,
+            in_report_size: 8u16,
             use_out_endpoint: true, // LED output report
             poll_interval_ms: 10,
         }
@@ -232,13 +232,13 @@ impl HidConfig {
             subclass: hid_subclass::BOOT,
             protocol: hid_protocol::MOUSE,
             report_descriptor: MOUSE_REPORT_DESCRIPTOR,
-            in_report_size: 4,
+            in_report_size: 4u16,
             use_out_endpoint: false,
             poll_interval_ms: 8,
         }
     }
 
-    pub fn custom(report_descriptor: &'static [u8], in_report_size: usize) -> Self {
+    pub fn custom(report_descriptor: &'static [u8], in_report_size: u16) -> Self {
         Self {
             subclass: hid_subclass::NONE,
             protocol: hid_protocol::NONE,
@@ -271,7 +271,7 @@ impl<'a, B: UsbBus> HidClass<'a, B> {
     /// Create an HID class from a custom `HidConfig`.
     pub fn new(alloc: &'a UsbBusAllocator<B>, config: HidConfig) -> Self {
         let interface = alloc.interface();
-        let int_in = alloc.interrupt(config.in_report_size as u16, config.poll_interval_ms);
+        let int_in = alloc.interrupt(config.in_report_size, config.poll_interval_ms);
         let int_out = if config.use_out_endpoint {
             Some(alloc.interrupt::<crate::endpoint::Out>(64, config.poll_interval_ms))
         } else {
@@ -418,7 +418,7 @@ impl<B: UsbBus> UsbClass<B> for HidClass<'_, B> {
         match req.request_type {
             RequestType::Standard => {
                 // GET_DESCRIPTOR for the HID report descriptor.
-                if req.request == 0x06 {
+                if req.request == StandardRequest::GET_DESCRIPTOR {
                     let (desc_type, _) = req.descriptor_type_index();
                     if desc_type == hid_descriptor_type::REPORT {
                         let rdesc = self.config.report_descriptor;
@@ -431,7 +431,7 @@ impl<B: UsbBus> UsbClass<B> for HidClass<'_, B> {
                 match req.request {
                     hid_req::GET_REPORT => {
                         // Return a zero-length report (no stored report).
-                        let n = core::cmp::min(self.config.in_report_size, req.length as usize);
+                        let n = core::cmp::min(self.config.in_report_size, req.length) as usize;
                         let buf = [0u8; 64];
                         let _ = xfer.accept_with(&buf[..n]);
                     }
@@ -484,9 +484,10 @@ impl<B: UsbBus> UsbClass<B> for HidClass<'_, B> {
     }
 
     fn endpoint_out(&mut self, addr: EndpointAddress) {
-        if self.int_out.as_ref().map(|ep| ep.address()) == Some(addr)
-            && let Some(ref ep) = self.int_out
-        {
+        if let Some(ep) = &self.int_out {
+            if ep.address() != addr {
+                return;
+            }
             let mut buf = [0u8; 64];
             if let Ok(n) = ep.read(&mut buf) {
                 self.out_report[..n].copy_from_slice(&buf[..n]);

@@ -182,7 +182,7 @@ fn usbctrl_irq() {
         if let (Some(dev), Some(cdc)) = (dev.as_mut(), cdc.as_mut()) {
             dev.poll(&mut [cdc as &mut dyn UsbClass<Rp2350Bus>]);
 
-            let port_open = cdc.is_configured() && cdc.dtr();
+            let port_open = cdc.port_open();
             let was_open = PORT_OPEN.swap(port_open, Ordering::Relaxed);
 
             if port_open && !was_open {

@@ -109,8 +109,6 @@ pub struct CdcAcm<'a, B: UsbBus> {
     line_coding: LineCoding,
     dtr: bool,
     rts: bool,
-    /// `true` when the host has set DTR (port is "open").
-    port_open: bool,
     configured: bool,
 }
 
@@ -131,7 +129,6 @@ impl<'a, B: UsbBus> CdcAcm<'a, B> {
             line_coding: LineCoding::default(),
             dtr: false,
             rts: false,
-            port_open: false,
             configured: false,
         }
     }
@@ -170,8 +167,13 @@ impl<'a, B: UsbBus> CdcAcm<'a, B> {
         self.rts
     }
 
+    /// `true` if the device is configured and the host has opened the serial port.
+    pub fn port_open(&self) -> bool {
+        self.configured && self.dtr
+    }
+
     /// `true` if the device has been configured by the host.
-    pub fn is_configured(&self) -> bool {
+    pub fn configured(&self) -> bool {
         self.configured
     }
 
@@ -310,7 +312,6 @@ impl<B: UsbBus> UsbClass<B> for CdcAcm<'_, B> {
                 let value = req.value;
                 self.dtr = value & 0x01 != 0;
                 self.rts = value & 0x02 != 0;
-                self.port_open = self.dtr;
                 #[cfg(feature = "defmt")]
                 defmt::debug!("CDC: control line state dtr={} rts={}", self.dtr, self.rts);
                 let _ = xfer.accept();
@@ -337,6 +338,5 @@ impl<B: UsbBus> UsbClass<B> for CdcAcm<'_, B> {
         self.configured = false;
         self.dtr = false;
         self.rts = false;
-        self.port_open = false;
     }
 }

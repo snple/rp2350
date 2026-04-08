@@ -95,7 +95,7 @@ fn main() -> ! {
 
         // Only interact when the host has configured the device and opened the
         // port (DTR set by the host terminal application).
-        if cdc.is_configured() && cdc.dtr() {
+        if cdc.port_open() {
             // ── Receive and echo ─────────────────────────────────────────────
             match cdc.read(&mut read_buf) {
                 Ok(n) if n > 0 => {
