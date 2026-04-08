@@ -66,6 +66,82 @@
 //! }
 //! ```
 //!
+//! ## 优先级系统（RP2350）
+//!
+//! RP2350 的 Cortex-M33 在每个 8-bit IPR 寄存器字段的**高 4 位**实现优先级，
+//! 共提供 **16 个有效级别**。数字越小优先级越高。
+//!
+//! | 级别 | 8-bit 写入值 | 十六进制 |
+//! |------|-------------|---------|
+//! |  0   |   0         | 0x00    | ← 最高优先级（复位后所有中断的默认值）
+//! |  1   |  16         | 0x10    |
+//! |  2   |  32         | 0x20    |
+//! |  3   |  48         | 0x30    |
+//! |  4   |  64         | 0x40    |
+//! |  5   |  80         | 0x50    |
+//! |  6   |  96         | 0x60    |
+//! |  7   | 112         | 0x70    |
+//! |  8   | 128         | 0x80    | ← 常用中间值
+//! |  9   | 144         | 0x90    |
+//! | 10   | 160         | 0xA0    |
+//! | 11   | 176         | 0xB0    |
+//! | 12   | 192         | 0xC0    |
+//! | 13   | 208         | 0xD0    |
+//! | 14   | 224         | 0xE0    |
+//! | 15   | 240         | 0xF0    | ← 最低优先级
+//!
+//! **重要细节：**
+//! - 写入不对齐的值（如 100）硬件会自动截断为 `value & 0xF0`（即 96）。
+//!   建议始终使用 16 的倍数，以避免歧义。
+//! - 复位后所有中断优先级寄存器为 **0x00**（最高优先级）。
+//! - **`set_priority()` 必须在 `enable()` 之前调用**，否则中断的第一次触发
+//!   仍以优先级 0（最高）运行。
+//!
+//! ## 抢占行为
+//!
+//! Cortex-M33 默认 PRIGROUP=0（AIRCR 寄存器），表示所有 4 个优先级位都用于
+//! **抢占优先级**，无子优先级位。效果：
+//!
+//! - 优先级数值更小的中断可以**抢占**正在运行的更大数值中断。
+//! - 同等优先级的中断**不能相互抢占**（等待当前 ISR 返回后才处理）。
+//!
+//! ```ignore
+//! // 典型优先级分配示例：
+//! // USBCTRL_IRQ  → 0   (最高，确保 USB 总线及时响应)
+//! // DMA_IRQ_0    → 32  (高，数据流)
+//! // TIMER0_IRQ_0 → 64  (中)
+//! // SPARE_IRQ_0  → 128 (低，应用层事件处理)
+//! // SysTick 优先级通过 SCB 的 SHPR3 寄存器单独配置，范围相同
+//!
+//! interrupt::set_priority(Interrupt::USBCTRL_IRQ, 0);
+//! interrupt::set_priority(Interrupt::SPARE_IRQ_0, 128);
+//! // 设置优先级之后再 enable，保证第一次触发就以正确优先级运行
+//! unsafe {
+//!     interrupt::enable(Interrupt::USBCTRL_IRQ);
+//!     interrupt::enable(Interrupt::SPARE_IRQ_0);
+//! }
+//! ```
+//!
+//! ## 使用 `#[bind]` 宏绑定中断
+//!
+//! `bind` 宏将一个函数绑定到指定的中断向量，生成 `#[no_mangle]` 的 ISR 入口：
+//!
+//! ```ignore
+//! use pico_rs::bind;
+//!
+//! #[bind(SPARE_IRQ_0)]
+//! fn event_handler() {
+//!     // 处理应用层事件
+//! }
+//! ```
+//!
+//! **优先级必须在 `enable()` 之前单独设置**（不在宏内处理）：
+//!
+//! ```ignore
+//! interrupt::set_priority(Interrupt::SPARE_IRQ_0, 128); // 先设优先级
+//! unsafe { interrupt::enable(Interrupt::SPARE_IRQ_0); } // 再 enable
+//! ```
+//!
 //! ## Features
 //!
 //! - NVIC control (enable, disable, pend, clear, priority)
@@ -79,10 +155,9 @@
 //! use pico_rs::pac::Interrupt as IrqNum;
 //!
 //! // Enable a specific interrupt (on the current core)
-//! interrupt::enable(IrqNum::TIMER0_IRQ_0);
-//!
-//! // Set interrupt priority (0 = highest, 255 = lowest)
-//! interrupt::set_priority(IrqNum::TIMER0_IRQ_0, 128);
+//! // 必须先设置优先级，再 enable，否则第一次触发以优先级 0 运行
+//! interrupt::set_priority(IrqNum::TIMER0_IRQ_0, 64); // 优先级级别 4
+//! unsafe { interrupt::enable(IrqNum::TIMER0_IRQ_0); }
 //!
 //! // Run code in a critical section (all interrupts disabled)
 //! interrupt::free(|_| {
@@ -183,23 +258,45 @@ pub fn unpend(interrupt: Interrupt) {
 
 /// Set the priority of an interrupt in the **current core's** NVIC
 ///
-/// Lower numbers mean higher priority. On Cortex-M33 (RP2350), priorities
-/// are 0-255, but only the top 4 bits are implemented (0, 16, 32, ..., 240).
+/// RP2350 Cortex-M33 实现了 **4 位优先级**（高 4 位有效），共 16 个级别。
+/// 数字越小优先级越高。写入值会被截断为 `value & 0xF0`，**请使用 16 的倍数**。
+///
+/// | 8-bit 值 | 级别 | 说明 |
+/// |---------|------|------|
+/// |   0     |  0   | 最高优先级（复位默认值）|
+/// |  16     |  1   | |
+/// |  32     |  2   | |
+/// |  48     |  3   | |
+/// |  64     |  4   | |
+/// |  80     |  5   | |
+/// |  96     |  6   | |
+/// | 112     |  7   | |
+/// | 128     |  8   | 常用中间值 |
+/// | 144..224|9..14 | |
+/// | 240     | 15   | 最低优先级 |
+///
+/// **必须在 `enable()` 之前调用**，否则中断的第一次触发以复位默认值（0）运行。
 ///
 /// # Arguments
-/// * `interrupt` - The interrupt to configure
-/// * `priority` - Priority level (0 = highest, 255 = lowest)
+/// * `interrupt` - 要配置的中断
+/// * `priority`  - 优先级值，使用 16 的倍数（0 = 最高，240 = 最低）
+///
+/// # Safety
+/// This function accesses the NVIC registers of the current core. The caller must ensure
+/// that setting the priority does not cause any timing or stability issues. Additionally,
+/// it is recommended to call this function before `enable()` to ensure the interrupt is
+/// triggered with the correct priority from its first occurrence.
 ///
 /// # Example
 /// ```ignore
 /// use pico_rs::interrupt::{self, Interrupt};
-/// use pico_rs::pac::Interrupt as IrqNum;
 ///
-/// // Set high priority for timer interrupt
-/// interrupt::set_priority(IrqNum::TIMER0_IRQ_0, 0);
+/// // 先设优先级，再 enable
+/// interrupt::set_priority(Interrupt::SPARE_IRQ_0, 128); // 级别 8
+/// unsafe { interrupt::enable(Interrupt::SPARE_IRQ_0); }
 /// ```
 #[inline]
-pub fn set_priority(interrupt: Interrupt, priority: u8) {
+pub unsafe fn set_priority(interrupt: Interrupt, priority: u8) {
     unsafe {
         NVIC::set_priority(interrupt as u16, priority);
     }

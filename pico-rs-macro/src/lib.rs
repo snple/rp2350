@@ -4,7 +4,7 @@
 //!
 //! - `#[entry]` - Entry point for RP2350 applications
 //! - `#[exception]` - Exception handler for Cortex-M exceptions
-//! - `#[bind(IRQ, priority)]` - Bind a function to an interrupt
+//! - `#[bind(IRQ)]` - Bind a function to an interrupt
 //! - `pio_asm!` - PIO assembly compiler
 
 use proc_macro::TokenStream;
@@ -12,8 +12,8 @@ use proc_macro2::Span;
 use quote::quote;
 use std::collections::HashSet;
 use syn::{
-    AttrStyle, Attribute, Expr, FnArg, Ident, Item, ItemFn, ItemStatic, Lit, ReturnType, Stmt,
-    Token, Type, Visibility,
+    AttrStyle, Attribute, Expr, FnArg, Ident, Item, ItemFn, ItemStatic, ReturnType, Stmt, Token,
+    Type, Visibility,
     parse::{self, Parse},
     parse_macro_input,
     punctuated::Punctuated,
@@ -744,53 +744,55 @@ pub fn pio_asm(input: TokenStream) -> TokenStream {
     pio_asm::pio_asm_impl(input)
 }
 
-/// Bind a function to an interrupt with automatic initialization
+/// Bind a function to an interrupt handler
 ///
-/// This macro generates an interrupt handler function that calls your function.
+/// This macro generates a `#[no_mangle]` interrupt handler that calls your
+/// function. It handles only the binding — priority must be configured
+/// separately via `interrupt::set_priority()` before `interrupt::enable()`.
 ///
 /// ## Usage
 ///
 /// ```ignore
-/// use pico_rs::bind;
+/// use pico_rs::{bind, interrupt, Interrupt};
 ///
-/// // Bind to SPARE_IRQ_0 with default priority
 /// #[bind(SPARE_IRQ_0)]
-/// fn my_task() {
-///     // This code runs when the interrupt is triggered
+/// fn event_handler() {
+///     // Runs when SPARE_IRQ_0 fires
 /// }
 ///
-/// // Bind to TIMER0_IRQ_0 with specific priority (lower = higher priority)
-/// #[bind(TIMER0_IRQ_0, priority = 64)]
-/// fn timer_handler() {
-///     // Handle timer interrupt
-/// }
+/// // In main — set priority before enable:
+/// interrupt::set_priority(Interrupt::SPARE_IRQ_0, 128);
+/// unsafe { interrupt::enable(Interrupt::SPARE_IRQ_0); }
 /// ```
 ///
-/// ## Generated Code
+/// ## Priority
 ///
-/// The macro generates an interrupt handler function with `#[unsafe(no_mangle)]`
-/// that calls your function.
+/// Priority cannot be set within the macro because `set_priority()` must be
+/// called **before** `interrupt::enable()` — setting it inside the ISR would
+/// only affect future invocations, not the first one (which runs at the
+/// reset-default priority of 0). Always call `set_priority()` explicitly
+/// in your initialisation code.
 ///
 /// ## Parameters
 ///
-/// - First parameter: Interrupt name (e.g., `SPARE_IRQ_0`, `TIMER0_IRQ_0`)
-/// - `priority = N`: Optional priority (0-255, lower = higher priority)
-///
-/// ## Note
-///
-/// Priority should be set during initialization using `interrupt::set_priority()`
-/// or `spare::init()`, not in the interrupt handler itself.
+/// - First (and only) parameter: Interrupt name (e.g., `SPARE_IRQ_0`, `TIMER0_IRQ_0`)
 #[proc_macro_attribute]
 pub fn bind(args: TokenStream, input: TokenStream) -> TokenStream {
     let f = parse_macro_input!(input as ItemFn);
 
-    // Parse arguments
+    // Parse arguments — only the interrupt name is accepted
     let args_parsed = parse_macro_input!(args with Punctuated::<Expr, Token![,]>::parse_terminated);
 
     if args_parsed.is_empty() {
-        return syn::Error::new(
-            Span::call_site(),
-            "Expected #[bind(IRQ_NAME)] or #[bind(IRQ_NAME, priority = N)]",
+        return syn::Error::new(Span::call_site(), "Expected #[bind(IRQ_NAME)]")
+            .to_compile_error()
+            .into();
+    }
+
+    if args_parsed.len() > 1 {
+        return syn::Error::new_spanned(
+            &args_parsed[1],
+            "#[bind] takes only the interrupt name — set priority via interrupt::set_priority() before interrupt::enable()",
         )
         .to_compile_error()
         .into();
@@ -809,78 +811,20 @@ pub fn bind(args: TokenStream, input: TokenStream) -> TokenStream {
         }
     };
 
-    // Parse optional priority = N
-    let mut priority: Option<u8> = None;
-    for arg in args_parsed.iter().skip(1) {
-        if let Expr::Assign(assign) = arg {
-            // Check if left side is "priority"
-            if let Expr::Path(path) = &*assign.left
-                && let Some(seg) = path.path.segments.last()
-                && seg.ident == "priority"
-            {
-                // Get the value
-                if let Expr::Lit(lit) = &*assign.right
-                    && let Lit::Int(int) = &lit.lit
-                {
-                    priority = int.base10_parse::<u8>().ok();
-                }
-            }
-        }
-    }
-
-    // Get original function name and body
     let user_fn_name = &f.sig.ident;
     let fn_body = &f.block;
     let fn_vis = &f.vis;
     let fn_attrs = &f.attrs;
 
-    // Generate output based on whether priority is specified
-    let output = if let Some(prio) = priority {
-        // Generate with priority initialization
-        let init_flag_name = quote::format_ident!("__BIND_{}_INIT", irq_name);
+    quote! {
+        #(#fn_attrs)*
+        #fn_vis fn #user_fn_name() #fn_body
 
-        quote! {
-            // User's original function
-            #(#fn_attrs)*
-            #fn_vis fn #user_fn_name() #fn_body
-
-            // Static flag for one-time priority initialization
-            static #init_flag_name: core::sync::atomic::AtomicBool =
-                core::sync::atomic::AtomicBool::new(false);
-
-            /// Interrupt handler generated by #[bind] macro
-            #[allow(non_snake_case)]
-            #[unsafe(no_mangle)]
-            fn #irq_name() {
-                // Lazy initialization of priority (only on first trigger)
-                if !#init_flag_name.load(core::sync::atomic::Ordering::Relaxed) {
-                    #init_flag_name.store(true, core::sync::atomic::Ordering::Relaxed);
-                    pico_rs::interrupt::set_priority(
-                        pico_rs::pac::Interrupt::#irq_name,
-                        #prio
-                    );
-                }
-
-                // Call user's function
-                #user_fn_name();
-            }
+        #[allow(non_snake_case)]
+        #[unsafe(no_mangle)]
+        fn #irq_name() {
+            #user_fn_name();
         }
-    } else {
-        // Generate without priority initialization
-        quote! {
-            // User's original function
-            #(#fn_attrs)*
-            #fn_vis fn #user_fn_name() #fn_body
-
-            /// Interrupt handler generated by #[bind] macro
-            #[allow(non_snake_case)]
-            #[unsafe(no_mangle)]
-            fn #irq_name() {
-                // Call user's function
-                #user_fn_name();
-            }
-        }
-    };
-
-    output.into()
+    }
+    .into()
 }

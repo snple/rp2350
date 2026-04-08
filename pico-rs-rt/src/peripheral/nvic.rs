@@ -5,10 +5,35 @@
 //! - Interrupt pending/clear
 //! - Priority configuration
 //!
-//! # Priority Levels
+//! # Priority Levels (RP2350)
 //!
-//! On Cortex-M33, the NVIC supports 8 priority levels by default
-//! (3 bits implemented). Lower numerical values mean higher priority.
+//! The RP2350 Cortex-M33 implements **4 bits** of interrupt priority in the
+//! upper nibble of each 8-bit IPR register field. This gives **16 distinct
+//! priority levels**. Lower numerical values mean higher priority.
+//!
+//! Valid 8-bit values (only the top 4 bits are significant):
+//!
+//! | Level | 8-bit value | Description |
+//! |-------|-------------|-------------|
+//! |  0    |   0 (0x00)  | Highest priority |
+//! |  1    |  16 (0x10)  | |
+//! |  2    |  32 (0x20)  | |
+//! |  3    |  48 (0x30)  | |
+//! |  4    |  64 (0x40)  | |
+//! |  5    |  80 (0x50)  | |
+//! |  6    |  96 (0x60)  | |
+//! |  7    | 112 (0x70)  | |
+//! |  8    | 128 (0x80)  | (mid-point, commonly used) |
+//! |  9    | 144 (0x90)  | |
+//! | 10    | 160 (0xA0)  | |
+//! | 11    | 176 (0xB0)  | |
+//! | 12    | 192 (0xC0)  | |
+//! | 13    | 208 (0xD0)  | |
+//! | 14    | 224 (0xE0)  | |
+//! | 15    | 240 (0xF0)  | Lowest priority |
+//!
+//! Values not in the table (e.g. 1, 100, 255) are silently truncated by the
+//! hardware: only `value & 0xF0` is stored. Use multiples of 16 to be explicit.
 //!
 //! # Example
 //!
@@ -18,7 +43,7 @@
 //! // Enable interrupt 0
 //! unsafe { NVIC::enable(0); }
 //!
-//! // Set priority (lower = higher priority)
+//! // Set priority (lower = higher priority; use multiples of 16)
 //! unsafe { NVIC::set_priority(0, 128); }
 //!
 //! // Check if pending
@@ -152,12 +177,18 @@ impl NVIC {
 
     /// Set the priority of an interrupt
     ///
-    /// Lower values mean higher priority. On Cortex-M33, typically only
-    /// the upper 3-4 bits are implemented (so values like 0, 32, 64, etc.).
+    /// Lower values mean higher priority. The RP2350 Cortex-M33 implements
+    /// **4 priority bits** in the upper nibble of the 8-bit IPR field, giving
+    /// **16 effective levels**. Use multiples of 16 to be explicit:
+    /// `0, 16, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240`.
+    ///
+    /// Any value written is masked to `value & 0xF0` by the hardware.
     ///
     /// # Safety
     ///
-    /// Changing priorities can affect interrupt latency and system behavior.
+    /// Must be called before `enable()` for the priority to take effect on
+    /// the first invocation. Changing priorities after enable can affect
+    /// interrupt latency and system behavior.
     #[inline]
     pub unsafe fn set_priority(irq: u16, priority: u8) {
         unsafe {

@@ -43,8 +43,7 @@ static LED_STATE: AtomicBool = AtomicBool::new(false);
 // ============================================================================
 
 /// 高优先级任务 - LED 开启
-/// 使用 priority = 64 指定优先级（在中断内延迟设置）
-#[bind(SPARE_IRQ_0, priority = 64)]
+#[bind(SPARE_IRQ_0)]
 fn high_priority_task() {
     // spare::clear(0);
     interrupt::unpend(spare::SPARE_IRQ_0);
@@ -53,7 +52,6 @@ fn high_priority_task() {
 }
 
 /// 低优先级任务 - LED 关闭
-/// 不指定 priority，使用 spare::init() 设置
 #[bind(SPARE_IRQ_1)]
 fn low_priority_task() {
     interrupt::unpend(spare::SPARE_IRQ_1);
@@ -79,8 +77,12 @@ fn main() -> ! {
     let led = pins.pin::<25>();
     led.into_output();
 
-    // 初始化 spare IRQs
+    // 初始化 spare IRQs：先设优先级，再 enable
+    // SPARE_IRQ_0 优先级更高（数字小），可抢占 SPARE_IRQ_1
     unsafe {
+        interrupt::set_priority(spare::SPARE_IRQ_0, 64);
+        interrupt::set_priority(spare::SPARE_IRQ_1, 128);
+
         interrupt::enable(spare::SPARE_IRQ_0);
         interrupt::enable(spare::SPARE_IRQ_1);
     }
