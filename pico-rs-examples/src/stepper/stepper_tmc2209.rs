@@ -68,6 +68,7 @@
 //! | GP2 | STEP | STEP | 步进脉冲输出 (上升沿有效) |
 //! | GP3 | DIR | DIR | 方向控制 (高/低 = CW/CCW) |
 //! | GP4 | ENABLE | ENN | 使能控制 (**低有效**) |
+//! | GP5 | DIAG | DIAG | 堵转检测输出 (开漏, 高 = 堵转) |
 //!
 //! ## 2.2 UART 配置接口
 //!
@@ -86,9 +87,9 @@
 //!                      1kΩ
 //!   GP8 (UART1_TX) ──/\/\/──┐
 //!                            ├──────── PDN_UART (单线半双工)
-//!   GP9 (UART1_RX) ──/\/\/──┘
-//!                      1kΩ    │
-//!                             │  1kΩ
+//!   GP9 (UART1_RX) ──/\/\/──┘  │
+//!                      1kΩ     /\
+//!                              /\  1kΩ
 //!   3.3V (VCC_IO) ──────/\/\/──┘  ← 上拉电阻 (UART 模式必须!)
 //!
 //!   GND ────────────────────────────── GND
@@ -179,7 +180,118 @@
 //!
 //! ---
 //!
-//! # 3. 配置参数说明
+//! # 3. StallGuard4 堵转检测
+//!
+//! TMC2209 内置 **StallGuard4** 无传感器堵转检测功能，通过监测电机线圈的
+//! **反电动势 (back-EMF)** 来估算负载大小，**无需物理限位开关**即可判断电机是否堵转。
+//! 典型应用包括无传感器回零 (sensorless homing) 和碰撞保护。
+//!
+//! ## 3.1 工作原理
+//!
+//! TMC2209 在每个斩波周期中测量线圈电流的衰减特征：
+//! - 电机正常运转时，转子产生的反电动势会影响电流波形
+//! - 电机堵转（转子被卡住）时，反电动势消失，电流波形发生变化
+//!
+//! 芯片将这一差异量化为 **SG_RESULT** 值 (0~510)：
+//!
+//! | SG_RESULT | 含义 |
+//! |-----------|------|
+//! | **~510** | 无负载（空转） |
+//! | **中值** | 正常负载 |
+//! | **接近 0** | 极大负载 / 已堵转 |
+//!
+//! > **注意**: StallGuard **仅在电机运动时有效**，静止时结果无意义。
+//!
+//! ## 3.2 三个关键寄存器
+//!
+//! ### SGTHRS (0x40) — 堵转阈值
+//!
+//! 触发条件: `SG_RESULT ≤ SGTHRS × 2`
+//!
+//! - 范围 0–255，**值越大越灵敏**（越容易触发堵转）
+//! - 设为 **0** = 禁用堵转检测
+//! - 本示例设为 **10**（保守值，不容易误触发）
+//! - 当触发条件满足时，TMC2209 的 **DIAG 引脚**被拉高
+//!
+//! ```rust
+//! // SGTHRS = 10 → 当 SG_RESULT ≤ 20 时触发堵转
+//! tmc_write_reg(uart, REG_SGTHRS, 10);
+//! ```
+//!
+//! ### TCOOLTHRS (0x14) — 速度激活阈值
+//!
+//! StallGuard 只在速度高于一定值时才激活（低速时反电动势太小，检测不可靠）：
+//!
+//! - 激活条件: `TSTEP ≤ TCOOLTHRS`（TSTEP 越小 = 速度越快）
+//! - 本示例设为 `0xFFFFF`（最大值），表示**任何速度下都激活**
+//! - 实际应用中建议设一个合理阈值，避免低速误触发
+//!
+//! ```rust
+//! tmc_write_reg(uart, REG_TCOOLTHRS, 0xFFFFF);
+//! ```
+//!
+//! ### SG_RESULT (0x41) — 只读结果
+//!
+//! 范围 0–510，通过 UART 轮询读取。Demo 4 中每 500ms 读取一次：
+//!
+//! ```rust
+//! if let Some(sg) = tmc_read_sg_result(&uart, &timer) {
+//!     info!("SG_RESULT = {}", sg & 0x3FF);
+//! }
+//! ```
+//!
+//! ## 3.3 两种检测方式
+//!
+//! | 方式 | 实现 | 延迟 | 适用场景 |
+//! |------|------|------|----------|
+//! | **UART 轮询 SG_RESULT** | Demo 4 | 取决于轮询间隔 (~500ms) | 调试、负载监控 |
+//! | **DIAG 引脚中断** | Demo 5 / Demo 6 | 实时 (~μs 级) | 回零、碰撞急停 |
+//!
+//! 如果需要**实时堵转急停**（如无传感器回零），应将 TMC2209 的 **DIAG 引脚**
+//! 接到 Pico 的一个 GPIO，配置为上升沿中断，在 ISR 中立即停止电机。
+//! 本示例的 Demo 5 和 Demo 6 已实现此功能：
+//!
+//! ```text
+//!   TMC2209 DIAG ──────────── Pico GP5 (内部上拉 + 上升沿中断)
+//! ```
+//!
+//! ISR 中的处理流程:
+//! 1. `check_and_clear(EdgeHigh)` — 确认并清除中断标志
+//! 2. `AXIS.stop()` — 立即停止步进脉冲输出
+//! 3. `STALL_DETECTED.store(true)` — 通知主循环
+//!
+//! ## 3.4 SGTHRS 调参方法
+//!
+//! StallGuard 阈值需要根据实际工况标定，建议在**匀速段**进行：
+//!
+//! | 步骤 | 操作 | 示例 SG_RESULT |
+//! |------|------|----------------|
+//! | 1 | 空载运行，记录典型值 | ~250 |
+//! | 2 | 加载到正常工作负载 | ~80 |
+//! | 3 | 手动堵住电机 | ~5–15 |
+//! | 4 | 设 `SGTHRS = 堵转值 / 2`，留裕量 | SGTHRS = 10 |
+//!
+//! **注意事项**:
+//! - 加速/减速过程中 SG_RESULT 会波动，应在匀速段检测
+//! - 微步细分越高，SG_RESULT 分辨率越好
+//! - 不同速度下 SG_RESULT 基线不同，建议在目标速度下标定
+//! - 温度变化也会影响 SG_RESULT，调参时要留足裕量
+//!
+//! ## 3.5 与编码器闭环堵转检测的对比
+//!
+//! 本项目的 `stepper_closed.rs` 使用编码器反馈做软件堵转检测，
+//! 与 StallGuard4 硬件检测各有优劣：
+//!
+//! | | StallGuard4 (TMC2209) | 编码器闭环 |
+//! |---|---|---|
+//! | 硬件成本 | 无额外硬件 | 需要编码器 |
+//! | 检测精度 | 中等，受速度/温度影响 | 高，直接测位置 |
+//! | 响应速度 | DIAG 中断: μs 级 | 取决于控制环周期 |
+//! | 适用场景 | 回零、碰撞保护 | 精密定位、力控 |
+//!
+//! ---
+//!
+//! # 4. 配置参数说明
 //!
 //! | 常量 | 默认值 | 说明 |
 //! |------|--------|------|
@@ -194,10 +306,13 @@
 //! | `RUN_CURRENT` | 16 | 运行电流 (0-31)，16 ≈ 50% 满量程 |
 //! | `HOLD_CURRENT` | 8 | 保持电流 (0-31)，8 ≈ 25% 满量程 |
 //! | `IHOLD_DELAY` | 10 | 从运行电流过渡到保持电流的延时 (0-15) |
+//! | `HOMING_SPEED_HZ` | 800 | 回零速度 (Hz)，低速提高堵转检测可靠性 |
+//! | `HOMING_SGTHRS` | 30 | 回零 StallGuard 阈值，比正常运行更灵敏 |
+//! | `HOMING_BACKOFF_STEPS` | 200 | 回零后反弹步数，离开机械限位 |
 //!
 //! ---
 //!
-//! # 4. 演示流程
+//! # 5. 演示流程
 //!
 //! 程序启动后依次执行：
 //!
@@ -206,12 +321,15 @@
 //! 3. **Demo 1** — 梯形加减速正转 1 圈 (MOTOR_STEPS_PER_REV × MICROSTEPPING 步)
 //! 4. **Demo 2** — 梯形加减速反转 1 圈
 //! 5. **Demo 3** — 动态修改运行电流：先降低到 25% 跑半圈，再恢复正常跑半圈
-//! 6. **Demo 4** — 连续运转 3 秒，每 0.5 秒读取 StallGuard 值和驱动状态
-//! 7. **循环** — 无限交替正反转半圈
+//! 6. **Demo 4** — 连续运转 3 秒，每 0.5 秒读取 StallGuard 值和驱动状态 (UART 轮询)
+//! 7. **Demo 5** — StallGuard 堵转检测: DIAG 引脚中断急停，手动堵住电机触发
+//! 8. **Demo 6** — 无传感器回零: 低速运动至机械限位，反弹后设零点
+//! 9. **Demo 7** — 读取全部关键寄存器
+//! 10. **循环** — 无限交替正反转半圈
 //!
 //! ---
 //!
-//! # 5. 编译运行
+//! # 6. 编译运行
 //!
 //! ```bash
 //! cd pico-rs-examples
@@ -225,6 +343,7 @@
 mod stepper_common;
 use stepper_common::{AxisConfig, AxisState, Direction};
 
+use core::sync::atomic::{AtomicBool, Ordering};
 use defmt::*;
 use defmt_rtt as _;
 use panic_probe as _;
@@ -232,7 +351,7 @@ use panic_probe as _;
 use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
-use pico_rs::gpio::{Gpio, Pins, Uart1RxPin, Uart1TxPin};
+use pico_rs::gpio::{EdgeLevel, Gpio, Pin, Pins, Uart1RxPin, Uart1TxPin};
 use pico_rs::interrupt;
 use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::ticks::Ticks;
@@ -299,8 +418,25 @@ const PIN_DIR: u32 = 3;
 /// GP4 → TMC2209 ENN 引脚 (使能，低有效)
 const PIN_ENABLE: u32 = 4;
 
+/// GP5 → TMC2209 DIAG 引脚 (堵转检测输出，开漏，上升沿 = 堵转)
+const PIN_DIAG: u32 = 5;
+
 // GP8 → UART1_TX (TMC2209 PDN_UART)  — 由 Uart1::new() 自动配置 AF
 // GP9 → UART1_RX (TMC2209 PDN_UART)  — 由 Uart1::new() 自动配置 AF
+
+// ============================================================================
+// 堵转检测 / 无传感器回零参数
+// ============================================================================
+
+/// 回零速度 (Hz) — 低速运行以提高 StallGuard 检测可靠性
+const HOMING_SPEED_HZ: u32 = 800;
+
+/// 回零 StallGuard 阈值 — 比正常运行时更灵敏 (值越大越灵敏)
+/// 正常运行 SGTHRS=10，回零时提高到 30 以确保碰到限位后快速触发
+const HOMING_SGTHRS: u32 = 30;
+
+/// 回零后反弹步数 — 离开机械限位，避免堵转状态持续
+const HOMING_BACKOFF_STEPS: u32 = 200;
 
 // ============================================================================
 // TMC2209 寄存器地址定义
@@ -629,12 +765,22 @@ fn tmc_read_sg_result<TX: Uart1TxPin, RX: Uart1RxPin>(
     tmc_read_reg(uart, timer, REG_SG_RESULT)
 }
 
+/// 动态修改 StallGuard 堵转阈值
+///
+/// 触发条件: SG_RESULT ≤ threshold × 2，值越大越灵敏，0 = 禁用
+fn tmc_set_sgthrs<TX: Uart1TxPin, RX: Uart1RxPin>(uart: &Uart1<TX, RX>, threshold: u32) {
+    tmc_write_reg(uart, REG_SGTHRS, threshold);
+}
+
 // ============================================================================
 // 全局共享状态
 // ============================================================================
 
 /// 步进轴状态 — 使用 stepper_common 公共模块
 static AXIS: AxisState = AxisState::new();
+
+/// 堵转检测标志 — 由 DIAG 引脚中断 (IO_IRQ_BANK0) 置位
+static STALL_DETECTED: AtomicBool = AtomicBool::new(false);
 
 #[inline(always)]
 fn gpio() -> Gpio {
@@ -713,7 +859,12 @@ fn main() -> ! {
     p4.into_output();
     p4.set_high();
 
-    info!("GPIO: GP2(STEP) GP3(DIR) GP4(ENN)");
+    // DIAG 开漏输出: 上拉 + 上升沿中断 (堵转时 DIAG 拉高)
+    let p5 = pins.pin::<5>();
+    p5.into_input_pullup();
+    p5.enable_interrupt(EdgeLevel::EdgeHigh);
+
+    info!("GPIO: GP2(STEP) GP3(DIR) GP4(ENN) GP5(DIAG)");
 
     // ------------------------------------------------------------------
     // 3. UART1 配置 — TMC2209 通信
@@ -758,10 +909,11 @@ fn main() -> ! {
     });
 
     // ------------------------------------------------------------------
-    // 6. Timer0 中断配置
+    // 6. Timer0 + IO_IRQ_BANK0 中断配置
     // ------------------------------------------------------------------
     unsafe {
         interrupt::enable(Interrupt::TIMER0_IRQ_0);
+        interrupt::enable(Interrupt::IO_IRQ_BANK0);
     }
 
     let delay_ms = |ms: u32| {
@@ -868,9 +1020,108 @@ fn main() -> ! {
     delay_ms(1000);
 
     // ======================================================================
-    // 演示 5: 读取全部关键寄存器
+    // 演示 5: StallGuard 堵转检测 (DIAG 引脚中断)
+    //   连续运转，手动堵住电机轴触发堵转中断，自动停机
     // ======================================================================
-    info!("=== Demo 5: Register dump ===");
+    info!("=== Demo 5: StallGuard stall detection (DIAG interrupt) ===");
+    info!("Block the motor shaft to trigger a stall!");
+
+    // 提高 SGTHRS 灵敏度用于堵转检测演示
+    tmc_set_sgthrs(&uart, HOMING_SGTHRS);
+    delay_ms(100);
+
+    // 清除堵转标志
+    STALL_DETECTED.store(false, Ordering::Relaxed);
+
+    start_continuous_run(0, HOMING_SPEED_HZ);
+
+    // 等待堵转或超时 (最多 10 秒)
+    let mut timeout = 0u32;
+    while !STALL_DETECTED.load(Ordering::Relaxed) && timeout < 20 {
+        delay_ms(500);
+        timeout += 1;
+
+        if let Some(sg) = tmc_read_sg_result(&uart, &timer) {
+            info!("[stall_detect] SG_RESULT = {}", sg & 0x3FF);
+        }
+    }
+
+    // AXIS.stop() 已在 ISR 中调用，此处确保停止
+    stop_motion();
+
+    if STALL_DETECTED.load(Ordering::Relaxed) {
+        info!("STALL DETECTED at position {} steps!", AXIS.position());
+        info!("Backing off {} steps...", HOMING_BACKOFF_STEPS);
+
+        delay_ms(200);
+        STALL_DETECTED.store(false, Ordering::Relaxed);
+
+        start_trapezoidal_move(HOMING_BACKOFF_STEPS, 1);
+        wait_motion_done();
+
+        info!(
+            "Demo 5 done. Position after backoff: {} steps",
+            AXIS.position()
+        );
+    } else {
+        info!("Demo 5: timeout — no stall detected in 10s");
+        info!("Tip: block the motor shaft during the test");
+    }
+
+    // 恢复正常 SGTHRS
+    tmc_set_sgthrs(&uart, 10);
+    delay_ms(1000);
+
+    // ======================================================================
+    // 演示 6: 无传感器回零 (Sensorless Homing)
+    //   低速向一个方向运动直到碰到机械限位 (堵转)，
+    //   然后反弹并将当前位置设为零点
+    // ======================================================================
+    info!("=== Demo 6: Sensorless homing ===");
+    info!("Motor will move forward until hitting a hard stop.");
+    info!("If no hard stop exists, it will timeout after 10s.");
+
+    // 步骤 1: 设置回零参数 — 提高灵敏度
+    tmc_set_sgthrs(&uart, HOMING_SGTHRS);
+    delay_ms(100);
+
+    // 步骤 2: 清除堵转标志，开始低速运动
+    STALL_DETECTED.store(false, Ordering::Relaxed);
+    start_continuous_run(0, HOMING_SPEED_HZ);
+
+    // 步骤 3: 等待堵转 (DIAG 中断自动停机)
+    let mut timeout = 0u32;
+    while !STALL_DETECTED.load(Ordering::Relaxed) && timeout < 20 {
+        delay_ms(500);
+        timeout += 1;
+    }
+    stop_motion();
+
+    if STALL_DETECTED.load(Ordering::Relaxed) {
+        info!("Home position found! (stall at {} steps)", AXIS.position());
+
+        // 步骤 4: 反弹离开限位
+        delay_ms(200);
+        STALL_DETECTED.store(false, Ordering::Relaxed);
+
+        start_trapezoidal_move(HOMING_BACKOFF_STEPS, 1);
+        wait_motion_done();
+
+        // 步骤 5: 将当前位置设为零点
+        AXIS.set_position(0);
+        info!("Zero position set. Homing complete!");
+    } else {
+        info!("Homing timeout — no hard stop detected");
+    }
+
+    // 恢复正常 SGTHRS
+    tmc_set_sgthrs(&uart, 10);
+    delay_ms(1000);
+
+    // ======================================================================
+    // 演示 7: 读取全部关键寄存器
+    // ======================================================================
+    info!("=== Demo 7: Register dump ===");
 
     if let Some(gconf) = tmc_read_reg(&uart, &timer, REG_GCONF) {
         info!("  GCONF     = {:#010x}", gconf);
@@ -929,4 +1180,20 @@ fn main() -> ! {
 fn TIMER0_IRQ_0() {
     let timer = unsafe { Timer0::steal() };
     AXIS.handle_alarm_isr(&timer);
+}
+
+// ============================================================================
+// IO_IRQ_BANK0 ISR — TMC2209 DIAG 引脚堵转检测
+// ============================================================================
+
+#[unsafe(no_mangle)]
+#[allow(non_snake_case)]
+fn IO_IRQ_BANK0() {
+    // GP5 = TMC2209 DIAG 引脚
+    let pin = unsafe { Pin::<5>::new() };
+    if pin.check_and_clear(EdgeLevel::EdgeHigh) {
+        // 堵转检测: 立即停止电机 + 设置标志
+        AXIS.stop();
+        STALL_DETECTED.store(true, Ordering::Relaxed);
+    }
 }
