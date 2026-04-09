@@ -59,7 +59,7 @@ pub mod trng;
 pub mod uart;
 pub mod watchdog;
 
-pub mod task;
+pub mod kit;
 
 #[cfg(feature = "critical-section-impl")]
 mod critical_section_impl;

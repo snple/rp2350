@@ -47,7 +47,7 @@
 //! ## 完整示例
 //!
 //! ```ignore
-//! use pico_rs::task::{Event, EventQueue};
+//! use pico_rs::kit::task::{Event, EventQueue};
 //! use pico_rs::interrupt::spare;
 //!
 //! // 事件定义

@@ -17,7 +17,7 @@ use pico_rs::entry;
 use pico_rs::gpio::Pins;
 use pico_rs::interrupt::{self, spare};
 use pico_rs::pac::Peripherals;
-use pico_rs::task::{Event, EventQueue};
+use pico_rs::kit::task::{Event, EventQueue};
 
 // Boot block
 #[unsafe(link_section = ".start_block")]

@@ -13,7 +13,7 @@
 //! ### 基础用法
 //!
 //! ```ignore
-//! use pico_rs::task::{Event, EventQueue};
+//! use pico_rs::kit::task::{Event, EventQueue};
 //!
 //! // 定义事件 ID
 //! const EVT_BUTTON: u16 = 1;
@@ -45,7 +45,7 @@
 //! ### 自定义事件类型
 //!
 //! ```ignore
-//! use pico_rs::task::GenericQueue;
+//! use pico_rs::kit::task::GenericQueue;
 //!
 //! #[derive(Clone, Copy)]
 //! enum MyEvent {
