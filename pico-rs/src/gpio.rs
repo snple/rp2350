@@ -1832,6 +1832,12 @@ pub struct Pin<const N: u8> {
     _marker: core::marker::PhantomData<*const ()>,
 }
 
+// SAFETY: Pin<N> is a zero-sized ownership token.
+// Ownership can safely transfer between cores / ISRs (Send),
+// but &Pin<N> must not be shared across cores (!Sync, guaranteed by
+// PhantomData<*const ()>), preventing concurrent hardware register access.
+unsafe impl<const N: u8> Send for Pin<N> {}
+
 // ============================================================================
 // Generate Pin implementations for all pins
 // ============================================================================
@@ -2102,6 +2108,11 @@ pub const GPIO_PIN_MAX: u8 = 47;
 pub struct Gpio {
     _marker: core::marker::PhantomData<*const ()>,
 }
+
+// SAFETY: Gpio is a zero-sized SIO accessor using only atomic SET/CLR/XOR registers.
+// Ownership can safely transfer (Send), but shared references must not cross
+// cores (!Sync).
+unsafe impl Send for Gpio {}
 
 impl Gpio {
     /// Create a raw GPIO accessor.

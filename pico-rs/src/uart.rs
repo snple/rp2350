@@ -1198,7 +1198,6 @@ macro_rules! impl_uart {
                             }
                         }
                     }
-
                     Ok(())
                 }
 
