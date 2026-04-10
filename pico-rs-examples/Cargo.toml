@@ -230,9 +230,9 @@ path = "src/usb_cdc/usb_cdc_acm.rs"
 name = "usb_cdc_acm_interrupt"
 path = "src/usb_cdc/usb_cdc_acm_interrupt.rs"
 
-# [[bin]]
-# name = "usb_hid_keyboard"
-# path = "src/usb_hid/usb_hid_keyboard.rs"
+[[bin]]
+name = "usb_hid_keyboard"
+path = "src/usb_hid/usb_hid_keyboard.rs"
 
 [[bin]]
 name = "bldc_drv8323"
@@ -241,6 +241,14 @@ path = "src/bldc/bldc_drv8323.rs"
 [[bin]]
 name = "bldc_mct8316z"
 path = "src/bldc/bldc_mct8316z.rs"
+
+[[bin]]
+name = "encoder_switch"
+path = "src/encoder_switch/encoder_switch.rs"
+
+[[bin]]
+name = "encoder_stepper"
+path = "src/encoder_switch/encoder_stepper.rs"
 
 [[bin]]
 name = "tcan4550"

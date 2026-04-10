@@ -30,30 +30,43 @@ use pico_rs::gpio::Pins;
 use pico_rs::pac::Peripherals;
 use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 
-use pico_rs_usb::bus::UsbBus;
-use pico_rs_usb::class::hid::{HidClass, KeyboardReport, keycode, modifier};
+use pico_rs_usb::UsbBusAllocator;
+use pico_rs_usb::class::hid::{HidClass, KeyboardReport, modifier};
 use pico_rs_usb::device::UsbDeviceBuilder;
+use pico_rs_usb::rp2350::Rp2350Bus;
 
 /// RP2350 Boot Block
 #[unsafe(link_section = ".start_block")]
 #[used]
 pub static IMAGE_DEF: ImageDef = ImageDef::exe();
 
+// ─── USB HID Keycodes (from USB HID Usage Tables §10) ────────────────────────
+
+mod keycode {
+    pub const A: u8 = 0x04;
+    pub const NUM_1: u8 = 0x1E;
+    pub const NUM_0: u8 = 0x27;
+    pub const ENTER: u8 = 0x28;
+    pub const TAB: u8 = 0x2B;
+    pub const SPACE: u8 = 0x2C;
+}
+
 /// Type a string by sending individual key reports
-fn type_string(hid: &mut HidClass, text: &str, delay: &mut Delay) {
+fn type_string(hid: &HidClass<Rp2350Bus>, text: &str, delay: &mut Delay) {
     for ch in text.chars() {
-        let (keycode, shift) = char_to_keycode(ch);
-        if keycode != 0 {
+        let (kc, shift) = char_to_keycode(ch);
+        if kc != 0 {
             // Key down
-            let mut report = KeyboardReport::new().with_key(keycode);
+            let mut report = KeyboardReport::default();
+            report.keys[0] = kc;
             if shift {
-                report = report.with_modifier(modifier::LEFT_SHIFT);
+                report.modifiers = modifier::LEFT_SHIFT;
             }
             let _ = hid.send_keyboard_report(&report);
             delay.delay_ms(10);
 
             // Key up
-            let _ = hid.send_keyboard_report(&KeyboardReport::new());
+            let _ = hid.send_keyboard_report(&KeyboardReport::default());
             delay.delay_ms(10);
         }
     }
@@ -104,19 +117,16 @@ fn main() -> ! {
     let button = pins.pin::<15>();
     button.into_input_pullup();
 
-    // Initialize USB bus
-    let usb_bus = UsbBus::new();
-    let _ = usb_bus.init();
-    info!("USB bus initialized");
+    // Initialize USB bus allocator
+    let alloc = UsbBusAllocator::new(Rp2350Bus::new());
+    info!("USB bus allocator created");
 
     // Create HID keyboard class
-    let mut hid = HidClass::keyboard(&usb_bus);
+    let mut hid = HidClass::keyboard(&alloc);
     info!("HID keyboard class created");
 
-    // Build USB device
-    let mut usb_dev = UsbDeviceBuilder::new(&usb_bus)
-        .vendor_id(0x2E8A) // Raspberry Pi
-        .product_id(0x000B) // Custom HID
+    // Build USB device (also freezes the allocator and enables the peripheral)
+    let mut usb_dev = UsbDeviceBuilder::new(&alloc, 0x2E8A, 0x000B)
         .device_release(0x0100)
         .manufacturer("Raspberry Pi")
         .product("Pico HID Keyboard")
@@ -125,8 +135,8 @@ fn main() -> ! {
 
     info!("USB device built, connecting...");
 
-    // Connect to host
-    usb_bus.connect();
+    // Connect to host (enable D+ pull-up)
+    usb_dev.bus().connect();
     info!("USB connected, waiting for enumeration...");
 
     let mut delay = Delay::new(cp.SYST, clocks.sys_freq());
@@ -135,7 +145,7 @@ fn main() -> ! {
 
     loop {
         // Poll USB
-        usb_dev.poll(&mut [&mut hid as &mut dyn pico_rs_usb::device::UsbClass]);
+        usb_dev.poll(&mut [&mut hid]);
 
         // Check if configured
         if hid.is_configured() && !configured {
@@ -154,7 +164,7 @@ fn main() -> ! {
                 led.toggle();
 
                 // Type "Hello!"
-                type_string(&mut hid, "Hello!", &mut delay);
+                type_string(&hid, "Hello!", &mut delay);
 
                 led.toggle();
             }
