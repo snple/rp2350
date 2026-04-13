@@ -118,7 +118,7 @@ fn main() -> ! {
     button.into_input_pullup();
 
     // Initialize USB bus allocator
-    let alloc = UsbBusAllocator::new(Rp2350Bus::steal());
+    let alloc = UsbBusAllocator::new(unsafe { Rp2350Bus::steal() });
     info!("USB bus allocator created");
 
     // Create HID keyboard class

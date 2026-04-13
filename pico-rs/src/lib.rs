@@ -41,6 +41,7 @@ pub mod gpio;
 pub mod i2c;
 pub mod interrupt;
 pub mod multicore;
+pub mod pin;
 pub mod pio;
 pub mod powman;
 pub mod pwm;
