@@ -42,7 +42,7 @@ fn main() -> ! {
     let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
 
     // Take PIO0 block
-    let mut pio0 = pio::Pio0::take();
+    let mut pio0 = pio::Pio0::new(dp.PIO0);
 
     // Claim GPIO 25 for PIO0 (takes ownership)
     pio0.claim_pin(pins.pin::<25>());

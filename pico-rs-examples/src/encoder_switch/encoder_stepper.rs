@@ -431,5 +431,5 @@ fn encoder_button_isr() {
 #[bind(TIMER0_IRQ_0)]
 fn stepper_pulse_isr() {
     let timer = unsafe { Timer0::steal() };
-    AXIS.handle_alarm_isr(&timer);
+    AXIS.handle_alarm_isr(timer.as_ref());
 }

@@ -226,13 +226,13 @@ impl<const N: u8, A, B> Slice<N, A, B> {
     /// The caller must ensure the PWM peripheral has been initialised
     /// (i.e. taken out of reset) before using the returned handle.
     #[inline]
-    pub const unsafe fn steal() -> Slice<N, NoPin, NoPin> {
-        Slice {
+    pub const unsafe fn steal() -> crate::Steal<Slice<N, NoPin, NoPin>> {
+        crate::Steal(Slice {
             pwm: unsafe { pico_rs_pac::PWM::steal() },
             _pin_a: NoPin,
             _pin_b: NoPin,
             mode: Mode::OutputA,
-        }
+        })
     }
 }
 

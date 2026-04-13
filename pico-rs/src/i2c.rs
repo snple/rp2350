@@ -215,12 +215,12 @@ macro_rules! impl_i2c {
                 /// i2c.read(0x50, &mut buf).unwrap();
                 /// ```
                 #[inline]
-                pub unsafe fn steal() -> $I2cName<crate::gpio::pins::NoPin, crate::gpio::pins::NoPin> {
-                    $I2cName {
+                pub unsafe fn steal() -> crate::Steal<$I2cName<crate::gpio::pins::NoPin, crate::gpio::pins::NoPin>> {
+                    crate::Steal($I2cName {
                         i2c: unsafe { <$I2cType>::steal() },
                         _sda: crate::gpio::pins::NoPin,
                         _scl: crate::gpio::pins::NoPin,
-                    }
+                    })
                 }
 
                 /// Get reference to the underlying register block.

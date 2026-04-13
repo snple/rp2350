@@ -199,7 +199,7 @@ fn main() -> ! {
     let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
 
     // Take PIO0 and claim the data pin
-    let mut pio0 = pio::Pio0::take();
+    let mut pio0 = pio::Pio0::new(dp.PIO0);
     pio0.claim_pin(pins.pin::<16>());
 
     // Initialize the WS2812 PIO driver

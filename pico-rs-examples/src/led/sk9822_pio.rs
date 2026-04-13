@@ -166,7 +166,10 @@ fn sk9822_pio_init(pio0: &mut Pio0, sys_clk: u32) {
     let div_full = sys_clk / (CLK_FREQ * 4);
     let int_div = div_full as u16;
 
-    info!("SK9822 PIO: clkdiv={}, offset={}", int_div, installed.offset);
+    info!(
+        "SK9822 PIO: clkdiv={}, offset={}",
+        int_div, installed.offset
+    );
 
     pio0.sm0()
         .apply_program(&installed)
@@ -222,7 +225,7 @@ fn main() -> ! {
     let delay = Delay::new(core.SYST, clocks.sys_freq());
 
     // Take PIO0 and claim CLK + DATA pins
-    let mut pio0 = pio::Pio0::take();
+    let mut pio0 = pio::Pio0::new(dp.PIO0);
     pio0.claim_pin(pins.pin::<2>()); // CLK
     pio0.claim_pin(pins.pin::<3>()); // DATA
 

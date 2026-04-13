@@ -1,7 +1,10 @@
-//! # PIO 三路正交编码器示例
+//! # PIO 三路正交编码器示例 (中断驱动)
 //!
 //! 基于 RP2350 (Raspberry Pi Pico 2) 的 **PIO (可编程 I/O)** 实现，
 //! 使用 **单个 PIO 块 (PIO0) 的 3 个状态机** 同时读取 3 个增量式旋转编码器。
+//!
+//! **使用 PIO0_IRQ_0 中断在 RX FIFO 非空时自动排空并解码**，
+//! 主循环仅负责定期打印，CPU 大部分时间可进入休眠。
 //!
 //! ---
 //!
@@ -17,13 +20,17 @@
 //! ```text
 //!   PIO0 (单个 PIO 块, 共享 13 条指令)
 //!   ┌──────────────────────────────────────────────────────┐
-//!   │  SM0 ─── 采样 GP2/GP3  ─── RX FIFO ───► 编码器 0    │
-//!   │  SM1 ─── 采样 GP4/GP5  ─── RX FIFO ───► 编码器 1    │
-//!   │  SM2 ─── 采样 GP6/GP7  ─── RX FIFO ───► 编码器 2    │
+//!   │  SM0 ─── 采样 GP2/GP3 ─┐                            │
+//!   │  SM1 ─── 采样 GP4/GP5 ─┼── RX FIFO 非空 ──► IRQ0   │
+//!   │  SM2 ─── 采样 GP6/GP7 ─┘                            │
 //!   └──────────────────────────────────────────────────────┘
 //!                      │
+//!                PIO0_IRQ_0 中断
+//!                      │
 //!                      ▼
-//!           CPU 主循环: 读取 FIFO → 查表解码 → 累加位置
+//!         ISR: 排空 FIFO → 查表解码 → 原子累加位置
+//!                      │
+//!           CPU 主循环: 读取位置 → 定期打印
 //! ```
 //!
 //! 每个状态机运行 **相同的 PIO 程序**（安装一次、共享执行），
@@ -113,14 +120,18 @@
 #![no_std]
 #![no_main]
 
+use core::sync::atomic::{AtomicI32, Ordering};
+
 use defmt::*;
 use defmt_rtt as _;
 use panic_probe as _;
 
+use pico_rs::bind;
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
 use pico_rs::gpio::Pins;
-use pico_rs::pac::Peripherals;
+use pico_rs::interrupt;
+use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::pio;
 use pico_rs::pio::FifoJoin;
 use pico_rs::pio_asm;
@@ -148,6 +159,27 @@ const NUM_ENCODERS: usize = 3;
 
 /// 打印间隔 (微秒)
 const PRINT_INTERVAL_US: u64 = 200_000;
+
+// ============================================================================
+// 共享状态 (主循环 ↔ ISR)
+// ============================================================================
+
+/// 编码器位置 (原子操作, ISR 递增/递减, 主循环读取)
+static POSITIONS: [AtomicI32; NUM_ENCODERS] =
+    [AtomicI32::new(0), AtomicI32::new(0), AtomicI32::new(0)];
+
+// ============================================================================
+// PIO0_IRQ_0 中断源位定义 (IRQ0_INTE 寄存器)
+// ============================================================================
+
+/// SM0 RX FIFO 非空 — bit 0
+const IRQ_SM0_RXNEMPTY: u32 = 0;
+
+/// SM1 RX FIFO 非空 — bit 1
+const IRQ_SM1_RXNEMPTY: u32 = 1;
+
+/// SM2 RX FIFO 非空 — bit 2
+const IRQ_SM2_RXNEMPTY: u32 = 2;
 
 // ============================================================================
 // 正交解码查找表
@@ -192,7 +224,7 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     // 2. PIO0 初始化
     // ------------------------------------------------------------------
-    let mut pio0 = pio::Pio0::take();
+    let mut pio0 = pio::Pio0::new(dp.PIO0);
 
     // ------------------------------------------------------------------
     // 3. 配置编码器引脚并声明给 PIO0
@@ -348,49 +380,49 @@ fn main() -> ! {
     // 同步启动所有 3 个状态机 (SM0 | SM1 | SM2 = 0b0111)
     pio0.enable_sm_mask_in_sync(0b0111);
 
+    // ------------------------------------------------------------------
+    // 6. 使能 PIO0 RX FIFO 中断
+    //
+    //    IRQ0_INTE 寄存器:
+    //      bit 0 = SM0 RX FIFO 非空
+    //      bit 1 = SM1 RX FIFO 非空
+    //      bit 2 = SM2 RX FIFO 非空
+    //
+    //    当任一 SM 的 RX FIFO 有数据时，触发 PIO0_IRQ_0 中断，
+    //    ISR 排空 FIFO 并通过查表累加位置。
+    // ------------------------------------------------------------------
+    pio0.set_irq0_source_enabled(IRQ_SM0_RXNEMPTY, true);
+    pio0.set_irq0_source_enabled(IRQ_SM1_RXNEMPTY, true);
+    pio0.set_irq0_source_enabled(IRQ_SM2_RXNEMPTY, true);
+
+    unsafe {
+        interrupt::enable(Interrupt::PIO0_IRQ_0);
+    }
+
     info!("All 3 state machines started in sync");
+    info!("PIO0_IRQ_0 enabled (RX FIFO not-empty for SM0/SM1/SM2)");
     info!("");
     info!("Rotate any encoder — positions printed every 200ms");
     info!("");
 
     // ------------------------------------------------------------------
-    // 6. 主循环: 排空 FIFO → 查表累加 → 定期打印
-    //
-    //    采样率已降至 ~30k/s, 手拧编码器每秒最多几百个边沿,
-    //    FIFO (8 深) 不会溢出, 主循环可加 1ms 延迟节省功耗。
+    // 7. 主循环: 定期打印位置 (解码在 ISR 中完成)
     // ------------------------------------------------------------------
 
-    let mut positions = [0i32; NUM_ENCODERS];
     let mut last_positions = [0i32; NUM_ENCODERS];
     let mut last_print_time = timer.get_time_us();
 
     loop {
-        // ── 排空所有 SM 的 RX FIFO，累加位置 ──
-        //
-        // 每个 FIFO 值的低 4 位 = (old_AB << 2) | new_AB
-        // 查 QUAD_TABLE 得到 +1 (CW) / -1 (CCW) / 0 (无效)
+        timer.delay_ms(10);
 
-        // SM0 — 编码器 0
-        while let Some(val) = pio0.sm0().rx_fifo_try_read() {
-            positions[0] += QUAD_TABLE[(val & 0x0F) as usize];
-        }
-
-        // SM1 — 编码器 1
-        while let Some(val) = pio0.sm1().rx_fifo_try_read() {
-            positions[1] += QUAD_TABLE[(val & 0x0F) as usize];
-        }
-
-        // SM2 — 编码器 2
-        while let Some(val) = pio0.sm2().rx_fifo_try_read() {
-            positions[2] += QUAD_TABLE[(val & 0x0F) as usize];
-        }
-
-        // ── 短暂休眠, 降低 CPU 占用 ──
-        timer.delay_ms(1);
-
-        // ── 定期打印 (仅在位置有变化时) ──
         let now = timer.get_time_us();
         if now.wrapping_sub(last_print_time) >= PRINT_INTERVAL_US {
+            let positions = [
+                POSITIONS[0].load(Ordering::Relaxed),
+                POSITIONS[1].load(Ordering::Relaxed),
+                POSITIONS[2].load(Ordering::Relaxed),
+            ];
+
             if positions != last_positions {
                 info!(
                     "Enc0: {}  |  Enc1: {}  |  Enc2: {}",
@@ -400,5 +432,36 @@ fn main() -> ! {
             }
             last_print_time = now;
         }
+    }
+}
+
+// ============================================================================
+// PIO0_IRQ_0 中断处理函数
+// ============================================================================
+
+/// PIO0 IRQ0 中断服务程序
+///
+/// 当任一 SM 的 RX FIFO 非空时触发。
+/// 排空所有 SM 的 FIFO，查表解码后原子累加到 POSITIONS。
+#[bind(PIO0_IRQ_0)]
+fn pio0_encoder_isr() {
+    // SAFETY: PIO0 已在 main() 中通过 Pio0::new() 初始化。
+    // ISR 在单核 Cortex-M33 上不会与主循环并发访问 PIO 寄存器
+    // (主循环只读原子变量, 不访问 PIO)。
+    let pio0 = unsafe { pio::Pio0::steal() };
+
+    // SM0 — 编码器 0
+    while let Some(val) = pio0.sm0().rx_fifo_try_read() {
+        POSITIONS[0].fetch_add(QUAD_TABLE[(val & 0x0F) as usize], Ordering::Relaxed);
+    }
+
+    // SM1 — 编码器 1
+    while let Some(val) = pio0.sm1().rx_fifo_try_read() {
+        POSITIONS[1].fetch_add(QUAD_TABLE[(val & 0x0F) as usize], Ordering::Relaxed);
+    }
+
+    // SM2 — 编码器 2
+    while let Some(val) = pio0.sm2().rx_fifo_try_read() {
+        POSITIONS[2].fetch_add(QUAD_TABLE[(val & 0x0F) as usize], Ordering::Relaxed);
     }
 }

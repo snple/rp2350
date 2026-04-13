@@ -135,10 +135,10 @@ macro_rules! impl_timer {
             /// - No conflicting ownership exists — i.e. the stolen handle is not
             ///   used to release or re-initialise the peripheral.
             #[inline]
-            pub unsafe fn steal() -> Self {
-                Self {
+            pub unsafe fn steal() -> crate::Steal<Self> {
+                crate::Steal(Self {
                     timer: unsafe { pico_rs_pac::$TIMER::steal() },
-                }
+                })
             }
 
             /// Get reference to the underlying register block

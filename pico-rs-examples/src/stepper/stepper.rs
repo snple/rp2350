@@ -167,6 +167,7 @@ use defmt::*;
 use defmt_rtt as _;
 use panic_probe as _;
 
+use pico_rs::Steal;
 use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
@@ -731,7 +732,7 @@ enum MotionPhase {
 static TIMER: Mutex<RefCell<Option<Timer0>>> = Mutex::new(RefCell::new(None));
 
 #[inline(always)]
-fn gpio() -> Gpio {
+fn gpio() -> Steal<Gpio> {
     // SAFETY: GPIOs are configured through `Pins` during startup. After that,
     // this helper only performs SIO data register access.
     unsafe { Gpio::steal() }

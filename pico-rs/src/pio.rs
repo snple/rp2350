@@ -21,7 +21,7 @@
 //! use pico_rs::pio::{self, Pio0, FifoJoin};
 //!
 //! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
-//! let mut pio0 = Pio0::take();
+//! let mut pio0 = Pio0::new(dp.PIO0);
 //!
 //! // Claim GPIO pin (takes ownership, configures for PIO0)
 //! pio0.claim_pin(pins.pin::<25>());
@@ -49,6 +49,7 @@ use paste::paste;
 
 pub use pico_rs_macro::pio_asm;
 
+use crate::Steal;
 use crate::gpio;
 use crate::reset::Resettable;
 
@@ -821,15 +822,56 @@ macro_rules! impl_pio_block {
                 /// PIO block index (0, 1, or 2)
                 pub const ID: u8 = $pio_num;
 
-                /// Take ownership of this PIO block
+                /// Create a new PIO block instance, taking ownership of the PAC peripheral.
                 ///
                 /// Unresets the PIO peripheral. Call once per PIO block.
-                pub fn take() -> Self {
+                ///
+                /// # Example
+                ///
+                /// ```ignore
+                /// let dp = Peripherals::take().unwrap();
+                /// let mut pio0 = Pio0::new(dp.PIO0);
+                /// ```
+                pub fn new(pio: pico_rs_pac::[<PIO $pio_num>]) -> Self {
                     <pico_rs_pac::[<PIO $pio_num>] as Resettable>::unreset();
                     Self {
-                        pio: unsafe { pico_rs_pac::[<PIO $pio_num>]::steal() },
+                        pio,
                         used_instruction_space: 0,
                     }
+                }
+
+                /// Obtain a read-only PIO handle without ownership.
+                ///
+                /// Returns [`Steal<Self>`], which dereferences to `&Self`
+                /// only — preventing access to `&mut self` methods such as
+                /// [`install_program`](Self::install_program) and
+                /// [`clear_instruction_memory`](Self::clear_instruction_memory).
+                ///
+                /// Useful for ISR context where only FIFO reads / status
+                /// queries are needed.
+                ///
+                /// # Safety
+                ///
+                /// The caller must ensure:
+                /// 1. The PIO peripheral has already been initialised via `new()`.
+                /// 2. No data races: the returned handle must not be used
+                ///    concurrently with the owning instance without proper
+                ///    synchronisation (e.g. critical section or single-core ISR).
+                ///
+                /// # Example
+                ///
+                /// ```ignore
+                #[doc = concat!("let pio0 = unsafe { ", stringify!($PioName), "::steal() };")]
+                /// while let Some(val) = pio0.sm0().rx_fifo_try_read() {
+                ///     // process val
+                /// }
+                /// ```
+                #[inline]
+                pub unsafe fn steal() -> Steal<Self> {
+                    Steal(Self {
+                        pio: unsafe { pico_rs_pac::[<PIO $pio_num>]::steal() },
+                        used_instruction_space: 0,
+                    })
                 }
 
                 // ============================================================

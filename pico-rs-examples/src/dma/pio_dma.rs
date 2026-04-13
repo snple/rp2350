@@ -60,7 +60,7 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     // PIO setup
     // ------------------------------------------------------------------
-    let mut pio0 = pio::Pio0::take();
+    let mut pio0 = pio::Pio0::new(dp.PIO0);
     pio0.claim_pin(pins.pin::<25>());
 
     // PIO program: autopull 32 bits, shift out 1 bit at a time to pin

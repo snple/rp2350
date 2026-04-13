@@ -28,6 +28,112 @@
 
 #![no_std]
 
+// ============================================================================
+// Steal wrapper — returned by `steal()` methods across HAL drivers
+// ============================================================================
+
+/// Zero-cost wrapper returned by `steal()` methods.
+///
+/// Implements [`Deref`](core::ops::Deref) but **not** `DerefMut`, so the
+/// caller can only obtain `&T` — preventing access to `&mut self` methods
+/// (e.g. `install_program`, `init`, `clear_instruction_memory`).
+///
+/// ## Example
+///
+/// ```ignore
+/// let pio0 = unsafe { Pio0::steal() }; // Steal<Pio0>
+/// pio0.sm0().rx_fifo_try_read();        // &self — OK via Deref
+/// pio0.install_program(&prog);           // &mut self — compile error
+/// ```
+pub struct Steal<T>(pub(crate) T);
+
+impl<T> core::ops::Deref for Steal<T> {
+    type Target = T;
+    #[inline]
+    fn deref(&self) -> &T {
+        &self.0
+    }
+}
+
+impl<T> AsRef<T> for Steal<T> {
+    #[inline]
+    fn as_ref(&self) -> &T {
+        &self.0
+    }
+}
+
+// Blanket trait forwarding for Steal<T> — allows stolen handles to satisfy
+// trait bounds that only require `&self` methods.
+
+impl<T: timer::MonotonicTimer> timer::MonotonicTimer for Steal<T> {
+    #[inline]
+    fn get_time_us(&self) -> u64 {
+        self.0.get_time_us()
+    }
+    #[inline]
+    fn get_time_us_32(&self) -> u32 {
+        self.0.get_time_us_32()
+    }
+}
+
+impl<T: timer::AlarmTimer> timer::AlarmTimer for Steal<T> {
+    #[inline]
+    fn set_alarm(&self, alarm: u8, time: u32) {
+        self.0.set_alarm(alarm, time)
+    }
+    #[inline]
+    fn set_alarm_safe(&self, alarm: u8, time: u32) {
+        self.0.set_alarm_safe(alarm, time)
+    }
+    #[inline]
+    fn is_alarm_armed(&self, alarm: u8) -> bool {
+        self.0.is_alarm_armed(alarm)
+    }
+    #[inline]
+    fn disarm_alarm(&self, alarm: u8) {
+        self.0.disarm_alarm(alarm)
+    }
+    #[inline]
+    fn enable_alarm_interrupt(&self, alarm: u8) {
+        self.0.enable_alarm_interrupt(alarm)
+    }
+    #[inline]
+    fn disable_alarm_interrupt(&self, alarm: u8) {
+        self.0.disable_alarm_interrupt(alarm)
+    }
+    #[inline]
+    fn is_alarm_interrupt_enabled(&self, alarm: u8) -> bool {
+        self.0.is_alarm_interrupt_enabled(alarm)
+    }
+    #[inline]
+    fn alarm_interrupt_raw(&self, alarm: u8) -> bool {
+        self.0.alarm_interrupt_raw(alarm)
+    }
+    #[inline]
+    fn alarm_interrupt_status(&self, alarm: u8) -> bool {
+        self.0.alarm_interrupt_status(alarm)
+    }
+    #[inline]
+    fn clear_alarm_interrupt(&self, alarm: u8) {
+        self.0.clear_alarm_interrupt(alarm)
+    }
+    #[inline]
+    fn force_alarm_interrupt(&self, alarm: u8) {
+        self.0.force_alarm_interrupt(alarm)
+    }
+    #[inline]
+    fn clear_forced_alarm_interrupt(&self, alarm: u8) {
+        self.0.clear_forced_alarm_interrupt(alarm)
+    }
+}
+
+impl<T: delay::DelayUs> delay::DelayUs for Steal<T> {
+    #[inline]
+    fn delay_us(&self, us: u32) {
+        self.0.delay_us(us)
+    }
+}
+
 pub mod accessctrl;
 pub mod adc;
 pub mod binary_info;

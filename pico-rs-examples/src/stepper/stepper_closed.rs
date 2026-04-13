@@ -140,6 +140,7 @@ use defmt::*;
 use defmt_rtt as _;
 use panic_probe as _;
 
+use pico_rs::Steal;
 use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
@@ -369,7 +370,7 @@ static STALL_DETECTED: AtomicBool = AtomicBool::new(false);
 static MOTION_DONE: AtomicBool = AtomicBool::new(true);
 
 #[inline(always)]
-fn gpio() -> Gpio {
+fn gpio() -> Steal<Gpio> {
     // SAFETY: the example configures STEP/DIR/ENABLE through `Pins` before
     // any runtime SIO access. This helper only performs SIO data-path IO.
     unsafe { Gpio::steal() }

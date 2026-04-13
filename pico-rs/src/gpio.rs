@@ -512,8 +512,8 @@ macro_rules! impl_pin {
                 /// - No data races occur — i.e. the same pin is not being
                 ///   concurrently reconfigured from another context.
                 #[inline]
-                pub const unsafe fn steal() -> Self {
-                    Self { _marker: core::marker::PhantomData }
+                pub const unsafe fn steal() -> crate::Steal<Self> {
+                    crate::Steal(Self { _marker: core::marker::PhantomData })
                 }
 
                 // ================================================================
@@ -1297,8 +1297,8 @@ macro_rules! impl_pin {
                 /// - No data races occur — i.e. the same pin is not being
                 ///   concurrently reconfigured from another context.
                 #[inline]
-                pub const unsafe fn steal() -> Self {
-                    Self { _marker: core::marker::PhantomData<*const ()> }
+                pub const unsafe fn steal() -> crate::Steal<Self> {
+                    crate::Steal(Self { _marker: core::marker::PhantomData<*const ()> })
                 }
 
                 #[inline(always)]
@@ -2127,10 +2127,10 @@ impl Gpio {
     /// configure pins through [`Pins`] and [`Pin<N>`] first, then use [`Gpio`]
     /// only for SIO data access.
     #[inline]
-    pub const unsafe fn steal() -> Self {
-        Self {
+    pub const unsafe fn steal() -> crate::Steal<Self> {
+        crate::Steal(Self {
             _marker: core::marker::PhantomData,
-        }
+        })
     }
 
     #[inline(always)]

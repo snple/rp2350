@@ -348,6 +348,7 @@ use defmt::*;
 use defmt_rtt as _;
 use panic_probe as _;
 
+use pico_rs::Steal;
 use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
@@ -783,7 +784,7 @@ static AXIS: AxisState = AxisState::new();
 static STALL_DETECTED: AtomicBool = AtomicBool::new(false);
 
 #[inline(always)]
-fn gpio() -> Gpio {
+fn gpio() -> Steal<Gpio> {
     unsafe { Gpio::steal() }
 }
 

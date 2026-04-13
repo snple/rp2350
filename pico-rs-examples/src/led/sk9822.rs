@@ -280,7 +280,7 @@ fn main() -> ! {
 
     if USE_PIO {
         // ---- PIO backend ----
-        let mut pio0 = pio::Pio0::take();
+        let mut pio0 = pio::Pio0::new(dp.PIO0);
         pio0.claim_pin(pins.pin::<2>()); // CLK
         pio0.claim_pin(pins.pin::<3>()); // DATA
 

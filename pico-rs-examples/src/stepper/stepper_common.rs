@@ -72,11 +72,12 @@
 
 use core::sync::atomic::{AtomicBool, AtomicI32, AtomicU8, AtomicU32, Ordering};
 
+use pico_rs::Steal;
 use pico_rs::gpio::Gpio;
 use pico_rs::timer::{AlarmTimer, MonotonicTimer};
 
 #[inline(always)]
-fn gpio() -> Gpio {
+fn gpio() -> Steal<Gpio> {
     // SAFETY: these examples configure GPIO direction and function once during
     // initialization, then use `Gpio` only for runtime SIO data-path access.
     unsafe { Gpio::steal() }

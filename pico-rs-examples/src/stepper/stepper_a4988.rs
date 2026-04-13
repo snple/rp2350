@@ -209,6 +209,7 @@ use defmt::*;
 use defmt_rtt as _;
 use panic_probe as _;
 
+use pico_rs::Steal;
 use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
@@ -299,7 +300,7 @@ const PIN_SLEEP: u32 = 9;
 static AXIS: AxisState = AxisState::new();
 
 #[inline(always)]
-fn gpio() -> Gpio {
+fn gpio() -> Steal<Gpio> {
     // SAFETY: all stepper control pins are configured through `Pins` before any
     // runtime SIO access happens.
     unsafe { Gpio::steal() }

@@ -229,12 +229,12 @@ macro_rules! impl_uart {
                 /// uart.write(b"hello from ISR\r\n");
                 /// ```
                 #[inline]
-                pub unsafe fn steal() -> $UartName<crate::gpio::pins::NoPin, crate::gpio::pins::NoPin> {
-                    $UartName {
+                pub unsafe fn steal() -> crate::Steal<$UartName<crate::gpio::pins::NoPin, crate::gpio::pins::NoPin>> {
+                    crate::Steal($UartName {
                         uart: unsafe { <$UartType>::steal() },
                         _tx: crate::gpio::pins::NoPin,
                         _rx: crate::gpio::pins::NoPin,
-                    }
+                    })
                 }
 
                 /// Get reference to the underlying register block.
@@ -982,19 +982,19 @@ macro_rules! impl_uart {
                 ///
                 /// Same requirements as [`$UartName::steal()`].
                 #[inline]
-                pub unsafe fn steal() -> [<$UartName WithFlowControl>]<
+                pub unsafe fn steal() -> crate::Steal<[<$UartName WithFlowControl>]<
                     crate::gpio::pins::NoPin,
                     crate::gpio::pins::NoPin,
                     crate::gpio::pins::NoPin,
                     crate::gpio::pins::NoPin,
-                > {
-                    [<$UartName WithFlowControl>] {
+                >> {
+                    crate::Steal([<$UartName WithFlowControl>] {
                         uart: unsafe { <$UartType>::steal() },
                         _tx: crate::gpio::pins::NoPin,
                         _rx: crate::gpio::pins::NoPin,
                         _cts: crate::gpio::pins::NoPin,
                         _rts: crate::gpio::pins::NoPin,
-                    }
+                    })
                 }
 
                 /// Get reference to the underlying register block.

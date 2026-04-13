@@ -269,13 +269,13 @@ macro_rules! impl_spi {
                 /// spi.write(&[0x01, 0x02]);
                 /// ```
                 #[inline]
-                pub unsafe fn steal() -> $SpiName<crate::gpio::pins::NoPin, crate::gpio::pins::NoPin, crate::gpio::pins::NoPin> {
-                    $SpiName {
+                pub unsafe fn steal() -> crate::Steal<$SpiName<crate::gpio::pins::NoPin, crate::gpio::pins::NoPin, crate::gpio::pins::NoPin>> {
+                    crate::Steal($SpiName {
                         spi: unsafe { <$SpiType>::steal() },
                         _sck: crate::gpio::pins::NoPin,
                         _tx: crate::gpio::pins::NoPin,
                         _rx: crate::gpio::pins::NoPin,
-                    }
+                    })
                 }
 
                 /// Get reference to the underlying register block.
@@ -963,19 +963,19 @@ macro_rules! impl_spi {
                 ///
                 /// Same requirements as [`$SpiName::steal()`].
                 #[inline]
-                pub unsafe fn steal() -> [<$SpiName WithCs>]<
+                pub unsafe fn steal() -> crate::Steal<[<$SpiName WithCs>]<
                     crate::gpio::pins::NoPin,
                     crate::gpio::pins::NoPin,
                     crate::gpio::pins::NoPin,
                     crate::gpio::pins::NoPin,
-                > {
-                    [<$SpiName WithCs>] {
+                >> {
+                    crate::Steal([<$SpiName WithCs>] {
                         spi: unsafe { <$SpiType>::steal() },
                         _sck: crate::gpio::pins::NoPin,
                         _tx: crate::gpio::pins::NoPin,
                         _rx: crate::gpio::pins::NoPin,
                         _csn: crate::gpio::pins::NoPin,
-                    }
+                    })
                 }
 
                 /// Get reference to the underlying register block.
