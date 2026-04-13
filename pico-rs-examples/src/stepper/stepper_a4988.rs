@@ -302,7 +302,7 @@ static AXIS: AxisState = AxisState::new();
 fn gpio() -> Gpio {
     // SAFETY: all stepper control pins are configured through `Pins` before any
     // runtime SIO access happens.
-    unsafe { Gpio::new() }
+    unsafe { Gpio::steal() }
 }
 
 // ============================================================================

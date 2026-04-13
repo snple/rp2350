@@ -189,7 +189,6 @@ macro_rules! impl_uart {
                 uart: $UartType,
                 _tx: TX,
                 _rx: RX,
-                baudrate: u32,
             }
 
             impl<TX, RX> $UartName<TX, RX>
@@ -199,6 +198,44 @@ macro_rules! impl_uart {
             {
                 /// UART peripheral number
                 pub const NUM: u8 = $uart_num;
+
+                /// Obtain a pin-erased UART handle without ownership.
+                ///
+                /// Returns `$UartName<NoPin, NoPin>` — a handle that can access
+                /// all UART registers without carrying pin type parameters.
+                /// This is useful for ISR context or global storage where the
+                /// concrete pin types are inconvenient.
+                ///
+                /// # Safety
+                ///
+                /// The caller must ensure:
+                /// 1. The UART peripheral has already been initialised (pins
+                ///    configured, baud rate set, peripheral taken out of reset).
+                /// 2. No data races: the returned handle must not be used
+                ///    concurrently with the owning instance without proper
+                ///    synchronisation (e.g. `Mutex`).
+                ///
+                /// # Example
+                ///
+                /// ```ignore
+                #[doc = concat!("// In init code: create the full UART with pins")]
+                #[doc = concat!("let uart = ", stringify!($UartName), "::new(")]
+                #[doc = concat!("    dp.UART", $uart_num, ", tx_pin, rx_pin, 115200, sys_clk,")]
+                /// );
+                /// // Store the owning instance somewhere (e.g. Mutex)
+                ///
+                /// // Later, in ISR or another context:
+                #[doc = concat!("let uart = unsafe { ", stringify!($UartName), "::<NoPin, NoPin>::steal() };")]
+                /// uart.write(b"hello from ISR\r\n");
+                /// ```
+                #[inline]
+                pub unsafe fn steal() -> $UartName<crate::gpio::pins::NoPin, crate::gpio::pins::NoPin> {
+                    $UartName {
+                        uart: unsafe { <$UartType>::steal() },
+                        _tx: crate::gpio::pins::NoPin,
+                        _rx: crate::gpio::pins::NoPin,
+                    }
+                }
 
                 /// Get reference to the underlying register block.
                 ///
@@ -256,7 +293,6 @@ macro_rules! impl_uart {
                         uart,
                         _tx: tx,
                         _rx: rx,
-                        baudrate: 0,
                     };
 
                     // Set baud rate
@@ -294,7 +330,9 @@ macro_rules! impl_uart {
                 // ================================================================
 
                 /// Configure the UART baud rate (internal helper)
-                fn configure_baudrate(&mut self, baudrate: u32, peri_clk: u32) {
+                ///
+                /// Returns the actual baud rate achieved.
+                fn configure_baudrate(&mut self, baudrate: u32, peri_clk: u32) -> u32 {
                     // Baud rate divider = peri_clk / (16 * baudrate)
                     // We use a fixed-point calculation with 6 fractional bits
                     // BRD = (64 * peri_clk) / (16 * baudrate) = (4 * peri_clk) / baudrate
@@ -310,9 +348,9 @@ macro_rules! impl_uart {
                     let lcr = self.uart.uartlcr_h.read_bits();
                     self.uart.uartlcr_h.write_bits(lcr);
 
-                    // Calculate actual baud rate
-                    let actual = (4 * peri_clk as u64) / (64 * ibrd as u64 + fbrd as u64);
-                    self.baudrate = actual as u32;
+                    // Return actual baud rate
+                    let divisor = 64 * ibrd as u64 + fbrd as u64;
+                    if divisor == 0 { 0 } else { (4 * peri_clk as u64 / divisor) as u32 }
                 }
 
                 /// Set the UART baud rate
@@ -324,8 +362,7 @@ macro_rules! impl_uart {
                 /// # Returns
                 /// The actual baud rate achieved
                 pub fn set_baudrate(&mut self, baudrate: u32, peri_clk: u32) -> u32 {
-                    self.configure_baudrate(baudrate, peri_clk);
-                    self.baudrate
+                    self.configure_baudrate(baudrate, peri_clk)
                 }
 
                 /// Set the data format
@@ -566,10 +603,19 @@ macro_rules! impl_uart {
                     self.uart.uartrsr.clr_fe();
                 }
 
-                /// Get the current baud rate
+                /// Get the current baud rate by reading hardware registers
+                ///
+                /// # Arguments
+                /// * `peri_clk` - Peripheral clock frequency in Hz
                 #[inline]
-                pub fn baudrate(&self) -> u32 {
-                    self.baudrate
+                pub fn baudrate(&self, peri_clk: u32) -> u32 {
+                    let ibrd = self.uart.uartibrd.baud_divint() as u64;
+                    let fbrd = self.uart.uartfbrd.baud_divfrac() as u64;
+                    let divisor = 64 * ibrd + fbrd;
+                    if divisor == 0 {
+                        return 0;
+                    }
+                    (4 * peri_clk as u64 / divisor) as u32
                 }
 
                 // ================================================================
@@ -918,7 +964,6 @@ macro_rules! impl_uart {
                 _rx: RX,
                 _cts: CTS,
                 _rts: RTS,
-                baudrate: u32,
             }
 
             impl<TX, RX, CTS, RTS> [<$UartName WithFlowControl>]<TX, RX, CTS, RTS>
@@ -930,6 +975,27 @@ macro_rules! impl_uart {
             {
                 /// UART peripheral number
                 pub const NUM: u8 = $uart_num;
+
+                /// Obtain a pin-erased UART handle without ownership (flow control variant).
+                ///
+                /// # Safety
+                ///
+                /// Same requirements as [`$UartName::steal()`].
+                #[inline]
+                pub unsafe fn steal() -> [<$UartName WithFlowControl>]<
+                    crate::gpio::pins::NoPin,
+                    crate::gpio::pins::NoPin,
+                    crate::gpio::pins::NoPin,
+                    crate::gpio::pins::NoPin,
+                > {
+                    [<$UartName WithFlowControl>] {
+                        uart: unsafe { <$UartType>::steal() },
+                        _tx: crate::gpio::pins::NoPin,
+                        _rx: crate::gpio::pins::NoPin,
+                        _cts: crate::gpio::pins::NoPin,
+                        _rts: crate::gpio::pins::NoPin,
+                    }
+                }
 
                 /// Get reference to the underlying register block.
                 ///
@@ -976,7 +1042,6 @@ macro_rules! impl_uart {
                         _rx: rx,
                         _cts: cts,
                         _rts: rts,
-                        baudrate: 0,
                     };
 
                     // Set baud rate
@@ -1011,7 +1076,9 @@ macro_rules! impl_uart {
                 }
 
                 /// Configure the UART baud rate (internal helper)
-                fn configure_baudrate(&mut self, baudrate: u32, peri_clk: u32) {
+                ///
+                /// Returns the actual baud rate achieved.
+                fn configure_baudrate(&mut self, baudrate: u32, peri_clk: u32) -> u32 {
                     let baud_div_fixed = (4 * peri_clk as u64) / baudrate as u64;
                     let ibrd = (baud_div_fixed >> 6) as u32;
                     let fbrd = (baud_div_fixed & 0x3f) as u32;
@@ -1022,14 +1089,13 @@ macro_rules! impl_uart {
                     let lcr = self.uart.uartlcr_h.read_bits();
                     self.uart.uartlcr_h.write_bits(lcr);
 
-                    let actual = (4 * peri_clk as u64) / (64 * ibrd as u64 + fbrd as u64);
-                    self.baudrate = actual as u32;
+                    let divisor = 64 * ibrd as u64 + fbrd as u64;
+                    if divisor == 0 { 0 } else { (4 * peri_clk as u64 / divisor) as u32 }
                 }
 
                 /// Set the UART baud rate
                 pub fn set_baudrate(&mut self, baudrate: u32, peri_clk: u32) -> u32 {
-                    self.configure_baudrate(baudrate, peri_clk);
-                    self.baudrate
+                    self.configure_baudrate(baudrate, peri_clk)
                 }
 
                 /// Set the data format
@@ -1149,10 +1215,19 @@ macro_rules! impl_uart {
                     while self.uart.uartfr.busy() {}
                 }
 
-                /// Get the current baud rate
+                /// Get the current baud rate by reading hardware registers
+                ///
+                /// # Arguments
+                /// * `peri_clk` - Peripheral clock frequency in Hz
                 #[inline]
-                pub fn baudrate(&self) -> u32 {
-                    self.baudrate
+                pub fn baudrate(&self, peri_clk: u32) -> u32 {
+                    let ibrd = self.uart.uartibrd.baud_divint() as u64;
+                    let fbrd = self.uart.uartfbrd.baud_divfrac() as u64;
+                    let divisor = 64 * ibrd + fbrd;
+                    if divisor == 0 {
+                        return 0;
+                    }
+                    (4 * peri_clk as u64 / divisor) as u32
                 }
             }
 

@@ -66,7 +66,7 @@ fn main() -> ! {
     // 3. Build the device — this freezes the allocator and enables the peripheral.
     // 4. Connect the D+ pull-up to signal presence to the host.
 
-    let alloc = UsbBusAllocator::new(Rp2350Bus::new());
+    let alloc = UsbBusAllocator::new(unsafe { Rp2350Bus::steal() });
 
     let mut cdc = CdcAcm::new(&alloc);
 

@@ -97,7 +97,7 @@ fn main() -> ! {
 extern "C" fn IO_IRQ_BANK0() {
     // SAFETY: GPIO subsystem was initialised in main() via Pins::new().
     // Only interrupt-status registers are accessed here — no reconfiguration.
-    let button = unsafe { Pin::<BUTTON_PIN>::new() };
+    let button = unsafe { Pin::<BUTTON_PIN>::steal() };
 
     // Check and clear GPIO15 falling edge interrupt in one call
     if button.check_and_clear(EdgeLevel::EdgeLow) {

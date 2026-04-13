@@ -372,7 +372,7 @@ static MOTION_DONE: AtomicBool = AtomicBool::new(true);
 fn gpio() -> Gpio {
     // SAFETY: the example configures STEP/DIR/ENABLE through `Pins` before
     // any runtime SIO access. This helper only performs SIO data-path IO.
-    unsafe { Gpio::new() }
+    unsafe { Gpio::steal() }
 }
 
 // ============================================================================
@@ -749,7 +749,7 @@ fn main() -> ! {
                     pi_speed.reset();
 
                     // LED 快闪指示
-                    unsafe { Pin::<{ PIN_LED as u8 }>::new() }.toggle();
+                    unsafe { Pin::<{ PIN_LED as u8 }>::steal() }.toggle();
 
                     warn!(
                         "STALL! cmd={} enc_ustep={} err={} cnt={}",
@@ -759,7 +759,7 @@ fn main() -> ! {
             } else {
                 stall_counter = 0;
                 // 堵转恢复后关闭 LED
-                unsafe { Pin::<{ PIN_LED as u8 }>::new() }.set_low();
+                unsafe { Pin::<{ PIN_LED as u8 }>::steal() }.set_low();
             }
 
             // ---- 日志 (~2Hz) ----
@@ -786,8 +786,8 @@ fn main() -> ! {
 #[unsafe(no_mangle)]
 #[allow(non_snake_case)]
 fn IO_IRQ_BANK0() {
-    let pin_a = unsafe { pico_rs::gpio::Pin::<10>::new() };
-    let pin_b = unsafe { pico_rs::gpio::Pin::<11>::new() };
+    let pin_a = unsafe { pico_rs::gpio::Pin::<10>::steal() };
+    let pin_b = unsafe { pico_rs::gpio::Pin::<11>::steal() };
     pin_a.clear_all_interrupts();
     pin_b.clear_all_interrupts();
 
@@ -841,7 +841,7 @@ fn TIMER0_IRQ_1() {
                 return;
             }
 
-            let step_pin = unsafe { Pin::<{ PIN_STEP as u8 }>::new() };
+            let step_pin = unsafe { Pin::<{ PIN_STEP as u8 }>::steal() };
             let pulse_high = PULSE_STATE.load(Ordering::Relaxed);
 
             if !pulse_high {

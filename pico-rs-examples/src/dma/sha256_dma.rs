@@ -37,7 +37,7 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     // SHA-256 setup
     // ------------------------------------------------------------------
-    let mut sha = Sha256::new();
+    let mut sha = Sha256::steal();
 
     // Initialise the SHA-256 engine (resets SUM registers to H0..H7)
     sha.start();

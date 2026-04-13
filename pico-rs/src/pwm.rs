@@ -219,14 +219,14 @@ pub struct Slice<const N: u8, A = NoPin, B = NoPin> {
 }
 
 impl<const N: u8, A, B> Slice<N, A, B> {
-    /// Create a PWM slice handle without going through [`Pwm`].
+    /// Obtain a PWM slice handle without going through [`Pwm`].
     ///
     /// # Safety
     ///
     /// The caller must ensure the PWM peripheral has been initialised
     /// (i.e. taken out of reset) before using the returned handle.
     #[inline]
-    pub const unsafe fn new() -> Slice<N, NoPin, NoPin> {
+    pub const unsafe fn steal() -> Slice<N, NoPin, NoPin> {
         Slice {
             pwm: unsafe { pico_rs_pac::PWM::steal() },
             _pin_a: NoPin,

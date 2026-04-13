@@ -41,11 +41,11 @@
 //! use pico_rs::multicore::Fifo;
 //!
 //! // On Core 0:
-//! let fifo = Fifo::new();
+//! let fifo = Fifo::steal();
 //! fifo.write(0x12345678);  // Send to Core 1
 //!
 //! // On Core 1:
-//! let fifo = Fifo::new();
+//! let fifo = Fifo::steal();
 //! let value = fifo.read();  // Receive from Core 0
 //! ```
 
@@ -185,13 +185,16 @@ pub struct Fifo {
 }
 
 impl Fifo {
-    /// Create a new FIFO instance
+    /// Obtain a handle to the inter-core FIFO.
+    ///
+    /// The FIFO is a hardware peripheral that already exists; this method
+    /// simply returns a handle to access it.
     ///
     /// # Safety
     /// This does not track ownership. The caller must ensure proper
     /// synchronization when accessing from multiple contexts.
     #[inline]
-    pub fn new() -> Self {
+    pub fn steal() -> Self {
         Self {
             sio: crate::sio::regs(),
         }
@@ -318,7 +321,7 @@ impl Fifo {
 
 impl Default for Fifo {
     fn default() -> Self {
-        Self::new()
+        Self::steal()
     }
 }
 
@@ -339,9 +342,12 @@ impl Doorbell {
     /// Number of available doorbell bits
     pub const COUNT: u8 = 8;
 
-    /// Create a new Doorbell instance
+    /// Obtain a handle to the doorbell hardware.
+    ///
+    /// The doorbell is a hardware peripheral that already exists; this method
+    /// simply returns a handle to access it.
     #[inline]
-    pub fn new() -> Self {
+    pub fn steal() -> Self {
         Self {
             sio: crate::sio::regs(),
         }
@@ -407,7 +413,7 @@ impl Doorbell {
 
 impl Default for Doorbell {
     fn default() -> Self {
-        Self::new()
+        Self::steal()
     }
 }
 
@@ -494,7 +500,7 @@ impl Multicore {
     /// - The vector table must be properly aligned
     pub unsafe fn launch_core1_raw(&mut self, stack_ptr: u32, entry: u32, vector_table: u32) {
         // Get the FIFO for sending commands to Core 1
-        let fifo = Fifo::new();
+        let fifo = Fifo::steal();
 
         // The launch sequence sends commands in this order:
         // 0, 0, 1, vector_table, stack_ptr, entry
@@ -563,7 +569,7 @@ impl Multicore {
         // 2. Drain its own FIFO
         // 3. Push a 0 to our FIFO to signal it's ready
 
-        let fifo = Fifo::new();
+        let fifo = Fifo::steal();
 
         // Wait for Core 1's ready signal (blocking read of 0)
         let response = fifo.read();

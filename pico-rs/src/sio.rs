@@ -33,14 +33,14 @@
 //! pins.pin::<25>().into_output();
 //!
 //! // Create SIO instance (zero-cost, no ownership required)
-//! let sio = Sio::new();
+//! let sio = Sio::steal();
 //!
 //! // Read current core ID
 //! let core = sio.core_id();
 //!
 //! // GPIO operations use the runtime-indexed GPIO accessor.
 //! // SAFETY: GPIO 25 was configured for SIO output above.
-//! let gpio = unsafe { Gpio::new() };
+//! let gpio = unsafe { Gpio::steal() };
 //! gpio.set_high(25);      // Set GPIO 25 high
 //! gpio.set_low(25);       // Set GPIO 25 low
 //! let input = gpio.get(25);
@@ -113,7 +113,7 @@ pub(crate) const fn regs() -> &'static RegisterBlock {
 /// Creating instances is cheap. All register access goes through the
 /// statically configured base address.
 ///
-/// The `_private` field prevents external construction — use [`Sio::new()`].
+/// The `_private` field prevents external construction — use [`Sio::steal()`].
 ///
 /// SIO is core-local and does not require ownership tracking. Multiple
 /// instances can coexist safely.
@@ -123,11 +123,11 @@ pub struct Sio {
 }
 
 impl Sio {
-    /// Create a new SIO instance.
+    /// Obtain a handle to the SIO hardware registers.
     ///
     /// This is a low-cost operation. No peripheral ownership is taken.
     #[inline]
-    pub const fn new() -> Self {
+    pub const fn steal() -> Self {
         Sio {
             _marker: core::marker::PhantomData,
         }

@@ -558,7 +558,7 @@ impl Clocks {
     #[inline]
     pub fn new(clocks: CLOCKS, xosc: Xosc) -> Self {
         // ROSC is already running from boot, just create the driver
-        let rosc = Rosc::new();
+        let rosc = Rosc::steal();
         Self {
             clocks,
             frequencies: ClockFrequencies::default(),

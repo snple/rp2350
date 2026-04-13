@@ -117,11 +117,14 @@ impl Rp2350Bus {
     ///
     /// Initialisation happens inside [`UsbBus::enable`], which is called by
     /// [`UsbBusAllocator::freeze`].
-    pub const fn new() -> Self {
+    ///
+    /// # Safety
+    /// - Caller must ensure this is only called once (e.g. by only calling from `main()`).
+    pub const unsafe fn steal() -> Self {
         Self {
             usb: unsafe { &*(USB::PTR as *const _) },
             dpram: unsafe { &*(USB_DPRAM::PTR as *const _) },
-            dpram_mem: Dpram::new(),
+            dpram_mem: Dpram::steal(),
             ep0_in_data_toggle: AtomicBool::new(true),
             setup_pending: AtomicBool::new(false),
             allocator: UnsafeCell::new(EpAllocator::new()),
@@ -679,11 +682,5 @@ impl UsbBus for Rp2350Bus {
     fn resume(&self) {
         #[cfg(feature = "defmt")]
         defmt::debug!("USB: resume");
-    }
-}
-
-impl Default for Rp2350Bus {
-    fn default() -> Self {
-        Self::new()
     }
 }

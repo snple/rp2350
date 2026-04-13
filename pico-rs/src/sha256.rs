@@ -8,7 +8,7 @@
 //! ```ignore
 //! use pico_rs::sha256::Sha256;
 //!
-//! let mut sha = Sha256::new();
+//! let mut sha = Sha256::steal();
 //!
 //! // Start a new hash computation
 //! sha.start();
@@ -51,11 +51,11 @@ pub struct Sha256 {
 }
 
 impl Sha256 {
-    /// Create a new SHA-256 driver instance
+    /// Obtain a handle to the SHA-256 hardware accelerator.
     ///
     /// This will bring the SHA-256 peripheral out of reset.
     #[inline]
-    pub fn new() -> Self {
+    pub fn steal() -> Self {
         // Bring SHA256 out of reset
         pico_rs_pac::SHA256::unreset();
 
@@ -328,7 +328,7 @@ impl Sha256 {
 
 impl Default for Sha256 {
     fn default() -> Self {
-        Self::new()
+        Self::steal()
     }
 }
 
@@ -345,7 +345,7 @@ pub struct Sha256Hasher {
 impl Sha256Hasher {
     /// Create a new incremental hasher
     pub fn new() -> Self {
-        let mut sha = Sha256::new();
+        let mut sha = Sha256::steal();
         sha.start();
 
         Self {

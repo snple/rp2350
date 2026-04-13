@@ -53,7 +53,7 @@ const COUNTER_SPINLOCK: u8 = 0;
 /// is not thread-safe and concurrent access from both cores would
 /// cause data corruption.
 fn core1_main() -> ! {
-    let fifo = Fifo::new();
+    let fifo = Fifo::steal();
 
     // Wait for the initial handshake value
     let handshake = fifo.read();
@@ -108,7 +108,7 @@ fn main() -> ! {
     info!("[Core 0] Running on {}", core_id);
 
     // Get FIFO interface for Core 0
-    let fifo = Fifo::new();
+    let fifo = Fifo::steal();
 
     // Drain any stale data in the FIFOs
     fifo.drain();

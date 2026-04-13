@@ -229,7 +229,6 @@ macro_rules! impl_spi {
                 _sck: SCK,
                 _tx: TX,
                 _rx: RX,
-                baudrate: u32,
             }
 
             impl<SCK, TX, RX> $SpiName<SCK, TX, RX>
@@ -240,6 +239,44 @@ macro_rules! impl_spi {
             {
                 /// SPI peripheral number
                 pub const NUM: u8 = $spi_num;
+
+                /// Obtain a pin-erased SPI handle without ownership.
+                ///
+                /// Returns `$SpiName<NoPin, NoPin, NoPin>` — a handle that can
+                /// access all SPI registers without carrying pin type parameters.
+                /// This is useful for ISR context or global storage where the
+                /// concrete pin types are inconvenient.
+                ///
+                /// # Safety
+                ///
+                /// The caller must ensure:
+                /// 1. The SPI peripheral has already been initialised (pins
+                ///    configured, clock set, peripheral taken out of reset).
+                /// 2. No data races: the returned handle must not be used
+                ///    concurrently with the owning instance without proper
+                ///    synchronisation (e.g. `Mutex`).
+                ///
+                /// # Example
+                ///
+                /// ```ignore
+                #[doc = concat!("// In init code: create the full SPI with pins")]
+                #[doc = concat!("let spi = ", stringify!($SpiName), "::new(")]
+                #[doc = concat!("    dp.SPI", $spi_num, ", sck, tx, rx, 1_000_000, sys_clk,")]
+                /// );
+                ///
+                /// // Later, in ISR or another context:
+                #[doc = concat!("let spi = unsafe { ", stringify!($SpiName), "::<NoPin, NoPin, NoPin>::steal() };")]
+                /// spi.write(&[0x01, 0x02]);
+                /// ```
+                #[inline]
+                pub unsafe fn steal() -> $SpiName<crate::gpio::pins::NoPin, crate::gpio::pins::NoPin, crate::gpio::pins::NoPin> {
+                    $SpiName {
+                        spi: unsafe { <$SpiType>::steal() },
+                        _sck: crate::gpio::pins::NoPin,
+                        _tx: crate::gpio::pins::NoPin,
+                        _rx: crate::gpio::pins::NoPin,
+                    }
+                }
 
                 /// Get reference to the underlying register block.
                 ///
@@ -303,7 +340,6 @@ macro_rules! impl_spi {
                         _sck: sck,
                         _tx: tx,
                         _rx: rx,
-                        baudrate: 0,
                     };
 
                     // Disable first
@@ -339,7 +375,7 @@ macro_rules! impl_spi {
                 /// Configure the SPI baudrate (internal helper)
                 ///
                 /// Baudrate = peri_clk / (CPSDVSR * (1 + SCR))
-                fn configure_baudrate(&mut self, baudrate: u32, peri_clk: u32) {
+                fn configure_baudrate(&mut self, baudrate: u32, peri_clk: u32) -> u32 {
                     let mut best_cpsdvsr = 2u32;
                     let mut best_scr = 0u32;
                     let mut best_error = u32::MAX;
@@ -380,7 +416,7 @@ macro_rules! impl_spi {
                     let cr0 = (cr0 & 0x00ff) | (best_scr << 8);
                     self.spi.sspcr0.write_bits(cr0);
 
-                    self.baudrate = peri_clk / (best_cpsdvsr * (1 + best_scr));
+                    peri_clk / (best_cpsdvsr * (1 + best_scr))
                 }
 
                 /// Set the SPI baudrate
@@ -393,9 +429,9 @@ macro_rules! impl_spi {
                 /// The actual baudrate achieved
                 pub fn set_baudrate(&mut self, baudrate: u32, peri_clk: u32) -> u32 {
                     self.spi.sspcr1.clr_sse();
-                    self.configure_baudrate(baudrate, peri_clk);
+                    let actual = self.configure_baudrate(baudrate, peri_clk);
                     self.spi.sspcr1.set_sse();
-                    self.baudrate
+                    actual
                 }
 
                 /// Set the data format
@@ -445,10 +481,19 @@ macro_rules! impl_spi {
                     }
                 }
 
-                /// Get the current baudrate
+                /// Get the current baudrate by reading hardware registers
+                ///
+                /// # Arguments
+                /// * `peri_clk` - Peripheral clock frequency in Hz
                 #[inline]
-                pub fn baudrate(&self) -> u32 {
-                    self.baudrate
+                pub fn baudrate(&self, peri_clk: u32) -> u32 {
+                    let cpsdvsr = self.spi.sspcpsr.cpsdvsr();
+                    let scr = self.spi.sspcr0.scr();
+                    let divisor = cpsdvsr * (1 + scr);
+                    if divisor == 0 {
+                        return 0;
+                    }
+                    peri_clk / divisor
                 }
 
                 // ================================================================
@@ -900,7 +945,6 @@ macro_rules! impl_spi {
                 _tx: TX,
                 _rx: RX,
                 _csn: CSN,
-                baudrate: u32,
             }
 
             impl<SCK, TX, RX, CSN> [<$SpiName WithCs>]<SCK, TX, RX, CSN>
@@ -912,6 +956,27 @@ macro_rules! impl_spi {
             {
                 /// SPI peripheral number
                 pub const NUM: u8 = $spi_num;
+
+                /// Obtain a pin-erased SPI handle without ownership (with-CS variant).
+                ///
+                /// # Safety
+                ///
+                /// Same requirements as [`$SpiName::steal()`].
+                #[inline]
+                pub unsafe fn steal() -> [<$SpiName WithCs>]<
+                    crate::gpio::pins::NoPin,
+                    crate::gpio::pins::NoPin,
+                    crate::gpio::pins::NoPin,
+                    crate::gpio::pins::NoPin,
+                > {
+                    [<$SpiName WithCs>] {
+                        spi: unsafe { <$SpiType>::steal() },
+                        _sck: crate::gpio::pins::NoPin,
+                        _tx: crate::gpio::pins::NoPin,
+                        _rx: crate::gpio::pins::NoPin,
+                        _csn: crate::gpio::pins::NoPin,
+                    }
+                }
 
                 /// Get reference to the underlying register block.
                 ///
@@ -958,7 +1023,6 @@ macro_rules! impl_spi {
                         _tx: tx,
                         _rx: rx,
                         _csn: csn,
-                        baudrate: 0,
                     };
 
                     // Disable first
@@ -1015,7 +1079,6 @@ macro_rules! impl_spi {
                         _tx: tx,
                         _rx: rx,
                         _csn: csn,
-                        baudrate: 0,
                     };
 
                     // Disable first
@@ -1043,7 +1106,7 @@ macro_rules! impl_spi {
                 }
 
                 /// Configure the SPI baudrate (internal helper)
-                fn configure_baudrate(&mut self, baudrate: u32, peri_clk: u32) {
+                fn configure_baudrate(&mut self, baudrate: u32, peri_clk: u32) -> u32 {
                     let mut best_cpsdvsr = 2u32;
                     let mut best_scr = 0u32;
                     let mut best_error = u32::MAX;
@@ -1078,15 +1141,16 @@ macro_rules! impl_spi {
                     let cr0 = self.spi.sspcr0.read_bits();
                     let cr0 = (cr0 & 0x00ff) | (best_scr << 8);
                     self.spi.sspcr0.write_bits(cr0);
-                    self.baudrate = peri_clk / (best_cpsdvsr * (1 + best_scr));
+
+                    peri_clk / (best_cpsdvsr * (1 + best_scr))
                 }
 
                 /// Set the SPI baudrate
                 pub fn set_baudrate(&mut self, baudrate: u32, peri_clk: u32) -> u32 {
                     self.spi.sspcr1.clr_sse();
-                    self.configure_baudrate(baudrate, peri_clk);
+                    let actual = self.configure_baudrate(baudrate, peri_clk);
                     self.spi.sspcr1.set_sse();
-                    self.baudrate
+                    actual
                 }
 
                 /// Set the data format
@@ -1126,10 +1190,19 @@ macro_rules! impl_spi {
                     }
                 }
 
-                /// Get the current baudrate
+                /// Get the current baudrate by reading hardware registers
+                ///
+                /// # Arguments
+                /// * `peri_clk` - Peripheral clock frequency in Hz
                 #[inline]
-                pub fn baudrate(&self) -> u32 {
-                    self.baudrate
+                pub fn baudrate(&self, peri_clk: u32) -> u32 {
+                    let cpsdvsr = self.spi.sspcpsr.cpsdvsr();
+                    let scr = self.spi.sspcr0.scr();
+                    let divisor = cpsdvsr * (1 + scr);
+                    if divisor == 0 {
+                        return 0;
+                    }
+                    peri_clk / divisor
                 }
 
                 /// Check if the SPI is busy

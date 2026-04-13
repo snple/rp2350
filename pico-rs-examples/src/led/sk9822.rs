@@ -309,7 +309,7 @@ fn main() -> ! {
         // SK9822 uses CPOL=0, CPHA=0 (Mode 0) — already the default
         spi.set_mode(Mode::Mode0);
 
-        info!("SPI0 baudrate = {} Hz", spi.baudrate());
+        info!("SPI0 baudrate = {} Hz", spi.baudrate(clocks.sys_freq()));
 
         loop {
             for i in 0..NUM_LEDS {

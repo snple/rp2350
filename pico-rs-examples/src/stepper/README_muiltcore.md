@@ -161,7 +161,7 @@ fn core1_main() -> ! {
         interrupt::enable(Interrupt::IO_IRQ_BANK0);
     }
 
-    let fifo = Fifo::new();
+    let fifo = Fifo::steal();
 
     loop {
         // 从 FIFO 接收运动命令
@@ -210,7 +210,7 @@ fn main() -> ! {
 //
 // 改为通过 FIFO 发送:
 fn send_move_command(axis: AxisId, steps: u32, dir: Direction, speed: u32) {
-    let fifo = Fifo::new();
+    let fifo = Fifo::steal();
     let cmd_word = CMD_MOVE | ((axis as u32) << 24) | (steps & 0x00FF_FFFF);
     let param_word = (speed & 0xFFFF) | ((dir as u32) << 16);
     fifo.write(cmd_word);
@@ -224,12 +224,12 @@ fn send_move_command(axis: AxisId, steps: u32, dir: Direction, speed: u32) {
 // Core 1 端: 运动完成时通知 Core 0
 // (在 stepper.rs 的 AxisState 完成回调中)
 fn on_motion_done() {
-    Doorbell::new().signal();  // 触发 Core 0 的 SIO_IRQ_BELL
+    Doorbell::steal().signal();  // 触发 Core 0 的 SIO_IRQ_BELL
 }
 
 // Core 0 端: SIO_IRQ_BELL ISR
 fn SIO_IRQ_BELL() {
-    let db = Doorbell::new();
+    let db = Doorbell::steal();
     db.clear_local(1);
     // 检查哪些轴完成，推送 EVT AXIS_DONE 给上位机
     interrupt::pend(Interrupt::SPARE_IRQ_0);

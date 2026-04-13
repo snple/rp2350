@@ -321,9 +321,9 @@ fn main() -> ! {
 fn encoder_button_isr() {
     // SAFETY: GPIO 子系统已在 main() 中通过 Pins::new() 初始化。
     // ISR 中仅访问中断状态寄存器和读取引脚电平, 不做重新配置。
-    let a = unsafe { Pin::<PIN_A>::new() };
-    let b = unsafe { Pin::<PIN_B>::new() };
-    let btn = unsafe { Pin::<PIN_BTN>::new() };
+    let a = unsafe { Pin::<PIN_A>::steal() };
+    let b = unsafe { Pin::<PIN_B>::steal() };
+    let btn = unsafe { Pin::<PIN_BTN>::steal() };
 
     // --- 编码器 A/B 中断处理 ---
     let a_fired = a.check_and_clear(EdgeLevel::EdgeHigh) | a.check_and_clear(EdgeLevel::EdgeLow);

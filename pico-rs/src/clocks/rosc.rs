@@ -9,7 +9,7 @@
 //! use pico_rs::rosc::{Rosc, FreqRange};
 //!
 //! // Initialize ROSC
-//! let mut rosc = Rosc::new();
+//! let mut rosc = Rosc::steal();
 //!
 //! // Enable the oscillator
 //! rosc.enable();
@@ -101,12 +101,12 @@ pub struct Rosc {
 }
 
 impl Rosc {
-    /// Create a new ROSC driver instance
+    /// Obtain a handle to the ROSC hardware peripheral.
     ///
     /// # Safety
     /// The caller must ensure only one instance of this driver exists at a time.
     #[inline]
-    pub fn new() -> Self {
+    pub fn steal() -> Self {
         Self {
             rosc: unsafe { ROSC::steal() },
         }
@@ -445,7 +445,7 @@ impl Rosc {
 
 impl Default for Rosc {
     fn default() -> Self {
-        Self::new()
+        Self::steal()
     }
 }
 

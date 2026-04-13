@@ -155,7 +155,7 @@ static AXIS: AxisState = AxisState::new();
 fn gpio() -> Gpio {
     // SAFETY: all used pins are configured through `Pins` before runtime SIO
     // access. This helper only touches SIO data registers.
-    unsafe { Gpio::new() }
+    unsafe { Gpio::steal() }
 }
 
 // ============================================================================

@@ -725,9 +725,9 @@ fn main() -> ! {
 #[allow(non_snake_case)]
 fn IO_IRQ_BANK0() {
     // 在 ISR 中重建 Pin 引用（GPIO 子系统已在 main 中初始化）
-    let ha = unsafe { Pin::<6>::new() };
-    let hb = unsafe { Pin::<7>::new() };
-    let hc = unsafe { Pin::<8>::new() };
+    let ha = unsafe { Pin::<6>::steal() };
+    let hb = unsafe { Pin::<7>::steal() };
+    let hc = unsafe { Pin::<8>::steal() };
 
     // 清除所有 3 个霍尔引脚的中断标志
     ha.clear_all_interrupts();

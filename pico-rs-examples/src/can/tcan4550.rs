@@ -376,7 +376,7 @@ fn main() -> ! {
         clocks.peri_freq(),
     );
     spi.set_format(8, Mode::Mode0, FrameFormat::MotorolaSpi);
-    info!("SPI0 已初始化: {} Hz", spi.baudrate());
+    info!("SPI0 已初始化: {} Hz", spi.baudrate(clocks.peri_freq()));
 
     // CS 引脚 (手动控制)
     let cs = pins.pin::<5>();

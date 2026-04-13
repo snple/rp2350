@@ -387,9 +387,9 @@ fn main() -> ! {
 
 #[bind(IO_IRQ_BANK0)]
 fn encoder_button_isr() {
-    let a = unsafe { Pin::<PIN_A>::new() };
-    let b = unsafe { Pin::<PIN_B>::new() };
-    let btn = unsafe { Pin::<PIN_BTN>::new() };
+    let a = unsafe { Pin::<PIN_A>::steal() };
+    let b = unsafe { Pin::<PIN_B>::steal() };
+    let btn = unsafe { Pin::<PIN_BTN>::steal() };
 
     // --- 编码器 A/B 中断处理 ---
     let a_fired = a.check_and_clear(EdgeLevel::EdgeHigh) | a.check_and_clear(EdgeLevel::EdgeLow);

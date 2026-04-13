@@ -14,7 +14,7 @@
 //! ```ignore
 //! use pico_rs::busctrl::{Busctrl, PerfEvent};
 //!
-//! let busctrl = Busctrl::new();
+//! let busctrl = Busctrl::steal();
 //!
 //! // Enable performance counters
 //! busctrl.enable_perf_counters(true);
@@ -109,9 +109,9 @@ pub struct Busctrl {
 }
 
 impl Busctrl {
-    /// Create a new Busctrl instance
+    /// Obtain a handle to the BUSCTRL hardware peripheral.
     #[inline]
-    pub fn new() -> Self {
+    pub fn steal() -> Self {
         Self {
             regs: unsafe { BUSCTRL::steal() },
         }
@@ -346,6 +346,6 @@ impl Busctrl {
 
 impl Default for Busctrl {
     fn default() -> Self {
-        Self::new()
+        Self::steal()
     }
 }

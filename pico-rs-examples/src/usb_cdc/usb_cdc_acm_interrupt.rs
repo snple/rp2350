@@ -137,7 +137,7 @@ fn main() -> ! {
     //
     // Safety：在任何中断触发之前运行，无并发访问。
     let alloc: &'static UsbBusAllocator<Rp2350Bus> = unsafe {
-        core::ptr::addr_of_mut!(USB_ALLOC).write(Some(UsbBusAllocator::new(Rp2350Bus::new())));
+        core::ptr::addr_of_mut!(USB_ALLOC).write(Some(UsbBusAllocator::new(Rp2350Bus::steal())));
         (*core::ptr::addr_of!(USB_ALLOC)).as_ref().unwrap()
     };
 

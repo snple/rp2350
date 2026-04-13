@@ -79,7 +79,7 @@ use pico_rs::timer::{AlarmTimer, MonotonicTimer};
 fn gpio() -> Gpio {
     // SAFETY: these examples configure GPIO direction and function once during
     // initialization, then use `Gpio` only for runtime SIO data-path access.
-    unsafe { Gpio::new() }
+    unsafe { Gpio::steal() }
 }
 
 // ============================================================================

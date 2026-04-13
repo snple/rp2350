@@ -38,7 +38,7 @@ fn main() -> ! {
     let dp = Peripherals::take().unwrap();
 
     // Get SIO instance
-    let sio = Sio::new();
+    let sio = Sio::steal();
 
     // Print core ID
     let core_id = sio.core_id();
@@ -126,7 +126,7 @@ fn main() -> ! {
     info!("Starting LED blink via SIO...");
 
     // SAFETY: GPIO 25 was configured for SIO output above.
-    let gpio = unsafe { Gpio::new() };
+    let gpio = unsafe { Gpio::steal() };
 
     loop {
         // Turn LED on using atomic set

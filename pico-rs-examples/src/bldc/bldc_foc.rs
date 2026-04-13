@@ -738,9 +738,9 @@ fn main() -> ! {
 #[unsafe(no_mangle)]
 #[allow(non_snake_case)]
 fn IO_IRQ_BANK0() {
-    let ha = unsafe { Pin::<6>::new() };
-    let hb = unsafe { Pin::<7>::new() };
-    let hc = unsafe { Pin::<8>::new() };
+    let ha = unsafe { Pin::<6>::steal() };
+    let hb = unsafe { Pin::<7>::steal() };
+    let hc = unsafe { Pin::<8>::steal() };
 
     // 清除中断
     ha.clear_all_interrupts();

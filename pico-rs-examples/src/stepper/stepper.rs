@@ -734,7 +734,7 @@ static TIMER: Mutex<RefCell<Option<Timer0>>> = Mutex::new(RefCell::new(None));
 fn gpio() -> Gpio {
     // SAFETY: GPIOs are configured through `Pins` during startup. After that,
     // this helper only performs SIO data register access.
-    unsafe { Gpio::new() }
+    unsafe { Gpio::steal() }
 }
 
 /// 当前运动阶段 (MotionPhase 编码为 u32: 0=Idle, 1=Accel, 2=Cruise, 3=Decel, 4=Run)
@@ -1202,7 +1202,7 @@ fn TIMER0_IRQ_0() {
                 return; // 空闲状态，不处理
             }
 
-            let step_pin = unsafe { Pin::<{ PIN_STEP as u8 }>::new() };
+            let step_pin = unsafe { Pin::<{ PIN_STEP as u8 }>::steal() };
             let pulse_high = PULSE_STATE.load(Ordering::Relaxed);
 
             if !pulse_high {

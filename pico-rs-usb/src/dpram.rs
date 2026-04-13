@@ -101,11 +101,11 @@ pub struct Dpram {
 }
 
 impl Dpram {
-    /// Create a new DPRAM accessor
+    /// Obtain a handle to the USB DPRAM.
     ///
     /// # Safety
     /// This is safe because DPRAM has a fixed address and we only create one accessor.
-    pub const fn new() -> Self {
+    pub const fn steal() -> Self {
         Self {
             mem: VolatileMemory::new(DPRAM_BASE as *mut u8),
         }
@@ -194,7 +194,7 @@ impl Dpram {
 
 impl Default for Dpram {
     fn default() -> Self {
-        Self::new()
+        Self::steal()
     }
 }
 

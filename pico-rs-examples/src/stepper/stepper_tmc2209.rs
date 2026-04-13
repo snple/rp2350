@@ -784,7 +784,7 @@ static STALL_DETECTED: AtomicBool = AtomicBool::new(false);
 
 #[inline(always)]
 fn gpio() -> Gpio {
-    unsafe { Gpio::new() }
+    unsafe { Gpio::steal() }
 }
 
 // ============================================================================
@@ -1190,7 +1190,7 @@ fn TIMER0_IRQ_0() {
 #[allow(non_snake_case)]
 fn IO_IRQ_BANK0() {
     // GP5 = TMC2209 DIAG 引脚
-    let pin = unsafe { Pin::<5>::new() };
+    let pin = unsafe { Pin::<5>::steal() };
     if pin.check_and_clear(EdgeLevel::EdgeHigh) {
         // 堵转检测: 立即停止电机 + 设置标志
         AXIS.stop();

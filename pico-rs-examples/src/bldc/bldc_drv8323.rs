@@ -1428,8 +1428,8 @@ fn main() -> ! {
 #[allow(non_snake_case)]
 fn IO_IRQ_BANK0() {
     // 清除所有编码器引脚中断
-    let pin_a = unsafe { pico_rs::gpio::Pin::<10>::new() };
-    let pin_b = unsafe { pico_rs::gpio::Pin::<11>::new() };
+    let pin_a = unsafe { pico_rs::gpio::Pin::<10>::steal() };
+    let pin_b = unsafe { pico_rs::gpio::Pin::<11>::steal() };
     pin_a.clear_all_interrupts();
     pin_b.clear_all_interrupts();
 

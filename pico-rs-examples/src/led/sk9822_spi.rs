@@ -174,7 +174,7 @@ fn main() -> ! {
         "SK9822 SPI: {} LEDs, brightness={}, baudrate={} Hz",
         NUM_LEDS,
         BRIGHTNESS,
-        spi.baudrate()
+        spi.baudrate(clocks.sys_freq())
     );
 
     // Pixel buffer

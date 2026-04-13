@@ -760,6 +760,11 @@ impl Spi0CsnPin for NoPin {
     fn configure_spi0_csn(&self) {}
 }
 
+// SPI0 SCK
+impl Spi0SckPin for NoPin {
+    fn configure_spi0_sck(&self) {}
+}
+
 // SPI1
 impl Spi1RxPin for NoPin {
     fn configure_spi1_rx(&self) {}
@@ -769,4 +774,51 @@ impl Spi1TxPin for NoPin {
 }
 impl Spi1CsnPin for NoPin {
     fn configure_spi1_csn(&self) {}
+}
+impl Spi1SckPin for NoPin {
+    fn configure_spi1_sck(&self) {}
+}
+
+// UART0
+impl Uart0TxPin for NoPin {
+    fn configure_uart0_tx(&self) {}
+}
+impl Uart0RxPin for NoPin {
+    fn configure_uart0_rx(&self) {}
+}
+impl Uart0CtsPin for NoPin {
+    fn configure_uart0_cts(&self) {}
+}
+impl Uart0RtsPin for NoPin {
+    fn configure_uart0_rts(&self) {}
+}
+
+// UART1
+impl Uart1TxPin for NoPin {
+    fn configure_uart1_tx(&self) {}
+}
+impl Uart1RxPin for NoPin {
+    fn configure_uart1_rx(&self) {}
+}
+impl Uart1CtsPin for NoPin {
+    fn configure_uart1_cts(&self) {}
+}
+impl Uart1RtsPin for NoPin {
+    fn configure_uart1_rts(&self) {}
+}
+
+// I2C0
+impl I2c0SdaPin for NoPin {
+    fn configure_i2c0_sda(&self) {}
+}
+impl I2c0SclPin for NoPin {
+    fn configure_i2c0_scl(&self) {}
+}
+
+// I2C1
+impl I2c1SdaPin for NoPin {
+    fn configure_i2c1_sda(&self) {}
+}
+impl I2c1SclPin for NoPin {
+    fn configure_i2c1_scl(&self) {}
 }

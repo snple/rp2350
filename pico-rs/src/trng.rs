@@ -50,9 +50,9 @@ pub struct Trng {
 }
 
 impl Trng {
-    /// Create a new Trng instance without initialization
+    /// Obtain a handle to the TRNG hardware peripheral.
     #[inline]
-    pub fn new() -> Self {
+    pub fn steal() -> Self {
         Self {
             trng: unsafe { TRNG::steal() },
         }
@@ -73,7 +73,7 @@ impl Trng {
         // Reset peripheral to ensure clean register state
         <pico_rs_pac::TRNG as Resettable>::init();
 
-        let trng = Self::new();
+        let trng = Self::steal();
 
         // Reset the TRNG
         trng.regs().trng_sw_reset.write_bits(1);
@@ -375,6 +375,6 @@ impl Trng {
 
 impl Default for Trng {
     fn default() -> Self {
-        Self::new()
+        Self::steal()
     }
 }

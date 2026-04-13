@@ -167,7 +167,7 @@ fn main() -> ! {
 
     // SAFETY: the GPIO bank is initialized above, and all accessed pins are
     // configured through `Pin<N>` before raw SIO access.
-    let gpio = unsafe { Gpio::new() };
+    let gpio = unsafe { Gpio::steal() };
 
     // Read GPIO input for low bank (pins 0-31)
     let gpio_in = gpio.mask_input_low();

@@ -168,7 +168,7 @@ const MSG_STOP: u32 = 0xFFFF_FFFF;
 ///
 /// 注意: **不使用 defmt 日志**, 所有输出通过 FIFO 发回 Core 0
 fn core1_main() -> ! {
-    let fifo = Fifo::new();
+    let fifo = Fifo::steal();
 
     // --- 握手: 等待 Core 0 的启动确认 ---
     let handshake = fifo.read();
@@ -231,7 +231,7 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     info!("[Core 0] Preparing to launch Core 1...");
 
-    let fifo = Fifo::new();
+    let fifo = Fifo::steal();
     fifo.drain(); // 清空残留数据
 
     let mut mc = Multicore::new(dp.PSM, dp.PPB);

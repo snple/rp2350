@@ -91,7 +91,7 @@
 //!                      │                                led.into_output();
 //!                      │                                led.set_high();
 //!                      │
-//!                      └──► let gpio = unsafe { Gpio::new() };
+//!                      └──► let gpio = unsafe { Gpio::steal() };
 //!                            gpio.toggle(25);
 //! ```
 //!
@@ -215,13 +215,13 @@
 //!
 //! // SAFETY: GPIO 25 was configured for SIO output above, and the program keeps
 //! // ownership discipline through `Pin<25>` for configuration changes.
-//! let gpio = unsafe { Gpio::new() };
+//! let gpio = unsafe { Gpio::steal() };
 //! gpio.toggle(25);
 //! ```
 //!
 //! ## Interrupt Handling (ISR)
 //!
-//! In ISR context, `Pin<N>` can be created via `unsafe { Pin::<N>::new() }`
+//! In ISR context, `Pin<N>` can be obtained via `unsafe { Pin::<N>::steal() }`
 //! without ownership, since the GPIO subsystem was already initialised:
 //!
 //! ```ignore
@@ -229,7 +229,7 @@
 //!
 //! #[unsafe(no_mangle)]
 //! extern "C" fn IO_IRQ_BANK0() {
-//!     let button = unsafe { Pin::<15>::new() };
+//!     let button = unsafe { Pin::<15>::steal() };
 //!     if button.check_and_clear(EdgeLevel::EdgeLow) {
 //!         // Handle button press...
 //!     }
@@ -499,7 +499,7 @@ macro_rules! impl_pin {
                 /// Bit mask for this pin in the 32-bit GPIO registers
                 pub const MASK: u32 = 1u32 << $n;
 
-                /// Create a new `Pin<N>` instance without ownership checks.
+                /// Obtain a `Pin<N>` handle without ownership checks.
                 ///
                 /// This is useful in ISR context where pin ownership is held
                 /// by `main()` and not accessible.
@@ -512,7 +512,7 @@ macro_rules! impl_pin {
                 /// - No data races occur — i.e. the same pin is not being
                 ///   concurrently reconfigured from another context.
                 #[inline]
-                pub const unsafe fn new() -> Self {
+                pub const unsafe fn steal() -> Self {
                     Self { _marker: core::marker::PhantomData }
                 }
 
@@ -1179,7 +1179,7 @@ macro_rules! impl_pin {
                 ///
                 /// ```ignore
                 /// // In the IO_IRQ_BANK0 interrupt handler:
-                /// let button = unsafe { Pin::<15>::new() };
+                /// let button = unsafe { Pin::<15>::steal() };
                 /// if button.check_and_clear(EdgeLevel::EdgeLow) {
                 ///     // Handle the button press...
                 /// }
@@ -1284,7 +1284,7 @@ macro_rules! impl_pin {
                 /// Bit mask for this pin in the high GPIO registers (32-47 → bits 0-15)
                 pub const MASK: u32 = 1u32 << ($n - 32);
 
-                /// Create a new `Pin<N>` instance without ownership checks.
+                /// Obtain a `Pin<N>` handle without ownership checks.
                 ///
                 /// This is useful in ISR context where pin ownership is held
                 /// by `main()` and not accessible.
@@ -1297,7 +1297,7 @@ macro_rules! impl_pin {
                 /// - No data races occur — i.e. the same pin is not being
                 ///   concurrently reconfigured from another context.
                 #[inline]
-                pub const unsafe fn new() -> Self {
+                pub const unsafe fn steal() -> Self {
                     Self { _marker: core::marker::PhantomData<*const ()> }
                 }
 
@@ -1826,7 +1826,7 @@ macro_rules! impl_pin {
 /// led.set_high();
 /// ```
 ///
-/// In ISR context, a pin handle can be created via `unsafe { Pin::<N>::new() }`,
+/// In ISR context, a pin handle can be obtained via `unsafe { Pin::<N>::steal() }`,
 /// provided the GPIO subsystem has already been initialised.
 pub struct Pin<const N: u8> {
     _marker: core::marker::PhantomData<*const ()>,
@@ -2115,10 +2115,11 @@ pub struct Gpio {
 unsafe impl Send for Gpio {}
 
 impl Gpio {
-    /// Create a raw GPIO accessor.
+    /// Obtain a handle to the SIO GPIO registers.
     ///
-    /// This is a zero-cost constructor. The returned handle does not own any
-    /// pins and can be copied freely.
+    /// The GPIO hardware already exists; this method simply returns a
+    /// zero-cost accessor. The returned handle does not own any pins and
+    /// can be copied freely.
     ///
     /// # Safety
     ///
@@ -2126,7 +2127,7 @@ impl Gpio {
     /// configure pins through [`Pins`] and [`Pin<N>`] first, then use [`Gpio`]
     /// only for SIO data access.
     #[inline]
-    pub const unsafe fn new() -> Self {
+    pub const unsafe fn steal() -> Self {
         Self {
             _marker: core::marker::PhantomData,
         }
