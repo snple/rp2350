@@ -171,6 +171,10 @@ name = "pio_blink_advanced"
 path = "src/pio/pio_blink_advanced.rs"
 
 [[bin]]
+name = "pio_encoder"
+path = "src/pio/pio_encoder.rs"
+
+[[bin]]
 name = "pwm_input"
 path = "src/pwm/pwm_input.rs"
 
