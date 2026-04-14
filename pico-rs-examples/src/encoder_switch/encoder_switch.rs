@@ -111,10 +111,12 @@ use panic_probe as _;
 
 use pico_rs::bind;
 use pico_rs::block::ImageDef;
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
 use pico_rs::gpio::{EdgeLevel, Pin, Pins};
 use pico_rs::interrupt;
 use pico_rs::pac::{Interrupt, Peripherals};
+use pico_rs::ticks::Ticks;
 use pico_rs::timer::Timer0;
 
 #[unsafe(link_section = ".start_block")]
@@ -193,6 +195,9 @@ fn main() -> ! {
     // 1. 外设初始化
     // ------------------------------------------------------------------
     let dp = Peripherals::take().unwrap();
+    let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
+    let ticks = Ticks::new(dp.TICKS, &clocks);
+    ticks.init_timer0();
     let timer = Timer0::init(dp.TIMER0);
     let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
 
@@ -325,7 +330,7 @@ fn encoder_button_isr() {
     let b = unsafe { Pin::<PIN_B>::steal() };
     let btn = unsafe { Pin::<PIN_BTN>::steal() };
 
-    // --- 编码器 A/B 中断处理 ---
+    // --- 先清除中断标志并保存结果 (check_and_clear 会清除标志, 只能调用一次) ---
     let a_fired = a.check_and_clear(EdgeLevel::EdgeHigh) | a.check_and_clear(EdgeLevel::EdgeLow);
     let b_fired = b.check_and_clear(EdgeLevel::EdgeHigh) | b.check_and_clear(EdgeLevel::EdgeLow);
 
@@ -348,17 +353,22 @@ fn encoder_button_isr() {
         }
     }
 
-    // --- 按钮中断处理 (带消抖) ---
+    // --- 按钮中断处理 (带消抖 + 电平确认) ---
     if btn.check_and_clear(EdgeLevel::EdgeLow) {
-        let now = {
-            let timer = unsafe { pico_rs::pac::TIMER0::steal() };
-            timer.timerawl.timerawl()
-        };
+        // 确认按钮确实处于按下状态 (引脚为低电平)
+        // 编码器旋转时相邻引脚串扰可能产生短暂毛刺触发 EdgeLow,
+        // 但此时引脚已恢复高电平, 可过滤掉
+        if !btn.get() {
+            let now = {
+                let timer = unsafe { Timer0::steal() };
+                timer.get_time_us_32()
+            };
 
-        let last = LAST_BTN_TIME.load(Ordering::Relaxed);
-        if now.wrapping_sub(last) >= DEBOUNCE_US {
-            LAST_BTN_TIME.store(now, Ordering::Relaxed);
-            BUTTON_PRESSED.store(true, Ordering::Relaxed);
+            let last = LAST_BTN_TIME.load(Ordering::Relaxed);
+            if now.wrapping_sub(last) >= DEBOUNCE_US {
+                LAST_BTN_TIME.store(now, Ordering::Relaxed);
+                BUTTON_PRESSED.store(true, Ordering::Relaxed);
+            }
         }
     }
 }

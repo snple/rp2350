@@ -201,9 +201,7 @@
 #![no_std]
 #![no_main]
 
-#[path = "stepper_common.rs"]
-mod stepper_common;
-use stepper_common::{AxisConfig, AxisState, Direction};
+use pico_rs_stepper::{AxisConfig, AxisState, Direction};
 
 use defmt::*;
 use defmt_rtt as _;
@@ -296,8 +294,19 @@ const PIN_SLEEP: u32 = 9;
 // 全局共享状态
 // ============================================================================
 
-/// 步进轴状态 — 使用 pico_rs::stepper 公共模块
-static AXIS: AxisState = AxisState::new();
+/// 步进轴状态
+static AXIS: AxisState = AxisState::new(AxisConfig {
+    pin_step: PIN_STEP as u8,
+    pin_dir: PIN_DIR as u8,
+    alarm: 0,
+    start_speed_hz: START_SPEED_HZ,
+    accel_steps: ACCEL_STEPS,
+    step_pulse_us: STEP_PULSE_US,
+    limit_pin: None,
+    limit_active_high: false,
+    index_pin: None,
+    homing_backoff_index: 0,
+});
 
 #[inline(always)]
 fn gpio() -> Steal<Gpio> {
@@ -585,19 +594,7 @@ fn main() -> ! {
     );
 
     // ------------------------------------------------------------------
-    // 7. 配置步进轴
-    // ------------------------------------------------------------------
-    AXIS.configure(&AxisConfig {
-        pin_step: PIN_STEP as u8,
-        pin_dir: PIN_DIR as u8,
-        alarm: 0,
-        start_speed_hz: START_SPEED_HZ,
-        accel_steps: ACCEL_STEPS,
-        step_pulse_us: STEP_PULSE_US,
-    });
-
-    // ------------------------------------------------------------------
-    // 8. Timer0 中断配置 — 用于 STEP 脉冲生成
+    // 7. Timer0 中断配置 — 用于 STEP 脉冲生成
     // ------------------------------------------------------------------
     // 使能 Timer0 Alarm0 中断 (NVIC)
     unsafe {

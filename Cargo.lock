@@ -293,6 +293,7 @@ dependencies = [
  "panic-probe",
  "pico-rs",
  "pico-rs-rt",
+ "pico-rs-stepper",
  "pico-rs-usb",
 ]
 
@@ -316,6 +317,15 @@ dependencies = [
 [[package]]
 name = "pico-rs-rt"
 version = "0.1.0"
+
+[[package]]
+name = "pico-rs-stepper"
+version = "0.1.0"
+dependencies = [
+ "defmt",
+ "pico-rs",
+ "pico-rs-rt",
+]
 
 [[package]]
 name = "pico-rs-usb"

@@ -339,9 +339,7 @@
 #![no_std]
 #![no_main]
 
-#[path = "stepper_common.rs"]
-mod stepper_common;
-use stepper_common::{AxisConfig, AxisState, Direction};
+use pico_rs_stepper::{AxisConfig, AxisState, Direction};
 
 use core::sync::atomic::{AtomicBool, Ordering};
 use defmt::*;
@@ -778,7 +776,18 @@ fn tmc_set_sgthrs<TX: Uart1TxPin, RX: Uart1RxPin>(uart: &Uart1<TX, RX>, threshol
 // ============================================================================
 
 /// 步进轴状态 — 使用 stepper_common 公共模块
-static AXIS: AxisState = AxisState::new();
+static AXIS: AxisState = AxisState::new(AxisConfig {
+    pin_step: PIN_STEP as u8,
+    pin_dir: PIN_DIR as u8,
+    alarm: 0,
+    start_speed_hz: START_SPEED_HZ,
+    accel_steps: ACCEL_STEPS,
+    step_pulse_us: STEP_PULSE_US,
+    limit_pin: None,
+    limit_active_high: false,
+    index_pin: None,
+    homing_backoff_index: 0,
+});
 
 /// 堵转检测标志 — 由 DIAG 引脚中断 (IO_IRQ_BANK0) 置位
 static STALL_DETECTED: AtomicBool = AtomicBool::new(false);
@@ -896,18 +905,6 @@ fn main() -> ! {
         "Steps per revolution: {} ({} full steps x {} microsteps)",
         steps_per_rev, MOTOR_STEPS_PER_REV, MICROSTEPPING
     );
-
-    // ------------------------------------------------------------------
-    // 5. 配置步进轴 (stepper_common)
-    // ------------------------------------------------------------------
-    AXIS.configure(&AxisConfig {
-        pin_step: PIN_STEP as u8,
-        pin_dir: PIN_DIR as u8,
-        alarm: 0,
-        start_speed_hz: START_SPEED_HZ,
-        accel_steps: ACCEL_STEPS,
-        step_pulse_us: STEP_PULSE_US,
-    });
 
     // ------------------------------------------------------------------
     // 6. Timer0 + IO_IRQ_BANK0 中断配置

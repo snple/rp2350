@@ -13,6 +13,7 @@ rp2350b = ["pico-rs/rp2350b"]
 [dependencies]
 pico-rs.workspace = true
 pico-rs-usb.workspace = true
+pico-rs-stepper.workspace = true
 pico-rs-rt.workspace = true
 defmt.workspace = true
 defmt-rtt.workspace = true
@@ -147,10 +148,6 @@ name = "uart_dma"
 path = "src/dma/uart_dma.rs"
 
 [[bin]]
-name = "encoder"
-path = "src/gpio/encoder.rs"
-
-[[bin]]
 name = "gpio"
 path = "src/gpio/gpio.rs"
 
@@ -183,20 +180,8 @@ name = "pwm_output"
 path = "src/pwm/pwm_output.rs"
 
 [[bin]]
-name = "stepper"
-path = "src/stepper/stepper.rs"
-
-[[bin]]
 name = "stepper_a4988"
 path = "src/stepper/stepper_a4988.rs"
-
-[[bin]]
-name = "stepper_a4988_bench"
-path = "src/stepper/stepper_a4988_bench.rs"
-
-[[bin]]
-name = "stepper_closed"
-path = "src/stepper/stepper_closed.rs"
 
 [[bin]]
 name = "stepper_tmc2209"
