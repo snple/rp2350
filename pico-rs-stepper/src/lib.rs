@@ -22,7 +22,7 @@
 //!     accel_steps: 200,
 //!     step_pulse_us: 3,
 //!     limit_pin: None,
-//!     limit_active_high: false,
+//!     limit_active_high: true,
 //!     index_pin: None,
 //!     homing_backoff_index: 0,
 //! });
@@ -129,8 +129,7 @@ pub struct AxisConfig {
     pub step_pulse_us: u32,
     /// 限位开关 / DIAG 引脚编号。`None` 表示未配置。
     pub limit_pin: Option<u8>,
-    /// 限位信号极性：`false` = 低电平有效（物理限位开关），
-    /// `true` = 高电平有效（TMC2209 DIAG 引脚）。
+    /// 限位信号极性：`true` = 高电平有效（物理限位开关和 TMC2209 DIAG 引脚均统一为高电平有效）。
     pub limit_active_high: bool,
     /// INDEX 引脚编号（TMC2209 INDEX 信号，每完整电气周期脉冲一次）。`None` 表示未配置。
     pub index_pin: Option<u8>,
@@ -172,7 +171,7 @@ pub struct AxisState {
     step_pulse_us: u32,
     /// 限位开关 / DIAG 引脚编号。
     limit_pin: Option<u8>,
-    /// 限位信号极性：false = 低有效，true = 高有效。
+    /// 限位信号极性：统一使用高电平有效（true）。
     limit_active_high: bool,
     /// INDEX 引脚编号。
     index_pin: Option<u8>,
@@ -298,9 +297,8 @@ impl AxisState {
 
     /// 返回限位 / DIAG 信号是否已触发。
     ///
-    /// 根据 `limit_active_high` 设置自动匹配极性：
-    /// - `false`（物理限位开关）：低电平有效
-    /// - `true`（TMC2209 DIAG）：高电平有效
+    /// 根据 `limit_active_high` 设置匹配极性（物理限位开关和 TMC2209 DIAG
+    /// 均统一为高电平有效）。
     #[inline]
     pub fn limit_triggered(&self) -> bool {
         match self.limit_pin {
@@ -329,7 +327,7 @@ impl AxisState {
     /// - 如果未配置限位开关，直接返回 Idle。
     /// - 如果限位开关已触发且无 INDEX 回退，直接置零并返回 Idle。
     /// - 如果限位开关已触发且有 INDEX 回退，进入 [`HomingBackoff`](MotionPhase::HomingBackoff)。
-    /// - 否则以固定速度向反方向运动，ISR 每步检测限位开关。
+    /// - 否则从起步速度加速至目标速度，向反方向运动，ISR 每步检测限位开关。
     pub fn start_homing<T: AlarmTimer + MonotonicTimer>(&self, timer: &T, speed_hz: u32) {
         if self.limit_pin.is_none() {
             self.motion_phase
@@ -355,6 +353,7 @@ impl AxisState {
         self.motion_done.store(false, Ordering::Relaxed);
         self.steps_done.store(0, Ordering::Relaxed);
         self.steps_target.store(0, Ordering::Relaxed);
+        self.max_speed_hz.store(speed_hz, Ordering::Relaxed);
         self.reset_index();
         self.direction
             .store(Direction::Reverse as u32, Ordering::Relaxed);
@@ -365,7 +364,8 @@ impl AxisState {
         self.motion_phase
             .store(MotionPhase::Homing as u32, Ordering::Relaxed);
 
-        let interval = speed_to_interval_us(speed_hz);
+        // 从起步速度开始，ISR 中逐步加速到目标速度
+        let interval = speed_to_interval_us(self.start_speed_hz);
         self.step_interval_us.store(interval, Ordering::Relaxed);
 
         let now = timer.get_time_us_32();
@@ -577,10 +577,22 @@ impl AxisState {
                 self.motion_done.store(true, Ordering::Relaxed);
                 return;
             }
-            // 继续归位运动
+            // 继续归位运动（带加速）
             let interval = self.step_interval_us.load(Ordering::Relaxed);
+            let min_interval = speed_to_interval_us(self.max_speed_hz.load(Ordering::Relaxed));
+            let accel = self.accel_steps;
+            let new_interval = if accel > 0 && interval > min_interval {
+                let start_interval = speed_to_interval_us(self.start_speed_hz);
+                let progress = step.min(accel);
+                start_interval
+                    - ((start_interval - min_interval) as u64 * progress as u64 / accel as u64)
+                        as u32
+            } else {
+                min_interval
+            };
+            self.step_interval_us.store(new_interval, Ordering::Relaxed);
             let now = timer.get_time_us_32();
-            timer.set_alarm_safe(self.alarm, now.wrapping_add(interval));
+            timer.set_alarm_safe(self.alarm, now.wrapping_add(new_interval));
             return;
         }
 

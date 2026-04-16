@@ -204,8 +204,19 @@ impl Rp2350Bus {
     }
 
     fn init_hardware(&mut self) {
-        // Bring USB out of reset.
         let resets = unsafe { &*RESETS::PTR };
+
+        // Force USB peripheral into reset to guarantee D+ pull-up is
+        // de-asserted.  Hold it in reset for ≥20 ms so the host detects
+        // a disconnect (USB 2.0 requires ≥2.5 µs SE0; Linux needs ~10 ms
+        // in practice).  Without this, a fast release-mode reboot may
+        // re-assert PULLUP_EN before the host notices the device went away,
+        // causing the host to skip re-enumeration.
+        resets.reset.set_bits(USBCTRL_RESET_BIT);
+        // 20 ms @ 150 MHz = 3 000 000 cycles
+        pico_rs_rt::asm::delay(3_000_000);
+
+        // Bring USB out of reset.
         resets.reset.clr_bits(USBCTRL_RESET_BIT);
         while resets.reset_done.read_bits() & USBCTRL_RESET_BIT == 0 {
             pico_rs_rt::asm::nop();
@@ -219,12 +230,12 @@ impl Rp2350Bus {
             .usb_muxing
             .write_bits(pico_rs_pac::usb::UsbMuxing::TO_PHY | pico_rs_pac::usb::UsbMuxing::SOFTCON);
 
-        // Override VBUS (for boards without dedicated VBUS GPIO routing).
-        self.usb
-            .usb_pwr
-            .write_bits(pico_rs_pac::usb::UsbPwr::VBUS_EN | pico_rs_pac::usb::UsbPwr::VBUS_DETECT);
-        self.usb.usb_pwr.set_bits(
-            pico_rs_pac::usb::UsbPwr::VBUS_EN_OVERRIDE_EN
+        // Override VBUS — single write to avoid a window where the override
+        // bits are not yet effective (rp-hal does a single modify).
+        self.usb.usb_pwr.write_bits(
+            pico_rs_pac::usb::UsbPwr::VBUS_EN
+                | pico_rs_pac::usb::UsbPwr::VBUS_DETECT
+                | pico_rs_pac::usb::UsbPwr::VBUS_EN_OVERRIDE_EN
                 | pico_rs_pac::usb::UsbPwr::VBUS_DETECT_OVERRIDE_EN,
         );
 
@@ -235,6 +246,13 @@ impl Rp2350Bus {
         self.usb
             .sie_ctrl
             .write_bits(pico_rs_pac::usb::SieCtrl::EP0_INT_1BUF);
+
+        // Clear any stale status flags before enabling interrupts.
+        // The controller may have latched events (e.g. BUS_RESET, SUSPENDED)
+        // between CONTROLLER_EN and here; clearing prevents a spurious first
+        // interrupt that could confuse the upper-layer state machine.
+        self.usb.sie_status.write_bits(0xFFFF_FFFF); // W1C: clear all flags
+        self.usb.buff_status.write_bits(0xFFFF_FFFF); // W1C: clear all
 
         // Enable required interrupts.
         self.usb.inte.write_bits(
@@ -254,19 +272,35 @@ impl Rp2350Bus {
     }
 
     /// Reset EP0 state (called on bus reset).
+    ///
+    /// Matches rp-hal `ep_reset_all` pattern:
+    /// 1. Re-assert EP0_INT_1BUF in SIE_CTRL (defensive; survives spurious clears).
+    /// 2. Set EP0 IN buffer control to PID_0 (DATA1 for first IN after SETUP).
+    /// 3. Arm EP0 OUT with AVAILABLE via errata-safe two-step write + DSB.
     fn reset_ep0(&self) {
-        // Clear EP0 IN.
+        // Re-assert EP0_INT_1BUF (rp-hal does this on every reset).
+        self.usb
+            .sie_ctrl
+            .set_bits(pico_rs_pac::usb::SieCtrl::EP0_INT_1BUF);
+
+        // Clear EP0 IN — PID_0 set so first response uses DATA1.
         self.dpram
             .ep0_in_buffer_control
             .write_bits(pico_rs_pac::usb_dpram::Ep0InBufferControl::PID_0);
-        // Prepare EP0 OUT for first SETUP packet.
+
+        // Arm EP0 OUT for first SETUP packet.
+        // Step 1: write config without AVAILABLE.
         self.dpram
             .ep0_out_buffer_control
             .write_bits(pico_rs_pac::usb_dpram::Ep0OutBufferControl::PID_0);
+        // Step 2: DSB + delay (errata: AVAILABLE must be set ≥12 cycles after config write).
+        pico_rs_rt::asm::dsb();
         pico_rs_rt::asm::delay(12);
+        // Step 3: set AVAILABLE via atomic SET alias.
         self.dpram
             .ep0_out_buffer_control
             .set_bits(pico_rs_pac::usb_dpram::Ep0OutBufferControl::AVAILABLE_0);
+        pico_rs_rt::asm::dsb();
 
         self.ep0_in_data_toggle.store(true, Ordering::SeqCst);
         self.setup_pending.store(false, Ordering::SeqCst);
@@ -383,6 +417,12 @@ impl UsbBus for Rp2350Bus {
     }
 
     fn reset(&self) {
+        // Clear bus-reset flag & all buffer status (matches rp-hal reset()).
+        self.usb
+            .sie_status
+            .write_bits(pico_rs_pac::usb::SieStatus::BUS_RESET);
+        self.usb.buff_status.write_bits(0xFFFF_FFFF);
+
         // Reset address.
         self.usb.addr_endp.write_address(0);
 
@@ -407,34 +447,29 @@ impl UsbBus for Rp2350Bus {
 
         // ── Bus reset ────────────────────────────────────────────────────────
         if ints & pico_rs_pac::usb::Ints::BUS_RESET != 0 {
-            self.usb
-                .sie_status
-                .write_bits(pico_rs_pac::usb::SieStatus::BUS_RESET);
-            self.usb.buff_status.write_bits(0xFFFF_FFFF);
             return PollResult::Reset;
         }
 
-        // ── Suspend ──────────────────────────────────────────────────────────
-        if ints & pico_rs_pac::usb::Ints::DEV_SUSPEND != 0 {
-            self.usb
-                .sie_status
-                .write_bits(pico_rs_pac::usb::SieStatus::SUSPENDED);
-            return PollResult::Suspend;
-        }
-
-        // ── Resume ───────────────────────────────────────────────────────────
-        if ints & pico_rs_pac::usb::Ints::DEV_RESUME_FROM_HOST != 0 {
-            self.usb
-                .sie_status
-                .write_bits(pico_rs_pac::usb::SieStatus::RESUME);
-            return PollResult::Resume;
-        }
-
         // ── SETUP / buffer status ────────────────────────────────────────────
+        // Check for data events BEFORE suspend/resume so a pending SETUP is
+        // never masked by a concurrent DEV_SUSPEND (matches rp-hal ordering).
         let has_setup = ints & pico_rs_pac::usb::Ints::SETUP_REQ != 0;
         let has_buffer = ints & pico_rs_pac::usb::Ints::BUFF_STATUS != 0;
 
         if !has_setup && !has_buffer {
+            // No data events — check suspend/resume.
+            if ints & pico_rs_pac::usb::Ints::DEV_SUSPEND != 0 {
+                self.usb
+                    .sie_status
+                    .write_bits(pico_rs_pac::usb::SieStatus::SUSPENDED);
+                return PollResult::Suspend;
+            }
+            if ints & pico_rs_pac::usb::Ints::DEV_RESUME_FROM_HOST != 0 {
+                self.usb
+                    .sie_status
+                    .write_bits(pico_rs_pac::usb::SieStatus::RESUME);
+                return PollResult::Resume;
+            }
             return PollResult::None;
         }
 
@@ -553,6 +588,9 @@ impl UsbBus for Rp2350Bus {
             // Reset data toggle — control IN starts at DATA1.
             self.ep0_in_data_toggle.store(true, Ordering::SeqCst);
 
+            // Clear any outstanding EP0 OUT buff_status (e.g. discarded ZLP).
+            self.clear_buffer_status_bit(EndpointAddress::EP0_OUT);
+
             let lo = self.dpram.setup_packet_low.read_bits();
             let hi = self.dpram.setup_packet_high.read_bits();
             let lo_bytes = lo.to_le_bytes();
@@ -561,6 +599,29 @@ impl UsbBus for Rp2350Bus {
             let len = core::cmp::min(8, buf.len());
             for (i, b) in pkt.take(len).enumerate() {
                 buf[i] = b;
+            }
+
+            // Determine if the host will send a DATA OUT or STATUS OUT phase.
+            // - IN requests (bmRequestType bit 7 set): host sends STATUS OUT ZLP
+            // - OUT requests with wLength > 0: host sends DATA OUT
+            // - No-data OUT requests (wLength == 0): no OUT phase; device sends STATUS IN
+            let expect_out = if len >= 8 {
+                let is_in = (buf[0] & 0x80) != 0;
+                let w_length = u16::from(buf[6]) | (u16::from(buf[7]) << 8);
+                is_in || w_length != 0
+            } else {
+                true // short read — arm defensively
+            };
+
+            // Re-arm EP0 OUT for the data/status phase (DATA1 after SETUP).
+            let ctrl = (CONTROL_MAX_PACKET_SIZE as u32) & buffer_control_bits::LENGTH_0_MASK
+                | buffer_control_bits::PID_0;
+            if expect_out {
+                BufferControlAccess::new(self.dpram)
+                    .write_with_errata(EndpointAddress::EP0_OUT, ctrl);
+            } else {
+                // No OUT phase expected — set clean state without AVAILABLE.
+                self.dpram.ep0_out_buffer_control.write_bits(ctrl);
             }
 
             #[cfg(feature = "defmt")]
