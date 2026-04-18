@@ -143,7 +143,12 @@ pub struct AxisConfig {
 /// 传入 0 Hz 时返回 1 秒（1_000_000 us）作为默认上限保护。
 #[inline]
 pub const fn speed_to_interval_us(hz: u32) -> u32 {
-    if hz == 0 { 1_000_000 } else { 1_000_000 / hz }
+    // if hz == 0 { 1_000_000 } else { 1_000_000 / hz }
+    if let Some(interval) = 1_000_000u32.checked_div(hz) {
+        interval
+    } else {
+        1_000_000
+    }
 }
 
 /// 单轴步进状态。

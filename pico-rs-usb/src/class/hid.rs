@@ -416,9 +416,9 @@ impl<B: UsbBus> UsbClass<B> for HidClass<'_, B> {
         }
 
         match req.request_type {
-            RequestType::Standard => {
+            RequestType::Standard
                 // GET_DESCRIPTOR for the HID report descriptor.
-                if req.request == StandardRequest::GET_DESCRIPTOR {
+                if req.request == StandardRequest::GET_DESCRIPTOR => {
                     let (desc_type, _) = req.descriptor_type_index();
                     if desc_type == hid_descriptor_type::REPORT {
                         let rdesc = self.config.report_descriptor;
@@ -426,7 +426,6 @@ impl<B: UsbBus> UsbClass<B> for HidClass<'_, B> {
                         let _ = xfer.accept_with(&rdesc[..len]);
                     }
                 }
-            }
             RequestType::Class => {
                 match req.request {
                     hid_req::GET_REPORT => {

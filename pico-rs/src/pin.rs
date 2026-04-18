@@ -444,7 +444,7 @@ const fn compute_pwm_ch(gpio: u8) -> PwmCh {
 /// - **RP2350A**: GPIO 26–29 → ADC channels 0–3
 /// - **RP2350B**: GPIO 40–47 → ADC channels 0–7
 const fn compute_adc(gpio: u8) -> Option<u8> {
-    #[cfg(not(feature = "rp2350b"))]
+    #[cfg(feature = "rp2350a")]
     {
         match gpio {
             26 => Some(0),
@@ -475,7 +475,7 @@ const fn compute_adc(gpio: u8) -> Option<u8> {
 // ============================================================================
 
 /// Number of GPIO pins on RP2350A.
-#[cfg(not(feature = "rp2350b"))]
+#[cfg(feature = "rp2350a")]
 pub const GPIO_COUNT: usize = 30;
 
 /// Number of GPIO pins on RP2350B.
@@ -492,7 +492,7 @@ pub const GPIO_COUNT: usize = 48;
 /// let gpio4 = &PIN_TABLE[4];
 /// // SPI0 RX, UART1 TX, I2C0 SDA, PWM slice 2 channel A
 /// ```
-#[cfg(not(feature = "rp2350b"))]
+#[cfg(feature = "rp2350a")]
 pub const PIN_TABLE: [PinDesc; GPIO_COUNT] = [
     PinDesc::new(0),
     PinDesc::new(1),
@@ -603,11 +603,11 @@ pub const fn pin_desc(gpio: u8) -> Option<&'static PinDesc> {
 /// ```
 pub const fn uart_tx_pins(instance: u8) -> &'static [u8] {
     match instance {
-        #[cfg(not(feature = "rp2350b"))]
+        #[cfg(feature = "rp2350a")]
         0 => &[0, 12, 16, 28],
         #[cfg(feature = "rp2350b")]
         0 => &[0, 12, 16, 28, 32, 44],
-        #[cfg(not(feature = "rp2350b"))]
+        #[cfg(feature = "rp2350a")]
         1 => &[4, 8, 20, 24],
         #[cfg(feature = "rp2350b")]
         1 => &[4, 8, 20, 24, 36, 40],
@@ -618,11 +618,11 @@ pub const fn uart_tx_pins(instance: u8) -> &'static [u8] {
 /// Find all GPIO pins that can serve as UART RX for a given instance.
 pub const fn uart_rx_pins(instance: u8) -> &'static [u8] {
     match instance {
-        #[cfg(not(feature = "rp2350b"))]
+        #[cfg(feature = "rp2350a")]
         0 => &[1, 13, 17, 29],
         #[cfg(feature = "rp2350b")]
         0 => &[1, 13, 17, 29, 33, 45],
-        #[cfg(not(feature = "rp2350b"))]
+        #[cfg(feature = "rp2350a")]
         1 => &[5, 9, 21, 25],
         #[cfg(feature = "rp2350b")]
         1 => &[5, 9, 21, 25, 37, 41],
@@ -633,11 +633,11 @@ pub const fn uart_rx_pins(instance: u8) -> &'static [u8] {
 /// Find all GPIO pins that can serve as I2C SDA for a given instance.
 pub const fn i2c_sda_pins(instance: u8) -> &'static [u8] {
     match instance {
-        #[cfg(not(feature = "rp2350b"))]
+        #[cfg(feature = "rp2350a")]
         0 => &[0, 4, 8, 12, 16, 20, 24, 28],
         #[cfg(feature = "rp2350b")]
         0 => &[0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44],
-        #[cfg(not(feature = "rp2350b"))]
+        #[cfg(feature = "rp2350a")]
         1 => &[2, 6, 10, 14, 18, 22, 26],
         #[cfg(feature = "rp2350b")]
         1 => &[2, 6, 10, 14, 18, 22, 26, 30, 34, 38, 42, 46],
@@ -648,11 +648,11 @@ pub const fn i2c_sda_pins(instance: u8) -> &'static [u8] {
 /// Find all GPIO pins that can serve as I2C SCL for a given instance.
 pub const fn i2c_scl_pins(instance: u8) -> &'static [u8] {
     match instance {
-        #[cfg(not(feature = "rp2350b"))]
+        #[cfg(feature = "rp2350a")]
         0 => &[1, 5, 9, 13, 17, 21, 25, 29],
         #[cfg(feature = "rp2350b")]
         0 => &[1, 5, 9, 13, 17, 21, 25, 29, 33, 37, 41, 45],
-        #[cfg(not(feature = "rp2350b"))]
+        #[cfg(feature = "rp2350a")]
         1 => &[3, 7, 11, 15, 19, 23, 27],
         #[cfg(feature = "rp2350b")]
         1 => &[3, 7, 11, 15, 19, 23, 27, 31, 35, 39, 43, 47],
@@ -686,7 +686,7 @@ pub const fn pwm_slice_pins(slice: u8) -> &'static [(u8, PwmCh)] {
             (28, PwmCh::A),
             (29, PwmCh::B),
         ],
-        #[cfg(not(feature = "rp2350b"))]
+        #[cfg(feature = "rp2350a")]
         7 => &[(14, PwmCh::A), (15, PwmCh::B)],
         #[cfg(feature = "rp2350b")]
         7 => &[
@@ -733,7 +733,7 @@ pub const fn pwm_slice_pins(slice: u8) -> &'static [(u8, PwmCh)] {
 ///
 /// - RP2350A: GPIO 26–29 (4 channels)
 /// - RP2350B: GPIO 40–47 (8 channels)
-#[cfg(not(feature = "rp2350b"))]
+#[cfg(feature = "rp2350a")]
 pub const fn adc_pins() -> &'static [(u8, u8)] {
     &[(26, 0), (27, 1), (28, 2), (29, 3)]
 }

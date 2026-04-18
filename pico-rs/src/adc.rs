@@ -226,7 +226,7 @@ macro_rules! impl_adc_pin {
 }
 
 // RP2350A ADC pin mappings
-#[cfg(not(feature = "rp2350b"))]
+#[cfg(feature = "rp2350a")]
 mod pin_impls {
     use super::*;
     impl_adc_pin!(26, 0);

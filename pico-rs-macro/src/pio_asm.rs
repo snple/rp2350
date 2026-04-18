@@ -402,10 +402,8 @@ fn parse_directive(
                 }
             }
         }
-        ".program" => {
-            if parts.len() >= 2 {
-                *program_name = parts[1].to_string();
-            }
+        ".program" if parts.len() >= 2 => {
+            *program_name = parts[1].to_string();
         }
         ".origin" => {
             if parts.len() >= 2
@@ -414,9 +412,9 @@ fn parse_directive(
                 *origin = Some(addr);
             }
         }
-        ".define" => {
+        ".define"
             // Parse .define [public] <name> <value>
-            if parts.len() >= 3 {
+            if parts.len() >= 3 => {
                 let (name_idx, _is_public) = if parts[1] == "public" {
                     (2, true)
                 } else {
@@ -432,7 +430,6 @@ fn parse_directive(
                     }
                 }
             }
-        }
         ".pio_version" | ".lang_opt" | ".fifo" | ".out" | ".in" | ".mov_status" | ".clock_div"
         | ".set" | ".word" => {
             // These directives are handled elsewhere or ignored
@@ -468,11 +465,9 @@ fn eval_simple_expr(expr: &str, defines: &HashMap<String, i32>) -> Result<i32, S
             ')' => paren_depth -= 1,
             '+' | '-' if paren_depth == 0 && i > 0 => {
                 // Make sure it's not part of a number sign
-                if i > 0 {
-                    op_pos = Some(i);
-                    op_char = chars[i];
-                    break;
-                }
+                op_pos = Some(i);
+                op_char = chars[i];
+                break;
             }
             _ => {}
         }
