@@ -140,7 +140,7 @@ fn parse_register(node: &Node) -> Result<Register> {
     }
 
     // Sort fields by LSB position (highest bit first for better readability)
-    fields.sort_by(|a, b| b.lsb.cmp(&a.lsb));
+    fields.sort_by_key(|b| std::cmp::Reverse(b.lsb));
 
     // Determine register access: use explicit SVD value if present,
     // otherwise infer from field access types.
