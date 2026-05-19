@@ -482,19 +482,19 @@ fn main() -> ! {
     let pwm = Pwm::new(dp.PWM);
 
     // Phase A — slice 0
-    let slice_a = pwm.slice::<0>().output_a(pins.pin::<0>(), sys_freq);
+    let slice_a = pwm.slice::<0>().output_a(pins.pin::<0>());
     slice_a.set_wrap(pwm_wrap);
     slice_a.set_duty_a(0);
     slice_a.enable();
 
     // Phase B — slice 1
-    let slice_b = pwm.slice::<1>().output_a(pins.pin::<2>(), sys_freq);
+    let slice_b = pwm.slice::<1>().output_a(pins.pin::<2>());
     slice_b.set_wrap(pwm_wrap);
     slice_b.set_duty_a(0);
     slice_b.enable();
 
     // Phase C — slice 2
-    let slice_c = pwm.slice::<2>().output_a(pins.pin::<4>(), sys_freq);
+    let slice_c = pwm.slice::<2>().output_a(pins.pin::<4>());
     slice_c.set_wrap(pwm_wrap);
     slice_c.set_duty_a(0);
     slice_c.enable();

@@ -1,7 +1,14 @@
-//! # PWM 输出示例 — LED 呼吸灯 + 舵机控制
+//! # PWM 输出示例 — 从频率配置到占空比控制
 //!
 //! 基于 RP2350 (Raspberry Pi Pico 2) 的 **PWM 输出**示例，
-//! 演示如何使用 PWM 产生不同频率和占空比的波形。
+//! 演示如何使用 pico-rs 的 PWM HAL 完成以下几类常见任务：
+//!
+//! 1. 选择合适的 `wrap` 获得需要的占空比分辨率
+//! 2. 使用 `configure_frequency_with_wrap()` 自动计算分频器
+//! 3. 使用 `get_frequency()` 回读实际编程后的频率
+//! 4. 使用 `CC`（compare）值控制占空比
+//! 5. 在同一 slice 上独立控制 A/B 两个通道
+//! 6. 切换到 phase-correct 模式获得对称波形
 //!
 //! ---
 //!
@@ -29,6 +36,7 @@
 //! - 16 位计数器 + 16 位 wrap (top) 值
 //! - 可选 8.4 位分频器 (整数部分 1~255，小数部分 0~15)
 //! - 支持 Phase-Correct 模式 (对称 PWM)
+//! - compare 值 (`CC`) 决定占空比：当 `counter < CC` 时输出为高
 //!
 //! ### PWM 频率计算
 //!
@@ -41,6 +49,21 @@
 //!     DIV   = 分频值 (整数 + 小数/16)
 //!     WRAP  = 计数器最大值 (0~65535)
 //! ```
+//!
+//! ### PWM 占空比计算
+//!
+//! ```text
+//!   duty ~= CC / (WRAP + 1)
+//!
+//!   例如 WRAP = 999:
+//!   CC = 250  ->  25%
+//!   CC = 500  ->  50%
+//!   CC = 750  ->  75%
+//!   CC = 1000 -> 100%
+//! ```
+//!
+//! > 注意：如果需要“真正的”100% 占空比，compare 值需要能表示 `WRAP + 1`。
+//! > 因此通常不要把 `WRAP` 设为 `0xffff`。
 //!
 //! ### GPIO → PWM Slice 映射 (RP2350A)
 //!
@@ -59,11 +82,11 @@
 //!
 //! ## 1.3 本示例演示内容
 //!
-//! 1. **LED 呼吸灯**: PWM 驱动 LED 渐亮渐灭 (GP0, Slice 0 Channel A)
-//! 2. **舵机控制**: 50 Hz PWM, 1~2ms 脉宽对应 0°~180° (GP2, Slice 1 Channel A)
-//! 3. **双通道输出**: 同一 Slice 的 A/B 通道独立设置占空比 (GP4 + GP5)
-//! 4. **Phase-Correct 模式**: 对称 PWM, 适合电机驱动 H 桥
-//! 5. **频率调整**: 运行时动态修改 PWM 频率和占空比
+//! 1. **LED 呼吸灯**: 1 kHz，1000 级亮度分辨率
+//! 2. **舵机控制**: 50 Hz，1~2ms 脉宽对应 0°~180°
+//! 3. **双通道输出**: 同一 Slice 的 A/B 通道共享频率、独立 duty
+//! 4. **Phase-Correct 模式**: 自动按相位修正公式配置频率
+//! 5. **输出反转**: 在保持频率和 compare 值不变时翻转极性
 //!
 //! ---
 //!
@@ -103,13 +126,13 @@
 //!
 //! # 3. 常用 PWM 频率参考
 //!
-//! | 应用场景 | 频率 | WRAP | DIV |
-//! |---------|------|------|-----|
-//! | LED 调光 | 1 kHz | 999 | 150 |
-//! | 舵机控制 | 50 Hz | 65535 | ~46 |
-//! | 蜂鸣器 | 440 Hz~4 kHz | 根据音调 | - |
-//! | 电机 PWM | 20 kHz | 7499 | 1 |
-//! | 音频 DAC | 44.1 kHz | 3400 | 1 |
+//! | 应用场景 | 频率 | 建议 WRAP | 说明 |
+//! |---------|------|-----------|------|
+//! | LED 调光 | 1 kHz | 999 | 1000 级 duty 分辨率 |
+//! | 舵机控制 | 50 Hz | 65217 | 20ms 周期，便于 1~2ms 脉宽换算 |
+//! | 电机 PWM | 20 kHz | 7499 | `DIV = 1` 时正好整除 |
+//! | 4 线风扇 | 25 kHz | 5999 | `DIV = 1` 时正好整除 |
+//! | 音频 / DAC | 44.1 kHz | 依据分辨率需求选取 | 频率优先时可减小 WRAP |
 //!
 //! ---
 //!
@@ -149,27 +172,31 @@ const SYS_CLK_HZ: u32 = 150_000_000;
 /// f_PWM = 150 MHz / (DIV × (WRAP + 1))
 /// DIV=150, WRAP=999 → f = 150M / (150 × 1000) = 1 kHz
 const LED_WRAP: u16 = 999;
-const LED_DIV: u8 = 150;
 
 /// 舵机 PWM 参数
 /// 舵机要求 50 Hz (20ms 周期), 脉宽 1~2ms 对应 0°~180°
-/// f_PWM = 150 MHz / (DIV × (WRAP + 1))
-/// DIV=46, WRAP=65217 → f ≈ 50.0 Hz (周期 ~20ms)
+/// 这里选择较大的 WRAP，以保留足够细的脉宽分辨率。
 const SERVO_WRAP: u16 = 65217;
-const SERVO_DIV: u8 = 46;
 
 /// 舵机脉宽对应的 duty 值
 ///   1.0ms (0°)  → duty = 65217 × (1.0 / 20.0) = ~3261
 ///   1.5ms (90°) → duty = 65217 × (1.5 / 20.0) = ~4891
 ///   2.0ms (180°) → duty = 65217 × (2.0 / 20.0) = ~6522
-const SERVO_MIN_DUTY: u16 = 3261;  // 0°
-const SERVO_MID_DUTY: u16 = 4891;  // 90°
-const SERVO_MAX_DUTY: u16 = 6522;  // 180°
+const SERVO_MIN_DUTY: u16 = 3261; // 0°
+const SERVO_MID_DUTY: u16 = 4891; // 90°
+const SERVO_MAX_DUTY: u16 = 6522; // 180°
 
 /// 将角度 (0~180) 转换为舵机 duty 值
 const fn angle_to_duty(angle: u32) -> u16 {
     let range = (SERVO_MAX_DUTY - SERVO_MIN_DUTY) as u32;
     (SERVO_MIN_DUTY as u32 + range * angle / 180) as u16
+}
+
+/// 将百分比转换为 compare 值。
+///
+/// 这里使用 `(wrap + 1)` 作为基数，因此 100% 对应的 compare 值是 `wrap + 1`。
+const fn duty_from_percent(wrap: u16, percent: u32) -> u16 {
+    ((((wrap as u32) + 1) * percent) / 100) as u16
 }
 
 #[entry]
@@ -200,21 +227,21 @@ fn main() -> ! {
     info!("--- Demo 1: LED Breathing Effect (GP0) ---");
 
     // 配置 Slice 0 — 仅使用 Channel A (GP0)
-    let slice0 = pwm.slice::<0>().output_a(pins.pin::<0>(), SYS_CLK_HZ);
+    let slice0 = pwm.slice::<0>().output_a(pins.pin::<0>());
 
-    // 设置分频和 wrap
-    slice0.set_div_int(LED_DIV);    // 整数分频 = 150
-    slice0.set_div_frac(0);         // 无小数分频
-    slice0.set_wrap(LED_WRAP);      // 计数器 top = 999 → 0~999 共 1000 级
-    slice0.set_duty_a(0);           // 初始占空比 = 0%
+    // 使用高层 API 配置频率：
+    // - 目标频率: 1 kHz
+    // - WRAP=999, 所以一个周期有 1000 个计数步
+    let led_actual_hz = slice0.configure_frequency_with_wrap(SYS_CLK_HZ, 1_000, LED_WRAP);
+    let (led_div_int, led_div_frac) = slice0.get_div();
+    slice0.set_duty_a(0); // 初始占空比 = 0%
 
     // 使能 PWM 输出
     slice0.enable();
 
-    let freq = SYS_CLK_HZ / (LED_DIV as u32 * (LED_WRAP as u32 + 1));
     info!(
-        "Slice 0: DIV={}, WRAP={}, freq={} Hz, 1000 brightness levels",
-        LED_DIV, LED_WRAP, freq
+        "Slice 0: TOP={}, DIV={} + {}/16, actual={} Hz, 1000 brightness levels",
+        LED_WRAP, led_div_int, led_div_frac, led_actual_hz
     );
 
     // 渐亮渐灭 3 个周期
@@ -249,19 +276,21 @@ fn main() -> ! {
     // ======================================================================
     info!("--- Demo 2: Servo Control (GP2) ---");
 
-    let slice1 = pwm.slice::<1>().output_a(pins.pin::<2>(), SYS_CLK_HZ);
+    let slice1 = pwm.slice::<1>().output_a(pins.pin::<2>());
 
-    slice1.set_div_int(SERVO_DIV);
-    slice1.set_div_frac(0);
-    slice1.set_wrap(SERVO_WRAP);
+    let servo_actual_hz = slice1.configure_frequency_with_wrap(SYS_CLK_HZ, 50, SERVO_WRAP);
+    let (servo_div_int, servo_div_frac) = slice1.get_div();
     slice1.set_duty_a(SERVO_MID_DUTY); // 初始 90°
 
     slice1.enable();
 
-    let servo_freq = SYS_CLK_HZ / (SERVO_DIV as u32 * (SERVO_WRAP as u32 + 1));
     info!(
-        "Slice 1: DIV={}, WRAP={}, freq={} Hz (servo)",
-        SERVO_DIV, SERVO_WRAP, servo_freq
+        "Slice 1: TOP={}, DIV={} + {}/16, actual={} Hz (servo)",
+        SERVO_WRAP, servo_div_int, servo_div_frac, servo_actual_hz
+    );
+    info!(
+        "Servo pulse window: 1.0ms={}, 1.5ms={}, 2.0ms={} counts",
+        SERVO_MIN_DUTY, SERVO_MID_DUTY, SERVO_MAX_DUTY
     );
 
     // 依次转到 0° → 45° → 90° → 135° → 180° → 90°
@@ -293,23 +322,20 @@ fn main() -> ! {
     // ======================================================================
     info!("--- Demo 3: Dual-Channel Output (GP4 + GP5) ---");
 
-    let slice2 = pwm
-        .slice::<2>()
-        .output_ab(pins.pin::<4>(), pins.pin::<5>(), SYS_CLK_HZ);
+    let slice2 = pwm.slice::<2>().output_ab(pins.pin::<4>(), pins.pin::<5>());
 
-    slice2.set_div_int(LED_DIV);
-    slice2.set_div_frac(0);
-    slice2.set_wrap(LED_WRAP);
+    let dual_actual_hz = slice2.configure_frequency_with_wrap(SYS_CLK_HZ, 1_000, LED_WRAP);
 
     // Channel A = 25%, Channel B = 75% — 互补效果
-    slice2.set_duty_a(LED_WRAP / 4);
-    slice2.set_duty_b(LED_WRAP * 3 / 4);
+    slice2.set_duty_a(duty_from_percent(LED_WRAP, 25));
+    slice2.set_duty_b(duty_from_percent(LED_WRAP, 75));
     slice2.enable();
 
     info!(
-        "Slice 2: Ch A = 25% (duty={}), Ch B = 75% (duty={})",
-        LED_WRAP / 4,
-        LED_WRAP * 3 / 4
+        "Slice 2: actual={} Hz, Ch A = 25% (cc={}), Ch B = 75% (cc={})",
+        dual_actual_hz,
+        duty_from_percent(LED_WRAP, 25),
+        duty_from_percent(LED_WRAP, 75)
     );
 
     // 互补渐变: A 从 0→100%, B 从 100→0%
@@ -350,15 +376,13 @@ fn main() -> ! {
 
     // 重新使用 slice0 (GP0)
     slice0.set_phase_correct(true);
-    slice0.set_div_int(LED_DIV);
-    slice0.set_wrap(LED_WRAP);
+    let pc_actual_hz = slice0.configure_frequency_with_wrap(SYS_CLK_HZ, 500, LED_WRAP);
     slice0.set_duty_a(LED_WRAP / 2); // 50% 占空比
     slice0.enable();
 
-    let pc_freq = SYS_CLK_HZ / (LED_DIV as u32 * LED_WRAP as u32 * 2);
     info!(
-        "Phase-correct mode: freq={} Hz (half of normal mode)",
-        pc_freq
+        "Phase-correct mode: target=500 Hz, actual={} Hz",
+        pc_actual_hz
     );
 
     // 保持 3 秒展示
@@ -377,12 +401,15 @@ fn main() -> ! {
     // ======================================================================
     info!("--- Demo 5: Output Inversion (GP0) ---");
 
-    slice0.set_wrap(LED_WRAP);
-    slice0.set_div_int(LED_DIV);
-    slice0.set_duty_a(LED_WRAP / 4); // 25% 占空比
+    let inverted_actual_hz = slice0.configure_frequency_with_wrap(SYS_CLK_HZ, 1_000, LED_WRAP);
+    let inverted_cc = duty_from_percent(LED_WRAP, 25);
+    slice0.set_duty_a(inverted_cc); // 25% 占空比
     slice0.enable();
 
-    info!("Normal output: 25% duty");
+    info!(
+        "Normal output: actual={} Hz, cc={} (25% duty)",
+        inverted_actual_hz, inverted_cc
+    );
     timer.delay_ms(2000);
 
     slice0.set_invert_a(true);
@@ -399,12 +426,14 @@ fn main() -> ! {
     info!("=== Loop: Onboard LED breathing (GP25) ===");
 
     // GP25 → Slice 4, Channel B
-    let slice4 = pwm.slice::<4>().output_ab(pins.pin::<24>(), pins.pin::<25>(), SYS_CLK_HZ);
+    let slice4 = pwm
+        .slice::<4>()
+        .output_ab(pins.pin::<24>(), pins.pin::<25>());
 
-    slice4.set_div_int(LED_DIV);
-    slice4.set_div_frac(0);
-    slice4.set_wrap(LED_WRAP);
+    let loop_actual_hz = slice4.configure_frequency_with_wrap(SYS_CLK_HZ, 1_000, LED_WRAP);
     slice4.enable();
+
+    info!("Slice 4: onboard LED breathing at {} Hz", loop_actual_hz);
 
     loop {
         // 渐亮

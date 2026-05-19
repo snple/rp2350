@@ -67,12 +67,12 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     let pwm = Pwm::new(dp.PWM);
     let slice = pwm.slice::<0>();
-    let slice = slice.output_a(pins.pin::<0>(), clocks.sys_freq());
+    let slice = slice.output_a(pins.pin::<0>());
 
-    // Set wrap to 65535 for full 16-bit duty resolution
-    slice.set_wrap(0xFFFF);
+    // Use 0xFFFE so CC=0xFFFF still represents a true 100% duty cycle.
+    slice.set_wrap(0xFFFE);
     // Clock divider: slow down for visible LED fade
-    // 150 MHz / 8 / 65536 ≈ 286 Hz PWM frequency
+    // 150 MHz / 8 / 65535 ≈ 286 Hz PWM frequency
     slice.set_div(8, 0);
     slice.enable();
 

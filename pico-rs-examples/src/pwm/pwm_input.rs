@@ -1,23 +1,56 @@
 //! PWM Input Mode Example for RP2350
 //!
-//! This example demonstrates how to use PWM input mode to measure:
-//! 1. Frequency of an external signal (edge counting)
-//! 2. Duty cycle of an external PWM signal (gated counting)
+//! This example demonstrates the three most practical ways to use PWM input mode:
+//!
+//! 1. Count edges over a known gate interval and convert that count into frequency
+//! 2. Count HIGH-time ticks in gated mode and estimate duty cycle
+//! 3. Leave the slice running as a continuous pulse counter
+//!
+//! # What PWM Input Mode Actually Does
+//!
+//! The RP2350 PWM peripheral does not turn into a timestamp capture block in
+//! input mode. Instead, it keeps using the slice counter and changes what causes
+//! that counter to advance:
+//!
+//! - `RisingEdge`: increment once per rising edge on channel B
+//! - `FallingEdge`: increment once per falling edge on channel B
+//! - `GatedByB`: advance at the divided PWM clock rate only while channel B is HIGH
+//!
+//! That means the interpretation of the final counter value depends on the mode:
+//!
+//! - In edge-counting mode, the count is an edge total
+//! - In gated mode, the count is accumulated HIGH time in counter ticks
 //!
 //! # Hardware Setup
-//! - Connect the signal to measure to GPIO 1 (PWM0 B input)
-//! - For frequency measurement: any square wave signal
-//! - For duty cycle measurement: PWM signal to analyze
 //!
-//! # PWM Input Modes
-//! The RP2350 PWM supports three input modes on the B channel:
-//! - GatedByB: Counter runs only when B is high (for duty cycle)
-//! - RisingEdge: Counter increments on each rising edge (for frequency)
-//! - FallingEdge: Counter increments on each falling edge
+//! - Connect the signal to measure to GPIO 1 (PWM slice 0, channel B)
+//! - For frequency measurement, feed in a square wave or tach-like pulse train
+//! - For duty-cycle measurement, feed in a PWM signal whose HIGH ratio you want
+//!   to estimate
+//!
+//! # Measurement Strategy
+//!
+//! Two parameters dominate the quality of the result:
+//!
+//! - Gate time: longer gate times give more stable counts but slower updates
+//! - Divider: smaller dividers give finer time resolution in `GatedByB` mode but
+//!   can overflow the 16-bit counter sooner
+//!
+//! For edge counting, choose a gate time long enough to accumulate several
+//! pulses. For gated duty measurement, choose the fastest divider that still
+//! keeps the counter from wrapping during the gate interval.
+//!
+//! # Overflow
+//!
+//! The counter is still only 16 bits wide. If it wraps, the reported count is no
+//! longer the full measurement result unless the application also tracks wraps.
+//! This example checks the wrap flag after each measurement to show when that
+//! happens.
 //!
 //! # Type-Safe Pin Ownership
-//! The PWM API uses type-safe pin ownership - the pin is consumed
-//! when creating the PWM input, preventing accidental reuse.
+//!
+//! The PWM API uses type-safe pin ownership: the B-channel pin is consumed when
+//! creating the PWM input, preventing accidental reuse by some other peripheral.
 
 #![no_std]
 #![no_main]
@@ -30,7 +63,7 @@ use pico_rs::Peripherals;
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
 use pico_rs::gpio::Pins;
-use pico_rs::pwm::{InputMode, Pwm, calc_duty_cycle};
+use pico_rs::pwm::{InputMode, Pwm, calc_duty_cycle, calc_input_frequency};
 use pico_rs::timer::Timer0;
 
 /// RP2350 Boot Block - tells the Boot ROM this is a valid ARM executable
@@ -72,7 +105,7 @@ fn main() -> ! {
     // GPIO 1 maps to PWM slice 0, channel B
     let slice0 = pwm
         .slice::<0>()
-        .input(pins.pin::<1>(), InputMode::RisingEdge, sys_clock_hz);
+        .input(pins.pin::<1>(), InputMode::RisingEdge);
 
     info!("Counting rising edges for 100ms...");
 
@@ -85,13 +118,8 @@ fn main() -> ! {
     let edge_count = slice0.stop_measurement();
     let wrapped = slice0.overflow_occurred();
 
-    // Calculate frequency
-    // freq = edges / gate_time_seconds = edges * 1_000_000 / gate_time_us
-    let frequency_hz = if edge_count > 0 {
-        (edge_count as u64 * 1_000_000 / gate_time_us) as u32
-    } else {
-        0
-    };
+    // In RisingEdge mode, the counter value is an edge count over the gate interval.
+    let frequency_hz = calc_input_frequency(edge_count, gate_time_us as u32);
 
     info!("Edge count: {}", edge_count);
     info!("Measured frequency: {} Hz", frequency_hz);
@@ -112,8 +140,8 @@ fn main() -> ! {
     slice0.set_div_mode(pico_rs::pwm::DivMode::GatedByB);
     slice0.set_div(1, 0); // Fastest counting (sys_clk rate)
 
-    // For duty cycle measurement, we need to know the input signal period
-    // Method: Run for a known time and calculate ratio
+    // In gated mode, the counter advances at the PWM counter clock only while
+    // the input is HIGH. With div=1, that counter clock is the system clock.
     let measure_time_us: u64 = 10_000; // 10ms
 
     info!("Measuring duty cycle for 10ms...");
@@ -122,8 +150,8 @@ fn main() -> ! {
     timer.delay_us(measure_time_us);
     let high_count = slice0.stop_measurement() as u32;
 
-    // Total count is based on system clock and divider
-    // At 12MHz boot clock with div=1: total_count ≈ 12MHz * 10ms = 120,000
+    // Total available ticks are based on system clock and divider.
+    // At 12 MHz boot clock with div=1: total_count ≈ 12 MHz * 10 ms = 120,000.
     let expected_total = (sys_clock_hz as u64 * measure_time_us / 1_000_000) as u32;
 
     // Calculate duty cycle percentage (approximate)
