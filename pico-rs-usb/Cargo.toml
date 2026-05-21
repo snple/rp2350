@@ -8,7 +8,6 @@ repository.workspace = true
 
 [dependencies]
 defmt = { workspace = true, optional = true }
-cfg-if.workspace = true
 pico-rs-pac.workspace = true
 pico-rs-rt.workspace = true
 

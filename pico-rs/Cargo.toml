@@ -7,7 +7,6 @@ description = "Hardware Abstraction Layer for RP2350 microcontrollers"
 
 [dependencies]
 defmt = { workspace = true, optional = true }
-cfg-if.workspace = true
 paste = "1.0"
 pico-rs-macro.workspace = true
 pico-rs-rt.workspace = true

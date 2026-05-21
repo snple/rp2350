@@ -59,7 +59,7 @@ fn main() -> ! {
     info!("PWM + DMA LED fade example");
 
     let dp = Peripherals::take().unwrap();
-    let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
+    let _clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
     let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
 
     // ------------------------------------------------------------------

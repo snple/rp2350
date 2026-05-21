@@ -18,11 +18,9 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/user/pico-rs"
 
 [workspace.dependencies]
-cfg-if = "1.0"
-
 # Logging
-defmt = "1.0.1"
-defmt-rtt = "1"
+defmt = "1.1"
+defmt-rtt = "1.2"
 panic-probe = { version = "1", features = ["print-defmt"] }
 
 # Macros
