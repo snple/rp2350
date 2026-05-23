@@ -160,6 +160,10 @@ name = "sht3x"
 path = "src/i2c/sht3x.rs"
 
 [[bin]]
+name = "eeprom_at24c"
+path = "src/i2c/eeprom_at24c.rs"
+
+[[bin]]
 name = "pio_blink"
 path = "src/pio/pio_blink.rs"
 
