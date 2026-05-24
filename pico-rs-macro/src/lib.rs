@@ -112,41 +112,7 @@ pub fn entry(args: TokenStream, input: TokenStream) -> TokenStream {
         #[unsafe(export_name = "main")]
         #(#attrs)*
         pub unsafe fn #ident() -> ! {
-            // ============================================================
-            // RP2350 Hardware Initialization
-            // ============================================================
-
-            // 1. Clear all spinlocks to prevent deadlocks after reset
-            // Spinlocks are NOT automatically cleared on software reset, only on
-            // power-on reset. This can cause deadlocks when using a debugger.
-            const SIO_BASE: u32 = 0xd000_0000;
-            const SPINLOCK0_PTR: *mut u32 = (SIO_BASE + 0x100) as *mut u32;
-            const SPINLOCK_COUNT: usize = 32;
-            for i in 0..SPINLOCK_COUNT {
-                // Writing any value releases the spinlock
-                unsafe { SPINLOCK0_PTR.wrapping_add(i).write_volatile(1) };
-            }
-
-            // 2. Enable co-processors in the Coprocessor Access Control Register (CPACR)
-            // This must be done early, before any code attempts to use these features.
-            const SCB_CPACR_PTR: *mut u32 = 0xE000_ED88 as *mut u32;
-            const CPACR_FULL_ACCESS: u32 = 0b11;
-
-            // Read current CPACR (FPU is already enabled by the runtime)
-            let mut cpacr = unsafe { SCB_CPACR_PTR.read_volatile() };
-
-            // Enable co-processors:
-            // - CP0 (bits 1:0): GPIO Co-Processor
-            // - CP4 (bits 9:8): DCP (Double Co-Processor) for accelerated math
-            // Note: CP10/CP11 (FPU) are already enabled by the runtime
-            cpacr |= CPACR_FULL_ACCESS << (0 * 2);  // CP0 - GPIO Co-Pro
-            cpacr |= CPACR_FULL_ACCESS << (4 * 2);  // CP4 - DCP
-
-            unsafe { SCB_CPACR_PTR.write_volatile(cpacr) };
-
-            // 3. Memory barrier to ensure all initialization is complete
-            // Prevents any accelerated code from being reordered before this point
-            core::sync::atomic::compiler_fence(core::sync::atomic::Ordering::SeqCst);
+            unsafe { pico_rs::startup::init() };
 
             // User code
             #(#stmts)*

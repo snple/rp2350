@@ -104,6 +104,44 @@ pub(crate) const fn regs() -> &'static RegisterBlock {
     unsafe { &*(SIO_BASE as *const RegisterBlock) }
 }
 
+#[inline]
+pub(crate) fn release_all_spinlocks() {
+    let r = regs();
+
+    r.spinlock0.write_spinlock0(1);
+    r.spinlock1.write_spinlock1(1);
+    r.spinlock2.write_spinlock2(1);
+    r.spinlock3.write_spinlock3(1);
+    r.spinlock4.write_spinlock4(1);
+    r.spinlock5.write_spinlock5(1);
+    r.spinlock6.write_spinlock6(1);
+    r.spinlock7.write_spinlock7(1);
+    r.spinlock8.write_spinlock8(1);
+    r.spinlock9.write_spinlock9(1);
+    r.spinlock10.write_spinlock10(1);
+    r.spinlock11.write_spinlock11(1);
+    r.spinlock12.write_spinlock12(1);
+    r.spinlock13.write_spinlock13(1);
+    r.spinlock14.write_spinlock14(1);
+    r.spinlock15.write_spinlock15(1);
+    r.spinlock16.write_spinlock16(1);
+    r.spinlock17.write_spinlock17(1);
+    r.spinlock18.write_spinlock18(1);
+    r.spinlock19.write_spinlock19(1);
+    r.spinlock20.write_spinlock20(1);
+    r.spinlock21.write_spinlock21(1);
+    r.spinlock22.write_spinlock22(1);
+    r.spinlock23.write_spinlock23(1);
+    r.spinlock24.write_spinlock24(1);
+    r.spinlock25.write_spinlock25(1);
+    r.spinlock26.write_spinlock26(1);
+    r.spinlock27.write_spinlock27(1);
+    r.spinlock28.write_spinlock28(1);
+    r.spinlock29.write_spinlock29(1);
+    r.spinlock30.write_spinlock30(1);
+    r.spinlock31.write_spinlock31(1);
+}
+
 // ============================================================================
 // SIO Core
 // ============================================================================

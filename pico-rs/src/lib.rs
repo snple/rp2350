@@ -156,6 +156,7 @@ pub mod reset;
 pub mod sha256;
 pub mod sio;
 pub mod spi;
+pub mod startup;
 pub mod syscfg;
 pub mod sysinfo;
 pub mod systick;

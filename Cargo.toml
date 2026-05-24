@@ -37,3 +37,12 @@ pico-rs-usb = { path = "pico-rs-usb" }
 pico-rs-stepper = { path = "pico-rs-stepper" }
 
 critical-section = { version = "1.2", features = ["restore-state-u32"]}
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
+lto = true
+codegen-units = 1
+opt-level = "z"
