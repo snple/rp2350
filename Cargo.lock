@@ -278,6 +278,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "pico-rs-dsp"
+version = "0.1.0"
+dependencies = [
+ "defmt",
+]
+
+[[package]]
 name = "pico-rs-examples"
 version = "0.1.0"
 dependencies = [
