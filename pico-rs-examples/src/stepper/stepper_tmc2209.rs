@@ -339,7 +339,7 @@
 #![no_std]
 #![no_main]
 
-use pico_rs_stepper::{AxisConfig, AxisState, Direction};
+use pico_rs_drivers::stepper::{AxisConfig, AxisState, Direction};
 
 use core::sync::atomic::{AtomicBool, Ordering};
 use defmt::*;

@@ -239,7 +239,7 @@ use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::ticks::Ticks;
 use pico_rs::timer::Timer0;
 
-use pico_rs_stepper::{AxisConfig, AxisState, Direction, MotionPhase};
+use pico_rs_drivers::stepper::{AxisConfig, AxisState, Direction, MotionPhase};
 
 #[unsafe(link_section = ".start_block")]
 #[used]

@@ -201,7 +201,7 @@
 #![no_std]
 #![no_main]
 
-use pico_rs_stepper::{AxisConfig, AxisState, Direction};
+use pico_rs_drivers::stepper::{AxisConfig, AxisState, Direction};
 
 use defmt::*;
 use defmt_rtt as _;

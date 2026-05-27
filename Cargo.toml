@@ -4,8 +4,8 @@ members = [
     "pico-rs",
     "pico-rs-pac",
     "pico-rs-macro",
+    "pico-rs-drivers",
     "pico-rs-usb",
-    "pico-rs-stepper",
     "pico-rs-rt",
     "pico-rs-examples",
     "xtask",
@@ -32,8 +32,8 @@ pico-rs = { path = "pico-rs" }
 pico-rs-rt = { path = "pico-rs-rt" }
 pico-rs-pac = { path = "pico-rs-pac" }
 pico-rs-macro = { path = "pico-rs-macro" }
+pico-rs-drivers = { path = "pico-rs-drivers" }
 pico-rs-usb = { path = "pico-rs-usb" }
-pico-rs-stepper = { path = "pico-rs-stepper" }
 
 critical-section = { version = "1.2", features = ["restore-state-u32"]}
 

@@ -1,9 +1,9 @@
 [package]
-name = "pico-rs-stepper"
+name = "pico-rs-drivers"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
-description = "Stepper motor driver for RP2350 microcontrollers"
+description = "Driver collection for RP2350 microcontrollers"
 repository.workspace = true
 
 [dependencies]

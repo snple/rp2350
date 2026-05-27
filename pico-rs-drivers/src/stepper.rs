@@ -1,4 +1,4 @@
-//! 步进电机控制库。
+//! 步进电机控制模块。
 //!
 //! 提供基于 RP2350 Timer alarm 的步进电机脉冲生成和梯形加减速控制。
 //!
@@ -12,7 +12,7 @@
 //! ## 使用方式
 //!
 //! ```ignore
-//! use pico_rs_stepper::{AxisConfig, AxisState, Direction};
+//! use pico_rs_drivers::stepper::{AxisConfig, AxisState, Direction};
 //!
 //! static AXIS_X: AxisState = AxisState::new(AxisConfig {
 //!     pin_step: 2,
@@ -27,8 +27,6 @@
 //!     homing_backoff_index: 0,
 //! });
 //! ```
-
-#![no_std]
 
 use core::sync::atomic::{AtomicBool, AtomicI32, AtomicU32, Ordering};
 

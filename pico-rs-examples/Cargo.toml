@@ -12,8 +12,8 @@ rp2350b = ["pico-rs/rp2350b"]
 
 [dependencies]
 pico-rs.workspace = true
+pico-rs-drivers.workspace = true
 pico-rs-usb.workspace = true
-pico-rs-stepper.workspace = true
 pico-rs-rt.workspace = true
 defmt.workspace = true
 defmt-rtt.workspace = true
