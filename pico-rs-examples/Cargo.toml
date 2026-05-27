@@ -17,7 +17,6 @@ pico-rs-stepper.workspace = true
 pico-rs-rt.workspace = true
 defmt.workspace = true
 defmt-rtt.workspace = true
-panic-probe.workspace = true
 
 [[bin]]
 name = "blink"

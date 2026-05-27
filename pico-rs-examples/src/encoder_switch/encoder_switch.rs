@@ -107,7 +107,6 @@ use core::sync::atomic::{AtomicBool, AtomicI32, AtomicU32, Ordering};
 
 use defmt::*;
 use defmt_rtt as _;
-use panic_probe as _;
 
 use pico_rs::bind;
 use pico_rs::block::ImageDef;

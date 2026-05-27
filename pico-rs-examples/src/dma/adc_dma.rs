@@ -20,7 +20,6 @@
 
 use defmt::*;
 use defmt_rtt as _;
-use panic_probe as _;
 
 use pico_rs::adc::{Adc, TEMPERATURE_CHANNEL};
 use pico_rs::block::ImageDef;

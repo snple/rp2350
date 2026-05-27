@@ -222,8 +222,3 @@ unsafe extern "C" {
     fn PendSV();
     fn SysTick();
 }
-
-/// Provide the default handler symbol
-#[doc(hidden)]
-#[unsafe(no_mangle)]
-pub static DefaultHandler: unsafe extern "C" fn() = DefaultHandler_;

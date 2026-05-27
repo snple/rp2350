@@ -7,6 +7,22 @@
 //! - `rt` - Runtime support (pico-rs-rt)
 //! - `atomics` - Portable atomic operations
 //! - `defmt` - Defmt logging support
+//! - `panic-handler` - Built-in embedded panic handler for bare-metal targets
+//!
+//! ## Panic And Logging
+//!
+//! `panic-handler` is enabled by default on embedded targets. Disable it if the
+//! final binary provides its own `#[panic_handler]`.
+//!
+//! - With `defmt` enabled, panic messages are emitted through the active defmt
+//!   transport selected by the binary, such as `defmt-rtt` in the examples.
+//! - Without `defmt`, the panic handler skips formatted output and terminates the
+//!   core immediately.
+//! - In both modes, interrupts are disabled first, `SHCSR.USGFAULTENA` is
+//!   cleared through the runtime crate's SCB definition, and execution ends in
+//!   `udf` so the failure reliably escalates to HardFault.
+//! - The examples no longer depend on `panic-probe`; they use this crate's
+//!   built-in panic handler directly.
 //!
 //! ## Example
 //!
@@ -27,6 +43,9 @@
 //! ```
 
 #![no_std]
+
+#[cfg(all(feature = "panic-handler", target_os = "none"))]
+mod panic_handler;
 
 // ============================================================================
 // Steal wrapper — returned by `steal()` methods across HAL drivers

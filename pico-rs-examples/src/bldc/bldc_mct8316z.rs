@@ -457,7 +457,6 @@
 
 use defmt::*;
 use defmt_rtt as _;
-use panic_probe as _;
 
 use pico_rs::Delay;
 use pico_rs::block::ImageDef;

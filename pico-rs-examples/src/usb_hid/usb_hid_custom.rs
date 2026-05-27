@@ -11,7 +11,6 @@
 
 use defmt::*;
 use defmt_rtt as _;
-use panic_probe as _;
 
 use pico_rs::Pico;
 use pico_rs_usb::{

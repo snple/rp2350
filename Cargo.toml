@@ -6,7 +6,6 @@ members = [
     "pico-rs-macro",
     "pico-rs-usb",
     "pico-rs-stepper",
-    "pico-rs-dsp",
     "pico-rs-rt",
     "pico-rs-examples",
     "xtask",
@@ -22,7 +21,6 @@ repository = "https://github.com/user/pico-rs"
 # Logging
 defmt = "1.1"
 defmt-rtt = "1.2"
-panic-probe = { version = "1", features = ["print-defmt"] }
 
 # Macros
 proc-macro2 = "1.0"
@@ -36,7 +34,6 @@ pico-rs-pac = { path = "pico-rs-pac" }
 pico-rs-macro = { path = "pico-rs-macro" }
 pico-rs-usb = { path = "pico-rs-usb" }
 pico-rs-stepper = { path = "pico-rs-stepper" }
-pico-rs-dsp = { path = "pico-rs-dsp" }
 
 critical-section = { version = "1.2", features = ["restore-state-u32"]}
 

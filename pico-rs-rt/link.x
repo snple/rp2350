@@ -13,6 +13,12 @@
 /* Include the memory layout (provided by application or BSP) */
 INCLUDE memory.x
 
+/* `DefaultHandler_` is the runtime fallback implementation.
+ * `DefaultHandler` is the public weak alias used by this script and device.x.
+ * A user-defined `DefaultHandler` function overrides this alias.
+ */
+PROVIDE(DefaultHandler = DefaultHandler_);
+
 /* Include device-specific interrupt handlers (provided by PAC) */
 INCLUDE device.x
 

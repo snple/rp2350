@@ -344,7 +344,6 @@ use pico_rs_stepper::{AxisConfig, AxisState, Direction};
 use core::sync::atomic::{AtomicBool, Ordering};
 use defmt::*;
 use defmt_rtt as _;
-use panic_probe as _;
 
 use pico_rs::Steal;
 use pico_rs::block::ImageDef;

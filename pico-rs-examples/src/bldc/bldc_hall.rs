@@ -283,7 +283,6 @@ use core::sync::atomic::{AtomicBool, AtomicU8, AtomicU16, AtomicU32, Ordering};
 
 use defmt::*;
 use defmt_rtt as _;
-use panic_probe as _;
 
 use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
