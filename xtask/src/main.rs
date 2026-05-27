@@ -1,4 +1,4 @@
-//! Build automation tasks for pico-rs
+//! Build automation tasks for roschi
 //!
 //! Run with `cargo xtask <command>`
 //!
@@ -16,7 +16,7 @@ use std::process::Command;
 
 #[derive(Parser)]
 #[command(name = "xtask")]
-#[command(about = "Build automation tasks for pico-rs")]
+#[command(about = "Build automation tasks for roschi")]
 struct Cli {
     #[command(subcommand)]
     command: Commands,
@@ -30,7 +30,7 @@ enum Commands {
         #[arg(short, long)]
         svd: Option<PathBuf>,
 
-        /// Output directory (default: pico-rs-pac/src/generated)
+        /// Output directory (default: roschi-pac/src/generated)
         #[arg(short, long)]
         output: Option<PathBuf>,
 
@@ -69,7 +69,7 @@ fn gen_pac(svd: Option<PathBuf>, output: Option<PathBuf>, no_check: bool) -> Res
     let root = workspace_root();
 
     let svd_path = svd.unwrap_or_else(|| root.join("RP2350.svd"));
-    let output_path = output.unwrap_or_else(|| root.join("pico-rs-pac/src/generated"));
+    let output_path = output.unwrap_or_else(|| root.join("roschi-pac/src/generated"));
 
     println!("Generating PAC from: {}", svd_path.display());
     println!("Output directory: {}", output_path.display());
@@ -96,13 +96,13 @@ fn gen_pac(svd: Option<PathBuf>, output: Option<PathBuf>, no_check: bool) -> Res
         .args([
             "build",
             "-p",
-            "pico-rs-pac",
+            "roschi-pac",
             "--target",
             "thumbv8m.main-none-eabihf",
         ])
         .current_dir(&root)
         .status()
-        .context("Failed to build pico-rs-pac")?;
+        .context("Failed to build roschi-pac")?;
 
     if !status.success() {
         anyhow::bail!("PAC compilation failed");

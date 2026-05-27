@@ -203,70 +203,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "57c0d7b74b563b49d38dae00a0c37d4d6de9b432382b2892f0574ddcae73fd0a"
 
 [[package]]
-name = "pico-rs"
-version = "0.1.0"
-dependencies = [
- "critical-section",
- "defmt",
- "enumflags2",
- "paste",
- "pico-rs-macro",
- "pico-rs-pac",
- "pico-rs-rt",
-]
-
-[[package]]
-name = "pico-rs-drivers"
-version = "0.1.0"
-dependencies = [
- "defmt",
- "pico-rs",
- "pico-rs-rt",
-]
-
-[[package]]
-name = "pico-rs-examples"
-version = "0.1.0"
-dependencies = [
- "defmt",
- "defmt-rtt",
- "pico-rs",
- "pico-rs-drivers",
- "pico-rs-rt",
- "pico-rs-usb",
-]
-
-[[package]]
-name = "pico-rs-macro"
-version = "0.1.0"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
-]
-
-[[package]]
-name = "pico-rs-pac"
-version = "0.1.0"
-dependencies = [
- "enumflags2",
- "pico-rs-rt",
-]
-
-[[package]]
-name = "pico-rs-rt"
-version = "0.1.0"
-
-[[package]]
-name = "pico-rs-usb"
-version = "0.1.0"
-dependencies = [
- "defmt",
- "pico-rs-pac",
- "pico-rs-rt",
-]
-
-[[package]]
 name = "proc-macro-error-attr2"
 version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -304,6 +240,70 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "21b2ebcf727b7760c461f091f9f0f539b77b8e87f2fd88131e7f1b433b3cece4"
 dependencies = [
  "proc-macro2",
+]
+
+[[package]]
+name = "roschi"
+version = "0.1.0"
+dependencies = [
+ "critical-section",
+ "defmt",
+ "enumflags2",
+ "paste",
+ "roschi-macro",
+ "roschi-pac",
+ "roschi-rt",
+]
+
+[[package]]
+name = "roschi-drivers"
+version = "0.1.0"
+dependencies = [
+ "defmt",
+ "roschi",
+ "roschi-rt",
+]
+
+[[package]]
+name = "roschi-examples"
+version = "0.1.0"
+dependencies = [
+ "defmt",
+ "defmt-rtt",
+ "roschi",
+ "roschi-drivers",
+ "roschi-rt",
+ "roschi-usb",
+]
+
+[[package]]
+name = "roschi-macro"
+version = "0.1.0"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
+name = "roschi-pac"
+version = "0.1.0"
+dependencies = [
+ "enumflags2",
+ "roschi-rt",
+]
+
+[[package]]
+name = "roschi-rt"
+version = "0.1.0"
+
+[[package]]
+name = "roschi-usb"
+version = "0.1.0"
+dependencies = [
+ "defmt",
+ "roschi-pac",
+ "roschi-rt",
 ]
 
 [[package]]

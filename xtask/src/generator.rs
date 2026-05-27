@@ -185,7 +185,7 @@ fn generate_mod_rs(peripherals: &[&Peripheral]) -> String {
 
         writeln!(
             out,
-            "unsafe impl pico_rs_rt::peripheral::nvic::InterruptNumber for Interrupt {{"
+            "unsafe impl roschi_rt::peripheral::nvic::InterruptNumber for Interrupt {{"
         )
         .unwrap();
         writeln!(out, "    #[inline(always)]").unwrap();
