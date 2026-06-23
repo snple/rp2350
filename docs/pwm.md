@@ -1,6 +1,6 @@
 # RP2350 PWM 使用与计算说明
 
-本文整理 roschi 当前 PWM HAL 的设计、PWM 输出和输入模式的工作方式，以及频率、占空比、测速等相关计算。
+本文整理 pico-rs 当前 PWM HAL 的设计、PWM 输出和输入模式的工作方式，以及频率、占空比、测速等相关计算。
 
 本文的目标不是简单重复 API 名称，而是把下面几件事讲清楚：
 
@@ -9,7 +9,7 @@
 - 输入模式下计数器到底在数什么
 - 如何从计数值换算出频率、占空比、RPM
 - 哪些参数决定分辨率、误差和溢出边界
-- roschi 当前 PWM API 适合怎么使用
+- pico-rs 当前 PWM API 适合怎么使用
 
 ---
 
@@ -111,7 +111,7 @@ DIV = div_int + div_frac / 16
 
 在 phase-correct 模式下，计数器先从 `0` 计到 `TOP`，再反向计回去。
 
-按 roschi 当前 HAL 的计算模型，一个完整 PWM 周期包含：
+按 pico-rs 当前 HAL 的计算模型，一个完整 PWM 周期包含：
 
 ```text
 2 * TOP
@@ -343,7 +343,7 @@ CC = 6000 * 0.3 = 1800
 
 ## 6. 当前 HAL 的输出 API 应该怎么理解
 
-当前 roschi PWM HAL 里，builder 方法负责的是：
+当前 pico-rs PWM HAL 里，builder 方法负责的是：
 
 - 绑定引脚
 - 初始化 slice

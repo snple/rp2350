@@ -1,13 +1,13 @@
 [workspace]
 resolver = "2"
 members = [
-    "roschi",
-    "roschi-pac",
-    "roschi-macro",
-    "roschi-drivers",
-    "roschi-usb",
-    "roschi-rt",
-    "roschi-examples",
+    "pico-rs",
+    "pico-rs-pac",
+    "pico-rs-macro",
+    "pico-rs-drivers",
+    "pico-rs-usb",
+    "pico-rs-rt",
+    "pico-rs-examples",
     "xtask",
 ]
 
@@ -15,7 +15,7 @@ members = [
 version = "0.1.0"
 edition = "2024"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/user/roschi"
+repository = "https://github.com/user/pico-rs"
 
 [workspace.dependencies]
 # Logging
@@ -28,12 +28,12 @@ quote = "1.0"
 syn = { version = "2.0", features = ["full"] }
 
 # Local crates
-roschi = { path = "roschi" }
-roschi-rt = { path = "roschi-rt" }
-roschi-pac = { path = "roschi-pac" }
-roschi-macro = { path = "roschi-macro" }
-roschi-drivers = { path = "roschi-drivers" }
-roschi-usb = { path = "roschi-usb" }
+pico-rs = { path = "pico-rs" }
+pico-rs-rt = { path = "pico-rs-rt" }
+pico-rs-pac = { path = "pico-rs-pac" }
+pico-rs-macro = { path = "pico-rs-macro" }
+pico-rs-drivers = { path = "pico-rs-drivers" }
+pico-rs-usb = { path = "pico-rs-usb" }
 
 critical-section = { version = "1.2", features = ["restore-state-u32"]}
 
