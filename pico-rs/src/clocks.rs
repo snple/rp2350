@@ -135,11 +135,13 @@
 // Sub-modules: Clock Sources (Layer 0)
 // ============================================================================
 
+pub mod lposc;
 pub mod pll;
 pub mod rosc;
 pub mod xosc;
 
 use crate::reset::Resettable;
+pub use lposc::Lposc;
 pub use pll::{PllConfig, PllSys, PllUsb};
 pub use rosc::Rosc;
 pub use xosc::Xosc;
@@ -493,6 +495,193 @@ pub enum FcSrc {
     OtpClk2Fc = 15,
     /// PLL USB primary reference (OPCG)
     PllUsbPrimaryRefOpcg = 16,
+}
+
+// ============================================================================
+// Peripheral Clock Enables (Wake/Sleep)
+// ============================================================================
+//
+// The WAKE_EN0/1, SLEEP_EN0/1, and ENABLED0/1 registers control which
+// peripherals receive clocks during wake, sleep, and the current state.
+// Each bit corresponds to one peripheral clock.
+//
+// These registers are organized as two 32-bit registers (0 and 1), covering
+// 64 possible peripheral clocks. Use [`Clocks::set_peripheral_clock_enabled`]
+// and related methods to manage individual peripherals.
+// ============================================================================
+
+/// Peripheral clock identifier for wake/sleep clock gating
+///
+/// Each variant corresponds to a bit in the `WAKE_EN0/1` or `SLEEP_EN0/1` registers.
+/// These control whether a specific peripheral receives its clock.
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+pub enum ClkPeripheral {
+    // === ENABLED0 / WAKE_EN0 / SLEEP_EN0 bits ===
+    /// CLOCKS peripheral itself
+    Clocks = 0,
+    /// Access control
+    AccessCtrl = 1,
+    /// ADC clock (clk_adc)
+    Adc = 2,
+    /// ADC system clock (clk_sys)
+    SysAdc = 3,
+    /// Boot RAM
+    BootRam = 4,
+    /// Bus control
+    BusCtrl = 5,
+    /// Bus fabric
+    BusFabric = 6,
+    /// DMA
+    Dma = 7,
+    /// Glitch detector
+    GlitchDetector = 8,
+    /// HSTX clock (clk_hstx)
+    Hstx = 9,
+    /// HSTX system clock (clk_sys)
+    SysHstx = 10,
+    /// I2C0
+    I2c0 = 11,
+    /// I2C1
+    I2c1 = 12,
+    /// IO bank
+    Io = 13,
+    /// JTAG
+    Jtag = 14,
+    /// OTP reference clock (clk_ref)
+    RefOtp = 15,
+    /// OTP system clock (clk_sys)
+    SysOtp = 16,
+    /// Pads
+    Pads = 17,
+    /// PIO0
+    Pio0 = 18,
+    /// PIO1
+    Pio1 = 19,
+    /// PIO2
+    Pio2 = 20,
+    /// PLL_SYS system clock
+    SysPllSys = 21,
+    /// PLL_USB system clock
+    SysPllUsb = 22,
+    /// POWMAN reference clock (clk_ref)
+    RefPowman = 23,
+    /// POWMAN system clock (clk_sys)
+    SysPowman = 24,
+    /// PWM
+    Pwm = 25,
+    /// Resets
+    Resets = 26,
+    /// ROM
+    Rom = 27,
+    /// ROSC
+    SysRosc = 28,
+    /// PSM
+    Psm = 29,
+    /// SHA-256
+    Sha256 = 30,
+    /// SIO
+    Sio = 31,
+
+    // === ENABLED1 / WAKE_EN1 / SLEEP_EN1 bits (offset +32) ===
+    /// SPI0 peripheral clock (clk_peri)
+    PeriSpi0 = 32,
+    /// SPI0 system clock (clk_sys)
+    SysSpi0 = 33,
+    /// SPI1 peripheral clock (clk_peri)
+    PeriSpi1 = 34,
+    /// SPI1 system clock (clk_sys)
+    SysSpi1 = 35,
+    /// SRAM bank 0
+    Sram0 = 36,
+    /// SRAM bank 1
+    Sram1 = 37,
+    /// SRAM bank 2
+    Sram2 = 38,
+    /// SRAM bank 3
+    Sram3 = 39,
+    /// SRAM bank 4
+    Sram4 = 40,
+    /// SRAM bank 5
+    Sram5 = 41,
+    /// SRAM bank 6
+    Sram6 = 42,
+    /// SRAM bank 7
+    Sram7 = 43,
+    /// SRAM bank 8
+    Sram8 = 44,
+    /// SRAM bank 9
+    Sram9 = 45,
+    /// System config
+    SysCfg = 46,
+    /// System info
+    SysInfo = 47,
+    /// Testbench manager
+    Tbman = 48,
+    /// TICKS reference clock (clk_ref)
+    RefTicks = 49,
+    /// TICKS system clock (clk_sys)
+    SysTicks = 50,
+    /// Timer 0
+    Timer0 = 51,
+    /// Timer 1
+    Timer1 = 52,
+    /// TRNG
+    Trng = 53,
+    /// UART0 peripheral clock (clk_peri)
+    PeriUart0 = 54,
+    /// UART0 system clock (clk_sys)
+    SysUart0 = 55,
+    /// UART1 peripheral clock (clk_peri)
+    PeriUart1 = 56,
+    /// UART1 system clock (clk_sys)
+    SysUart1 = 57,
+    /// USB controller system clock
+    SysUsbCtrl = 58,
+    /// USB clock (clk_usb)
+    Usb = 59,
+    /// Watchdog
+    Watchdog = 60,
+    /// XIP
+    Xip = 61,
+    /// XOSC
+    SysXosc = 62,
+}
+
+impl ClkPeripheral {
+    /// Get the register index (0 or 1) and bit position
+    #[inline]
+    const fn reg_bit(self) -> (usize, u32) {
+        let val = self as u32;
+        ((val >> 5) as usize, 1u32 << (val & 0x1F))
+    }
+}
+
+// ============================================================================
+// DFT Debug Clock Source
+// ============================================================================
+
+/// DFT debug clock source selection
+///
+/// Each oscillator (XOSC, ROSC, LPOSC) can have its clock replaced
+/// by a debug clock source for testing purposes. The meaning of each
+/// variant depends on which oscillator is being configured:
+///
+/// | Oscillator | `DebugClk` source | `GpIn` source |
+/// |------------|-------------------|---------------|
+/// | XOSC       | PLL_USB primary   | GPIN0         |
+/// | ROSC       | PLL_SYS primary   | GPIN1         |
+/// | LPOSC      | PLL_USB primary   | GPIN1         |
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+#[repr(u32)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+pub enum DftClkSrc {
+    /// No debug clock (normal operation) — valid for all oscillators
+    Null = 0,
+    /// Debug PLL clock — source depends on oscillator (see table above)
+    DebugClk = 1,
+    /// External GPIO clock input — pin depends on oscillator (see table above)
+    GpIn = 2,
 }
 
 // ============================================================================
@@ -1386,6 +1575,371 @@ impl Clocks {
             pll_usb.wait_lock();
         }
     }
+
+    // ========================================================================
+    // ███████╗██╗     ███████╗███████╗██████╗     ██╗    ██╗ █████╗ ██╗  ██╗███████╗
+    // ██╔════╝██║     ██╔════╝██╔════╝██╔══██╗    ██║    ██║██╔══██╗██║ ██╔╝██╔════╝
+    // ███████╗██║     █████╗  █████╗  ██████╔╝    ██║ █╗ ██║███████║█████╔╝ █████╗
+    // ╚════██║██║     ██╔══╝  ██╔══╝  ██╔═══╝     ██║███╗██║██╔══██║██╔═██╗ ██╔══╝
+    // ███████║███████╗███████╗███████╗██║         ╚███╔███╔╝██║  ██║██║  ██╗███████╗
+    // ╚══════╝╚══════╝╚══════╝╚══════╝╚═╝          ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝
+    // Sleep / Wake Clock Enables
+    // ========================================================================
+    //
+    // These registers control which peripherals receive clocks during sleep
+    // and wake states. Disabling unused peripheral clocks during sleep can
+    // significantly reduce power consumption.
+    //
+    // The RP2350 has 64 peripheral clock enable bits across two 32-bit
+    // registers (WAKE_EN0/1, SLEEP_EN0/1, ENABLED0/1).
+    // ========================================================================
+
+    /// Check if a peripheral is currently clocked
+    ///
+    /// Reads the ENABLED0/1 status registers to determine if the peripheral
+    /// is currently receiving its clock.
+    #[inline]
+    pub fn is_peripheral_clocked(&self, peripheral: ClkPeripheral) -> bool {
+        let (reg_idx, bit) = peripheral.reg_bit();
+        let val = if reg_idx == 0 {
+            self.clocks.enabled0.read_bits()
+        } else {
+            self.clocks.enabled1.read_bits()
+        };
+        (val & bit) != 0
+    }
+
+    /// Get the raw enabled status register (ENABLED0/1)
+    ///
+    /// Returns (enabled0, enabled1) raw bitmasks.
+    #[inline]
+    pub fn enabled_mask(&self) -> (u32, u32) {
+        (
+            self.clocks.enabled0.read_bits(),
+            self.clocks.enabled1.read_bits(),
+        )
+    }
+
+    /// Configure wake-mode clock enable for a peripheral
+    ///
+    /// When a peripheral's wake enable is set, it receives its clock during
+    /// wake mode. All wake enables default to enabled after reset.
+    ///
+    /// # Arguments
+    /// * `peripheral` - The peripheral to configure
+    /// * `enabled` - `true` to enable clock in wake mode, `false` to disable
+    #[inline]
+    pub fn set_wake_enabled(&self, peripheral: ClkPeripheral, enabled: bool) {
+        let (reg_idx, bit) = peripheral.reg_bit();
+        if reg_idx == 0 {
+            if enabled {
+                self.clocks.wake_en0.set_bits(bit);
+            } else {
+                self.clocks.wake_en0.clr_bits(bit);
+            }
+        } else if enabled {
+            self.clocks.wake_en1.set_bits(bit);
+        } else {
+            self.clocks.wake_en1.clr_bits(bit);
+        }
+    }
+
+    /// Check if a peripheral's wake-mode clock is enabled
+    #[inline]
+    pub fn is_wake_enabled(&self, peripheral: ClkPeripheral) -> bool {
+        let (reg_idx, bit) = peripheral.reg_bit();
+        let val = if reg_idx == 0 {
+            self.clocks.wake_en0.read_bits()
+        } else {
+            self.clocks.wake_en1.read_bits()
+        };
+        (val & bit) != 0
+    }
+
+    /// Configure sleep-mode clock enable for a peripheral
+    ///
+    /// When a peripheral's sleep enable is set, it receives its clock during
+    /// sleep mode. Disabling unused peripherals during sleep reduces power.
+    /// All sleep enables default to enabled after reset.
+    ///
+    /// # Arguments
+    /// * `peripheral` - The peripheral to configure
+    /// * `enabled` - `true` to enable clock in sleep mode, `false` to disable
+    #[inline]
+    pub fn set_sleep_enabled(&self, peripheral: ClkPeripheral, enabled: bool) {
+        let (reg_idx, bit) = peripheral.reg_bit();
+        if reg_idx == 0 {
+            if enabled {
+                self.clocks.sleep_en0.set_bits(bit);
+            } else {
+                self.clocks.sleep_en0.clr_bits(bit);
+            }
+        } else if enabled {
+            self.clocks.sleep_en1.set_bits(bit);
+        } else {
+            self.clocks.sleep_en1.clr_bits(bit);
+        }
+    }
+
+    /// Check if a peripheral's sleep-mode clock is enabled
+    #[inline]
+    pub fn is_sleep_enabled(&self, peripheral: ClkPeripheral) -> bool {
+        let (reg_idx, bit) = peripheral.reg_bit();
+        let val = if reg_idx == 0 {
+            self.clocks.sleep_en0.read_bits()
+        } else {
+            self.clocks.sleep_en1.read_bits()
+        };
+        (val & bit) != 0
+    }
+
+    /// Get raw wake enable bitmasks
+    ///
+    /// Returns (wake_en0, wake_en1).
+    #[inline]
+    pub fn wake_enable_mask(&self) -> (u32, u32) {
+        (
+            self.clocks.wake_en0.read_bits(),
+            self.clocks.wake_en1.read_bits(),
+        )
+    }
+
+    /// Get raw sleep enable bitmasks
+    ///
+    /// Returns (sleep_en0, sleep_en1).
+    #[inline]
+    pub fn sleep_enable_mask(&self) -> (u32, u32) {
+        (
+            self.clocks.sleep_en0.read_bits(),
+            self.clocks.sleep_en1.read_bits(),
+        )
+    }
+
+    /// Disable all non-essential peripheral clocks during sleep
+    ///
+    /// This provides a conservative power-saving configuration by disabling
+    /// peripherals that are typically not needed during sleep (DMA, PIO, SPI,
+    /// UART, I2C, PWM, USB, HSTX, ADC, TRNG, SHA256, JTAG, etc.).
+    ///
+    /// Essential peripherals (CLOCKS, SRAM, ROM, bus fabrics, resets, etc.)
+    /// are kept enabled to allow the system to wake up.
+    ///
+    /// Use [`set_sleep_enabled`](Self::set_sleep_enabled) for fine-grained control.
+    pub fn sleep_power_save(&self) {
+        // Keep essential: CLOCKS, ACCESSCTRL, BOOTRAM, BUSCTRL, BUSFABRIC,
+        // RESETS, ROM, IO, PADS, SYSCFG, SYSINFO, SRAM0-9, XIP, GLITCH_DETECTOR,
+        // PSM, POWMAN, TBMAN, TICKS, TIMER0, TIMER1, WATCHDOG, XOSC, ROSC
+
+        // Disable non-essential peripherals in sleep mode
+        let non_essential0: &[ClkPeripheral] = &[
+            ClkPeripheral::Adc,
+            ClkPeripheral::SysAdc,
+            ClkPeripheral::Dma,
+            ClkPeripheral::Hstx,
+            ClkPeripheral::SysHstx,
+            ClkPeripheral::I2c0,
+            ClkPeripheral::I2c1,
+            ClkPeripheral::Jtag,
+            ClkPeripheral::Pio0,
+            ClkPeripheral::Pio1,
+            ClkPeripheral::Pio2,
+            ClkPeripheral::Pwm,
+            ClkPeripheral::Sha256,
+            ClkPeripheral::Sio,
+            ClkPeripheral::RefOtp,
+            ClkPeripheral::SysOtp,
+        ];
+        let non_essential1: &[ClkPeripheral] = &[
+            ClkPeripheral::PeriSpi0,
+            ClkPeripheral::SysSpi0,
+            ClkPeripheral::PeriSpi1,
+            ClkPeripheral::SysSpi1,
+            ClkPeripheral::PeriUart0,
+            ClkPeripheral::SysUart0,
+            ClkPeripheral::PeriUart1,
+            ClkPeripheral::SysUart1,
+            ClkPeripheral::Usb,
+            ClkPeripheral::SysUsbCtrl,
+            ClkPeripheral::Trng,
+        ];
+
+        for &p in non_essential0 {
+            self.set_sleep_enabled(p, false);
+        }
+        for &p in non_essential1 {
+            self.set_sleep_enabled(p, false);
+        }
+    }
+
+    // ========================================================================
+    // ██╗███╗   ██╗████████╗███████╗██████╗ ██████╗ ██╗   ██╗██████╗ ████████╗
+    // ██║████╗  ██║╚══██╔══╝██╔════╝██╔══██╗██╔══██╗██║   ██║██╔══██╗╚══██╔══╝
+    // ██║██╔██╗ ██║   ██║   █████╗  ██████╔╝██████╔╝██║   ██║██████╔╝   ██║
+    // ██║██║╚██╗██║   ██║   ██╔══╝  ██╔══██╗██╔══██╗██║   ██║██╔═══╝    ██║
+    // ██║██║ ╚████║   ██║   ███████╗██║  ██║██║  ██║╚██████╔╝██║        ██║
+    // ╚═╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝        ╚═╝
+    // Interrupt Handling
+    // ========================================================================
+    //
+    // The CLOCKS block has a single interrupt source: CLK_SYS_RESUS,
+    // which fires when the system clock resuscitation (RESUS) is triggered.
+    // ========================================================================
+
+    /// Check if the CLK_SYS_RESUS interrupt is pending (raw)
+    #[inline]
+    pub fn is_intr_clk_sys_resus(&self) -> bool {
+        self.clocks.intr.clk_sys_resus()
+    }
+
+    /// Enable the CLK_SYS_RESUS interrupt
+    #[inline]
+    pub fn enable_intr_clk_sys_resus(&self) {
+        self.clocks.inte.set_clk_sys_resus();
+    }
+
+    /// Disable the CLK_SYS_RESUS interrupt
+    #[inline]
+    pub fn disable_intr_clk_sys_resus(&self) {
+        self.clocks.inte.clr_clk_sys_resus();
+    }
+
+    /// Check if CLK_SYS_RESUS interrupt is enabled
+    #[inline]
+    pub fn is_intr_clk_sys_resus_enabled(&self) -> bool {
+        self.clocks.inte.clk_sys_resus()
+    }
+
+    /// Force the CLK_SYS_RESUS interrupt (for testing)
+    #[inline]
+    pub fn force_intr_clk_sys_resus(&self) {
+        self.clocks.intf.set_clk_sys_resus();
+    }
+
+    /// Clear forced CLK_SYS_RESUS interrupt
+    #[inline]
+    pub fn unforce_intr_clk_sys_resus(&self) {
+        self.clocks.intf.clr_clk_sys_resus();
+    }
+
+    /// Check masked interrupt status (after enable & force)
+    #[inline]
+    pub fn is_ints_clk_sys_resus(&self) -> bool {
+        self.clocks.ints.clk_sys_resus()
+    }
+
+    // ========================================================================
+    // ██████╗ ███████╗████████╗     ██████╗ ███████╗██████╗ ██╗   ██╗ ██████╗
+    // ██╔══██╗██╔════╝╚══██╔══╝    ██╔══██╗██╔════╝██╔══██╗██║   ██║██╔════╝
+    // ██║  ██║█████╗     ██║       ██║  ██║█████╗  ██████╔╝██║   ██║██║  ███╗
+    // ██║  ██║██╔══╝     ██║       ██║  ██║██╔══╝  ██╔══██╗██║   ██║██║   ██║
+    // ██████╔╝██║        ██║       ██████╔╝███████╗██████╔╝╚██████╔╝╚██████╔╝
+    // ╚═════╝ ╚═╝        ╚═╝       ╚═════╝ ╚══════╝╚═════╝  ╚═════╝  ╚═════╝
+    // DFT Debug Clocks
+    // ========================================================================
+    //
+    // DFT (Design for Test) debug clocks allow replacing each oscillator's
+    // output with a debug clock source. This is primarily useful for:
+    // - Silicon testing and validation
+    // - Debugging clock source issues
+    // - Bypassing a faulty oscillator
+    //
+    // **Warning**: These are test features. Misuse can cause unstable operation.
+    // ========================================================================
+
+    /// Configure the XOSC DFT debug clock source
+    ///
+    /// Replaces the XOSC clock with a debug source. Use `DftClkSrc::Null`
+    /// to restore normal XOSC operation.
+    #[inline]
+    pub fn set_dft_xosc_src(&self, src: DftClkSrc) {
+        self.clocks.dftclk_xosc_ctrl.write_src(src as u32);
+    }
+
+    /// Get the current XOSC DFT debug clock source
+    #[inline]
+    pub fn dft_xosc_src(&self) -> DftClkSrc {
+        match self.clocks.dftclk_xosc_ctrl.src() {
+            0 => DftClkSrc::Null,
+            1 => DftClkSrc::DebugClk,
+            2 => DftClkSrc::GpIn,
+            _ => DftClkSrc::Null,
+        }
+    }
+
+    /// Configure the ROSC DFT debug clock source
+    #[inline]
+    pub fn set_dft_rosc_src(&self, src: DftClkSrc) {
+        self.clocks.dftclk_rosc_ctrl.write_src(src as u32);
+    }
+
+    /// Get the current ROSC DFT debug clock source
+    #[inline]
+    pub fn dft_rosc_src(&self) -> DftClkSrc {
+        match self.clocks.dftclk_rosc_ctrl.src() {
+            0 => DftClkSrc::Null,
+            1 => DftClkSrc::DebugClk,
+            2 => DftClkSrc::GpIn,
+            _ => DftClkSrc::Null,
+        }
+    }
+
+    /// Configure the LPOSC DFT debug clock source
+    #[inline]
+    pub fn set_dft_lposc_src(&self, src: DftClkSrc) {
+        self.clocks.dftclk_lposc_ctrl.write_src(src as u32);
+    }
+
+    /// Get the current LPOSC DFT debug clock source
+    #[inline]
+    pub fn dft_lposc_src(&self) -> DftClkSrc {
+        match self.clocks.dftclk_lposc_ctrl.src() {
+            0 => DftClkSrc::Null,
+            1 => DftClkSrc::DebugClk,
+            2 => DftClkSrc::GpIn,
+            _ => DftClkSrc::Null,
+        }
+    }
+
+    // ========================================================================
+    //  ██████╗ ██████╗ ██╗███╗   ██╗
+    // ██╔════╝ ██╔══██╗██║████╗  ██║
+    // ██║  ███╗██████╔╝██║██╔██╗ ██║
+    // ██║   ██║██╔═══╝ ██║██║╚██╗██║
+    // ╚██████╔╝██║     ██║██║ ╚████║
+    //  ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═══╝
+    // GPIN External Clock Input
+    // ========================================================================
+    //
+    // GPIN0 and GPIN1 are dedicated GPIO pins that can be used as external
+    // clock inputs. They can be selected as auxiliary sources for many clocks.
+    //
+    // To use GPIN as a clock source:
+    // 1. Configure the GPIO pin to GPIN function using the GPIO HAL
+    // 2. Select the GPIN source in the desired clock's auxiliary source
+    //
+    // GPIN0 is GPIO pin 20, GPIN1 is GPIO pin 22 on RP2350.
+    // ========================================================================
+
+    /// Check if GPIN0 is currently providing a valid clock
+    ///
+    /// This reads the FC0 counter with GPIN0 as the source and checks
+    /// if a non-zero frequency is detected.
+    ///
+    /// # Note
+    /// This temporarily uses the frequency counter and may interfere
+    /// with other frequency measurements.
+    pub fn is_gpin0_clock_present(&self) -> bool {
+        self.frequency_count_khz(FcSrc::ClkSrcGpIn0) > 0
+    }
+
+    /// Check if GPIN1 is currently providing a valid clock
+    ///
+    /// # Note
+    /// This temporarily uses the frequency counter and may interfere
+    /// with other frequency measurements.
+    pub fn is_gpin1_clock_present(&self) -> bool {
+        self.frequency_count_khz(FcSrc::ClkSrcGpIn1) > 0
+    }
 }
 
 // ============================================================================
@@ -1758,8 +2312,8 @@ impl ClockBuilder {
         let ref_freq = match self.ref_src {
             ClkRefSrc::Xosc => self.xosc_freq,
             ClkRefSrc::Rosc => rosc::ROSC_HZ,
-            ClkRefSrc::Lposc => 32_768,       // ~32 kHz
-            ClkRefSrc::Aux => self.xosc_freq, // Assume same as XOSC for aux
+            ClkRefSrc::Lposc => lposc::LPOSC_HZ, // ~32 kHz
+            ClkRefSrc::Aux => self.xosc_freq,    // Assume same as XOSC for aux
         };
         clocks.configure_ref_src(self.ref_src, ref_freq);
 
