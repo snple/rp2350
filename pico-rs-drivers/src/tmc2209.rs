@@ -793,15 +793,18 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
 
     /// 非阻塞单字节读取 (带超时)。
     ///
-    /// 通过 [`UartBus::read_available`] 轮询 RX，每次尝试读取 1 字节。
+    /// 通过 [`UartBus::read_raw`] 轮询 RX，每次尝试读取 1 字节。
     /// 在 `timeout_us` 微秒内超时则返回 `None`。
+    ///
+    /// 使用 `read_raw` 而非 `read_available` 以忽略帧错误标志：
+    /// 单线半双工电阻网络下回显和 TMC2209 回复都可能触发虚假的 FE。
     fn read_byte_timeout(&self, delay: &impl DelayUs, timeout_us: u32) -> Option<u8> {
         let mut remaining = timeout_us;
         let mut buf = [0u8; 1];
         while remaining > 0 {
-            match self.uart.read_available(&mut buf) {
-                Ok(n) if n > 0 => return Some(buf[0]),
-                _ => {}
+            let n = self.uart.read_raw(&mut buf);
+            if n > 0 {
+                return Some(buf[0]);
             }
             delay.delay_us(POLL_INTERVAL_US);
             remaining = remaining.saturating_sub(POLL_INTERVAL_US);
@@ -816,21 +819,21 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
     ///
     /// 带超时保护：若 `timeout_us` 微秒内未排完指定字节则提前返回，
     /// 避免因硬件异常导致死循环。
+    ///
+    /// 使用 `read_raw` 忽略帧错误：电阻网络下回显可能带有
+    /// 虚假的 framing error，若用 `read_available` 会提前退出导致
+    /// 回显残留并污染后续 TMC2209 回复帧。
     fn drain_bytes(&self, count: usize, delay: &impl DelayUs, timeout_us: u32) {
         let mut buf = [0u8; 8];
         let mut drained = 0;
         let mut remaining = timeout_us;
         while drained < count && remaining > 0 {
-            match self
-                .uart
-                .read_available(&mut buf[..(count - drained).min(8)])
-            {
-                Ok(n) if n > 0 => drained += n,
-                Ok(0) => {
-                    delay.delay_us(POLL_INTERVAL_US);
-                    remaining = remaining.saturating_sub(POLL_INTERVAL_US);
-                }
-                _ => break,
+            let n = self.uart.read_raw(&mut buf[..(count - drained).min(8)]);
+            if n > 0 {
+                drained += n;
+            } else {
+                delay.delay_us(POLL_INTERVAL_US);
+                remaining = remaining.saturating_sub(POLL_INTERVAL_US);
             }
         }
     }

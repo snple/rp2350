@@ -156,7 +156,19 @@ pub trait UartBus {
     fn read(&self, buffer: &mut [u8]) -> Result<(), Self::Error>;
 
     /// Read all currently available bytes without blocking.
+    ///
+    /// May return an error if a framing/parity/overrun error is detected
+    /// on any byte.  For raw byte access that ignores error flags (useful
+    /// for half-duplex echo draining), use [`read_raw`](UartBus::read_raw).
     fn read_available(&self, buffer: &mut [u8]) -> Result<usize, Self::Error>;
+
+    /// Read available bytes **without error checking**.
+    ///
+    /// Unlike [`read_available`](UartBus::read_available), this method returns
+    /// the raw data bytes and ignores framing / parity / overrun flags.
+    /// Essential for single-wire half-duplex buses where the echo may carry
+    /// spurious framing errors due to resistor-network level contention.
+    fn read_raw(&self, buffer: &mut [u8]) -> usize;
 
     /// Block until all pending transfers are complete.
     fn flush(&self) -> Result<(), Self::Error>;
@@ -938,6 +950,11 @@ macro_rules! impl_uart {
                 }
 
                 #[inline]
+                fn read_raw(&self, buffer: &mut [u8]) -> usize {
+                    self.read_raw(buffer)
+                }
+
+                #[inline]
                 fn flush(&self) -> Result<(), Self::Error> {
                     self.flush();
                     Ok(())
@@ -1191,6 +1208,22 @@ macro_rules! impl_uart {
                     }
                 }
 
+                /// Read available bytes into buffer (non-blocking)
+                ///
+                /// Returns the number of bytes read
+                pub fn read_raw(&self, buffer: &mut [u8]) -> usize {
+                    let mut count = 0;
+                    for slot in buffer.iter_mut() {
+                        if let Some(byte) = self.read_byte() {
+                            *slot = byte;
+                            count += 1;
+                        } else {
+                            break;
+                        }
+                    }
+                    count
+                }
+
                 /// Check if TX FIFO is full
                 #[inline]
                 pub fn is_tx_full(&self) -> bool {
@@ -1292,6 +1325,11 @@ macro_rules! impl_uart {
                     }
 
                     Ok(count)
+                }
+
+                #[inline]
+                fn read_raw(&self, buffer: &mut [u8]) -> usize {
+                    self.read_raw(buffer)
                 }
 
                 #[inline]
