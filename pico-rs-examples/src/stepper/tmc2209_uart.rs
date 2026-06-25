@@ -3,6 +3,9 @@
 //! 使用 UART1 (GPIO4=TX, GPIO5=RX)，轮询 4 个从机地址 (0x00~0x03)，
 //! 读取 IOIN 寄存器确认芯片版本号 (应为 0x21)。
 //!
+//! 本示例基于 `pico_rs_drivers::tmc2209::Tmc2209` 驱动，
+//! 同一 UART 总线上创建 4 个驱动实例共享 `&uart`。
+//!
 //! ---
 //!
 //! # 1. 硬件接线
@@ -49,137 +52,23 @@ use defmt_rtt as _;
 use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
-use pico_rs::gpio::{Pins, Uart1RxPin, Uart1TxPin};
+use pico_rs::gpio::Pins;
 use pico_rs::pac::Peripherals;
 use pico_rs::ticks::Ticks;
 use pico_rs::timer::Timer0;
 use pico_rs::uart::{DataBits, Parity, StopBits, Uart1};
+use pico_rs_drivers::tmc2209::{Gconf, REG_TSTEP, Tmc2209};
 
 #[unsafe(link_section = ".start_block")]
 #[used]
 pub static IMAGE_DEF: ImageDef = ImageDef::exe();
 
 const TMC_UART_BAUD: u32 = 115_200;
-const SLAVE_ADDRS: [u8; 4] = [0x00, 0x01, 0x02, 0x03];
-
-const REG_GCONF: u8 = 0x00;
-const REG_GSTAT: u8 = 0x01;
-const REG_IFCNT: u8 = 0x02;
-const REG_IOIN: u8 = 0x06;
-const REG_IHOLD_IRUN: u8 = 0x10;
-const REG_TSTEP: u8 = 0x12;
-const REG_SG_RESULT: u8 = 0x41;
-const REG_CHOPCONF: u8 = 0x6C;
-const REG_DRV_STATUS: u8 = 0x6F;
-const REG_PWMCONF: u8 = 0x70;
-
-const TMC_SYNC: u8 = 0x05;
-
-fn tmc_crc8(data: &[u8]) -> u8 {
-    let mut crc: u8 = 0;
-    for &byte in data {
-        let mut current = byte;
-        for _ in 0..8 {
-            if (crc >> 7) ^ (current & 0x01) != 0 {
-                crc = (crc << 1) ^ 0x07;
-            } else {
-                crc <<= 1;
-            }
-            current >>= 1;
-        }
-    }
-    crc
-}
-
-fn read_byte_timeout<TX: Uart1TxPin, RX: Uart1RxPin>(
-    uart: &Uart1<TX, RX>,
-    timeout_loops: u32,
-) -> Option<u8> {
-    for _ in 0..timeout_loops {
-        if let Some(byte) = uart.read_byte() {
-            return Some(byte);
-        }
-        for _ in 0..100 {
-            core::hint::spin_loop();
-        }
-    }
-    None
-}
-
-fn tmc_write_reg<TX: Uart1TxPin, RX: Uart1RxPin>(
-    uart: &Uart1<TX, RX>,
-    slave_addr: u8,
-    reg: u8,
-    value: u32,
-) {
-    let mut datagram = [0u8; 8];
-    datagram[0] = TMC_SYNC;
-    datagram[1] = slave_addr;
-    datagram[2] = reg | 0x80;
-    datagram[3] = (value >> 24) as u8;
-    datagram[4] = (value >> 16) as u8;
-    datagram[5] = (value >> 8) as u8;
-    datagram[6] = value as u8;
-    datagram[7] = tmc_crc8(&datagram[..7]);
-
-    uart.write(&datagram);
-    uart.flush();
-
-    for _ in 0..8 {
-        let _ = read_byte_timeout(uart, 2000);
-    }
-}
-
-fn tmc_read_reg<TX: Uart1TxPin, RX: Uart1RxPin>(
-    uart: &Uart1<TX, RX>,
-    timer: &Timer0,
-    slave_addr: u8,
-    reg: u8,
-) -> Option<u32> {
-    let mut request = [0u8; 4];
-    request[0] = TMC_SYNC;
-    request[1] = slave_addr;
-    request[2] = reg;
-    request[3] = tmc_crc8(&request[..3]);
-
-    uart.write(&request);
-    uart.flush();
-
-    for _ in 0..4 {
-        let _ = read_byte_timeout(uart, 2000);
-    }
-
-    timer.delay_us(200);
-
-    let mut reply = [0u8; 8];
-    for slot in reply.iter_mut() {
-        match read_byte_timeout(uart, 5000) {
-            Some(b) => *slot = b,
-            None => return None,
-        }
-    }
-
-    let crc = tmc_crc8(&reply[..7]);
-    if crc != reply[7] {
-        warn!("[addr={:#04x}] CRC error", slave_addr);
-        return None;
-    }
-    if reply[0] != TMC_SYNC || reply[1] != 0xFF {
-        warn!("[addr={:#04x}] Bad header", slave_addr);
-        return None;
-    }
-
-    let value = (reply[3] as u32) << 24
-        | (reply[4] as u32) << 16
-        | (reply[5] as u32) << 8
-        | (reply[6] as u32);
-
-    Some(value)
-}
 
 #[entry]
 fn main() -> ! {
-    info!("=== TMC2209 UART Scan (UART1: TX=GP4, RX=GP5) ===");
+    info!("=== TMC2209 UART Scan (pico_rs_drivers::tmc2209) ===");
+    info!("UART1: TX=GP4, RX=GP5");
     info!("");
 
     let dp = Peripherals::take().unwrap();
@@ -213,35 +102,46 @@ fn main() -> ! {
 
     timer.delay_ms(100);
 
+    // 同一 UART 总线上创建 4 个驱动实例，不同从机地址
+    let chips: [Tmc2209<'_, Uart1<_, _>>; 4] = [
+        Tmc2209::new(&uart, 0x00),
+        Tmc2209::new(&uart, 0x01),
+        Tmc2209::new(&uart, 0x02),
+        Tmc2209::new(&uart, 0x03),
+    ];
+
     let mut ok = 0u32;
     let mut fail = 0u32;
 
-    for &addr in SLAVE_ADDRS.iter() {
+    for (i, tmc) in chips.iter().enumerate() {
+        let addr = tmc.slave_addr();
         info!(
-            "--- addr={:#04x} (MS1={}, MS2={}) ---",
+            "--- Chip {}  addr={:#04x} (MS1={}, MS2={}) ---",
+            i,
             addr,
             addr & 1,
             (addr >> 1) & 1
         );
 
-        match tmc_read_reg(&uart, &timer, addr, REG_IOIN) {
+        // 读取 IOIN 验证芯片
+        match tmc.read_ioin(&timer) {
             Some(ioin) => {
-                let ver = (ioin >> 24) & 0xFF;
-                let enn = ioin & 1;
-                let ms1 = (ioin >> 1) & 1;
-                let ms2 = (ioin >> 2) & 1;
-                let step = (ioin >> 4) & 1;
-                let dir = (ioin >> 5) & 1;
+                let ver = ioin.version();
                 if ver == 0x21 {
-                    info!("  IOIN={:#010x}  version={:#04x} ✓", ioin, ver);
+                    info!("  IOIN={:#010x}  version={:#04x} ✓", u32::from(ioin), ver);
                     info!(
                         "    ENN={}  MS1={}  MS2={}  STEP={}  DIR={}",
-                        enn, ms1, ms2, step, dir
+                        ioin.enn(),
+                        ioin.ms1(),
+                        ioin.ms2(),
+                        ioin.step(),
+                        ioin.dir()
                     );
                 } else {
                     warn!(
                         "  IOIN={:#010x}  version={:#04x} (expected 0x21)",
-                        ioin, ver
+                        u32::from(ioin),
+                        ver
                     );
                     fail += 1;
                     continue;
@@ -257,57 +157,53 @@ fn main() -> ! {
         timer.delay_ms(5);
 
         // 清除并读 GSTAT
-        tmc_write_reg(&uart, addr, REG_GSTAT, 0x07);
+        tmc.clear_gstat(&timer);
         timer.delay_ms(5);
-        if let Some(gstat) = tmc_read_reg(&uart, &timer, addr, REG_GSTAT) {
-            let rst = gstat & 1;
-            let drv_err = (gstat >> 1) & 1;
-            let uv_cp = (gstat >> 2) & 1;
+        if let Some(gstat) = tmc.read_gstat(&timer) {
             info!(
                 "  GSTAT={:#04x}  reset={}  drv_err={}  uv_cp={}",
-                gstat & 0x7,
-                rst,
-                drv_err,
-                uv_cp
+                u32::from(gstat),
+                gstat.reset(),
+                gstat.drv_err(),
+                gstat.uv_cp()
             );
         }
 
-        // 写 GCONF
-        tmc_write_reg(&uart, addr, REG_GCONF, (1 << 6) | (1 << 7));
+        // 写 GCONF: multistep_filt + pdn_disable
+        tmc.write_gconf(
+            &Gconf::new()
+                .with_multistep_filt(true)
+                .with_pdn_disable(true),
+            &timer,
+        );
         timer.delay_ms(5);
 
-        // 读回 GCONF 并解析
-        if let Some(gconf) = tmc_read_reg(&uart, &timer, addr, REG_GCONF) {
-            let pdn_disable = (gconf >> 7) & 1;
-            let multistep = (gconf >> 6) & 1;
-            let shaft = (gconf >> 4) & 1;
-            let en_spread = gconf & 1;
+        // 读回 GCONF
+        if let Some(gconf) = tmc.read_gconf(&timer) {
             info!(
                 "  GCONF={:#06x}  pdn_dis={}  multistep={}  shaft={}  spread={}",
-                gconf, pdn_disable, multistep, shaft, en_spread
+                u32::from(gconf),
+                gconf.pdn_disable(),
+                gconf.multistep_filt(),
+                gconf.shaft(),
+                gconf.en_spread_cycle()
             );
         }
 
         // 读 IHOLD_IRUN
-        if let Some(ihold_irun) = tmc_read_reg(&uart, &timer, addr, REG_IHOLD_IRUN) {
-            let ihold = ihold_irun & 0x1F;
-            let irun = (ihold_irun >> 8) & 0x1F;
-            let iholddelay = (ihold_irun >> 16) & 0xF;
+        if let Some(ihold_irun) = tmc.read_ihold_irun(&timer) {
             info!(
                 "  IHOLD_IRUN={:#08x}  ihold={}  irun={}  iholddelay={}",
-                ihold_irun, ihold, irun, iholddelay
+                u32::from(ihold_irun),
+                ihold_irun.ihold(),
+                ihold_irun.irun(),
+                ihold_irun.iholddelay()
             );
         }
 
         // 读 CHOPCONF
-        if let Some(chopconf) = tmc_read_reg(&uart, &timer, addr, REG_CHOPCONF) {
-            let toff = chopconf & 0xF;
-            let hstrt = (chopconf >> 4) & 0x7;
-            let hend = (chopconf >> 7) & 0xF;
-            let tbl = (chopconf >> 15) & 0x3;
-            let mres = (chopconf >> 24) & 0xF;
-            let intpol = (chopconf >> 28) & 1;
-            let mres_str = match mres {
+        if let Some(chopconf) = tmc.read_chopconf(&timer) {
+            let mres_str = match chopconf.mres() {
                 0 => "256",
                 1 => "128",
                 2 => "64",
@@ -320,54 +216,63 @@ fn main() -> ! {
             };
             info!(
                 "  CHOPCONF={:#08x}  toff={}  hstrt={}  hend={}  tbl={}  mres=1/{}  intpol={}",
-                chopconf, toff, hstrt, hend, tbl, mres_str, intpol
+                u32::from(chopconf),
+                chopconf.toff(),
+                chopconf.hstrt(),
+                chopconf.hend(),
+                chopconf.tbl(),
+                mres_str,
+                chopconf.intpol()
             );
         }
 
         // 读 PWMCONF
-        if let Some(pwmconf) = tmc_read_reg(&uart, &timer, addr, REG_PWMCONF) {
-            let pwm_ofs = pwmconf & 0xFF;
-            let pwm_grad = (pwmconf >> 8) & 0xFF;
-            let pwm_autoscale = (pwmconf >> 18) & 1;
-            let pwm_autograd = (pwmconf >> 19) & 1;
-            let pwm_lim = (pwmconf >> 24) & 0xF;
-            let pwm_reg = (pwmconf >> 28) & 0xF;
+        if let Some(pwmconf) = tmc.read_pwmconf(&timer) {
             info!(
-                "  PWMCONF={:#08x}  ofs={}  grad={}  autoscale={}  autograd={}  lim={}  reg={}",
-                pwmconf, pwm_ofs, pwm_grad, pwm_autoscale, pwm_autograd, pwm_lim, pwm_reg
+                "  PWMCONF={:#08x}  ofs={}  grad={}  freq={}  autoscale={}  autograd={}  lim={}  reg={}",
+                u32::from(pwmconf),
+                pwmconf.pwm_ofs(),
+                pwmconf.pwm_grad(),
+                pwmconf.pwm_freq(),
+                pwmconf.pwm_autoscale(),
+                pwmconf.pwm_autograd(),
+                pwmconf.pwm_lim(),
+                pwmconf.pwm_reg()
             );
         }
 
         // 读 DRV_STATUS
-        if let Some(drv) = tmc_read_reg(&uart, &timer, addr, REG_DRV_STATUS) {
-            let cs_actual = (drv >> 16) & 0x1F;
-            let stst = (drv >> 31) & 1;
-            let ol_a = (drv >> 29) & 1;
-            let ol_b = (drv >> 30) & 1;
-            let otpw = (drv >> 26) & 1;
-            let ot = (drv >> 25) & 1;
-            let s2ga = (drv >> 27) & 1;
-            let s2gb = (drv >> 28) & 1;
+        if let Some(drv) = tmc.read_drv_status(&timer) {
             info!(
                 "  DRV_STATUS={:#08x}  stst={}  cs_actual={}  olA={}  olB={}  otpw={}  ot={}  s2ga={}  s2gb={}",
-                drv, stst, cs_actual, ol_a, ol_b, otpw, ot, s2ga, s2gb
+                u32::from(drv),
+                drv.stst(),
+                drv.cs_actual(),
+                drv.ola(),
+                drv.olb(),
+                drv.otpw(),
+                drv.ot(),
+                drv.s2ga(),
+                drv.s2gb()
             );
         }
 
-        // 读 SG_RESULT & TSTEP
-        if let Some(sg) = tmc_read_reg(&uart, &timer, addr, REG_SG_RESULT) {
-            info!("  SG_RESULT={}", sg & 0x3FF);
+        // 读 SG_RESULT
+        if let Some(sg) = tmc.read_sg_result(&timer) {
+            info!("  SG_RESULT={}", sg);
         }
-        if let Some(tstep) = tmc_read_reg(&uart, &timer, addr, REG_TSTEP)
+
+        // 读 TSTEP
+        if let Some(tstep) = tmc.read_reg(REG_TSTEP, &timer)
             && tstep != 0xFFFFF
         {
             info!("  TSTEP={} (speed indicator)", tstep & 0xFFFFF);
         }
 
         // 读 IFCNT
-        match tmc_read_reg(&uart, &timer, addr, REG_IFCNT) {
+        match tmc.read_ifcnt(&timer) {
             Some(ifcnt) => {
-                info!("  IFCNT={}", ifcnt & 0xFF);
+                info!("  IFCNT={}", ifcnt);
             }
             None => {
                 warn!("  IFCNT read failed!");

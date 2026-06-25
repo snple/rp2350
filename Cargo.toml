@@ -22,10 +22,11 @@ repository = "https://github.com/user/pico-rs"
 defmt = "1.1"
 defmt-rtt = "1.2"
 
-# Macros
+# Macros / code generation
 proc-macro2 = "1.0"
 quote = "1.0"
 syn = { version = "2.0", features = ["full"] }
+bitfield-struct = "0.12"
 
 # Local crates
 pico-rs = { path = "pico-rs" }

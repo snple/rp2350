@@ -7,6 +7,7 @@ description = "Driver collection for RP2350 microcontrollers"
 repository.workspace = true
 
 [dependencies]
+bitfield-struct.workspace = true
 defmt = { workspace = true, optional = true }
 pico-rs.workspace = true
 pico-rs-rt.workspace = true
