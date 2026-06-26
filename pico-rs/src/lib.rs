@@ -163,6 +163,11 @@ pub mod delay;
 pub mod dma;
 pub mod eppb;
 pub mod gpio;
+/// GPIO Coprocessor (Cortex-M33 CP0) — single-cycle GPIO access via MCR/MRC.
+///
+/// Only available on RP2350 (Cortex-M33). Not available on RP2040 (Cortex-M0+).
+#[cfg(target_arch = "arm")]
+pub mod gpioc;
 pub mod i2c;
 pub mod interrupt;
 pub mod multicore;

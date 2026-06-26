@@ -155,6 +155,10 @@ name = "gpio_interrupt"
 path = "src/gpio/gpio_interrupt.rs"
 
 [[bin]]
+name = "gpioc"
+path = "src/gpio/gpioc.rs"
+
+[[bin]]
 name = "sht3x"
 path = "src/i2c/sht3x.rs"
 
