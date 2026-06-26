@@ -23,7 +23,7 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::ClockBuilder;
+use pico_rs::clocks::{ClockBuilder, ClockResources};
 use pico_rs::dma::{DataSize, Dma};
 use pico_rs::entry;
 use pico_rs::gpio::Pins;
@@ -53,7 +53,7 @@ fn main() -> ! {
     info!("PIO + DMA blink pattern example");
 
     let dp = Peripherals::take().unwrap();
-    let _clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
+    let _clocks = ClockBuilder::new().build(ClockResources { clocks: dp.CLOCKS, xosc: dp.XOSC, pll_sys: dp.PLL_SYS, pll_usb: dp.PLL_USB });
     let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
 
     // ------------------------------------------------------------------

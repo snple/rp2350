@@ -332,7 +332,7 @@ use defmt_rtt as _;
 
 use pico_rs::Delay;
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::ClockBuilder;
+use pico_rs::clocks::{ClockBuilder, ClockResources};
 use pico_rs::entry;
 use pico_rs::gpio::Pins;
 use pico_rs::i2c::{I2c0, I2cBus};
@@ -1202,7 +1202,7 @@ fn main() -> ! {
     let dp = Peripherals::take().unwrap();
     let core = CorePeripherals::take().unwrap();
 
-    let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
+    let clocks = ClockBuilder::new().build(ClockResources { clocks: dp.CLOCKS, xosc: dp.XOSC, pll_sys: dp.PLL_SYS, pll_usb: dp.PLL_USB });
     info!("系统时钟: {} MHz", clocks.sys_freq() / 1_000_000);
 
     let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);

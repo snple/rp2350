@@ -32,7 +32,7 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::ClockBuilder;
+use pico_rs::clocks::{ClockBuilder, ClockResources};
 use pico_rs::interrupt::{self, Interrupt, Mutex};
 use pico_rs::pac::Peripherals;
 use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
@@ -130,7 +130,7 @@ fn main() -> ! {
 
     let clocks = ClockBuilder::new()
         .enable_usb()
-        .build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
+        .build(ClockResources { clocks: dp.CLOCKS, xosc: dp.XOSC, pll_sys: dp.PLL_SYS, pll_usb: dp.PLL_USB });
 
     // USB 初始化（通过裸指针写入 static mut，避免 static_mut_refs lint）
     //

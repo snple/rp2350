@@ -110,7 +110,7 @@ use defmt_rtt as _;
 
 use pico_rs::bind;
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::ClockBuilder;
+use pico_rs::clocks::{ClockBuilder, ClockResources};
 use pico_rs::entry;
 use pico_rs::gpio::{EdgeLevel, Pin, Pins};
 use pico_rs::interrupt;
@@ -194,7 +194,7 @@ fn main() -> ! {
     // 1. 外设初始化
     // ------------------------------------------------------------------
     let dp = Peripherals::take().unwrap();
-    let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
+    let clocks = ClockBuilder::new().build(ClockResources { clocks: dp.CLOCKS, xosc: dp.XOSC, pll_sys: dp.PLL_SYS, pll_usb: dp.PLL_USB });
     let ticks = Ticks::new(dp.TICKS, &clocks);
     ticks.init_timer0();
     let timer = Timer0::init(dp.TIMER0);
