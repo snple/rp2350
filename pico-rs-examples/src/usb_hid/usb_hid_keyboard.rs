@@ -23,7 +23,7 @@ use defmt_rtt as _;
 
 use pico_rs::Delay;
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClockBuilder, ClockResources};
+use pico_rs::clocks::{ClockBuilder};
 use pico_rs::entry;
 use pico_rs::gpio::Pins;
 use pico_rs::pac::Peripherals;
@@ -97,7 +97,7 @@ fn main() -> ! {
     // Initialize clocks using the convenient API (150 MHz sys, 48 MHz USB)
     let clocks = ClockBuilder::new()
         .enable_usb()
-        .build(ClockResources { clocks: dp.CLOCKS, xosc: dp.XOSC, pll_sys: dp.PLL_SYS, pll_usb: dp.PLL_USB });
+        .build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
     info!(
         "Clock system initialized: sys={} Hz, usb={} Hz",
         clocks.sys_freq(),

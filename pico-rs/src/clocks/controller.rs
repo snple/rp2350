@@ -83,12 +83,11 @@ pub(super) struct ClockFreqs {
 ///
 /// For easy one-shot initialization, prefer [`ClockBuilder`]:
 /// ```ignore
-/// let clocks = ClockBuilder::new().build(ClockResources { ... });
+/// let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
 /// // clk_sys = 150 MHz, clk_usb = 48 MHz, clk_peri = 150 MHz
 /// ```
 ///
 /// [`ClockBuilder`]: super::builder::ClockBuilder
-/// [`ClockResources`]: super::builder::ClockResources
 pub struct Clocks {
     pub(super) clocks: pico_rs_pac::CLOCKS,
     pub(super) xosc: Xosc,

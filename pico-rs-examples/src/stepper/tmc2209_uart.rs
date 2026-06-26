@@ -50,7 +50,7 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClockBuilder, ClockResources};
+use pico_rs::clocks::{ClockBuilder};
 use pico_rs::entry;
 use pico_rs::gpio::Pins;
 use pico_rs::pac::Peripherals;
@@ -72,7 +72,7 @@ fn main() -> ! {
     info!("");
 
     let dp = Peripherals::take().unwrap();
-    let clocks = ClockBuilder::new().build(ClockResources { clocks: dp.CLOCKS, xosc: dp.XOSC, pll_sys: dp.PLL_SYS, pll_usb: dp.PLL_USB });
+    let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
     info!(
         "Clock: sys={} Hz, peri={} Hz",
         clocks.sys_freq(),

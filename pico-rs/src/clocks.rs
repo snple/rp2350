@@ -102,7 +102,7 @@
 //! # Example
 //!
 //! ```ignore
-//! use pico_rs::clocks::{ClockBuilder, ClockResources};
+//! use pico_rs::clocks::ClockBuilder;
 //!
 //! let dp = pico_rs_pac::Peripherals::take().unwrap();
 //!
@@ -110,20 +110,14 @@
 //! let clocks = ClockBuilder::new()
 //!     .enable_usb()
 //!     .enable_adc()
-//!     .build(ClockResources {
-//!         clocks:  dp.CLOCKS,
-//!         xosc:    dp.XOSC,
-//!         pll_sys: dp.PLL_SYS,
-//!         pll_usb: dp.PLL_USB,
-//!     });
+//!     .build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
 //! // clk_sys = 150 MHz, clk_usb = 48 MHz, clk_peri = 150 MHz
 //!
 //! // Custom: 125 MHz sys, stable 48 MHz for UART baud rates
 //! let clocks = ClockBuilder::new()
 //!     .sys_freq_mhz(125)
 //!     .peri_stable_48mhz()
-//!     .build(ClockResources { clocks: dp.CLOCKS, xosc: dp.XOSC,
-//!                             pll_sys: dp.PLL_SYS, pll_usb: dp.PLL_USB });
+//!     .build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
 //! ```
 
 // ============================================================================
@@ -154,8 +148,8 @@ pub use xosc::Xosc;
 
 // Clock tree types
 pub use types::{
-    ClkAdcAuxSrc, ClkGpOutAuxSrc, ClkHstxAuxSrc, ClkPeriAuxSrc, ClkRefAuxSrc, ClkRefSrc,
-    ClkSysAuxSrc, ClkUsbAuxSrc, ClockId, DftClkSrc, FcSrc, GpOutId, CLK_COUNT,
+    CLK_COUNT, ClkAdcAuxSrc, ClkGpOutAuxSrc, ClkHstxAuxSrc, ClkPeriAuxSrc, ClkRefAuxSrc, ClkRefSrc,
+    ClkSysAuxSrc, ClkUsbAuxSrc, ClockId, DftClkSrc, FcSrc, GpOutId,
 };
 
 // Clock gate / sleep control
@@ -165,4 +159,4 @@ pub use gate::ClkPeripheral;
 pub use controller::Clocks;
 
 // Clock builder
-pub use builder::{ClockBuilder, ClockResources};
+pub use builder::ClockBuilder;

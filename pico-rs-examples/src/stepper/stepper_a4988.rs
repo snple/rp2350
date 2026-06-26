@@ -208,7 +208,7 @@ use defmt_rtt as _;
 
 use pico_rs::Steal;
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClockBuilder, ClockResources};
+use pico_rs::clocks::{ClockBuilder};
 use pico_rs::entry;
 use pico_rs::gpio::{Gpio, Pins};
 use pico_rs::interrupt;
@@ -482,7 +482,7 @@ fn main() -> ! {
     let dp = Peripherals::take().unwrap();
 
     // 配置系统时钟: 150MHz sys_clk, 48MHz USB
-    let clocks = ClockBuilder::new().build(ClockResources { clocks: dp.CLOCKS, xosc: dp.XOSC, pll_sys: dp.PLL_SYS, pll_usb: dp.PLL_USB });
+    let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
     info!("Clock system initialized: sys={} Hz", clocks.sys_freq());
 
     // Initialize TIMER0 tick generator (1µs ticks from clk_ref)

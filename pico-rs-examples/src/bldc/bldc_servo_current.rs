@@ -387,7 +387,7 @@ use defmt_rtt as _;
 
 use pico_rs::adc::{Adc, AdcPin};
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClockBuilder, ClockResources};
+use pico_rs::clocks::{ClockBuilder};
 use pico_rs::entry;
 use pico_rs::gpio::Pins;
 use pico_rs::interrupt::{self, Mutex};
@@ -709,7 +709,7 @@ fn main() -> ! {
     let dp = Peripherals::take().unwrap();
     let clocks = ClockBuilder::new()
         .enable_adc()
-        .build(ClockResources { clocks: dp.CLOCKS, xosc: dp.XOSC, pll_sys: dp.PLL_SYS, pll_usb: dp.PLL_USB });
+        .build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
     let sys_freq = clocks.sys_freq();
     info!("System clock: {} MHz", sys_freq / 1_000_000);
 

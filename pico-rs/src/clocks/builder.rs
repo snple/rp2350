@@ -1,25 +1,18 @@
 //! Clock tree builder for RP2350
 //!
-//! This module provides:
-//!
-//! - [`ClockResources`] — bundles all PAC peripherals needed to build a clock tree
-//! - [`ClockBuilder`]  — fluent API for configuring the entire clock tree with
-//!   sensible defaults and compile-time customisation
+//! This module provides [`ClockBuilder`] — a fluent API for configuring the
+//! entire RP2350 clock tree with sensible defaults.
 //!
 //! # Quick Start
 //!
 //! ```ignore
-//! use pico_rs::clocks::{ClockBuilder, ClockResources};
+//! use pico_rs::clocks::ClockBuilder;
 //!
 //! let dp = pico_rs_pac::Peripherals::take().unwrap();
 //!
-//! let clocks = ClockBuilder::new().build(ClockResources {
-//!     clocks: dp.CLOCKS,
-//!     xosc:   dp.XOSC,
-//!     pll_sys: dp.PLL_SYS,
-//!     pll_usb: dp.PLL_USB,
-//! });
-//! // clk_sys = 150 MHz, clk_usb = 48 MHz, clk_peri = 150 MHz (from clk_sys)
+//! let clocks = ClockBuilder::new()
+//!     .build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
+//! // clk_sys = 150 MHz, clk_peri = 150 MHz (follows clk_sys)
 //! ```
 
 use pico_rs_pac::{CLOCKS, PLL_SYS, PLL_USB, XOSC};
@@ -33,36 +26,6 @@ use super::types::{
 };
 use super::xosc::Xosc;
 use crate::reset::Resettable;
-
-// ============================================================================
-// Clock Resource Bundle
-// ============================================================================
-
-/// All PAC peripherals required to initialise the RP2350 clock tree
-///
-/// Pass this to [`ClockBuilder::build`] to avoid listing four separate
-/// arguments each time.
-///
-/// # Example
-/// ```ignore
-/// let dp = pico_rs_pac::Peripherals::take().unwrap();
-/// let res = ClockResources {
-///     clocks:  dp.CLOCKS,
-///     xosc:    dp.XOSC,
-///     pll_sys: dp.PLL_SYS,
-///     pll_usb: dp.PLL_USB,
-/// };
-/// ```
-pub struct ClockResources {
-    /// CLOCKS register block
-    pub clocks: CLOCKS,
-    /// Crystal oscillator (XOSC)
-    pub xosc: XOSC,
-    /// System PLL
-    pub pll_sys: PLL_SYS,
-    /// USB PLL
-    pub pll_usb: PLL_USB,
-}
 
 // ============================================================================
 // ███████╗ █████╗ ███████╗██╗   ██╗    ██╗███╗   ██╗██╗████████╗
@@ -105,19 +68,19 @@ pub struct ClockResources {
 /// # Example
 ///
 /// ```ignore
-/// use pico_rs::clocks::{ClockBuilder, ClockResources, ClkPeriAuxSrc};
+/// use pico_rs::clocks::{ClockBuilder, ClkPeriAuxSrc};
 ///
 /// // Default: 150 MHz sys, enable USB and ADC
 /// let clocks = ClockBuilder::new()
 ///     .enable_usb()
 ///     .enable_adc()
-///     .build(ClockResources { clocks, xosc, pll_sys, pll_usb });
+///     .build(clocks, xosc, pll_sys, pll_usb);
 ///
 /// // Custom: 125 MHz sys, stable 48 MHz peri for UART baud rates
 /// let clocks = ClockBuilder::new()
 ///     .sys_freq_mhz(125)
 ///     .peri_stable_48mhz()
-///     .build(ClockResources { clocks, xosc, pll_sys, pll_usb });
+///     .build(clocks, xosc, pll_sys, pll_usb);
 /// ```
 #[derive(Clone)]
 pub struct ClockBuilder {
@@ -356,14 +319,14 @@ impl ClockBuilder {
     /// # Panics
     /// Panics if `sys_freq` is not one of the supported values (48, 125, 133,
     /// 150 MHz).
-    pub fn build(self, res: ClockResources) -> Clocks {
+    pub fn build(self, clocks: CLOCKS, xosc: XOSC, pll_sys: PLL_SYS, pll_usb: PLL_USB) -> Clocks {
         // ====================================================================
         // Step 1 — Start XOSC
         // ====================================================================
-        let xosc = Xosc::init(res.xosc, self.xosc_freq);
+        let xosc = Xosc::init(xosc, self.xosc_freq);
         xosc.wait_stable();
 
-        let mut clocks = Clocks::new(res.clocks, xosc);
+        let mut clocks = Clocks::new(clocks, xosc);
 
         // ====================================================================
         // Step 2 — Configure clk_ref
@@ -389,20 +352,20 @@ impl ClockBuilder {
         let sys_pll_cfg = if use_pll_sys {
             let cfg = Self::pll_config_for_freq(self.sys_freq);
             <PLL_SYS as Resettable>::init();
-            let pll = PllSys::new(res.pll_sys);
+            let pll = PllSys::new(pll_sys);
             pll.configure(cfg.refdiv, cfg.fbdiv, cfg.postdiv1, cfg.postdiv2);
             pll.wait_lock();
             Some(cfg)
         } else {
             // pll_sys not needed at this system frequency
-            let _ = res.pll_sys;
+            let _ = pll_sys;
             None
         };
 
         // PLL_USB always provides the 48 MHz reference
         let usb_pll_cfg = PllConfig::usb_48mhz();
         <PLL_USB as Resettable>::init();
-        let pll = PllUsb::new(res.pll_usb);
+        let pll = PllUsb::new(pll_usb);
         pll.configure(
             usb_pll_cfg.refdiv,
             usb_pll_cfg.fbdiv,

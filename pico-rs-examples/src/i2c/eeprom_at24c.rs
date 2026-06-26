@@ -274,7 +274,7 @@ use defmt_rtt as _;
 
 use pico_rs::Delay;
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClockBuilder, ClockResources};
+use pico_rs::clocks::{ClockBuilder};
 use pico_rs::entry;
 use pico_rs::gpio::Pins;
 use pico_rs::i2c::{Error, I2c1, I2cBus};
@@ -479,7 +479,7 @@ fn main() -> ! {
     let dp = Peripherals::take().unwrap();
 
     // 初始化时钟系统（150 MHz 系统时钟，48 MHz USB 时钟）
-    let clocks = ClockBuilder::new().build(ClockResources { clocks: dp.CLOCKS, xosc: dp.XOSC, pll_sys: dp.PLL_SYS, pll_usb: dp.PLL_USB });
+    let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
     info!("System clock: {} Hz", clocks.sys_freq());
 
     // 初始化 GPIO 管理器

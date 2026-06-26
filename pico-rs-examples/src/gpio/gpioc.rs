@@ -8,7 +8,7 @@
 #![no_main]
 
 use defmt::info;
-use pico_rs::clocks::{ClockBuilder, ClockResources};
+use pico_rs::clocks::{ClockBuilder};
 use pico_rs::entry;
 use pico_rs::gpio::Pins;
 use pico_rs::gpioc;
@@ -21,12 +21,7 @@ fn main() -> ! {
     let dp = pac::Peripherals::take().unwrap();
 
     // Initialize clocks
-    let clocks = ClockBuilder::new().build(ClockResources {
-        clocks: dp.CLOCKS,
-        xosc: dp.XOSC,
-        pll_sys: dp.PLL_SYS,
-        pll_usb: dp.PLL_USB,
-    });
+    let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
 
     // Initialize pins — configures IO_BANK0 and PADS_BANK0
     let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);

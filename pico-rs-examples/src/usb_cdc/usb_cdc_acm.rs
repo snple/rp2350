@@ -22,7 +22,7 @@ use defmt_rtt as _;
 
 use pico_rs::SysTick;
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClockBuilder, ClockResources};
+use pico_rs::clocks::{ClockBuilder};
 use pico_rs::entry;
 use pico_rs::pac::Peripherals;
 use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
@@ -51,7 +51,7 @@ fn main() -> ! {
     // Initialize clock system (150 MHz sys, 48 MHz USB)
     let clocks = ClockBuilder::new()
         .enable_usb()
-        .build(ClockResources { clocks: dp.CLOCKS, xosc: dp.XOSC, pll_sys: dp.PLL_SYS, pll_usb: dp.PLL_USB });
+        .build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
     info!(
         "Clocks: sys={} Hz, usb={} Hz",
         clocks.sys_freq(),

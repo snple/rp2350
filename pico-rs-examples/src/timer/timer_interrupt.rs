@@ -16,7 +16,7 @@ use core::sync::atomic::{AtomicBool, Ordering};
 use defmt::*;
 use defmt_rtt as _;
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClockBuilder, ClockResources};
+use pico_rs::clocks::{ClockBuilder};
 use pico_rs::entry;
 use pico_rs::gpio::Pins;
 use pico_rs::interrupt::{self, Mutex};
@@ -44,7 +44,7 @@ fn main() -> ! {
     let dp = Peripherals::take().unwrap();
 
     // Initialize clock system
-    let clocks = ClockBuilder::new().build(ClockResources { clocks: dp.CLOCKS, xosc: dp.XOSC, pll_sys: dp.PLL_SYS, pll_usb: dp.PLL_USB });
+    let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
 
     // Initialize GPIO
     let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);

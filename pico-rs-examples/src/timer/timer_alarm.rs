@@ -30,7 +30,7 @@ use core::sync::atomic::{AtomicBool, Ordering};
 use defmt::*;
 use defmt_rtt as _;
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClockBuilder, ClockResources};
+use pico_rs::clocks::{ClockBuilder};
 use pico_rs::entry;
 use pico_rs::gpio::Pins;
 use pico_rs::interrupt::{self, Mutex};
@@ -82,7 +82,7 @@ fn main() -> ! {
 
     // 初始化时钟系统。
     // TIMER 的计数依赖 TICKS 提供的 1MHz tick，因此必须先完成时钟配置。
-    let clocks = ClockBuilder::new().build(ClockResources { clocks: dp.CLOCKS, xosc: dp.XOSC, pll_sys: dp.PLL_SYS, pll_usb: dp.PLL_USB });
+    let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
 
     // 让 TIMER0 开始以 1MHz 计数。
     let ticks = Ticks::new(dp.TICKS, &clocks);

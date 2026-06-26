@@ -21,11 +21,7 @@
 //! use pico_rs::clocks::ClockBuilder;
 //! use pico_rs::ticks::Ticks;
 //!
-//! use pico_rs::clocks::ClockResources;
-//!
-//! let clocks = ClockBuilder::new().build(ClockResources {
-//!     clocks: dp.CLOCKS, xosc: dp.XOSC, pll_sys: dp.PLL_SYS, pll_usb: dp.PLL_USB,
-//! });
+//! let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
 //! let ticks = Ticks::new(dp.TICKS, &clocks);
 //!
 //! // Initialize only the tick generators you need
