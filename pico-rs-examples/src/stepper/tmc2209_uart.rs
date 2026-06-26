@@ -123,6 +123,8 @@ fn main() -> ! {
             (addr >> 1) & 1
         );
 
+        timer.delay_ms(5);
+
         // 读取 IOIN 验证芯片
         match tmc.read_ioin(&timer) {
             Some(ioin) => {

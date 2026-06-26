@@ -173,25 +173,48 @@ pub const REG_PWMCONF: u8 = 0x70;
 // ============================================================================
 
 /// GCONF (0x00) — 全局配置
+///
+/// | 位 | 名称 | 说明 |
+/// |----|------|------|
+/// | 0 | i_scale_analog | 0: 内部 VREF, 1: AIN 模拟电流基准 |
+/// | 1 | internal_rsense | 0: 外部检流电阻, 1: 内部检流电阻 |
+/// | 2 | en_spread_cycle | 0: StealthChop, 1: SpreadCycle |
+/// | 3 | shaft | 反转电机方向 |
+/// | 4 | index_otpw | INDEX 引脚输出过温预警 |
+/// | 5 | index_step | INDEX 引脚输出步进脉冲 |
+/// | 6 | pdn_disable | PDN_UART 仅用于 UART 通信 (必须置 1) |
+/// | 7 | mstep_reg_select | 微步来源: 0=MS1/MS2 引脚, 1=CHOPCONF.mres |
+/// | 8 | multistep_filt | STEP 脉冲边沿滤波 |
 #[bitfield(u32)]
 pub struct Gconf {
-    /// 0 = StealthChop, 1 = SpreadCycle
+    /// 0: 内部 VREF, 1: AIN 模拟电流基准
+    #[bits(1)]
+    pub i_scale_analog: bool,
+    /// 0: 外部检流电阻, 1: 内部检流电阻
+    #[bits(1)]
+    pub internal_rsense: bool,
+    /// 0: StealthChop, 1: SpreadCycle
     #[bits(1)]
     pub en_spread_cycle: bool,
-    #[bits(3)]
-    __: u8,
     /// 反转电机方向
     #[bits(1)]
     pub shaft: bool,
+    /// INDEX 引脚输出过温预警
     #[bits(1)]
-    __: u8,
-    /// STEP 脉冲边沿滤波
+    pub index_otpw: bool,
+    /// INDEX 引脚输出步进脉冲
     #[bits(1)]
-    pub multistep_filt: bool,
+    pub index_step: bool,
     /// PDN_UART 仅用于 UART 通信 (必须置 1)
     #[bits(1)]
     pub pdn_disable: bool,
-    #[bits(24)]
+    /// 微步分辨率来源: 0=MS1/MS2 引脚, 1=CHOPCONF.mres
+    #[bits(1)]
+    pub mstep_reg_select: bool,
+    /// STEP 脉冲边沿滤波
+    #[bits(1)]
+    pub multistep_filt: bool,
+    #[bits(23)]
     __: u32,
 }
 
@@ -217,27 +240,32 @@ pub struct Ioin {
     /// ENN 引脚状态
     #[bits(1)]
     pub enn: bool,
+    #[bits(1)]
+    __: u8,
     /// MS1 引脚状态
     #[bits(1)]
     pub ms1: bool,
     /// MS2 引脚状态
     #[bits(1)]
     pub ms2: bool,
+    /// DIAG 引脚状态
+    #[bits(1)]
+    pub diag: bool,
     #[bits(1)]
     __: u8,
+    /// PDN_UART 引脚状态
+    #[bits(1)]
+    pub pdn_uart: bool,
     /// STEP 引脚状态
     #[bits(1)]
     pub step: bool,
-    /// DIR 引脚状态
-    #[bits(1)]
-    pub dir: bool,
     /// Spread 使能引脚状态
     #[bits(1)]
     pub spread_en: bool,
-    /// 索引引脚状态
+    /// DIR 引脚状态
     #[bits(1)]
-    pub index: bool,
-    #[bits(16)]
+    pub dir: bool,
+    #[bits(14)]
     __: u32,
     /// 芯片版本号 (TMC2209 = 0x21)
     #[bits(8)]
@@ -636,6 +664,55 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
     pub fn read_sg_result(&self, delay: &impl DelayUs) -> Option<u16> {
         self.read_reg(REG_SG_RESULT, delay)
             .map(|v| (v & 0x3FF) as u16)
+    }
+
+    /// 读取 StallGuard 堵转阈值 (SGTHRS)。
+    ///
+    /// 堵转判定条件: `SG_RESULT ≤ SGTHRS × 2`。
+    /// 设为 0 禁用堵转检测。
+    pub fn read_sg_threshold(&self, delay: &impl DelayUs) -> Option<u16> {
+        self.read_reg(REG_SGTHRS, delay).map(|v| v as u16)
+    }
+
+    /// 检测电机是否堵转（软件轮询方式）。
+    ///
+    /// 同时读取 SG_RESULT 和 SGTHRS，判断是否触发 StallGuard 堵转条件。
+    /// 仅在电机运动时有效。
+    ///
+    /// 堵转判定: `SG_RESULT ≤ SGTHRS × 2`
+    ///
+    /// # 返回
+    ///
+    /// - `true`: 堵转
+    /// - `false`: 正常运行，或通信失败（保守返回 false）
+    ///
+    /// # 示例
+    ///
+    /// ```ignore
+    /// // 运动循环中轮询堵转状态
+    /// if tmc.is_stalled(&delay) {
+    ///     // 立即停止电机
+    /// }
+    /// ```
+    ///
+    /// # 硬件替代方案
+    ///
+    /// 如需避免软件轮询开销，可将 TMC2209 的 **DIAG 引脚** 连接到 MCU 的一个
+    /// GPIO 中断引脚。DIAG 是开漏输出（需外部上拉），一旦发生堵转、驱动错误或
+    /// 过温，引脚会被拉低。通过 MCU 外部中断可零延迟感知堵转事件。
+    ///
+    /// DIAG 引脚的堵转输出功能无需额外寄存器配置——只要 SGTHRS 和 TCOOLTHRS
+    /// 已正确设置（[`configure`] 已包含），堵转时 DIAG 自动拉低。
+    pub fn is_stalled(&self, delay: &impl DelayUs) -> bool {
+        let sg_result = match self.read_sg_result(delay) {
+            Some(v) => v,
+            None => return false,
+        };
+        let sg_threshold = match self.read_sg_threshold(delay) {
+            Some(v) => v,
+            None => return false,
+        };
+        sg_result <= sg_threshold.saturating_mul(2)
     }
 
     /// 读取 IHOLD_IRUN 寄存器 (类型化)。
