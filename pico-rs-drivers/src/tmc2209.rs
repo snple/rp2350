@@ -60,6 +60,111 @@ use pico_rs::delay::DelayUs;
 use pico_rs::uart::UartBus;
 
 // ============================================================================
+// 数据类型
+// ============================================================================
+
+/// 电机静止时的行为模式 (对应 PWMCONF.freewheel)。
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+#[repr(u8)]
+pub enum StandstillMode {
+    /// 正常操作
+    Normal = 0b00,
+    /// 续流 (所有 MOSFET 关断)
+    Freewheeling = 0b01,
+    /// 线圈通过低侧 MOSFET 短路 (被动制动)
+    StrongBraking = 0b10,
+    /// 线圈通过高侧 MOSFET 短路 (被动制动)
+    Braking = 0b11,
+}
+
+impl StandstillMode {
+    /// 转换为驱动寄存器中的二进制值。
+    #[inline]
+    pub const fn to_bits(self) -> u8 {
+        self as u8
+    }
+}
+
+impl From<u8> for StandstillMode {
+    fn from(value: u8) -> Self {
+        match value {
+            0b00 => Self::Normal,
+            0b01 => Self::Freewheeling,
+            0b10 => Self::StrongBraking,
+            0b11 => Self::Braking,
+            _ => Self::Normal,
+        }
+    }
+}
+
+/// 微步分辨率描述。
+///
+/// 内部以"指数"表示：微步数 = 2^exponent。
+/// 与驱动寄存器 MRES 的关系：`mres = 8 - exponent`。
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+pub struct MicroStepResolution {
+    exponent: u8,
+}
+
+impl MicroStepResolution {
+    /// 从指数创建 (0 = 1 微步/全步, 8 = 256 微步)。
+    #[inline]
+    pub const fn from_exponent(exponent: u8) -> Self {
+        assert!(exponent <= 8);
+        Self { exponent }
+    }
+
+    /// 从微步数创建 (如 256, 128, 64, …, 1)。
+    ///
+    /// # Panics
+    /// 如果 `microsteps` 不是 2 的幂或超过 256。
+    #[inline]
+    pub const fn from_microsteps(microsteps: u32) -> Self {
+        assert!(microsteps.is_power_of_two() && microsteps <= 256);
+        Self {
+            exponent: microsteps.trailing_zeros() as u8,
+        }
+    }
+
+    /// 指数值 (微步数 = 2^exponent)。
+    #[inline]
+    pub const fn exponent(self) -> u8 {
+        self.exponent
+    }
+
+    /// 微步数量。
+    #[inline]
+    pub const fn microsteps(self) -> u32 {
+        1 << self.exponent as u32
+    }
+
+    /// 对应的 MRES 驱动寄存器值。
+    #[inline]
+    pub const fn to_mres(self) -> u32 {
+        (8 - self.exponent) as u32
+    }
+
+    /// 从 MRES 驱动寄存器值创建。
+    #[inline]
+    pub const fn from_mres(mres: u32) -> Self {
+        Self {
+            exponent: (8 - mres) as u8,
+        }
+    }
+}
+
+// ============================================================================
+// 芯片参数
+// ============================================================================
+
+/// TMC2209 内部时钟频率 (Hz)。
+///
+/// 即数据手册中的 `f_CLK`。由出厂 OTP 校准至 12 MHz。
+pub const INTERNAL_CLOCK_HZ: u32 = 12_000_000;
+
+// ============================================================================
 // TMC2209 寄存器地址
 // ============================================================================
 
@@ -67,8 +172,11 @@ use pico_rs::uart::UartBus;
 ///
 /// | 位 | 名称 | 说明 |
 /// |----|------|------|
-/// | 6  | multistep_filt | STEP 脉冲边沿滤波 |
-/// | 7  | pdn_disable | PDN_UART 仅用于 UART 通信 (必须置 1) |
+/// | 0 | i_scale_analog | 电流基准源选择 |
+/// | 2 | en_spread_cycle | 0: StealthChop, 1: SpreadCycle |
+/// | 6 | pdn_disable | PDN_UART 仅用于 UART 通信 (必须置 1) |
+/// | 7 | mstep_reg_select | 微步来源: 0=引脚, 1=寄存器 |
+/// | 8 | multistep_filt | STEP 脉冲边沿滤波 |
 pub const REG_GCONF: u8 = 0x00;
 
 /// GSTAT (0x01) — 全局状态寄存器 (读后自动清除)
@@ -91,8 +199,8 @@ pub const REG_IFCNT: u8 = 0x02;
 /// |----|------|------|
 /// | [31:24] | VERSION | 芯片版本 (TMC2209 = 0x21) |
 /// | 0 | ENN | ENN 引脚状态 |
-/// | 1 | MS1 | MS1 引脚状态 |
-/// | 2 | MS2 | MS2 引脚状态 |
+/// | 2 | MS1 | MS1 引脚状态 |
+/// | 3 | MS2 | MS2 引脚状态 |
 pub const REG_IOIN: u8 = 0x06;
 
 /// IHOLD_IRUN (0x10) — 保持/运行电流设置
@@ -135,11 +243,12 @@ pub const REG_SG_RESULT: u8 = 0x41;
 ///
 /// | 位 | 名称 | 说明 |
 /// |----|------|------|
-/// | [3:0] | TOFF | 斩波关断时间 |
-/// | [7:4] | HSTRT | 滞后起始值 |
-/// | [14:8] | HEND | 滞后结束值 |
-/// | 15 | TBL | 消隐时间比较 |
-/// | [27:24] | MRES | 微步分辨率 (0=256 ... 8=全步) |
+/// | [3:0] | toff | 斩波关断时间 |
+/// | [6:4] | hstrt | 滞后起始值 |
+/// | [10:7] | hend | 滞后结束值 |
+/// | [16:15] | tbl | 消隐时间比较 |
+/// | 17 | vsense | 检流电阻灵敏度 |
+/// | [27:24] | mres | 微步分辨率 (0=256 ... 8=全步) |
 /// | 28 | intpol | 256 微步插值使能 |
 pub const REG_CHOPCONF: u8 = 0x6C;
 
@@ -147,26 +256,87 @@ pub const REG_CHOPCONF: u8 = 0x6C;
 ///
 /// | 位 | 名称 | 说明 |
 /// |----|------|------|
-/// | [20:16] | CS_ACTUAL | 实际电流缩放值 |
-/// | 25 | stst | 静止检测 |
-/// | 29 | ola | A 相开路 |
-/// | 30 | olb | B 相开路 |
-/// | 26 | otpw | 过温预警 (~120°C) |
-/// | 25 | ot | 过温关断 (~150°C) |
+/// | 0 | otpw | 过温预警 (~120°C) |
+/// | 1 | ot | 过温关断 (~150°C) |
+/// | [20:16] | cs_actual | 实际电流缩放值 |
+/// | 30 | stealth | StealthChop 模式指示 |
+/// | 31 | stst | 静止检测 |
 pub const REG_DRV_STATUS: u8 = 0x6F;
 
 /// PWMCONF (0x70) — StealthChop PWM 调谐参数
 ///
 /// | 位 | 名称 | 说明 |
 /// |----|------|------|
-/// | [7:0] | PWM_OFS | PWM 初始偏移 |
-/// | [15:8] | PWM_GRAD | PWM 梯度 |
-/// | [17:16] | PWM_FREQ | PWM 频率 |
-/// | 18 | PWM_AUTOSCALE | 自动调幅 |
-/// | 19 | PWM_AUTOGRAD | 自动调梯度 |
-/// | [27:24] | PWM_LIM | PWM 限幅 |
-/// | [31:28] | PWM_REG | 调节精度 |
+/// | [7:0] | pwm_ofs | PWM 初始偏移 |
+/// | [15:8] | pwm_grad | PWM 梯度 |
+/// | [17:16] | pwm_freq | PWM 频率 |
+/// | 18 | pwm_autoscale | 自动调幅 |
+/// | 19 | pwm_autograd | 自动调梯度 |
+/// | [21:20] | freewheel | 静止模式 (IHOLD=0 时) |
+/// | [27:24] | pwm_reg | 调节精度 |
+/// | [31:28] | pwm_lim | PWM 限幅 |
 pub const REG_PWMCONF: u8 = 0x70;
+
+/// SLAVECONF (0x03) — 从机配置 (仅写)
+///
+/// | 位 | 名称 | 说明 |
+/// |----|------|------|
+/// | [11:8] | SENDDELAY | 读回复发送延时 |
+pub const REG_SLAVECONF: u8 = 0x03;
+
+/// TPWMTHRS (0x13) — StealthChop 切换到 SpreadCycle 的速度阈值
+///
+/// 当 `TSTEP < TPWMTHRS` (速度高于阈值) 时自动切换到 SpreadCycle。
+/// 设为 0 则全程使用 StealthChop。
+pub const REG_TPWMTHRS: u8 = 0x13;
+
+/// VACTUAL (0x22) — UART 直接速度控制
+///
+/// 非零值时电机直接以给定速度运动，忽略 STEP 引脚输入。
+/// 0 表示回到 STEP 引脚控制。内部 12 MHz 时钟下：
+/// `VACTUAL ≈ microsteps_per_sec / 0.715`
+pub const REG_VACTUAL: u8 = 0x22;
+
+/// COOLCONF (0x42) — CoolStep 智能电流控制
+///
+/// CoolStep 根据 StallGuard 结果动态调节电机电流以节省能量。
+pub const REG_COOLCONF: u8 = 0x42;
+
+/// MSCNT (0x6A) — 微步计数器 (只读, 0–1023)
+///
+/// 指示电机在当前电气周期内的微步位置。
+pub const REG_MSCNT: u8 = 0x6A;
+
+/// MSCURACT (0x6B) — 当前 A/B 相微步电流 (只读)
+///
+/// 从正弦波表中读出的原始值 (未经电流缩放)，范围 -255~255。
+pub const REG_MSCURACT: u8 = 0x6B;
+
+/// PWM_SCALE (0x71) — StealthChop 自动调幅结果 (只读)
+///
+/// 可监控自动 PWM 幅度调节的状态。
+pub const REG_PWM_SCALE: u8 = 0x71;
+
+/// PWM_AUTO (0x72) — 自动 PWM 梯度/偏移值 (只读)
+///
+/// 可用于为 PWMCONF 确定上电默认参数。
+pub const REG_PWM_AUTO: u8 = 0x72;
+
+/// FACTORY_CONF (0x07) — 工厂配置
+///
+/// | 位 | 名称 | 说明 |
+/// |----|------|------|
+/// | [4:0] | FCLKTRIM | 时钟频率调节 (出厂 OTP 预设为 12 MHz) |
+/// | [9:8] | OTTRIM | 过温阈值调节 |
+pub const REG_FACTORY_CONF: u8 = 0x07;
+
+/// OTP_PROG (0x04) — OTP 编程 (仅写, 一次性)
+///
+/// <div class=\"warning\">OTP = One Time Programmable, 只能写一次！</div>
+pub const REG_OTP_PROG: u8 = 0x04;
+
+/// OTP_READ (0x05) — OTP 读出 (只读)
+pub const REG_OTP_READ: u8 = 0x05;
 
 // ============================================================================
 // 寄存器 bitfield 类型
@@ -185,6 +355,7 @@ pub const REG_PWMCONF: u8 = 0x70;
 /// | 6 | pdn_disable | PDN_UART 仅用于 UART 通信 (必须置 1) |
 /// | 7 | mstep_reg_select | 微步来源: 0=MS1/MS2 引脚, 1=CHOPCONF.mres |
 /// | 8 | multistep_filt | STEP 脉冲边沿滤波 |
+/// | 9 | test_mode | 测试模式 (正常操作必须为 0) |
 #[bitfield(u32)]
 pub struct Gconf {
     /// 0: 内部 VREF, 1: AIN 模拟电流基准
@@ -214,7 +385,10 @@ pub struct Gconf {
     /// STEP 脉冲边沿滤波
     #[bits(1)]
     pub multistep_filt: bool,
-    #[bits(23)]
+    /// 测试模式 (正常操作必须为 0)
+    #[bits(1)]
+    pub test_mode: bool,
+    #[bits(22)]
     __: u32,
 }
 
@@ -295,60 +469,93 @@ pub struct IholdIr {
 /// CHOPCONF (0x6C) — 斩波器配置
 #[bitfield(u32)]
 pub struct Chopconf {
-    /// 斩波关断时间
+    /// 斩波关断时间 (0=禁用驱动, 1–15)
     #[bits(4)]
     pub toff: u8,
-    /// 滞后起始值
+    /// 滞后起始值 (1–8 加到 HEND)
     #[bits(3)]
     pub hstrt: u8,
-    /// 滞后结束值
+    /// 滞后结束值 (−3..12)
     #[bits(4)]
     pub hend: u8,
     #[bits(4)]
     __: u8,
-    /// 消隐时间比较
+    /// 比较器消隐时间 (0=16, 1=24, 2=32, 3=40 clocks)
     #[bits(2)]
     pub tbl: u8,
-    #[bits(7)]
-    __: u16,
+    /// 检流电阻电压灵敏度 (0: 低灵敏度 V_FS=0.325V, 1: 高灵敏度 V_FS=0.180V)
+    #[bits(1)]
+    pub vsense: bool,
+    #[bits(6)]
+    __: u8,
     /// 微步分辨率 (0=256 ... 8=全步)
     #[bits(4)]
     pub mres: u8,
     /// 256 微步插值使能
     #[bits(1)]
     pub intpol: bool,
-    #[bits(3)]
-    __: u8,
+    /// 双边沿步进脉冲 (与 multistep_filt 互斥)
+    #[bits(1)]
+    pub dedge: bool,
+    /// 禁用对地短路保护
+    #[bits(1)]
+    pub diss2g: bool,
+    /// 禁用低侧短路保护
+    #[bits(1)]
+    pub diss2vs: bool,
 }
 
 /// DRV_STATUS (0x6F) — 驱动器状态 (只读)
 #[bitfield(u32)]
 pub struct DrvStatus {
-    #[bits(16)]
-    __: u32,
-    /// 实际电流缩放值
-    #[bits(5)]
-    pub cs_actual: u8,
-    #[bits(4)]
-    __: u8,
-    /// 过温关断 (~150°C)
-    #[bits(1)]
-    pub ot: bool,
     /// 过温预警 (~120°C)
     #[bits(1)]
     pub otpw: bool,
-    /// StallGuard A 相
+    /// 过温关断 (~150°C)
+    #[bits(1)]
+    pub ot: bool,
+    /// A 相对地短路
     #[bits(1)]
     pub s2ga: bool,
-    /// StallGuard B 相
+    /// B 相对地短路
     #[bits(1)]
     pub s2gb: bool,
+    /// A 相低侧短路
+    #[bits(1)]
+    pub s2vsa: bool,
+    /// B 相低侧短路
+    #[bits(1)]
+    pub s2vsb: bool,
     /// A 相开路
     #[bits(1)]
     pub ola: bool,
     /// B 相开路
     #[bits(1)]
     pub olb: bool,
+    /// 温度超过 120°C
+    #[bits(1)]
+    pub t120: bool,
+    /// 温度超过 143°C
+    #[bits(1)]
+    pub t143: bool,
+    /// 温度超过 150°C
+    #[bits(1)]
+    pub t150: bool,
+    /// 温度超过 157°C
+    #[bits(1)]
+    pub t157: bool,
+    #[bits(4)]
+    __: u8,
+    /// 实际电流缩放值 (0–31)
+    #[bits(5)]
+    pub cs_actual: u8,
+    #[bits(5)]
+    __: u8,
+    #[bits(4)]
+    __: u8,
+    /// StealthChop 模式指示 (1=StealthChop, 0=SpreadCycle)
+    #[bits(1)]
+    pub stealth: bool,
     /// 静止检测
     #[bits(1)]
     pub stst: bool,
@@ -372,14 +579,268 @@ pub struct Pwmconf {
     /// 自动调梯度
     #[bits(1)]
     pub pwm_autograd: bool,
-    #[bits(4)]
+    /// 静止模式 (仅当 IHOLD=0 时生效)
+    #[bits(2)]
+    pub freewheel: u8,
+    #[bits(2)]
     __: u8,
-    /// PWM 限幅
-    #[bits(4)]
-    pub pwm_lim: u8,
     /// 调节精度
     #[bits(4)]
     pub pwm_reg: u8,
+    /// PWM 限幅
+    #[bits(4)]
+    pub pwm_lim: u8,
+}
+
+/// TSTEP (0x12) — 步进间隔测量值 (只读)
+///
+/// 以 1/f_CLK 为单位，表示两次 1/256 微步之间的时间。
+/// 值越小 = 速度越快。溢出或静止时为 `2^20 - 1`。
+#[bitfield(u32)]
+pub struct Tstep {
+    /// 步进间隔 (0..1_048_575)
+    #[bits(20)]
+    pub tstep: u32,
+    #[bits(12)]
+    __: u32,
+}
+
+/// TPWMTHRS (0x13) — StealthChop 速度切换阈值
+#[bitfield(u32)]
+pub struct Tpwmthrs {
+    /// 当 TSTEP 小于此值时切换到 SpreadCycle
+    #[bits(20)]
+    pub threshold: u32,
+    #[bits(12)]
+    __: u32,
+}
+
+/// TCOOLTHRS (0x14) — CoolStep/StallGuard 速度阈值
+///
+/// `TSTEP ≤ TCOOLTHRS` 时启用 CoolStep 和 DIAG 堵转输出。
+#[bitfield(u32)]
+pub struct Tcoolthrs {
+    #[bits(20)]
+    pub threshold: u32,
+    #[bits(12)]
+    __: u32,
+}
+
+/// VACTUAL (0x22) — UART 速度控制
+///
+/// 非零值时电机按此速度直接运动，忽略 STEP 引脚。
+/// 有符号值：正 = 正转，负 = 反转。
+#[bitfield(u32)]
+pub struct Vactual {
+    /// 电机速度 (有符号, 最大 ±2^23-1 微步/t)
+    #[bits(24)]
+    pub velocity: i32,
+    #[bits(8)]
+    __: u32,
+}
+
+/// SGTHRS (0x40) — StallGuard 堵转阈值
+///
+/// 触发条件: `SG_RESULT ≤ SGTHRS × 2`。
+#[bitfield(u32)]
+pub struct Sgthrs {
+    /// 堵转阈值 (0–255, 0 = 禁用)
+    #[bits(8)]
+    pub threshold: u8,
+    #[bits(24)]
+    __: u32,
+}
+
+/// SG_RESULT (0x41) — StallGuard 结果 (只读, 0–510)
+///
+/// 值越大负载越轻 (~510 = 空载, ~0 = 堵转)。
+#[bitfield(u32)]
+pub struct SgResult {
+    /// StallGuard 值
+    #[bits(10)]
+    pub result: u16,
+    #[bits(22)]
+    __: u32,
+}
+
+/// COOLCONF (0x42) — CoolStep 智能电流控制
+#[bitfield(u32)]
+pub struct Coolconf {
+    /// 最小 StallGuard 值。低于此值则增加电流 (0–15, 0 = 禁用 CoolStep)
+    #[bits(4)]
+    pub semin: u8,
+    #[bits(1)]
+    __: u8,
+    /// 电流增加步长: 0=1, 1=2, 2=4, 3=8
+    #[bits(2)]
+    pub seup: u8,
+    #[bits(1)]
+    __: u8,
+    /// 电流减小上限 (0–15)。SG ≥ (SEMIN + SEMAX + 1)×32 时减小电流
+    #[bits(4)]
+    pub semax: u8,
+    #[bits(1)]
+    __: u8,
+    /// 电流减小速度: 0=每32次, 1=每8次, 2=每2次, 3=每次
+    #[bits(2)]
+    pub sedn: u8,
+    /// 最小电流: 0=IRUN/2, 1=IRUN/4
+    #[bits(1)]
+    pub seimin: bool,
+    #[bits(16)]
+    __: u32,
+}
+
+/// MSCNT (0x6A) — 微步计数器 (只读)
+#[bitfield(u32)]
+pub struct Mscnt {
+    /// 当前微步位置 (0–1023)
+    #[bits(10)]
+    pub count: u16,
+    #[bits(22)]
+    __: u32,
+}
+
+/// MSCURACT (0x6B) — 当前 A/B 相微步电流 (只读)
+#[bitfield(u32)]
+pub struct Mscuract {
+    /// B 相电流 (−255..255)
+    #[bits(9)]
+    pub cur_b: i16,
+    #[bits(7)]
+    __: u16,
+    /// A 相电流 (−255..255)
+    #[bits(9)]
+    pub cur_a: i16,
+    #[bits(7)]
+    __: u16,
+}
+
+/// PWM_SCALE (0x71) — StealthChop 自动调幅结果 (只读)
+#[bitfield(u32)]
+pub struct PwmScale {
+    /// 实际 PWM 占空比总和
+    #[bits(8)]
+    pub pwm_scale_sum: u8,
+    #[bits(8)]
+    __: u16,
+    /// 自动幅度调节偏移 (−255..255)
+    #[bits(9)]
+    pub pwm_scale_auto: i16,
+    #[bits(7)]
+    __: u16,
+}
+
+/// PWM_AUTO (0x72) — 自动 PWM 梯度/偏移值 (只读)
+///
+/// 可用于为 PWMCONF 确定上电默认值。
+#[bitfield(u32)]
+pub struct PwmAuto {
+    /// 自动确定的 PWM 偏移
+    #[bits(8)]
+    pub pwm_ofs_auto: u8,
+    #[bits(8)]
+    __: u16,
+    /// 自动确定的 PWM 梯度
+    #[bits(8)]
+    pub pwm_grad_auto: u8,
+    #[bits(8)]
+    __: u16,
+}
+
+/// SLAVECONF (0x03) — 从机配置 (仅写)
+#[bitfield(u32)]
+pub struct Slaveconf {
+    #[bits(8)]
+    __: u32,
+    /// 读回复发送延时 (0–15)，对应 1×8 到 15×8 bit times
+    #[bits(4)]
+    pub send_delay: u8,
+    #[bits(20)]
+    __: u32,
+}
+
+/// TPOWERDOWN (0x11) — 停止后电流降低延时
+///
+/// 单位: 约 2^18 个时钟周期。0 = 无延时立即掉电。
+#[bitfield(u32)]
+pub struct Tpowerdown {
+    /// 延时值 (0–255)
+    #[bits(8)]
+    pub delay: u8,
+    #[bits(24)]
+    __: u32,
+}
+
+/// IFCNT (0x02) — UART 写入计数器 (只读)
+#[bitfield(u32)]
+pub struct Ifcnt {
+    /// 写入计数 (0–255, 溢出回绕)
+    #[bits(8)]
+    pub count: u8,
+    #[bits(24)]
+    __: u32,
+}
+
+/// FACTORY_CONF (0x07) — 工厂配置
+#[bitfield(u32)]
+pub struct FactoryConf {
+    /// 时钟频率调节 (0–31, 出厂 OTP 预设)
+    #[bits(5)]
+    pub fclktrim: u8,
+    #[bits(3)]
+    __: u8,
+    /// 过温阈值调节
+    #[bits(2)]
+    pub ottrim: u8,
+    #[bits(22)]
+    __: u32,
+}
+
+/// OTP_READ (0x05) — OTP 只读
+#[bitfield(u32)]
+pub struct OtpRead {
+    /// 出厂时钟频率调节值 (0–31)
+    #[bits(5)]
+    pub otp_fclktrim: u8,
+    /// 过温阈值
+    #[bits(1)]
+    pub otp_ottrim: u8,
+    /// 内部检流电阻默认值
+    #[bits(1)]
+    pub otp_internal_rsense: bool,
+    /// 消隐时间默认值
+    #[bits(1)]
+    pub otp_tbl: u8,
+    /// PWM_GRAD 默认值编码
+    #[bits(4)]
+    pub otp_pwm_grad: u8,
+    /// pwm_autograd 默认值
+    #[bits(1)]
+    pub otp_pwm_autograd: bool,
+    /// TPWM_THRS 默认值编码
+    #[bits(3)]
+    pub otp_tpwmthrs: u8,
+    /// PWM_OFS 默认值 (0 = 36, 1 = 0)
+    #[bits(1)]
+    pub otp_pwm_ofs: u8,
+    /// PWM_REG 默认值
+    #[bits(1)]
+    pub otp_pwm_reg: u8,
+    /// PWM_FREQ 默认值
+    #[bits(1)]
+    pub otp_pwm_freq: u8,
+    /// IHOLDDELAY 默认值编码
+    #[bits(2)]
+    pub otp_ihold_delay: u8,
+    /// IHOLD 默认值编码
+    #[bits(2)]
+    pub otp_ihold: u8,
+    /// 默认 chopper 模式 (1=SpreadCycle, 0=StealthChop)
+    #[bits(1)]
+    pub otp_en_spread_cycle: bool,
+    #[bits(8)]
+    __: u32,
 }
 
 // ============================================================================
@@ -720,11 +1181,93 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
         self.read_reg(REG_IHOLD_IRUN, delay).map(IholdIr::from)
     }
 
+    /// 写入 IHOLD_IRUN 寄存器。
+    pub fn write_ihold_irun(&self, val: &IholdIr, delay: &impl DelayUs) {
+        self.write_reg(REG_IHOLD_IRUN, (*val).into(), delay);
+    }
+
+    /// 写入 CHOPCONF 寄存器。
+    pub fn write_chopconf(&self, val: &Chopconf, delay: &impl DelayUs) {
+        self.write_reg(REG_CHOPCONF, (*val).into(), delay);
+    }
+
+    /// 写入 PWMCONF 寄存器。
+    pub fn write_pwmconf(&self, val: &Pwmconf, delay: &impl DelayUs) {
+        self.write_reg(REG_PWMCONF, (*val).into(), delay);
+    }
+
+    /// 读取 TSTEP 寄存器 (步进间隔，只读)。
+    ///
+    /// 值越小 = 速度越快。溢出或静止时为 `2^20 - 1`。
+    /// 以 1/f_CLK 为单位，始终对应 1/256 微步。
+    pub fn read_tstep(&self, delay: &impl DelayUs) -> Option<Tstep> {
+        self.read_reg(REG_TSTEP, delay).map(Tstep::from)
+    }
+
+    /// 读取 PWM_SCALE 寄存器 (自动调幅结果，只读)。
+    pub fn read_pwm_scale(&self, delay: &impl DelayUs) -> Option<PwmScale> {
+        self.read_reg(REG_PWM_SCALE, delay).map(PwmScale::from)
+    }
+
+    /// 读取 PWM_AUTO 寄存器 (自动梯度/偏移值，只读)。
+    pub fn read_pwm_auto(&self, delay: &impl DelayUs) -> Option<PwmAuto> {
+        self.read_reg(REG_PWM_AUTO, delay).map(PwmAuto::from)
+    }
+
+    /// 读取 MSCNT 寄存器 (微步计数器，只读)。
+    ///
+    /// 返回当前电机在电气周期内的微步位置 (0–1023)。
+    /// 可用于替代编码器做位置反馈。
+    pub fn read_mscnt(&self, delay: &impl DelayUs) -> Option<Mscnt> {
+        self.read_reg(REG_MSCNT, delay).map(Mscnt::from)
+    }
+
+    /// 读取 MSCURACT 寄存器 (A/B 相微步电流，只读)。
+    pub fn read_mscuract(&self, delay: &impl DelayUs) -> Option<Mscuract> {
+        self.read_reg(REG_MSCURACT, delay).map(Mscuract::from)
+    }
+
+    /// 读取 COOLCONF 寄存器 (CoolStep 配置，类型化)。
+    pub fn read_coolconf(&self, delay: &impl DelayUs) -> Option<Coolconf> {
+        self.read_reg(REG_COOLCONF, delay).map(Coolconf::from)
+    }
+
+    /// 写入 COOLCONF 寄存器。
+    pub fn write_coolconf(&self, val: &Coolconf, delay: &impl DelayUs) {
+        self.write_reg(REG_COOLCONF, (*val).into(), delay);
+    }
+
+    /// 读取 FACTORY_CONF 寄存器 (类型化)。
+    pub fn read_factory_conf(&self, delay: &impl DelayUs) -> Option<FactoryConf> {
+        self.read_reg(REG_FACTORY_CONF, delay)
+            .map(FactoryConf::from)
+    }
+
+    /// 读取 OTP_READ 寄存器 (类型化)。
+    pub fn read_otp(&self, delay: &impl DelayUs) -> Option<OtpRead> {
+        self.read_reg(REG_OTP_READ, delay).map(OtpRead::from)
+    }
+
+    /// 读取 IFCNT (类型化)。
+    pub fn read_ifcnt_typed(&self, delay: &impl DelayUs) -> Option<Ifcnt> {
+        self.read_reg(REG_IFCNT, delay).map(Ifcnt::from)
+    }
+
     /// 清除 GSTAT 错误标志。
     ///
     /// 写入 `0x07` 清除 reset、drv_err、uv_cp 三个标志位。
     pub fn clear_gstat(&self, delay: &impl DelayUs) {
         self.write_reg(REG_GSTAT, 0x07, delay);
+    }
+
+    /// 清除驱动错误标志 (GSTAT.drv_err)。
+    ///
+    /// GSTAT 是 R+WC 寄存器，写入 bit 为 1 以清除对应标志。
+    /// 仅在驱动错误条件已消除时才能成功清除。
+    pub fn clear_drv_err(&self, delay: &impl DelayUs) {
+        let mut gstat = Gstat::default();
+        gstat.set_drv_err(true);
+        self.write_reg(REG_GSTAT, gstat.into(), delay);
     }
 
     // ========================================================================
@@ -735,7 +1278,7 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
     ///
     /// 执行以下步骤:
     /// 1. 清除 GSTAT 错误标志
-    /// 2. 配置 GCONF: StealthChop + UART 使能
+    /// 2. 配置 GCONF: StealthChop + UART 使能 + 寄存器微步
     /// 3. 配置 IHOLD_IRUN: 运行/保持电流
     /// 4. 配置 TPOWERDOWN: 停止后电流降低延时
     /// 5. 配置 CHOPCONF: 微步细分 + 256 微步插值
@@ -771,15 +1314,20 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
         self.clear_gstat(delay);
         delay.delay_ms(10);
 
-        // 步骤 2: GCONF — StealthChop + UART 使能
-        let gconf: u32 = (1 << 6) | (1 << 7);
-        self.write_reg(REG_GCONF, gconf, delay);
+        // 步骤 2: GCONF — StealthChop + UART 模式 + 寄存器微步
+        let mut gconf = Gconf::default();
+        gconf.set_pdn_disable(true); // UART 通信必须
+        gconf.set_mstep_reg_select(true); // 微步由 CHOPCONF.mres 控制
+        gconf.set_multistep_filt(true); // STEP 脉冲滤波
+        self.write_gconf(&gconf, delay);
         delay.delay_ms(10);
 
         // 步骤 3: IHOLD_IRUN — 电流设置
-        let ihold_irun: u32 =
-            (hold_current as u32) | ((run_current as u32) << 8) | ((ihold_delay as u32) << 16);
-        self.write_reg(REG_IHOLD_IRUN, ihold_irun, delay);
+        let mut ihold_irun = IholdIr::default();
+        ihold_irun.set_ihold(hold_current);
+        ihold_irun.set_irun(run_current);
+        ihold_irun.set_iholddelay(ihold_delay);
+        self.write_ihold_irun(&ihold_irun, delay);
         delay.delay_ms(10);
 
         // 步骤 4: TPOWERDOWN
@@ -787,22 +1335,36 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
         delay.delay_ms(10);
 
         // 步骤 5: CHOPCONF — 斩波器 + 微步配置
-        let mres = microstepping_to_mres(microstepping);
-        let chopconf: u32 = 3 | (4 << 4) | (1 << 7) | (1 << 15) | (mres << 24) | (1 << 28);
-        self.write_reg(REG_CHOPCONF, chopconf, delay);
+        let mut chopconf = Chopconf::default();
+        chopconf.set_toff(3);
+        chopconf.set_hstrt(4);
+        chopconf.set_hend(1);
+        chopconf.set_tbl(1); // 24 clocks blanking
+        chopconf.set_mres(microstepping_to_mres(microstepping) as u8);
+        chopconf.set_intpol(true);
+        self.write_chopconf(&chopconf, delay);
         delay.delay_ms(10);
 
         // 步骤 6: PWMCONF — StealthChop 自动调谐
-        let pwmconf: u32 = (36 | (14 << 8)) | (1 << 18) | (1 << 19) | (8 << 24) | (12 << 28);
-        self.write_reg(REG_PWMCONF, pwmconf, delay);
+        let mut pwmconf = Pwmconf::default();
+        pwmconf.set_pwm_ofs(36);
+        pwmconf.set_pwm_grad(14);
+        pwmconf.set_pwm_freq(0); // 0b00: fPWM = 2/1024 fCLK
+        pwmconf.set_pwm_autoscale(true);
+        pwmconf.set_pwm_autograd(true);
+        pwmconf.set_pwm_reg(8);
+        pwmconf.set_pwm_lim(12);
+        self.write_pwmconf(&pwmconf, delay);
         delay.delay_ms(10);
 
         // 步骤 7: SGTHRS
         self.set_sg_threshold(sg_threshold, delay);
         delay.delay_ms(10);
 
-        // 步骤 8: TCOOLTHRS — 任意速度下都激活
-        self.write_reg(REG_TCOOLTHRS, 0xFFFFF, delay);
+        // 步骤 8: TCOOLTHRS — 只在 ≥~500 Hz 时激活 StallGuard
+        // 避免 StealthChop 刚起步电流自整定未稳定时误判堵转。
+        // TSTEP = fCLK / (speed_hz × 256)，设 TCOOLTHRS=100 → 激活速度 ≈ 470 Hz。
+        self.write_reg(REG_TCOOLTHRS, 100, delay);
         delay.delay_ms(10);
     }
 
@@ -815,10 +1377,11 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
     /// - `run_current`: 运行电流 IRUN (0–31)
     /// - `hold_current`: 保持电流 IHOLD (0–31)
     pub fn set_run_current(&self, run_current: u8, hold_current: u8, delay: &impl DelayUs) {
-        let ihold_irun: u32 = (hold_current as u32)
-            | ((run_current as u32) << 8)
-            | ((IHOLD_DELAY_DEFAULT as u32) << 16);
-        self.write_reg(REG_IHOLD_IRUN, ihold_irun, delay);
+        let mut ihold_irun = IholdIr::default();
+        ihold_irun.set_ihold(hold_current);
+        ihold_irun.set_irun(run_current);
+        ihold_irun.set_iholddelay(IHOLD_DELAY_DEFAULT);
+        self.write_ihold_irun(&ihold_irun, delay);
     }
 
     /// 动态修改 StallGuard 堵转阈值。
@@ -847,6 +1410,117 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
     /// 单位: 约 2^18 个内部时钟周期 (~2.6 ms/单位 @ 12 MHz 内部时钟)。
     pub fn set_power_down_delay(&self, time: u32, delay: &impl DelayUs) {
         self.write_reg(REG_TPOWERDOWN, time, delay);
+    }
+
+    // ========================================================================
+    // CoolStep 配置
+    // ========================================================================
+
+    /// 配置 CoolStep 智能电流控制。
+    ///
+    /// CoolStep 根据电机负载 (由 StallGuard 检测) 自动调节电流：
+    /// - 负载轻时降低电流以节省能量
+    /// - 负载重时增加电流以防止丢步
+    ///
+    /// 该功能仅在 StealthChop 模式下有效，且要求电机速度高于 TCOOLTHRS 阈值。
+    ///
+    /// # 参数
+    ///
+    /// - `semin`: 最小 StallGuard 阈值 (0–15)。SG 低于此值时增加电流。0 = 禁用 CoolStep。
+    /// - `semax`: 最大 StallGuard 阈值 (0–15)。SG 高于 (SEMIN+SEMAX+1)×32 时降低电流。
+    /// - `seup`: 电流增加步长 (0=1, 1=2, 2=4, 3=8)。值越小越平滑。
+    /// - `sedn`: 电流降低速度 (0=每32次, 1=每8次, 2=每2次, 3=每次)。值越小越平滑。
+    /// - `seimin`: 最小电流限制。`false` = IRUN/2, `true` = IRUN/4。
+    ///
+    /// # 建议起始值
+    ///
+    /// ```ignore
+    /// tmc.configure_coolstep(&delay, 5, 2, 0, 0, false);
+    /// ```
+    pub fn configure_coolstep(
+        &self,
+        delay: &impl DelayUs,
+        semin: u8,
+        semax: u8,
+        seup: u8,
+        sedn: u8,
+        seimin: bool,
+    ) {
+        let mut coolconf = Coolconf::default();
+        coolconf.set_semin(semin);
+        coolconf.set_semax(semax);
+        coolconf.set_seup(seup);
+        coolconf.set_sedn(sedn);
+        coolconf.set_seimin(seimin);
+        self.write_coolconf(&coolconf, delay);
+    }
+
+    // ========================================================================
+    // 速度控制 (VACTUAL)
+    // ========================================================================
+
+    /// 通过 UART 直接设置电机速度 (忽略 STEP 引脚)。
+    ///
+    /// 这是 TMC2209 的 UART 速度模式：写入非零值后电机自动按该速度运动，
+    /// 无需外部脉冲。写入 0 则回到 STEP 引脚控制。
+    ///
+    /// # 参数
+    ///
+    /// - `velocity`: 速度值。内部 12 MHz 时钟下：
+    ///   `VACTUAL ≈ microsteps_per_sec / 0.715`
+    ///   正值 = 正转，负值 = 反转，0 = 停止并回到 STEP 控制。
+    ///
+    /// # 示例
+    ///
+    /// ```ignore
+    /// // 10000 微步/秒 = 约 VACTUAL 13986
+    /// tmc.set_vactual(13986, &delay);
+    /// ```
+    pub fn set_vactual(&self, velocity: i32, delay: &impl DelayUs) {
+        let val = Vactual::new().with_velocity(velocity);
+        self.write_reg(REG_VACTUAL, val.into(), delay);
+    }
+
+    /// 停止 UART 速度模式，回到 STEP 引脚控制。
+    pub fn stop_vactual(&self, delay: &impl DelayUs) {
+        self.write_reg(REG_VACTUAL, 0, delay);
+    }
+
+    // ========================================================================
+    // 静止行为 (Freewheel)
+    // ========================================================================
+
+    /// 设置电机静止时的行为 (PWMCONF.freewheel)。
+    ///
+    /// 仅在 IHOLD=0 时生效。可选择续流或被动制动。
+    pub fn set_standstill_mode(&self, mode: StandstillMode, delay: &impl DelayUs) {
+        if let Some(mut pwm) = self.read_pwmconf(delay) {
+            pwm.set_freewheel(mode.to_bits());
+            self.write_pwmconf(&pwm, delay);
+        }
+    }
+
+    /// 设置 StealthChop 切换到 SpreadCycle 的速度阈值。
+    ///
+    /// 当电机速度快于此阈值 (`TSTEP < TPWMTHRS`) 时自动切换到 SpreadCycle。
+    /// 设为 0 则全程使用 StealthChop。
+    pub fn set_tpwmthrs(&self, threshold: u32, delay: &impl DelayUs) {
+        self.write_reg(REG_TPWMTHRS, threshold & 0xFFFFF, delay);
+    }
+
+    /// 设置 SLAVECONF 的 send_delay。
+    ///
+    /// 在多从机总线上可能需要调整读回复延时。
+    ///
+    /// | 值 | bit times |
+    /// |----|-----------|
+    /// | 0–1 | 1×8  |
+    /// | 2–3 | 3×8  |
+    /// | …   | …     |
+    /// | 14–15 | 15×8 |
+    pub fn set_send_delay(&self, delay_val: u8, delay: &impl DelayUs) {
+        let val = Slaveconf::default().with_send_delay(delay_val);
+        self.write_reg(REG_SLAVECONF, val.into(), delay);
     }
 
     /// 芯片版本号提取。
@@ -962,5 +1636,162 @@ pub fn microstepping_label(microstepping: u32) -> &'static str {
         2 => "1/2",
         1 => "full-step",
         _ => "unknown",
+    }
+}
+
+// ============================================================================
+// 电流计算
+// ============================================================================
+
+/// 根据目标 RMS 电流和检流电阻计算 vsense 和 IRUN 设置值。
+///
+/// 这是 [`Tmc2209::set_run_current`] 的高级替代——直接由物理参数计算
+/// 最优的寄存器写入值。
+///
+/// # 参数
+///
+/// - `rsense`: 外部检流电阻值 (Ω)。例如 0.11Ω → `0.11`。
+/// - `milliamps`: 目标 RMS 电流 (mA)。例如 800 mA → `800.0`。
+///
+/// # 返回
+///
+/// `(vsense, current_scale)`:
+/// - `vsense`: `true` = 高灵敏度模式 (V_FS=0.180V)，写入 `CHOPCONF.vsense`
+/// - `current_scale`: IRUN/IHOLD 的写入值 (0–31)
+///
+/// # 检流电阻选择参考
+///
+/// | RSENSE (Ω) | 最大 RMS 电流 (IRUN=31, vsense=0) |
+/// |------------|-------------------------------------|
+/// | 0.11       | ~0.96 A (适合 1A 电机)             |
+/// | 0.22       | ~0.48 A                            |
+/// | 0.33       | ~0.66 A (700mA 电机)               |
+/// | 0.47       | ~0.47 A                            |
+/// | 0.11       | ~0.96 A (1A 电机)                  |
+/// | 0.10       | ~1.92 A (2A 电机)                  |
+///
+/// # 示例
+///
+/// ```
+/// use pico_rs_drivers::tmc2209::rms_current_to_vsense_cs;
+///
+/// // 0.11Ω 检流电阻, 800mA RMS → vsense=false, cs≈21
+/// let (vsense, cs) = rms_current_to_vsense_cs(0.11, 800.0);
+/// ```
+pub fn rms_current_to_vsense_cs(rsense: f32, milliamps: f32) -> (bool, u8) {
+    let amps = milliamps / 1000.0;
+
+    // 标准模式: V_FS = 0.325V
+    let mut cs = (32.0 * core::f32::consts::SQRT_2 * amps * (rsense + 0.02) / 0.325 - 1.0) as u8;
+
+    // 如果 CS 太小，切换到高灵敏度模式
+    if cs < 16 {
+        cs = (32.0 * core::f32::consts::SQRT_2 * amps * (rsense + 0.02) / 0.180 - 1.0) as u8;
+        (true, cs.min(31))
+    } else {
+        (false, cs.min(31))
+    }
+}
+
+/// 将 CS (IRUN/IHOLD 寄存器值) 和 vsense 设置转换回 RMS 电流 (mA)。
+///
+/// 用于从 `DRV_STATUS.cs_actual` 反算实际电机电流。
+///
+/// # 参数
+///
+/// - `rsense`: 外部检流电阻值 (Ω)
+/// - `vsense`: 高灵敏度模式 (`CHOPCONF.vsense`)
+/// - `cs`: 电流缩放值 (0–31)
+///
+/// # 示例
+///
+/// ```
+/// use pico_rs_drivers::tmc2209::vsense_cs_to_rms_current;
+///
+/// let ma = vsense_cs_to_rms_current(0.11, false, 21);
+/// // ma ≈ 800.0
+/// ```
+pub fn vsense_cs_to_rms_current(rsense: f32, vsense: bool, cs: u8) -> f32 {
+    let v_fs = if vsense { 0.180 } else { 0.325 };
+    (cs as f32 + 1.0) / 32.0 * v_fs / (rsense + 0.02) / core::f32::consts::SQRT_2 * 1000.0
+}
+
+// ============================================================================
+// 斩波频率计算
+// ============================================================================
+
+/// 将斩波频率 (Hz) 转换为 TOFF 寄存器值。
+///
+/// TMC2209 仅支持离散的 15 个斩波频率，范围约 5.95 kHz ~ 53.57 kHz。
+/// 此函数返回最接近的 TOFF 值。
+///
+/// # 返回
+///
+/// `Some(toff)` 如果找到有效值 (1–15)，`None` 如果频率太高 (需要 TOFF=0，会禁用驱动)。
+///
+/// # 示例
+///
+/// ```
+/// use pico_rs_drivers::tmc2209::{chopper_hz_to_toff, INTERNAL_CLOCK_HZ};
+///
+/// // 约 25 kHz 斩波频率
+/// let toff = chopper_hz_to_toff(INTERNAL_CLOCK_HZ as f32, 25_000.0);
+/// assert_eq!(toff, Some(3));
+/// ```
+pub fn chopper_hz_to_toff(fclk: f32, hz: f32) -> Option<u8> {
+    let toff_f = ((hz * 0.25).recip() * fclk - 24.0) / 32.0;
+    let toff = (round_f32(toff_f) as u8).min(15);
+    if toff == 0 { None } else { Some(toff) }
+}
+
+/// 将 TOFF 寄存器值转换为对应的斩波频率 (Hz)。
+///
+/// # 返回
+///
+/// `Some(hz)` 如果 TOFF 在有效范围 (1–15)，否则 `None`。
+pub fn toff_to_chopper_hz(fclk: f32, toff: u8) -> Option<f32> {
+    if !(1..=15).contains(&toff) {
+        return None;
+    }
+    let toff_secs = (toff as f32 * 32.0 + 24.0) / fclk;
+    Some(1.0 / toff_secs / 4.0)
+}
+
+/// 将微步/秒速度转换为 VACTUAL 寄存器值。
+///
+/// 基于 TMC2209 内部 12 MHz 时钟的转换公式。
+///
+/// # 示例
+///
+/// ```
+/// use pico_rs_drivers::tmc2209::microsteps_per_sec_to_vactual;
+///
+/// // 10000 微步/秒 → VACTUAL ≈ 13986
+/// let vactual = microsteps_per_sec_to_vactual(10_000);
+/// ```
+#[inline]
+pub fn microsteps_per_sec_to_vactual(microsteps_per_sec: i32) -> i32 {
+    round_f32((microsteps_per_sec as f32) / 0.7152557) as i32
+}
+
+/// 将 VACTUAL 寄存器值转换为微步/秒速度。
+#[inline]
+pub fn vactual_to_microsteps_per_sec(vactual: i32) -> f32 {
+    (vactual as f32) * 0.7152557
+}
+
+// ============================================================================
+// 内部辅助函数
+// ============================================================================
+
+/// `no_std` 友好的 f32 四舍五入。
+#[inline]
+fn round_f32(f: f32) -> f32 {
+    let floor = (f as i32) as f32;
+    let ceil = if f >= 0.0 { floor + 1.0 } else { floor - 1.0 };
+    if (f - floor).abs() <= (ceil - f).abs() {
+        floor
+    } else {
+        ceil
     }
 }

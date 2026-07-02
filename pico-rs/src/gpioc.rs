@@ -302,6 +302,75 @@ pub fn out64_get() -> u64 {
 }
 
 // ============================================================================
+// Output Convenience Aliases (mask-based, GPIO 0–31 shorthand)
+// ============================================================================
+
+/// Set GPIO output bits (shorthand for [`out_lo_set`]).
+#[inline(always)]
+pub fn out_set(mask: u32) {
+    out_lo_set(mask);
+}
+
+/// Clear GPIO output bits (shorthand for [`out_lo_clr`]).
+#[inline(always)]
+pub fn out_clr(mask: u32) {
+    out_lo_clr(mask);
+}
+
+/// Toggle GPIO output bits (shorthand for [`out_lo_xor`]).
+#[inline(always)]
+pub fn out_xor(mask: u32) {
+    out_lo_xor(mask);
+}
+
+/// Read GPIO output state (shorthand for [`out_lo_get`]).
+#[inline(always)]
+pub fn out_get() -> u32 {
+    out_lo_get()
+}
+
+// ============================================================================
+// Output Pin-Level Operations — single-bit OUT (MCRR, cRm = 0, opc 4–7)
+// ============================================================================
+
+/// Write a single GPIO output bit. Equivalent to:
+/// ```ignore
+/// if val { gpioc::out64_set(1 << pin) } else { gpioc::out64_clr(1 << pin) }
+/// ```
+#[inline(always)]
+pub fn bit_out_put(pin: u32, val: bool) {
+    gpioc_bit_write!(4, 0, pin, val);
+}
+
+/// Unconditionally toggle a single GPIO output bit.
+#[inline(always)]
+pub fn bit_out_toggle(pin: u32) {
+    gpioc_write!(5, 0, pin);
+}
+
+/// Unconditionally set a single GPIO output bit.
+#[inline(always)]
+pub fn bit_out_set(pin: u32) {
+    gpioc_write!(6, 0, pin);
+}
+
+/// Unconditionally clear a single GPIO output bit.
+#[inline(always)]
+pub fn bit_out_clr(pin: u32) {
+    gpioc_write!(7, 0, pin);
+}
+
+/// Read the output level of a specific GPIO pin (0–63).
+///
+/// Returns `true` if the pin is being driven high, `false` if low.
+/// This reads the output register, not the actual pin voltage —
+/// use [`in_pin`] to sample the pad state.
+#[inline(always)]
+pub fn out_pin_get(pin: u32) -> bool {
+    (out64_get() >> pin) & 1 != 0
+}
+
+// ============================================================================
 // Output Enable Register Operations (OE) — cRm = 4 (lo) / 5 (hi)
 // ============================================================================
 
@@ -404,64 +473,36 @@ pub fn oe64_get() -> u64 {
 }
 
 // ============================================================================
-// Input Register Operations (IN) — cRm = 8 (lo) / 9 (hi)
+// OE Convenience Aliases (mask-based, GPIO 0–31 shorthand)
 // ============================================================================
 
-/// Sample the low 32 GPIO input pins. Equivalent to `sio_hw->gpio_in`.
+/// Set GPIO output enable bits (shorthand for [`oe_lo_set`]).
 #[inline(always)]
-pub fn in_lo() -> u32 {
-    gpioc_read!(0, 8)
+pub fn oe_set(mask: u32) {
+    oe_lo_set(mask);
 }
 
-/// Sample the high 32 GPIO input pins. Equivalent to `sio_hw->gpio_hi_in`.
+/// Clear GPIO output enable bits (shorthand for [`oe_lo_clr`]).
 #[inline(always)]
-pub fn in_hi() -> u32 {
-    gpioc_read!(0, 9)
+pub fn oe_clr(mask: u32) {
+    oe_lo_clr(mask);
 }
 
-/// Sample all 64 GPIO input pins in a single cycle.
+/// Toggle GPIO output enable bits (shorthand for [`oe_lo_xor`]).
 #[inline(always)]
-pub fn in64() -> u64 {
-    gpioc_read64!(0, 8)
+pub fn oe_xor(mask: u32) {
+    oe_lo_xor(mask);
+}
+
+/// Read GPIO output enable state (shorthand for [`oe_lo_get`]).
+#[inline(always)]
+pub fn oe_get() -> u32 {
+    oe_lo_get()
 }
 
 // ============================================================================
-// Single-Bit Operations — MCR/MCRR with opc 4–7
+// OE Pin-Level Operations — single-bit OE (MCRR, cRm = 4, opc 4–7)
 // ============================================================================
-//
-// These provide direct per-pin GPIO access without computing a mask.
-// The pin number can be 0–63.
-//
-// All bit operations target the full 64-bit register space via MCRR.
-// For OUT bit ops, cRm = 0; for OE bit ops, cRm = 4.
-// ============================================================================
-
-/// Write a single GPIO output bit. Equivalent to:
-/// ```ignore
-/// if val { gpioc::out64_set(1 << pin) } else { gpioc::out64_clr(1 << pin) }
-/// ```
-#[inline(always)]
-pub fn bit_out_put(pin: u32, val: bool) {
-    gpioc_bit_write!(4, 0, pin, val);
-}
-
-/// Unconditionally toggle a single GPIO output bit.
-#[inline(always)]
-pub fn bit_out_toggle(pin: u32) {
-    gpioc_write!(5, 0, pin);
-}
-
-/// Unconditionally set a single GPIO output bit.
-#[inline(always)]
-pub fn bit_out_set(pin: u32) {
-    gpioc_write!(6, 0, pin);
-}
-
-/// Unconditionally clear a single GPIO output bit.
-#[inline(always)]
-pub fn bit_out_clr(pin: u32) {
-    gpioc_write!(7, 0, pin);
-}
 
 /// Write a single GPIO output enable bit.
 #[inline(always)]
@@ -485,6 +526,48 @@ pub fn bit_oe_set(pin: u32) {
 #[inline(always)]
 pub fn bit_oe_clr(pin: u32) {
     gpioc_write!(7, 4, pin);
+}
+
+/// Read the output enable state of a specific GPIO pin (0–63).
+///
+/// Returns `true` if the pin is configured as output, `false` if input.
+#[inline(always)]
+pub fn oe_pin_get(pin: u32) -> bool {
+    (oe64_get() >> pin) & 1 != 0
+}
+
+// ============================================================================
+// Input Register Operations (IN) — cRm = 8 (lo) / 9 (hi)
+// ============================================================================
+
+/// Sample the low 32 GPIO input pins. Equivalent to `sio_hw->gpio_in`.
+#[inline(always)]
+pub fn in_lo() -> u32 {
+    gpioc_read!(0, 8)
+}
+
+/// Sample the high 32 GPIO input pins. Equivalent to `sio_hw->gpio_hi_in`.
+#[inline(always)]
+pub fn in_hi() -> u32 {
+    gpioc_read!(0, 9)
+}
+
+/// Sample all 64 GPIO input pins in a single cycle.
+#[inline(always)]
+pub fn in64() -> u64 {
+    gpioc_read64!(0, 8)
+}
+
+// ============================================================================
+// Input Pin-Level Operations — single-pin read convenience
+// ============================================================================
+
+/// Read the input level of a specific GPIO pin (0–63).
+///
+/// Returns `true` if the pin is high, `false` if low.
+#[inline(always)]
+pub fn in_pin(pin: u32) -> bool {
+    (in64() >> pin) & 1 != 0
 }
 
 // ============================================================================
@@ -544,56 +627,4 @@ pub fn index_oe_set(reg_index: u32, mask: u32) {
 #[inline(always)]
 pub fn index_oe_clr(reg_index: u32, mask: u32) {
     gpioc_index_write!(11, 4, reg_index, mask);
-}
-
-// ============================================================================
-// Convenience aliases — shorter names for common operations
-// ============================================================================
-
-/// Set GPIO output bits (shorthand for [`out_lo_set`]).
-#[inline(always)]
-pub fn out_set(mask: u32) {
-    out_lo_set(mask);
-}
-
-/// Clear GPIO output bits (shorthand for [`out_lo_clr`]).
-#[inline(always)]
-pub fn out_clr(mask: u32) {
-    out_lo_clr(mask);
-}
-
-/// Toggle GPIO output bits (shorthand for [`out_lo_xor`]).
-#[inline(always)]
-pub fn out_xor(mask: u32) {
-    out_lo_xor(mask);
-}
-
-/// Read GPIO output state (shorthand for [`out_lo_get`]).
-#[inline(always)]
-pub fn out_get() -> u32 {
-    out_lo_get()
-}
-
-/// Set GPIO output enable bits (shorthand for [`oe_lo_set`]).
-#[inline(always)]
-pub fn oe_set(mask: u32) {
-    oe_lo_set(mask);
-}
-
-/// Clear GPIO output enable bits (shorthand for [`oe_lo_clr`]).
-#[inline(always)]
-pub fn oe_clr(mask: u32) {
-    oe_lo_clr(mask);
-}
-
-/// Toggle GPIO output enable bits (shorthand for [`oe_lo_xor`]).
-#[inline(always)]
-pub fn oe_xor(mask: u32) {
-    oe_lo_xor(mask);
-}
-
-/// Read GPIO output enable state (shorthand for [`oe_lo_get`]).
-#[inline(always)]
-pub fn oe_get() -> u32 {
-    oe_lo_get()
 }

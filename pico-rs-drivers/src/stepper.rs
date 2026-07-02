@@ -63,6 +63,41 @@ impl Direction {
     }
 }
 
+/// INDEX 信号校验结果。
+///
+/// TMC2209 INDEX 信号每个电气周期（4 个全步）脉冲一次。
+/// 通过比较预期 INDEX 脉冲数和实际计数值来判断是否丢步。
+#[derive(Clone, Copy)]
+pub struct IndexCheck {
+    /// 预期 INDEX 脉冲数。
+    pub expected: u32,
+    /// 实际计数的 INDEX 脉冲数。
+    pub actual: u32,
+}
+
+impl IndexCheck {
+    /// 判断 INDEX 计数是否在容差范围内。
+    ///
+    /// `tolerance` 为允许的 INDEX 脉冲偏差（通常为 1，允许 ±1 个脉冲的边界对齐误差）。
+    pub fn is_accurate(&self, tolerance: u32) -> bool {
+        let diff = self.actual.abs_diff(self.expected);
+        diff <= tolerance
+    }
+
+    /// 估算丢失的微步数。
+    ///
+    /// 仅在实际计数少于预期时有效（`actual < expected`）。
+    /// 每个 INDEX 脉冲对应 `4 × microstepping` 个微步。
+    pub fn missed_microsteps(&self, microstepping: u32) -> u32 {
+        let steps_per_index = 4 * microstepping;
+        if self.actual >= self.expected {
+            0
+        } else {
+            (self.expected - self.actual) * steps_per_index
+        }
+    }
+}
+
 /// 轴的当前运动阶段，描述梯形速度曲线的哪一段（或停止状态）。
 ///
 /// 梯形曲线结构：
@@ -435,7 +470,10 @@ impl AxisState {
         self.pulse_state.store(false, Ordering::Relaxed);
 
         let accel_steps = self.accel_steps.min(steps / 2);
-        let decel_start = steps - accel_steps;
+        // +1 让减速段步数与加速段对称：
+        // 加速段：step 1 用固定 start_interval，step 2..=accel 用加速计算（accel 步）
+        // 减速段：step decel_start 用 max_interval（过渡），step decel_start+1..=total 用减速计算（accel 步）
+        let decel_start = steps.saturating_sub(accel_steps).saturating_add(1);
         self.decel_start_step.store(decel_start, Ordering::Relaxed);
 
         gpio().set(self.pin_dir, dir as u32 != 0);
@@ -491,8 +529,12 @@ impl AxisState {
         // 先写 steps_target，防止 ISR 在旧 target 处提前完成运动
         self.steps_target.store(new_total_steps, Ordering::Relaxed);
         let accel_steps = self.accel_steps.min(new_total_steps / 2);
-        self.decel_start_step
-            .store(new_total_steps - accel_steps, Ordering::Relaxed);
+        self.decel_start_step.store(
+            new_total_steps
+                .saturating_sub(accel_steps)
+                .saturating_add(1),
+            Ordering::Relaxed,
+        );
     }
 
     /// 立即停止轴运动，将阶段设为 [`MotionPhase::Idle`] 并拉低 STEP 引脚。
@@ -584,11 +626,12 @@ impl AxisState {
             let interval = self.step_interval_us.load(Ordering::Relaxed);
             let min_interval = speed_to_interval_us(self.max_speed_hz.load(Ordering::Relaxed));
             let accel = self.accel_steps;
-            let new_interval = if accel > 0 && interval > min_interval {
+            let new_interval = if accel > 1 && interval > min_interval {
                 let start_interval = speed_to_interval_us(self.start_speed_hz);
+                let divisor = accel - 1;
                 let progress = step.min(accel);
                 start_interval
-                    - ((start_interval - min_interval) as u64 * progress as u64 / accel as u64)
+                    - ((start_interval - min_interval) as u64 * progress as u64 / divisor as u64)
                         as u32
             } else {
                 min_interval
@@ -665,14 +708,17 @@ impl AxisState {
 
         match phase {
             MotionPhase::Accelerating => {
-                if accel == 0 {
+                if accel <= 1 {
                     return max_interval;
                 }
 
+                // 加速段 step 1 使用固定 start_interval，step 2..=accel 用公式计算。
+                // 共 accel-1 次计算，除数应为 accel-1（而非 accel），使区间精确覆盖 [start, max]。
+                let divisor = accel - 1;
                 let progress = step.min(accel);
                 start_interval
-                    - ((start_interval - max_interval) as u64 * progress as u64 / accel as u64)
-                        as u32
+                    - ((start_interval.saturating_sub(max_interval)) as u64 * progress as u64
+                        / divisor as u64) as u32
             }
             MotionPhase::Cruising
             | MotionPhase::Running
@@ -682,16 +728,52 @@ impl AxisState {
                 let decel_start = self.decel_start_step.load(Ordering::Relaxed);
                 let steps_into_decel = step.saturating_sub(decel_start);
                 let decel_steps = total_steps.saturating_sub(decel_start);
-                if decel_steps == 0 {
+                if decel_steps <= 1 {
                     return start_interval;
                 }
 
+                // 减速段共 decel_steps-1 次计算（progress 0..decel_steps-2），
+                // 除数应为 decel_steps-1，使区间精确覆盖 [max, start]。
+                let divisor = decel_steps - 1;
                 let progress = steps_into_decel.min(decel_steps);
                 max_interval
-                    + ((start_interval - max_interval) as u64 * progress as u64
-                        / decel_steps as u64) as u32
+                    + ((start_interval.saturating_sub(max_interval)) as u64 * progress as u64
+                        / divisor as u64) as u32
             }
             MotionPhase::Idle => start_interval,
         }
+    }
+
+    /// 使用 INDEX 信号校验本次运动的步进精度，检测是否丢步。
+    ///
+    /// ## 调用时机
+    ///
+    /// 运动完成后（`is_done() == true`）。
+    ///
+    /// ## 计算原理
+    ///
+    /// TMC2209 INDEX 信号每 4 个全步（一个完整电气周期）输出一个脉冲。
+    /// `expected = total_steps / (4 × microstepping)`
+    ///
+    /// 如果 `actual` 明显小于 `expected`，说明步进电机丢步；
+    /// 偏差在 ±1 以内属于正常的边界对齐误差。
+    ///
+    /// ## 示例
+    ///
+    /// ```ignore
+    /// AXIS.start_move(&timer, 800, Direction::Forward, 5000);
+    /// AXIS.wait_done();
+    /// let check = AXIS.check_index(800, 4); // 1/4 微步
+    /// if !check.is_accurate(1) {
+    ///     warn!("丢步! 预期 {} INDEX, 实际 {} (≈{} 微步)",
+    ///         check.expected, check.actual,
+    ///         check.missed_microsteps(4));
+    /// }
+    /// ```
+    pub fn check_index(&self, total_steps: u32, microstepping: u32) -> IndexCheck {
+        let steps_per_index = 4 * microstepping;
+        let expected = total_steps / steps_per_index;
+        let actual = self.index_count.load(Ordering::Relaxed);
+        IndexCheck { expected, actual }
     }
 }

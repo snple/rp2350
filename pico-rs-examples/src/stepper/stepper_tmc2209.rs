@@ -12,10 +12,10 @@
 //! | GP4       | UART1_TX | PDN_UART    | 通过 1kΩ 电阻连接           |
 //! | GP5       | UART1_RX | PDN_UART    | 通过 1kΩ 电阻连接           |
 //! | GP7       | EN       | ENN          | 使能控制 (**低有效**)        |
-//! | GP8       | DIR      | DIR          | 方向控制                    |
-//! | GP9       | STEP     | STEP         | 步进脉冲输出                |
-//! | GP10      | INDEX    | INDEX        | 电气周期脉冲 (可选)         |
-//! | GP11      | DIAG     | DIAG         | 堵转/错误输出 (开漏, 需上拉) |
+//! | GP8/12    | DIR      | DIR          | 方向控制                    |
+//! | GP9/13    | STEP     | STEP         | 步进脉冲输出                |
+//! | GP10/14   | INDEX    | INDEX        | 电气周期脉冲 (可选)         |
+//! | GP11/15   | DIAG     | DIAG         | 堵转/错误输出 (开漏, 需上拉) |
 //!
 //! PDN_UART 上必须外接 1kΩ 上拉电阻到 VCC_IO (3.3V)，否则芯片上电即进入待机模式，
 //! 不响应 UART 命令。
@@ -55,7 +55,7 @@ use defmt_rtt as _;
 
 use pico_rs::Steal;
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClockBuilder};
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
 use pico_rs::gpio::{EdgeLevel, Gpio, Pin, Pins};
 use pico_rs::interrupt;
@@ -97,9 +97,6 @@ const MICROSTEPPING: u32 = 16;
 /// UART 波特率
 const TMC_UART_BAUD: u32 = 115_200;
 
-/// TMC2209 从机地址 — MS1=GND, MS2=VCC → addr 0x00
-const TMC_SLAVE_ADDR: u8 = 0x00;
-
 // ============================================================================
 // TMC2209 电流参数 — 外部检流电阻 (GCONF.internal_rsense = 0, Rsense = 0.11Ω)
 //
@@ -109,7 +106,7 @@ const TMC_SLAVE_ADDR: u8 = 0x00;
 // ============================================================================
 
 /// 运行电流 IRUN (0–31), 外部 Rsense: ~325 mA
-const RUN_CURRENT: u8 = 8;
+const RUN_CURRENT: u8 = 12;
 
 /// 保持电流 IHOLD (0–31), 外部 Rsense: ~195 mA
 const HOLD_CURRENT: u8 = 2;
@@ -140,10 +137,20 @@ const HOMING_BACKOFF_STEPS: u32 = 200;
 /// GP4 → UART1_TX → TMC2209 PDN_UART
 /// GP5 → UART1_RX → TMC2209 PDN_UART
 const PIN_ENABLE: u8 = 7; // GP7  → ENN (低有效)
+
+// #1
+const TMC_SLAVE_ADDR: u8 = 0x00; // TMC2209 从机地址
 const PIN_DIR: u8 = 8; // GP8  → DIR
 const PIN_STEP: u8 = 9; // GP9  → STEP
 const PIN_INDEX: u8 = 10; // GP10 → INDEX
 const PIN_DIAG: u8 = 11; // GP11 → DIAG
+
+// #2
+// const TMC_SLAVE_ADDR: u8 = 0x01; // TMC2209 从机地址
+// const PIN_DIR: u8 = 12; // GP12  → DIR
+// const PIN_STEP: u8 = 13; // GP13  → STEP
+// const PIN_INDEX: u8 = 14; // GP14 → INDEX
+// const PIN_DIAG: u8 = 15; // GP15 → DIAG
 
 // ============================================================================
 // 步进轴状态
@@ -199,7 +206,10 @@ fn wait_done() {
 #[entry]
 fn main() -> ! {
     info!("=== TMC2209 Stepper (pico_rs_drivers) ===");
-    info!("Pins: UART1 GP4(TX)/GP5(RX)  EN=GP7  DIR=GP8  STEP=GP9  INDEX=GP10  DIAG=GP11");
+    info!(
+        "Pins: UART1 GP4(TX)/GP5(RX)  EN=GP{}  DIR=GP{}  STEP=GP{}  INDEX=GP{}  DIAG=GP{}",
+        PIN_ENABLE, PIN_DIR, PIN_STEP, PIN_INDEX, PIN_DIAG
+    );
     info!(
         "Params: 1/{} microstep, ext_rsense=0.11Ω, IRUN={} (~325mA), IHOLD={} (~195mA), SGTHRS={}",
         MICROSTEPPING, RUN_CURRENT, HOLD_CURRENT, SG_THRESHOLD
@@ -226,26 +236,26 @@ fn main() -> ! {
     // ------------------------------------------------------------------
 
     // ENN (低有效): 初始拉高 = 禁用
-    let _en = pins.pin::<7>();
+    let _en = pins.pin::<PIN_ENABLE>();
     _en.into_output();
     gpio().set_high(PIN_ENABLE);
 
     // DIR: 初始低
-    let _dir = pins.pin::<8>();
+    let _dir = pins.pin::<PIN_DIR>();
     _dir.into_output();
     gpio().set_low(PIN_DIR);
 
     // STEP: 初始低
-    let _step = pins.pin::<9>();
+    let _step = pins.pin::<PIN_STEP>();
     _step.into_output();
     gpio().set_low(PIN_STEP);
 
     // INDEX: 输入 (由 AxisState 读取)
-    let _index = pins.pin::<10>();
+    let _index = pins.pin::<PIN_INDEX>();
     _index.into_input_pullup();
 
     // DIAG: 开漏输出, 上拉 + 上升沿中断
-    let p_diag = pins.pin::<11>();
+    let p_diag = pins.pin::<PIN_DIAG>();
     p_diag.into_input_pullup();
     p_diag.enable_interrupt(EdgeLevel::EdgeHigh);
 
@@ -285,13 +295,14 @@ fn main() -> ! {
     let ver = ioin_init.unwrap().version();
     info!("Chip version: {:#04x} (expect 0x21)", ver);
 
-    // --- 测试 ENN (GP7) ---
-    info!("--- ENN (GP7) test ---");
+    // --- 测试 ENN (GPxx) ---
+    info!("--- ENN (GP{}) test ---", PIN_ENABLE);
     gpio().set_high(PIN_ENABLE);
     timer.delay_ms(2);
     match tmc.read_ioin(&timer) {
         Some(v) => info!(
-            "  ENN=HIGH (GP7 high) → IOIN.ENN={} (expect true) {}",
+            "  ENN=HIGH (GP{} high) → IOIN.ENN={} (expect true) {}",
+            PIN_ENABLE,
             v.enn(),
             if v.enn() { "✓" } else { "✗" }
         ),
@@ -301,20 +312,22 @@ fn main() -> ! {
     timer.delay_ms(2);
     match tmc.read_ioin(&timer) {
         Some(v) => info!(
-            "  ENN=LOW  (GP7 low)  → IOIN.ENN={} (expect false) {}",
+            "  ENN=LOW  (GP{} low)  → IOIN.ENN={} (expect false) {}",
+            PIN_ENABLE,
             v.enn(),
             if !v.enn() { "✓" } else { "✗" }
         ),
         None => warn!("  read failed"),
     }
 
-    // --- 测试 DIR (GP8) ---
-    info!("--- DIR (GP8) test ---");
+    // --- 测试 DIR (GPxx) ---
+    info!("--- DIR (GP{}) test ---", PIN_DIR);
     gpio().set_high(PIN_DIR);
     timer.delay_ms(2);
     match tmc.read_ioin(&timer) {
         Some(v) => info!(
-            "  DIR=HIGH (GP8 high) → IOIN.DIR={} (expect true) {}",
+            "  DIR=HIGH (GP{} high) → IOIN.DIR={} (expect true) {}",
+            PIN_DIR,
             v.dir(),
             if v.dir() { "✓" } else { "✗" }
         ),
@@ -324,20 +337,22 @@ fn main() -> ! {
     timer.delay_ms(2);
     match tmc.read_ioin(&timer) {
         Some(v) => info!(
-            "  DIR=LOW  (GP8 low)  → IOIN.DIR={} (expect false) {}",
+            "  DIR=LOW  (GP{} low)  → IOIN.DIR={} (expect false) {}",
+            PIN_DIR,
             v.dir(),
             if !v.dir() { "✓" } else { "✗" }
         ),
         None => warn!("  read failed"),
     }
 
-    // --- 测试 STEP (GP9) ---
-    info!("--- STEP (GP9) test ---");
+    // --- 测试 STEP (GPxx) ---
+    info!("--- STEP (GP{}) test ---", PIN_STEP);
     gpio().set_high(PIN_STEP);
     timer.delay_ms(2);
     match tmc.read_ioin(&timer) {
         Some(v) => info!(
-            "  STEP=HIGH (GP9 high) → IOIN.STEP={} (expect true) {}",
+            "  STEP=HIGH (GP{} high) → IOIN.STEP={} (expect true) {}",
+            PIN_STEP,
             v.step(),
             if v.step() { "✓" } else { "✗" }
         ),
@@ -347,23 +362,24 @@ fn main() -> ! {
     timer.delay_ms(2);
     match tmc.read_ioin(&timer) {
         Some(v) => info!(
-            "  STEP=LOW  (GP9 low)  → IOIN.STEP={} (expect false) {}",
+            "  STEP=LOW  (GP{} low)  → IOIN.STEP={} (expect false) {}",
+            PIN_STEP,
             v.step(),
             if !v.step() { "✓" } else { "✗" }
         ),
         None => warn!("  read failed"),
     }
 
-    // --- 测试 INDEX (GP10, TMC2209 输出 → Pico 输入) ---
-    info!("--- INDEX (GP10) test (Pico-side read) ---");
+    // --- 测试 INDEX (GPxx, TMC2209 输出 → Pico 输入) ---
+    info!("--- INDEX (GP{}) test (Pico-side read) ---", PIN_INDEX);
     let idx_state = gpio().get(PIN_INDEX);
     info!(
         "  INDEX pin = {} (TMC2209 output, expect stable HIGH or LOW)",
         idx_state
     );
 
-    // --- 测试 DIAG (GP11, TMC2209 开漏输出 → Pico 上拉输入) ---
-    info!("--- DIAG (GP11) test (Pico-side read) ---");
+    // --- 测试 DIAG (GPxx, TMC2209 开漏输出 → Pico 上拉输入) ---
+    info!("--- DIAG (GP{}) test (Pico-side read) ---", PIN_DIAG);
     let diag_state = gpio().get(PIN_DIAG);
     info!(
         "  DIAG pin = {} (open-drain w/ pull-up, expect HIGH) {}",
@@ -450,6 +466,16 @@ fn main() -> ! {
         None => warn!("GCONF readback FAILED"),
     }
 
+    // --- 诊断: 先读默认值 ---
+    match tmc.read_reg(REG_IHOLD_IRUN, &timer) {
+        Some(v) => info!("IHOLD_IRUN default (pre-write): {:#010x}", v),
+        None => warn!("IHOLD_IRUN default read FAILED"),
+    }
+    match tmc.read_reg(REG_TPOWERDOWN, &timer) {
+        Some(v) => info!("TPOWERDOWN default (pre-write): {}", v),
+        None => warn!("TPOWERDOWN default read FAILED"),
+    }
+
     // IHOLD_IRUN — 直接写 raw register，不通过 helper
     let ihold_irun_val: u32 =
         (HOLD_CURRENT as u32) | ((RUN_CURRENT as u32) << 8) | ((IHOLD_DELAY as u32) << 16);
@@ -511,13 +537,42 @@ fn main() -> ! {
     let pwmconf_val: u32 = 30 | (14 << 8) | (1 << 18) | (1 << 19) | (8 << 24) | (12 << 28);
     tmc.write_reg(REG_PWMCONF, pwmconf_val, &timer);
     timer.delay_ms(5);
+    match tmc.read_reg(REG_PWMCONF, &timer) {
+        Some(v) => info!(
+            "PWMCONF write→read: {:#010x} {}",
+            v,
+            if v == pwmconf_val { "✓" } else { "✗" }
+        ),
+        None => warn!("PWMCONF readback FAILED"),
+    }
 
     // SGTHRS
     tmc.write_reg(REG_SGTHRS, SG_THRESHOLD, &timer);
     timer.delay_ms(5);
+    match tmc.read_reg(REG_SGTHRS, &timer) {
+        Some(v) => info!(
+            "SGTHRS write→read: {} (expect {}) {}",
+            v,
+            SG_THRESHOLD,
+            if v == SG_THRESHOLD { "✓" } else { "✗" }
+        ),
+        None => warn!("SGTHRS readback FAILED"),
+    }
 
     // TCOOLTHRS
     tmc.write_reg(REG_TCOOLTHRS, 0xFFFFF, &timer);
+    timer.delay_ms(10);
+    match tmc.read_reg(REG_TCOOLTHRS, &timer) {
+        Some(v) => info!(
+            "TCOOLTHRS write→read: {:#x} (expect 0xFFFFF) {}",
+            v,
+            if v == 0xFFFFF { "✓" } else { "✗" }
+        ),
+        None => warn!("TCOOLTHRS readback FAILED"),
+    }
+
+    // VACTUAL=0 — 关闭 UART 速度控制模式，确保 STEP/DIR 正常
+    tmc.stop_vactual(&timer);
     timer.delay_ms(10);
 
     // 最终校验: 再次读取 IHOLD_IRUN
@@ -781,7 +836,7 @@ fn TIMER0_IRQ_0() {
 #[unsafe(no_mangle)]
 #[allow(non_snake_case)]
 fn IO_IRQ_BANK0() {
-    let pin = unsafe { Pin::<11>::steal() };
+    let pin = unsafe { Pin::<{ PIN_DIAG }>::steal() };
     if pin.check_and_clear(EdgeLevel::EdgeHigh) {
         AXIS.stop();
         STALL_DETECTED.store(true, Ordering::Relaxed);

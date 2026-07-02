@@ -195,6 +195,18 @@ name = "stepper_tmc2209"
 path = "src/stepper/stepper_tmc2209.rs"
 
 [[bin]]
+name = "stepper_simple"
+path = "src/stepper/stepper_simple.rs"
+
+[[bin]]
+name = "stepper_stall_homing"
+path = "src/stepper/stepper_stall_homing.rs"
+
+[[bin]]
+name = "stepper_vactual_stall"
+path = "src/stepper/stepper_vactual_stall.rs"
+
+[[bin]]
 name = "tmc2209_uart"
 path = "src/stepper/tmc2209_uart.rs"
 

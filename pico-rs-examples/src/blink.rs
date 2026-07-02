@@ -25,6 +25,8 @@ pub static IMAGE_DEF: ImageDef = ImageDef::exe();
 /// At boot, RP2350 runs from ROSC at approximately 12 MHz
 const CLOCK_FREQ_HZ: u32 = 12_000_000;
 
+const LED_PIN: u8 = 6;
+
 #[entry]
 fn main() -> ! {
     info!("RP2350 started!");
@@ -37,10 +39,10 @@ fn main() -> ! {
     let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
 
     // Configure GPIO 25 (LED) as output
-    let led = pins.pin::<6>();
+    let led = pins.pin::<LED_PIN>();
     led.into_output();
 
-    info!("GPIO 25 configured as output");
+    info!("GPIO {} configured as output", LED_PIN);
 
     // Take core peripherals (NVIC, SCB, SYST, MPU, FPU, SAU)
     let core_peripherals = CorePeripherals::take().unwrap();
