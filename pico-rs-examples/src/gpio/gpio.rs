@@ -190,7 +190,7 @@ fn main() -> ! {
         led.toggle();
         counter = counter.wrapping_add(1);
 
-        if counter % 10 == 0 {
+        if counter.is_multiple_of(10) {
             info!("BLINK Count: {}, LED: {}", counter, led.output_level());
         }
 

@@ -53,23 +53,24 @@
 //! use pico_rs::gpioc;
 //!
 //! // Output — replace sio_hw->gpio_set / gpio_clr / gpio_togl
-//! gpioc::out_set(1 << 25);       // drive GPIO 25 high
-//! gpioc::out_clr(1 << 25);       // drive GPIO 25 low
-//! gpioc::out_xor(1 << 25);       // toggle GPIO 25
+//! gpioc::out_lo_set(1 << 25);     // drive GPIO 25 high
+//! gpioc::out_lo_clr(1 << 25);     // drive GPIO 25 low
+//! gpioc::out_lo_xor(1 << 25);     // toggle GPIO 25
+//! gpioc::out_hi_set(1 << 10);     // set bit 10 in high bank (GPIO 42)
 //!
 //! // Direction — replace sio_hw->gpio_oe_set / gpio_oe_clr
-//! gpioc::oe_set(1 << 25);        // set GPIO 25 to output
-//! gpioc::oe_clr(1 << 25);        // set GPIO 25 to input
+//! gpioc::oe_lo_set(1 << 25);      // set GPIO 25 to output
+//! gpioc::oe_lo_clr(1 << 25);      // set GPIO 25 to input
 //!
 //! // Read — replace sio_hw->gpio_in
-//! let pins = gpioc::in_lo();     // sample GPIO 0–31
+//! let pins = gpioc::in_lo();       // sample GPIO 0–31
 //!
 //! // Atomic 64-bit operations (OUT and OE simultaneously)
-//! gpioc::out64_set(1 << 40);     // set GPIO 40 in one cycle
+//! gpioc::out64_set(1 << 40);       // set GPIO 40 in one cycle
 //!
 //! // Single-bit operations
-//! gpioc::bit_out_put(25, true);  // set GPIO 25
-//! gpioc::bit_out_toggle(25);     // toggle GPIO 25
+//! gpioc::bit_out_put(25, true);    // set GPIO 25
+//! gpioc::bit_out_toggle(25);       // toggle GPIO 25
 //! ```
 //!
 //! # Safety
@@ -302,34 +303,6 @@ pub fn out64_get() -> u64 {
 }
 
 // ============================================================================
-// Output Convenience Aliases (mask-based, GPIO 0–31 shorthand)
-// ============================================================================
-
-/// Set GPIO output bits (shorthand for [`out_lo_set`]).
-#[inline(always)]
-pub fn out_set(mask: u32) {
-    out_lo_set(mask);
-}
-
-/// Clear GPIO output bits (shorthand for [`out_lo_clr`]).
-#[inline(always)]
-pub fn out_clr(mask: u32) {
-    out_lo_clr(mask);
-}
-
-/// Toggle GPIO output bits (shorthand for [`out_lo_xor`]).
-#[inline(always)]
-pub fn out_xor(mask: u32) {
-    out_lo_xor(mask);
-}
-
-/// Read GPIO output state (shorthand for [`out_lo_get`]).
-#[inline(always)]
-pub fn out_get() -> u32 {
-    out_lo_get()
-}
-
-// ============================================================================
 // Output Pin-Level Operations — single-bit OUT (MCRR, cRm = 0, opc 4–7)
 // ============================================================================
 
@@ -365,9 +338,33 @@ pub fn bit_out_clr(pin: u32) {
 /// Returns `true` if the pin is being driven high, `false` if low.
 /// This reads the output register, not the actual pin voltage —
 /// use [`in_pin`] to sample the pad state.
+///
+/// Uses a 64-bit MRRC. For compile-time-known pins, prefer [`out_pin_const_get`].
 #[inline(always)]
 pub fn out_pin_get(pin: u32) -> bool {
     (out64_get() >> pin) & 1 != 0
+}
+
+/// Read output level of a pin whose number is known at compile time.
+#[inline(always)]
+pub fn const_out_pin_get<const PIN: u32>() -> bool {
+    if PIN < 32 {
+        (out_lo_get() & (1 << PIN)) != 0
+    } else {
+        (out_hi_get() & (1 << (PIN - 32))) != 0
+    }
+}
+
+/// Read output level of a pin in the low bank (GPIO 0–31).
+#[inline(always)]
+pub fn out_pin_lo_get(pin: u32) -> bool {
+    (out_lo_get() & (1 << pin)) != 0
+}
+
+/// Read output level of a pin in the high bank (GPIO 32–63).
+#[inline(always)]
+pub fn out_pin_hi_get(pin: u32) -> bool {
+    (out_hi_get() & (1 << pin)) != 0
 }
 
 // ============================================================================
@@ -473,34 +470,6 @@ pub fn oe64_get() -> u64 {
 }
 
 // ============================================================================
-// OE Convenience Aliases (mask-based, GPIO 0–31 shorthand)
-// ============================================================================
-
-/// Set GPIO output enable bits (shorthand for [`oe_lo_set`]).
-#[inline(always)]
-pub fn oe_set(mask: u32) {
-    oe_lo_set(mask);
-}
-
-/// Clear GPIO output enable bits (shorthand for [`oe_lo_clr`]).
-#[inline(always)]
-pub fn oe_clr(mask: u32) {
-    oe_lo_clr(mask);
-}
-
-/// Toggle GPIO output enable bits (shorthand for [`oe_lo_xor`]).
-#[inline(always)]
-pub fn oe_xor(mask: u32) {
-    oe_lo_xor(mask);
-}
-
-/// Read GPIO output enable state (shorthand for [`oe_lo_get`]).
-#[inline(always)]
-pub fn oe_get() -> u32 {
-    oe_lo_get()
-}
-
-// ============================================================================
 // OE Pin-Level Operations — single-bit OE (MCRR, cRm = 4, opc 4–7)
 // ============================================================================
 
@@ -531,9 +500,33 @@ pub fn bit_oe_clr(pin: u32) {
 /// Read the output enable state of a specific GPIO pin (0–63).
 ///
 /// Returns `true` if the pin is configured as output, `false` if input.
+///
+/// Uses a 64-bit MRRC. For compile-time-known pins, prefer [`oe_pin_const_get`].
 #[inline(always)]
 pub fn oe_pin_get(pin: u32) -> bool {
     (oe64_get() >> pin) & 1 != 0
+}
+
+/// Read OE state of a pin whose number is known at compile time.
+#[inline(always)]
+pub fn const_oe_pin_get<const PIN: u32>() -> bool {
+    if PIN < 32 {
+        (oe_lo_get() & (1 << PIN)) != 0
+    } else {
+        (oe_hi_get() & (1 << (PIN - 32))) != 0
+    }
+}
+
+/// Read OE state of a pin in the low bank (GPIO 0–31).
+#[inline(always)]
+pub fn oe_pin_lo_get(pin: u32) -> bool {
+    (oe_lo_get() & (1 << pin)) != 0
+}
+
+/// Read OE state of a pin in the high bank (GPIO 32–63).
+#[inline(always)]
+pub fn oe_pin_hi_get(pin: u32) -> bool {
+    (oe_hi_get() & (1 << pin)) != 0
 }
 
 // ============================================================================
@@ -565,9 +558,48 @@ pub fn in64() -> u64 {
 /// Read the input level of a specific GPIO pin (0–63).
 ///
 /// Returns `true` if the pin is high, `false` if low.
+///
+/// Uses a 64-bit MRRC to sample all pins. For pins known at compile time,
+/// prefer [`const_in_pin`] — the compiler will select `in_lo`/`in_hi` and
+/// eliminate the branch.
 #[inline(always)]
 pub fn in_pin(pin: u32) -> bool {
-    (in64() >> pin) & 1 != 0
+    (in64() & (1u64 << pin)) != 0
+}
+
+/// Read a pin whose number is known at compile time.
+///
+/// The compiler optimizes the `PIN < 32` branch away, dispatching
+/// directly to a single 32-bit MRC without any runtime overhead.
+///
+/// ```ignore
+/// let level = gpioc::const_in_pin::<25>();  // → in_lo(), no branch
+/// let level = gpioc::const_in_pin::<42>();  // → in_hi(), no branch
+/// ```
+#[inline(always)]
+pub fn const_in_pin<const PIN: u32>() -> bool {
+    if PIN < 32 {
+        (in_lo() & (1 << PIN)) != 0
+    } else {
+        (in_hi() & (1 << (PIN - 32))) != 0
+    }
+}
+
+/// Read a pin in the low bank (GPIO 0–31).
+///
+/// Single 32-bit MRC — one cycle, one result register. Faster than [`in_pin`]
+/// because no 64-bit MRRC + combine.
+#[inline(always)]
+pub fn in_pin_lo(pin: u32) -> bool {
+    (in_lo() & (1 << pin)) != 0
+}
+
+/// Read a pin in the high bank (GPIO 32–63).
+///
+/// Single 32-bit MRC — one cycle, one result register.
+#[inline(always)]
+pub fn in_pin_hi(pin: u32) -> bool {
+    (in_hi() & (1 << pin)) != 0
 }
 
 // ============================================================================

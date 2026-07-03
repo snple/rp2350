@@ -91,6 +91,10 @@ name = "clocks"
 path = "src/clocks/clocks.rs"
 
 [[bin]]
+name = "dcp_test"
+path = "src/dcp/dcp_test.rs"
+
+[[bin]]
 name = "dormant"
 path = "src/clocks/dormant.rs"
 

@@ -99,6 +99,69 @@ pub enum VregTempThreshold {
     Temp150C = 7,
 }
 
+/// Core voltage selection.
+///
+/// The reset default is [`V1_10`] (1.10 V).
+///
+/// Voltages above [`V1_30`] require calling
+/// [`Powman::set_voltage_limit_disabled(true)`](Powman::set_voltage_limit_disabled)
+/// first.
+///
+/// | Voltage | Typical Max Freq |
+/// |---------|-----------------|
+/// | V0_85   | ~50 MHz |
+/// | V1_10   | 150 MHz (default) |
+/// | V1_30   | 300 MHz |
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[repr(u8)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+pub enum Voltage {
+    V0_55 = 0b00000,
+    V0_60 = 0b00001,
+    V0_65 = 0b00010,
+    V0_70 = 0b00011,
+    V0_75 = 0b00100,
+    V0_80 = 0b00101,
+    V0_85 = 0b00110,
+    V0_90 = 0b00111,
+    V0_95 = 0b01000,
+    V1_00 = 0b01001,
+    V1_05 = 0b01010,
+    /// Reset default
+    V1_10 = 0b01011,
+    V1_15 = 0b01100,
+    V1_20 = 0b01101,
+    V1_25 = 0b01110,
+    /// Maximum without limit disabled
+    V1_30 = 0b01111,
+    /// Requires [`Powman::set_voltage_limit_disabled(true)`](Powman::set_voltage_limit_disabled)
+    V1_35 = 0b10000,
+    V1_40 = 0b10001,
+    V1_50 = 0b10010,
+    V1_60 = 0b10011,
+    V1_65 = 0b10100,
+    V1_70 = 0b10101,
+    V1_80 = 0b10110,
+    V1_90 = 0b10111,
+    V2_00 = 0b11000,
+    V2_35 = 0b11001,
+    V2_50 = 0b11010,
+    V2_65 = 0b11011,
+    V2_80 = 0b11100,
+    V3_00 = 0b11101,
+    V3_15 = 0b11110,
+    V3_30 = 0b11111,
+}
+
+impl Voltage {
+    /// Minimum available voltage.
+    pub const MIN: Self = Voltage::V0_85;
+    /// Reset default.
+    pub const DEFAULT: Self = Voltage::V1_10;
+    /// Maximum without calling `set_voltage_limit_disabled`.
+    pub const MAX: Self = Voltage::V1_30;
+}
+
 /// Power state (bit mask of enabled domains)
 pub type PowerState = u32;
 
@@ -137,21 +200,54 @@ impl Powman {
     // Voltage Regulator (VREG) Control
     // ========================================================================
 
-    /// Set the voltage regulator output voltage
+    /// Set the core voltage.
     ///
-    /// # Arguments
-    /// * `vsel` - Voltage select (0-31). Typical values:
-    ///   - 0x0B (11): 1.10V (default)
-    ///   - 0x0F (15): 1.30V (for higher clock speeds)
-    pub fn set_voltage(&self, vsel: u8) {
-        let vsel = vsel.min(31) as u32;
-        self.powman.vreg.write_vsel(vsel);
+    /// Unlocks the VREG interface, waits for any in-progress change to finish,
+    /// writes the new voltage (with POWMAN password), and waits for the update
+    /// to complete.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `voltage > `[`Voltage::MAX`] and
+    /// [`set_voltage_limit_disabled(true)`](Self::set_voltage_limit_disabled)
+    /// has not been called first.
+    pub fn set_voltage(&self, voltage: Voltage) {
+        // Hardware silently clamps to 1.30 V if limit not disabled
+        if voltage as u8 > Voltage::MAX as u8 {
+            assert!(
+                self.powman.vreg_ctrl.read_bits()
+                    & pico_rs_pac::powman::VregCtrl::DISABLE_VOLTAGE_LIMIT
+                    != 0,
+                "Voltage above 1.30 V requires calling set_voltage_limit_disabled(true) first"
+            );
+        }
+
+        // Unlock VREG control interface
+        self.powman
+            .vreg_ctrl
+            .write_bits(POWMAN_PASSWORD | pico_rs_pac::powman::VregCtrl::UNLOCK);
+
+        // Wait for any prior update to finish
+        while self.powman.vreg.read_bits() & pico_rs_pac::powman::Vreg::UPDATE_IN_PROGRESS != 0 {
+            core::hint::spin_loop();
+        }
+
+        // Write new voltage with password
+        let vsel = (voltage as u32) << pico_rs_pac::powman::Vreg::VSEL_OFFSET;
+        self.powman.vreg.write_bits(POWMAN_PASSWORD | vsel);
+
+        // Wait for update to complete
+        while self.powman.vreg.read_bits() & pico_rs_pac::powman::Vreg::UPDATE_IN_PROGRESS != 0 {
+            core::hint::spin_loop();
+        }
     }
 
-    /// Get the current voltage setting
+    /// Get the current core voltage setting.
     #[inline]
-    pub fn get_voltage(&self) -> u8 {
-        self.powman.vreg.vsel() as u8
+    pub fn get_voltage(&self) -> Voltage {
+        let raw = self.powman.vreg.vsel() as u8;
+        // Safety: VSEL is 5 bits (0–31), all values are valid Voltage variants
+        unsafe { core::mem::transmute(raw) }
     }
 
     /// Check if voltage regulator output is stable

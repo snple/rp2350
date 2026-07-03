@@ -30,15 +30,8 @@
 
 use core::sync::atomic::{AtomicBool, AtomicI32, AtomicU32, Ordering};
 
-use pico_rs::Steal;
-use pico_rs::gpio::Gpio;
+use pico_rs::gpioc;
 use pico_rs::timer::{AlarmTimer, MonotonicTimer};
-
-#[inline(always)]
-fn gpio() -> Steal<Gpio> {
-    // SAFETY: 对应 GPIO 均在初始化阶段设置完成，后续仅通过 SIO 访问数据寄存器。
-    unsafe { Gpio::steal() }
-}
 
 /// 步进电机运动方向。
 ///
@@ -340,7 +333,7 @@ impl AxisState {
     #[inline]
     pub fn limit_triggered(&self) -> bool {
         match self.limit_pin {
-            Some(pin) => gpio().get(pin) == self.limit_active_high,
+            Some(pin) => gpioc::in_pin(pin as u32) == self.limit_active_high,
             None => false,
         }
     }
@@ -355,7 +348,7 @@ impl AxisState {
     fn reset_index(&self) {
         self.index_count.store(0, Ordering::Relaxed);
         if let Some(pin) = self.index_pin {
-            let state = gpio().get(pin);
+            let state = gpioc::in_pin(pin as u32);
             self.index_last_state.store(state, Ordering::Relaxed);
         }
     }
@@ -397,7 +390,7 @@ impl AxisState {
             .store(Direction::Reverse as u32, Ordering::Relaxed);
         self.pulse_state.store(false, Ordering::Relaxed);
 
-        gpio().set(self.pin_dir, Direction::Reverse as u32 != 0);
+        gpioc::bit_out_put(self.pin_dir as u32, Direction::Reverse as u32 != 0);
 
         self.motion_phase
             .store(MotionPhase::Homing as u32, Ordering::Relaxed);
@@ -426,7 +419,7 @@ impl AxisState {
             .store(Direction::Forward as u32, Ordering::Relaxed);
         self.pulse_state.store(false, Ordering::Relaxed);
 
-        gpio().set(self.pin_dir, Direction::Forward as u32 != 0);
+        gpioc::bit_out_put(self.pin_dir as u32, Direction::Forward as u32 != 0);
 
         self.motion_phase
             .store(MotionPhase::HomingBackoff as u32, Ordering::Relaxed);
@@ -476,7 +469,7 @@ impl AxisState {
         let decel_start = steps.saturating_sub(accel_steps).saturating_add(1);
         self.decel_start_step.store(decel_start, Ordering::Relaxed);
 
-        gpio().set(self.pin_dir, dir as u32 != 0);
+        gpioc::bit_out_put(self.pin_dir as u32, dir as u32 != 0);
 
         self.motion_phase
             .store(MotionPhase::Accelerating as u32, Ordering::Relaxed);
@@ -505,7 +498,7 @@ impl AxisState {
         self.direction.store(dir as u32, Ordering::Relaxed);
         self.pulse_state.store(false, Ordering::Relaxed);
 
-        gpio().set(self.pin_dir, dir as u32 != 0);
+        gpioc::bit_out_put(self.pin_dir as u32, dir as u32 != 0);
 
         self.motion_phase
             .store(MotionPhase::Running as u32, Ordering::Relaxed);
@@ -543,7 +536,7 @@ impl AxisState {
         self.motion_phase
             .store(MotionPhase::Idle as u32, Ordering::Relaxed);
         self.motion_done.store(true, Ordering::Relaxed);
-        gpio().set_low(self.pin_step);
+        gpioc::bit_out_clr(self.pin_step as u32);
     }
 
     /// Timer alarm 中断服务函数（ISR）。应在对应轴的 `TIMER0_IRQx` 部署中调用。
@@ -565,7 +558,7 @@ impl AxisState {
         let pulse_high = self.pulse_state.load(Ordering::Relaxed);
 
         if !pulse_high {
-            gpio().set_high(self.pin_step);
+            gpioc::bit_out_set(self.pin_step as u32);
             self.pulse_state.store(true, Ordering::Relaxed);
 
             let now = timer.get_time_us_32();
@@ -573,7 +566,7 @@ impl AxisState {
             return;
         }
 
-        gpio().set_low(self.pin_step);
+        gpioc::bit_out_clr(self.pin_step as u32);
         self.pulse_state.store(false, Ordering::Relaxed);
 
         let step = self.steps_done.fetch_add(1, Ordering::Relaxed) + 1;
@@ -588,7 +581,7 @@ impl AxisState {
 
         // INDEX 脉冲检测（下降沿计数）
         if let Some(idx_pin) = self.index_pin {
-            let state = gpio().get(idx_pin);
+            let state = gpioc::in_pin(idx_pin as u32);
             let last = self.index_last_state.swap(state, Ordering::Relaxed);
             if !state && last {
                 self.index_count.fetch_add(1, Ordering::Relaxed);
@@ -606,7 +599,7 @@ impl AxisState {
                         .store(self.homing_backoff_index, Ordering::Relaxed);
                     self.direction
                         .store(Direction::Forward as u32, Ordering::Relaxed);
-                    gpio().set(self.pin_dir, Direction::Forward as u32 != 0);
+                    gpioc::bit_out_put(self.pin_dir as u32, Direction::Forward as u32 != 0);
                     self.motion_phase
                         .store(MotionPhase::HomingBackoff as u32, Ordering::Relaxed);
                     // 回退速度减半以提高精度
