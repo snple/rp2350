@@ -27,7 +27,7 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClockBuilder};
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::dma::{DataSize, Dma, TreqSel};
 use pico_rs::entry;
 use pico_rs::gpio::Pins;
@@ -70,8 +70,8 @@ fn main() -> ! {
     //
     // Example: write [0x24, 0x00] (SHT3x measurement command)
     let tx_cmd: [u32; 2] = [
-        0x0024,        // write byte 0x24 (no STOP, no RESTART)
-        0x0200 | 0x00, // write byte 0x00 + STOP (bit 9 = STOP)
+        0x0024, // write byte 0x24 (no STOP, no RESTART)
+        0x0200, // write byte 0x00 + STOP (bit 9 = STOP)
     ];
 
     i2c.enable_dma_tx();

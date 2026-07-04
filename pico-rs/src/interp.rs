@@ -50,7 +50,6 @@
 //! ```
 
 use crate::Steal;
-use crate::sio;
 
 // ============================================================================
 // Interp0 / Interp1 handles
@@ -149,7 +148,7 @@ impl InterpIndex for Interp1 {
 macro_rules! with_interp_reg {
     // Accumulator registers (2 interps × 2 lanes = 4 variants)
     ($idx:expr, $lane:expr, accum, $reg:ident, $expr:expr) => {{
-        let r = sio::regs();
+        let r = unsafe { &*crate::sio::REGS };
         match ($idx, $lane) {
             (0, 0) => {
                 let $reg = &r.interp0_accum0;
@@ -171,7 +170,7 @@ macro_rules! with_interp_reg {
     }};
     // Base registers (2 interps × 3 bases = 6 variants)
     ($idx:expr, $base:expr, base, $reg:ident, $expr:expr) => {{
-        let r = sio::regs();
+        let r = unsafe { &*crate::sio::REGS };
         match ($idx, $base) {
             (0, 0) => {
                 let $reg = &r.interp0_base0;
@@ -201,7 +200,7 @@ macro_rules! with_interp_reg {
     }};
     // Pop lane (2 interps × 2 lanes = 4)
     ($idx:expr, $lane:expr, pop_lane, $reg:ident, $expr:expr) => {{
-        let r = sio::regs();
+        let r = unsafe { &*crate::sio::REGS };
         match ($idx, $lane) {
             (0, 0) => {
                 let $reg = &r.interp0_pop_lane0;
@@ -223,7 +222,7 @@ macro_rules! with_interp_reg {
     }};
     // Peek lane (2 interps × 2 lanes = 4)
     ($idx:expr, $lane:expr, peek_lane, $reg:ident, $expr:expr) => {{
-        let r = sio::regs();
+        let r = unsafe { &*crate::sio::REGS };
         match ($idx, $lane) {
             (0, 0) => {
                 let $reg = &r.interp0_peek_lane0;
@@ -245,7 +244,7 @@ macro_rules! with_interp_reg {
     }};
     // Pop full (2 interps)
     ($idx:expr, pop_full, $reg:ident, $expr:expr) => {{
-        let r = sio::regs();
+        let r = unsafe { &*crate::sio::REGS };
         match $idx {
             0 => {
                 let $reg = &r.interp0_pop_full;
@@ -259,7 +258,7 @@ macro_rules! with_interp_reg {
     }};
     // Peek full (2 interps)
     ($idx:expr, peek_full, $reg:ident, $expr:expr) => {{
-        let r = sio::regs();
+        let r = unsafe { &*crate::sio::REGS };
         match $idx {
             0 => {
                 let $reg = &r.interp0_peek_full;
@@ -273,7 +272,7 @@ macro_rules! with_interp_reg {
     }};
     // Control registers (2 interps × 2 lanes = 4)
     ($idx:expr, $lane:expr, ctrl, $reg:ident, $expr:expr) => {{
-        let r = sio::regs();
+        let r = unsafe { &*crate::sio::REGS };
         match ($idx, $lane) {
             (0, 0) => {
                 let $reg = &r.interp0_ctrl_lane0;
@@ -295,7 +294,7 @@ macro_rules! with_interp_reg {
     }};
     // Add raw registers (2 interps × 2 lanes = 4)
     ($idx:expr, $lane:expr, add_raw, $reg:ident, $expr:expr) => {{
-        let r = sio::regs();
+        let r = unsafe { &*crate::sio::REGS };
         match ($idx, $lane) {
             (0, 0) => {
                 let $reg = &r.interp0_accum0_add;
@@ -351,7 +350,7 @@ pub trait InterpOps: InterpIndex {
     /// Each half is sign-extended to 32 bits if that lane's SIGNED flag is set.
     #[inline]
     fn set_base_both(&self, value: u32) {
-        let r = sio::regs();
+        let r = unsafe { &*crate::sio::REGS };
         if Self::index() == 0 {
             r.interp0_base_1and0.write_bits(value);
         } else {

@@ -790,7 +790,7 @@ pub(crate) static CS_NESTING: [AtomicU8; 2] = [AtomicU8::new(0), AtomicU8::new(0
 #[inline]
 fn cs_spinlock_acquire() {
     // 读 SIO spinlock-31：返回非零表示获取成功（硬件保证原子性）
-    while crate::sio::regs().spinlock31.spinlock31() == 0 {
+    while unsafe { &*crate::sio::REGS }.spinlock31.spinlock31() == 0 {
         core::hint::spin_loop();
     }
 }
@@ -798,7 +798,7 @@ fn cs_spinlock_acquire() {
 #[inline]
 fn cs_spinlock_release() {
     // 写任意值释放 spinlock-31
-    crate::sio::regs().spinlock31.write_spinlock31(1);
+    unsafe { &*crate::sio::REGS }.spinlock31.write_spinlock31(1);
 }
 
 /// 进入临界区：禁用本核中断 + 获取 spinlock-31（支持嵌套）
@@ -811,7 +811,7 @@ pub(crate) fn cs_acquire() -> u32 {
     // 2. 禁用本核中断
     pico_rs_rt::interrupt::disable();
     // 3. 更新嵌套计数器，只有从 0 变为 1 时才真正获取 spinlock-31
-    let core = crate::sio::regs().cpuid.cpuid() as usize;
+    let core = unsafe { &*crate::sio::REGS }.cpuid.cpuid() as usize;
     let prev = CS_NESTING[core].fetch_add(1, Ordering::Acquire);
     if prev == 0 {
         cs_spinlock_acquire();
@@ -826,7 +826,7 @@ pub(crate) fn cs_acquire() -> u32 {
 #[inline]
 pub(crate) unsafe fn cs_release(primask: u32) {
     // 1. 更新嵌套计数器，只有从 1 变为 0 时才真正释放 spinlock-31
-    let core = crate::sio::regs().cpuid.cpuid() as usize;
+    let core = unsafe { &*crate::sio::REGS }.cpuid.cpuid() as usize;
     let prev = CS_NESTING[core].fetch_sub(1, Ordering::Release);
     if prev == 1 {
         cs_spinlock_release();

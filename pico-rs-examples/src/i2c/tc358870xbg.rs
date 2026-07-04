@@ -332,7 +332,7 @@ use defmt_rtt as _;
 
 use pico_rs::Delay;
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClockBuilder};
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
 use pico_rs::gpio::Pins;
 use pico_rs::i2c::{I2c0, I2cBus};
@@ -489,9 +489,9 @@ const TC358870_ADDR: u8 = 0x0F;
 // ============================================================================
 
 /// TC358870XBG 硬件复位引脚 (低电平有效)
-const PIN_RESET: u8 = 6;
+const PIN_RESET: u32 = 6;
 /// TC358870XBG 中断引脚 (低电平有效, 输入)
-const PIN_INT: u8 = 7;
+const PIN_INT: u32 = 7;
 
 // ============================================================================
 // EDID 数据 — 1080×1240@60Hz
@@ -1158,7 +1158,7 @@ fn send_dcs_command(i2c: &impl I2cBus, cmd: u8, params: &[u8]) {
     payload[1..1 + copy_len].copy_from_slice(&params[..copy_len]);
 
     // 写入 DCSCMD_DATA 寄存器 (0x0610 ~ 0x0630)
-    let num_data_regs = (total_len + 3) / 4; // 向上取整到 4 字节边界
+    let num_data_regs = total_len.div_ceil(4); // 向上取整到 4 字节边界
     for i in 0..num_data_regs {
         let offset = i * 4;
         let val = u32::from_le_bytes([
@@ -1512,7 +1512,7 @@ fn main() -> ! {
         }
 
         // 每 10 秒打印一次心跳 (20 × 500ms)
-        if poll_counter % 20 == 0 {
+        if poll_counter.is_multiple_of(20) {
             if hdmi_connected {
                 info!("[心跳] HDMI 已连接, 视频输出中...");
             } else {

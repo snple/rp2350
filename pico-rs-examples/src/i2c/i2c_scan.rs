@@ -157,7 +157,7 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClockBuilder};
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
 use pico_rs::gpio::Pins;
 use pico_rs::i2c::I2c0;
@@ -212,11 +212,11 @@ fn main() -> ! {
         &clocks,
     );
 
+    info!("I2C0: {} Hz (GP4=SDA, GP5=SCL)", I2C_BAUDRATE);
     info!(
-        "I2C0: {} Hz (GP4=SDA, GP5=SCL)",
-        I2C_BAUDRATE
+        "Scanning address range: {:#04x} ~ {:#04x}",
+        SCAN_ADDR_START, SCAN_ADDR_END
     );
-    info!("Scanning address range: {:#04x} ~ {:#04x}", SCAN_ADDR_START, SCAN_ADDR_END);
 
     // ======================================================================
     // 3. I2C 总线扫描
@@ -239,14 +239,38 @@ fn main() -> ! {
         let row = addr >> 4;
         // 使用 defmt 打印行头 — 因为 defmt 不支持动态格式，我们用 match
         match row {
-            0 => info!("00: -- -- -- -- -- -- -- -- {}", scan_row(&i2c, 0x08, 0x0F, &mut found_addrs, &mut found_count)),
-            1 => info!("10: {}", scan_row(&i2c, 0x10, 0x1F, &mut found_addrs, &mut found_count)),
-            2 => info!("20: {}", scan_row(&i2c, 0x20, 0x2F, &mut found_addrs, &mut found_count)),
-            3 => info!("30: {}", scan_row(&i2c, 0x30, 0x3F, &mut found_addrs, &mut found_count)),
-            4 => info!("40: {}", scan_row(&i2c, 0x40, 0x4F, &mut found_addrs, &mut found_count)),
-            5 => info!("50: {}", scan_row(&i2c, 0x50, 0x5F, &mut found_addrs, &mut found_count)),
-            6 => info!("60: {}", scan_row(&i2c, 0x60, 0x6F, &mut found_addrs, &mut found_count)),
-            7 => info!("70: {}", scan_row(&i2c, 0x70, 0x77, &mut found_addrs, &mut found_count)),
+            0 => info!(
+                "00: -- -- -- -- -- -- -- -- {}",
+                scan_row(&i2c, 0x08, 0x0F, &mut found_addrs, &mut found_count)
+            ),
+            1 => info!(
+                "10: {}",
+                scan_row(&i2c, 0x10, 0x1F, &mut found_addrs, &mut found_count)
+            ),
+            2 => info!(
+                "20: {}",
+                scan_row(&i2c, 0x20, 0x2F, &mut found_addrs, &mut found_count)
+            ),
+            3 => info!(
+                "30: {}",
+                scan_row(&i2c, 0x30, 0x3F, &mut found_addrs, &mut found_count)
+            ),
+            4 => info!(
+                "40: {}",
+                scan_row(&i2c, 0x40, 0x4F, &mut found_addrs, &mut found_count)
+            ),
+            5 => info!(
+                "50: {}",
+                scan_row(&i2c, 0x50, 0x5F, &mut found_addrs, &mut found_count)
+            ),
+            6 => info!(
+                "60: {}",
+                scan_row(&i2c, 0x60, 0x6F, &mut found_addrs, &mut found_count)
+            ),
+            7 => info!(
+                "70: {}",
+                scan_row(&i2c, 0x70, 0x77, &mut found_addrs, &mut found_count)
+            ),
             _ => {}
         }
 
@@ -267,8 +291,7 @@ fn main() -> ! {
         info!("  4. Verify device I2C address (check datasheet)");
     } else {
         info!("Found {} device(s):", found_count);
-        for i in 0..found_count {
-            let addr = found_addrs[i];
+        for &addr in &found_addrs[..found_count] {
             let device_name = identify_device(addr);
             info!("  {:#04x} — {}", addr, device_name);
         }
@@ -321,7 +344,7 @@ where
 
     let mut addr = start;
     while addr <= end {
-        if addr < SCAN_ADDR_START || addr > SCAN_ADDR_END {
+        if !(SCAN_ADDR_START..=SCAN_ADDR_END).contains(&addr) {
             result.set(addr & 0x0F, ScanEntry::Reserved);
         } else if i2c.write(addr, &[]).is_ok() {
             result.set(addr & 0x0F, ScanEntry::Found(addr));

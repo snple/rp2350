@@ -20,7 +20,7 @@ use defmt_rtt as _;
 use pico_rs::Delay;
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
-use pico_rs::gpio::{DriveStrength, Gpio, Pin, Pins, Pull, SlewRate};
+use pico_rs::gpio::{self, DriveStrength, Pin, Pins, Pull, SlewRate};
 use pico_rs::pac::Peripherals;
 use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 
@@ -166,18 +166,17 @@ fn main() -> ! {
 
     // SAFETY: the GPIO bank is initialized above, and all accessed pins are
     // configured through `Pin<N>` before raw SIO access.
-    let gpio = unsafe { Gpio::steal() };
 
     // Read GPIO input for low bank (pins 0-31)
-    let gpio_in = gpio.mask_input_low();
+    let gpio_in = unsafe { gpio::mask_input_low() };
     info!("GPIO IN (0-31): {:#010X}", gpio_in);
 
     // Read GPIO output for low bank
-    let gpio_out = gpio.mask_output_low();
+    let gpio_out = unsafe { gpio::mask_output_low() };
     info!("GPIO OUT (0-31): {:#010X}", gpio_out);
 
     // Read GPIO OE for low bank
-    let gpio_oe = gpio.mask_oe_low();
+    let gpio_oe = unsafe { gpio::mask_output_enable_lo() };
     info!("GPIO OE (0-31): {:#010X}", gpio_oe);
 
     // ========================================================================

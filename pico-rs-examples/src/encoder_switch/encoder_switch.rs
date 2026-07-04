@@ -127,15 +127,15 @@ pub static IMAGE_DEF: ImageDef = ImageDef::exe();
 // ============================================================================
 
 /// 编码器信号 A 的 GPIO 编号 (编码器引脚 A)
-const PIN_A: u8 = 10;
+const PIN_A: u32 = 10;
 
 /// 编码器信号 B 的 GPIO 编号 (编码器引脚 B)
-const PIN_B: u8 = 11;
+const PIN_B: u32 = 11;
 
 /// 按钮引脚的 GPIO 编号 (编码器引脚 D)
 /// 编码器引脚 C 接 GND (编码器公共端)
 /// 编码器引脚 E 接 GND (按钮公共端)
-const PIN_BTN: u8 = 12;
+const PIN_BTN: u32 = 12;
 
 /// 按钮消抖时间 (微秒)
 const DEBOUNCE_US: u32 = 50_000; // 50ms

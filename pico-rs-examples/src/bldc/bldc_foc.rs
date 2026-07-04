@@ -240,7 +240,7 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClockBuilder};
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
 use pico_rs::gpio::{EdgeLevel, Pin, Pins};
 use pico_rs::interrupt::{self, Mutex};
@@ -563,7 +563,7 @@ fn main() -> ! {
         // 逆 Park (Ud=0): Uα = -Uq·sin(θ), Uβ = Uq·cos(θ)
         let u_alpha = -(uq * sin_q15(theta)) >> 15;
         let u_beta = (uq * cos_q15(theta)) >> 15;
-        let (da, db, dc) = svpwm(u_alpha as i32, u_beta as i32, pwm_wrap);
+        let (da, db, dc) = svpwm(u_alpha, u_beta, pwm_wrap);
         slice_a.set_duty_a(da);
         slice_b.set_duty_a(db);
         slice_c.set_duty_a(dc);
@@ -677,7 +677,7 @@ fn main() -> ! {
         // ==============================================================
         // 4. 速度 PI 控制器 (每 SPEED_LOOP_DIVIDER 次 FOC 循环执行一次)
         // ==============================================================
-        if foc_counter % SPEED_LOOP_DIVIDER == 0 {
+        if foc_counter.is_multiple_of(SPEED_LOOP_DIVIDER) {
             // 计算 RPM
             let step_period = HALL_PERIOD_US.load(Ordering::Relaxed);
             let actual_rpm = if step_period > 0 && step_period < MAX_STEP_PERIOD_US {
@@ -716,7 +716,7 @@ fn main() -> ! {
 
             // 日志 (~1 Hz)
             log_counter += 1;
-            if log_counter % 100 == 0 {
+            if log_counter.is_multiple_of(100) {
                 info!(
                     "RPM: {} (target {}), Uq: {}, θe: {}, period: {}us",
                     actual_rpm,

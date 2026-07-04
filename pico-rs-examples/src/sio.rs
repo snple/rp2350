@@ -15,7 +15,7 @@ use defmt::*;
 use defmt_rtt as _;
 use pico_rs::block::ImageDef;
 use pico_rs::entry;
-use pico_rs::gpio::{Gpio, Pins};
+use pico_rs::gpio::{self, Pins};
 use pico_rs::pac::Peripherals;
 use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 use pico_rs::sio::{Sio, Spinlock};
@@ -26,7 +26,7 @@ use pico_rs::systick::Delay;
 #[used]
 pub static IMAGE_DEF: ImageDef = ImageDef::exe();
 
-const LED_PIN: u8 = 25;
+const LED_PIN: u32 = 25;
 const CLOCK_FREQ_HZ: u32 = 150_000_000;
 
 #[entry]
@@ -125,25 +125,23 @@ fn main() -> ! {
     info!("Starting LED blink via SIO...");
 
     // SAFETY: GPIO 25 was configured for SIO output above.
-    let gpio = unsafe { Gpio::steal() };
-
     loop {
         // Turn LED on using atomic set
-        gpio.set_high(LED_PIN);
+        unsafe { gpio::set_high(LED_PIN) };
         info!("LED ON");
         delay.delay_ms(250);
 
         // Turn LED off using atomic clear
-        gpio.set_low(LED_PIN);
+        unsafe { gpio::set_low(LED_PIN) };
         info!("LED OFF");
         delay.delay_ms(250);
 
         // Toggle LED using atomic XOR
-        gpio.toggle(LED_PIN);
+        unsafe { gpio::toggle(LED_PIN) };
         info!("LED TOGGLE (ON)");
         delay.delay_ms(250);
 
-        gpio.toggle(LED_PIN);
+        unsafe { gpio::toggle(LED_PIN) };
         info!("LED TOGGLE (OFF)");
         delay.delay_ms(250);
     }

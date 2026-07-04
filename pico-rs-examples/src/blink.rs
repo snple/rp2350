@@ -25,7 +25,7 @@ pub static IMAGE_DEF: ImageDef = ImageDef::exe();
 /// At boot, RP2350 runs from ROSC at approximately 12 MHz
 const CLOCK_FREQ_HZ: u32 = 12_000_000;
 
-const LED_PIN: u8 = 6;
+const LED_PIN: u32 = 6;
 
 #[entry]
 fn main() -> ! {

@@ -71,10 +71,10 @@
 //! 3. **Peripheral ownership**: Drivers like I2C or SPI can consume pins,
 //!    making them unavailable for other uses (enforced at compile time).
 //!
-//! 4. **[`Gpio`] struct**: A raw, zero-cost SIO GPIO accessor for cases where
-//!    the pin number is only known at runtime or when batch operations across
-//!    many pins are needed. This type does not participate in ownership
-//!    tracking, so constructing it is `unsafe`.
+//! 4. **Free functions** (`get`, `set_high`, `toggle`, ...): Runtime-indexed
+//!    SIO GPIO data access. These are the SIO-register equivalent of
+//!    [`crate::gpioc`]. All functions are `unsafe` because the caller must
+//!    ensure GPIO has been initialized.
 //!
 //! ```text
 //! Peripherals::take()
@@ -91,8 +91,7 @@
 //!                      │                                led.into_output();
 //!                      │                                led.set_high();
 //!                      │
-//!                      └──► let gpio = unsafe { Gpio::steal() };
-//!                            gpio.toggle(25);
+//!                      └──► unsafe { gpio::toggle(25); }
 //! ```
 //!
 //! # Function Selection
@@ -202,11 +201,13 @@
 //! ## Runtime-Indexed GPIO Access
 //!
 //! When the pin number is only known at runtime, or when code needs to update a
-//! variable set of pins using masks, use [`Gpio`]. The configuration and
-//! ownership model still lives in [`Pins`] and [`Pin<N>`]; [`Gpio`] is only the
+//! variable set of pins using masks, use [`gpio::sio`]. Configuration and
+//! ownership still go through [`Pins`] and [`Pin<N>`]; [`gpio::sio`] is only the
 //! data-plane accessor for the SIO GPIO registers.
 //!
 //! ```ignore
+//! use pico_rs::gpio::{self, Pins};
+//!
 //! let dp = Peripherals::take().unwrap();
 //! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
 //!
@@ -215,8 +216,7 @@
 //!
 //! // SAFETY: GPIO 25 was configured for SIO output above, and the program keeps
 //! // ownership discipline through `Pin<25>` for configuration changes.
-//! let gpio = unsafe { Gpio::steal() };
-//! gpio.toggle(25);
+//! unsafe { gpio::sio::toggle(25) };
 //! ```
 //!
 //! ## Interrupt Handling (ISR)
@@ -256,6 +256,8 @@
 //! - Internal register access uses `steal()` for zero-cost abstraction
 //! - SIO uses atomic registers, safe for use from interrupts
 //! - Each pin type (`Pin<N>`) has compile-time known register offsets
+//! - [`gpio::sio`] and [`crate::gpioc`] offer two paths for runtime-indexed
+//!   GPIO data access — choose the right one for your latency requirements
 
 #![allow(clippy::identity_op)]
 
@@ -494,7 +496,7 @@ macro_rules! impl_pin {
         paste! {
             impl Pin<$n> {
                 /// Pin number
-                pub const PIN: u8 = $n;
+                pub const PIN: u32 = $n;
 
                 /// Bit mask for this pin in the 32-bit GPIO registers
                 pub const MASK: u32 = 1u32 << $n;
@@ -532,7 +534,7 @@ macro_rules! impl_pin {
 
                 #[inline(always)]
                 fn sio(&self) -> &'static SioRegisterBlock {
-                    crate::sio::regs()
+                    unsafe { &*crate::sio::REGS }
                 }
 
                 // ================================================================
@@ -1279,7 +1281,7 @@ macro_rules! impl_pin {
         paste! {
             impl Pin<$n> {
                 /// Pin number
-                pub const PIN: u8 = $n;
+                pub const PIN: u32 = $n;
 
                 /// Bit mask for this pin in the high GPIO registers (32-47 → bits 0-15)
                 pub const MASK: u32 = 1u32 << ($n - 32);
@@ -1313,7 +1315,7 @@ macro_rules! impl_pin {
 
                 #[inline(always)]
                 fn sio(&self) -> &'static SioRegisterBlock {
-                    crate::sio::regs()
+                    unsafe { &*crate::sio::REGS }
                 }
 
                 // Function selection (same as low pins)
@@ -1828,7 +1830,7 @@ macro_rules! impl_pin {
 ///
 /// In ISR context, a pin handle can be obtained via `unsafe { Pin::<N>::steal() }`,
 /// provided the GPIO subsystem has already been initialised.
-pub struct Pin<const N: u8> {
+pub struct Pin<const N: u32> {
     _marker: core::marker::PhantomData<*const ()>,
 }
 
@@ -1836,7 +1838,7 @@ pub struct Pin<const N: u8> {
 // Ownership can safely transfer between cores / ISRs (Send),
 // but &Pin<N> must not be shared across cores (!Sync, guaranteed by
 // PhantomData<*const ()>), preventing concurrent hardware register access.
-unsafe impl<const N: u8> Send for Pin<N> {}
+unsafe impl<const N: u32> Send for Pin<N> {}
 
 // ============================================================================
 // Generate Pin implementations for all pins
@@ -1995,7 +1997,7 @@ impl Pins {
     ///
     /// Compile-time error if `N` is out of range.
     #[inline]
-    pub fn pin<const N: u8>(&self) -> Pin<N> {
+    pub fn pin<const N: u32>(&self) -> Pin<N> {
         #[cfg(not(feature = "rp2350b"))]
         const {
             assert!(N < 30, "GPIO pin number must be 0-29 (RP2350A)")
@@ -2057,387 +2059,714 @@ pub use pins::{
 
 /// Maximum GPIO pin number for the selected RP2350A variant.
 #[cfg(feature = "rp2350a")]
-pub const GPIO_PIN_MAX: u8 = 29;
+pub const GPIO_PIN_MAX: u32 = 29;
 
 /// Maximum GPIO pin number for the selected RP2350B variant.
 #[cfg(feature = "rp2350b")]
-pub const GPIO_PIN_MAX: u8 = 47;
+pub const GPIO_PIN_MAX: u32 = 47;
 
 // ============================================================================
-// Runtime-indexed SIO GPIO access
+// Runtime-indexed SIO GPIO access (free functions)
 // ============================================================================
 
-/// Raw SIO GPIO accessor for pins 0-47 on RP2350B, or 0-29 on RP2350A.
+// ============================================================================
+// SIO-based GPIO data access (free functions, same names as gpioc)
+// ============================================================================
+//
+// These functions access GPIO via SIO MMIO registers. For single-cycle
+// GPIOC coprocessor access, use the identical API in [`crate::gpioc`].
+//
+// # Safety
+//
+// All functions are `unsafe` because the caller must ensure:
+//
+// - The GPIO subsystem was initialized via [`Pins::new()`].
+// - Each pin has been configured for SIO function via [`Pin<N>`].
+// - No concurrent configuration changes happen through [`Pin<N>`] or
+//   peripheral drivers while data operations are in flight.
+//
+// [`Pin<N>`] remains the safe API for configuration; these functions are
+// for efficient runtime-indexed data access.
+
+#[inline(always)]
+fn assert_pin(pin: u32) {
+    debug_assert!(pin <= GPIO_PIN_MAX);
+}
+
+// ========================================================================
+// Pin-level operations (auto-routing by pin number)
+// ========================================================================
+
+/// Read the input value of a single pin.
 ///
-/// [`Gpio`] is the runtime-indexed counterpart to [`Pin<N>`]. It provides
-/// direct access to the SIO GPIO input, output, and output-enable registers,
-/// automatically routing pin numbers 0-31 to the low bank and 32-47 to the
-/// high bank.
-///
-/// This type intentionally does not model pin ownership. That omission makes it
-/// useful for dynamic pin tables, loops over pin numbers, and mask-based IO, but
-/// it also means the compiler can no longer prevent reconfiguration conflicts.
-/// For that reason, construction is `unsafe`.
+/// Returns `true` if the pin is high.
 ///
 /// # Safety
 ///
-/// The caller must ensure all of the following:
-///
-/// - The GPIO subsystem was initialized first, typically by calling
-///   [`Pins::new()`].
-/// - Each pin accessed through this handle has already been configured for SIO
-///   via [`Pin<N>`] or equivalent low-level setup.
-/// - Code using [`Gpio`] does not race with other code that reconfigures the same
-///   pins through [`Pin<N>`], peripheral drivers, or direct PAC access.
-/// - Ownership decisions remain centralized in the higher-level GPIO API. In
-///   practice, [`Gpio`] should be treated as a data-path helper, not as a
-///   replacement for pin configuration.
-///
-/// # Relationship To [`Pin<N>`]
-///
-/// [`Pin<N>`] remains the safe API for:
-///
-/// - taking ownership of a specific pin,
-/// - selecting the pin function,
-/// - configuring pad state and pulls,
-/// - configuring direction and interrupts.
-///
-/// [`Gpio`] is for the narrower case where that setup already happened and the
-/// remaining need is efficient runtime-indexed SIO access.
-#[derive(Copy, Clone, Default, Debug)]
-pub struct Gpio {
-    _marker: core::marker::PhantomData<*const ()>,
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn get(pin: u32) -> bool {
+    assert_pin(pin);
+    if pin < 32 {
+        (unsafe { &*crate::sio::REGS }.gpio_in.gpio_in() & (1 << pin)) != 0
+    } else {
+        (unsafe { &*crate::sio::REGS }.gpio_hi_in.gpio() & (1 << (pin - 32))) != 0
+    }
 }
 
-// SAFETY: Gpio is a zero-sized SIO accessor using only atomic SET/CLR/XOR registers.
-// Ownership can safely transfer (Send), but shared references must not cross
-// cores (!Sync).
-unsafe impl Send for Gpio {}
-
-impl Gpio {
-    /// Obtain a handle to the SIO GPIO registers.
-    ///
-    /// The GPIO hardware already exists; this method simply returns a
-    /// zero-cost accessor. The returned handle does not own any pins and
-    /// can be copied freely.
-    ///
-    /// # Safety
-    ///
-    /// See the type-level safety contract on [`Gpio`]. In short: initialize and
-    /// configure pins through [`Pins`] and [`Pin<N>`] first, then use [`Gpio`]
-    /// only for SIO data access.
-    #[inline]
-    pub const unsafe fn steal() -> crate::Steal<Self> {
-        crate::Steal(Self {
-            _marker: core::marker::PhantomData,
-        })
+/// Set a single pin output high.
+///
+/// The pin must already be configured for SIO output.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn set_high(pin: u32) {
+    assert_pin(pin);
+    if pin < 32 {
+        unsafe { &*crate::sio::REGS }
+            .gpio_out_set
+            .write_gpio_out_set(1 << pin);
+    } else {
+        unsafe { &*crate::sio::REGS }
+            .gpio_hi_out_set
+            .write_gpio(1 << (pin - 32));
     }
+}
 
-    #[inline(always)]
-    fn assert_pin(pin: u8) {
-        debug_assert!(pin <= GPIO_PIN_MAX);
+/// Set a single pin output low.
+///
+/// The pin must already be configured for SIO output.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn set_low(pin: u32) {
+    assert_pin(pin);
+    if pin < 32 {
+        unsafe { &*crate::sio::REGS }
+            .gpio_out_clr
+            .write_gpio_out_clr(1 << pin);
+    } else {
+        unsafe { &*crate::sio::REGS }
+            .gpio_hi_out_clr
+            .write_gpio(1 << (pin - 32));
     }
+}
 
-    // ========================================================================
-    // Pin-level operations (auto-routing by pin number)
-    // ========================================================================
+/// Toggle a single pin output.
+///
+/// The pin must already be configured for SIO output.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn toggle(pin: u32) {
+    assert_pin(pin);
+    if pin < 32 {
+        unsafe { &*crate::sio::REGS }
+            .gpio_out_xor
+            .write_gpio_out_xor(1 << pin);
+    } else {
+        unsafe { &*crate::sio::REGS }
+            .gpio_hi_out_xor
+            .write_gpio(1 << (pin - 32));
+    }
+}
 
-    /// Read the input value of a single pin.
-    ///
-    /// Returns `true` if the pin is high.
-    #[inline]
-    pub fn get(&self, pin: u8) -> bool {
-        Self::assert_pin(pin);
-        if pin < 32 {
-            (crate::sio::regs().gpio_in.gpio_in() & (1 << pin)) != 0
+/// Set a single pin output to a specific value.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn set(pin: u32, high: bool) {
+    if high {
+        // SAFETY: caller upholds the module-level safety contract.
+        unsafe { set_high(pin) };
+    } else {
+        // SAFETY: caller upholds the module-level safety contract.
+        unsafe { set_low(pin) };
+    }
+}
+
+/// Read the programmed output level of a single pin.
+///
+/// This reads the SIO output register, not the actual pad input state. Use
+/// [`get`] if you need the live pin level.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn output(pin: u32) -> bool {
+    assert_pin(pin);
+    if pin < 32 {
+        (unsafe { &*crate::sio::REGS }.gpio_out.gpio_out() & (1 << pin)) != 0
+    } else {
+        (unsafe { &*crate::sio::REGS }.gpio_hi_out.gpio() & (1 << (pin - 32))) != 0
+    }
+}
+
+/// Enable output for a single pin.
+///
+/// This only touches the SIO output-enable register. It does not select the
+/// SIO function or configure the pad; that must have been done earlier via
+/// [`Pin<N>`].
+///
+/// Unconditionally sets the OE bit to 1 (output). See [`set_output_enable`] for a
+/// conditional version that accepts a `bool`.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn enable_output(pin: u32) {
+    assert_pin(pin);
+    if pin < 32 {
+        unsafe { &*crate::sio::REGS }
+            .gpio_oe_set
+            .write_gpio_oe_set(1 << pin);
+    } else {
+        unsafe { &*crate::sio::REGS }
+            .gpio_hi_oe_set
+            .write_gpio(1 << (pin - 32));
+    }
+}
+
+/// Disable output for a single pin.
+///
+/// Unconditionally clears the OE bit to 0 (input). See [`set_output_enable`] for a
+/// conditional version that accepts a `bool`.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn disable_output(pin: u32) {
+    assert_pin(pin);
+    if pin < 32 {
+        unsafe { &*crate::sio::REGS }
+            .gpio_oe_clr
+            .write_gpio_oe_clr(1 << pin);
+    } else {
+        unsafe { &*crate::sio::REGS }
+            .gpio_hi_oe_clr
+            .write_gpio(1 << (pin - 32));
+    }
+}
+
+/// Write the OE bit to a specific value.
+///
+/// Sets to output if `output` is `true`, input if `false`.
+/// On GPIOC this is a single `MCRR` instruction; here it dispatches to
+/// [`enable_output`]/[`disable_output`] via the atomic SET/CLR alias registers.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn set_output_enable(pin: u32, output: bool) {
+    unsafe {
+        if output {
+            enable_output(pin);
         } else {
-            (crate::sio::regs().gpio_hi_in.gpio() & (1 << (pin - 32))) != 0
+            disable_output(pin);
         }
     }
+}
 
-    /// Set a single pin output high.
-    ///
-    /// The pin must already be configured for SIO output.
-    #[inline]
-    pub fn set_high(&self, pin: u8) {
-        Self::assert_pin(pin);
-        if pin < 32 {
-            crate::sio::regs().gpio_out_set.write_gpio_out_set(1 << pin);
-        } else {
-            crate::sio::regs()
-                .gpio_hi_out_set
-                .write_gpio(1 << (pin - 32));
-        }
+/// Toggle the OE bit for a single pin.
+///
+/// If the pin was output it becomes input, and vice versa.
+/// Uses the atomic XOR alias register for interrupt safety.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn toggle_output_enable(pin: u32) {
+    assert_pin(pin);
+    if pin < 32 {
+        unsafe { &*crate::sio::REGS }
+            .gpio_oe_xor
+            .write_gpio_oe_xor(1 << pin);
+    } else {
+        unsafe { &*crate::sio::REGS }
+            .gpio_hi_oe_xor
+            .write_gpio(1 << (pin - 32));
     }
+}
 
-    /// Set a single pin output low.
-    ///
-    /// The pin must already be configured for SIO output.
-    #[inline]
-    pub fn set_low(&self, pin: u8) {
-        Self::assert_pin(pin);
-        if pin < 32 {
-            crate::sio::regs().gpio_out_clr.write_gpio_out_clr(1 << pin);
-        } else {
-            crate::sio::regs()
-                .gpio_hi_out_clr
-                .write_gpio(1 << (pin - 32));
-        }
+/// Check whether output is enabled for a single pin.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn is_output(pin: u32) -> bool {
+    assert_pin(pin);
+    if pin < 32 {
+        (unsafe { &*crate::sio::REGS }.gpio_oe.gpio_oe() & (1 << pin)) != 0
+    } else {
+        (unsafe { &*crate::sio::REGS }.gpio_hi_oe.gpio() & (1 << (pin - 32))) != 0
     }
+}
 
-    /// Toggle a single pin output.
-    ///
-    /// The pin must already be configured for SIO output.
-    #[inline]
-    pub fn toggle(&self, pin: u8) {
-        Self::assert_pin(pin);
-        if pin < 32 {
-            crate::sio::regs().gpio_out_xor.write_gpio_out_xor(1 << pin);
-        } else {
-            crate::sio::regs()
-                .gpio_hi_out_xor
-                .write_gpio(1 << (pin - 32));
-        }
+// ========================================================================
+// Mask-level operations - low bank (pins 0-31)
+// ========================================================================
+
+/// Read the live input state of GPIO 0-31 as a bitmask.
+///
+/// Bit `n` in the returned value corresponds directly to GPIO `n`.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn mask_input_low() -> u32 {
+    unsafe { &*crate::sio::REGS }.gpio_in.gpio_in()
+}
+
+/// Read the programmed SIO output register for GPIO 0-31.
+///
+/// This reports the value currently stored in `GPIO_OUT`, not the live pad
+/// input level. Use [`mask_input_low`] to sample the pins.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn mask_output_low() -> u32 {
+    unsafe { &*crate::sio::REGS }.gpio_out.gpio_out()
+}
+
+/// Replace the entire SIO output register for GPIO 0-31.
+///
+/// Each bit in `value` maps directly to the output state of the
+/// corresponding GPIO in the low bank.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn mask_write_output_low(value: u32) {
+    unsafe { &*crate::sio::REGS }.gpio_out.write_gpio_out(value);
+}
+
+/// Atomically drive selected GPIO 0-31 outputs high.
+///
+/// Bits that are `1` in `mask` are set; bits that are `0` are left
+/// unchanged.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn mask_set_low(mask: u32) {
+    unsafe { &*crate::sio::REGS }
+        .gpio_out_set
+        .write_gpio_out_set(mask);
+}
+
+/// Atomically drive selected GPIO 0-31 outputs low.
+///
+/// Bits that are `1` in `mask` are cleared; bits that are `0` are left
+/// unchanged.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn mask_clr_lo(mask: u32) {
+    unsafe { &*crate::sio::REGS }
+        .gpio_out_clr
+        .write_gpio_out_clr(mask);
+}
+
+/// Atomically toggle selected GPIO 0-31 outputs.
+///
+/// Bits that are `1` in `mask` are inverted; bits that are `0` are left
+/// unchanged.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn mask_xor_lo(mask: u32) {
+    unsafe { &*crate::sio::REGS }
+        .gpio_out_xor
+        .write_gpio_out_xor(mask);
+}
+
+/// Read the SIO output-enable register for GPIO 0-31.
+///
+/// A bit value of `1` means the corresponding GPIO is configured as an
+/// output in SIO. A bit value of `0` means input/high-impedance at the SIO
+/// data path level.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn mask_output_enable_lo() -> u32 {
+    unsafe { &*crate::sio::REGS }.gpio_oe.gpio_oe()
+}
+
+/// Replace the entire SIO output-enable register for GPIO 0-31.
+///
+/// Each bit in `value` directly controls whether the corresponding GPIO is
+/// driven as an output (`1`) or left as input (`0`).
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn mask_write_output_enable_lo(value: u32) {
+    unsafe { &*crate::sio::REGS }.gpio_oe.write_gpio_oe(value);
+}
+
+/// Atomically enable SIO output mode for selected GPIO 0-31 pins.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn mask_set_output_enable_lo(mask: u32) {
+    unsafe { &*crate::sio::REGS }
+        .gpio_oe_set
+        .write_gpio_oe_set(mask);
+}
+
+/// Atomically disable SIO output mode for selected GPIO 0-31 pins.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn mask_clear_output_enable_lo(mask: u32) {
+    unsafe { &*crate::sio::REGS }
+        .gpio_oe_clr
+        .write_gpio_oe_clr(mask);
+}
+
+/// Atomically toggle SIO output mode for selected GPIO 0-31 pins.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn mask_toggle_output_enable_lo(mask: u32) {
+    unsafe { &*crate::sio::REGS }
+        .gpio_oe_xor
+        .write_gpio_oe_xor(mask);
+}
+
+// ========================================================================
+// Mask-level operations - high bank (pins 32-47)
+// ========================================================================
+
+/// Read the live input state of GPIO 32-47 as a compact bitmask.
+///
+/// Bit `0` corresponds to GPIO 32, bit `1` to GPIO 33, and so on up to
+/// bit `15` for GPIO 47.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn mask_input_hi() -> u32 {
+    unsafe { &*crate::sio::REGS }.gpio_hi_in.gpio()
+}
+
+/// Read the programmed SIO output register for GPIO 32-47.
+///
+/// The returned mask uses bits `0..=15` for GPIO 32-47, not bits 32-47.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn mask_output_hi() -> u32 {
+    unsafe { &*crate::sio::REGS }.gpio_hi_out.gpio()
+}
+
+/// Replace the entire SIO output register for GPIO 32-47.
+///
+/// Bit `0` in `value` controls GPIO 32, bit `1` controls GPIO 33, and so
+/// on.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn mask_write_output_hi(value: u32) {
+    unsafe { &*crate::sio::REGS }.gpio_hi_out.write_gpio(value);
+}
+
+/// Atomically drive selected GPIO 32-47 outputs high.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn mask_set_hi(mask: u32) {
+    unsafe { &*crate::sio::REGS }
+        .gpio_hi_out_set
+        .write_gpio(mask);
+}
+
+/// Atomically drive selected GPIO 32-47 outputs low.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn mask_clr_hi(mask: u32) {
+    unsafe { &*crate::sio::REGS }
+        .gpio_hi_out_clr
+        .write_gpio(mask);
+}
+
+/// Atomically toggle selected GPIO 32-47 outputs.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn mask_xor_hi(mask: u32) {
+    unsafe { &*crate::sio::REGS }
+        .gpio_hi_out_xor
+        .write_gpio(mask);
+}
+
+/// Read the SIO output-enable register for GPIO 32-47.
+///
+/// As with the other high-bank mask APIs, bit `0` corresponds to GPIO 32.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn mask_output_enable_hi() -> u32 {
+    unsafe { &*crate::sio::REGS }.gpio_hi_oe.gpio()
+}
+
+/// Replace the entire SIO output-enable register for GPIO 32-47.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn mask_write_output_enable_hi(value: u32) {
+    unsafe { &*crate::sio::REGS }.gpio_hi_oe.write_gpio(value);
+}
+
+/// Atomically enable SIO output mode for selected GPIO 32-47 pins.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn mask_set_output_enable_hi(mask: u32) {
+    unsafe { &*crate::sio::REGS }
+        .gpio_hi_oe_set
+        .write_gpio(mask);
+}
+
+/// Atomically disable SIO output mode for selected GPIO 32-47 pins.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn mask_clear_output_enable_hi(mask: u32) {
+    unsafe { &*crate::sio::REGS }
+        .gpio_hi_oe_clr
+        .write_gpio(mask);
+}
+
+/// Atomically toggle SIO output mode for selected GPIO 32-47 pins.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn mask_toggle_output_enable_hi(mask: u32) {
+    unsafe { &*crate::sio::REGS }
+        .gpio_hi_oe_xor
+        .write_gpio(mask);
+}
+
+// ============================================================================
+// 64-bit operations — convenience wrappers for both low + high banks
+// ============================================================================
+//
+// These perform two sequential 32-bit SIO writes/reads. On GPIOC the same
+// operations are a single atomic instruction; here they are not atomic across
+// the 64-bit boundary but provide the same API for portability.
+
+/// Write all 64 output bits via two SIO writes.
+///
+/// Bits 0-31 → GPIO 0-31, bits 32-63 → GPIO 32-63.
+///
+/// # Safety
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn out64_put(value: u64) {
+    unsafe {
+        mask_write_output_low(value as u32);
+        mask_write_output_hi((value >> 32) as u32);
     }
+}
 
-    /// Set a single pin output to a specific value.
-    ///
-    /// This dispatches to [`Self::set_high`] or [`Self::set_low`].
-    #[inline]
-    pub fn set(&self, pin: u8, high: bool) {
-        if high {
-            self.set_high(pin);
-        } else {
-            self.set_low(pin);
-        }
+/// Toggle selected output bits across all 64 GPIOs via two SIO writes.
+///
+/// # Safety
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn out64_xor(mask: u64) {
+    unsafe {
+        mask_xor_lo(mask as u32);
+        mask_xor_hi((mask >> 32) as u32);
     }
+}
 
-    /// Read the programmed output level of a single pin.
-    ///
-    /// This reads the SIO output register, not the actual pad input state. Use
-    /// [`Self::get`] if you need the live pin level.
-    #[inline]
-    pub fn output(&self, pin: u8) -> bool {
-        Self::assert_pin(pin);
-        if pin < 32 {
-            (crate::sio::regs().gpio_out.gpio_out() & (1 << pin)) != 0
-        } else {
-            (crate::sio::regs().gpio_hi_out.gpio() & (1 << (pin - 32))) != 0
-        }
+/// Set selected output bits high across all 64 GPIOs via two SIO writes.
+///
+/// # Safety
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn out64_set(mask: u64) {
+    unsafe {
+        mask_set_low(mask as u32);
+        mask_set_hi((mask >> 32) as u32);
     }
+}
 
-    /// Enable output for a single pin.
-    ///
-    /// This only touches the SIO output-enable register. It does not select the
-    /// SIO function or configure the pad; that must have been done earlier via
-    /// [`Pin<N>`].
-    #[inline]
-    pub fn oe_set(&self, pin: u8) {
-        Self::assert_pin(pin);
-        if pin < 32 {
-            crate::sio::regs().gpio_oe_set.write_gpio_oe_set(1 << pin);
-        } else {
-            crate::sio::regs()
-                .gpio_hi_oe_set
-                .write_gpio(1 << (pin - 32));
-        }
+/// Clear selected output bits low across all 64 GPIOs via two SIO writes.
+///
+/// # Safety
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn out64_clr(mask: u64) {
+    unsafe {
+        mask_clr_lo(mask as u32);
+        mask_clr_hi((mask >> 32) as u32);
     }
+}
 
-    /// Disable output for a single pin.
-    #[inline]
-    pub fn oe_clr(&self, pin: u8) {
-        Self::assert_pin(pin);
-        if pin < 32 {
-            crate::sio::regs().gpio_oe_clr.write_gpio_oe_clr(1 << pin);
-        } else {
-            crate::sio::regs()
-                .gpio_hi_oe_clr
-                .write_gpio(1 << (pin - 32));
-        }
+/// Read all 64 output bits via two SIO reads.
+///
+/// # Safety
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn out64_get() -> u64 {
+    unsafe {
+        let lo = mask_output_low() as u64;
+        let hi = (mask_output_hi() as u64) << 32;
+        lo | hi
     }
+}
 
-    /// Check whether output is enabled for a single pin.
-    #[inline]
-    pub fn is_output(&self, pin: u8) -> bool {
-        Self::assert_pin(pin);
-        if pin < 32 {
-            (crate::sio::regs().gpio_oe.gpio_oe() & (1 << pin)) != 0
-        } else {
-            (crate::sio::regs().gpio_hi_oe.gpio() & (1 << (pin - 32))) != 0
-        }
+/// Write all 64 output-enable bits via two SIO writes.
+///
+/// # Safety
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn output_enable64_put(value: u64) {
+    unsafe {
+        mask_write_output_enable_lo(value as u32);
+        mask_write_output_enable_hi((value >> 32) as u32);
     }
+}
 
-    // ========================================================================
-    // Mask-level operations - low bank (pins 0-31)
-    // ========================================================================
-
-    /// Read the live input state of GPIO 0-31 as a bitmask.
-    ///
-    /// Bit `n` in the returned value corresponds directly to GPIO `n`.
-    #[inline]
-    pub fn mask_input_low(&self) -> u32 {
-        crate::sio::regs().gpio_in.gpio_in()
+/// Toggle selected output-enable bits across all 64 GPIOs.
+///
+/// # Safety
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn output_enable64_xor(mask: u64) {
+    unsafe {
+        mask_toggle_output_enable_lo(mask as u32);
+        mask_toggle_output_enable_hi((mask >> 32) as u32);
     }
+}
 
-    /// Read the programmed SIO output register for GPIO 0-31.
-    ///
-    /// This reports the value currently stored in `GPIO_OUT`, not the live pad
-    /// input level. Use [`Self::mask_input_low`] to sample the pins.
-    #[inline]
-    pub fn mask_output_low(&self) -> u32 {
-        crate::sio::regs().gpio_out.gpio_out()
+/// Set selected output-enable bits (to output) across all 64 GPIOs.
+///
+/// # Safety
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn output_enable64_set(mask: u64) {
+    unsafe {
+        mask_set_output_enable_lo(mask as u32);
+        mask_set_output_enable_hi((mask >> 32) as u32);
     }
+}
 
-    /// Replace the entire SIO output register for GPIO 0-31.
-    ///
-    /// Each bit in `value` maps directly to the output state of the
-    /// corresponding GPIO in the low bank.
-    #[inline]
-    pub fn mask_write_output_low(&self, value: u32) {
-        crate::sio::regs().gpio_out.write_gpio_out(value);
+/// Clear selected output-enable bits (to input) across all 64 GPIOs.
+///
+/// # Safety
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn output_enable64_clr(mask: u64) {
+    unsafe {
+        mask_clear_output_enable_lo(mask as u32);
+        mask_clear_output_enable_hi((mask >> 32) as u32);
     }
+}
 
-    /// Atomically drive selected GPIO 0-31 outputs high.
-    ///
-    /// Bits that are `1` in `mask` are set; bits that are `0` are left
-    /// unchanged.
-    #[inline]
-    pub fn mask_set_low(&self, mask: u32) {
-        crate::sio::regs().gpio_out_set.write_gpio_out_set(mask);
+/// Read all 64 output-enable bits via two SIO reads.
+///
+/// # Safety
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn output_enable64_get() -> u64 {
+    unsafe {
+        let lo = mask_output_enable_lo() as u64;
+        let hi = (mask_output_enable_hi() as u64) << 32;
+        lo | hi
     }
+}
 
-    /// Atomically drive selected GPIO 0-31 outputs low.
-    ///
-    /// Bits that are `1` in `mask` are cleared; bits that are `0` are left
-    /// unchanged.
-    #[inline]
-    pub fn mask_clr_low(&self, mask: u32) {
-        crate::sio::regs().gpio_out_clr.write_gpio_out_clr(mask);
+// ============================================================================
+// Combined-input & single-bank optimizations
+// ============================================================================
+
+/// Read all 64 input pins via two SIO reads.
+///
+/// # Safety
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn in64() -> u64 {
+    unsafe {
+        let lo = mask_input_low() as u64;
+        let hi = (mask_input_hi() as u64) << 32;
+        lo | hi
     }
+}
 
-    /// Atomically toggle selected GPIO 0-31 outputs.
-    ///
-    /// Bits that are `1` in `mask` are inverted; bits that are `0` are left
-    /// unchanged.
-    #[inline]
-    pub fn mask_xor_low(&self, mask: u32) {
-        crate::sio::regs().gpio_out_xor.write_gpio_out_xor(mask);
-    }
+/// Read a single pin in the low bank (GPIO 0–31) via one SIO read.
+///
+/// Faster than [`get`] when the pin's bank is known at compile time.
+///
+/// # Safety
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn in_pin_lo(pin: u32) -> bool {
+    unsafe { (mask_input_low() & (1 << pin)) != 0 }
+}
 
-    /// Read the SIO output-enable register for GPIO 0-31.
-    ///
-    /// A bit value of `1` means the corresponding GPIO is configured as an
-    /// output in SIO. A bit value of `0` means input/high-impedance at the SIO
-    /// data path level.
-    #[inline]
-    pub fn mask_oe_low(&self) -> u32 {
-        crate::sio::regs().gpio_oe.gpio_oe()
-    }
-
-    /// Replace the entire SIO output-enable register for GPIO 0-31.
-    ///
-    /// Each bit in `value` directly controls whether the corresponding GPIO is
-    /// driven as an output (`1`) or left as input (`0`).
-    #[inline]
-    pub fn mask_write_oe_low(&self, value: u32) {
-        crate::sio::regs().gpio_oe.write_gpio_oe(value);
-    }
-
-    /// Atomically enable SIO output mode for selected GPIO 0-31 pins.
-    #[inline]
-    pub fn mask_oe_set_low(&self, mask: u32) {
-        crate::sio::regs().gpio_oe_set.write_gpio_oe_set(mask);
-    }
-
-    /// Atomically disable SIO output mode for selected GPIO 0-31 pins.
-    #[inline]
-    pub fn mask_oe_clr_low(&self, mask: u32) {
-        crate::sio::regs().gpio_oe_clr.write_gpio_oe_clr(mask);
-    }
-
-    /// Atomically toggle SIO output mode for selected GPIO 0-31 pins.
-    #[inline]
-    pub fn mask_oe_xor_low(&self, mask: u32) {
-        crate::sio::regs().gpio_oe_xor.write_gpio_oe_xor(mask);
-    }
-
-    // ========================================================================
-    // Mask-level operations - high bank (pins 32-47)
-    // ========================================================================
-
-    /// Read the live input state of GPIO 32-47 as a compact bitmask.
-    ///
-    /// Bit `0` corresponds to GPIO 32, bit `1` to GPIO 33, and so on up to
-    /// bit `15` for GPIO 47.
-    #[inline]
-    pub fn mask_input_high(&self) -> u32 {
-        crate::sio::regs().gpio_hi_in.gpio()
-    }
-
-    /// Read the programmed SIO output register for GPIO 32-47.
-    ///
-    /// The returned mask uses bits `0..=15` for GPIO 32-47, not bits 32-47.
-    #[inline]
-    pub fn mask_output_high(&self) -> u32 {
-        crate::sio::regs().gpio_hi_out.gpio()
-    }
-
-    /// Replace the entire SIO output register for GPIO 32-47.
-    ///
-    /// Bit `0` in `value` controls GPIO 32, bit `1` controls GPIO 33, and so
-    /// on.
-    #[inline]
-    pub fn mask_write_output_high(&self, value: u32) {
-        crate::sio::regs().gpio_hi_out.write_gpio(value);
-    }
-
-    /// Atomically drive selected GPIO 32-47 outputs high.
-    #[inline]
-    pub fn mask_set_high(&self, mask: u32) {
-        crate::sio::regs().gpio_hi_out_set.write_gpio(mask);
-    }
-
-    /// Atomically drive selected GPIO 32-47 outputs low.
-    #[inline]
-    pub fn mask_clr_high(&self, mask: u32) {
-        crate::sio::regs().gpio_hi_out_clr.write_gpio(mask);
-    }
-
-    /// Atomically toggle selected GPIO 32-47 outputs.
-    #[inline]
-    pub fn mask_xor_high(&self, mask: u32) {
-        crate::sio::regs().gpio_hi_out_xor.write_gpio(mask);
-    }
-
-    /// Read the SIO output-enable register for GPIO 32-47.
-    ///
-    /// As with the other high-bank mask APIs, bit `0` corresponds to GPIO 32.
-    #[inline]
-    pub fn mask_oe_high(&self) -> u32 {
-        crate::sio::regs().gpio_hi_oe.gpio()
-    }
-
-    /// Replace the entire SIO output-enable register for GPIO 32-47.
-    #[inline]
-    pub fn mask_write_oe_high(&self, value: u32) {
-        crate::sio::regs().gpio_hi_oe.write_gpio(value);
-    }
-
-    /// Atomically enable SIO output mode for selected GPIO 32-47 pins.
-    #[inline]
-    pub fn mask_oe_set_high(&self, mask: u32) {
-        crate::sio::regs().gpio_hi_oe_set.write_gpio(mask);
-    }
-
-    /// Atomically disable SIO output mode for selected GPIO 32-47 pins.
-    #[inline]
-    pub fn mask_oe_clr_high(&self, mask: u32) {
-        crate::sio::regs().gpio_hi_oe_clr.write_gpio(mask);
-    }
-
-    /// Atomically toggle SIO output mode for selected GPIO 32-47 pins.
-    #[inline]
-    pub fn mask_oe_xor_high(&self, mask: u32) {
-        crate::sio::regs().gpio_hi_oe_xor.write_gpio(mask);
-    }
+/// Read a single pin in the high bank (GPIO 32–47) via one SIO read.
+///
+/// # Safety
+/// See the [module-level safety contract](self).
+#[inline]
+pub unsafe fn in_pin_hi(pin: u32) -> bool {
+    unsafe { (mask_input_hi() & (1 << pin)) != 0 }
 }

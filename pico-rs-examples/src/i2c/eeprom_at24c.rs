@@ -274,7 +274,7 @@ use defmt_rtt as _;
 
 use pico_rs::Delay;
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClockBuilder};
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
 use pico_rs::gpio::Pins;
 use pico_rs::i2c::{Error, I2c1, I2cBus};
@@ -519,7 +519,9 @@ fn main() -> ! {
                 "  [5] Address pins A2/A1/A0 match EEPROM_ADDR={:#04x}",
                 EEPROM_ADDR
             );
-            loop {}
+            loop {
+                pico_rs::rt::asm::nop();
+            }
         }
     }
 
@@ -543,7 +545,9 @@ fn main() -> ! {
         error!("Write failed: {}", e);
         error!("Hint: WP pin may be HIGH (connected to VCC).");
         error!("      Connect WP to GND to enable write operations.");
-        loop {}
+        loop {
+            pico_rs::rt::asm::nop();
+        }
     }
 
     // 等待 EEPROM 内部编程完成（ACK 轮询）
@@ -551,7 +555,9 @@ fn main() -> ! {
         Ok(retries) => info!("Write complete (ACK polling: {} retries)", retries),
         Err(_) => {
             error!("Write timeout! EEPROM may be write-protected (WP=HIGH).");
-            loop {}
+            loop {
+                pico_rs::rt::asm::nop();
+            }
         }
     }
 
@@ -600,14 +606,18 @@ fn main() -> ! {
 
     if let Err(e) = eeprom_write_page(&i2c, page_addr, &page_data) {
         error!("Page write failed: {}", e);
-        loop {}
+        loop {
+            pico_rs::rt::asm::nop();
+        }
     }
 
     match eeprom_wait_ready(&i2c, &delay) {
         Ok(retries) => info!("Page write complete (ACK polling: {} retries)", retries),
         Err(_) => {
             error!("Write timeout!");
-            loop {}
+            loop {
+                pico_rs::rt::asm::nop();
+            }
         }
     }
 
@@ -674,7 +684,9 @@ fn main() -> ! {
         Ok(_) => info!("Cross-page write complete"),
         Err(e) => {
             error!("Cross-page write failed: {}", e);
-            loop {}
+            loop {
+                pico_rs::rt::asm::nop();
+            }
         }
     }
 

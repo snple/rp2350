@@ -151,7 +151,7 @@ impl<const N: usize> Default for Stack<N> {
 /// 获取当前核心的 ID
 #[inline]
 pub fn core_id() -> CoreId {
-    match crate::sio::regs().cpuid.cpuid() {
+    match unsafe { &*crate::sio::REGS }.cpuid.cpuid() {
         0 => CoreId::Core0,
         _ => CoreId::Core1,
     }
@@ -196,7 +196,7 @@ impl Fifo {
     #[inline]
     pub fn steal() -> Self {
         Self {
-            sio: crate::sio::regs(),
+            sio: unsafe { &*crate::sio::REGS },
         }
     }
 
@@ -349,7 +349,7 @@ impl Doorbell {
     #[inline]
     pub fn steal() -> Self {
         Self {
-            sio: crate::sio::regs(),
+            sio: unsafe { &*crate::sio::REGS },
         }
     }
 

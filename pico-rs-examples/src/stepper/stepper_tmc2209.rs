@@ -1,7 +1,7 @@
 //! # TMC2209 步进电机控制 — 基于 pico_rs_drivers
 //!
 //! 使用 [`pico_rs_drivers::tmc2209::Tmc2209`] 驱动 TMC2209 芯片，
-//! 使用 [`pico_rs_drivers::stepper::AxisState`] 实现 STEP/DIR 脉冲生成与梯形加减速。
+//! 使用 [`pico_rs_drivers::stepper::tmc2209::AxisState`] 实现 STEP/DIR 脉冲生成与梯形加减速。
 //!
 //! ---
 //!
@@ -43,21 +43,20 @@
 #![no_std]
 #![no_main]
 
-use pico_rs_drivers::stepper::{AxisConfig, AxisState, Direction};
+use pico_rs_drivers::stepper::Direction;
+use pico_rs_drivers::stepper::tmc2209::{AxisConfig, AxisState};
 use pico_rs_drivers::tmc2209::{
     Gconf, IholdIr, REG_CHOPCONF, REG_IHOLD_IRUN, REG_PWMCONF, REG_SGTHRS, REG_TCOOLTHRS,
     REG_TPOWERDOWN, Tmc2209, microstepping_to_mres,
 };
 
-use core::sync::atomic::{AtomicBool, Ordering};
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::Steal;
 use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
-use pico_rs::gpio::{EdgeLevel, Gpio, Pin, Pins};
+use pico_rs::gpio::{self, Pins};
 use pico_rs::interrupt;
 use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::ticks::Ticks;
@@ -136,14 +135,14 @@ const HOMING_BACKOFF_STEPS: u32 = 200;
 
 /// GP4 → UART1_TX → TMC2209 PDN_UART
 /// GP5 → UART1_RX → TMC2209 PDN_UART
-const PIN_ENABLE: u8 = 7; // GP7  → ENN (低有效)
+const PIN_ENABLE: u32 = 7; // GP7  → ENN (低有效)
 
 // #1
 const TMC_SLAVE_ADDR: u8 = 0x00; // TMC2209 从机地址
-const PIN_DIR: u8 = 8; // GP8  → DIR
-const PIN_STEP: u8 = 9; // GP9  → STEP
-const PIN_INDEX: u8 = 10; // GP10 → INDEX
-const PIN_DIAG: u8 = 11; // GP11 → DIAG
+const PIN_DIR: u32 = 8; // GP8  → DIR
+const PIN_STEP: u32 = 9; // GP9  → STEP
+const PIN_INDEX: u32 = 10; // GP10 → INDEX
+const PIN_DIAG: u32 = 11; // GP11 → DIAG
 
 // #2
 // const TMC_SLAVE_ADDR: u8 = 0x01; // TMC2209 从机地址
@@ -163,19 +162,10 @@ static AXIS: AxisState = AxisState::new(AxisConfig {
     start_speed_hz: START_SPEED_HZ,
     accel_steps: ACCEL_STEPS,
     step_pulse_us: STEP_PULSE_US,
-    limit_pin: Some(PIN_DIAG),
-    limit_active_high: true, // DIAG 高电平 = 堵转
-    index_pin: Some(PIN_INDEX),
+    diag_pin: PIN_DIAG,
+    index_pin: PIN_INDEX,
     homing_backoff_index: 0, // 不使用 INDEX 回退
 });
-
-/// 堵转检测标志 — DIAG 中断置位
-static STALL_DETECTED: AtomicBool = AtomicBool::new(false);
-
-#[inline(always)]
-fn gpio() -> Steal<Gpio> {
-    unsafe { Gpio::steal() }
-}
 
 // ============================================================================
 // 运动控制辅助函数
@@ -238,17 +228,17 @@ fn main() -> ! {
     // ENN (低有效): 初始拉高 = 禁用
     let _en = pins.pin::<PIN_ENABLE>();
     _en.into_output();
-    gpio().set_high(PIN_ENABLE);
+    unsafe { gpio::set_high(PIN_ENABLE) };
 
     // DIR: 初始低
     let _dir = pins.pin::<PIN_DIR>();
     _dir.into_output();
-    gpio().set_low(PIN_DIR);
+    unsafe { gpio::set_low(PIN_DIR) };
 
     // STEP: 初始低
     let _step = pins.pin::<PIN_STEP>();
     _step.into_output();
-    gpio().set_low(PIN_STEP);
+    unsafe { gpio::set_low(PIN_STEP) };
 
     // INDEX: 输入 (由 AxisState 读取)
     let _index = pins.pin::<PIN_INDEX>();
@@ -257,7 +247,6 @@ fn main() -> ! {
     // DIAG: 开漏输出, 上拉 + 上升沿中断
     let p_diag = pins.pin::<PIN_DIAG>();
     p_diag.into_input_pullup();
-    p_diag.enable_interrupt(EdgeLevel::EdgeHigh);
 
     info!("GPIO configured");
 
@@ -297,7 +286,7 @@ fn main() -> ! {
 
     // --- 测试 ENN (GPxx) ---
     info!("--- ENN (GP{}) test ---", PIN_ENABLE);
-    gpio().set_high(PIN_ENABLE);
+    unsafe { gpio::set_high(PIN_ENABLE) };
     timer.delay_ms(2);
     match tmc.read_ioin(&timer) {
         Some(v) => info!(
@@ -308,7 +297,7 @@ fn main() -> ! {
         ),
         None => warn!("  read failed"),
     }
-    gpio().set_low(PIN_ENABLE);
+    unsafe { gpio::set_low(PIN_ENABLE) };
     timer.delay_ms(2);
     match tmc.read_ioin(&timer) {
         Some(v) => info!(
@@ -322,7 +311,7 @@ fn main() -> ! {
 
     // --- 测试 DIR (GPxx) ---
     info!("--- DIR (GP{}) test ---", PIN_DIR);
-    gpio().set_high(PIN_DIR);
+    unsafe { gpio::set_high(PIN_DIR) };
     timer.delay_ms(2);
     match tmc.read_ioin(&timer) {
         Some(v) => info!(
@@ -333,7 +322,7 @@ fn main() -> ! {
         ),
         None => warn!("  read failed"),
     }
-    gpio().set_low(PIN_DIR);
+    unsafe { gpio::set_low(PIN_DIR) };
     timer.delay_ms(2);
     match tmc.read_ioin(&timer) {
         Some(v) => info!(
@@ -347,7 +336,7 @@ fn main() -> ! {
 
     // --- 测试 STEP (GPxx) ---
     info!("--- STEP (GP{}) test ---", PIN_STEP);
-    gpio().set_high(PIN_STEP);
+    unsafe { gpio::set_high(PIN_STEP) };
     timer.delay_ms(2);
     match tmc.read_ioin(&timer) {
         Some(v) => info!(
@@ -358,7 +347,7 @@ fn main() -> ! {
         ),
         None => warn!("  read failed"),
     }
-    gpio().set_low(PIN_STEP);
+    unsafe { gpio::set_low(PIN_STEP) };
     timer.delay_ms(2);
     match tmc.read_ioin(&timer) {
         Some(v) => info!(
@@ -372,7 +361,7 @@ fn main() -> ! {
 
     // --- 测试 INDEX (GPxx, TMC2209 输出 → Pico 输入) ---
     info!("--- INDEX (GP{}) test (Pico-side read) ---", PIN_INDEX);
-    let idx_state = gpio().get(PIN_INDEX);
+    let idx_state = unsafe { gpio::get(PIN_INDEX) };
     info!(
         "  INDEX pin = {} (TMC2209 output, expect stable HIGH or LOW)",
         idx_state
@@ -380,7 +369,7 @@ fn main() -> ! {
 
     // --- 测试 DIAG (GPxx, TMC2209 开漏输出 → Pico 上拉输入) ---
     info!("--- DIAG (GP{}) test (Pico-side read) ---", PIN_DIAG);
-    let diag_state = gpio().get(PIN_DIAG);
+    let diag_state = unsafe { gpio::get(PIN_DIAG) };
     info!(
         "  DIAG pin = {} (open-drain w/ pull-up, expect HIGH) {}",
         diag_state,
@@ -392,9 +381,9 @@ fn main() -> ! {
     );
 
     // 恢复初始状态: ENN=HIGH (禁用), DIR=LOW, STEP=LOW
-    gpio().set_high(PIN_ENABLE);
-    gpio().set_low(PIN_DIR);
-    gpio().set_low(PIN_STEP);
+    unsafe { gpio::set_high(PIN_ENABLE) };
+    unsafe { gpio::set_low(PIN_DIR) };
+    unsafe { gpio::set_low(PIN_STEP) };
     info!("Pin test complete. ENN=HIGH (disabled), DIR=LOW, STEP=LOW");
     timer.delay_ms(50);
 
@@ -604,14 +593,13 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     unsafe {
         interrupt::enable(Interrupt::TIMER0_IRQ_0);
-        interrupt::enable(Interrupt::IO_IRQ_BANK0);
     }
     info!("Interrupts enabled");
 
     // ------------------------------------------------------------------
     // 5. 使能电机
     // ------------------------------------------------------------------
-    gpio().set_low(PIN_ENABLE);
+    unsafe { gpio::set_low(PIN_ENABLE) };
     timer.delay_ms(10);
 
     // 回读 IOIN 确认 ENN 引脚状态
@@ -708,12 +696,11 @@ fn main() -> ! {
 
     tmc.set_sg_threshold(HOMING_SG_THRESHOLD, &timer);
     timer.delay_ms(50);
-    STALL_DETECTED.store(false, Ordering::Relaxed);
 
     start_continuous(Direction::Forward, HOMING_SPEED_HZ);
 
     let mut timeout = 0u32;
-    while !STALL_DETECTED.load(Ordering::Relaxed) && timeout < 20 {
+    while !AXIS.stall_occurred() && timeout < 20 {
         timer.delay_ms(500);
         timeout += 1;
         if let Some(sg) = tmc.read_sg_result(&timer) {
@@ -722,10 +709,9 @@ fn main() -> ! {
     }
     stop_motion();
 
-    if STALL_DETECTED.load(Ordering::Relaxed) {
+    if AXIS.stall_occurred() {
         info!("STALL DETECTED at pos={}!", AXIS.position());
         info!("Backing off {} steps...", HOMING_BACKOFF_STEPS);
-        STALL_DETECTED.store(false, Ordering::Relaxed);
         timer.delay_ms(200);
 
         start_move(HOMING_BACKOFF_STEPS, Direction::Reverse);
@@ -744,7 +730,6 @@ fn main() -> ! {
 
     tmc.set_sg_threshold(HOMING_SG_THRESHOLD, &timer);
     timer.delay_ms(50);
-    STALL_DETECTED.store(false, Ordering::Relaxed);
 
     // 使用 start_homing 向 Reverse 方向 (反方向 = 向限位)
     AXIS.start_homing(&timer, HOMING_SPEED_HZ);
@@ -827,18 +812,4 @@ fn main() -> ! {
 fn TIMER0_IRQ_0() {
     let timer = unsafe { Timer0::steal() };
     AXIS.handle_alarm_isr(&timer);
-}
-
-// ============================================================================
-// IO_IRQ_BANK0 ISR — DIAG 引脚堵转检测
-// ============================================================================
-
-#[unsafe(no_mangle)]
-#[allow(non_snake_case)]
-fn IO_IRQ_BANK0() {
-    let pin = unsafe { Pin::<{ PIN_DIAG }>::steal() };
-    if pin.check_and_clear(EdgeLevel::EdgeHigh) {
-        AXIS.stop();
-        STALL_DETECTED.store(true, Ordering::Relaxed);
-    }
 }

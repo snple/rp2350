@@ -13,10 +13,10 @@
 #![no_std]
 #![no_main]
 
-use pico_rs_drivers::stepper::{AxisConfig, AxisState, Direction};
+use pico_rs_drivers::stepper::Direction;
+use pico_rs_drivers::stepper::tmc2209::{AxisConfig, AxisState};
 use pico_rs_drivers::tmc2209::Tmc2209;
 
-use core::sync::atomic::{AtomicBool, Ordering};
 use defmt::*;
 use defmt_rtt as _;
 
@@ -24,7 +24,7 @@ use pico_rs::Steal;
 use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
-use pico_rs::gpio::{EdgeLevel, Gpio, Pin, Pins};
+use pico_rs::gpio::{self, Pins};
 use pico_rs::interrupt;
 use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::ticks::Ticks;
@@ -146,14 +146,14 @@ const TMC_UART_BAUD: u32 = 115_200;
 // 引脚定义
 // ============================================================================
 
-const PIN_ENABLE: u8 = 7;
+const PIN_ENABLE: u32 = 7;
 
 // #1 (电机 1: GP8–11, addr 0x00)
 const TMC_SLAVE_ADDR: u8 = 0x00;
-const PIN_DIR: u8 = 8;
-const PIN_STEP: u8 = 9;
-const PIN_INDEX: u8 = 10;
-const PIN_DIAG: u8 = 11;
+const PIN_DIR: u32 = 8;
+const PIN_STEP: u32 = 9;
+const PIN_INDEX: u32 = 10;
+const PIN_DIAG: u32 = 11;
 
 // ============================================================================
 // 步进轴状态
@@ -166,18 +166,10 @@ static AXIS: AxisState = AxisState::new(AxisConfig {
     start_speed_hz: 500,
     accel_steps: ACCEL_STEPS,
     step_pulse_us: STEP_PULSE_US,
-    limit_pin: Some(PIN_DIAG),
-    limit_active_high: true,
-    index_pin: Some(PIN_INDEX),
+    diag_pin: PIN_DIAG,
+    index_pin: PIN_INDEX,
     homing_backoff_index: 0,
 });
-
-static STALL_DETECTED: AtomicBool = AtomicBool::new(false);
-
-#[inline(always)]
-fn gpio() -> Steal<Gpio> {
-    unsafe { Gpio::steal() }
-}
 
 #[inline(always)]
 fn timer() -> Steal<Timer0> {
@@ -205,22 +197,21 @@ fn main() -> ! {
     // --- GPIO ---
     let _en = pins.pin::<PIN_ENABLE>();
     _en.into_output();
-    gpio().set_high(PIN_ENABLE);
+    unsafe { gpio::set_high(PIN_ENABLE) };
 
     let _dir = pins.pin::<PIN_DIR>();
     _dir.into_output();
-    gpio().set_low(PIN_DIR);
+    unsafe { gpio::set_low(PIN_DIR) };
 
     let _step = pins.pin::<PIN_STEP>();
     _step.into_output();
-    gpio().set_low(PIN_STEP);
+    unsafe { gpio::set_low(PIN_STEP) };
 
     let _index = pins.pin::<PIN_INDEX>();
     _index.into_input_pullup();
 
     let p_diag = pins.pin::<PIN_DIAG>();
     p_diag.into_input_pullup();
-    p_diag.enable_interrupt(EdgeLevel::EdgeHigh);
 
     // --- UART ---
     let uart = Uart1::new(
@@ -272,11 +263,10 @@ fn main() -> ! {
     // --- 中断 ---
     unsafe {
         interrupt::enable(Interrupt::TIMER0_IRQ_0);
-        interrupt::enable(Interrupt::IO_IRQ_BANK0);
     }
 
     // --- 使能 ---
-    gpio().set_low(PIN_ENABLE);
+    unsafe { gpio::set_low(PIN_ENABLE) };
     timer.delay_ms(100);
 
     // ======================================================================
@@ -391,11 +381,10 @@ fn main() -> ! {
             "[lap {}] moving done  pos={}  DIR={}",
             lap,
             AXIS.position(),
-            gpio().get(PIN_DIR)
+            unsafe { gpio::get(PIN_DIR) }
         );
 
-        // 堵转触发后 DIAG ISR 调用 stop() → motion_done=true → 到达此处
-        STALL_DETECTED.store(false, Ordering::Relaxed);
+        // 堵转触发后 Timer ISR 检测到 DIAG → stop + motion_done=true → 到达此处
         let pos = AXIS.position();
         info!(
             "[lap {}] STALL at pos={} — back off {} steps @ {} Hz",
@@ -403,20 +392,14 @@ fn main() -> ! {
         );
 
         // 反向低速退离末端，防止皮带回弹反复触发
-        // 退离期间暂时屏蔽 DIAG 中断，避免退离动作再次触发堵转
         let back_dir = match direction {
             Direction::Forward => Direction::Reverse,
             Direction::Reverse => Direction::Forward,
         };
 
-        // interrupt::disable(Interrupt::IO_IRQ_BANK0);
-
         AXIS.start_move(&timer, BACKOFF_STEPS, back_dir, BACKOFF_SPEED_HZ);
         AXIS.wait_done();
         info!("[lap {}] moving done  pos={}", lap, AXIS.position());
-        // unsafe {
-        //     interrupt::enable(Interrupt::IO_IRQ_BANK0);
-        // }
 
         info!(
             "[lap {}] backoff done  pos={} — pause {} ms",
@@ -440,15 +423,4 @@ fn main() -> ! {
 fn TIMER0_IRQ_0() {
     let t = timer();
     AXIS.handle_alarm_isr(&t);
-}
-
-#[unsafe(no_mangle)]
-#[allow(non_snake_case)]
-fn IO_IRQ_BANK0() {
-    let pin = unsafe { Pin::<{ PIN_DIAG }>::steal() };
-    if pin.check_and_clear(EdgeLevel::EdgeHigh) {
-        warn!("DIAG stall!");
-        AXIS.stop();
-        STALL_DETECTED.store(true, Ordering::Relaxed);
-    }
 }

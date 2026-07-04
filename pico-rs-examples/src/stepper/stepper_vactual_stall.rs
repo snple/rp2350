@@ -19,11 +19,10 @@ use core::sync::atomic::{AtomicBool, Ordering};
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::Steal;
 use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
-use pico_rs::gpio::{EdgeLevel, Gpio, Pin, Pins};
+use pico_rs::gpio::{self, EdgeLevel, Pin, Pins};
 use pico_rs::interrupt;
 use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::ticks::Ticks;
@@ -75,12 +74,12 @@ const TMC_UART_BAUD: u32 = 115_200;
 // 引脚定义
 // ============================================================================
 
-const PIN_ENABLE: u8 = 7;
+const PIN_ENABLE: u32 = 7;
 
 // #1 (电机 1: GP8–11, addr 0x00)
 // VACTUAL 模式下无需 STEP/DIR/INDEX，方向由 set_vactual(±vel) 控制。
 const TMC_SLAVE_ADDR: u8 = 0x00;
-const PIN_DIAG: u8 = 11;
+const PIN_DIAG: u32 = 11;
 
 // ============================================================================
 // 全局状态
@@ -88,11 +87,6 @@ const PIN_DIAG: u8 = 11;
 
 /// 堵转标记：DIAG ISR 置 true，主循环检查后清除
 static STALL_FLAG: AtomicBool = AtomicBool::new(false);
-
-#[inline(always)]
-fn gpio() -> Steal<Gpio> {
-    unsafe { Gpio::steal() }
-}
 
 // ============================================================================
 // 程序入口
@@ -115,7 +109,7 @@ fn main() -> ! {
     // --- GPIO ---
     let _en = pins.pin::<PIN_ENABLE>();
     _en.into_output();
-    gpio().set_high(PIN_ENABLE);
+    unsafe { gpio::set_high(PIN_ENABLE) };
 
     let p_diag = pins.pin::<PIN_DIAG>();
     p_diag.into_input_pullup();
@@ -169,7 +163,7 @@ fn main() -> ! {
     }
 
     // --- 使能 ---
-    gpio().set_low(PIN_ENABLE);
+    unsafe { gpio::set_low(PIN_ENABLE) };
     timer.delay_ms(100);
 
     let vactual = tmc2209::microsteps_per_sec_to_vactual(RUN_SPEED_HZ as i32);

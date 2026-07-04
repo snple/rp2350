@@ -2,5 +2,3 @@
 
 pub mod stepper;
 pub mod tmc2209;
-
-pub use stepper::*;

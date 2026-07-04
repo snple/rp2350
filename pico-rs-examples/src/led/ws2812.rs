@@ -27,7 +27,7 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClockBuilder};
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
 use pico_rs::gpio::Pins;
 use pico_rs::pac::Peripherals;
@@ -216,10 +216,10 @@ fn main() -> ! {
 
     loop {
         // Generate a rainbow pattern
-        for i in 0..NUM_LEDS {
+        for (i, pixel) in pixels.iter_mut().enumerate() {
             let hue = ((hue_offset + (i as u16 * 256 / NUM_LEDS as u16)) % 256) as u8;
             let (r, g, b) = hsv_to_rgb(hue, 255, 32); // low brightness to protect eyes
-            pixels[i] = urgb_u32(r, g, b);
+            *pixel = urgb_u32(r, g, b);
         }
 
         // Send pixel data

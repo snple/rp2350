@@ -111,12 +111,12 @@ fn main() -> ! {
         // 模拟周期性触发
         counter = counter.wrapping_add(1);
 
-        if counter % 1_000_000 == 0 {
+        if counter.is_multiple_of(1_000_000) {
             // 触发高优先级任务
             interrupt::pend(spare::SPARE_IRQ_0);
         }
 
-        if counter % 2_000_000 == 0 {
+        if counter.is_multiple_of(2_000_000) {
             // 触发低优先级任务
             interrupt::pend(spare::SPARE_IRQ_1);
         }

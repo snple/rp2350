@@ -89,24 +89,19 @@ pub const fn is_secure() -> bool {
     cfg!(not(feature = "non-secure"))
 }
 
-/// Get the SIO register block reference.
-///
-/// This is the central access point for all SIO operations.
-/// Uses the base address selected at compile time by the `non-secure` feature.
+/// Raw pointer to the SIO register block — use via `unsafe { &*REGS }`.
 ///
 /// # Safety
 ///
-/// Both `sio::RegisterBlock` and `sio_ns::RegisterBlock` have identical memory
-/// layouts (verified from SVD). The cast from SIO_NS address to
-/// `sio::RegisterBlock` is safe due to layout equivalence.
-#[inline(always)]
-pub(crate) const fn regs() -> &'static RegisterBlock {
-    unsafe { &*(SIO_BASE as *const RegisterBlock) }
-}
+/// Dereferencing this pointer is unsafe. Both `sio::RegisterBlock` and
+/// `sio_ns::RegisterBlock` have identical memory layouts (verified from SVD).
+/// The cast from SIO_NS address to `sio::RegisterBlock` is safe for access
+/// due to layout equivalence.
+pub(crate) const REGS: *const RegisterBlock = SIO_BASE as *const RegisterBlock;
 
 #[inline]
 pub(crate) fn release_all_spinlocks() {
-    let r = regs();
+    let r = unsafe { &*REGS };
 
     r.spinlock0.write_spinlock0(1);
     r.spinlock1.write_spinlock1(1);
@@ -178,7 +173,7 @@ impl Sio {
     /// Get the current core's ID (0 or 1).
     #[inline]
     pub fn core_id(&self) -> u32 {
-        regs().cpuid.cpuid()
+        unsafe { &*REGS }.cpuid.cpuid()
     }
 
     // ========================================================================
@@ -190,7 +185,7 @@ impl Sio {
     /// Each bit represents a spinlock: 1 = locked, 0 = unlocked.
     #[inline]
     pub fn spinlock_state(&self) -> u32 {
-        regs().spinlock_st.read_bits()
+        unsafe { &*REGS }.spinlock_st.read_bits()
     }
 
     /// Check if a specific spinlock is locked.
@@ -276,7 +271,7 @@ macro_rules! impl_spinlock_access {
                 #[inline]
                 pub fn try_acquire() -> Option<SpinlockGuard<N>> {
                     let _ = Self::_ASSERT;
-                    let r = regs();
+                    let r = unsafe { &*REGS };
                     let result = match N {
                         $(
                             $num => r.$spinlock.[<$spinlock>](),
@@ -312,7 +307,7 @@ macro_rules! impl_spinlock_access {
                 #[inline]
                 pub fn release() {
                     let _ = Self::_ASSERT;
-                    let r = regs();
+                    let r = unsafe { &*REGS };
                     match N {
                         $(
                             $num => r.$spinlock.[<write_ $spinlock>](1),
@@ -324,7 +319,7 @@ macro_rules! impl_spinlock_access {
                 /// Check if the spinlock is currently locked.
                 #[inline]
                 pub fn is_locked() -> bool {
-                    (regs().spinlock_st.read_bits() & (1u32 << N)) != 0
+                    (unsafe { &*REGS }.spinlock_st.read_bits() & (1u32 << N)) != 0
                 }
             }
         }
@@ -362,31 +357,31 @@ impl<'a> Interp0<'a> {
     /// Read accumulator 0.
     #[inline]
     pub fn accum0(&self) -> u32 {
-        regs().interp0_accum0.read_bits()
+        unsafe { &*REGS }.interp0_accum0.read_bits()
     }
 
     /// Write accumulator 0.
     #[inline]
     pub fn set_accum0(&self, value: u32) {
-        regs().interp0_accum0.write_bits(value);
+        unsafe { &*REGS }.interp0_accum0.write_bits(value);
     }
 
     /// Read accumulator 1.
     #[inline]
     pub fn accum1(&self) -> u32 {
-        regs().interp0_accum1.read_bits()
+        unsafe { &*REGS }.interp0_accum1.read_bits()
     }
 
     /// Write accumulator 1.
     #[inline]
     pub fn set_accum1(&self, value: u32) {
-        regs().interp0_accum1.write_bits(value);
+        unsafe { &*REGS }.interp0_accum1.write_bits(value);
     }
 
     /// Add to accumulator 0 atomically and return the add value.
     #[inline]
     pub fn add_accum0(&self, value: u32) -> u32 {
-        let r = regs();
+        let r = unsafe { &*REGS };
         r.interp0_accum0_add.write_interp0_accum0_add(value);
         r.interp0_accum0_add.interp0_accum0_add()
     }
@@ -394,7 +389,7 @@ impl<'a> Interp0<'a> {
     /// Add to accumulator 1 atomically and return the add value.
     #[inline]
     pub fn add_accum1(&self, value: u32) -> u32 {
-        let r = regs();
+        let r = unsafe { &*REGS };
         r.interp0_accum1_add.write_interp0_accum1_add(value);
         r.interp0_accum1_add.interp0_accum1_add()
     }
@@ -406,43 +401,43 @@ impl<'a> Interp0<'a> {
     /// Read base 0.
     #[inline]
     pub fn base0(&self) -> u32 {
-        regs().interp0_base0.read_bits()
+        unsafe { &*REGS }.interp0_base0.read_bits()
     }
 
     /// Write base 0.
     #[inline]
     pub fn set_base0(&self, value: u32) {
-        regs().interp0_base0.write_bits(value);
+        unsafe { &*REGS }.interp0_base0.write_bits(value);
     }
 
     /// Read base 1.
     #[inline]
     pub fn base1(&self) -> u32 {
-        regs().interp0_base1.read_bits()
+        unsafe { &*REGS }.interp0_base1.read_bits()
     }
 
     /// Write base 1.
     #[inline]
     pub fn set_base1(&self, value: u32) {
-        regs().interp0_base1.write_bits(value);
+        unsafe { &*REGS }.interp0_base1.write_bits(value);
     }
 
     /// Read base 2.
     #[inline]
     pub fn base2(&self) -> u32 {
-        regs().interp0_base2.read_bits()
+        unsafe { &*REGS }.interp0_base2.read_bits()
     }
 
     /// Write base 2.
     #[inline]
     pub fn set_base2(&self, value: u32) {
-        regs().interp0_base2.write_bits(value);
+        unsafe { &*REGS }.interp0_base2.write_bits(value);
     }
 
     /// Write both base 0 (lower 16 bits) and base 1 (upper 16 bits) simultaneously.
     #[inline]
     pub fn set_base_1and0(&self, base0: u16, base1: u16) {
-        regs()
+        unsafe { &*REGS }
             .interp0_base_1and0
             .write_interp0_base_1and0((base0 as u32) | ((base1 as u32) << 16));
     }
@@ -454,19 +449,19 @@ impl<'a> Interp0<'a> {
     /// Peek lane 0 result without modifying state.
     #[inline]
     pub fn peek_lane0(&self) -> u32 {
-        regs().interp0_peek_lane0.read_bits()
+        unsafe { &*REGS }.interp0_peek_lane0.read_bits()
     }
 
     /// Peek lane 1 result without modifying state.
     #[inline]
     pub fn peek_lane1(&self) -> u32 {
-        regs().interp0_peek_lane1.read_bits()
+        unsafe { &*REGS }.interp0_peek_lane1.read_bits()
     }
 
     /// Peek full result without modifying state.
     #[inline]
     pub fn peek_full(&self) -> u32 {
-        regs().interp0_peek_full.read_bits()
+        unsafe { &*REGS }.interp0_peek_full.read_bits()
     }
 
     // ========================================================================
@@ -476,19 +471,19 @@ impl<'a> Interp0<'a> {
     /// Pop lane 0 result and write lane results to both accumulators.
     #[inline]
     pub fn pop_lane0(&self) -> u32 {
-        regs().interp0_pop_lane0.read_bits()
+        unsafe { &*REGS }.interp0_pop_lane0.read_bits()
     }
 
     /// Pop lane 1 result and write lane results to both accumulators.
     #[inline]
     pub fn pop_lane1(&self) -> u32 {
-        regs().interp0_pop_lane1.read_bits()
+        unsafe { &*REGS }.interp0_pop_lane1.read_bits()
     }
 
     /// Pop full result and write lane results to both accumulators.
     #[inline]
     pub fn pop_full(&self) -> u32 {
-        regs().interp0_pop_full.read_bits()
+        unsafe { &*REGS }.interp0_pop_full.read_bits()
     }
 
     // ========================================================================
@@ -498,13 +493,13 @@ impl<'a> Interp0<'a> {
     /// Read lane 0 control register raw value.
     #[inline]
     pub fn ctrl_lane0(&self) -> u32 {
-        regs().interp0_ctrl_lane0.read_bits()
+        unsafe { &*REGS }.interp0_ctrl_lane0.read_bits()
     }
 
     /// Write lane 0 control register raw value.
     #[inline]
     pub fn set_ctrl_lane0(&self, value: u32) {
-        regs().interp0_ctrl_lane0.write_bits(value);
+        unsafe { &*REGS }.interp0_ctrl_lane0.write_bits(value);
     }
 
     /// Configure lane 0 shift and mask using PAC field methods.
@@ -516,7 +511,7 @@ impl<'a> Interp0<'a> {
     /// * `signed` — Enable sign extension
     #[inline]
     pub fn config_lane0(&self, shift: u8, mask_lsb: u8, mask_msb: u8, signed: bool) {
-        regs().interp0_ctrl_lane0.modify_val(|v| {
+        unsafe { &*REGS }.interp0_ctrl_lane0.modify_val(|v| {
             v.with_shift(shift as u32)
                 .with_mask_lsb(mask_lsb as u32)
                 .with_mask_msb(mask_msb as u32)
@@ -527,7 +522,7 @@ impl<'a> Interp0<'a> {
     /// Enable or disable BLEND mode (interpolator 0 only).
     #[inline]
     pub fn set_blend(&self, enable: bool) {
-        regs()
+        unsafe { &*REGS }
             .interp0_ctrl_lane0
             .modify_val(|v| v.with_blend(enable));
     }
@@ -535,7 +530,7 @@ impl<'a> Interp0<'a> {
     /// Check if BLEND mode is enabled.
     #[inline]
     pub fn blend(&self) -> bool {
-        regs().interp0_ctrl_lane0.blend()
+        unsafe { &*REGS }.interp0_ctrl_lane0.blend()
     }
 
     // ========================================================================
@@ -545,19 +540,19 @@ impl<'a> Interp0<'a> {
     /// Read lane 1 control register raw value.
     #[inline]
     pub fn ctrl_lane1(&self) -> u32 {
-        regs().interp0_ctrl_lane1.read_bits()
+        unsafe { &*REGS }.interp0_ctrl_lane1.read_bits()
     }
 
     /// Write lane 1 control register raw value.
     #[inline]
     pub fn set_ctrl_lane1(&self, value: u32) {
-        regs().interp0_ctrl_lane1.write_bits(value);
+        unsafe { &*REGS }.interp0_ctrl_lane1.write_bits(value);
     }
 
     /// Configure lane 1 shift and mask.
     #[inline]
     pub fn config_lane1(&self, shift: u8, mask_lsb: u8, mask_msb: u8, signed: bool) {
-        regs().interp0_ctrl_lane1.modify_val(|v| {
+        unsafe { &*REGS }.interp0_ctrl_lane1.modify_val(|v| {
             v.with_shift(shift as u32)
                 .with_mask_lsb(mask_lsb as u32)
                 .with_mask_msb(mask_msb as u32)
@@ -572,19 +567,19 @@ impl<'a> Interp0<'a> {
     /// Check if accumulator 0 has overflow.
     #[inline]
     pub fn overf0(&self) -> bool {
-        regs().interp0_ctrl_lane0.overf0()
+        unsafe { &*REGS }.interp0_ctrl_lane0.overf0()
     }
 
     /// Check if accumulator 1 has overflow.
     #[inline]
     pub fn overf1(&self) -> bool {
-        regs().interp0_ctrl_lane0.overf1()
+        unsafe { &*REGS }.interp0_ctrl_lane0.overf1()
     }
 
     /// Check if either accumulator has overflow.
     #[inline]
     pub fn overf(&self) -> bool {
-        regs().interp0_ctrl_lane0.overf()
+        unsafe { &*REGS }.interp0_ctrl_lane0.overf()
     }
 }
 
@@ -608,31 +603,31 @@ impl<'a> Interp1<'a> {
     /// Read accumulator 0.
     #[inline]
     pub fn accum0(&self) -> u32 {
-        regs().interp1_accum0.read_bits()
+        unsafe { &*REGS }.interp1_accum0.read_bits()
     }
 
     /// Write accumulator 0.
     #[inline]
     pub fn set_accum0(&self, value: u32) {
-        regs().interp1_accum0.write_bits(value);
+        unsafe { &*REGS }.interp1_accum0.write_bits(value);
     }
 
     /// Read accumulator 1.
     #[inline]
     pub fn accum1(&self) -> u32 {
-        regs().interp1_accum1.read_bits()
+        unsafe { &*REGS }.interp1_accum1.read_bits()
     }
 
     /// Write accumulator 1.
     #[inline]
     pub fn set_accum1(&self, value: u32) {
-        regs().interp1_accum1.write_bits(value);
+        unsafe { &*REGS }.interp1_accum1.write_bits(value);
     }
 
     /// Add to accumulator 0 atomically and return the add value.
     #[inline]
     pub fn add_accum0(&self, value: u32) -> u32 {
-        let r = regs();
+        let r = unsafe { &*REGS };
         r.interp1_accum0_add.write_interp1_accum0_add(value);
         r.interp1_accum0_add.interp1_accum0_add()
     }
@@ -640,7 +635,7 @@ impl<'a> Interp1<'a> {
     /// Add to accumulator 1 atomically and return the add value.
     #[inline]
     pub fn add_accum1(&self, value: u32) -> u32 {
-        let r = regs();
+        let r = unsafe { &*REGS };
         r.interp1_accum1_add.write_interp1_accum1_add(value);
         r.interp1_accum1_add.interp1_accum1_add()
     }
@@ -652,43 +647,43 @@ impl<'a> Interp1<'a> {
     /// Read base 0.
     #[inline]
     pub fn base0(&self) -> u32 {
-        regs().interp1_base0.read_bits()
+        unsafe { &*REGS }.interp1_base0.read_bits()
     }
 
     /// Write base 0.
     #[inline]
     pub fn set_base0(&self, value: u32) {
-        regs().interp1_base0.write_bits(value);
+        unsafe { &*REGS }.interp1_base0.write_bits(value);
     }
 
     /// Read base 1.
     #[inline]
     pub fn base1(&self) -> u32 {
-        regs().interp1_base1.read_bits()
+        unsafe { &*REGS }.interp1_base1.read_bits()
     }
 
     /// Write base 1.
     #[inline]
     pub fn set_base1(&self, value: u32) {
-        regs().interp1_base1.write_bits(value);
+        unsafe { &*REGS }.interp1_base1.write_bits(value);
     }
 
     /// Read base 2.
     #[inline]
     pub fn base2(&self) -> u32 {
-        regs().interp1_base2.read_bits()
+        unsafe { &*REGS }.interp1_base2.read_bits()
     }
 
     /// Write base 2.
     #[inline]
     pub fn set_base2(&self, value: u32) {
-        regs().interp1_base2.write_bits(value);
+        unsafe { &*REGS }.interp1_base2.write_bits(value);
     }
 
     /// Write both base 0 (lower 16 bits) and base 1 (upper 16 bits) simultaneously.
     #[inline]
     pub fn set_base_1and0(&self, base0: u16, base1: u16) {
-        regs()
+        unsafe { &*REGS }
             .interp1_base_1and0
             .write_interp1_base_1and0((base0 as u32) | ((base1 as u32) << 16));
     }
@@ -700,19 +695,19 @@ impl<'a> Interp1<'a> {
     /// Peek lane 0 result without modifying state.
     #[inline]
     pub fn peek_lane0(&self) -> u32 {
-        regs().interp1_peek_lane0.read_bits()
+        unsafe { &*REGS }.interp1_peek_lane0.read_bits()
     }
 
     /// Peek lane 1 result without modifying state.
     #[inline]
     pub fn peek_lane1(&self) -> u32 {
-        regs().interp1_peek_lane1.read_bits()
+        unsafe { &*REGS }.interp1_peek_lane1.read_bits()
     }
 
     /// Peek full result without modifying state.
     #[inline]
     pub fn peek_full(&self) -> u32 {
-        regs().interp1_peek_full.read_bits()
+        unsafe { &*REGS }.interp1_peek_full.read_bits()
     }
 
     // ========================================================================
@@ -722,19 +717,19 @@ impl<'a> Interp1<'a> {
     /// Pop lane 0 result and write lane results to both accumulators.
     #[inline]
     pub fn pop_lane0(&self) -> u32 {
-        regs().interp1_pop_lane0.read_bits()
+        unsafe { &*REGS }.interp1_pop_lane0.read_bits()
     }
 
     /// Pop lane 1 result and write lane results to both accumulators.
     #[inline]
     pub fn pop_lane1(&self) -> u32 {
-        regs().interp1_pop_lane1.read_bits()
+        unsafe { &*REGS }.interp1_pop_lane1.read_bits()
     }
 
     /// Pop full result and write lane results to both accumulators.
     #[inline]
     pub fn pop_full(&self) -> u32 {
-        regs().interp1_pop_full.read_bits()
+        unsafe { &*REGS }.interp1_pop_full.read_bits()
     }
 
     // ========================================================================
@@ -744,19 +739,19 @@ impl<'a> Interp1<'a> {
     /// Read lane 0 control register raw value.
     #[inline]
     pub fn ctrl_lane0(&self) -> u32 {
-        regs().interp1_ctrl_lane0.read_bits()
+        unsafe { &*REGS }.interp1_ctrl_lane0.read_bits()
     }
 
     /// Write lane 0 control register raw value.
     #[inline]
     pub fn set_ctrl_lane0(&self, value: u32) {
-        regs().interp1_ctrl_lane0.write_bits(value);
+        unsafe { &*REGS }.interp1_ctrl_lane0.write_bits(value);
     }
 
     /// Configure lane 0 shift and mask using PAC field methods.
     #[inline]
     pub fn config_lane0(&self, shift: u8, mask_lsb: u8, mask_msb: u8, signed: bool) {
-        regs().interp1_ctrl_lane0.modify_val(|v| {
+        unsafe { &*REGS }.interp1_ctrl_lane0.modify_val(|v| {
             v.with_shift(shift as u32)
                 .with_mask_lsb(mask_lsb as u32)
                 .with_mask_msb(mask_msb as u32)
@@ -767,7 +762,7 @@ impl<'a> Interp1<'a> {
     /// Enable or disable CLAMP mode (interpolator 1 only).
     #[inline]
     pub fn set_clamp(&self, enable: bool) {
-        regs()
+        unsafe { &*REGS }
             .interp1_ctrl_lane0
             .modify_val(|v| v.with_clamp(enable));
     }
@@ -775,7 +770,7 @@ impl<'a> Interp1<'a> {
     /// Check if CLAMP mode is enabled.
     #[inline]
     pub fn clamp(&self) -> bool {
-        regs().interp1_ctrl_lane0.clamp()
+        unsafe { &*REGS }.interp1_ctrl_lane0.clamp()
     }
 
     // ========================================================================
@@ -785,19 +780,19 @@ impl<'a> Interp1<'a> {
     /// Read lane 1 control register raw value.
     #[inline]
     pub fn ctrl_lane1(&self) -> u32 {
-        regs().interp1_ctrl_lane1.read_bits()
+        unsafe { &*REGS }.interp1_ctrl_lane1.read_bits()
     }
 
     /// Write lane 1 control register raw value.
     #[inline]
     pub fn set_ctrl_lane1(&self, value: u32) {
-        regs().interp1_ctrl_lane1.write_bits(value);
+        unsafe { &*REGS }.interp1_ctrl_lane1.write_bits(value);
     }
 
     /// Configure lane 1 shift and mask.
     #[inline]
     pub fn config_lane1(&self, shift: u8, mask_lsb: u8, mask_msb: u8, signed: bool) {
-        regs().interp1_ctrl_lane1.modify_val(|v| {
+        unsafe { &*REGS }.interp1_ctrl_lane1.modify_val(|v| {
             v.with_shift(shift as u32)
                 .with_mask_lsb(mask_lsb as u32)
                 .with_mask_msb(mask_msb as u32)
@@ -812,19 +807,19 @@ impl<'a> Interp1<'a> {
     /// Check if accumulator 0 has overflow.
     #[inline]
     pub fn overf0(&self) -> bool {
-        regs().interp1_ctrl_lane0.overf0()
+        unsafe { &*REGS }.interp1_ctrl_lane0.overf0()
     }
 
     /// Check if accumulator 1 has overflow.
     #[inline]
     pub fn overf1(&self) -> bool {
-        regs().interp1_ctrl_lane0.overf1()
+        unsafe { &*REGS }.interp1_ctrl_lane0.overf1()
     }
 
     /// Check if either accumulator has overflow.
     #[inline]
     pub fn overf(&self) -> bool {
-        regs().interp1_ctrl_lane0.overf()
+        unsafe { &*REGS }.interp1_ctrl_lane0.overf()
     }
 }
 

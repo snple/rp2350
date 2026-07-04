@@ -167,11 +167,22 @@ fn main() -> ! {
             uuid[8] = (uuid[8] & 0x3F) | 0x80; // 变体 1
             info!(
                 "UUID v4: {:02x}{:02x}{:02x}{:02x}-{:02x}{:02x}-{:02x}{:02x}-{:02x}{:02x}-{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}",
-                uuid[0], uuid[1], uuid[2], uuid[3],
-                uuid[4], uuid[5],
-                uuid[6], uuid[7],
-                uuid[8], uuid[9],
-                uuid[10], uuid[11], uuid[12], uuid[13], uuid[14], uuid[15]
+                uuid[0],
+                uuid[1],
+                uuid[2],
+                uuid[3],
+                uuid[4],
+                uuid[5],
+                uuid[6],
+                uuid[7],
+                uuid[8],
+                uuid[9],
+                uuid[10],
+                uuid[11],
+                uuid[12],
+                uuid[13],
+                uuid[14],
+                uuid[15]
             );
         }
     }
@@ -266,28 +277,23 @@ fn main() -> ! {
         }
 
         let total_bits = zeros + ones;
-        let one_pct = if total_bits > 0 {
-            ones * 100 / total_bits
-        } else {
-            0
-        };
+        let one_pct = (ones * 100).checked_div(total_bits).unwrap_or(0);
 
         info!(
             "Bit distribution: 1s={}%, 0s={}% (ideal: 50/50)",
             one_pct,
             100 - one_pct
         );
-        info!("  Total bits: {}, ones: {}, zeros: {}", total_bits, ones, zeros);
+        info!(
+            "  Total bits: {}, ones: {}, zeros: {}",
+            total_bits, ones, zeros
+        );
 
         // 简单均匀性检查: 16 个桶的最大偏差
         let expected = SAMPLE_COUNT / 16; // 每桶期望值
         let mut max_deviation: u32 = 0;
         for count in byte_counts.iter() {
-            let dev = if *count > expected {
-                *count - expected
-            } else {
-                expected - *count
-            };
+            let dev = (*count).abs_diff(expected);
             if dev > max_deviation {
                 max_deviation = dev;
             }
@@ -298,7 +304,7 @@ fn main() -> ! {
             expected, max_deviation
         );
 
-        if one_pct >= 45 && one_pct <= 55 && max_deviation < expected {
+        if (45..=55).contains(&one_pct) && max_deviation < expected {
             info!("Quality: PASS (reasonable for quick check)");
         } else {
             warn!("Quality: MARGINAL — consider running more samples");
@@ -335,11 +341,9 @@ fn main() -> ! {
             let _ = trng.fill_random(&mut buf);
         }
         let elapsed = timer.get_time_us() - start;
-        let bytes_per_sec = if elapsed > 0 {
-            (count as u64 * 64 * 1_000_000) / elapsed
-        } else {
-            0
-        };
+        let bytes_per_sec = (count as u64 * 64 * 1_000_000)
+            .checked_div(elapsed)
+            .unwrap_or(0);
         info!(
             "fill_random(64B): {} calls in {} us ({} bytes/sec)",
             count, elapsed, bytes_per_sec
@@ -355,10 +359,7 @@ fn main() -> ! {
     loop {
         match trng.random_u32() {
             Ok(val) => {
-                info!(
-                    "[#{}] {:#010x} (decimal: {})",
-                    counter, val, val
-                );
+                info!("[#{}] {:#010x} (decimal: {})", counter, val, val);
             }
             Err(_e) => warn!("[#{}] TRNG error", counter),
         }

@@ -34,7 +34,7 @@ static LED_STATE: AtomicBool = AtomicBool::new(false);
 static BUTTON_PRESSED: AtomicBool = AtomicBool::new(false);
 
 /// Button GPIO pin number
-const BUTTON_PIN: u8 = 15;
+const BUTTON_PIN: u32 = 15;
 
 #[entry]
 fn main() -> ! {

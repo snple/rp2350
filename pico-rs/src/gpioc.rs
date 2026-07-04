@@ -52,32 +52,33 @@
 //! ```ignore
 //! use pico_rs::gpioc;
 //!
-//! // Output — replace sio_hw->gpio_set / gpio_clr / gpio_togl
-//! gpioc::out_lo_set(1 << 25);     // drive GPIO 25 high
-//! gpioc::out_lo_clr(1 << 25);     // drive GPIO 25 low
-//! gpioc::out_lo_xor(1 << 25);     // toggle GPIO 25
-//! gpioc::out_hi_set(1 << 10);     // set bit 10 in high bank (GPIO 42)
+//! // Output — pin-level (single-cycle coprocessor)
+//! unsafe { gpioc::set_high(25) };    // drive GPIO 25 high
+//! unsafe { gpioc::set_low(25) };     // drive GPIO 25 low
+//! unsafe { gpioc::toggle(25) };      // toggle GPIO 25
 //!
-//! // Direction — replace sio_hw->gpio_oe_set / gpio_oe_clr
-//! gpioc::oe_lo_set(1 << 25);      // set GPIO 25 to output
-//! gpioc::oe_lo_clr(1 << 25);      // set GPIO 25 to input
+//! // Direction
+//! unsafe { gpioc::enable_output(25) };      // set GPIO 25 to output
+//! unsafe { gpioc::disable_output(25) };      // set GPIO 25 to input
 //!
-//! // Read — replace sio_hw->gpio_in
-//! let pins = gpioc::in_lo();       // sample GPIO 0–31
+//! // Read
+//! let input = unsafe { gpioc::get(25) };
 //!
-//! // Atomic 64-bit operations (OUT and OE simultaneously)
-//! gpioc::out64_set(1 << 40);       // set GPIO 40 in one cycle
-//!
-//! // Single-bit operations
-//! gpioc::bit_out_put(25, true);    // set GPIO 25
-//! gpioc::bit_out_toggle(25);       // toggle GPIO 25
+//! // Mask-level (batch control)
+//! unsafe { gpioc::mask_set_low(1 << 25) };
+//! let pins = unsafe { gpioc::mask_input_low() };
 //! ```
 //!
 //! # Safety
 //!
-//! All functions are safe to call from any context. GPIOC operations are
-//! inherently atomic and concurrency-safe — there are no read-modify-write
-//! concerns because each instruction targets a single register directly.
+//! All public functions in this module are `unsafe` because the caller must
+//! ensure that the GPIO subsystem has been initialized and pins are configured
+//! for SIO — matching the contract of the equivalent functions in
+//! [`gpio`](crate::gpio).
+//!
+//! The low-level coprocessor instructions themselves are inherently atomic and
+//! concurrency-safe, but they are private implementation details in
+//! [`imp`](self::imp).
 //!
 //! # Availability
 //!
@@ -85,578 +86,513 @@
 //! a GPIO coprocessor. This module is conditionally compiled only for ARM targets
 //! (`#[cfg(target_arch = "arm")]`).
 
+mod imp;
+
 // ============================================================================
-// Low-level coprocessor instruction macros
+// Unified high-level API — same names as gpio
+// ============================================================================
 // ============================================================================
 //
-// These macros wrap the Cortex-M33 MCR/MRC/MCRR/MRRC instructions used to
-// access the GPIO coprocessor (CP0).
+// These functions mirror the [`gpio`](crate::gpio) module API but
+// use the GPIOC coprocessor instead of SIO MMIO registers. Users can choose
+// between the two modules for identical operations:
 //
-// Instruction set:
-//   MCR  p0, #opc, Rd, c0, cRm  — coprocessor write (Rd → CP0)
-//   MRC  p0, #opc, Rd, c0, cRm  — coprocessor read  (CP0 → Rd)
-//   MCRR p0, #opc, Rd, Rn, cRm  — coprocessor 64-bit write (Rd,Rn → CP0)
-//   MRRC p0, #opc, Rd, Rn, cRm  — coprocessor 64-bit read  (CP0 → Rd,Rn)
+// ```ignore
+// use pico_rs::gpio;
+// use pico_rs::gpioc;
 //
-// Register reference (pico-sdk hardware/gpio_coproc.h):
-//   MCR/MRC  cRm values: c0=OUT_LO, c1=OUT_HI, c4=OE_LO, c5=OE_HI,
-//                         c8=IN_LO,  c9=IN_HI
-//   MCRR/MRRC cRm values: c0=OUT_HILO, c4=OE_HILO, c8=IN_HILO
-// ============================================================================
+// // SIO path (MMIO):
+// unsafe { gpio::set_high(25) };
+//
+// // GPIOC path (coprocessor, single-cycle):
+// unsafe { gpioc::set_high(25) };
+// ```
+//
+// # Safety
+//
+// All functions are `unsafe` because the caller must ensure:
+// - The GPIO subsystem was initialized via [`gpio::Pins::new()`](crate::gpio::Pins::new).
+// - Each pin has been configured for SIO function via [`Pin<N>`](crate::gpio::Pin).
+// - No concurrent configuration changes happen while data operations are in flight.
 
-/// 32-bit coprocessor write: `MCR p0, #opc, val, c0, cRm`
-macro_rules! gpioc_write {
-    ($opc:expr, $reg:expr, $val:expr) => {
-        unsafe {
-            core::arch::asm!(
-                "mcr p0, #{opc}, {val}, c0, c{reg}",
-                opc = const $opc,
-                reg = const $reg,
-                val = in(reg) $val,
-                options(nomem, nostack, preserves_flags),
-            )
-        }
-    };
-}
-
-/// 32-bit coprocessor read: `MRC p0, #opc, val, c0, cRm`
-macro_rules! gpioc_read {
-    ($opc:expr, $reg:expr) => {{
-        let val: u32;
-        unsafe {
-            core::arch::asm!(
-                "mrc p0, #{opc}, {val}, c0, c{reg}",
-                opc = const $opc,
-                reg = const $reg,
-                val = out(reg) val,
-                options(nomem, nostack, preserves_flags),
-            );
-        }
-        val
-    }};
-}
-
-/// 64-bit coprocessor write: `MCRR p0, #opc, lo, hi, cRm`
-macro_rules! gpioc_write64 {
-    ($opc:expr, $crm:expr, $lo:expr, $hi:expr) => {
-        unsafe {
-            core::arch::asm!(
-                "mcrr p0, #{opc}, {lo}, {hi}, c{reg}",
-                opc = const $opc,
-                reg = const $crm,
-                lo = in(reg) $lo,
-                hi = in(reg) $hi,
-                options(nomem, nostack, preserves_flags),
-            )
-        }
-    };
-}
-
-/// 64-bit coprocessor read: `MRRC p0, #opc, lo, hi, cRm`
-macro_rules! gpioc_read64 {
-    ($opc:expr, $crm:expr) => {{
-        let lo: u32;
-        let hi: u32;
-        unsafe {
-            core::arch::asm!(
-                "mrrc p0, #{opc}, {lo}, {hi}, c{reg}",
-                opc = const $opc,
-                reg = const $crm,
-                lo = out(reg) lo,
-                hi = out(reg) hi,
-                options(nomem, nostack, preserves_flags),
-            );
-        }
-        ((hi as u64) << 32) | (lo as u64)
-    }};
-}
-
-/// Single-bit coprocessor write (MCRR with pin + bool)
-macro_rules! gpioc_bit_write {
-    ($opc:expr, $crm:expr, $pin:expr, $val:expr) => {
-        unsafe {
-            core::arch::asm!(
-                "mcrr p0, #{opc}, {pin}, {val}, c{reg}",
-                opc = const $opc,
-                reg = const $crm,
-                pin = in(reg) $pin,
-                val = in(reg) $val as u32,
-                options(nomem, nostack, preserves_flags),
-            )
-        }
-    };
-}
-
-/// Indexed coprocessor write: `MCRR p0, #opc, val, idx, cRm`
-macro_rules! gpioc_index_write {
-    ($opc:expr, $crm:expr, $idx:expr, $val:expr) => {
-        unsafe {
-            core::arch::asm!(
-                "mcrr p0, #{opc}, {val}, {idx}, c{reg}",
-                opc = const $opc,
-                reg = const $crm,
-                idx = in(reg) $idx,
-                val = in(reg) $val,
-                options(nomem, nostack, preserves_flags),
-            )
-        }
-    };
-}
-
-// ============================================================================
-// Output Register Operations (OUT) — cRm = 0 (lo) / 1 (hi)
-// ============================================================================
-
-/// Write the low 32-bit output register. Equivalent to `sio_hw->gpio_out = val`.
-#[inline(always)]
-pub fn out_lo_put(val: u32) {
-    gpioc_write!(0, 0, val);
-}
-
-/// Toggle the low 32-bit output register. Equivalent to `sio_hw->gpio_togl = mask`.
-#[inline(always)]
-pub fn out_lo_xor(mask: u32) {
-    gpioc_write!(1, 0, mask);
-}
-
-/// Set bits in the low 32-bit output register. Equivalent to `sio_hw->gpio_set = mask`.
-#[inline(always)]
-pub fn out_lo_set(mask: u32) {
-    gpioc_write!(2, 0, mask);
-}
-
-/// Clear bits in the low 32-bit output register. Equivalent to `sio_hw->gpio_clr = mask`.
-#[inline(always)]
-pub fn out_lo_clr(mask: u32) {
-    gpioc_write!(3, 0, mask);
-}
-
-/// Read the low 32-bit output register. Equivalent to `sio_hw->gpio_out`.
-#[inline(always)]
-pub fn out_lo_get() -> u32 {
-    gpioc_read!(0, 0)
-}
-
-/// Write the high 32-bit output register. Equivalent to `sio_hw->gpio_hi_out = val`.
-#[inline(always)]
-pub fn out_hi_put(val: u32) {
-    gpioc_write!(0, 1, val);
-}
-
-/// Toggle the high 32-bit output register. Equivalent to `sio_hw->gpio_hi_togl = mask`.
-#[inline(always)]
-pub fn out_hi_xor(mask: u32) {
-    gpioc_write!(1, 1, mask);
-}
-
-/// Set bits in the high 32-bit output register. Equivalent to `sio_hw->gpio_hi_set = mask`.
-#[inline(always)]
-pub fn out_hi_set(mask: u32) {
-    gpioc_write!(2, 1, mask);
-}
-
-/// Clear bits in the high 32-bit output register. Equivalent to `sio_hw->gpio_hi_clr = mask`.
-#[inline(always)]
-pub fn out_hi_clr(mask: u32) {
-    gpioc_write!(3, 1, mask);
-}
-
-/// Read the high 32-bit output register. Equivalent to `sio_hw->gpio_hi_out`.
-#[inline(always)]
-pub fn out_hi_get() -> u32 {
-    gpioc_read!(0, 1)
-}
-
-// ============================================================================
-// Output 64-bit atomic operations — MCRR/MRRC cRm = 0
-// ============================================================================
-
-/// Write both output registers in a single cycle.
-/// Equivalent to `sio_hw->gpio_out = val as u32; sio_hw->gpio_hi_out = (val >> 32) as u32`.
-#[inline(always)]
-pub fn out64_put(val: u64) {
-    gpioc_write64!(0, 0, val as u32, (val >> 32) as u32);
-}
-
-/// Toggle bits in both output registers in a single cycle.
-#[inline(always)]
-pub fn out64_xor(mask: u64) {
-    gpioc_write64!(1, 0, mask as u32, (mask >> 32) as u32);
-}
-
-/// Set bits in both output registers in a single cycle.
-#[inline(always)]
-pub fn out64_set(mask: u64) {
-    gpioc_write64!(2, 0, mask as u32, (mask >> 32) as u32);
-}
-
-/// Clear bits in both output registers in a single cycle.
-#[inline(always)]
-pub fn out64_clr(mask: u64) {
-    gpioc_write64!(3, 0, mask as u32, (mask >> 32) as u32);
-}
-
-/// Read both output registers in a single cycle.
-#[inline(always)]
-pub fn out64_get() -> u64 {
-    gpioc_read64!(0, 0)
-}
-
-// ============================================================================
-// Output Pin-Level Operations — single-bit OUT (MCRR, cRm = 0, opc 4–7)
-// ============================================================================
-
-/// Write a single GPIO output bit. Equivalent to:
-/// ```ignore
-/// if val { gpioc::out64_set(1 << pin) } else { gpioc::out64_clr(1 << pin) }
-/// ```
-#[inline(always)]
-pub fn bit_out_put(pin: u32, val: bool) {
-    gpioc_bit_write!(4, 0, pin, val);
-}
-
-/// Unconditionally toggle a single GPIO output bit.
-#[inline(always)]
-pub fn bit_out_toggle(pin: u32) {
-    gpioc_write!(5, 0, pin);
-}
-
-/// Unconditionally set a single GPIO output bit.
-#[inline(always)]
-pub fn bit_out_set(pin: u32) {
-    gpioc_write!(6, 0, pin);
-}
-
-/// Unconditionally clear a single GPIO output bit.
-#[inline(always)]
-pub fn bit_out_clr(pin: u32) {
-    gpioc_write!(7, 0, pin);
-}
-
-/// Read the output level of a specific GPIO pin (0–63).
+/// Read the input value of a single pin.
 ///
-/// Returns `true` if the pin is being driven high, `false` if low.
-/// This reads the output register, not the actual pin voltage —
-/// use [`in_pin`] to sample the pad state.
+/// Returns `true` if the pin is high.
 ///
-/// Uses a 64-bit MRRC. For compile-time-known pins, prefer [`out_pin_const_get`].
-#[inline(always)]
-pub fn out_pin_get(pin: u32) -> bool {
-    (out64_get() >> pin) & 1 != 0
-}
-
-/// Read output level of a pin whose number is known at compile time.
-#[inline(always)]
-pub fn const_out_pin_get<const PIN: u32>() -> bool {
-    if PIN < 32 {
-        (out_lo_get() & (1 << PIN)) != 0
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn get(pin: u32) -> bool {
+    if pin < 32 {
+        unsafe { (imp::in_lo() & (1 << pin)) != 0 }
     } else {
-        (out_hi_get() & (1 << (PIN - 32))) != 0
+        unsafe { (imp::in_hi() & (1 << (pin - 32))) != 0 }
     }
 }
 
-/// Read output level of a pin in the low bank (GPIO 0–31).
-#[inline(always)]
-pub fn out_pin_lo_get(pin: u32) -> bool {
-    (out_lo_get() & (1 << pin)) != 0
-}
-
-/// Read output level of a pin in the high bank (GPIO 32–63).
-#[inline(always)]
-pub fn out_pin_hi_get(pin: u32) -> bool {
-    (out_hi_get() & (1 << pin)) != 0
-}
-
-// ============================================================================
-// Output Enable Register Operations (OE) — cRm = 4 (lo) / 5 (hi)
-// ============================================================================
-
-/// Write the low 32-bit output enable register. Equivalent to `sio_hw->gpio_oe = val`.
-#[inline(always)]
-pub fn oe_lo_put(val: u32) {
-    gpioc_write!(0, 4, val);
-}
-
-/// Toggle the low 32-bit output enable register. Equivalent to `sio_hw->gpio_oe_togl = mask`.
-#[inline(always)]
-pub fn oe_lo_xor(mask: u32) {
-    gpioc_write!(1, 4, mask);
-}
-
-/// Set bits in the low 32-bit output enable register (set to output).
-/// Equivalent to `sio_hw->gpio_oe_set = mask`.
-#[inline(always)]
-pub fn oe_lo_set(mask: u32) {
-    gpioc_write!(2, 4, mask);
-}
-
-/// Clear bits in the low 32-bit output enable register (set to input).
-/// Equivalent to `sio_hw->gpio_oe_clr = mask`.
-#[inline(always)]
-pub fn oe_lo_clr(mask: u32) {
-    gpioc_write!(3, 4, mask);
-}
-
-/// Read the low 32-bit output enable register. Equivalent to `sio_hw->gpio_oe`.
-#[inline(always)]
-pub fn oe_lo_get() -> u32 {
-    gpioc_read!(0, 4)
-}
-
-/// Write the high 32-bit output enable register. Equivalent to `sio_hw->gpio_hi_oe = val`.
-#[inline(always)]
-pub fn oe_hi_put(val: u32) {
-    gpioc_write!(0, 5, val);
-}
-
-/// Toggle the high 32-bit output enable register.
-#[inline(always)]
-pub fn oe_hi_xor(mask: u32) {
-    gpioc_write!(1, 5, mask);
-}
-
-/// Set bits in the high 32-bit output enable register (set to output).
-/// Equivalent to `sio_hw->gpio_hi_oe_set = mask`.
-#[inline(always)]
-pub fn oe_hi_set(mask: u32) {
-    gpioc_write!(2, 5, mask);
-}
-
-/// Clear bits in the high 32-bit output enable register (set to input).
-/// Equivalent to `sio_hw->gpio_hi_oe_clr = mask`.
-#[inline(always)]
-pub fn oe_hi_clr(mask: u32) {
-    gpioc_write!(3, 5, mask);
-}
-
-/// Read the high 32-bit output enable register. Equivalent to `sio_hw->gpio_hi_oe`.
-#[inline(always)]
-pub fn oe_hi_get() -> u32 {
-    gpioc_read!(0, 5)
-}
-
-// ============================================================================
-// OE 64-bit atomic operations — MCRR/MRRC cRm = 4
-// ============================================================================
-
-/// Write both output enable registers in a single cycle.
-#[inline(always)]
-pub fn oe64_put(val: u64) {
-    gpioc_write64!(0, 4, val as u32, (val >> 32) as u32);
-}
-
-/// Toggle bits in both output enable registers in a single cycle.
-#[inline(always)]
-pub fn oe64_xor(mask: u64) {
-    gpioc_write64!(1, 4, mask as u32, (mask >> 32) as u32);
-}
-
-/// Set bits in both output enable registers (to output) in a single cycle.
-#[inline(always)]
-pub fn oe64_set(mask: u64) {
-    gpioc_write64!(2, 4, mask as u32, (mask >> 32) as u32);
-}
-
-/// Clear bits in both output enable registers (to input) in a single cycle.
-#[inline(always)]
-pub fn oe64_clr(mask: u64) {
-    gpioc_write64!(3, 4, mask as u32, (mask >> 32) as u32);
-}
-
-/// Read both output enable registers in a single cycle.
-#[inline(always)]
-pub fn oe64_get() -> u64 {
-    gpioc_read64!(4, 4)
-}
-
-// ============================================================================
-// OE Pin-Level Operations — single-bit OE (MCRR, cRm = 4, opc 4–7)
-// ============================================================================
-
-/// Write a single GPIO output enable bit.
-#[inline(always)]
-pub fn bit_oe_put(pin: u32, val: bool) {
-    gpioc_bit_write!(4, 4, pin, val);
-}
-
-/// Unconditionally toggle a single GPIO output enable bit.
-#[inline(always)]
-pub fn bit_oe_toggle(pin: u32) {
-    gpioc_write!(5, 4, pin);
-}
-
-/// Unconditionally set a single GPIO output enable bit (to output).
-#[inline(always)]
-pub fn bit_oe_set(pin: u32) {
-    gpioc_write!(6, 4, pin);
-}
-
-/// Unconditionally clear a single GPIO output enable bit (to input).
-#[inline(always)]
-pub fn bit_oe_clr(pin: u32) {
-    gpioc_write!(7, 4, pin);
-}
-
-/// Read the output enable state of a specific GPIO pin (0–63).
+/// Set a single pin output high.
 ///
-/// Returns `true` if the pin is configured as output, `false` if input.
+/// The pin must already be configured for SIO output.
 ///
-/// Uses a 64-bit MRRC. For compile-time-known pins, prefer [`oe_pin_const_get`].
-#[inline(always)]
-pub fn oe_pin_get(pin: u32) -> bool {
-    (oe64_get() >> pin) & 1 != 0
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn set_high(pin: u32) {
+    unsafe { imp::bit_out_set(pin) }
 }
 
-/// Read OE state of a pin whose number is known at compile time.
-#[inline(always)]
-pub fn const_oe_pin_get<const PIN: u32>() -> bool {
-    if PIN < 32 {
-        (oe_lo_get() & (1 << PIN)) != 0
+/// Set a single pin output low.
+///
+/// The pin must already be configured for SIO output.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn set_low(pin: u32) {
+    unsafe { imp::bit_out_clr(pin) }
+}
+
+/// Toggle a single pin output.
+///
+/// The pin must already be configured for SIO output.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn toggle(pin: u32) {
+    unsafe { imp::bit_out_toggle(pin) }
+}
+
+/// Set a single pin output to a specific value.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn set(pin: u32, high: bool) {
+    unsafe { imp::bit_out_put(pin, high) }
+}
+
+/// Read the programmed output level of a single pin.
+///
+/// This reads the output register, not the actual pad input state. Use
+/// [`get`] if you need the live pin level.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn output(pin: u32) -> bool {
+    if pin < 32 {
+        unsafe { (imp::out_lo_get() & (1 << pin)) != 0 }
     } else {
-        (oe_hi_get() & (1 << (PIN - 32))) != 0
+        unsafe { (imp::out_hi_get() & (1 << (pin - 32))) != 0 }
     }
 }
 
-/// Read OE state of a pin in the low bank (GPIO 0–31).
-#[inline(always)]
-pub fn oe_pin_lo_get(pin: u32) -> bool {
-    (oe_lo_get() & (1 << pin)) != 0
-}
-
-/// Read OE state of a pin in the high bank (GPIO 32–63).
-#[inline(always)]
-pub fn oe_pin_hi_get(pin: u32) -> bool {
-    (oe_hi_get() & (1 << pin)) != 0
-}
-
-// ============================================================================
-// Input Register Operations (IN) — cRm = 8 (lo) / 9 (hi)
-// ============================================================================
-
-/// Sample the low 32 GPIO input pins. Equivalent to `sio_hw->gpio_in`.
-#[inline(always)]
-pub fn in_lo() -> u32 {
-    gpioc_read!(0, 8)
-}
-
-/// Sample the high 32 GPIO input pins. Equivalent to `sio_hw->gpio_hi_in`.
-#[inline(always)]
-pub fn in_hi() -> u32 {
-    gpioc_read!(0, 9)
-}
-
-/// Sample all 64 GPIO input pins in a single cycle.
-#[inline(always)]
-pub fn in64() -> u64 {
-    gpioc_read64!(0, 8)
-}
-
-// ============================================================================
-// Input Pin-Level Operations — single-pin read convenience
-// ============================================================================
-
-/// Read the input level of a specific GPIO pin (0–63).
+/// Enable output for a single pin.
 ///
-/// Returns `true` if the pin is high, `false` if low.
+/// Unconditionally sets the OE bit to 1 (output). See [`set_output_enable`] for a
+/// conditional version that accepts a `bool`.
 ///
-/// Uses a 64-bit MRRC to sample all pins. For pins known at compile time,
-/// prefer [`const_in_pin`] — the compiler will select `in_lo`/`in_hi` and
-/// eliminate the branch.
-#[inline(always)]
-pub fn in_pin(pin: u32) -> bool {
-    (in64() & (1u64 << pin)) != 0
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn enable_output(pin: u32) {
+    unsafe { imp::bit_output_enable_set(pin) }
 }
 
-/// Read a pin whose number is known at compile time.
+/// Disable output for a single pin.
 ///
-/// The compiler optimizes the `PIN < 32` branch away, dispatching
-/// directly to a single 32-bit MRC without any runtime overhead.
+/// Unconditionally clears the OE bit to 0 (input). See [`set_output_enable`] for a
+/// conditional version that accepts a `bool`.
 ///
-/// ```ignore
-/// let level = gpioc::const_in_pin::<25>();  // → in_lo(), no branch
-/// let level = gpioc::const_in_pin::<42>();  // → in_hi(), no branch
-/// ```
-#[inline(always)]
-pub fn const_in_pin<const PIN: u32>() -> bool {
-    if PIN < 32 {
-        (in_lo() & (1 << PIN)) != 0
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn disable_output(pin: u32) {
+    unsafe { imp::bit_output_enable_clr(pin) }
+}
+
+/// Write the OE bit to a specific value.
+///
+/// Sets to output if `output` is `true`, input if `false`.
+/// More efficient than a separate `if` + [`enable_output`]/[`disable_output`]
+/// because GPIOC uses a single `MCRR` instruction.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn set_output_enable(pin: u32, output: bool) {
+    unsafe { imp::bit_output_enable_put(pin, output) }
+}
+
+/// Toggle the OE bit for a single pin.
+///
+/// If the pin was output it becomes input, and vice versa.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn toggle_output_enable(pin: u32) {
+    unsafe { imp::bit_output_enable_toggle(pin) }
+}
+
+/// Check whether output is enabled for a single pin.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn is_output(pin: u32) -> bool {
+    if pin < 32 {
+        unsafe { (imp::output_enable_lo_get() & (1 << pin)) != 0 }
     } else {
-        (in_hi() & (1 << (PIN - 32))) != 0
+        unsafe { (imp::output_enable_hi_get() & (1 << (pin - 32))) != 0 }
     }
 }
 
-/// Read a pin in the low bank (GPIO 0–31).
+// Mask-level operations — low bank -------------------------------------------
+
+/// Read the live input state of GPIO 0-31 as a bitmask.
 ///
-/// Single 32-bit MRC — one cycle, one result register. Faster than [`in_pin`]
-/// because no 64-bit MRRC + combine.
-#[inline(always)]
-pub fn in_pin_lo(pin: u32) -> bool {
-    (in_lo() & (1 << pin)) != 0
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn mask_input_low() -> u32 {
+    unsafe { imp::in_lo() }
 }
 
-/// Read a pin in the high bank (GPIO 32–63).
+/// Read the programmed output register for GPIO 0-31.
 ///
-/// Single 32-bit MRC — one cycle, one result register.
-#[inline(always)]
-pub fn in_pin_hi(pin: u32) -> bool {
-    (in_hi() & (1 << pin)) != 0
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn mask_output_low() -> u32 {
+    unsafe { imp::out_lo_get() }
+}
+
+/// Replace the entire output register for GPIO 0-31.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn mask_write_output_low(value: u32) {
+    unsafe { imp::out_lo_put(value) }
+}
+
+/// Atomically drive selected GPIO 0-31 outputs high.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn mask_set_low(mask: u32) {
+    unsafe { imp::out_lo_set(mask) }
+}
+
+/// Atomically drive selected GPIO 0-31 outputs low.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn mask_clr_lo(mask: u32) {
+    unsafe { imp::out_lo_clr(mask) }
+}
+
+/// Atomically toggle selected GPIO 0-31 outputs.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn mask_xor_lo(mask: u32) {
+    unsafe { imp::out_lo_xor(mask) }
+}
+
+/// Read the output-enable register for GPIO 0-31.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn mask_output_enable_lo() -> u32 {
+    unsafe { imp::output_enable_lo_get() }
+}
+
+/// Replace the entire output-enable register for GPIO 0-31.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn mask_write_output_enable_lo(value: u32) {
+    unsafe { imp::output_enable_lo_put(value) }
+}
+
+/// Atomically enable output for selected GPIO 0-31 pins.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn mask_set_output_enable_lo(mask: u32) {
+    unsafe { imp::output_enable_lo_set(mask) }
+}
+
+/// Atomically disable output for selected GPIO 0-31 pins.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn mask_clear_output_enable_lo(mask: u32) {
+    unsafe { imp::output_enable_lo_clr(mask) }
+}
+
+/// Atomically toggle output mode for selected GPIO 0-31 pins.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn mask_toggle_output_enable_lo(mask: u32) {
+    unsafe { imp::output_enable_lo_xor(mask) }
+}
+
+// Mask-level operations — high bank ------------------------------------------
+
+/// Read the live input state of GPIO 32-63 as a compact bitmask.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn mask_input_hi() -> u32 {
+    unsafe { imp::in_hi() }
+}
+
+/// Read the programmed output register for GPIO 32-63.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn mask_output_hi() -> u32 {
+    unsafe { imp::out_hi_get() }
+}
+
+/// Replace the entire output register for GPIO 32-63.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn mask_write_output_hi(value: u32) {
+    unsafe { imp::out_hi_put(value) }
+}
+
+/// Atomically drive selected GPIO 32-63 outputs high.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn mask_set_hi(mask: u32) {
+    unsafe { imp::out_hi_set(mask) }
+}
+
+/// Atomically drive selected GPIO 32-63 outputs low.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn mask_clr_hi(mask: u32) {
+    unsafe { imp::out_hi_clr(mask) }
+}
+
+/// Atomically toggle selected GPIO 32-63 outputs.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn mask_xor_hi(mask: u32) {
+    unsafe { imp::out_hi_xor(mask) }
+}
+
+/// Read the output-enable register for GPIO 32-63.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn mask_output_enable_hi() -> u32 {
+    unsafe { imp::output_enable_hi_get() }
+}
+
+/// Replace the entire output-enable register for GPIO 32-63.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn mask_write_output_enable_hi(value: u32) {
+    unsafe { imp::output_enable_hi_put(value) }
+}
+
+/// Atomically enable output for selected GPIO 32-63 pins.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn mask_set_output_enable_hi(mask: u32) {
+    unsafe { imp::output_enable_hi_set(mask) }
+}
+
+/// Atomically disable output for selected GPIO 32-63 pins.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn mask_clear_output_enable_hi(mask: u32) {
+    unsafe { imp::output_enable_hi_clr(mask) }
+}
+
+/// Atomically toggle output mode for selected GPIO 32-63 pins.
+///
+/// # Safety
+///
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn mask_toggle_output_enable_hi(mask: u32) {
+    unsafe { imp::output_enable_hi_xor(mask) }
 }
 
 // ============================================================================
-// Indexed Operations — MCRR with opc 8–11
+// 64-bit atomic operations — single-cycle read/write of both low + high banks
 // ============================================================================
 //
-// These allow dynamic register selection for situations where the register
-// index is not known at compile time. Useful for generic pin manipulation.
-//
-// `reg_index` selects which 32-bit register to target:
-//   0 = low 32 bits (GPIO 0–31), 1 = high 32 bits (GPIO 32–63)
+// On GPIOC these are a single `MCRR`/`MRRC` instruction. On SIO they are two
+// sequential 32-bit writes — still convenient for API symmetry, but not atomic
+// across the 64-bit boundary on the SIO path.
+
+/// Write all 64 output bits in a single GPIOC instruction.
+///
+/// Bits 0-31 → GPIO 0-31, bits 32-63 → GPIO 32-63.
+///
+/// # Safety
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn out64_put(value: u64) {
+    unsafe { imp::out64_put(value) }
+}
+
+/// Toggle selected output bits across all 64 GPIOs.
+///
+/// # Safety
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn out64_xor(mask: u64) {
+    unsafe { imp::out64_xor(mask) }
+}
+
+/// Set selected output bits high across all 64 GPIOs.
+///
+/// # Safety
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn out64_set(mask: u64) {
+    unsafe { imp::out64_set(mask) }
+}
+
+/// Clear selected output bits low across all 64 GPIOs.
+///
+/// # Safety
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn out64_clr(mask: u64) {
+    unsafe { imp::out64_clr(mask) }
+}
+
+/// Read all 64 output bits in a single GPIOC instruction.
+///
+/// # Safety
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn out64_get() -> u64 {
+    unsafe { imp::out64_get() }
+}
+
+/// Write all 64 output-enable bits in a single GPIOC instruction.
+///
+/// # Safety
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn output_enable64_put(value: u64) {
+    unsafe { imp::output_enable64_put(value) }
+}
+
+/// Toggle selected output-enable bits across all 64 GPIOs.
+///
+/// # Safety
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn output_enable64_xor(mask: u64) {
+    unsafe { imp::output_enable64_xor(mask) }
+}
+
+/// Set selected output-enable bits (to output) across all 64 GPIOs.
+///
+/// # Safety
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn output_enable64_set(mask: u64) {
+    unsafe { imp::output_enable64_set(mask) }
+}
+
+/// Clear selected output-enable bits (to input) across all 64 GPIOs.
+///
+/// # Safety
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn output_enable64_clr(mask: u64) {
+    unsafe { imp::output_enable64_clr(mask) }
+}
+
+/// Read all 64 output-enable bits in a single GPIOC instruction.
+///
+/// # Safety
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn output_enable64_get() -> u64 {
+    unsafe { imp::output_enable64_get() }
+}
+
+// ============================================================================
+// Combined-input & single-bank optimizations
 // ============================================================================
 
-/// Write a value to a dynamically selected output register.
-#[inline(always)]
-pub fn index_out_put(reg_index: u32, val: u32) {
-    gpioc_index_write!(8, 0, reg_index, val);
-}
-
-/// Toggle bits in a dynamically selected output register.
-#[inline(always)]
-pub fn index_out_xor(reg_index: u32, mask: u32) {
-    gpioc_index_write!(9, 0, reg_index, mask);
-}
-
-/// Set bits in a dynamically selected output register.
-#[inline(always)]
-pub fn index_out_set(reg_index: u32, mask: u32) {
-    gpioc_index_write!(10, 0, reg_index, mask);
-}
-
-/// Clear bits in a dynamically selected output register.
-#[inline(always)]
-pub fn index_out_clr(reg_index: u32, mask: u32) {
-    gpioc_index_write!(11, 0, reg_index, mask);
-}
-
-/// Write a value to a dynamically selected output enable register.
-#[inline(always)]
-pub fn index_oe_put(reg_index: u32, val: u32) {
-    gpioc_index_write!(8, 4, reg_index, val);
-}
-
-/// Toggle bits in a dynamically selected output enable register.
-#[inline(always)]
-pub fn index_oe_xor(reg_index: u32, mask: u32) {
-    gpioc_index_write!(9, 4, reg_index, mask);
-}
-
-/// Set bits in a dynamically selected output enable register (to output).
-#[inline(always)]
-pub fn index_oe_set(reg_index: u32, mask: u32) {
-    gpioc_index_write!(10, 4, reg_index, mask);
-}
-
-/// Clear bits in a dynamically selected output enable register (to input).
-#[inline(always)]
-pub fn index_oe_clr(reg_index: u32, mask: u32) {
-    gpioc_index_write!(11, 4, reg_index, mask);
+/// Read all 64 input pins in a single GPIOC instruction.
+///
+/// # Safety
+/// See the [module-level safety contract](crate::gpioc#safety).
+#[inline]
+pub unsafe fn in64() -> u64 {
+    unsafe { imp::in64() }
 }

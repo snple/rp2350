@@ -30,7 +30,7 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClockBuilder};
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
 use pico_rs::gpio::{NoPin, Pins};
 use pico_rs::pac::Peripherals;
@@ -118,7 +118,7 @@ fn hsv_to_rgb(h: u8, s: u8, v: u8) -> (u8, u8, u8) {
 
 /// Number of end-frame bytes needed: ceil(NUM_LEDS / 2) bits → bytes
 const fn end_frame_bytes(num_leds: usize) -> usize {
-    (num_leds + 15) / 16 * 4
+    num_leds.div_ceil(16) * 4
 }
 
 /// Transmit a full SK9822 frame via SPI.
@@ -182,10 +182,10 @@ fn main() -> ! {
 
     loop {
         // Generate a rainbow pattern
-        for i in 0..NUM_LEDS {
+        for (i, pixel) in pixels.iter_mut().enumerate() {
             let hue = ((hue_offset + (i as u16 * 256 / NUM_LEDS as u16)) % 256) as u8;
             let (r, g, b) = hsv_to_rgb(hue, 255, 64);
-            pixels[i] = Pixel::new(r, g, b, BRIGHTNESS);
+            *pixel = Pixel::new(r, g, b, BRIGHTNESS);
         }
 
         sk9822_write(&spi, &pixels);

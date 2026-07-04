@@ -231,7 +231,7 @@ use defmt_rtt as _;
 
 use pico_rs::bind;
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClockBuilder};
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
 use pico_rs::gpio::{EdgeLevel, Pin, Pins};
 use pico_rs::interrupt;
@@ -250,15 +250,15 @@ pub static IMAGE_DEF: ImageDef = ImageDef::exe();
 // ============================================================================
 
 /// 编码器信号 A 的 GPIO 编号 (编码器引脚 A)
-const PIN_A: u8 = 10;
+const PIN_A: u32 = 10;
 
 /// 编码器信号 B 的 GPIO 编号 (编码器引脚 B)
-const PIN_B: u8 = 11;
+const PIN_B: u32 = 11;
 
 /// 按钮引脚的 GPIO 编号 (编码器引脚 D)
 /// 编码器引脚 C 接 GND (编码器公共端)
 /// 编码器引脚 E 接 GND (按钮公共端)
-const PIN_BTN: u8 = 12;
+const PIN_BTN: u32 = 12;
 
 /// 按钮消抖时间 (微秒)
 const DEBOUNCE_US: u32 = 50_000; // 50ms
@@ -268,13 +268,13 @@ const DEBOUNCE_US: u32 = 50_000; // 50ms
 // ============================================================================
 
 /// STEP 引脚
-const PIN_STEP: u8 = 2;
+const PIN_STEP: u32 = 2;
 
 /// DIR 引脚
-const PIN_DIR: u8 = 3;
+const PIN_DIR: u32 = 3;
 
 /// ENABLE 引脚 (低有效)
-const PIN_ENABLE: u8 = 4;
+const PIN_ENABLE: u32 = 4;
 
 /// 起步频率 (Hz)
 const START_SPEED_HZ: u32 = 200;
@@ -356,10 +356,6 @@ static AXIS: AxisState = AxisState::new(AxisConfig {
     start_speed_hz: START_SPEED_HZ,
     accel_steps: ACCEL_STEPS,
     step_pulse_us: STEP_PULSE_US,
-    limit_pin: None,
-    limit_active_high: false,
-    index_pin: None,
-    homing_backoff_index: 0,
 });
 
 // ============================================================================

@@ -60,7 +60,7 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClockBuilder};
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
 use pico_rs::gpio::{Pin, Pins};
 use pico_rs::pac::Peripherals;
@@ -235,10 +235,10 @@ const MODE_STANDBY: u32 = 0x00000040; // bit[6:5] = 0b10
 /// 2. 读取 32-bit 数据
 fn spi_read_word(spi: &impl SpiBus, cs: &Pin<5>, addr: u16) -> u32 {
     let header: [u8; 4] = [
-        0x00 | ((addr >> 8) as u8 & 0xFF), // R/W=0 (read) | addr high
-        (addr & 0xFF) as u8,               // addr low
-        0x00,                              // reserved
-        0x01,                              // word count = 1
+        ((addr >> 8) as u8), // R/W=0 (read) | addr high
+        (addr & 0xFF) as u8, // addr low
+        0x00,                // reserved
+        0x01,                // word count = 1
     ];
 
     let mut rx = [0u8; 4];
@@ -271,12 +271,7 @@ fn spi_write_word(spi: &impl SpiBus, cs: &Pin<5>, addr: u16, data: u32) {
 /// SPI 读取多个连续 32-bit 字
 fn spi_read_words(spi: &impl SpiBus, cs: &Pin<5>, addr: u16, buf: &mut [u32]) {
     let count = buf.len() as u8;
-    let header: [u8; 4] = [
-        0x00 | ((addr >> 8) as u8 & 0xFF),
-        (addr & 0xFF) as u8,
-        0x00,
-        count,
-    ];
+    let header: [u8; 4] = [((addr >> 8) as u8), (addr & 0xFF) as u8, 0x00, count];
 
     cs.set_low();
     spi.write(&header);
@@ -454,7 +449,7 @@ fn main() -> ! {
     info!(
         "CCCR: {:#010x} (INIT={}, CCE={})",
         cccr,
-        (cccr & CCCR_INIT) >> 0,
+        (cccr & CCCR_INIT),
         (cccr & CCCR_CCE) >> 1
     );
 
@@ -478,10 +473,9 @@ fn main() -> ! {
     info!("--- 步骤 5: 配置 CAN 位时序 ---");
 
     // NBTP: NSJW[31:25]=15 | NBRP[24:16]=0 | NTSEG1[15:8]=63 | NTSEG2[6:0]=15
-    let nbtp: u32 = (15 << 25)   // NSJW = 16 (值-1)
-                  | (0 << 16)    // NBRP = 1  (值-1=0, 预分频 1)
+    let nbtp: u32 = (15 << 25)    // NBRP = 1  (值-1=0, 预分频 1)
                   | (63 << 8)    // NTSEG1 = 64 (值-1)
-                  | (15 << 0); // NTSEG2 = 16 (值-1)
+                  | 15; // NTSEG2 = 16 (值-1)
     spi_write_word(&spi, &cs, MCAN_NBTP, nbtp);
     info!("NBTP: {:#010x} (500 kbit/s, 采样点 80%)", nbtp);
 
@@ -491,8 +485,7 @@ fn main() -> ! {
     //   比特率 = 40 MHz / 20 = 2 Mbit/s
     //   采样点 = 16 / 20 = 80%
     //   SJW = 4
-    let dbtp: u32 = (3 << 0)    // DSJW = 4  (值-1)
-                  | (0 << 16)   // DBRP = 1  (值-1=0)
+    let dbtp: u32 = 3   // DBRP = 1  (值-1=0)
                   | (14 << 8)   // DTSEG1 = 15 (值-1)
                   | (3 << 4); // DTSEG2 = 4  (值-1)
     spi_write_word(&spi, &cs, MCAN_DBTP, dbtp);
@@ -780,7 +773,7 @@ fn main() -> ! {
         }
 
         // 定期检查总线状态
-        if tx_count % 10 == 0 {
+        if tx_count.is_multiple_of(10) {
             let psr = spi_read_word(&spi, &cs, MCAN_PSR);
             let lec = psr & 0x7; // Last Error Code
             let act = (psr >> 3) & 0x3; // Activity

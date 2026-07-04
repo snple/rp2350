@@ -36,7 +36,7 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClockBuilder};
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
 use pico_rs::gpio::Pins;
 use pico_rs::pac::Peripherals;
@@ -201,8 +201,8 @@ fn sk9822_write(pio0: &Pio0, pixels: &[Pixel]) {
     }
 
     // End frame: ceil(NUM_LEDS/2) bits HIGH → round up to 32-bit words
-    let end_bits = (pixels.len() + 1) / 2;
-    let end_words = (end_bits + 31) / 32;
+    let end_bits = pixels.len().div_ceil(2);
+    let end_words = end_bits.div_ceil(32);
     for _ in 0..end_words.max(1) {
         sm.tx_fifo_write(0xFFFFFFFF);
     }
@@ -241,10 +241,10 @@ fn main() -> ! {
 
     loop {
         // Generate a rainbow pattern
-        for i in 0..NUM_LEDS {
+        for (i, pixel) in pixels.iter_mut().enumerate() {
             let hue = ((hue_offset + (i as u16 * 256 / NUM_LEDS as u16)) % 256) as u8;
             let (r, g, b) = hsv_to_rgb(hue, 255, 64);
-            pixels[i] = Pixel::new(r, g, b, BRIGHTNESS);
+            *pixel = Pixel::new(r, g, b, BRIGHTNESS);
         }
 
         sk9822_write(&pio0, &pixels);
