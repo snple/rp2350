@@ -16,7 +16,7 @@
 //! use pico_rs_drivers::stepper::Direction;
 //! ```
 
-use core::sync::atomic::{AtomicBool, AtomicI32, AtomicU32, Ordering};
+use core::sync::atomic::{AtomicBool, AtomicI32, AtomicU8, AtomicU32, Ordering};
 
 use pico_rs::gpioc;
 use pico_rs::timer::{AlarmTimer, MonotonicTimer};
@@ -31,6 +31,7 @@ use pico_rs::timer::{AlarmTimer, MonotonicTimer};
 /// `Forward` 对应坐标轴正方向（位置 +1），`Reverse` 对应负方向（位置 -1）。
 #[derive(Clone, Copy, PartialEq, Eq)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
+#[repr(u8)]
 pub enum Direction {
     /// 坐标轴正方向，每步位置 +1。
     Forward = 0,
@@ -65,6 +66,7 @@ impl Direction {
 /// [`Homing`](MotionPhase::Homing) 和 [`HomingBackoff`](MotionPhase::HomingBackoff)
 /// 仅在 [`tmc2209::AxisState`] 中使用，依赖 DIAG/INDEX 引脚。
 #[derive(Clone, Copy, PartialEq, Eq)]
+#[repr(u8)]
 pub enum MotionPhase {
     /// 静止，无运动任务。
     Idle = 0,
@@ -83,10 +85,10 @@ pub enum MotionPhase {
 }
 
 impl MotionPhase {
-    /// 将原子存储器中的 u32 数字还原为枚举值。
+    /// 将原子存储器中的 u8 数字还原为枚举值。
     /// 未识别值均映射到 [`MotionPhase::Idle`]。
     #[inline]
-    pub fn from_u32(value: u32) -> Self {
+    pub fn from_u8(value: u8) -> Self {
         match value {
             1 => Self::Accelerating,
             2 => Self::Cruising,
@@ -163,8 +165,10 @@ pub struct AxisState {
     step_pulse_us: u32,
 
     // --- 动态运动状态（中断内更新，主循环只读）---
+    /// 当前运动方向（存储 [`Direction`] 的离散化整数值）。
+    pub(crate) direction: AtomicU8,
     /// 当前运动阶段（存储 [`MotionPhase`] 的离散化整数值）。
-    pub(crate) motion_phase: AtomicU32,
+    pub(crate) motion_phase: AtomicU8,
     /// 当前目标巡航速度，单位 Hz。
     pub(crate) max_speed_hz: AtomicU32,
     /// 当前每步间隔，单位 us。加减速期间每步更新。
@@ -173,10 +177,10 @@ pub struct AxisState {
     pub(crate) steps_done: AtomicU32,
     /// 本次运动的目标步数（连续模式下为 0）。
     pub(crate) steps_target: AtomicU32,
-    /// 开始减速的步号阈值（`steps_target - accel_steps`）。
+    /// 本次运动实际使用的加速步数（= `min(accel_steps, steps/2)`），在 `start_move` 时写入。
+    pub(crate) effective_accel_steps: AtomicU32,
+    /// 开始减速的步号阈值（`steps_target - effective_accel_steps + 1`）。
     pub(crate) decel_start_step: AtomicU32,
-    /// 当前运动方向（存储 [`Direction`] 的离散化整数值）。
-    pub(crate) direction: AtomicU32,
     /// 当前逻辑坐标，单位步（正向运动 +1，反向运动 -1）。
     pub(crate) position: AtomicI32,
     /// 运动已完成标志（启动时置 false，最后一步完成后置 true）。
@@ -200,13 +204,14 @@ impl AxisState {
             accel_steps: config.accel_steps,
             step_pulse_us: config.step_pulse_us,
 
-            motion_phase: AtomicU32::new(0),
+            direction: AtomicU8::new(0),
+            motion_phase: AtomicU8::new(0),
             max_speed_hz: AtomicU32::new(1000),
             step_interval_us: AtomicU32::new(0),
             steps_done: AtomicU32::new(0),
             steps_target: AtomicU32::new(0),
+            effective_accel_steps: AtomicU32::new(0),
             decel_start_step: AtomicU32::new(0),
-            direction: AtomicU32::new(0),
             position: AtomicI32::new(0),
             motion_done: AtomicBool::new(true),
             pulse_state: AtomicBool::new(false),
@@ -218,7 +223,7 @@ impl AxisState {
     /// 返回当前运动阶段。可在主循环中读取以显示轴状态。
     #[inline]
     pub fn phase(&self) -> MotionPhase {
-        MotionPhase::from_u32(self.motion_phase.load(Ordering::Relaxed))
+        MotionPhase::from_u8(self.motion_phase.load(Ordering::Relaxed))
     }
 
     /// 返回当前逻辑坐标（步）。中断内每完成一步自动累加。
@@ -279,7 +284,7 @@ impl AxisState {
     ) {
         if steps == 0 {
             self.motion_phase
-                .store(MotionPhase::Idle as u32, Ordering::Relaxed);
+                .store(MotionPhase::Idle as u8, Ordering::Relaxed);
             self.motion_done.store(true, Ordering::Relaxed);
             return;
         }
@@ -288,7 +293,7 @@ impl AxisState {
         self.motion_done.store(false, Ordering::Relaxed);
         self.steps_done.store(0, Ordering::Relaxed);
         self.steps_target.store(steps, Ordering::Relaxed);
-        self.direction.store(dir as u32, Ordering::Relaxed);
+        self.direction.store(dir as u8, Ordering::Relaxed);
         self.pulse_state.store(false, Ordering::Relaxed);
 
         let accel_steps = self.accel_steps.min(steps / 2);
@@ -297,11 +302,13 @@ impl AxisState {
         // 减速段：step decel_start 用 max_interval（过渡），step decel_start+1..=total 用减速计算（accel 步）
         let decel_start = steps.saturating_sub(accel_steps).saturating_add(1);
         self.decel_start_step.store(decel_start, Ordering::Relaxed);
+        self.effective_accel_steps
+            .store(accel_steps, Ordering::Relaxed);
 
         unsafe { gpioc::set(self.pin_dir, dir as u32 != 0) };
 
         self.motion_phase
-            .store(MotionPhase::Accelerating as u32, Ordering::Relaxed);
+            .store(MotionPhase::Accelerating as u8, Ordering::Relaxed);
 
         let interval = speed_to_interval_us(self.start_speed_hz);
         self.step_interval_us.store(interval, Ordering::Relaxed);
@@ -323,13 +330,13 @@ impl AxisState {
         self.motion_done.store(false, Ordering::Relaxed);
         self.steps_done.store(0, Ordering::Relaxed);
         self.steps_target.store(0, Ordering::Relaxed);
-        self.direction.store(dir as u32, Ordering::Relaxed);
+        self.direction.store(dir as u8, Ordering::Relaxed);
         self.pulse_state.store(false, Ordering::Relaxed);
 
         unsafe { gpioc::set(self.pin_dir, dir as u32 != 0) };
 
         self.motion_phase
-            .store(MotionPhase::Running as u32, Ordering::Relaxed);
+            .store(MotionPhase::Running as u8, Ordering::Relaxed);
 
         let interval = speed_to_interval_us(speed_hz);
         self.step_interval_us.store(interval, Ordering::Relaxed);
@@ -350,6 +357,8 @@ impl AxisState {
         // 先写 steps_target，防止 ISR 在旧 target 处提前完成运动
         self.steps_target.store(new_total_steps, Ordering::Relaxed);
         let accel_steps = self.accel_steps.min(new_total_steps / 2);
+        self.effective_accel_steps
+            .store(accel_steps, Ordering::Relaxed);
         self.decel_start_step.store(
             new_total_steps
                 .saturating_sub(accel_steps)
@@ -362,7 +371,7 @@ impl AxisState {
     /// 不等待减速完成，适合 ESTOP 场景。ISR 下次触发时检测到 Idle 后直接返回。
     pub fn stop(&self) {
         self.motion_phase
-            .store(MotionPhase::Idle as u32, Ordering::Relaxed);
+            .store(MotionPhase::Idle as u8, Ordering::Relaxed);
         self.motion_done.store(true, Ordering::Relaxed);
         unsafe { gpioc::set_low(self.pin_step) };
     }
@@ -421,7 +430,7 @@ impl AxisState {
         timer: &T,
         step: u32,
         total: u32,
-        phase_raw: u32,
+        phase_raw: u8,
     ) {
         // Running (4) — fast path: fixed interval
         if phase_raw == 4 {
@@ -437,7 +446,7 @@ impl AxisState {
             return;
         }
 
-        let accel = self.accel_steps;
+        let accel = self.effective_accel_steps.load(Ordering::Relaxed);
         let decel_start = self.decel_start_step.load(Ordering::Relaxed);
 
         // Phase transition (raw values: 1=Accel, 2=Cruise, 3=Decel)
@@ -448,7 +457,7 @@ impl AxisState {
         } else {
             MotionPhase::Cruising
         };
-        self.motion_phase.store(new_phase as u32, Ordering::Relaxed);
+        self.motion_phase.store(new_phase as u8, Ordering::Relaxed);
 
         let interval = self.compute_interval(step, total, new_phase);
         self.step_interval_us.store(interval, Ordering::Relaxed);
@@ -469,22 +478,24 @@ impl AxisState {
     pub(crate) fn compute_interval(&self, step: u32, total_steps: u32, phase: MotionPhase) -> u32 {
         let start_speed = self.start_speed_hz;
         let max_speed = self.max_speed_hz.load(Ordering::Relaxed);
-        let accel = self.accel_steps;
 
         let start_interval = speed_to_interval_us(start_speed);
         let max_interval = speed_to_interval_us(max_speed);
 
         match phase {
             MotionPhase::Accelerating => {
+                let accel = self.effective_accel_steps.load(Ordering::Relaxed);
                 if accel <= 1 {
                     return max_interval;
                 }
 
                 let divisor = accel - 1;
                 let progress = step.min(accel);
-                start_interval
+                let computed = start_interval
                     - ((start_interval.saturating_sub(max_interval)) as u64 * progress as u64
-                        / divisor as u64) as u32
+                        / divisor as u64) as u32;
+                // 防御性 clamp：当 step > accel（如归位模式无双阶段切换）时防止 overshoot
+                computed.max(max_interval)
             }
             MotionPhase::Cruising
             | MotionPhase::Running
@@ -519,7 +530,7 @@ impl AxisState {
         timer.clear_alarm_interrupt(self.alarm);
         timer.clear_forced_alarm_interrupt(self.alarm);
 
-        // 一次 atomic load，避免两次 MotionPhase::from_u32 转换
+        // 一次 atomic load，避免两次 MotionPhase::from_u8 转换
         let phase_raw = self.motion_phase.load(Ordering::Relaxed);
         if phase_raw == 0 {
             return;

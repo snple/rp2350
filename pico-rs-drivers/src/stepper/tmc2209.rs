@@ -121,6 +121,8 @@ pub struct AxisState {
     homing_backoff_target: AtomicU32,
     /// 堵转锁存标志（DIAG 触发后被 ISR 置 true，`start_*` 时清零）。
     stall_latched: AtomicBool,
+    /// 堵转检测使能（默认 true）。退离/回退等场景可临时关闭，避免 DIAG 误杀。
+    stall_check_enabled: AtomicBool,
 }
 
 unsafe impl Sync for AxisState {}
@@ -144,6 +146,7 @@ impl AxisState {
             index_last_state: AtomicBool::new(false),
             homing_backoff_target: AtomicU32::new(0),
             stall_latched: AtomicBool::new(false),
+            stall_check_enabled: AtomicBool::new(true),
         }
     }
 
@@ -211,6 +214,7 @@ impl AxisState {
         speed_hz: u32,
     ) {
         self.stall_latched.store(false, Ordering::Relaxed);
+        self.stall_check_enabled.store(true, Ordering::Relaxed);
         self.reset_index();
         self.axis.start_continuous(timer, dir, speed_hz);
     }
@@ -240,6 +244,26 @@ impl AxisState {
     #[inline]
     pub fn stall_occurred(&self) -> bool {
         self.stall_latched.load(Ordering::Relaxed)
+    }
+
+    /// 临时关闭堵转检测（不影响 `stall_occurred()` 锁存读取）。
+    ///
+    /// 用于退离/回退等场景：堵转后电机静止时 DIAG 持续为高，
+    /// 此时启动反向运动会立即触发误判。关闭后 ISR 跳过 DIAG 检查。
+    ///
+    /// `start_continuous` 和 `start_homing` 会自动恢复为使能状态，
+    /// `start_move` 不会自动恢复——由调用者通过本方法和
+    /// [`enable_stall_check`] 控制。
+    #[inline]
+    pub fn disable_stall_check(&self) {
+        self.stall_check_enabled.store(false, Ordering::Relaxed);
+    }
+
+    /// 恢复堵转检测使能。`start_continuous` / `start_homing` 会自动调用，
+    /// `start_move` 不会——由调用者决定。
+    #[inline]
+    pub fn enable_stall_check(&self) {
+        self.stall_check_enabled.store(true, Ordering::Relaxed);
     }
 
     // --- INDEX ---
@@ -289,7 +313,7 @@ impl AxisState {
     /// }
     /// ```
     pub fn check_index(&self, total_steps: u32, microstepping: u32) -> IndexCheck {
-        let steps_per_index = 4 * microstepping;
+        let steps_per_index = 4 * microstepping.max(1);
         let expected = total_steps / steps_per_index;
         let actual = self.index_count.load(Ordering::Relaxed);
         IndexCheck { expected, actual }
@@ -304,6 +328,7 @@ impl AxisState {
     /// - 否则从起步速度加速至目标速度，向反方向运动，ISR 每步检测 DIAG 信号。
     pub fn start_homing<T: AlarmTimer + MonotonicTimer>(&self, timer: &T, speed_hz: u32) {
         self.stall_latched.store(false, Ordering::Relaxed);
+        self.stall_check_enabled.store(true, Ordering::Relaxed);
 
         // 已在限位位置
         if self.diag_triggered() {
@@ -314,7 +339,7 @@ impl AxisState {
             self.axis.position.store(0, Ordering::Relaxed);
             self.axis
                 .motion_phase
-                .store(MotionPhase::Idle as u32, Ordering::Relaxed);
+                .store(MotionPhase::Idle as u8, Ordering::Relaxed);
             self.axis.motion_done.store(true, Ordering::Relaxed);
             return;
         }
@@ -323,17 +348,20 @@ impl AxisState {
         self.axis.steps_done.store(0, Ordering::Relaxed);
         self.axis.steps_target.store(0, Ordering::Relaxed);
         self.axis.max_speed_hz.store(speed_hz, Ordering::Relaxed);
+        self.axis
+            .effective_accel_steps
+            .store(self.axis.accel_steps, Ordering::Relaxed);
         self.reset_index();
         self.axis
             .direction
-            .store(Direction::Reverse as u32, Ordering::Relaxed);
+            .store(Direction::Reverse as u8, Ordering::Relaxed);
         self.axis.pulse_state.store(false, Ordering::Relaxed);
 
         unsafe { gpioc::set(self.axis.pin_dir, Direction::Reverse as u32 != 0) };
 
         self.axis
             .motion_phase
-            .store(MotionPhase::Homing as u32, Ordering::Relaxed);
+            .store(MotionPhase::Homing as u8, Ordering::Relaxed);
 
         let interval = speed_to_interval_us(self.axis.start_speed_hz);
         self.axis
@@ -355,14 +383,14 @@ impl AxisState {
             .store(self.homing_backoff_index, Ordering::Relaxed);
         self.axis
             .direction
-            .store(Direction::Forward as u32, Ordering::Relaxed);
+            .store(Direction::Forward as u8, Ordering::Relaxed);
         self.axis.pulse_state.store(false, Ordering::Relaxed);
 
         unsafe { gpioc::set(self.axis.pin_dir, Direction::Forward as u32 != 0) };
 
         self.axis
             .motion_phase
-            .store(MotionPhase::HomingBackoff as u32, Ordering::Relaxed);
+            .store(MotionPhase::HomingBackoff as u8, Ordering::Relaxed);
 
         // 回退速度取归位速度的一半，确保低速精确对齐
         let backoff_speed = (speed_hz / 2).max(1);
@@ -403,12 +431,12 @@ impl AxisState {
         // INDEX 下降沿检测
         self.detect_index_edge();
 
-        match MotionPhase::from_u32(phase_raw) {
+        match MotionPhase::from_u8(phase_raw) {
             MotionPhase::Homing => self.handle_homing_step(timer, step),
             MotionPhase::HomingBackoff => self.handle_homing_backoff_step(timer),
             _ => {
-                // 通用阶段：先检测 DIAG 堵转，再调度下一步
-                if self.diag_triggered() {
+                // 通用阶段：先检测 DIAG 堵转（如果使能），再调度下一步
+                if self.stall_check_enabled.load(Ordering::Relaxed) && self.diag_triggered() {
                     self.stall_latched.store(true, Ordering::Relaxed);
                     self.axis.motion_phase.store(0, Ordering::Relaxed); // Idle
                     self.axis.motion_done.store(true, Ordering::Relaxed);
@@ -432,11 +460,11 @@ impl AxisState {
                     .store(self.homing_backoff_index, Ordering::Relaxed);
                 self.axis
                     .direction
-                    .store(Direction::Forward as u32, Ordering::Relaxed);
+                    .store(Direction::Forward as u8, Ordering::Relaxed);
                 unsafe { gpioc::set(self.axis.pin_dir, Direction::Forward as u32 != 0) };
                 self.axis
                     .motion_phase
-                    .store(MotionPhase::HomingBackoff as u32, Ordering::Relaxed);
+                    .store(MotionPhase::HomingBackoff as u8, Ordering::Relaxed);
                 // 回退速度减半以提高精度
                 let interval = self.axis.step_interval_us.load(Ordering::Relaxed) * 2;
                 self.axis
@@ -449,25 +477,15 @@ impl AxisState {
             self.axis.position.store(0, Ordering::Relaxed);
             self.axis
                 .motion_phase
-                .store(MotionPhase::Idle as u32, Ordering::Relaxed);
+                .store(MotionPhase::Idle as u8, Ordering::Relaxed);
             self.axis.motion_done.store(true, Ordering::Relaxed);
             return;
         }
 
-        // 继续归位运动（带加速）
-        let interval = self.axis.step_interval_us.load(Ordering::Relaxed);
-        let min_interval = speed_to_interval_us(self.axis.max_speed_hz.load(Ordering::Relaxed));
-        let accel = self.axis.accel_steps;
-        let new_interval = if accel > 1 && interval > min_interval {
-            let start_interval = speed_to_interval_us(self.axis.start_speed_hz);
-            let divisor = accel - 1;
-            let progress = step.min(accel);
-            start_interval
-                - ((start_interval.saturating_sub(min_interval)) as u64 * progress as u64
-                    / divisor as u64) as u32
-        } else {
-            min_interval
-        };
+        // 继续归位运动（带加速），复用通用加速算法
+        let new_interval = self
+            .axis
+            .compute_interval(step, 0, MotionPhase::Accelerating);
         self.axis
             .step_interval_us
             .store(new_interval, Ordering::Relaxed);
@@ -482,7 +500,7 @@ impl AxisState {
             self.axis.position.store(0, Ordering::Relaxed);
             self.axis
                 .motion_phase
-                .store(MotionPhase::Idle as u32, Ordering::Relaxed);
+                .store(MotionPhase::Idle as u8, Ordering::Relaxed);
             self.axis.motion_done.store(true, Ordering::Relaxed);
             return;
         }

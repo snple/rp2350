@@ -8,7 +8,6 @@ members = [
     "pico-rs-usb",
     "pico-rs-rt",
     "pico-rs-examples",
-    "xtask",
 ]
 
 [workspace.package]
@@ -26,7 +25,7 @@ defmt-rtt = "1.2"
 proc-macro2 = "1.0"
 quote = "1.0"
 syn = { version = "2.0", features = ["full"] }
-bitfield-struct = "0.12"
+bitfield-struct = "0.13"
 
 # Local crates
 pico-rs = { path = "pico-rs" }

@@ -377,12 +377,6 @@ fn main() -> ! {
 
         AXIS.start_continuous(&timer, direction, STALL_SPEED_HZ);
         AXIS.wait_done();
-        info!(
-            "[lap {}] moving done  pos={}  DIR={}",
-            lap,
-            AXIS.position(),
-            unsafe { gpio::get(PIN_DIR) }
-        );
 
         // 堵转触发后 Timer ISR 检测到 DIAG → stop + motion_done=true → 到达此处
         let pos = AXIS.position();
@@ -397,9 +391,12 @@ fn main() -> ! {
             Direction::Reverse => Direction::Forward,
         };
 
+        // 关闭堵转检测：堵转后电机静止，DIAG 持续为高，
+        // 不关闭会导致退离第一步就被误判堵转而立即停止。
+        // start_continuous（下一圈）会自动恢复使能。
+        AXIS.disable_stall_check();
         AXIS.start_move(&timer, BACKOFF_STEPS, back_dir, BACKOFF_SPEED_HZ);
         AXIS.wait_done();
-        info!("[lap {}] moving done  pos={}", lap, AXIS.position());
 
         info!(
             "[lap {}] backoff done  pos={} — pause {} ms",
