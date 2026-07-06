@@ -284,20 +284,13 @@ use core::sync::atomic::{AtomicBool, AtomicU8, AtomicU16, AtomicU32, Ordering};
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::gpio::{EdgeLevel, Pin, Pins};
 use pico_rs::interrupt::{self, Mutex};
 use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::pwm::Pwm;
-use pico_rs::timer::Timer0;
-
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-// ============================================================================
+use pico_rs::timer::Timer0;// ============================================================================
 // 配置 — 根据电机和应用调整
 // ============================================================================
 
@@ -418,7 +411,7 @@ static PWM_WRAP: AtomicU16 = AtomicU16::new(0);
 // 入口
 // ============================================================================
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("BLDC ESC — Hall sensor closed-loop control");
 

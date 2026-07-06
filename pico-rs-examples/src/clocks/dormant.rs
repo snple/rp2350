@@ -19,19 +19,13 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::Delay;
-use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClockBuilder};
-use pico_rs::entry;
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::gpio::{EdgeLevel, Pins};
+use pico_rs::main;
 use pico_rs::pac::Peripherals;
 use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 
-/// RP2350 Boot Block
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-#[entry]
+#[main]
 fn main() -> ! {
     info!("Dormant mode example starting...");
 

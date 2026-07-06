@@ -3,16 +3,30 @@
 //! The Boot ROM looks for a valid Block in the first 4KB of flash to determine
 //! how to boot the image. The block format is defined by the PICOBIN specification.
 //!
-//! ## Usage
+//! ## Automatic Generation
 //!
-//! Every RP2350 application needs an Image Definition block in the `.start_block` section:
+//! The `#[main]` macro automatically generates an `ImageDef::exe()` block in
+//! the `.start_block` section. For most applications, no manual Image Definition
+//! is needed — just use `#[main]` and the correct boot block is emitted.
+//!
+//! ## Manual Definition (Advanced)
+//!
+//! To use `ImageDefWithVersion` or a RISC-V image, opt out of automatic
+//! generation with `#[main(no_image_def)]` and define your own static:
 //!
 //! ```ignore
-//! use pico_rs::block::ImageDef;
+//! use pico_rs::block::ImageDefWithVersion;
+//! use pico_rs::main;
 //!
-//! #[link_section = ".start_block"]
+//! #[unsafe(link_section = ".start_block")]
 //! #[used]
-//! pub static IMAGE_DEF: ImageDef = ImageDef::exe();
+//! pub static IMAGE_DEF: ImageDefWithVersion =
+//!     ImageDefWithVersion::exe_with_version(1, 0, 0);
+//!
+//! #[main(no_image_def)]
+//! fn main() -> ! {
+//!     loop {}
+//! }
 //! ```
 //!
 //! ## Security Mode

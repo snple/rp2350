@@ -22,21 +22,14 @@
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::block::ImageDef;
 use pico_rs::clocks::{ClockBuilder};
 use pico_rs::dma::{DataSize, Dma};
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::gpio::Pins;
 use pico_rs::pac::Peripherals;
 use pico_rs::pio;
 use pico_rs::pio::Pio0Sm0;
-use pico_rs::pio_asm;
-
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-/// Blink pattern: each bit controls the LED for one PIO cycle.
+use pico_rs::pio_asm;/// Blink pattern: each bit controls the LED for one PIO cycle.
 /// At ~1 Hz per bit (with appropriate clock divider), this creates
 /// a visible blink pattern.
 ///
@@ -48,7 +41,7 @@ static PATTERN: [u32; 4] = [
     0b10001000_10001000_10001000_10001000, // short blinks
 ];
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("PIO + DMA blink pattern example");
 

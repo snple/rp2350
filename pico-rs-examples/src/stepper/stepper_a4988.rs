@@ -206,20 +206,13 @@ use pico_rs_drivers::stepper::{AxisConfig, AxisState, Direction};
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::gpio::{self, Pins};
 use pico_rs::interrupt;
 use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::ticks::Ticks;
-use pico_rs::timer::Timer0;
-
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-// ============================================================================
+use pico_rs::timer::Timer0;// ============================================================================
 // 配置参数
 // ============================================================================
 
@@ -456,7 +449,7 @@ fn wait_motion_done() {
 // 程序入口
 // ============================================================================
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("Stepper Motor — A4988 STEP/DIR Control");
 

@@ -15,28 +15,21 @@ use core::sync::atomic::{AtomicBool, Ordering};
 
 use defmt::*;
 use defmt_rtt as _;
-use pico_rs::block::ImageDef;
 use pico_rs::clocks::{ClockBuilder};
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::gpio::Pins;
 use pico_rs::interrupt::{self, Mutex};
 use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::ticks::Ticks;
 use pico_rs::timer::Timer0;
 
-/// RP2350 Boot Block
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-// Shared state protected by a mutex
 static TIMER: Mutex<RefCell<Option<Timer0>>> = Mutex::new(RefCell::new(None));
 static LED_STATE: AtomicBool = AtomicBool::new(false);
 
 // Interval in microseconds (500ms)
 const BLINK_INTERVAL_US: u32 = 500_000;
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("Timer Interrupt Example");
 

@@ -11,19 +11,13 @@ use defmt::info;
 use defmt_rtt as _;
 
 use pico_rs::bind;
-use pico_rs::block::ImageDef;
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::gpio::Pins;
 use pico_rs::interrupt::{self, spare};
 use pico_rs::kit::task::{Event, EventQueue};
 use pico_rs::pac::Peripherals;
 
-// Boot block
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-// ============================================================================
+// Boot block// ============================================================================
 // 事件定义
 // ============================================================================
 
@@ -62,7 +56,7 @@ fn low_priority_task() {
 // 主程序
 // ============================================================================
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("Bind macro example starting...");
 

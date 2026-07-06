@@ -59,18 +59,12 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::Peripherals;
-use pico_rs::block::ImageDef;
-use pico_rs::entry;
 use pico_rs::gpio::Pins;
+use pico_rs::main;
 use pico_rs::pwm::{InputMode, Pwm, calc_duty_cycle, calc_input_frequency};
 use pico_rs::timer::Timer0;
 
-/// RP2350 Boot Block - tells the Boot ROM this is a valid ARM executable
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-#[entry]
+#[main]
 fn main() -> ! {
     info!("=== PWM Input Mode Example ===");
 

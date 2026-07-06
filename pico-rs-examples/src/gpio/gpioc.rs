@@ -14,23 +14,16 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::Delay;
-use pico_rs::block::ImageDef;
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::gpio::Pins;
 use pico_rs::gpioc;
 use pico_rs::pac;
-use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
-
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-const CLOCK_FREQ_HZ: u32 = 12_000_000;
+use pico_rs::rt::peripheral::Peripherals as CorePeripherals;const CLOCK_FREQ_HZ: u32 = 12_000_000;
 const LED: u32 = 6;
 const TEST_OUT: u32 = 7;
 const TEST_IN: u32 = 8;
 
-#[entry]
+#[main]
 fn main() -> ! {
     let dp = pac::Peripherals::take().unwrap();
     let core = CorePeripherals::take().unwrap();

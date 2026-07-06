@@ -2,7 +2,7 @@
 //!
 //! This crate provides the following macros:
 //!
-//! - `#[entry]` - Entry point for RP2350 applications
+//! - `#[main]` - Entry point for RP2350 applications
 //! - `#[exception]` - Exception handler for Cortex-M exceptions
 //! - `#[bind(IRQ)]` - Bind a function to an interrupt
 //! - `pio_asm!` - PIO assembly compiler
@@ -22,6 +22,30 @@ use syn::{
 
 mod pio_asm;
 
+/// Parse optional arguments to `#[main]`.
+///
+/// Returns `Ok(true)` if `no_image_def` was specified, `Ok(false)` if no args.
+fn parse_main_args(args: TokenStream) -> Result<bool, TokenStream> {
+    if args.is_empty() {
+        return Ok(false);
+    }
+
+    let ident: Ident = match syn::parse(args) {
+        Ok(id) => id,
+        Err(e) => return Err(e.to_compile_error().into()),
+    };
+
+    match ident.to_string().as_str() {
+        "no_image_def" => Ok(true),
+        other => {
+            let msg = format!("unknown argument `{}`; expected `no_image_def`", other);
+            Err(syn::Error::new(Span::call_site(), msg)
+                .to_compile_error()
+                .into())
+        }
+    }
+}
+
 /// Attribute to declare the entry point of the program
 ///
 /// This macro generates the `main` entry point that the runtime calls after
@@ -29,28 +53,44 @@ mod pio_asm;
 ///
 /// ## Initialization performed:
 ///
-/// 1. **Spinlock Clearing**: Releases all 32 hardware spinlocks to prevent deadlocks
+/// 1. **PICOBIN Image Definition**: Automatically generates the boot block
+///    (`ImageDef::exe()`) in the `.start_block` section. No manual
+///    `IMAGE_DEF` static is needed in user code.
+///
+/// 2. **Spinlock Clearing**: Releases all 32 hardware spinlocks to prevent deadlocks
 ///    when using a debugger (spinlocks persist across software reset)
 ///
-/// 2. **Co-Processor Enabling**: Enables the following co-processors in CPACR:
+/// 3. **Co-Processor Enabling**: Enables the following co-processors in CPACR:
 ///    - **DCP (Double Co-Processor)**: Provides accelerated double-precision floating-point
 ///      and other mathematical operations
 ///    - **GPIO Co-Processor**: Enables GPIO acceleration instructions
 ///
-/// 3. **Memory Barrier**: Ensures initialization completes before any user code runs
+/// 4. **Memory Barrier**: Ensures initialization completes before any user code runs
 ///
 /// ## Usage
 ///
 /// ```ignore
-/// use pico_rs::entry;
-/// use pico_rs::block::ImageDef;
+/// use pico_rs::main;
 ///
-/// // Boot block is required for RP2350
-/// #[link_section = ".start_block"]
+/// /// Default — auto-generates ImageDef::exe()
+/// #[main]
+/// fn main() -> ! {
+///     loop {}
+/// }
+/// ```
+///
+/// To supply your own image definition (e.g. `ImageDefWithVersion` or RISC-V),
+/// opt out of automatic generation:
+///
+/// ```ignore
+/// use pico_rs::block::ImageDefWithVersion;
+///
+/// #[unsafe(link_section = ".start_block")]
 /// #[used]
-/// pub static IMAGE_DEF: ImageDef = ImageDef::secure_exe();
+/// pub static IMAGE_DEF: ImageDefWithVersion =
+///     ImageDefWithVersion::exe_with_version(1, 0, 0);
 ///
-/// #[entry]
+/// #[main(no_image_def)]
 /// fn main() -> ! {
 ///     loop {}
 /// }
@@ -60,20 +100,20 @@ mod pio_asm;
 ///
 /// The entry function must have the signature `fn() -> !` (never returns).
 #[proc_macro_attribute]
-pub fn entry(args: TokenStream, input: TokenStream) -> TokenStream {
+pub fn main(args: TokenStream, input: TokenStream) -> TokenStream {
     let f = parse_macro_input!(input as ItemFn);
 
-    if !args.is_empty() {
-        return parse::Error::new(Span::call_site(), "This attribute accepts no arguments")
-            .to_compile_error()
-            .into();
-    }
+    // Parse optional argument: no_image_def
+    let no_image_def = match parse_main_args(args) {
+        Ok(v) => v,
+        Err(e) => return e,
+    };
 
     // Check that the function has no arguments
     if !f.sig.inputs.is_empty() {
         return parse::Error::new(
             Span::call_site(),
-            "#[entry] function must have signature fn() -> !",
+            "#[main] function must have signature fn() -> !",
         )
         .to_compile_error()
         .into();
@@ -87,7 +127,7 @@ pub fn entry(args: TokenStream, input: TokenStream) -> TokenStream {
             } else {
                 return parse::Error::new(
                     Span::call_site(),
-                    "#[entry] function must have return type `!`",
+                    "#[main] function must have return type `!`",
                 )
                 .to_compile_error()
                 .into();
@@ -96,7 +136,7 @@ pub fn entry(args: TokenStream, input: TokenStream) -> TokenStream {
         ReturnType::Default => {
             return parse::Error::new(
                 Span::call_site(),
-                "#[entry] function must have return type `!`",
+                "#[main] function must have return type `!`",
             )
             .to_compile_error()
             .into();
@@ -107,8 +147,21 @@ pub fn entry(args: TokenStream, input: TokenStream) -> TokenStream {
     let stmts = &f.block.stmts;
     let ident = &f.sig.ident;
 
-    // Generate the main function that the runtime calls
+    // Generate the image definition block (unless opt-out) plus the main entry point
+    let image_def = if no_image_def {
+        quote!()
+    } else {
+        quote!(
+            #[doc(hidden)]
+            #[unsafe(link_section = ".start_block")]
+            #[used]
+            static __pico_rs_image_def: pico_rs::block::ImageDef = pico_rs::block::ImageDef::exe();
+        )
+    };
+
     quote!(
+        #image_def
+
         #[unsafe(export_name = "main")]
         #(#attrs)*
         pub unsafe fn #ident() -> ! {

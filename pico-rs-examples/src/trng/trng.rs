@@ -78,17 +78,10 @@
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::block::ImageDef;
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::pac::Peripherals;
 use pico_rs::timer::Timer0;
-use pico_rs::trng::Trng;
-
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-#[entry]
+use pico_rs::trng::Trng;#[main]
 fn main() -> ! {
     info!("=== TRNG (True Random Number Generator) Example ===");
 

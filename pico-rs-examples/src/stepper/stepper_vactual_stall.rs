@@ -19,21 +19,14 @@ use core::sync::atomic::{AtomicBool, Ordering};
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::gpio::{self, EdgeLevel, Pin, Pins};
 use pico_rs::interrupt;
 use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::ticks::Ticks;
 use pico_rs::timer::Timer0;
-use pico_rs::uart::{DataBits, Parity, StopBits, Uart1};
-
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-// ============================================================================
+use pico_rs::uart::{DataBits, Parity, StopBits, Uart1};// ============================================================================
 // 参数
 // ============================================================================
 
@@ -92,7 +85,7 @@ static STALL_FLAG: AtomicBool = AtomicBool::new(false);
 // 程序入口
 // ============================================================================
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("=== TMC2209 VACTUAL Stall Homing ===");
 

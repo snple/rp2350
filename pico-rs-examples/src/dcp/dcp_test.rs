@@ -12,15 +12,8 @@ use core::f64;
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::block::ImageDef;
 use pico_rs::dcp::Dcp;
-use pico_rs::entry;
-
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-// ==========================================================================
+use pico_rs::main;// ==========================================================================
 // Test helpers
 // ==========================================================================
 
@@ -359,7 +352,7 @@ fn test_fxprod(dcp: &Dcp) {
 // Entry point
 // ==========================================================================
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("=== DCP Comprehensive Test ===");
 

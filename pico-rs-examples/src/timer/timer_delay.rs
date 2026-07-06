@@ -12,20 +12,14 @@
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClockBuilder};
-use pico_rs::entry;
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::gpio::Pins;
+use pico_rs::main;
 use pico_rs::pac::Peripherals;
 use pico_rs::ticks::Ticks;
 use pico_rs::timer::Timer0;
 
-/// RP2350 Boot Block
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-#[entry]
+#[main]
 fn main() -> ! {
     info!("=== Timer Delay Test ===");
 

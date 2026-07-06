@@ -281,19 +281,12 @@
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::gpio::Pins;
 use pico_rs::pac::Peripherals;
 use pico_rs::pwm::Pwm;
-use pico_rs::timer::Timer0;
-
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-// ============================================================================
+use pico_rs::timer::Timer0;// ============================================================================
 // Configuration
 // ============================================================================
 
@@ -335,7 +328,7 @@ const STEP_LOW: [u8; 6] = [1, 2, 2, 0, 0, 1];
 // Entry
 // ============================================================================
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("BLDC ESC — sensorless open-loop 6-step commutation");
 

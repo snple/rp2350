@@ -29,20 +29,13 @@ use core::sync::atomic::{AtomicBool, Ordering};
 
 use defmt::*;
 use defmt_rtt as _;
-use pico_rs::block::ImageDef;
 use pico_rs::clocks::{ClockBuilder};
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::gpio::Pins;
 use pico_rs::interrupt::{self, Mutex};
 use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::ticks::Ticks;
-use pico_rs::timer::{AlarmTimer, MonotonicTimer, Timer0};
-
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-static TIMER: Mutex<RefCell<Option<Timer0>>> = Mutex::new(RefCell::new(None));
+use pico_rs::timer::{AlarmTimer, MonotonicTimer, Timer0};static TIMER: Mutex<RefCell<Option<Timer0>>> = Mutex::new(RefCell::new(None));
 static LED_STATE: AtomicBool = AtomicBool::new(false);
 static TICK_COUNT: Mutex<RefCell<u32>> = Mutex::new(RefCell::new(0));
 
@@ -73,7 +66,7 @@ fn clear_alarm_sources<T: AlarmTimer>(timer: &T, alarm: u8) {
     timer.clear_forced_alarm_interrupt(alarm);
 }
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("=== Timer Alarm Trait Example ===");
 

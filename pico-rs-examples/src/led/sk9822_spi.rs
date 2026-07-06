@@ -29,21 +29,14 @@
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::gpio::{NoPin, Pins};
 use pico_rs::pac::Peripherals;
 use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 use pico_rs::spi::{Mode, Spi0};
 use pico_rs::systick::Delay;
 
-/// RP2350 Boot Block
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-// ============================================================================
 // Configuration
 // ============================================================================
 
@@ -147,7 +140,7 @@ where
 // Entry Point
 // ============================================================================
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("SK9822 SPI LED example");
 

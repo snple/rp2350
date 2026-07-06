@@ -148,19 +148,12 @@
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::block::ImageDef;
 use pico_rs::clocks::{ClockBuilder};
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::gpio::Pins;
 use pico_rs::pac::Peripherals;
 use pico_rs::pwm::Pwm;
-use pico_rs::timer::Timer0;
-
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-// ============================================================================
+use pico_rs::timer::Timer0;// ============================================================================
 // 配置参数
 // ============================================================================
 
@@ -198,7 +191,7 @@ const fn duty_from_percent(wrap: u16, percent: u32) -> u16 {
     ((((wrap as u32) + 1) * percent) / 100) as u16
 }
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("=== PWM Output Example ===");
 

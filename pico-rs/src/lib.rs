@@ -30,10 +30,10 @@
 //! #![no_std]
 //! #![no_main]
 //!
-//! use pico_rs::entry;
+//! use pico_rs::main;
 //! use pico_rs::systick::Delay;
 //!
-//! #[entry]
+//! #[main]
 //! fn main() -> ! {
 //!     let delay = Delay::new(150_000_000); // 150 MHz
 //!     loop {
@@ -203,7 +203,7 @@ pub use pico_rs_pac::__INTERRUPTS;
 pub use pico_rs_pac::{Interrupt, Peripherals, Vector};
 
 // Re-export the entry macro
-pub use pico_rs_macro::entry;
+pub use pico_rs_macro::main;
 
 // Re-export the exception macro
 pub use pico_rs_macro::exception;

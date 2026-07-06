@@ -13,23 +13,18 @@
 
 use defmt::*;
 use defmt_rtt as _;
-use pico_rs::block::ImageDef;
-use pico_rs::entry;
 use pico_rs::gpio::{self, Pins};
+use pico_rs::main;
 use pico_rs::pac::Peripherals;
 use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 use pico_rs::sio::{Sio, Spinlock};
 use pico_rs::systick::Delay;
 
-/// RP2350 Boot Block
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
 const LED_PIN: u32 = 25;
+
 const CLOCK_FREQ_HZ: u32 = 150_000_000;
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("SIO Example");
 

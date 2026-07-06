@@ -273,22 +273,12 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::Delay;
-use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
-use pico_rs::entry;
 use pico_rs::gpio::Pins;
 use pico_rs::i2c::{Error, I2c1, I2cBus};
+use pico_rs::main;
 use pico_rs::pac::Peripherals;
 use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
-
-/// RP2350 启动块 —— 告知 Boot ROM 本镜像是合法的 ARM 可执行文件
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-// ============================================================================
-// 配置参数
-// ============================================================================
 
 /// EEPROM I2C 设备地址
 /// A2=A1=A0=GND → 0b1010_000 = 0x50
@@ -469,7 +459,7 @@ fn eeprom_write_any<B: I2cBus<Error = Error>>(
 // 主程序
 // ============================================================================
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("=== AT24C256 EEPROM Example ===");
 

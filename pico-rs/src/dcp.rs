@@ -51,8 +51,8 @@
 //!
 //! # Safety
 //!
-//! The DCP is enabled in CPACR by the `#[entry]` macro during startup.
-//! Calling DCP methods before `#[entry]` runs will cause an UNDEFINSTR
+//! The DCP is enabled in CPACR by the `#[main]` macro during startup.
+//! Calling DCP methods before `#[main]` runs will cause an UNDEFINSTR
 //! exception (the coprocessor is disabled).
 
 // Suppress warnings for scratch registers whose final values are unused after

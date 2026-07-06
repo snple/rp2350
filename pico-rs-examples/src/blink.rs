@@ -10,24 +10,17 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::Delay;
-use pico_rs::block::ImageDef;
-use pico_rs::entry;
 use pico_rs::gpio::Pins;
+use pico_rs::main;
 use pico_rs::pac::Peripherals;
 use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 
-/// RP2350 Boot Block - tells the Boot ROM this is a valid ARM executable
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-/// RP2350 default boot clock frequency
 /// At boot, RP2350 runs from ROSC at approximately 12 MHz
 const CLOCK_FREQ_HZ: u32 = 12_000_000;
 
 const LED_PIN: u32 = 6;
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("RP2350 started!");
     info!("Blink example with GPIO LED control...");

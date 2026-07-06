@@ -11,23 +11,17 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::Delay;
-use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClockBuilder};
-use pico_rs::entry;
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::gpio::Pins;
+use pico_rs::main;
 use pico_rs::pac::Peripherals;
 use pico_rs::pio;
 use pico_rs::pio_asm;
 use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 
-/// RP2350 Boot Block
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
 const LED_PIN: u8 = 25;
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("PIO Blink Advanced Example");
 

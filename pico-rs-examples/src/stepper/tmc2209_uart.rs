@@ -49,23 +49,16 @@
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::block::ImageDef;
 use pico_rs::clocks::{ClockBuilder};
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::gpio::Pins;
 use pico_rs::pac::Peripherals;
 use pico_rs::ticks::Ticks;
 use pico_rs::timer::Timer0;
 use pico_rs::uart::{DataBits, Parity, StopBits, Uart1};
-use pico_rs_drivers::tmc2209::{Gconf, REG_TSTEP, Tmc2209};
+use pico_rs_drivers::tmc2209::{Gconf, REG_TSTEP, Tmc2209};const TMC_UART_BAUD: u32 = 115_200;
 
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-const TMC_UART_BAUD: u32 = 115_200;
-
-#[entry]
+#[main]
 fn main() -> ! {
     info!("=== TMC2209 UART Scan (pico_rs_drivers::tmc2209) ===");
     info!("UART1: TX=GP4, RX=GP5");

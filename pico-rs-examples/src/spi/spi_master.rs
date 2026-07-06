@@ -114,19 +114,12 @@
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::block::ImageDef;
 use pico_rs::clocks::{ClockBuilder};
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::gpio::Pins;
 use pico_rs::pac::Peripherals;
 use pico_rs::spi::{FrameFormat, Mode, Spi0};
-use pico_rs::timer::Timer0;
-
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-// ============================================================================
+use pico_rs::timer::Timer0;// ============================================================================
 // 配置参数
 // ============================================================================
 
@@ -139,7 +132,7 @@ const SPI_BAUDRATE: u32 = 1_000_000;
 /// 软件控制 CS 的优势: 可在一次传输中灵活控制 CS 的拉高拉低时机
 const _PIN_CS: u32 = 5;
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("=== SPI Master Example ===");
 

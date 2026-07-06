@@ -10,20 +10,13 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::Delay;
-use pico_rs::block::ImageDef;
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::reset::{self, Resettable};
 use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 
-/// RP2350 Boot Block - tells the Boot ROM this is a valid ARM executable
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-/// RP2350 default boot clock frequency
 const CLOCK_FREQ_HZ: u32 = 12_000_000;
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("RP2350 Reset HAL Demo");
 

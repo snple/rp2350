@@ -331,20 +331,13 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::Delay;
-use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::gpio::Pins;
 use pico_rs::i2c::{I2c0, I2cBus};
 use pico_rs::pac::Peripherals;
 use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
-use pico_rs::timer::Timer0;
-
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-// ============================================================================
+use pico_rs::timer::Timer0;// ============================================================================
 // TC358870XBG 寄存器地址定义
 // ============================================================================
 
@@ -1188,7 +1181,7 @@ fn send_dcs_command(i2c: &impl I2cBus, cmd: u8, params: &[u8]) {
 // 主函数
 // ============================================================================
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("=== TC358870XBG HDMI-to-MIPI DSI 桥接驱动 ===");
     info!(

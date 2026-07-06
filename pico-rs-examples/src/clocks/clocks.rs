@@ -48,25 +48,18 @@
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::block::ImageDef;
 use pico_rs::clocks::{ClockBuilder};
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::gpio::Pins;
 use pico_rs::pac::Peripherals;
 use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 use pico_rs::systick::Delay;
 
-/// RP2350 Boot Block
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-/// 目标系统主频。
 ///
 /// RP2350 在本 HAL 中的常用高性能配置就是 150 MHz。
 const SYS_CLK_HZ: u32 = 150_000_000;
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("=== RP2350 ClockBuilder Example ===");
     info!("Target system clock: {} MHz", SYS_CLK_HZ / 1_000_000);

@@ -23,19 +23,12 @@
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::block::ImageDef;
 use pico_rs::clocks::{ClockBuilder};
 use pico_rs::dma::{DataSize, Dma, TreqSel};
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::gpio::Pins;
 use pico_rs::pac::Peripherals;
-use pico_rs::spi;
-
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-#[entry]
+use pico_rs::spi;#[main]
 fn main() -> ! {
     info!("SPI + DMA loopback example");
 

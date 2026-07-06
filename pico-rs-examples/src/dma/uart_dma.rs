@@ -24,22 +24,15 @@
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::block::ImageDef;
 use pico_rs::dma::{DataSize, Dma};
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::gpio::{Pin, Pins};
 use pico_rs::pac::Peripherals;
 use pico_rs::uart::Uart0;
 
-/// RP2350 Boot Block
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-/// RP2350 default boot clock frequency (ROSC ≈ 12 MHz)
 const CLOCK_FREQ_HZ: u32 = 12_000_000;
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("UART + DMA example (builder pattern)");
 

@@ -26,22 +26,15 @@
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::dma::{DataSize, Dma, TreqSel};
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::gpio::Pins;
 use pico_rs::i2c::I2c0;
-use pico_rs::pac::Peripherals;
-
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-/// I2C target device address (e.g. SHT3x temperature sensor)
+use pico_rs::pac::Peripherals;/// I2C target device address (e.g. SHT3x temperature sensor)
 const I2C_ADDR: u8 = 0x44;
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("I2C + DMA example");
 

@@ -156,19 +156,12 @@
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::gpio::Pins;
 use pico_rs::i2c::I2c0;
 use pico_rs::pac::Peripherals;
-use pico_rs::timer::Timer0;
-
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-// ============================================================================
+use pico_rs::timer::Timer0;// ============================================================================
 // 配置参数
 // ============================================================================
 
@@ -184,7 +177,7 @@ const SCAN_ADDR_END: u8 = 0x77;
 /// 最大可记录的设备数
 const MAX_DEVICES: usize = 16;
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("=== I2C Bus Scanner ===");
 

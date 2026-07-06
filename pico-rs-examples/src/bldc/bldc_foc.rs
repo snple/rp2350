@@ -239,20 +239,13 @@ use core::sync::atomic::{AtomicBool, AtomicI32, AtomicU16, AtomicU32, Ordering};
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::gpio::{EdgeLevel, Pin, Pins};
 use pico_rs::interrupt::{self, Mutex};
 use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::pwm::Pwm;
-use pico_rs::timer::Timer0;
-
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-// ============================================================================
+use pico_rs::timer::Timer0;// ============================================================================
 // 配置参数
 // ============================================================================
 
@@ -456,7 +449,7 @@ static ACTUAL_RPM: AtomicU32 = AtomicU32::new(0);
 // 入口
 // ============================================================================
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("BLDC FOC — Hall sensor + angle interpolation + SVPWM");
 

@@ -101,19 +101,12 @@ use core::sync::atomic::{AtomicI32, AtomicU32, Ordering};
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::block::ImageDef;
 use pico_rs::clocks::{ClockBuilder};
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::multicore::{self, Fifo, Multicore, Stack};
 use pico_rs::pac::Peripherals;
 use pico_rs::sio::Spinlock;
-use pico_rs::timer::Timer0;
-
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-// ============================================================================
+use pico_rs::timer::Timer0;// ============================================================================
 // Core 1 栈 — 静态分配, 8 字节对齐
 // ============================================================================
 
@@ -211,7 +204,7 @@ fn core1_main() -> ! {
 // Core 0 主函数
 // ============================================================================
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("=== Multicore Shared Data Example ===");
     info!("");

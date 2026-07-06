@@ -24,19 +24,12 @@
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::block::ImageDef;
 use pico_rs::clocks::{ClockBuilder};
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::gpio::Pins;
 use pico_rs::pac::Peripherals;
 use pico_rs::ticks::Ticks;
-use pico_rs::timer::{MonotonicTimer, Timer0};
-
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-const BLINK_INTERVAL_US: u64 = 500_000;
+use pico_rs::timer::{MonotonicTimer, Timer0};const BLINK_INTERVAL_US: u64 = 500_000;
 const REPORT_INTERVAL_US: u64 = 2_000_000;
 
 /// 等待直到绝对时间 `deadline_us`。
@@ -72,7 +65,7 @@ fn elapsed_us<T: MonotonicTimer>(timer: &T, start_us: u64) -> u64 {
     timer.get_time_us().wrapping_sub(start_us)
 }
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("=== Timer Monotonic Trait Example ===");
 

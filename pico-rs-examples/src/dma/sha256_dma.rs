@@ -17,17 +17,10 @@
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::block::ImageDef;
 use pico_rs::dma::{DataSize, Dma};
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::pac::Peripherals;
-use pico_rs::sha256::{DmaSize, Sha256};
-
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-#[entry]
+use pico_rs::sha256::{DmaSize, Sha256};#[main]
 fn main() -> ! {
     info!("SHA-256 + DMA hashing example");
 

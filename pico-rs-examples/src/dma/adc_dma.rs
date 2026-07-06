@@ -22,20 +22,13 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::adc::{Adc, TEMPERATURE_CHANNEL};
-use pico_rs::block::ImageDef;
 use pico_rs::clocks::{ClockBuilder};
 use pico_rs::dma::{DataSize, Dma};
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::gpio::Pins;
-use pico_rs::pac::Peripherals;
+use pico_rs::pac::Peripherals;const NUM_SAMPLES: usize = 16;
 
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-const NUM_SAMPLES: usize = 16;
-
-#[entry]
+#[main]
 fn main() -> ! {
     info!("ADC + DMA temperature sampling example");
 

@@ -24,7 +24,7 @@
 //!
 //! ```ignore
 //! // Core 0 main — 处理 USB 和 UART
-//! #[entry]
+//! #[main]
 //! fn main() -> ! {
 //!     unsafe {
 //!         interrupt::enable(Interrupt::USBCTRL_IRQ);

@@ -20,19 +20,12 @@
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::block::ImageDef;
 use pico_rs::clocks::{ClockBuilder};
 use pico_rs::dma::{DataSize, Dma, TransCountMode, TreqSel};
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::gpio::Pins;
 use pico_rs::pac::Peripherals;
-use pico_rs::pwm::Pwm;
-
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-/// 64-entry triangle fade table.  Each entry stores the CC register value
+use pico_rs::pwm::Pwm;/// 64-entry triangle fade table.  Each entry stores the CC register value
 /// for channel-A duty in bits [15:0].
 ///
 /// Duty ramps 0 → 65535 → 0 in a triangular wave.
@@ -53,7 +46,7 @@ static FADE_TABLE: [u32; 64] = {
     table
 };
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("PWM + DMA LED fade example");
 

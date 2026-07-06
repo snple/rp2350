@@ -345,21 +345,14 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::adc::{Adc, AdcPin};
-use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::gpio::Pins;
 use pico_rs::interrupt::{self, Mutex};
 use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::pwm::Pwm;
 use pico_rs::spi::Spi1WithCs;
-use pico_rs::timer::Timer0;
-
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-// ============================================================================
+use pico_rs::timer::Timer0;// ============================================================================
 // 配置参数
 // ============================================================================
 
@@ -895,7 +888,7 @@ const ENCODER_TABLE: [i32; 16] = [
 // 入口
 // ============================================================================
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("BLDC Servo SPI Current Mode — 4-loop FOC via SPI slave");
 

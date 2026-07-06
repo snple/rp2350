@@ -21,20 +21,13 @@ use core::sync::atomic::{AtomicU32, Ordering};
 use defmt::*;
 use defmt_rtt as _;
 use pico_rs::Delay;
-use pico_rs::block::ImageDef;
 use pico_rs::clocks::{ClockBuilder};
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::multicore::{self, Fifo, Multicore, Stack};
 use pico_rs::pac::Peripherals;
 use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 use pico_rs::sio::Spinlock;
 
-/// RP2350 Boot Block
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-// Stack for Core 1 - 4KB should be sufficient for this example
 static mut CORE1_STACK: Stack<4096> = Stack::new();
 
 // Shared counter protected by spinlock
@@ -87,7 +80,7 @@ fn core1_main() -> ! {
     }
 }
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("Multicore Example");
     info!("==================");

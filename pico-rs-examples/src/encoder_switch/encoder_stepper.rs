@@ -230,22 +230,15 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::bind;
-use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::gpio::{EdgeLevel, Pin, Pins};
 use pico_rs::interrupt;
 use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::ticks::Ticks;
 use pico_rs::timer::Timer0;
 
-use pico_rs_drivers::stepper::{AxisConfig, AxisState, Direction, MotionPhase};
-
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-// ============================================================================
+use pico_rs_drivers::stepper::{AxisConfig, AxisState, Direction, MotionPhase};// ============================================================================
 // 编码器引脚配置
 // ============================================================================
 
@@ -413,7 +406,7 @@ fn gear_max_speed(gear: u32) -> u32 {
     }
 }
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("=== Encoder + Stepper Motor Control (3-Gear) ===");
     info!("Rotate encoder to move motor, press button to switch gear");

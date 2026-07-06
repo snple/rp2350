@@ -53,21 +53,14 @@ use pico_rs_drivers::tmc2209::{
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::block::ImageDef;
 use pico_rs::clocks::ClockBuilder;
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::gpio::{self, Pins};
 use pico_rs::interrupt;
 use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::ticks::Ticks;
 use pico_rs::timer::Timer0;
-use pico_rs::uart::{DataBits, Parity, StopBits, Uart1};
-
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-// ============================================================================
+use pico_rs::uart::{DataBits, Parity, StopBits, Uart1};// ============================================================================
 // 运动控制参数
 // ============================================================================
 
@@ -193,7 +186,7 @@ fn wait_done() {
 // 程序入口
 // ============================================================================
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("=== TMC2209 Stepper (pico_rs_drivers) ===");
     info!(

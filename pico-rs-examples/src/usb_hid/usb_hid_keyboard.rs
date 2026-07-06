@@ -22,9 +22,8 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::Delay;
-use pico_rs::block::ImageDef;
 use pico_rs::clocks::{ClockBuilder};
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::gpio::Pins;
 use pico_rs::pac::Peripherals;
 use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
@@ -34,12 +33,6 @@ use pico_rs_usb::class::hid::{HidClass, KeyboardReport, modifier};
 use pico_rs_usb::device::UsbDeviceBuilder;
 use pico_rs_usb::rp2350::Rp2350Bus;
 
-/// RP2350 Boot Block
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-// ─── USB HID Keycodes (from USB HID Usage Tables §10) ────────────────────────
 
 mod keycode {
     pub const A: u8 = 0x04;
@@ -86,7 +79,7 @@ fn char_to_keycode(ch: char) -> (u8, bool) {
     }
 }
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("USB HID Keyboard Example starting...");
 

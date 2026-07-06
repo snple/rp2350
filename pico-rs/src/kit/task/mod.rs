@@ -58,7 +58,7 @@
 //! // 全局事件队列
 //! static EVENTS: EventQueue = EventQueue::new();
 //!
-//! #[entry]
+//! #[main]
 //! fn main() -> ! {
 //!     // 初始化 spare IRQ 作为低优先级任务
 //!     spare::init(0, 200);

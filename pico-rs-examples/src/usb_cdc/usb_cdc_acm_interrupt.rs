@@ -31,12 +31,11 @@ use core::cell::RefCell;
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClockBuilder};
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::interrupt::{self, Interrupt, Mutex};
 use pico_rs::pac::Peripherals;
 use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
-use pico_rs::{SysTick, bind, entry, exception};
+use pico_rs::{SysTick, bind, exception, main};
 
 use pico_rs_usb::bus::UsbBusAllocator;
 use pico_rs_usb::class::UsbClass;
@@ -46,13 +45,7 @@ use pico_rs_usb::rp2350::Rp2350Bus;
 
 // ──────────────────────────────────────────────────────────────────────────────
 // Boot block
-// ──────────────────────────────────────────────────────────────────────────────
-
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-// ──────────────────────────────────────────────────────────────────────────────
+// ──────────────────────────────────────────────────────────────────────────────// ──────────────────────────────────────────────────────────────────────────────
 // 全局状态
 // ──────────────────────────────────────────────────────────────────────────────
 
@@ -121,7 +114,7 @@ fn SysTick() {
 // Main
 // ──────────────────────────────────────────────────────────────────────────────
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("USB CDC Interrupt Example starting...");
 

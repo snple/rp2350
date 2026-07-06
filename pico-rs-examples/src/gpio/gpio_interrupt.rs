@@ -17,18 +17,11 @@ use core::sync::atomic::{AtomicBool, Ordering};
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::block::ImageDef;
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::gpio::{EdgeLevel, Pin, Pins};
 use pico_rs::interrupt;
 use pico_rs::pac::{Interrupt, Peripherals};
 
-/// RP2350 Boot Block
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-// Atomic flag for LED state
 static LED_STATE: AtomicBool = AtomicBool::new(false);
 // Debounce flag
 static BUTTON_PRESSED: AtomicBool = AtomicBool::new(false);
@@ -36,7 +29,7 @@ static BUTTON_PRESSED: AtomicBool = AtomicBool::new(false);
 /// Button GPIO pin number
 const BUTTON_PIN: u32 = 15;
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("GPIO Interrupt Example");
 

@@ -21,9 +21,8 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::SysTick;
-use pico_rs::block::ImageDef;
 use pico_rs::clocks::{ClockBuilder};
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::pac::Peripherals;
 use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 
@@ -33,15 +32,9 @@ use pico_rs_usb::class::cdc_acm::CdcAcm;
 use pico_rs_usb::device::UsbDeviceBuilder;
 use pico_rs_usb::rp2350::Rp2350Bus;
 
-/// RP2350 Boot Block
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-/// Target system clock frequency (150 MHz)
 const SYS_CLK_HZ: u32 = 150_000_000;
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("USB CDC Serial Example starting...");
 

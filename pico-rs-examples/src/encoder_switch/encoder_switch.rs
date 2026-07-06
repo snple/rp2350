@@ -109,20 +109,13 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::bind;
-use pico_rs::block::ImageDef;
 use pico_rs::clocks::{ClockBuilder};
-use pico_rs::entry;
+use pico_rs::main;
 use pico_rs::gpio::{EdgeLevel, Pin, Pins};
 use pico_rs::interrupt;
 use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::ticks::Ticks;
-use pico_rs::timer::Timer0;
-
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-// ============================================================================
+use pico_rs::timer::Timer0;// ============================================================================
 // 引脚配置
 // ============================================================================
 
@@ -185,7 +178,7 @@ const QUAD_TABLE: [i32; 16] = [
     0,  // 11 → 11: 无变化
 ];
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("=== 5-Pin Rotary Encoder Switch Example ===");
     info!("Pins: A(encoder), B(encoder), C(GND), D(button), E(GND)");

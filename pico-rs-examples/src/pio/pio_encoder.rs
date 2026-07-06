@@ -126,21 +126,14 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::bind;
-use pico_rs::block::ImageDef;
-use pico_rs::entry;
 use pico_rs::gpio::Pins;
 use pico_rs::interrupt;
+use pico_rs::main;
 use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::pio;
 use pico_rs::pio::FifoJoin;
 use pico_rs::pio_asm;
-use pico_rs::timer::Timer0;
-
-#[unsafe(link_section = ".start_block")]
-#[used]
-pub static IMAGE_DEF: ImageDef = ImageDef::exe();
-
-// ============================================================================
+use pico_rs::timer::Timer0; // ============================================================================
 // 引脚配置 (每个编码器的 A, B 必须是连续的 GPIO)
 // ============================================================================
 
@@ -208,7 +201,7 @@ const QUAD_TABLE: [i32; 16] = [
     0,  // 15: 11→11 无变化
 ];
 
-#[entry]
+#[main]
 fn main() -> ! {
     info!("=== PIO Triple Quadrature Encoder Example ===");
     info!("1 PIO block, 3 state machines, 3 encoders");
