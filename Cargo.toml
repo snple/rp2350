@@ -25,7 +25,9 @@ defmt-rtt = "1.2"
 proc-macro2 = "1.0"
 quote = "1.0"
 syn = { version = "2.0", features = ["full"] }
+paste = "1.0"
 bitfield-struct = "0.13"
+enumflags2 = "0.7"
 
 # Local crates
 pico-rs = { path = "pico-rs" }

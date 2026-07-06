@@ -98,7 +98,6 @@ version = "0.1.0"
 dependencies = [
  "critical-section",
  "defmt",
- "enumflags2",
  "paste",
  "pico-rs-macro",
  "pico-rs-pac",
