@@ -410,7 +410,7 @@ use defmt_rtt as _;
 
 use pico_rs::adc::{Adc, AdcPin};
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClockBuilder};
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
 use pico_rs::gpio::Pins;
 use pico_rs::interrupt::{self, Mutex};
@@ -701,7 +701,7 @@ fn main() -> ! {
     for i in 0..total_ramp_steps {
         // Linear interpolation: interval decreases as i increases
         let interval = STARTUP_INTERVAL_US_MAX
-            - (STARTUP_INTERVAL_US_MAX - STARTUP_INTERVAL_US_MIN) * (i as u32) / total_ramp_steps;
+            - (STARTUP_INTERVAL_US_MAX - STARTUP_INTERVAL_US_MIN) * i / total_ramp_steps;
 
         commutate(step, startup_duty);
         timer_delay_us(interval as u64);
@@ -792,7 +792,7 @@ fn main() -> ! {
             timer_delay_us(delay_30deg as u64);
 
             // Update RPM every electrical revolution (6 ZCs)
-            if zc_count % 6 == 0 {
+            if zc_count.is_multiple_of(6) {
                 let elec_period_us = step_period_us as u64 * 6;
                 if elec_period_us > 0 {
                     let rpm = 60_000_000u64 / (elec_period_us * pole_pairs as u64);
@@ -851,7 +851,7 @@ fn main() -> ! {
             }
 
             // Periodic status log (every ~1 second)
-            if zc_count % 600 == 0 && zc_count > 0 {
+            if zc_count.is_multiple_of(600) && zc_count > 0 {
                 info!(
                     "RPM: {} (target {}), duty: {}%, step: {}us, misses: {}",
                     actual_rpm,

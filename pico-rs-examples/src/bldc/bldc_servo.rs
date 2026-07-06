@@ -328,7 +328,7 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClockBuilder};
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
 use pico_rs::gpio::Pins;
 use pico_rs::interrupt::{self, Mutex};
@@ -793,7 +793,7 @@ fn main() -> ! {
         // ==============================================================
         // 4. 位置环 + 速度环 (@1 kHz)
         // ==============================================================
-        if foc_counter % POSITION_LOOP_DIVIDER == 0 {
+        if foc_counter.is_multiple_of(POSITION_LOOP_DIVIDER) {
             let now = timer_now_us();
             let dt_us = now.wrapping_sub(last_speed_time);
             last_speed_time = now;
@@ -846,7 +846,7 @@ fn main() -> ! {
 
             // ---- 日志 (~2 Hz) ----
             log_counter += 1;
-            if log_counter % 500 == 0 {
+            if log_counter.is_multiple_of(500) {
                 let target_deg = target_pos * 360 / ENCODER_CPR as i32;
                 let actual_deg = enc_count * 360 / ENCODER_CPR as i32;
                 info!(

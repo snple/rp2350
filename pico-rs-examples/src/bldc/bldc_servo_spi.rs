@@ -346,7 +346,7 @@ use defmt_rtt as _;
 
 use pico_rs::adc::{Adc, AdcPin};
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClockBuilder};
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
 use pico_rs::gpio::Pins;
 use pico_rs::interrupt::{self, Mutex};
@@ -1208,7 +1208,7 @@ fn main() -> ! {
         // ==============================================================
         // 8. 位置环 + 速度环 (@1 kHz)
         // ==============================================================
-        if foc_counter % POSITION_LOOP_DIVIDER == 0 {
+        if foc_counter.is_multiple_of(POSITION_LOOP_DIVIDER) {
             let now = timer_now_us();
             let dt_us = now.wrapping_sub(last_speed_time);
             last_speed_time = now;
@@ -1257,14 +1257,13 @@ fn main() -> ! {
             let target_pos = TARGET_POSITION.load(Ordering::Relaxed);
             let pos_error = target_pos - enc_count;
 
-            let speed_ref;
-            if pos_error.abs() <= deadband {
+            let speed_ref = if pos_error.abs() <= deadband {
                 pid_pos.reset();
                 pi_speed.reset();
-                speed_ref = 0;
+                0
             } else {
-                speed_ref = pid_pos.update(pos_error);
-            }
+                pid_pos.update(pos_error)
+            };
 
             // ---- 速度 PI → Iq_ref (mA) ----
             let speed_error = speed_ref - actual_rpm;
@@ -1273,7 +1272,7 @@ fn main() -> ! {
 
             // ---- 日志 (~2 Hz) ----
             log_counter += 1;
-            if log_counter % 500 == 0 {
+            if log_counter.is_multiple_of(500) {
                 let target_deg = target_pos * 360 / ENCODER_CPR as i32;
                 let actual_deg = enc_count * 360 / ENCODER_CPR as i32;
                 info!(

@@ -460,7 +460,7 @@ use defmt_rtt as _;
 
 use pico_rs::Delay;
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClockBuilder};
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
 use pico_rs::gpio::Pins;
 use pico_rs::i2c::{I2c0, I2cBus};
@@ -872,40 +872,40 @@ impl<'a, I2C: I2cBus> Mct8316z<'a, I2C> {
             }
 
             // 读 STATUS1
-            if let Some(s1) = self.read_reg(mct_reg::STATUS1) {
-                if s1 != 0 {
-                    warn!("  STATUS1=0x{:06x}", s1);
-                    if s1 & status1::OVP != 0 {
-                        warn!("    OVP (过压)");
-                    }
-                    if s1 & status1::UVLO != 0 {
-                        warn!("    UVLO (欠压)");
-                    }
-                    if s1 & status1::OTP != 0 {
-                        warn!("    OTP (过温关断)");
-                    }
-                    if s1 & status1::SUPPLY_OCP != 0 {
-                        warn!("    SUPPLY_OCP (供电过流)");
-                    }
+            if let Some(s1) = self.read_reg(mct_reg::STATUS1)
+                && s1 != 0
+            {
+                warn!("  STATUS1=0x{:06x}", s1);
+                if s1 & status1::OVP != 0 {
+                    warn!("    OVP (过压)");
+                }
+                if s1 & status1::UVLO != 0 {
+                    warn!("    UVLO (欠压)");
+                }
+                if s1 & status1::OTP != 0 {
+                    warn!("    OTP (过温关断)");
+                }
+                if s1 & status1::SUPPLY_OCP != 0 {
+                    warn!("    SUPPLY_OCP (供电过流)");
                 }
             }
 
             // 读 STATUS3 (电机相关故障)
-            if let Some(s3) = self.read_reg(mct_reg::STATUS3) {
-                if s3 != 0 {
-                    warn!("  STATUS3=0x{:06x}", s3);
-                    if s3 & status3::NO_MTR != 0 {
-                        warn!("    NO_MTR (未检测到电机)");
-                    }
-                    if s3 & status3::MTR_LCK != 0 {
-                        warn!("    MTR_LCK (电机卡转)");
-                    }
-                    if s3 & status3::ABN_SPEED != 0 {
-                        warn!("    ABN_SPEED (异常速度)");
-                    }
-                    if s3 & status3::ABN_BEMF != 0 {
-                        warn!("    ABN_BEMF (异常反电动势)");
-                    }
+            if let Some(s3) = self.read_reg(mct_reg::STATUS3)
+                && s3 != 0
+            {
+                warn!("  STATUS3=0x{:06x}", s3);
+                if s3 & status3::NO_MTR != 0 {
+                    warn!("    NO_MTR (未检测到电机)");
+                }
+                if s3 & status3::MTR_LCK != 0 {
+                    warn!("    MTR_LCK (电机卡转)");
+                }
+                if s3 & status3::ABN_SPEED != 0 {
+                    warn!("    ABN_SPEED (异常速度)");
+                }
+                if s3 & status3::ABN_BEMF != 0 {
+                    warn!("    ABN_BEMF (异常反电动势)");
                 }
             }
         }
@@ -920,6 +920,7 @@ impl<'a, I2C: I2cBus> Mct8316z<'a, I2C> {
     ///   1. DRVOFF=1 (关闭驱动)
     ///   2. 等待 >1ms
     ///   3. DRVOFF=0 (重新使能)
+    ///
     /// 或通过 I2C 写 ALGO_CTRL1 的 DRVOFF_CMD 位
     fn clear_fault_via_i2c(&self) -> bool {
         // 设 DRVOFF_CMD = 1
@@ -1324,38 +1325,34 @@ fn main() -> ! {
         // ==============================================================
         // 2. 读取设备状态机
         // ==============================================================
-        if let Some(state) = mct.get_device_state() {
-            if state != last_state {
-                info!(
-                    "State: {} → {} ({})",
-                    Mct8316z::<I2c0<pico_rs::gpio::Pin<4>, pico_rs::gpio::Pin<5>>>::state_name(
-                        last_state
-                    ),
-                    Mct8316z::<I2c0<pico_rs::gpio::Pin<4>, pico_rs::gpio::Pin<5>>>::state_name(
-                        state
-                    ),
-                    state
-                );
-                last_state = state;
-            }
+        if let Some(state) = mct.get_device_state()
+            && state != last_state
+        {
+            info!(
+                "State: {} → {} ({})",
+                Mct8316z::<I2c0<pico_rs::gpio::Pin<4>, pico_rs::gpio::Pin<5>>>::state_name(
+                    last_state
+                ),
+                Mct8316z::<I2c0<pico_rs::gpio::Pin<4>, pico_rs::gpio::Pin<5>>>::state_name(state),
+                state
+            );
+            last_state = state;
         }
 
         // ==============================================================
         // 3. 读取完整状态 (每隔 ~2 秒)
         // ==============================================================
-        if loop_count % (2000 / POLL_INTERVAL_MS) == 0 {
-            if let Some(dev_stat) = mct.read_reg(mct_reg::DEV_STATUS) {
-                let state = (dev_stat >> dev_status::DEV_STATE_SHIFT) & 0xF;
-                let bus_current = dev_stat & 0xFFFF;
-                info!(
-                    "DEV_STATUS: state={} bus_current_raw={} nFAULT={}",
-                    Mct8316z::<I2c0<pico_rs::gpio::Pin<4>, pico_rs::gpio::Pin<5>>>::state_name(
-                        state
-                    ),
-                    bus_current,
-                    nfault.get()
-                );
-            }
+        if loop_count.is_multiple_of(2000 / POLL_INTERVAL_MS)
+            && let Some(dev_stat) = mct.read_reg(mct_reg::DEV_STATUS)
+        {
+            let state = (dev_stat >> dev_status::DEV_STATE_SHIFT) & 0xF;
+            let bus_current = dev_stat & 0xFFFF;
+            info!(
+                "DEV_STATUS: state={} bus_current_raw={} nFAULT={}",
+                Mct8316z::<I2c0<pico_rs::gpio::Pin<4>, pico_rs::gpio::Pin<5>>>::state_name(state),
+                bus_current,
+                nfault.get()
+            );
         }
 
         // ==============================================================

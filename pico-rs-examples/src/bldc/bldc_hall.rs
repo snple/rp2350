@@ -285,7 +285,7 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClockBuilder};
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
 use pico_rs::gpio::{EdgeLevel, Pin, Pins};
 use pico_rs::interrupt::{self, Mutex};
@@ -694,7 +694,7 @@ fn main() -> ! {
 
             // 周期日志（约每 1 秒）
             log_counter += 1;
-            if log_counter % 100 == 0 {
+            if log_counter.is_multiple_of(100) {
                 let hall_cnt = HALL_COUNT.load(Ordering::Relaxed);
                 let hall_state = HALL_STATE.load(Ordering::Relaxed);
                 info!(

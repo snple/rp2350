@@ -282,7 +282,7 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::block::ImageDef;
-use pico_rs::clocks::{ClockBuilder};
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::entry;
 use pico_rs::gpio::Pins;
 use pico_rs::pac::Peripherals;
@@ -471,7 +471,7 @@ fn main() -> ! {
 
     for i in 0..total_steps {
         // Linear ramp from STARTUP_INTERVAL_US_MAX → STARTUP_INTERVAL_US_MIN
-        let progress = i as u32;
+        let progress = i;
         let interval = STARTUP_INTERVAL_US_MAX
             - (STARTUP_INTERVAL_US_MAX - STARTUP_INTERVAL_US_MIN) * progress / total_steps;
 
