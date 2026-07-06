@@ -21,16 +21,36 @@
 //!     step_pulse_us: 3,
 //!     diag_pin: 5,
 //!     index_pin: 6,
-//!     homing_backoff_index: 0,
+//!     homing_index_backoff: 0,
 //! });
 //! ```
 
-use core::sync::atomic::{AtomicBool, AtomicU32, Ordering};
+use core::sync::atomic::{AtomicBool, AtomicU8, AtomicU32, Ordering};
 
+use defmt::debug;
 use pico_rs::gpioc;
 use pico_rs::timer::{AlarmTimer, MonotonicTimer};
 
 use super::{Direction, MotionPhase, speed_to_interval_us};
+
+// ============================================================================
+// 常量
+// ============================================================================
+
+/// 启动消隐步数。新运动启动后前 N 步跳过 DIAG 堵转检测。
+///
+/// **为什么需要消隐**：堵转后电机静止时 DIAG 保持高电平。
+/// 如果 `start_continuous` 一启动就检测 DIAG，ISR 会在第一步就误判
+/// 堵转而立即停止电机。消隐期给电机足够时间建立 BEMF、让 SG_RESULT
+/// 回升到阈值以上，DIAG 自然清除。
+///
+/// 200 步 @ 10 kHz = 20 ms，实测足以让任意步进电机建立稳定 BEMF。
+const STALL_BLANKING_STEPS: u32 = 200;
+
+/// 探测启动消隐步数。从限位附近起步时，需要足够步数让电机离开
+/// 堵转敏感区。200 步 @500Hz = 400ms，覆盖 INDEX_BACKOFF 最大回退距离
+/// 并留有余量。backoff 已改用 500Hz 慢速，消隐期内撞限位的物理冲击很小。
+const PROBE_BLANKING_STEPS: u32 = 200;
 
 // ============================================================================
 // IndexCheck
@@ -94,7 +114,9 @@ pub struct AxisConfig {
     /// INDEX 引脚编号（TMC2209 INDEX 信号，每完整电气周期脉冲一次）。
     pub index_pin: u32,
     /// 归位回退时需要检测到的 INDEX 脉冲数（0 = 不回退）。
-    pub homing_backoff_index: u32,
+    pub index_backoff: u32,
+    /// DIR 引脚方向反转（false = HIGH=Reverse, true = HIGH=Forward）。
+    pub invert_dir: bool,
 }
 
 // ============================================================================
@@ -112,17 +134,31 @@ pub struct AxisState {
     /// INDEX 引脚编号。
     index_pin: u32,
     /// 归位回退时需要检测到的 INDEX 脉冲数（0 = 不回退）。
-    homing_backoff_index: u32,
+    index_backoff: u32,
     /// INDEX 脉冲计数器（每个完整电气周期 +1）。
     index_count: AtomicU32,
     /// INDEX 引脚上一次采样状态。
     index_last_state: AtomicBool,
     /// 归位回退目标 INDEX 计数。
-    homing_backoff_target: AtomicU32,
+    index_backoff_target: AtomicU32,
+    /// 探测方向（0=Forward, 1=Reverse）。由 `probe_endstop` 设置。
+    probe_dir: AtomicU8,
     /// 堵转锁存标志（DIAG 触发后被 ISR 置 true，`start_*` 时清零）。
     stall_latched: AtomicBool,
     /// 堵转检测使能（默认 true）。退离/回退等场景可临时关闭，避免 DIAG 误杀。
     stall_check_enabled: AtomicBool,
+    /// 启动消隐计数器（步数）。新运动启动后前 N 步跳过 DIAG 检测，
+    /// 给电机足够时间建立 BEMF 并让 SG_RESULT 回升到阈值以上。
+    ///
+    /// 堵转后电机静止时 DIAG 保持高电平，若不做消隐，下一个
+    /// `start_continuous` 的第一步就会被 DIAG 误判为堵转而立即停止。
+    stall_blanking: AtomicU32,
+    /// 回退阶段 DIAG 已清除标志。
+    ///
+    /// 回退启动时 DIAG 必然为高（刚从限位离开，SG_RESULT 尚未回升）。
+    /// 此标志在 DIAG 第一次变低后置 true，之后若 DIAG 再次变高则说明
+    /// 撞上了对面限位，应立即停止回退。
+    backoff_diag_cleared: AtomicBool,
 }
 
 unsafe impl Sync for AxisState {}
@@ -138,15 +174,19 @@ impl AxisState {
                 start_speed_hz: config.start_speed_hz,
                 accel_steps: config.accel_steps,
                 step_pulse_us: config.step_pulse_us,
+                invert_dir: config.invert_dir,
             }),
             diag_pin: config.diag_pin,
             index_pin: config.index_pin,
-            homing_backoff_index: config.homing_backoff_index,
+            index_backoff: config.index_backoff,
             index_count: AtomicU32::new(0),
             index_last_state: AtomicBool::new(false),
-            homing_backoff_target: AtomicU32::new(0),
+            index_backoff_target: AtomicU32::new(0),
+            probe_dir: AtomicU8::new(1), // 默认 Reverse
             stall_latched: AtomicBool::new(false),
             stall_check_enabled: AtomicBool::new(true),
+            stall_blanking: AtomicU32::new(0),
+            backoff_diag_cleared: AtomicBool::new(false),
         }
     }
 
@@ -193,7 +233,15 @@ impl AxisState {
         self.axis.prepare_start();
     }
 
+    /// 设置最大行程。委托给底层通用 [`AxisState`](super::AxisState)。
+    #[inline]
+    pub fn set_max_travel(&self, travel: i32) {
+        self.axis.set_max_travel(travel);
+    }
+
     /// 启动有限步数的相对位移运动，带梯形加减速。
+    ///
+    /// 步数受 [`max_travel`](super::AxisState::set_max_travel) 约束。
     pub fn start_move<T: AlarmTimer + MonotonicTimer>(
         &self,
         timer: &T,
@@ -201,20 +249,47 @@ impl AxisState {
         dir: Direction,
         max_speed_hz: u32,
     ) {
+        let steps = self.axis.clamp_steps(steps, dir);
+        if steps == 0 {
+            self.axis.motion_done.store(true, Ordering::Relaxed);
+            return;
+        }
         self.stall_latched.store(false, Ordering::Relaxed);
+        self.stall_blanking
+            .store(STALL_BLANKING_STEPS, Ordering::Relaxed);
         self.reset_index();
         self.axis.start_move(timer, steps, dir, max_speed_hz);
     }
 
     /// 启动不限步数的连续运动，无加减速。
+    ///
+    /// 如果设置了最大行程，自动转为有限步数的 `start_move`。
     pub fn start_continuous<T: AlarmTimer + MonotonicTimer>(
         &self,
         timer: &T,
         dir: Direction,
         speed_hz: u32,
     ) {
+        // 有行程约束 → 转为有限运动
+        let limit = self.axis.max_travel.load(Ordering::Relaxed);
+        if limit > 0 {
+            let cur = self.axis.position();
+            let max_steps = match dir {
+                Direction::Forward => limit.saturating_sub(cur).max(0) as u32,
+                Direction::Reverse => cur.max(0) as u32,
+            };
+            if max_steps == 0 {
+                self.axis.motion_done.store(true, Ordering::Relaxed);
+                return;
+            }
+            self.start_move(timer, max_steps, dir, speed_hz);
+            return;
+        }
+        // 无限位 → 原逻辑
         self.stall_latched.store(false, Ordering::Relaxed);
         self.stall_check_enabled.store(true, Ordering::Relaxed);
+        self.stall_blanking
+            .store(STALL_BLANKING_STEPS, Ordering::Relaxed);
         self.reset_index();
         self.axis.start_continuous(timer, dir, speed_hz);
     }
@@ -319,30 +394,45 @@ impl AxisState {
         IndexCheck { expected, actual }
     }
 
-    // --- 归位 ---
+    // --- 末端探测（归位 / 行程校准） ---
 
-    /// 启动归位运动：向反方向连续运动直到触碰限位开关。
+    /// 向指定方向运动，直到 DIAG 堵转触发，INDEX 回退精确对齐。
     ///
-    /// - 如果 DIAG 已触发且无 INDEX 回退，直接置零并返回 Idle。
-    /// - 如果 DIAG 已触发且有 INDEX 回退，进入 [`HomingBackoff`](MotionPhase::HomingBackoff)。
-    /// - 否则从起步速度加速至目标速度，向反方向运动，ISR 每步检测 DIAG 信号。
-    pub fn start_homing<T: AlarmTimer + MonotonicTimer>(&self, timer: &T, speed_hz: u32) {
+    /// 纯探测——不修改位置坐标。调用者探测后自行决定：
+    ///
+    /// ```ignore
+    /// // 探测近端，标记为 home
+    /// AXIS.probe_endstop(&timer, Direction::Reverse, 2000);
+    /// AXIS.wait_done();
+    /// AXIS.set_position(0);
+    ///
+    /// // 探测远端，计算行程
+    /// AXIS.probe_endstop(&timer, Direction::Forward, 2000);
+    /// AXIS.wait_done();
+    /// let travel = AXIS.position();
+    ///
+    /// // 设置行程保护
+    /// AXIS.set_max_travel(travel);
+    /// ```
+    ///
+    /// INDEX 回退量由 [`AxisConfig::homing_index_backoff`] 控制，
+    /// 设为 0 则跳过回退，DIAG 触发即停止。
+    pub fn probe_endstop<T: AlarmTimer + MonotonicTimer>(
+        &self,
+        timer: &T,
+        dir: Direction,
+        speed_hz: u32,
+    ) {
         self.stall_latched.store(false, Ordering::Relaxed);
         self.stall_check_enabled.store(true, Ordering::Relaxed);
+        self.stall_blanking
+            .store(STALL_BLANKING_STEPS, Ordering::Relaxed);
+        self.probe_dir.store(dir as u8, Ordering::Relaxed);
 
-        // 已在限位位置
-        if self.diag_triggered() {
-            if self.homing_backoff_index > 0 {
-                self.start_homing_backoff(timer, speed_hz);
-                return;
-            }
-            self.axis.position.store(0, Ordering::Relaxed);
-            self.axis
-                .motion_phase
-                .store(MotionPhase::Idle as u8, Ordering::Relaxed);
-            self.axis.motion_done.store(true, Ordering::Relaxed);
-            return;
-        }
+        // 不提前检查 DIAG——直接开始探测。
+        // 若在限位处：第一步会触发 DIAG → handle_probing_step 自动 backoff
+        // 若不在限位：正常探测到远端
+        // 两种情况的 backoff 方向都由探测方向推导，保证正确。
 
         self.axis.motion_done.store(false, Ordering::Relaxed);
         self.axis.steps_done.store(0, Ordering::Relaxed);
@@ -352,49 +442,16 @@ impl AxisState {
             .effective_accel_steps
             .store(self.axis.accel_steps, Ordering::Relaxed);
         self.reset_index();
-        self.axis
-            .direction
-            .store(Direction::Reverse as u8, Ordering::Relaxed);
+        self.axis.direction.store(dir as u8, Ordering::Relaxed);
         self.axis.pulse_state.store(false, Ordering::Relaxed);
 
-        unsafe { gpioc::set(self.axis.pin_dir, Direction::Reverse as u32 != 0) };
+        unsafe { gpioc::set(self.axis.pin_dir, self.axis.dir_pin_level(dir)) };
 
         self.axis
             .motion_phase
-            .store(MotionPhase::Homing as u8, Ordering::Relaxed);
+            .store(MotionPhase::Probing as u8, Ordering::Relaxed);
 
         let interval = speed_to_interval_us(self.axis.start_speed_hz);
-        self.axis
-            .step_interval_us
-            .store(interval, Ordering::Relaxed);
-
-        let now = timer.get_time_us_32();
-        timer.set_alarm_safe(self.axis.alarm, now.wrapping_add(interval));
-        timer.enable_alarm_interrupt(self.axis.alarm);
-    }
-
-    /// 启动归位回退：触发限位后反向低速运动，直到检测到指定数量的 INDEX 脉冲。
-    fn start_homing_backoff<T: AlarmTimer + MonotonicTimer>(&self, timer: &T, speed_hz: u32) {
-        self.axis.motion_done.store(false, Ordering::Relaxed);
-        self.axis.steps_done.store(0, Ordering::Relaxed);
-        self.axis.steps_target.store(0, Ordering::Relaxed);
-        self.reset_index();
-        self.homing_backoff_target
-            .store(self.homing_backoff_index, Ordering::Relaxed);
-        self.axis
-            .direction
-            .store(Direction::Forward as u8, Ordering::Relaxed);
-        self.axis.pulse_state.store(false, Ordering::Relaxed);
-
-        unsafe { gpioc::set(self.axis.pin_dir, Direction::Forward as u32 != 0) };
-
-        self.axis
-            .motion_phase
-            .store(MotionPhase::HomingBackoff as u8, Ordering::Relaxed);
-
-        // 回退速度取归位速度的一半，确保低速精确对齐
-        let backoff_speed = (speed_hz / 2).max(1);
-        let interval = speed_to_interval_us(backoff_speed);
         self.axis
             .step_interval_us
             .store(interval, Ordering::Relaxed);
@@ -432,11 +489,19 @@ impl AxisState {
         self.detect_index_edge();
 
         match MotionPhase::from_u8(phase_raw) {
-            MotionPhase::Homing => self.handle_homing_step(timer, step),
-            MotionPhase::HomingBackoff => self.handle_homing_backoff_step(timer),
+            MotionPhase::Probing => self.handle_probing_step(timer, step),
+            MotionPhase::ProbingBackoff => self.handle_probing_backoff_step(timer),
             _ => {
-                // 通用阶段：先检测 DIAG 堵转（如果使能），再调度下一步
-                if self.stall_check_enabled.load(Ordering::Relaxed) && self.diag_triggered() {
+                // 消隐期递减（每步 -1）
+                let blanking = self.stall_blanking.load(Ordering::Relaxed);
+                if blanking > 0 {
+                    self.stall_blanking.store(blanking - 1, Ordering::Relaxed);
+                }
+                // 消隐期过后才检测 DIAG 堵转
+                if blanking == 0
+                    && self.stall_check_enabled.load(Ordering::Relaxed)
+                    && self.diag_triggered()
+                {
                     self.stall_latched.store(true, Ordering::Relaxed);
                     self.axis.motion_phase.store(0, Ordering::Relaxed); // Idle
                     self.axis.motion_done.store(true, Ordering::Relaxed);
@@ -449,32 +514,26 @@ impl AxisState {
         }
     }
 
-    /// 归位模式下每步处理：检测限位 + 加速。
-    fn handle_homing_step<T: AlarmTimer + MonotonicTimer>(&self, timer: &T, step: u32) {
-        if self.diag_triggered() {
-            // 限位开关触发
-            if self.homing_backoff_index > 0 {
-                // 切换到回退模式
-                self.reset_index();
-                self.homing_backoff_target
-                    .store(self.homing_backoff_index, Ordering::Relaxed);
-                self.axis
-                    .direction
-                    .store(Direction::Forward as u8, Ordering::Relaxed);
-                unsafe { gpioc::set(self.axis.pin_dir, Direction::Forward as u32 != 0) };
-                self.axis
-                    .motion_phase
-                    .store(MotionPhase::HomingBackoff as u8, Ordering::Relaxed);
-                // 回退速度减半以提高精度
-                let interval = self.axis.step_interval_us.load(Ordering::Relaxed) * 2;
-                self.axis
-                    .step_interval_us
-                    .store(interval, Ordering::Relaxed);
-                let now = timer.get_time_us_32();
-                timer.set_alarm_safe(self.axis.alarm, now.wrapping_add(interval));
+    /// 探测模式下每步处理：检测限位 + 加速。
+    ///
+    /// 前 [`PROBE_BLANKING_STEPS`] 步跳过 DIAG 检测：
+    /// 从限位附近起步时给电机时间摆脱机械接触、建立稳定 BEMF。
+    /// 消隐仅 20 步（@500Hz = 40ms），不会导致撞墙空转。
+    fn handle_probing_step<T: AlarmTimer + MonotonicTimer>(&self, timer: &T, step: u32) {
+        // 消隐期内不检测 DIAG
+        if step > PROBE_BLANKING_STEPS && self.diag_triggered() {
+            debug!(
+                "probe DIAG@step={} pos={} dir={}",
+                step,
+                self.axis.position(),
+                self.axis.direction.load(Ordering::Relaxed),
+            );
+            if self.index_backoff > 0 {
+                let dir = Direction::from_u8(self.axis.direction.load(Ordering::Relaxed));
+                self.do_backoff(dir.backward(), timer);
                 return;
             }
-            self.axis.position.store(0, Ordering::Relaxed);
+            // 无 INDEX 回退：直接停止
             self.axis
                 .motion_phase
                 .store(MotionPhase::Idle as u8, Ordering::Relaxed);
@@ -482,7 +541,7 @@ impl AxisState {
             return;
         }
 
-        // 继续归位运动（带加速），复用通用加速算法
+        // 继续运动（带加速）
         let new_interval = self
             .axis
             .compute_interval(step, 0, MotionPhase::Accelerating);
@@ -493,11 +552,64 @@ impl AxisState {
         timer.set_alarm_safe(self.axis.alarm, now.wrapping_add(new_interval));
     }
 
-    /// 归位回退模式下每步处理：检测 INDEX 脉冲计数。
-    fn handle_homing_backoff_step<T: AlarmTimer + MonotonicTimer>(&self, timer: &T) {
-        let target = self.homing_backoff_target.load(Ordering::Relaxed);
+    /// 启动 INDEX 回退：向 `back_dir` 方向低速运动，直到检测到 N 个 INDEX 脉冲。
+    ///
+    /// 由 [`handle_probing_step`]（探测中 DIAG 触发）和
+    /// [`probe_endstop`]（已在限位）共同调用。
+    fn do_backoff<T: AlarmTimer + MonotonicTimer>(&self, back_dir: Direction, timer: &T) {
+        self.reset_index();
+        self.index_backoff_target
+            .store(self.index_backoff, Ordering::Relaxed);
+        self.axis.direction.store(back_dir as u8, Ordering::Relaxed);
+        unsafe { gpioc::set(self.axis.pin_dir, self.axis.dir_pin_level(back_dir)) };
+        self.axis
+            .motion_phase
+            .store(MotionPhase::ProbingBackoff as u8, Ordering::Relaxed);
+        // 回退启动时 DIAG 必然为高（刚从限位离开），标记未清除
+        self.backoff_diag_cleared.store(false, Ordering::Relaxed);
+        // 使用起步速度而非当前探测速度：从静止以低速启动，避免丢步
+        let interval = speed_to_interval_us(self.axis.start_speed_hz);
+        self.axis
+            .step_interval_us
+            .store(interval, Ordering::Relaxed);
+        let now = timer.get_time_us_32();
+        timer.set_alarm_safe(self.axis.alarm, now.wrapping_add(interval));
+        timer.enable_alarm_interrupt(self.axis.alarm);
+    }
+
+    /// 回退模式下每步处理：检测 INDEX 脉冲计数，同时检测 DIAG 防止对面限位撞击。
+    ///
+    /// 回退启动时 DIAG 必然为高（刚从限位离开），因此不能立即检测 DIAG。
+    /// 使用 `backoff_diag_cleared` 标志：DIAG 第一次变低后置 true，
+    /// 之后若 DIAG 再次变高则说明撞上对面限位，立即停止。
+    fn handle_probing_backoff_step<T: AlarmTimer + MonotonicTimer>(&self, timer: &T) {
+        let diag = self.diag_triggered();
+        if !diag {
+            // DIAG 已清除：标记"曾离开过限位"
+            if !self.backoff_diag_cleared.load(Ordering::Relaxed) {
+                debug!("backoff DIAG cleared pos={}", self.axis.position());
+            }
+            self.backoff_diag_cleared.store(true, Ordering::Relaxed);
+        } else if self.backoff_diag_cleared.load(Ordering::Relaxed) {
+            // DIAG 高 且 之前已清除过 → 撞上了对面限位
+            debug!(
+                "backoff DIAG re-triggered (opposite endstop) pos={} INDEX={}",
+                self.axis.position(),
+                self.index_count.load(Ordering::Relaxed),
+            );
+            self.axis
+                .motion_phase
+                .store(MotionPhase::Idle as u8, Ordering::Relaxed);
+            self.axis.motion_done.store(true, Ordering::Relaxed);
+            return;
+        }
+        let target = self.index_backoff_target.load(Ordering::Relaxed);
         if self.index_count.load(Ordering::Relaxed) >= target {
-            self.axis.position.store(0, Ordering::Relaxed);
+            debug!(
+                "backoff done INDEX>={} pos={}",
+                target,
+                self.axis.position(),
+            );
             self.axis
                 .motion_phase
                 .store(MotionPhase::Idle as u8, Ordering::Relaxed);

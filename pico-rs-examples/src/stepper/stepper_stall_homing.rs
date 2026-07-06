@@ -22,13 +22,13 @@ use defmt_rtt as _;
 
 use pico_rs::Steal;
 use pico_rs::clocks::ClockBuilder;
-use pico_rs::main;
 use pico_rs::gpio::{self, Pins};
 use pico_rs::interrupt;
+use pico_rs::main;
 use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::ticks::Ticks;
 use pico_rs::timer::Timer0;
-use pico_rs::uart::{DataBits, Parity, StopBits, Uart1};// ============================================================================
+use pico_rs::uart::{DataBits, Parity, StopBits, Uart1}; // ============================================================================
 // 参数
 // ============================================================================
 
@@ -161,7 +161,8 @@ static AXIS: AxisState = AxisState::new(AxisConfig {
     step_pulse_us: STEP_PULSE_US,
     diag_pin: PIN_DIAG,
     index_pin: PIN_INDEX,
-    homing_backoff_index: 0,
+    index_backoff: 0,
+    invert_dir: false,
 });
 
 #[inline(always)]
@@ -378,15 +379,17 @@ fn main() -> ! {
             lap, pos, BACKOFF_STEPS, BACKOFF_SPEED_HZ,
         );
 
-        // 反向低速退离末端，防止皮带回弹反复触发
+        // 反向低速退离末端，防止皮带回弹反复触发。
+        //
+        // TMC2209 的 DIAG 是锁存信号：一旦堵转触发，DIAG 保持 HIGH
+        // 直到 ENN 拉高（禁用驱动器）才能复位。因此退离时必须临时
+        // 关闭堵转检测（disable_stall_check），退离完成后再循环 ENN
+        // 清除 DIAG 锁存。
         let back_dir = match direction {
             Direction::Forward => Direction::Reverse,
             Direction::Reverse => Direction::Forward,
         };
 
-        // 关闭堵转检测：堵转后电机静止，DIAG 持续为高，
-        // 不关闭会导致退离第一步就被误判堵转而立即停止。
-        // start_continuous（下一圈）会自动恢复使能。
         AXIS.disable_stall_check();
         AXIS.start_move(&timer, BACKOFF_STEPS, back_dir, BACKOFF_SPEED_HZ);
         AXIS.wait_done();

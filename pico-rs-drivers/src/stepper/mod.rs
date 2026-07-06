@@ -47,6 +47,20 @@ impl Direction {
             Self::Reverse => "REV",
         }
     }
+
+    pub fn from_u8(value: u8) -> Self {
+        match value {
+            1 => Self::Reverse,
+            _ => Self::Forward,
+        }
+    }
+
+    pub fn backward(self) -> Self {
+        match self {
+            Self::Forward => Self::Reverse,
+            Self::Reverse => Self::Forward,
+        }
+    }
 }
 
 /// 轴的当前运动阶段，描述梯形速度曲线的哪一段（或停止状态）。
@@ -78,10 +92,10 @@ pub enum MotionPhase {
     Decelerating = 3,
     /// 连续运动模式：无步数限制，不经过加减速。
     Running = 4,
-    /// 归位模式：向限位开关方向连续运动，每步检测限位开关。
-    Homing = 5,
-    /// 归位回退模式：触发限位后反向运动，利用 INDEX 信号对齐到电气周期边界。
-    HomingBackoff = 6,
+    /// 探测模式：向限位开关方向连续运动，每步检测限位开关。
+    Probing = 5,
+    /// 探测回退模式：触发限位后反向运动，利用 INDEX 信号对齐到电气周期边界。
+    ProbingBackoff = 6,
 }
 
 impl MotionPhase {
@@ -94,8 +108,8 @@ impl MotionPhase {
             2 => Self::Cruising,
             3 => Self::Decelerating,
             4 => Self::Running,
-            5 => Self::Homing,
-            6 => Self::HomingBackoff,
+            5 => Self::Probing,
+            6 => Self::ProbingBackoff,
             _ => Self::Idle,
         }
     }
@@ -132,6 +146,8 @@ pub struct AxisConfig {
     pub accel_steps: u32,
     /// STEP 脉冲高电平宽度，单位微秒（us）。A4988/TMC 系列均可接受 2us 以上。
     pub step_pulse_us: u32,
+    /// DIR 引脚方向反转（false = HIGH=Reverse, true = HIGH=Forward）。
+    pub invert_dir: bool,
 }
 
 // ============================================================================
@@ -163,6 +179,8 @@ pub struct AxisState {
     pub(crate) accel_steps: u32,
     /// STEP 脉冲高电平宽度，单位 us。
     step_pulse_us: u32,
+    /// DIR 引脚方向反转（false = HIGH=Reverse, true = HIGH=Forward）。
+    invert_dir: bool,
 
     // --- 动态运动状态（中断内更新，主循环只读）---
     /// 当前运动方向（存储 [`Direction`] 的离散化整数值）。
@@ -183,6 +201,8 @@ pub struct AxisState {
     pub(crate) decel_start_step: AtomicU32,
     /// 当前逻辑坐标，单位步（正向运动 +1，反向运动 -1）。
     pub(crate) position: AtomicI32,
+    /// 最大行程（微步）。0 = 无限位；>0 时位置约束在 [0, max_travel]。
+    pub(crate) max_travel: AtomicI32,
     /// 运动已完成标志（启动时置 false，最后一步完成后置 true）。
     pub(crate) motion_done: AtomicBool,
     /// STEP 引脚的当前电平（false = 低电平 / true = 高电平）。中断内切换。
@@ -203,6 +223,7 @@ impl AxisState {
             start_speed_hz: config.start_speed_hz,
             accel_steps: config.accel_steps,
             step_pulse_us: config.step_pulse_us,
+            invert_dir: config.invert_dir,
 
             direction: AtomicU8::new(0),
             motion_phase: AtomicU8::new(0),
@@ -213,6 +234,7 @@ impl AxisState {
             effective_accel_steps: AtomicU32::new(0),
             decel_start_step: AtomicU32::new(0),
             position: AtomicI32::new(0),
+            max_travel: AtomicI32::new(0),
             motion_done: AtomicBool::new(true),
             pulse_state: AtomicBool::new(false),
         }
@@ -267,11 +289,48 @@ impl AxisState {
         self.motion_done.store(false, Ordering::Relaxed);
     }
 
+    // --- 行程约束 ---
+
+    /// 设置最大行程（微步）。
+    ///
+    /// 设置后所有运动被约束在 `[0, max_travel]` 范围内：
+    /// `start_move` 超出自动截断，`start_continuous` 自动转为有限运动。
+    /// 设 0 取消限位。
+    pub fn set_max_travel(&self, travel: i32) {
+        self.max_travel.store(travel, Ordering::Relaxed);
+    }
+
+    /// DIR 引脚电平：考虑 `invert_dir` 后的 GPIO 值。
+    #[inline]
+    fn dir_pin_level(&self, dir: Direction) -> bool {
+        let raw = (dir as u32) != 0;
+        if self.invert_dir { !raw } else { raw }
+    }
+
+    /// 受最大行程约束后的有效步数。
+    pub(crate) fn clamp_steps(&self, steps: u32, dir: Direction) -> u32 {
+        let limit = self.max_travel.load(Ordering::Relaxed);
+        if limit <= 0 {
+            return steps;
+        }
+        let cur = self.position();
+        let target = match dir {
+            Direction::Forward => cur.saturating_add_unsigned(steps),
+            Direction::Reverse => cur.saturating_sub_unsigned(steps),
+        };
+        let clamped = target.clamp(0, limit);
+        match dir {
+            Direction::Forward => clamped.saturating_sub(cur).max(0) as u32,
+            Direction::Reverse => cur.saturating_sub(clamped).max(0) as u32,
+        }
+    }
+
     // --- 运动控制 ---
 
     /// 启动有限步数的相对位移运动，带梯形加减速。
     ///
     /// 该方法必须在轴当前已 Idle（调用方检查 `is_done()`）的情况下调用。
+    /// 目标位置超出 [`max_travel`] 时步数自动截断。
     ///
     /// - `steps == 0`：直接将轴置为 Idle 并返回，不开启定时器。
     /// - 加速步数不超过 `steps / 2`，确保对称运动不会先加后减透支。
@@ -282,6 +341,7 @@ impl AxisState {
         dir: Direction,
         max_speed_hz: u32,
     ) {
+        let steps = self.clamp_steps(steps, dir);
         if steps == 0 {
             self.motion_phase
                 .store(MotionPhase::Idle as u8, Ordering::Relaxed);
@@ -305,7 +365,7 @@ impl AxisState {
         self.effective_accel_steps
             .store(accel_steps, Ordering::Relaxed);
 
-        unsafe { gpioc::set(self.pin_dir, dir as u32 != 0) };
+        unsafe { gpioc::set(self.pin_dir, self.dir_pin_level(dir)) };
 
         self.motion_phase
             .store(MotionPhase::Accelerating as u8, Ordering::Relaxed);
@@ -320,20 +380,36 @@ impl AxisState {
 
     /// 启动不限步数的连续运动，无加减速，固定速度运转。
     ///
-    /// 坐标仍然每步累加。需调用 [`stop()`](Self::stop) 终止运动。
+    /// 如果设置了 [`max_travel`]，自动转为有限步数的 `start_move`。
     pub fn start_continuous<T: AlarmTimer + MonotonicTimer>(
         &self,
         timer: &T,
         dir: Direction,
         speed_hz: u32,
     ) {
+        // 有行程约束时转为有限运动
+        let limit = self.max_travel.load(Ordering::Relaxed);
+        if limit > 0 {
+            let cur = self.position();
+            let max_steps = match dir {
+                Direction::Forward => limit.saturating_sub(cur).max(0) as u32,
+                Direction::Reverse => cur.max(0) as u32,
+            };
+            if max_steps == 0 {
+                self.motion_done.store(true, Ordering::Relaxed);
+                return;
+            }
+            self.start_move(timer, max_steps, dir, speed_hz);
+            return;
+        }
+        // 无限位 → 原逻辑
         self.motion_done.store(false, Ordering::Relaxed);
         self.steps_done.store(0, Ordering::Relaxed);
         self.steps_target.store(0, Ordering::Relaxed);
         self.direction.store(dir as u8, Ordering::Relaxed);
         self.pulse_state.store(false, Ordering::Relaxed);
 
-        unsafe { gpioc::set(self.pin_dir, dir as u32 != 0) };
+        unsafe { gpioc::set(self.pin_dir, self.dir_pin_level(dir)) };
 
         self.motion_phase
             .store(MotionPhase::Running as u8, Ordering::Relaxed);
@@ -499,8 +575,8 @@ impl AxisState {
             }
             MotionPhase::Cruising
             | MotionPhase::Running
-            | MotionPhase::Homing
-            | MotionPhase::HomingBackoff => max_interval,
+            | MotionPhase::Probing
+            | MotionPhase::ProbingBackoff => max_interval,
             MotionPhase::Decelerating => {
                 let decel_start = self.decel_start_step.load(Ordering::Relaxed);
                 let steps_into_decel = step.saturating_sub(decel_start);

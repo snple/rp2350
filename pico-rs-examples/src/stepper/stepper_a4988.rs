@@ -293,6 +293,7 @@ static AXIS: AxisState = AxisState::new(AxisConfig {
     start_speed_hz: START_SPEED_HZ,
     accel_steps: ACCEL_STEPS,
     step_pulse_us: STEP_PULSE_US,
+    invert_dir: false,
 });
 
 // ============================================================================

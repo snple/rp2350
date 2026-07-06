@@ -207,6 +207,10 @@ name = "stepper_stall_homing"
 path = "src/stepper/stepper_stall_homing.rs"
 
 [[bin]]
+name = "stepper_homing"
+path = "src/stepper/stepper_homing.rs"
+
+[[bin]]
 name = "stepper_vactual_stall"
 path = "src/stepper/stepper_vactual_stall.rs"
 

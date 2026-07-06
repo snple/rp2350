@@ -54,13 +54,13 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::clocks::ClockBuilder;
-use pico_rs::main;
 use pico_rs::gpio::{self, Pins};
 use pico_rs::interrupt;
+use pico_rs::main;
 use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::ticks::Ticks;
 use pico_rs::timer::Timer0;
-use pico_rs::uart::{DataBits, Parity, StopBits, Uart1};// ============================================================================
+use pico_rs::uart::{DataBits, Parity, StopBits, Uart1}; // ============================================================================
 // 运动控制参数
 // ============================================================================
 
@@ -157,7 +157,8 @@ static AXIS: AxisState = AxisState::new(AxisConfig {
     step_pulse_us: STEP_PULSE_US,
     diag_pin: PIN_DIAG,
     index_pin: PIN_INDEX,
-    homing_backoff_index: 0, // 不使用 INDEX 回退
+    index_backoff: 0, // 不使用 INDEX 回退
+    invert_dir: false,
 });
 
 // ============================================================================
