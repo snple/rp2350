@@ -25,17 +25,31 @@
 //! });
 //! ```
 
+use core::marker::PhantomData;
 use core::sync::atomic::{AtomicBool, AtomicU32, Ordering};
 
 use defmt::debug;
-use pico_rs::gpioc;
 use pico_rs::timer::{AlarmTimer, MonotonicTimer};
 
-use super::{Direction, MotionPhase, speed_to_interval_us};
+use super::{AxisPins, Direction, MotionPhase, speed_to_interval_us};
+
+// ============================================================================
+// TmcPins trait
+// ============================================================================
+
+/// TMC2209 引脚操作 trait，扩展 [`AxisPins`] 增加 DIAG/INDEX。
+///
+/// 实现为零大小类型 (ZST)，编译期单态化零开销。
+pub trait TmcPins: AxisPins {
+    /// 读取 DIAG 引脚：`true` = 堵转/故障。
+    fn diag() -> bool;
+    /// 读取 INDEX 引脚：`true` = 高电平。
+    fn index() -> bool;
+}
 
 // ============================================================================
 // 常量
-// ============================================================================
+// ============================================================================"
 
 /// 每个电气周期包含的整步数（2 相步进电机 = 4 整步）。
 /// INDEX 信号每完成一个电气周期翻转一次。
@@ -86,10 +100,6 @@ impl IndexCheck {
 
 /// TMC2209 轴静态配置参数。
 pub struct AxisConfig {
-    /// STEP 信号引脚编号。
-    pub pin_step: u32,
-    /// DIR 方向控制引脚编号。
-    pub pin_dir: u32,
     /// Timer0 alarm 编号（对应 0/1/2 分别绑定 X/Y/Z 轴）。
     pub alarm: u8,
     /// 起步频率，单位 Hz。
@@ -98,14 +108,10 @@ pub struct AxisConfig {
     pub accel_steps: u32,
     /// STEP 脉冲高电平宽度，单位 us。
     pub step_pulse_us: u32,
-    /// 限位开关 / DIAG 引脚编号（高电平有效）。
-    pub diag_pin: u32,
-    /// INDEX 引脚编号（TMC2209 INDEX 信号，每完整电气周期脉冲一次）。
-    pub index_pin: u32,
-    /// 归位回退时需要检测到的 INDEX 脉冲数（0 = 不回退）。
-    pub index_backoff: u32,
     /// Forward 方向对应 DIR 引脚的电平。`true` = 高电平，`false` = 低电平。
     pub fwd_level: bool,
+    /// 归位回退时需要检测到的 INDEX 脉冲数（0 = 不回退）。
+    pub index_backoff: u32,
     /// DIAG 消隐步数。两种模式共用：
     /// - 探测模式：跳过前 N 步，给 BEMF 建立时间
     /// - 梯形运动：两端各留 N 步缓冲区，仅巡航中段检堵
@@ -114,96 +120,111 @@ pub struct AxisConfig {
 }
 
 // ============================================================================
+// ============================================================================
 // AxisState
 // ============================================================================
 
 /// TMC2209 单轴步进状态。
 ///
+/// 泛型 `P` 实现 [`TmcPins`]，编译期单态化零开销。
 /// 包装通用 [`AxisState`](super::AxisState)，额外添加 DIAG/INDEX/归位功能。
-pub struct AxisState {
+pub struct AxisState<P: TmcPins> {
+    _pins: PhantomData<P>,
     /// 通用步进轴状态（脉冲生成、梯形加减速）。
-    axis: super::AxisState,
-    /// DIAG 引脚编号。
-    diag_pin: u32,
-    /// INDEX 引脚编号。
-    index_pin: u32,
+    axis: super::AxisState<P>,
+
+    // --- 静态配置（initialize once，之后只读）---
     /// 归位回退时需要检测到的 INDEX 脉冲数（0 = 不回退）。
     index_backoff: u32,
-    /// INDEX 脉冲计数器（每个完整电气周期 +1）。
+    /// DIAG 消隐步数（配置值，构造后不变）。探测模式和梯形运动共用此值。
+    blanking_steps: u32,
+
+    // --- 动态运动状态（中断内更新，主循环只读）---
+    /// INDEX 脉冲计数器。
     index_count: AtomicU32,
     /// INDEX 引脚上一次采样状态。
     index_last_state: AtomicBool,
+    /// 堵转锁存标志。
+    stall_latched: AtomicBool,
     /// 归位回退目标 INDEX 计数。
     index_backoff_target: AtomicU32,
-    /// 堵转锁存标志（DIAG 触发后被 ISR 置 true，`start_*` 时清零）。
-    stall_latched: AtomicBool,
     /// 堵转检测启用（默认 true）。退离/回退等场景可临时关闭，避免 DIAG 误杀。
     stall_check_enabled: AtomicBool,
-    /// DIAG 消隐步数（配置值，构造后不变）。探测模式和梯形运动共用此值。
-    blanking_steps: u32,
     /// 回退阶段 DIAG 已清除标志。
-    ///
-    /// 回退启动时 DIAG 必然为高（刚从限位离开，SG_RESULT 尚未回升）。
-    /// 此标志在 DIAG 第一次变低后置 true，之后若 DIAG 再次变高则说明
-    /// 撞上了对面限位，应立即停止回退。
     backoff_diag_cleared: AtomicBool,
 }
 
-unsafe impl Sync for AxisState {}
+unsafe impl<P: TmcPins> Sync for AxisState<P> {}
 
-impl AxisState {
-    /// 根据静态配置创建 TMC2209 轴状态对象。
+impl<P: TmcPins> AxisState<P> {
     pub const fn new(config: AxisConfig) -> Self {
         Self {
+            _pins: PhantomData,
             axis: super::AxisState::new(super::AxisConfig {
-                pin_step: config.pin_step,
-                pin_dir: config.pin_dir,
                 alarm: config.alarm,
                 start_speed_hz: config.start_speed_hz,
                 accel_steps: config.accel_steps,
                 step_pulse_us: config.step_pulse_us,
                 fwd_level: config.fwd_level,
             }),
-            diag_pin: config.diag_pin,
-            index_pin: config.index_pin,
             index_backoff: config.index_backoff,
+            blanking_steps: config.blanking_steps,
             index_count: AtomicU32::new(0),
             index_last_state: AtomicBool::new(false),
-            index_backoff_target: AtomicU32::new(0),
             stall_latched: AtomicBool::new(false),
+            index_backoff_target: AtomicU32::new(0),
             stall_check_enabled: AtomicBool::new(true),
-            blanking_steps: config.blanking_steps,
             backoff_diag_cleared: AtomicBool::new(false),
         }
     }
 
+    // --- 内部 DIAG/INDEX 操作 ---
+
+    #[inline]
+    fn diag(&self) -> bool {
+        P::diag()
+    }
+    #[inline]
+    fn index(&self) -> bool {
+        P::index()
+    }
+
+    fn reset_index(&self) {
+        self.index_count.store(0, Ordering::Relaxed);
+        self.stall_latched.store(false, Ordering::Relaxed);
+        self.index_last_state.store(self.index(), Ordering::Relaxed);
+    }
+
+    fn detect_index_edge(&self) {
+        let state = self.index();
+        let last = self.index_last_state.swap(state, Ordering::Relaxed);
+        if !state && last {
+            self.index_count.fetch_add(1, Ordering::Relaxed);
+        }
+    }
+
+    fn reset_stall_state(&self) {
+        self.reset_index();
+    }
+
     // --- 委托给内部 AxisState 的方法 ---
 
-    /// 返回当前运动阶段。
     #[inline]
     pub fn phase(&self) -> MotionPhase {
         self.axis.phase()
     }
-
-    /// 返回当前逻辑坐标（步）。
     #[inline]
     pub fn position(&self) -> i32 {
         self.axis.position()
     }
-
-    /// 返回本次运动已完成的步数。
     #[inline]
     pub fn steps_done(&self) -> u32 {
         self.axis.steps_done()
     }
-
-    /// 返回轴是否处于可新建状态（Idle）。
     #[inline]
     pub fn is_done(&self) -> bool {
         self.axis.is_done()
     }
-
-    /// 将逻辑坐标强制写入指定值。
     #[inline]
     pub fn set_position(&self, pos: i32) {
         self.axis.set_position(pos);
@@ -224,25 +245,6 @@ impl AxisState {
     #[inline]
     pub fn set_max_travel(&self, travel: i32) {
         self.axis.set_max_travel(travel);
-    }
-
-    // --- GPIO 操作（集中所有 unsafe gpioc 调用） ---
-
-    #[inline(always)]
-    fn read_diag(&self) -> bool {
-        unsafe { gpioc::get(self.diag_pin) }
-    }
-
-    #[inline(always)]
-    fn read_index(&self) -> bool {
-        unsafe { gpioc::get(self.index_pin) }
-    }
-
-    // --- 堵转状态重置（start_* 和 probe_endstop 共用） ---
-
-    fn reset_stall_state(&self) {
-        self.stall_latched.store(false, Ordering::Relaxed);
-        self.reset_index();
     }
 
     /// 启动有限步数的相对位移运动，带梯形加减速。
@@ -303,13 +305,13 @@ impl AxisState {
     /// 返回 DIAG 引脚当前电平（`true` = 堵转/故障）。
     #[inline(always)]
     pub fn diag_triggered(&self) -> bool {
-        self.read_diag()
+        self.diag()
     }
 
     /// 返回本次运动是否发生过堵转（DIAG 锁存标志）。
     ///
     /// 由 ISR 在检测到 DIAG 时自动置位，调用 `start_move` / `start_continuous` /
-    /// `start_homing` 时自动清零。
+    /// `probe_endstop` 时自动清零。
     #[inline]
     pub fn stall_occurred(&self) -> bool {
         self.stall_latched.load(Ordering::Relaxed)
@@ -341,23 +343,6 @@ impl AxisState {
     #[inline]
     pub fn index_count(&self) -> u32 {
         self.index_count.load(Ordering::Relaxed)
-    }
-
-    /// 重置 INDEX 计数器并快照当前 INDEX 引脚电平。
-    fn reset_index(&self) {
-        self.index_count.store(0, Ordering::Relaxed);
-        let state = self.read_index();
-        self.index_last_state.store(state, Ordering::Relaxed);
-    }
-
-    /// INDEX 下降沿检测（由 ISR 在每步完成后调用）。
-    #[inline(always)]
-    fn detect_index_edge(&self) {
-        let state = self.read_index();
-        let last = self.index_last_state.swap(state, Ordering::Relaxed);
-        if !state && last {
-            self.index_count.fetch_add(1, Ordering::Relaxed);
-        }
     }
 
     /// 使用 INDEX 信号校验本次运动的步进精度，检测是否丢步。

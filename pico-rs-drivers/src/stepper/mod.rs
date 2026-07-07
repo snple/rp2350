@@ -16,10 +16,25 @@
 //! use pico_rs_drivers::stepper::Direction;
 //! ```
 
+use core::marker::PhantomData;
 use core::sync::atomic::{AtomicBool, AtomicI32, AtomicU8, AtomicU32, Ordering};
 
-use pico_rs::gpioc;
 use pico_rs::timer::{AlarmTimer, MonotonicTimer};
+
+// ============================================================================
+// StepDirPins trait
+// ============================================================================
+
+/// 步进电机 STEP/DIR 引脚操作 trait。
+///
+/// 实现为零大小类型 (ZST)，编译期单态化，ISR 中零开销内联。
+/// 双电机同步：在 `set_step`/`set_dir` 中操作多个 GPIO 即可。
+pub trait AxisPins {
+    /// 设置 STEP 引脚电平：`true` = 高，`false` = 低。
+    fn set_step(high: bool);
+    /// 设置 DIR 引脚电平：`true` = 高，`false` = 低。
+    fn set_dir(high: bool);
+}
 
 // ============================================================================
 // Direction
@@ -134,10 +149,6 @@ pub const fn speed_to_interval_us(hz: u32) -> u32 {
 
 /// 轴的静态配置参数，在初始化阶段一次性写入 [`AxisState`]。
 pub struct AxisConfig {
-    /// STEP 信号引脚编号。
-    pub pin_step: u32,
-    /// DIR 方向控制引脚编号。
-    pub pin_dir: u32,
     /// Timer0 alarm 编号（对应 0/1/2 分别绑定 X/Y/Z 轴）。
     pub alarm: u8,
     /// 步进电机从静止起步的初始频率，单位 Hz（steps/s）。
@@ -156,21 +167,13 @@ pub struct AxisConfig {
 
 /// 单轴步进状态（通用版）。
 ///
-/// 静态配置字段（`pin_step`、`alarm` 等）在 [`new`](AxisState::new) 后不再变化，
-/// 使用普通类型保存；动态运动状态字段使用原子类型以支持 ISR 和主循环跨核心安全读写。
-///
-/// 设计原则：
-/// - 配置字段只写一次，之后只读——无需原子操作。
-/// - 运动状态字段仅在中断中写，主循环只读。
-/// - `position` 和 `motion_done` 对主循环可读，不需要屏障。
+/// 泛型参数 `P` 实现 [`StepDirPins`]，提供 STEP/DIR 的 GPIO 操作。
+/// 编译期单态化，ISR 中零开销内联。
 ///
 /// 如需 DIAG/INDEX/归位功能，请使用 [`tmc2209::AxisState`]。
-pub struct AxisState {
+pub struct AxisState<P: AxisPins> {
+    _pins: PhantomData<P>,
     // --- 静态配置（initialize once，之后只读）---
-    /// STEP 脉冲输出引脚编号。
-    pin_step: u32,
-    /// DIR 方向控制引脚编号。
-    pub(crate) pin_dir: u32,
     /// 所占用的 Timer0 alarm 编号（0/1/2）。
     pub(crate) alarm: u8,
     /// 起步频率，单位 Hz。
@@ -209,16 +212,15 @@ pub struct AxisState {
     pub(crate) pulse_state: AtomicBool,
 }
 
-unsafe impl Sync for AxisState {}
+unsafe impl<P: AxisPins> Sync for AxisState<P> {}
 
-impl AxisState {
+impl<P: AxisPins> AxisState<P> {
     /// 根据静态配置创建轴状态对象。
     ///
     /// 所有配置字段在构造时写入，后续不再变化。`const fn` 便于直接在 `static` 中初始化。
     pub const fn new(config: AxisConfig) -> Self {
         Self {
-            pin_step: config.pin_step,
-            pin_dir: config.pin_dir,
+            _pins: PhantomData,
             alarm: config.alarm,
             start_speed_hz: config.start_speed_hz,
             accel_steps: config.accel_steps,
@@ -296,6 +298,7 @@ impl AxisState {
     /// 设置后所有运动被约束在 `[0, max_travel]` 范围内：
     /// `start_move` 超出自动截断，`start_continuous` 自动转为有限运动。
     /// 设 0 取消限位。
+    #[inline]
     pub fn set_max_travel(&self, travel: i32) {
         self.max_travel.store(travel, Ordering::Relaxed);
     }
@@ -303,24 +306,21 @@ impl AxisState {
     // --- GPIO 操作（集中所有 unsafe gpioc 调用） ---
 
     #[inline(always)]
-    fn set_dir_pin(&self, dir: Direction) {
+    fn apply_dir(&self, dir: Direction) {
         let level = match dir {
             Direction::Forward => self.fwd_level,
             Direction::Reverse => !self.fwd_level,
         };
-        unsafe { gpioc::set(self.pin_dir, level) };
+        P::set_dir(level);
     }
 
     #[inline(always)]
-    fn set_step_pin(&self, high: bool) {
-        if high {
-            unsafe { gpioc::set_high(self.pin_step) };
-        } else {
-            unsafe { gpioc::set_low(self.pin_step) };
-        }
+    fn apply_step(&self, high: bool) {
+        P::set_step(high);
     }
 
     /// 受最大行程约束后的有效步数。
+    #[inline]
     pub(crate) fn clamp_steps(&self, steps: u32, dir: Direction) -> u32 {
         match self.continuous_max_steps(dir) {
             Some(max) => steps.min(max),
@@ -334,6 +334,7 @@ impl AxisState {
     ///
     /// 返回 `None` 表示无限位；`Some(0)` 表示已在限位、无法运动；
     /// `Some(n)` 表示可运动 n 步。
+    #[inline]
     pub(crate) fn continuous_max_steps(&self, dir: Direction) -> Option<u32> {
         let limit = self.max_travel.load(Ordering::Relaxed);
         if limit <= 0 {
@@ -403,7 +404,7 @@ impl AxisState {
     ) {
         self.direction.store(dir as u8, Ordering::Relaxed);
         self.pulse_state.store(false, Ordering::Relaxed);
-        self.set_dir_pin(dir);
+        self.apply_dir(dir);
         self.motion_phase.store(phase as u8, Ordering::Relaxed);
         self.step_interval_us
             .store(start_interval_us, Ordering::Relaxed);
@@ -487,6 +488,7 @@ impl AxisState {
     /// 再更新 `decel_start_step`。
     ///
     /// 用于编码器连续输入场景：无需停止电机，直接延长运动距离。
+    #[inline]
     pub fn set_target_steps(&self, new_total_steps: u32) {
         // 先写 steps_target，防止 ISR 在旧 target 处提前完成运动
         self.steps_target.store(new_total_steps, Ordering::Relaxed);
@@ -495,9 +497,10 @@ impl AxisState {
 
     /// 立即停止轴运动，将阶段设为 [`MotionPhase::Idle`] 并拉低 STEP 引脚。
     /// 不等待减速完成，适合 ESTOP 场景。ISR 下次触发时检测到 Idle 后直接返回。
+    #[inline]
     pub fn stop(&self) {
         self.set_idle();
-        self.set_step_pin(false);
+        self.apply_step(false);
     }
 
     // --- ISR building blocks ---
@@ -510,14 +513,14 @@ impl AxisState {
         let pulse_high = self.pulse_state.load(Ordering::Relaxed);
         if !pulse_high {
             // 上升沿：拉高 STEP，安排脉冲宽度后的下一次 alarm
-            self.set_step_pin(true);
+            self.apply_step(true);
             self.pulse_state.store(true, Ordering::Relaxed);
             let now = timer.get_time_us_32();
             timer.set_alarm_safe(self.alarm, now.wrapping_add(self.step_pulse_us));
             return false;
         }
         // 下降沿：拉低 STEP，一步完成
-        self.set_step_pin(false);
+        self.apply_step(false);
         self.pulse_state.store(false, Ordering::Relaxed);
         true
     }

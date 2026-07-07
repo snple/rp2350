@@ -232,13 +232,14 @@ use defmt_rtt as _;
 use pico_rs::bind;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::gpio::{EdgeLevel, Pin, Pins};
+use pico_rs::gpioc;
 use pico_rs::interrupt;
 use pico_rs::main;
 use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::ticks::Ticks;
 use pico_rs::timer::Timer0;
 
-use pico_rs_drivers::stepper::{AxisConfig, AxisState, Direction, MotionPhase}; // ============================================================================
+use pico_rs_drivers::stepper::{AxisConfig, AxisPins, AxisState, Direction, MotionPhase}; // ============================================================================
 // 编码器引脚配置
 // ============================================================================
 
@@ -341,10 +342,22 @@ static LAST_BTN_TIME: AtomicU32 = AtomicU32::new(0);
 /// 当前档位 (0 = 快档, 1 = 中档, 2 = 慢档)
 static GEAR: AtomicU32 = AtomicU32::new(0);
 
+/// 步进电机 ZST — 编译期单态化 GPIO 操作
+struct StepperPins;
+
+impl AxisPins for StepperPins {
+    #[inline]
+    fn set_step(high: bool) {
+        unsafe { gpioc::set(PIN_STEP, high) };
+    }
+    #[inline]
+    fn set_dir(high: bool) {
+        unsafe { gpioc::set(PIN_DIR, high) };
+    }
+}
+
 /// 步进轴状态
-static AXIS: AxisState = AxisState::new(AxisConfig {
-    pin_step: PIN_STEP,
-    pin_dir: PIN_DIR,
+static AXIS: AxisState<StepperPins> = AxisState::new(AxisConfig {
     alarm: 0,
     start_speed_hz: START_SPEED_HZ,
     accel_steps: ACCEL_STEPS,

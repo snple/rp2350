@@ -19,8 +19,9 @@
 #![no_std]
 #![no_main]
 
+use pico_rs_drivers::stepper::AxisPins;
 use pico_rs_drivers::stepper::Direction;
-use pico_rs_drivers::stepper::tmc2209::{AxisConfig, AxisState};
+use pico_rs_drivers::stepper::tmc2209::{AxisConfig, AxisState, TmcPins};
 use pico_rs_drivers::tmc2209::Tmc2209;
 
 use defmt::*;
@@ -28,7 +29,8 @@ use defmt_rtt as _;
 
 use pico_rs::Steal;
 use pico_rs::clocks::ClockBuilder;
-use pico_rs::gpio::{self, Pins};
+use pico_rs::gpio::{self};
+use pico_rs::gpioc;
 use pico_rs::interrupt;
 use pico_rs::main;
 use pico_rs::pac::{Interrupt, Peripherals};
@@ -108,26 +110,41 @@ const PIN_INDEX: u32 = 10;
 /// 在 StallGuard 模式下用于指示堵转 (低电平 = 堵转)。
 const PIN_DIAG: u32 = 11;
 
+/// 引脚操作类型（ZST），编译期单态化零开销。
+struct Pins;
+
+impl AxisPins for Pins {
+    #[inline]
+    fn set_step(high: bool) {
+        unsafe { gpioc::set(PIN_STEP, high) };
+    }
+    #[inline]
+    fn set_dir(high: bool) {
+        unsafe { gpioc::set(PIN_DIR, high) };
+    }
+}
+
+impl TmcPins for Pins {
+    #[inline]
+    fn diag() -> bool {
+        unsafe { gpioc::get(PIN_DIAG) }
+    }
+    #[inline]
+    fn index() -> bool {
+        unsafe { gpioc::get(PIN_INDEX) }
+    }
+}
+
 // ============================================================================
 // 全局步进轴实例
 // ============================================================================
 
 /// 全局 AxisState，ISR 和主循环共享。
-/// - `alarm: 0` 表示使用 TIMER0 的 alarm 0 通道生成步进脉冲。
-/// - `start_speed_hz: 500` 是起步速度，低于此速度直接以该频率启动而不加速。
-/// - `fwd_level: true` 表示 DIR 高电平时为正向运动。
-/// - `blanking_steps: 80` 消隐步数，应 ≥ ACCEL_STEPS + 少量沉降。
-///   从运动起步开始计数，覆盖加速段和进入巡航后的 SG 稳定过渡，
-///   归零后仅巡航阶段检堵，加减速阶段始终跳过。
-static AXIS: AxisState = AxisState::new(AxisConfig {
-    pin_step: PIN_STEP,
-    pin_dir: PIN_DIR,
+static AXIS: AxisState<Pins> = AxisState::new(AxisConfig {
     alarm: 0,
     start_speed_hz: 500,
     accel_steps: ACCEL_STEPS,
     step_pulse_us: STEP_PULSE_US,
-    diag_pin: PIN_DIAG,
-    index_pin: PIN_INDEX,
     index_backoff: INDEX_BACKOFF,
     fwd_level: true,
     blanking_steps: 80,
@@ -161,7 +178,7 @@ fn main() -> ! {
     let timer = Timer0::init(dp.TIMER0);
 
     // 获取 GPIO 引脚集合
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = pico_rs::gpio::Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
 
     // --- 步进电机控制引脚 ---
     // ENABLE: 初始拉高 → 电机禁用 (防止上电抖动)

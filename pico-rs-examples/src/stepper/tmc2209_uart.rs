@@ -16,12 +16,12 @@
 //!   Pico 2 (RP2350)
 //!   ──────────────
 //!   GP4 (UART1_TX) ──/\/\/──┐
-//!                    1kΩ     │
-//!   GP5 (UART1_RX) ──/\/\/──┤
-//!                    1kΩ     │
-//!                            ├──────── 所有 TMC2209 的 PDN_UART
+//!                    1kΩ    │
+//!   GP5 (UART1_RX) ─────────┤
+//!                           │
+//!                           ├──────── 所有 TMC2209 的 PDN_UART
 //!   3.3V (VCC_IO) ───/\/\/──┘
-//!                    1kΩ
+//!                    10kΩ
 //!    (上拉电阻 — UART 模式必须!)
 //! ```
 //!
@@ -49,14 +49,16 @@
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::clocks::{ClockBuilder};
-use pico_rs::main;
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::gpio::Pins;
+use pico_rs::main;
 use pico_rs::pac::Peripherals;
 use pico_rs::ticks::Ticks;
 use pico_rs::timer::Timer0;
 use pico_rs::uart::{DataBits, Parity, StopBits, Uart1};
-use pico_rs_drivers::tmc2209::{Gconf, REG_TSTEP, Tmc2209};const TMC_UART_BAUD: u32 = 115_200;
+use pico_rs_drivers::tmc2209::{Gconf, REG_TSTEP, Tmc2209};
+
+const TMC_UART_BAUD: u32 = 115_200;
 
 #[main]
 fn main() -> ! {
