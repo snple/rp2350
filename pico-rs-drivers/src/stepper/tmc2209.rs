@@ -106,8 +106,10 @@ pub struct AxisConfig {
     pub index_backoff: u32,
     /// Forward 方向对应 DIR 引脚的电平。`true` = 高电平，`false` = 低电平。
     pub fwd_level: bool,
-    /// DIAG 消隐步数。运动启动后前 N 步跳过堵转检测，
-    /// 给电机建立 BEMF 的时间。默认 200 步（@10kHz = 20ms）。
+    /// DIAG 消隐步数（配置值，构造后不变）。两种用途：
+    /// - 探测模式：跳过前 N 步，给 BEMF 建立时间
+    /// - 梯形运动：覆盖加速段 + 进入巡航后的沉降期，
+    ///   应设为 `≥ accel_steps + 少量沉降步数`，归零后仅巡航阶段检堵
     pub blanking_steps: u32,
 }
 
@@ -137,11 +139,8 @@ pub struct AxisState {
     stall_latched: AtomicBool,
     /// 堵转检测使能（默认 true）。退离/回退等场景可临时关闭，避免 DIAG 误杀。
     stall_check_enabled: AtomicBool,
-    /// DIAG 消隐步数（配置值，构造后不变）。
+    /// DIAG 消隐步数（配置值，构造后不变）。探测模式和梯形运动共用此值。
     blanking_steps: u32,
-    /// 消隐计数器（运行时递减）。运动启动时设为 `blanking_steps`，
-    /// 每步 -1，降至 0 后恢复 DIAG 堵转检测。
-    stall_blanking: AtomicU32,
     /// 回退阶段 DIAG 已清除标志。
     ///
     /// 回退启动时 DIAG 必然为高（刚从限位离开，SG_RESULT 尚未回升）。
@@ -174,7 +173,6 @@ impl AxisState {
             stall_latched: AtomicBool::new(false),
             stall_check_enabled: AtomicBool::new(true),
             blanking_steps: config.blanking_steps,
-            stall_blanking: AtomicU32::new(0),
             backoff_diag_cleared: AtomicBool::new(false),
         }
     }
@@ -244,8 +242,6 @@ impl AxisState {
 
     fn reset_stall_state(&self) {
         self.stall_latched.store(false, Ordering::Relaxed);
-        self.stall_blanking
-            .store(self.blanking_steps, Ordering::Relaxed);
         self.reset_index();
     }
 
@@ -479,22 +475,21 @@ impl AxisState {
             MotionPhase::Probing => self.handle_probing_step(timer, step),
             MotionPhase::ProbingBackoff => self.handle_probing_backoff_step(timer),
             _ => {
-                // 消隐期递减（每步 -1）
-                let blanking = self.stall_blanking.load(Ordering::Relaxed);
-                if blanking > 0 {
-                    self.stall_blanking.store(blanking - 1, Ordering::Relaxed);
-                }
-                // DIAG 堵转检测：仅在巡航阶段进行，加减速阶段跳过。
+                // DIAG 堵转检测：仅巡航阶段 + 两端缓冲区之外。
                 //
-                // StallGuard 的 SG 值依赖于电机反电动势 (BEMF)，
-                // BEMF 随转速变化：加速阶段转速偏低，减速阶段转速持续下降，
-                // 都会导致 SG 值跌破阈值，产生假阳性堵车。
-                // 加速阶段的起步低速期由 blanking_steps 覆盖，
-                // 但后续转速仍可能未达巡航速度，同样有误触发风险。
-                // 仅保留巡航阶段（匀速）的堵转检测：此时转速恒定，SG 值可靠。
+                // SG 值在加速→巡航、巡航→减速两个过渡点都不稳定，
+                // 容易假阳性。因此只在巡航中段检堵：
+                //   step ∈ [blanking_steps, total - blanking_steps]
+                // 即前后各留 blanking_steps 作为缓冲区。
+                //
+                // 建议 blanking_steps ≥ accel_steps + 沉降步数，
+                // 确保缓冲区完全覆盖加速/减速段及过渡。
                 let is_cruising = phase_raw == MotionPhase::Cruising as u8;
-                if blanking == 0
-                    && is_cruising
+                let total = self.axis.steps_target.load(Ordering::Relaxed);
+                let in_window = step >= self.blanking_steps
+                    && step <= total.saturating_sub(self.blanking_steps);
+                if is_cruising
+                    && in_window
                     && self.stall_check_enabled.load(Ordering::Relaxed)
                     && self.diag_triggered()
                 {
@@ -502,7 +497,6 @@ impl AxisState {
                     self.axis.set_idle();
                     return;
                 }
-                let total = self.axis.steps_target.load(Ordering::Relaxed);
                 self.axis
                     .schedule_next_by_phase(timer, step, total, phase_raw);
             }

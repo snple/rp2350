@@ -45,8 +45,9 @@ use pico_rs::uart::{DataBits, Parity, StopBits, Uart1};
 const PROBE_SPEED_HZ: u32 = 10000;
 
 /// 加减速距离 (步数)。从零加速到目标速度所需的步数，
-/// 值越大加速越柔和，值越小响应越快但可能丢步。
-const ACCEL_STEPS: u32 = 100;
+/// 值越大加速越柔和。设为较小值以缩短加速段，
+/// 配合略大于它的 blanking_steps 覆盖加速+沉降。
+const ACCEL_STEPS: u32 = 50;
 
 /// STEP 引脚脉冲宽度 (μs)。TMC2209 要求 STEP 高电平至少 100ns，
 /// 这里取 3μs 留有充足余量，确保可靠触发。
@@ -115,8 +116,9 @@ const PIN_DIAG: u32 = 11;
 /// - `alarm: 0` 表示使用 TIMER0 的 alarm 0 通道生成步进脉冲。
 /// - `start_speed_hz: 500` 是起步速度，低于此速度直接以该频率启动而不加速。
 /// - `fwd_level: true` 表示 DIR 高电平时为正向运动。
-/// - `blanking_steps: 200` 是 DIAG 信号在方向切换后的屏蔽步数，
-///   避免换向瞬间的电流尖峰误触发 StallGuard。
+/// - `blanking_steps: 80` 消隐步数，应 ≥ ACCEL_STEPS + 少量沉降。
+///   从运动起步开始计数，覆盖加速段和进入巡航后的 SG 稳定过渡，
+///   归零后仅巡航阶段检堵，加减速阶段始终跳过。
 static AXIS: AxisState = AxisState::new(AxisConfig {
     pin_step: PIN_STEP,
     pin_dir: PIN_DIR,
@@ -128,7 +130,7 @@ static AXIS: AxisState = AxisState::new(AxisConfig {
     index_pin: PIN_INDEX,
     index_backoff: INDEX_BACKOFF,
     fwd_level: true,
-    blanking_steps: 200,
+    blanking_steps: 80,
 });
 
 /// 从 ISR 中安全获取 Timer0 的借用。
@@ -362,18 +364,20 @@ fn main() -> ! {
             }
 
             // --- INDEX 丢步检测 ---
-            // 比较实际 INDEX 脉冲数与理论值：
-            //   INDEX 每 4 个全步 (即 4×MICROSTEPPING 微步) 产生一个脉冲。
-            //   如果实际脉冲数 < 预期，说明电机丢失了步进。
+            // 比较实际 INDEX 脉冲数与理论值，允许 ±1 脉冲容差。
+            // INDEX 每 4 个全步 (4×MICROSTEPPING 微步) 产生一个脉冲，
+            // 整数除法截断 + 起始电角度随机性导致边界 ±1 是正常的。
             let idx = AXIS.check_index(steps, MICROSTEPPING);
-            if idx.actual != idx.expected {
+            if !idx.is_accurate(1) {
                 miss_count += 1;
+                let actual = idx.actual as i32;
+                let expected = idx.expected as i32;
                 warn!(
-                    "[{}] INDEX miss: expected {} pulses, got {} (delta={}, total misses: {})",
+                    "[{}] INDEX miss: expected {} pulses, got {} (diff={}, total misses: {})",
                     iteration,
-                    idx.expected,
-                    idx.actual,
-                    idx.expected.saturating_sub(idx.actual),
+                    expected,
+                    actual,
+                    actual - expected,
                     miss_count
                 );
             }
