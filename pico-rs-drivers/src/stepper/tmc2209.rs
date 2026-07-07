@@ -106,10 +106,10 @@ pub struct AxisConfig {
     pub index_backoff: u32,
     /// Forward 方向对应 DIR 引脚的电平。`true` = 高电平，`false` = 低电平。
     pub fwd_level: bool,
-    /// DIAG 消隐步数（配置值，构造后不变）。两种用途：
+    /// DIAG 消隐步数。两种模式共用：
     /// - 探测模式：跳过前 N 步，给 BEMF 建立时间
-    /// - 梯形运动：覆盖加速段 + 进入巡航后的沉降期，
-    ///   应设为 `≥ accel_steps + 少量沉降步数`，归零后仅巡航阶段检堵
+    /// - 梯形运动：两端各留 N 步缓冲区，仅巡航中段检堵
+    ///   应设为 `≥ accel_steps + 少量沉降步数`。
     pub blanking_steps: u32,
 }
 
@@ -320,7 +320,7 @@ impl AxisState {
     /// 用于退离/回退等场景：堵转后电机静止时 DIAG 持续为高，
     /// 此时启动反向运动会立即触发误判。关闭后 ISR 跳过 DIAG 检查。
     ///
-    /// `start_continuous` 和 `start_homing` 会自动恢复为使能状态，
+    /// `start_continuous` 和 `probe_endstop` 会自动恢复为使能状态，
     /// `start_move` 不会自动恢复——由调用者通过本方法和
     /// [`enable_stall_check`] 控制。
     #[inline]
@@ -328,7 +328,7 @@ impl AxisState {
         self.stall_check_enabled.store(false, Ordering::Relaxed);
     }
 
-    /// 恢复堵转检测使能。`start_continuous` / `start_homing` 会自动调用，
+    /// 恢复堵转检测使能。`start_continuous` / `probe_endstop` 会自动调用，
     /// `start_move` 不会——由调用者决定。
     #[inline]
     pub fn enable_stall_check(&self) {
@@ -506,9 +506,12 @@ impl AxisState {
     /// 探测模式下每步处理：检测限位 + 加速。
     ///
     /// 前 `blanking_steps` 步跳过 DIAG 检测，给电机时间建立 BEMF。
+    /// 与正常模式共用 `blanking_steps` 参数。
+    ///
+    /// 注意：探测模式**不检查** [`stall_check_enabled`]，始终检堵。
+    /// 因为归位是安全关键操作，不应被用户临时禁用。
     fn handle_probing_step<T: AlarmTimer + MonotonicTimer>(&self, timer: &T, step: u32) {
-        // 消隐期内不检测 DIAG
-        if step > self.blanking_steps && self.diag_triggered() {
+        if step >= self.blanking_steps && self.diag_triggered() {
             debug!(
                 "probe DIAG@step={} pos={} dir={}",
                 step,
