@@ -191,6 +191,10 @@ name = "pwm_output"
 path = "src/pwm/pwm_output.rs"
 
 [[bin]]
+name = "pwm_fan_control"
+path = "src/pwm/fan_control.rs"
+
+[[bin]]
 name = "stepper_a4988"
 path = "src/stepper/stepper_a4988.rs"
 
@@ -269,6 +273,7 @@ path = "src/encoder_switch/encoder_switch.rs"
 [[bin]]
 name = "encoder_stepper"
 path = "src/encoder_switch/encoder_stepper.rs"
+
 
 [[bin]]
 name = "tcan4550"
