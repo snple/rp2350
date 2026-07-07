@@ -373,7 +373,7 @@ fn main() -> ! {
     pio0.enable_sm_mask_in_sync(0b0111);
 
     // ------------------------------------------------------------------
-    // 6. 使能 PIO0 RX FIFO 中断
+    // 6. 启用 PIO0 RX FIFO 中断
     //
     //    IRQ0_INTE 寄存器:
     //      bit 0 = SM0 RX FIFO 非空

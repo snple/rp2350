@@ -137,7 +137,7 @@ pub struct AxisState {
     index_backoff_target: AtomicU32,
     /// 堵转锁存标志（DIAG 触发后被 ISR 置 true，`start_*` 时清零）。
     stall_latched: AtomicBool,
-    /// 堵转检测使能（默认 true）。退离/回退等场景可临时关闭，避免 DIAG 误杀。
+    /// 堵转检测启用（默认 true）。退离/回退等场景可临时关闭，避免 DIAG 误杀。
     stall_check_enabled: AtomicBool,
     /// DIAG 消隐步数（配置值，构造后不变）。探测模式和梯形运动共用此值。
     blanking_steps: u32,
@@ -320,7 +320,7 @@ impl AxisState {
     /// 用于退离/回退等场景：堵转后电机静止时 DIAG 持续为高，
     /// 此时启动反向运动会立即触发误判。关闭后 ISR 跳过 DIAG 检查。
     ///
-    /// `start_continuous` 和 `probe_endstop` 会自动恢复为使能状态，
+    /// `start_continuous` 和 `probe_endstop` 会自动恢复为启用状态，
     /// `start_move` 不会自动恢复——由调用者通过本方法和
     /// [`enable_stall_check`] 控制。
     #[inline]
@@ -328,7 +328,7 @@ impl AxisState {
         self.stall_check_enabled.store(false, Ordering::Relaxed);
     }
 
-    /// 恢复堵转检测使能。`start_continuous` / `probe_endstop` 会自动调用，
+    /// 恢复堵转检测启用。`start_continuous` / `probe_endstop` 会自动调用，
     /// `start_move` 不会——由调用者决定。
     #[inline]
     pub fn enable_stall_check(&self) {

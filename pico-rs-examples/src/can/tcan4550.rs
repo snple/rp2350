@@ -60,11 +60,11 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::clocks::ClockBuilder;
-use pico_rs::main;
 use pico_rs::gpio::{Pin, Pins};
+use pico_rs::main;
 use pico_rs::pac::Peripherals;
 use pico_rs::spi::{FrameFormat, Mode, Spi0, SpiBus};
-use pico_rs::timer::Timer0;// ============================================================================
+use pico_rs::timer::Timer0; // ============================================================================
 // SPI 配置
 // ============================================================================
 
@@ -94,7 +94,7 @@ const TIMESTAMP_PRESCALER: u16 = 0x0804;
 const TEST_REG: u16 = 0x0808;
 /// 中断寄存器
 const DEV_IR: u16 = 0x0820;
-/// 中断使能寄存器
+/// 中断启用寄存器
 const DEV_IE: u16 = 0x0830;
 
 // ============================================================================
@@ -125,11 +125,11 @@ const MCAN_TOCV: u16 = 0x102C;
 const MCAN_PSR: u16 = 0x1044;
 /// MCAN 中断寄存器
 const MCAN_IR: u16 = 0x1050;
-/// MCAN 中断使能
+/// MCAN 中断启用
 const MCAN_IE: u16 = 0x1054;
 /// MCAN 中断线选择
 const MCAN_ILS: u16 = 0x1058;
-/// MCAN 中断线使能
+/// MCAN 中断线启用
 const MCAN_ILE: u16 = 0x105C;
 
 /// 全局过滤器配置
@@ -171,9 +171,9 @@ const MCAN_TXBCR: u16 = 0x10D4;
 const MCAN_TXBTO: u16 = 0x10D8;
 /// TX Buffer 取消完成
 const MCAN_TXBCF: u16 = 0x10DC;
-/// TX Buffer 传输中断使能
+/// TX Buffer 传输中断启用
 const MCAN_TXBTIE: u16 = 0x10E0;
-/// TX Buffer 取消完成中断使能
+/// TX Buffer 取消完成中断启用
 const MCAN_TXBCIE: u16 = 0x10E4;
 
 // ============================================================================
@@ -202,11 +202,11 @@ const MRAM_TX_BUFFER_NUM: u8 = 2;
 // ============================================================================
 
 const CCCR_INIT: u32 = 1 << 0; // 初始化模式请求
-const CCCR_CCE: u32 = 1 << 1; // 配置变更使能
+const CCCR_CCE: u32 = 1 << 1; // 配置变更启用
 const CCCR_MON: u32 = 1 << 5; // 总线监听模式
 const CCCR_DAR: u32 = 1 << 6; // 禁用自动重传
-const CCCR_BRSE: u32 = 1 << 9; // 比特率切换使能 (CAN FD)
-const CCCR_FDOE: u32 = 1 << 8; // CAN FD 操作使能
+const CCCR_BRSE: u32 = 1 << 9; // 比特率切换启用 (CAN FD)
+const CCCR_FDOE: u32 = 1 << 8; // CAN FD 操作启用
 
 // ============================================================================
 // MODE_PINS 寄存器位定义
@@ -313,7 +313,7 @@ fn mcan_enter_init(spi: &impl SpiBus, cs: &Pin<5>, timer: &Timer0) {
         timer.delay_ms(1);
     }
 
-    // 使能配置变更
+    // 启用配置变更
     spi_write_word(spi, cs, MCAN_CCCR, CCCR_INIT | CCCR_CCE);
     timer.delay_ms(1);
 }
@@ -549,13 +549,13 @@ fn main() -> ! {
     info!("标准 ID 过滤器 0: 接受 ID=0x100");
 
     // ========================================================================
-    // 步骤 8: 配置 CCCR — 使能 CAN FD 与位率切换 (可选)
+    // 步骤 8: 配置 CCCR — 启用 CAN FD 与位率切换 (可选)
     // ========================================================================
     info!("--- 步骤 8: 配置操作模式 ---");
 
     // 保持 INIT+CCE, 加上:
     // - DAR: 禁用自动重传 (调试方便)
-    // - FDOE + BRSE: 使能 CAN FD (可选, 如果只需要 Classic CAN 可去掉)
+    // - FDOE + BRSE: 启用 CAN FD (可选, 如果只需要 Classic CAN 可去掉)
     let cccr_val = CCCR_INIT | CCCR_CCE | CCCR_DAR;
     // 如需 CAN FD: let cccr_val = CCCR_INIT | CCCR_CCE | CCCR_DAR | CCCR_FDOE | CCCR_BRSE;
     spi_write_word(&spi, &cs, MCAN_CCCR, cccr_val);
@@ -566,7 +566,7 @@ fn main() -> ! {
     // ========================================================================
     info!("--- 步骤 9: 配置中断 ---");
 
-    // 使能 RX FIFO 0 新消息中断 (bit 0) 和 TX 完成中断 (bit 9)
+    // 启用 RX FIFO 0 新消息中断 (bit 0) 和 TX 完成中断 (bit 9)
     let ie_val: u32 = (1 << 0)   // RF0NE - RX FIFO 0 New Message
                     | (1 << 9); // TCE   - Transmission Completed
     spi_write_word(&spi, &cs, MCAN_IE, ie_val);
@@ -574,10 +574,10 @@ fn main() -> ! {
     // 所有中断分配到 INT line 0
     spi_write_word(&spi, &cs, MCAN_ILS, 0);
 
-    // 使能中断线 0
+    // 启用中断线 0
     spi_write_word(&spi, &cs, MCAN_ILE, 0x00000001);
 
-    // TX Buffer 传输完成中断使能 (buffer 0 和 1)
+    // TX Buffer 传输完成中断启用 (buffer 0 和 1)
     spi_write_word(&spi, &cs, MCAN_TXBTIE, 0x00000003);
 
     // 清除所有挂起的 MCAN 中断
@@ -585,8 +585,8 @@ fn main() -> ! {
 
     // 清除设备中断
     spi_write_word(&spi, &cs, DEV_IR, 0xFFFFFFFF);
-    // 使能设备中断 (MCAN 中断映射到 nINT 引脚)
-    spi_write_word(&spi, &cs, DEV_IE, 0x00000002); // bit 1: MCAN INT 使能
+    // 启用设备中断 (MCAN 中断映射到 nINT 引脚)
+    spi_write_word(&spi, &cs, DEV_IE, 0x00000002); // bit 1: MCAN INT 启用
 
     info!("中断已配置: RX FIFO 0 新消息 + TX 完成");
 
@@ -597,7 +597,7 @@ fn main() -> ! {
 
     mcan_exit_init(&spi, &cs, &timer);
 
-    // 将 TCAN4550 设备切换到 Normal 模式 (使能收发器)
+    // 将 TCAN4550 设备切换到 Normal 模式 (启用收发器)
     spi_write_word(&spi, &cs, MODE_PINS, MODE_NORMAL);
     timer.delay_ms(5);
 

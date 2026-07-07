@@ -260,7 +260,7 @@ fn main() -> ! {
         interrupt::enable(Interrupt::TIMER0_IRQ_0);
     }
 
-    // --- 使能 ---
+    // --- 启用 ---
     unsafe { gpio::set_low(PIN_ENABLE) };
     timer.delay_ms(100);
 

@@ -146,7 +146,7 @@
 //! | 0x3 | Gate Drive HS | R/W | 高侧栅极驱动电流配置 |
 //! | 0x4 | Gate Drive LS | R/W | 低侧栅极驱动 + 死区时间 + OCP 模式 |
 //! | 0x5 | OCP Control | R/W | VDS 过流阈值、去抖时间、重试模式 |
-//! | 0x6 | CSA Control | R/W | 电流检测放大器增益、校准使能 |
+//! | 0x6 | CSA Control | R/W | 电流检测放大器增益、校准启用 |
 //!
 //! ## 3.2 Fault Status 1 (0x0) — 只读
 //!
@@ -205,7 +205,7 @@
 //! ## 3.6 Gate Drive LS (0x4) — 低侧栅极
 //!
 //! ```text
-//! bit10    CBC        — 逐周期过流限制使能 (Cycle-By-Cycle)
+//! bit10    CBC        — 逐周期过流限制启用 (Cycle-By-Cycle)
 //! bit9:8   TDRIVE     — 栅极驱动峰值源时间: 00=500ns 01=1μs 10=2μs 11=4μs
 //! bit7:4   IDRIVEP_LS — 低侧源电流
 //! bit3:0   IDRIVEN_LS — 低侧灌电流
@@ -239,7 +239,7 @@
 //!                         10=20 V/V  ← 推荐（平衡灵敏度与范围）
 //!                         11=40 V/V
 //! bit5     DIS_SEN    — 禁用过流检测
-//! bit4:3   CSA_CAL_A/B — 校准使能 (接内部短路，校准偏移)
+//! bit4:3   CSA_CAL_A/B — 校准启用 (接内部短路，校准偏移)
 //! bit2     CSA_CAL_C  — C 相校准
 //! bit1:0   SEN_LVL    — CSA 过流检测阈值:
 //!                         00=0.25V, 01=0.50V, 10=0.75V, 11=1.0V
@@ -344,7 +344,7 @@
 //! | GP3 | INLB (B 相低侧) | GPIO SIO 输出 | 常高 → DRV8323 INLB |
 //! | GP5 | INLC (C 相低侧) | GPIO SIO 输出 | 常高 → DRV8323 INLC |
 //! | GP6 | nFAULT | GPIO 输入 (上拉) | DRV8323 故障输出 (低有效) |
-//! | GP7 | ENABLE | GPIO 输出 | DRV8323 使能 (高有效) |
+//! | GP7 | ENABLE | GPIO 输出 | DRV8323 启用 (高有效) |
 //! | GP10 | Encoder A | GPIO 输入 + 中断 | 上拉，双边沿 |
 //! | GP11 | Encoder B | GPIO 输入 + 中断 | 上拉，双边沿 |
 //! | GP18 | SPI0 SCK | SPI0 | → DRV8323 SCLK |
@@ -479,13 +479,13 @@ use defmt_rtt as _;
 
 use pico_rs::adc::{Adc, AdcPin};
 use pico_rs::clocks::ClockBuilder;
-use pico_rs::main;
 use pico_rs::gpio::Pins;
 use pico_rs::interrupt::{self, Mutex};
+use pico_rs::main;
 use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::pwm::Pwm;
 use pico_rs::spi::{FrameFormat, Mode, Spi0, SpiBus};
-use pico_rs::timer::Timer0;// ============================================================================
+use pico_rs::timer::Timer0; // ============================================================================
 // 配置参数
 // ============================================================================
 
@@ -675,11 +675,11 @@ mod csa_ctrl {
 
     /// 禁用过流检测
     pub const DIS_SEN: u16 = 1 << 5;
-    /// 校准使能 A
+    /// 校准启用 A
     pub const CSA_CAL_A: u16 = 1 << 4;
-    /// 校准使能 B
+    /// 校准启用 B
     pub const CSA_CAL_B: u16 = 1 << 3;
-    /// 校准使能 C
+    /// 校准启用 C
     pub const CSA_CAL_C: u16 = 1 << 2;
 
     /// CSA 过流检测阈值
@@ -1102,7 +1102,7 @@ fn main() -> ! {
     let cs_pin = pins.pin::<17>();
 
     // ------------------------------------------------------------------
-    // DRV8323 ENABLE 引脚 (GP7) — 拉高使能芯片
+    // DRV8323 ENABLE 引脚 (GP7) — 拉高启用芯片
     // ------------------------------------------------------------------
     let drv_enable = pins.pin::<7>();
     drv_enable.into_output();

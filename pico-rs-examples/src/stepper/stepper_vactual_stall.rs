@@ -20,13 +20,13 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::clocks::ClockBuilder;
-use pico_rs::main;
 use pico_rs::gpio::{self, EdgeLevel, Pin, Pins};
 use pico_rs::interrupt;
+use pico_rs::main;
 use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::ticks::Ticks;
 use pico_rs::timer::Timer0;
-use pico_rs::uart::{DataBits, Parity, StopBits, Uart1};// ============================================================================
+use pico_rs::uart::{DataBits, Parity, StopBits, Uart1}; // ============================================================================
 // 参数
 // ============================================================================
 
@@ -155,7 +155,7 @@ fn main() -> ! {
         interrupt::enable(Interrupt::IO_IRQ_BANK0);
     }
 
-    // --- 使能 ---
+    // --- 启用 ---
     unsafe { gpio::set_low(PIN_ENABLE) };
     timer.delay_ms(100);
 

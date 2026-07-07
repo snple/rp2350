@@ -249,7 +249,7 @@ pub const REG_SG_RESULT: u8 = 0x41;
 /// | [16:15] | tbl | 消隐时间比较 |
 /// | 17 | vsense | 检流电阻灵敏度 |
 /// | [27:24] | mres | 微步分辨率 (0=256 ... 8=全步) |
-/// | 28 | intpol | 256 微步插值使能 |
+/// | 28 | intpol | 256 微步插值启用 |
 pub const REG_CHOPCONF: u8 = 0x6C;
 
 /// DRV_STATUS (0x6F) — 驱动器状态 (只读)
@@ -433,7 +433,7 @@ pub struct Ioin {
     /// STEP 引脚状态
     #[bits(1)]
     pub step: bool,
-    /// Spread 使能引脚状态
+    /// Spread 启用引脚状态
     #[bits(1)]
     pub spread_en: bool,
     /// DIR 引脚状态
@@ -491,7 +491,7 @@ pub struct Chopconf {
     /// 微步分辨率 (0=256 ... 8=全步)
     #[bits(4)]
     pub mres: u8,
-    /// 256 微步插值使能
+    /// 256 微步插值启用
     #[bits(1)]
     pub intpol: bool,
     /// 双边沿步进脉冲 (与 multistep_filt 互斥)
@@ -1278,7 +1278,7 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
     ///
     /// 执行以下步骤:
     /// 1. 清除 GSTAT 错误标志
-    /// 2. 配置 GCONF: StealthChop + UART 使能 + 寄存器微步
+    /// 2. 配置 GCONF: StealthChop + UART 启用 + 寄存器微步
     /// 3. 配置 IHOLD_IRUN: 运行/保持电流
     /// 4. 配置 TPOWERDOWN: 停止后电流降低延时
     /// 5. 配置 CHOPCONF: 微步细分 + 256 微步插值

@@ -148,12 +148,12 @@
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::clocks::{ClockBuilder};
-use pico_rs::main;
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::gpio::Pins;
+use pico_rs::main;
 use pico_rs::pac::Peripherals;
 use pico_rs::pwm::Pwm;
-use pico_rs::timer::Timer0;// ============================================================================
+use pico_rs::timer::Timer0; // ============================================================================
 // 配置参数
 // ============================================================================
 
@@ -228,7 +228,7 @@ fn main() -> ! {
     let (led_div_int, led_div_frac) = slice0.get_div();
     slice0.set_duty_a(0); // 初始占空比 = 0%
 
-    // 使能 PWM 输出
+    // 启用 PWM 输出
     slice0.enable();
 
     info!(

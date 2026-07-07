@@ -109,13 +109,13 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::bind;
-use pico_rs::clocks::{ClockBuilder};
-use pico_rs::main;
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::gpio::{EdgeLevel, Pin, Pins};
 use pico_rs::interrupt;
+use pico_rs::main;
 use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::ticks::Ticks;
-use pico_rs::timer::Timer0;// ============================================================================
+use pico_rs::timer::Timer0; // ============================================================================
 // 引脚配置
 // ============================================================================
 
@@ -229,7 +229,7 @@ fn main() -> ! {
     );
 
     // ------------------------------------------------------------------
-    // 4. 使能 GPIO 中断
+    // 4. 启用 GPIO 中断
     //    A, B: 双沿中断 (上升沿 + 下降沿) → 4× 解码
     //    D:    下降沿中断 (按下时触发)
     // ------------------------------------------------------------------
@@ -241,7 +241,7 @@ fn main() -> ! {
 
     pin_btn.enable_interrupt(EdgeLevel::EdgeLow);
 
-    // 使能 NVIC 中 IO_IRQ_BANK0 中断
+    // 启用 NVIC 中 IO_IRQ_BANK0 中断
     unsafe {
         interrupt::enable(Interrupt::IO_IRQ_BANK0);
     }

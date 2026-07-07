@@ -85,8 +85,8 @@ const INDEX_BACKOFF: u32 = 4;
 // 引脚分配 (RP2350 GPIO)
 // ============================================================================
 
-/// 电机使能 (ENABLE)。低电平使能，高电平禁用。
-/// 上电初始拉高以禁止输出，初始化完成后拉低使能。
+/// 电机启用 (ENABLE)。低电平启用，高电平禁用。
+/// 上电初始拉高以禁止输出，初始化完成后拉低启用。
 const PIN_ENABLE: u32 = 7;
 
 /// TMC2209 UART 从机地址。0x00 为默认广播地址，
@@ -252,7 +252,7 @@ fn main() -> ! {
         interrupt::enable(Interrupt::TIMER0_IRQ_0);
     }
 
-    // 拉低 ENABLE → 电机使能，可以开始运动
+    // 拉低 ENABLE → 电机启用，可以开始运动
     unsafe { gpio::set_low(PIN_ENABLE) };
 
     timer.delay_ms(100);

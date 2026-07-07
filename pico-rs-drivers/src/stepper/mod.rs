@@ -388,10 +388,10 @@ impl AxisState {
         timer.set_alarm_safe(self.alarm, now.wrapping_add(interval_us));
     }
 
-    /// 启动运动：设置方向、相位、间隔并使能定时器中断。
+    /// 启动运动：设置方向、相位、间隔并启用定时器中断。
     ///
     /// 将方向、脉冲状态、GPIO、运动阶段、步间隔一次性写入，
-    /// 然后设置首步 alarm 并使能中断。`start_move`、`start_continuous`、
+    /// 然后设置首步 alarm 并启用中断。`start_move`、`start_continuous`、
     /// 以及 `tmc2209` 的 `probe_endstop` / `do_backoff` 均通过本方法收尾。
     #[inline]
     fn begin_motion<T: AlarmTimer + MonotonicTimer>(

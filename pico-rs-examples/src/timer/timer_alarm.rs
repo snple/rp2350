@@ -6,7 +6,7 @@
 //! 这里刻意把职责拆开：
 //!
 //! - `MonotonicTimer` 用来读取当前时间，计算下一次触发的绝对时刻。
-//! - `AlarmTimer` 用来设置 alarm、清中断、使能中断和强制中断。
+//! - `AlarmTimer` 用来设置 alarm、清中断、启用中断和强制中断。
 //!
 //! 这种拆分更贴近真实驱动场景：
 //! 有些驱动只需要超时判断，有些只需要定时中断，而不是总想绑定整个 Timer API。
@@ -29,13 +29,14 @@ use core::sync::atomic::{AtomicBool, Ordering};
 
 use defmt::*;
 use defmt_rtt as _;
-use pico_rs::clocks::{ClockBuilder};
-use pico_rs::main;
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::gpio::Pins;
 use pico_rs::interrupt::{self, Mutex};
+use pico_rs::main;
 use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::ticks::Ticks;
-use pico_rs::timer::{AlarmTimer, MonotonicTimer, Timer0};static TIMER: Mutex<RefCell<Option<Timer0>>> = Mutex::new(RefCell::new(None));
+use pico_rs::timer::{AlarmTimer, MonotonicTimer, Timer0};
+static TIMER: Mutex<RefCell<Option<Timer0>>> = Mutex::new(RefCell::new(None));
 static LED_STATE: AtomicBool = AtomicBool::new(false);
 static TICK_COUNT: Mutex<RefCell<u32>> = Mutex::new(RefCell::new(0));
 
@@ -91,7 +92,7 @@ fn main() -> ! {
     // 但后面的调度逻辑和中断清理逻辑都通过 trait 函数来表达。
     let timer = Timer0::init(dp.TIMER0);
 
-    // 设置第一次 alarm，并打开对应的中断使能。
+    // 设置第一次 alarm，并打开对应的中断启用。
     // 后续的每一次 alarm 都会在 ISR 内重新调度下一次。
     schedule_next_alarm(&timer, ALARM_NUM, PERIOD_US);
     timer.enable_alarm_interrupt(ALARM_NUM);

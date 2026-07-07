@@ -133,10 +133,10 @@
 //! ```text
 //! EEPROM 写入步骤:
 //!   1. 写 Shadow Register 到目标值
-//!   2. 向 ALGO_CTRL2 (0xA4) 写入 EEPROM 写使能密钥 (0xB6 到 bit[7:0])
+//!   2. 向 ALGO_CTRL2 (0xA4) 写入 EEPROM 写启用密钥 (0xB6 到 bit[7:0])
 //!   3. 向 ALGO_CTRL2 写入 EEPROM 写触发 (0xFE 到 bit[7:0])
 //!   4. 等待 >10ms，芯片将 Shadow → EEPROM
-//!   5. 写 0x00 关闭 EEPROM 写使能
+//!   5. 写 0x00 关闭 EEPROM 写启用
 //! ```
 //!
 //! ---
@@ -189,7 +189,7 @@
 //! bit[18:16] OL_ILIMIT      — 开环电流限制: 000=250mA ... 111=2A
 //! bit[15:13] OL_ACC_A1      — 开环段1加速率
 //! bit[12:10] OL_ACC_A2      — 开环段2加速率
-//! bit[9:7]   SLOW_SLEW_EN   — 慢斜率使能 + 配置
+//! bit[9:7]   SLOW_SLEW_EN   — 慢斜率启用 + 配置
 //! bit[6:4]   OPEN_LOOP_SPD  — 进入闭环转速阈值
 //! ```
 //!
@@ -238,7 +238,7 @@
 //!
 //! ```text
 //! bit[23:22] —               保留
-//! bit[21]    FOC_EN          — FOC 使能: 0=梯形换向, 1=FOC 正弦换向
+//! bit[21]    FOC_EN          — FOC 启用: 0=梯形换向, 1=FOC 正弦换向
 //! bit[20:18] SPEED_CMD       — I2C 速度指令 (当 PWM_MODE=I2C 时)
 //!                               数值映射到不同速度档位
 //! bit[17]    MOTOR_DIR       — 电机方向: 0=正转, 1=反转
@@ -252,12 +252,12 @@
 //!
 //! ```text
 //! bit[23:16] —               保留
-//! bit[15:13] FAST_ISD_EN     — 快速初始速度检测使能
+//! bit[15:13] FAST_ISD_EN     — 快速初始速度检测启用
 //! bit[12:8]  —               保留
 //! bit[7:0]   EEPROM_CMD      — EEPROM 写入控制:
-//!                               写 0xB6 → 写使能
+//!                               写 0xB6 → 写启用
 //!                               写 0xFE → 触发 Shadow → EEPROM
-//!                               写 0x00 → 关闭写使能
+//!                               写 0x00 → 关闭写启用
 //! ```
 //!
 //! ## 3.9 DEV_STATUS (0xE0) — 设备状态
@@ -382,7 +382,7 @@
 //! | `I2C_BAUDRATE` | 400 kHz | I2C 快速模式 |
 //! | `PWM_FREQ` | 25 kHz | 内部 PWM 频率 |
 //! | `CSA_GAIN` | 0.15 V/A | 电流检测增益 (内部固定) |
-//! | `FOC_EN` | true | 使能 FOC 模式 (否则梯形) |
+//! | `FOC_EN` | true | 启用 FOC 模式 (否则梯形) |
 //! | `OL_CURR` | 500 mA | 开环启动电流 |
 //! | `ALIGN_TIME` | 500 ms | 转子对齐时间 |
 //! | `SPEED_CMD` | I2C | 速度指令来源 |
@@ -416,7 +416,7 @@
 //! 1. VM 只接低压 (<12V) 并空载
 //! 2. 通过 I2C 读 IC_STATUS (0x00) 确认通信正常
 //! 3. 配置 MOTOR_STARTUP 参数 (低电流、长对齐时间)
-//! 4. 使能 FOC_EN，设低速度指令
+//! 4. 启用 FOC_EN，设低速度指令
 //! 5. DRVOFF=0 → 启动电机
 //! 6. 观察启动序列: ALIGN → OL_ACC → CL → RUN
 //! 7. 成功后再提高速度/电流/电压
@@ -460,12 +460,12 @@ use defmt_rtt as _;
 
 use pico_rs::Delay;
 use pico_rs::clocks::ClockBuilder;
-use pico_rs::main;
 use pico_rs::gpio::Pins;
 use pico_rs::i2c::{I2c0, I2cBus};
+use pico_rs::main;
 use pico_rs::pac::Peripherals;
 use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
-use pico_rs::timer::Timer0;// ============================================================================
+use pico_rs::timer::Timer0; // ============================================================================
 // 配置参数
 // ============================================================================
 
@@ -536,7 +536,7 @@ mod mct_reg {
     pub const DEVICE_CONFIG1: u8 = 0x9C;
     /// 设备配置 2 (死区、电流增益等)
     pub const DEVICE_CONFIG2: u8 = 0xA0;
-    /// 算法控制 1 (FOC 使能、速度指令、方向等)
+    /// 算法控制 1 (FOC 启用、速度指令、方向等)
     pub const ALGO_CTRL1: u8 = 0xA4;
     /// 算法控制 2 (EEPROM 写入控制)
     pub const ALGO_CTRL2: u8 = 0xA8;
@@ -734,7 +734,7 @@ mod dev_config1 {
 // ============================================================================
 
 mod algo_ctrl1 {
-    /// FOC 使能 (bit21): 0=梯形, 1=FOC
+    /// FOC 启用 (bit21): 0=梯形, 1=FOC
     pub const FOC_EN: u32 = 1 << 21;
     /// 电机方向 (bit17): 0=正转, 1=反转
     pub const MOTOR_DIR: u32 = 1 << 17;
@@ -752,7 +752,7 @@ mod algo_ctrl1 {
 // ============================================================================
 
 mod algo_ctrl2 {
-    /// EEPROM 写使能密钥
+    /// EEPROM 写启用密钥
     pub const EEPROM_WRITE_KEY: u8 = 0xB6;
     /// EEPROM 写触发
     pub const EEPROM_WRITE_TRIGGER: u8 = 0xFE;
@@ -912,7 +912,7 @@ impl<'a, I2C: I2cBus> Mct8316z<'a, I2C> {
     /// 清除故障的方式是:
     ///   1. DRVOFF=1 (关闭驱动)
     ///   2. 等待 >1ms
-    ///   3. DRVOFF=0 (重新使能)
+    ///   3. DRVOFF=0 (重新启用)
     ///
     /// 或通过 I2C 写 ALGO_CTRL1 的 DRVOFF_CMD 位
     fn clear_fault_via_i2c(&self) -> bool {
@@ -929,7 +929,7 @@ impl<'a, I2C: I2cBus> Mct8316z<'a, I2C> {
         true
     }
 
-    /// 使能驱动输出 (DRVOFF_CMD = 0)
+    /// 启用驱动输出 (DRVOFF_CMD = 0)
     fn enable_drive(&self) -> bool {
         self.modify_reg(mct_reg::ALGO_CTRL1, algo_ctrl1::DRVOFF_CMD, 0)
     }
@@ -1040,7 +1040,7 @@ impl<'a, I2C: I2cBus> Mct8316z<'a, I2C> {
         // ------------------------------------------------------------------
         // CLOSED_LOOP1 (0x70):
         //   - 换相超前角 = 7.5° (通常需根据电机调整)
-        //   - 闭环使能 (CLOOP_DIS = 0)
+        //   - 闭环启用 (CLOOP_DIS = 0)
         // ------------------------------------------------------------------
         let cl1_mask: u32 = 0x7 << 19 | closed_loop1::CLOOP_DIS;
         let cl1_val: u32 = closed_loop1::COMM_ADVANCE_7P5; // CLOOP_DIS=0
@@ -1064,7 +1064,7 @@ impl<'a, I2C: I2cBus> Mct8316z<'a, I2C> {
 
         // ------------------------------------------------------------------
         // ALGO_CTRL1 (0xA4):
-        //   - FOC 使能
+        //   - FOC 启用
         //   - 方向 = 正转
         //   - DRVOFF = 1 (先保持关闭，等配置完再开)
         //   - 速度 = 0 (待后续设定)
@@ -1101,14 +1101,14 @@ impl<'a, I2C: I2cBus> Mct8316z<'a, I2C> {
     /// 将 Shadow 寄存器写入 EEPROM (掉电永久保存)
     ///
     /// 步骤:
-    /// 1. 写入 EEPROM 写使能密钥 (0xB6)
+    /// 1. 写入 EEPROM 写启用密钥 (0xB6)
     /// 2. 触发 EEPROM 写入 (0xFE)
     /// 3. 等待 >10ms
-    /// 4. 关闭 EEPROM 写使能 (0x00)
+    /// 4. 关闭 EEPROM 写启用 (0x00)
     fn save_to_eeprom(&self, delay: &Delay) -> bool {
         info!("Saving configuration to EEPROM...");
 
-        // 写使能
+        // 写启用
         if !self.modify_reg(
             mct_reg::ALGO_CTRL2,
             0xFF,
@@ -1131,7 +1131,7 @@ impl<'a, I2C: I2cBus> Mct8316z<'a, I2C> {
         // 等待写入完成
         delay.delay_ms(20);
 
-        // 关闭写使能
+        // 关闭写启用
         self.modify_reg(
             mct_reg::ALGO_CTRL2,
             0xFF,
@@ -1275,7 +1275,7 @@ fn main() -> ! {
         TARGET_SPEED as u32 * 100 / 127
     );
 
-    // 使能驱动输出 (通过 I2C 清除 DRVOFF_CMD 位)
+    // 启用驱动输出 (通过 I2C 清除 DRVOFF_CMD 位)
     mct.enable_drive();
 
     // 同时释放硬件 DRVOFF 引脚

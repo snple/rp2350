@@ -472,7 +472,7 @@ fn main() -> ! {
 
     let p_en = pins.pin::<PIN_ENABLE>();
     p_en.into_output();
-    p_en.set_low(); // 使能驱动器
+    p_en.set_low(); // 启用驱动器
 
     info!("Encoder: A=GP{}, B=GP{}, BTN=GP{}", PIN_A, PIN_B, PIN_BTN);
     info!(
@@ -487,7 +487,7 @@ fn main() -> ! {
     );
 
     // ------------------------------------------------------------------
-    // 4. 使能中断
+    // 4. 启用中断
     //    IO_IRQ_BANK0:  编码器正交解码 + 按钮检测 (优先级 0, 最高)
     //    TIMER0_IRQ_0:  步进电机脉冲生成        (优先级 0, 最高)
     //    SPARE_IRQ_0:   软中断 — 电机控制逻辑    (优先级 48, 较低)

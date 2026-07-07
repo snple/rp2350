@@ -27,7 +27,7 @@ RP2350 的 PWM 外设由多个 slice 组成。
 - 一个 8.4 定点分频器 `DIV`
 - 一个 16 位 `TOP`/`WRAP` 寄存器
 - 一个 32 位 `CC` 寄存器，低 16 位是 A 通道 compare，高 16 位是 B 通道 compare
-- 一组控制位，例如使能、反相、phase-correct、div mode 等
+- 一组控制位，例如启用、反相、phase-correct、div mode 等
 
 最重要的一点是：
 

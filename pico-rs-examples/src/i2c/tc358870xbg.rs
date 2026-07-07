@@ -98,10 +98,10 @@
 //!
 //! | 地址 | 名称 | 宽度 | 说明 |
 //! |------|------|------|------|
-//! | 0x0108 | DSI_TX_CLKEN | 32-bit | DSI TX 时钟使能 |
+//! | 0x0108 | DSI_TX_CLKEN | 32-bit | DSI TX 时钟启用 |
 //! | 0x010C | PPI_CLKCTRL | 32-bit | PPI 时钟控制 |
-//! | 0x0110 | PPI_LANEENABLE | 32-bit | PPI 通道使能 |
-//! | 0x0114 | DSI_LANEENABLE | 32-bit | DSI 通道使能 |
+//! | 0x0110 | PPI_LANEENABLE | 32-bit | PPI 通道启用 |
+//! | 0x0114 | DSI_LANEENABLE | 32-bit | DSI 通道启用 |
 //! | 0x0118 | PPI_STARTCNTRL | 32-bit | PPI 启动控制 |
 //! | 0x0120 | DSI_STARTCNTRL | 32-bit | DSI 启动控制 |
 //! | 0x0204 | LINEINITCNT | 32-bit | PHY 行初始化计数 |
@@ -113,7 +113,7 @@
 //! | 0x0224 | TCLK_POSTCNT | 32-bit | TCLK-POST 计数 |
 //! | 0x0228 | THS_TRAILCNT | 32-bit | THS-TRAIL 计数 |
 //! | 0x022C | HSTXVREGCNT | 32-bit | HS-TX 电压调节器计数 |
-//! | 0x0230 | HSTXVREGEN | 32-bit | HS-TX 电压调节使能 |
+//! | 0x0230 | HSTXVREGEN | 32-bit | HS-TX 电压调节启用 |
 //! | 0x0234 | BTA_COUNT | 32-bit | BTA 周期计数 |
 //! | 0x0238 | DPHY_TX_ADJUST | 32-bit | D-PHY TX 调整 |
 //! | 0x0518 | DSI_HSYNC_STOP_COUNT | 32-bit | DSI HSYNC 停止计数 |
@@ -232,7 +232,7 @@
 //! ```text
 //! C0 83 71 8E 00 → 电源IC参数
 //! C1 ...         → 电压阶梯
-//! C2 FF          → 电源使能
+//! C2 FF          → 电源启用
 //! C9 ...         → Power On Sequence 时序
 //! CC ...         → 高级时序补偿
 //! ```
@@ -310,7 +310,7 @@
 //! [配置视频通路]          ← 将 HDMI RX 连接到 DSI TX
 //!      │
 //!      ▼
-//! [启动视频传输]          ← 使能 DSI 视频模式输出
+//! [启动视频传输]          ← 启用 DSI 视频模式输出
 //!      │
 //!      ▼
 //! [主循环: 监控状态]      ← 检测 HDMI 信号、中断、错误
@@ -332,12 +332,12 @@ use defmt_rtt as _;
 
 use pico_rs::Delay;
 use pico_rs::clocks::ClockBuilder;
-use pico_rs::main;
 use pico_rs::gpio::Pins;
 use pico_rs::i2c::{I2c0, I2cBus};
+use pico_rs::main;
 use pico_rs::pac::Peripherals;
 use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
-use pico_rs::timer::Timer0;// ============================================================================
+use pico_rs::timer::Timer0; // ============================================================================
 // TC358870XBG 寄存器地址定义
 // ============================================================================
 
@@ -352,13 +352,13 @@ const REG_CONFCTL0: u16 = 0x0004;
 const REG_CONFCTL1: u16 = 0x0006;
 
 // --- MIPI DSI TX ---
-/// DSI TX 时钟使能
+/// DSI TX 时钟启用
 const REG_DSI_TX_CLKEN: u16 = 0x0108;
 /// PPI 时钟控制
 const REG_PPI_CLKCTRL: u16 = 0x010C;
-/// PPI 通道使能
+/// PPI 通道启用
 const REG_PPI_LANEENABLE: u16 = 0x0110;
-/// DSI 通道使能
+/// DSI 通道启用
 const REG_DSI_LANEENABLE: u16 = 0x0114;
 /// PPI 启动控制
 const REG_PPI_STARTCNTRL: u16 = 0x0118;
@@ -382,7 +382,7 @@ const REG_TCLK_POSTCNT: u16 = 0x0228;
 const REG_THS_TRAILCNT: u16 = 0x022C;
 /// HS-TX 电压调节器计数
 const REG_HSTXVREGCNT: u16 = 0x0230;
-/// HS-TX 电压调节使能
+/// HS-TX 电压调节启用
 const REG_HSTXVREGEN: u16 = 0x0234;
 /// BTA (Bus Turn Around) 计数
 const REG_BTA_COUNT: u16 = 0x0238;
@@ -1264,17 +1264,17 @@ fn main() -> ! {
     // ==================================================================
     info!("配置 MIPI DSI TX...");
 
-    // 7.1 使能 DSI TX 时钟
+    // 7.1 启用 DSI TX 时钟
     tc_write_reg32(&i2c, REG_DSI_TX_CLKEN, 0x00000001);
 
     // 7.2 PPI 时钟控制
     tc_write_reg32(&i2c, REG_PPI_CLKCTRL, 0x00000002);
 
-    // 7.3 PPI 通道使能 — 4 数据通道 + 1 时钟通道 = 0x1F
+    // 7.3 PPI 通道启用 — 4 数据通道 + 1 时钟通道 = 0x1F
     //     bit[0] = CLK lane, bit[1:4] = Data lane 0~3
     tc_write_reg32(&i2c, REG_PPI_LANEENABLE, 0x0000001F);
 
-    // 7.4 DSI 通道使能 — 同上
+    // 7.4 DSI 通道启用 — 同上
     tc_write_reg32(&i2c, REG_DSI_LANEENABLE, 0x0000001F);
 
     // 7.5 D-PHY 时序参数
@@ -1308,7 +1308,7 @@ fn main() -> ! {
     // HS-TX 电压调节器稳定时间
     tc_write_reg32(&i2c, REG_HSTXVREGCNT, 0x00000005);
 
-    // HS-TX 电压调节使能 — 所有通道
+    // HS-TX 电压调节启用 — 所有通道
     tc_write_reg32(&i2c, REG_HSTXVREGEN, 0x0000001F);
 
     // BTA 计数
@@ -1418,14 +1418,14 @@ fn main() -> ! {
 
     // 10.2 配置 HPD (Hot Plug Detect)
     //      HPD 拉高告诉 HDMI 源设备: "显示器已连接"
-    tc_write_reg8(&i2c, REG_HPD_CTL, 0x01); // 使能 HPD 输出
-    tc_write_reg8(&i2c, REG_HPD_CTL2, 0x01); // DDC 5V 使能
+    tc_write_reg8(&i2c, REG_HPD_CTL, 0x01); // 启用 HPD 输出
+    tc_write_reg8(&i2c, REG_HPD_CTL2, 0x01); // DDC 5V 启用
 
-    // 10.3 DDC 通道使能 (用于 EDID 传输)
+    // 10.3 DDC 通道启用 (用于 EDID 传输)
     tc_write_reg8(&i2c, REG_DDC_CTL, 0x00); // 自动 DDC 应答
 
     // 10.4 HDMI PHY 配置
-    tc_write_reg8(&i2c, REG_PHY_CTL0, 0x01); // 使能 HDMI PHY
+    tc_write_reg8(&i2c, REG_PHY_CTL0, 0x01); // 启用 HDMI PHY
 
     // 10.5 初始化结束标志
     tc_write_reg8(&i2c, REG_INIT_END, 0x01);
@@ -1437,16 +1437,16 @@ fn main() -> ! {
     // ==================================================================
     info!("配置视频通路...");
 
-    // 配置控制 0 — 使能 HDMI→DSI 视频通路
-    //   bit[0] = 1: 使能视频输出
-    //   bit[2] = 1: HDMI 视频通路使能
+    // 配置控制 0 — 启用 HDMI→DSI 视频通路
+    //   bit[0] = 1: 启用视频输出
+    //   bit[2] = 1: HDMI 视频通路启用
     //   bit[4] = 1: DSI 视频模式 (非命令模式)
     tc_write_reg16(&i2c, REG_CONFCTL0, 0x0015);
 
     // 配置控制 1
     tc_write_reg16(&i2c, REG_CONFCTL1, 0x0001);
 
-    info!("视频通路已使能: HDMI RX → DSI TX (Video Mode)");
+    info!("视频通路已启用: HDMI RX → DSI TX (Video Mode)");
 
     // ==================================================================
     // 12. 主循环 — 监控 HDMI 信号状态
