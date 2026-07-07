@@ -162,7 +162,8 @@ static AXIS: AxisState = AxisState::new(AxisConfig {
     diag_pin: PIN_DIAG,
     index_pin: PIN_INDEX,
     index_backoff: 0,
-    invert_dir: false,
+    fwd_level: false,
+    blanking_steps: 200,
 });
 
 #[inline(always)]

@@ -158,7 +158,8 @@ static AXIS: AxisState = AxisState::new(AxisConfig {
     diag_pin: PIN_DIAG,
     index_pin: PIN_INDEX,
     index_backoff: 0, // 不使用 INDEX 回退
-    invert_dir: false,
+    fwd_level: false,
+    blanking_steps: 200,
 });
 
 // ============================================================================
@@ -720,25 +721,25 @@ fn main() -> ! {
 
     // --- Demo 6: 无传感器回零 (利用 DIAG + 限位检测) ---
     info!("=== Demo 6: Sensorless homing ===");
-    info!("Motor moves forward until hitting hard stop...");
+    info!("Motor moves toward endstop until stall detected...");
 
     tmc.set_sg_threshold(HOMING_SG_THRESHOLD, &timer);
     timer.delay_ms(50);
 
-    // 使用 start_homing 向 Reverse 方向 (反方向 = 向限位)
-    AXIS.start_homing(&timer, HOMING_SPEED_HZ);
+    AXIS.probe_endstop(&timer, Direction::Reverse, HOMING_SPEED_HZ);
 
     timeout = 0;
     while !AXIS.is_done() && timeout < 20 {
         timer.delay_ms(500);
         timeout += 1;
     }
-    stop_motion();
 
-    if AXIS.position() == 0 {
-        info!("Homing complete: at limit, pos=0");
+    if AXIS.is_done() {
+        AXIS.set_position(0);
+        info!("Homing complete: pos=0");
     } else {
-        info!("Homing timeout — position={}", AXIS.position());
+        warn!("Homing timeout — stopping");
+        AXIS.stop();
     }
 
     tmc.set_sg_threshold(SG_THRESHOLD, &timer);

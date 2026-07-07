@@ -231,14 +231,14 @@ use defmt_rtt as _;
 
 use pico_rs::bind;
 use pico_rs::clocks::ClockBuilder;
-use pico_rs::main;
 use pico_rs::gpio::{EdgeLevel, Pin, Pins};
 use pico_rs::interrupt;
+use pico_rs::main;
 use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::ticks::Ticks;
 use pico_rs::timer::Timer0;
 
-use pico_rs_drivers::stepper::{AxisConfig, AxisState, Direction, MotionPhase};// ============================================================================
+use pico_rs_drivers::stepper::{AxisConfig, AxisState, Direction, MotionPhase}; // ============================================================================
 // 编码器引脚配置
 // ============================================================================
 
@@ -349,7 +349,7 @@ static AXIS: AxisState = AxisState::new(AxisConfig {
     start_speed_hz: START_SPEED_HZ,
     accel_steps: ACCEL_STEPS,
     step_pulse_us: STEP_PULSE_US,
-    invert_dir: false,
+    fwd_level: false,
 });
 
 // ============================================================================
