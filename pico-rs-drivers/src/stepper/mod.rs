@@ -22,7 +22,7 @@ use core::sync::atomic::{AtomicBool, AtomicI32, AtomicU8, AtomicU32, Ordering};
 use pico_rs::timer::{AlarmTimer, MonotonicTimer};
 
 // ============================================================================
-// StepDirPins trait
+// AxisPins trait
 // ============================================================================
 
 /// 步进电机 STEP/DIR 引脚操作 trait。
@@ -92,7 +92,7 @@ impl Direction {
 /// ```
 /// [`Running`](MotionPhase::Running) 是没有步数上限的连续运动模式。
 ///
-/// [`Homing`](MotionPhase::Homing) 和 [`HomingBackoff`](MotionPhase::HomingBackoff)
+/// [`Probing`](MotionPhase::Probing) 和 [`ProbingBackoff`](MotionPhase::ProbingBackoff)
 /// 仅在 [`tmc2209::AxisState`] 中使用，依赖 DIAG/INDEX 引脚。
 #[derive(Clone, Copy, PartialEq, Eq)]
 #[repr(u8)]
@@ -129,6 +129,10 @@ impl MotionPhase {
         }
     }
 }
+
+/// Running 模式下 `set_speed` 平滑过渡时，每步间隔的最大变化量（微秒）。
+/// 值越大过渡越快（但可能产生速度跳变感），建议 1~5 µs。
+const SPEED_RAMP_DELTA_US: u32 = 2;
 
 /// 将步进频率（Hz）转换为每步间隔时间（微秒）。
 ///
@@ -167,13 +171,15 @@ pub struct AxisConfig {
 
 /// 单轴步进状态（通用版）。
 ///
-/// 泛型参数 `P` 实现 [`StepDirPins`]，提供 STEP/DIR 的 GPIO 操作。
+/// 泛型参数 `P` 实现 [`AxisPins`]，提供 STEP/DIR 的 GPIO 操作。
 /// 编译期单态化，ISR 中零开销内联。
 ///
 /// 如需 DIAG/INDEX/归位功能，请使用 [`tmc2209::AxisState`]。
 pub struct AxisState<P: AxisPins> {
     _pins: PhantomData<P>,
-    // --- 静态配置（initialize once，之后只读）---
+    // ========================================================================
+    // 静态配置（initialize once，之后只读）
+    // ========================================================================
     /// 所占用的 Timer0 alarm 编号（0/1/2）。
     pub(crate) alarm: u8,
     /// 起步频率，单位 Hz。
@@ -185,7 +191,9 @@ pub struct AxisState<P: AxisPins> {
     /// Forward 方向对应 DIR 引脚的电平。`true` = 高电平，`false` = 低电平。
     fwd_level: bool,
 
-    // --- 动态运动状态（中断内更新，主循环只读）---
+    // ========================================================================
+    // 动态运动状态（中断内更新，主循环只读）
+    // ========================================================================
     /// 当前运动方向（存储 [`Direction`] 的离散化整数值）。
     pub(crate) direction: AtomicU8,
     /// 当前运动阶段（存储 [`MotionPhase`] 的离散化整数值）。
@@ -210,6 +218,10 @@ pub struct AxisState<P: AxisPins> {
     pub(crate) motion_done: AtomicBool,
     /// STEP 引脚的当前电平（false = 低电平 / true = 高电平）。中断内切换。
     pub(crate) pulse_state: AtomicBool,
+    /// Running 模式下平滑调速的目标间隔（us）。与 `step_interval_us` 不同时触发过渡。
+    target_interval_us: AtomicU32,
+    /// Running 模式下达到目标速度后的稳定步数计数（用于 DIAG 重启用判断）。
+    pub(crate) speed_settle_count: AtomicU32,
 }
 
 unsafe impl<P: AxisPins> Sync for AxisState<P> {}
@@ -239,10 +251,14 @@ impl<P: AxisPins> AxisState<P> {
             max_travel: AtomicI32::new(0),
             motion_done: AtomicBool::new(true),
             pulse_state: AtomicBool::new(false),
+            target_interval_us: AtomicU32::new(0),
+            speed_settle_count: AtomicU32::new(0),
         }
     }
 
-    // --- 状态查询 ---
+    // ========================================================================
+    // 状态查询
+    // ========================================================================
 
     /// 返回当前运动阶段。可在主循环中读取以显示轴状态。
     #[inline]
@@ -262,12 +278,31 @@ impl<P: AxisPins> AxisState<P> {
         self.steps_done.load(Ordering::Relaxed)
     }
 
+    /// 返回本次运动的目标步数（`start_continuous` 连续模式为 0）。
+    #[inline]
+    pub fn steps_target(&self) -> u32 {
+        self.steps_target.load(Ordering::Relaxed)
+    }
+
     /// 返回轴是否处于可新建状态（Idle）。
     /// `true` 表示无运动任务或任务已完成。
     #[inline]
     pub fn is_done(&self) -> bool {
         self.motion_done.load(Ordering::Relaxed)
     }
+
+    /// 轴是否正在运动中（phase 不为 Idle）。
+    ///
+    /// 与 [`is_done`] 不同：`prepare_start` 会将 `motion_done` 置 false
+    /// 但 phase 保持 Idle，因此用 phase 判断更准确。
+    #[inline]
+    pub fn is_busy(&self) -> bool {
+        self.motion_phase.load(Ordering::Relaxed) != MotionPhase::Idle as u8
+    }
+
+    // ========================================================================
+    // 位置管理
+    // ========================================================================
 
     /// 将逻辑坐标强制写入指定值，不产生任何实际运动。
     #[inline]
@@ -276,6 +311,7 @@ impl<P: AxisPins> AxisState<P> {
     }
 
     /// 阻塞等待运动完成（使用 WFI 省电）。
+    #[inline]
     pub fn wait_done(&self) {
         while !self.motion_done.load(Ordering::Relaxed) {
             pico_rs_rt::asm::wfi();
@@ -291,7 +327,9 @@ impl<P: AxisPins> AxisState<P> {
         self.motion_done.store(false, Ordering::Relaxed);
     }
 
-    // --- 行程约束 ---
+    // ========================================================================
+    // 行程约束
+    // ========================================================================
 
     /// 设置最大行程（微步）。
     ///
@@ -303,7 +341,9 @@ impl<P: AxisPins> AxisState<P> {
         self.max_travel.store(travel, Ordering::Relaxed);
     }
 
-    // --- GPIO 操作（集中所有 unsafe gpioc 调用） ---
+    // ========================================================================
+    // GPIO 操作
+    // ========================================================================
 
     #[inline(always)]
     fn apply_dir(&self, dir: Direction) {
@@ -319,6 +359,10 @@ impl<P: AxisPins> AxisState<P> {
         P::set_step(high);
     }
 
+    // ========================================================================
+    // 行程辅助
+    // ========================================================================
+
     /// 受最大行程约束后的有效步数。
     #[inline]
     pub(crate) fn clamp_steps(&self, steps: u32, dir: Direction) -> u32 {
@@ -327,8 +371,6 @@ impl<P: AxisPins> AxisState<P> {
             None => steps,
         }
     }
-
-    // --- 行程辅助 ---
 
     /// 受最大行程约束后，连续运动可用的最大步数。
     ///
@@ -348,7 +390,9 @@ impl<P: AxisPins> AxisState<P> {
         Some(steps)
     }
 
-    // --- 运动控制 ---
+    // ========================================================================
+    // 运动控制（内部）
+    // ========================================================================
 
     /// 设置梯形加减速的加速步数和减速起始点。
     ///
@@ -363,15 +407,6 @@ impl<P: AxisPins> AxisState<P> {
             total_steps.saturating_sub(accel_steps).saturating_add(1),
             Ordering::Relaxed,
         );
-    }
-
-    /// 轴是否正在运动中（phase 不为 Idle）。
-    ///
-    /// 与 [`is_done`] 不同：`prepare_start` 会将 `motion_done` 置 false
-    /// 但 phase 保持 Idle，因此用 phase 判断更准确。
-    #[inline]
-    fn is_busy(&self) -> bool {
-        self.motion_phase.load(Ordering::Relaxed) != MotionPhase::Idle as u8
     }
 
     /// 将轴置为 Idle（仅更新阶段和完成标志，不操作 GPIO）。
@@ -408,9 +443,16 @@ impl<P: AxisPins> AxisState<P> {
         self.motion_phase.store(phase as u8, Ordering::Relaxed);
         self.step_interval_us
             .store(start_interval_us, Ordering::Relaxed);
+        self.target_interval_us
+            .store(start_interval_us, Ordering::Relaxed);
+        self.speed_settle_count.store(0, Ordering::Relaxed);
         self.schedule_next_alarm(timer, start_interval_us);
         timer.enable_alarm_interrupt(self.alarm);
     }
+
+    // ========================================================================
+    // 运动控制（公开 API）
+    // ========================================================================
 
     /// 启动有限步数的相对位移运动，带梯形加减速。
     ///
@@ -481,18 +523,40 @@ impl<P: AxisPins> AxisState<P> {
         );
     }
 
-    /// 动态更新当前运动的目标步数和减速起始点。
+    /// 在当前目标步数基础上增加额外步数，推迟减速起始点。
     ///
-    /// 仅在电机处于加速或巡航阶段时调用有效。
-    /// 内部先更新 `steps_target`（防止 ISR 在旧 target 处提前判定运动完成），
-    /// 再更新 `decel_start_step`。
+    /// 用于运动中实时延长运动距离的场景（如摇杆连续输入），
+    /// 无需停止电机即可直接延长。
     ///
-    /// 用于编码器连续输入场景：无需停止电机，直接延长运动距离。
+    /// 如果在减速阶段调用，且新的减速起始点大于当前步数，
+    /// ISR 会自动将阶段切回巡航阶段，继续匀速运动。
+    ///
+    /// 注意：`Running` 模式（`start_continuous`）下此方法无效，
+    /// 因为 Running 模式无步数限制、不经梯形调度。请改用
+    /// [`smooth_stop`] 停止后再重新 [`start_continuous`] 换向。
     #[inline]
-    pub fn set_target_steps(&self, new_total_steps: u32) {
+    pub fn extend_target(&self, extra_steps: u32) {
+        let current = self.steps_target.load(Ordering::Relaxed);
+        let new_total = current.saturating_add(extra_steps);
         // 先写 steps_target，防止 ISR 在旧 target 处提前完成运动
-        self.steps_target.store(new_total_steps, Ordering::Relaxed);
-        self.setup_trapezoid(new_total_steps);
+        self.steps_target.store(new_total, Ordering::Relaxed);
+        self.setup_trapezoid(new_total);
+    }
+
+    /// 实时调整 Running 模式下的运动速度，带平滑过渡。
+    ///
+    /// 仅在 [`start_continuous`] 启动的连续运动中生效。
+    /// 内部更新 `target_interval_us`，ISR 每步以固定斜率向目标逼近，
+    /// 避免速度跳变。同时更新 `max_speed_hz`，梯形模式调用时也可影响
+    /// 加减速计算。
+    ///
+    /// TMC2209 版会在调速期间自动屏蔽 DIAG 堵转检测，
+    /// 速度稳定 `blanking_steps` 步后自动恢复。
+    #[inline]
+    pub fn set_speed(&self, speed_hz: u32) {
+        let interval = speed_to_interval_us(speed_hz);
+        self.target_interval_us.store(interval, Ordering::Relaxed);
+        self.max_speed_hz.store(speed_hz, Ordering::Relaxed);
     }
 
     /// 立即停止轴运动，将阶段设为 [`MotionPhase::Idle`] 并拉低 STEP 引脚。
@@ -503,7 +567,45 @@ impl<P: AxisPins> AxisState<P> {
         self.apply_step(false);
     }
 
-    // --- ISR building blocks ---
+    /// 平滑停止：立即进入减速阶段，按梯形曲线降速至停止。
+    ///
+    /// 不同于 [`stop`] 的急停——`stop` 瞬间将阶段设为 Idle，
+    /// 电机因惯性滑行停止；`smooth_stop` 让电机按当前的
+    /// 加减速参数从当前位置平稳减速到停止，减少机械冲击。
+    ///
+    /// 适用于 `start_move` 的梯形模式和 `start_continuous` 的连续模式。
+    /// 探测模式（Probing/ProbingBackoff）下调用无效，请使用 [`stop`]。
+    ///
+    /// ## 实现说明
+    ///
+    /// 将目标步数设为 `当前步数 + accel_steps`，减速起始点设为
+    /// `当前步数 + 1`，强制阶段为 Decelerating。ISR 下次触发时
+    /// 会按 `accel_steps` 步完成从当前速度到起始速度的平滑降速。
+    #[inline]
+    pub fn smooth_stop(&self) {
+        let phase_raw = self.motion_phase.load(Ordering::Relaxed);
+        if phase_raw == MotionPhase::Idle as u8
+            || phase_raw == MotionPhase::Probing as u8
+            || phase_raw == MotionPhase::ProbingBackoff as u8
+        {
+            return;
+        }
+
+        let cur_step = self.steps_done.load(Ordering::Relaxed);
+        let decel_dist = self.accel_steps.max(1);
+        let new_target = cur_step + decel_dist;
+
+        // 原子写入顺序：先写 steps_target 防止 ISR 在旧 target 处提前 done
+        self.steps_target.store(new_target, Ordering::Relaxed);
+        self.effective_accel_steps.store(0, Ordering::Relaxed);
+        self.decel_start_step.store(cur_step + 1, Ordering::Relaxed);
+        self.motion_phase
+            .store(MotionPhase::Decelerating as u8, Ordering::Relaxed);
+    }
+
+    // ========================================================================
+    // ISR 基础构件
+    // ========================================================================
 
     /// STEP 引脚脉冲翻转。返回 `true` 表示下降沿（步完成），`false` 表示上升沿。
     ///
@@ -542,6 +644,69 @@ impl<P: AxisPins> AxisState<P> {
         (step, total)
     }
 
+    // ========================================================================
+    // 速度计算
+    // ========================================================================
+
+    /// 根据当前步号和运动阶段计算下一步的间隔时间（us）。
+    ///
+    /// - 加速段：起始间隔 → 巡航间隔求线性内插。
+    /// - 巡航 / Running：返回固定巡航间隔。
+    /// - 减速段：巡航间隔 → 起始间隔求线性内插（全速停止）。
+    ///
+    /// 内插使用整数算术（提升到 u64 后再取整）避免浮点。
+    pub(crate) fn compute_interval(&self, step: u32, total_steps: u32, phase: MotionPhase) -> u32 {
+        let start_speed = self.start_speed_hz;
+        let max_speed = self.max_speed_hz.load(Ordering::Relaxed);
+
+        let start_interval = speed_to_interval_us(start_speed);
+        let max_interval = speed_to_interval_us(max_speed);
+
+        match phase {
+            MotionPhase::Accelerating => {
+                let accel = self.effective_accel_steps.load(Ordering::Relaxed);
+                if accel <= 1 {
+                    return max_interval;
+                }
+
+                let divisor = accel - 1;
+                // 用 divisor 而非 accel 作为上限：progress/divisor ≤ 1，避免减法溢出
+                let progress = step.min(divisor);
+                let computed = start_interval
+                    - ((start_interval.saturating_sub(max_interval)) as u64 * progress as u64
+                        / divisor as u64) as u32;
+                // 防御性 clamp：当 step > accel（如归位模式无双阶段切换）时防止 overshoot
+                computed.max(max_interval)
+            }
+            // 恒定速度阶段。Probing / ProbingBackoff 不经过此路径
+            // （各自在 tmc2209 中自行调度），保留分支以消除 unreachable 风险。
+            MotionPhase::Cruising
+            | MotionPhase::Running
+            | MotionPhase::Probing
+            | MotionPhase::ProbingBackoff => max_interval,
+            MotionPhase::Decelerating => {
+                let decel_start = self.decel_start_step.load(Ordering::Relaxed);
+                let steps_into_decel = step.saturating_sub(decel_start);
+                let decel_steps = total_steps.saturating_sub(decel_start);
+                if decel_steps <= 1 {
+                    return start_interval;
+                }
+
+                let divisor = decel_steps - 1;
+                // 用 divisor 而非 decel_steps 作为上限：progress/divisor ≤ 1，保证内插正确
+                let progress = steps_into_decel.min(divisor);
+                max_interval
+                    + ((start_interval.saturating_sub(max_interval)) as u64 * progress as u64
+                        / divisor as u64) as u32
+            }
+            MotionPhase::Idle => start_interval,
+        }
+    }
+
+    // ========================================================================
+    // ISR 调度
+    // ========================================================================
+
     /// ISR 优化版调度：直接传入已读取的 phase 原始值，避免重复原子加载和枚举转换。
     pub(crate) fn schedule_next_by_phase<T: AlarmTimer + MonotonicTimer>(
         &self,
@@ -550,9 +715,29 @@ impl<P: AxisPins> AxisState<P> {
         total: u32,
         phase_raw: u8,
     ) {
-        // Running — fast path: fixed interval
+        // Running — fast path: smooth speed ramp
         if phase_raw == MotionPhase::Running as u8 {
-            let interval = self.step_interval_us.load(Ordering::Relaxed);
+            let current = self.step_interval_us.load(Ordering::Relaxed);
+            let target = self.target_interval_us.load(Ordering::Relaxed);
+            let interval = if current != target {
+                // 每步向目标逼近 SPEED_RAMP_DELTA_US（需保证不小于 1）
+                let delta = SPEED_RAMP_DELTA_US.max(1);
+                if current > target {
+                    current.saturating_sub(delta).max(target)
+                } else {
+                    current.saturating_add(delta).min(target)
+                }
+            } else {
+                current
+            };
+            self.step_interval_us.store(interval, Ordering::Relaxed);
+            if interval == target {
+                // 已达目标速度：递增稳定计数
+                self.speed_settle_count.fetch_add(1, Ordering::Relaxed);
+            } else {
+                // 过渡中：清零稳定计数
+                self.speed_settle_count.store(0, Ordering::Relaxed);
+            }
             self.schedule_next_alarm(timer, interval);
             return;
         }
@@ -580,62 +765,9 @@ impl<P: AxisPins> AxisState<P> {
         self.schedule_next_alarm(timer, interval);
     }
 
-    // --- ISR ---
-
-    /// 根据当前步号和运动阶段计算下一步的间隔时间（us）。
-    ///
-    /// - 加速段：起始间隔 → 巡航间隔求线性内插。
-    /// - 巡航 / Running：返回固定巡航间隔。
-    /// - 减速段：巡航间隔 → 起始间隔求线性内插（全速停止）。
-    ///
-    /// 内插使用整数算术（提升到 u64 后再取整）避免浮点。
-    pub(crate) fn compute_interval(&self, step: u32, total_steps: u32, phase: MotionPhase) -> u32 {
-        let start_speed = self.start_speed_hz;
-        let max_speed = self.max_speed_hz.load(Ordering::Relaxed);
-
-        let start_interval = speed_to_interval_us(start_speed);
-        let max_interval = speed_to_interval_us(max_speed);
-
-        match phase {
-            MotionPhase::Accelerating => {
-                let accel = self.effective_accel_steps.load(Ordering::Relaxed);
-                if accel <= 1 {
-                    return max_interval;
-                }
-
-                let divisor = accel - 1;
-                let progress = step.min(accel);
-                let computed = start_interval
-                    - ((start_interval.saturating_sub(max_interval)) as u64 * progress as u64
-                        / divisor as u64) as u32;
-                // 防御性 clamp：当 step > accel（如归位模式无双阶段切换）时防止 overshoot
-                computed.max(max_interval)
-            }
-            // 恒定速度阶段。Probing / ProbingBackoff 不经过此路径
-            // （各自在 tmc2209 中自行调度），保留分支以消除 unreachable 风险。
-            MotionPhase::Cruising
-            | MotionPhase::Running
-            | MotionPhase::Probing
-            | MotionPhase::ProbingBackoff => max_interval,
-            MotionPhase::Decelerating => {
-                let decel_start = self.decel_start_step.load(Ordering::Relaxed);
-                let steps_into_decel = step.saturating_sub(decel_start);
-                let decel_steps = total_steps.saturating_sub(decel_start);
-                if decel_steps <= 1 {
-                    return start_interval;
-                }
-
-                let divisor = decel_steps - 1;
-                let progress = steps_into_decel.min(decel_steps);
-                max_interval
-                    + ((start_interval.saturating_sub(max_interval)) as u64 * progress as u64
-                        / divisor as u64) as u32
-            }
-            MotionPhase::Idle => start_interval,
-        }
-    }
-
-    // --- ISR ---
+    // ========================================================================
+    // ISR
+    // ========================================================================
 
     /// Timer alarm 中断服务函数（ISR）。应在对应轴的 `TIMER0_IRQx` 部署中调用。
     ///

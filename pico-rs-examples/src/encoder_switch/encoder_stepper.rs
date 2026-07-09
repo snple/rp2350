@@ -612,9 +612,14 @@ fn motor_control_swi() {
 
         if want_forward == cur_forward && AXIS.phase() != MotionPhase::Decelerating {
             // 同方向且仍在加速/巡航: 动态延长运动距离, 无需停止电机
-            // steps_done + remaining = 新的总目标步数, 减速点自动后移
             let new_total = AXIS.steps_done() + remaining.unsigned_abs();
-            AXIS.set_target_steps(new_total);
+            let extra = new_total.saturating_sub(AXIS.steps_target());
+            if extra > 0 {
+                AXIS.extend_target(extra);
+                return;
+            }
+            // extra == 0: 新目标 ≤ 当前计划, 不缩短目标 (extend_target 仅支持延长)。
+            // 由 Timer ISR 在运动完成后检测目标偏差并触发 SWI 修正。
             return;
         }
 

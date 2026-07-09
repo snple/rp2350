@@ -13,15 +13,13 @@
 //! use pico_rs_drivers::stepper::Direction;
 //!
 //! static AXIS: AxisState = AxisState::new(AxisConfig {
-//!     pin_step: 2,
-//!     pin_dir: 3,
 //!     alarm: 0,
 //!     start_speed_hz: 500,
 //!     accel_steps: 200,
 //!     step_pulse_us: 3,
-//!     diag_pin: 5,
-//!     index_pin: 6,
-//!     homing_index_backoff: 0,
+//!     fwd_level: true,
+//!     index_backoff: 0,
+//!     blanking_steps: 100,
 //! });
 //! ```
 
@@ -112,10 +110,18 @@ pub struct AxisConfig {
     pub fwd_level: bool,
     /// 归位回退时需要检测到的 INDEX 脉冲数（0 = 不回退）。
     pub index_backoff: u32,
-    /// DIAG 消隐步数。两种模式共用：
-    /// - 探测模式：跳过前 N 步，给 BEMF 建立时间
-    /// - 梯形运动：两端各留 N 步缓冲区，仅巡航中段检堵
-    ///   应设为 `≥ accel_steps + 少量沉降步数`。
+    /// DIAG 附加消隐步数（在 `accel_steps` 基础上额外增加）。
+    ///
+    /// 梯形运动中，DIAG 堵转检测仅作用于巡航中段：
+    /// - 起始端屏蔽 `accel_steps + blanking_steps` 步
+    /// - 结束端屏蔽 `accel_steps + blanking_steps` 步
+    ///
+    /// 加速段本身已由 ISR 的阶段判断屏蔽，此处的 `blanking_steps`
+    /// 用于覆盖加速→巡航过渡区的 SG 不稳定区间。
+    ///
+    /// 探测模式：跳过 `blanking_steps` 步后开始检堵（给 BEMF 建立时间）。
+    ///
+    /// 建议值：50~200 步（取决于负载惯性和微步设置）。
     pub blanking_steps: u32,
 }
 
@@ -133,13 +139,17 @@ pub struct AxisState<P: TmcPins> {
     /// 通用步进轴状态（脉冲生成、梯形加减速）。
     axis: super::AxisState<P>,
 
-    // --- 静态配置（initialize once，之后只读）---
+    // ========================================================================
+    // 静态配置（initialize once，之后只读）
+    // ========================================================================
     /// 归位回退时需要检测到的 INDEX 脉冲数（0 = 不回退）。
     index_backoff: u32,
     /// DIAG 消隐步数（配置值，构造后不变）。探测模式和梯形运动共用此值。
     blanking_steps: u32,
 
-    // --- 动态运动状态（中断内更新，主循环只读）---
+    // ========================================================================
+    // 动态运动状态（中断内更新，主循环只读）
+    // ========================================================================
     /// INDEX 脉冲计数器。
     index_count: AtomicU32,
     /// INDEX 引脚上一次采样状态。
@@ -178,7 +188,9 @@ impl<P: TmcPins> AxisState<P> {
         }
     }
 
-    // --- 内部 DIAG/INDEX 操作 ---
+    // ========================================================================
+    // DIAG/INDEX 内部操作
+    // ========================================================================
 
     #[inline]
     fn diag(&self) -> bool {
@@ -207,30 +219,52 @@ impl<P: TmcPins> AxisState<P> {
         self.reset_index();
     }
 
-    // --- 委托给内部 AxisState 的方法 ---
+    // ========================================================================
+    // 委托给通用 AxisState
+    // ========================================================================
+
+    // --- 状态查询 ---
 
     #[inline]
     pub fn phase(&self) -> MotionPhase {
         self.axis.phase()
     }
+
     #[inline]
     pub fn position(&self) -> i32 {
         self.axis.position()
     }
+
     #[inline]
     pub fn steps_done(&self) -> u32 {
         self.axis.steps_done()
     }
+
+    #[inline]
+    pub fn steps_target(&self) -> u32 {
+        self.axis.steps_target()
+    }
+
     #[inline]
     pub fn is_done(&self) -> bool {
         self.axis.is_done()
     }
+
+    /// 轴是否正在运动中。
+    #[inline]
+    pub fn is_busy(&self) -> bool {
+        self.axis.is_busy()
+    }
+
+    // --- 位置管理 ---
+
     #[inline]
     pub fn set_position(&self, pos: i32) {
         self.axis.set_position(pos);
     }
 
     /// 阻塞等待运动完成（使用 WFI 省电）。
+    #[inline]
     pub fn wait_done(&self) {
         self.axis.wait_done();
     }
@@ -241,15 +275,20 @@ impl<P: TmcPins> AxisState<P> {
         self.axis.prepare_start();
     }
 
-    /// 设置最大行程。委托给底层通用 [`AxisState`](super::AxisState)。
+    /// 设置最大行程。
     #[inline]
     pub fn set_max_travel(&self, travel: i32) {
         self.axis.set_max_travel(travel);
     }
 
+    // ========================================================================
+    // 运动控制
+    // ========================================================================
+
     /// 启动有限步数的相对位移运动，带梯形加减速。
     ///
     /// 轴忙时直接返回。步数受 [`max_travel`](super::AxisState::set_max_travel) 约束。
+    /// 自动重新启用 DIAG 堵转检测（若之前被 [`smooth_stop`] 或 [`disable_stall_check`] 关闭）。
     pub fn start_move<T: AlarmTimer + MonotonicTimer>(
         &self,
         timer: &T,
@@ -260,6 +299,7 @@ impl<P: TmcPins> AxisState<P> {
         if self.axis.is_busy() {
             return;
         }
+        self.stall_check_enabled.store(true, Ordering::Relaxed);
         self.reset_stall_state();
         self.axis.start_move(timer, steps, dir, max_speed_hz);
     }
@@ -290,17 +330,47 @@ impl<P: TmcPins> AxisState<P> {
         self.axis.start_continuous(timer, dir, speed_hz);
     }
 
-    /// 动态更新目标步数和减速起始点。
-    pub fn set_target_steps(&self, new_total_steps: u32) {
-        self.axis.set_target_steps(new_total_steps);
+    /// 在当前目标步数基础上增加额外步数，推迟减速起始点。
+    ///
+    /// 用于 `start_move` 梯形运动中实时延长运动距离。
+    /// 仅增不减——若需提前停止请用 [`smooth_stop`]。
+    /// 对 [`start_continuous`] 的 Running 模式无效。
+    #[inline]
+    pub fn extend_target(&self, extra_steps: u32) {
+        self.axis.extend_target(extra_steps);
     }
 
-    /// 立即停止轴运动。
+    /// 实时调整 Running 模式下的运动速度，带平滑过渡。
+    ///
+    /// 调速期间自动屏蔽 DIAG 堵转检测，速度稳定
+    /// `blanking_steps` 步后自动恢复。
+    #[inline]
+    pub fn set_speed(&self, speed_hz: u32) {
+        self.disable_stall_check();
+        self.axis.set_speed(speed_hz);
+    }
+
+    /// 立即停止轴运动（急停）。瞬间将阶段设为 Idle，STEP 拉低。
+    ///
+    /// 不等待减速完成，适合 ESTOP / 紧急换向场景。
+    /// 平滑停机请用 [`smooth_stop`]。
     pub fn stop(&self) {
         self.axis.stop();
     }
 
-    // --- DIAG ---
+    /// 平滑停止：进入减速阶段，同时临时屏蔽 DIAG 堵转检测。
+    ///
+    /// 减速过程中电机反电动势不稳定，DIAG 可能误触发。
+    /// 下次调用 [`start_move`]、[`start_continuous`] 或 [`probe_endstop`]
+    /// 时会自动恢复堵转检测，无需手动调用 [`enable_stall_check`]。
+    pub fn smooth_stop(&self) {
+        self.disable_stall_check();
+        self.axis.smooth_stop();
+    }
+
+    // ========================================================================
+    // DIAG 堵转检测
+    // ========================================================================
 
     /// 返回 DIAG 引脚当前电平（`true` = 堵转/故障）。
     #[inline(always)]
@@ -322,22 +392,24 @@ impl<P: TmcPins> AxisState<P> {
     /// 用于退离/回退等场景：堵转后电机静止时 DIAG 持续为高，
     /// 此时启动反向运动会立即触发误判。关闭后 ISR 跳过 DIAG 检查。
     ///
-    /// `start_continuous` 和 `probe_endstop` 会自动恢复为启用状态，
-    /// `start_move` 不会自动恢复——由调用者通过本方法和
-    /// [`enable_stall_check`] 控制。
+    /// 下次调用 [`start_move`]、[`start_continuous`] 或 [`probe_endstop`]
+    /// 时会自动恢复为启用状态。
     #[inline]
     pub fn disable_stall_check(&self) {
         self.stall_check_enabled.store(false, Ordering::Relaxed);
     }
 
-    /// 恢复堵转检测启用。`start_continuous` / `probe_endstop` 会自动调用，
-    /// `start_move` 不会——由调用者决定。
+    /// 恢复堵转检测启用。通常无需手动调用——
+    /// [`start_move`]、[`start_continuous`]、[`probe_endstop`]
+    /// 均会自动恢复。仅在需要在运动之间提前启用时使用。
     #[inline]
     pub fn enable_stall_check(&self) {
         self.stall_check_enabled.store(true, Ordering::Relaxed);
     }
 
-    // --- INDEX ---
+    // ========================================================================
+    // INDEX 校验
+    // ========================================================================
 
     /// 返回当前 INDEX 脉冲计数。
     #[inline]
@@ -373,7 +445,9 @@ impl<P: TmcPins> AxisState<P> {
         IndexCheck { expected, actual }
     }
 
-    // --- 末端探测（归位 / 行程校准） ---
+    // ========================================================================
+    // 末端探测（归位 / 行程校准）
+    // ========================================================================
 
     /// 向指定方向运动，直到 DIAG 堵转触发，INDEX 回退精确对齐。
     ///
@@ -394,7 +468,7 @@ impl<P: TmcPins> AxisState<P> {
     /// AXIS.set_max_travel(travel);
     /// ```
     ///
-    /// INDEX 回退量由 [`AxisConfig::homing_index_backoff`] 控制，
+    /// INDEX 回退量由 [`AxisConfig::index_backoff`] 控制，
     /// 设为 0 则跳过回退，DIAG 触发即停止。
     pub fn probe_endstop<T: AlarmTimer + MonotonicTimer>(
         &self,
@@ -429,7 +503,9 @@ impl<P: TmcPins> AxisState<P> {
         );
     }
 
-    // --- ISR ---
+    // ========================================================================
+    // ISR
+    // ========================================================================
 
     /// Timer alarm 中断服务函数（ISR）。
     ///
@@ -460,20 +536,21 @@ impl<P: TmcPins> AxisState<P> {
             MotionPhase::Probing => self.handle_probing_step(timer, step),
             MotionPhase::ProbingBackoff => self.handle_probing_backoff_step(timer),
             _ => {
-                // DIAG 堵转检测：仅巡航阶段 + 两端缓冲区之外。
+                // DIAG 堵转检测：仅巡航/连续运行阶段 + 两端缓冲区之外。
                 //
                 // SG 值在加速→巡航、巡航→减速两个过渡点都不稳定，
-                // 容易假阳性。因此只在巡航中段检堵：
-                //   step ∈ [blanking_steps, total - blanking_steps]
-                // 即前后各留 blanking_steps 作为缓冲区。
-                //
-                // 建议 blanking_steps ≥ accel_steps + 沉降步数，
-                // 确保缓冲区完全覆盖加速/减速段及过渡。
-                let is_cruising = phase_raw == MotionPhase::Cruising as u8;
+                // 容易假阳性。因此只在巡航/运行中段检堵：
+                //   - 梯形模式 (total > 0): step ∈ [accel_steps + blanking_steps, total - (accel_steps + blanking_steps)]
+                //   - 连续模式 (total == 0): step >= accel_steps + blanking_steps（无上限）
+                // 即加速段 + 附加消隐步作为前缓冲区。
+                // blanking_steps 是额外的沉降步数，补偿加速→巡航过渡区的余振动。
+                let is_stable_phase = phase_raw == MotionPhase::Cruising as u8
+                    || phase_raw == MotionPhase::Running as u8;
                 let total = self.axis.steps_target.load(Ordering::Relaxed);
-                let in_window = step >= self.blanking_steps
-                    && step <= total.saturating_sub(self.blanking_steps);
-                if is_cruising
+                let total_blanking = self.axis.accel_steps + self.blanking_steps;
+                let in_window = step >= total_blanking
+                    && (total == 0 || step <= total.saturating_sub(total_blanking));
+                if is_stable_phase
                     && in_window
                     && self.stall_check_enabled.load(Ordering::Relaxed)
                     && self.diag_triggered()
@@ -484,9 +561,22 @@ impl<P: TmcPins> AxisState<P> {
                 }
                 self.axis
                     .schedule_next_by_phase(timer, step, total, phase_raw);
+
+                // 速度稳定检测：DIAG 被临时关闭时（set_speed 调速期间），
+                // 等待 speed_settle_count >= blanking_steps 后自动恢复。
+                if !self.stall_check_enabled.load(Ordering::Relaxed) {
+                    let settled = self.axis.speed_settle_count.load(Ordering::Relaxed);
+                    if settled >= self.blanking_steps {
+                        self.enable_stall_check();
+                    }
+                }
             }
         }
     }
+
+    // ========================================================================
+    // ISR 内部（探测）
+    // ========================================================================
 
     /// 探测模式下每步处理：检测限位 + 加速。
     ///
