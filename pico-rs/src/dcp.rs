@@ -59,6 +59,7 @@
 // the asm! block — these are temporary working registers consumed entirely
 // within the inline assembly.
 #![allow(unused_assignments)]
+#![allow(asm_sub_register)]
 
 use core::f32;
 use core::f64;

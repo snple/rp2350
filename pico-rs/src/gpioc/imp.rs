@@ -7,6 +7,7 @@
 //! in the parent module.
 
 #![allow(dead_code)]
+#![allow(asm_sub_register)]
 
 // ============================================================================
 // Coprocessor instruction macros
