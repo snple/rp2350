@@ -24,6 +24,9 @@
 //! // Generate random bytes
 //! let mut buffer = [0u8; 16];
 //! trng.fill_random(&mut buffer);
+//!
+//! // Or steal after init (unsafe — caller guarantees init happened)
+//! let trng = unsafe { Trng::steal() };
 //! ```
 
 use crate::reset::Resettable;
@@ -51,8 +54,14 @@ pub struct Trng {
 
 impl Trng {
     /// Obtain a handle to the TRNG hardware peripheral.
+    ///
+    /// # Safety
+    ///
+    /// The caller must ensure the TRNG peripheral has been reset and
+    /// initialized before use. Prefer [`Trng::init`] which handles
+    /// initialization automatically.
     #[inline]
-    pub fn steal() -> Self {
+    pub unsafe fn steal() -> Self {
         Self {
             trng: unsafe { TRNG::steal() },
         }
@@ -73,7 +82,8 @@ impl Trng {
         // Reset peripheral to ensure clean register state
         <pico_rs_pac::TRNG as Resettable>::init();
 
-        let trng = Self::steal();
+        // SAFETY: hardware has just been reset above, so steal is safe
+        let trng = unsafe { Self::steal() };
 
         // Reset the TRNG
         trng.regs().trng_sw_reset.write_bits(1);
@@ -375,6 +385,6 @@ impl Trng {
 
 impl Default for Trng {
     fn default() -> Self {
-        Self::steal()
+        unsafe { Self::steal() }
     }
 }

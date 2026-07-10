@@ -835,8 +835,18 @@ pub fn bind(args: TokenStream, input: TokenStream) -> TokenStream {
     let fn_vis = &f.vis;
     let fn_attrs = &f.attrs;
 
+    // 如果用户已手动标注 #[inline] 或 #[inline(always)]，不再重复添加
+    let has_inline = fn_attrs.iter().any(|attr| attr.path().is_ident("inline"));
+
+    let inline_attr = if has_inline {
+        quote!()
+    } else {
+        quote!(#[inline])
+    };
+
     quote! {
         #(#fn_attrs)*
+        #inline_attr
         #fn_vis fn #user_fn_name() #fn_body
 
         #[allow(non_snake_case)]
