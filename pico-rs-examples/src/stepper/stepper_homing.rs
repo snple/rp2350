@@ -42,14 +42,18 @@ use pico_rs::uart::{DataBits, Parity, StopBits, Uart1};
 // 运动参数
 // ============================================================================
 
+const START_SPEED_HZ: u32 = 500;
+
 /// 探测时的目标速度 (Hz)，即每秒脉冲数。
 /// 10 kHz = 10,000 pulse/s，在 1/16 微步下对应约 31.25 full-step/s。
-const PROBE_SPEED_HZ: u32 = 10000;
+const PROBE_SPEED_HZ: u32 = 20000;
 
 /// 加减速距离 (步数)。从零加速到目标速度所需的步数，
 /// 值越大加速越柔和。设为较小值以缩短加速段，
 /// 配合略大于它的 blanking_steps 覆盖加速+沉降。
 const ACCEL_STEPS: u32 = 100;
+
+const BLANKING_STEPS: u32 = 200;
 
 /// STEP 引脚脉冲宽度 (μs)。TMC2209 要求 STEP 高电平至少 100ns，
 /// 这里取 3μs 留有充足余量，确保可靠触发。
@@ -69,12 +73,12 @@ const RUN_CURRENT: u8 = 14;
 
 /// 保持电流 (IHOLD)，电机静止时的电流。
 /// 2 表示约 0.0625A RMS，远低于运行电流，避免长时间静止过热。
-const HOLD_CURRENT: u8 = 2;
+const HOLD_CURRENT: u8 = 4;
 
 /// StallGuard 阈值。TMC2209 通过反电动势检测堵转，
 /// 当 SG 值低于此阈值时判定堵转 (DIAG 引脚拉低)。
 /// 值越大越敏感，典型范围 0-255，0 表示禁用。
-const SG_THRESHOLD: u32 = 10;
+const SG_THRESHOLD: u32 = 45;
 
 /// TMC2209 UART 通信波特率。默认 115200，需与芯片 OTP 或硬件配置一致。
 const TMC_UART_BAUD: u32 = 115_200;
@@ -142,12 +146,12 @@ impl TmcPins for Pins {
 /// 全局 AxisState，ISR 和主循环共享。
 static AXIS: AxisState<Pins> = AxisState::new(AxisConfig {
     alarm: 0,
-    start_speed_hz: 500,
+    start_speed_hz: START_SPEED_HZ,
     accel_steps: ACCEL_STEPS,
     step_pulse_us: STEP_PULSE_US,
     index_backoff: INDEX_BACKOFF,
     fwd_level: true,
-    blanking_steps: 100,
+    blanking_steps: BLANKING_STEPS,
 });
 
 /// 从 ISR 中安全获取 Timer0 的借用。

@@ -1648,6 +1648,24 @@ pub fn microstepping_label(microstepping: u32) -> &'static str {
 /// 这是 [`Tmc2209::set_run_current`] 的高级替代——直接由物理参数计算
 /// 最优的寄存器写入值。
 ///
+/// ## 推导
+///
+/// TMC2209 数据手册电流公式 (vsense=0, V_FS=0.325V):
+///
+/// ```text
+/// I_RMS = (CS + 1) / 32 × V_FS / (RSENSE + 0.02) / √2
+/// ```
+///
+/// 反解 CS:
+///
+/// ```text
+/// CS = 32 × √2 × I_RMS × (RSENSE + 0.02) / V_FS - 1
+/// ```
+///
+/// 其中 `+0.02` 为 TMC2209 内部 20 mΩ 寄生电阻。
+/// 若 CS < 16 则自动切换到高灵敏度模式 (vsense=1, V_FS=0.180V)
+/// 重新计算以获得更高精度。
+///
 /// # 参数
 ///
 /// - `rsense`: 外部检流电阻值 (Ω)。例如 0.11Ω → `0.11`。
@@ -1663,19 +1681,18 @@ pub fn microstepping_label(microstepping: u32) -> &'static str {
 ///
 /// | RSENSE (Ω) | 最大 RMS 电流 (IRUN=31, vsense=0) |
 /// |------------|-------------------------------------|
-/// | 0.11       | ~0.96 A (适合 1A 电机)             |
-/// | 0.22       | ~0.48 A                            |
-/// | 0.33       | ~0.66 A (700mA 电机)               |
-/// | 0.47       | ~0.47 A                            |
-/// | 0.11       | ~0.96 A (1A 电机)                  |
-/// | 0.10       | ~1.92 A (2A 电机)                  |
+/// | 0.10       | ~1.92 A (适合 2A 电机)             |
+/// | 0.11       | ~1.77 A (适合 1.5A 电机)           |
+/// | 0.22       | ~0.96 A (适合 1A 电机)             |
+/// | 0.33       | ~0.66 A (适合 700mA 电机)          |
+/// | 0.47       | ~0.47 A (适合 500mA 电机)          |
 ///
 /// # 示例
 ///
 /// ```
 /// use pico_rs_drivers::tmc2209::rms_current_to_vsense_cs;
 ///
-/// // 0.11Ω 检流电阻, 800mA RMS → vsense=false, cs≈21
+/// // 0.11Ω 检流电阻, 800mA RMS → vsense=false, cs≈13
 /// let (vsense, cs) = rms_current_to_vsense_cs(0.11, 800.0);
 /// ```
 pub fn rms_current_to_vsense_cs(rsense: f32, milliamps: f32) -> (bool, u8) {
@@ -1697,6 +1714,17 @@ pub fn rms_current_to_vsense_cs(rsense: f32, milliamps: f32) -> (bool, u8) {
 ///
 /// 用于从 `DRV_STATUS.cs_actual` 反算实际电机电流。
 ///
+/// ## 推导
+///
+/// 数据手册公式正向:
+///
+/// ```text
+/// I_RMS = (CS + 1) / 32 × V_FS / (RSENSE + 0.02) / √2
+/// ```
+///
+/// 其中 V_FS = 0.325V (vsense=0) 或 0.180V (vsense=1)。
+/// 返回值乘以 1000 转换为 mA。
+///
 /// # 参数
 ///
 /// - `rsense`: 外部检流电阻值 (Ω)
@@ -1708,7 +1736,7 @@ pub fn rms_current_to_vsense_cs(rsense: f32, milliamps: f32) -> (bool, u8) {
 /// ```
 /// use pico_rs_drivers::tmc2209::vsense_cs_to_rms_current;
 ///
-/// let ma = vsense_cs_to_rms_current(0.11, false, 21);
+/// let ma = vsense_cs_to_rms_current(0.11, false, 13);
 /// // ma ≈ 800.0
 /// ```
 pub fn vsense_cs_to_rms_current(rsense: f32, vsense: bool, cs: u8) -> f32 {
@@ -1721,6 +1749,23 @@ pub fn vsense_cs_to_rms_current(rsense: f32, vsense: bool, cs: u8) -> f32 {
 // ============================================================================
 
 /// 将斩波频率 (Hz) 转换为 TOFF 寄存器值。
+///
+/// ## 推导
+///
+/// TMC2209 斩波器周期由 off-time 决定：
+///
+/// ```text
+/// t_OFF = (TOFF × 32 + 24) / f_CLK
+/// f_CHOP = 1 / (4 × t_OFF) = f_CLK / (4 × (TOFF × 32 + 24))
+/// ```
+///
+/// 反解 TOFF:
+///
+/// ```text
+/// TOFF = (f_CLK / (4 × f_CHOP) - 24) / 32
+/// ```
+///
+/// 代码实现: `(fclk / (hz * 4.0) - 24.0) / 32.0`
 ///
 /// TMC2209 仅支持离散的 15 个斩波频率，范围约 5.95 kHz ~ 53.57 kHz。
 /// 此函数返回最接近的 TOFF 值。
@@ -1739,16 +1784,33 @@ pub fn vsense_cs_to_rms_current(rsense: f32, vsense: bool, cs: u8) -> f32 {
 /// assert_eq!(toff, Some(3));
 /// ```
 pub fn chopper_hz_to_toff(fclk: f32, hz: f32) -> Option<u8> {
-    let toff_f = ((hz * 0.25).recip() * fclk - 24.0) / 32.0;
+    // TOFF = (f_CLK / (4 × f_CHOP) - 24) / 32
+    let toff_f = (fclk / (hz * 4.0) - 24.0) / 32.0;
     let toff = (round_f32(toff_f) as u8).min(15);
     if toff == 0 { None } else { Some(toff) }
 }
 
 /// 将 TOFF 寄存器值转换为对应的斩波频率 (Hz)。
 ///
+/// ## 推导
+///
+/// ```text
+/// f_CHOP = f_CLK / (4 × (TOFF × 32 + 24))
+/// ```
+///
 /// # 返回
 ///
 /// `Some(hz)` 如果 TOFF 在有效范围 (1–15)，否则 `None`。
+///
+/// # 示例
+///
+/// ```
+/// use pico_rs_drivers::tmc2209::{toff_to_chopper_hz, INTERNAL_CLOCK_HZ};
+///
+/// // TOFF=3 → f_CHOP = 12e6 / (4 × (3×32+24)) = 12e6 / 480 = 25 kHz
+/// let hz = toff_to_chopper_hz(INTERNAL_CLOCK_HZ as f32, 3);
+/// assert!((hz.unwrap() - 25_000.0).abs() < 1.0);
+/// ```
 pub fn toff_to_chopper_hz(fclk: f32, toff: u8) -> Option<f32> {
     if !(1..=15).contains(&toff) {
         return None;
@@ -1759,7 +1821,24 @@ pub fn toff_to_chopper_hz(fclk: f32, toff: u8) -> Option<f32> {
 
 /// 将微步/秒速度转换为 VACTUAL 寄存器值。
 ///
-/// 基于 TMC2209 内部 12 MHz 时钟的转换公式。
+/// ## 推导
+///
+/// TMC2209 数据手册 VACTUAL 速度公式:
+///
+/// ```text
+/// v[µSteps/s] = VACTUAL × f_CLK / 2^24
+/// ```
+///
+/// 其中 f_CLK = 12 MHz (内部时钟)。反解:
+///
+/// ```text
+/// VACTUAL = v[µSteps/s] × 2^24 / f_CLK
+///         = v[µSteps/s] × 16_777_216 / 12_000_000
+///         = v[µSteps/s] / 0.715255737...
+/// ```
+///
+/// 常量 `0.7152557` = f_CLK / 2^24，截断至 7 位小数，
+/// 精度误差 < 0.04 µSteps/s。
 ///
 /// # 示例
 ///
@@ -1767,6 +1846,7 @@ pub fn toff_to_chopper_hz(fclk: f32, toff: u8) -> Option<f32> {
 /// use pico_rs_drivers::tmc2209::microsteps_per_sec_to_vactual;
 ///
 /// // 10000 微步/秒 → VACTUAL ≈ 13986
+/// // 校验: 13986 × 0.7152557 ≈ 10000.0 ✓
 /// let vactual = microsteps_per_sec_to_vactual(10_000);
 /// ```
 #[inline]
@@ -1775,6 +1855,13 @@ pub fn microsteps_per_sec_to_vactual(microsteps_per_sec: i32) -> i32 {
 }
 
 /// 将 VACTUAL 寄存器值转换为微步/秒速度。
+///
+/// ## 推导
+///
+/// ```text
+/// v[µSteps/s] = VACTUAL × f_CLK / 2^24
+///             = VACTUAL × 0.715255737...
+/// ```
 #[inline]
 pub fn vactual_to_microsteps_per_sec(vactual: i32) -> f32 {
     (vactual as f32) * 0.7152557
@@ -1784,14 +1871,28 @@ pub fn vactual_to_microsteps_per_sec(vactual: i32) -> f32 {
 // 内部辅助函数
 // ============================================================================
 
-/// `no_std` 友好的 f32 四舍五入。
+/// `no_std` 友好的 f32 四舍五入 (round half away from zero)。
+///
+/// 通过 `±0.5` 偏移后向零截断实现标准舍入：
+///
+/// ```text
+/// f ≥ 0: round(f) = trunc(f + 0.5)
+/// f < 0: round(f) = trunc(f - 0.5)
+/// ```
+///
+/// 验证:
+///
+/// ```text
+/// f =  1.2 → trunc( 1.7) =  1.0 ✓
+/// f =  1.5 → trunc( 2.0) =  2.0 ✓
+/// f = -1.2 → trunc(-1.7) = -1.0 ✓
+/// f = -1.5 → trunc(-2.0) = -2.0 ✓ (half away from zero)
+/// ```
 #[inline]
 fn round_f32(f: f32) -> f32 {
-    let floor = (f as i32) as f32;
-    let ceil = if f >= 0.0 { floor + 1.0 } else { floor - 1.0 };
-    if (f - floor).abs() <= (ceil - f).abs() {
-        floor
+    if f >= 0.0 {
+        (f + 0.5) as i32 as f32
     } else {
-        ceil
+        (f - 0.5) as i32 as f32
     }
 }

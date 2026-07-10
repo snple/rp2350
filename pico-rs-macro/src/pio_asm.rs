@@ -668,8 +668,8 @@ fn parse_delay_and_sideset(
             delay = delay_value as u8;
             result = format!(
                 "{}{}",
-                &result[..delay_start].trim(),
-                &result[delay_end + 1..].trim()
+                result[..delay_start].trim(),
+                result[delay_end + 1..].trim()
             );
         } else {
             break;

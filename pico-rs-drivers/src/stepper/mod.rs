@@ -136,8 +136,16 @@ const SPEED_RAMP_DELTA_US: u32 = 2;
 
 /// 将步进频率（Hz）转换为每步间隔时间（微秒）。
 ///
-/// 公式：`interval_us = 1_000_000 / hz`。
-/// 传入 0 Hz 时返回 1 秒（1_000_000 us）作为默认上限保护。
+/// ## 公式
+///
+/// ```text
+/// interval_us = 1_000_000 / hz
+/// ```
+///
+/// 推导：1 Hz = 1 step/s，每步间隔 = 1 s = 1,000,000 µs。
+/// n Hz 时每步间隔 = 1/n s = 1,000,000/n µs。
+///
+/// 传入 0 Hz 时返回 1 秒（1_000_000 µs）作为默认上限保护。
 #[inline]
 pub const fn speed_to_interval_us(hz: u32) -> u32 {
     if let Some(interval) = 1_000_000u32.checked_div(hz) {
@@ -222,6 +230,12 @@ pub struct AxisState<P: AxisPins> {
     target_interval_us: AtomicU32,
     /// Running 模式下达到目标速度后的稳定步数计数（用于 DIAG 重启用判断）。
     pub(crate) speed_settle_count: AtomicU32,
+    /// 减速起始时的实际 step interval (us)。
+    ///
+    /// `0` 表示从 [`max_speed_hz`] 对应的 `max_interval` 开始减速（正常梯形减速）；
+    /// 非零表示从该值开始减速，由 [`smooth_stop`] 在中途减速时写入，
+    /// 避免电机尚未达到最高速度时产生速度跳变。
+    pub(crate) decel_start_interval: AtomicU32,
 }
 
 unsafe impl<P: AxisPins> Sync for AxisState<P> {}
@@ -253,6 +267,7 @@ impl<P: AxisPins> AxisState<P> {
             pulse_state: AtomicBool::new(false),
             target_interval_us: AtomicU32::new(0),
             speed_settle_count: AtomicU32::new(0),
+            decel_start_interval: AtomicU32::new(0),
         }
     }
 
@@ -397,7 +412,24 @@ impl<P: AxisPins> AxisState<P> {
     /// 设置梯形加减速的加速步数和减速起始点。
     ///
     /// 加速步数 = `min(accel_steps, total_steps / 2)`，
-    /// 减速起始 = `total_steps - accel_steps + 1`（+1 保证对称）。
+    /// 减速起始 = `total_steps - accel_steps + 1`。
+    ///
+    /// ## 为什么 `+1`？
+    ///
+    /// 加速段通过 `step < accel_steps` 判断完成步数 1..(accel-1) 处于加速段，
+    /// 共 `accel-1` 次内插计算。加上 `begin_motion` 中预设的初始间隔，
+    /// 合计 `accel` 次速度变化的过渡。
+    ///
+    /// 减速段通过 `step >= decel_start` 判断。为与加速段对称，
+    /// `decel_start = total - accel + 1` 使减速段覆盖 `total - decel_start`
+    /// `= accel - 1` 次内插计算，与加速段的内插次数一致。
+    ///
+    /// 验证示例 (total=1000, accel=200)：
+    /// - 加速：step 1..199 加速 → 199 次内插 + 1 次预设 = 200 过渡
+    /// - 减速：decel_start=801, step 801..999 减速 → 199 次内插 = 199 过渡
+    ///
+    /// 同时清零 `decel_start_interval`，标记为正常梯形减速
+    ///（从 `max_speed_hz` 对应的 `max_interval` 起始）。
     #[inline]
     fn setup_trapezoid(&self, total_steps: u32) {
         let accel_steps = self.accel_steps.min(total_steps / 2);
@@ -407,6 +439,7 @@ impl<P: AxisPins> AxisState<P> {
             total_steps.saturating_sub(accel_steps).saturating_add(1),
             Ordering::Relaxed,
         );
+        self.decel_start_interval.store(0, Ordering::Relaxed);
     }
 
     /// 将轴置为 Idle（仅更新阶段和完成标志，不操作 GPIO）。
@@ -579,8 +612,13 @@ impl<P: AxisPins> AxisState<P> {
     /// ## 实现说明
     ///
     /// 将目标步数设为 `当前步数 + accel_steps`，减速起始点设为
-    /// `当前步数 + 1`，强制阶段为 Decelerating。ISR 下次触发时
-    /// 会按 `accel_steps` 步完成从当前速度到起始速度的平滑降速。
+    /// `当前步数 + 1`，强制阶段为 Decelerating。
+    ///
+    /// 关键：保存当前的 `step_interval_us` 到 `decel_start_interval`，
+    /// 减速内插从实际当前速度（而非 `max_interval`）起始，
+    /// 避免加速中途调用时产生短暂加速尖峰。
+    ///
+    /// ISR 下次触发时会按 `accel_steps` 步完成从当前速度到起始速度的平滑降速。
     #[inline]
     pub fn smooth_stop(&self) {
         let phase_raw = self.motion_phase.load(Ordering::Relaxed);
@@ -592,6 +630,7 @@ impl<P: AxisPins> AxisState<P> {
         }
 
         let cur_step = self.steps_done.load(Ordering::Relaxed);
+        let cur_interval = self.step_interval_us.load(Ordering::Relaxed);
         let decel_dist = self.accel_steps.max(1);
         let new_target = cur_step + decel_dist;
 
@@ -599,6 +638,9 @@ impl<P: AxisPins> AxisState<P> {
         self.steps_target.store(new_target, Ordering::Relaxed);
         self.effective_accel_steps.store(0, Ordering::Relaxed);
         self.decel_start_step.store(cur_step + 1, Ordering::Relaxed);
+        // 保存当前实际速度作为减速起点，避免加速中途调用时跳到 max_interval
+        self.decel_start_interval
+            .store(cur_interval, Ordering::Relaxed);
         self.motion_phase
             .store(MotionPhase::Decelerating as u8, Ordering::Relaxed);
     }
@@ -650,11 +692,37 @@ impl<P: AxisPins> AxisState<P> {
 
     /// 根据当前步号和运动阶段计算下一步的间隔时间（us）。
     ///
-    /// - 加速段：起始间隔 → 巡航间隔求线性内插。
-    /// - 巡航 / Running：返回固定巡航间隔。
-    /// - 减速段：巡航间隔 → 起始间隔求线性内插（全速停止）。
+    /// 所有计算均为纯整数算术（提升到 u64 后取整），避免浮点。
     ///
-    /// 内插使用整数算术（提升到 u64 后再取整）避免浮点。
+    /// ## 加速段
+    ///
+    /// 线性内插公式（progress ∈ [0, divisor]）：
+    ///
+    /// ```text
+    /// interval(progress) = start_interval
+    ///     - (start_interval - max_interval) × progress / divisor
+    /// ```
+    ///
+    /// - `progress = 0` → `start_interval`（起步速度）
+    /// - `progress = divisor` → `max_interval`（巡航速度）
+    /// - `divisor = accel_steps - 1`：共 `accel-1` 次内插，加上预设初始值合计 `accel` 次过渡
+    ///
+    /// ## 减速段
+    ///
+    /// 线性内插公式（progress ∈ [0, divisor]）：
+    ///
+    /// ```text
+    /// interval(progress) = decel_start_interval
+    ///     + (start_interval - decel_start_interval) × progress / divisor
+    /// ```
+    ///
+    /// - `progress = 0` → `decel_start_interval`（当前实际速度）
+    /// - `progress = divisor` → `start_interval`（起步速度，之后急停）
+    ///
+    /// `decel_start_interval` 取值规则：
+    /// - `0`：正常梯形减速，使用 `max_interval`（= `speed_to_interval_us(max_speed_hz)`）
+    /// - 非零：`smooth_stop` 中途减速，使用当时的 `step_interval_us`，
+    ///   避免电机尚未达到最高速度时产生速度跳变
     pub(crate) fn compute_interval(&self, step: u32, total_steps: u32, phase: MotionPhase) -> u32 {
         let start_speed = self.start_speed_hz;
         let max_speed = self.max_speed_hz.load(Ordering::Relaxed);
@@ -669,13 +737,17 @@ impl<P: AxisPins> AxisState<P> {
                     return max_interval;
                 }
 
+                // divisor = accel - 1 使得 progress/divisor ∈ [0, 1]
                 let divisor = accel - 1;
-                // 用 divisor 而非 accel 作为上限：progress/divisor ≤ 1，避免减法溢出
+                // step 是 1-based 已完成步数。progress = step 确保第一步 (step=1)
+                // 就开始加速；step ≥ accel 时 clamped 到 divisor，全速运行。
                 let progress = step.min(divisor);
+                // interval = start - (start - max) × progress / divisor
                 let computed = start_interval
                     - ((start_interval.saturating_sub(max_interval)) as u64 * progress as u64
                         / divisor as u64) as u32;
-                // 防御性 clamp：当 step > accel（如归位模式无双阶段切换）时防止 overshoot
+                // 防御性 clamp：归位模式无阶段切换，step 可远超 accel，
+                // progress 被 min(divisor) 限制，理论上不会 overshoot，但保留安全网
                 computed.max(max_interval)
             }
             // 恒定速度阶段。Probing / ProbingBackoff 不经过此路径
@@ -692,11 +764,28 @@ impl<P: AxisPins> AxisState<P> {
                     return start_interval;
                 }
 
+                // 减速起始速度：优先用 decel_start_interval（smooth_stop 场景），
+                // 若为 0 则回退到 max_interval（正常梯形减速）
+                let raw_start = self.decel_start_interval.load(Ordering::Relaxed);
+                let decel_start_interval = if raw_start == 0 {
+                    max_interval
+                } else {
+                    raw_start
+                };
+
+                // divisor = decel_steps - 1，progress/divisor ∈ [0, 1]
                 let divisor = decel_steps - 1;
-                // 用 divisor 而非 decel_steps 作为上限：progress/divisor ≤ 1，保证内插正确
                 let progress = steps_into_decel.min(divisor);
-                max_interval
-                    + ((start_interval.saturating_sub(max_interval)) as u64 * progress as u64
+                // interval = decel_start_interval
+                //     + (start_interval - decel_start_interval) × progress / divisor
+                //
+                // 注意：当 decel_start_interval < start_interval 时（减速），
+                // start_interval - decel_start_interval > 0，interval 递增（速度递减）；
+                // 当 decel_start_interval > start_interval 时（理论上不会发生，
+                // 电机起步速度应 ≤ 减速起始速度），saturating_sub 返回 0，匀速。
+                decel_start_interval
+                    + ((start_interval.saturating_sub(decel_start_interval)) as u64
+                        * progress as u64
                         / divisor as u64) as u32
             }
             MotionPhase::Idle => start_interval,
@@ -708,6 +797,28 @@ impl<P: AxisPins> AxisState<P> {
     // ========================================================================
 
     /// ISR 优化版调度：直接传入已读取的 phase 原始值，避免重复原子加载和枚举转换。
+    ///
+    /// ## Running 模式 — 平滑调速
+    ///
+    /// 每步以固定步长 `SPEED_RAMP_DELTA_US`（默认 2 µs）向目标逼近：
+    ///
+    /// ```text
+    /// interval_next = clamp(interval_current ± Δ, target)
+    /// ```
+    ///
+    /// 调速耗时 ≈ |I_current² - I_target²| / (2 × Δ)（近似积分）。
+    /// 例如 100 Hz → 1000 Hz：I₁=10000, I₂=1000, Δ=2 → ~24.75 s。
+    /// 达到目标后 `speed_settle_count` 递增，供上层判断速度稳定。
+    ///
+    /// ## 梯形模式 — 阶段切换
+    ///
+    /// 根据已完成步数 `step` 判断当前处于加速/巡航/减速哪一段：
+    ///
+    /// ```text
+    /// phase = Accelerating   if step < min(accel_steps, decel_start_step)
+    ///         Decelerating   if step >= decel_start_step
+    ///         Cruising       otherwise
+    /// ```
     pub(crate) fn schedule_next_by_phase<T: AlarmTimer + MonotonicTimer>(
         &self,
         timer: &T,
@@ -750,7 +861,10 @@ impl<P: AxisPins> AxisState<P> {
         let accel = self.effective_accel_steps.load(Ordering::Relaxed);
         let decel_start = self.decel_start_step.load(Ordering::Relaxed);
 
-        // Phase transition (raw values: 1=Accel, 2=Cruise, 3=Decel)
+        // 阶段判断：step 为 1-based 已完成步数。
+        // - step < accel：仍在加速段（step 1..accel-1，共 accel-1 次内插）
+        // - step >= decel_start：已进入减速段
+        // - 其他：巡航段
         let new_phase = if step < accel.min(decel_start) {
             MotionPhase::Accelerating
         } else if step >= decel_start {
