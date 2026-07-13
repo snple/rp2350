@@ -55,7 +55,7 @@ fn main() -> ! {
     info!("Initializing ADC...");
 
     // Create ADC controller
-    let mut adc = Adc::new(dp.ADC);
+    let mut adc = Adc::init(dp.ADC);
     info!("ADC initialized");
 
     // Configure pin for ADC - this consumes the pin!

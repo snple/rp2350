@@ -14,7 +14,7 @@
 //! ```ignore
 //! use pico_rs::busctrl::{Busctrl, PerfEvent};
 //!
-//! let busctrl = Busctrl::steal();
+//! let busctrl = Busctrl::init(dp.BUSCTRL);
 //!
 //! // Enable performance counters
 //! busctrl.enable_perf_counters(true);
@@ -110,9 +110,22 @@ pub struct Busctrl {
 }
 
 impl Busctrl {
-    /// Obtain a handle to the BUSCTRL hardware peripheral.
+    /// Initialize the BUSCTRL driver.
+    ///
+    /// Takes ownership of the BUSCTRL peripheral.
     #[inline]
-    pub fn steal() -> Steal<Self> {
+    pub fn init(regs: BUSCTRL) -> Self {
+        Self { regs }
+    }
+
+    /// Obtain a handle to the BUSCTRL hardware peripheral.
+    ///
+    /// # Safety
+    ///
+    /// The caller must ensure the peripheral has been initialised
+    /// and that no data races occur.
+    #[inline]
+    pub unsafe fn steal() -> Steal<Self> {
         Steal(Self {
             regs: unsafe { BUSCTRL::steal() },
         })

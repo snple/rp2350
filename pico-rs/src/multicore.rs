@@ -41,15 +41,16 @@
 //! use pico_rs::multicore::Fifo;
 //!
 //! // On Core 0:
-//! let fifo = Fifo::steal();
+//! let fifo = Fifo::init();
 //! fifo.write(0x12345678);  // Send to Core 1
 //!
 //! // On Core 1:
-//! let fifo = Fifo::steal();
+//! let fifo = Fifo::init();
 //! let value = fifo.read();  // Receive from Core 0
 //! ```
 
 use core::sync::atomic::{Ordering, compiler_fence};
+
 use crate::Steal;
 
 // ============================================================================
@@ -186,16 +187,24 @@ pub struct Fifo {
 }
 
 impl Fifo {
-    /// Obtain a handle to the inter-core FIFO.
+    /// Create a handle to the inter-core FIFO.
     ///
-    /// The FIFO is a hardware peripheral that already exists; this method
-    /// simply returns a handle to access it.
+    /// The FIFO is a hardware peripheral that is always available; this
+    /// constructor is safe and does not require any PAC peripheral.
+    #[inline]
+    pub fn init() -> Self {
+        Self {
+            sio: unsafe { &*crate::sio::REGS },
+        }
+    }
+
+    /// Obtain a handle to the inter-core FIFO without runtime checks.
     ///
     /// # Safety
     /// This does not track ownership. The caller must ensure proper
     /// synchronization when accessing from multiple contexts.
     #[inline]
-    pub fn steal() -> Steal<Self> {
+    pub unsafe fn steal() -> Steal<Self> {
         Steal(Self {
             sio: unsafe { &*crate::sio::REGS },
         })
@@ -320,12 +329,6 @@ impl Fifo {
     }
 }
 
-impl Default for Fifo {
-    fn default() -> Self {
-        Self::steal().0
-    }
-}
-
 // ============================================================================
 // Doorbell Interrupts
 // ============================================================================
@@ -343,12 +346,25 @@ impl Doorbell {
     /// Number of available doorbell bits
     pub const COUNT: u8 = 8;
 
-    /// Obtain a handle to the doorbell hardware.
+    /// Create a handle to the doorbell hardware.
     ///
-    /// The doorbell is a hardware peripheral that already exists; this method
-    /// simply returns a handle to access it.
+    /// The doorbell is always available; this constructor is safe and does
+    /// not require any PAC peripheral.
     #[inline]
-    pub fn steal() -> Steal<Self> {
+    pub fn init() -> Self {
+        Self {
+            sio: unsafe { &*crate::sio::REGS },
+        }
+    }
+
+    /// Obtain a handle to the doorbell hardware without runtime checks.
+    ///
+    /// # Safety
+    ///
+    /// The caller must ensure no data races occur when accessing doorbell
+    /// registers from multiple contexts.
+    #[inline]
+    pub unsafe fn steal() -> Steal<Self> {
         Steal(Self {
             sio: unsafe { &*crate::sio::REGS },
         })
@@ -412,12 +428,6 @@ impl Doorbell {
     }
 }
 
-impl Default for Doorbell {
-    fn default() -> Self {
-        Self::steal().0
-    }
-}
-
 // ============================================================================
 // Multicore Controller
 // ============================================================================
@@ -432,12 +442,26 @@ pub struct Multicore {
 }
 
 impl Multicore {
-    /// Create a new Multicore instance
+    /// Initialize the Multicore driver.
     ///
     /// Should only be called from Core 0.
-    pub fn new(psm: pico_rs_pac::PSM, ppb: pico_rs_pac::PPB) -> Self {
+    pub fn init(psm: pico_rs_pac::PSM, ppb: pico_rs_pac::PPB) -> Self {
         debug_assert!(is_core0(), "Multicore should be created on Core 0");
         Self { psm, ppb }
+    }
+
+    /// Obtain a Multicore handle without ownership checks.
+    ///
+    /// # Safety
+    ///
+    /// The caller must ensure [`Multicore::init()`] has been called first
+    /// and that no data races occur. This should only be used from Core 0.
+    #[inline]
+    pub unsafe fn steal() -> Steal<Self> {
+        Steal(Self {
+            psm: unsafe { pico_rs_pac::PSM::steal() },
+            ppb: unsafe { pico_rs_pac::PPB::steal() },
+        })
     }
 
     /// Launch code on Core 1
@@ -467,7 +491,7 @@ impl Multicore {
     ///     }
     /// }
     ///
-    /// let mut mc = Multicore::new(psm, ppb);
+    /// let mut mc = Multicore::init(psm, ppb);
     /// unsafe {
     ///     mc.launch_core1(core1_entry, &raw mut CORE1_STACK);
     /// }
@@ -501,7 +525,7 @@ impl Multicore {
     /// - The vector table must be properly aligned
     pub unsafe fn launch_core1_raw(&mut self, stack_ptr: u32, entry: u32, vector_table: u32) {
         // Get the FIFO for sending commands to Core 1
-        let fifo = Fifo::steal();
+        let fifo = unsafe { Fifo::steal() };
 
         // The launch sequence sends commands in this order:
         // 0, 0, 1, vector_table, stack_ptr, entry
@@ -570,7 +594,7 @@ impl Multicore {
         // 2. Drain its own FIFO
         // 3. Push a 0 to our FIFO to signal it's ready
 
-        let fifo = Fifo::steal();
+        let fifo = unsafe { Fifo::steal() };
 
         // Wait for Core 1's ready signal (blocking read of 0)
         let response = fifo.read();

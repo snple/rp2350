@@ -41,7 +41,7 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     // ADC setup — temperature sensor on channel 4
     // ------------------------------------------------------------------
-    let mut adc = Adc::new(dp.ADC);
+    let mut adc = Adc::init(dp.ADC);
     adc.enable_temp_sensor();
 
     // Use round-robin with only the temperature channel enabled,
@@ -54,7 +54,7 @@ fn main() -> ! {
     adc.fifo_setup(true, true, 1, false, false);
     adc.fifo_drain();
 
-    let dma = Dma::new(dp.DMA);
+    let dma = Dma::init(dp.DMA);
 
     // ------------------------------------------------------------------
     // DMA: ADC FIFO → memory buffer

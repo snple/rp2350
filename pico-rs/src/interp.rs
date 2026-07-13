@@ -33,7 +33,7 @@
 //! ```ignore
 //! use pico_rs::interp::{Interp0, Config};
 //!
-//! let interp0 = unsafe { Interp0::steal() };
+//! let interp0 = Interp0::init();
 //!
 //! // Configure lane 0: no shift, all bits pass, signed
 //! let mut cfg = Config::new();
@@ -58,6 +58,9 @@ use crate::Steal;
 /// Handle to INTERP0 (interpolator 0) on the current core.
 ///
 /// INTERP0 lane 0 supports **BLEND** mode for hardware linear interpolation.
+///
+/// Obtain a handle through [`Interp0::init()`] (main context) or
+/// [`Interp0::steal()`] (ISR context).
 pub struct Interp0 {
     _private: (),
 }
@@ -65,11 +68,23 @@ pub struct Interp0 {
 /// Handle to INTERP1 (interpolator 1) on the current core.
 ///
 /// INTERP1 lane 0 supports **CLAMP** mode for hardware value clamping.
+///
+/// Obtain a handle through [`Interp1::init()`] (main context) or
+/// [`Interp1::steal()`] (ISR context).
 pub struct Interp1 {
     _private: (),
 }
 
 impl Interp0 {
+    /// Create an INTERP0 handle.
+    ///
+    /// The interpolator is part of SIO and requires no reset sequence.
+    /// This constructor is safe.
+    #[inline]
+    pub fn init() -> Self {
+        Interp0 { _private: () }
+    }
+
     /// Obtain an INTERP0 handle without runtime checks.
     ///
     /// # Safety
@@ -79,7 +94,7 @@ impl Interp0 {
     /// interrupts are enabled.
     #[inline]
     pub unsafe fn steal() -> Steal<Interp0> {
-        Steal(Interp0 { _private: () })
+        Steal(Interp0::init())
     }
     #[inline]
     pub fn lane0(&self) -> Lane {
@@ -92,6 +107,15 @@ impl Interp0 {
 }
 
 impl Interp1 {
+    /// Create an INTERP1 handle.
+    ///
+    /// The interpolator is part of SIO and requires no reset sequence.
+    /// This constructor is safe.
+    #[inline]
+    pub fn init() -> Self {
+        Interp1 { _private: () }
+    }
+
     /// Obtain an INTERP1 handle without runtime checks.
     ///
     /// # Safety
@@ -101,7 +125,7 @@ impl Interp1 {
     /// interrupts are enabled.
     #[inline]
     pub unsafe fn steal() -> Steal<Interp1> {
-        Steal(Interp1 { _private: () })
+        Steal(Interp1::init())
     }
     #[inline]
     pub fn lane0(&self) -> Lane {

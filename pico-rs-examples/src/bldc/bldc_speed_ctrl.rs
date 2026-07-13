@@ -519,7 +519,7 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     // ADC setup — BEMF voltage dividers on GP26 / GP27 / GP28
     // ------------------------------------------------------------------
-    let mut adc = Adc::new(dp.ADC);
+    let mut adc = Adc::init(dp.ADC);
     let bemf_a = pins.pin::<26>().into_adc_input(); // ADC ch 0 — Phase A
     let bemf_b = pins.pin::<27>().into_adc_input(); // ADC ch 1 — Phase B
     let bemf_c = pins.pin::<28>().into_adc_input(); // ADC ch 2 — Phase C

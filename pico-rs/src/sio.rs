@@ -33,7 +33,7 @@
 //! pins.pin::<25>().into_output();
 //!
 //! // Create SIO instance (zero-cost, no ownership required)
-//! let sio = Sio::steal();
+//! let sio = Sio::init();
 //!
 //! // Read current core ID
 //! let core = sio.core_id();
@@ -61,9 +61,9 @@
 
 #![allow(clippy::identity_op)]
 
+use crate::Steal;
 use paste::paste;
 use pico_rs_pac::sio::RegisterBlock;
-use crate::Steal;
 
 /// Number of hardware spinlocks
 pub const SPINLOCK_COUNT: usize = 32;
@@ -147,21 +147,35 @@ pub(crate) fn release_all_spinlocks() {
 /// Creating instances is cheap. All register access goes through the
 /// statically configured base address.
 ///
-/// The `_private` field prevents external construction — use [`Sio::steal()`].
+/// The `_private` field prevents external construction — use [`Sio::init()`].
 ///
 /// SIO is core-local and does not require ownership tracking. Multiple
 /// instances can coexist safely.
-#[derive(Copy, Clone, Default, Debug)]
+#[derive(Debug)]
 pub struct Sio {
     _marker: core::marker::PhantomData<*const ()>,
 }
 
 impl Sio {
-    /// Obtain a handle to the SIO hardware registers.
+    /// Create a handle to the SIO hardware registers.
     ///
-    /// This is a low-cost operation. No peripheral ownership is taken.
+    /// SIO is core-local and does not require ownership tracking.
+    /// This is a low-cost operation; no peripheral ownership is taken.
     #[inline]
-    pub const fn steal() -> Steal<Self> {
+    pub const fn init() -> Self {
+        Sio {
+            _marker: core::marker::PhantomData,
+        }
+    }
+
+    /// Obtain a handle to the SIO hardware registers without runtime checks.
+    ///
+    /// # Safety
+    ///
+    /// The caller must ensure no data races occur when accessing SIO
+    /// registers from multiple contexts (e.g. both cores).
+    #[inline]
+    pub const unsafe fn steal() -> Steal<Self> {
         Steal(Sio {
             _marker: core::marker::PhantomData,
         })

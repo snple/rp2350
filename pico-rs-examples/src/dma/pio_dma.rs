@@ -92,7 +92,7 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     // DMA: memory → PIO TX FIFO
     // ------------------------------------------------------------------
-    let dma = Dma::new(dp.DMA);
+    let dma = Dma::init(dp.DMA);
 
     // Total bits: 4 words × 32 bits = 128 LED state changes
     dma.channel::<0>()

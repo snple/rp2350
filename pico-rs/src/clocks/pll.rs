@@ -27,7 +27,7 @@
 //!
 //! // Get PLL_SYS peripheral
 //! let pll_sys_pac = unsafe { PLL_SYS::steal() };
-//! let pll_sys = PllSys::new(pll_sys_pac);
+//! let pll_sys = PllSys::init(pll_sys_pac);
 //!
 //! // Configure for 150 MHz (assuming 12 MHz XOSC)
 //! // VCO = 12 MHz / 1 * 125 = 1500 MHz
@@ -38,6 +38,7 @@
 //! while !pll_sys.is_locked() {}
 //! ```
 
+use crate::Steal;
 use pico_rs_pac::{PLL_SYS, PLL_USB};
 
 /// Macro to implement PLL peripheral
@@ -49,13 +50,26 @@ macro_rules! impl_pll {
         }
 
         impl $Pll {
-            /// Create a new PLL instance
+            /// Initialize the PLL driver.
             ///
             /// # Arguments
             /// * `pll` - The PLL peripheral from PAC
             #[inline]
-            pub fn new(pll: $PLL) -> Self {
+            pub fn init(pll: $PLL) -> Self {
                 Self { pll }
+            }
+
+            /// Obtain a PLL handle without ownership checks.
+            ///
+            /// # Safety
+            ///
+            /// The caller must ensure the peripheral has been initialised
+            /// and that no data races occur.
+            #[inline]
+            pub unsafe fn steal() -> Steal<Self> {
+                Steal(Self {
+                    pll: unsafe { $PLL::steal() },
+                })
             }
 
             /// Get reference to the underlying register block
@@ -94,7 +108,7 @@ macro_rules! impl_pll {
 
             /// Clear the lock_n sticky flag
             #[inline]
-            pub fn clear_lock_n(&self) {
+            pub fn clear_lock_n(&mut self) {
                 self.pll.cs.set_lock_n();
             }
 
@@ -108,7 +122,7 @@ macro_rules! impl_pll {
             ///
             /// In bypass mode, the reference clock passes directly to output.
             #[inline]
-            pub fn set_bypass(&self, bypass: bool) {
+            pub fn set_bypass(&mut self, bypass: bool) {
                 if bypass {
                     self.pll.cs.set_bypass();
                 } else {
@@ -127,7 +141,7 @@ macro_rules! impl_pll {
             /// The reference frequency (XOSC) is divided by this before the PLL.
             /// FREF = XOSC / REFDIV
             #[inline]
-            pub fn set_refdiv(&self, div: u8) {
+            pub fn set_refdiv(&mut self, div: u8) {
                 let div = div.clamp(1, 63) as u32;
                 self.pll.cs.write_refdiv(div);
             }
@@ -138,13 +152,13 @@ macro_rules! impl_pll {
 
             /// Power down the entire PLL
             #[inline]
-            pub fn power_down(&self) {
+            pub fn power_down(&mut self) {
                 self.pll.pwr.set_pd();
             }
 
             /// Power up the PLL (clear power-down bit)
             #[inline]
-            pub fn power_up(&self) {
+            pub fn power_up(&mut self) {
                 self.pll.pwr.clr_pd();
             }
 
@@ -156,13 +170,13 @@ macro_rules! impl_pll {
 
             /// Power down the VCO
             #[inline]
-            pub fn vco_power_down(&self) {
+            pub fn vco_power_down(&mut self) {
                 self.pll.pwr.set_vcopd();
             }
 
             /// Power up the VCO
             #[inline]
-            pub fn vco_power_up(&self) {
+            pub fn vco_power_up(&mut self) {
                 self.pll.pwr.clr_vcopd();
             }
 
@@ -174,13 +188,13 @@ macro_rules! impl_pll {
 
             /// Power down the post dividers
             #[inline]
-            pub fn postdiv_power_down(&self) {
+            pub fn postdiv_power_down(&mut self) {
                 self.pll.pwr.set_postdivpd();
             }
 
             /// Power up the post dividers
             #[inline]
-            pub fn postdiv_power_up(&self) {
+            pub fn postdiv_power_up(&mut self) {
                 self.pll.pwr.clr_postdivpd();
             }
 
@@ -192,13 +206,13 @@ macro_rules! impl_pll {
 
             /// Power down the DSM (delta-sigma modulator)
             #[inline]
-            pub fn dsm_power_down(&self) {
+            pub fn dsm_power_down(&mut self) {
                 self.pll.pwr.set_dsmpd();
             }
 
             /// Power up the DSM
             #[inline]
-            pub fn dsm_power_up(&self) {
+            pub fn dsm_power_up(&mut self) {
                 self.pll.pwr.clr_dsmpd();
             }
 
@@ -217,7 +231,7 @@ macro_rules! impl_pll {
             /// VCO frequency = (FREF / REFDIV) * FBDIV
             /// VCO must be 750-1600 MHz
             #[inline]
-            pub fn set_fbdiv(&self, div: u16) {
+            pub fn set_fbdiv(&mut self, div: u16) {
                 let div = div.clamp(16, 320) as u32;
                 self.pll.fbdiv_int.write_fbdiv_int(div);
             }
@@ -239,7 +253,7 @@ macro_rules! impl_pll {
             /// Output = VCO / (POSTDIV1 * POSTDIV2)
             /// For best performance, use POSTDIV1 >= POSTDIV2
             #[inline]
-            pub fn set_postdiv(&self, postdiv1: u8, postdiv2: u8) {
+            pub fn set_postdiv(&mut self, postdiv1: u8, postdiv2: u8) {
                 let postdiv1 = postdiv1.clamp(1, 7) as u32;
                 let postdiv2 = postdiv2.clamp(1, 7) as u32;
                 self.pll.prim.write_postdiv1(postdiv1);
@@ -258,19 +272,19 @@ macro_rules! impl_pll {
 
             /// Clear lock_n interrupt
             #[inline]
-            pub fn clear_intr_lock_n(&self) {
+            pub fn clear_intr_lock_n(&mut self) {
                 self.pll.intr.set_lock_n_sticky();
             }
 
             /// Enable lock_n interrupt
             #[inline]
-            pub fn enable_intr_lock_n(&self) {
+            pub fn enable_intr_lock_n(&mut self) {
                 self.pll.inte.set_lock_n_sticky();
             }
 
             /// Disable lock_n interrupt
             #[inline]
-            pub fn disable_intr_lock_n(&self) {
+            pub fn disable_intr_lock_n(&mut self) {
                 self.pll.inte.clr_lock_n_sticky();
             }
 
@@ -306,7 +320,7 @@ macro_rules! impl_pll {
             /// // VCO = 12 / 1 * 125 = 1500 MHz
             /// // Out = 1500 / (5 * 2) = 150 MHz
             /// ```
-            pub fn configure(&self, refdiv: u8, fbdiv: u16, postdiv1: u8, postdiv2: u8) {
+            pub fn configure(&mut self, refdiv: u8, fbdiv: u16, postdiv1: u8, postdiv2: u8) {
                 // After reset, all power bits should be set (PLL off)
                 // Configure dividers first while PLL is off
                 self.set_refdiv(refdiv);
@@ -342,7 +356,7 @@ macro_rules! impl_pll {
             }
 
             /// Disable the PLL (power down all components)
-            pub fn disable(&self) {
+            pub fn disable(&mut self) {
                 self.postdiv_power_down();
                 self.vco_power_down();
                 self.power_down();

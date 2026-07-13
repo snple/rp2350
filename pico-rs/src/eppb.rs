@@ -13,11 +13,10 @@
 //!
 //! ```ignore
 //! use pico_rs::eppb::Eppb;
-//! use pico_rs_pac::EPPB;
+//! use pico_rs::Peripherals;
 //!
-//! // Get EPPB peripheral
-//! let eppb_pac = unsafe { EPPB::steal() };
-//! let eppb = Eppb::new(eppb_pac);
+//! let dp = Peripherals::take().unwrap();
+//! let eppb = Eppb::init(dp.EPPB);
 //!
 //! // Mask IRQ 5 as NMI
 //! eppb.set_nmi_mask0(1 << 5);
@@ -32,6 +31,8 @@
 
 use pico_rs_pac::EPPB;
 
+use crate::Steal;
+
 /// EPPB peripheral wrapper
 ///
 /// Provides access to Extended Private Peripheral Bus registers
@@ -41,13 +42,24 @@ pub struct Eppb {
 }
 
 impl Eppb {
-    /// Create a new Eppb instance
+    /// Initialize the Eppb driver.
     ///
     /// # Arguments
     /// * `eppb` - The EPPB peripheral from PAC
     #[inline]
-    pub fn new(eppb: EPPB) -> Self {
+    pub fn init(eppb: EPPB) -> Self {
         Self { eppb }
+    }
+
+    /// Obtain an Eppb handle without ownership checks.
+    ///
+    /// # Safety
+    ///
+    /// The caller must ensure the peripheral has been initialised
+    /// and that no data races occur.
+    #[inline]
+    pub unsafe fn steal() -> Steal<Self> {
+        Steal(Self::init(unsafe { EPPB::steal() }))
     }
 
     /// Get reference to the underlying register block

@@ -51,7 +51,7 @@
 //! ```ignore
 //! use pico_rs::dma::{Dma, DataSize, TreqSel};
 //!
-//! let dma = Dma::new(dp.DMA);
+//! let dma = Dma::init(dp.DMA);
 //! let ch = dma.channel::<0>();
 //!
 //! let src = [1u32, 2, 3, 4];
@@ -73,7 +73,7 @@
 //! use pico_rs::dma::{Dma, DataSize};
 //! use pico_rs::uart::Uart0;
 //!
-//! let dma = Dma::new(dp.DMA);
+//! let dma = Dma::init(dp.DMA);
 //! let ch = dma.channel::<0>();
 //!
 //! uart.enable_dma_tx();
@@ -94,6 +94,7 @@ use core::marker::PhantomData;
 use paste::paste;
 use pico_rs_pac::DMA;
 
+use crate::Steal;
 use crate::reset::Resettable;
 
 /// Total number of DMA channels available on RP2350.
@@ -285,14 +286,14 @@ pub enum SniffCalc {
 
 /// DMA controller, owning the PAC peripheral.
 ///
-/// Create once via [`Dma::new()`], then obtain individual [`Channel`] handles
+/// Create once via [`Dma::init()`], then obtain individual [`Channel`] handles
 /// via [`Dma::channel()`].
 pub struct Dma {
     dma: pico_rs_pac::DMA,
 }
 
 impl Dma {
-    /// Create a new DMA controller, consuming the PAC peripheral.
+    /// Initialize the DMA controller, consuming the PAC peripheral.
     ///
     /// This brings the DMA block out of reset and returns a controller
     /// from which individual channels can be obtained.
@@ -300,10 +301,23 @@ impl Dma {
     /// # Arguments
     ///
     /// * `dma` — The DMA peripheral from `Peripherals::take()`
-    pub fn new(dma: pico_rs_pac::DMA) -> Self {
+    pub fn init(dma: pico_rs_pac::DMA) -> Self {
         // Reset then unreset to guarantee clean register state
         <pico_rs_pac::DMA as Resettable>::init();
         Self { dma }
+    }
+
+    /// Obtain a Dma handle without ownership checks.
+    ///
+    /// # Safety
+    ///
+    /// The caller must ensure [`Dma::init()`] has been called first
+    /// and that no data races occur.
+    #[inline]
+    pub unsafe fn steal() -> Steal<Self> {
+        Steal(Self {
+            dma: unsafe { pico_rs_pac::DMA::steal() },
+        })
     }
 
     // ========================================================================
@@ -436,7 +450,7 @@ impl Dma {
     ///
     /// The timer fires at rate: `sys_clk × numerator / denominator`.
     /// Timer index must be 0–3.
-    pub fn set_timer(&self, index: u8, numerator: u16, denominator: u16) {
+    pub fn set_timer(&mut self, index: u8, numerator: u16, denominator: u16) {
         let val = ((numerator as u32) << 16) | (denominator as u32);
         let regs = self.regs();
         match index {
@@ -454,7 +468,7 @@ impl Dma {
 
     /// Enable or disable the sniff hardware block.
     #[inline]
-    pub fn sniff_enable(&self, enable: bool) {
+    pub fn sniff_enable(&mut self, enable: bool) {
         if enable {
             self.regs().sniff_ctrl.set_en();
         } else {
@@ -464,13 +478,13 @@ impl Dma {
 
     /// Set which channel the sniff hardware monitors.
     #[inline]
-    pub fn sniff_set_channel(&self, channel: u8) {
+    pub fn sniff_set_channel(&mut self, channel: u8) {
         self.regs().sniff_ctrl.write_dmach(channel as u32 & 0xF);
     }
 
     /// Set the sniff calculation type.
     #[inline]
-    pub fn sniff_set_calc(&self, calc: SniffCalc) {
+    pub fn sniff_set_calc(&mut self, calc: SniffCalc) {
         self.regs().sniff_ctrl.write_calc(calc as u32);
     }
 
@@ -482,13 +496,13 @@ impl Dma {
 
     /// Write a seed value into the sniff accumulator.
     #[inline]
-    pub fn sniff_set_data(&self, seed: u32) {
+    pub fn sniff_set_data(&mut self, seed: u32) {
         self.regs().sniff_data.write_sniff_data(seed);
     }
 
     /// Enable or disable byte-swap on sniff input data.
     #[inline]
-    pub fn sniff_set_bswap(&self, enable: bool) {
+    pub fn sniff_set_bswap(&mut self, enable: bool) {
         if enable {
             self.regs().sniff_ctrl.set_bswap();
         } else {
@@ -498,7 +512,7 @@ impl Dma {
 
     /// Enable or disable bit inversion on sniff output.
     #[inline]
-    pub fn sniff_set_out_inv(&self, enable: bool) {
+    pub fn sniff_set_out_inv(&mut self, enable: bool) {
         if enable {
             self.regs().sniff_ctrl.set_out_inv();
         } else {
@@ -508,7 +522,7 @@ impl Dma {
 
     /// Enable or disable bit reversal on sniff output.
     #[inline]
-    pub fn sniff_set_out_rev(&self, enable: bool) {
+    pub fn sniff_set_out_rev(&mut self, enable: bool) {
         if enable {
             self.regs().sniff_ctrl.set_out_rev();
         } else {

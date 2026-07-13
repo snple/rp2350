@@ -326,7 +326,7 @@ impl ClockBuilder {
         let xosc = Xosc::init(xosc, self.xosc_freq);
         xosc.wait_stable();
 
-        let mut clocks = Clocks::new(clocks, xosc);
+        let mut clocks = Clocks::init(clocks, xosc);
 
         // ====================================================================
         // Step 2 — Configure clk_ref
@@ -352,7 +352,7 @@ impl ClockBuilder {
         let sys_pll_cfg = if use_pll_sys {
             let cfg = Self::pll_config_for_freq(self.sys_freq);
             <PLL_SYS as Resettable>::init();
-            let pll = PllSys::new(pll_sys);
+            let mut pll = PllSys::init(pll_sys);
             pll.configure(cfg.refdiv, cfg.fbdiv, cfg.postdiv1, cfg.postdiv2);
             pll.wait_lock();
             Some(cfg)
@@ -365,7 +365,7 @@ impl ClockBuilder {
         // PLL_USB always provides the 48 MHz reference
         let usb_pll_cfg = PllConfig::usb_48mhz();
         <PLL_USB as Resettable>::init();
-        let pll = PllUsb::new(pll_usb);
+        let mut pll = PllUsb::init(pll_usb);
         pll.configure(
             usb_pll_cfg.refdiv,
             usb_pll_cfg.fbdiv,

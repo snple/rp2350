@@ -293,7 +293,7 @@ macro_rules! impl_uart {
                 ///     150_000_000,  // System clock
                 /// );
                 /// ```
-                pub fn init(uart: $UartType, tx: TX, rx: RX, baudrate: u32, peri_clk: u32) -> Self {
+                pub fn init(uart: $UartType, mut tx: TX, mut rx: RX, baudrate: u32, peri_clk: u32) -> Self {
                     // Configure pins for UART function
                     tx.[<configure_uart $uart_num _tx>]();
                     rx.[<configure_uart $uart_num _rx>]();
@@ -413,7 +413,7 @@ macro_rules! impl_uart {
 
                 /// Enable/disable the UART
                 #[inline]
-                pub fn set_enabled(&self, enable: bool) {
+                pub fn set_enabled(&mut self, enable: bool) {
                     if enable {
                         self.uart.uartcr.set_uarten();
                     } else {
@@ -423,7 +423,7 @@ macro_rules! impl_uart {
 
                 /// Enable/disable TX
                 #[inline]
-                pub fn set_tx_enabled(&self, enable: bool) {
+                pub fn set_tx_enabled(&mut self, enable: bool) {
                     if enable {
                         self.uart.uartcr.set_txe();
                     } else {
@@ -433,7 +433,7 @@ macro_rules! impl_uart {
 
                 /// Enable/disable RX
                 #[inline]
-                pub fn set_rx_enabled(&self, enable: bool) {
+                pub fn set_rx_enabled(&mut self, enable: bool) {
                     if enable {
                         self.uart.uartcr.set_rxe();
                     } else {
@@ -446,7 +446,7 @@ macro_rules! impl_uart {
                 /// # Arguments
                 /// * `tx_level` - TX FIFO trigger level (0-4, corresponding to 1/8, 1/4, 1/2, 3/4, 7/8)
                 /// * `rx_level` - RX FIFO trigger level (0-4, corresponding to 1/8, 1/4, 1/2, 3/4, 7/8)
-                pub fn set_fifo_levels(&self, tx_level: u8, rx_level: u8) {
+                pub fn set_fifo_levels(&mut self, tx_level: u8, rx_level: u8) {
                     self.uart.uartifls.write_txiflsel(tx_level.min(4) as u32);
                     self.uart.uartifls.write_rxiflsel(rx_level.min(4) as u32);
                 }
@@ -1037,10 +1037,10 @@ macro_rules! impl_uart {
                 /// * `peri_clk` - Peripheral clock frequency in Hz
                 pub fn init(
                     uart: $UartType,
-                    tx: TX,
-                    rx: RX,
-                    cts: CTS,
-                    rts: RTS,
+                    mut tx: TX,
+                    mut rx: RX,
+                    mut cts: CTS,
+                    mut rts: RTS,
                     baudrate: u32,
                     peri_clk: u32,
                 ) -> Self {

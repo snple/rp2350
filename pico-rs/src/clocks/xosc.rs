@@ -29,6 +29,8 @@ use pico_rs_pac::{
     xosc::{Ctrl, Dormant},
 };
 
+use crate::Steal;
+
 /// Default XOSC frequency for Pico 2 board (12 MHz)
 pub const XOSC_HZ: u32 = 12_000_000;
 
@@ -79,7 +81,6 @@ impl FrequencyRange {
 /// Crystal Oscillator (XOSC) peripheral wrapper
 pub struct Xosc {
     xosc: XOSC,
-    frequency: u32,
 }
 
 impl Xosc {
@@ -124,10 +125,20 @@ impl Xosc {
             core::hint::spin_loop();
         }
 
-        Self {
-            xosc,
-            frequency: freq_hz,
-        }
+        Self { xosc }
+    }
+
+    /// Obtain an Xosc handle without ownership checks.
+    ///
+    /// # Safety
+    ///
+    /// The caller must ensure [`Xosc::init()`] has been called first
+    /// and that no data races occur.
+    #[inline]
+    pub unsafe fn steal() -> Steal<Self> {
+        Steal(Self {
+            xosc: unsafe { XOSC::steal() },
+        })
     }
 
     /// Get reference to the underlying register block
@@ -180,14 +191,14 @@ impl Xosc {
     /// Note: You should call `wait_stable()` after enabling to ensure
     /// the oscillator is ready for use.
     #[inline]
-    pub fn enable(&self) {
+    pub fn enable(&mut self) {
         self.xosc.ctrl.write_enable(Ctrl::ENABLE_ENABLE);
     }
 
     /// Disable the crystal oscillator
     ///
     /// Warning: Make sure no clocks are depending on XOSC before disabling!
-    pub fn disable(&self) {
+    pub fn disable(&mut self) {
         self.xosc.ctrl.write_enable(Ctrl::ENABLE_DISABLE);
 
         // Wait for stable to go away
@@ -213,20 +224,18 @@ impl Xosc {
 
     /// Wake the XOSC from dormant mode
     #[inline]
-    pub fn wake(&self) {
+    pub fn wake(&mut self) {
         self.xosc.dormant.write_dormant(Dormant::DORMANT_WAKE);
     }
 
-    /// Get the configured frequency in Hz
+    /// Get the current frequency range setting from hardware.
+    ///
+    /// This returns the raw hardware register value, which encodes the
+    /// configured frequency range (1-15 MHz, 10-30 MHz, etc.). The exact
+    /// crystal frequency is known only at [`init()`](Self::init) time.
     #[inline]
-    pub const fn frequency(&self) -> u32 {
-        self.frequency
-    }
-
-    /// Get the configured frequency in kHz
-    #[inline]
-    pub const fn frequency_khz(&self) -> u32 {
-        self.frequency / 1000
+    pub fn current_freq_range(&self) -> u32 {
+        self.xosc.status.freq_range()
     }
 
     /// Check if a bad write has occurred
@@ -240,14 +249,8 @@ impl Xosc {
 
     /// Clear the bad write flag
     #[inline]
-    pub fn clear_bad_write(&self) {
+    pub fn clear_bad_write(&mut self) {
         self.xosc.status.set_badwrite();
-    }
-
-    /// Get the current frequency range setting from hardware
-    #[inline]
-    pub fn current_freq_range(&self) -> u32 {
-        self.xosc.status.freq_range()
     }
 
     /// Set the startup delay
@@ -259,7 +262,7 @@ impl Xosc {
     /// * `delay` - Delay value (0-8191)
     /// * `multiply_by_4` - If true, multiply the delay by 4
     #[inline]
-    pub fn set_startup_delay(&self, delay: u16, multiply_by_4: bool) {
+    pub fn set_startup_delay(&mut self, delay: u16, multiply_by_4: bool) {
         self.xosc.startup.write_delay(delay as u32);
         if multiply_by_4 {
             self.xosc.startup.set_x4();
@@ -276,7 +279,7 @@ impl Xosc {
     /// # Arguments
     /// * `count` - Number of XOSC cycles to delay (minimum 4)
     #[inline]
-    pub fn start_count(&self, count: u16) {
+    pub fn start_count(&mut self, count: u16) {
         self.xosc.count.write_count(count as u32);
     }
 
@@ -294,7 +297,7 @@ impl Xosc {
     ///
     /// # Arguments
     /// * `cycles` - Number of XOSC cycles to delay (minimum 4)
-    pub fn delay_cycles(&self, cycles: u16) {
+    pub fn delay_cycles(&mut self, cycles: u16) {
         self.start_count(cycles.max(4));
         while !self.count_done() {
             core::hint::spin_loop();

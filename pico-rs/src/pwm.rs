@@ -653,7 +653,7 @@ impl Pwm {
     /// # Arguments
     /// * `mask` - Bitmask of slices to enable (bit 0 = slice 0, etc.)
     #[inline]
-    pub fn enable_mask(&self, mask: u16) {
+    pub fn enable_mask(&mut self, mask: u16) {
         self.regs().en.set_bits(mask as u32);
     }
 
@@ -662,7 +662,7 @@ impl Pwm {
     /// # Arguments
     /// * `mask` - Bitmask of slices to disable
     #[inline]
-    pub fn disable_mask(&self, mask: u16) {
+    pub fn disable_mask(&mut self, mask: u16) {
         self.regs().en.clr_bits(mask as u32);
     }
 
@@ -793,15 +793,6 @@ impl Pwm {
     pub fn interrupt_status_irq1(&self) -> u16 {
         (self.regs().irq1_ints.read_bits() & 0xfff) as u16
     }
-
-    /// Get reference to the underlying register block.
-    ///
-    /// # Safety
-    /// Direct register access can bypass the HAL's safety guarantees.
-    #[inline]
-    pub unsafe fn registers(&self) -> &pico_rs_pac::pwm::RegisterBlock {
-        self.regs()
-    }
 }
 
 // ============================================================================
@@ -824,12 +815,12 @@ macro_rules! impl_pwm_slice {
                 /// # Arguments
                 ///
                 /// * `pin_a` - Channel A pin (must be for this slice)
-                pub fn output_a<A: PwmAPin>(self, pin_a: A) -> Slice<$slice_num, A, NoPin> {
+                pub fn output_a<A: PwmAPin>(self, mut pin_a: A) -> Slice<$slice_num, A, NoPin> {
                     // Verify the pin is for this slice
                     assert_eq!(A::PWM_SLICE, $slice_num, "Pin must be for PWM slice {}", $slice_num);
 
                     // Configure pin for PWM function
-                    PwmAPin::configure_pwm_a(&pin_a);
+                    PwmAPin::configure_pwm_a(&mut pin_a);
 
                     // Initialize via direct register access (avoids const-generic
                     // method resolution ambiguity)
@@ -858,14 +849,14 @@ macro_rules! impl_pwm_slice {
                 ///
                 /// * `pin_a` - Channel A pin
                 /// * `pin_b` - Channel B pin
-                pub fn output_ab<A: PwmAPin, B: PwmBPin>(self, pin_a: A, pin_b: B) -> Slice<$slice_num, A, B> {
+                pub fn output_ab<A: PwmAPin, B: PwmBPin>(self, mut pin_a: A, mut pin_b: B) -> Slice<$slice_num, A, B> {
                     // Verify pins are for this slice
                     assert_eq!(A::PWM_SLICE, $slice_num, "Pin A must be for PWM slice {}", $slice_num);
                     assert_eq!(B::PWM_SLICE, $slice_num, "Pin B must be for PWM slice {}", $slice_num);
 
                     // Configure pins for PWM function
-                    PwmAPin::configure_pwm_a(&pin_a);
-                    PwmBPin::configure_pwm_b(&pin_b);
+                    PwmAPin::configure_pwm_a(&mut pin_a);
+                    PwmBPin::configure_pwm_b(&mut pin_b);
 
                     // Initialize via direct register access
                     let pwm = unsafe { pico_rs_pac::PWM::steal() };
@@ -908,12 +899,12 @@ macro_rules! impl_pwm_slice {
                 ///
                 /// * `pin_b` - Channel B pin for input
                 /// * `mode` - Input mode (GatedByB, RisingEdge, FallingEdge)
-                pub fn input<B: PwmBPin>(self, pin_b: B, mode: InputMode) -> Slice<$slice_num, NoPin, B> {
+                pub fn input<B: PwmBPin>(self, mut pin_b: B, mode: InputMode) -> Slice<$slice_num, NoPin, B> {
                     // Verify pin is for this slice
                     assert_eq!(B::PWM_SLICE, $slice_num, "Pin B must be for PWM slice {}", $slice_num);
 
                     // Configure pin for PWM function
-                    PwmBPin::configure_pwm_b(&pin_b);
+                    PwmBPin::configure_pwm_b(&mut pin_b);
 
                     // Initialize for input via direct register access
                     let pwm = unsafe { pico_rs_pac::PWM::steal() };
@@ -952,8 +943,8 @@ macro_rules! impl_pwm_slice {
                 /// * `mode` - Input mode for measurement
                 pub fn output_a_input<A: PwmAPin, B: PwmBPin>(
                     self,
-                    pin_a: A,
-                    pin_b: B,
+                    mut pin_a: A,
+                    mut pin_b: B,
                     mode: InputMode,
                 ) -> Slice<$slice_num, A, B> {
                     // Verify pins are for this slice
@@ -961,8 +952,8 @@ macro_rules! impl_pwm_slice {
                     assert_eq!(B::PWM_SLICE, $slice_num, "Pin B must be for PWM slice {}", $slice_num);
 
                     // Configure pins
-                    PwmAPin::configure_pwm_a(&pin_a);
-                    PwmBPin::configure_pwm_b(&pin_b);
+                    PwmAPin::configure_pwm_a(&mut pin_a);
+                    PwmBPin::configure_pwm_b(&mut pin_b);
 
                     // Initialize via direct register access
                     let pwm = unsafe { pico_rs_pac::PWM::steal() };
@@ -1043,7 +1034,7 @@ macro_rules! impl_pwm_slice {
 
                 /// Check if this slice is enabled.
                 #[inline]
-                pub fn is_enabled(&self) -> bool {
+                pub fn enabled(&self) -> bool {
                     self.csr().en()
                 }
 
@@ -1056,7 +1047,7 @@ macro_rules! impl_pwm_slice {
                 /// In phase-correct mode, the counter counts up to TOP then back down,
                 /// giving symmetric PWM waveforms.
                 #[inline]
-                pub fn set_phase_correct(&self, enable: bool) {
+                pub fn set_phase_correct(&mut self, enable: bool) {
                     if enable {
                         self.csr().set_ph_correct();
                     } else {
@@ -1079,7 +1070,7 @@ macro_rules! impl_pwm_slice {
                 /// Changing this mode changes the meaning of subsequent counter values, so
                 /// callers should treat any in-flight measurement as invalid after switching.
                 #[inline]
-                pub fn set_div_mode(&self, mode: DivMode) {
+                pub fn set_div_mode(&mut self, mode: DivMode) {
                     self.csr().write_divmode(mode as u32);
                 }
 
@@ -1106,13 +1097,13 @@ macro_rules! impl_pwm_slice {
                 ///
                 /// The PWM counter advances at: sys_clk / (int + frac/16)
                 #[inline]
-                pub fn set_div_int(&self, div: u8) {
+                pub fn set_div_int(&mut self, div: u8) {
                     self.div().write_int(div as u32);
                 }
 
                 /// Set the fractional part of the clock divider (0-15).
                 #[inline]
-                pub fn set_div_frac(&self, frac: u8) {
+                pub fn set_div_frac(&mut self, frac: u8) {
                     self.div().write_frac(frac as u32);
                 }
 
@@ -1127,7 +1118,7 @@ macro_rules! impl_pwm_slice {
                 /// counter_clock = sys_clock / (int_part + frac_part / 16)
                 /// ```
                 #[inline]
-                pub fn set_div(&self, int_part: u8, frac_part: u8) {
+                pub fn set_div(&mut self, int_part: u8, frac_part: u8) {
                     self.div().write_bits(((int_part as u32) << 4) | ((frac_part as u32) & 0xf));
                 }
 
@@ -1162,7 +1153,7 @@ macro_rules! impl_pwm_slice {
                 /// or [`set_duty_b()`](Self::set_duty_b), avoid `0xffff`: the compare value
                 /// would need to be `TOP + 1`, which does not fit in the 16-bit CC register.
                 #[inline]
-                pub fn set_wrap(&self, wrap: u16) {
+                pub fn set_wrap(&mut self, wrap: u16) {
                     self.top().write_bits(wrap as u32);
                 }
 
@@ -1242,7 +1233,7 @@ macro_rules! impl_pwm_slice {
 
                 /// Invert output A.
                 #[inline]
-                pub fn set_invert_a(&self, invert: bool) {
+                pub fn set_invert_a(&mut self, invert: bool) {
                     if invert {
                         self.csr().set_a_inv();
                     } else {
@@ -1279,7 +1270,7 @@ macro_rules! impl_pwm_slice {
 
                 /// Invert output B.
                 #[inline]
-                pub fn set_invert_b(&self, invert: bool) {
+                pub fn set_invert_b(&mut self, invert: bool) {
                     if invert {
                         self.csr().set_b_inv();
                     } else {
@@ -1504,7 +1495,7 @@ macro_rules! impl_pwm_slice {
                 /// assert!(actual > 0);
                 /// ```
                 #[inline]
-                pub fn configure_frequency(&self, sys_clock: u32, target_freq: u32) -> u32 {
+                pub fn configure_frequency(&mut self, sys_clock: u32, target_freq: u32) -> u32 {
                     self.configure_frequency_with_wrap(sys_clock, target_freq, self.get_wrap())
                 }
 
@@ -1544,7 +1535,7 @@ macro_rules! impl_pwm_slice {
                 /// assert!(actual > 0);
                 /// ```
                 #[inline]
-                pub fn configure_frequency_with_wrap(&self, sys_clock: u32, target_freq: u32, wrap: u16) -> u32 {
+                pub fn configure_frequency_with_wrap(&mut self, sys_clock: u32, target_freq: u32, wrap: u16) -> u32 {
                     assert!(target_freq != 0, "target PWM frequency must be non-zero");
 
                     self.set_wrap(wrap);

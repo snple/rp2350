@@ -13,10 +13,10 @@
 //!
 //! ```ignore
 //! use pico_rs::accessctrl::Accessctrl;
-//! use pico_rs_pac::ACCESSCTRL;
+//! use pico_rs::Peripherals;
 //!
-//! let accessctrl_pac = unsafe { ACCESSCTRL::steal() };
-//! let accessctrl = Accessctrl::new(accessctrl_pac);
+//! let dp = Peripherals::take().unwrap();
+//! let accessctrl = Accessctrl::init(dp.ACCESSCTRL);
 //!
 //! // Lock core0 from modifying access control
 //! accessctrl.lock_core0();
@@ -26,6 +26,8 @@
 //!     // DMA cannot modify access control
 //! }
 //! ```
+
+use crate::Steal;
 
 /// Security/Privilege level for peripheral access
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
@@ -50,13 +52,25 @@ pub struct Accessctrl {
 }
 
 impl Accessctrl {
-    /// Create a new Accessctrl instance
+    /// Initialize the Accessctrl driver.
     ///
     /// # Arguments
     /// * `accessctrl` - The ACCESSCTRL peripheral from PAC
     #[inline]
-    pub fn new(accessctrl: pico_rs_pac::ACCESSCTRL) -> Self {
+    pub fn init(accessctrl: pico_rs_pac::ACCESSCTRL) -> Self {
         Self { accessctrl }
+    }
+
+    /// Obtain an Accessctrl handle without ownership checks.
+    ///
+    /// # Safety
+    ///
+    /// The caller must ensure the peripheral has been initialised
+    /// and that no data races occur (e.g. only called from one core
+    /// or properly synchronised).
+    #[inline]
+    pub unsafe fn steal() -> Steal<Self> {
+        Steal(Self::init(unsafe { pico_rs_pac::ACCESSCTRL::steal() }))
     }
 
     /// Get reference to the underlying register block

@@ -321,9 +321,9 @@ macro_rules! impl_spi {
                 /// ```
                 pub fn init(
                     spi: $SpiType,
-                    sck: SCK,
-                    tx: TX,
-                    rx: RX,
+                    mut sck: SCK,
+                    mut tx: TX,
+                    mut rx: RX,
                     baudrate: u32,
                     peri_clk: u32,
                 ) -> Self {
@@ -440,7 +440,7 @@ macro_rules! impl_spi {
                 /// * `data_bits` - Number of data bits (4-16)
                 /// * `mode` - SPI mode (clock polarity and phase)
                 /// * `format` - Frame format
-                pub fn set_format(&self, data_bits: u8, mode: Mode, format: FrameFormat) {
+                pub fn set_format(&mut self, data_bits: u8, mode: Mode, format: FrameFormat) {
                     let data_bits = data_bits.clamp(4, 16);
 
                     // Read current CR0 to preserve SCR
@@ -457,7 +457,7 @@ macro_rules! impl_spi {
                 }
 
                 /// Set the SPI mode
-                pub fn set_mode(&self, mode: Mode) {
+                pub fn set_mode(&mut self, mode: Mode) {
                     if mode.polarity() {
                         self.spi.sspcr0.set_spo();
                     } else {
@@ -473,7 +473,7 @@ macro_rules! impl_spi {
 
                 /// Enable/disable the SPI peripheral
                 #[inline]
-                pub fn set_enabled(&self, enable: bool) {
+                pub fn set_enabled(&mut self, enable: bool) {
                     if enable {
                         self.spi.sspcr1.set_sse();
                     } else {
@@ -828,13 +828,13 @@ macro_rules! impl_spi {
 
                 /// Enable loopback mode (TX output fed back to RX input)
                 #[inline]
-                pub fn enable_loopback(&self) {
+                pub fn enable_loopback(&mut self) {
                     self.spi.sspcr1.set_lbm();
                 }
 
                 /// Disable loopback mode
                 #[inline]
-                pub fn disable_loopback(&self) {
+                pub fn disable_loopback(&mut self) {
                     self.spi.sspcr1.clr_lbm();
                 }
             }
@@ -1001,10 +1001,10 @@ macro_rules! impl_spi {
                 /// * `peri_clk` - Peripheral clock frequency in Hz
                 pub fn init(
                     spi: $SpiType,
-                    sck: SCK,
-                    tx: TX,
-                    rx: RX,
-                    csn: CSN,
+                    mut sck: SCK,
+                    mut tx: TX,
+                    mut rx: RX,
+                    mut csn: CSN,
                     baudrate: u32,
                     peri_clk: u32,
                 ) -> Self {
@@ -1058,10 +1058,10 @@ macro_rules! impl_spi {
                 /// * `peri_clk` - Peripheral clock frequency in Hz
                 pub fn init_slave(
                     spi: $SpiType,
-                    sck: SCK,
-                    tx: TX,
-                    rx: RX,
-                    csn: CSN,
+                    mut sck: SCK,
+                    mut tx: TX,
+                    mut rx: RX,
+                    mut csn: CSN,
                     peri_clk: u32,
                 ) -> Self {
                     // Configure pins for SPI function
@@ -1154,7 +1154,7 @@ macro_rules! impl_spi {
                 }
 
                 /// Set the data format
-                pub fn set_format(&self, data_bits: u8, mode: Mode, format: FrameFormat) {
+                pub fn set_format(&mut self, data_bits: u8, mode: Mode, format: FrameFormat) {
                     let data_bits = data_bits.clamp(4, 16);
                     let scr = self.spi.sspcr0.scr();
                     let cr0 = (scr << 8)
@@ -1166,7 +1166,7 @@ macro_rules! impl_spi {
                 }
 
                 /// Set the SPI mode
-                pub fn set_mode(&self, mode: Mode) {
+                pub fn set_mode(&mut self, mode: Mode) {
                     if mode.polarity() {
                         self.spi.sspcr0.set_spo();
                     } else {
@@ -1182,7 +1182,7 @@ macro_rules! impl_spi {
 
                 /// Enable/disable the SPI peripheral
                 #[inline]
-                pub fn set_enabled(&self, enable: bool) {
+                pub fn set_enabled(&mut self, enable: bool) {
                     if enable {
                         self.spi.sspcr1.set_sse();
                     } else {
@@ -1495,13 +1495,13 @@ macro_rules! impl_spi {
 
                 /// Enable loopback mode (TX output fed back to RX input)
                 #[inline]
-                pub fn enable_loopback(&self) {
+                pub fn enable_loopback(&mut self) {
                     self.spi.sspcr1.set_lbm();
                 }
 
                 /// Disable loopback mode
                 #[inline]
-                pub fn disable_loopback(&self) {
+                pub fn disable_loopback(&mut self) {
                     self.spi.sspcr1.clr_lbm();
                 }
 

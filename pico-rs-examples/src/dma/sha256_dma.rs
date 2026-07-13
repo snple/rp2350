@@ -74,7 +74,7 @@ fn main() -> ! {
     //   ba7816bf 8f01cfea 414140de 5dae2223
     //   b00361a3 96177a9c b410ff61 f20015ad
 
-    let dma = Dma::new(dp.DMA);
+    let dma = Dma::init(dp.DMA);
 
     // ------------------------------------------------------------------
     // DMA: memory → SHA-256 WDATA register

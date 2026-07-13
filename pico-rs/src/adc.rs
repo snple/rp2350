@@ -37,7 +37,7 @@
 //! let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 //!
 //! // Create ADC controller
-//! let mut adc = Adc::new(dp.ADC);
+//! let mut adc = Adc::init(dp.ADC);
 //!
 //! // Configure pin for ADC - consumes the pin, returns AdcInput
 //! let input0 = pins.pin::<26>().into_adc_input();
@@ -53,7 +53,7 @@
 //! # Example (Temperature Sensor)
 //!
 //! ```ignore
-//! let mut adc = Adc::new(dp.ADC);
+//! let mut adc = Adc::init(dp.ADC);
 //!
 //! // Read temperature (no pin needed)
 //! let raw = adc.read_temp();
@@ -63,7 +63,7 @@
 //! # Example (Round-Robin with FIFO)
 //!
 //! ```ignore
-//! let mut adc = Adc::new(dp.ADC);
+//! let mut adc = Adc::init(dp.ADC);
 //!
 //! // Configure pins - ownership transferred
 //! let input0 = pins.pin::<26>().into_adc_input();
@@ -84,6 +84,7 @@
 //! }
 //! ```
 
+use crate::Steal;
 use crate::gpio::{Function, Pin, Pull};
 use crate::reset::Resettable;
 use pico_rs_pac::ADC;
@@ -209,7 +210,7 @@ macro_rules! impl_adc_pin {
         impl AdcPin for Pin<$pin_num> {
             type Input = AdcInput<$channel>;
 
-            fn into_adc_input(self) -> AdcInput<$channel> {
+            fn into_adc_input(mut self) -> AdcInput<$channel> {
                 // Set to NULL function (high-Z output for ADC)
                 self.set_function(Function::Null);
                 // Disable pull resistors
@@ -260,7 +261,7 @@ mod pin_impls {
 /// # Example
 ///
 /// ```ignore
-/// let mut adc = Adc::new(dp.ADC);
+/// let mut adc = Adc::init(dp.ADC);
 ///
 /// // Configure pin for ADC - ownership transferred
 /// let input = pins.pin::<26>().into_adc_input();
@@ -270,20 +271,19 @@ mod pin_impls {
 /// ```
 pub struct Adc {
     adc: ADC,
-    temp_enabled: bool,
 }
 
 impl Adc {
-    /// Create a new ADC controller.
+    /// Initialize the ADC controller.
     ///
     /// Initializes the ADC subsystem by taking it out of reset and enabling it.
     ///
     /// # Example
     ///
     /// ```ignore
-    /// let mut adc = Adc::new(dp.ADC);
+    /// let mut adc = Adc::init(dp.ADC);
     /// ```
-    pub fn new(adc: ADC) -> Self {
+    pub fn init(adc: ADC) -> Self {
         // Reset peripheral to ensure clean register state
         <pico_rs_pac::ADC as Resettable>::init();
 
@@ -295,10 +295,20 @@ impl Adc {
             core::hint::spin_loop();
         }
 
-        Self {
-            adc,
-            temp_enabled: false,
-        }
+        Self { adc }
+    }
+
+    /// Obtain an Adc handle without ownership checks.
+    ///
+    /// # Safety
+    ///
+    /// The caller must ensure [`Adc::init()`] has been called first
+    /// and that no data races occur.
+    #[inline]
+    pub unsafe fn steal() -> Steal<Self> {
+        Steal(Self {
+            adc: unsafe { ADC::steal() },
+        })
     }
 
     /// Get reference to the underlying register block.
@@ -351,7 +361,8 @@ impl Adc {
 
     /// Read temperature sensor.
     ///
-    /// Enables the temperature sensor if not already enabled.
+    /// Enables the temperature sensor for the duration of this reading,
+    /// then restores the previous enable state.
     ///
     /// # Example
     ///
@@ -360,29 +371,13 @@ impl Adc {
     /// let temp_c = Adc::convert_temp_to_celsius(raw);
     /// ```
     pub fn read_temp(&mut self) -> u16 {
-        // Enable temperature sensor if needed
-        if !self.temp_enabled {
-            self.adc.cs.set_ts_en();
-            self.temp_enabled = true;
-
-            // Small delay for sensor to stabilize
-            for _ in 0..100 {
-                core::hint::spin_loop();
-            }
+        let was_enabled = self.adc.cs.ts_en();
+        self.adc.cs.set_ts_en();
+        let result = self.read_channel(TEMPERATURE_CHANNEL);
+        if !was_enabled {
+            self.adc.cs.clr_ts_en();
         }
-
-        // Select temperature channel
-        self.adc.cs.write_ainsel(TEMPERATURE_CHANNEL as u32);
-
-        // Start conversion
-        self.adc.cs.trigger_start_once();
-
-        // Wait for completion
-        while !self.adc.cs.ready() {
-            core::hint::spin_loop();
-        }
-
-        self.adc.result.result() as u16
+        result
     }
 
     /// Start a conversion on the specified input (non-blocking).
@@ -444,20 +439,18 @@ impl Adc {
     #[inline]
     pub fn enable_temp_sensor(&mut self) {
         self.adc.cs.set_ts_en();
-        self.temp_enabled = true;
     }
 
     /// Disable the on-chip temperature sensor.
     #[inline]
     pub fn disable_temp_sensor(&mut self) {
         self.adc.cs.clr_ts_en();
-        self.temp_enabled = false;
     }
 
     /// Check if temperature sensor is enabled.
     #[inline]
     pub fn is_temp_sensor_enabled(&self) -> bool {
-        self.temp_enabled
+        self.adc.cs.ts_en()
     }
 
     // ========================================================================
@@ -778,7 +771,6 @@ impl Adc {
 impl core::fmt::Debug for Adc {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_struct("Adc")
-            .field("temp_enabled", &self.temp_enabled)
             .field("selected_channel", &self.selected_channel())
             .field("is_ready", &self.is_ready())
             .finish()

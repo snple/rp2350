@@ -267,7 +267,7 @@ macro_rules! impl_i2c {
                 ///     150_000_000,  // System clock
                 /// );
                 /// ```
-                pub fn init(i2c: $I2cType, sda: SDA, scl: SCL, baudrate: u32, clocks: &Clocks) -> Self {
+                pub fn init(i2c: $I2cType, mut sda: SDA, mut scl: SCL, baudrate: u32, clocks: &Clocks) -> Self {
                     // Configure pins for I2C function (includes pull-up)
                     sda.[<configure_i2c $i2c_num _sda>]();
                     scl.[<configure_i2c $i2c_num _scl>]();
@@ -329,7 +329,7 @@ macro_rules! impl_i2c {
                 ///     150_000_000,  // System clock
                 /// );
                 /// ```
-                pub fn init_slave(i2c: $I2cType, sda: SDA, scl: SCL, addr: u8, sys_clk: u32) -> Self {
+                pub fn init_slave(i2c: $I2cType, mut sda: SDA, mut scl: SCL, addr: u8, sys_clk: u32) -> Self {
                     // Configure pins for I2C function
                     sda.[<configure_i2c $i2c_num _sda>]();
                     scl.[<configure_i2c $i2c_num _scl>]();
@@ -383,7 +383,7 @@ macro_rules! impl_i2c {
                 /// * `scl` - SCL pin (must implement the appropriate SCL trait)
                 /// * `addr` - 10-bit slave address
                 /// * `sys_clk` - System clock frequency in Hz
-                pub fn init_slave_10bit(i2c: $I2cType, sda: SDA, scl: SCL, addr: u16, sys_clk: u32) -> Self {
+                pub fn init_slave_10bit(i2c: $I2cType, mut sda: SDA, mut scl: SCL, addr: u16, sys_clk: u32) -> Self {
                     // Configure pins for I2C function
                     sda.[<configure_i2c $i2c_num _sda>]();
                     scl.[<configure_i2c $i2c_num _scl>]();
@@ -502,14 +502,22 @@ macro_rules! impl_i2c {
                     self.i2c.ic_enable.set_enable();
                 }
 
-                /// Enable/disable I2C peripheral.
+                /// Enable the I2C peripheral.
                 #[inline]
-                pub fn set_enabled(&self, enable: bool) {
-                    if enable {
-                        self.i2c.ic_enable.set_enable();
-                    } else {
-                        self.i2c.ic_enable.clr_enable();
-                    }
+                pub fn enable(&mut self) {
+                    self.i2c.ic_enable.set_enable();
+                }
+
+                /// Disable the I2C peripheral.
+                #[inline]
+                pub fn disable(&mut self) {
+                    self.i2c.ic_enable.clr_enable();
+                }
+
+                /// Check if I2C peripheral is enabled.
+                #[inline]
+                pub fn enabled(&self) -> bool {
+                    self.i2c.ic_enable.enable()
                 }
 
                 /// Set the target address for master mode transactions.

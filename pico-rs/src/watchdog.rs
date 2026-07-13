@@ -16,10 +16,10 @@
 //!
 //! ```ignore
 //! use pico_rs::watchdog::Watchdog;
-//! use pico_rs_pac::WATCHDOG;
+//! use pico_rs::Peripherals;
 //!
-//! let watchdog_pac = unsafe { WATCHDOG::steal() };
-//! let wd = Watchdog::new(watchdog_pac);
+//! let dp = Peripherals::take().unwrap();
+//! let wd = Watchdog::init(dp.WATCHDOG);
 //!
 //! // Check reset reason
 //! let reason = wd.reset_reason();
@@ -38,15 +38,16 @@
 //!
 //! ```ignore
 //! use pico_rs::watchdog::Watchdog;
-//! use pico_rs_pac::WATCHDOG;
+//! use pico_rs::Peripherals;
 //!
-//! let watchdog_pac = unsafe { WATCHDOG::steal() };
-//! let wd = Watchdog::new(watchdog_pac);
+//! let dp = Peripherals::take().unwrap();
+//! let wd = Watchdog::init(dp.WATCHDOG);
 //!
 //! // Reboot into regular flash path after 100ms
 //! wd.reboot(100);
 //! ```
 
+use crate::Steal;
 use pico_rs_pac::psm::Wdsel;
 use pico_rs_pac::{PSM, WATCHDOG};
 
@@ -112,13 +113,24 @@ pub struct Watchdog {
 }
 
 impl Watchdog {
-    /// Create a new Watchdog instance without initialization
+    /// Initialize the Watchdog driver.
     ///
     /// # Arguments
     /// * `watchdog` - The WATCHDOG peripheral from PAC
     #[inline]
-    pub fn new(watchdog: pico_rs_pac::WATCHDOG) -> Self {
+    pub fn init(watchdog: pico_rs_pac::WATCHDOG) -> Self {
         Self { watchdog }
+    }
+
+    /// Obtain a Watchdog handle without ownership checks.
+    ///
+    /// # Safety
+    ///
+    /// The caller must ensure the peripheral has been initialised
+    /// and that no data races occur.
+    #[inline]
+    pub unsafe fn steal() -> Steal<Self> {
+        Steal(Self::init(unsafe { pico_rs_pac::WATCHDOG::steal() }))
     }
 
     /// Get reference to the underlying register block
@@ -148,7 +160,7 @@ impl Watchdog {
     ///
     /// # Arguments
     /// * `timeout_us` - Timeout in microseconds (max 0x7FFFFF = ~8.3s)
-    pub fn start(&self, timeout_us: u32) {
+    pub fn start(&mut self, timeout_us: u32) {
         self.watchdog.load.write_load(timeout_us);
         self.watchdog.ctrl.set_enable();
     }
@@ -170,7 +182,7 @@ impl Watchdog {
 
     /// Disable the watchdog
     #[inline]
-    pub fn disable(&self) {
+    pub fn disable(&mut self) {
         self.watchdog.ctrl.clr_enable();
     }
 
@@ -194,7 +206,7 @@ impl Watchdog {
 
     /// Trigger an immediate watchdog reset
     #[inline]
-    pub fn force_reset(&self) {
+    pub fn force_reset(&mut self) {
         self.watchdog.ctrl.trigger_trigger();
     }
 
@@ -204,7 +216,7 @@ impl Watchdog {
 
     /// Pause watchdog when processor 0 is in debug mode
     #[inline]
-    pub fn pause_on_debug0(&self, pause: bool) {
+    pub fn pause_on_debug0(&mut self, pause: bool) {
         if pause {
             self.watchdog.ctrl.set_pause_dbg0();
         } else {
@@ -214,7 +226,7 @@ impl Watchdog {
 
     /// Pause watchdog when processor 1 is in debug mode
     #[inline]
-    pub fn pause_on_debug1(&self, pause: bool) {
+    pub fn pause_on_debug1(&mut self, pause: bool) {
         if pause {
             self.watchdog.ctrl.set_pause_dbg1();
         } else {
@@ -224,7 +236,7 @@ impl Watchdog {
 
     /// Pause watchdog when JTAG is accessing the bus fabric
     #[inline]
-    pub fn pause_on_jtag(&self, pause: bool) {
+    pub fn pause_on_jtag(&mut self, pause: bool) {
         if pause {
             self.watchdog.ctrl.set_pause_jtag();
         } else {
@@ -233,14 +245,14 @@ impl Watchdog {
     }
 
     /// Enable all debug pausing (convenience method)
-    pub fn enable_debug_pause(&self) {
+    pub fn enable_debug_pause(&mut self) {
         self.pause_on_debug0(true);
         self.pause_on_debug1(true);
         self.pause_on_jtag(true);
     }
 
     /// Disable all debug pausing (convenience method)
-    pub fn disable_debug_pause(&self) {
+    pub fn disable_debug_pause(&mut self) {
         self.pause_on_debug0(false);
         self.pause_on_debug1(false);
         self.pause_on_jtag(false);
@@ -288,7 +300,7 @@ impl Watchdog {
     /// Distinguishes between a reset from the regular watchdog timer
     /// versus a reboot initiated by `reboot()` or `reboot_to_address()`.
     #[inline]
-    pub fn enable_caused_reboot(&self) -> bool {
+    pub fn enable_caused_reboot(&mut self) -> bool {
         self.watchdog.reason.read_bits() != 0
             && self.watchdog.scratch4.read_bits() == WATCHDOG_NON_REBOOT_MAGIC
     }
@@ -317,7 +329,7 @@ impl Watchdog {
     /// Write a scratch register (0-7)
     ///
     /// Scratch registers persist through soft resets.
-    pub fn write_scratch(&self, index: usize, value: u32) {
+    pub fn write_scratch(&mut self, index: usize, value: u32) {
         match index {
             0 => self.watchdog.scratch0.write_bits(value),
             1 => self.watchdog.scratch1.write_bits(value),
@@ -339,7 +351,7 @@ impl Watchdog {
 
     /// Write scratch register 0
     #[inline]
-    pub fn set_scratch0(&self, value: u32) {
+    pub fn set_scratch0(&mut self, value: u32) {
         self.watchdog.scratch0.write_bits(value);
     }
 
@@ -351,7 +363,7 @@ impl Watchdog {
 
     /// Write scratch register 1
     #[inline]
-    pub fn set_scratch1(&self, value: u32) {
+    pub fn set_scratch1(&mut self, value: u32) {
         self.watchdog.scratch1.write_bits(value);
     }
 
@@ -363,7 +375,7 @@ impl Watchdog {
 
     /// Write scratch register 2
     #[inline]
-    pub fn set_scratch2(&self, value: u32) {
+    pub fn set_scratch2(&mut self, value: u32) {
         self.watchdog.scratch2.write_bits(value);
     }
 
@@ -375,7 +387,7 @@ impl Watchdog {
 
     /// Write scratch register 3
     #[inline]
-    pub fn set_scratch3(&self, value: u32) {
+    pub fn set_scratch3(&mut self, value: u32) {
         self.watchdog.scratch3.write_bits(value);
     }
 
@@ -387,7 +399,7 @@ impl Watchdog {
 
     /// Write scratch register 4
     #[inline]
-    pub fn set_scratch4(&self, value: u32) {
+    pub fn set_scratch4(&mut self, value: u32) {
         self.watchdog.scratch4.write_bits(value);
     }
 
@@ -399,7 +411,7 @@ impl Watchdog {
 
     /// Write scratch register 5
     #[inline]
-    pub fn set_scratch5(&self, value: u32) {
+    pub fn set_scratch5(&mut self, value: u32) {
         self.watchdog.scratch5.write_bits(value);
     }
 
@@ -411,7 +423,7 @@ impl Watchdog {
 
     /// Write scratch register 6
     #[inline]
-    pub fn set_scratch6(&self, value: u32) {
+    pub fn set_scratch6(&mut self, value: u32) {
         self.watchdog.scratch6.write_bits(value);
     }
 
@@ -423,7 +435,7 @@ impl Watchdog {
 
     /// Write scratch register 7
     #[inline]
-    pub fn set_scratch7(&self, value: u32) {
+    pub fn set_scratch7(&mut self, value: u32) {
         self.watchdog.scratch7.write_bits(value);
     }
 

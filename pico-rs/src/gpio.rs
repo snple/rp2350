@@ -552,7 +552,7 @@ macro_rules! impl_pin {
                 /// pin.set_function(Function::Uart);
                 /// ```
                 #[inline]
-                pub fn set_function(&self, func: Function) {
+                pub fn set_function(&mut self, func: Function) {
                     self.io_bank().[<gpio $n _ctrl>].write_funcsel(func as u32);
                 }
 
@@ -564,31 +564,31 @@ macro_rules! impl_pin {
 
                 /// Set function to SIO (direct CPU control).
                 #[inline]
-                pub fn set_function_sio(&self) {
+                pub fn set_function_sio(&mut self) {
                     self.set_function(Function::Sio);
                 }
 
                 /// Set function to PIO0.
                 #[inline]
-                pub fn set_function_pio0(&self) {
+                pub fn set_function_pio0(&mut self) {
                     self.set_function(Function::Pio0);
                 }
 
                 /// Set function to PIO1.
                 #[inline]
-                pub fn set_function_pio1(&self) {
+                pub fn set_function_pio1(&mut self) {
                     self.set_function(Function::Pio1);
                 }
 
                 /// Set function to PIO2.
                 #[inline]
-                pub fn set_function_pio2(&self) {
+                pub fn set_function_pio2(&mut self) {
                     self.set_function(Function::Pio2);
                 }
 
                 /// Set function to NULL (disabled).
                 #[inline]
-                pub fn set_function_null(&self) {
+                pub fn set_function_null(&mut self) {
                     self.set_function(Function::Null);
                 }
 
@@ -605,7 +605,7 @@ macro_rules! impl_pin {
                 ///
                 /// Call this before using a pin for the first time.
                 #[inline]
-                pub fn init_pad(&self) {
+                pub fn init_pad(&mut self) {
                     let pad = &self.pads_bank().[<gpio $n>];
                     pad.clr_iso();  // Remove pad isolation
                     pad.set_ie();   // Enable input
@@ -624,7 +624,7 @@ macro_rules! impl_pin {
                 /// button.set_pull(Pull::Up);
                 /// ```
                 #[inline]
-                pub fn set_pull(&self, pull: Pull) {
+                pub fn set_pull(&mut self, pull: Pull) {
                     let pad = &self.pads_bank().[<gpio $n>];
                     match pull {
                         Pull::None => {
@@ -644,19 +644,19 @@ macro_rules! impl_pin {
 
                 /// Enable pull-up resistor.
                 #[inline]
-                pub fn set_pull_up(&self) {
+                pub fn set_pull_up(&mut self) {
                     self.set_pull(Pull::Up);
                 }
 
                 /// Enable pull-down resistor.
                 #[inline]
-                pub fn set_pull_down(&self) {
+                pub fn set_pull_down(&mut self) {
                     self.set_pull(Pull::Down);
                 }
 
                 /// Disable pull resistor.
                 #[inline]
-                pub fn set_pull_none(&self) {
+                pub fn set_pull_none(&mut self) {
                     self.set_pull(Pull::None);
                 }
 
@@ -666,7 +666,7 @@ macro_rules! impl_pin {
                 ///
                 /// * `strength` - Drive current capability
                 #[inline]
-                pub fn set_drive_strength(&self, strength: DriveStrength) {
+                pub fn set_drive_strength(&mut self, strength: DriveStrength) {
                     self.pads_bank().[<gpio $n>].write_drive(strength as u32);
                 }
 
@@ -676,7 +676,7 @@ macro_rules! impl_pin {
                 ///
                 /// * `rate` - Slew rate (Slow or Fast)
                 #[inline]
-                pub fn set_slew_rate(&self, rate: SlewRate) {
+                pub fn set_slew_rate(&mut self, rate: SlewRate) {
                     let pad = &self.pads_bank().[<gpio $n>];
                     match rate {
                         SlewRate::Slow => pad.clr_slewfast(),
@@ -689,7 +689,7 @@ macro_rules! impl_pin {
                 /// Schmitt trigger adds hysteresis to the input, improving
                 /// noise immunity for slow or noisy signals.
                 #[inline]
-                pub fn set_schmitt(&self, enable: bool) {
+                pub fn set_schmitt(&mut self, enable: bool) {
                     let pad = &self.pads_bank().[<gpio $n>];
                     if enable {
                         pad.set_schmitt();
@@ -700,13 +700,13 @@ macro_rules! impl_pin {
 
                 /// Enable input receiver.
                 #[inline]
-                pub fn enable_input(&self) {
+                pub fn enable_input(&mut self) {
                     self.pads_bank().[<gpio $n>].set_ie();
                 }
 
                 /// Disable input receiver.
                 #[inline]
-                pub fn disable_input(&self) {
+                pub fn disable_input(&mut self) {
                     self.pads_bank().[<gpio $n>].clr_ie();
                 }
 
@@ -714,7 +714,7 @@ macro_rules! impl_pin {
                 ///
                 /// When disabled, the output driver is in high-impedance state.
                 #[inline]
-                pub fn set_output_disable(&self, disable: bool) {
+                pub fn set_output_disable(&mut self, disable: bool) {
                     let pad = &self.pads_bank().[<gpio $n>];
                     if disable {
                         pad.set_od();
@@ -729,25 +729,25 @@ macro_rules! impl_pin {
 
                 /// Set output override.
                 #[inline]
-                pub fn set_output_override(&self, ov: OutputOverride) {
+                pub fn set_output_override(&mut self, ov: OutputOverride) {
                     self.io_bank().[<gpio $n _ctrl>].write_outover(ov as u32);
                 }
 
                 /// Set output enable override.
                 #[inline]
-                pub fn set_output_enable_override(&self, ov: OutputEnableOverride) {
+                pub fn set_output_enable_override(&mut self, ov: OutputEnableOverride) {
                     self.io_bank().[<gpio $n _ctrl>].write_oeover(ov as u32);
                 }
 
                 /// Set input override.
                 #[inline]
-                pub fn set_input_override(&self, ov: InputOverride) {
+                pub fn set_input_override(&mut self, ov: InputOverride) {
                     self.io_bank().[<gpio $n _ctrl>].write_inover(ov as u32);
                 }
 
                 /// Set IRQ override.
                 #[inline]
-                pub fn set_irq_override(&self, ov: IrqOverride) {
+                pub fn set_irq_override(&mut self, ov: IrqOverride) {
                     self.io_bank().[<gpio $n _ctrl>].write_irqover(ov as u32);
                 }
 
@@ -759,7 +759,7 @@ macro_rules! impl_pin {
                 ///
                 /// Uses the atomic SET register for interrupt safety.
                 #[inline]
-                pub fn set_direction_out(&self) {
+                pub fn set_direction_out(&mut self) {
                     self.sio().gpio_oe_set.write_gpio_oe_set(Self::MASK);
                 }
 
@@ -767,7 +767,7 @@ macro_rules! impl_pin {
                 ///
                 /// Uses the atomic CLR register for interrupt safety.
                 #[inline]
-                pub fn set_direction_in(&self) {
+                pub fn set_direction_in(&mut self) {
                     self.sio().gpio_oe_clr.write_gpio_oe_clr(Self::MASK);
                 }
 
@@ -857,7 +857,7 @@ macro_rules! impl_pin {
                 /// led.into_output().set_high();
                 /// ```
                 #[inline]
-                pub fn into_output(&self) -> &Self {
+                pub fn into_output(&mut self) -> &Self {
                     self.init_pad();
                     self.set_function_sio();
                     self.set_direction_out();
@@ -871,7 +871,7 @@ macro_rules! impl_pin {
                 /// 2. Sets function to SIO
                 /// 3. Sets direction to input
                 #[inline]
-                pub fn into_input(&self) -> &Self {
+                pub fn into_input(&mut self) -> &Self {
                     self.init_pad();
                     self.set_function_sio();
                     self.set_direction_in();
@@ -882,7 +882,7 @@ macro_rules! impl_pin {
                 ///
                 /// Suitable for active-low buttons and open-drain signals.
                 #[inline]
-                pub fn into_input_pullup(&self) -> &Self {
+                pub fn into_input_pullup(&mut self) -> &Self {
                     self.into_input();
                     self.set_pull_up();
                     self
@@ -892,7 +892,7 @@ macro_rules! impl_pin {
                 ///
                 /// Suitable for active-high buttons.
                 #[inline]
-                pub fn into_input_pulldown(&self) -> &Self {
+                pub fn into_input_pulldown(&mut self) -> &Self {
                     self.into_input();
                     self.set_pull_down();
                     self
@@ -900,7 +900,7 @@ macro_rules! impl_pin {
 
                 /// Configure as PIO0 pin.
                 #[inline]
-                pub fn into_pio0(&self) -> &Self {
+                pub fn into_pio0(&mut self) -> &Self {
                     self.init_pad();
                     self.set_function_pio0();
                     self
@@ -908,7 +908,7 @@ macro_rules! impl_pin {
 
                 /// Configure as PIO1 pin.
                 #[inline]
-                pub fn into_pio1(&self) -> &Self {
+                pub fn into_pio1(&mut self) -> &Self {
                     self.init_pad();
                     self.set_function_pio1();
                     self
@@ -916,7 +916,7 @@ macro_rules! impl_pin {
 
                 /// Configure as PIO2 pin.
                 #[inline]
-                pub fn into_pio2(&self) -> &Self {
+                pub fn into_pio2(&mut self) -> &Self {
                     self.init_pad();
                     self.set_function_pio2();
                     self
@@ -924,7 +924,7 @@ macro_rules! impl_pin {
 
                 /// Configure as PWM pin.
                 #[inline]
-                pub fn into_pwm(&self) -> &Self {
+                pub fn into_pwm(&mut self) -> &Self {
                     self.init_pad();
                     self.set_function(Function::Pwm);
                     self
@@ -934,7 +934,7 @@ macro_rules! impl_pin {
                 ///
                 /// Also enables pull-up (required for I2C).
                 #[inline]
-                pub fn into_i2c(&self) -> &Self {
+                pub fn into_i2c(&mut self) -> &Self {
                     self.init_pad();
                     self.set_function(Function::I2c);
                     self.set_pull_up();
@@ -943,7 +943,7 @@ macro_rules! impl_pin {
 
                 /// Configure as SPI pin.
                 #[inline]
-                pub fn into_spi(&self) -> &Self {
+                pub fn into_spi(&mut self) -> &Self {
                     self.init_pad();
                     self.set_function(Function::Spi);
                     self
@@ -951,7 +951,7 @@ macro_rules! impl_pin {
 
                 /// Configure as UART pin.
                 #[inline]
-                pub fn into_uart(&self) -> &Self {
+                pub fn into_uart(&mut self) -> &Self {
                     self.init_pad();
                     self.set_function(Function::Uart);
                     self
@@ -1320,7 +1320,7 @@ macro_rules! impl_pin {
 
                 // Function selection (same as low pins)
                 #[inline]
-                pub fn set_function(&self, func: Function) {
+                pub fn set_function(&mut self, func: Function) {
                     self.io_bank().[<gpio $n _ctrl>].write_funcsel(func as u32);
                 }
 
@@ -1330,33 +1330,33 @@ macro_rules! impl_pin {
                 }
 
                 #[inline]
-                pub fn set_function_sio(&self) {
+                pub fn set_function_sio(&mut self) {
                     self.set_function(Function::Sio);
                 }
 
                 #[inline]
-                pub fn set_function_pio0(&self) {
+                pub fn set_function_pio0(&mut self) {
                     self.set_function(Function::Pio0);
                 }
 
                 #[inline]
-                pub fn set_function_pio1(&self) {
+                pub fn set_function_pio1(&mut self) {
                     self.set_function(Function::Pio1);
                 }
 
                 #[inline]
-                pub fn set_function_pio2(&self) {
+                pub fn set_function_pio2(&mut self) {
                     self.set_function(Function::Pio2);
                 }
 
                 #[inline]
-                pub fn set_function_null(&self) {
+                pub fn set_function_null(&mut self) {
                     self.set_function(Function::Null);
                 }
 
                 // Pad configuration (same as low pins)
                 #[inline]
-                pub fn init_pad(&self) {
+                pub fn init_pad(&mut self) {
                     let pad = &self.pads_bank().[<gpio $n>];
                     pad.clr_iso();
                     pad.set_ie();
@@ -1364,7 +1364,7 @@ macro_rules! impl_pin {
                 }
 
                 #[inline]
-                pub fn set_pull(&self, pull: Pull) {
+                pub fn set_pull(&mut self, pull: Pull) {
                     let pad = &self.pads_bank().[<gpio $n>];
                     match pull {
                         Pull::None => {
@@ -1383,27 +1383,27 @@ macro_rules! impl_pin {
                 }
 
                 #[inline]
-                pub fn set_pull_up(&self) {
+                pub fn set_pull_up(&mut self) {
                     self.set_pull(Pull::Up);
                 }
 
                 #[inline]
-                pub fn set_pull_down(&self) {
+                pub fn set_pull_down(&mut self) {
                     self.set_pull(Pull::Down);
                 }
 
                 #[inline]
-                pub fn set_pull_none(&self) {
+                pub fn set_pull_none(&mut self) {
                     self.set_pull(Pull::None);
                 }
 
                 #[inline]
-                pub fn set_drive_strength(&self, strength: DriveStrength) {
+                pub fn set_drive_strength(&mut self, strength: DriveStrength) {
                     self.pads_bank().[<gpio $n>].write_drive(strength as u32);
                 }
 
                 #[inline]
-                pub fn set_slew_rate(&self, rate: SlewRate) {
+                pub fn set_slew_rate(&mut self, rate: SlewRate) {
                     let pad = &self.pads_bank().[<gpio $n>];
                     match rate {
                         SlewRate::Slow => pad.clr_slewfast(),
@@ -1412,7 +1412,7 @@ macro_rules! impl_pin {
                 }
 
                 #[inline]
-                pub fn set_schmitt(&self, enable: bool) {
+                pub fn set_schmitt(&mut self, enable: bool) {
                     let pad = &self.pads_bank().[<gpio $n>];
                     if enable {
                         pad.set_schmitt();
@@ -1422,17 +1422,17 @@ macro_rules! impl_pin {
                 }
 
                 #[inline]
-                pub fn enable_input(&self) {
+                pub fn enable_input(&mut self) {
                     self.pads_bank().[<gpio $n>].set_ie();
                 }
 
                 #[inline]
-                pub fn disable_input(&self) {
+                pub fn disable_input(&mut self) {
                     self.pads_bank().[<gpio $n>].clr_ie();
                 }
 
                 #[inline]
-                pub fn set_output_disable(&self, disable: bool) {
+                pub fn set_output_disable(&mut self, disable: bool) {
                     let pad = &self.pads_bank().[<gpio $n>];
                     if disable {
                         pad.set_od();
@@ -1443,33 +1443,33 @@ macro_rules! impl_pin {
 
                 // Control overrides (same as low pins)
                 #[inline]
-                pub fn set_output_override(&self, ov: OutputOverride) {
+                pub fn set_output_override(&mut self, ov: OutputOverride) {
                     self.io_bank().[<gpio $n _ctrl>].write_outover(ov as u32);
                 }
 
                 #[inline]
-                pub fn set_output_enable_override(&self, ov: OutputEnableOverride) {
+                pub fn set_output_enable_override(&mut self, ov: OutputEnableOverride) {
                     self.io_bank().[<gpio $n _ctrl>].write_oeover(ov as u32);
                 }
 
                 #[inline]
-                pub fn set_input_override(&self, ov: InputOverride) {
+                pub fn set_input_override(&mut self, ov: InputOverride) {
                     self.io_bank().[<gpio $n _ctrl>].write_inover(ov as u32);
                 }
 
                 #[inline]
-                pub fn set_irq_override(&self, ov: IrqOverride) {
+                pub fn set_irq_override(&mut self, ov: IrqOverride) {
                     self.io_bank().[<gpio $n _ctrl>].write_irqover(ov as u32);
                 }
 
                 // SIO operations - use GPIO_HI_* registers
                 #[inline]
-                pub fn set_direction_out(&self) {
+                pub fn set_direction_out(&mut self) {
                     self.sio().gpio_hi_oe_set.write_gpio(Self::MASK);
                 }
 
                 #[inline]
-                pub fn set_direction_in(&self) {
+                pub fn set_direction_in(&mut self) {
                     self.sio().gpio_hi_oe_clr.write_gpio(Self::MASK);
                 }
 
@@ -1514,7 +1514,7 @@ macro_rules! impl_pin {
 
                 // Convenience methods (same as low pins)
                 #[inline]
-                pub fn into_output(&self) -> &Self {
+                pub fn into_output(&mut self) -> &Self {
                     self.init_pad();
                     self.set_function_sio();
                     self.set_direction_out();
@@ -1522,7 +1522,7 @@ macro_rules! impl_pin {
                 }
 
                 #[inline]
-                pub fn into_input(&self) -> &Self {
+                pub fn into_input(&mut self) -> &Self {
                     self.init_pad();
                     self.set_function_sio();
                     self.set_direction_in();
@@ -1530,49 +1530,49 @@ macro_rules! impl_pin {
                 }
 
                 #[inline]
-                pub fn into_input_pullup(&self) -> &Self {
+                pub fn into_input_pullup(&mut self) -> &Self {
                     self.into_input();
                     self.set_pull_up();
                     self
                 }
 
                 #[inline]
-                pub fn into_input_pulldown(&self) -> &Self {
+                pub fn into_input_pulldown(&mut self) -> &Self {
                     self.into_input();
                     self.set_pull_down();
                     self
                 }
 
                 #[inline]
-                pub fn into_pio0(&self) -> &Self {
+                pub fn into_pio0(&mut self) -> &Self {
                     self.init_pad();
                     self.set_function_pio0();
                     self
                 }
 
                 #[inline]
-                pub fn into_pio1(&self) -> &Self {
+                pub fn into_pio1(&mut self) -> &Self {
                     self.init_pad();
                     self.set_function_pio1();
                     self
                 }
 
                 #[inline]
-                pub fn into_pio2(&self) -> &Self {
+                pub fn into_pio2(&mut self) -> &Self {
                     self.init_pad();
                     self.set_function_pio2();
                     self
                 }
 
                 #[inline]
-                pub fn into_pwm(&self) -> &Self {
+                pub fn into_pwm(&mut self) -> &Self {
                     self.init_pad();
                     self.set_function(Function::Pwm);
                     self
                 }
 
                 #[inline]
-                pub fn into_i2c(&self) -> &Self {
+                pub fn into_i2c(&mut self) -> &Self {
                     self.init_pad();
                     self.set_function(Function::I2c);
                     self.set_pull_up();
@@ -1580,14 +1580,14 @@ macro_rules! impl_pin {
                 }
 
                 #[inline]
-                pub fn into_spi(&self) -> &Self {
+                pub fn into_spi(&mut self) -> &Self {
                     self.init_pad();
                     self.set_function(Function::Spi);
                     self
                 }
 
                 #[inline]
-                pub fn into_uart(&self) -> &Self {
+                pub fn into_uart(&mut self) -> &Self {
                     self.init_pad();
                     self.set_function(Function::Uart);
                     self

@@ -36,12 +36,12 @@
 //!
 //! # Usage
 //!
-//! The DCP is a shared resource. Obtain a handle via [`Dcp::steal()`]:
+//! Obtain a handle via [`Dcp::init()`] or [`Dcp::steal()`] (ISR context):
 //!
 //! ```ignore
 //! use pico_rs::dcp::Dcp;
 //!
-//! let dcp = unsafe { Dcp::steal() };
+//! let dcp = Dcp::init();
 //! let sum = dcp.fadd(1.0f32, 2.0f32);
 //! let quotient = dcp.ddiv(1.0f64, 3.0f64);
 //! ```
@@ -72,13 +72,23 @@ use crate::Steal;
 
 /// Handle to the RP2350 Double-precision Co-Processor (DCP).
 ///
-/// The DCP is a shared resource — only one handle should exist. Obtain it
-/// through [`Dcp::steal()`].
+/// Obtain a handle through [`Dcp::init()`] (main context) or
+/// [`Dcp::steal()`] (ISR context).
 pub struct Dcp {
     _private: (),
 }
 
 impl Dcp {
+    /// Create a DCP handle.
+    ///
+    /// The DCP is enabled in CPACR by the `#[main]` macro during startup.
+    /// This constructor is safe — the DCP has no memory-mapped registers
+    /// that need resetting.
+    #[inline]
+    pub fn init() -> Self {
+        Dcp { _private: () }
+    }
+
     /// Obtain a DCP handle without runtime checks.
     ///
     /// # Safety
@@ -87,7 +97,7 @@ impl Dcp {
     /// once at startup before any interrupts are enabled.
     #[inline]
     pub unsafe fn steal() -> Steal<Dcp> {
-        Steal(Dcp { _private: () })
+        Steal(Dcp::init())
     }
 }
 

@@ -101,12 +101,12 @@ use core::sync::atomic::{AtomicI32, AtomicU32, Ordering};
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::clocks::{ClockBuilder};
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::main;
 use pico_rs::multicore::{self, Fifo, Multicore, Stack};
 use pico_rs::pac::Peripherals;
 use pico_rs::sio::Spinlock;
-use pico_rs::timer::Timer0;// ============================================================================
+use pico_rs::timer::Timer0; // ============================================================================
 // Core 1 栈 — 静态分配, 8 字节对齐
 // ============================================================================
 
@@ -160,7 +160,7 @@ const MSG_STOP: u32 = 0xFFFF_FFFF;
 ///
 /// 注意: **不使用 defmt 日志**, 所有输出通过 FIFO 发回 Core 0
 fn core1_main() -> ! {
-    let fifo = Fifo::steal();
+    let fifo = unsafe { Fifo::steal() };
 
     // --- 握手: 等待 Core 0 的启动确认 ---
     let handshake = fifo.read();
@@ -223,10 +223,10 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     info!("[Core 0] Preparing to launch Core 1...");
 
-    let fifo = Fifo::steal();
+    let fifo = unsafe { Fifo::steal() };
     fifo.drain(); // 清空残留数据
 
-    let mut mc = Multicore::new(dp.PSM, dp.PPB);
+    let mut mc = Multicore::init(dp.PSM, dp.PPB);
     mc.reset_core1(); // 确保 Core 1 处于已知状态
 
     // SAFETY: CORE1_STACK 只在此处使用, core1_main 永不返回

@@ -21,7 +21,7 @@
 //!
 //! // Get POWMAN peripheral
 //! let powman_pac = unsafe { POWMAN::steal() };
-//! let powman = Powman::new(powman_pac);
+//! let powman = Powman::init(powman_pac);
 //!
 //! // Use XOSC as timer source
 //! powman.timer_set_1khz_tick_source_xosc(12_000_000);
@@ -37,6 +37,8 @@
 //! ```
 
 use pico_rs_pac::POWMAN;
+
+use crate::Steal;
 
 /// Password required for POWMAN writes (upper 16 bits)
 pub const POWMAN_PASSWORD: u32 = 0x5AFE_0000;
@@ -171,13 +173,24 @@ pub struct Powman {
 }
 
 impl Powman {
-    /// Create a new Powman instance
+    /// Initialize the Powman driver.
     ///
     /// # Arguments
     /// * `powman` - The POWMAN peripheral from PAC
     #[inline]
-    pub fn new(powman: POWMAN) -> Self {
+    pub fn init(powman: POWMAN) -> Self {
         Self { powman }
+    }
+
+    /// Obtain a Powman handle without ownership checks.
+    ///
+    /// # Safety
+    ///
+    /// The caller must ensure the peripheral has been initialised
+    /// and that no data races occur.
+    #[inline]
+    pub unsafe fn steal() -> Steal<Self> {
+        Steal(Self::init(unsafe { POWMAN::steal() }))
     }
 
     /// Get reference to the underlying register block
@@ -874,24 +887,38 @@ impl AonTimer {
     /// Note: You should call one of the `init_with_*` methods instead,
     /// or configure the clock source manually via `powman()`.
     #[inline]
-    pub fn new(powman: POWMAN) -> Self {
+    pub fn init(powman: POWMAN) -> Self {
         Self {
-            powman: Powman::new(powman),
+            powman: Powman::init(powman),
         }
+    }
+
+    /// Obtain an AonTimer handle without ownership checks.
+    ///
+    /// The clock source is not configured. Call one of the `init_with_*`
+    /// methods or configure the clock manually before use.
+    ///
+    /// # Safety
+    ///
+    /// The caller must ensure the peripheral has been initialised
+    /// and that no data races occur.
+    #[inline]
+    pub unsafe fn steal() -> Steal<Self> {
+        Steal(Self::init(unsafe { POWMAN::steal() }))
     }
 
     /// Initialize AON timer with LPOSC as clock source
     ///
     /// LPOSC is less accurate but available in all power modes.
     pub fn init_with_lposc(powman: POWMAN) -> Self {
-        let timer = Self::new(powman);
+        let timer = Self::init(powman);
         timer.powman.timer_set_1khz_tick_source_lposc();
         timer
     }
 
     /// Initialize AON timer with LPOSC and known frequency
     pub fn init_with_lposc_hz(powman: POWMAN, lposc_freq_hz: u32) -> Self {
-        let timer = Self::new(powman);
+        let timer = Self::init(powman);
         timer
             .powman
             .timer_set_1khz_tick_source_lposc_with_hz(lposc_freq_hz);
@@ -902,7 +929,7 @@ impl AonTimer {
     ///
     /// XOSC is more accurate but requires crystal to be running.
     pub fn init_with_xosc(powman: POWMAN, xosc_freq_hz: u32) -> Self {
-        let timer = Self::new(powman);
+        let timer = Self::init(powman);
         timer
             .powman
             .timer_set_1khz_tick_source_xosc_with_hz(xosc_freq_hz);
@@ -914,7 +941,7 @@ impl AonTimer {
     /// # Arguments
     /// * `gpio` - GPIO number (must be 12, 14, 20, or 22)
     pub fn init_with_gpio(powman: POWMAN, gpio: u8) -> Self {
-        let timer = Self::new(powman);
+        let timer = Self::init(powman);
         timer.powman.timer_set_1khz_tick_source_gpio(gpio);
         timer
     }

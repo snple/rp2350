@@ -21,10 +21,10 @@
 //!
 //! ```ignore
 //! use pico_rs::clocks::lposc::Lposc;
-//! use pico_rs_pac::POWMAN;
+//! use pico_rs::Peripherals;
 //!
-//! // SAFETY: this is the only POWMAN owner in the application
-//! let lposc = unsafe { Lposc::steal() };
+//! let dp = Peripherals::take().unwrap();
+//! let lposc = Lposc::init(dp.POWMAN);
 //!
 //! // Read OTP calibration and apply trim
 //! lposc.apply_otp_calib();
@@ -51,12 +51,12 @@ pub struct Lposc {
 }
 
 impl Lposc {
-    /// Create a new LPOSC driver
+    /// Initialize the LPOSC driver.
     ///
-    /// # Safety
-    /// The caller must ensure no other code is concurrently modifying LPOSC registers.
+    /// Takes ownership of the POWMAN peripheral. The LPOSC is always running
+    /// and does not require a reset sequence.
     #[inline]
-    pub unsafe fn new(powman: POWMAN) -> Self {
+    pub fn init(powman: POWMAN) -> Self {
         Self { powman }
     }
 
@@ -67,7 +67,9 @@ impl Lposc {
     #[inline]
     pub unsafe fn steal() -> Steal<Self> {
         // SAFETY: caller guarantees single ownership
-        Steal(unsafe { Self::new(POWMAN::steal()) })
+        Steal(Self {
+            powman: unsafe { POWMAN::steal() },
+        })
     }
 
     /// Get a reference to the LPOSC register
@@ -92,7 +94,7 @@ impl Lposc {
     ///
     /// Higher trim values generally increase frequency.
     #[inline]
-    pub fn set_trim(&self, trim: u8) {
+    pub fn set_trim(&mut self, trim: u8) {
         let trim = (trim as u32).min(LPOSC_TRIM_MAX);
         self.regs().write_trim(trim);
     }
@@ -104,7 +106,7 @@ impl Lposc {
     /// giving the most accurate 32 kHz frequency.
     ///
     /// Returns `true` if calibration was applied, `false` if OTP was unprogrammed.
-    pub fn apply_otp_calib(&self) -> bool {
+    pub fn apply_otp_calib(&mut self) -> bool {
         unsafe {
             let otp = pico_rs_pac::OTP_DATA::steal();
             let calib = otp.lposc_calib.lposc_calib() as u16;

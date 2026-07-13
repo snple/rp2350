@@ -50,7 +50,7 @@ fn main() -> ! {
     // Set target address
     i2c.set_target_addr(I2C_ADDR as u16, false);
 
-    let dma = Dma::new(dp.DMA);
+    let dma = Dma::init(dp.DMA);
 
     // ------------------------------------------------------------------
     // DMA TX: Write command bytes to I2C device

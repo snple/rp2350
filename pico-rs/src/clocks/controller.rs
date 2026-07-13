@@ -101,7 +101,7 @@ pub struct Clocks {
 }
 
 impl Clocks {
-    /// Create a bare `Clocks` instance
+    /// Initialize a bare `Clocks` instance
     ///
     /// Initialises frequency tracking to zero and assumes the reference clock
     /// is still being driven by ROSC (the hardware default after reset).
@@ -115,7 +115,7 @@ impl Clocks {
     ///
     /// [`ClockBuilder::build`]: super::builder::ClockBuilder::build
     #[inline]
-    pub fn new(clocks: pico_rs_pac::CLOCKS, xosc: Xosc) -> Self {
+    pub fn init(clocks: pico_rs_pac::CLOCKS, xosc: Xosc) -> Self {
         Self {
             clocks,
             xosc,
@@ -702,14 +702,14 @@ impl Clocks {
     /// # Arguments
     /// * `timeout` — Inactivity threshold in `clk_ref` cycles (1–255)
     #[inline]
-    pub fn enable_resus(&self, timeout: u8) {
+    pub fn enable_resus(&mut self, timeout: u8) {
         self.clocks.clk_sys_resus_ctrl.write_timeout(timeout as u32);
         self.clocks.clk_sys_resus_ctrl.set_enable();
     }
 
     /// Disable system clock resuscitation
     #[inline]
-    pub fn disable_resus(&self) {
+    pub fn disable_resus(&mut self) {
         self.clocks.clk_sys_resus_ctrl.clr_enable();
     }
 
@@ -1139,7 +1139,7 @@ impl Clocks {
     // -----------------------------------------------------------------------
 
     /// Power down both PLLs before entering dormant
-    fn power_down_plls(&self) {
+    fn power_down_plls(&mut self) {
         unsafe {
             let pll_sys = PLL_SYS::steal();
             let pll_usb = PLL_USB::steal();
@@ -1162,14 +1162,14 @@ impl Clocks {
         unsafe {
             if let Some(ref cfg) = self.pll_sys_config {
                 <PLL_SYS as Resettable>::init();
-                let pll = PllSys::new(PLL_SYS::steal());
+                let mut pll = PllSys::init(PLL_SYS::steal());
                 pll.configure(cfg.refdiv, cfg.fbdiv, cfg.postdiv1, cfg.postdiv2);
                 pll.wait_lock();
             }
 
             if let Some(ref cfg) = self.pll_usb_config {
                 <PLL_USB as Resettable>::init();
-                let pll = PllUsb::new(PLL_USB::steal());
+                let mut pll = PllUsb::init(PLL_USB::steal());
                 pll.configure(cfg.refdiv, cfg.fbdiv, cfg.postdiv1, cfg.postdiv2);
                 pll.wait_lock();
             }

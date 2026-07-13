@@ -60,7 +60,7 @@ fn main() -> ! {
     let delay = Delay::init(cp.SYST, CLOCK_FREQ_HZ);
 
     // Create watchdog instance to check reset reason
-    let wd = Watchdog::new(unsafe { WATCHDOG::steal() });
+    let wd = Watchdog::init(unsafe { WATCHDOG::steal() });
 
     // Check reset reason and scratch register
     let reset_reason = wd.reset_reason();

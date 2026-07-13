@@ -46,7 +46,7 @@ fn main() -> ! {
         clocks.peri_freq(),
     );
 
-    let dma = Dma::new(dp.DMA);
+    let dma = Dma::init(dp.DMA);
 
     // ------------------------------------------------------------------
     // Prepare buffers

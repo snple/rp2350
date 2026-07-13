@@ -51,7 +51,7 @@ fn main() -> ! {
         CLOCK_FREQ_HZ,
     );
 
-    let dma = Dma::new(dp.DMA);
+    let dma = Dma::init(dp.DMA);
 
     // ------------------------------------------------------------------
     // 2. DMA TX — memory → UART0 TX FIFO

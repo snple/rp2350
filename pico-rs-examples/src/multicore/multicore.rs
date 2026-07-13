@@ -106,7 +106,7 @@ fn main() -> ! {
     fifo.drain();
 
     // Get multicore controller
-    let mut mc = Multicore::new(dp.PSM, dp.PPB);
+    let mut mc = Multicore::init(dp.PSM, dp.PPB);
 
     // Reset Core 1 first to ensure it's in a known state
     info!("[Core 0] Resetting Core 1...");

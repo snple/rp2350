@@ -39,6 +39,7 @@
 //! ```
 
 use crate::clocks::Clocks;
+use crate::Steal;
 
 /// TICKS peripheral wrapper
 ///
@@ -66,6 +67,23 @@ impl Ticks {
             ticks,
             cycles_per_tick,
         }
+    }
+
+    /// Obtain a Ticks handle without ownership checks.
+    ///
+    /// The returned handle uses a zero `cycles_per_tick`. The caller is
+    /// responsible for calling [`set_proc0_cycles()`](Self::set_proc0_cycles)
+    /// etc. before enabling any tick generator.
+    ///
+    /// # Safety
+    ///
+    /// The caller must ensure no data races occur.
+    #[inline]
+    pub unsafe fn steal() -> Steal<Self> {
+        Steal(Self {
+            ticks: unsafe { pico_rs_pac::TICKS::steal() },
+            cycles_per_tick: 0,
+        })
     }
 
     /// Get the configured cycles per tick

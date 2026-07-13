@@ -43,7 +43,7 @@
 //! use pico_rs::Peripherals;
 //!
 //! let dp = Peripherals::take().unwrap();
-//! let mut qspi = Qspi::new(dp.QMI);
+//! let mut qspi = Qspi::init(dp.QMI);
 //!
 //! // Enter direct mode and select CS0
 //! qspi.enable_direct_mode();
@@ -65,7 +65,7 @@
 //! use pico_rs::qspi::{Qspi, BusWidth};
 //!
 //! let dp = Peripherals::take().unwrap();
-//! let mut qspi = Qspi::new(dp.QMI);
+//! let mut qspi = Qspi::init(dp.QMI);
 //!
 //! // Configure memory window 0 for quad read (0x6B) at higher speed
 //! qspi.set_clkdiv(Window::M0, 2);
@@ -84,6 +84,8 @@
 //!
 //! // Now XIP flash reads from 0x10000000 will use quad output
 //! ```
+
+use crate::Steal;
 
 use pico_rs_pac::QMI;
 
@@ -252,7 +254,7 @@ pub struct Qspi {
 }
 
 impl Qspi {
-    /// Create a new QSPI peripheral wrapper.
+    /// Initialize the QSPI driver.
     ///
     /// Takes ownership of the QMI peripheral. The QSPI pins are dedicated
     /// and don't need to be configured separately.
@@ -265,10 +267,21 @@ impl Qspi {
     ///
     /// ```ignore
     /// let dp = Peripherals::take().unwrap();
-    /// let qspi = Qspi::new(dp.QMI);
+    /// let qspi = Qspi::init(dp.QMI);
     /// ```
-    pub fn new(qmi: QMI) -> Self {
+    pub fn init(qmi: QMI) -> Self {
         Self { qmi }
+    }
+
+    /// Obtain a Qspi handle without ownership checks.
+    ///
+    /// # Safety
+    ///
+    /// The caller must ensure the peripheral has been initialised
+    /// and that no data races occur.
+    #[inline]
+    pub unsafe fn steal() -> Steal<Self> {
+        Steal(Self::init(unsafe { QMI::steal() }))
     }
 
     /// Release the QMI peripheral.

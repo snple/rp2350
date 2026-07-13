@@ -449,7 +449,7 @@ macro_rules! impl_timer {
             ///
             /// Once locked, the timer cannot be unlocked until reset.
             #[inline]
-            pub fn lock(&self) {
+            pub fn lock(&mut self) {
                 self.timer.locked.set_locked();
             }
 

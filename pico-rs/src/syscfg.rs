@@ -24,8 +24,10 @@
 //! syscfg.set_sram_power_down(5, true);
 //! ```
 
-use crate::reset::Resettable;
 use pico_rs_pac::syscfg::Mempowerdown;
+
+use crate::Steal;
+use crate::reset::Resettable;
 
 /// Memory bank identifiers for power control
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -87,6 +89,19 @@ impl Syscfg {
         // Reset then unreset to guarantee clean register state
         <pico_rs_pac::SYSCFG as Resettable>::init();
         Self { syscfg }
+    }
+
+    /// Obtain a Syscfg handle without ownership checks.
+    ///
+    /// # Safety
+    ///
+    /// The caller must ensure [`Syscfg::init()`] has been called first
+    /// and that no data races occur.
+    #[inline]
+    pub unsafe fn steal() -> Steal<Self> {
+        Steal(Self {
+            syscfg: unsafe { pico_rs_pac::SYSCFG::steal() },
+        })
     }
 
     /// Get reference to the underlying register block

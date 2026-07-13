@@ -1199,7 +1199,7 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     // ADC — 采样 DRV8323 CSA 输出 (SO_A → GP26, SO_B → GP27)
     // ------------------------------------------------------------------
-    let adc = Adc::new(dp.ADC);
+    let adc = Adc::init(dp.ADC);
     let adc_ia = pins.pin::<26>().into_adc_input();
     let adc_ib = pins.pin::<27>().into_adc_input();
     info!(

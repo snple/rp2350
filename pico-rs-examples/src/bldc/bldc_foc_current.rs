@@ -595,7 +595,7 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     // ADC — 采样两相电流 (Ia on GP26, Ib on GP27)
     // ------------------------------------------------------------------
-    let adc = Adc::new(dp.ADC);
+    let adc = Adc::init(dp.ADC);
     let adc_ia = pins.pin::<26>().into_adc_input();
     let adc_ib = pins.pin::<27>().into_adc_input();
     info!(

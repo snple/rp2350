@@ -71,7 +71,7 @@ use super::{Function, Pin};
 /// Additional: 32, 36, 40, 44 (RP2350B)
 pub trait I2c0SdaPin {
     /// Configure this pin for I2C0 SDA function
-    fn configure_i2c0_sda(&self);
+    fn configure_i2c0_sda(&mut self);
 }
 
 /// Marker trait for pins that can be used as I2C0 SCL.
@@ -80,7 +80,7 @@ pub trait I2c0SdaPin {
 /// Additional: 33, 37, 41, 45 (RP2350B)
 pub trait I2c0SclPin {
     /// Configure this pin for I2C0 SCL function
-    fn configure_i2c0_scl(&self);
+    fn configure_i2c0_scl(&mut self);
 }
 
 /// Marker trait for pins that can be used as I2C1 SDA.
@@ -89,7 +89,7 @@ pub trait I2c0SclPin {
 /// Additional: 30, 34, 38, 42, 46 (RP2350B)
 pub trait I2c1SdaPin {
     /// Configure this pin for I2C1 SDA function
-    fn configure_i2c1_sda(&self);
+    fn configure_i2c1_sda(&mut self);
 }
 
 /// Marker trait for pins that can be used as I2C1 SCL.
@@ -98,7 +98,7 @@ pub trait I2c1SdaPin {
 /// Additional: 31, 35, 39, 43, 47 (RP2350B)
 pub trait I2c1SclPin {
     /// Configure this pin for I2C1 SCL function
-    fn configure_i2c1_scl(&self);
+    fn configure_i2c1_scl(&mut self);
 }
 
 /// Macro for implementing I2C pin traits
@@ -108,7 +108,7 @@ macro_rules! impl_i2c_pins {
         $(
             impl I2c0SdaPin for Pin<$n> {
                 #[inline]
-                fn configure_i2c0_sda(&self) {
+                fn configure_i2c0_sda(&mut self) {
                     self.init_pad();
                     self.set_function(Function::I2c);
                     self.set_pull_up();  // I2C requires pull-up
@@ -121,7 +121,7 @@ macro_rules! impl_i2c_pins {
         $(
             impl I2c0SclPin for Pin<$n> {
                 #[inline]
-                fn configure_i2c0_scl(&self) {
+                fn configure_i2c0_scl(&mut self) {
                     self.init_pad();
                     self.set_function(Function::I2c);
                     self.set_pull_up();  // I2C requires pull-up
@@ -134,7 +134,7 @@ macro_rules! impl_i2c_pins {
         $(
             impl I2c1SdaPin for Pin<$n> {
                 #[inline]
-                fn configure_i2c1_sda(&self) {
+                fn configure_i2c1_sda(&mut self) {
                     self.init_pad();
                     self.set_function(Function::I2c);
                     self.set_pull_up();
@@ -147,7 +147,7 @@ macro_rules! impl_i2c_pins {
         $(
             impl I2c1SclPin for Pin<$n> {
                 #[inline]
-                fn configure_i2c1_scl(&self) {
+                fn configure_i2c1_scl(&mut self) {
                     self.init_pad();
                     self.set_function(Function::I2c);
                     self.set_pull_up();
@@ -166,7 +166,7 @@ macro_rules! impl_i2c_pins {
 /// Valid pins: 0, 12, 16, 28 (RP2350A)
 pub trait Uart0TxPin {
     /// Configure this pin for UART0 TX function
-    fn configure_uart0_tx(&self);
+    fn configure_uart0_tx(&mut self);
 }
 
 /// Marker trait for pins that can be used as UART0 RX.
@@ -174,7 +174,7 @@ pub trait Uart0TxPin {
 /// Valid pins: 1, 13, 17, 29 (RP2350A)
 pub trait Uart0RxPin {
     /// Configure this pin for UART0 RX function
-    fn configure_uart0_rx(&self);
+    fn configure_uart0_rx(&mut self);
 }
 
 /// Marker trait for pins that can be used as UART0 CTS.
@@ -182,7 +182,7 @@ pub trait Uart0RxPin {
 /// Valid pins: 2, 14, 18 (RP2350A)
 pub trait Uart0CtsPin {
     /// Configure this pin for UART0 CTS function
-    fn configure_uart0_cts(&self);
+    fn configure_uart0_cts(&mut self);
 }
 
 /// Marker trait for pins that can be used as UART0 RTS.
@@ -190,7 +190,7 @@ pub trait Uart0CtsPin {
 /// Valid pins: 3, 15, 19 (RP2350A)
 pub trait Uart0RtsPin {
     /// Configure this pin for UART0 RTS function
-    fn configure_uart0_rts(&self);
+    fn configure_uart0_rts(&mut self);
 }
 
 /// Marker trait for pins that can be used as UART1 TX.
@@ -198,7 +198,7 @@ pub trait Uart0RtsPin {
 /// Valid pins: 4, 8, 20, 24 (RP2350A)
 pub trait Uart1TxPin {
     /// Configure this pin for UART1 TX function
-    fn configure_uart1_tx(&self);
+    fn configure_uart1_tx(&mut self);
 }
 
 /// Marker trait for pins that can be used as UART1 RX.
@@ -206,7 +206,7 @@ pub trait Uart1TxPin {
 /// Valid pins: 5, 9, 21, 25 (RP2350A)
 pub trait Uart1RxPin {
     /// Configure this pin for UART1 RX function
-    fn configure_uart1_rx(&self);
+    fn configure_uart1_rx(&mut self);
 }
 
 /// Marker trait for pins that can be used as UART1 CTS.
@@ -214,7 +214,7 @@ pub trait Uart1RxPin {
 /// Valid pins: 6, 10, 22, 26 (RP2350A)
 pub trait Uart1CtsPin {
     /// Configure this pin for UART1 CTS function
-    fn configure_uart1_cts(&self);
+    fn configure_uart1_cts(&mut self);
 }
 
 /// Marker trait for pins that can be used as UART1 RTS.
@@ -222,7 +222,7 @@ pub trait Uart1CtsPin {
 /// Valid pins: 7, 11, 23, 27 (RP2350A)
 pub trait Uart1RtsPin {
     /// Configure this pin for UART1 RTS function
-    fn configure_uart1_rts(&self);
+    fn configure_uart1_rts(&mut self);
 }
 
 /// Macro for implementing UART pin traits
@@ -231,7 +231,7 @@ macro_rules! impl_uart_pins {
         $(
             impl Uart0TxPin for Pin<$n> {
                 #[inline]
-                fn configure_uart0_tx(&self) {
+                fn configure_uart0_tx(&mut self) {
                     self.init_pad();
                     self.set_function(Function::Uart);
                 }
@@ -242,7 +242,7 @@ macro_rules! impl_uart_pins {
         $(
             impl Uart0RxPin for Pin<$n> {
                 #[inline]
-                fn configure_uart0_rx(&self) {
+                fn configure_uart0_rx(&mut self) {
                     self.init_pad();
                     self.set_function(Function::Uart);
                 }
@@ -253,7 +253,7 @@ macro_rules! impl_uart_pins {
         $(
             impl Uart0CtsPin for Pin<$n> {
                 #[inline]
-                fn configure_uart0_cts(&self) {
+                fn configure_uart0_cts(&mut self) {
                     self.init_pad();
                     self.set_function(Function::Uart);
                 }
@@ -264,7 +264,7 @@ macro_rules! impl_uart_pins {
         $(
             impl Uart0RtsPin for Pin<$n> {
                 #[inline]
-                fn configure_uart0_rts(&self) {
+                fn configure_uart0_rts(&mut self) {
                     self.init_pad();
                     self.set_function(Function::Uart);
                 }
@@ -275,7 +275,7 @@ macro_rules! impl_uart_pins {
         $(
             impl Uart1TxPin for Pin<$n> {
                 #[inline]
-                fn configure_uart1_tx(&self) {
+                fn configure_uart1_tx(&mut self) {
                     self.init_pad();
                     self.set_function(Function::Uart);
                 }
@@ -286,7 +286,7 @@ macro_rules! impl_uart_pins {
         $(
             impl Uart1RxPin for Pin<$n> {
                 #[inline]
-                fn configure_uart1_rx(&self) {
+                fn configure_uart1_rx(&mut self) {
                     self.init_pad();
                     self.set_function(Function::Uart);
                 }
@@ -297,7 +297,7 @@ macro_rules! impl_uart_pins {
         $(
             impl Uart1CtsPin for Pin<$n> {
                 #[inline]
-                fn configure_uart1_cts(&self) {
+                fn configure_uart1_cts(&mut self) {
                     self.init_pad();
                     self.set_function(Function::Uart);
                 }
@@ -308,7 +308,7 @@ macro_rules! impl_uart_pins {
         $(
             impl Uart1RtsPin for Pin<$n> {
                 #[inline]
-                fn configure_uart1_rts(&self) {
+                fn configure_uart1_rts(&mut self) {
                     self.init_pad();
                     self.set_function(Function::Uart);
                 }
@@ -326,7 +326,7 @@ macro_rules! impl_uart_pins {
 /// Valid pins: 0, 4, 16, 20 (RP2350A)
 pub trait Spi0RxPin {
     /// Configure this pin for SPI0 RX function
-    fn configure_spi0_rx(&self);
+    fn configure_spi0_rx(&mut self);
 }
 
 /// Marker trait for pins that can be used as SPI0 CSn (Chip Select).
@@ -334,7 +334,7 @@ pub trait Spi0RxPin {
 /// Valid pins: 1, 5, 17, 21 (RP2350A)
 pub trait Spi0CsnPin {
     /// Configure this pin for SPI0 CSn function
-    fn configure_spi0_csn(&self);
+    fn configure_spi0_csn(&mut self);
 }
 
 /// Marker trait for pins that can be used as SPI0 SCK (Clock).
@@ -342,7 +342,7 @@ pub trait Spi0CsnPin {
 /// Valid pins: 2, 6, 18, 22 (RP2350A)
 pub trait Spi0SckPin {
     /// Configure this pin for SPI0 SCK function
-    fn configure_spi0_sck(&self);
+    fn configure_spi0_sck(&mut self);
 }
 
 /// Marker trait for pins that can be used as SPI0 TX (MOSI).
@@ -350,7 +350,7 @@ pub trait Spi0SckPin {
 /// Valid pins: 3, 7, 19, 23 (RP2350A)
 pub trait Spi0TxPin {
     /// Configure this pin for SPI0 TX function
-    fn configure_spi0_tx(&self);
+    fn configure_spi0_tx(&mut self);
 }
 
 /// Marker trait for pins that can be used as SPI1 RX (MISO).
@@ -358,7 +358,7 @@ pub trait Spi0TxPin {
 /// Valid pins: 8, 12, 24, 28 (RP2350A)
 pub trait Spi1RxPin {
     /// Configure this pin for SPI1 RX function
-    fn configure_spi1_rx(&self);
+    fn configure_spi1_rx(&mut self);
 }
 
 /// Marker trait for pins that can be used as SPI1 CSn (Chip Select).
@@ -366,7 +366,7 @@ pub trait Spi1RxPin {
 /// Valid pins: 9, 13, 25, 29 (RP2350A)
 pub trait Spi1CsnPin {
     /// Configure this pin for SPI1 CSn function
-    fn configure_spi1_csn(&self);
+    fn configure_spi1_csn(&mut self);
 }
 
 /// Marker trait for pins that can be used as SPI1 SCK (Clock).
@@ -374,7 +374,7 @@ pub trait Spi1CsnPin {
 /// Valid pins: 10, 14, 26 (RP2350A)
 pub trait Spi1SckPin {
     /// Configure this pin for SPI1 SCK function
-    fn configure_spi1_sck(&self);
+    fn configure_spi1_sck(&mut self);
 }
 
 /// Marker trait for pins that can be used as SPI1 TX (MOSI).
@@ -382,7 +382,7 @@ pub trait Spi1SckPin {
 /// Valid pins: 11, 15, 27 (RP2350A)
 pub trait Spi1TxPin {
     /// Configure this pin for SPI1 TX function
-    fn configure_spi1_tx(&self);
+    fn configure_spi1_tx(&mut self);
 }
 
 /// Macro for implementing SPI pin traits
@@ -391,7 +391,7 @@ macro_rules! impl_spi_pins {
         $(
             impl Spi0RxPin for Pin<$n> {
                 #[inline]
-                fn configure_spi0_rx(&self) {
+                fn configure_spi0_rx(&mut self) {
                     self.init_pad();
                     self.set_function(Function::Spi);
                 }
@@ -402,7 +402,7 @@ macro_rules! impl_spi_pins {
         $(
             impl Spi0CsnPin for Pin<$n> {
                 #[inline]
-                fn configure_spi0_csn(&self) {
+                fn configure_spi0_csn(&mut self) {
                     self.init_pad();
                     self.set_function(Function::Spi);
                 }
@@ -413,7 +413,7 @@ macro_rules! impl_spi_pins {
         $(
             impl Spi0SckPin for Pin<$n> {
                 #[inline]
-                fn configure_spi0_sck(&self) {
+                fn configure_spi0_sck(&mut self) {
                     self.init_pad();
                     self.set_function(Function::Spi);
                 }
@@ -424,7 +424,7 @@ macro_rules! impl_spi_pins {
         $(
             impl Spi0TxPin for Pin<$n> {
                 #[inline]
-                fn configure_spi0_tx(&self) {
+                fn configure_spi0_tx(&mut self) {
                     self.init_pad();
                     self.set_function(Function::Spi);
                 }
@@ -435,7 +435,7 @@ macro_rules! impl_spi_pins {
         $(
             impl Spi1RxPin for Pin<$n> {
                 #[inline]
-                fn configure_spi1_rx(&self) {
+                fn configure_spi1_rx(&mut self) {
                     self.init_pad();
                     self.set_function(Function::Spi);
                 }
@@ -446,7 +446,7 @@ macro_rules! impl_spi_pins {
         $(
             impl Spi1CsnPin for Pin<$n> {
                 #[inline]
-                fn configure_spi1_csn(&self) {
+                fn configure_spi1_csn(&mut self) {
                     self.init_pad();
                     self.set_function(Function::Spi);
                 }
@@ -457,7 +457,7 @@ macro_rules! impl_spi_pins {
         $(
             impl Spi1SckPin for Pin<$n> {
                 #[inline]
-                fn configure_spi1_sck(&self) {
+                fn configure_spi1_sck(&mut self) {
                     self.init_pad();
                     self.set_function(Function::Spi);
                 }
@@ -468,7 +468,7 @@ macro_rules! impl_spi_pins {
         $(
             impl Spi1TxPin for Pin<$n> {
                 #[inline]
-                fn configure_spi1_tx(&self) {
+                fn configure_spi1_tx(&mut self) {
                     self.init_pad();
                     self.set_function(Function::Spi);
                 }
@@ -488,7 +488,7 @@ pub trait PwmAPin {
     /// The PWM slice number (0-11)
     const PWM_SLICE: u8;
     /// Configure this pin for PWM channel A function
-    fn configure_pwm_a(&self);
+    fn configure_pwm_a(&mut self);
 }
 
 /// Marker trait for pins that can be used as PWM channel B.
@@ -498,7 +498,7 @@ pub trait PwmBPin {
     /// The PWM slice number (0-11)
     const PWM_SLICE: u8;
     /// Configure this pin for PWM channel B function
-    fn configure_pwm_b(&self);
+    fn configure_pwm_b(&mut self);
 }
 
 /// Macro for implementing PWM pin traits
@@ -508,7 +508,7 @@ macro_rules! impl_pwm_pins {
             impl PwmAPin for Pin<$n> {
                 const PWM_SLICE: u8 = $slice;
                 #[inline]
-                fn configure_pwm_a(&self) {
+                fn configure_pwm_a(&mut self) {
                     self.init_pad();
                     self.set_function(Function::Pwm);
                 }
@@ -520,7 +520,7 @@ macro_rules! impl_pwm_pins {
             impl PwmBPin for Pin<$n> {
                 const PWM_SLICE: u8 = $slice;
                 #[inline]
-                fn configure_pwm_b(&self) {
+                fn configure_pwm_b(&mut self) {
                     self.init_pad();
                     self.set_function(Function::Pwm);
                 }
@@ -539,19 +539,19 @@ macro_rules! impl_pwm_pins {
 /// On RP2350B, pins 0-47 are available.
 pub trait Pio0Pin {
     /// Configure this pin for PIO0 function
-    fn configure_pio0(&self);
+    fn configure_pio0(&mut self);
 }
 
 /// Marker trait for pins that can be used with PIO1.
 pub trait Pio1Pin {
     /// Configure this pin for PIO1 function
-    fn configure_pio1(&self);
+    fn configure_pio1(&mut self);
 }
 
 /// Marker trait for pins that can be used with PIO2.
 pub trait Pio2Pin {
     /// Configure this pin for PIO2 function
-    fn configure_pio2(&self);
+    fn configure_pio2(&mut self);
 }
 
 /// Macro for implementing PIO pin traits
@@ -560,7 +560,7 @@ macro_rules! impl_pio_pins {
         $(
             impl Pio0Pin for Pin<$n> {
                 #[inline]
-                fn configure_pio0(&self) {
+                fn configure_pio0(&mut self) {
                     self.init_pad();
                     self.set_function(Function::Pio0);
                 }
@@ -571,7 +571,7 @@ macro_rules! impl_pio_pins {
         $(
             impl Pio1Pin for Pin<$n> {
                 #[inline]
-                fn configure_pio1(&self) {
+                fn configure_pio1(&mut self) {
                     self.init_pad();
                     self.set_function(Function::Pio1);
                 }
@@ -582,7 +582,7 @@ macro_rules! impl_pio_pins {
         $(
             impl Pio2Pin for Pin<$n> {
                 #[inline]
-                fn configure_pio2(&self) {
+                fn configure_pio2(&mut self) {
                     self.init_pad();
                     self.set_function(Function::Pio2);
                 }
@@ -741,84 +741,84 @@ pub struct NoPin;
 // PWM
 impl PwmAPin for NoPin {
     const PWM_SLICE: u8 = 255;
-    fn configure_pwm_a(&self) {}
+    fn configure_pwm_a(&mut self) {}
 }
 
 impl PwmBPin for NoPin {
     const PWM_SLICE: u8 = 255;
-    fn configure_pwm_b(&self) {}
+    fn configure_pwm_b(&mut self) {}
 }
 
 // SPI0
 impl Spi0RxPin for NoPin {
-    fn configure_spi0_rx(&self) {}
+    fn configure_spi0_rx(&mut self) {}
 }
 impl Spi0TxPin for NoPin {
-    fn configure_spi0_tx(&self) {}
+    fn configure_spi0_tx(&mut self) {}
 }
 impl Spi0CsnPin for NoPin {
-    fn configure_spi0_csn(&self) {}
+    fn configure_spi0_csn(&mut self) {}
 }
 
 // SPI0 SCK
 impl Spi0SckPin for NoPin {
-    fn configure_spi0_sck(&self) {}
+    fn configure_spi0_sck(&mut self) {}
 }
 
 // SPI1
 impl Spi1RxPin for NoPin {
-    fn configure_spi1_rx(&self) {}
+    fn configure_spi1_rx(&mut self) {}
 }
 impl Spi1TxPin for NoPin {
-    fn configure_spi1_tx(&self) {}
+    fn configure_spi1_tx(&mut self) {}
 }
 impl Spi1CsnPin for NoPin {
-    fn configure_spi1_csn(&self) {}
+    fn configure_spi1_csn(&mut self) {}
 }
 impl Spi1SckPin for NoPin {
-    fn configure_spi1_sck(&self) {}
+    fn configure_spi1_sck(&mut self) {}
 }
 
 // UART0
 impl Uart0TxPin for NoPin {
-    fn configure_uart0_tx(&self) {}
+    fn configure_uart0_tx(&mut self) {}
 }
 impl Uart0RxPin for NoPin {
-    fn configure_uart0_rx(&self) {}
+    fn configure_uart0_rx(&mut self) {}
 }
 impl Uart0CtsPin for NoPin {
-    fn configure_uart0_cts(&self) {}
+    fn configure_uart0_cts(&mut self) {}
 }
 impl Uart0RtsPin for NoPin {
-    fn configure_uart0_rts(&self) {}
+    fn configure_uart0_rts(&mut self) {}
 }
 
 // UART1
 impl Uart1TxPin for NoPin {
-    fn configure_uart1_tx(&self) {}
+    fn configure_uart1_tx(&mut self) {}
 }
 impl Uart1RxPin for NoPin {
-    fn configure_uart1_rx(&self) {}
+    fn configure_uart1_rx(&mut self) {}
 }
 impl Uart1CtsPin for NoPin {
-    fn configure_uart1_cts(&self) {}
+    fn configure_uart1_cts(&mut self) {}
 }
 impl Uart1RtsPin for NoPin {
-    fn configure_uart1_rts(&self) {}
+    fn configure_uart1_rts(&mut self) {}
 }
 
 // I2C0
 impl I2c0SdaPin for NoPin {
-    fn configure_i2c0_sda(&self) {}
+    fn configure_i2c0_sda(&mut self) {}
 }
 impl I2c0SclPin for NoPin {
-    fn configure_i2c0_scl(&self) {}
+    fn configure_i2c0_scl(&mut self) {}
 }
 
 // I2C1
 impl I2c1SdaPin for NoPin {
-    fn configure_i2c1_sda(&self) {}
+    fn configure_i2c1_sda(&mut self) {}
 }
 impl I2c1SclPin for NoPin {
-    fn configure_i2c1_scl(&self) {}
+    fn configure_i2c1_scl(&mut self) {}
 }

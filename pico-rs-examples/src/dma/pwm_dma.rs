@@ -71,7 +71,7 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     // DMA: continuously write fade table → PWM CC register
     // ------------------------------------------------------------------
-    let dma = Dma::new(dp.DMA);
+    let dma = Dma::init(dp.DMA);
     let ch = dma.channel::<0>();
 
     // FADE_TABLE is 64 × 4 = 256 bytes = 2^8
