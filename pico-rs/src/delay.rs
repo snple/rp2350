@@ -53,3 +53,10 @@ pub trait DelayUs {
         }
     }
 }
+
+impl<T: DelayUs> DelayUs for crate::Steal<T> {
+    #[inline]
+    fn delay_us(&self, us: u32) {
+        self.0.delay_us(us)
+    }
+}

@@ -182,13 +182,13 @@ impl Watchdog {
 
     /// Disable the watchdog
     #[inline]
-    pub fn disable(&mut self) {
+    pub fn disable(&self) {
         self.watchdog.ctrl.clr_enable();
     }
 
     /// Check if the watchdog is enabled
     #[inline]
-    pub fn is_enabled(&self) -> bool {
+    pub fn enabled(&self) -> bool {
         self.watchdog.ctrl.enable()
     }
 

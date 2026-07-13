@@ -48,6 +48,20 @@ pub trait MonotonicTimer {
     fn get_time_us_32(&self) -> u32;
 }
 
+// Blanket trait forwarding for Steal<T> — allows stolen handles to satisfy
+// trait bounds that only require `&self` methods.
+
+impl<T: MonotonicTimer> MonotonicTimer for crate::Steal<T> {
+    #[inline]
+    fn get_time_us(&self) -> u64 {
+        self.0.get_time_us()
+    }
+    #[inline]
+    fn get_time_us_32(&self) -> u32 {
+        self.0.get_time_us_32()
+    }
+}
+
 /// Abstract alarm-capable timer trait for driver implementations.
 ///
 /// This is intended for code that needs hardware alarm scheduling and alarm
@@ -88,6 +102,57 @@ pub trait AlarmTimer {
 
     /// Clear a forced alarm interrupt.
     fn clear_forced_alarm_interrupt(&self, alarm: u8);
+}
+
+impl<T: AlarmTimer> AlarmTimer for crate::Steal<T> {
+    #[inline]
+    fn set_alarm(&self, alarm: u8, time: u32) {
+        self.0.set_alarm(alarm, time)
+    }
+    #[inline]
+    fn set_alarm_safe(&self, alarm: u8, time: u32) {
+        self.0.set_alarm_safe(alarm, time)
+    }
+    #[inline]
+    fn is_alarm_armed(&self, alarm: u8) -> bool {
+        self.0.is_alarm_armed(alarm)
+    }
+    #[inline]
+    fn disarm_alarm(&self, alarm: u8) {
+        self.0.disarm_alarm(alarm)
+    }
+    #[inline]
+    fn enable_alarm_interrupt(&self, alarm: u8) {
+        self.0.enable_alarm_interrupt(alarm)
+    }
+    #[inline]
+    fn disable_alarm_interrupt(&self, alarm: u8) {
+        self.0.disable_alarm_interrupt(alarm)
+    }
+    #[inline]
+    fn is_alarm_interrupt_enabled(&self, alarm: u8) -> bool {
+        self.0.is_alarm_interrupt_enabled(alarm)
+    }
+    #[inline]
+    fn alarm_interrupt_raw(&self, alarm: u8) -> bool {
+        self.0.alarm_interrupt_raw(alarm)
+    }
+    #[inline]
+    fn alarm_interrupt_status(&self, alarm: u8) -> bool {
+        self.0.alarm_interrupt_status(alarm)
+    }
+    #[inline]
+    fn clear_alarm_interrupt(&self, alarm: u8) {
+        self.0.clear_alarm_interrupt(alarm)
+    }
+    #[inline]
+    fn force_alarm_interrupt(&self, alarm: u8) {
+        self.0.force_alarm_interrupt(alarm)
+    }
+    #[inline]
+    fn clear_forced_alarm_interrupt(&self, alarm: u8) {
+        self.0.clear_forced_alarm_interrupt(alarm)
+    }
 }
 
 /// Macro to generate Timer types for both TIMER0 and TIMER1

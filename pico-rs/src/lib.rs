@@ -81,78 +81,6 @@ impl<T> AsRef<T> for Steal<T> {
     }
 }
 
-// Blanket trait forwarding for Steal<T> — allows stolen handles to satisfy
-// trait bounds that only require `&self` methods.
-
-impl<T: timer::MonotonicTimer> timer::MonotonicTimer for Steal<T> {
-    #[inline]
-    fn get_time_us(&self) -> u64 {
-        self.0.get_time_us()
-    }
-    #[inline]
-    fn get_time_us_32(&self) -> u32 {
-        self.0.get_time_us_32()
-    }
-}
-
-impl<T: timer::AlarmTimer> timer::AlarmTimer for Steal<T> {
-    #[inline]
-    fn set_alarm(&self, alarm: u8, time: u32) {
-        self.0.set_alarm(alarm, time)
-    }
-    #[inline]
-    fn set_alarm_safe(&self, alarm: u8, time: u32) {
-        self.0.set_alarm_safe(alarm, time)
-    }
-    #[inline]
-    fn is_alarm_armed(&self, alarm: u8) -> bool {
-        self.0.is_alarm_armed(alarm)
-    }
-    #[inline]
-    fn disarm_alarm(&self, alarm: u8) {
-        self.0.disarm_alarm(alarm)
-    }
-    #[inline]
-    fn enable_alarm_interrupt(&self, alarm: u8) {
-        self.0.enable_alarm_interrupt(alarm)
-    }
-    #[inline]
-    fn disable_alarm_interrupt(&self, alarm: u8) {
-        self.0.disable_alarm_interrupt(alarm)
-    }
-    #[inline]
-    fn is_alarm_interrupt_enabled(&self, alarm: u8) -> bool {
-        self.0.is_alarm_interrupt_enabled(alarm)
-    }
-    #[inline]
-    fn alarm_interrupt_raw(&self, alarm: u8) -> bool {
-        self.0.alarm_interrupt_raw(alarm)
-    }
-    #[inline]
-    fn alarm_interrupt_status(&self, alarm: u8) -> bool {
-        self.0.alarm_interrupt_status(alarm)
-    }
-    #[inline]
-    fn clear_alarm_interrupt(&self, alarm: u8) {
-        self.0.clear_alarm_interrupt(alarm)
-    }
-    #[inline]
-    fn force_alarm_interrupt(&self, alarm: u8) {
-        self.0.force_alarm_interrupt(alarm)
-    }
-    #[inline]
-    fn clear_forced_alarm_interrupt(&self, alarm: u8) {
-        self.0.clear_forced_alarm_interrupt(alarm)
-    }
-}
-
-impl<T: delay::DelayUs> delay::DelayUs for Steal<T> {
-    #[inline]
-    fn delay_us(&self, us: u32) {
-        self.0.delay_us(us)
-    }
-}
-
 pub mod accessctrl;
 pub mod adc;
 pub mod binary_info;
@@ -230,12 +158,12 @@ pub use dcp::Dcp;
 pub use dma::{Channel, Dma};
 pub use eppb::Eppb;
 pub use gpio::Pins;
-pub use i2c::{I2c0, I2c1};
+pub use i2c::{I2c0, I2c0Slave, I2c1, I2c1Slave};
 pub use multicore::{Fifo, Multicore, Stack};
 pub use powman::{AonTimer, Powman, Timespec};
 pub use pwm::Pwm;
 pub use sha256::Sha256;
-pub use spi::{Spi0, Spi1};
+pub use spi::{Spi0, Spi0Slave, Spi1, Spi1Slave};
 pub use syscfg::Syscfg;
 pub use sysinfo::Sysinfo;
 pub use systick::{Delay, SysTick};

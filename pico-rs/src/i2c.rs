@@ -37,7 +37,7 @@
 //!     pins.pin::<4>(),      // SDA pin - ownership transferred
 //!     pins.pin::<5>(),      // SCL pin - ownership transferred
 //!     400_000,      // 400 kHz
-//!     150_000_000,  // System clock
+//!     &clocks,
 //! );
 //!
 //! // Write to a device
@@ -55,13 +55,14 @@
 //!
 //! ```ignore
 //! use pico_rs::gpio::Pins;
-//! use pico_rs::i2c::I2c0;
+//! use pico_rs::i2c::I2c0Slave;
+//! use pico_rs::Peripherals;
 //!
 //! let dp = Peripherals::take().unwrap();
 //! let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 //!
 //! // Initialize I2C0 as slave with address 0x55
-//! let i2c = I2c0::init_slave(
+//! let i2c = I2c0Slave::init(
 //!     dp.I2C0,
 //!     pins.pin::<4>(),
 //!     pins.pin::<5>(),
@@ -71,10 +72,10 @@
 //!
 //! // Wait for and read data from master
 //! let mut buf = [0u8; 4];
-//! let count = i2c.slave_read(&mut buf).unwrap();
+//! let count = i2c.read(&mut buf).unwrap();
 //!
 //! // Write data for master to read
-//! i2c.slave_write(&[0x01, 0x02, 0x03]).unwrap();
+//! i2c.write(&[0x01, 0x02, 0x03]).unwrap();
 //! ```
 
 use paste::paste;
@@ -149,24 +150,27 @@ pub enum Mode {
 }
 
 // ============================================================================
-// Macro for generating I2C implementations
+// Macro for generating I2C master implementations
 // ============================================================================
 
 macro_rules! impl_i2c {
     ($I2cName:ident, $i2c_num:literal, $I2cType:ty, $i2c_mod:ident, $SdaPin:ident, $SclPin:ident) => {
         paste! {
-            /// I2C peripheral wrapper with type-safe pin ownership.
+            /// I2C master peripheral wrapper with type-safe pin ownership.
             ///
             /// This struct owns both the I2C peripheral and the GPIO pins used for
             /// SDA and SCL. The pins are configured automatically when the I2C
             /// instance is created, and their ownership prevents them from being
             /// used for other purposes.
             ///
-            #[doc = concat!("# I2C", $i2c_num, " Pin Mapping")]
+            #[doc = concat!("# I2C", $i2c_num, " Master Pin Mapping")]
             ///
             #[doc = concat!("See [`", stringify!($SdaPin), "`] for valid SDA pins.")]
             ///
             #[doc = concat!("See [`", stringify!($SclPin), "`] for valid SCL pins.")]
+            ///
+            /// For slave mode, use
+            #[doc = concat!("[`", stringify!($I2cName), "Slave`].")]
             pub struct $I2cName<SDA, SCL>
             where
                 SDA: $SdaPin,
@@ -185,10 +189,8 @@ macro_rules! impl_i2c {
                 /// I2C peripheral number
                 pub const NUM: u8 = $i2c_num;
 
-
-
                 // ================================================================
-                // Initialization
+                // Initialization (Master Mode)
                 // ================================================================
 
                 /// Initialize I2C in master mode.
@@ -202,7 +204,7 @@ macro_rules! impl_i2c {
                 /// * `sda` - SDA pin (must implement the appropriate SDA trait)
                 /// * `scl` - SCL pin (must implement the appropriate SCL trait)
                 /// * `baudrate` - Desired baudrate in Hz (e.g., 100_000 for 100 kHz)
-                /// * `sys_clk` - System clock frequency in Hz
+                /// * `clocks` - System clocks
                 ///
                 /// # Type Safety
                 ///
@@ -218,7 +220,7 @@ macro_rules! impl_i2c {
                 ///     pins.pin::<4>(),      // SDA
                 ///     pins.pin::<5>(),      // SCL
                 ///     400_000,      // 400 kHz
-                ///     150_000_000,  // System clock
+                ///     &clocks,
                 /// );
                 /// ```
                 pub fn init(i2c: $I2cType, mut sda: SDA, mut scl: SCL, baudrate: u32, clocks: &Clocks) -> Self {
@@ -262,36 +264,28 @@ macro_rules! impl_i2c {
                     i2c_dev
                 }
 
-                /// Initialize I2C in slave mode with 7-bit address.
+                /// Initialize I2C in master mode with 10-bit target addressing.
+                ///
+                /// Same as [`init()`](Self::init) but configures the master to use
+                /// 10-bit addressing for the target device. The target address is
+                /// set via [`set_target_addr()`](Self::set_target_addr) later.
                 ///
                 /// # Arguments
                 ///
                 /// * `i2c` - The I2C peripheral from PAC
                 /// * `sda` - SDA pin (must implement the appropriate SDA trait)
                 /// * `scl` - SCL pin (must implement the appropriate SCL trait)
-                /// * `addr` - 7-bit slave address
-                /// * `sys_clk` - System clock frequency in Hz
-                ///
-                /// # Example
-                ///
-                /// ```ignore
-                #[doc = concat!("let i2c = ", stringify!($I2cName), "::init_slave(")]
-                #[doc = concat!("    dp.I2C", $i2c_num, ",")]
-                ///     pins.pin::<4>(),      // SDA
-                ///     pins.pin::<5>(),      // SCL
-                ///     0x55,         // Slave address
-                ///     150_000_000,  // System clock
-                /// );
-                /// ```
-                pub fn init_slave(i2c: $I2cType, mut sda: SDA, mut scl: SCL, addr: u8, sys_clk: u32) -> Self {
-                    // Configure pins for I2C function
+                /// * `baudrate` - Desired baudrate in Hz (e.g., 100_000 for 100 kHz)
+                /// * `clocks` - System clocks
+                pub fn init_10bit(i2c: $I2cType, mut sda: SDA, mut scl: SCL, baudrate: u32, clocks: &Clocks) -> Self {
+                    // Configure pins for I2C function (includes pull-up)
                     sda.[<configure_i2c $i2c_num _sda>]();
                     scl.[<configure_i2c $i2c_num _scl>]();
 
                     // Reset peripheral to ensure clean register state
                     <$I2cType as Resettable>::init();
 
-                    let i2c_dev = Self {
+                    let mut i2c_dev = Self {
                         i2c,
                         _sda: sda,
                         _scl: scl,
@@ -304,78 +298,20 @@ macro_rules! impl_i2c {
                     i2c_dev.i2c.ic_intr_mask.write_bits(0);
                     let _ = i2c_dev.i2c.ic_clr_intr.read_bits();
 
-                    // Configure as slave: clear all, then set required bits
+                    // Configure as master with 10-bit addressing
                     i2c_dev.i2c.ic_con.write_bits(0);
-                    i2c_dev.i2c.ic_con.write_speed(Speed::Fast as u32);
-                    i2c_dev.i2c.ic_con.set_stop_det_ifaddressed();
-                    i2c_dev.i2c.ic_con.set_rx_fifo_full_hld_ctrl();
+                    i2c_dev.i2c.ic_con.set_master_mode();
+                    i2c_dev.i2c.ic_con.set_ic_restart_en();
+                    i2c_dev.i2c.ic_con.set_ic_slave_disable();
+                    i2c_dev.i2c.ic_con.set_ic_10bitaddr_master();
                     i2c_dev.i2c.ic_con.set_tx_empty_ctrl();
 
-                    // Set slave address
-                    i2c_dev.i2c.ic_sar.write_ic_sar(addr as u32);
+                    // Set baudrate (also configures speed mode in IC_CON)
+                    i2c_dev.configure_baudrate(baudrate, clocks.sys_freq());
 
                     // Set FIFO thresholds
                     i2c_dev.i2c.ic_tx_tl.write_tx_tl(0);
                     i2c_dev.i2c.ic_rx_tl.write_rx_tl(0);
-
-                    // Configure timing for slave (use sensible defaults)
-                    let sda_hold = (sys_clk / 1_000_000 / 3).max(1);
-                    i2c_dev.i2c.ic_sda_hold.write_ic_sda_tx_hold(sda_hold);
-
-                    // Enable I2C
-                    i2c_dev.i2c.ic_enable.set_enable();
-
-                    i2c_dev
-                }
-
-                /// Initialize I2C in slave mode with 10-bit address.
-                ///
-                /// # Arguments
-                ///
-                /// * `i2c` - The I2C peripheral from PAC
-                /// * `sda` - SDA pin (must implement the appropriate SDA trait)
-                /// * `scl` - SCL pin (must implement the appropriate SCL trait)
-                /// * `addr` - 10-bit slave address
-                /// * `sys_clk` - System clock frequency in Hz
-                pub fn init_slave_10bit(i2c: $I2cType, mut sda: SDA, mut scl: SCL, addr: u16, sys_clk: u32) -> Self {
-                    // Configure pins for I2C function
-                    sda.[<configure_i2c $i2c_num _sda>]();
-                    scl.[<configure_i2c $i2c_num _scl>]();
-
-                    // Reset peripheral to ensure clean register state
-                    <$I2cType as Resettable>::init();
-
-                    let i2c_dev = Self {
-                        i2c,
-                        _sda: sda,
-                        _scl: scl,
-                    };
-
-                    // Disable I2C to configure
-                    i2c_dev.i2c.ic_enable.clr_enable();
-
-                    // Disable all interrupts and clear pending
-                    i2c_dev.i2c.ic_intr_mask.write_bits(0);
-                    let _ = i2c_dev.i2c.ic_clr_intr.read_bits();
-
-                    // Configure as slave with 10-bit addressing
-                    i2c_dev.i2c.ic_con.write_bits(0);
-                    i2c_dev.i2c.ic_con.write_speed(Speed::Fast as u32);
-                    i2c_dev.i2c.ic_con.set_ic_10bitaddr_slave();
-                    i2c_dev.i2c.ic_con.set_stop_det_ifaddressed();
-                    i2c_dev.i2c.ic_con.set_rx_fifo_full_hld_ctrl();
-                    i2c_dev.i2c.ic_con.set_tx_empty_ctrl();
-
-                    // Set slave address
-                    i2c_dev.i2c.ic_sar.write_ic_sar(addr as u32);
-
-                    // Set FIFO thresholds
-                    i2c_dev.i2c.ic_tx_tl.write_tx_tl(0);
-                    i2c_dev.i2c.ic_rx_tl.write_rx_tl(0);
-
-                    // Configure timing for slave
-                    let sda_hold = (sys_clk / 1_000_000 / 3).max(1);
-                    i2c_dev.i2c.ic_sda_hold.write_ic_sda_tx_hold(sda_hold);
 
                     // Enable I2C
                     i2c_dev.i2c.ic_enable.set_enable();
@@ -419,31 +355,6 @@ macro_rules! impl_i2c {
                         _sda: crate::gpio::pins::ErasedPin,
                         _scl: crate::gpio::pins::ErasedPin,
                     })
-                }
-
-                /// Erase pin type parameters, returning a borrowed type-erased [`I2c`] view.
-                ///
-                /// Returns an [`I2c`] handle that borrows from `self`, without
-                /// consuming the I2C instance. The returned handle is valid for
-                /// the lifetime of `self`.
-                ///
-                /// # Example
-                ///
-                /// ```ignore
-                #[doc = concat!("let i2c = ", stringify!($I2cName), "::init(")]
-                #[doc = concat!("    dp.I2C", $i2c_num, ", sda, scl, 400_000, &clocks,")]
-                /// );
-                /// let erased: I2c<'_> = i2c.erase();
-                /// ```
-                #[inline]
-                pub fn erase(&self) -> I2c<'_> {
-                    // SAFETY: $I2cName<SDA, SCL> and $I2cName<ErasedPin, ErasedPin>
-                    // have identical layout — all fields (I2C peripheral, SDA pin,
-                    // SCL pin) are ZSTs backed by PhantomData.
-                    let erased: &$I2cName<crate::gpio::pins::ErasedPin, crate::gpio::pins::ErasedPin> = unsafe {
-                        &*(self as *const $I2cName<SDA, SCL> as *const $I2cName<crate::gpio::pins::ErasedPin, crate::gpio::pins::ErasedPin>)
-                    };
-                    I2c::$I2cName(erased)
                 }
 
                 /// Get reference to the underlying register block.
@@ -529,15 +440,19 @@ macro_rules! impl_i2c {
                     self.i2c.ic_enable.set_enable();
                 }
 
+                // ================================================================
+                // Control
+                // ================================================================
+
                 /// Enable the I2C peripheral.
                 #[inline]
-                pub fn enable(&mut self) {
+                pub fn enable(&self) {
                     self.i2c.ic_enable.set_enable();
                 }
 
                 /// Disable the I2C peripheral.
                 #[inline]
-                pub fn disable(&mut self) {
+                pub fn disable(&self) {
                     self.i2c.ic_enable.clr_enable();
                 }
 
@@ -705,121 +620,6 @@ macro_rules! impl_i2c {
                 }
 
                 // ================================================================
-                // Slave Mode Operations
-                // ================================================================
-
-                /// Read data sent by master (slave mode).
-                ///
-                /// Returns the number of bytes read. Blocks until STOP condition.
-                pub fn slave_read(&self, buffer: &mut [u8]) -> Result<usize, Error> {
-                    let mut count = 0;
-
-                    // Clear any pending interrupts
-                    let _ = self.i2c.ic_clr_intr.read_bits();
-
-                    // Wait for data or STOP
-                    loop {
-                        // Check for RX data
-                        while self.i2c.ic_status.rfne() && count < buffer.len() {
-                            buffer[count] = self.i2c.ic_data_cmd.dat() as u8;
-                            count += 1;
-                        }
-
-                        // Check for STOP condition
-                        if self.i2c.ic_raw_intr_stat.stop_det() {
-                            // Read any remaining data
-                            while self.i2c.ic_status.rfne() && count < buffer.len() {
-                                buffer[count] = self.i2c.ic_data_cmd.dat() as u8;
-                                count += 1;
-                            }
-                            // Clear STOP flag
-                            let _ = self.i2c.ic_clr_stop_det.read_bits();
-                            break;
-                        }
-
-                        // Check for errors
-                        if self.i2c.ic_raw_intr_stat.rx_over() {
-                            let _ = self.i2c.ic_clr_rx_over.read_bits();
-                            return Err(Error::RxOverflow);
-                        }
-                    }
-
-                    Ok(count)
-                }
-
-                /// Read data sent by master (slave mode, non-blocking).
-                ///
-                /// Returns the number of bytes read.
-                pub fn slave_read_available(&self, buffer: &mut [u8]) -> usize {
-                    let mut count = 0;
-                    while self.i2c.ic_status.rfne() && count < buffer.len() {
-                        buffer[count] = self.i2c.ic_data_cmd.dat() as u8;
-                        count += 1;
-                    }
-                    count
-                }
-
-                /// Write data for master to read (slave mode).
-                ///
-                /// This writes data to the TX FIFO when master requests a read.
-                /// Call this when you detect a read request (RD_REQ interrupt).
-                pub fn slave_write(&self, data: &[u8]) -> Result<(), Error> {
-                    for &byte in data {
-                        // Wait for TX FIFO space
-                        while !self.i2c.ic_status.tfnf() {
-                            if self.i2c.ic_raw_intr_stat.tx_over() {
-                                let _ = self.i2c.ic_clr_tx_over.read_bits();
-                                return Err(Error::TxOverflow);
-                            }
-                        }
-
-                        // Write data
-                        self.i2c.ic_data_cmd.write_dat(byte as u32);
-                    }
-
-                    // Clear read request flag
-                    let _ = self.i2c.ic_clr_rd_req.read_bits();
-
-                    Ok(())
-                }
-
-                /// Check if master is requesting a read (slave mode).
-                #[inline]
-                pub fn slave_read_requested(&self) -> bool {
-                    self.i2c.ic_raw_intr_stat.rd_req()
-                }
-
-                /// Clear read request flag (slave mode).
-                #[inline]
-                pub fn slave_clear_read_request(&self) {
-                    let _ = self.i2c.ic_clr_rd_req.read_bits();
-                }
-
-                /// Check if a STOP condition was detected (slave mode).
-                #[inline]
-                pub fn slave_stop_detected(&self) -> bool {
-                    self.i2c.ic_raw_intr_stat.stop_det()
-                }
-
-                /// Clear STOP detection flag (slave mode).
-                #[inline]
-                pub fn slave_clear_stop(&self) {
-                    let _ = self.i2c.ic_clr_stop_det.read_bits();
-                }
-
-                /// Check if a START condition was detected (slave mode).
-                #[inline]
-                pub fn slave_start_detected(&self) -> bool {
-                    self.i2c.ic_raw_intr_stat.start_det()
-                }
-
-                /// Clear START detection flag (slave mode).
-                #[inline]
-                pub fn slave_clear_start(&self) {
-                    let _ = self.i2c.ic_clr_start_det.read_bits();
-                }
-
-                // ================================================================
                 // Status and Errors
                 // ================================================================
 
@@ -980,20 +780,6 @@ macro_rules! impl_i2c {
                 #[inline]
                 pub fn disable_tx_abort_interrupt(&self) {
                     self.i2c.ic_intr_mask.clr_m_tx_abrt();
-                }
-
-                // ---- RD REQ interrupt (slave mode) ----
-
-                /// Enable read request interrupt (slave mode: master wants to read).
-                #[inline]
-                pub fn enable_rd_req_interrupt(&self) {
-                    self.i2c.ic_intr_mask.set_m_rd_req();
-                }
-
-                /// Disable read request interrupt.
-                #[inline]
-                pub fn disable_rd_req_interrupt(&self) {
-                    self.i2c.ic_intr_mask.clr_m_rd_req();
                 }
 
                 // ---- STOP DET interrupt ----
@@ -1247,96 +1033,723 @@ macro_rules! impl_i2c {
 }
 
 // ============================================================================
-// Generate I2C0 and I2C1
+// Macro for generating I2C slave implementations
+// ============================================================================
+
+macro_rules! impl_i2c_slave {
+    ($I2cName:ident, $i2c_num:literal, $I2cType:ty, $i2c_mod:ident, $SdaPin:ident, $SclPin:ident) => {
+        paste! {
+            /// I2C slave peripheral wrapper with type-safe pin ownership.
+            ///
+            /// This struct owns both the I2C peripheral and the GPIO pins used for
+            /// SDA and SCL. The pins are configured automatically when the I2C
+            /// instance is created, and their ownership prevents them from being
+            /// used for other purposes.
+            ///
+            #[doc = concat!("# I2C", $i2c_num, " Slave Pin Mapping")]
+            ///
+            #[doc = concat!("See [`", stringify!($SdaPin), "`] for valid SDA pins.")]
+            ///
+            #[doc = concat!("See [`", stringify!($SclPin), "`] for valid SCL pins.")]
+            pub struct $I2cName<SDA, SCL>
+            where
+                SDA: $SdaPin,
+                SCL: $SclPin,
+            {
+                i2c: $I2cType,
+                _sda: SDA,
+                _scl: SCL,
+            }
+
+            impl<SDA, SCL> $I2cName<SDA, SCL>
+            where
+                SDA: $SdaPin,
+                SCL: $SclPin,
+            {
+                /// I2C peripheral number
+                pub const NUM: u8 = $i2c_num;
+
+                // ================================================================
+                // Initialization (Slave Mode)
+                // ================================================================
+
+                /// Initialize I2C in slave mode with 7-bit address.
+                ///
+                /// # Arguments
+                ///
+                /// * `i2c` - The I2C peripheral from PAC
+                /// * `sda` - SDA pin (must implement the appropriate SDA trait)
+                /// * `scl` - SCL pin (must implement the appropriate SCL trait)
+                /// * `addr` - 7-bit slave address
+                /// * `sys_clk` - System clock frequency in Hz
+                ///
+                /// # Example
+                ///
+                /// ```ignore
+                #[doc = concat!("let i2c = ", stringify!($I2cName), "::init(")]
+                #[doc = concat!("    dp.I2C", $i2c_num, ",")]
+                ///     pins.pin::<4>(),      // SDA
+                ///     pins.pin::<5>(),      // SCL
+                ///     0x55,         // Slave address
+                ///     150_000_000,  // System clock
+                /// );
+                /// ```
+                pub fn init(i2c: $I2cType, mut sda: SDA, mut scl: SCL, addr: u8, sys_clk: u32) -> Self {
+                    // Configure pins for I2C function
+                    sda.[<configure_i2c $i2c_num _sda>]();
+                    scl.[<configure_i2c $i2c_num _scl>]();
+
+                    // Reset peripheral to ensure clean register state
+                    <$I2cType as Resettable>::init();
+
+                    let i2c_dev = Self {
+                        i2c,
+                        _sda: sda,
+                        _scl: scl,
+                    };
+
+                    // Disable I2C to configure
+                    i2c_dev.i2c.ic_enable.clr_enable();
+
+                    // Disable all interrupts and clear pending
+                    i2c_dev.i2c.ic_intr_mask.write_bits(0);
+                    let _ = i2c_dev.i2c.ic_clr_intr.read_bits();
+
+                    // Configure as slave: clear all, then set required bits
+                    i2c_dev.i2c.ic_con.write_bits(0);
+                    i2c_dev.i2c.ic_con.write_speed(Speed::Fast as u32);
+                    i2c_dev.i2c.ic_con.set_stop_det_ifaddressed();
+                    i2c_dev.i2c.ic_con.set_rx_fifo_full_hld_ctrl();
+                    i2c_dev.i2c.ic_con.set_tx_empty_ctrl();
+
+                    // Set slave address
+                    i2c_dev.i2c.ic_sar.write_ic_sar(addr as u32);
+
+                    // Set FIFO thresholds
+                    i2c_dev.i2c.ic_tx_tl.write_tx_tl(0);
+                    i2c_dev.i2c.ic_rx_tl.write_rx_tl(0);
+
+                    // Configure timing for slave (use sensible defaults)
+                    let sda_hold = (sys_clk / 1_000_000 / 3).max(1);
+                    i2c_dev.i2c.ic_sda_hold.write_ic_sda_tx_hold(sda_hold);
+
+                    // Enable I2C
+                    i2c_dev.i2c.ic_enable.set_enable();
+
+                    i2c_dev
+                }
+
+                /// Initialize I2C in slave mode with 10-bit address.
+                ///
+                /// # Arguments
+                ///
+                /// * `i2c` - The I2C peripheral from PAC
+                /// * `sda` - SDA pin (must implement the appropriate SDA trait)
+                /// * `scl` - SCL pin (must implement the appropriate SCL trait)
+                /// * `addr` - 10-bit slave address
+                /// * `sys_clk` - System clock frequency in Hz
+                pub fn init_10bit(i2c: $I2cType, mut sda: SDA, mut scl: SCL, addr: u16, sys_clk: u32) -> Self {
+                    // Configure pins for I2C function
+                    sda.[<configure_i2c $i2c_num _sda>]();
+                    scl.[<configure_i2c $i2c_num _scl>]();
+
+                    // Reset peripheral to ensure clean register state
+                    <$I2cType as Resettable>::init();
+
+                    let i2c_dev = Self {
+                        i2c,
+                        _sda: sda,
+                        _scl: scl,
+                    };
+
+                    // Disable I2C to configure
+                    i2c_dev.i2c.ic_enable.clr_enable();
+
+                    // Disable all interrupts and clear pending
+                    i2c_dev.i2c.ic_intr_mask.write_bits(0);
+                    let _ = i2c_dev.i2c.ic_clr_intr.read_bits();
+
+                    // Configure as slave with 10-bit addressing
+                    i2c_dev.i2c.ic_con.write_bits(0);
+                    i2c_dev.i2c.ic_con.write_speed(Speed::Fast as u32);
+                    i2c_dev.i2c.ic_con.set_ic_10bitaddr_slave();
+                    i2c_dev.i2c.ic_con.set_stop_det_ifaddressed();
+                    i2c_dev.i2c.ic_con.set_rx_fifo_full_hld_ctrl();
+                    i2c_dev.i2c.ic_con.set_tx_empty_ctrl();
+
+                    // Set slave address
+                    i2c_dev.i2c.ic_sar.write_ic_sar(addr as u32);
+
+                    // Set FIFO thresholds
+                    i2c_dev.i2c.ic_tx_tl.write_tx_tl(0);
+                    i2c_dev.i2c.ic_rx_tl.write_rx_tl(0);
+
+                    // Configure timing for slave
+                    let sda_hold = (sys_clk / 1_000_000 / 3).max(1);
+                    i2c_dev.i2c.ic_sda_hold.write_ic_sda_tx_hold(sda_hold);
+
+                    // Enable I2C
+                    i2c_dev.i2c.ic_enable.set_enable();
+
+                    i2c_dev
+                }
+
+                // ================================================================
+                // Steal / Release
+                // ================================================================
+
+                /// Obtain a pin-erased I2C slave handle without ownership.
+                ///
+                /// # Safety
+                ///
+                /// The caller must ensure:
+                /// 1. The I2C peripheral has already been initialised (pins
+                ///    configured, slave address set, peripheral taken out of reset).
+                /// 2. No data races: the returned handle must not be used
+                ///    concurrently with the owning instance without proper
+                ///    synchronisation (e.g. `Mutex`).
+                #[inline]
+                pub unsafe fn steal() -> crate::Steal<$I2cName<crate::gpio::pins::ErasedPin, crate::gpio::pins::ErasedPin>> {
+                    crate::Steal($I2cName {
+                        i2c: unsafe { <$I2cType>::steal() },
+                        _sda: crate::gpio::pins::ErasedPin,
+                        _scl: crate::gpio::pins::ErasedPin,
+                    })
+                }
+
+                /// Get reference to the underlying register block.
+                ///
+                /// # Safety
+                /// Direct register access can bypass the HAL's safety guarantees.
+                /// The caller must ensure operations do not conflict with the HAL state.
+                #[inline]
+                pub unsafe fn regs(&self) -> &pico_rs_pac::$i2c_mod::RegisterBlock {
+                    &self.i2c
+                }
+
+                /// Release the I2C peripheral and pins.
+                ///
+                /// Returns a tuple of (I2C peripheral, SDA pin, SCL pin).
+                /// The pins can then be reconfigured for other uses.
+                #[inline]
+                pub fn release(self) -> ($I2cType, SDA, SCL) {
+                    (self.i2c, self._sda, self._scl)
+                }
+
+                // ================================================================
+                // Slave Mode Operations
+                // ================================================================
+
+                /// Read data sent by master (slave mode).
+                ///
+                /// Returns the number of bytes read. Blocks until STOP condition.
+                pub fn read(&self, buffer: &mut [u8]) -> Result<usize, Error> {
+                    let mut count = 0;
+
+                    // Clear any pending interrupts
+                    let _ = self.i2c.ic_clr_intr.read_bits();
+
+                    // Wait for data or STOP
+                    loop {
+                        // Check for RX data
+                        while self.i2c.ic_status.rfne() && count < buffer.len() {
+                            buffer[count] = self.i2c.ic_data_cmd.dat() as u8;
+                            count += 1;
+                        }
+
+                        // Check for STOP condition
+                        if self.i2c.ic_raw_intr_stat.stop_det() {
+                            // Read any remaining data
+                            while self.i2c.ic_status.rfne() && count < buffer.len() {
+                                buffer[count] = self.i2c.ic_data_cmd.dat() as u8;
+                                count += 1;
+                            }
+                            // Clear STOP flag
+                            let _ = self.i2c.ic_clr_stop_det.read_bits();
+                            break;
+                        }
+
+                        // Check for errors
+                        if self.i2c.ic_raw_intr_stat.rx_over() {
+                            let _ = self.i2c.ic_clr_rx_over.read_bits();
+                            return Err(Error::RxOverflow);
+                        }
+                    }
+
+                    Ok(count)
+                }
+
+                /// Read data sent by master (slave mode, non-blocking).
+                ///
+                /// Returns the number of bytes read.
+                pub fn read_available(&self, buffer: &mut [u8]) -> usize {
+                    let mut count = 0;
+                    while self.i2c.ic_status.rfne() && count < buffer.len() {
+                        buffer[count] = self.i2c.ic_data_cmd.dat() as u8;
+                        count += 1;
+                    }
+                    count
+                }
+
+                /// Write data for master to read (slave mode).
+                ///
+                /// This writes data to the TX FIFO when master requests a read.
+                /// Call this when you detect a read request (RD_REQ interrupt).
+                pub fn write(&self, data: &[u8]) -> Result<(), Error> {
+                    for &byte in data {
+                        // Wait for TX FIFO space
+                        while !self.i2c.ic_status.tfnf() {
+                            if self.i2c.ic_raw_intr_stat.tx_over() {
+                                let _ = self.i2c.ic_clr_tx_over.read_bits();
+                                return Err(Error::TxOverflow);
+                            }
+                        }
+
+                        // Write data
+                        self.i2c.ic_data_cmd.write_dat(byte as u32);
+                    }
+
+                    // Clear read request flag
+                    let _ = self.i2c.ic_clr_rd_req.read_bits();
+
+                    Ok(())
+                }
+
+                /// Check if master is requesting a read (slave mode).
+                #[inline]
+                pub fn read_requested(&self) -> bool {
+                    self.i2c.ic_raw_intr_stat.rd_req()
+                }
+
+                /// Clear read request flag (slave mode).
+                #[inline]
+                pub fn clear_read_request(&self) {
+                    let _ = self.i2c.ic_clr_rd_req.read_bits();
+                }
+
+                /// Check if a STOP condition was detected (slave mode).
+                #[inline]
+                pub fn stop_detected(&self) -> bool {
+                    self.i2c.ic_raw_intr_stat.stop_det()
+                }
+
+                /// Clear STOP detection flag (slave mode).
+                #[inline]
+                pub fn clear_stop(&self) {
+                    let _ = self.i2c.ic_clr_stop_det.read_bits();
+                }
+
+                /// Check if a START condition was detected (slave mode).
+                #[inline]
+                pub fn start_detected(&self) -> bool {
+                    self.i2c.ic_raw_intr_stat.start_det()
+                }
+
+                /// Clear START detection flag (slave mode).
+                #[inline]
+                pub fn clear_start(&self) {
+                    let _ = self.i2c.ic_clr_start_det.read_bits();
+                }
+
+                // ================================================================
+                // Control
+                // ================================================================
+
+                /// Enable the I2C peripheral.
+                #[inline]
+                pub fn enable(&self) {
+                    self.i2c.ic_enable.set_enable();
+                }
+
+                /// Disable the I2C peripheral.
+                #[inline]
+                pub fn disable(&self) {
+                    self.i2c.ic_enable.clr_enable();
+                }
+
+                /// Check if I2C peripheral is enabled.
+                #[inline]
+                pub fn enabled(&self) -> bool {
+                    self.i2c.ic_enable.enable()
+                }
+
+                // ================================================================
+                // Status
+                // ================================================================
+
+                /// Get the TX FIFO level.
+                #[inline]
+                pub fn tx_fifo_level(&self) -> u8 {
+                    self.i2c.ic_txflr.txflr() as u8
+                }
+
+                /// Get the RX FIFO level.
+                #[inline]
+                pub fn rx_fifo_level(&self) -> u8 {
+                    self.i2c.ic_rxflr.rxflr() as u8
+                }
+
+                /// Check if TX FIFO is empty.
+                #[inline]
+                pub fn is_tx_empty(&self) -> bool {
+                    self.i2c.ic_status.tfe()
+                }
+
+                /// Check if RX FIFO is not empty.
+                #[inline]
+                pub fn is_rx_not_empty(&self) -> bool {
+                    self.i2c.ic_status.rfne()
+                }
+
+                /// Check if I2C is busy.
+                #[inline]
+                pub fn is_busy(&self) -> bool {
+                    self.i2c.ic_status.activity()
+                }
+
+                /// Get the current mode.
+                #[inline]
+                pub fn mode(&self) -> Mode {
+                    Mode::Slave
+                }
+
+                // ================================================================
+                // Interrupts
+                // ================================================================
+
+                // ---- Mask operations (enable/disable) ----
+
+                /// Enable specific interrupts using mask.
+                pub fn enable_interrupts(&self, mask: u32) {
+                    self.i2c.ic_intr_mask.set_bits(mask);
+                }
+
+                /// Disable specific interrupts using mask.
+                pub fn disable_interrupts(&self, mask: u32) {
+                    self.i2c.ic_intr_mask.clr_bits(mask);
+                }
+
+                /// Disable all interrupts.
+                #[inline]
+                pub fn disable_all_interrupts(&self) {
+                    self.i2c.ic_intr_mask.write_bits(0);
+                }
+
+                // ---- RX FULL interrupt ----
+
+                /// Enable RX FULL interrupt (RX FIFO reaches or exceeds threshold).
+                #[inline]
+                pub fn enable_rx_full_interrupt(&self) {
+                    self.i2c.ic_intr_mask.set_m_rx_full();
+                }
+
+                /// Disable RX FULL interrupt.
+                #[inline]
+                pub fn disable_rx_full_interrupt(&self) {
+                    self.i2c.ic_intr_mask.clr_m_rx_full();
+                }
+
+                /// Check if RX FULL interrupt is enabled.
+                #[inline]
+                pub fn is_rx_full_interrupt_enabled(&self) -> bool {
+                    self.i2c.ic_intr_mask.m_rx_full()
+                }
+
+                // ---- TX EMPTY interrupt ----
+
+                /// Enable TX EMPTY interrupt (TX FIFO at or below threshold).
+                #[inline]
+                pub fn enable_tx_empty_interrupt(&self) {
+                    self.i2c.ic_intr_mask.set_m_tx_empty();
+                }
+
+                /// Disable TX EMPTY interrupt.
+                #[inline]
+                pub fn disable_tx_empty_interrupt(&self) {
+                    self.i2c.ic_intr_mask.clr_m_tx_empty();
+                }
+
+                /// Check if TX EMPTY interrupt is enabled.
+                #[inline]
+                pub fn is_tx_empty_interrupt_enabled(&self) -> bool {
+                    self.i2c.ic_intr_mask.m_tx_empty()
+                }
+
+                // ---- TX ABRT interrupt ----
+
+                /// Enable TX abort interrupt.
+                #[inline]
+                pub fn enable_tx_abort_interrupt(&self) {
+                    self.i2c.ic_intr_mask.set_m_tx_abrt();
+                }
+
+                /// Disable TX abort interrupt.
+                #[inline]
+                pub fn disable_tx_abort_interrupt(&self) {
+                    self.i2c.ic_intr_mask.clr_m_tx_abrt();
+                }
+
+                // ---- RD REQ interrupt ----
+
+                /// Enable read request interrupt (master wants to read).
+                #[inline]
+                pub fn enable_rd_req_interrupt(&self) {
+                    self.i2c.ic_intr_mask.set_m_rd_req();
+                }
+
+                /// Disable read request interrupt.
+                #[inline]
+                pub fn disable_rd_req_interrupt(&self) {
+                    self.i2c.ic_intr_mask.clr_m_rd_req();
+                }
+
+                // ---- STOP DET interrupt ----
+
+                /// Enable stop detected interrupt.
+                #[inline]
+                pub fn enable_stop_det_interrupt(&self) {
+                    self.i2c.ic_intr_mask.set_m_stop_det();
+                }
+
+                /// Disable stop detected interrupt.
+                #[inline]
+                pub fn disable_stop_det_interrupt(&self) {
+                    self.i2c.ic_intr_mask.clr_m_stop_det();
+                }
+
+                // ---- START DET interrupt ----
+
+                /// Enable start detected interrupt.
+                #[inline]
+                pub fn enable_start_det_interrupt(&self) {
+                    self.i2c.ic_intr_mask.set_m_start_det();
+                }
+
+                /// Disable start detected interrupt.
+                #[inline]
+                pub fn disable_start_det_interrupt(&self) {
+                    self.i2c.ic_intr_mask.clr_m_start_det();
+                }
+
+                // ---- ACTIVITY interrupt ----
+
+                /// Enable activity interrupt.
+                #[inline]
+                pub fn enable_activity_interrupt(&self) {
+                    self.i2c.ic_intr_mask.set_m_activity();
+                }
+
+                /// Disable activity interrupt.
+                #[inline]
+                pub fn disable_activity_interrupt(&self) {
+                    self.i2c.ic_intr_mask.clr_m_activity();
+                }
+
+                // ---- Error interrupts ----
+
+                /// Enable RX overflow interrupt.
+                #[inline]
+                pub fn enable_rx_over_interrupt(&self) {
+                    self.i2c.ic_intr_mask.set_m_rx_over();
+                }
+
+                /// Disable RX overflow interrupt.
+                #[inline]
+                pub fn disable_rx_over_interrupt(&self) {
+                    self.i2c.ic_intr_mask.clr_m_rx_over();
+                }
+
+                /// Enable RX underflow interrupt.
+                #[inline]
+                pub fn enable_rx_under_interrupt(&self) {
+                    self.i2c.ic_intr_mask.set_m_rx_under();
+                }
+
+                /// Disable RX underflow interrupt.
+                #[inline]
+                pub fn disable_rx_under_interrupt(&self) {
+                    self.i2c.ic_intr_mask.clr_m_rx_under();
+                }
+
+                /// Enable TX overflow interrupt.
+                #[inline]
+                pub fn enable_tx_over_interrupt(&self) {
+                    self.i2c.ic_intr_mask.set_m_tx_over();
+                }
+
+                /// Disable TX overflow interrupt.
+                #[inline]
+                pub fn disable_tx_over_interrupt(&self) {
+                    self.i2c.ic_intr_mask.clr_m_tx_over();
+                }
+
+                // ---- Status reading ----
+
+                /// Get raw interrupt status.
+                #[inline]
+                pub fn raw_interrupt_status(&self) -> u32 {
+                    self.i2c.ic_raw_intr_stat.read_bits()
+                }
+
+                /// Get masked interrupt status.
+                #[inline]
+                pub fn interrupt_status(&self) -> u32 {
+                    self.i2c.ic_intr_stat.read_bits()
+                }
+
+                // ---- Clear interrupts ----
+
+                /// Clear all interrupts.
+                #[inline]
+                pub fn clear_all_interrupts(&self) {
+                    let _ = self.i2c.ic_clr_intr.read_bits();
+                }
+
+                /// Clear RX UNDER interrupt.
+                #[inline]
+                pub fn clear_rx_under_interrupt(&self) {
+                    let _ = self.i2c.ic_clr_rx_under.read_bits();
+                }
+
+                /// Clear RX OVER interrupt.
+                #[inline]
+                pub fn clear_rx_over_interrupt(&self) {
+                    let _ = self.i2c.ic_clr_rx_over.read_bits();
+                }
+
+                /// Clear TX OVER interrupt.
+                #[inline]
+                pub fn clear_tx_over_interrupt(&self) {
+                    let _ = self.i2c.ic_clr_tx_over.read_bits();
+                }
+
+                /// Clear TX ABRT interrupt.
+                #[inline]
+                pub fn clear_tx_abort_interrupt(&self) {
+                    let _ = self.i2c.ic_clr_tx_abrt.read_bits();
+                }
+
+                /// Clear ACTIVITY interrupt.
+                #[inline]
+                pub fn clear_activity_interrupt(&self) {
+                    let _ = self.i2c.ic_clr_activity.read_bits();
+                }
+
+                /// Clear STOP DET interrupt.
+                #[inline]
+                pub fn clear_stop_det_interrupt(&self) {
+                    let _ = self.i2c.ic_clr_stop_det.read_bits();
+                }
+
+                /// Clear START DET interrupt.
+                #[inline]
+                pub fn clear_start_det_interrupt(&self) {
+                    let _ = self.i2c.ic_clr_start_det.read_bits();
+                }
+
+                /// Clear GEN CALL interrupt.
+                #[inline]
+                pub fn clear_gen_call_interrupt(&self) {
+                    let _ = self.i2c.ic_clr_gen_call.read_bits();
+                }
+
+                /// Clear RESTART DET interrupt.
+                #[inline]
+                pub fn clear_restart_det_interrupt(&self) {
+                    let _ = self.i2c.ic_clr_restart_det.read_bits();
+                }
+
+                // ================================================================
+                // DMA Support
+                // ================================================================
+
+                /// DREQ selection for transmitting data via DMA.
+                pub const TX_DREQ: crate::dma::TreqSel = crate::dma::TreqSel::[<I2c $i2c_num Tx>];
+
+                /// DREQ selection for receiving data via DMA.
+                pub const RX_DREQ: crate::dma::TreqSel = crate::dma::TreqSel::[<I2c $i2c_num Rx>];
+
+                /// Get the I2C data/command register (IC_DATA_CMD) address for DMA transfers.
+                ///
+                /// IC_DATA_CMD is at offset `0x10` from the I2C base address.
+                #[inline]
+                pub fn data_register_address(&self) -> u32 {
+                    <$I2cType>::PTR as u32 + 0x10
+                }
+
+                /// Enable DMA requests for the transmit FIFO.
+                #[inline]
+                pub fn enable_dma_tx(&self) {
+                    self.i2c.ic_dma_cr.set_tdmae();
+                }
+
+                /// Disable DMA requests for the transmit FIFO.
+                #[inline]
+                pub fn disable_dma_tx(&self) {
+                    self.i2c.ic_dma_cr.clr_tdmae();
+                }
+
+                /// Enable DMA requests for the receive FIFO.
+                #[inline]
+                pub fn enable_dma_rx(&self) {
+                    self.i2c.ic_dma_cr.set_rdmae();
+                }
+
+                /// Disable DMA requests for the receive FIFO.
+                #[inline]
+                pub fn disable_dma_rx(&self) {
+                    self.i2c.ic_dma_cr.clr_rdmae();
+                }
+
+                /// Set the DMA transmit data level.
+                ///
+                /// Controls the level at which a DMA request is generated for TX.
+                /// The DMA TX request fires when the number of entries in the
+                /// TX FIFO is at or below this threshold.
+                #[inline]
+                pub fn set_dma_tx_data_level(&self, level: u8) {
+                    self.i2c.ic_dma_tdlr.write_dmatdl(level as u32);
+                }
+
+                /// Set the DMA receive data level.
+                ///
+                /// Controls the level at which a DMA request is generated for RX.
+                /// The DMA RX request fires when the number of entries in the
+                /// RX FIFO is at or above this threshold + 1.
+                #[inline]
+                pub fn set_dma_rx_data_level(&self, level: u8) {
+                    self.i2c.ic_dma_rdlr.write_dmardl(level as u32);
+                }
+            }
+        }
+    };
+}
+
+// ============================================================================
+// Generate I2C0 and I2C1 (Master)
 // ============================================================================
 
 impl_i2c!(I2c0, 0, pico_rs_pac::I2C0, i2c0, I2c0SdaPin, I2c0SclPin);
 impl_i2c!(I2c1, 1, pico_rs_pac::I2C1, i2c1, I2c1SdaPin, I2c1SclPin);
 
 // ============================================================================
-// Type-erased I2c handle (borrowed view)
+// Generate I2C0Slave and I2C1Slave
 // ============================================================================
 
-use crate::gpio::pins::ErasedPin;
+impl_i2c_slave!(
+    I2c0Slave,
+    0,
+    pico_rs_pac::I2C0,
+    i2c0,
+    I2c0SdaPin,
+    I2c0SclPin
+);
 
-/// Type-erased I2C handle — a borrowed view over an [`I2c0`] or [`I2c1`].
-///
-/// `I2c<'a>` erases the concrete peripheral and pin type parameters, providing
-/// a uniform `&self`-based interface for driver implementations.  It is
-/// obtained via [`I2c0::erase()`] / [`I2c1::erase()`] and borrows from the
-/// owning instance.
-///
-/// # Example
-///
-/// ```ignore
-/// use pico_rs::i2c::{I2c, I2c0};
-///
-/// let i2c0 = I2c0::init(dp.I2C0, sda, scl, 400_000, &clocks);
-/// let i2c: I2c<'_> = i2c0.erase();
-/// i2c.write(0x50, &[0x00]).unwrap();
-/// ```
-pub enum I2c<'a> {
-    /// Borrowed I2C0 view.
-    I2c0(&'a I2c0<ErasedPin, ErasedPin>),
-    /// Borrowed I2C1 view.
-    I2c1(&'a I2c1<ErasedPin, ErasedPin>),
-}
-
-/// Delegate a method call to the inner I2C reference.
-macro_rules! delegate {
-    ($self:expr, $method:ident $(,)? $($arg:expr),* $(,)?) => {
-        match $self {
-            I2c::I2c0(inner) => inner.$method($($arg),*),
-            I2c::I2c1(inner) => inner.$method($($arg),*),
-        }
-    };
-}
-
-impl<'a> I2c<'a> {
-    // ================================================================
-    // Data read/write
-    // ================================================================
-
-    /// Write data to an I2C device.
-    #[inline]
-    pub fn write(&self, addr: u8, data: &[u8]) -> Result<(), Error> {
-        delegate!(self, write, addr, data)
-    }
-
-    /// Read data from an I2C device.
-    #[inline]
-    pub fn read(&self, addr: u8, buffer: &mut [u8]) -> Result<(), Error> {
-        delegate!(self, read, addr, buffer)
-    }
-
-    /// Write then read with repeated start.
-    #[inline]
-    pub fn write_read(&self, addr: u8, w: &[u8], r: &mut [u8]) -> Result<(), Error> {
-        delegate!(self, write_read, addr, w, r)
-    }
-
-    /// Check if the I2C bus is busy.
-    #[inline]
-    pub fn is_busy(&self) -> bool {
-        delegate!(self, is_busy)
-    }
-}
-
-impl I2cBus for I2c<'_> {
-    type Error = Error;
-
-    #[inline]
-    fn write(&self, addr: u8, data: &[u8]) -> Result<(), Self::Error> {
-        I2c::write(self, addr, data)
-    }
-
-    #[inline]
-    fn read(&self, addr: u8, buffer: &mut [u8]) -> Result<(), Self::Error> {
-        I2c::read(self, addr, buffer)
-    }
-
-    #[inline]
-    fn write_read(&self, addr: u8, w: &[u8], r: &mut [u8]) -> Result<(), Self::Error> {
-        I2c::write_read(self, addr, w, r)
-    }
-}
+impl_i2c_slave!(
+    I2c1Slave,
+    1,
+    pico_rs_pac::I2C1,
+    i2c1,
+    I2c1SdaPin,
+    I2c1SclPin
+);

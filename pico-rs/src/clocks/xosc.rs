@@ -168,20 +168,20 @@ impl Xosc {
 
     /// Check if the XOSC is running and stable
     #[inline]
-    pub fn is_stable(&self) -> bool {
+    pub fn stable(&self) -> bool {
         self.xosc.status.stable()
     }
 
     /// Check if the XOSC is enabled
     #[inline]
-    pub fn is_enabled(&self) -> bool {
+    pub fn enabled(&self) -> bool {
         self.xosc.status.enabled()
     }
 
     /// Wait for the XOSC to become stable
     #[inline]
     pub fn wait_stable(&self) {
-        while !self.is_stable() {
+        while !self.stable() {
             core::hint::spin_loop();
         }
     }
@@ -191,18 +191,18 @@ impl Xosc {
     /// Note: You should call `wait_stable()` after enabling to ensure
     /// the oscillator is ready for use.
     #[inline]
-    pub fn enable(&mut self) {
+    pub fn enable(&self) {
         self.xosc.ctrl.write_enable(Ctrl::ENABLE_ENABLE);
     }
 
     /// Disable the crystal oscillator
     ///
     /// Warning: Make sure no clocks are depending on XOSC before disabling!
-    pub fn disable(&mut self) {
+    pub fn disable(&self) {
         self.xosc.ctrl.write_enable(Ctrl::ENABLE_DISABLE);
 
         // Wait for stable to go away
-        while self.is_stable() {
+        while self.stable() {
             core::hint::spin_loop();
         }
     }

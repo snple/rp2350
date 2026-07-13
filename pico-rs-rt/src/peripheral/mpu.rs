@@ -211,7 +211,7 @@ impl MPU {
 
     /// Check if MPU is enabled
     #[inline]
-    pub fn is_enabled(&self) -> bool {
+    pub fn enabled(&self) -> bool {
         unsafe { (*Self::PTR).ctrl.read_bits() & ctrl::ENABLE != 0 }
     }
 

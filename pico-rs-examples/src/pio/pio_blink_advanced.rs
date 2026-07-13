@@ -92,7 +92,7 @@ fn main() -> ! {
             sm.tx_fifo_write(delay_cycles);
 
             // Enable the state machine
-            sm.set_enabled(true);
+            sm.enable();
 
             info!("PIO state machine started - LED blinking!");
         }

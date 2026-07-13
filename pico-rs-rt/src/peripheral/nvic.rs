@@ -123,7 +123,7 @@ impl NVIC {
 
     /// Check if an interrupt is enabled
     #[inline]
-    pub fn is_enabled(irq: u16) -> bool {
+    pub fn enabled(irq: u16) -> bool {
         let nr = irq as usize;
         let reg = nr / 32;
         let bit = nr % 32;
@@ -157,7 +157,7 @@ impl NVIC {
 
     /// Check if an interrupt is pending
     #[inline]
-    pub fn is_pending(irq: u16) -> bool {
+    pub fn pending(irq: u16) -> bool {
         let nr = irq as usize;
         let reg = nr / 32;
         let bit = nr % 32;
@@ -167,7 +167,7 @@ impl NVIC {
 
     /// Check if an interrupt is active (currently being handled)
     #[inline]
-    pub fn is_active(irq: u16) -> bool {
+    pub fn active(irq: u16) -> bool {
         let nr = irq as usize;
         let reg = nr / 32;
         let bit = nr % 32;
@@ -198,7 +198,7 @@ impl NVIC {
 
     /// Get the priority of an interrupt
     #[inline]
-    pub fn get_priority(irq: u16) -> u8 {
+    pub fn priority(irq: u16) -> u8 {
         unsafe { (*Self::PTR).ipr[irq as usize].read_bits() }
     }
 
@@ -248,8 +248,8 @@ impl NVIC {
 
     /// Check if enabled (type-safe version)
     #[inline]
-    pub fn is_enabled_int<I: InterruptNumber>(interrupt: I) -> bool {
-        Self::is_enabled(interrupt.number())
+    pub fn enabled_int<I: InterruptNumber>(interrupt: I) -> bool {
+        Self::enabled(interrupt.number())
     }
 
     /// Set pending (type-safe version)
@@ -266,8 +266,8 @@ impl NVIC {
 
     /// Check if pending (type-safe version)
     #[inline]
-    pub fn is_pending_int<I: InterruptNumber>(interrupt: I) -> bool {
-        Self::is_pending(interrupt.number())
+    pub fn pending_int<I: InterruptNumber>(interrupt: I) -> bool {
+        Self::pending(interrupt.number())
     }
 
     /// Set priority (type-safe version)
@@ -280,7 +280,7 @@ impl NVIC {
 
     /// Get priority (type-safe version)
     #[inline]
-    pub fn get_priority_int<I: InterruptNumber>(interrupt: I) -> u8 {
-        Self::get_priority(interrupt.number())
+    pub fn priority_int<I: InterruptNumber>(interrupt: I) -> u8 {
+        Self::priority(interrupt.number())
     }
 }

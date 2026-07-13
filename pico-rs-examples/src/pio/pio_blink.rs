@@ -70,7 +70,7 @@ fn main() -> ! {
                 .set_set_pins(LED_PIN, 1)
                 .set_consecutive_pindirs(LED_PIN, 1, true)
                 .init(installed.offset)
-                .set_enabled(true);
+                .enable();
 
             info!("PIO state machine started - LED blinking!");
         }

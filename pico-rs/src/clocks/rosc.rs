@@ -135,7 +135,7 @@ impl Rosc {
 
     /// Enable the ring oscillator
     #[inline]
-    pub fn enable(&mut self) {
+    pub fn enable(&self) {
         let rosc = self.regs();
         rosc.ctrl
             .write_enable(Ctrl::ENABLE_ENABLE >> Ctrl::ENABLE_OFFSET);
@@ -146,7 +146,7 @@ impl Rosc {
     /// # Safety
     /// The system clock must not be using ROSC when disabling it.
     #[inline]
-    pub fn disable(&mut self) {
+    pub fn disable(&self) {
         let rosc = self.regs();
         rosc.ctrl
             .write_enable(Ctrl::ENABLE_DISABLE >> Ctrl::ENABLE_OFFSET);
@@ -154,7 +154,7 @@ impl Rosc {
 
     /// Check if the oscillator is enabled
     #[inline]
-    pub fn is_enabled(&self) -> bool {
+    pub fn enabled(&self) -> bool {
         self.regs().status.enabled()
     }
 
@@ -195,7 +195,7 @@ impl Rosc {
 
     /// Get the current frequency range setting
     #[inline]
-    pub fn get_freq_range(&self) -> u32 {
+    pub fn freq_range(&self) -> u32 {
         self.regs().ctrl.freq_range()
     }
 

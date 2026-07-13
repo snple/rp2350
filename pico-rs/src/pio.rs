@@ -242,7 +242,7 @@ macro_rules! impl_state_machine {
             /// Disables the SM, clears FIFOs, resets internal state, and
             /// jumps to `initial_pc`. The SM is left **disabled**.
             pub fn init(&mut self, initial_pc: u8) -> &mut Self {
-                self.set_enabled(false);
+                self.disable();
                 self.clear_fifos();
                 self.restart();
                 self.restart_clock_divider();
@@ -254,21 +254,25 @@ macro_rules! impl_state_machine {
             // Control
             // ================================================================
 
-            /// Enable or disable the state machine
+            /// Enable the state machine
             #[inline]
-            pub fn set_enabled(&mut self, enabled: bool) -> &mut Self {
+            pub fn enable(&mut self) -> &mut Self {
                 let mask = 1u32 << $sm_index;
-                if enabled {
-                    self.pio.ctrl.set_bits(mask);
-                } else {
-                    self.pio.ctrl.clr_bits(mask);
-                }
+                self.pio.ctrl.set_bits(mask);
+                self
+            }
+
+            /// Disable the state machine
+            #[inline]
+            pub fn disable(&mut self) -> &mut Self {
+                let mask = 1u32 << $sm_index;
+                self.pio.ctrl.clr_bits(mask);
                 self
             }
 
             /// Check if the state machine is enabled
             #[inline]
-            pub fn is_enabled(&self) -> bool {
+            pub fn enabled(&self) -> bool {
                 (self.pio.ctrl.sm_enable() & (1u32 << $sm_index)) != 0
             }
 

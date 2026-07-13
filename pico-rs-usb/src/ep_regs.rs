@@ -184,7 +184,7 @@ pub trait EndpointControlRegister {
     }
 
     /// Check if enabled
-    fn is_enabled(&self) -> bool {
+    fn enabled(&self) -> bool {
         (self.read_raw() & ep_control_bits::ENABLE) != 0
     }
 }

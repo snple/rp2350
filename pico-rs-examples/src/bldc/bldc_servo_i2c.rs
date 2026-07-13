@@ -280,7 +280,7 @@
 //!
 //! > **SPI 从机替代方案**: 如需 SPI 而非 I2C，可用 SPI1 Slave:
 //! > GP12(RX) GP13(CSn) GP14(SCK) GP15(TX)。寄存器映射和协议不变，
-//! > 只需替换初始化和轮询代码。参见 `pico_rs::spi::Spi1WithCs::init_slave()`。
+//! > 只需替换初始化和轮询代码。参见 `pico_rs::spi::Spi1Slave::init()`。
 //!
 //! ---
 //!
@@ -361,7 +361,7 @@ use defmt_rtt as _;
 use pico_rs::adc::{Adc, AdcPin};
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::gpio::Pins;
-use pico_rs::i2c::I2c0;
+use pico_rs::i2c::I2c0Slave;
 use pico_rs::interrupt::{self, Mutex};
 use pico_rs::main;
 use pico_rs::pac::{Interrupt, Peripherals};
@@ -954,7 +954,7 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     // I2C0 从机 — GP8 (SDA), GP9 (SCL), 地址 0x2A
     // ------------------------------------------------------------------
-    let i2c = I2c0::init_slave(
+    let i2c = I2c0Slave::init(
         dp.I2C0,
         pins.pin::<8>(),
         pins.pin::<9>(),
@@ -1093,23 +1093,23 @@ fn main() -> ! {
         // 读取主机写入的字节
         {
             let mut buf = [0u8; 16];
-            let n = i2c.slave_read_available(&mut buf);
+            let n = i2c.read_available(&mut buf);
             for &byte in buf[..n].iter() {
                 i2c_regs.rx_byte(byte);
             }
         }
 
         // STOP 条件 → 处理写事务
-        if i2c.slave_stop_detected() {
-            i2c.slave_clear_stop();
+        if i2c.stop_detected() {
+            i2c.clear_stop();
             i2c_regs.on_stop();
         }
 
         // 主机请求读 → 回应一字节
-        if i2c.slave_read_requested() {
+        if i2c.read_requested() {
             i2c_regs.update_status();
             let byte = i2c_regs.tx_byte();
-            let _ = i2c.slave_write(&[byte]);
+            let _ = i2c.write(&[byte]);
         }
 
         // ==============================================================

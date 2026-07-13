@@ -149,7 +149,7 @@ impl SysTick {
 
     /// Check if the counter is enabled
     #[inline]
-    pub fn is_enabled(&self) -> bool {
+    pub fn enabled(&self) -> bool {
         self.syst.is_counter_enabled()
     }
 

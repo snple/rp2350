@@ -86,7 +86,7 @@ fn main() -> ! {
         .set_consecutive_pindirs(25, 1, true)
         .set_out_shift(true, true, 32) // shift right, autopull, threshold=32
         .init(installed.offset)
-        .set_enabled(true);
+        .enable();
 
     info!("PIO state machine started");
 

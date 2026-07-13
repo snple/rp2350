@@ -36,8 +36,8 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::clocks::ClockBuilder;
-use pico_rs::main;
 use pico_rs::gpio::Pins;
+use pico_rs::main;
 use pico_rs::pac::Peripherals;
 use pico_rs::pio;
 use pico_rs::pio::{FifoJoin, Pio0};
@@ -178,7 +178,7 @@ fn sk9822_pio_init(pio0: &mut Pio0, sys_clk: u32) {
         .set_consecutive_pindirs(CLK_PIN, 1, true)
         .set_consecutive_pindirs(DATA_PIN, 1, true)
         .init(installed.offset)
-        .set_enabled(true);
+        .enable();
 }
 
 /// Transmit a full SK9822 frame via PIO.

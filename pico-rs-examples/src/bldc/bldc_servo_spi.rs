@@ -351,7 +351,7 @@ use pico_rs::interrupt::{self, Mutex};
 use pico_rs::main;
 use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::pwm::Pwm;
-use pico_rs::spi::Spi1WithCs;
+use pico_rs::spi::Spi1Slave;
 use pico_rs::timer::Timer0; // ============================================================================
 // 配置参数
 // ============================================================================
@@ -946,7 +946,7 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     // SPI1 从机 — GP14(SCK), GP15(TX/MISO), GP12(RX/MOSI), GP13(CSn)
     // ------------------------------------------------------------------
-    let spi = Spi1WithCs::init_slave(
+    let spi = Spi1Slave::init(
         dp.SPI1,
         pins.pin::<14>(), // SCK
         pins.pin::<15>(), // TX (MISO — 从机输出)
