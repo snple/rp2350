@@ -421,6 +421,31 @@ macro_rules! impl_i2c {
                     })
                 }
 
+                /// Erase pin type parameters, returning a borrowed type-erased [`I2c`] view.
+                ///
+                /// Returns an [`I2c`] handle that borrows from `self`, without
+                /// consuming the I2C instance. The returned handle is valid for
+                /// the lifetime of `self`.
+                ///
+                /// # Example
+                ///
+                /// ```ignore
+                #[doc = concat!("let i2c = ", stringify!($I2cName), "::init(")]
+                #[doc = concat!("    dp.I2C", $i2c_num, ", sda, scl, 400_000, &clocks,")]
+                /// );
+                /// let erased: I2c<'_> = i2c.erase();
+                /// ```
+                #[inline]
+                pub fn erase(&self) -> I2c<'_> {
+                    // SAFETY: $I2cName<SDA, SCL> and $I2cName<ErasedPin, ErasedPin>
+                    // have identical layout — all fields (I2C peripheral, SDA pin,
+                    // SCL pin) are ZSTs backed by PhantomData.
+                    let erased: &$I2cName<crate::gpio::pins::ErasedPin, crate::gpio::pins::ErasedPin> = unsafe {
+                        &*(self as *const $I2cName<SDA, SCL> as *const $I2cName<crate::gpio::pins::ErasedPin, crate::gpio::pins::ErasedPin>)
+                    };
+                    I2c::$I2cName(erased)
+                }
+
                 /// Get reference to the underlying register block.
                 ///
                 /// # Safety
@@ -1227,3 +1252,91 @@ macro_rules! impl_i2c {
 
 impl_i2c!(I2c0, 0, pico_rs_pac::I2C0, i2c0, I2c0SdaPin, I2c0SclPin);
 impl_i2c!(I2c1, 1, pico_rs_pac::I2C1, i2c1, I2c1SdaPin, I2c1SclPin);
+
+// ============================================================================
+// Type-erased I2c handle (borrowed view)
+// ============================================================================
+
+use crate::gpio::pins::ErasedPin;
+
+/// Type-erased I2C handle — a borrowed view over an [`I2c0`] or [`I2c1`].
+///
+/// `I2c<'a>` erases the concrete peripheral and pin type parameters, providing
+/// a uniform `&self`-based interface for driver implementations.  It is
+/// obtained via [`I2c0::erase()`] / [`I2c1::erase()`] and borrows from the
+/// owning instance.
+///
+/// # Example
+///
+/// ```ignore
+/// use pico_rs::i2c::{I2c, I2c0};
+///
+/// let i2c0 = I2c0::init(dp.I2C0, sda, scl, 400_000, &clocks);
+/// let i2c: I2c<'_> = i2c0.erase();
+/// i2c.write(0x50, &[0x00]).unwrap();
+/// ```
+pub enum I2c<'a> {
+    /// Borrowed I2C0 view.
+    I2c0(&'a I2c0<ErasedPin, ErasedPin>),
+    /// Borrowed I2C1 view.
+    I2c1(&'a I2c1<ErasedPin, ErasedPin>),
+}
+
+/// Delegate a method call to the inner I2C reference.
+macro_rules! delegate {
+    ($self:expr, $method:ident $(,)? $($arg:expr),* $(,)?) => {
+        match $self {
+            I2c::I2c0(inner) => inner.$method($($arg),*),
+            I2c::I2c1(inner) => inner.$method($($arg),*),
+        }
+    };
+}
+
+impl<'a> I2c<'a> {
+    // ================================================================
+    // Data read/write
+    // ================================================================
+
+    /// Write data to an I2C device.
+    #[inline]
+    pub fn write(&self, addr: u8, data: &[u8]) -> Result<(), Error> {
+        delegate!(self, write, addr, data)
+    }
+
+    /// Read data from an I2C device.
+    #[inline]
+    pub fn read(&self, addr: u8, buffer: &mut [u8]) -> Result<(), Error> {
+        delegate!(self, read, addr, buffer)
+    }
+
+    /// Write then read with repeated start.
+    #[inline]
+    pub fn write_read(&self, addr: u8, w: &[u8], r: &mut [u8]) -> Result<(), Error> {
+        delegate!(self, write_read, addr, w, r)
+    }
+
+    /// Check if the I2C bus is busy.
+    #[inline]
+    pub fn is_busy(&self) -> bool {
+        delegate!(self, is_busy)
+    }
+}
+
+impl I2cBus for I2c<'_> {
+    type Error = Error;
+
+    #[inline]
+    fn write(&self, addr: u8, data: &[u8]) -> Result<(), Self::Error> {
+        I2c::write(self, addr, data)
+    }
+
+    #[inline]
+    fn read(&self, addr: u8, buffer: &mut [u8]) -> Result<(), Self::Error> {
+        I2c::read(self, addr, buffer)
+    }
+
+    #[inline]
+    fn write_read(&self, addr: u8, w: &[u8], r: &mut [u8]) -> Result<(), Self::Error> {
+        I2c::write_read(self, addr, w, r)
+    }
+}
