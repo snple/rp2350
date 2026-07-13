@@ -410,12 +410,12 @@ use defmt_rtt as _;
 
 use pico_rs::adc::{Adc, AdcPin};
 use pico_rs::clocks::ClockBuilder;
-use pico_rs::main;
 use pico_rs::gpio::Pins;
 use pico_rs::interrupt::{self, Mutex};
+use pico_rs::main;
 use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::pwm::Pwm;
-use pico_rs::timer::Timer0;// ============================================================================
+use pico_rs::timer::Timer0; // ============================================================================
 // Configuration — Tune these for your motor and application
 // ============================================================================
 
@@ -532,17 +532,17 @@ fn main() -> ! {
 
     let pwm = Pwm::init(dp.PWM);
 
-    let slice_a = pwm.slice::<0>().output_a(pins.pin::<0>());
+    let mut slice_a = pwm.slice::<0>().output_a(pins.pin::<0>());
     slice_a.set_wrap(pwm_wrap);
     slice_a.set_duty_a(0);
     slice_a.enable();
 
-    let slice_b = pwm.slice::<1>().output_a(pins.pin::<2>());
+    let mut slice_b = pwm.slice::<1>().output_a(pins.pin::<2>());
     slice_b.set_wrap(pwm_wrap);
     slice_b.set_duty_a(0);
     slice_b.enable();
 
-    let slice_c = pwm.slice::<2>().output_a(pins.pin::<4>());
+    let mut slice_c = pwm.slice::<2>().output_a(pins.pin::<4>());
     slice_c.set_wrap(pwm_wrap);
     slice_c.set_duty_a(0);
     slice_c.enable();
@@ -550,15 +550,15 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     // Low-side GPIO outputs (directly switching the low-side FETs)
     // ------------------------------------------------------------------
-    let al = pins.pin::<1>();
+    let mut al = pins.pin::<1>();
     al.into_output();
     al.set_low();
 
-    let bl = pins.pin::<3>();
+    let mut bl = pins.pin::<3>();
     bl.into_output();
     bl.set_low();
 
-    let cl = pins.pin::<5>();
+    let mut cl = pins.pin::<5>();
     cl.into_output();
     cl.set_low();
 

@@ -38,8 +38,8 @@
 //! }
 //! ```
 
-use crate::clocks::Clocks;
 use crate::Steal;
+use crate::clocks::Clocks;
 
 /// TICKS peripheral wrapper
 ///
@@ -114,13 +114,13 @@ impl Ticks {
 
     /// Enable PROC0 tick generator
     #[inline]
-    pub fn enable_proc0(&self) {
+    pub fn enable_proc0(&mut self) {
         self.ticks.proc0_ctrl.set_enable();
     }
 
     /// Disable PROC0 tick generator
     #[inline]
-    pub fn disable_proc0(&self) {
+    pub fn disable_proc0(&mut self) {
         self.ticks.proc0_ctrl.clr_enable();
     }
 
@@ -138,7 +138,7 @@ impl Ticks {
 
     /// Set PROC0 cycles per tick
     #[inline]
-    pub fn set_proc0_cycles(&self, cycles: u16) {
+    pub fn set_proc0_cycles(&mut self, cycles: u16) {
         self.ticks.proc0_cycles.write_proc0_cycles(cycles as u32);
     }
 
@@ -160,13 +160,13 @@ impl Ticks {
 
     /// Enable PROC1 tick generator
     #[inline]
-    pub fn enable_proc1(&self) {
+    pub fn enable_proc1(&mut self) {
         self.ticks.proc1_ctrl.set_enable();
     }
 
     /// Disable PROC1 tick generator
     #[inline]
-    pub fn disable_proc1(&self) {
+    pub fn disable_proc1(&mut self) {
         self.ticks.proc1_ctrl.clr_enable();
     }
 
@@ -184,7 +184,7 @@ impl Ticks {
 
     /// Set PROC1 cycles per tick
     #[inline]
-    pub fn set_proc1_cycles(&self, cycles: u16) {
+    pub fn set_proc1_cycles(&mut self, cycles: u16) {
         self.ticks.proc1_cycles.write_proc1_cycles(cycles as u32);
     }
 
@@ -206,13 +206,13 @@ impl Ticks {
 
     /// Enable TIMER0 tick generator
     #[inline]
-    pub fn enable_timer0(&self) {
+    pub fn enable_timer0(&mut self) {
         self.ticks.timer0_ctrl.set_enable();
     }
 
     /// Disable TIMER0 tick generator
     #[inline]
-    pub fn disable_timer0(&self) {
+    pub fn disable_timer0(&mut self) {
         self.ticks.timer0_ctrl.clr_enable();
     }
 
@@ -230,7 +230,7 @@ impl Ticks {
 
     /// Set TIMER0 cycles per tick
     #[inline]
-    pub fn set_timer0_cycles(&self, cycles: u16) {
+    pub fn set_timer0_cycles(&mut self, cycles: u16) {
         self.ticks.timer0_cycles.write_timer0_cycles(cycles as u32);
     }
 
@@ -252,13 +252,13 @@ impl Ticks {
 
     /// Enable TIMER1 tick generator
     #[inline]
-    pub fn enable_timer1(&self) {
+    pub fn enable_timer1(&mut self) {
         self.ticks.timer1_ctrl.set_enable();
     }
 
     /// Disable TIMER1 tick generator
     #[inline]
-    pub fn disable_timer1(&self) {
+    pub fn disable_timer1(&mut self) {
         self.ticks.timer1_ctrl.clr_enable();
     }
 
@@ -276,7 +276,7 @@ impl Ticks {
 
     /// Set TIMER1 cycles per tick
     #[inline]
-    pub fn set_timer1_cycles(&self, cycles: u16) {
+    pub fn set_timer1_cycles(&mut self, cycles: u16) {
         self.ticks.timer1_cycles.write_timer1_cycles(cycles as u32);
     }
 
@@ -298,13 +298,13 @@ impl Ticks {
 
     /// Enable WATCHDOG tick generator
     #[inline]
-    pub fn enable_watchdog(&self) {
+    pub fn enable_watchdog(&mut self) {
         self.ticks.watchdog_ctrl.set_enable();
     }
 
     /// Disable WATCHDOG tick generator
     #[inline]
-    pub fn disable_watchdog(&self) {
+    pub fn disable_watchdog(&mut self) {
         self.ticks.watchdog_ctrl.clr_enable();
     }
 
@@ -322,7 +322,7 @@ impl Ticks {
 
     /// Set WATCHDOG cycles per tick
     #[inline]
-    pub fn set_watchdog_cycles(&self, cycles: u16) {
+    pub fn set_watchdog_cycles(&mut self, cycles: u16) {
         self.ticks
             .watchdog_cycles
             .write_watchdog_cycles(cycles as u32);
@@ -346,7 +346,7 @@ impl Ticks {
 
     /// Initialize PROC0 tick generator (disable, set cycles, enable)
     #[inline]
-    pub fn init_proc0(&self) {
+    pub fn init_proc0(&mut self) {
         self.disable_proc0();
         self.set_proc0_cycles(self.cycles_per_tick);
         self.enable_proc0();
@@ -354,7 +354,7 @@ impl Ticks {
 
     /// Initialize PROC1 tick generator (disable, set cycles, enable)
     #[inline]
-    pub fn init_proc1(&self) {
+    pub fn init_proc1(&mut self) {
         self.disable_proc1();
         self.set_proc1_cycles(self.cycles_per_tick);
         self.enable_proc1();
@@ -362,7 +362,7 @@ impl Ticks {
 
     /// Initialize TIMER0 tick generator (disable, set cycles, enable)
     #[inline]
-    pub fn init_timer0(&self) {
+    pub fn init_timer0(&mut self) {
         self.disable_timer0();
         self.set_timer0_cycles(self.cycles_per_tick);
         self.enable_timer0();
@@ -370,7 +370,7 @@ impl Ticks {
 
     /// Initialize TIMER1 tick generator (disable, set cycles, enable)
     #[inline]
-    pub fn init_timer1(&self) {
+    pub fn init_timer1(&mut self) {
         self.disable_timer1();
         self.set_timer1_cycles(self.cycles_per_tick);
         self.enable_timer1();
@@ -378,7 +378,7 @@ impl Ticks {
 
     /// Initialize WATCHDOG tick generator (disable, set cycles, enable)
     #[inline]
-    pub fn init_watchdog(&self) {
+    pub fn init_watchdog(&mut self) {
         self.disable_watchdog();
         self.set_watchdog_cycles(self.cycles_per_tick);
         self.enable_watchdog();

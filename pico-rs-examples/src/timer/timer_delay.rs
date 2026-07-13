@@ -31,7 +31,7 @@ fn main() -> ! {
     info!("Clock system initialized: sys={} Hz", clocks.sys_freq());
 
     // Initialize TIMER0 tick generator (1µs ticks from clk_ref)
-    let ticks = Ticks::init(dp.TICKS, &clocks);
+    let mut ticks = Ticks::init(dp.TICKS, &clocks);
     ticks.init_timer0();
 
     // Initialize the hardware timer
@@ -44,7 +44,7 @@ fn main() -> ! {
 
     // Initialize GPIO for LED
     let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
-    let led = pins.pin::<25>();
+    let mut led = pins.pin::<25>();
     led.into_output();
     info!("LED configured on GPIO 25");
 

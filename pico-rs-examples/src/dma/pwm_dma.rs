@@ -59,7 +59,7 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     let pwm = Pwm::init(dp.PWM);
     let slice = pwm.slice::<0>();
-    let slice = slice.output_a(pins.pin::<0>());
+    let mut slice = slice.output_a(pins.pin::<0>());
 
     // Use 0xFFFE so CC=0xFFFF still represents a true 100% duty cycle.
     slice.set_wrap(0xFFFE);

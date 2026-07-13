@@ -32,7 +32,7 @@ fn main() -> ! {
     let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
     // Configure GPIO 25 (LED) as output
-    let led = pins.pin::<LED_PIN>();
+    let mut led = pins.pin::<LED_PIN>();
     led.into_output();
 
     info!("GPIO {} configured as output", LED_PIN);

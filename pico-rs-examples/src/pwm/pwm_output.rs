@@ -219,7 +219,7 @@ fn main() -> ! {
     info!("--- Demo 1: LED Breathing Effect (GP0) ---");
 
     // 配置 Slice 0 — 仅使用 Channel A (GP0)
-    let slice0 = pwm.slice::<0>().output_a(pins.pin::<0>());
+    let mut slice0 = pwm.slice::<0>().output_a(pins.pin::<0>());
 
     // 使用高层 API 配置频率：
     // - 目标频率: 1 kHz
@@ -268,7 +268,7 @@ fn main() -> ! {
     // ======================================================================
     info!("--- Demo 2: Servo Control (GP2) ---");
 
-    let slice1 = pwm.slice::<1>().output_a(pins.pin::<2>());
+    let mut slice1 = pwm.slice::<1>().output_a(pins.pin::<2>());
 
     let servo_actual_hz = slice1.configure_frequency_with_wrap(SYS_CLK_HZ, 50, SERVO_WRAP);
     let (servo_div_int, servo_div_frac) = slice1.get_div();
@@ -314,7 +314,7 @@ fn main() -> ! {
     // ======================================================================
     info!("--- Demo 3: Dual-Channel Output (GP4 + GP5) ---");
 
-    let slice2 = pwm.slice::<2>().output_ab(pins.pin::<4>(), pins.pin::<5>());
+    let mut slice2 = pwm.slice::<2>().output_ab(pins.pin::<4>(), pins.pin::<5>());
 
     let dual_actual_hz = slice2.configure_frequency_with_wrap(SYS_CLK_HZ, 1_000, LED_WRAP);
 
@@ -418,7 +418,7 @@ fn main() -> ! {
     info!("=== Loop: Onboard LED breathing (GP25) ===");
 
     // GP25 → Slice 4, Channel B
-    let slice4 = pwm
+    let mut slice4 = pwm
         .slice::<4>()
         .output_ab(pins.pin::<24>(), pins.pin::<25>());
 

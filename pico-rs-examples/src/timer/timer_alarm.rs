@@ -79,12 +79,12 @@ fn main() -> ! {
     let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
 
     // 让 TIMER0 开始以 1MHz 计数。
-    let ticks = Ticks::init(dp.TICKS, &clocks);
+    let mut ticks = Ticks::init(dp.TICKS, &clocks);
     ticks.init_timer0();
 
     // 初始化板载 LED，用来观察 alarm 中断是否按预期发生。
     let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
-    let led = pins.pin::<25>();
+    let mut led = pins.pin::<25>();
     led.into_output();
     led.set_low();
 

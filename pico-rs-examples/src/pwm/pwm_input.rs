@@ -78,7 +78,7 @@ fn main() -> ! {
     let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
     // Also configure LED for visual feedback
-    let led = pins.pin::<25>();
+    let mut led = pins.pin::<25>();
     led.into_output();
 
     // Boot clock frequency (before PLL setup)
@@ -96,7 +96,7 @@ fn main() -> ! {
 
     // Create PWM input using pin ownership
     // GPIO 1 maps to PWM slice 0, channel B
-    let slice0 = pwm
+    let mut slice0 = pwm
         .slice::<0>()
         .input(pins.pin::<1>(), InputMode::RisingEdge);
 

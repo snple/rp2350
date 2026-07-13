@@ -474,19 +474,19 @@ fn main() -> ! {
     let pwm = Pwm::init(dp.PWM);
 
     // Phase A — slice 0
-    let slice_a = pwm.slice::<0>().output_a(pins.pin::<0>());
+    let mut slice_a = pwm.slice::<0>().output_a(pins.pin::<0>());
     slice_a.set_wrap(pwm_wrap);
     slice_a.set_duty_a(0);
     slice_a.enable();
 
     // Phase B — slice 1
-    let slice_b = pwm.slice::<1>().output_a(pins.pin::<2>());
+    let mut slice_b = pwm.slice::<1>().output_a(pins.pin::<2>());
     slice_b.set_wrap(pwm_wrap);
     slice_b.set_duty_a(0);
     slice_b.enable();
 
     // Phase C — slice 2
-    let slice_c = pwm.slice::<2>().output_a(pins.pin::<4>());
+    let mut slice_c = pwm.slice::<2>().output_a(pins.pin::<4>());
     slice_c.set_wrap(pwm_wrap);
     slice_c.set_duty_a(0);
     slice_c.enable();
@@ -495,32 +495,32 @@ fn main() -> ! {
     // 低侧 GPIO — FOC 模式下全部保持常高（导通）
     // 高侧 PWM 负责全部调制
     // ------------------------------------------------------------------
-    let al = pins.pin::<1>();
+    let mut al = pins.pin::<1>();
     al.into_output();
     al.set_high(); // 常导通
 
-    let bl = pins.pin::<3>();
+    let mut bl = pins.pin::<3>();
     bl.into_output();
     bl.set_high(); // 常导通
 
-    let cl = pins.pin::<5>();
+    let mut cl = pins.pin::<5>();
     cl.into_output();
     cl.set_high(); // 常导通
 
     // ------------------------------------------------------------------
     // 霍尔传感器
     // ------------------------------------------------------------------
-    let hall_a = pins.pin::<6>();
+    let mut hall_a = pins.pin::<6>();
     hall_a.into_input_pullup();
     hall_a.enable_interrupt(EdgeLevel::EdgeHigh);
     hall_a.enable_interrupt(EdgeLevel::EdgeLow);
 
-    let hall_b = pins.pin::<7>();
+    let mut hall_b = pins.pin::<7>();
     hall_b.into_input_pullup();
     hall_b.enable_interrupt(EdgeLevel::EdgeHigh);
     hall_b.enable_interrupt(EdgeLevel::EdgeLow);
 
-    let hall_c = pins.pin::<8>();
+    let mut hall_c = pins.pin::<8>();
     hall_c.into_input_pullup();
     hall_c.enable_interrupt(EdgeLevel::EdgeHigh);
     hall_c.enable_interrupt(EdgeLevel::EdgeLow);

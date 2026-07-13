@@ -485,7 +485,7 @@ fn main() -> ! {
     info!("Clock system initialized: sys={} Hz", clocks.sys_freq());
 
     // Initialize TIMER0 tick generator (1µs ticks from clk_ref)
-    let ticks = Ticks::init(dp.TICKS, &clocks);
+    let mut ticks = Ticks::init(dp.TICKS, &clocks);
     ticks.init_timer0();
 
     // Initialize the hardware timer
@@ -499,18 +499,18 @@ fn main() -> ! {
     // ------------------------------------------------------------------
 
     // GP2 = STEP (步进脉冲输出)
-    let p2 = pins.pin::<2>();
+    let mut p2 = pins.pin::<2>();
     p2.into_output();
     p2.set_low();
 
     // GP3 = DIR (方向控制)
-    let p3 = pins.pin::<3>();
+    let mut p3 = pins.pin::<3>();
     p3.into_output();
     p3.set_low();
 
     // GP4 = ENABLE (启用控制, 低有效)
     // 初始化时先禁用驱动器 (HIGH)，待配置完成后再启用
-    let p4 = pins.pin::<4>();
+    let mut p4 = pins.pin::<4>();
     p4.into_output();
     p4.set_high(); // 先禁用
 
@@ -521,17 +521,17 @@ fn main() -> ! {
     // ------------------------------------------------------------------
 
     // GP5 = MS1
-    let p5 = pins.pin::<5>();
+    let mut p5 = pins.pin::<5>();
     p5.into_output();
     p5.set_low();
 
     // GP6 = MS2
-    let p6 = pins.pin::<6>();
+    let mut p6 = pins.pin::<6>();
     p6.into_output();
     p6.set_low();
 
     // GP7 = MS3
-    let p7 = pins.pin::<7>();
+    let mut p7 = pins.pin::<7>();
     p7.into_output();
     p7.set_low();
 
@@ -543,13 +543,13 @@ fn main() -> ! {
 
     // GP8 = RESET (复位, 低有效)
     // 初始设为 LOW (复位状态)，稍后释放
-    let p8 = pins.pin::<8>();
+    let mut p8 = pins.pin::<8>();
     p8.into_output();
     p8.set_low();
 
     // GP9 = SLEEP (休眠, 低有效)
     // 初始设为 LOW (休眠状态)，稍后唤醒
-    let p9 = pins.pin::<9>();
+    let mut p9 = pins.pin::<9>();
     p9.into_output();
     p9.set_low();
 

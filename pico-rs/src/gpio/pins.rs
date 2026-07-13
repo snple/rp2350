@@ -721,104 +721,112 @@ mod rp2350b_pins {
                          40, 41, 42, 43, 44, 45, 46, 47);
 }
 
-/// NoPin - a placeholder for unused peripheral pins.
+/// ErasedPin — placeholder for unused or type-erased peripheral pins.
 ///
-/// Use `NoPin` when a peripheral API requires a pin you don't need.
-/// For example:
-/// - PWM: only one channel → pass `NoPin` for the other
-/// - SPI TX-only: no RX needed → pass `NoPin` for RX
-/// - SPI RX-only: no TX needed → pass `NoPin` for TX
+/// Use `ErasedPin` when a peripheral API requires a pin you don't need,
+/// or when obtaining a pin-erased handle via `steal()`.
+///
+/// # Placeholder
+///
+/// - PWM: only one channel → pass `ErasedPin` for the other
+/// - SPI TX-only: no RX needed → pass `ErasedPin` for RX
+/// - SPI RX-only: no TX needed → pass `ErasedPin` for TX
+///
+/// # Type erasure
+///
+/// `steal()` methods return handles parameterised with `ErasedPin` so that
+/// the concrete pin types are not required in ISR or global-storage context.
 ///
 /// ```ignore
-/// use pico_rs::gpio::pins::NoPin;
+/// use pico_rs::gpio::pins::ErasedPin;
 /// use pico_rs::spi::Spi0;
 ///
 /// // TX-only SPI: no MISO pin needed
-/// let spi = Spi0::init(dp.SPI0, sck_pin, tx_pin, NoPin, 1_000_000, sys_clk);
+/// let spi = Spi0::init(dp.SPI0, sck_pin, tx_pin, ErasedPin, 1_000_000, sys_clk);
 /// ```
-pub struct NoPin;
+pub struct ErasedPin;
 
 // PWM
-impl PwmAPin for NoPin {
+impl PwmAPin for ErasedPin {
     const PWM_SLICE: u8 = 255;
     fn configure_pwm_a(&mut self) {}
 }
 
-impl PwmBPin for NoPin {
+impl PwmBPin for ErasedPin {
     const PWM_SLICE: u8 = 255;
     fn configure_pwm_b(&mut self) {}
 }
 
 // SPI0
-impl Spi0RxPin for NoPin {
+impl Spi0RxPin for ErasedPin {
     fn configure_spi0_rx(&mut self) {}
 }
-impl Spi0TxPin for NoPin {
+impl Spi0TxPin for ErasedPin {
     fn configure_spi0_tx(&mut self) {}
 }
-impl Spi0CsnPin for NoPin {
+impl Spi0CsnPin for ErasedPin {
     fn configure_spi0_csn(&mut self) {}
 }
 
 // SPI0 SCK
-impl Spi0SckPin for NoPin {
+impl Spi0SckPin for ErasedPin {
     fn configure_spi0_sck(&mut self) {}
 }
 
 // SPI1
-impl Spi1RxPin for NoPin {
+impl Spi1RxPin for ErasedPin {
     fn configure_spi1_rx(&mut self) {}
 }
-impl Spi1TxPin for NoPin {
+impl Spi1TxPin for ErasedPin {
     fn configure_spi1_tx(&mut self) {}
 }
-impl Spi1CsnPin for NoPin {
+impl Spi1CsnPin for ErasedPin {
     fn configure_spi1_csn(&mut self) {}
 }
-impl Spi1SckPin for NoPin {
+impl Spi1SckPin for ErasedPin {
     fn configure_spi1_sck(&mut self) {}
 }
 
 // UART0
-impl Uart0TxPin for NoPin {
+impl Uart0TxPin for ErasedPin {
     fn configure_uart0_tx(&mut self) {}
 }
-impl Uart0RxPin for NoPin {
+impl Uart0RxPin for ErasedPin {
     fn configure_uart0_rx(&mut self) {}
 }
-impl Uart0CtsPin for NoPin {
+impl Uart0CtsPin for ErasedPin {
     fn configure_uart0_cts(&mut self) {}
 }
-impl Uart0RtsPin for NoPin {
+impl Uart0RtsPin for ErasedPin {
     fn configure_uart0_rts(&mut self) {}
 }
 
 // UART1
-impl Uart1TxPin for NoPin {
+impl Uart1TxPin for ErasedPin {
     fn configure_uart1_tx(&mut self) {}
 }
-impl Uart1RxPin for NoPin {
+impl Uart1RxPin for ErasedPin {
     fn configure_uart1_rx(&mut self) {}
 }
-impl Uart1CtsPin for NoPin {
+impl Uart1CtsPin for ErasedPin {
     fn configure_uart1_cts(&mut self) {}
 }
-impl Uart1RtsPin for NoPin {
+impl Uart1RtsPin for ErasedPin {
     fn configure_uart1_rts(&mut self) {}
 }
 
 // I2C0
-impl I2c0SdaPin for NoPin {
+impl I2c0SdaPin for ErasedPin {
     fn configure_i2c0_sda(&mut self) {}
 }
-impl I2c0SclPin for NoPin {
+impl I2c0SclPin for ErasedPin {
     fn configure_i2c0_scl(&mut self) {}
 }
 
 // I2C1
-impl I2c1SdaPin for NoPin {
+impl I2c1SdaPin for ErasedPin {
     fn configure_i2c1_sda(&mut self) {}
 }
-impl I2c1SclPin for NoPin {
+impl I2c1SclPin for ErasedPin {
     fn configure_i2c1_scl(&mut self) {}
 }

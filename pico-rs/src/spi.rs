@@ -242,7 +242,7 @@ macro_rules! impl_spi {
 
                 /// Obtain a pin-erased SPI handle without ownership.
                 ///
-                /// Returns `$SpiName<NoPin, NoPin, NoPin>` — a handle that can
+                /// Returns `$SpiName<ErasedPin, ErasedPin, ErasedPin>` — a handle that can
                 /// access all SPI registers without carrying pin type parameters.
                 /// This is useful for ISR context or global storage where the
                 /// concrete pin types are inconvenient.
@@ -265,16 +265,16 @@ macro_rules! impl_spi {
                 /// );
                 ///
                 /// // Later, in ISR or another context:
-                #[doc = concat!("let spi = unsafe { ", stringify!($SpiName), "::<NoPin, NoPin, NoPin>::steal() };")]
+                #[doc = concat!("let spi = unsafe { ", stringify!($SpiName), "::<ErasedPin, ErasedPin, ErasedPin>::steal() };")]
                 /// spi.write(&[0x01, 0x02]);
                 /// ```
                 #[inline]
-                pub unsafe fn steal() -> crate::Steal<$SpiName<crate::gpio::pins::NoPin, crate::gpio::pins::NoPin, crate::gpio::pins::NoPin>> {
+                pub unsafe fn steal() -> crate::Steal<$SpiName<crate::gpio::pins::ErasedPin, crate::gpio::pins::ErasedPin, crate::gpio::pins::ErasedPin>> {
                     crate::Steal($SpiName {
                         spi: unsafe { <$SpiType>::steal() },
-                        _sck: crate::gpio::pins::NoPin,
-                        _tx: crate::gpio::pins::NoPin,
-                        _rx: crate::gpio::pins::NoPin,
+                        _sck: crate::gpio::pins::ErasedPin,
+                        _tx: crate::gpio::pins::ErasedPin,
+                        _rx: crate::gpio::pins::ErasedPin,
                     })
                 }
 
@@ -964,17 +964,17 @@ macro_rules! impl_spi {
                 /// Same requirements as [`$SpiName::steal()`].
                 #[inline]
                 pub unsafe fn steal() -> crate::Steal<[<$SpiName WithCs>]<
-                    crate::gpio::pins::NoPin,
-                    crate::gpio::pins::NoPin,
-                    crate::gpio::pins::NoPin,
-                    crate::gpio::pins::NoPin,
+                    crate::gpio::pins::ErasedPin,
+                    crate::gpio::pins::ErasedPin,
+                    crate::gpio::pins::ErasedPin,
+                    crate::gpio::pins::ErasedPin,
                 >> {
                     crate::Steal([<$SpiName WithCs>] {
                         spi: unsafe { <$SpiType>::steal() },
-                        _sck: crate::gpio::pins::NoPin,
-                        _tx: crate::gpio::pins::NoPin,
-                        _rx: crate::gpio::pins::NoPin,
-                        _csn: crate::gpio::pins::NoPin,
+                        _sck: crate::gpio::pins::ErasedPin,
+                        _tx: crate::gpio::pins::ErasedPin,
+                        _rx: crate::gpio::pins::ErasedPin,
+                        _csn: crate::gpio::pins::ErasedPin,
                     })
                 }
 

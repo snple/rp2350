@@ -185,53 +185,7 @@ macro_rules! impl_i2c {
                 /// I2C peripheral number
                 pub const NUM: u8 = $i2c_num;
 
-                /// Obtain a pin-erased I2C handle without ownership.
-                ///
-                /// Returns `$I2cName<NoPin, NoPin>` — a handle that can access
-                /// all I2C registers without carrying pin type parameters.
-                /// This is useful for ISR context or global storage where the
-                /// concrete pin types are inconvenient.
-                ///
-                /// # Safety
-                ///
-                /// The caller must ensure:
-                /// 1. The I2C peripheral has already been initialised (pins
-                ///    configured, baud rate set, peripheral taken out of reset).
-                /// 2. No data races: the returned handle must not be used
-                ///    concurrently with the owning instance without proper
-                ///    synchronisation (e.g. `Mutex`).
-                ///
-                /// # Example
-                ///
-                /// ```ignore
-                #[doc = concat!("// In init code: create the full I2C with pins")]
-                #[doc = concat!("let i2c = ", stringify!($I2cName), "::init(")]
-                #[doc = concat!("    dp.I2C", $i2c_num, ", sda_pin, scl_pin, 400_000, &clocks,")]
-                /// );
-                ///
-                /// // Later, in ISR or another context:
-                #[doc = concat!("let i2c = unsafe { ", stringify!($I2cName), "::<NoPin, NoPin>::steal() };")]
-                /// let mut buf = [0u8; 2];
-                /// i2c.read(0x50, &mut buf).unwrap();
-                /// ```
-                #[inline]
-                pub unsafe fn steal() -> crate::Steal<$I2cName<crate::gpio::pins::NoPin, crate::gpio::pins::NoPin>> {
-                    crate::Steal($I2cName {
-                        i2c: unsafe { <$I2cType>::steal() },
-                        _sda: crate::gpio::pins::NoPin,
-                        _scl: crate::gpio::pins::NoPin,
-                    })
-                }
 
-                /// Get reference to the underlying register block.
-                ///
-                /// # Safety
-                /// Direct register access can bypass the HAL's safety guarantees.
-                /// The caller must ensure operations do not conflict with the HAL state.
-                #[inline]
-                pub unsafe fn regs(&self) -> &pico_rs_pac::$i2c_mod::RegisterBlock {
-                    &self.i2c
-                }
 
                 // ================================================================
                 // Initialization
@@ -427,6 +381,54 @@ macro_rules! impl_i2c {
                     i2c_dev.i2c.ic_enable.set_enable();
 
                     i2c_dev
+                }
+
+                /// Obtain a pin-erased I2C handle without ownership.
+                ///
+                /// Returns `$I2cName<ErasedPin, ErasedPin>` — a handle that can access
+                /// all I2C registers without carrying pin type parameters.
+                /// This is useful for ISR context or global storage where the
+                /// concrete pin types are inconvenient.
+                ///
+                /// # Safety
+                ///
+                /// The caller must ensure:
+                /// 1. The I2C peripheral has already been initialised (pins
+                ///    configured, baud rate set, peripheral taken out of reset).
+                /// 2. No data races: the returned handle must not be used
+                ///    concurrently with the owning instance without proper
+                ///    synchronisation (e.g. `Mutex`).
+                ///
+                /// # Example
+                ///
+                /// ```ignore
+                #[doc = concat!("// In init code: create the full I2C with pins")]
+                #[doc = concat!("let i2c = ", stringify!($I2cName), "::init(")]
+                #[doc = concat!("    dp.I2C", $i2c_num, ", sda_pin, scl_pin, 400_000, &clocks,")]
+                /// );
+                ///
+                /// // Later, in ISR or another context:
+                #[doc = concat!("let i2c = unsafe { ", stringify!($I2cName), "::<ErasedPin, ErasedPin>::steal() };")]
+                /// let mut buf = [0u8; 2];
+                /// i2c.read(0x50, &mut buf).unwrap();
+                /// ```
+                #[inline]
+                pub unsafe fn steal() -> crate::Steal<$I2cName<crate::gpio::pins::ErasedPin, crate::gpio::pins::ErasedPin>> {
+                    crate::Steal($I2cName {
+                        i2c: unsafe { <$I2cType>::steal() },
+                        _sda: crate::gpio::pins::ErasedPin,
+                        _scl: crate::gpio::pins::ErasedPin,
+                    })
+                }
+
+                /// Get reference to the underlying register block.
+                ///
+                /// # Safety
+                /// Direct register access can bypass the HAL's safety guarantees.
+                /// The caller must ensure operations do not conflict with the HAL state.
+                #[inline]
+                pub unsafe fn regs(&self) -> &pico_rs_pac::$i2c_mod::RegisterBlock {
+                    &self.i2c
                 }
 
                 /// Release the I2C peripheral and pins.

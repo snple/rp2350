@@ -15,10 +15,10 @@ use core::sync::atomic::{AtomicBool, Ordering};
 
 use defmt::*;
 use defmt_rtt as _;
-use pico_rs::clocks::{ClockBuilder};
-use pico_rs::main;
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::gpio::Pins;
 use pico_rs::interrupt::{self, Mutex};
+use pico_rs::main;
 use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::ticks::Ticks;
 use pico_rs::timer::Timer0;
@@ -41,13 +41,13 @@ fn main() -> ! {
 
     // Initialize GPIO
     let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
-    let led = pins.pin::<25>();
+    let mut led = pins.pin::<25>();
     led.into_output();
     led.set_low();
     info!("LED configured on GPIO25");
 
     // Initialize TIMER0 tick generator (1µs ticks from clk_ref)
-    let ticks = Ticks::init(dp.TICKS, &clocks);
+    let mut ticks = Ticks::init(dp.TICKS, &clocks);
     ticks.init_timer0();
 
     // Initialize Timer0

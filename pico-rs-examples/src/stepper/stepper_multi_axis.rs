@@ -241,18 +241,18 @@ fn timer() -> Steal<Timer0> {
 
 macro_rules! init_motor_pins {
     ($pins:expr, $dir:expr, $step:expr, $index:expr, $diag:expr) => {{
-        let _d = $pins.pin::<$dir>();
+        let mut _d = $pins.pin::<$dir>();
         _d.into_output();
         unsafe { gpio::set_low($dir) };
 
-        let _s = $pins.pin::<$step>();
+        let mut _s = $pins.pin::<$step>();
         _s.into_output();
         unsafe { gpio::set_low($step) };
 
-        let _i = $pins.pin::<$index>();
+        let mut _i = $pins.pin::<$index>();
         _i.into_input_pullup();
 
-        let _g = $pins.pin::<$diag>();
+        let mut _g = $pins.pin::<$diag>();
         _g.into_input_pullup();
     }};
 }
@@ -359,16 +359,16 @@ fn main() -> ! {
     let dp = Peripherals::take().unwrap();
     let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
 
-    let ticks = Ticks::init(dp.TICKS, &clocks);
+    let mut ticks = Ticks::init(dp.TICKS, &clocks);
     ticks.init_timer0();
     let timer = Timer0::init(dp.TIMER0);
 
     let pins = pico_rs::gpio::Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
     // --- GPIO: ENABLE ---
-    let _en = pins.pin::<PIN_ENABLE>();
+    let mut _en = pins.pin::<PIN_ENABLE>();
     _en.into_output();
-    unsafe { gpio::set_high(PIN_ENABLE) };
+    _en.set_high();
 
     // --- GPIO: 各电机引脚 ---
     init_motor_pins!(pins, M1_DIR, M1_STEP, M1_INDEX, M1_DIAG);
@@ -376,15 +376,15 @@ fn main() -> ! {
     init_motor_pins!(pins, M3_DIR, M3_STEP, M3_INDEX, M3_DIAG);
     // 电机 4 的 INDEX/DIAG 只初始化为输入 (防浮空)
     {
-        let _i4 = pins.pin::<20>();
+        let mut _i4 = pins.pin::<20>();
         _i4.into_input_pullup();
-        let _g4 = pins.pin::<21>();
+        let mut _g4 = pins.pin::<21>();
         _g4.into_input_pullup();
     }
     // 注意: 电机 4 的 DIR/STEP 与电机 3 共用 GPIO16/17，不重复初始化
 
     // --- UART ---
-    let uart = Uart1::init(
+    let mut uart = Uart1::init(
         dp.UART1,
         pins.pin::<4>(),
         pins.pin::<5>(),

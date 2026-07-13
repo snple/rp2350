@@ -188,7 +188,7 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     let dp = Peripherals::take().unwrap();
     let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
-    let ticks = Ticks::init(dp.TICKS, &clocks);
+    let mut ticks = Ticks::init(dp.TICKS, &clocks);
     ticks.init_timer0();
     let timer = Timer0::init(dp.TIMER0);
     let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
@@ -200,15 +200,15 @@ fn main() -> ! {
     // ------------------------------------------------------------------
 
     // 编码器信号 A — 输入 + 内部上拉
-    let pin_a = pins.pin::<PIN_A>();
+    let mut pin_a = pins.pin::<PIN_A>();
     pin_a.into_input_pullup();
 
     // 编码器信号 B — 输入 + 内部上拉
-    let pin_b = pins.pin::<PIN_B>();
+    let mut pin_b = pins.pin::<PIN_B>();
     pin_b.into_input_pullup();
 
     // 按钮引脚 D — 输入 + 内部上拉 (按下时 D 被拉低到 E/GND)
-    let pin_btn = pins.pin::<PIN_BTN>();
+    let mut pin_btn = pins.pin::<PIN_BTN>();
     pin_btn.into_input_pullup();
 
     info!(

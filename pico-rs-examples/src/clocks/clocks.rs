@@ -100,7 +100,7 @@ fn main() -> ! {
     // 我们不再继续展开时钟树细节，而是直接使用新的系统频率创建 Delay，
     // 然后闪烁板载 LED，验证 CPU 和 SysTick 都在预期频率下工作。
     let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
-    let led = pins.pin::<25>();
+    let mut led = pins.pin::<25>();
     led.into_output();
 
     // SysTick 属于 Cortex-M 内核外设，不在 PAC 的 `Peripherals` 里，

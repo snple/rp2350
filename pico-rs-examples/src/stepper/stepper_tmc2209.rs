@@ -43,8 +43,8 @@
 #![no_std]
 #![no_main]
 
-use pico_rs_drivers::stepper::{AxisPins, Direction};
 use pico_rs_drivers::stepper::tmc2209::{AxisConfig, AxisState, TmcPins};
+use pico_rs_drivers::stepper::{AxisPins, Direction};
 use pico_rs_drivers::tmc2209::{
     Gconf, IholdIr, REG_CHOPCONF, REG_IHOLD_IRUN, REG_PWMCONF, REG_SGTHRS, REG_TCOOLTHRS,
     REG_TPOWERDOWN, Tmc2209, microstepping_to_mres,
@@ -154,12 +154,16 @@ struct MotPins;
 impl AxisPins for MotPins {
     #[inline]
     fn set_step(high: bool) {
-        unsafe { gpio::set(PIN_STEP, high); }
+        unsafe {
+            gpio::set(PIN_STEP, high);
+        }
     }
 
     #[inline]
     fn set_dir(high: bool) {
-        unsafe { gpio::set(PIN_DIR, high); }
+        unsafe {
+            gpio::set(PIN_DIR, high);
+        }
     }
 }
 
@@ -235,7 +239,7 @@ fn main() -> ! {
     let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
     info!("Clock: sys={} Hz", clocks.sys_freq());
 
-    let ticks = Ticks::init(dp.TICKS, &clocks);
+    let mut ticks = Ticks::init(dp.TICKS, &clocks);
     ticks.init_timer0();
 
     let timer = Timer0::init(dp.TIMER0);
@@ -248,26 +252,26 @@ fn main() -> ! {
     // ------------------------------------------------------------------
 
     // ENN (低有效): 初始拉高 = 禁用
-    let _en = pins.pin::<PIN_ENABLE>();
+    let mut _en = pins.pin::<PIN_ENABLE>();
     _en.into_output();
     unsafe { gpio::set_high(PIN_ENABLE) };
 
     // DIR: 初始低
-    let _dir = pins.pin::<PIN_DIR>();
+    let mut _dir = pins.pin::<PIN_DIR>();
     _dir.into_output();
     unsafe { gpio::set_low(PIN_DIR) };
 
     // STEP: 初始低
-    let _step = pins.pin::<PIN_STEP>();
+    let mut _step = pins.pin::<PIN_STEP>();
     _step.into_output();
     unsafe { gpio::set_low(PIN_STEP) };
 
     // INDEX: 输入 (由 AxisState 读取)
-    let _index = pins.pin::<PIN_INDEX>();
+    let mut _index = pins.pin::<PIN_INDEX>();
     _index.into_input_pullup();
 
     // DIAG: 开漏输出, 上拉 + 上升沿中断
-    let p_diag = pins.pin::<PIN_DIAG>();
+    let mut p_diag = pins.pin::<PIN_DIAG>();
     p_diag.into_input_pullup();
 
     info!("GPIO configured");
@@ -275,7 +279,7 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     // 3. UART1 初始化 — TMC2209 通信
     // ------------------------------------------------------------------
-    let uart = Uart1::init(
+    let mut uart = Uart1::init(
         dp.UART1,
         pins.pin::<4>(), // GP4 = TX
         pins.pin::<5>(), // GP5 = RX

@@ -37,11 +37,11 @@ fn main() -> ! {
 
     // Initialize GPIO pins
     let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
-    let led = pins.pin::<25>();
+    let mut led = pins.pin::<25>();
     led.into_output();
 
     // Configure button as input with pull-up and dormant wake on falling edge
-    let button = pins.pin::<15>();
+    let mut button = pins.pin::<15>();
     button.into_input_pullup();
     // Configure button to wake from dormant on falling edge
     button.set_dormant_wake(EdgeLevel::EdgeLow);

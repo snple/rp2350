@@ -225,24 +225,24 @@ fn main() -> ! {
     // ------------------------------------------------------------------
 
     // 编码器 0: GP2 (A), GP3 (B)
-    let enc0a = pins.pin::<2>();
-    let enc0b = pins.pin::<3>();
+    let mut enc0a = pins.pin::<2>();
+    let mut enc0b = pins.pin::<3>();
     enc0a.set_pull_up();
     enc0b.set_pull_up();
     pio0.claim_pin(enc0a);
     pio0.claim_pin(enc0b);
 
     // 编码器 1: GP4 (A), GP5 (B)
-    let enc1a = pins.pin::<4>();
-    let enc1b = pins.pin::<5>();
+    let mut enc1a = pins.pin::<4>();
+    let mut enc1b = pins.pin::<5>();
     enc1a.set_pull_up();
     enc1b.set_pull_up();
     pio0.claim_pin(enc1a);
     pio0.claim_pin(enc1b);
 
     // 编码器 2: GP6 (A), GP7 (B)
-    let enc2a = pins.pin::<6>();
-    let enc2b = pins.pin::<7>();
+    let mut enc2a = pins.pin::<6>();
+    let mut enc2b = pins.pin::<7>();
     enc2a.set_pull_up();
     enc2b.set_pull_up();
     pio0.claim_pin(enc2a);

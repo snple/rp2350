@@ -101,12 +101,12 @@ fn main() -> ! {
     let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
     // LED on GPIO 25
-    let led = pins.pin::<25>();
+    let mut led = pins.pin::<25>();
     led.into_output();
     led.set_low();
 
     // Button on GPIO 15 with pull-up
-    let button = pins.pin::<15>();
+    let mut button = pins.pin::<15>();
     button.into_input_pullup();
 
     // Initialize USB bus allocator

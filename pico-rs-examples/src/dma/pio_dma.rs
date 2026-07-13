@@ -22,14 +22,15 @@
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::clocks::{ClockBuilder};
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::dma::{DataSize, Dma};
-use pico_rs::main;
 use pico_rs::gpio::Pins;
+use pico_rs::main;
 use pico_rs::pac::Peripherals;
 use pico_rs::pio;
 use pico_rs::pio::Pio0Sm0;
-use pico_rs::pio_asm;/// Blink pattern: each bit controls the LED for one PIO cycle.
+use pico_rs::pio_asm;
+/// Blink pattern: each bit controls the LED for one PIO cycle.
 /// At ~1 Hz per bit (with appropriate clock divider), this creates
 /// a visible blink pattern.
 ///
@@ -77,7 +78,7 @@ fn main() -> ! {
     // Configure SM0:
     // - ~1 Hz per bit: 150 MHz / 65535 / 32 ≈ ~0.07 Hz per bit
     //   Use divider 46875 for ~100 ms per bit (150M / 46875 / 32 ≈ 100Hz)
-    let sm0 = pio0.sm0();
+    let mut sm0 = pio0.sm0();
     sm0.apply_program(&installed)
         .set_clkdiv(46875, 0) // ~3.2 kHz instruction rate, ~100 Hz per bit with delay
         .set_out_pins(25, 1)

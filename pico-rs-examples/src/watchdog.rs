@@ -52,7 +52,7 @@ fn main() -> ! {
     // Initialize GPIO and LED
     let dp = Peripherals::take().unwrap();
     let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
-    let led = pins.pin::<25>();
+    let mut led = pins.pin::<25>();
     led.into_output();
 
     // Initialize delay (requires SYST peripheral)
@@ -60,7 +60,7 @@ fn main() -> ! {
     let delay = Delay::init(cp.SYST, CLOCK_FREQ_HZ);
 
     // Create watchdog instance to check reset reason
-    let wd = Watchdog::init(unsafe { WATCHDOG::steal() });
+    let mut wd = Watchdog::init(unsafe { WATCHDOG::steal() });
 
     // Check reset reason and scratch register
     let reset_reason = wd.reset_reason();

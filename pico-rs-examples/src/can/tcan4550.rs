@@ -354,7 +354,7 @@ fn main() -> ! {
     let timer = Timer0::init(dp.TIMER0);
 
     // 初始化 SPI0 (Mode 0)
-    let spi = Spi0::init(
+    let mut spi = Spi0::init(
         dp.SPI0,
         pins.pin::<2>(), // SCK
         pins.pin::<3>(), // TX (MOSI → SDI)
@@ -366,16 +366,16 @@ fn main() -> ! {
     info!("SPI0 已初始化: {} Hz", spi.baudrate(clocks.peri_freq()));
 
     // CS 引脚 (手动控制)
-    let cs = pins.pin::<5>();
+    let mut cs = pins.pin::<5>();
     cs.into_output();
     cs.set_high();
 
     // nINT 引脚 (中断输入, 可选)
-    let _nint = pins.pin::<6>();
+    let mut _nint = pins.pin::<6>();
     _nint.into_input_pullup();
 
     // LED 指示灯
-    let led = pins.pin::<25>();
+    let mut led = pins.pin::<25>();
     led.into_output();
     led.set_low();
 

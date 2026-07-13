@@ -187,7 +187,7 @@ fn main() -> ! {
     let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
 
     // 初始化定时器 tick 发生器，为 TIMER0 提供微秒级时基
-    let ticks = Ticks::init(dp.TICKS, &clocks);
+    let mut ticks = Ticks::init(dp.TICKS, &clocks);
     ticks.init_timer0();
     let timer = Timer0::init(dp.TIMER0);
 
@@ -196,32 +196,32 @@ fn main() -> ! {
 
     // --- 步进电机控制引脚 ---
     // ENABLE: 初始拉高 → 电机禁用 (防止上电抖动)
-    let _en = pins.pin::<PIN_ENABLE>();
+    let mut _en = pins.pin::<PIN_ENABLE>();
     _en.into_output();
     unsafe { gpio::set_high(PIN_ENABLE) };
 
     // DIR: 初始拉低，对应 AxisConfig 中 fwd_level=true 时的反方向
-    let _dir = pins.pin::<PIN_DIR>();
+    let mut _dir = pins.pin::<PIN_DIR>();
     _dir.into_output();
     unsafe { gpio::set_low(PIN_DIR) };
 
     // STEP: 初始拉低，脉冲为上升沿触发
-    let _step = pins.pin::<PIN_STEP>();
+    let mut _step = pins.pin::<PIN_STEP>();
     _step.into_output();
     unsafe { gpio::set_low(PIN_STEP) };
 
     // INDEX: 输入 + 内部上拉，TMC2209 开漏输出，需上拉读取高电平
-    let _index = pins.pin::<PIN_INDEX>();
+    let mut _index = pins.pin::<PIN_INDEX>();
     _index.into_input_pullup();
 
     // DIAG: 输入 + 内部上拉，TMC2209 开漏输出
-    let p_diag = pins.pin::<PIN_DIAG>();
+    let mut p_diag = pins.pin::<PIN_DIAG>();
     p_diag.into_input_pullup();
 
     // --- TMC2209 UART 通信 ---
     // UART1 使用 GPIO4 (TX) 和 GPIO5 (RX)，波特率 115200
     // TMC2209 的 PDN_UART 引脚需接 GND 以启用 UART 模式
-    let uart = Uart1::init(
+    let mut uart = Uart1::init(
         dp.UART1,
         pins.pin::<4>(),
         pins.pin::<5>(),

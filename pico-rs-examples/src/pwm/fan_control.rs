@@ -182,7 +182,7 @@ fn main() -> ! {
     );
 
     // GP0 → Slice 0 Ch A (PWM 输出), GP1 → Slice 0 Ch B (转速计输入)
-    let fan =
+    let mut fan =
         pwm.slice::<0>()
             .output_a_input(pins.pin::<0>(), pins.pin::<1>(), InputMode::RisingEdge);
 

@@ -15,9 +15,9 @@ use defmt_rtt as _;
 
 use pico_rs::Delay;
 use pico_rs::adc::{Adc, AdcPin};
-use pico_rs::clocks::{ClockBuilder};
-use pico_rs::main;
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::gpio::Pins;
+use pico_rs::main;
 use pico_rs::pac::Peripherals;
 use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 

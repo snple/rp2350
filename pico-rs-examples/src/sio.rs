@@ -32,7 +32,7 @@ fn main() -> ! {
     let dp = Peripherals::take().unwrap();
 
     // Get SIO instance
-    let sio = Sio::steal();
+    let sio = unsafe { Sio::steal() };
 
     // Print core ID
     let core_id = sio.core_id();
@@ -46,7 +46,7 @@ fn main() -> ! {
 
     // Configure GPIO 25 (LED) as SIO output through the safe GPIO API.
     let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
-    let led = pins.pin::<25>();
+    let mut led = pins.pin::<25>();
     led.into_output();
 
     info!("GPIO {} configured as SIO output", LED_PIN);

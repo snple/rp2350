@@ -71,7 +71,7 @@ fn main() -> ! {
         Ok(installed) => {
             info!("Program installed at offset {}", installed.offset);
 
-            let sm = pio0.sm0();
+            let mut sm = pio0.sm0();
 
             // Configure SM using builder pattern
             sm.apply_program(&installed)

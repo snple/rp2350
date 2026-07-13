@@ -383,7 +383,7 @@
 //! │                          ├── pwm.slice::<0>()                    │
 //! │                          │        ──► Slice<0>                   │
 //! │                          │        .output_a(pin)                 │
-//! │                          │              └──► Slice<0, A, NoPin>  │
+//! │                          │              └──► Slice<0, A, ErasedPin>  │
 //! │                          │                                       │
 //! │                          ├── pwm.slice::<1>()                    │
 //! │                          │        ──► Slice<1>                   │
@@ -442,7 +442,7 @@
 
 use paste::paste;
 
-use crate::gpio::pins::{NoPin, PwmAPin, PwmBPin};
+use crate::gpio::pins::{ErasedPin, PwmAPin, PwmBPin};
 use crate::reset::Resettable;
 
 /// Number of PWM slices for RP2350A
@@ -534,7 +534,7 @@ pub enum Mode {
 /// PWM slice with type-safe pin ownership.
 ///
 /// Obtained from [`Pwm::slice()`] in an unconfigured state
-/// (`Slice<N, NoPin, NoPin>`). Call builder methods like
+/// (`Slice<N, ErasedPin, ErasedPin>`). Call builder methods like
 /// [`output_a()`](Slice::output_a) to configure the slice and bind
 /// GPIO pins.
 ///
@@ -544,9 +544,9 @@ pub enum Mode {
 /// # ISR Usage
 ///
 /// In interrupt context, a `Slice` can be created directly
-/// via `unsafe { Slice::<N, NoPin, NoPin>::new() }` without going
+/// via `unsafe { Slice::<N, ErasedPin, ErasedPin>::new() }` without going
 /// through [`Pwm`].
-pub struct Slice<const N: u8, A = NoPin, B = NoPin> {
+pub struct Slice<const N: u8, A = ErasedPin, B = ErasedPin> {
     pwm: pico_rs_pac::PWM,
     _pin_a: A,
     _pin_b: B,
@@ -561,11 +561,11 @@ impl<const N: u8, A, B> Slice<N, A, B> {
     /// The caller must ensure the PWM peripheral has been initialised
     /// (i.e. taken out of reset) before using the returned handle.
     #[inline]
-    pub const unsafe fn steal() -> crate::Steal<Slice<N, NoPin, NoPin>> {
+    pub const unsafe fn steal() -> crate::Steal<Slice<N, ErasedPin, ErasedPin>> {
         crate::Steal(Slice {
             pwm: unsafe { pico_rs_pac::PWM::steal() },
-            _pin_a: NoPin,
-            _pin_b: NoPin,
+            _pin_a: ErasedPin,
+            _pin_b: ErasedPin,
             mode: Mode::OutputA,
         })
     }
@@ -633,8 +633,8 @@ impl Pwm {
 
         Slice {
             pwm: unsafe { pico_rs_pac::PWM::steal() },
-            _pin_a: NoPin,
-            _pin_b: NoPin,
+            _pin_a: ErasedPin,
+            _pin_b: ErasedPin,
             mode: Mode::OutputA,
         }
     }
@@ -803,10 +803,10 @@ macro_rules! impl_pwm_slice {
     ($slice_num:literal) => {
         paste! {
             // ================================================================
-            // Slice<N, NoPin, NoPin> builder methods
+            // Slice<N, ErasedPin, ErasedPin> builder methods
             // ================================================================
 
-            impl Slice<$slice_num, NoPin, NoPin> {
+            impl Slice<$slice_num, ErasedPin, ErasedPin> {
                 #[doc = concat!("Create PWM slice ", $slice_num, " with output on channel A only.")]
                 ///
                 /// Consumes this unconfigured slice. The pin is configured
@@ -815,7 +815,7 @@ macro_rules! impl_pwm_slice {
                 /// # Arguments
                 ///
                 /// * `pin_a` - Channel A pin (must be for this slice)
-                pub fn output_a<A: PwmAPin>(self, mut pin_a: A) -> Slice<$slice_num, A, NoPin> {
+                pub fn output_a<A: PwmAPin>(self, mut pin_a: A) -> Slice<$slice_num, A, ErasedPin> {
                     // Verify the pin is for this slice
                     assert_eq!(A::PWM_SLICE, $slice_num, "Pin must be for PWM slice {}", $slice_num);
 
@@ -835,7 +835,7 @@ macro_rules! impl_pwm_slice {
                     Slice {
                         pwm,
                         _pin_a: pin_a,
-                        _pin_b: NoPin,
+                        _pin_b: ErasedPin,
                         mode: Mode::OutputA,
                     }
                 }
@@ -899,7 +899,7 @@ macro_rules! impl_pwm_slice {
                 ///
                 /// * `pin_b` - Channel B pin for input
                 /// * `mode` - Input mode (GatedByB, RisingEdge, FallingEdge)
-                pub fn input<B: PwmBPin>(self, mut pin_b: B, mode: InputMode) -> Slice<$slice_num, NoPin, B> {
+                pub fn input<B: PwmBPin>(self, mut pin_b: B, mode: InputMode) -> Slice<$slice_num, ErasedPin, B> {
                     // Verify pin is for this slice
                     assert_eq!(B::PWM_SLICE, $slice_num, "Pin B must be for PWM slice {}", $slice_num);
 
@@ -917,7 +917,7 @@ macro_rules! impl_pwm_slice {
 
                     Slice {
                         pwm,
-                        _pin_a: NoPin,
+                        _pin_a: ErasedPin,
                         _pin_b: pin_b,
                         mode: Mode::Input,
                     }

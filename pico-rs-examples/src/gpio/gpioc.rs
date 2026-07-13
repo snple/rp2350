@@ -29,9 +29,9 @@ fn main() -> ! {
     let core = CorePeripherals::take().unwrap();
 
     let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
-    let _led = pins.pin::<LED>().into_output();
-    let _out = pins.pin::<TEST_OUT>().into_output();
-    let _in = pins.pin::<TEST_IN>().into_input();
+    let mut _led = pins.pin::<LED>().into_output();
+    let mut _out = pins.pin::<TEST_OUT>().into_output();
+    let mut _in = pins.pin::<TEST_IN>().into_input();
 
     let delay = Delay::init(core.SYST, CLOCK_FREQ_HZ);
 

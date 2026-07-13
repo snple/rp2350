@@ -30,8 +30,8 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::clocks::ClockBuilder;
+use pico_rs::gpio::{ErasedPin, Pins};
 use pico_rs::main;
-use pico_rs::gpio::{NoPin, Pins};
 use pico_rs::pac::Peripherals;
 use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 use pico_rs::spi::{Mode, Spi0};
@@ -152,11 +152,11 @@ fn main() -> ! {
     let delay = Delay::init(core.SYST, clocks.sys_freq());
 
     // Initialize SPI0 (TX-only, no MISO needed)
-    let spi = Spi0::init(
+    let mut spi = Spi0::init(
         dp.SPI0,
         pins.pin::<2>(), // SCK  → CKI
         pins.pin::<3>(), // MOSI → SDI
-        NoPin,           // No MISO (TX-only)
+        ErasedPin,       // No MISO (TX-only)
         SPI_BAUDRATE,
         clocks.sys_freq(),
     );

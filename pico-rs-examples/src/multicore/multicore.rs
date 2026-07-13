@@ -21,7 +21,7 @@ use core::sync::atomic::{AtomicU32, Ordering};
 use defmt::*;
 use defmt_rtt as _;
 use pico_rs::Delay;
-use pico_rs::clocks::{ClockBuilder};
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::main;
 use pico_rs::multicore::{self, Fifo, Multicore, Stack};
 use pico_rs::pac::Peripherals;
@@ -45,7 +45,7 @@ const COUNTER_SPINLOCK: u8 = 0;
 /// is not thread-safe and concurrent access from both cores would
 /// cause data corruption.
 fn core1_main() -> ! {
-    let fifo = Fifo::steal();
+    let fifo = unsafe { Fifo::steal() };
 
     // Wait for the initial handshake value
     let handshake = fifo.read();
@@ -100,7 +100,7 @@ fn main() -> ! {
     info!("[Core 0] Running on {}", core_id);
 
     // Get FIFO interface for Core 0
-    let fifo = Fifo::steal();
+    let fifo = unsafe { Fifo::steal() };
 
     // Drain any stale data in the FIFOs
     fifo.drain();

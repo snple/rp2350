@@ -67,7 +67,7 @@ fn main() -> ! {
     let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
     // 获取 LED 引脚 (GPIO 25) 并配置为输出
-    let led = pins.pin::<25>();
+    let mut led = pins.pin::<25>();
     led.into_output();
 
     // 初始化 spare IRQs：先设优先级，再 enable

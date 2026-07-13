@@ -64,8 +64,8 @@ fn main() -> ! {
 
             // Configure and init SM using builder pattern
             // Clock: 12MHz / 256 = ~46.875 kHz instruction rate
-            pio0.sm0()
-                .apply_program(&installed)
+            let mut sm0 = pio0.sm0();
+            sm0.apply_program(&installed)
                 .set_clkdiv(256, 0)
                 .set_set_pins(LED_PIN, 1)
                 .set_consecutive_pindirs(LED_PIN, 1, true)

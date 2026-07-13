@@ -211,54 +211,6 @@ macro_rules! impl_uart {
                 /// UART peripheral number
                 pub const NUM: u8 = $uart_num;
 
-                /// Obtain a pin-erased UART handle without ownership.
-                ///
-                /// Returns `$UartName<NoPin, NoPin>` — a handle that can access
-                /// all UART registers without carrying pin type parameters.
-                /// This is useful for ISR context or global storage where the
-                /// concrete pin types are inconvenient.
-                ///
-                /// # Safety
-                ///
-                /// The caller must ensure:
-                /// 1. The UART peripheral has already been initialised (pins
-                ///    configured, baud rate set, peripheral taken out of reset).
-                /// 2. No data races: the returned handle must not be used
-                ///    concurrently with the owning instance without proper
-                ///    synchronisation (e.g. `Mutex`).
-                ///
-                /// # Example
-                ///
-                /// ```ignore
-                #[doc = concat!("// In init code: create the full UART with pins")]
-                #[doc = concat!("let uart = ", stringify!($UartName), "::init(")]
-                #[doc = concat!("    dp.UART", $uart_num, ", tx_pin, rx_pin, 115200, sys_clk,")]
-                /// );
-                /// // Store the owning instance somewhere (e.g. Mutex)
-                ///
-                /// // Later, in ISR or another context:
-                #[doc = concat!("let uart = unsafe { ", stringify!($UartName), "::<NoPin, NoPin>::steal() };")]
-                /// uart.write(b"hello from ISR\r\n");
-                /// ```
-                #[inline]
-                pub unsafe fn steal() -> crate::Steal<$UartName<crate::gpio::pins::NoPin, crate::gpio::pins::NoPin>> {
-                    crate::Steal($UartName {
-                        uart: unsafe { <$UartType>::steal() },
-                        _tx: crate::gpio::pins::NoPin,
-                        _rx: crate::gpio::pins::NoPin,
-                    })
-                }
-
-                /// Get reference to the underlying register block.
-                ///
-                /// # Safety
-                /// Direct register access can bypass the HAL's safety guarantees.
-                /// The caller must ensure operations do not conflict with the HAL state.
-                #[inline]
-                pub unsafe fn regs(&self) -> &pico_rs_pac::$uart_mod::RegisterBlock {
-                    &self.uart
-                }
-
                 // ================================================================
                 // Initialization
                 // ================================================================
@@ -328,6 +280,54 @@ macro_rules! impl_uart {
                     uart_dev
                 }
 
+                /// Obtain a pin-erased UART handle without ownership.
+                ///
+                /// Returns `$UartName<ErasedPin, ErasedPin>` — a handle that can
+                /// access all UART registers without carrying pin type parameters.
+                /// This is useful for ISR context or global storage where the
+                /// concrete pin types are inconvenient.
+                ///
+                /// # Safety
+                ///
+                /// The caller must ensure:
+                /// 1. The UART peripheral has already been initialised (pins
+                ///    configured, baud rate set, peripheral taken out of reset).
+                /// 2. No data races: the returned handle must not be used
+                ///    concurrently with the owning instance without proper
+                ///    synchronisation (e.g. `Mutex`).
+                ///
+                /// # Example
+                ///
+                /// ```ignore
+                #[doc = concat!("// In init code: create the full UART with pins")]
+                #[doc = concat!("let uart = ", stringify!($UartName), "::init(")]
+                #[doc = concat!("    dp.UART", $uart_num, ", tx_pin, rx_pin, 115200, sys_clk,")]
+                /// );
+                /// // Store the owning instance somewhere (e.g. Mutex)
+                ///
+                /// // Later, in ISR or another context:
+                #[doc = concat!("let uart = unsafe { ", stringify!($UartName), "::<ErasedPin, ErasedPin>::steal() };")]
+                /// uart.write(b"hello from ISR\r\n");
+                /// ```
+                #[inline]
+                pub unsafe fn steal() -> crate::Steal<$UartName<crate::gpio::pins::ErasedPin, crate::gpio::pins::ErasedPin>> {
+                    crate::Steal($UartName {
+                        uart: unsafe { <$UartType>::steal() },
+                        _tx: crate::gpio::pins::ErasedPin,
+                        _rx: crate::gpio::pins::ErasedPin,
+                    })
+                }
+
+                /// Get reference to the underlying register block.
+                ///
+                /// # Safety
+                /// Direct register access can bypass the HAL's safety guarantees.
+                /// The caller must ensure operations do not conflict with the HAL state.
+                #[inline]
+                pub unsafe fn regs(&self) -> &pico_rs_pac::$uart_mod::RegisterBlock {
+                    &self.uart
+                }
+
                 /// Release the UART peripheral and pins.
                 ///
                 /// Returns a tuple of (UART peripheral, TX pin, RX pin).
@@ -383,7 +383,7 @@ macro_rules! impl_uart {
                 /// * `data_bits` - Number of data bits (5-8)
                 /// * `stop_bits` - Number of stop bits (1 or 2)
                 /// * `parity` - Parity configuration
-                pub fn set_format(&self, data_bits: DataBits, stop_bits: StopBits, parity: Parity) {
+                pub fn set_format(&mut self, data_bits: DataBits, stop_bits: StopBits, parity: Parity) {
                     // Set word length (WLEN)
                     self.uart.uartlcr_h.write_wlen(data_bits as u32);
 
@@ -1000,17 +1000,17 @@ macro_rules! impl_uart {
                 /// Same requirements as [`$UartName::steal()`].
                 #[inline]
                 pub unsafe fn steal() -> crate::Steal<[<$UartName WithFlowControl>]<
-                    crate::gpio::pins::NoPin,
-                    crate::gpio::pins::NoPin,
-                    crate::gpio::pins::NoPin,
-                    crate::gpio::pins::NoPin,
+                    crate::gpio::pins::ErasedPin,
+                    crate::gpio::pins::ErasedPin,
+                    crate::gpio::pins::ErasedPin,
+                    crate::gpio::pins::ErasedPin,
                 >> {
                     crate::Steal([<$UartName WithFlowControl>] {
                         uart: unsafe { <$UartType>::steal() },
-                        _tx: crate::gpio::pins::NoPin,
-                        _rx: crate::gpio::pins::NoPin,
-                        _cts: crate::gpio::pins::NoPin,
-                        _rts: crate::gpio::pins::NoPin,
+                        _tx: crate::gpio::pins::ErasedPin,
+                        _rx: crate::gpio::pins::ErasedPin,
+                        _cts: crate::gpio::pins::ErasedPin,
+                        _rts: crate::gpio::pins::ErasedPin,
                     })
                 }
 
@@ -1116,7 +1116,7 @@ macro_rules! impl_uart {
                 }
 
                 /// Set the data format
-                pub fn set_format(&self, data_bits: DataBits, stop_bits: StopBits, parity: Parity) {
+                pub fn set_format(&mut self, data_bits: DataBits, stop_bits: StopBits, parity: Parity) {
                     self.uart.uartlcr_h.write_wlen(data_bits as u32);
 
                     if stop_bits == StopBits::Two {
@@ -1142,7 +1142,7 @@ macro_rules! impl_uart {
                 }
 
                 /// Enable/disable flow control
-                pub fn set_flow_control(&self, cts: bool, rts: bool) {
+                pub fn set_flow_control(&mut self, cts: bool, rts: bool) {
                     if cts {
                         self.uart.uartcr.set_ctsen();
                     } else {

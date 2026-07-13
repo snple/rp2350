@@ -24,12 +24,13 @@
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::clocks::{ClockBuilder};
-use pico_rs::main;
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::gpio::Pins;
+use pico_rs::main;
 use pico_rs::pac::Peripherals;
 use pico_rs::ticks::Ticks;
-use pico_rs::timer::{MonotonicTimer, Timer0};const BLINK_INTERVAL_US: u64 = 500_000;
+use pico_rs::timer::{MonotonicTimer, Timer0};
+const BLINK_INTERVAL_US: u64 = 500_000;
 const REPORT_INTERVAL_US: u64 = 2_000_000;
 
 /// 等待直到绝对时间 `deadline_us`。
@@ -80,7 +81,7 @@ fn main() -> ! {
 
     // 初始化 TIMER0 的 1MHz tick。
     // RP2350 硬件 timer 以微秒为单位计数，所以非常适合做 timeout 和 profiling。
-    let ticks = Ticks::init(dp.TICKS, &clocks);
+    let mut ticks = Ticks::init(dp.TICKS, &clocks);
     ticks.init_timer0();
 
     // 创建具体的 Timer0 实例。
@@ -89,7 +90,7 @@ fn main() -> ! {
 
     // 板载 LED（GPIO25）仅用于提供一个肉眼可见的周期行为。
     let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
-    let led = pins.pin::<25>();
+    let mut led = pins.pin::<25>();
     led.into_output();
     led.set_low();
 

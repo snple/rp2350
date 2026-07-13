@@ -241,7 +241,7 @@ macro_rules! impl_state_machine {
             ///
             /// Disables the SM, clears FIFOs, resets internal state, and
             /// jumps to `initial_pc`. The SM is left **disabled**.
-            pub fn init(&mut self, initial_pc: u8) -> &Self {
+            pub fn init(&mut self, initial_pc: u8) -> &mut Self {
                 self.set_enabled(false);
                 self.clear_fifos();
                 self.restart();
@@ -256,7 +256,7 @@ macro_rules! impl_state_machine {
 
             /// Enable or disable the state machine
             #[inline]
-            pub fn set_enabled(&mut self, enabled: bool) -> &Self {
+            pub fn set_enabled(&mut self, enabled: bool) -> &mut Self {
                 let mask = 1u32 << $sm_index;
                 if enabled {
                     self.pio.ctrl.set_bits(mask);
@@ -274,7 +274,7 @@ macro_rules! impl_state_machine {
 
             /// Restart the state machine (clears ISR, shift counters, etc.)
             #[inline]
-            pub fn restart(&mut self) -> &Self {
+            pub fn restart(&mut self) -> &mut Self {
                 self.pio
                     .ctrl
                     .set_bits(1u32 << (CTRL_SM_RESTART_LSB + $sm_index));
@@ -283,7 +283,7 @@ macro_rules! impl_state_machine {
 
             /// Restart the clock divider from phase 0
             #[inline]
-            pub fn restart_clock_divider(&mut self) -> &Self {
+            pub fn restart_clock_divider(&mut self) -> &mut Self {
                 self.pio
                     .ctrl
                     .set_bits(1u32 << (CTRL_CLKDIV_RESTART_LSB + $sm_index));
@@ -305,7 +305,7 @@ macro_rules! impl_state_machine {
             /// SM runs at `sysclk / (int_div + frac_div/256)`.
             /// - `int_div`: 1-65535 (0 means 65536)
             /// - `frac_div`: 0-255
-            pub fn set_clkdiv(&mut self, int_div: u16, frac_div: u8) -> &Self {
+            pub fn set_clkdiv(&mut self, int_div: u16, frac_div: u8) -> &mut Self {
                 self.pio.[<sm $sm_index _clkdiv>].write_int(int_div as u32);
                 self.pio.[<sm $sm_index _clkdiv>].write_frac(frac_div as u32);
                 self
@@ -319,7 +319,7 @@ macro_rules! impl_state_machine {
             ///
             /// Sets wrap addresses and side-set parameters from `InstalledProgram`.
             /// Does not set pin-base — call `set_sideset_pins()` separately.
-            pub fn apply_program(&mut self, prog: &InstalledProgram) -> &Self {
+            pub fn apply_program(&mut self, prog: &InstalledProgram) -> &mut Self {
                 self.set_wrap(prog.wrap_bottom, prog.wrap_top);
                 if prog.side_set_count > 0 {
                     self.pio.[<sm $sm_index _pinctrl>].write_sideset_count(prog.side_set_count as u32);
@@ -344,7 +344,7 @@ macro_rules! impl_state_machine {
             /// Set program wrap addresses
             ///
             /// When PC reaches `wrap_top`, it wraps to `wrap_target` next cycle.
-            pub fn set_wrap(&mut self, wrap_target: u8, wrap_top: u8) -> &Self {
+            pub fn set_wrap(&mut self, wrap_target: u8, wrap_top: u8) -> &mut Self {
                 self.pio.[<sm $sm_index _execctrl>].write_wrap_bottom(wrap_target as u32);
                 self.pio.[<sm $sm_index _execctrl>].write_wrap_top(wrap_top as u32);
                 self
@@ -355,21 +355,21 @@ macro_rules! impl_state_machine {
             // ================================================================
 
             /// Set OUT pin base and count
-            pub fn set_out_pins(&mut self, base: u8, count: u8) -> &Self {
+            pub fn set_out_pins(&mut self, base: u8, count: u8) -> &mut Self {
                 self.pio.[<sm $sm_index _pinctrl>].write_out_base((base & 31) as u32);
                 self.pio.[<sm $sm_index _pinctrl>].write_out_count(count as u32);
                 self
             }
 
             /// Set SET pin base and count (count must be 0-5)
-            pub fn set_set_pins(&mut self, base: u8, count: u8) -> &Self {
+            pub fn set_set_pins(&mut self, base: u8, count: u8) -> &mut Self {
                 self.pio.[<sm $sm_index _pinctrl>].write_set_base((base & 31) as u32);
                 self.pio.[<sm $sm_index _pinctrl>].write_set_count(count as u32);
                 self
             }
 
             /// Set IN pin base
-            pub fn set_in_pins(&mut self, base: u8) -> &Self {
+            pub fn set_in_pins(&mut self, base: u8) -> &mut Self {
                 self.pio.[<sm $sm_index _pinctrl>].write_in_base((base & 31) as u32);
                 self
             }
@@ -377,7 +377,7 @@ macro_rules! impl_state_machine {
             /// (RP2350) Set IN pin count
             ///
             /// Limits the number of pins read by IN instruction. 0 means 32.
-            pub fn set_in_pin_count(&mut self, count: u8) -> &Self {
+            pub fn set_in_pin_count(&mut self, count: u8) -> &mut Self {
                 self.pio.[<sm $sm_index _shiftctrl>].write_in_count((count & 31) as u32);
                 self
             }
@@ -389,12 +389,12 @@ macro_rules! impl_state_machine {
             /// - `optional`: MSB acts as enable flag
             /// - `pindirs`: sideset affects pin directions
             pub fn set_sideset(
-                &self,
+                &mut self,
                 base: u8,
                 bit_count: u8,
                 optional: bool,
                 pindirs: bool,
-            ) -> &Self {
+            ) -> &mut Self {
                 self.pio.[<sm $sm_index _pinctrl>].write_sideset_base((base & 31) as u32);
                 self.pio.[<sm $sm_index _pinctrl>].write_sideset_count(bit_count as u32);
                 if optional {
@@ -411,7 +411,7 @@ macro_rules! impl_state_machine {
             }
 
             /// Set JMP PIN source
-            pub fn set_jmp_pin(&mut self, pin: u8) -> &Self {
+            pub fn set_jmp_pin(&mut self, pin: u8) -> &mut Self {
                 self.pio.[<sm $sm_index _execctrl>].write_jmp_pin((pin & 31) as u32);
                 self
             }
@@ -421,11 +421,11 @@ macro_rules! impl_state_machine {
             /// Temporarily modifies SET configuration to execute `SET PINDIRS`
             /// instructions. Restores original configuration afterward.
             pub fn set_consecutive_pindirs(
-                &self,
+                &mut self,
                 pin_base: u8,
                 pin_count: u8,
                 is_out: bool,
-            ) -> &Self {
+            ) -> &mut Self {
                 let pindir_val = if is_out { 0x1F } else { 0 };
 
                 // Save current register values
@@ -468,11 +468,11 @@ macro_rules! impl_state_machine {
             /// - `autopush`: push ISR when threshold reached
             /// - `push_threshold`: bits before push (1-32; 32 encoded as 0)
             pub fn set_in_shift(
-                &self,
+                &mut self,
                 shift_right: bool,
                 autopush: bool,
                 push_threshold: u8,
-            ) -> &Self {
+            ) -> &mut Self {
                 if shift_right {
                     self.pio.[<sm $sm_index _shiftctrl>].set_in_shiftdir();
                 } else {
@@ -494,11 +494,11 @@ macro_rules! impl_state_machine {
             /// - `autopull`: pull OSR when threshold reached
             /// - `pull_threshold`: bits before pull (1-32; 32 encoded as 0)
             pub fn set_out_shift(
-                &self,
+                &mut self,
                 shift_right: bool,
                 autopull: bool,
                 pull_threshold: u8,
-            ) -> &Self {
+            ) -> &mut Self {
                 if shift_right {
                     self.pio.[<sm $sm_index _shiftctrl>].set_out_shiftdir();
                 } else {
@@ -519,7 +519,7 @@ macro_rules! impl_state_machine {
             // ================================================================
 
             /// Set FIFO join mode
-            pub fn set_fifo_join(&mut self, join: FifoJoin) -> &Self {
+            pub fn set_fifo_join(&mut self, join: FifoJoin) -> &mut Self {
                 let join_val = join as u32;
 
                 // Clear all join bits
@@ -556,7 +556,7 @@ macro_rules! impl_state_machine {
             /// - `has_enable_pin`: use an OUT data bit as output enable
             /// - `enable_bit_index`: which OUT data bit is the enable (0-31)
             pub fn set_out_special(
-                &self,
+                &mut self,
                 sticky: bool,
                 has_enable_pin: bool,
                 enable_bit_index: u8,

@@ -2023,13 +2023,13 @@ pub mod pins;
 
 // Re-export pin function traits for convenience
 pub use pins::{
+    // Placeholder / type-erased pin
+    ErasedPin,
     // I2C traits
     I2c0SclPin,
     I2c0SdaPin,
     I2c1SclPin,
     I2c1SdaPin,
-    // Placeholder for unused pins
-    NoPin,
     // PIO traits
     Pio0Pin,
     Pio1Pin,

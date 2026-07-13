@@ -708,7 +708,7 @@ struct Drv8323<'a, SPI: SpiBus> {
 
 impl<'a, SPI: SpiBus> Drv8323<'a, SPI> {
     /// 创建 DRV8323 驱动实例
-    fn new(spi: &'a SPI, cs: pico_rs::gpio::Pin<17>) -> Self {
+    fn new(spi: &'a SPI, mut cs: pico_rs::gpio::Pin<17>) -> Self {
         cs.into_output();
         cs.set_high(); // nSCS 空闲为高
         Self { spi, cs }
@@ -1104,7 +1104,7 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     // DRV8323 ENABLE 引脚 (GP7) — 拉高启用芯片
     // ------------------------------------------------------------------
-    let drv_enable = pins.pin::<7>();
+    let mut drv_enable = pins.pin::<7>();
     drv_enable.into_output();
     drv_enable.set_low();
     timer.delay_ms(10); // 确保 ENABLE 初始为低
@@ -1117,7 +1117,7 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     // nFAULT 输入引脚 (GP6) — 开漏输出，需上拉
     // ------------------------------------------------------------------
-    let nfault = pins.pin::<6>();
+    let mut nfault = pins.pin::<6>();
     nfault.into_input_pullup();
 
     // ------------------------------------------------------------------
@@ -1164,19 +1164,19 @@ fn main() -> ! {
     let pwm = Pwm::init(dp.PWM);
 
     // Phase A: GP0 (INHA)
-    let slice_a = pwm.slice::<0>().output_a(pins.pin::<0>());
+    let mut slice_a = pwm.slice::<0>().output_a(pins.pin::<0>());
     slice_a.set_wrap(pwm_wrap);
     slice_a.set_duty_a(0);
     slice_a.enable();
 
     // Phase B: GP2 (INHB)
-    let slice_b = pwm.slice::<1>().output_a(pins.pin::<2>());
+    let mut slice_b = pwm.slice::<1>().output_a(pins.pin::<2>());
     slice_b.set_wrap(pwm_wrap);
     slice_b.set_duty_a(0);
     slice_b.enable();
 
     // Phase C: GP4 (INHC)
-    let slice_c = pwm.slice::<2>().output_a(pins.pin::<4>());
+    let mut slice_c = pwm.slice::<2>().output_a(pins.pin::<4>());
     slice_c.set_wrap(pwm_wrap);
     slice_c.set_duty_a(0);
     slice_c.enable();
@@ -1184,15 +1184,15 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     // 低侧 INLx — GPIO 常高 (DRV8323 6×PWM 模式下低侧需保持导通)
     // ------------------------------------------------------------------
-    let inla = pins.pin::<1>();
+    let mut inla = pins.pin::<1>();
     inla.into_output();
     inla.set_high();
 
-    let inlb = pins.pin::<3>();
+    let mut inlb = pins.pin::<3>();
     inlb.into_output();
     inlb.set_high();
 
-    let inlc = pins.pin::<5>();
+    let mut inlc = pins.pin::<5>();
     inlc.into_output();
     inlc.set_high();
 
@@ -1211,12 +1211,12 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     // 编码器 — GPIO 中断 4 倍频正交解码 (GP10=A, GP11=B)
     // ------------------------------------------------------------------
-    let enc_a = pins.pin::<10>();
+    let mut enc_a = pins.pin::<10>();
     enc_a.into_input_pullup();
     enc_a.enable_interrupt(pico_rs::gpio::EdgeLevel::EdgeHigh);
     enc_a.enable_interrupt(pico_rs::gpio::EdgeLevel::EdgeLow);
 
-    let enc_b = pins.pin::<11>();
+    let mut enc_b = pins.pin::<11>();
     enc_b.into_input_pullup();
     enc_b.enable_interrupt(pico_rs::gpio::EdgeLevel::EdgeHigh);
     enc_b.enable_interrupt(pico_rs::gpio::EdgeLevel::EdgeLow);

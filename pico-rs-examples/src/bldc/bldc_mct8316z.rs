@@ -1182,22 +1182,22 @@ fn main() -> ! {
     // ------------------------------------------------------------------
 
     // nFAULT — 开漏输出，需上拉，低有效
-    let nfault = pins.pin::<6>();
+    let mut nfault = pins.pin::<6>();
     nfault.into_input_pullup();
 
     // DRVOFF — 高有效 (高=关断驱动输出)
     // 上电默认拉高，保证电机不会意外启动
-    let drvoff = pins.pin::<7>();
+    let mut drvoff = pins.pin::<7>();
     drvoff.into_output();
     drvoff.set_high(); // 先关断驱动
 
     // DIR — 方向控制 (可选引脚控制)
-    let dir_pin = pins.pin::<10>();
+    let mut dir_pin = pins.pin::<10>();
     dir_pin.into_output();
     dir_pin.set_low(); // 正转
 
     // BRAKE — 刹车控制 (可选)
-    let brake_pin = pins.pin::<11>();
+    let mut brake_pin = pins.pin::<11>();
     brake_pin.into_output();
     brake_pin.set_low(); // 不刹车
 

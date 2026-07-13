@@ -1205,9 +1205,9 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     // 2. GPIO 初始化 — 复位引脚 & 中断引脚
     // ------------------------------------------------------------------
-    let reset_binding = pins.pin::<PIN_RESET>();
+    let mut reset_binding = pins.pin::<PIN_RESET>();
     let reset_pin = reset_binding.into_output();
-    let int_binding = pins.pin::<PIN_INT>();
+    let mut int_binding = pins.pin::<PIN_INT>();
     let _int_pin = int_binding.into_input();
 
     // ------------------------------------------------------------------
