@@ -35,10 +35,10 @@
 //! use pico_rs::Peripherals;
 //!
 //! let dp = Peripherals::take().unwrap();
-//! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+//! let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 //!
 //! // Initialize UART0 at 115200 baud, consuming pins p0 (TX) and p1 (RX)
-//! let mut uart = Uart0::new(
+//! let mut uart = Uart0::init(
 //!     dp.UART0,
 //!     pins.pin::<0>(),      // TX pin - ownership transferred
 //!     pins.pin::<1>(),      // RX pin - ownership transferred
@@ -68,10 +68,10 @@
 //! use pico_rs::uart::Uart0;
 //!
 //! let dp = Peripherals::take().unwrap();
-//! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+//! let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 //!
 //! // Initialize UART0 with CTS/RTS flow control
-//! let mut uart = Uart0::new_with_flow_control(
+//! let mut uart = Uart0WithFlowControl::init(
 //!     dp.UART0,
 //!     pins.pin::<0>(),      // TX
 //!     pins.pin::<1>(),      // RX
@@ -231,7 +231,7 @@ macro_rules! impl_uart {
                 ///
                 /// ```ignore
                 #[doc = concat!("// In init code: create the full UART with pins")]
-                #[doc = concat!("let uart = ", stringify!($UartName), "::new(")]
+                #[doc = concat!("let uart = ", stringify!($UartName), "::init(")]
                 #[doc = concat!("    dp.UART", $uart_num, ", tx_pin, rx_pin, 115200, sys_clk,")]
                 /// );
                 /// // Store the owning instance somewhere (e.g. Mutex)
@@ -285,7 +285,7 @@ macro_rules! impl_uart {
                 /// # Example
                 ///
                 /// ```ignore
-                #[doc = concat!("let uart = ", stringify!($UartName), "::new(")]
+                #[doc = concat!("let uart = ", stringify!($UartName), "::init(")]
                 #[doc = concat!("    dp.UART", $uart_num, ",")]
                 ///     pins.pin::<0>(),      // TX
                 ///     pins.pin::<1>(),      // RX
@@ -293,7 +293,7 @@ macro_rules! impl_uart {
                 ///     150_000_000,  // System clock
                 /// );
                 /// ```
-                pub fn new(uart: $UartType, tx: TX, rx: RX, baudrate: u32, peri_clk: u32) -> Self {
+                pub fn init(uart: $UartType, tx: TX, rx: RX, baudrate: u32, peri_clk: u32) -> Self {
                     // Configure pins for UART function
                     tx.[<configure_uart $uart_num _tx>]();
                     rx.[<configure_uart $uart_num _rx>]();
@@ -1035,7 +1035,7 @@ macro_rules! impl_uart {
                 /// * `rts` - RTS pin (Request To Send)
                 /// * `baudrate` - Desired baudrate in Hz
                 /// * `peri_clk` - Peripheral clock frequency in Hz
-                pub fn new(
+                pub fn init(
                     uart: $UartType,
                     tx: TX,
                     rx: RX,

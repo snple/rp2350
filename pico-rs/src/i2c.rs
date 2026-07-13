@@ -29,10 +29,10 @@
 //! use pico_rs::Peripherals;
 //!
 //! let dp = Peripherals::take().unwrap();
-//! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+//! let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 //!
 //! // Initialize I2C0 at 400 kHz, consuming pins p4 (SDA) and p5 (SCL)
-//! let i2c = I2c0::new(
+//! let i2c = I2c0::init(
 //!     dp.I2C0,
 //!     pins.pin::<4>(),      // SDA pin - ownership transferred
 //!     pins.pin::<5>(),      // SCL pin - ownership transferred
@@ -58,10 +58,10 @@
 //! use pico_rs::i2c::I2c0;
 //!
 //! let dp = Peripherals::take().unwrap();
-//! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+//! let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 //!
 //! // Initialize I2C0 as slave with address 0x55
-//! let i2c = I2c0::new_slave(
+//! let i2c = I2c0::init_slave(
 //!     dp.I2C0,
 //!     pins.pin::<4>(),
 //!     pins.pin::<5>(),
@@ -205,7 +205,7 @@ macro_rules! impl_i2c {
                 ///
                 /// ```ignore
                 #[doc = concat!("// In init code: create the full I2C with pins")]
-                #[doc = concat!("let i2c = ", stringify!($I2cName), "::new(")]
+                #[doc = concat!("let i2c = ", stringify!($I2cName), "::init(")]
                 #[doc = concat!("    dp.I2C", $i2c_num, ", sda_pin, scl_pin, 400_000, &clocks,")]
                 /// );
                 ///
@@ -259,7 +259,7 @@ macro_rules! impl_i2c {
                 /// # Example
                 ///
                 /// ```ignore
-                #[doc = concat!("let i2c = ", stringify!($I2cName), "::new(")]
+                #[doc = concat!("let i2c = ", stringify!($I2cName), "::init(")]
                 #[doc = concat!("    dp.I2C", $i2c_num, ",")]
                 ///     pins.pin::<4>(),      // SDA
                 ///     pins.pin::<5>(),      // SCL
@@ -267,7 +267,7 @@ macro_rules! impl_i2c {
                 ///     150_000_000,  // System clock
                 /// );
                 /// ```
-                pub fn new(i2c: $I2cType, sda: SDA, scl: SCL, baudrate: u32, clocks: &Clocks) -> Self {
+                pub fn init(i2c: $I2cType, sda: SDA, scl: SCL, baudrate: u32, clocks: &Clocks) -> Self {
                     // Configure pins for I2C function (includes pull-up)
                     sda.[<configure_i2c $i2c_num _sda>]();
                     scl.[<configure_i2c $i2c_num _scl>]();
@@ -321,7 +321,7 @@ macro_rules! impl_i2c {
                 /// # Example
                 ///
                 /// ```ignore
-                #[doc = concat!("let i2c = ", stringify!($I2cName), "::new_slave(")]
+                #[doc = concat!("let i2c = ", stringify!($I2cName), "::init_slave(")]
                 #[doc = concat!("    dp.I2C", $i2c_num, ",")]
                 ///     pins.pin::<4>(),      // SDA
                 ///     pins.pin::<5>(),      // SCL
@@ -329,7 +329,7 @@ macro_rules! impl_i2c {
                 ///     150_000_000,  // System clock
                 /// );
                 /// ```
-                pub fn new_slave(i2c: $I2cType, sda: SDA, scl: SCL, addr: u8, sys_clk: u32) -> Self {
+                pub fn init_slave(i2c: $I2cType, sda: SDA, scl: SCL, addr: u8, sys_clk: u32) -> Self {
                     // Configure pins for I2C function
                     sda.[<configure_i2c $i2c_num _sda>]();
                     scl.[<configure_i2c $i2c_num _scl>]();
@@ -383,7 +383,7 @@ macro_rules! impl_i2c {
                 /// * `scl` - SCL pin (must implement the appropriate SCL trait)
                 /// * `addr` - 10-bit slave address
                 /// * `sys_clk` - System clock frequency in Hz
-                pub fn new_slave_10bit(i2c: $I2cType, sda: SDA, scl: SCL, addr: u16, sys_clk: u32) -> Self {
+                pub fn init_slave_10bit(i2c: $I2cType, sda: SDA, scl: SCL, addr: u16, sys_clk: u32) -> Self {
                     // Configure pins for I2C function
                     sda.[<configure_i2c $i2c_num _sda>]();
                     scl.[<configure_i2c $i2c_num _scl>]();

@@ -64,7 +64,7 @@ fn main() -> ! {
     let dp = Peripherals::take().unwrap();
 
     // 初始化 GPIO
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
     // 获取 LED 引脚 (GPIO 25) 并配置为输出
     let led = pins.pin::<25>();

@@ -280,7 +280,7 @@
 //!
 //! > **SPI 从机替代方案**: 如需 SPI 而非 I2C，可用 SPI1 Slave:
 //! > GP12(RX) GP13(CSn) GP14(SCK) GP15(TX)。寄存器映射和协议不变，
-//! > 只需替换初始化和轮询代码。参见 `pico_rs::spi::Spi1::new_slave()`。
+//! > 只需替换初始化和轮询代码。参见 `pico_rs::spi::Spi1WithCs::init_slave()`。
 //!
 //! ---
 //!
@@ -360,13 +360,13 @@ use defmt_rtt as _;
 
 use pico_rs::adc::{Adc, AdcPin};
 use pico_rs::clocks::ClockBuilder;
-use pico_rs::main;
 use pico_rs::gpio::Pins;
 use pico_rs::i2c::I2c0;
 use pico_rs::interrupt::{self, Mutex};
+use pico_rs::main;
 use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::pwm::Pwm;
-use pico_rs::timer::Timer0;// ============================================================================
+use pico_rs::timer::Timer0; // ============================================================================
 // 配置参数
 // ============================================================================
 
@@ -910,7 +910,7 @@ fn main() -> ! {
     let sys_freq = clocks.sys_freq();
     info!("System clock: {} MHz", sys_freq / 1_000_000);
 
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
     let timer = Timer0::init(dp.TIMER0);
 
     // ------------------------------------------------------------------
@@ -919,7 +919,7 @@ fn main() -> ! {
     let pwm_wrap: u16 = (sys_freq / PWM_FREQ_HZ) as u16;
     info!("PWM wrap = {} ({} kHz)", pwm_wrap, PWM_FREQ_HZ / 1000);
 
-    let pwm = Pwm::new(dp.PWM);
+    let pwm = Pwm::init(dp.PWM);
 
     let slice_a = pwm.slice::<0>().output_a(pins.pin::<0>());
     slice_a.set_wrap(pwm_wrap);
@@ -954,7 +954,7 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     // I2C0 从机 — GP8 (SDA), GP9 (SCL), 地址 0x2A
     // ------------------------------------------------------------------
-    let i2c = I2c0::new_slave(
+    let i2c = I2c0::init_slave(
         dp.I2C0,
         pins.pin::<8>(),
         pins.pin::<9>(),

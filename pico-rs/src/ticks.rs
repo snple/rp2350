@@ -22,7 +22,7 @@
 //! use pico_rs::ticks::Ticks;
 //!
 //! let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
-//! let ticks = Ticks::new(dp.TICKS, &clocks);
+//! let ticks = Ticks::init(dp.TICKS, &clocks);
 //!
 //! // Initialize only the tick generators you need
 //! ticks.init_timer0();
@@ -51,7 +51,7 @@ pub struct Ticks {
 }
 
 impl Ticks {
-    /// Create a new Ticks instance
+    /// Initialize the TICKS peripheral.
     ///
     /// Computes the correct cycles-per-tick value from the reference clock
     /// frequency tracked by `clocks`.
@@ -60,7 +60,7 @@ impl Ticks {
     /// * `ticks` - The TICKS peripheral from PAC
     /// * `clocks` - Reference to the initialized clock system
     #[inline]
-    pub fn new(ticks: pico_rs_pac::TICKS, clocks: &Clocks) -> Self {
+    pub fn init(ticks: pico_rs_pac::TICKS, clocks: &Clocks) -> Self {
         let cycles_per_tick = (clocks.ref_freq() / 1_000_000) as u16;
         Self {
             ticks,

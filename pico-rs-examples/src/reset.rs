@@ -24,7 +24,7 @@ fn main() -> ! {
     let core_peripherals = CorePeripherals::take().unwrap();
 
     // Initialize delay
-    let delay = Delay::new(core_peripherals.SYST, CLOCK_FREQ_HZ);
+    let delay = Delay::init(core_peripherals.SYST, CLOCK_FREQ_HZ);
 
     delay.delay_ms(1000);
 

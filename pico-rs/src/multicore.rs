@@ -50,6 +50,7 @@
 //! ```
 
 use core::sync::atomic::{Ordering, compiler_fence};
+use crate::Steal;
 
 // ============================================================================
 // Core ID
@@ -194,10 +195,10 @@ impl Fifo {
     /// This does not track ownership. The caller must ensure proper
     /// synchronization when accessing from multiple contexts.
     #[inline]
-    pub fn steal() -> Self {
-        Self {
+    pub fn steal() -> Steal<Self> {
+        Steal(Self {
             sio: unsafe { &*crate::sio::REGS },
-        }
+        })
     }
 
     // ========================================================================
@@ -321,7 +322,7 @@ impl Fifo {
 
 impl Default for Fifo {
     fn default() -> Self {
-        Self::steal()
+        Self::steal().0
     }
 }
 
@@ -347,10 +348,10 @@ impl Doorbell {
     /// The doorbell is a hardware peripheral that already exists; this method
     /// simply returns a handle to access it.
     #[inline]
-    pub fn steal() -> Self {
-        Self {
+    pub fn steal() -> Steal<Self> {
+        Steal(Self {
             sio: unsafe { &*crate::sio::REGS },
-        }
+        })
     }
 
     /// Set doorbell bits on the opposite core (trigger interrupt)
@@ -413,7 +414,7 @@ impl Doorbell {
 
 impl Default for Doorbell {
     fn default() -> Self {
-        Self::steal()
+        Self::steal().0
     }
 }
 

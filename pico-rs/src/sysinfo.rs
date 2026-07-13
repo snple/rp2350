@@ -30,6 +30,7 @@
 //! }
 //! ```
 
+use crate::Steal;
 use crate::reset::Resettable;
 
 /// SYSINFO peripheral wrapper
@@ -41,24 +42,30 @@ pub struct Sysinfo {
 }
 
 impl Sysinfo {
-    /// Create a new Sysinfo instance without initialization
+    /// Initialize the SYSINFO peripheral.
     ///
-    /// # Arguments
-    /// * `sysinfo` - The SYSINFO peripheral from PAC
-    #[inline]
-    pub fn new(sysinfo: pico_rs_pac::SYSINFO) -> Self {
-        Self { sysinfo }
-    }
-
-    /// Initialize the SYSINFO peripheral
-    ///
-    /// This brings the SYSINFO peripheral out of reset.
+    /// Takes ownership of the [`pico_rs_pac::SYSINFO`] register block, resets
+    /// the peripheral, and brings it out of reset.
     ///
     /// # Arguments
     /// * `sysinfo` - The SYSINFO peripheral from PAC
     pub fn init(sysinfo: pico_rs_pac::SYSINFO) -> Self {
-        pico_rs_pac::SYSINFO::unreset();
-        Self::new(sysinfo)
+        // Reset then unreset to guarantee clean register state
+        <pico_rs_pac::SYSINFO as Resettable>::init();
+        Self { sysinfo }
+    }
+
+    /// Obtain a handle to the SYSINFO peripheral without initialization.
+    ///
+    /// # Safety
+    ///
+    /// The caller must ensure the SYSINFO peripheral has already been
+    /// initialized (e.g. via [`Sysinfo::init`]) before use.
+    #[inline]
+    pub unsafe fn steal() -> Steal<Self> {
+        Steal(Self {
+            sysinfo: unsafe { pico_rs_pac::SYSINFO::steal() },
+        })
     }
 
     /// Get reference to the underlying register block

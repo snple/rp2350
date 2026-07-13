@@ -378,7 +378,7 @@
 //! │                                                                  │
 //! │  Peripherals::take()                                             │
 //! │        │                                                         │
-//! │        └── PWM ──► Pwm::new(pwm)                                 │
+//! │        └── PWM ──► Pwm::init(pwm)                                 │
 //! │                          │                                       │
 //! │                          ├── pwm.slice::<0>()                    │
 //! │                          │        ──► Slice<0>                   │
@@ -403,10 +403,10 @@
 //! use pico_rs::Peripherals;
 //!
 //! let dp = Peripherals::take().unwrap();
-//! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+//! let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 //!
 //! // Create PWM controller (owns the PWM peripheral)
-//! let pwm = Pwm::new(dp.PWM);
+//! let pwm = Pwm::init(dp.PWM);
 //!
 //! // Create slice 0 with output on channel A
 //! let slice0 = pwm.slice::<0>().output_a(pins.pin::<0>());
@@ -428,7 +428,7 @@
 //! ```ignore
 //! use pico_rs::pwm::{Pwm, InputMode};
 //!
-//! let pwm = Pwm::new(dp.PWM);
+//! let pwm = Pwm::init(dp.PWM);
 //!
 //! // Initialize PWM slice 0 for input measurement
 //! let slice0 = pwm.slice::<0>().input(pins.pin::<1>(), InputMode::RisingEdge);
@@ -583,7 +583,7 @@ impl<const N: u8, A, B> Slice<N, A, B> {
 /// # Example
 ///
 /// ```ignore
-/// let pwm = Pwm::new(dp.PWM);
+/// let pwm = Pwm::init(dp.PWM);
 ///
 /// // Get an unconfigured slice, then bind a pin
 /// let slice0 = pwm.slice::<0>().output_a(pins.pin::<0>());
@@ -596,12 +596,14 @@ pub struct Pwm {
 }
 
 impl Pwm {
-    /// Create a new PWM controller from the peripheral.
+    /// Initialize the PWM controller from the peripheral.
     ///
-    /// This initializes the PWM subsystem by taking it out of reset.
-    /// The peripheral is consumed to ensure only one `Pwm` instance exists.
-    pub fn new(pwm: pico_rs_pac::PWM) -> Self {
-        pico_rs_pac::PWM::unreset();
+    /// This resets then unresets the PWM subsystem to guarantee clean
+    /// register state. The peripheral is consumed to ensure only one
+    /// `Pwm` instance exists.
+    pub fn init(pwm: pico_rs_pac::PWM) -> Self {
+        // Reset then unreset to guarantee clean register state
+        <pico_rs_pac::PWM as Resettable>::init();
         Self { _pwm: pwm }
     }
 

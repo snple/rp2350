@@ -145,7 +145,7 @@ fn main() -> ! {
     let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
     info!("System clock: {} Hz", clocks.sys_freq());
 
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
     let timer = Timer0::init(dp.TIMER0);
 
     // ------------------------------------------------------------------
@@ -153,7 +153,7 @@ fn main() -> ! {
     //    GP2 = SCK, GP3 = TX (MOSI), GP4 = RX (MISO)
     //    不使用硬件 CSn，用 GP5 GPIO 软件控制片选
     // ------------------------------------------------------------------
-    let mut spi = Spi0::new(
+    let mut spi = Spi0::init(
         dp.SPI0,
         pins.pin::<2>(), // SCK
         pins.pin::<3>(), // TX (MOSI)

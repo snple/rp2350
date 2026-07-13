@@ -31,10 +31,10 @@ fn main() -> ! {
     let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
 
     // Initialize GPIO pins
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
     // Take PIO0 block (this also unresets it)
-    let mut pio0 = pio::Pio0::new(dp.PIO0);
+    let mut pio0 = pio::Pio0::init(dp.PIO0);
 
     // Claim GPIO 25 for PIO0 (takes ownership, configures pad + funcsel)
     pio0.claim_pin(pins.pin::<25>());
@@ -82,7 +82,7 @@ fn main() -> ! {
     // Keep running
     // Initialize delay
     let core = CorePeripherals::take().unwrap();
-    let delay = Delay::new(core.SYST, clocks.sys_freq());
+    let delay = Delay::init(core.SYST, clocks.sys_freq());
     loop {
         delay.delay_ms(5000);
         info!("Running...");

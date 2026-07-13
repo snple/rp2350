@@ -20,8 +20,8 @@
 //! use pico_rs::gpio::{Pins, Pio0Pin};
 //! use pico_rs::pio::{self, Pio0, FifoJoin};
 //!
-//! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
-//! let mut pio0 = Pio0::new(dp.PIO0);
+//! let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
+//! let mut pio0 = Pio0::init(dp.PIO0);
 //!
 //! // Claim GPIO pin (takes ownership, configures for PIO0)
 //! pio0.claim_pin(pins.pin::<25>());
@@ -822,7 +822,7 @@ macro_rules! impl_pio_block {
                 /// PIO block index (0, 1, or 2)
                 pub const ID: u8 = $pio_num;
 
-                /// Create a new PIO block instance, taking ownership of the PAC peripheral.
+                /// Initialize a PIO block, taking ownership of the PAC peripheral.
                 ///
                 /// Unresets the PIO peripheral. Call once per PIO block.
                 ///
@@ -830,10 +830,11 @@ macro_rules! impl_pio_block {
                 ///
                 /// ```ignore
                 /// let dp = Peripherals::take().unwrap();
-                /// let mut pio0 = Pio0::new(dp.PIO0);
+                /// let mut pio0 = Pio0::init(dp.PIO0);
                 /// ```
-                pub fn new(pio: pico_rs_pac::[<PIO $pio_num>]) -> Self {
-                    <pico_rs_pac::[<PIO $pio_num>] as Resettable>::unreset();
+                pub fn init(pio: pico_rs_pac::[<PIO $pio_num>]) -> Self {
+                    // Reset then unreset to guarantee clean register state
+                    <pico_rs_pac::[<PIO $pio_num>] as Resettable>::init();
                     Self {
                         pio,
                         used_instruction_space: 0,
@@ -853,7 +854,7 @@ macro_rules! impl_pio_block {
                 /// # Safety
                 ///
                 /// The caller must ensure:
-                /// 1. The PIO peripheral has already been initialised via `new()`.
+                /// 1. The PIO peripheral has already been initialised via [`init`](Self::init).
                 /// 2. No data races: the returned handle must not be used
                 ///    concurrently with the owning instance without proper
                 ///    synchronisation (e.g. critical section or single-core ISR).

@@ -423,7 +423,7 @@ fn main() -> ! {
     let sys_freq = clocks.sys_freq();
     info!("System clock: {} MHz", sys_freq / 1_000_000);
 
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
     let timer = Timer0::init(dp.TIMER0);
 
     // ------------------------------------------------------------------
@@ -433,7 +433,7 @@ fn main() -> ! {
     PWM_WRAP.store(pwm_wrap, Ordering::Relaxed);
     info!("PWM wrap = {} ({} kHz)", pwm_wrap, PWM_FREQ_HZ / 1000);
 
-    let pwm = Pwm::new(dp.PWM);
+    let pwm = Pwm::init(dp.PWM);
 
     let slice_a = pwm.slice::<0>().output_a(pins.pin::<0>());
     slice_a.set_wrap(pwm_wrap);

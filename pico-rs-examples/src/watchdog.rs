@@ -51,13 +51,13 @@ fn main() -> ! {
 
     // Initialize GPIO and LED
     let dp = Peripherals::take().unwrap();
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
     let led = pins.pin::<25>();
     led.into_output();
 
     // Initialize delay (requires SYST peripheral)
     let cp = CorePeripherals::take().unwrap();
-    let delay = Delay::new(cp.SYST, CLOCK_FREQ_HZ);
+    let delay = Delay::init(cp.SYST, CLOCK_FREQ_HZ);
 
     // Create watchdog instance to check reset reason
     let wd = Watchdog::new(unsafe { WATCHDOG::steal() });

@@ -26,6 +26,7 @@
 //! let count = busctrl.perfctr0();
 //! ```
 
+use crate::Steal;
 use pico_rs_pac::BUSCTRL;
 
 /// Performance counter event selection
@@ -111,10 +112,10 @@ pub struct Busctrl {
 impl Busctrl {
     /// Obtain a handle to the BUSCTRL hardware peripheral.
     #[inline]
-    pub fn steal() -> Self {
-        Self {
+    pub fn steal() -> Steal<Self> {
+        Steal(Self {
             regs: unsafe { BUSCTRL::steal() },
-        }
+        })
     }
 
     /// Get reference to the register block
@@ -341,11 +342,5 @@ impl Busctrl {
             self.perfctr2(),
             self.perfctr3(),
         ]
-    }
-}
-
-impl Default for Busctrl {
-    fn default() -> Self {
-        Self::steal()
     }
 }

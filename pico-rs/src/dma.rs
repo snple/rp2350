@@ -301,7 +301,8 @@ impl Dma {
     ///
     /// * `dma` — The DMA peripheral from `Peripherals::take()`
     pub fn new(dma: pico_rs_pac::DMA) -> Self {
-        pico_rs_pac::DMA::unreset();
+        // Reset then unreset to guarantee clean register state
+        <pico_rs_pac::DMA as Resettable>::init();
         Self { dma }
     }
 

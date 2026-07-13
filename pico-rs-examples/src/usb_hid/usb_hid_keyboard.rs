@@ -98,7 +98,7 @@ fn main() -> ! {
     );
 
     // Initialize GPIO
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
     // LED on GPIO 25
     let led = pins.pin::<25>();
@@ -131,7 +131,7 @@ fn main() -> ! {
     usb_dev.bus().connect();
     info!("USB connected, waiting for enumeration...");
 
-    let mut delay = Delay::new(cp.SYST, clocks.sys_freq());
+    let mut delay = Delay::init(cp.SYST, clocks.sys_freq());
     let mut button_prev = true; // Pull-up, so high when not pressed
     let mut configured = false;
 

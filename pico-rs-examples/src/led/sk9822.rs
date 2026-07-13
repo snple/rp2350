@@ -259,10 +259,10 @@ fn main() -> ! {
 
     let dp = Peripherals::take().unwrap();
     let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
     let core = CorePeripherals::take().unwrap();
-    let delay = Delay::new(core.SYST, clocks.sys_freq());
+    let delay = Delay::init(core.SYST, clocks.sys_freq());
 
     info!("SK9822: {} LEDs, brightness={}", NUM_LEDS, BRIGHTNESS);
 
@@ -272,7 +272,7 @@ fn main() -> ! {
 
     if USE_PIO {
         // ---- PIO backend ----
-        let mut pio0 = pio::Pio0::new(dp.PIO0);
+        let mut pio0 = pio::Pio0::init(dp.PIO0);
         pio0.claim_pin(pins.pin::<2>()); // CLK
         pio0.claim_pin(pins.pin::<3>()); // DATA
 
@@ -290,7 +290,7 @@ fn main() -> ! {
         }
     } else {
         // ---- SPI backend ----
-        let spi = Spi0::new(
+        let spi = Spi0::init(
             dp.SPI0,
             pins.pin::<2>(), // SCK
             pins.pin::<3>(), // TX (MOSI → DATA)

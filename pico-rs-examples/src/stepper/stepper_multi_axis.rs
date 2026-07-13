@@ -359,11 +359,11 @@ fn main() -> ! {
     let dp = Peripherals::take().unwrap();
     let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
 
-    let ticks = Ticks::new(dp.TICKS, &clocks);
+    let ticks = Ticks::init(dp.TICKS, &clocks);
     ticks.init_timer0();
     let timer = Timer0::init(dp.TIMER0);
 
-    let pins = pico_rs::gpio::Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = pico_rs::gpio::Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
     // --- GPIO: ENABLE ---
     let _en = pins.pin::<PIN_ENABLE>();
@@ -384,7 +384,7 @@ fn main() -> ! {
     // 注意: 电机 4 的 DIR/STEP 与电机 3 共用 GPIO16/17，不重复初始化
 
     // --- UART ---
-    let uart = Uart1::new(
+    let uart = Uart1::init(
         dp.UART1,
         pins.pin::<4>(),
         pins.pin::<5>(),
@@ -451,7 +451,7 @@ fn main() -> ! {
 
     info!("--- Parallel random move stress test ---");
 
-    let trng = Trng::init();
+    let trng = Trng::init(dp.TRNG);
 
     let max_steps = EFFECTIVE_TRAVEL as u32;
 

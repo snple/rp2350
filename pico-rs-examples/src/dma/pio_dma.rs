@@ -47,12 +47,12 @@ fn main() -> ! {
 
     let dp = Peripherals::take().unwrap();
     let _clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
     // ------------------------------------------------------------------
     // PIO setup
     // ------------------------------------------------------------------
-    let mut pio0 = pio::Pio0::new(dp.PIO0);
+    let mut pio0 = pio::Pio0::init(dp.PIO0);
     pio0.claim_pin(pins.pin::<25>());
 
     // PIO program: autopull 32 bits, shift out 1 bit at a time to pin

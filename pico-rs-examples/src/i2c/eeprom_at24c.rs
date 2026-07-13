@@ -473,11 +473,11 @@ fn main() -> ! {
     info!("System clock: {} Hz", clocks.sys_freq());
 
     // 初始化 GPIO 管理器
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
     // 初始化 I2C1：GP2=SDA，GP3=SCL，400 kHz 快速模式
     // HAL 会自动配置引脚为 I2C 功能（开漏 + 内部上拉）
-    let i2c = I2c1::new(
+    let i2c = I2c1::init(
         dp.I2C1,
         pins.pin::<2>(), // SDA
         pins.pin::<3>(), // SCL
@@ -488,7 +488,7 @@ fn main() -> ! {
 
     // 初始化 SysTick 延时（用于 ACK 轮询等待）
     let core = CorePeripherals::take().unwrap();
-    let delay = Delay::new(core.SYST, clocks.sys_freq());
+    let delay = Delay::init(core.SYST, clocks.sys_freq());
 
     // ------------------------------------------------------------------
     // 2. EEPROM 在线检测

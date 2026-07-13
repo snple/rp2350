@@ -40,14 +40,14 @@ fn main() -> ! {
     let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
 
     // Initialize GPIO
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
     let led = pins.pin::<25>();
     led.into_output();
     led.set_low();
     info!("LED configured on GPIO25");
 
     // Initialize TIMER0 tick generator (1µs ticks from clk_ref)
-    let ticks = Ticks::new(dp.TICKS, &clocks);
+    let ticks = Ticks::init(dp.TICKS, &clocks);
     ticks.init_timer0();
 
     // Initialize Timer0

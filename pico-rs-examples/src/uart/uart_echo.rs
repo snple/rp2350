@@ -158,14 +158,14 @@ fn main() -> ! {
     let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
     info!("System clock: {} Hz", clocks.sys_freq());
 
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
     let timer = Timer0::init(dp.TIMER0);
 
     // ------------------------------------------------------------------
     // 2. UART0 初始化
     //    GP0 = TX, GP1 = RX
     // ------------------------------------------------------------------
-    let mut uart = Uart0::new(
+    let mut uart = Uart0::init(
         dp.UART0,
         pins.pin::<0>(), // TX
         pins.pin::<1>(), // RX

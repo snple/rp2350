@@ -1198,8 +1198,8 @@ fn main() -> ! {
     let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
     info!("系统时钟: {} MHz", clocks.sys_freq() / 1_000_000);
 
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
-    let delay = Delay::new(core.SYST, clocks.sys_freq());
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
+    let delay = Delay::init(core.SYST, clocks.sys_freq());
     let _timer = Timer0::init(dp.TIMER0);
 
     // ------------------------------------------------------------------
@@ -1225,7 +1225,7 @@ fn main() -> ! {
     // 4. I2C0 初始化 — 100 kHz (TC358870XBG I2C 标准模式)
     //    GP4 = SDA, GP5 = SCL
     // ------------------------------------------------------------------
-    let i2c = I2c0::new(
+    let i2c = I2c0::init(
         dp.I2C0,
         pins.pin::<4>(), // SDA
         pins.pin::<5>(), // SCL

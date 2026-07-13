@@ -350,11 +350,11 @@ fn main() -> ! {
     info!("系统时钟: {} Hz", clocks.sys_freq());
 
     // 初始化 GPIO 和定时器
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
     let timer = Timer0::init(dp.TIMER0);
 
     // 初始化 SPI0 (Mode 0)
-    let spi = Spi0::new(
+    let spi = Spi0::init(
         dp.SPI0,
         pins.pin::<2>(), // SCK
         pins.pin::<3>(), // TX (MOSI → SDI)

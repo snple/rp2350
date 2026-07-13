@@ -81,9 +81,9 @@
 //!       │
 //!       ├── IO_BANK0 ──┐
 //!       │              │
-//!       ├── PADS_BANK0 ┼──► Pins::new() ──► pins.pin::<N>()
+//!       ├── PADS_BANK0 ┼──► Pins::init() ──► pins.pin::<N>()
 //!       │              │                          │
-//!       ├── I2C0 ──────┼──────────────────────────┼──► I2c0::new(i2c0, pin4, pin5, ...)
+//!       ├── I2C0 ──────┼──────────────────────────┼──► I2c0::init(i2c0, pin4, pin5, ...)
 //!       │              │                          │         ▲
 //!       └── ...        │                          │    pin4, pin5 consumed!
 //!                      │                          │
@@ -125,7 +125,7 @@
 //! let dp = Peripherals::take().unwrap();
 //!
 //! // Create GPIO controller by consuming IO_BANK0 and PADS_BANK0
-//! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+//! let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 //!
 //! // Configure pin 25 (on-board LED) as output
 //! let led = pins.pin::<25>();
@@ -143,7 +143,7 @@
 //! use pico_rs::gpio::Pins;
 //!
 //! let dp = Peripherals::take().unwrap();
-//! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+//! let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 //!
 //! // Configure pin 14 as input with internal pull-up
 //! let button = pins.pin::<14>();
@@ -162,10 +162,10 @@
 //! use pico_rs::i2c::I2c0;
 //!
 //! let dp = Peripherals::take().unwrap();
-//! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+//! let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 //!
 //! // Initialize I2C, consuming the SDA and SCL pins
-//! let i2c = I2c0::new(
+//! let i2c = I2c0::init(
 //!     dp.I2C0,
 //!     pins.pin::<4>(),  // SDA - ownership transferred
 //!     pins.pin::<5>(),  // SCL - ownership transferred
@@ -177,7 +177,7 @@
 //! ## PWM Output
 //!
 //! ```ignore
-//! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+//! let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 //!
 //! // Configure pin for PWM function
 //! let pwm_pin = pins.pin::<16>();
@@ -189,7 +189,7 @@
 //! ## PIO for Custom Protocols
 //!
 //! ```ignore
-//! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+//! let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 //!
 //! // Configure pins for PIO0
 //! pins.pin::<0>().into_pio0();
@@ -209,7 +209,7 @@
 //! use pico_rs::gpio::{self, Pins};
 //!
 //! let dp = Peripherals::take().unwrap();
-//! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+//! let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 //!
 //! let led = pins.pin::<25>();
 //! led.into_output();
@@ -510,7 +510,7 @@ macro_rules! impl_pin {
                 ///
                 /// The caller must ensure that:
                 /// - The GPIO subsystem (IO_BANK0, PADS_BANK0) has been initialised
-                ///   (e.g. via [`Pins::new()`]).
+                ///   (e.g. via [`Pins::init()`]).
                 /// - No data races occur — i.e. the same pin is not being
                 ///   concurrently reconfigured from another context.
                 #[inline]
@@ -978,7 +978,7 @@ macro_rules! impl_pin {
                 /// use pico_rs::interrupt;
                 /// use pico_rs::pac::Interrupt;
                 ///
-                /// let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+                /// let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
                 /// let button = pins.pin::<15>();
                 /// button.into_input_pullup();
                 /// button.enable_interrupt(EdgeLevel::EdgeLow);
@@ -1295,7 +1295,7 @@ macro_rules! impl_pin {
                 ///
                 /// The caller must ensure that:
                 /// - The GPIO subsystem (IO_BANK0, PADS_BANK0) has been initialised
-                ///   (e.g. via [`Pins::new()`]).
+                ///   (e.g. via [`Pins::init()`]).
                 /// - No data races occur — i.e. the same pin is not being
                 ///   concurrently reconfigured from another context.
                 #[inline]
@@ -1822,7 +1822,7 @@ macro_rules! impl_pin {
 /// Pins are normally obtained from [`Pins::pin()`]:
 ///
 /// ```ignore
-/// let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+/// let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 /// let led = pins.pin::<25>();
 /// led.into_output();
 /// led.set_high();
@@ -1922,7 +1922,7 @@ impl_pin!(47, high);
 
 /// GPIO controller, owning the PAC peripherals.
 ///
-/// Create once via [`Pins::new()`], then obtain individual [`Pin`] handles
+/// Create once via [`Pins::init()`], then obtain individual [`Pin`] handles
 /// via [`Pins::pin()`]. This mirrors the pattern used by [`Dma::channel()`].
 ///
 /// # Example
@@ -1932,7 +1932,7 @@ impl_pin!(47, high);
 /// use pico_rs::Peripherals;
 ///
 /// let dp = Peripherals::take().unwrap();
-/// let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+/// let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 ///
 /// let led = pins.pin::<25>();
 /// led.into_output();
@@ -1947,7 +1947,7 @@ pub struct Pins {
 }
 
 impl Pins {
-    /// Create a new `Pins` controller by consuming GPIO peripherals.
+    /// Initialize the `Pins` controller by consuming GPIO peripherals.
     ///
     /// This brings IO_BANK0 and PADS_BANK0 out of reset and returns a
     /// controller from which individual [`Pin`] handles can be obtained.
@@ -1964,10 +1964,10 @@ impl Pins {
     /// use pico_rs::Peripherals;
     ///
     /// let dp = Peripherals::take().unwrap();
-    /// let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    /// let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
     /// ```
     #[inline]
-    pub fn new(io_bank0: IO_BANK0, pads_bank0: PADS_BANK0) -> Self {
+    pub fn init(io_bank0: IO_BANK0, pads_bank0: PADS_BANK0) -> Self {
         // Initialize GPIO subsystem: reset and unreset peripherals
         let mask = pico_rs_pac::IO_BANK0::RESET_MASK | pico_rs_pac::PADS_BANK0::RESET_MASK;
         // SAFETY: mask is composed from valid Resettable::RESET_MASK constants.
@@ -2007,7 +2007,7 @@ impl Pins {
             assert!(N < 48, "GPIO pin number must be 0-47 (RP2350B)")
         };
 
-        // SAFETY: `Pins::new()` guarantees the GPIO subsystem is initialised.
+        // SAFETY: `Pins::init()` guarantees the GPIO subsystem is initialised.
         // The const assert above ensures N is in the valid range.
         Pin {
             _marker: core::marker::PhantomData,
@@ -2080,7 +2080,7 @@ pub const GPIO_PIN_MAX: u32 = 47;
 //
 // All functions are `unsafe` because the caller must ensure:
 //
-// - The GPIO subsystem was initialized via [`Pins::new()`].
+// - The GPIO subsystem was initialized via [`Pins::init()`].
 // - Each pin has been configured for SIO function via [`Pin<N>`].
 // - No concurrent configuration changes happen through [`Pin<N>`] or
 //   peripheral drivers while data operations are in flight.

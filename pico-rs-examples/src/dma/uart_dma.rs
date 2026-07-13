@@ -40,10 +40,10 @@ fn main() -> ! {
     // 1. Peripheral setup
     // ------------------------------------------------------------------
     let dp = Peripherals::take().unwrap();
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
     // UART0: 115200 baud, 8N1, GPIO 0 TX / GPIO 1 RX
-    let uart = Uart0::new(
+    let uart = Uart0::init(
         dp.UART0,
         pins.pin::<0>(),
         pins.pin::<1>(),

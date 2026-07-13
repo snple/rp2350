@@ -36,7 +36,7 @@ fn main() -> ! {
     let _clocks = ClockBuilder::new()
         .enable_adc()
         .build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
-    let _pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let _pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
     // ------------------------------------------------------------------
     // ADC setup — temperature sensor on channel 4

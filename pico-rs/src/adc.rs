@@ -34,7 +34,7 @@
 //! use pico_rs::gpio::Pins;
 //!
 //! let dp = Peripherals::take().unwrap();
-//! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+//! let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 //!
 //! // Create ADC controller
 //! let mut adc = Adc::new(dp.ADC);

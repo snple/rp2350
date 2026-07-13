@@ -37,7 +37,7 @@ fn main() -> ! {
     let dp = Peripherals::take().unwrap();
 
     // Initialize GPIO via Pins (consumes IO_BANK0 and PADS_BANK0)
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
     // Configure LED as output
     let led = pins.pin::<25>();
@@ -87,7 +87,7 @@ fn main() -> ! {
 #[allow(non_snake_case)]
 #[unsafe(no_mangle)]
 extern "C" fn IO_IRQ_BANK0() {
-    // SAFETY: GPIO subsystem was initialised in main() via Pins::new().
+    // SAFETY: GPIO subsystem was initialised in main() via Pins::init().
     // Only interrupt-status registers are accessed here — no reconfiguration.
     let button = unsafe { Pin::<BUTTON_PIN>::steal() };
 

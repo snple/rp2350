@@ -235,13 +235,13 @@ fn main() -> ! {
     let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
     info!("Clock: sys={} Hz", clocks.sys_freq());
 
-    let ticks = Ticks::new(dp.TICKS, &clocks);
+    let ticks = Ticks::init(dp.TICKS, &clocks);
     ticks.init_timer0();
 
     let timer = Timer0::init(dp.TIMER0);
     info!("Timer0 initialized");
 
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
     // ------------------------------------------------------------------
     // 2. GPIO 配置
@@ -275,7 +275,7 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     // 3. UART1 初始化 — TMC2209 通信
     // ------------------------------------------------------------------
-    let uart = Uart1::new(
+    let uart = Uart1::init(
         dp.UART1,
         pins.pin::<4>(), // GP4 = TX
         pins.pin::<5>(), // GP5 = RX

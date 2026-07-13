@@ -34,10 +34,10 @@ fn main() -> ! {
 
     let dp = Peripherals::take().unwrap();
     let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
     // SPI0: 1 MHz, GPIO 2=SCK, GPIO 3=TX, GPIO 0=RX
-    let spi = spi::Spi0::new(
+    let spi = spi::Spi0::init(
         dp.SPI0,
         pins.pin::<2>(),
         pins.pin::<3>(),

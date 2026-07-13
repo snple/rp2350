@@ -7,8 +7,14 @@
 //!
 //! ```ignore
 //! use pico_rs::sha256::Sha256;
+//! use pico_rs_pac::SHA256;
 //!
-//! let mut sha = Sha256::steal();
+//! // Obtain the SHA256 peripheral from the PAC
+//! let sha_peripheral = unsafe { SHA256::steal() };
+//! let mut sha = Sha256::init(sha_peripheral);
+//!
+//! // Or steal after init (unsafe — caller guarantees init happened)
+//! let sha = unsafe { Sha256::steal() };
 //!
 //! // Start a new hash computation
 //! sha.start();
@@ -23,6 +29,7 @@
 //! }
 //! ```
 
+use crate::Steal;
 use crate::reset::Resettable;
 use pico_rs_pac::SHA256;
 
@@ -51,17 +58,35 @@ pub struct Sha256 {
 }
 
 impl Sha256 {
-    /// Obtain a handle to the SHA-256 hardware accelerator.
+    /// Initialize the SHA-256 hardware accelerator.
     ///
-    /// This will bring the SHA-256 peripheral out of reset.
+    /// Takes ownership of the [`pico_rs_pac::SHA256`] register block, resets
+    /// the peripheral, and brings it out of reset.
+    ///
+    /// # Arguments
+    ///
+    /// * `sha256` — The PAC-level [`pico_rs_pac::SHA256`] peripheral instance.
     #[inline]
-    pub fn steal() -> Self {
-        // Bring SHA256 out of reset
-        pico_rs_pac::SHA256::unreset();
+    pub fn init(sha256: pico_rs_pac::SHA256) -> Self {
+        // Reset then unreset to guarantee clean register state
+        <pico_rs_pac::SHA256 as Resettable>::init();
 
-        Self {
+        Self { sha256 }
+    }
+
+    /// Obtain a handle to the SHA-256 hardware accelerator without
+    /// re-initializing.
+    ///
+    /// # Safety
+    ///
+    /// The caller must ensure the SHA-256 peripheral has already been reset
+    /// and initialized (e.g. via [`Sha256::init`]) before use. Prefer
+    /// [`Sha256::init`] which handles initialization automatically.
+    #[inline]
+    pub unsafe fn steal() -> Steal<Self> {
+        Steal(Self {
             sha256: unsafe { SHA256::steal() },
-        }
+        })
     }
 
     /// Get a reference to the SHA256 registers
@@ -326,12 +351,6 @@ impl Sha256 {
     }
 }
 
-impl Default for Sha256 {
-    fn default() -> Self {
-        Self::steal()
-    }
-}
-
 /// Incremental SHA-256 hasher
 ///
 /// This allows computing a hash incrementally by calling `update()` multiple times.
@@ -344,8 +363,16 @@ pub struct Sha256Hasher {
 
 impl Sha256Hasher {
     /// Create a new incremental hasher
+    /// Create a new incremental hasher.
+    ///
+    /// # Safety
+    ///
+    /// The caller must ensure the SHA-256 peripheral has already been
+    /// initialized via [`Sha256::init`] before using this hasher.
     pub fn new() -> Self {
-        let mut sha = Sha256::steal();
+        // SAFETY: caller guarantees Sha256::init() was called before.
+        // Unwrap Steal to gain &mut self access for start().
+        let mut sha = unsafe { Sha256::steal().0 };
         sha.start();
 
         Self {

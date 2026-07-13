@@ -35,10 +35,10 @@
 //! use pico_rs::Peripherals;
 //!
 //! let dp = Peripherals::take().unwrap();
-//! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+//! let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 //!
 //! // Initialize SPI0 at 1 MHz, consuming pins
-//! let mut spi = Spi0::new(
+//! let mut spi = Spi0::init(
 //!     dp.SPI0,
 //!     pins.pin::<2>(),      // SCK pin - ownership transferred
 //!     pins.pin::<3>(),      // TX (MOSI) pin - ownership transferred
@@ -68,10 +68,10 @@
 //! use pico_rs::spi::Spi0;
 //!
 //! let dp = Peripherals::take().unwrap();
-//! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+//! let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 //!
 //! // Initialize SPI0 with hardware chip select
-//! let mut spi = Spi0::new_with_cs(
+//! let mut spi = Spi0WithCs::init(
 //!     dp.SPI0,
 //!     pins.pin::<2>(),      // SCK
 //!     pins.pin::<3>(),      // TX (MOSI)
@@ -89,10 +89,10 @@
 //! use pico_rs::spi::Spi0;
 //!
 //! let dp = Peripherals::take().unwrap();
-//! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+//! let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 //!
 //! // Initialize SPI0 as slave (requires CSn pin)
-//! let mut spi = Spi0::new_slave(
+//! let mut spi = Spi0WithCs::init_slave(
 //!     dp.SPI0,
 //!     pins.pin::<2>(),      // SCK
 //!     pins.pin::<3>(),      // TX (MOSI from slave perspective)
@@ -260,7 +260,7 @@ macro_rules! impl_spi {
                 ///
                 /// ```ignore
                 #[doc = concat!("// In init code: create the full SPI with pins")]
-                #[doc = concat!("let spi = ", stringify!($SpiName), "::new(")]
+                #[doc = concat!("let spi = ", stringify!($SpiName), "::init(")]
                 #[doc = concat!("    dp.SPI", $spi_num, ", sck, tx, rx, 1_000_000, sys_clk,")]
                 /// );
                 ///
@@ -310,7 +310,7 @@ macro_rules! impl_spi {
                 /// # Example
                 ///
                 /// ```ignore
-                #[doc = concat!("let spi = ", stringify!($SpiName), "::new(")]
+                #[doc = concat!("let spi = ", stringify!($SpiName), "::init(")]
                 #[doc = concat!("    dp.SPI", $spi_num, ",")]
                 ///     pins.pin::<2>(),      // SCK
                 ///     pins.pin::<3>(),      // TX (MOSI)
@@ -319,7 +319,7 @@ macro_rules! impl_spi {
                 ///     150_000_000,  // System clock
                 /// );
                 /// ```
-                pub fn new(
+                pub fn init(
                     spi: $SpiType,
                     sck: SCK,
                     tx: TX,
@@ -882,12 +882,12 @@ macro_rules! impl_spi {
             ///
             /// # Master Mode
             ///
-            /// Use [`new()`](Self::new) to initialize in master mode. The hardware
+            /// Use [`init()`](Self::init) to initialize in master mode. The hardware
             /// controls the CSn pin automatically during transfers.
             ///
             /// # Slave Mode
             ///
-            /// Use [`new_slave()`](Self::new_slave) to initialize in slave mode.
+            /// Use [`init_slave()`](Self::init_slave) to initialize in slave mode.
             /// The CSn pin is used by the master to select this slave device.
             ///
             #[doc = concat!("# SPI", $spi_num, " Pin Mapping")]
@@ -903,7 +903,7 @@ macro_rules! impl_spi {
             /// # Example (Master Mode)
             ///
             /// ```ignore
-            #[doc = concat!("let spi = ", stringify!($SpiName), "WithCs::new(")]
+            #[doc = concat!("let spi = ", stringify!($SpiName), "WithCs::init(")]
             #[doc = concat!("    dp.SPI", $spi_num, ",")]
             ///     pins.pin::<2>(),      // SCK
             ///     pins.pin::<3>(),      // TX (MOSI)
@@ -917,7 +917,7 @@ macro_rules! impl_spi {
             /// # Example (Slave Mode)
             ///
             /// ```ignore
-            #[doc = concat!("let spi = ", stringify!($SpiName), "WithCs::new_slave(")]
+            #[doc = concat!("let spi = ", stringify!($SpiName), "WithCs::init_slave(")]
             #[doc = concat!("    dp.SPI", $spi_num, ",")]
             ///     pins.pin::<2>(),      // SCK (input from master)
             ///     pins.pin::<3>(),      // TX (MISO - output to master)
@@ -999,7 +999,7 @@ macro_rules! impl_spi {
                 /// * `csn` - CSn (chip select) pin
                 /// * `baudrate` - Desired baudrate in Hz
                 /// * `peri_clk` - Peripheral clock frequency in Hz
-                pub fn new(
+                pub fn init(
                     spi: $SpiType,
                     sck: SCK,
                     tx: TX,
@@ -1056,7 +1056,7 @@ macro_rules! impl_spi {
                 /// * `rx` - RX pin (slave input)
                 /// * `csn` - CSn (chip select) pin
                 /// * `peri_clk` - Peripheral clock frequency in Hz
-                pub fn new_slave(
+                pub fn init_slave(
                     spi: $SpiType,
                     sck: SCK,
                     tx: TX,

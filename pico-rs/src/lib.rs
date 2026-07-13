@@ -35,7 +35,7 @@
 //!
 //! #[main]
 //! fn main() -> ! {
-//!     let delay = Delay::new(150_000_000); // 150 MHz
+//!     let delay = Delay::init(cp.SYST, 150_000_000); // 150 MHz
 //!     loop {
 //!         delay.delay_ms(500);
 //!     }

@@ -111,7 +111,7 @@ mod imp;
 // # Safety
 //
 // All functions are `unsafe` because the caller must ensure:
-// - The GPIO subsystem was initialized via [`gpio::Pins::new()`](crate::gpio::Pins::new).
+// - The GPIO subsystem was initialized via [`gpio::Pins::init()`](crate::gpio::Pins::init).
 // - Each pin has been configured for SIO function via [`Pin<N>`](crate::gpio::Pin).
 // - No concurrent configuration changes happen while data operations are in flight.
 

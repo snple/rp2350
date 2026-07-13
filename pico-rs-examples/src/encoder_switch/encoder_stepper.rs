@@ -430,10 +430,10 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     let dp = Peripherals::take().unwrap();
     let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
-    let ticks = Ticks::new(dp.TICKS, &clocks);
+    let ticks = Ticks::init(dp.TICKS, &clocks);
     ticks.init_timer0();
     let _timer = Timer0::init(dp.TIMER0);
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
     // ------------------------------------------------------------------
     // 2. 配置编码器引脚
@@ -668,7 +668,7 @@ fn motor_control_swi() {
 
 #[bind(IO_IRQ_BANK0)]
 fn encoder_button_isr() {
-    // SAFETY: GPIO 子系统已在 main() 中通过 Pins::new() 初始化。
+    // SAFETY: GPIO 子系统已在 main() 中通过 Pins::init() 初始化。
     // ISR 中仅访问中断状态寄存器和读取引脚电平, 不做重新配置。
     let a = unsafe { Pin::<PIN_A>::steal() };
     let b = unsafe { Pin::<PIN_B>::steal() };

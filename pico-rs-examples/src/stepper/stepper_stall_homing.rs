@@ -210,11 +210,11 @@ fn main() -> ! {
     let dp = Peripherals::take().unwrap();
     let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
 
-    let ticks = Ticks::new(dp.TICKS, &clocks);
+    let ticks = Ticks::init(dp.TICKS, &clocks);
     ticks.init_timer0();
 
     let timer = Timer0::init(dp.TIMER0);
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
     // --- GPIO ---
     let _en = pins.pin::<PIN_ENABLE>();
@@ -236,7 +236,7 @@ fn main() -> ! {
     p_diag.into_input_pullup();
 
     // --- UART ---
-    let uart = Uart1::new(
+    let uart = Uart1::init(
         dp.UART1,
         pins.pin::<4>(),
         pins.pin::<5>(),

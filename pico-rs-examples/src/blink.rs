@@ -29,7 +29,7 @@ fn main() -> ! {
     let dp = Peripherals::take().unwrap();
 
     // Initialize GPIO pins by consuming IO_BANK0 and PADS_BANK0
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
     // Configure GPIO 25 (LED) as output
     let led = pins.pin::<LED_PIN>();
@@ -41,7 +41,7 @@ fn main() -> ! {
     let core_peripherals = CorePeripherals::take().unwrap();
 
     // Initialize SysTick-based delay
-    let delay = Delay::new(core_peripherals.SYST, CLOCK_FREQ_HZ);
+    let delay = Delay::init(core_peripherals.SYST, CLOCK_FREQ_HZ);
 
     let mut led_on = false;
     loop {

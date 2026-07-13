@@ -187,12 +187,12 @@ fn main() -> ! {
     let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
 
     // 初始化定时器 tick 发生器，为 TIMER0 提供微秒级时基
-    let ticks = Ticks::new(dp.TICKS, &clocks);
+    let ticks = Ticks::init(dp.TICKS, &clocks);
     ticks.init_timer0();
     let timer = Timer0::init(dp.TIMER0);
 
     // 获取 GPIO 引脚集合
-    let pins = pico_rs::gpio::Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = pico_rs::gpio::Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
     // --- 步进电机控制引脚 ---
     // ENABLE: 初始拉高 → 电机禁用 (防止上电抖动)
@@ -221,7 +221,7 @@ fn main() -> ! {
     // --- TMC2209 UART 通信 ---
     // UART1 使用 GPIO4 (TX) 和 GPIO5 (RX)，波特率 115200
     // TMC2209 的 PDN_UART 引脚需接 GND 以启用 UART 模式
-    let uart = Uart1::new(
+    let uart = Uart1::init(
         dp.UART1,
         pins.pin::<4>(),
         pins.pin::<5>(),

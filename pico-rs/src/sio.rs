@@ -29,7 +29,7 @@
 //! use pico_rs::sio::{Sio, Spinlock};
 //!
 //! let dp = Peripherals::take().unwrap();
-//! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+//! let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 //! pins.pin::<25>().into_output();
 //!
 //! // Create SIO instance (zero-cost, no ownership required)
@@ -63,6 +63,7 @@
 
 use paste::paste;
 use pico_rs_pac::sio::RegisterBlock;
+use crate::Steal;
 
 /// Number of hardware spinlocks
 pub const SPINLOCK_COUNT: usize = 32;
@@ -160,10 +161,10 @@ impl Sio {
     ///
     /// This is a low-cost operation. No peripheral ownership is taken.
     #[inline]
-    pub const fn steal() -> Self {
-        Sio {
+    pub const fn steal() -> Steal<Self> {
+        Steal(Sio {
             _marker: core::marker::PhantomData,
-        }
+        })
     }
 
     // ========================================================================

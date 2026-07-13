@@ -75,13 +75,17 @@ pub struct Syscfg {
 }
 
 impl Syscfg {
-    /// Create a new SYSCFG driver
+    /// Initialize the SYSCFG driver.
+    ///
+    /// Takes ownership of the [`pico_rs_pac::SYSCFG`] register block, resets
+    /// the peripheral, and brings it out of reset.
     ///
     /// # Arguments
     /// * `syscfg` - The SYSCFG peripheral from PAC
     #[inline]
-    pub fn new(syscfg: pico_rs_pac::SYSCFG) -> Self {
-        pico_rs_pac::SYSCFG::unreset();
+    pub fn init(syscfg: pico_rs_pac::SYSCFG) -> Self {
+        // Reset then unreset to guarantee clean register state
+        <pico_rs_pac::SYSCFG as Resettable>::init();
         Self { syscfg }
     }
 

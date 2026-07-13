@@ -99,7 +99,7 @@ fn main() -> ! {
     // 下面进入“结果验证”阶段。
     // 我们不再继续展开时钟树细节，而是直接使用新的系统频率创建 Delay，
     // 然后闪烁板载 LED，验证 CPU 和 SysTick 都在预期频率下工作。
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
     let led = pins.pin::<25>();
     led.into_output();
 
@@ -109,7 +109,7 @@ fn main() -> ! {
 
     // Delay 依赖“当前真实的系统主频”。
     // 这里使用 clocks.sys_freq() 而不是硬编码常量，避免以后修改 builder 配置后忘记同步。
-    let delay = Delay::new(core_peripherals.SYST, clocks.sys_freq());
+    let delay = Delay::init(core_peripherals.SYST, clocks.sys_freq());
     info!("Delay initialized with {} Hz", clocks.sys_freq());
     info!(
         "SysTick ticks_per_us: {} (expected {})",

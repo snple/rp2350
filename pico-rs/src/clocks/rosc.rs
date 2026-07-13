@@ -25,6 +25,7 @@
 //! let random_byte = rosc.get_random_byte();
 //! ```
 
+use crate::Steal;
 use pico_rs_pac::ROSC;
 use pico_rs_pac::rosc::{Ctrl, Freqa, Freqb};
 
@@ -106,10 +107,10 @@ impl Rosc {
     /// # Safety
     /// The caller must ensure only one instance of this driver exists at a time.
     #[inline]
-    pub fn steal() -> Self {
-        Self {
+    pub fn steal() -> Steal<Self> {
+        Steal(Self {
             rosc: unsafe { ROSC::steal() },
-        }
+        })
     }
 
     /// Get a reference to the ROSC registers
@@ -440,12 +441,6 @@ impl Rosc {
     #[inline]
     pub unsafe fn dormant(&self) {
         self.regs().dormant.write_bits(ROSC_DORMANT_VALUE);
-    }
-}
-
-impl Default for Rosc {
-    fn default() -> Self {
-        Self::steal()
     }
 }
 

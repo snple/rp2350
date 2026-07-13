@@ -211,12 +211,12 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     let dp = Peripherals::take().unwrap();
     let timer = Timer0::init(dp.TIMER0);
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
     // ------------------------------------------------------------------
     // 2. PIO0 初始化
     // ------------------------------------------------------------------
-    let mut pio0 = pio::Pio0::new(dp.PIO0);
+    let mut pio0 = pio::Pio0::init(dp.PIO0);
 
     // ------------------------------------------------------------------
     // 3. 配置编码器引脚并声明给 PIO0
@@ -437,7 +437,7 @@ fn main() -> ! {
 /// 排空所有 SM 的 FIFO，查表解码后原子累加到 POSITIONS。
 #[bind(PIO0_IRQ_0)]
 fn pio0_encoder_isr() {
-    // SAFETY: PIO0 已在 main() 中通过 Pio0::new() 初始化。
+    // SAFETY: PIO0 已在 main() 中通过 Pio0::init() 初始化。
     // ISR 在单核 Cortex-M33 上不会与主循环并发访问 PIO 寄存器
     // (主循环只读原子变量, 不访问 PIO)。
     let pio0 = unsafe { pio::Pio0::steal() };

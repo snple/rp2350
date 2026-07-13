@@ -3,7 +3,7 @@
 //! This example demonstrates the new type-safe GPIO API with dedicated pin types.
 //!
 //! Features demonstrated:
-//! - Pins::new() initialization
+//! - Pins::init() initialization
 //! - Pin ownership model
 //! - SIO function (direct CPU control)
 //! - Output/Input configuration
@@ -32,15 +32,15 @@ fn main() -> ! {
     // Take device peripherals
     let dp = Peripherals::take().unwrap();
 
-    // Initialize GPIO bank using Pins::new() - consumes IO_BANK0 and PADS_BANK0
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    // Initialize GPIO bank using Pins::init() - consumes IO_BANK0 and PADS_BANK0
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
     info!("GPIO bank initialized");
 
     // Take core peripherals for Delay
     let core_peripherals = CorePeripherals::take().unwrap();
 
     // Initialize delay (12MHz)
-    let delay = Delay::new(core_peripherals.SYST, CLOCK_FREQ_HZ);
+    let delay = Delay::init(core_peripherals.SYST, CLOCK_FREQ_HZ);
 
     // Get individual pins from the Pins struct
     let led = pins.pin::<25>();

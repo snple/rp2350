@@ -162,13 +162,13 @@ fn main() -> ! {
     let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
     info!("System clock: {} Hz", clocks.sys_freq());
 
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
     let timer = Timer0::init(dp.TIMER0);
 
     // ------------------------------------------------------------------
     // 2. PWM 控制器初始化
     // ------------------------------------------------------------------
-    let pwm = Pwm::new(dp.PWM);
+    let pwm = Pwm::init(dp.PWM);
 
     // ==================================================================
     // Slice 0: PWM 控制输出 (GP0, Ch A) + 转速计输入 (GP1, Ch B)

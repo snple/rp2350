@@ -36,7 +36,7 @@ fn main() -> ! {
     let mut clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
 
     // Initialize GPIO pins
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
     let led = pins.pin::<25>();
     led.into_output();
 
@@ -48,7 +48,7 @@ fn main() -> ! {
 
     // Initialize delay
     let core = CorePeripherals::take().unwrap();
-    let delay = Delay::new(core.SYST, clocks.sys_freq());
+    let delay = Delay::init(core.SYST, clocks.sys_freq());
 
     let mut wake_count: u32 = 0;
 

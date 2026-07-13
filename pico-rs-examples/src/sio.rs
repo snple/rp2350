@@ -42,10 +42,10 @@ fn main() -> ! {
     let core_peripherals = CorePeripherals::take().unwrap();
 
     // Initialize delay
-    let delay = Delay::new(core_peripherals.SYST, CLOCK_FREQ_HZ);
+    let delay = Delay::init(core_peripherals.SYST, CLOCK_FREQ_HZ);
 
     // Configure GPIO 25 (LED) as SIO output through the safe GPIO API.
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
     let led = pins.pin::<25>();
     led.into_output();
 

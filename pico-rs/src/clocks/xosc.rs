@@ -83,34 +83,6 @@ pub struct Xosc {
 }
 
 impl Xosc {
-    /// Create a new XOSC instance without initialization
-    ///
-    /// # Arguments
-    /// * `xosc` - The XOSC peripheral from PAC
-    #[inline]
-    pub fn new(xosc: XOSC) -> Self {
-        Self {
-            xosc,
-            frequency: XOSC_HZ,
-        }
-    }
-
-    /// Get reference to the underlying register block
-    ///
-    /// # Safety
-    /// Direct register access can bypass the HAL's safety guarantees.
-    /// The caller must ensure operations do not conflict with the HAL state.
-    #[inline]
-    pub unsafe fn regs(&self) -> &pico_rs_pac::xosc::RegisterBlock {
-        &self.xosc
-    }
-
-    /// Release the XOSC peripheral
-    #[inline]
-    pub fn release(self) -> XOSC {
-        self.xosc
-    }
-
     /// Initialize the crystal oscillator
     ///
     /// This configures the XOSC with the appropriate frequency range and startup
@@ -156,6 +128,22 @@ impl Xosc {
             xosc,
             frequency: freq_hz,
         }
+    }
+
+    /// Get reference to the underlying register block
+    ///
+    /// # Safety
+    /// Direct register access can bypass the HAL's safety guarantees.
+    /// The caller must ensure operations do not conflict with the HAL state.
+    #[inline]
+    pub unsafe fn regs(&self) -> &pico_rs_pac::xosc::RegisterBlock {
+        &self.xosc
+    }
+
+    /// Release the XOSC peripheral
+    #[inline]
+    pub fn release(self) -> XOSC {
+        self.xosc
     }
 
     /// Initialize XOSC with default 12 MHz crystal frequency

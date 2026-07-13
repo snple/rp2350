@@ -52,12 +52,12 @@ fn main() -> ! {
 
     let dp = Peripherals::take().unwrap();
     let _clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
     // ------------------------------------------------------------------
     // PWM setup — Slice 0, channel A for GPIO 0
     // ------------------------------------------------------------------
-    let pwm = Pwm::new(dp.PWM);
+    let pwm = Pwm::init(dp.PWM);
     let slice = pwm.slice::<0>();
     let slice = slice.output_a(pins.pin::<0>());
 

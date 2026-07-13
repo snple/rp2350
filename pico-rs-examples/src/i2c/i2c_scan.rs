@@ -189,7 +189,7 @@ fn main() -> ! {
     let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
     info!("System clock: {} Hz", clocks.sys_freq());
 
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
     let timer = Timer0::init(dp.TIMER0);
 
     // ------------------------------------------------------------------
@@ -197,7 +197,7 @@ fn main() -> ! {
     //    GP4 = SDA, GP5 = SCL
     //    Pico I2C HAL 会自动配置引脚的上拉和 I2C 功能
     // ------------------------------------------------------------------
-    let i2c = I2c0::new(
+    let i2c = I2c0::init(
         dp.I2C0,
         pins.pin::<4>(), // SDA
         pins.pin::<5>(), // SCL

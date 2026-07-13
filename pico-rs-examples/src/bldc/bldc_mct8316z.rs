@@ -1159,16 +1159,16 @@ fn main() -> ! {
     let sys_freq = clocks.sys_freq();
     info!("System clock: {} MHz", sys_freq / 1_000_000);
 
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
     // SysTick delay
     let core = CorePeripherals::take().unwrap();
-    let delay = Delay::new(core.SYST, clocks.sys_freq());
+    let delay = Delay::init(core.SYST, clocks.sys_freq());
 
     // ------------------------------------------------------------------
     // I2C0 初始化 — GP4 (SDA), GP5 (SCL), 400 kHz
     // ------------------------------------------------------------------
-    let i2c = I2c0::new(
+    let i2c = I2c0::init(
         dp.I2C0,
         pins.pin::<4>(), // SDA
         pins.pin::<5>(), // SCL

@@ -81,7 +81,8 @@ use defmt_rtt as _;
 use pico_rs::main;
 use pico_rs::pac::Peripherals;
 use pico_rs::timer::Timer0;
-use pico_rs::trng::Trng;#[main]
+use pico_rs::trng::Trng;
+#[main]
 fn main() -> ! {
     info!("=== TRNG (True Random Number Generator) Example ===");
 
@@ -95,7 +96,7 @@ fn main() -> ! {
     // 2. TRNG 初始化
     //    Trng::init() 会自动配置 ROSC 采样参数并启用 TRNG 模块
     // ------------------------------------------------------------------
-    let trng = Trng::init();
+    let trng = Trng::init(dp.TRNG);
     info!("TRNG initialized (hardware entropy source)");
 
     // ======================================================================

@@ -40,12 +40,12 @@ fn main() -> ! {
 
     let dp = Peripherals::take().unwrap();
     let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
     // ------------------------------------------------------------------
     // I2C0 setup — 400 kHz, GPIO 4=SDA, GPIO 5=SCL
     // ------------------------------------------------------------------
-    let i2c = I2c0::new(dp.I2C0, pins.pin::<4>(), pins.pin::<5>(), 400_000, &clocks);
+    let i2c = I2c0::init(dp.I2C0, pins.pin::<4>(), pins.pin::<5>(), 400_000, &clocks);
 
     // Set target address
     i2c.set_target_addr(I2C_ADDR as u16, false);

@@ -46,14 +46,14 @@
 //! use pico_rs::i2c::I2c0;
 //!
 //! let dp = Peripherals::take().unwrap();
-//! let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+//! let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 //!
 //! // I2C0::new requires pins that implement I2c0SdaPin and I2c0SclPin
 //! // Pin<4> implements I2c0SdaPin, Pin<5> implements I2c0SclPin
-//! let i2c = I2c0::new(dp.I2C0, pins.pin::<4>(), pins.pin::<5>(), 400_000, sys_clk);
+//! let i2c = I2c0::init(dp.I2C0, pins.pin::<4>(), pins.pin::<5>(), 400_000, sys_clk);
 //!
 //! // Compile error: Pin<3> does not implement I2c0SdaPin!
-//! // let i2c = I2c0::new(dp.I2C0, pins.pin::<3>(), pins.pin::<5>(), 400_000, sys_clk);
+//! // let i2c = I2c0::init(dp.I2C0, pins.pin::<3>(), pins.pin::<5>(), 400_000, sys_clk);
 //!
 //! // Compile error: pins.pin::<4>() already moved!
 //! // pins.pin::<4>().into_output();
@@ -734,7 +734,7 @@ mod rp2350b_pins {
 /// use pico_rs::spi::Spi0;
 ///
 /// // TX-only SPI: no MISO pin needed
-/// let spi = Spi0::new(dp.SPI0, sck_pin, tx_pin, NoPin, 1_000_000, sys_clk);
+/// let spi = Spi0::init(dp.SPI0, sck_pin, tx_pin, NoPin, 1_000_000, sys_clk);
 /// ```
 pub struct NoPin;
 

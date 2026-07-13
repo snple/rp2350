@@ -14,7 +14,7 @@
 //! let cp = Peripherals::take().unwrap();
 //!
 //! // Initialize SysTick with 150 MHz clock (default RP2350 system clock)
-//! let mut systick = SysTick::new(cp.SYST, 150_000_000);
+//! let mut systick = SysTick::init(cp.SYST, 150_000_000);
 //!
 //! // Delay for 500ms
 //! systick.delay(Duration::from_millis(500));
@@ -24,6 +24,7 @@
 //! systick.delay_us(500);
 //! ```
 
+use crate::Steal;
 use crate::time::Duration;
 use pico_rs_rt::peripheral::syst::{self, SYST, SystClkSource};
 
@@ -44,7 +45,9 @@ pub struct SysTick {
 }
 
 impl SysTick {
-    /// Create a new SysTick timer with the given clock frequency
+    /// Initialize SysTick timer with the given clock frequency.
+    ///
+    /// Configures the SysTick counter with maximum reload and enables it.
     ///
     /// # Arguments
     /// * `syst` - The SYST peripheral from pico-rs-rt
@@ -56,9 +59,9 @@ impl SysTick {
     /// use pico_rs::systick::SysTick;
     ///
     /// let cp = Peripherals::take().unwrap();
-    /// let systick = SysTick::new(cp.SYST, 150_000_000);
+    /// let systick = SysTick::init(cp.SYST, 150_000_000);
     /// ```
-    pub fn new(mut syst: SYST, freq_hz: u32) -> Self {
+    pub fn init(mut syst: SYST, freq_hz: u32) -> Self {
         let ticks_per_us = freq_hz / 1_000_000;
 
         // Configure SysTick
@@ -74,6 +77,25 @@ impl SysTick {
             freq_hz,
             ticks_per_us,
         }
+    }
+
+    /// Obtain a SysTick handle without re-initializing.
+    ///
+    /// # Safety
+    ///
+    /// The caller must ensure the SysTick timer has already been initialized
+    /// (e.g. via [`SysTick::init`]) before use. Prefer [`SysTick::init`] which
+    /// handles initialization automatically.
+    ///
+    /// Note: the returned handle has `freq_hz = 0`, so delay methods will not
+    /// work. Use this only for reading counter/status values.
+    #[inline]
+    pub unsafe fn steal() -> Steal<Self> {
+        Steal(Self {
+            syst: unsafe { SYST::steal() },
+            freq_hz: 0,
+            ticks_per_us: 0,
+        })
     }
 
     /// Get the clock frequency
@@ -253,7 +275,7 @@ pub struct Delay {
 }
 
 impl Delay {
-    /// Create a new Delay instance from an owned SYST peripheral
+    /// Initialize a Delay instance from an owned SYST peripheral.
     ///
     /// # Arguments
     /// * `syst` - The SYST peripheral from pico-rs-rt
@@ -265,13 +287,27 @@ impl Delay {
     /// use pico_rs::systick::Delay;
     ///
     /// let cp = Peripherals::take().unwrap();
-    /// let delay = Delay::new(cp.SYST, 150_000_000);
+    /// let delay = Delay::init(cp.SYST, 150_000_000);
     /// delay.delay_ms(500);
     /// ```
-    pub fn new(syst: SYST, freq_hz: u32) -> Self {
+    pub fn init(syst: SYST, freq_hz: u32) -> Self {
         Self {
-            systick: SysTick::new(syst, freq_hz),
+            systick: SysTick::init(syst, freq_hz),
         }
+    }
+
+    /// Obtain a Delay handle without re-initializing.
+    ///
+    /// # Safety
+    ///
+    /// The caller must ensure the SysTick timer has already been initialized
+    /// (e.g. via [`SysTick::init`]) before use. Prefer [`Delay::init`] which
+    /// handles initialization automatically.
+    #[inline]
+    pub unsafe fn steal() -> Steal<Self> {
+        Steal(Self {
+            systick: unsafe { SysTick::steal().0 },
+        })
     }
 
     /// Delay for nanoseconds (rounded to microseconds)

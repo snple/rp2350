@@ -30,16 +30,16 @@ fn main() -> ! {
     info!("Clock system initialized: sys={} Hz", clocks.sys_freq());
 
     // Initialize GPIO pins by consuming IO_BANK0 and PADS_BANK0
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
     // Initialize I2C0 on GPIO 4 (SDA) and GPIO 5 (SCL)
-    let i2c = I2c0::new(dp.I2C0, pins.pin::<4>(), pins.pin::<5>(), 400_000, &clocks);
+    let i2c = I2c0::init(dp.I2C0, pins.pin::<4>(), pins.pin::<5>(), 400_000, &clocks);
 
     // Take core peripherals (NVIC, SCB, SYST, MPU, FPU, SAU)
     let core_peripherals = CorePeripherals::take().unwrap();
 
     // Initialize SysTick-based delay
-    let delay = Delay::new(core_peripherals.SYST, clocks.sys_freq());
+    let delay = Delay::init(core_peripherals.SYST, clocks.sys_freq());
 
     loop {
         match sht30_read(&i2c, &delay) {

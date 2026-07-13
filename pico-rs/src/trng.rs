@@ -15,20 +15,24 @@
 //!
 //! ```ignore
 //! use pico_rs::trng::Trng;
+//! use pico_rs_pac::TRNG;
 //!
-//! let mut trng = Trng::init();
+//! // Obtain the TRNG peripheral from the PAC
+//! let trng_peripheral = unsafe { TRNG::steal() };
+//! let trng = Trng::init(trng_peripheral);
 //!
 //! // Generate random u32
-//! let random = trng.random_u32();
+//! let random = trng.random_u32().unwrap();
 //!
 //! // Generate random bytes
 //! let mut buffer = [0u8; 16];
-//! trng.fill_random(&mut buffer);
+//! trng.fill_random(&mut buffer).unwrap();
 //!
 //! // Or steal after init (unsafe — caller guarantees init happened)
 //! let trng = unsafe { Trng::steal() };
 //! ```
 
+use crate::Steal;
 use crate::reset::Resettable;
 use pico_rs_pac::TRNG;
 
@@ -53,57 +57,62 @@ pub struct Trng {
 }
 
 impl Trng {
-    /// Obtain a handle to the TRNG hardware peripheral.
+    // ========================================================================
+    // Initialization
+    // ========================================================================
+
+    /// Initialize the TRNG peripheral
+    ///
+    /// Takes ownership of the [`pico_rs_pac::TRNG`] register block, resets the
+    /// peripheral, configures the ROSC sample rate to its default, enables the
+    /// random source, and unmasks the EHR-valid interrupt.
+    ///
+    /// # Arguments
+    ///
+    /// * `trng` — The PAC-level [`pico_rs_pac::TRNG`] peripheral instance.
+    pub fn init(trng: pico_rs_pac::TRNG) -> Self {
+        // Reset peripheral to ensure clean register state
+        <pico_rs_pac::TRNG as Resettable>::init();
+
+        // Reset the TRNG
+        trng.trng_sw_reset.write_bits(1);
+
+        // Wait for reset to complete
+        while trng.trng_sw_reset.read_bits() != 0 {
+            core::hint::spin_loop();
+        }
+
+        // Configure ROSC sample rate (default is fine for most uses)
+        // sample_cnt1 controls the number of clock cycles between samples
+        trng.sample_cnt1.write_bits(0xFFFF);
+
+        // Enable the random source
+        trng.rnd_source_enable.set_rnd_src_en();
+
+        // Unmask EHR valid interrupt (we poll, but it helps for checking)
+        trng.rng_imr.clr_ehr_valid_int_mask();
+
+        Self { trng }
+    }
+
+    /// Obtain a handle to the TRNG hardware peripheral without re-initializing.
     ///
     /// # Safety
     ///
-    /// The caller must ensure the TRNG peripheral has been reset and
-    /// initialized before use. Prefer [`Trng::init`] which handles
-    /// initialization automatically.
+    /// The caller must ensure the TRNG peripheral has already been reset and
+    /// initialized (e.g. via [`Trng::init`]) before use. Prefer [`Trng::init`]
+    /// which handles initialization automatically.
     #[inline]
-    pub unsafe fn steal() -> Self {
-        Self {
+    pub unsafe fn steal() -> Steal<Self> {
+        Steal(Self {
             trng: unsafe { TRNG::steal() },
-        }
+        })
     }
 
     /// Get reference to the register block
     #[inline]
     pub fn regs(&self) -> &pico_rs_pac::trng::RegisterBlock {
         &self.trng
-    }
-
-    // ========================================================================
-    // Initialization
-    // ========================================================================
-
-    /// Initialize the TRNG peripheral
-    pub fn init() -> Self {
-        // Reset peripheral to ensure clean register state
-        <pico_rs_pac::TRNG as Resettable>::init();
-
-        // SAFETY: hardware has just been reset above, so steal is safe
-        let trng = unsafe { Self::steal() };
-
-        // Reset the TRNG
-        trng.regs().trng_sw_reset.write_bits(1);
-
-        // Wait for reset to complete
-        while trng.regs().trng_sw_reset.read_bits() != 0 {
-            core::hint::spin_loop();
-        }
-
-        // Configure ROSC sample rate (default is fine for most uses)
-        // sample_cnt1 controls the number of clock cycles between samples
-        trng.regs().sample_cnt1.write_bits(0xFFFF);
-
-        // Enable the random source
-        trng.regs().rnd_source_enable.set_rnd_src_en();
-
-        // Unmask EHR valid interrupt (we poll, but it helps for checking)
-        trng.regs().rng_imr.clr_ehr_valid_int_mask();
-
-        trng
     }
 
     // ========================================================================
@@ -380,11 +389,5 @@ impl Trng {
     #[inline]
     pub fn autocorr_statistic(&self) -> u32 {
         self.regs().autocorr_statistic.read_bits()
-    }
-}
-
-impl Default for Trng {
-    fn default() -> Self {
-        unsafe { Self::steal() }
     }
 }

@@ -146,13 +146,13 @@ fn main() -> ! {
 
     let dp = Peripherals::take().unwrap();
     let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
     let core = CorePeripherals::take().unwrap();
-    let delay = Delay::new(core.SYST, clocks.sys_freq());
+    let delay = Delay::init(core.SYST, clocks.sys_freq());
 
     // Initialize SPI0 (TX-only, no MISO needed)
-    let spi = Spi0::new(
+    let spi = Spi0::init(
         dp.SPI0,
         pins.pin::<2>(), // SCK  → CKI
         pins.pin::<3>(), // MOSI → SDI

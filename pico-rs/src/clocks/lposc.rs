@@ -33,6 +33,7 @@
 //! let trim = lposc.trim();
 //! ```
 
+use crate::Steal;
 use pico_rs_pac::POWMAN;
 
 /// LPOSC nominal frequency (Hz)
@@ -64,9 +65,9 @@ impl Lposc {
     /// # Safety
     /// This steals the peripheral globally. Only call once.
     #[inline]
-    pub unsafe fn steal() -> Self {
+    pub unsafe fn steal() -> Steal<Self> {
         // SAFETY: caller guarantees single ownership
-        unsafe { Self::new(POWMAN::steal()) }
+        Steal(unsafe { Self::new(POWMAN::steal()) })
     }
 
     /// Get a reference to the LPOSC register

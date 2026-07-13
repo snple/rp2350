@@ -164,7 +164,7 @@ fn main() -> ! {
     info!("USB interrupt enabled");
 
     // SysTick：100 ms 节拍（sys_freq / 10 = 15_000_000，在 24-bit 上限 16_777_215 内）
-    let mut systick = SysTick::new(cp.SYST, clocks.sys_freq());
+    let mut systick = SysTick::init(cp.SYST, clocks.sys_freq());
     systick.disable();
     systick.set_reload(clocks.sys_freq() / 10);
     systick.enable_interrupt();

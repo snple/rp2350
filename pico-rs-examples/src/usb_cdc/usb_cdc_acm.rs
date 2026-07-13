@@ -76,7 +76,7 @@ fn main() -> ! {
 
     // ── Main loop ─────────────────────────────────────────────────────────────
 
-    let systick = SysTick::new(cp.SYST, SYS_CLK_HZ);
+    let systick = SysTick::init(cp.SYST, SYS_CLK_HZ);
     let mut read_buf = [0u8; 64];
     let mut counter: u32 = 0;
     let mut last_send: u32 = 0;

@@ -20,7 +20,8 @@ use defmt_rtt as _;
 use pico_rs::dma::{DataSize, Dma};
 use pico_rs::main;
 use pico_rs::pac::Peripherals;
-use pico_rs::sha256::{DmaSize, Sha256};#[main]
+use pico_rs::sha256::{DmaSize, Sha256};
+#[main]
 fn main() -> ! {
     info!("SHA-256 + DMA hashing example");
 
@@ -29,7 +30,7 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     // SHA-256 setup
     // ------------------------------------------------------------------
-    let mut sha = Sha256::steal();
+    let mut sha = Sha256::init(dp.SHA256);
 
     // Initialise the SHA-256 engine (resets SUM registers to H0..H7)
     sha.start();

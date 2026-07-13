@@ -485,14 +485,14 @@ fn main() -> ! {
     info!("Clock system initialized: sys={} Hz", clocks.sys_freq());
 
     // Initialize TIMER0 tick generator (1µs ticks from clk_ref)
-    let ticks = Ticks::new(dp.TICKS, &clocks);
+    let ticks = Ticks::init(dp.TICKS, &clocks);
     ticks.init_timer0();
 
     // Initialize the hardware timer
     let timer = Timer0::init(dp.TIMER0);
     info!("Timer0 initialized");
 
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
     // ------------------------------------------------------------------
     // 2. GPIO 配置 — STEP / DIR / ENABLE

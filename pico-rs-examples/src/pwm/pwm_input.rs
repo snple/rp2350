@@ -75,7 +75,7 @@ fn main() -> ! {
     let timer = Timer0::init(dp.TIMER0);
 
     // Initialize GPIO and get pin ownership
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
     // Also configure LED for visual feedback
     let led = pins.pin::<25>();
@@ -92,7 +92,7 @@ fn main() -> ! {
     info!("PWM input configured on GPIO 1 (PWM slice 0, channel B)");
 
     // Create PWM controller (owns the peripheral and slice tokens)
-    let pwm = Pwm::new(dp.PWM);
+    let pwm = Pwm::init(dp.PWM);
 
     // Create PWM input using pin ownership
     // GPIO 1 maps to PWM slice 0, channel B

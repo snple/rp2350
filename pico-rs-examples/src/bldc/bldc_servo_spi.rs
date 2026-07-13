@@ -902,7 +902,7 @@ fn main() -> ! {
     let sys_freq = clocks.sys_freq();
     info!("System clock: {} MHz", sys_freq / 1_000_000);
 
-    let pins = Pins::new(dp.IO_BANK0, dp.PADS_BANK0);
+    let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
     let timer = Timer0::init(dp.TIMER0);
 
     // ------------------------------------------------------------------
@@ -911,7 +911,7 @@ fn main() -> ! {
     let pwm_wrap: u16 = (sys_freq / PWM_FREQ_HZ) as u16;
     info!("PWM wrap = {} ({} kHz)", pwm_wrap, PWM_FREQ_HZ / 1000);
 
-    let pwm = Pwm::new(dp.PWM);
+    let pwm = Pwm::init(dp.PWM);
 
     let slice_a = pwm.slice::<0>().output_a(pins.pin::<0>());
     slice_a.set_wrap(pwm_wrap);
@@ -946,7 +946,7 @@ fn main() -> ! {
     // ------------------------------------------------------------------
     // SPI1 从机 — GP14(SCK), GP15(TX/MISO), GP12(RX/MOSI), GP13(CSn)
     // ------------------------------------------------------------------
-    let spi = Spi1WithCs::new_slave(
+    let spi = Spi1WithCs::init_slave(
         dp.SPI1,
         pins.pin::<14>(), // SCK
         pins.pin::<15>(), // TX (MISO — 从机输出)
