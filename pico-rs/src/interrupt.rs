@@ -55,7 +55,7 @@
 //! use pico_rs::multicore::Doorbell;
 //!
 //! // Core 0: 通知 Core 1 有工作要处理
-//! Doorbell::new().signal();
+//! Doorbell::new().signal(0);
 //!
 //! // Core 1: 在 SIO_IRQ_BELL handler 中处理
 //! #[unsafe(no_mangle)]

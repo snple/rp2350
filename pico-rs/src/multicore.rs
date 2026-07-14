@@ -333,11 +333,55 @@ impl Fifo {
 // Doorbell Interrupts
 // ============================================================================
 
-/// Doorbell interrupts for signaling between cores
+/// Inter-core doorbell for low-latency signaling
 ///
-/// RP2350 provides 8 doorbell bits (0-7) that can be used to trigger
-/// interrupts on the other core. This is more efficient than using
-/// the FIFO for simple signaling.
+/// RP2350 provides **8 doorbell bits** (0–7) per core, implemented via four
+/// SIO registers on each core.  They are designed for *event notification*
+/// rather than bulk data transfer.
+///
+/// # Hardware model
+///
+/// ```text
+///          Core 0                              Core 1
+///   ┌──────────────────┐              ┌──────────────────┐
+///   │  doorbell_in_set  │◄── set ──────│ doorbell_out_set │
+///   │  doorbell_in_clr  │──► status    │ doorbell_out_clr │
+///   │  doorbell_out_set │───── set ──►│  doorbell_in_set  │
+///   │  doorbell_out_clr │              │  doorbell_in_clr  │
+///   └──────────────────┘              └──────────────────┘
+/// ```
+///
+/// * **out** registers — written by *this* core, visible on the *other* core.
+///   `out_set` asserts bits; `out_clr` de-asserts them.
+/// * **in** registers — written by the *other* core, read by *this* core.
+///   `in_set` / `in_clr` work the same way but represent incoming signals.
+///   Reading `in_clr` returns the current pending bitmask.
+///
+/// A write to `doorbell_out_set` on Core 0 immediately appears as a pending
+/// bit in `doorbell_in_clr` on Core 1, and also triggers the `SIO_IRQ_BELL`
+/// interrupt on Core 1 if enabled.
+///
+/// # Usage patterns
+///
+/// * **Simple event** — use [`signal()`](Self::signal) / [`wait()`](Self::wait)
+///   to notify the other core that work is ready.  Each doorbell index acts as
+///   a separate event channel.
+/// * **Multiple events** — assign different doorbell indices to different event
+///   types (e.g. index 0 = "data ready", index 1 = "error occurred").
+/// * **Tiny data** — write an arbitrary 8-bit pattern with
+///   [`set_remote()`](Self::set_remote) and read it back on the other side
+///   with [`status()`](Self::status).  Note that this is a *one-word* channel
+///   with no FIFO — if the receiver hasn't consumed the previous value, new
+///   writes will merge via bitwise OR.
+///
+/// # Comparison with FIFO
+///
+/// | Feature          | Doorbell                          | FIFO                        |
+/// |------------------|-----------------------------------|-----------------------------|
+/// | Data width       | 8 bits (bitmask)                  | 32 bits per word            |
+/// | Queue depth      | 1 (per bit, sticky until cleared) | 8 words each direction      |
+/// | Interrupt source | `SIO_IRQ_BELL`                    | `SIO_IRQ_FIFO`              |
+/// | Best for         | Event notification, flags         | Streaming data, commands    |
 pub struct Doorbell {
     sio: &'static pico_rs_pac::sio::RegisterBlock,
 }
@@ -370,61 +414,105 @@ impl Doorbell {
         })
     }
 
-    /// Set doorbell bits on the opposite core (trigger interrupt)
+    /// Assert doorbell bits on the **other** core
     ///
-    /// Write 1 to set the corresponding doorbell interrupt on the other core.
+    /// Writing `1` to a bit in `mask` sets the corresponding doorbell on the
+    /// remote core.  This also triggers `SIO_IRQ_BELL` on the remote core if
+    /// the interrupt is enabled.
+    ///
+    /// Bits written as `0` are ignored — only `1` bits have effect.
     #[inline]
     pub fn set_remote(&self, mask: u8) {
         self.sio.doorbell_out_set.write_bits(mask as u32);
     }
 
-    /// Clear doorbell bits that were posted to the opposite core
+    /// De-assert doorbell bits that were previously posted to the other core
+    ///
+    /// Writing `1` to a bit in `mask` clears the corresponding doorbell on the
+    /// remote core.  Bits written as `0` are ignored.
     #[inline]
     pub fn clear_remote(&self, mask: u8) {
         self.sio.doorbell_out_clr.write_bits(mask as u32);
     }
 
-    /// Set doorbell bits on this core (self-trigger)
+    /// Assert doorbell bits on **this** core (self-trigger)
+    ///
+    /// This is typically used for testing or to trigger the local
+    /// `SIO_IRQ_BELL` handler from software.
     #[inline]
     pub fn set_local(&self, mask: u8) {
         self.sio.doorbell_in_set.write_bits(mask as u32);
     }
 
-    /// Clear doorbell bits on this core
+    /// De-assert doorbell bits on **this** core
+    ///
+    /// Call this from an interrupt handler or after a [`wait()`](Self::wait)
+    /// to acknowledge and clear the pending bits.
     #[inline]
     pub fn clear_local(&self, mask: u8) {
         self.sio.doorbell_in_clr.write_bits(mask as u32);
     }
 
-    /// Get the status of doorbell interrupts on this core
+    /// Read the pending doorbell status on this core
     ///
-    /// Returns a bitmask of pending doorbell interrupts.
+    /// Returns a bitmask where each set bit represents a doorbell that has
+    /// been signaled by the other core and not yet cleared.  Reading
+    /// `doorbell_in_clr` returns the current state.
     #[inline]
     pub fn status(&self) -> u8 {
-        // Reading doorbell_in_clr returns the current status
         self.sio.doorbell_in_clr.read_bits() as u8
     }
 
-    /// Check if a specific doorbell is pending on this core
+    /// Check if a specific doorbell index is pending on this core
+    ///
+    /// Returns `true` if the given doorbell bit is currently asserted.
+    ///
+    /// # Panics
+    ///
+    /// Panics in debug if `doorbell >= Doorbell::COUNT`.
     #[inline]
-    pub fn is_pending(&self, doorbell: u8) -> bool {
+    pub fn pending(&self, doorbell: u8) -> bool {
         debug_assert!(doorbell < Self::COUNT);
         (self.status() & (1 << doorbell)) != 0
     }
 
-    /// Signal the other core using doorbell 0
+    /// Signal the other core on a specific doorbell
+    ///
+    /// Sets the given doorbell bit on the remote core, waking it from
+    /// [`wait()`](Self::wait) on the same doorbell index.
+    ///
+    /// This is the simplest way to send a notification.  For more control
+    /// (e.g. setting multiple bits at once), use [`set_remote()`](Self::set_remote).
+    ///
+    /// # Panics
+    ///
+    /// Panics in debug if `doorbell >= Doorbell::COUNT`.
     #[inline]
-    pub fn signal(&self) {
-        self.set_remote(1);
+    pub fn signal(&self, doorbell: u8) {
+        debug_assert!(doorbell < Self::COUNT);
+        self.set_remote(1 << doorbell);
     }
 
-    /// Wait for a signal from the other core (doorbell 0)
+    /// Wait for a signal from the other core on a specific doorbell
+    ///
+    /// Blocks until the given doorbell bit is set by the other core, then
+    /// clears it.  Uses `WFE` for low-power waiting; spurious wakeups are
+    /// handled by re-checking the pending status.
+    ///
+    /// After this returns, the doorbell bit is cleared and ready for the
+    /// next signal.  For non-blocking polling, use
+    /// [`is_pending()`](Self::is_pending) + [`clear_local()`](Self::clear_local).
+    ///
+    /// # Panics
+    ///
+    /// Panics in debug if `doorbell >= Doorbell::COUNT`.
     #[inline]
-    pub fn wait(&self) {
-        while !self.is_pending(0) {
+    pub fn wait(&self, doorbell: u8) {
+        debug_assert!(doorbell < Self::COUNT);
+        while !self.pending(doorbell) {
             pico_rs_rt::asm::wfe();
         }
-        self.clear_local(1);
+        self.clear_local(1 << doorbell);
     }
 }
 
