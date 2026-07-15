@@ -18,7 +18,6 @@ Raspberry Pi Pico 2 family.
 - `defmt`: enable `defmt` logging support
 - `rp2350a`: target RP2350A with GPIO 0-29 (default)
 - `rp2350b`: target RP2350B with GPIO 0-47
-- `non-secure`: use the non-secure SIO register block
 - `critical-section-impl`: register this crate as the `critical-section` provider
 - `panic-handler`: enable the built-in panic handler on `target_os = "none"`
 

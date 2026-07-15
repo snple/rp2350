@@ -556,6 +556,50 @@ impl<P: AxisPins> AxisState<P> {
         );
     }
 
+    /// 绝对定位：移动到指定坐标位置。
+    ///
+    /// 计算当前位置到目标位置的相对位移，自动选择方向和步数，
+    /// 调用 [`start_move`] 执行梯形加减速运动。
+    ///
+    /// - 轴忙时直接返回。
+    /// - 目标等于当前位置时直接置 Idle。
+    /// - 目标位置受 [`max_travel`] 约束：超出 [0, max_travel] 自动截断。
+    ///
+    /// ## 示例
+    ///
+    /// ```ignore
+    /// AXIS.set_position(100);
+    /// AXIS.start_move_absolute(&timer, 500, 5000);
+    /// AXIS.wait_done();
+    /// assert_eq!(AXIS.position(), 500);
+    /// ```
+    pub fn start_move_absolute<T: AlarmTimer + MonotonicTimer>(
+        &self,
+        timer: &T,
+        target: i32,
+        max_speed_hz: u32,
+    ) {
+        if self.is_busy() {
+            return;
+        }
+
+        let cur = self.position();
+        let delta = target - cur;
+        if delta == 0 {
+            self.set_idle();
+            return;
+        }
+
+        let (dir, steps) = if delta > 0 {
+            (Direction::Forward, delta as u32)
+        } else {
+            (Direction::Reverse, (-delta) as u32)
+        };
+
+        // start_move 内部已有 clamp_steps 处理 max_travel 约束
+        self.start_move(timer, steps, dir, max_speed_hz);
+    }
+
     /// 在当前目标步数基础上增加额外步数，推迟减速起始点。
     ///
     /// 用于运动中实时延长运动距离的场景（如摇杆连续输入），

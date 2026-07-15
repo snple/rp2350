@@ -6,14 +6,11 @@
 
 use core::sync::atomic::{Ordering, compiler_fence};
 
-#[cfg(not(feature = "non-secure"))]
-use crate::pac::PPB as StartupPpb;
-#[cfg(feature = "non-secure")]
-use crate::pac::PPB_NS as StartupPpb;
-
-const CPACR_FULL_ACCESS: u32 = 0b11;
-
 /// Perform RP2350-specific startup initialisation.
+///
+/// On Core 0 this:
+/// - Releases all spinlocks
+/// - Enables coprocessor access (CP0/CP4/CP10)
 ///
 /// # Safety
 ///
@@ -23,13 +20,7 @@ const CPACR_FULL_ACCESS: u32 = 0b11;
 pub unsafe fn init() {
     crate::sio::release_all_spinlocks();
 
-    let ppb = unsafe { StartupPpb::steal() };
-    let cpacr = ppb
-        .cpacr
-        .read_val()
-        .with_cp0(CPACR_FULL_ACCESS)
-        .with_cp4(CPACR_FULL_ACCESS);
-    ppb.cpacr.write_val(cpacr);
+    crate::ppb::Cpacr::enable_cp();
 
     compiler_fence(Ordering::SeqCst);
 }

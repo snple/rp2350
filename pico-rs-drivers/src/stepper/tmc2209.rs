@@ -330,6 +330,45 @@ impl<P: TmcPins> AxisState<P> {
         self.axis.start_continuous(timer, dir, speed_hz);
     }
 
+    /// 绝对定位：移动到指定坐标位置。
+    ///
+    /// 自动重新启用 DIAG 堵转检测（若之前被 [`smooth_stop`] 或 [`disable_stall_check`] 关闭）。
+    /// 目标位置受 [`max_travel`] 约束，超出 [0, max_travel] 自动截断。
+    ///
+    /// ## 示例
+    ///
+    /// ```ignore
+    /// AXIS.set_position(100);
+    /// AXIS.start_move_absolute(&timer, 500, 5000);
+    /// AXIS.wait_done();
+    /// assert_eq!(AXIS.position(), 500);
+    /// ```
+    pub fn start_move_absolute<T: AlarmTimer + MonotonicTimer>(
+        &self,
+        timer: &T,
+        target: i32,
+        max_speed_hz: u32,
+    ) {
+        if self.axis.is_busy() {
+            return;
+        }
+
+        let cur = self.axis.position();
+        let delta = target - cur;
+        if delta == 0 {
+            self.axis.motion_done.store(true, Ordering::Relaxed);
+            return;
+        }
+
+        let (dir, steps) = if delta > 0 {
+            (Direction::Forward, delta as u32)
+        } else {
+            (Direction::Reverse, (-delta) as u32)
+        };
+
+        self.start_move(timer, steps, dir, max_speed_hz);
+    }
+
     /// 在当前目标步数基础上增加额外步数，推迟减速起始点。
     ///
     /// 用于 `start_move` 梯形运动中实时延长运动距离。

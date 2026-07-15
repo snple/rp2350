@@ -14,9 +14,7 @@
 //! - **SIO** (`0xd000_0000`): Secure access — full control of all GPIOs
 //! - **SIO_NS** (`0xd002_0000`): Non-Secure access — Secure-only GPIOs are hidden
 //!
-//! The module defaults to Secure mode. Enable the `non-secure` Cargo feature
-//! when building a Non-Secure image with
-//! [`ImageDef::exe()`](crate::block::ImageDef::exe).
+//! This module always uses Secure mode (`SIO` at `0xd000_0000`).
 //!
 //! ## Usage
 //!
@@ -68,37 +66,8 @@ use pico_rs_pac::sio::RegisterBlock;
 /// Number of hardware spinlocks
 pub const SPINLOCK_COUNT: usize = 32;
 
-// ============================================================================
-// Security Mode / Register Base
-// ============================================================================
-
-/// SIO base address — determined at compile time by the `non-secure` feature.
-///
-/// - Default (Secure): `0xd000_0000` — full control of all GPIOs
-/// - `non-secure` feature: `0xd002_0000` — Secure-only GPIOs are hidden
-///
-/// Both `sio::RegisterBlock` and `sio_ns::RegisterBlock` have identical memory
-/// layouts, so we cast the Non-Secure address to the same type.
-#[cfg(not(feature = "non-secure"))]
-const SIO_BASE: u32 = pico_rs_pac::sio::BASE;
-#[cfg(feature = "non-secure")]
-const SIO_BASE: u32 = pico_rs_pac::sio_ns::BASE;
-
-/// Check if SIO is configured for Secure mode (compile-time constant).
-#[inline]
-pub const fn is_secure() -> bool {
-    cfg!(not(feature = "non-secure"))
-}
-
 /// Raw pointer to the SIO register block — use via `unsafe { &*REGS }`.
-///
-/// # Safety
-///
-/// Dereferencing this pointer is unsafe. Both `sio::RegisterBlock` and
-/// `sio_ns::RegisterBlock` have identical memory layouts (verified from SVD).
-/// The cast from SIO_NS address to `sio::RegisterBlock` is safe for access
-/// due to layout equivalence.
-pub(crate) const REGS: *const RegisterBlock = SIO_BASE as *const RegisterBlock;
+pub(crate) const REGS: *const RegisterBlock = pico_rs_pac::SIO::PTR;
 
 #[inline]
 pub(crate) fn release_all_spinlocks() {

@@ -227,7 +227,6 @@ fn main() -> ! {
     fifo.drain(); // 清空残留数据
 
     let mut mc = Multicore::init(dp.PSM, dp.PPB);
-    mc.reset_core1(); // 确保 Core 1 处于已知状态
 
     // SAFETY: CORE1_STACK 只在此处使用, core1_main 永不返回
     unsafe {
@@ -361,17 +360,14 @@ fn main() -> ! {
 
         // Core 0: 发送 1000 个请求, 每个请求 Core 1 会 fetch_add(1)
         // Core 0: 自己也 fetch_add(1) 1000 次
-        for n in 0..iterations {
+        for _ in 0..iterations {
             // Core 0 递增
             ATOMIC_COUNTER.fetch_add(1, Ordering::Relaxed);
 
-            // 每 100 次发一个 FIFO 请求让 Core 1 也递增
+            // 每次都发 FIFO 消息触发 Core 1 也递增
             // (Core 1 在处理每个 FIFO 消息时都会 fetch_add(1))
-            if n % 100 == 0 {
-                // 每次都发, 共 1000 次
-                fifo.write(1); // 数值不重要, 只是触发 Core 1 工作
-                let _ = fifo.read();
-            }
+            fifo.write(1); // 数值不重要, 只是触发 Core 1 工作
+            let _ = fifo.read();
         }
 
         let final_val = ATOMIC_COUNTER.load(Ordering::Relaxed);

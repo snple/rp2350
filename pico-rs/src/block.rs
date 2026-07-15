@@ -31,13 +31,10 @@
 //!
 //! ## Security Mode
 //!
-//! Security mode is determined at compile time by the `non-secure` Cargo feature:
+//! All images are built in Secure mode (TrustZone-M enabled, `0xd000_0000`).
 //!
-//! - **Default** — Secure mode (TrustZone-M enabled, `0xd000_0000`)
-//! - **`non-secure` feature** — Non-Secure mode (`0xd002_0000`)
-//!
-//! [`ImageDef::exe()`] and [`ImageDefWithVersion::exe_with_version()`] automatically
-//! select the correct security flag based on the feature.
+//! [`ImageDef::exe()`] and [`ImageDefWithVersion::exe_with_version()`] always
+//! set the Secure flag.
 //!
 //! ## Architecture Support
 //!
@@ -82,11 +79,8 @@ const IMAGE_TYPE_EXE_CHIP_RP2350: u16 = 0x1000;
 // Compile-time Security Selection
 // ============================================================================
 
-/// Security flag selected at compile time by the `non-secure` feature.
-#[cfg(not(feature = "non-secure"))]
+/// Security flag — always Secure mode (`IMAGE_TYPE_EXE_SECURITY_S`).
 const SECURITY: u16 = IMAGE_TYPE_EXE_SECURITY_S;
-#[cfg(feature = "non-secure")]
-const SECURITY: u16 = IMAGE_TYPE_EXE_SECURITY_NS;
 
 // ============================================================================
 // Item Builders

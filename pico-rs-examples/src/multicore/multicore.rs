@@ -109,9 +109,6 @@ fn main() -> ! {
     let mut mc = Multicore::init(dp.PSM, dp.PPB);
 
     // Reset Core 1 first to ensure it's in a known state
-    info!("[Core 0] Resetting Core 1...");
-    mc.reset_core1();
-
     info!("[Core 0] Launching Core 1...");
 
     // Launch Core 1 with its own stack

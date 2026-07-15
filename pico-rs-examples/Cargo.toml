@@ -35,6 +35,10 @@ name = "multicore_shared"
 path = "src/multicore/multicore_shared.rs"
 
 [[bin]]
+name = "multicore_memory"
+path = "src/multicore/multicore_memory.rs"
+
+[[bin]]
 name = "reset"
 path = "src/reset.rs"
 

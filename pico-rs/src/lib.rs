@@ -100,6 +100,7 @@ pub mod multicore;
 pub mod pin;
 pub mod pio;
 pub mod powman;
+pub mod ppb;
 pub mod pwm;
 pub mod qspi;
 pub mod reset;

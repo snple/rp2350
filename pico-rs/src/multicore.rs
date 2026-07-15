@@ -24,11 +24,11 @@
 //! }
 //!
 //! fn main() {
-//!     let mut mc = Multicore::new();
+//!     let mut mc = Multicore::init(psm, ppb);
 //!
-//!     // Launch Core 1
+//!     // Launch Core 1 (automatically resets it first)
 //!     unsafe {
-//!         mc.launch_core1(core1_main, &mut CORE1_STACK);
+//!         mc.launch_core1(core1_main, &raw mut CORE1_STACK);
 //!     }
 //!
 //!     // Core 0 continues here
@@ -177,11 +177,48 @@ pub fn is_core1() -> bool {
 
 /// Inter-core FIFO for communication between cores
 ///
-/// Each core has a separate view of the FIFO:
-/// - Writing puts data into the TX FIFO (sent to the other core)
-/// - Reading takes data from the RX FIFO (received from the other core)
+/// The SIO contains **two** physical FIFOs, each 32 bits wide and 8 words deep:
 ///
-/// The FIFO can hold up to 8 words in each direction.
+/// - **FIFO 0→1** — written by Core 0, read by Core 1
+/// - **FIFO 1→0** — written by Core 1, read by Core 0
+///
+/// Each core sees one FIFO as its TX (outgoing, via [`write()`](Self::write) /
+/// [`try_write()`](Self::try_write)) and the other as its RX (incoming, via
+/// [`read()`](Self::read) / [`try_read()`](Self::try_read)).
+///
+/// On Core 0: TX = FIFO 0→1 (write side), RX = FIFO 1→0 (read side).
+/// On Core 1: TX = FIFO 1→0 (write side), RX = FIFO 0→1 (read side).
+///
+/// # Usage on both cores
+///
+/// The `Fifo` struct works identically on both cores — the hardware
+/// automatically routes `FIFO_WR` / `FIFO_RD` to the correct physical FIFO.
+/// Simply call [`Fifo::init()`] on each core:
+///
+/// ```ignore
+/// // Core 0 — sends 0x42, then waits for a reply
+/// let fifo = Fifo::init();
+/// fifo.write(0x42);
+/// let reply = fifo.read();
+///
+/// // Core 1 — blocks until data arrives, then responds
+/// let fifo = Fifo::init();
+/// let cmd = fifo.read();
+/// fifo.write(cmd + 1);
+/// ```
+///
+/// # Interrupts
+///
+/// Each core has its own independent FIFO interrupt line (same IRQ number,
+/// separate NVIC): `SIO_IRQ_FIFO` (IRQ 25) for secure, and
+/// `SIO_IRQ_FIFO_NS` (IRQ 27) for non-secure.  The interrupt is the logical OR
+/// of the VLD, ROE, and WOF bits in [`FifoSt`](pico_rs_pac::sio::FifoSt) — it
+/// fires whenever data arrives **or** a sticky error flag is set.
+///
+/// To clear the interrupt:
+/// - **VLD**: read from the RX FIFO until it is empty
+/// - **ROE/WOF**: write any value to `FIFO_ST` (this clears *both* sticky flags
+///   at once — they cannot be cleared independently)
 pub struct Fifo {
     sio: &'static pico_rs_pac::sio::RegisterBlock,
 }
@@ -226,36 +263,31 @@ impl Fifo {
         self.sio.fifo_st.rdy()
     }
 
-    /// Check if RX FIFO was read when empty (read-on-empty error)
+    /// Check if RX FIFO was read when empty (sticky read-on-empty error).
+    ///
+    /// Once set, this flag remains asserted until cleared by [`clear_errors()`](Self::clear_errors).
     #[inline]
     pub fn read_error(&self) -> bool {
         self.sio.fifo_st.roe()
     }
 
-    /// Check if TX FIFO was written when full (write-on-full error)
+    /// Check if TX FIFO was written when full (sticky write-on-full error).
+    ///
+    /// Once set, this flag remains asserted until cleared by [`clear_errors()`](Self::clear_errors).
     #[inline]
     pub fn write_error(&self) -> bool {
         self.sio.fifo_st.wof()
     }
 
-    /// Clear the read-on-empty error flag
-    #[inline]
-    pub fn clear_read_error(&self) {
-        // Write 1 to clear ROE bit
-        self.sio.fifo_st.write_bits(0x08);
-    }
-
-    /// Clear the write-on-full error flag
-    #[inline]
-    pub fn clear_write_error(&self) {
-        // Write 1 to clear WOF bit
-        self.sio.fifo_st.write_bits(0x04);
-    }
-
-    /// Clear all error flags
+    /// Clear both sticky error flags (ROE and WOF).
+    ///
+    /// **Hardware note:** writing *any* value to `FIFO_ST` clears **both** ROE
+    /// and WOF simultaneously — they cannot be cleared independently.
+    /// Call this from the FIFO interrupt handler if either error flag is set.
     #[inline]
     pub fn clear_errors(&self) {
-        self.sio.fifo_st.write_bits(0x0C);
+        // Write any value to FIFO_ST to clear both ROE and WOF
+        self.sio.fifo_st.write_bits(0);
     }
 
     // ========================================================================
@@ -335,9 +367,44 @@ impl Fifo {
 
 /// Inter-core doorbell for low-latency signaling
 ///
-/// RP2350 provides **8 doorbell bits** (0–7) per core, implemented via four
-/// SIO registers on each core.  They are designed for *event notification*
-/// rather than bulk data transfer.
+/// RP2350 provides **8 doorbell bits** (0–7) in each direction, backed by
+/// four SIO registers per core.  Unlike the FIFO, doorbells are designed for
+/// *accumulative* events — they can be posted multiple times but only need to
+/// be handled once, and can be processed in any order.
+///
+/// Each core has its own independent doorbell interrupt line (same IRQ
+/// number, separate NVIC): `SIO_IRQ_BELL` (IRQ 26) for secure, and
+/// `SIO_IRQ_BELL_NS` (IRQ 28) for non-secure.  Each core can independently
+/// enable the interrupt and register its own handler.  The interrupt fires
+/// when the opposite core writes a non-zero value to its `DOORBELL_OUT_SET`,
+/// and remains asserted **until all 8 bits are cleared**.
+///
+/// The typical interrupt-handler flow is:
+///
+/// 1. Read [`status()`](Self::status) (= `DOORBELL_IN_CLR`) to get the mask
+///    of currently-pending doorbell bits
+/// 2. Process each asserted bit
+/// 3. Acknowledge by writing the same mask to
+///    [`clear_local()`](Self::clear_local) (= `DOORBELL_IN_CLR`)
+///
+/// # Usage on both cores
+///
+/// Like [`Fifo`], the `Doorbell` struct works identically on both cores —
+/// the hardware automatically routes `doorbell_out_*` / `doorbell_in_*` to
+/// the correct direction:
+///
+/// ```ignore
+/// // Core 0 — signal Core 1 that data is ready, then wait for ack
+/// let db = Doorbell::init();
+/// db.signal(0);       // fire doorbell 0 on Core 1
+/// db.wait(1);         // wait for Core 1 to ring doorbell 1
+///
+/// // Core 1 — wait for notification, do work, then acknowledge
+/// let db = Doorbell::init();
+/// db.wait(0);         // block until Core 0 rings doorbell 0
+/// // ... process data ...
+/// db.signal(1);       // tell Core 0 we're done
+/// ```
 ///
 /// # Hardware model
 ///
@@ -352,14 +419,16 @@ impl Fifo {
 /// ```
 ///
 /// * **out** registers — written by *this* core, visible on the *other* core.
-///   `out_set` asserts bits; `out_clr` de-asserts them.
+///   `out_set` asserts bits; `out_clr` de-asserts them.  Reading either
+///   `out_set` or `out_clr` returns the **same** value — the current status
+///   of doorbells posted to the remote core.
 /// * **in** registers — written by the *other* core, read by *this* core.
 ///   `in_set` / `in_clr` work the same way but represent incoming signals.
-///   Reading `in_clr` returns the current pending bitmask.
+///   Reading either returns the current pending bitmask.
 ///
-/// A write to `doorbell_out_set` on Core 0 immediately appears as a pending
-/// bit in `doorbell_in_clr` on Core 1, and also triggers the `SIO_IRQ_BELL`
-/// interrupt on Core 1 if enabled.
+/// A write to `doorbell_out_set` on Core 0 immediately asserts the
+/// corresponding bits in `doorbell_in_clr` on Core 1, and raises Core 1's
+/// `SIO_IRQ_BELL` interrupt if enabled.
 ///
 /// # Usage patterns
 ///
@@ -380,7 +449,8 @@ impl Fifo {
 /// |------------------|-----------------------------------|-----------------------------|
 /// | Data width       | 8 bits (bitmask)                  | 32 bits per word            |
 /// | Queue depth      | 1 (per bit, sticky until cleared) | 8 words each direction      |
-/// | Interrupt source | `SIO_IRQ_BELL`                    | `SIO_IRQ_FIFO`              |
+/// | Interrupt source | `SIO_IRQ_BELL` (IRQ 26)           | `SIO_IRQ_FIFO` (IRQ 25)     |
+/// | Non-secure IRQ   | `SIO_IRQ_BELL_NS` (IRQ 28)        | `SIO_IRQ_FIFO_NS` (IRQ 27)  |
 /// | Best for         | Event notification, flags         | Streaming data, commands    |
 pub struct Doorbell {
     sio: &'static pico_rs_pac::sio::RegisterBlock,
@@ -417,10 +487,13 @@ impl Doorbell {
     /// Assert doorbell bits on the **other** core
     ///
     /// Writing `1` to a bit in `mask` sets the corresponding doorbell on the
-    /// remote core.  This also triggers `SIO_IRQ_BELL` on the remote core if
-    /// the interrupt is enabled.
+    /// remote core.  Writing *any* non-zero value raises the remote core's
+    /// `SIO_IRQ_BELL` interrupt (IRQ 26) if enabled.
     ///
     /// Bits written as `0` are ignored — only `1` bits have effect.
+    ///
+    /// After calling this, use [`remote_status()`](Self::remote_status) to
+    /// check which doorbells are still pending on the other core.
     #[inline]
     pub fn set_remote(&self, mask: u8) {
         self.sio.doorbell_out_set.write_bits(mask as u32);
@@ -430,9 +503,31 @@ impl Doorbell {
     ///
     /// Writing `1` to a bit in `mask` clears the corresponding doorbell on the
     /// remote core.  Bits written as `0` are ignored.
+    ///
+    /// # ⚠️ Race condition warning
+    ///
+    /// This register is intended for **debugging and initialisation only**.
+    /// The normal flow is for the *receiving* core to acknowledge events by
+    /// writing to its own [`clear_local()`](Self::clear_local).  Using
+    /// `clear_remote` can race with the remote core's interrupt handler and
+    /// should generally be avoided in production code.
     #[inline]
     pub fn clear_remote(&self, mask: u8) {
         self.sio.doorbell_out_clr.write_bits(mask as u32);
+    }
+
+    /// Read the status of doorbells currently posted to the **other** core
+    ///
+    /// Returns the same value that the remote core would see when reading its
+    /// own [`status()`](Self::status).  This is useful for diagnostics: you can
+    /// check which doorbells have been asserted on the other core but not yet
+    /// acknowledged.
+    ///
+    /// Both `DOORBELL_OUT_SET` and `DOORBELL_OUT_CLR` return the same value,
+    /// so this method reads either one (they are equivalent).
+    #[inline]
+    pub fn remote_status(&self) -> u8 {
+        self.sio.doorbell_out_set.read_bits() as u8
     }
 
     /// Assert doorbell bits on **this** core (self-trigger)
@@ -501,7 +596,7 @@ impl Doorbell {
     ///
     /// After this returns, the doorbell bit is cleared and ready for the
     /// next signal.  For non-blocking polling, use
-    /// [`is_pending()`](Self::is_pending) + [`clear_local()`](Self::clear_local).
+    /// [`pending()`](Self::pending) + [`clear_local()`](Self::clear_local).
     ///
     /// # Panics
     ///
@@ -522,8 +617,9 @@ impl Doorbell {
 
 /// Multicore controller for launching and managing Core 1
 ///
-/// This struct provides methods for launching code on Core 1 and
-/// resetting the core.
+/// Core 1 is automatically reset before launching, so there is no need to
+/// call [`reset_core1()`](Self::reset_core1) separately (unless you want to
+/// hold Core 1 in reset without launching it immediately).
 pub struct Multicore {
     psm: pico_rs_pac::PSM,
     ppb: pico_rs_pac::PPB,
@@ -546,6 +642,7 @@ impl Multicore {
     /// and that no data races occur. This should only be used from Core 0.
     #[inline]
     pub unsafe fn steal() -> Steal<Self> {
+        debug_assert!(is_core0(), "Multicore should be created on Core 0");
         Steal(Self {
             psm: unsafe { pico_rs_pac::PSM::steal() },
             ppb: unsafe { pico_rs_pac::PPB::steal() },
@@ -554,19 +651,15 @@ impl Multicore {
 
     /// Launch code on Core 1
     ///
-    /// This function starts Core 1 executing the given entry function with
-    /// the provided stack. Core 1 will use the same vector table as Core 0.
+    /// Resets Core 1 (if it was previously running), then starts it executing
+    /// the given entry function with the provided stack.  Core 1 uses the
+    /// same vector table as Core 0.
     ///
     /// # Safety
     ///
     /// - The stack must have a static lifetime and not be used elsewhere
     /// - The entry function must never return
-    /// - This function should only be called once
-    ///
-    /// # Arguments
-    ///
-    /// * `entry` - The entry point function for Core 1 (must be `fn() -> !`)
-    /// * `stack` - The stack for Core 1 to use
+    /// - This function should only be called once (call [`reset_core1()`](Self::reset_core1) + launch again to restart)
     ///
     /// # Example
     ///
@@ -574,36 +667,38 @@ impl Multicore {
     /// static mut CORE1_STACK: Stack<4096> = Stack::new();
     ///
     /// fn core1_entry() -> ! {
-    ///     loop {
-    ///         pico_rs_rt::asm::wfe();
-    ///     }
+    ///     loop { pico_rs_rt::asm::wfe(); }
     /// }
     ///
     /// let mut mc = Multicore::init(psm, ppb);
-    /// unsafe {
-    ///     mc.launch_core1(core1_entry, &raw mut CORE1_STACK);
-    /// }
+    /// unsafe { mc.launch_core1(core1_entry, &raw mut CORE1_STACK); }
     /// ```
     #[inline(never)]
     pub unsafe fn launch_core1<const N: usize>(&mut self, entry: fn() -> !, stack: *mut Stack<N>) {
         // Ensure stack is large enough (minimum 256 bytes)
         assert!(N >= 256, "Core 1 stack must be at least 256 bytes");
 
+        // Reset Core 1 to a known state before launching.
+        // This is safe to call even if Core 1 was never launched —
+        // the bootrom handshake ensures both sides agree on the state.
+        self.reset_core1();
+
         // SAFETY: The caller guarantees that stack points to valid memory
         let stack_ptr = unsafe { (*stack).top() as u32 };
         let entry_ptr = entry as *const () as u32;
         let vector_table = self.ppb.vtor.read_bits();
 
-        // Launch Core 1 with the launch sequence
-        // SAFETY: We are already in an unsafe fn, and parameters are validated above
+        // SAFETY: Parameters are validated above, Core 1 is in reset state
         unsafe {
             self.launch_core1_raw(stack_ptr, entry_ptr, vector_table);
         }
     }
 
-    /// Launch Core 1 with raw parameters
+    /// Launch Core 1 with raw parameters.
     ///
-    /// This is a lower-level function that allows specifying all parameters directly.
+    /// Lower-level than [`launch_core1()`](Self::launch_core1) — expects
+    /// Core 1 to already be in reset state (call [`reset_core1()`](Self::reset_core1)
+    /// first unless using [`launch_core1()`](Self::launch_core1) which does it for you).
     ///
     /// # Safety
     ///
