@@ -378,6 +378,12 @@ impl<P: TmcPins> AxisState<P> {
         self.diag()
     }
 
+    /// 返回 Timer alarm 编号，即 doorbell bit。
+    #[inline]
+    pub fn alarm(&self) -> u8 {
+        self.axis.alarm
+    }
+
     /// 返回本次运动是否发生过堵转（DIAG 锁存标志）。
     ///
     /// 由 ISR 在检测到 DIAG 时自动置位，调用 `start_move` / `start_continuous` /
