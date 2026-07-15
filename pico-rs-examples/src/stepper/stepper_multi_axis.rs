@@ -82,10 +82,10 @@ const FWD_LEVEL: bool = false;
 // TMC2209 驱动参数
 // ============================================================================
 
-const RUN_CURRENT: u8 = 14;
+const RUN_CURRENT: u8 = 16;
 const HOLD_CURRENT: u8 = 4;
 const IHOLD_DELAY: u8 = 10;
-const SG_THRESHOLD: u32 = 55;
+const SG_THRESHOLD: u32 = 45;
 const TMC_UART_BAUD: u32 = 115_200;
 const INDEX_BACKOFF: u32 = 10;
 
@@ -442,6 +442,54 @@ fn main() -> ! {
     info!(
         "calibration done: all axes at home, max_travel={}",
         EFFECTIVE_TRAVEL
+    );
+    timer.delay_ms(1000);
+
+    // ======================================================================
+    // 三轴并行连续运动到最大行程位置
+    //
+    // 各轴从当前位置 (0) 以连续运动模式向远端匀速运动。
+    // 由于已设 max_travel = EFFECTIVE_TRAVEL，start_continuous 自动
+    // 转为有限梯形运动到达限位，无需手动指定步数。
+    // ======================================================================
+
+    info!("--- Moving all axes to max travel (continuous) ---");
+
+    AXIS1.start_continuous(&timer, Direction::Forward, RUN_SPEED_HZ);
+    AXIS2.start_continuous(&timer, Direction::Forward, RUN_SPEED_HZ);
+    AXIS3.start_continuous(&timer, Direction::Forward, RUN_SPEED_HZ);
+
+    AXIS1.wait_done();
+    AXIS2.wait_done();
+    AXIS3.wait_done();
+
+    info!(
+        "all axes at max travel: M1={}, M2={}, M3={}",
+        AXIS1.position(),
+        AXIS2.position(),
+        AXIS3.position(),
+    );
+    timer.delay_ms(1000);
+
+    // ======================================================================
+    // 三轴并行返回近端 (测试反向连续运动)
+    // ======================================================================
+
+    info!("--- Moving all axes back to home (continuous) ---");
+
+    AXIS1.start_continuous(&timer, Direction::Reverse, RUN_SPEED_HZ);
+    AXIS2.start_continuous(&timer, Direction::Reverse, RUN_SPEED_HZ);
+    AXIS3.start_continuous(&timer, Direction::Reverse, RUN_SPEED_HZ);
+
+    AXIS1.wait_done();
+    AXIS2.wait_done();
+    AXIS3.wait_done();
+
+    info!(
+        "all axes back home: M1={}, M2={}, M3={}",
+        AXIS1.position(),
+        AXIS2.position(),
+        AXIS3.position(),
     );
     timer.delay_ms(1000);
 

@@ -367,6 +367,9 @@ macro_rules! impl_uart {
 
                 /// Set the UART baud rate
                 ///
+                /// Flushes any pending transmission, disables the UART, updates the
+                /// baud rate registers, and re-enables the UART.
+                ///
                 /// # Arguments
                 /// * `baudrate` - Desired baud rate
                 /// * `peri_clk` - Peripheral clock frequency in Hz
@@ -374,7 +377,11 @@ macro_rules! impl_uart {
                 /// # Returns
                 /// The actual baud rate achieved
                 pub fn set_baudrate(&mut self, baudrate: u32, peri_clk: u32) -> u32 {
-                    self.configure_baudrate(baudrate, peri_clk)
+                    self.flush();
+                    self.uart.uartcr.clr_uarten();
+                    let actual = self.configure_baudrate(baudrate, peri_clk);
+                    self.uart.uartcr.set_uarten();
+                    actual
                 }
 
                 /// Set the data format
@@ -411,34 +418,58 @@ macro_rules! impl_uart {
                     }
                 }
 
-                /// Enable/disable the UART
+                /// Enable the UART (set UARTEN bit)
                 #[inline]
-                pub fn set_enabled(&mut self, enable: bool) {
-                    if enable {
-                        self.uart.uartcr.set_uarten();
-                    } else {
-                        self.uart.uartcr.clr_uarten();
-                    }
+                pub fn enable(&self) {
+                    self.uart.uartcr.set_uarten();
                 }
 
-                /// Enable/disable TX
+                /// Disable the UART (clear UARTEN bit)
                 #[inline]
-                pub fn set_tx_enabled(&mut self, enable: bool) {
-                    if enable {
-                        self.uart.uartcr.set_txe();
-                    } else {
-                        self.uart.uartcr.clr_txe();
-                    }
+                pub fn disable(&self) {
+                    self.uart.uartcr.clr_uarten();
                 }
 
-                /// Enable/disable RX
+                /// Check if the UART is enabled
                 #[inline]
-                pub fn set_rx_enabled(&mut self, enable: bool) {
-                    if enable {
-                        self.uart.uartcr.set_rxe();
-                    } else {
-                        self.uart.uartcr.clr_rxe();
-                    }
+                pub fn enabled(&self) -> bool {
+                    self.uart.uartcr.uarten()
+                }
+
+                /// Enable TX (set TXE bit)
+                #[inline]
+                pub fn enable_tx(&self) {
+                    self.uart.uartcr.set_txe();
+                }
+
+                /// Disable TX (clear TXE bit)
+                #[inline]
+                pub fn disable_tx(&self) {
+                    self.uart.uartcr.clr_txe();
+                }
+
+                /// Check if TX is enabled
+                #[inline]
+                pub fn tx_enabled(&self) -> bool {
+                    self.uart.uartcr.txe()
+                }
+
+                /// Enable RX (set RXE bit)
+                #[inline]
+                pub fn enable_rx(&self) {
+                    self.uart.uartcr.set_rxe();
+                }
+
+                /// Disable RX (clear RXE bit)
+                #[inline]
+                pub fn disable_rx(&self) {
+                    self.uart.uartcr.clr_rxe();
+                }
+
+                /// Check if RX is enabled
+                #[inline]
+                pub fn rx_enabled(&self) -> bool {
+                    self.uart.uartcr.rxe()
                 }
 
                 /// Set FIFO trigger levels
@@ -1111,8 +1142,15 @@ macro_rules! impl_uart {
                 }
 
                 /// Set the UART baud rate
+                ///
+                /// Flushes any pending transmission, disables the UART, updates the
+                /// baud rate registers, and re-enables the UART.
                 pub fn set_baudrate(&mut self, baudrate: u32, peri_clk: u32) -> u32 {
-                    self.configure_baudrate(baudrate, peri_clk)
+                    self.flush();
+                    self.uart.uartcr.clr_uarten();
+                    let actual = self.configure_baudrate(baudrate, peri_clk);
+                    self.uart.uartcr.set_uarten();
+                    actual
                 }
 
                 /// Set the data format
