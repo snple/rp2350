@@ -443,7 +443,7 @@ impl<P: AxisPins> AxisState<P> {
     }
 
     /// 将轴置为 Idle（仅更新阶段和完成标志，不操作 GPIO）。
-    #[inline]
+    #[inline(always)]
     fn set_idle(&self) {
         self.motion_phase
             .store(MotionPhase::Idle as u8, Ordering::Relaxed);
@@ -767,6 +767,7 @@ impl<P: AxisPins> AxisState<P> {
     /// - `0`：正常梯形减速，使用 `max_interval`（= `speed_to_interval_us(max_speed_hz)`）
     /// - 非零：`smooth_stop` 中途减速，使用当时的 `step_interval_us`，
     ///   避免电机尚未达到最高速度时产生速度跳变
+    #[inline]
     pub(crate) fn compute_interval(&self, step: u32, total_steps: u32, phase: MotionPhase) -> u32 {
         let start_speed = self.start_speed_hz;
         let max_speed = self.max_speed_hz.load(Ordering::Relaxed);
@@ -863,7 +864,8 @@ impl<P: AxisPins> AxisState<P> {
     ///         Decelerating   if step >= decel_start_step
     ///         Cruising       otherwise
     /// ```
-    pub(crate) fn schedule_next_by_phase<T: AlarmTimer + MonotonicTimer>(
+    #[inline]
+    pub fn schedule_next_by_phase<T: AlarmTimer + MonotonicTimer>(
         &self,
         timer: &T,
         step: u32,

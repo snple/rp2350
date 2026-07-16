@@ -207,6 +207,7 @@ impl<P: TmcPins> AxisState<P> {
         self.index_last_state.store(self.index(), Ordering::Relaxed);
     }
 
+    #[inline(always)]
     fn detect_index_edge(&self) {
         let state = self.index();
         let last = self.index_last_state.swap(state, Ordering::Relaxed);
@@ -557,6 +558,10 @@ impl<P: TmcPins> AxisState<P> {
     /// 在通用脉冲逻辑基础上，每步完成后额外检测 INDEX 信号和 DIAG 堵转。
     /// 归位和归位回退阶段由本方法独立处理，其他阶段委托给
     /// [`AxisState::schedule_next_by_phase`]。
+    ///
+    /// 标记 `#[inline(always)]` 以确保在双核场景下被强制内联到 `.ramfunc` ISR 中，
+    /// 避免 debug 模式下跨核 Flash XIP 竞争导致 STEP 脉冲抖动。
+    #[inline]
     pub fn handle_alarm_isr<T: AlarmTimer + MonotonicTimer>(&self, timer: &T) {
         timer.clear_alarm_interrupt(self.axis.alarm);
         timer.clear_forced_alarm_interrupt(self.axis.alarm);
