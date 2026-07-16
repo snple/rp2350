@@ -143,6 +143,9 @@ pub use pico_rs_macro::pio_asm;
 // Re-export the bind macro for interrupt handlers
 pub use pico_rs_macro::bind;
 
+// Re-export the ramfunc macro
+pub use pico_rs_macro::ramfunc;
+
 // Re-export ExceptionFrame from pico-rs-rt for use with HardFault handler
 pub use pico_rs_rt::ExceptionFrame;
 

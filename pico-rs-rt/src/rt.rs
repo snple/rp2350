@@ -79,6 +79,11 @@ unsafe extern "C" {
     static mut __sdata: u32; // Start of .data in RAM
     static mut __edata: u32; // End of .data in RAM
 
+    // RAM function section
+    static __siramfunc: u32; // LMA of .ramfunc
+    static mut __sramfunc: u32; // Start of .ramfunc in RAM
+    static mut __eramfunc: u32; // End of .ramfunc in RAM
+
     // BSS section
     static mut __sbss: u32; // Start of .bss
     static mut __ebss: u32; // End of .bss
@@ -112,6 +117,23 @@ pub unsafe extern "C" fn Reset() -> ! {
             src = src.offset(1);
             dst = dst.offset(1);
         }
+    }
+
+    // Copy .ramfunc section (code to run from RAM)
+    unsafe {
+        let mut src = &raw const __siramfunc;
+        let mut dst = &raw mut __sramfunc;
+        let end = &raw mut __eramfunc;
+
+        while dst < end {
+            core::ptr::write_volatile(dst, core::ptr::read_volatile(src));
+            src = src.offset(1);
+            dst = dst.offset(1);
+        }
+
+        // Instruction cache coherency: ensure the newly-written code is visible
+        // to the instruction fetch unit before any #[ramfunc] is called.
+        core::arch::asm!("dsb sy", "isb sy", options(nomem, nostack, preserves_flags));
     }
 
     // Zero .bss section

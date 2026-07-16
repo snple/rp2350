@@ -106,6 +106,28 @@ SECTIONS
     } > FLASH
 
     /* ================================================================
+     * RAM Functions (.ramfunc) — code loaded into RAM at startup
+     * ================================================================
+     *
+     * Functions marked with #[ramfunc] are placed here.  The linker
+     * allocates space for them in RAM (VMA) but stores the initial
+     * content in FLASH (LMA).  The startup code copies them to RAM
+     * before calling main().
+     *
+     * Usage:
+     *   #[ramfunc]
+     *   fn flash_write(...) { ... }
+     */
+    .ramfunc : ALIGN(4)
+    {
+        __sramfunc = .;
+        *(.ramfunc .ramfunc.*);
+        . = ALIGN(4);
+    } > RAM AT>FLASH
+    __eramfunc = .;
+    __siramfunc = LOADADDR(.ramfunc);
+
+    /* ================================================================
      * RAM Sections
      * ================================================================ */
 
@@ -176,6 +198,12 @@ ERROR(pico-rs-rt): FLASH origin must be 4-byte aligned");
 
 ASSERT(ORIGIN(RAM) % 4 == 0, "
 ERROR(pico-rs-rt): RAM origin must be 4-byte aligned");
+
+ASSERT(__sramfunc % 4 == 0 && __eramfunc % 4 == 0, "
+BUG(pico-rs-rt): .ramfunc is not 4-byte aligned");
+
+ASSERT(__siramfunc % 4 == 0, "
+BUG(pico-rs-rt): LMA of .ramfunc is not 4-byte aligned");
 
 ASSERT(__sdata % 4 == 0 && __edata % 4 == 0, "
 BUG(pico-rs-rt): .data is not 4-byte aligned");

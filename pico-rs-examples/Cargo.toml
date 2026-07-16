@@ -51,6 +51,10 @@ name = "watchdog"
 path = "src/watchdog.rs"
 
 [[bin]]
+name = "ramfunc"
+path = "src/ramfunc.rs"
+
+[[bin]]
 name = "adc"
 path = "src/adc/adc.rs"
 

@@ -763,11 +763,58 @@ pub fn pio_asm(input: TokenStream) -> TokenStream {
     pio_asm::pio_asm_impl(input)
 }
 
+/// Mark a function to be executed from RAM.
+///
+/// Functions marked with `#[ramfunc]` are placed in the `.ramfunc` linker
+/// section.  The startup code copies them from flash to RAM before `main()`
+/// runs, so they execute at full speed even when the flash controller is
+/// busy (e.g. during flash erase/program operations or when XIP caching is
+/// disabled).
+///
+/// ## Usage
+///
+/// ```ignore
+/// use pico_rs::ramfunc;
+///
+/// #[ramfunc]
+/// fn flash_range_erase(addr: u32, len: u32) {
+///     // This code runs from RAM — safe to call while flash is busy
+/// }
+/// ```
+///
+/// ## Notes
+///
+/// - RAM-resident code consumes both flash (for initial storage) and RAM
+///   (for execution).  Use sparingly.
+/// - `#[ramfunc]` functions should be kept small — the entire `.ramfunc`
+///   section is copied at startup.
+/// - `#[inline]` and `#[ramfunc]` can be combined; the inlined copy will
+///   also reside in RAM if the caller is `#[ramfunc]`-annotated.
+#[proc_macro_attribute]
+pub fn ramfunc(_args: TokenStream, input: TokenStream) -> TokenStream {
+    let mut f = parse_macro_input!(input as ItemFn);
+
+    // In Rust 2024 edition, link_section must use `unsafe(link_section = ...)`
+    let section_attr: Attribute = syn::parse_quote!(
+        #[unsafe(link_section = ".ramfunc")]
+    );
+
+    // Insert at the beginning so user's own attributes stay visible
+    f.attrs.insert(0, section_attr);
+
+    quote!(#f).into()
+}
+
 /// Bind a function to an interrupt handler
 ///
-/// This macro generates a `#[no_mangle]` interrupt handler that calls your
-/// function. It handles only the binding — priority must be configured
-/// separately via `interrupt::set_priority()` before `interrupt::enable()`.
+/// This macro re-exports the annotated function under the interrupt's linker
+/// name (e.g. `SPARE_IRQ_0`) via `#[unsafe(export_name)]`.  There is no
+/// trampoline — the function **is** the ISR.  Any attribute applied to the
+/// function (such as `#[ramfunc]` adding `link_section`) automatically
+/// propagates to the interrupt entry point.
+///
+/// Priority must be configured separately via `interrupt::set_priority()`
+/// before `interrupt::enable()`.
 ///
 /// ## Usage
 ///
@@ -782,6 +829,16 @@ pub fn pio_asm(input: TokenStream) -> TokenStream {
 /// // In main — set priority before enable:
 /// interrupt::set_priority(Interrupt::SPARE_IRQ_0, 128);
 /// unsafe { interrupt::enable(Interrupt::SPARE_IRQ_0); }
+/// ```
+///
+/// Combine with `#[ramfunc]` to run the ISR from RAM:
+///
+/// ```ignore
+/// #[bind(SPARE_IRQ_0)]
+/// #[ramfunc]
+/// fn flash_safe_isr() {
+///     // Entire interrupt path runs from RAM — safe during flash ops
+/// }
 /// ```
 ///
 /// ## Priority
@@ -835,25 +892,12 @@ pub fn bind(args: TokenStream, input: TokenStream) -> TokenStream {
     let fn_vis = &f.vis;
     let fn_attrs = &f.attrs;
 
-    // 如果用户已手动标注 #[inline] 或 #[inline(always)]，不再重复添加
-    let has_inline = fn_attrs.iter().any(|attr| attr.path().is_ident("inline"));
-
-    let inline_attr = if has_inline {
-        quote!()
-    } else {
-        quote!(#[inline])
-    };
+    let irq_name_str = irq_name.to_string();
 
     quote! {
+        #[unsafe(export_name = #irq_name_str)]
         #(#fn_attrs)*
-        #inline_attr
         #fn_vis fn #user_fn_name() #fn_body
-
-        #[allow(non_snake_case)]
-        #[unsafe(no_mangle)]
-        fn #irq_name() {
-            #user_fn_name();
-        }
     }
     .into()
 }
