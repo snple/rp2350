@@ -453,7 +453,7 @@ impl<P: AxisPins> AxisState<P> {
     /// 按给定间隔调度下一次定时器报警。
     #[inline(always)]
     fn schedule_next_alarm<T: AlarmTimer + MonotonicTimer>(&self, timer: &T, interval_us: u32) {
-        let now = timer.get_time_us_32();
+        let now = timer.time_us_32();
         timer.set_alarm_safe(self.alarm, now.wrapping_add(interval_us));
     }
 
@@ -703,7 +703,7 @@ impl<P: AxisPins> AxisState<P> {
             // 上升沿：拉高 STEP，安排脉冲宽度后的下一次 alarm
             self.apply_step(true);
             self.pulse_state.store(true, Ordering::Relaxed);
-            let now = timer.get_time_us_32();
+            let now = timer.time_us_32();
             timer.set_alarm_safe(self.alarm, now.wrapping_add(self.step_pulse_us));
             return false;
         }

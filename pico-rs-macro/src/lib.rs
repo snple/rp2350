@@ -335,7 +335,7 @@ fn check_attr_whitelist(attrs: &[Attribute], caller: WhiteListCaller) -> Result<
     ];
 
     'o: for attr in attrs {
-        if let Some(attr_name) = get_attr_name(attr)
+        if let Some(attr_name) = attr_name(attr)
             && whitelist.contains(&attr_name.as_str())
         {
             continue 'o;
@@ -354,7 +354,7 @@ fn check_attr_whitelist(attrs: &[Attribute], caller: WhiteListCaller) -> Result<
 }
 
 /// Get the name of an attribute
-fn get_attr_name(attr: &Attribute) -> Option<String> {
+fn attr_name(attr: &Attribute) -> Option<String> {
     if !matches!(attr.style, AttrStyle::Outer) {
         return None;
     }

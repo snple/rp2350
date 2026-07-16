@@ -566,7 +566,7 @@ impl Doorbell {
     ///
     /// Panics in debug if `doorbell >= Doorbell::COUNT`.
     #[inline]
-    pub fn pending(&self, doorbell: u8) -> bool {
+    pub fn is_pending(&self, doorbell: u8) -> bool {
         debug_assert!(doorbell < Self::COUNT);
         (self.status() & (1 << doorbell)) != 0
     }
@@ -604,7 +604,7 @@ impl Doorbell {
     #[inline]
     pub fn wait(&self, doorbell: u8) {
         debug_assert!(doorbell < Self::COUNT);
-        while !self.pending(doorbell) {
+        while !self.is_pending(doorbell) {
             pico_rs_rt::asm::wfe();
         }
         self.clear_local(1 << doorbell);

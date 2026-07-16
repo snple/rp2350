@@ -191,7 +191,7 @@ fn main() -> ! {
     fan.set_wrap(FAN_PWM_WRAP);
     fan.set_duty_a(0); // 初始占空比 0%
 
-    let actual_freq = fan.get_frequency(SYS_CLK_HZ);
+    let actual_freq = fan.frequency(SYS_CLK_HZ);
     info!(
         "PWM control: WRAP={}, DIV={}+{}/16, actual={} Hz",
         FAN_PWM_WRAP, FAN_PWM_DIV_INT, FAN_PWM_DIV_FRAC, actual_freq

@@ -39,7 +39,7 @@ fn main() -> ! {
     info!("Timer0 initialized");
 
     // Show initial timer value
-    let start_time = timer.get_time_us();
+    let start_time = timer.time_us();
     info!("Initial timer value: {} us", start_time);
 
     // Initialize GPIO for LED
@@ -52,10 +52,10 @@ fn main() -> ! {
     info!("LED should blink at 1 Hz (500ms on, 500ms off)");
 
     let mut blink_count: u32 = 0;
-    let test_start = timer.get_time_us();
+    let test_start = timer.time_us();
 
     loop {
-        let loop_start = timer.get_time_us();
+        let loop_start = timer.time_us();
 
         // LED ON
         led.set_high();
@@ -69,7 +69,7 @@ fn main() -> ! {
 
         // Every 5 blinks, report timing accuracy
         if blink_count.is_multiple_of(5) {
-            let elapsed = timer.get_time_us() - test_start;
+            let elapsed = timer.time_us() - test_start;
             let expected = blink_count as u64 * 1_000_000; // 1 second per blink
             let drift_us = elapsed.abs_diff(expected);
 
@@ -79,7 +79,7 @@ fn main() -> ! {
             );
 
             // Also show single cycle timing
-            let cycle_time = timer.get_time_us() - loop_start;
+            let cycle_time = timer.time_us() - loop_start;
             info!("  Last cycle: {} us (should be ~1000000 us)", cycle_time);
         }
     }

@@ -123,7 +123,7 @@ impl NVIC {
 
     /// Check if an interrupt is enabled
     #[inline]
-    pub fn enabled(irq: u16) -> bool {
+    pub fn is_enabled(irq: u16) -> bool {
         let nr = irq as usize;
         let reg = nr / 32;
         let bit = nr % 32;
@@ -157,7 +157,7 @@ impl NVIC {
 
     /// Check if an interrupt is pending
     #[inline]
-    pub fn pending(irq: u16) -> bool {
+    pub fn is_pending(irq: u16) -> bool {
         let nr = irq as usize;
         let reg = nr / 32;
         let bit = nr % 32;
@@ -248,8 +248,8 @@ impl NVIC {
 
     /// Check if enabled (type-safe version)
     #[inline]
-    pub fn enabled_int<I: InterruptNumber>(interrupt: I) -> bool {
-        Self::enabled(interrupt.number())
+    pub fn is_enabled_int<I: InterruptNumber>(interrupt: I) -> bool {
+        Self::is_enabled(interrupt.number())
     }
 
     /// Set pending (type-safe version)
@@ -266,8 +266,8 @@ impl NVIC {
 
     /// Check if pending (type-safe version)
     #[inline]
-    pub fn pending_int<I: InterruptNumber>(interrupt: I) -> bool {
-        Self::pending(interrupt.number())
+    pub fn is_pending_int<I: InterruptNumber>(interrupt: I) -> bool {
+        Self::is_pending(interrupt.number())
     }
 
     /// Set priority (type-safe version)

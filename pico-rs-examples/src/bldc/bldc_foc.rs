@@ -240,12 +240,12 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::clocks::ClockBuilder;
-use pico_rs::main;
 use pico_rs::gpio::{EdgeLevel, Pin, Pins};
 use pico_rs::interrupt::{self, Mutex};
+use pico_rs::main;
 use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::pwm::Pwm;
-use pico_rs::timer::Timer0;// ============================================================================
+use pico_rs::timer::Timer0; // ============================================================================
 // 配置参数
 // ============================================================================
 
@@ -567,7 +567,7 @@ fn main() -> ! {
     // Timer0 Alarm — FOC 循环 @10kHz
     // ------------------------------------------------------------------
     {
-        let now = timer.get_time_us_32();
+        let now = timer.time_us_32();
         LAST_HALL_TIME.store(now, Ordering::Relaxed);
         timer.set_alarm(0, now.wrapping_add(FOC_LOOP_INTERVAL_US));
         timer.enable_alarm_interrupt(0);
@@ -599,7 +599,7 @@ fn main() -> ! {
                 .borrow(cs)
                 .borrow()
                 .as_ref()
-                .map_or(0, |t| t.get_time_us_32())
+                .map_or(0, |t| t.time_us_32())
         })
     };
 
@@ -751,7 +751,7 @@ fn IO_IRQ_BANK0() {
     // 测量步进周期
     interrupt::free(|cs| {
         if let Some(ref timer) = *TIMER.borrow(cs).borrow() {
-            let now = timer.get_time_us_32();
+            let now = timer.time_us_32();
             let last = LAST_HALL_TIME.load(Ordering::Relaxed);
             let period = now.wrapping_sub(last);
             LAST_HALL_TIME.store(now, Ordering::Relaxed);
@@ -779,7 +779,7 @@ fn TIMER0_IRQ_0() {
         if let Some(ref timer) = *TIMER.borrow(cs).borrow() {
             timer.clear_alarm_interrupt(0);
             FOC_TICK.store(true, Ordering::Relaxed);
-            let now = timer.get_time_us_32();
+            let now = timer.time_us_32();
             timer.set_alarm(0, now.wrapping_add(FOC_LOOP_INTERVAL_US));
         }
     });

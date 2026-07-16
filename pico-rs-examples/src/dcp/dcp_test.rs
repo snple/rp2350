@@ -13,7 +13,7 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::dcp::Dcp;
-use pico_rs::main;// ==========================================================================
+use pico_rs::main; // ==========================================================================
 // Test helpers
 // ==========================================================================
 
@@ -30,10 +30,10 @@ fn inc_failed() {
         FAILED += 1;
     }
 }
-fn get_passed() -> u32 {
+fn passed() -> u32 {
     unsafe { PASSED }
 }
-fn get_failed() -> u32 {
+fn failed() -> u32 {
     unsafe { FAILED }
 }
 
@@ -372,11 +372,11 @@ fn main() -> ! {
     test_conversions_between(&dcp);
 
     info!("==================================");
-    info!("Results: {} passed, {} failed", get_passed(), get_failed());
-    if get_failed() == 0 {
+    info!("Results: {} passed, {} failed", passed(), failed());
+    if failed() == 0 {
         info!("ALL TESTS PASSED!");
     } else {
-        error!("{} TESTS FAILED!", get_failed());
+        error!("{} TESTS FAILED!", failed());
     }
     info!("==================================");
 

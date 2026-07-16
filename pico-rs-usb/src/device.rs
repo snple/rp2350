@@ -364,7 +364,7 @@ impl<'a, B: UsbBus> UsbDevice<'a, B> {
                 }
                 let iface = InterfaceNumber(req.index as u8);
                 for cls in classes.iter_mut() {
-                    if let Some(alt) = cls.get_alt_setting(iface) {
+                    if let Some(alt) = cls.alt_setting(iface) {
                         let xfer = ControlIn::new(&mut self.control, self.bus, &req);
                         let _ = xfer.accept_with(&[alt]);
                         return;
@@ -555,7 +555,7 @@ impl<'a, B: UsbBus> UsbDevice<'a, B> {
             return false;
         }
         for cls in classes.iter() {
-            if cls.get_configuration_descriptors(&mut writer).is_err() {
+            if cls.configuration_descriptors(&mut writer).is_err() {
                 return false;
             }
         }
@@ -595,7 +595,7 @@ impl<'a, B: UsbBus> UsbDevice<'a, B> {
                 let string_idx = StringIndex::new(index);
                 classes
                     .iter()
-                    .find_map(|cls| cls.get_string(string_idx, lang_id_value))
+                    .find_map(|cls| cls.string(string_idx, lang_id_value))
                     .and_then(|s| DescriptorWriter::write_string(&mut buf, s).ok())
             }
         };

@@ -1232,7 +1232,7 @@ fn main() -> ! {
     // Timer0 — FOC tick @10kHz
     // ------------------------------------------------------------------
     {
-        let now = timer.get_time_us_32();
+        let now = timer.time_us_32();
         timer.set_alarm(0, now.wrapping_add(FOC_LOOP_INTERVAL_US));
         timer.enable_alarm_interrupt(0);
 
@@ -1281,7 +1281,7 @@ fn main() -> ! {
                 .borrow(cs)
                 .borrow()
                 .as_ref()
-                .map_or(0, |t| t.get_time_us_32())
+                .map_or(0, |t| t.time_us_32())
         })
     };
 
@@ -1453,7 +1453,7 @@ fn TIMER0_IRQ_0() {
         if let Some(ref timer) = *TIMER.borrow(cs).borrow() {
             timer.clear_alarm_interrupt(0);
             FOC_TICK.store(true, Ordering::Relaxed);
-            let now = timer.get_time_us_32();
+            let now = timer.time_us_32();
             timer.set_alarm(0, now.wrapping_add(FOC_LOOP_INTERVAL_US));
         }
     });

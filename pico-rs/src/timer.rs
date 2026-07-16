@@ -23,7 +23,7 @@
 //! let timer = Timer0::init(timer0_pac);
 //!
 //! // Read current time
-//! let now = timer.get_time_us();
+//! let now = timer.time_us();
 //!
 //! // Set an alarm to fire in 1 second
 //! timer.set_alarm(0, now + 1_000_000);
@@ -42,10 +42,10 @@ pub const ALARM_COUNT: usize = 4;
 /// measurements.
 pub trait MonotonicTimer {
     /// Get the current 64-bit time value in microseconds.
-    fn get_time_us(&self) -> u64;
+    fn time_us(&self) -> u64;
 
     /// Get the current time as the low 32 bits only.
-    fn get_time_us_32(&self) -> u32;
+    fn time_us_32(&self) -> u32;
 }
 
 // Blanket trait forwarding for Steal<T> — allows stolen handles to satisfy
@@ -53,12 +53,12 @@ pub trait MonotonicTimer {
 
 impl<T: MonotonicTimer> MonotonicTimer for crate::Steal<T> {
     #[inline]
-    fn get_time_us(&self) -> u64 {
-        self.0.get_time_us()
+    fn time_us(&self) -> u64 {
+        self.0.time_us()
     }
     #[inline]
-    fn get_time_us_32(&self) -> u32 {
-        self.0.get_time_us_32()
+    fn time_us_32(&self) -> u32 {
+        self.0.time_us_32()
     }
 }
 
@@ -224,7 +224,7 @@ macro_rules! impl_timer {
             ///
             /// This reads both the low and high words atomically.
             #[inline]
-            pub fn get_time_us(&self) -> u64 {
+            pub fn time_us(&self) -> u64 {
                 // Read low first, which latches high
                 let lo = self.timer.timelr.timelr();
                 let hi = self.timer.timehr.timehr();
@@ -235,15 +235,15 @@ macro_rules! impl_timer {
             ///
             /// This is faster but wraps every ~71 minutes.
             #[inline]
-            pub fn get_time_us_32(&self) -> u32 {
+            pub fn time_us_32(&self) -> u32 {
                 self.timer.timerawl.timerawl()
             }
 
             /// Get raw time without side effects
             ///
-            /// Unlike `get_time_us()`, this doesn't latch the high word.
+            /// Unlike `time_us()`, this doesn't latch the high word.
             #[inline]
-            pub fn get_time_raw(&self) -> (u32, u32) {
+            pub fn time_raw(&self) -> (u32, u32) {
                 let lo = self.timer.timerawl.timerawl();
                 let hi = self.timer.timerawh.timerawh();
                 (lo, hi)
@@ -319,7 +319,7 @@ macro_rules! impl_timer {
             #[inline]
             pub fn set_alarm_safe(&self, alarm: u8, time: u32) {
                 self.set_alarm(alarm, time);
-                let now = self.get_time_us_32();
+                let now = self.time_us_32();
                 if now.wrapping_sub(time) < 0x8000_0000 {
                     if self.is_alarm_armed(alarm) {
                         self.disarm_alarm(alarm);
@@ -534,8 +534,8 @@ macro_rules! impl_timer {
             /// The timer runs at 1 MHz (1 tick = 1 microsecond).
             #[inline]
             pub fn delay_us(&self, us: u64) {
-                let target = self.get_time_us().wrapping_add(us);
-                while self.get_time_us() < target {
+                let target = self.time_us().wrapping_add(us);
+                while self.time_us() < target {
                     pico_rs_rt::asm::nop();
                 }
             }
@@ -557,7 +557,7 @@ macro_rules! impl_timer {
             /// If the target time has already passed, returns immediately.
             #[inline]
             pub fn delay_until(&self, target_us: u64) {
-                while self.get_time_us() < target_us {
+                while self.time_us() < target_us {
                     pico_rs_rt::asm::nop();
                 }
             }
@@ -573,13 +573,13 @@ macro_rules! impl_timer {
 
         impl MonotonicTimer for $TimerName {
             #[inline]
-            fn get_time_us(&self) -> u64 {
-                $TimerName::get_time_us(self)
+            fn time_us(&self) -> u64 {
+                $TimerName::time_us(self)
             }
 
             #[inline]
-            fn get_time_us_32(&self) -> u32 {
-                $TimerName::get_time_us_32(self)
+            fn time_us_32(&self) -> u32 {
+                $TimerName::time_us_32(self)
             }
         }
 

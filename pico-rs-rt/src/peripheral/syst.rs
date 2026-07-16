@@ -164,7 +164,7 @@ impl SYST {
 
     /// Get the reload value
     #[inline]
-    pub fn get_reload() -> u32 {
+    pub fn reload() -> u32 {
         unsafe { (*Self::PTR).rvr.read_bits() & MAX_RELOAD }
     }
 
@@ -178,7 +178,7 @@ impl SYST {
 
     /// Get the current counter value
     #[inline]
-    pub fn get_current() -> u32 {
+    pub fn current() -> u32 {
         unsafe { (*Self::PTR).cvr.read_bits() & MAX_RELOAD }
     }
 
@@ -194,7 +194,7 @@ impl SYST {
     ///
     /// Returns `None` if the calibration value is not available or not accurate.
     #[inline]
-    pub fn get_ticks_per_10ms() -> Option<u32> {
+    pub fn ticks_per_10ms() -> Option<u32> {
         let calib = unsafe { (*Self::PTR).calib.read_bits() };
         let tenms = calib & 0x00FF_FFFF;
 

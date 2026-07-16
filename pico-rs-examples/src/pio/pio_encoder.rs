@@ -402,12 +402,12 @@ fn main() -> ! {
     // ------------------------------------------------------------------
 
     let mut last_positions = [0i32; NUM_ENCODERS];
-    let mut last_print_time = timer.get_time_us();
+    let mut last_print_time = timer.time_us();
 
     loop {
         timer.delay_ms(10);
 
-        let now = timer.get_time_us();
+        let now = timer.time_us();
         if now.wrapping_sub(last_print_time) >= PRINT_INTERVAL_US {
             let positions = [
                 POSITIONS[0].load(Ordering::Relaxed),

@@ -15,8 +15,8 @@ pub fn parse_svd(path: &std::path::Path) -> Result<SvdDevice> {
 
     let device_node = doc.root_element();
 
-    let name = get_child_text(&device_node, "name").unwrap_or_default();
-    let description = get_child_text(&device_node, "description")
+    let name = child_text(&device_node, "name").unwrap_or_default();
+    let description = child_text(&device_node, "description")
         .map(|s| clean_description(&s))
         .unwrap_or_default();
 
@@ -46,13 +46,13 @@ pub fn parse_svd(path: &std::path::Path) -> Result<SvdDevice> {
 
 fn parse_peripheral(node: &Node) -> Result<Peripheral> {
     let name =
-        get_child_text(node, "name").ok_or_else(|| anyhow::anyhow!("Peripheral missing name"))?;
+        child_text(node, "name").ok_or_else(|| anyhow::anyhow!("Peripheral missing name"))?;
 
-    let description = get_child_text(node, "description")
+    let description = child_text(node, "description")
         .map(|s| clean_description(&s))
         .unwrap_or_default();
 
-    let base_address = get_child_text(node, "baseAddress").and_then(|s| parse_number(&s));
+    let base_address = child_text(node, "baseAddress").and_then(|s| parse_number(&s));
 
     // Check if this peripheral derives from another
     let derived_from = node.attribute("derivedFrom").map(String::from);
@@ -113,20 +113,19 @@ fn infer_register_access(fields: &[Field]) -> Access {
 }
 
 fn parse_register(node: &Node) -> Result<Register> {
-    let name =
-        get_child_text(node, "name").ok_or_else(|| anyhow::anyhow!("Register missing name"))?;
+    let name = child_text(node, "name").ok_or_else(|| anyhow::anyhow!("Register missing name"))?;
 
-    let description = get_child_text(node, "description")
+    let description = child_text(node, "description")
         .map(|s| clean_description(&s))
         .unwrap_or_default();
 
-    let offset = get_child_text(node, "addressOffset")
+    let offset = child_text(node, "addressOffset")
         .and_then(|s| parse_number(&s))
         .unwrap_or(0);
 
-    let reset_value = get_child_text(node, "resetValue").and_then(|s| parse_number(&s));
+    let reset_value = child_text(node, "resetValue").and_then(|s| parse_number(&s));
 
-    let explicit_access = get_child_text(node, "access").map(|s| Access::from_str(&s));
+    let explicit_access = child_text(node, "access").map(|s| Access::from_str(&s));
 
     let mut fields = Vec::new();
 
@@ -160,15 +159,15 @@ fn parse_register(node: &Node) -> Result<Register> {
 }
 
 fn parse_field(node: &Node) -> Result<Field> {
-    let name = get_child_text(node, "name").ok_or_else(|| anyhow::anyhow!("Field missing name"))?;
+    let name = child_text(node, "name").ok_or_else(|| anyhow::anyhow!("Field missing name"))?;
 
-    let description = get_child_text(node, "description")
+    let description = child_text(node, "description")
         .map(|s| clean_description(&s))
         .unwrap_or_default();
 
     let (msb, lsb) = parse_bit_range(node)?;
 
-    let access = get_child_text(node, "access")
+    let access = child_text(node, "access")
         .map(|s| Access::from_str(&s))
         .unwrap_or(Access::ReadWrite);
 
@@ -197,7 +196,7 @@ fn parse_field(node: &Node) -> Result<Field> {
 
 fn parse_bit_range(node: &Node) -> Result<(u32, u32)> {
     // Try bitRange format: [MSB:LSB]
-    if let Some(range) = get_child_text(node, "bitRange") {
+    if let Some(range) = child_text(node, "bitRange") {
         let range = range.trim_matches(|c| c == '[' || c == ']');
         let parts: Vec<&str> = range.split(':').collect();
         if parts.len() == 2 {
@@ -208,10 +207,10 @@ fn parse_bit_range(node: &Node) -> Result<(u32, u32)> {
     }
 
     // Try bitOffset and bitWidth
-    let offset = get_child_text(node, "bitOffset")
+    let offset = child_text(node, "bitOffset")
         .and_then(|s| s.parse().ok())
         .unwrap_or(0);
-    let width = get_child_text(node, "bitWidth")
+    let width = child_text(node, "bitWidth")
         .and_then(|s| s.parse().ok())
         .unwrap_or(1);
 
@@ -219,9 +218,9 @@ fn parse_bit_range(node: &Node) -> Result<(u32, u32)> {
 }
 
 fn parse_enum_value(node: &Node) -> Option<EnumValue> {
-    let name = get_child_text(node, "name")?;
-    let value = get_child_text(node, "value").and_then(|s| parse_number(&s))?;
-    let description = get_child_text(node, "description")
+    let name = child_text(node, "name")?;
+    let value = child_text(node, "value").and_then(|s| parse_number(&s))?;
+    let description = child_text(node, "description")
         .map(|s| clean_description(&s))
         .unwrap_or_default();
 
@@ -233,9 +232,9 @@ fn parse_enum_value(node: &Node) -> Option<EnumValue> {
 }
 
 fn parse_interrupt(node: &Node) -> Option<Interrupt> {
-    let name = get_child_text(node, "name")?;
-    let value = get_child_text(node, "value").and_then(|s| s.parse().ok())?;
-    let description = get_child_text(node, "description")
+    let name = child_text(node, "name")?;
+    let value = child_text(node, "value").and_then(|s| s.parse().ok())?;
+    let description = child_text(node, "description")
         .map(|s| clean_description(&s))
         .unwrap_or_default();
 
@@ -246,7 +245,7 @@ fn parse_interrupt(node: &Node) -> Option<Interrupt> {
     })
 }
 
-fn get_child_text(node: &Node, tag: &str) -> Option<String> {
+fn child_text(node: &Node, tag: &str) -> Option<String> {
     node.children()
         .find(|n| n.has_tag_name(tag))
         .and_then(|n| n.text())

@@ -272,7 +272,7 @@ macro_rules! impl_state_machine {
 
             /// Check if the state machine is enabled
             #[inline]
-            pub fn enabled(&self) -> bool {
+            pub fn is_enabled(&self) -> bool {
                 (self.pio.ctrl.sm_enable() & (1u32 << $sm_index)) != 0
             }
 
@@ -296,7 +296,7 @@ macro_rules! impl_state_machine {
 
             /// Get the current program counter
             #[inline]
-            pub fn get_pc(&self) -> u8 {
+            pub fn pc(&self) -> u8 {
                 self.pio.[<sm $sm_index _addr>].read_bits() as u8 & 0x1F
             }
 
@@ -645,13 +645,13 @@ macro_rules! impl_state_machine {
 
             /// Get TX FIFO level
             #[inline]
-            pub fn get_tx_fifo_level(&self) -> u8 {
+            pub fn tx_fifo_level(&self) -> u8 {
                 self.pio.flevel.[<tx $sm_index>]() as u8
             }
 
             /// Get RX FIFO level
             #[inline]
-            pub fn get_rx_fifo_level(&self) -> u8 {
+            pub fn rx_fifo_level(&self) -> u8 {
                 self.pio.flevel.[<rx $sm_index>]() as u8
             }
 
@@ -944,7 +944,7 @@ macro_rules! impl_pio_block {
                 }
 
                 /// (RP2350) Get current GPIO base
-                pub fn get_gpio_base(&self) -> bool {
+                pub fn gpio_base(&self) -> bool {
                     self.pio.gpiobase.gpiobase()
                 }
 
@@ -1117,7 +1117,7 @@ macro_rules! impl_pio_block {
 
                 /// Get raw IRQ flags (8 bits)
                 #[inline]
-                pub fn get_irq_raw(&self) -> u8 {
+                pub fn irq_raw(&self) -> u8 {
                     self.pio.irq.irq() as u8
                 }
 
@@ -1163,13 +1163,13 @@ macro_rules! impl_pio_block {
 
                 /// Get current PIO-driven GPIO output values
                 #[inline]
-                pub fn get_dbg_padout(&self) -> u32 {
+                pub fn dbg_padout(&self) -> u32 {
                     self.pio.dbg_padout.read_bits()
                 }
 
                 /// Get current PIO-driven GPIO output enables
                 #[inline]
-                pub fn get_dbg_padoe(&self) -> u32 {
+                pub fn dbg_padoe(&self) -> u32 {
                     self.pio.dbg_padoe.read_bits()
                 }
             }

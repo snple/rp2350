@@ -174,7 +174,7 @@ impl Xosc {
 
     /// Check if the XOSC is enabled
     #[inline]
-    pub fn enabled(&self) -> bool {
+    pub fn is_enabled(&self) -> bool {
         self.xosc.status.enabled()
     }
 

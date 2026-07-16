@@ -458,7 +458,7 @@ macro_rules! impl_i2c {
 
                 /// Check if I2C peripheral is enabled.
                 #[inline]
-                pub fn enabled(&self) -> bool {
+                pub fn is_enabled(&self) -> bool {
                     self.i2c.ic_enable.enable()
                 }
 
@@ -1369,7 +1369,7 @@ macro_rules! impl_i2c_slave {
 
                 /// Check if I2C peripheral is enabled.
                 #[inline]
-                pub fn enabled(&self) -> bool {
+                pub fn is_enabled(&self) -> bool {
                     self.i2c.ic_enable.enable()
                 }
 

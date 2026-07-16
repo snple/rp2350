@@ -592,7 +592,7 @@ impl<const N: u8, A, B> Slice<N, A, B> {
 /// let slice1 = pwm.slice::<1>().output_ab(pins.pin::<2>(), pins.pin::<3>());
 /// ```
 pub struct Pwm {
-    _pwm: pico_rs_pac::PWM,
+    pwm: pico_rs_pac::PWM,
 }
 
 impl Pwm {
@@ -604,7 +604,7 @@ impl Pwm {
     pub fn init(pwm: pico_rs_pac::PWM) -> Self {
         // Reset then unreset to guarantee clean register state
         <pico_rs_pac::PWM as Resettable>::init();
-        Self { _pwm: pwm }
+        Self { pwm }
     }
 
     /// Obtain an unconfigured [`Slice`] for PWM slice `N`.
@@ -641,7 +641,7 @@ impl Pwm {
 
     #[inline]
     fn regs(&self) -> &pico_rs_pac::pwm::RegisterBlock {
-        &self._pwm
+        &self.pwm
     }
 
     // ========================================================================
@@ -982,38 +982,42 @@ macro_rules! impl_pwm_slice {
                 /// PWM slice number.
                 pub const SLICE: u8 = $slice_num;
 
+                /// Get reference to the underlying register block.
+                ///
+                /// # Safety
+                /// Direct register access can bypass the HAL's safety guarantees.
+                #[inline]
+                pub unsafe fn regs(&self) -> &pico_rs_pac::pwm::RegisterBlock {
+                    &self.pwm
+                }
+
                 // ============================================================
                 // Private register accessors
                 // ============================================================
 
                 #[inline]
-                fn pwm(&self) -> &pico_rs_pac::pwm::RegisterBlock {
-                    &self.pwm
+                unsafe fn ch_csr(&self) -> &pico_rs_pac::pwm::[<Ch $slice_num Csr>] {
+                    &self.pwm.[<ch $slice_num _csr>]
                 }
 
                 #[inline]
-                fn csr(&self) -> &pico_rs_pac::pwm::[<Ch $slice_num Csr>] {
-                    &self.pwm().[<ch $slice_num _csr>]
+                unsafe fn ch_div(&self) -> &pico_rs_pac::pwm::[<Ch $slice_num Div>] {
+                    &self.pwm.[<ch $slice_num _div>]
                 }
 
                 #[inline]
-                fn div(&self) -> &pico_rs_pac::pwm::[<Ch $slice_num Div>] {
-                    &self.pwm().[<ch $slice_num _div>]
+                unsafe fn ch_ctr(&self) -> &pico_rs_pac::pwm::[<Ch $slice_num Ctr>] {
+                    &self.pwm.[<ch $slice_num _ctr>]
                 }
 
                 #[inline]
-                fn ctr(&self) -> &pico_rs_pac::pwm::[<Ch $slice_num Ctr>] {
-                    &self.pwm().[<ch $slice_num _ctr>]
+                unsafe fn ch_cc(&self) -> &pico_rs_pac::pwm::[<Ch $slice_num Cc>] {
+                    &self.pwm.[<ch $slice_num _cc>]
                 }
 
                 #[inline]
-                fn cc(&self) -> &pico_rs_pac::pwm::[<Ch $slice_num Cc>] {
-                    &self.pwm().[<ch $slice_num _cc>]
-                }
-
-                #[inline]
-                fn top(&self) -> &pico_rs_pac::pwm::[<Ch $slice_num Top>] {
-                    &self.pwm().[<ch $slice_num _top>]
+                unsafe fn ch_top(&self) -> &pico_rs_pac::pwm::[<Ch $slice_num Top>] {
+                    &self.pwm.[<ch $slice_num _top>]
                 }
 
                 // ============================================================
@@ -1023,19 +1027,19 @@ macro_rules! impl_pwm_slice {
                 /// Enable this PWM slice.
                 #[inline]
                 pub fn enable(&self) {
-                    self.csr().set_en();
+                    unsafe { self.ch_csr().set_en(); }
                 }
 
                 /// Disable this PWM slice.
                 #[inline]
                 pub fn disable(&self) {
-                    self.csr().clr_en();
+                    unsafe { self.ch_csr().clr_en(); }
                 }
 
                 /// Check if this slice is enabled.
                 #[inline]
-                pub fn enabled(&self) -> bool {
-                    self.csr().en()
+                pub fn is_enabled(&self) -> bool {
+                    unsafe { self.ch_csr().en() }
                 }
 
                 // ============================================================
@@ -1049,16 +1053,16 @@ macro_rules! impl_pwm_slice {
                 #[inline]
                 pub fn set_phase_correct(&mut self, enable: bool) {
                     if enable {
-                        self.csr().set_ph_correct();
+                        unsafe { self.ch_csr().set_ph_correct(); }
                     } else {
-                        self.csr().clr_ph_correct();
+                        unsafe { self.ch_csr().clr_ph_correct(); }
                     }
                 }
 
                 /// Check if phase-correct mode is enabled.
                 #[inline]
                 pub fn is_phase_correct(&self) -> bool {
-                    self.csr().ph_correct()
+                    unsafe { self.ch_csr().ph_correct() }
                 }
 
                 /// Set the divider mode.
@@ -1071,7 +1075,7 @@ macro_rules! impl_pwm_slice {
                 /// callers should treat any in-flight measurement as invalid after switching.
                 #[inline]
                 pub fn set_div_mode(&mut self, mode: DivMode) {
-                    self.csr().write_divmode(mode as u32);
+                    unsafe { self.ch_csr().write_divmode(mode as u32); }
                 }
 
                 /// Get the current divider mode.
@@ -1079,8 +1083,8 @@ macro_rules! impl_pwm_slice {
                 /// This is useful when a generic helper wants to distinguish between
                 /// free-running output mode and one of the B-input-driven counting modes.
                 #[inline]
-                pub fn get_div_mode(&self) -> DivMode {
-                    match self.csr().divmode() {
+                pub fn div_mode(&self) -> DivMode {
+                    match unsafe { self.ch_csr().divmode() } {
                         0 => DivMode::FreeRunning,
                         1 => DivMode::GatedByB,
                         2 => DivMode::RisingEdgeB,
@@ -1098,13 +1102,13 @@ macro_rules! impl_pwm_slice {
                 /// The PWM counter advances at: sys_clk / (int + frac/16)
                 #[inline]
                 pub fn set_div_int(&mut self, div: u8) {
-                    self.div().write_int(div as u32);
+                    unsafe { self.ch_div().write_int(div as u32); }
                 }
 
                 /// Set the fractional part of the clock divider (0-15).
                 #[inline]
                 pub fn set_div_frac(&mut self, frac: u8) {
-                    self.div().write_frac(frac as u32);
+                    unsafe { self.ch_div().write_frac(frac as u32); }
                 }
 
                 /// Set both integer and fractional divider parts.
@@ -1119,14 +1123,14 @@ macro_rules! impl_pwm_slice {
                 /// ```
                 #[inline]
                 pub fn set_div(&mut self, int_part: u8, frac_part: u8) {
-                    self.div().write_bits(((int_part as u32) << 4) | ((frac_part as u32) & 0xf));
+                    unsafe { self.ch_div().write_bits(((int_part as u32) << 4) | ((frac_part as u32) & 0xf)); }
                 }
 
                 /// Get the current divider value (8.4 fixed point format).
                 #[inline]
-                pub fn get_div(&self) -> (u8, u8) {
-                    let int_part = self.div().int() as u8;
-                    let frac_part = self.div().frac() as u8;
+                pub fn div(&self) -> (u8, u8) {
+                    let int_part = unsafe { self.ch_div().int() as u8 };
+                    let frac_part = unsafe { self.ch_div().frac() as u8 };
                     (int_part, frac_part)
                 }
 
@@ -1154,31 +1158,31 @@ macro_rules! impl_pwm_slice {
                 /// would need to be `TOP + 1`, which does not fit in the 16-bit CC register.
                 #[inline]
                 pub fn set_wrap(&mut self, wrap: u16) {
-                    self.top().write_bits(wrap as u32);
+                    unsafe { self.ch_top().write_bits(wrap as u32); }
                 }
 
                 /// Get the current wrap value.
                 #[inline]
-                pub fn get_wrap(&self) -> u16 {
-                    self.top().read_bits() as u16
+                pub fn wrap(&self) -> u16 {
+                    unsafe { self.ch_top().read_bits() as u16 }
                 }
 
                 /// Set the counter value directly.
                 #[inline]
                 pub fn set_counter(&self, value: u16) {
-                    self.ctr().write_bits(value as u32);
+                    unsafe { self.ch_ctr().write_bits(value as u32); }
                 }
 
                 /// Get the current counter value.
                 #[inline]
-                pub fn get_counter(&self) -> u16 {
-                    self.ctr().read_bits() as u16
+                pub fn counter(&self) -> u16 {
+                    unsafe { self.ch_ctr().read_bits() as u16 }
                 }
 
                 /// Reset counter to zero.
                 #[inline]
                 pub fn reset_counter(&self) {
-                    self.ctr().write_bits(0);
+                    unsafe { self.ch_ctr().write_bits(0); }
                 }
 
                 // ============================================================
@@ -1190,7 +1194,7 @@ macro_rules! impl_pwm_slice {
                 /// Self-clearing; write 1 to advance phase while running.
                 #[inline]
                 pub fn advance_phase(&self) {
-                    self.csr().trigger_ph_adv();
+                    unsafe { self.ch_csr().trigger_ph_adv(); }
                 }
 
                 /// Retard phase by one count.
@@ -1198,7 +1202,7 @@ macro_rules! impl_pwm_slice {
                 /// Self-clearing; write 1 to retard phase while running.
                 #[inline]
                 pub fn retard_phase(&self) {
-                    self.csr().trigger_ph_ret();
+                    unsafe { self.ch_csr().trigger_ph_ret(); }
                 }
 
                 // ============================================================
@@ -1222,29 +1226,29 @@ macro_rules! impl_pwm_slice {
                 /// - `value = 1000` => 100%, if representable
                 #[inline]
                 pub fn set_duty_a(&self, value: u16) {
-                    self.cc().write_a(value as u32);
+                    unsafe { self.ch_cc().write_a(value as u32); }
                 }
 
                 /// Get duty cycle for channel A.
                 #[inline]
-                pub fn get_duty_a(&self) -> u16 {
-                    self.cc().a() as u16
+                pub fn duty_a(&self) -> u16 {
+                    unsafe { self.ch_cc().a() as u16 }
                 }
 
                 /// Invert output A.
                 #[inline]
                 pub fn set_invert_a(&mut self, invert: bool) {
                     if invert {
-                        self.csr().set_a_inv();
+                        unsafe { self.ch_csr().set_a_inv(); }
                     } else {
-                        self.csr().clr_a_inv();
+                        unsafe { self.ch_csr().clr_a_inv(); }
                     }
                 }
 
                 /// Check if output A is inverted.
                 #[inline]
                 pub fn is_invert_a(&self) -> bool {
-                    self.csr().a_inv()
+                    unsafe { self.ch_csr().a_inv() }
                 }
 
                 // ============================================================
@@ -1259,29 +1263,29 @@ macro_rules! impl_pwm_slice {
                 /// so only the duty can differ between them.
                 #[inline]
                 pub fn set_duty_b(&self, value: u16) {
-                    self.cc().write_b(value as u32);
+                    unsafe { self.ch_cc().write_b(value as u32); }
                 }
 
                 /// Get duty cycle for channel B.
                 #[inline]
-                pub fn get_duty_b(&self) -> u16 {
-                    self.cc().b() as u16
+                pub fn duty_b(&self) -> u16 {
+                    unsafe { self.ch_cc().b() as u16 }
                 }
 
                 /// Invert output B.
                 #[inline]
                 pub fn set_invert_b(&mut self, invert: bool) {
                     if invert {
-                        self.csr().set_b_inv();
+                        unsafe { self.ch_csr().set_b_inv(); }
                     } else {
-                        self.csr().clr_b_inv();
+                        unsafe { self.ch_csr().clr_b_inv(); }
                     }
                 }
 
                 /// Check if output B is inverted.
                 #[inline]
                 pub fn is_invert_b(&self) -> bool {
-                    self.csr().b_inv()
+                    unsafe { self.ch_csr().b_inv() }
                 }
 
                 /// Set duty cycle for both channels in one register write.
@@ -1290,7 +1294,7 @@ macro_rules! impl_pwm_slice {
                 /// together without a transient mismatch between separate writes.
                 #[inline]
                 pub fn set_duty(&self, a: u16, b: u16) {
-                    self.cc().write_bits((a as u32) | ((b as u32) << 16));
+                    unsafe { self.ch_cc().write_bits((a as u32) | ((b as u32) << 16)); }
                 }
 
                 // ============================================================
@@ -1300,49 +1304,49 @@ macro_rules! impl_pwm_slice {
                 /// Enable interrupt for this slice (IRQ0).
                 #[inline]
                 pub fn enable_interrupt(&self) {
-                    self.pwm().irq0_inte.set_bits(1 << Self::SLICE);
+                    unsafe { self.regs().irq0_inte.set_bits(1 << Self::SLICE); }
                 }
 
                 /// Disable interrupt for this slice (IRQ0).
                 #[inline]
                 pub fn disable_interrupt(&self) {
-                    self.pwm().irq0_inte.clr_bits(1 << Self::SLICE);
+                    unsafe { self.regs().irq0_inte.clr_bits(1 << Self::SLICE); }
                 }
 
                 /// Check if interrupt is enabled for this slice (IRQ0).
                 #[inline]
                 pub fn is_interrupt_enabled(&self) -> bool {
-                    (self.pwm().irq0_inte.read_bits() & (1 << Self::SLICE)) != 0
+                    unsafe { (self.regs().irq0_inte.read_bits() & (1 << Self::SLICE)) != 0 }
                 }
 
                 /// Check if raw interrupt is pending for this slice.
                 #[inline]
                 pub fn is_interrupt_raw(&self) -> bool {
-                    (self.pwm().intr.read_bits() & (1 << Self::SLICE)) != 0
+                    unsafe { (self.regs().intr.read_bits() & (1 << Self::SLICE)) != 0 }
                 }
 
                 /// Check if interrupt is pending for this slice (masked).
                 #[inline]
                 pub fn is_interrupt_pending(&self) -> bool {
-                    (self.pwm().irq0_ints.read_bits() & (1 << Self::SLICE)) != 0
+                    unsafe { (self.regs().irq0_ints.read_bits() & (1 << Self::SLICE)) != 0 }
                 }
 
                 /// Clear interrupt for this slice.
                 #[inline]
                 pub fn clear_interrupt(&self) {
-                    self.pwm().intr.write_bits(1 << Self::SLICE);
+                    unsafe { self.regs().intr.write_bits(1 << Self::SLICE); }
                 }
 
                 /// Force interrupt for this slice (for testing).
                 #[inline]
                 pub fn force_interrupt(&self) {
-                    self.pwm().irq0_intf.set_bits(1 << Self::SLICE);
+                    unsafe { self.regs().irq0_intf.set_bits(1 << Self::SLICE); }
                 }
 
                 /// Clear forced interrupt for this slice.
                 #[inline]
                 pub fn clear_forced_interrupt(&self) {
-                    self.pwm().irq0_intf.clr_bits(1 << Self::SLICE);
+                    unsafe { self.regs().irq0_intf.clr_bits(1 << Self::SLICE); }
                 }
 
                 /// Check if a counter wrap occurred.
@@ -1395,7 +1399,7 @@ macro_rules! impl_pwm_slice {
                 #[inline]
                 pub fn stop_measurement(&self) -> u16 {
                     self.disable();
-                    self.get_counter()
+                    self.counter()
                 }
 
                 /// Check if overflow occurred during measurement.
@@ -1417,14 +1421,7 @@ macro_rules! impl_pwm_slice {
                     (self._pin_a, self._pin_b)
                 }
 
-                /// Get reference to the underlying register block.
-                ///
-                /// # Safety
-                /// Direct register access can bypass the HAL's safety guarantees.
-                #[inline]
-                pub unsafe fn regs(&self) -> &pico_rs_pac::pwm::RegisterBlock {
-                    self.pwm()
-                }
+
 
                 // ============================================================
                 // DMA Support
@@ -1442,8 +1439,7 @@ macro_rules! impl_pwm_slice {
                 /// (low 16 bits) and channel B (high 16 bits) duty in one transfer.
                 #[inline]
                 pub fn cc_address(&self) -> u32 {
-                    let pwm = self.pwm();
-                    &pwm.[<ch $slice_num _cc>] as *const _ as u32
+                    &self.pwm.[<ch $slice_num _cc>] as *const _ as u32
                 }
 
                 /// Get the TOP register address for DMA.
@@ -1451,8 +1447,7 @@ macro_rules! impl_pwm_slice {
                 /// DMA can write here to update the wrap value (period).
                 #[inline]
                 pub fn top_address(&self) -> u32 {
-                    let pwm = self.pwm();
-                    &pwm.[<ch $slice_num _top>] as *const _ as u32
+                    &self.pwm.[<ch $slice_num _top>] as *const _ as u32
                 }
 
                 // ============================================================
@@ -1496,7 +1491,7 @@ macro_rules! impl_pwm_slice {
                 /// ```
                 #[inline]
                 pub fn configure_frequency(&mut self, sys_clock: u32, target_freq: u32) -> u32 {
-                    self.configure_frequency_with_wrap(sys_clock, target_freq, self.get_wrap())
+                    self.configure_frequency_with_wrap(sys_clock, target_freq, self.wrap())
                 }
 
                 /// Configure wrap and divider together for a target PWM frequency.
@@ -1580,9 +1575,9 @@ macro_rules! impl_pwm_slice {
                 /// assert_eq!(freq, 1_000);
                 /// ```
                 #[inline]
-                pub fn get_frequency(&self, sys_clock: u32) -> u32 {
-                    let (div_int, div_frac) = self.get_div();
-                    let wrap = self.get_wrap();
+                pub fn frequency(&self, sys_clock: u32) -> u32 {
+                    let (div_int, div_frac) = self.div();
+                    let wrap = self.wrap();
 
                     if self.is_phase_correct() {
                         calc_phase_correct_frequency(sys_clock, div_int, div_frac, wrap)

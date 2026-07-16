@@ -724,7 +724,7 @@ fn main() -> ! {
 
         // --- 5a: 纯写入 ---
         {
-            let start = timer.get_time_us();
+            let start = timer.time_us();
 
             for iter in 0..iterations {
                 let seed = iter as u32;
@@ -734,7 +734,7 @@ fn main() -> ! {
                 compiler_fence(Ordering::SeqCst);
             }
 
-            let elapsed = timer.get_time_us() - start;
+            let elapsed = timer.time_us() - start;
             let mbps = (total_bytes as u64 * 1_000_000 / elapsed as u64) as u32;
             info!(
                 "  Write: {} KB in {} us ({} MB/s)",
@@ -748,7 +748,7 @@ fn main() -> ! {
         {
             let mut sink: u32 = 0;
 
-            let start = timer.get_time_us();
+            let start = timer.time_us();
 
             for _ in 0..iterations {
                 for &w in data.iter() {
@@ -757,7 +757,7 @@ fn main() -> ! {
                 compiler_fence(Ordering::SeqCst);
             }
 
-            let elapsed = timer.get_time_us() - start;
+            let elapsed = timer.time_us() - start;
             let mbps = (total_bytes as u64 * 1_000_000 / elapsed as u64) as u32;
 
             // 防止编译器优化掉 sink
@@ -774,7 +774,7 @@ fn main() -> ! {
 
         // --- 5c: 写后读 (模拟生产-消费) ---
         {
-            let start = timer.get_time_us();
+            let start = timer.time_us();
 
             for iter in 0..iterations {
                 let seed = iter as u32 * 13;
@@ -790,7 +790,7 @@ fn main() -> ! {
                 core::hint::black_box(sink);
             }
 
-            let elapsed = timer.get_time_us() - start;
+            let elapsed = timer.time_us() - start;
             let mbps = (2u64 * total_bytes * 1_000_000 / elapsed as u64) as u32;
             info!(
                 "  R/W:   {} KB in {} us ({} MB/s effective)",

@@ -104,7 +104,7 @@ impl SAU {
 
     /// Check if SAU is enabled
     #[inline]
-    pub fn enabled(&self) -> bool {
+    pub fn is_enabled(&self) -> bool {
         unsafe { (*Self::PTR).ctrl.read_bits() & ctrl::ENABLE != 0 }
     }
 

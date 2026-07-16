@@ -976,7 +976,7 @@ impl<'a, I2C: I2cBus> Mct8316z<'a, I2C> {
     /// 获取设备状态机当前状态
     ///
     /// 返回值: STATE_IDLE, STATE_RUN, STATE_FAULT 等
-    fn get_device_state(&self) -> Option<u32> {
+    fn device_state(&self) -> Option<u32> {
         self.read_reg(mct_reg::DEV_STATUS)
             .map(|v| (v & dev_status::DEV_STATE_MASK) >> dev_status::DEV_STATE_SHIFT)
     }
@@ -1318,7 +1318,7 @@ fn main() -> ! {
         // ==============================================================
         // 2. 读取设备状态机
         // ==============================================================
-        if let Some(state) = mct.get_device_state()
+        if let Some(state) = mct.device_state()
             && state != last_state
         {
             info!(

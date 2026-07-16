@@ -129,12 +129,12 @@ use core::fmt::Write;
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::clocks::{ClockBuilder};
-use pico_rs::main;
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::gpio::Pins;
+use pico_rs::main;
 use pico_rs::pac::Peripherals;
 use pico_rs::timer::Timer0;
-use pico_rs::uart::{DataBits, Parity, StopBits, Uart0};// ============================================================================
+use pico_rs::uart::{DataBits, Parity, StopBits, Uart0}; // ============================================================================
 // 配置参数
 // ============================================================================
 
@@ -217,11 +217,11 @@ fn main() -> ! {
 
     info!("Demo 1: Non-blocking echo for 5 seconds");
 
-    let start = timer.get_time_us();
+    let start = timer.time_us();
     let duration_us: u64 = 5_000_000; // 5 秒
     let mut echo_count: u32 = 0;
 
-    while timer.get_time_us() - start < duration_us {
+    while timer.time_us() - start < duration_us {
         // 非阻塞读取 — 不会卡在这里
         if let Some(byte) = uart.read_byte() {
             // 立即回发收到的字符

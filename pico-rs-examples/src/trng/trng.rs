@@ -316,11 +316,11 @@ fn main() -> ! {
         let count: u32 = 100;
 
         // 测量 random_u32 速度
-        let start = timer.get_time_us();
+        let start = timer.time_us();
         for _ in 0..count {
             let _ = trng.random_u32();
         }
-        let elapsed = timer.get_time_us() - start;
+        let elapsed = timer.time_us() - start;
         let per_call = elapsed / count as u64;
 
         info!(
@@ -330,11 +330,11 @@ fn main() -> ! {
 
         // 测量 fill_random 速度 (64 字节)
         let mut buf = [0u8; 64];
-        let start = timer.get_time_us();
+        let start = timer.time_us();
         for _ in 0..count {
             let _ = trng.fill_random(&mut buf);
         }
-        let elapsed = timer.get_time_us() - start;
+        let elapsed = timer.time_us() - start;
         let bytes_per_sec = (count as u64 * 64 * 1_000_000)
             .checked_div(elapsed)
             .unwrap_or(0);

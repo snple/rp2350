@@ -187,7 +187,7 @@ fn main() -> ! {
     loop {
         timer.delay_ms(1000);
 
-        let current_count = slice0.get_counter();
+        let current_count = slice0.counter();
 
         // Handle wrap-around
         let delta = if current_count >= last_count {

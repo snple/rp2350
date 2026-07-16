@@ -146,7 +146,7 @@ pub trait BufferControlRegister {
     }
 
     /// Get the length field
-    fn get_length(&self) -> u16 {
+    fn length(&self) -> u16 {
         (self.read_raw() & buffer_control_bits::LENGTH_0_MASK) as u16
     }
 }
@@ -184,7 +184,7 @@ pub trait EndpointControlRegister {
     }
 
     /// Check if enabled
-    fn enabled(&self) -> bool {
+    fn is_enabled(&self) -> bool {
         (self.read_raw() & ep_control_bits::ENABLE) != 0
     }
 }

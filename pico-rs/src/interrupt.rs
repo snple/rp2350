@@ -231,14 +231,14 @@ pub fn disable(interrupt: Interrupt) {
 
 /// Check if an interrupt is enabled in the **current core's** NVIC
 #[inline]
-pub fn enabled(interrupt: Interrupt) -> bool {
-    NVIC::enabled(interrupt as u16)
+pub fn is_enabled(interrupt: Interrupt) -> bool {
+    NVIC::is_enabled(interrupt as u16)
 }
 
 /// Check if an interrupt is pending in the **current core's** NVIC
 #[inline]
-pub fn pending(interrupt: Interrupt) -> bool {
-    NVIC::pending(interrupt as u16)
+pub fn is_pending(interrupt: Interrupt) -> bool {
+    NVIC::is_pending(interrupt as u16)
 }
 
 /// Set an interrupt as pending in the **current core's** NVIC
@@ -627,7 +627,7 @@ pub mod spare {
 /// } // Interrupts automatically restored here
 /// ```
 pub fn disable_all() -> InterruptGuard {
-    let was_enabled = pico_rs_rt::interrupt::enabled();
+    let was_enabled = pico_rs_rt::interrupt::is_enabled();
     pico_rs_rt::interrupt::disable();
     InterruptGuard { was_enabled }
 }

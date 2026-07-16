@@ -161,7 +161,7 @@ impl Sha256 {
 
     /// Get the current DMA transfer size configuration
     #[inline]
-    pub fn get_dma_size(&self) -> DmaSize {
+    pub fn dma_size(&self) -> DmaSize {
         match self.regs().csr.dma_size() {
             0 => DmaSize::Bit8,
             1 => DmaSize::Bit16,

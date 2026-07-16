@@ -186,7 +186,7 @@ impl FPU {
 
     /// Check if FPU is enabled
     #[inline]
-    pub fn enabled() -> bool {
+    pub fn is_enabled() -> bool {
         let cpacr = unsafe { core::ptr::read_volatile(CPACR) };
         // Check if both CP10 and CP11 have full access
         (cpacr & ((0b11 << 20) | (0b11 << 22))) == ((0b11 << 20) | (0b11 << 22))

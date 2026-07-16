@@ -17,13 +17,13 @@ pub trait UsbClass<B: UsbBus> {
     // ── Descriptors ──────────────────────────────────────────────────────────
 
     /// Append this class's interface and endpoint descriptors.
-    fn get_configuration_descriptors(&self, writer: &mut DescriptorWriter) -> UsbResult<()> {
+    fn configuration_descriptors(&self, writer: &mut DescriptorWriter) -> UsbResult<()> {
         let _ = writer;
         Ok(())
     }
 
     /// Return the string for a previously allocated [`StringIndex`], or `None`.
-    fn get_string(&self, index: StringIndex, lang_id: u16) -> Option<&str> {
+    fn string(&self, index: StringIndex, lang_id: u16) -> Option<&str> {
         let _ = (index, lang_id);
         None
     }
@@ -74,7 +74,7 @@ pub trait UsbClass<B: UsbBus> {
     // ── Alternate settings ────────────────────────────────────────────────────
 
     /// Return the current alternate setting for `interface`, or `None`.
-    fn get_alt_setting(&mut self, interface: InterfaceNumber) -> Option<u8> {
+    fn alt_setting(&mut self, interface: InterfaceNumber) -> Option<u8> {
         let _ = interface;
         None
     }

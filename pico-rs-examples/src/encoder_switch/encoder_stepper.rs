@@ -713,7 +713,7 @@ fn encoder_button_isr() {
         if !btn.get() {
             let now = {
                 let timer = unsafe { Timer0::steal() };
-                timer.get_time_us_32()
+                timer.time_us_32()
             };
 
             let last = LAST_BTN_TIME.load(Ordering::Relaxed);

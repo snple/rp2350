@@ -396,14 +396,14 @@ fn main() -> ! {
     info!("--- Demo 4: FIFO Round-Trip Latency ---");
     {
         let rounds: u32 = 100;
-        let start = timer.get_time_us();
+        let start = timer.time_us();
 
         for n in 0..rounds {
             fifo.write(n + 1);
             let _ = fifo.read();
         }
 
-        let elapsed = timer.get_time_us() - start;
+        let elapsed = timer.time_us() - start;
         let per_round = elapsed / rounds as u64;
 
         info!(

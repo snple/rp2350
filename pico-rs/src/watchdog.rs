@@ -188,7 +188,7 @@ impl Watchdog {
 
     /// Check if the watchdog is enabled
     #[inline]
-    pub fn enabled(&self) -> bool {
+    pub fn is_enabled(&self) -> bool {
         self.watchdog.ctrl.enable()
     }
 

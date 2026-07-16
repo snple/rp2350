@@ -113,13 +113,13 @@ impl SysTick {
     /// Read the current counter value (counts down from reload value)
     #[inline]
     pub fn read_counter(&self) -> u32 {
-        SYST::get_current()
+        SYST::current()
     }
 
     /// Read the reload value
     #[inline]
     pub fn read_reload(&self) -> u32 {
-        SYST::get_reload()
+        SYST::reload()
     }
 
     /// Check if the counter has reached zero since last check
@@ -132,7 +132,7 @@ impl SysTick {
     /// Get the calibration value (if available)
     #[inline]
     pub fn calibration(&self) -> Option<u32> {
-        SYST::get_ticks_per_10ms()
+        SYST::ticks_per_10ms()
     }
 
     /// Enable the SysTick counter
@@ -149,7 +149,7 @@ impl SysTick {
 
     /// Check if the counter is enabled
     #[inline]
-    pub fn enabled(&self) -> bool {
+    pub fn is_enabled(&self) -> bool {
         self.syst.is_counter_enabled()
     }
 
@@ -226,16 +226,16 @@ impl SysTick {
         // Clamp to max reload value
         let ticks = ticks.min(SYSTICK_MAX_RELOAD);
 
-        let reload = SYST::get_reload();
+        let reload = SYST::reload();
 
         // Read start value and track previous value for wrap detection
-        let mut last = SYST::get_current();
+        let mut last = SYST::current();
         let mut elapsed: u32 = 0;
 
         // Since SysTick counts down, we accumulate elapsed ticks
         // by detecting when the counter wraps (current > last means wrap occurred)
         loop {
-            let current = SYST::get_current();
+            let current = SYST::current();
 
             // Calculate ticks since last read, handling wrap-around
             let delta = if current <= last {

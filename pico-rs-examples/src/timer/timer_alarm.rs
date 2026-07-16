@@ -54,7 +54,7 @@ fn schedule_next_alarm<T>(timer: &T, alarm: u8, interval_us: u32)
 where
     T: AlarmTimer + MonotonicTimer,
 {
-    let deadline = timer.get_time_us_32().wrapping_add(interval_us);
+    let deadline = timer.time_us_32().wrapping_add(interval_us);
     timer.set_alarm_safe(alarm, deadline);
 }
 
@@ -152,7 +152,7 @@ fn TIMER0_IRQ_0() {
                 info!(
                     "alarm tick={}, now={} us",
                     *tick_count,
-                    timer.get_time_us_32()
+                    timer.time_us_32()
                 );
             }
 

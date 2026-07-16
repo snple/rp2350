@@ -257,7 +257,7 @@ fn main() -> ! {
     info!("");
 
     let mut last_position: i32 = 0;
-    let mut last_time = timer.get_time_us();
+    let mut last_time = timer.time_us();
     let mut print_count: u32 = 0;
 
     loop {
@@ -265,7 +265,7 @@ fn main() -> ! {
 
         // 读取当前位置 (原子操作, 与 ISR 无竞争)
         let position = POSITION.load(Ordering::Relaxed);
-        let now = timer.get_time_us();
+        let now = timer.time_us();
 
         // 计算自上次以来的增量和时间差
         let delta = position - last_position;
@@ -353,7 +353,7 @@ fn encoder_button_isr() {
         if !btn.get() {
             let now = {
                 let timer = unsafe { Timer0::steal() };
-                timer.get_time_us_32()
+                timer.time_us_32()
             };
 
             let last = LAST_BTN_TIME.load(Ordering::Relaxed);

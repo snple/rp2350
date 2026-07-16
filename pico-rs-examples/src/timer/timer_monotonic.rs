@@ -40,7 +40,7 @@ const REPORT_INTERVAL_US: u64 = 2_000_000;
 ///
 /// 通过 `wrapping_sub()` 做比较，可以在计时器最终发生回绕时仍保持正确的先后关系。
 fn wait_until<T: MonotonicTimer>(timer: &T, deadline_us: u64) {
-    while timer.get_time_us().wrapping_sub(deadline_us) >= (1u64 << 63) {
+    while timer.time_us().wrapping_sub(deadline_us) >= (1u64 << 63) {
         pico_rs_rt::asm::nop();
     }
 }
@@ -52,7 +52,7 @@ fn wait_until<T: MonotonicTimer>(timer: &T, deadline_us: u64) {
 ///
 /// 这样上层代码既可以用“等待多久”的心智模型，也能复用统一的底层等待实现。
 fn wait_for<T: MonotonicTimer>(timer: &T, duration_us: u64) {
-    let deadline = timer.get_time_us().wrapping_add(duration_us);
+    let deadline = timer.time_us().wrapping_add(duration_us);
     wait_until(timer, deadline);
 }
 
@@ -63,7 +63,7 @@ fn wait_for<T: MonotonicTimer>(timer: &T, duration_us: u64) {
 /// - 实现超时退出
 /// - 统计某段初始化流程耗时
 fn elapsed_us<T: MonotonicTimer>(timer: &T, start_us: u64) -> u64 {
-    timer.get_time_us().wrapping_sub(start_us)
+    timer.time_us().wrapping_sub(start_us)
 }
 
 #[main]
@@ -95,7 +95,7 @@ fn main() -> ! {
     led.set_low();
 
     // 记录示例启动时间，用于后续打印累计运行时长。
-    let start = timer.get_time_us();
+    let start = timer.time_us();
     let mut last_report = start;
     let mut led_on = false;
     let mut blink_count = 0u32;
@@ -117,14 +117,14 @@ fn main() -> ! {
         // 这里调用的是泛型辅助函数，它只要求 `timer` 实现 MonotonicTimer。
         wait_for(&timer, BLINK_INTERVAL_US);
 
-        let now = timer.get_time_us();
+        let now = timer.time_us();
         // 每 2 秒输出一次统计信息，展示如何基于 trait 读取当前时间和累计耗时。
         if now.wrapping_sub(last_report) >= REPORT_INTERVAL_US {
             info!(
                 "elapsed={} us, blink_count={}, low32={} us",
                 elapsed_us(&timer, start),
                 blink_count,
-                timer.get_time_us_32()
+                timer.time_us_32()
             );
             last_report = now;
         }

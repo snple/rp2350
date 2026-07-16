@@ -2217,8 +2217,7 @@ impl Crit1 {
     /// Increase the sensitivity of the glitch detectors from their default.
     #[inline(always)]
     pub fn glitch_detector_sens(&self) -> u32 {
-        (self.value.read_bits() & Self::GLITCH_DETECTOR_SENS_MASK)
-            >> Self::GLITCH_DETECTOR_SENS_OFFSET
+        (self.value.read_bits() & Self::GLITCH_DETECTOR_SENS_MASK) >> Self::GLITCH_DETECTOR_SENS_OFFSET
     }
 
     /// **GLITCH_DETECTOR_ENABLE** `[4]` (RO)
@@ -4173,8 +4172,7 @@ impl DefaultBootVersion0 {
     /// **DEFAULT_BOOT_VERSION0** `[23:0]` (RO)
     #[inline(always)]
     pub fn default_boot_version0(&self) -> u32 {
-        (self.value.read_bits() & Self::DEFAULT_BOOT_VERSION0_MASK)
-            >> Self::DEFAULT_BOOT_VERSION0_OFFSET
+        (self.value.read_bits() & Self::DEFAULT_BOOT_VERSION0_MASK) >> Self::DEFAULT_BOOT_VERSION0_OFFSET
     }
 }
 
@@ -4203,8 +4201,7 @@ impl DefaultBootVersion0Val {
     /// Read **DEFAULT_BOOT_VERSION0** `[23:0]`
     #[inline(always)]
     pub const fn default_boot_version0(&self) -> u32 {
-        (self.bits & DefaultBootVersion0::DEFAULT_BOOT_VERSION0_MASK)
-            >> DefaultBootVersion0::DEFAULT_BOOT_VERSION0_OFFSET
+        (self.bits & DefaultBootVersion0::DEFAULT_BOOT_VERSION0_MASK) >> DefaultBootVersion0::DEFAULT_BOOT_VERSION0_OFFSET
     }
 }
 
@@ -4257,8 +4254,7 @@ impl DefaultBootVersion0R1 {
     /// **DEFAULT_BOOT_VERSION0_R1** `[23:0]` (RO)
     #[inline(always)]
     pub fn default_boot_version0_r1(&self) -> u32 {
-        (self.value.read_bits() & Self::DEFAULT_BOOT_VERSION0_R1_MASK)
-            >> Self::DEFAULT_BOOT_VERSION0_R1_OFFSET
+        (self.value.read_bits() & Self::DEFAULT_BOOT_VERSION0_R1_MASK) >> Self::DEFAULT_BOOT_VERSION0_R1_OFFSET
     }
 }
 
@@ -4287,8 +4283,7 @@ impl DefaultBootVersion0R1Val {
     /// Read **DEFAULT_BOOT_VERSION0_R1** `[23:0]`
     #[inline(always)]
     pub const fn default_boot_version0_r1(&self) -> u32 {
-        (self.bits & DefaultBootVersion0R1::DEFAULT_BOOT_VERSION0_R1_MASK)
-            >> DefaultBootVersion0R1::DEFAULT_BOOT_VERSION0_R1_OFFSET
+        (self.bits & DefaultBootVersion0R1::DEFAULT_BOOT_VERSION0_R1_MASK) >> DefaultBootVersion0R1::DEFAULT_BOOT_VERSION0_R1_OFFSET
     }
 }
 
@@ -4341,8 +4336,7 @@ impl DefaultBootVersion0R2 {
     /// **DEFAULT_BOOT_VERSION0_R2** `[23:0]` (RO)
     #[inline(always)]
     pub fn default_boot_version0_r2(&self) -> u32 {
-        (self.value.read_bits() & Self::DEFAULT_BOOT_VERSION0_R2_MASK)
-            >> Self::DEFAULT_BOOT_VERSION0_R2_OFFSET
+        (self.value.read_bits() & Self::DEFAULT_BOOT_VERSION0_R2_MASK) >> Self::DEFAULT_BOOT_VERSION0_R2_OFFSET
     }
 }
 
@@ -4371,8 +4365,7 @@ impl DefaultBootVersion0R2Val {
     /// Read **DEFAULT_BOOT_VERSION0_R2** `[23:0]`
     #[inline(always)]
     pub const fn default_boot_version0_r2(&self) -> u32 {
-        (self.bits & DefaultBootVersion0R2::DEFAULT_BOOT_VERSION0_R2_MASK)
-            >> DefaultBootVersion0R2::DEFAULT_BOOT_VERSION0_R2_OFFSET
+        (self.bits & DefaultBootVersion0R2::DEFAULT_BOOT_VERSION0_R2_MASK) >> DefaultBootVersion0R2::DEFAULT_BOOT_VERSION0_R2_OFFSET
     }
 }
 
@@ -4425,8 +4418,7 @@ impl DefaultBootVersion1 {
     /// **DEFAULT_BOOT_VERSION1** `[23:0]` (RO)
     #[inline(always)]
     pub fn default_boot_version1(&self) -> u32 {
-        (self.value.read_bits() & Self::DEFAULT_BOOT_VERSION1_MASK)
-            >> Self::DEFAULT_BOOT_VERSION1_OFFSET
+        (self.value.read_bits() & Self::DEFAULT_BOOT_VERSION1_MASK) >> Self::DEFAULT_BOOT_VERSION1_OFFSET
     }
 }
 
@@ -4455,8 +4447,7 @@ impl DefaultBootVersion1Val {
     /// Read **DEFAULT_BOOT_VERSION1** `[23:0]`
     #[inline(always)]
     pub const fn default_boot_version1(&self) -> u32 {
-        (self.bits & DefaultBootVersion1::DEFAULT_BOOT_VERSION1_MASK)
-            >> DefaultBootVersion1::DEFAULT_BOOT_VERSION1_OFFSET
+        (self.bits & DefaultBootVersion1::DEFAULT_BOOT_VERSION1_MASK) >> DefaultBootVersion1::DEFAULT_BOOT_VERSION1_OFFSET
     }
 }
 
@@ -4509,8 +4500,7 @@ impl DefaultBootVersion1R1 {
     /// **DEFAULT_BOOT_VERSION1_R1** `[23:0]` (RO)
     #[inline(always)]
     pub fn default_boot_version1_r1(&self) -> u32 {
-        (self.value.read_bits() & Self::DEFAULT_BOOT_VERSION1_R1_MASK)
-            >> Self::DEFAULT_BOOT_VERSION1_R1_OFFSET
+        (self.value.read_bits() & Self::DEFAULT_BOOT_VERSION1_R1_MASK) >> Self::DEFAULT_BOOT_VERSION1_R1_OFFSET
     }
 }
 
@@ -4539,8 +4529,7 @@ impl DefaultBootVersion1R1Val {
     /// Read **DEFAULT_BOOT_VERSION1_R1** `[23:0]`
     #[inline(always)]
     pub const fn default_boot_version1_r1(&self) -> u32 {
-        (self.bits & DefaultBootVersion1R1::DEFAULT_BOOT_VERSION1_R1_MASK)
-            >> DefaultBootVersion1R1::DEFAULT_BOOT_VERSION1_R1_OFFSET
+        (self.bits & DefaultBootVersion1R1::DEFAULT_BOOT_VERSION1_R1_MASK) >> DefaultBootVersion1R1::DEFAULT_BOOT_VERSION1_R1_OFFSET
     }
 }
 
@@ -4593,8 +4582,7 @@ impl DefaultBootVersion1R2 {
     /// **DEFAULT_BOOT_VERSION1_R2** `[23:0]` (RO)
     #[inline(always)]
     pub fn default_boot_version1_r2(&self) -> u32 {
-        (self.value.read_bits() & Self::DEFAULT_BOOT_VERSION1_R2_MASK)
-            >> Self::DEFAULT_BOOT_VERSION1_R2_OFFSET
+        (self.value.read_bits() & Self::DEFAULT_BOOT_VERSION1_R2_MASK) >> Self::DEFAULT_BOOT_VERSION1_R2_OFFSET
     }
 }
 
@@ -4623,8 +4611,7 @@ impl DefaultBootVersion1R2Val {
     /// Read **DEFAULT_BOOT_VERSION1_R2** `[23:0]`
     #[inline(always)]
     pub const fn default_boot_version1_r2(&self) -> u32 {
-        (self.bits & DefaultBootVersion1R2::DEFAULT_BOOT_VERSION1_R2_MASK)
-            >> DefaultBootVersion1R2::DEFAULT_BOOT_VERSION1_R2_OFFSET
+        (self.bits & DefaultBootVersion1R2::DEFAULT_BOOT_VERSION1_R2_MASK) >> DefaultBootVersion1R2::DEFAULT_BOOT_VERSION1_R2_OFFSET
     }
 }
 
@@ -4945,8 +4932,7 @@ impl FlashPartitionSlotSize {
     /// **FLASH_PARTITION_SLOT_SIZE** `[15:0]` (RO)
     #[inline(always)]
     pub fn flash_partition_slot_size(&self) -> u32 {
-        (self.value.read_bits() & Self::FLASH_PARTITION_SLOT_SIZE_MASK)
-            >> Self::FLASH_PARTITION_SLOT_SIZE_OFFSET
+        (self.value.read_bits() & Self::FLASH_PARTITION_SLOT_SIZE_MASK) >> Self::FLASH_PARTITION_SLOT_SIZE_OFFSET
     }
 }
 
@@ -4975,8 +4961,7 @@ impl FlashPartitionSlotSizeVal {
     /// Read **FLASH_PARTITION_SLOT_SIZE** `[15:0]`
     #[inline(always)]
     pub const fn flash_partition_slot_size(&self) -> u32 {
-        (self.bits & FlashPartitionSlotSize::FLASH_PARTITION_SLOT_SIZE_MASK)
-            >> FlashPartitionSlotSize::FLASH_PARTITION_SLOT_SIZE_OFFSET
+        (self.bits & FlashPartitionSlotSize::FLASH_PARTITION_SLOT_SIZE_MASK) >> FlashPartitionSlotSize::FLASH_PARTITION_SLOT_SIZE_OFFSET
     }
 }
 
@@ -6109,8 +6094,7 @@ impl UsbBootFlagsR1Val {
     /// Read **USB_BOOT_FLAGS_R1** `[23:0]`
     #[inline(always)]
     pub const fn usb_boot_flags_r1(&self) -> u32 {
-        (self.bits & UsbBootFlagsR1::USB_BOOT_FLAGS_R1_MASK)
-            >> UsbBootFlagsR1::USB_BOOT_FLAGS_R1_OFFSET
+        (self.bits & UsbBootFlagsR1::USB_BOOT_FLAGS_R1_MASK) >> UsbBootFlagsR1::USB_BOOT_FLAGS_R1_OFFSET
     }
 }
 
@@ -6192,8 +6176,7 @@ impl UsbBootFlagsR2Val {
     /// Read **USB_BOOT_FLAGS_R2** `[23:0]`
     #[inline(always)]
     pub const fn usb_boot_flags_r2(&self) -> u32 {
-        (self.bits & UsbBootFlagsR2::USB_BOOT_FLAGS_R2_MASK)
-            >> UsbBootFlagsR2::USB_BOOT_FLAGS_R2_OFFSET
+        (self.bits & UsbBootFlagsR2::USB_BOOT_FLAGS_R2_MASK) >> UsbBootFlagsR2::USB_BOOT_FLAGS_R2_OFFSET
     }
 }
 
@@ -6285,8 +6268,7 @@ impl UsbWhiteLabelAddr {
     /// **USB_WHITE_LABEL_ADDR** `[15:0]` (RO)
     #[inline(always)]
     pub fn usb_white_label_addr(&self) -> u32 {
-        (self.value.read_bits() & Self::USB_WHITE_LABEL_ADDR_MASK)
-            >> Self::USB_WHITE_LABEL_ADDR_OFFSET
+        (self.value.read_bits() & Self::USB_WHITE_LABEL_ADDR_MASK) >> Self::USB_WHITE_LABEL_ADDR_OFFSET
     }
 }
 
@@ -6315,8 +6297,7 @@ impl UsbWhiteLabelAddrVal {
     /// Read **USB_WHITE_LABEL_ADDR** `[15:0]`
     #[inline(always)]
     pub const fn usb_white_label_addr(&self) -> u32 {
-        (self.bits & UsbWhiteLabelAddr::USB_WHITE_LABEL_ADDR_MASK)
-            >> UsbWhiteLabelAddr::USB_WHITE_LABEL_ADDR_OFFSET
+        (self.bits & UsbWhiteLabelAddr::USB_WHITE_LABEL_ADDR_MASK) >> UsbWhiteLabelAddr::USB_WHITE_LABEL_ADDR_OFFSET
     }
 }
 
@@ -48506,3 +48487,4 @@ pub struct RegisterBlock {
     /// This OTP location is always readable, and is write-protected by its own permissions.
     pub page63_lock1: Page63Lock1,
 }
+

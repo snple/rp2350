@@ -154,7 +154,7 @@ impl Rosc {
 
     /// Check if the oscillator is enabled
     #[inline]
-    pub fn enabled(&self) -> bool {
+    pub fn is_enabled(&self) -> bool {
         self.regs().status.enabled()
     }
 
@@ -354,7 +354,7 @@ impl Rosc {
     ///
     /// This is not suitable for cryptographic purposes.
     #[inline]
-    pub fn get_random_bit(&self) -> bool {
+    pub fn random_bit(&self) -> bool {
         self.regs().randombit.randombit()
     }
 
@@ -362,7 +362,7 @@ impl Rosc {
     ///
     /// This is not suitable for cryptographic purposes.
     #[inline]
-    pub fn get_random_byte(&self) -> u8 {
+    pub fn random_byte(&self) -> u8 {
         let rosc = self.regs();
         let mut byte = 0u8;
         for _ in 0..8 {
@@ -375,10 +375,10 @@ impl Rosc {
     ///
     /// This is not suitable for cryptographic purposes.
     #[inline]
-    pub fn get_random_u32(&self) -> u32 {
+    pub fn random_u32(&self) -> u32 {
         let mut val = 0u32;
         for _ in 0..32 {
-            val = (val << 1) | (self.get_random_bit() as u32);
+            val = (val << 1) | (self.random_bit() as u32);
         }
         val
     }
@@ -388,7 +388,7 @@ impl Rosc {
     /// This is not suitable for cryptographic purposes.
     pub fn fill_random(&self, buf: &mut [u8]) {
         for byte in buf.iter_mut() {
-            *byte = self.get_random_byte();
+            *byte = self.random_byte();
         }
     }
 

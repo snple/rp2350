@@ -432,7 +432,7 @@ macro_rules! impl_uart {
 
                 /// Check if the UART is enabled
                 #[inline]
-                pub fn enabled(&self) -> bool {
+                pub fn is_enabled(&self) -> bool {
                     self.uart.uartcr.uarten()
                 }
 

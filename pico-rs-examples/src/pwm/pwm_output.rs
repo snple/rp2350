@@ -225,7 +225,7 @@ fn main() -> ! {
     // - 目标频率: 1 kHz
     // - WRAP=999, 所以一个周期有 1000 个计数步
     let led_actual_hz = slice0.configure_frequency_with_wrap(SYS_CLK_HZ, 1_000, LED_WRAP);
-    let (led_div_int, led_div_frac) = slice0.get_div();
+    let (led_div_int, led_div_frac) = slice0.div();
     slice0.set_duty_a(0); // 初始占空比 = 0%
 
     // 启用 PWM 输出
@@ -271,7 +271,7 @@ fn main() -> ! {
     let mut slice1 = pwm.slice::<1>().output_a(pins.pin::<2>());
 
     let servo_actual_hz = slice1.configure_frequency_with_wrap(SYS_CLK_HZ, 50, SERVO_WRAP);
-    let (servo_div_int, servo_div_frac) = slice1.get_div();
+    let (servo_div_int, servo_div_frac) = slice1.div();
     slice1.set_duty_a(SERVO_MID_DUTY); // 初始 90°
 
     slice1.enable();

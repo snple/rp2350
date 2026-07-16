@@ -285,12 +285,12 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::clocks::ClockBuilder;
-use pico_rs::main;
 use pico_rs::gpio::{EdgeLevel, Pin, Pins};
 use pico_rs::interrupt::{self, Mutex};
+use pico_rs::main;
 use pico_rs::pac::{Interrupt, Peripherals};
 use pico_rs::pwm::Pwm;
-use pico_rs::timer::Timer0;// ============================================================================
+use pico_rs::timer::Timer0; // ============================================================================
 // 配置 — 根据电机和应用调整
 // ============================================================================
 
@@ -575,7 +575,7 @@ fn main() -> ! {
     // Timer0 Alarm 中断 — PI 速度控制循环 @100Hz
     // ------------------------------------------------------------------
     {
-        let now = timer.get_time_us_32();
+        let now = timer.time_us_32();
         LAST_HALL_TIME_US.store(now, Ordering::Relaxed);
         timer.set_alarm(0, now.wrapping_add(SPEED_LOOP_INTERVAL_US));
         timer.enable_alarm_interrupt(0);
@@ -606,7 +606,7 @@ fn main() -> ! {
                 .borrow(cs)
                 .borrow()
                 .as_ref()
-                .map_or(0, |t| t.get_time_us_32())
+                .map_or(0, |t| t.time_us_32())
         })
     };
 
@@ -737,7 +737,7 @@ fn IO_IRQ_BANK0() {
     // 计时：测量换向步周期
     interrupt::free(|cs| {
         if let Some(ref timer) = *TIMER.borrow(cs).borrow() {
-            let now = timer.get_time_us_32();
+            let now = timer.time_us_32();
             let last = LAST_HALL_TIME_US.load(Ordering::Relaxed);
             let period = now.wrapping_sub(last);
             LAST_HALL_TIME_US.store(now, Ordering::Relaxed);
@@ -769,7 +769,7 @@ fn TIMER0_IRQ_0() {
         if let Some(ref timer) = *TIMER.borrow(cs).borrow() {
             timer.clear_alarm_interrupt(0);
             SPEED_LOOP_TICK.store(true, Ordering::Relaxed);
-            let now = timer.get_time_us_32();
+            let now = timer.time_us_32();
             timer.set_alarm(0, now.wrapping_add(SPEED_LOOP_INTERVAL_US));
         }
     });

@@ -186,7 +186,7 @@ impl<'a, B: UsbBus> CdcAcm<'a, B> {
 // ─── UsbClass<B> implementation ───────────────────────────────────────────────
 
 impl<B: UsbBus> UsbClass<B> for CdcAcm<'_, B> {
-    fn get_configuration_descriptors(&self, w: &mut DescriptorWriter) -> UsbResult<()> {
+    fn configuration_descriptors(&self, w: &mut DescriptorWriter) -> UsbResult<()> {
         // ── IAD (Interface Association Descriptor) ────────────────────────────
         w.iad(
             self.comm_if,

@@ -1,6 +1,7 @@
 [workspace]
 resolver = "2"
 members = [
+    "xtask",
     "pico-rs",
     "pico-rs-pac",
     "pico-rs-macro",

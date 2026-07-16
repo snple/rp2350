@@ -160,7 +160,7 @@ impl Syscfg {
 
     /// Get the sync bypass state for a GPIO pin (0-31)
     #[inline]
-    pub fn get_gpio_sync_bypass(&self, pin: u8) -> bool {
+    pub fn gpio_sync_bypass(&self, pin: u8) -> bool {
         if pin >= 32 {
             return false;
         }
@@ -179,7 +179,7 @@ impl Syscfg {
 
     /// Get the sync bypass mask for GPIO pins 0-31
     #[inline]
-    pub fn get_gpio_sync_bypass_mask(&self) -> u32 {
+    pub fn gpio_sync_bypass_mask(&self) -> u32 {
         self.syscfg.proc_in_sync_bypass.gpio()
     }
 
@@ -285,7 +285,7 @@ impl Syscfg {
 
     /// Read the SWDO (SWDIO output) signal
     #[inline]
-    pub fn get_swdo(&self) -> bool {
+    pub fn swdo(&self) -> bool {
         self.syscfg.dbgforce.swdo()
     }
 
@@ -385,7 +385,7 @@ impl Syscfg {
 
     /// Get the raw memory power-down register value
     #[inline]
-    pub fn get_memory_power_down_mask(&self) -> u32 {
+    pub fn memory_power_down_mask(&self) -> u32 {
         self.syscfg.mempowerdown.read_bits()
     }
 
@@ -403,7 +403,7 @@ impl Syscfg {
 
     /// Get the auxiliary control register value
     #[inline]
-    pub fn get_auxctrl(&self) -> u8 {
+    pub fn auxctrl(&self) -> u8 {
         self.syscfg.auxctrl.auxctrl() as u8
     }
 }

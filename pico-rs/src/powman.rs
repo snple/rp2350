@@ -257,7 +257,7 @@ impl Powman {
 
     /// Get the current core voltage setting.
     #[inline]
-    pub fn get_voltage(&self) -> Voltage {
+    pub fn voltage(&self) -> Voltage {
         let raw = self.powman.vreg.vsel() as u8;
         // Safety: VSEL is 5 bits (0–31), all values are valid Voltage variants
         unsafe { core::mem::transmute(raw) }
@@ -329,7 +329,7 @@ impl Powman {
     // ========================================================================
 
     /// Get LPOSC frequency in Hz (approximately 32 kHz)
-    pub fn get_lposc_freq(&self) -> u32 {
+    pub fn lposc_freq(&self) -> u32 {
         // LPOSC is nominally 32.768 kHz but varies
         32768
     }
@@ -661,7 +661,7 @@ impl Powman {
     // ========================================================================
 
     /// Get current power state
-    pub fn get_power_state(&self) -> PowerState {
+    pub fn power_state(&self) -> PowerState {
         // State register shows which domains are OFF (inverted)
 
         !self.powman.state.read_bits() & 0xF
@@ -669,7 +669,7 @@ impl Powman {
 
     /// Check if a power domain is on
     pub fn is_domain_on(&self, domain: PowerDomain) -> bool {
-        (self.get_power_state() & (1 << domain as u32)) != 0
+        (self.power_state() & (1 << domain as u32)) != 0
     }
 
     /// Create a power state with domain on
@@ -991,13 +991,13 @@ impl AonTimer {
     }
 
     /// Get the current time
-    pub fn get_time(&self) -> Timespec {
+    pub fn time(&self) -> Timespec {
         Timespec::from_ms(self.powman.timer_get_ms())
     }
 
     /// Get the current time in milliseconds
     #[inline]
-    pub fn get_time_ms(&self) -> u64 {
+    pub fn time_ms(&self) -> u64 {
         self.powman.timer_get_ms()
     }
 
@@ -1075,15 +1075,15 @@ impl AonTimer {
     /// For true low-power sleep, use the alarm wakeup feature.
     pub fn wait_until(&self, ts: &Timespec) {
         let target_ms = ts.to_ms();
-        while self.get_time_ms() < target_ms {
+        while self.time_ms() < target_ms {
             core::hint::spin_loop();
         }
     }
 
     /// Delay for the specified duration (busy wait)
     pub fn delay_ms(&self, ms: u64) {
-        let target = self.get_time_ms() + ms;
-        while self.get_time_ms() < target {
+        let target = self.time_ms() + ms;
+        while self.time_ms() < target {
             core::hint::spin_loop();
         }
     }

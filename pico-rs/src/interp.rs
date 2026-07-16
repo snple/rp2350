@@ -354,7 +354,7 @@ pub trait InterpOps: InterpIndex {
 
     /// Get the current accumulator value for a lane.
     #[inline]
-    fn get_accumulator(&self, lane: usize) -> u32 {
+    fn accumulator(&self, lane: usize) -> u32 {
         with_interp_reg!(Self::index(), lane, accum, reg, reg.read_bits())
     }
 
@@ -366,7 +366,7 @@ pub trait InterpOps: InterpIndex {
 
     /// Get the current value of a base register.
     #[inline]
-    fn get_base(&self, base_idx: usize) -> u32 {
+    fn base(&self, base_idx: usize) -> u32 {
         with_interp_reg!(Self::index(), base_idx, base, reg, reg.read_bits())
     }
 
@@ -414,7 +414,7 @@ pub trait InterpOps: InterpIndex {
 
     /// Get the raw shift+mask value for a lane (BASE not added).
     #[inline]
-    fn get_raw(&self, lane: usize) -> u32 {
+    fn raw(&self, lane: usize) -> u32 {
         with_interp_reg!(Self::index(), lane, add_raw, reg, reg.read_bits())
     }
 
@@ -422,8 +422,8 @@ pub trait InterpOps: InterpIndex {
     #[inline]
     fn save(&self) -> State {
         State {
-            accum: [self.get_accumulator(0), self.get_accumulator(1)],
-            base: [self.get_base(0), self.get_base(1), self.get_base(2)],
+            accum: [self.accumulator(0), self.accumulator(1)],
+            base: [self.base(0), self.base(1), self.base(2)],
             ctrl: [
                 with_interp_reg!(Self::index(), 0, ctrl, reg, reg.read_bits()),
                 with_interp_reg!(Self::index(), 1, ctrl, reg, reg.read_bits()),

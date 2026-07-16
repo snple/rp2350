@@ -54,7 +54,7 @@ fn main() -> ! {
     let timer = Timer0::init(dp.TIMER0);
 
     // Set up first alarm
-    let now = timer.get_time_us_32();
+    let now = timer.time_us_32();
     timer.set_alarm(0, now.wrapping_add(BLINK_INTERVAL_US));
     timer.enable_alarm_interrupt(0);
 
@@ -107,7 +107,7 @@ fn TIMER0_IRQ_0() {
             }
 
             // Schedule next alarm
-            let now = timer.get_time_us_32();
+            let now = timer.time_us_32();
             timer.set_alarm(0, now.wrapping_add(BLINK_INTERVAL_US));
         }
     });

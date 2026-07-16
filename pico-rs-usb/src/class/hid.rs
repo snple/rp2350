@@ -356,7 +356,7 @@ impl<'a, B: UsbBus> HidClass<'a, B> {
 // ─── UsbClass<B> implementation ───────────────────────────────────────────────
 
 impl<B: UsbBus> UsbClass<B> for HidClass<'_, B> {
-    fn get_configuration_descriptors(&self, w: &mut DescriptorWriter) -> UsbResult<()> {
+    fn configuration_descriptors(&self, w: &mut DescriptorWriter) -> UsbResult<()> {
         let num_eps: u8 = 1 + self.int_out.is_some() as u8;
         w.interface(
             self.interface,
