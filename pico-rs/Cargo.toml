@@ -23,6 +23,8 @@ rp2350b = []  # RP2350B: 48 GPIO pins (0-47)
 # Register this crate as the critical-section implementation provider.
 critical-section-impl = []
 panic-handler = []
+# Copy .text and .rodata to RAM at startup so all code runs from RAM.
+run-from-ram = ["pico-rs-rt/run-from-ram"]
 
 [package.metadata.docs.rs]
 features = ["defmt"]

@@ -79,6 +79,22 @@ unsafe extern "C" {
     static mut __sdata: u32; // Start of .data in RAM
     static mut __edata: u32; // End of .data in RAM
 
+    // Text section (run-from-ram only)
+    #[cfg(feature = "run-from-ram")]
+    static __sitext: u32; // LMA of .text
+    #[cfg(feature = "run-from-ram")]
+    static mut __stext: u32; // Start of .text in RAM
+    #[cfg(feature = "run-from-ram")]
+    static mut __etext: u32; // End of .text in RAM
+
+    // Rodata section (run-from-ram only)
+    #[cfg(feature = "run-from-ram")]
+    static __sirodata: u32; // LMA of .rodata
+    #[cfg(feature = "run-from-ram")]
+    static mut __srodata: u32; // Start of .rodata in RAM
+    #[cfg(feature = "run-from-ram")]
+    static mut __erodata: u32; // End of .rodata in RAM
+
     // RAM function section
     static __siramfunc: u32; // LMA of .ramfunc
     static mut __sramfunc: u32; // Start of .ramfunc in RAM
@@ -103,7 +119,83 @@ unsafe extern "C" {
 #[doc(hidden)]
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn Reset() -> ! {
-    // Call pre-init (typically empty, but can be overridden)
+    // ── run-from-ram: copy .text FIRST so all subsequent code is callable ──
+    // Inline asm avoids calling read_volatile / write_volatile (which live
+    // in .text and haven't been copied to RAM yet in debug builds).
+    #[cfg(feature = "run-from-ram")]
+    unsafe {
+        let mut src = &raw const __sitext as u32;
+        let mut dst = &raw mut __stext as u32;
+        let end = &raw mut __etext as u32;
+
+        core::arch::asm!(
+            "1:",
+            "cmp {dst}, {end}",
+            "bhs 2f",
+            "ldr {tmp}, [{src}]",
+            "str {tmp}, [{dst}]",
+            "adds {src}, #4",
+            "adds {dst}, #4",
+            "b 1b",
+            "2:",
+            src = inout(reg) src,
+            dst = inout(reg) dst,
+            end = in(reg) end,
+            tmp = out(reg) _,
+            options(nomem, nostack, preserves_flags),
+        );
+        // 'src' and 'dst' are consumed by the asm loop; silence unused-assign
+        _ = src;
+        _ = dst;
+
+        // Self-check: verify the first word was copied.
+        let first_src: u32;
+        let first_dst: u32;
+        core::arch::asm!(
+            "ldr {s}, [{src}]",
+            "ldr {d}, [{dst}]",
+            src = in(reg) &raw const __sitext,
+            dst = in(reg) &raw const __stext,
+            s = out(reg) first_src,
+            d = out(reg) first_dst,
+            options(nomem, nostack, preserves_flags),
+        );
+        if first_src != first_dst {
+            loop {
+                core::arch::asm!("bkpt #1", options(nomem, nostack, preserves_flags));
+            }
+        }
+    }
+
+    #[cfg(feature = "run-from-ram")]
+    unsafe {
+        let mut src = &raw const __sirodata;
+        let mut dst = &raw mut __srodata;
+        let end = &raw mut __erodata;
+
+        while dst < end {
+            core::ptr::write_volatile(dst, core::ptr::read_volatile(src));
+            src = src.offset(1);
+            dst = dst.offset(1);
+        }
+
+        // I-cache coherency: code is now in RAM, make it visible to I-side.
+        // DSB+ISB alone only flushes the pipeline; if the Cortex-M33 has an
+        // I-cache (configurable), it may still hold stale data.
+        core::arch::asm!(
+            "dsb sy",
+            "isb sy",
+            "movw r0, #0xEF50",
+            "movt r0, #0xE000",
+            "str r0, [r0]",    // ICIALLU — invalidate entire I-cache
+            "dsb sy",
+            "isb sy",
+            out("r0") _,
+            options(nomem, nostack, preserves_flags),
+        );
+    }
+
+    // Call pre-init (safe now — .text is in RAM when run-from-ram is active)
     unsafe { __pre_init() };
 
     // Initialize .data section (copy from flash to RAM)
@@ -157,19 +249,43 @@ pub unsafe extern "C" fn Reset() -> ! {
         );
     }
 
-    // Enable FPU (CP10 and CP11)
-    // RP2350's Cortex-M33 has FPU, enable it unconditionally
+    // ── Platform init: FPU + unaligned access ──────────────────────────
     unsafe {
+        // CPACR (Coprocessor Access Control Register) — enable FPU.
+        // CP10 = bits [21:20], CP11 = bits [23:22]; 0b11 = full access.
         const CPACR: *mut u32 = 0xE000_ED88 as *mut u32;
         let cpacr = core::ptr::read_volatile(CPACR);
-        // Full access to CP10 and CP11
         core::ptr::write_volatile(CPACR, cpacr | (0b11 << 20) | (0b11 << 22));
-        // Memory barrier to ensure FPU is enabled before use
-        core::arch::asm!("dsb", "isb", options(nomem, nostack, preserves_flags));
+
+        // CCR (Configuration & Control Register) at 0xE000_ED14.
+        // Bit 3 (UNALIGN_TRP): clear to allow unaligned LDR/STR on Normal memory.
+        const CCR: *mut u32 = 0xE000_ED14 as *mut u32;
+        let ccr = core::ptr::read_volatile(CCR);
+        core::ptr::write_volatile(CCR, ccr & !(1 << 3));
+
+        core::arch::asm!("dsb sy", "isb sy", options(nomem, nostack, preserves_flags));
     }
 
-    // Call user's main function
-    unsafe { main() }
+    // Call user's main function.
+    //
+    // In run-from-ram mode, Reset is in FLASH (0x10xxxxxx) while main is
+    // linked to RAM (0x20xxxxxx).  A direct BL would exceed the ±16 MB
+    // range and require a linker-generated veneer.  We use BLX <reg>
+    // instead, which has unlimited range and needs no veneer.
+    #[cfg(feature = "run-from-ram")]
+    unsafe {
+        let main_addr = main as *const () as u32;
+        core::arch::asm!(
+            "blx {main}",
+            main = in(reg) main_addr,
+            options(noreturn, nomem, nostack)
+        );
+    }
+
+    #[cfg(not(feature = "run-from-ram"))]
+    unsafe {
+        main()
+    }
 }
 
 /// Reset vector (entry point address)

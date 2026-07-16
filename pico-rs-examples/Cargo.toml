@@ -9,6 +9,7 @@ autobins = false
 [features]
 default = []
 rp2350b = ["pico-rs/rp2350b"]
+run-from-ram = ["pico-rs/run-from-ram"]
 
 [dependencies]
 pico-rs.workspace = true

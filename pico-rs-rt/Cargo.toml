@@ -13,6 +13,7 @@ categories = ["embedded", "hardware-support", "no-std"]
 [features]
 default = ["rt"]
 rt = []
+run-from-ram = []
 
 [build-dependencies]
 
