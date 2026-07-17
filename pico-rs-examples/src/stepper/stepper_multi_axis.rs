@@ -85,7 +85,7 @@ const FWD_LEVEL: bool = false;
 const RUN_CURRENT: u8 = 16;
 const HOLD_CURRENT: u8 = 4;
 const IHOLD_DELAY: u8 = 10;
-const SG_THRESHOLD: u32 = 45;
+const SG_THRESHOLD: u32 = 50;
 const TMC_UART_BAUD: u32 = 115_200;
 const INDEX_BACKOFF: u32 = 10;
 
