@@ -125,6 +125,7 @@ mod critical_section_impl;
 
 // Re-export pico-rs-rt for convenience
 pub use pico_rs_rt as rt;
+pub use pico_rs_rt::Peripherals as CorePeripherals;
 
 // Re-export pico-rs-pac
 pub use pico_rs_pac as pac;

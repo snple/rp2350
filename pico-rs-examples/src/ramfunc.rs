@@ -20,14 +20,13 @@
 use defmt::*;
 use defmt_rtt as _;
 
+use pico_rs::CorePeripherals;
 use pico_rs::Delay;
+use pico_rs::Peripherals;
 use pico_rs::bind;
 use pico_rs::interrupt;
 use pico_rs::main;
-use pico_rs::pac::Interrupt;
-use pico_rs::pac::Peripherals;
 use pico_rs::ramfunc;
-use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 
 const CLOCK_FREQ_HZ: u32 = 12_000_000;
 
@@ -159,12 +158,12 @@ fn main() -> ! {
 
     // Enable SPARE_IRQ_0 and manually pend it to demonstrate the RAM ISR
     unsafe {
-        interrupt::set_priority(Interrupt::SPARE_IRQ_0, 0xC0);
+        interrupt::set_priority(interrupt::spare::SPARE_IRQ_0, 0xC0);
     }
     unsafe {
-        interrupt::enable(Interrupt::SPARE_IRQ_0);
+        interrupt::enable(interrupt::spare::SPARE_IRQ_0);
     }
-    interrupt::pend(Interrupt::SPARE_IRQ_0);
+    interrupt::pend(interrupt::spare::SPARE_IRQ_0);
     info!("SPARE_IRQ_0 enabled & pended — ram_isr should fire now");
     info!("ISR_COUNT = {} (expected: 1)", unsafe { ISR_COUNT });
 
@@ -188,7 +187,7 @@ fn main() -> ! {
 
         // Every 10 iterations, print a status line and pend the RAM ISR
         if counter % 10 == 0 {
-            interrupt::pend(Interrupt::SPARE_IRQ_0);
+            interrupt::pend(interrupt::spare::SPARE_IRQ_0);
             info!(
                 "iter={}  fib={}  sq={}  isr_cnt={}",
                 counter,

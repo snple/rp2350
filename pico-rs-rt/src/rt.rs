@@ -257,12 +257,6 @@ pub unsafe extern "C" fn Reset() -> ! {
         let cpacr = core::ptr::read_volatile(CPACR);
         core::ptr::write_volatile(CPACR, cpacr | (0b11 << 20) | (0b11 << 22));
 
-        // CCR (Configuration & Control Register) at 0xE000_ED14.
-        // Bit 3 (UNALIGN_TRP): clear to allow unaligned LDR/STR on Normal memory.
-        const CCR: *mut u32 = 0xE000_ED14 as *mut u32;
-        let ccr = core::ptr::read_volatile(CCR);
-        core::ptr::write_volatile(CCR, ccr & !(1 << 3));
-
         core::arch::asm!("dsb sy", "isb sy", options(nomem, nostack, preserves_flags));
     }
 
