@@ -179,20 +179,12 @@ pub unsafe extern "C" fn Reset() -> ! {
             dst = dst.offset(1);
         }
 
-        // I-cache coherency: code is now in RAM, make it visible to I-side.
-        // DSB+ISB alone only flushes the pipeline; if the Cortex-M33 has an
-        // I-cache (configurable), it may still hold stale data.
-        core::arch::asm!(
-            "dsb sy",
-            "isb sy",
-            "movw r0, #0xEF50",
-            "movt r0, #0xE000",
-            "str r0, [r0]",    // ICIALLU — invalidate entire I-cache
-            "dsb sy",
-            "isb sy",
-            out("r0") _,
-            options(nomem, nostack, preserves_flags),
-        );
+        // I-cache / pipeline coherency: code is now in RAM.
+        // Cortex-M33 has a modified Harvard architecture with unified bus
+        // to RAM — DSB+ISB alone is sufficient to flush the pipeline and
+        // make the newly written code visible to instruction fetch.
+        // (RP2350's M33 has no I-cache, so ICIALLU is unnecessary.)
+        core::arch::asm!("dsb sy", "isb sy", options(nomem, nostack, preserves_flags));
     }
 
     // Call pre-init (safe now — .text is in RAM when run-from-ram is active)

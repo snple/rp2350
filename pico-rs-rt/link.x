@@ -85,7 +85,6 @@ SECTIONS
     .text _stext :
     {
         __stext = .;
-        *(.Reset);
         *(.text .text.*);
 
         /* HardFault trampoline must be near HardFault handler */
@@ -123,8 +122,8 @@ SECTIONS
         __sramfunc = .;
         *(.ramfunc .ramfunc.*);
         . = ALIGN(4);
+        __eramfunc = .;
     } > RAM AT>FLASH
-    __eramfunc = .;
     __siramfunc = LOADADDR(.ramfunc);
 
     /* ================================================================
@@ -147,8 +146,8 @@ SECTIONS
         __veneer_base = .;
         *(.gnu.sgstubs*)
         . = ALIGN(32);
+        __veneer_limit = .;
     } > FLASH
-    __veneer_limit = .;
 
     /* Uninitialized Data - zeroed at startup */
     .bss (NOLOAD) : ALIGN(4)
@@ -169,16 +168,16 @@ SECTIONS
         __euninit = .;
     } > RAM
 
-    /* Heap starts here */
-    . = ALIGN(4);
-    PROVIDE(__sheap = .);
-    PROVIDE(_stack_end = .);
-
-    /* Dynamic relocations check */
+    /* Dynamic relocations check — must precede heap/stack boundary */
     .got (NOLOAD) :
     {
         KEEP(*(.got .got.*));
     }
+
+    /* Heap starts here */
+    . = ALIGN(4);
+    PROVIDE(__sheap = .);
+    PROVIDE(_stack_end = .);
 
     /* Discard unused exception info */
     /DISCARD/ :
@@ -198,6 +197,12 @@ ERROR(pico-rs-rt): FLASH origin must be 4-byte aligned");
 
 ASSERT(ORIGIN(RAM) % 4 == 0, "
 ERROR(pico-rs-rt): RAM origin must be 4-byte aligned");
+
+ASSERT(__stext % 4 == 0 && __etext % 4 == 0, "
+BUG(pico-rs-rt): .text is not 4-byte aligned");
+
+ASSERT(__srodata % 4 == 0 && __erodata % 4 == 0, "
+BUG(pico-rs-rt): .rodata is not 4-byte aligned");
 
 ASSERT(__sramfunc % 4 == 0 && __eramfunc % 4 == 0, "
 BUG(pico-rs-rt): .ramfunc is not 4-byte aligned");

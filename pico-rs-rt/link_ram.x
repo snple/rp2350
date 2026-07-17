@@ -7,17 +7,28 @@
  * Enable with:  pico-rs-rt = { features = ["run-from-ram"] }
  */
 
+/* Include the memory layout (provided by application or BSP) */
 INCLUDE memory.x
 
+/* `DefaultHandler_` is the runtime fallback implementation.
+ * `DefaultHandler` is the public weak alias used by this script and device.x.
+ * A user-defined `DefaultHandler` function overrides this alias.
+ */
 PROVIDE(DefaultHandler = DefaultHandler_);
+
+/* Include device-specific interrupt handlers (provided by PAC) */
 INCLUDE device.x
+
+/* Entry point */
 ENTRY(Reset);
 
+/* External symbols that must be provided */
 EXTERN(__RESET_VECTOR);
 EXTERN(Reset);
 EXTERN(__EXCEPTIONS);
 EXTERN(DefaultHandler);
 
+/* Default exception handlers (can be overridden) */
 PROVIDE(NonMaskableInt = DefaultHandler);
 PROVIDE(HardFault = HardFault_);
 PROVIDE(MemoryManagement = DefaultHandler);
@@ -29,7 +40,10 @@ PROVIDE(DebugMonitor = DefaultHandler);
 PROVIDE(PendSV = DefaultHandler);
 PROVIDE(SysTick = DefaultHandler);
 
+/* Device interrupts (provided by device crate) */
 EXTERN(__INTERRUPTS);
+
+/* Pre-init function (optional, for assembly-level early init) */
 PROVIDE(__pre_init = DefaultPreInit);
 
 SECTIONS
@@ -42,14 +56,23 @@ SECTIONS
      * FLASH-resident Sections (NOT copied to RAM)
      * ================================================================ */
 
+    /* Vector Table - must be at the start of flash */
     .vector_table ORIGIN(FLASH) :
     {
         __vector_table = .;
+
+        /* Initial Stack Pointer (8-byte aligned) */
         LONG(_stack_start & 0xFFFFFFF8);
+
+        /* Reset Vector */
         KEEP(*(.vector_table.reset_vector));
+
+        /* Exception Vectors (handlers 2-15) */
         __exceptions = .;
         KEEP(*(.vector_table.exceptions));
         __eexceptions = .;
+
+        /* Device-specific Interrupt Vectors */
         KEEP(*(.vector_table.interrupts));
     } > FLASH
 
@@ -91,7 +114,19 @@ SECTIONS
     } > RAM AT>FLASH
     __sirodata = LOADADDR(.rodata);
 
-    /* RAM Functions — same as normal mode but VMA/LMA semantics match */
+    /* ================================================================
+     * RAM Functions (.ramfunc) — code loaded into RAM at startup
+     * ================================================================
+     *
+     * Functions marked with #[ramfunc] are placed here.  The linker
+     * allocates space for them in RAM (VMA) but stores the initial
+     * content in FLASH (LMA).  The startup code copies them to RAM
+     * before calling main().
+     *
+     * Usage:
+     *   #[ramfunc]
+     *   fn flash_write(...) { ... }
+     */
     .ramfunc : ALIGN(4)
     {
         __sramfunc = .;
@@ -101,7 +136,7 @@ SECTIONS
     } > RAM AT>FLASH
     __siramfunc = LOADADDR(.ramfunc);
 
-    /* Initialized Data */
+    /* Initialized Data - copied from FLASH to RAM at startup */
     .data : ALIGN(4)
     {
         __sdata = .;
@@ -124,6 +159,7 @@ SECTIONS
      * Zero-initialised RAM Sections
      * ================================================================ */
 
+    /* Uninitialized Data - zeroed at startup */
     .bss (NOLOAD) : ALIGN(4)
     {
         __sbss = .;
@@ -133,6 +169,7 @@ SECTIONS
         __ebss = .;
     } > RAM
 
+    /* Explicitly Uninitialized Data - NOT zeroed at startup */
     .uninit (NOLOAD) : ALIGN(4)
     {
         __suninit = .;
@@ -141,15 +178,18 @@ SECTIONS
         __euninit = .;
     } > RAM
 
-    . = ALIGN(4);
-    PROVIDE(__sheap = .);
-    PROVIDE(_stack_end = .);
-
+    /* Dynamic relocations check — must precede heap/stack boundary */
     .got (NOLOAD) :
     {
         KEEP(*(.got .got.*));
     }
 
+    /* Heap starts here */
+    . = ALIGN(4);
+    PROVIDE(__sheap = .);
+    PROVIDE(_stack_end = .);
+
+    /* Discard unused exception info */
     /DISCARD/ :
     {
         *(.ARM.exidx);
@@ -207,11 +247,13 @@ ERROR(pico-rs-rt): stack end must be 4-byte aligned");
 ASSERT(_stack_start >= _stack_end, "
 ERROR(pico-rs-rt): stack end must be below stack start");
 
+/* Vector table checks */
 ASSERT(__exceptions == ADDR(.vector_table) + 0x8, "
 BUG(pico-rs-rt): reset vector is missing");
 
 ASSERT(__eexceptions == ADDR(.vector_table) + 0x40, "
 BUG(pico-rs-rt): exception vectors are missing");
 
+/* Dynamic relocation check */
 ASSERT(SIZEOF(.got) == 0, "
 ERROR(pico-rs-rt): .got section detected - dynamic relocations not supported");
