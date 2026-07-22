@@ -71,7 +71,7 @@ use pico_rs::uart::{DataBits, Parity, StopBits, Uart1};
 // ============================================================================
 
 const START_SPEED_HZ: u32 = 400;
-const RUN_SPEED_HZ: u32 = 20000;
+const RUN_SPEED_HZ: u32 = 40000;
 const ACCEL_STEPS: u32 = 100;
 const BLANKING_STEPS: u32 = 200;
 const STEP_PULSE_US: u32 = 3;
@@ -85,7 +85,7 @@ const FWD_LEVEL: bool = false;
 const RUN_CURRENT: u8 = 16;
 const HOLD_CURRENT: u8 = 4;
 const IHOLD_DELAY: u8 = 10;
-const SG_THRESHOLD: u32 = 50;
+const SG_THRESHOLD: u32 = 90;
 const TMC_UART_BAUD: u32 = 115_200;
 const INDEX_BACKOFF: u32 = 10;
 
@@ -303,7 +303,7 @@ macro_rules! tmc_init {
 //   两端各留 5mm 安全边距 → 有效行程 45mm → 72000 微步
 // ============================================================================
 // 1mm 对应微步数
-const STEPS_PER_MM: u32 = 1600;
+const STEPS_PER_MM: u32 = 200 * MICROSTEPPING / 2;
 
 // 极限行程 (55mm)
 const MAX_TRAVEL: u32 = 55 * STEPS_PER_MM;

@@ -12,8 +12,8 @@ use proc_macro2::Span;
 use quote::quote;
 use std::collections::HashSet;
 use syn::{
-    AttrStyle, Attribute, Expr, FnArg, Ident, Item, ItemFn, ItemStatic, ReturnType, Stmt, Token,
-    Type, Visibility,
+    AttrStyle, Attribute, Expr, FnArg, Ident, Item, ItemFn, ItemStatic, ReturnType, Safety, Stmt,
+    Token, Type, Visibility,
     parse::{self, Parse},
     parse_macro_input,
     punctuated::Punctuated,
@@ -487,7 +487,7 @@ pub fn exception(args: TokenStream, input: TokenStream) -> TokenStream {
     };
 
     // Check if unsafe is required
-    if f.sig.unsafety.is_none() {
+    if matches!(f.sig.safety, Safety::Default) {
         match exn {
             Exception::DefaultHandler | Exception::HardFault(_) | Exception::NonMaskableInt => {
                 let name = format!("{}", exn);
