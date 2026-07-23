@@ -1,6 +1,7 @@
-//! [`UsbClass`] trait and USB class implementations (CDC ACM, HID, …).
+//! [`UsbClass`] trait and USB class implementations (CDC ACM, HID, GS_USB, …).
 
 pub mod cdc_acm;
+pub mod gs_usb;
 pub mod hid;
 pub mod uac;
 
