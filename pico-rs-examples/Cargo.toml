@@ -284,6 +284,10 @@ name = "encoder_switch"
 path = "src/encoder_switch/encoder_switch.rs"
 
 [[bin]]
+name = "usb_audio_speaker"
+path = "src/usb_audio/usb_audio_speaker.rs"
+
+[[bin]]
 name = "encoder_stepper"
 path = "src/encoder_switch/encoder_stepper.rs"
 

@@ -2,6 +2,7 @@
 
 pub mod cdc_acm;
 pub mod hid;
+pub mod uac;
 
 use crate::bus::{InterfaceNumber, StringIndex, UsbBus};
 use crate::control::{ControlIn, ControlOut};

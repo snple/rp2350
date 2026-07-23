@@ -10,14 +10,14 @@ use crate::error::{UsbError, UsbResult};
 // ─── Standard descriptor type codes ──────────────────────────────────────────
 
 pub mod descriptor_type {
-    pub const DEVICE:        u8 = 1;
+    pub const DEVICE: u8 = 1;
     pub const CONFIGURATION: u8 = 2;
-    pub const STRING:        u8 = 3;
-    pub const INTERFACE:     u8 = 4;
-    pub const ENDPOINT:      u8 = 5;
-    pub const IAD:           u8 = 11;
-    pub const BOS:           u8 = 15;
-    pub const CAPABILITY:    u8 = 16;
+    pub const STRING: u8 = 3;
+    pub const INTERFACE: u8 = 4;
+    pub const ENDPOINT: u8 = 5;
+    pub const IAD: u8 = 11;
+    pub const BOS: u8 = 15;
+    pub const CAPABILITY: u8 = 16;
 }
 
 /// USB language IDs (ISO 639).
@@ -29,11 +29,11 @@ pub mod lang_id {
 // ─── USB class / subclass / protocol constants ────────────────────────────────
 
 pub mod class_code {
-    pub const CDC:      u8 = 0x02;
+    pub const CDC: u8 = 0x02;
     pub const CDC_DATA: u8 = 0x0A;
-    pub const HID:      u8 = 0x03;
-    pub const MISC:     u8 = 0xEF;
-    pub const NONE:     u8 = 0x00;
+    pub const HID: u8 = 0x03;
+    pub const MISC: u8 = 0xEF;
+    pub const NONE: u8 = 0x00;
 }
 
 pub mod cdc_subclass {
@@ -42,18 +42,18 @@ pub mod cdc_subclass {
 
 pub mod cdc_protocol {
     pub const AT_COMMANDS: u8 = 0x01;
-    pub const NONE:        u8 = 0x00;
+    pub const NONE: u8 = 0x00;
 }
 
 /// CDC functional descriptors subtypes.
 pub mod cdc_descriptor {
     /// bDescriptorType for class-specific interface descriptors.
-    pub const CS_INTERFACE:               u8 = 0x24;
-    pub const HEADER:                    u8 = 0x00;
-    pub const CALL_MANAGEMENT:           u8 = 0x01;
-    pub const ACM:                       u8 = 0x02;
+    pub const CS_INTERFACE: u8 = 0x24;
+    pub const HEADER: u8 = 0x00;
+    pub const CALL_MANAGEMENT: u8 = 0x01;
+    pub const ACM: u8 = 0x02;
     pub const ABSTRACT_CONTROL_MANAGEMENT: u8 = 0x02;
-    pub const UNION:                     u8 = 0x06;
+    pub const UNION: u8 = 0x06;
 }
 
 // ─── DescriptorWriter ─────────────────────────────────────────────────────────
@@ -89,7 +89,9 @@ impl<'a> DescriptorWriter<'a> {
     }
 
     /// Bytes written so far.
-    pub fn position(&self) -> usize { self.pos }
+    pub fn position(&self) -> usize {
+        self.pos
+    }
 
     // ── Low-level primitives ─────────────────────────────────────────────────
 
@@ -133,21 +135,18 @@ impl<'a> DescriptorWriter<'a> {
 
     /// Begin a configuration descriptor.  Must be paired with
     /// [`end_configuration`](Self::end_configuration).
-    pub fn configuration(
-        &mut self,
-        attributes: u8,
-        max_power_ma: u8,
-    ) -> UsbResult<()> {
-        self.config_total_len_pos = Some(self.pos + 2);   // offset of wTotalLength[0]
-        self.config_num_ifaces_pos = Some(self.pos + 4);  // offset of bNumInterfaces
+    pub fn configuration(&mut self, attributes: u8, max_power_ma: u8) -> UsbResult<()> {
+        self.config_total_len_pos = Some(self.pos + 2); // offset of wTotalLength[0]
+        self.config_num_ifaces_pos = Some(self.pos + 4); // offset of bNumInterfaces
         self.num_interfaces = 0;
         self.write(
             descriptor_type::CONFIGURATION,
             &[
-                0, 0,  // wTotalLength — patched later
-                0,     // bNumInterfaces — patched later
-                1,     // bConfigurationValue
-                0,     // iConfiguration
+                0,
+                0, // wTotalLength — patched later
+                0, // bNumInterfaces — patched later
+                1, // bConfigurationValue
+                0, // iConfiguration
                 attributes,
                 max_power_ma,
             ],
@@ -161,7 +160,7 @@ impl<'a> DescriptorWriter<'a> {
             (self.config_total_len_pos, self.config_num_ifaces_pos)
         {
             let total = self.pos as u16;
-            self.buf[tl_pos]     = total as u8;
+            self.buf[tl_pos] = total as u8;
             self.buf[tl_pos + 1] = (total >> 8) as u8;
             self.buf[ni_pos] = self.num_interfaces;
         }
@@ -206,7 +205,14 @@ impl<'a> DescriptorWriter<'a> {
         subclass: u8,
         protocol: u8,
     ) -> UsbResult<()> {
-        self.interface_with_string(number, num_endpoints, class, subclass, protocol, StringIndex::new(0))
+        self.interface_with_string(
+            number,
+            num_endpoints,
+            class,
+            subclass,
+            protocol,
+            StringIndex::new(0),
+        )
     }
 
     /// Write an Interface descriptor with a string index.
@@ -230,6 +236,33 @@ impl<'a> DescriptorWriter<'a> {
                 subclass,
                 protocol,
                 string.into(),
+            ],
+        )
+    }
+
+    /// Write an Interface descriptor with a non-zero alternate setting.
+    ///
+    /// Does **not** increment `bNumInterfaces` — alternate settings share the
+    /// same interface number and are not counted separately.
+    pub fn interface_alt(
+        &mut self,
+        number: InterfaceNumber,
+        alternate_setting: u8,
+        num_endpoints: u8,
+        class: u8,
+        subclass: u8,
+        protocol: u8,
+    ) -> UsbResult<()> {
+        self.write(
+            descriptor_type::INTERFACE,
+            &[
+                number.into(),
+                alternate_setting,
+                num_endpoints,
+                class,
+                subclass,
+                protocol,
+                0, // iInterface
             ],
         )
     }
@@ -268,7 +301,7 @@ impl<'a> DescriptorWriter<'a> {
             let cp = c as u32;
             let unit = if cp <= 0xFFFF { cp as u16 } else { 0xFFFD };
             let off = header_len + i * 2;
-            buf[off]     = unit as u8;
+            buf[off] = unit as u8;
             buf[off + 1] = (unit >> 8) as u8;
             len = off + 2;
         }
@@ -290,7 +323,7 @@ impl<'a> DescriptorWriter<'a> {
         buf[0] = total as u8;
         buf[1] = descriptor_type::STRING;
         for (i, &id) in lang_ids.iter().enumerate() {
-            buf[2 + i * 2]     = id as u8;
+            buf[2 + i * 2] = id as u8;
             buf[2 + i * 2 + 1] = (id >> 8) as u8;
         }
         Ok(total)
