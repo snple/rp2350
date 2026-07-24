@@ -299,3 +299,7 @@ path = "src/encoder_switch/encoder_stepper.rs"
 [[bin]]
 name = "tcan4550"
 path = "src/can/tcan4550.rs"
+
+[[bin]]
+name = "tag_bus"
+path = "src/tag_bus/tag_bus.rs"
