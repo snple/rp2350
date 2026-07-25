@@ -44,7 +44,7 @@
 
 #![no_std]
 
-#[cfg(all(feature = "panic-handler", target_os = "none"))]
+#[cfg(feature = "panic-handler")]
 mod panic_handler;
 
 // ============================================================================

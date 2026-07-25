@@ -200,6 +200,10 @@ name = "pwm_output"
 path = "src/pwm/pwm_output.rs"
 
 [[bin]]
+name = "pwm_deadtime"
+path = "src/pwm/pwm_deadtime.rs"
+
+[[bin]]
 name = "pwm_fan_control"
 path = "src/pwm/fan_control.rs"
 

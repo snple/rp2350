@@ -501,7 +501,7 @@ fn main() -> ! {
 
     let trng = Trng::init(dp.TRNG);
 
-    let max_steps = EFFECTIVE_TRAVEL as u32;
+    let max_steps = EFFECTIVE_TRAVEL;
 
     let mut iteration: u32 = 0;
     let mut stalls: [u32; 3] = [0; 3];

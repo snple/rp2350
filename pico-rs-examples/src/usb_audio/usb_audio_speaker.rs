@@ -132,7 +132,7 @@ fn main() -> ! {
 
                 // Toggle LED every ~64 KB to show activity.
                 led_counter = led_counter.wrapping_add(1);
-                if led_counter % 64 == 0 {
+                if led_counter.is_multiple_of(64) {
                     led.toggle();
                 }
 

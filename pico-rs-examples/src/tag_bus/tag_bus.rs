@@ -551,10 +551,10 @@ impl TagBus {
     /// 按 ID 查找标签索引
     fn find_tag(&self, id: u16) -> Option<usize> {
         for i in 0..self.tag_count {
-            if let Some(ref tag) = self.tags[i] {
-                if tag.id == id {
-                    return Some(i);
-                }
+            if let Some(ref tag) = self.tags[i]
+                && tag.id == id
+            {
+                return Some(i);
             }
         }
         None
@@ -971,10 +971,10 @@ impl TagBus {
         // 只读标签数 (2B)
         let mut ro_count: u16 = 0;
         for i in 0..self.tag_count {
-            if let Some(ref tag) = self.tags[i] {
-                if tag.access == TAG_ACCESS_RO {
-                    ro_count += 1;
-                }
+            if let Some(ref tag) = self.tags[i]
+                && tag.access == TAG_ACCESS_RO
+            {
+                ro_count += 1;
             }
         }
         self.tx_buf[pos..pos + 2].copy_from_slice(&ro_count.to_le_bytes());
@@ -1261,29 +1261,29 @@ fn main() -> ! {
         }
 
         // 读取字节
-        if let Some(byte) = uart.read_byte() {
-            if let Some(frame_len) = tagbus.feed_byte(byte) {
-                // 收到完整帧
-                let func = tagbus.received_frame()[OFF_FUNC];
-                info!("RX request: func=0x{:02X}, len={}", func, frame_len);
+        if let Some(byte) = uart.read_byte()
+            && let Some(frame_len) = tagbus.feed_byte(byte)
+        {
+            // 收到完整帧
+            let func = tagbus.received_frame()[OFF_FUNC];
+            info!("RX request: func=0x{:02X}, len={}", func, frame_len);
 
-                let response_len = {
-                    let frame = tagbus.received_frame();
-                    let len = frame.len();
-                    // 将帧数据复制出来以避免借用冲突
-                    let mut frame_copy = [0u8; RX_BUF_SIZE];
-                    frame_copy[..len].copy_from_slice(frame);
-                    tagbus.process_frame(&frame_copy[..len])
-                };
-                if response_len > 0 {
-                    let resp = tagbus.tx_frame(response_len);
-                    uart.write(resp);
-                    uart.flush();
-                    info!("TX response: {} bytes", response_len);
-                }
-
-                tagbus.reset_rx();
+            let response_len = {
+                let frame = tagbus.received_frame();
+                let len = frame.len();
+                // 将帧数据复制出来以避免借用冲突
+                let mut frame_copy = [0u8; RX_BUF_SIZE];
+                frame_copy[..len].copy_from_slice(frame);
+                tagbus.process_frame(&frame_copy[..len])
+            };
+            if response_len > 0 {
+                let resp = tagbus.tx_frame(response_len);
+                uart.write(resp);
+                uart.flush();
+                info!("TX response: {} bytes", response_len);
             }
+
+            tagbus.reset_rx();
         }
     }
 }

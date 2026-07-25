@@ -182,11 +182,11 @@ fn main() -> ! {
         counter = counter.wrapping_add(1);
 
         // Call fib_ram regularly to keep exercising RAM code
-        let fib = fib_ram((counter % 12) as u32);
+        let fib = fib_ram(counter % 12);
         led.toggle();
 
         // Every 10 iterations, print a status line and pend the RAM ISR
-        if counter % 10 == 0 {
+        if counter.is_multiple_of(10) {
             interrupt::pend(interrupt::spare::SPARE_IRQ_0);
             info!(
                 "iter={}  fib={}  sq={}  isr_cnt={}",
