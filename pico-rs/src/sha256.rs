@@ -362,14 +362,30 @@ pub struct Sha256Hasher {
 }
 
 impl Sha256Hasher {
-    /// Create a new incremental hasher
+    /// Create a new incremental hasher from an already-initialized [`Sha256`]
+    /// instance.
+    ///
+    /// Unlike [`new`](Self::new), this constructor is safe because the
+    /// `Sha256` object has already been properly initialized (e.g. via
+    /// [`Sha256::init`]).
+    pub fn from_sha256(mut sha: Sha256) -> Self {
+        sha.start();
+
+        Self {
+            sha,
+            buffer: [0u8; BLOCK_SIZE],
+            buffer_len: 0,
+            total_len: 0,
+        }
+    }
+
     /// Create a new incremental hasher.
     ///
     /// # Safety
     ///
     /// The caller must ensure the SHA-256 peripheral has already been
     /// initialized via [`Sha256::init`] before using this hasher.
-    pub fn new() -> Self {
+    pub unsafe fn new() -> Self {
         // SAFETY: caller guarantees Sha256::init() was called before.
         // Unwrap Steal to gain &mut self access for start().
         let mut sha = unsafe { Sha256::steal().0 };
@@ -440,11 +456,5 @@ impl Sha256Hasher {
         }
 
         self.sha.read_hash_blocking()
-    }
-}
-
-impl Default for Sha256Hasher {
-    fn default() -> Self {
-        Self::new()
     }
 }

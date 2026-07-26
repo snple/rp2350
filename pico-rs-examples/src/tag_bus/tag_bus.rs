@@ -357,6 +357,10 @@ impl TagValue {
         }
     }
 
+    pub fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
+
     /// 将值序列化为小端字节数组
     pub fn to_bytes(&self, buf: &mut [u8]) -> usize {
         let len = self.len() as usize;
@@ -770,6 +774,7 @@ impl TagBus {
         let mut actual_count: usize = 0;
 
         // 解析请求的 ID 列表
+        #[allow(clippy::needless_range_loop)]
         for i in 0..count.min(32) {
             let off = 2 + i * 2;
             if off + 2 <= payload.len() {
@@ -786,6 +791,7 @@ impl TagBus {
         pos += 2;
         let mut returned: u16 = 0;
 
+        #[allow(clippy::needless_range_loop)]
         for i in 0..actual_count {
             if let Some(idx) = self.find_tag(ids[i]) {
                 match &self.tags[idx] {
@@ -927,6 +933,7 @@ impl TagBus {
         self.tx_buf[pos..pos + 2].copy_from_slice(&ret_count.to_le_bytes());
         pos += 2;
 
+        #[allow(clippy::needless_range_loop)]
         for i in 0..result_count {
             // ID (2B)
             self.tx_buf[pos..pos + 2].copy_from_slice(&results[i].id.to_le_bytes());

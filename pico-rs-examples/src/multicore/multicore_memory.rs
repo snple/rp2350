@@ -302,6 +302,7 @@ fn core1_main() -> ! {
 
                 // Core 1 写入后半部分 (索引 128..256)
                 let seed: u32 = 0xDEAD_BEEF;
+                #[allow(clippy::needless_range_loop)]
                 for i in 128..256 {
                     data[i] = seed.wrapping_mul(i as u32 + 1);
                 }
@@ -602,6 +603,7 @@ fn main() -> ! {
             let _guard = Spinlock::<SPINLOCK_BUF>::acquire();
 
             let seed: u32 = 0xCAFE_F00D;
+            #[allow(clippy::needless_range_loop)]
             for i in 0..128 {
                 data[i] = seed.wrapping_mul(i as u32 + 1);
             }
@@ -616,6 +618,7 @@ fn main() -> ! {
         let mut errors = 0u32;
         // 验证 Core 0 写入区域
         let seed0: u32 = 0xCAFE_F00D;
+        #[allow(clippy::needless_range_loop)]
         for i in 0..128 {
             let expected = seed0.wrapping_mul(i as u32 + 1);
             if data[i] != expected {
@@ -630,6 +633,7 @@ fn main() -> ! {
         }
         // 验证 Core 1 写入区域
         let seed1: u32 = 0xDEAD_BEEF;
+        #[allow(clippy::needless_range_loop)]
         for i in 128..256 {
             let expected = seed1.wrapping_mul(i as u32 + 1);
             if data[i] != expected {
@@ -735,7 +739,7 @@ fn main() -> ! {
             }
 
             let elapsed = timer.time_us() - start;
-            let mbps = (total_bytes as u64 * 1_000_000 / elapsed as u64) as u32;
+            let mbps = (total_bytes * 1_000_000 / elapsed) as u32;
             info!(
                 "  Write: {} KB in {} us ({} MB/s)",
                 total_bytes / 1024,
@@ -758,7 +762,7 @@ fn main() -> ! {
             }
 
             let elapsed = timer.time_us() - start;
-            let mbps = (total_bytes as u64 * 1_000_000 / elapsed as u64) as u32;
+            let mbps = (total_bytes * 1_000_000 / elapsed) as u32;
 
             // 防止编译器优化掉 sink
             core::hint::black_box(sink);
@@ -791,7 +795,7 @@ fn main() -> ! {
             }
 
             let elapsed = timer.time_us() - start;
-            let mbps = (2u64 * total_bytes * 1_000_000 / elapsed as u64) as u32;
+            let mbps = (2u64 * total_bytes * 1_000_000 / elapsed) as u32;
             info!(
                 "  R/W:   {} KB in {} us ({} MB/s effective)",
                 total_bytes / 1024,
