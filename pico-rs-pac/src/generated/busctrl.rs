@@ -236,7 +236,7 @@ impl BusPriorityVal {
                 self.bits | BusPriority::DMA_W_MASK
             } else {
                 self.bits & !BusPriority::DMA_W_MASK
-            }
+            },
         }
     }
 
@@ -250,7 +250,7 @@ impl BusPriorityVal {
                 self.bits | BusPriority::DMA_R_MASK
             } else {
                 self.bits & !BusPriority::DMA_R_MASK
-            }
+            },
         }
     }
 
@@ -264,7 +264,7 @@ impl BusPriorityVal {
                 self.bits | BusPriority::PROC1_MASK
             } else {
                 self.bits & !BusPriority::PROC1_MASK
-            }
+            },
         }
     }
 
@@ -278,7 +278,7 @@ impl BusPriorityVal {
                 self.bits | BusPriority::PROC0_MASK
             } else {
                 self.bits & !BusPriority::PROC0_MASK
-            }
+            },
         }
     }
 }
@@ -512,7 +512,7 @@ impl PerfctrEnVal {
                 self.bits | PerfctrEn::PERFCTR_EN_MASK
             } else {
                 self.bits & !PerfctrEn::PERFCTR_EN_MASK
-            }
+            },
         }
     }
 }
@@ -602,7 +602,9 @@ impl Perfctr0 {
     /// Write any value to clear. Select an event to count using PERFSEL0
     #[inline(always)]
     pub fn write_perfctr0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PERFCTR0_MASK) | ((value << Self::PERFCTR0_OFFSET) & Self::PERFCTR0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PERFCTR0_MASK) | ((value << Self::PERFCTR0_OFFSET) & Self::PERFCTR0_MASK)
+        });
     }
 }
 
@@ -652,7 +654,8 @@ impl Perfctr0Val {
     #[inline(always)]
     pub const fn with_perfctr0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Perfctr0::PERFCTR0_MASK) | ((value << Perfctr0::PERFCTR0_OFFSET) & Perfctr0::PERFCTR0_MASK)
+            bits: (self.bits & !Perfctr0::PERFCTR0_MASK)
+                | ((value << Perfctr0::PERFCTR0_OFFSET) & Perfctr0::PERFCTR0_MASK),
         }
     }
 }
@@ -870,7 +873,9 @@ impl Perfsel0 {
     /// Select an event for PERFCTR0. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub fn write_perfsel0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PERFSEL0_MASK) | ((value << Self::PERFSEL0_OFFSET) & Self::PERFSEL0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PERFSEL0_MASK) | ((value << Self::PERFSEL0_OFFSET) & Self::PERFSEL0_MASK)
+        });
     }
 }
 
@@ -916,7 +921,8 @@ impl Perfsel0Val {
     #[inline(always)]
     pub const fn with_perfsel0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Perfsel0::PERFSEL0_MASK) | ((value << Perfsel0::PERFSEL0_OFFSET) & Perfsel0::PERFSEL0_MASK)
+            bits: (self.bits & !Perfsel0::PERFSEL0_MASK)
+                | ((value << Perfsel0::PERFSEL0_OFFSET) & Perfsel0::PERFSEL0_MASK),
         }
     }
 }
@@ -1006,7 +1012,9 @@ impl Perfctr1 {
     /// Write any value to clear. Select an event to count using PERFSEL1
     #[inline(always)]
     pub fn write_perfctr1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PERFCTR1_MASK) | ((value << Self::PERFCTR1_OFFSET) & Self::PERFCTR1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PERFCTR1_MASK) | ((value << Self::PERFCTR1_OFFSET) & Self::PERFCTR1_MASK)
+        });
     }
 }
 
@@ -1056,7 +1064,8 @@ impl Perfctr1Val {
     #[inline(always)]
     pub const fn with_perfctr1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Perfctr1::PERFCTR1_MASK) | ((value << Perfctr1::PERFCTR1_OFFSET) & Perfctr1::PERFCTR1_MASK)
+            bits: (self.bits & !Perfctr1::PERFCTR1_MASK)
+                | ((value << Perfctr1::PERFCTR1_OFFSET) & Perfctr1::PERFCTR1_MASK),
         }
     }
 }
@@ -1274,7 +1283,9 @@ impl Perfsel1 {
     /// Select an event for PERFCTR1. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub fn write_perfsel1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PERFSEL1_MASK) | ((value << Self::PERFSEL1_OFFSET) & Self::PERFSEL1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PERFSEL1_MASK) | ((value << Self::PERFSEL1_OFFSET) & Self::PERFSEL1_MASK)
+        });
     }
 }
 
@@ -1320,7 +1331,8 @@ impl Perfsel1Val {
     #[inline(always)]
     pub const fn with_perfsel1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Perfsel1::PERFSEL1_MASK) | ((value << Perfsel1::PERFSEL1_OFFSET) & Perfsel1::PERFSEL1_MASK)
+            bits: (self.bits & !Perfsel1::PERFSEL1_MASK)
+                | ((value << Perfsel1::PERFSEL1_OFFSET) & Perfsel1::PERFSEL1_MASK),
         }
     }
 }
@@ -1410,7 +1422,9 @@ impl Perfctr2 {
     /// Write any value to clear. Select an event to count using PERFSEL2
     #[inline(always)]
     pub fn write_perfctr2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PERFCTR2_MASK) | ((value << Self::PERFCTR2_OFFSET) & Self::PERFCTR2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PERFCTR2_MASK) | ((value << Self::PERFCTR2_OFFSET) & Self::PERFCTR2_MASK)
+        });
     }
 }
 
@@ -1460,7 +1474,8 @@ impl Perfctr2Val {
     #[inline(always)]
     pub const fn with_perfctr2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Perfctr2::PERFCTR2_MASK) | ((value << Perfctr2::PERFCTR2_OFFSET) & Perfctr2::PERFCTR2_MASK)
+            bits: (self.bits & !Perfctr2::PERFCTR2_MASK)
+                | ((value << Perfctr2::PERFCTR2_OFFSET) & Perfctr2::PERFCTR2_MASK),
         }
     }
 }
@@ -1678,7 +1693,9 @@ impl Perfsel2 {
     /// Select an event for PERFCTR2. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub fn write_perfsel2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PERFSEL2_MASK) | ((value << Self::PERFSEL2_OFFSET) & Self::PERFSEL2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PERFSEL2_MASK) | ((value << Self::PERFSEL2_OFFSET) & Self::PERFSEL2_MASK)
+        });
     }
 }
 
@@ -1724,7 +1741,8 @@ impl Perfsel2Val {
     #[inline(always)]
     pub const fn with_perfsel2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Perfsel2::PERFSEL2_MASK) | ((value << Perfsel2::PERFSEL2_OFFSET) & Perfsel2::PERFSEL2_MASK)
+            bits: (self.bits & !Perfsel2::PERFSEL2_MASK)
+                | ((value << Perfsel2::PERFSEL2_OFFSET) & Perfsel2::PERFSEL2_MASK),
         }
     }
 }
@@ -1814,7 +1832,9 @@ impl Perfctr3 {
     /// Write any value to clear. Select an event to count using PERFSEL3
     #[inline(always)]
     pub fn write_perfctr3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PERFCTR3_MASK) | ((value << Self::PERFCTR3_OFFSET) & Self::PERFCTR3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PERFCTR3_MASK) | ((value << Self::PERFCTR3_OFFSET) & Self::PERFCTR3_MASK)
+        });
     }
 }
 
@@ -1864,7 +1884,8 @@ impl Perfctr3Val {
     #[inline(always)]
     pub const fn with_perfctr3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Perfctr3::PERFCTR3_MASK) | ((value << Perfctr3::PERFCTR3_OFFSET) & Perfctr3::PERFCTR3_MASK)
+            bits: (self.bits & !Perfctr3::PERFCTR3_MASK)
+                | ((value << Perfctr3::PERFCTR3_OFFSET) & Perfctr3::PERFCTR3_MASK),
         }
     }
 }
@@ -2082,7 +2103,9 @@ impl Perfsel3 {
     /// Select an event for PERFCTR3. For each downstream port of the main crossbar, four events are available: ACCESS, an access took place; ACCESS_CONTESTED, an access took place that previously stalled due to contention from other masters; STALL_DOWNSTREAM, count cycles where any master stalled due to a stall on the downstream bus; STALL_UPSTREAM, count cycles where any master stalled for any reason, including contention from other masters.
     #[inline(always)]
     pub fn write_perfsel3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PERFSEL3_MASK) | ((value << Self::PERFSEL3_OFFSET) & Self::PERFSEL3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PERFSEL3_MASK) | ((value << Self::PERFSEL3_OFFSET) & Self::PERFSEL3_MASK)
+        });
     }
 }
 
@@ -2128,7 +2151,8 @@ impl Perfsel3Val {
     #[inline(always)]
     pub const fn with_perfsel3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Perfsel3::PERFSEL3_MASK) | ((value << Perfsel3::PERFSEL3_OFFSET) & Perfsel3::PERFSEL3_MASK)
+            bits: (self.bits & !Perfsel3::PERFSEL3_MASK)
+                | ((value << Perfsel3::PERFSEL3_OFFSET) & Perfsel3::PERFSEL3_MASK),
         }
     }
 }
@@ -2197,4 +2221,3 @@ pub struct RegisterBlock {
     /// Bus fabric performance event select for PERFCTR3
     pub perfsel3: Perfsel3,
 }
-

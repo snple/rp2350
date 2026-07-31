@@ -509,4 +509,3 @@ pub struct RegisterBlock {
     /// Git hash of the chip source. Used to identify chip version.
     pub gitref_rp2350: GitrefRp2350,
 }
-

@@ -53,7 +53,6 @@ pub enum DmaSize {
 
 /// SHA-256 hardware accelerator driver
 pub struct Sha256 {
-    // _marker: core::marker::PhantomData<*const ()>,
     sha256: SHA256,
 }
 

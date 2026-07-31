@@ -377,6 +377,9 @@ fn generate_mod_rs(peripherals: &[&Peripheral]) -> String {
     .unwrap();
     writeln!(out, "    #[inline]").unwrap();
     writeln!(out, "    pub unsafe fn steal() -> Self {{").unwrap();
+    // Rust 2024: `unsafe fn` bodies are not implicit unsafe blocks, so the
+    // inner `unsafe {}` is required for the `X::steal()` calls below
+    // (see the `unsafe-op-in-unsafe-fn` lint).
     writeln!(out, "        unsafe {{").unwrap();
     writeln!(out, "            Peripherals {{").unwrap();
     for periph in peripherals {

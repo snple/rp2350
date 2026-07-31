@@ -190,6 +190,13 @@ impl SysTick {
             return;
         }
 
+        // If the handle was obtained via `steal()`, no tick rate was configured
+        // (`ticks_per_us == 0`). Delay cannot be computed, so return early
+        // instead of dividing by zero.
+        if self.ticks_per_us == 0 {
+            return;
+        }
+
         // For very long delays, break into chunks
         let max_delay_us = (SYSTICK_MAX_RELOAD / self.ticks_per_us) as u64;
 

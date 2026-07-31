@@ -22,11 +22,12 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::adc::{Adc, TEMPERATURE_CHANNEL};
-use pico_rs::clocks::{ClockBuilder};
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::dma::{DataSize, Dma};
-use pico_rs::main;
 use pico_rs::gpio::Pins;
-use pico_rs::pac::Peripherals;const NUM_SAMPLES: usize = 16;
+use pico_rs::main;
+use pico_rs::pac::Peripherals;
+const NUM_SAMPLES: usize = 16;
 
 #[main]
 fn main() -> ! {

@@ -171,4 +171,3 @@ pub struct RegisterBlock {
     /// Indicates the type of platform in use
     pub platform: Platform,
 }
-

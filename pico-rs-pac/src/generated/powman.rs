@@ -102,7 +102,7 @@ impl BadpasswdVal {
                 self.bits | Badpasswd::BADPASSWD_MASK
             } else {
                 self.bits & !Badpasswd::BADPASSWD_MASK
-            }
+            },
         }
     }
 }
@@ -373,7 +373,9 @@ impl VregCtrl {
     /// 111 - 150C
     #[inline(always)]
     pub fn write_ht_th(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::HT_TH_MASK) | ((value << Self::HT_TH_OFFSET) & Self::HT_TH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::HT_TH_MASK) | ((value << Self::HT_TH_OFFSET) & Self::HT_TH_MASK)
+        });
     }
 }
 
@@ -473,7 +475,7 @@ impl VregCtrlVal {
                 self.bits | VregCtrl::RST_N_MASK
             } else {
                 self.bits & !VregCtrl::RST_N_MASK
-            }
+            },
         }
     }
 
@@ -490,7 +492,7 @@ impl VregCtrlVal {
                 self.bits | VregCtrl::UNLOCK_MASK
             } else {
                 self.bits & !VregCtrl::UNLOCK_MASK
-            }
+            },
         }
     }
 
@@ -506,7 +508,7 @@ impl VregCtrlVal {
                 self.bits | VregCtrl::ISOLATE_MASK
             } else {
                 self.bits & !VregCtrl::ISOLATE_MASK
-            }
+            },
         }
     }
 
@@ -520,7 +522,7 @@ impl VregCtrlVal {
                 self.bits | VregCtrl::DISABLE_VOLTAGE_LIMIT_MASK
             } else {
                 self.bits & !VregCtrl::DISABLE_VOLTAGE_LIMIT_MASK
-            }
+            },
         }
     }
 
@@ -539,7 +541,8 @@ impl VregCtrlVal {
     #[inline(always)]
     pub const fn with_ht_th(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !VregCtrl::HT_TH_MASK) | ((value << VregCtrl::HT_TH_OFFSET) & VregCtrl::HT_TH_MASK)
+            bits: (self.bits & !VregCtrl::HT_TH_MASK)
+                | ((value << VregCtrl::HT_TH_OFFSET) & VregCtrl::HT_TH_MASK),
         }
     }
 }
@@ -932,7 +935,9 @@ impl Vreg {
     /// 11111 - 3.30V
     #[inline(always)]
     pub fn write_vsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::VSEL_MASK) | ((value << Self::VSEL_OFFSET) & Self::VSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::VSEL_MASK) | ((value << Self::VSEL_OFFSET) & Self::VSEL_MASK)
+        });
     }
 
     /// **HIZ** `[1]` (RW)
@@ -1085,7 +1090,7 @@ impl VregVal {
     #[inline(always)]
     pub const fn with_vsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Vreg::VSEL_MASK) | ((value << Vreg::VSEL_OFFSET) & Vreg::VSEL_MASK)
+            bits: (self.bits & !Vreg::VSEL_MASK) | ((value << Vreg::VSEL_OFFSET) & Vreg::VSEL_MASK),
         }
     }
 
@@ -1100,7 +1105,7 @@ impl VregVal {
                 self.bits | Vreg::HIZ_MASK
             } else {
                 self.bits & !Vreg::HIZ_MASK
-            }
+            },
         }
     }
 }
@@ -1352,7 +1357,9 @@ impl VregLpEntry {
     /// 11111 - 3.30V
     #[inline(always)]
     pub fn write_vsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::VSEL_MASK) | ((value << Self::VSEL_OFFSET) & Self::VSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::VSEL_MASK) | ((value << Self::VSEL_OFFSET) & Self::VSEL_MASK)
+        });
     }
 
     /// **MODE** `[2]` (RW)
@@ -1530,7 +1537,8 @@ impl VregLpEntryVal {
     #[inline(always)]
     pub const fn with_vsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !VregLpEntry::VSEL_MASK) | ((value << VregLpEntry::VSEL_OFFSET) & VregLpEntry::VSEL_MASK)
+            bits: (self.bits & !VregLpEntry::VSEL_MASK)
+                | ((value << VregLpEntry::VSEL_OFFSET) & VregLpEntry::VSEL_MASK),
         }
     }
 
@@ -1547,7 +1555,7 @@ impl VregLpEntryVal {
                 self.bits | VregLpEntry::MODE_MASK
             } else {
                 self.bits & !VregLpEntry::MODE_MASK
-            }
+            },
         }
     }
 
@@ -1562,7 +1570,7 @@ impl VregLpEntryVal {
                 self.bits | VregLpEntry::HIZ_MASK
             } else {
                 self.bits & !VregLpEntry::HIZ_MASK
-            }
+            },
         }
     }
 }
@@ -1814,7 +1822,9 @@ impl VregLpExit {
     /// 11111 - 3.30V
     #[inline(always)]
     pub fn write_vsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::VSEL_MASK) | ((value << Self::VSEL_OFFSET) & Self::VSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::VSEL_MASK) | ((value << Self::VSEL_OFFSET) & Self::VSEL_MASK)
+        });
     }
 
     /// **MODE** `[2]` (RW)
@@ -1992,7 +2002,8 @@ impl VregLpExitVal {
     #[inline(always)]
     pub const fn with_vsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !VregLpExit::VSEL_MASK) | ((value << VregLpExit::VSEL_OFFSET) & VregLpExit::VSEL_MASK)
+            bits: (self.bits & !VregLpExit::VSEL_MASK)
+                | ((value << VregLpExit::VSEL_OFFSET) & VregLpExit::VSEL_MASK),
         }
     }
 
@@ -2009,7 +2020,7 @@ impl VregLpExitVal {
                 self.bits | VregLpExit::MODE_MASK
             } else {
                 self.bits & !VregLpExit::MODE_MASK
-            }
+            },
         }
     }
 
@@ -2024,7 +2035,7 @@ impl VregLpExitVal {
                 self.bits | VregLpExit::HIZ_MASK
             } else {
                 self.bits & !VregLpExit::HIZ_MASK
-            }
+            },
         }
     }
 }
@@ -2171,7 +2182,7 @@ impl BodCtrlVal {
                 self.bits | BodCtrl::ISOLATE_MASK
             } else {
                 self.bits & !BodCtrl::ISOLATE_MASK
-            }
+            },
         }
     }
 }
@@ -2340,7 +2351,9 @@ impl Bod {
     /// 10001 - 1.204V
     #[inline(always)]
     pub fn write_vsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::VSEL_MASK) | ((value << Self::VSEL_OFFSET) & Self::VSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::VSEL_MASK) | ((value << Self::VSEL_OFFSET) & Self::VSEL_MASK)
+        });
     }
 
     /// **EN** `[0]` (RW)
@@ -2452,7 +2465,7 @@ impl BodVal {
     #[inline(always)]
     pub const fn with_vsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Bod::VSEL_MASK) | ((value << Bod::VSEL_OFFSET) & Bod::VSEL_MASK)
+            bits: (self.bits & !Bod::VSEL_MASK) | ((value << Bod::VSEL_OFFSET) & Bod::VSEL_MASK),
         }
     }
 
@@ -2467,7 +2480,7 @@ impl BodVal {
                 self.bits | Bod::EN_MASK
             } else {
                 self.bits & !Bod::EN_MASK
-            }
+            },
         }
     }
 }
@@ -2636,7 +2649,9 @@ impl BodLpEntry {
     /// 10001 - 1.204V
     #[inline(always)]
     pub fn write_vsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::VSEL_MASK) | ((value << Self::VSEL_OFFSET) & Self::VSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::VSEL_MASK) | ((value << Self::VSEL_OFFSET) & Self::VSEL_MASK)
+        });
     }
 
     /// **EN** `[0]` (RW)
@@ -2748,7 +2763,8 @@ impl BodLpEntryVal {
     #[inline(always)]
     pub const fn with_vsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !BodLpEntry::VSEL_MASK) | ((value << BodLpEntry::VSEL_OFFSET) & BodLpEntry::VSEL_MASK)
+            bits: (self.bits & !BodLpEntry::VSEL_MASK)
+                | ((value << BodLpEntry::VSEL_OFFSET) & BodLpEntry::VSEL_MASK),
         }
     }
 
@@ -2763,7 +2779,7 @@ impl BodLpEntryVal {
                 self.bits | BodLpEntry::EN_MASK
             } else {
                 self.bits & !BodLpEntry::EN_MASK
-            }
+            },
         }
     }
 }
@@ -2932,7 +2948,9 @@ impl BodLpExit {
     /// 10001 - 1.204V
     #[inline(always)]
     pub fn write_vsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::VSEL_MASK) | ((value << Self::VSEL_OFFSET) & Self::VSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::VSEL_MASK) | ((value << Self::VSEL_OFFSET) & Self::VSEL_MASK)
+        });
     }
 
     /// **EN** `[0]` (RW)
@@ -3044,7 +3062,8 @@ impl BodLpExitVal {
     #[inline(always)]
     pub const fn with_vsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !BodLpExit::VSEL_MASK) | ((value << BodLpExit::VSEL_OFFSET) & BodLpExit::VSEL_MASK)
+            bits: (self.bits & !BodLpExit::VSEL_MASK)
+                | ((value << BodLpExit::VSEL_OFFSET) & BodLpExit::VSEL_MASK),
         }
     }
 
@@ -3059,7 +3078,7 @@ impl BodLpExitVal {
                 self.bits | BodLpExit::EN_MASK
             } else {
                 self.bits & !BodLpExit::EN_MASK
-            }
+            },
         }
     }
 }
@@ -3153,7 +3172,9 @@ impl Lposc {
     /// Frequency trim - the trim step is typically 1% of the reset frequency, but can be up to 3%
     #[inline(always)]
     pub fn write_trim(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TRIM_MASK) | ((value << Self::TRIM_OFFSET) & Self::TRIM_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TRIM_MASK) | ((value << Self::TRIM_OFFSET) & Self::TRIM_MASK)
+        });
     }
 
     /// **MODE** `[1:0]` (RW)
@@ -3169,7 +3190,9 @@ impl Lposc {
     /// This feature has been removed
     #[inline(always)]
     pub fn write_mode(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK)
+        });
     }
 }
 
@@ -3223,7 +3246,8 @@ impl LposcVal {
     #[inline(always)]
     pub const fn with_trim(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Lposc::TRIM_MASK) | ((value << Lposc::TRIM_OFFSET) & Lposc::TRIM_MASK)
+            bits: (self.bits & !Lposc::TRIM_MASK)
+                | ((value << Lposc::TRIM_OFFSET) & Lposc::TRIM_MASK),
         }
     }
 
@@ -3233,7 +3257,8 @@ impl LposcVal {
     #[inline(always)]
     pub const fn with_mode(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Lposc::MODE_MASK) | ((value << Lposc::MODE_OFFSET) & Lposc::MODE_MASK)
+            bits: (self.bits & !Lposc::MODE_MASK)
+                | ((value << Lposc::MODE_OFFSET) & Lposc::MODE_MASK),
         }
     }
 }
@@ -4249,7 +4274,7 @@ impl ChipResetVal {
                 self.bits | ChipReset::RESCUE_FLAG_MASK
             } else {
                 self.bits & !ChipReset::RESCUE_FLAG_MASK
-            }
+            },
         }
     }
 
@@ -4263,7 +4288,7 @@ impl ChipResetVal {
                 self.bits | ChipReset::DOUBLE_TAP_MASK
             } else {
                 self.bits & !ChipReset::DOUBLE_TAP_MASK
-            }
+            },
         }
     }
 }
@@ -4558,7 +4583,7 @@ impl WdselVal {
                 self.bits | Wdsel::RESET_RSM_MASK
             } else {
                 self.bits & !Wdsel::RESET_RSM_MASK
-            }
+            },
         }
     }
 
@@ -4574,7 +4599,7 @@ impl WdselVal {
                 self.bits | Wdsel::RESET_SWCORE_MASK
             } else {
                 self.bits & !Wdsel::RESET_SWCORE_MASK
-            }
+            },
         }
     }
 
@@ -4590,7 +4615,7 @@ impl WdselVal {
                 self.bits | Wdsel::RESET_POWMAN_MASK
             } else {
                 self.bits & !Wdsel::RESET_POWMAN_MASK
-            }
+            },
         }
     }
 
@@ -4606,7 +4631,7 @@ impl WdselVal {
                 self.bits | Wdsel::RESET_POWMAN_ASYNC_MASK
             } else {
                 self.bits & !Wdsel::RESET_POWMAN_ASYNC_MASK
-            }
+            },
         }
     }
 }
@@ -5189,7 +5214,7 @@ impl SeqCfgVal {
                 self.bits | SeqCfg::USE_FAST_POWCK_MASK
             } else {
                 self.bits & !SeqCfg::USE_FAST_POWCK_MASK
-            }
+            },
         }
     }
 
@@ -5204,7 +5229,7 @@ impl SeqCfgVal {
                 self.bits | SeqCfg::RUN_LPOSC_IN_LP_MASK
             } else {
                 self.bits & !SeqCfg::RUN_LPOSC_IN_LP_MASK
-            }
+            },
         }
     }
 
@@ -5219,7 +5244,7 @@ impl SeqCfgVal {
                 self.bits | SeqCfg::USE_BOD_HP_MASK
             } else {
                 self.bits & !SeqCfg::USE_BOD_HP_MASK
-            }
+            },
         }
     }
 
@@ -5234,7 +5259,7 @@ impl SeqCfgVal {
                 self.bits | SeqCfg::USE_BOD_LP_MASK
             } else {
                 self.bits & !SeqCfg::USE_BOD_LP_MASK
-            }
+            },
         }
     }
 
@@ -5249,7 +5274,7 @@ impl SeqCfgVal {
                 self.bits | SeqCfg::USE_VREG_HP_MASK
             } else {
                 self.bits & !SeqCfg::USE_VREG_HP_MASK
-            }
+            },
         }
     }
 
@@ -5264,7 +5289,7 @@ impl SeqCfgVal {
                 self.bits | SeqCfg::USE_VREG_LP_MASK
             } else {
                 self.bits & !SeqCfg::USE_VREG_LP_MASK
-            }
+            },
         }
     }
 
@@ -5280,7 +5305,7 @@ impl SeqCfgVal {
                 self.bits | SeqCfg::HW_PWRUP_SRAM0_MASK
             } else {
                 self.bits & !SeqCfg::HW_PWRUP_SRAM0_MASK
-            }
+            },
         }
     }
 
@@ -5296,7 +5321,7 @@ impl SeqCfgVal {
                 self.bits | SeqCfg::HW_PWRUP_SRAM1_MASK
             } else {
                 self.bits & !SeqCfg::HW_PWRUP_SRAM1_MASK
-            }
+            },
         }
     }
 }
@@ -5551,7 +5576,9 @@ impl State {
     /// This is written by software or hardware to request a new power state
     #[inline(always)]
     pub fn write_req(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::REQ_MASK) | ((value << Self::REQ_OFFSET) & Self::REQ_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::REQ_MASK) | ((value << Self::REQ_OFFSET) & Self::REQ_MASK)
+        });
     }
 
     /// **CURRENT** `[3:0]` (RO)
@@ -5665,7 +5692,7 @@ impl StateVal {
                 self.bits | State::PWRUP_WHILE_WAITING_MASK
             } else {
                 self.bits & !State::PWRUP_WHILE_WAITING_MASK
-            }
+            },
         }
     }
 
@@ -5679,7 +5706,7 @@ impl StateVal {
                 self.bits | State::REQ_IGNORED_MASK
             } else {
                 self.bits & !State::REQ_IGNORED_MASK
-            }
+            },
         }
     }
 
@@ -5689,7 +5716,7 @@ impl StateVal {
     #[inline(always)]
     pub const fn with_req(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !State::REQ_MASK) | ((value << State::REQ_OFFSET) & State::REQ_MASK)
+            bits: (self.bits & !State::REQ_MASK) | ((value << State::REQ_OFFSET) & State::REQ_MASK),
         }
     }
 }
@@ -5777,7 +5804,10 @@ impl PowFastdiv {
     /// when clk_pow is running from the fast clock it is divided by tick_div
     #[inline(always)]
     pub fn write_pow_fastdiv(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::POW_FASTDIV_MASK) | ((value << Self::POW_FASTDIV_OFFSET) & Self::POW_FASTDIV_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::POW_FASTDIV_MASK)
+                | ((value << Self::POW_FASTDIV_OFFSET) & Self::POW_FASTDIV_MASK)
+        });
     }
 }
 
@@ -5827,7 +5857,8 @@ impl PowFastdivVal {
     #[inline(always)]
     pub const fn with_pow_fastdiv(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !PowFastdiv::POW_FASTDIV_MASK) | ((value << PowFastdiv::POW_FASTDIV_OFFSET) & PowFastdiv::POW_FASTDIV_MASK)
+            bits: (self.bits & !PowFastdiv::POW_FASTDIV_MASK)
+                | ((value << PowFastdiv::POW_FASTDIV_OFFSET) & PowFastdiv::POW_FASTDIV_MASK),
         }
     }
 }
@@ -5941,7 +5972,9 @@ impl PowDelay {
     /// measured in units of the powman tick period (>=1us), 0 gives a delay of 1 unit
     #[inline(always)]
     pub fn write_sram_step(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SRAM_STEP_MASK) | ((value << Self::SRAM_STEP_OFFSET) & Self::SRAM_STEP_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SRAM_STEP_MASK) | ((value << Self::SRAM_STEP_OFFSET) & Self::SRAM_STEP_MASK)
+        });
     }
 
     /// **XIP_STEP** `[7:4]` (RW)
@@ -5959,7 +5992,9 @@ impl PowDelay {
     /// measured in units of the lposc period, 0 gives a delay of 1 unit
     #[inline(always)]
     pub fn write_xip_step(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::XIP_STEP_MASK) | ((value << Self::XIP_STEP_OFFSET) & Self::XIP_STEP_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::XIP_STEP_MASK) | ((value << Self::XIP_STEP_OFFSET) & Self::XIP_STEP_MASK)
+        });
     }
 
     /// **SWCORE_STEP** `[3:0]` (RW)
@@ -5977,7 +6012,10 @@ impl PowDelay {
     /// measured in units of the lposc period, 0 gives a delay of 1 unit
     #[inline(always)]
     pub fn write_swcore_step(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SWCORE_STEP_MASK) | ((value << Self::SWCORE_STEP_OFFSET) & Self::SWCORE_STEP_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SWCORE_STEP_MASK)
+                | ((value << Self::SWCORE_STEP_OFFSET) & Self::SWCORE_STEP_MASK)
+        });
     }
 }
 
@@ -6043,7 +6081,8 @@ impl PowDelayVal {
     #[inline(always)]
     pub const fn with_sram_step(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !PowDelay::SRAM_STEP_MASK) | ((value << PowDelay::SRAM_STEP_OFFSET) & PowDelay::SRAM_STEP_MASK)
+            bits: (self.bits & !PowDelay::SRAM_STEP_MASK)
+                | ((value << PowDelay::SRAM_STEP_OFFSET) & PowDelay::SRAM_STEP_MASK),
         }
     }
 
@@ -6054,7 +6093,8 @@ impl PowDelayVal {
     #[inline(always)]
     pub const fn with_xip_step(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !PowDelay::XIP_STEP_MASK) | ((value << PowDelay::XIP_STEP_OFFSET) & PowDelay::XIP_STEP_MASK)
+            bits: (self.bits & !PowDelay::XIP_STEP_MASK)
+                | ((value << PowDelay::XIP_STEP_OFFSET) & PowDelay::XIP_STEP_MASK),
         }
     }
 
@@ -6065,7 +6105,8 @@ impl PowDelayVal {
     #[inline(always)]
     pub const fn with_swcore_step(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !PowDelay::SWCORE_STEP_MASK) | ((value << PowDelay::SWCORE_STEP_OFFSET) & PowDelay::SWCORE_STEP_MASK)
+            bits: (self.bits & !PowDelay::SWCORE_STEP_MASK)
+                | ((value << PowDelay::SWCORE_STEP_OFFSET) & PowDelay::SWCORE_STEP_MASK),
         }
     }
 }
@@ -6269,7 +6310,10 @@ impl ExtCtrl0 {
     /// set to 31 to disable this feature
     #[inline(always)]
     pub fn write_gpio_select(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::GPIO_SELECT_MASK) | ((value << Self::GPIO_SELECT_OFFSET) & Self::GPIO_SELECT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::GPIO_SELECT_MASK)
+                | ((value << Self::GPIO_SELECT_OFFSET) & Self::GPIO_SELECT_MASK)
+        });
     }
 }
 
@@ -6348,7 +6392,7 @@ impl ExtCtrl0Val {
                 self.bits | ExtCtrl0::LP_EXIT_STATE_MASK
             } else {
                 self.bits & !ExtCtrl0::LP_EXIT_STATE_MASK
-            }
+            },
         }
     }
 
@@ -6362,7 +6406,7 @@ impl ExtCtrl0Val {
                 self.bits | ExtCtrl0::LP_ENTRY_STATE_MASK
             } else {
                 self.bits & !ExtCtrl0::LP_ENTRY_STATE_MASK
-            }
+            },
         }
     }
 
@@ -6374,7 +6418,7 @@ impl ExtCtrl0Val {
                 self.bits | ExtCtrl0::INIT_STATE_MASK
             } else {
                 self.bits & !ExtCtrl0::INIT_STATE_MASK
-            }
+            },
         }
     }
 
@@ -6386,7 +6430,7 @@ impl ExtCtrl0Val {
                 self.bits | ExtCtrl0::INIT_MASK
             } else {
                 self.bits & !ExtCtrl0::INIT_MASK
-            }
+            },
         }
     }
 
@@ -6397,7 +6441,8 @@ impl ExtCtrl0Val {
     #[inline(always)]
     pub const fn with_gpio_select(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ExtCtrl0::GPIO_SELECT_MASK) | ((value << ExtCtrl0::GPIO_SELECT_OFFSET) & ExtCtrl0::GPIO_SELECT_MASK)
+            bits: (self.bits & !ExtCtrl0::GPIO_SELECT_MASK)
+                | ((value << ExtCtrl0::GPIO_SELECT_OFFSET) & ExtCtrl0::GPIO_SELECT_MASK),
         }
     }
 }
@@ -6601,7 +6646,10 @@ impl ExtCtrl1 {
     /// set to 31 to disable this feature
     #[inline(always)]
     pub fn write_gpio_select(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::GPIO_SELECT_MASK) | ((value << Self::GPIO_SELECT_OFFSET) & Self::GPIO_SELECT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::GPIO_SELECT_MASK)
+                | ((value << Self::GPIO_SELECT_OFFSET) & Self::GPIO_SELECT_MASK)
+        });
     }
 }
 
@@ -6680,7 +6728,7 @@ impl ExtCtrl1Val {
                 self.bits | ExtCtrl1::LP_EXIT_STATE_MASK
             } else {
                 self.bits & !ExtCtrl1::LP_EXIT_STATE_MASK
-            }
+            },
         }
     }
 
@@ -6694,7 +6742,7 @@ impl ExtCtrl1Val {
                 self.bits | ExtCtrl1::LP_ENTRY_STATE_MASK
             } else {
                 self.bits & !ExtCtrl1::LP_ENTRY_STATE_MASK
-            }
+            },
         }
     }
 
@@ -6706,7 +6754,7 @@ impl ExtCtrl1Val {
                 self.bits | ExtCtrl1::INIT_STATE_MASK
             } else {
                 self.bits & !ExtCtrl1::INIT_STATE_MASK
-            }
+            },
         }
     }
 
@@ -6718,7 +6766,7 @@ impl ExtCtrl1Val {
                 self.bits | ExtCtrl1::INIT_MASK
             } else {
                 self.bits & !ExtCtrl1::INIT_MASK
-            }
+            },
         }
     }
 
@@ -6729,7 +6777,8 @@ impl ExtCtrl1Val {
     #[inline(always)]
     pub const fn with_gpio_select(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ExtCtrl1::GPIO_SELECT_MASK) | ((value << ExtCtrl1::GPIO_SELECT_OFFSET) & ExtCtrl1::GPIO_SELECT_MASK)
+            bits: (self.bits & !ExtCtrl1::GPIO_SELECT_MASK)
+                | ((value << ExtCtrl1::GPIO_SELECT_OFFSET) & ExtCtrl1::GPIO_SELECT_MASK),
         }
     }
 }
@@ -6856,7 +6905,10 @@ impl ExtTimeRef {
     /// 3 -> gpio22
     #[inline(always)]
     pub fn write_source_sel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SOURCE_SEL_MASK) | ((value << Self::SOURCE_SEL_OFFSET) & Self::SOURCE_SEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SOURCE_SEL_MASK)
+                | ((value << Self::SOURCE_SEL_OFFSET) & Self::SOURCE_SEL_MASK)
+        });
     }
 }
 
@@ -6917,7 +6969,7 @@ impl ExtTimeRefVal {
                 self.bits | ExtTimeRef::DRIVE_LPCK_MASK
             } else {
                 self.bits & !ExtTimeRef::DRIVE_LPCK_MASK
-            }
+            },
         }
     }
 
@@ -6930,7 +6982,8 @@ impl ExtTimeRefVal {
     #[inline(always)]
     pub const fn with_source_sel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ExtTimeRef::SOURCE_SEL_MASK) | ((value << ExtTimeRef::SOURCE_SEL_OFFSET) & ExtTimeRef::SOURCE_SEL_MASK)
+            bits: (self.bits & !ExtTimeRef::SOURCE_SEL_MASK)
+                | ((value << ExtTimeRef::SOURCE_SEL_OFFSET) & ExtTimeRef::SOURCE_SEL_MASK),
         }
     }
 }
@@ -7012,7 +7065,10 @@ impl LposcFreqKhzInt {
     /// Integer component of the LPOSC or GPIO clock source frequency in kHz. Default = 32 This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=1
     #[inline(always)]
     pub fn write_lposc_freq_khz_int(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LPOSC_FREQ_KHZ_INT_MASK) | ((value << Self::LPOSC_FREQ_KHZ_INT_OFFSET) & Self::LPOSC_FREQ_KHZ_INT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LPOSC_FREQ_KHZ_INT_MASK)
+                | ((value << Self::LPOSC_FREQ_KHZ_INT_OFFSET) & Self::LPOSC_FREQ_KHZ_INT_MASK)
+        });
     }
 }
 
@@ -7049,7 +7105,8 @@ impl LposcFreqKhzIntVal {
     /// Integer component of the LPOSC or GPIO clock source frequency in kHz. Default = 32 This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=1
     #[inline(always)]
     pub const fn lposc_freq_khz_int(&self) -> u32 {
-        (self.bits & LposcFreqKhzInt::LPOSC_FREQ_KHZ_INT_MASK) >> LposcFreqKhzInt::LPOSC_FREQ_KHZ_INT_OFFSET
+        (self.bits & LposcFreqKhzInt::LPOSC_FREQ_KHZ_INT_MASK)
+            >> LposcFreqKhzInt::LPOSC_FREQ_KHZ_INT_OFFSET
     }
 
     /// Set **LPOSC_FREQ_KHZ_INT** `[5:0]`
@@ -7058,7 +7115,9 @@ impl LposcFreqKhzIntVal {
     #[inline(always)]
     pub const fn with_lposc_freq_khz_int(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !LposcFreqKhzInt::LPOSC_FREQ_KHZ_INT_MASK) | ((value << LposcFreqKhzInt::LPOSC_FREQ_KHZ_INT_OFFSET) & LposcFreqKhzInt::LPOSC_FREQ_KHZ_INT_MASK)
+            bits: (self.bits & !LposcFreqKhzInt::LPOSC_FREQ_KHZ_INT_MASK)
+                | ((value << LposcFreqKhzInt::LPOSC_FREQ_KHZ_INT_OFFSET)
+                    & LposcFreqKhzInt::LPOSC_FREQ_KHZ_INT_MASK),
         }
     }
 }
@@ -7132,7 +7191,8 @@ impl LposcFreqKhzFrac {
     /// Fractional component of the LPOSC or GPIO clock source frequency in kHz. Default = 0.768 This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=1
     #[inline(always)]
     pub fn lposc_freq_khz_frac(&self) -> u32 {
-        (self.value.read_bits() & Self::LPOSC_FREQ_KHZ_FRAC_MASK) >> Self::LPOSC_FREQ_KHZ_FRAC_OFFSET
+        (self.value.read_bits() & Self::LPOSC_FREQ_KHZ_FRAC_MASK)
+            >> Self::LPOSC_FREQ_KHZ_FRAC_OFFSET
     }
 
     /// Write **LPOSC_FREQ_KHZ_FRAC** `[15:0]` (RW)
@@ -7140,7 +7200,10 @@ impl LposcFreqKhzFrac {
     /// Fractional component of the LPOSC or GPIO clock source frequency in kHz. Default = 0.768 This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=1
     #[inline(always)]
     pub fn write_lposc_freq_khz_frac(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LPOSC_FREQ_KHZ_FRAC_MASK) | ((value << Self::LPOSC_FREQ_KHZ_FRAC_OFFSET) & Self::LPOSC_FREQ_KHZ_FRAC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LPOSC_FREQ_KHZ_FRAC_MASK)
+                | ((value << Self::LPOSC_FREQ_KHZ_FRAC_OFFSET) & Self::LPOSC_FREQ_KHZ_FRAC_MASK)
+        });
     }
 }
 
@@ -7177,7 +7240,8 @@ impl LposcFreqKhzFracVal {
     /// Fractional component of the LPOSC or GPIO clock source frequency in kHz. Default = 0.768 This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=1
     #[inline(always)]
     pub const fn lposc_freq_khz_frac(&self) -> u32 {
-        (self.bits & LposcFreqKhzFrac::LPOSC_FREQ_KHZ_FRAC_MASK) >> LposcFreqKhzFrac::LPOSC_FREQ_KHZ_FRAC_OFFSET
+        (self.bits & LposcFreqKhzFrac::LPOSC_FREQ_KHZ_FRAC_MASK)
+            >> LposcFreqKhzFrac::LPOSC_FREQ_KHZ_FRAC_OFFSET
     }
 
     /// Set **LPOSC_FREQ_KHZ_FRAC** `[15:0]`
@@ -7186,7 +7250,9 @@ impl LposcFreqKhzFracVal {
     #[inline(always)]
     pub const fn with_lposc_freq_khz_frac(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !LposcFreqKhzFrac::LPOSC_FREQ_KHZ_FRAC_MASK) | ((value << LposcFreqKhzFrac::LPOSC_FREQ_KHZ_FRAC_OFFSET) & LposcFreqKhzFrac::LPOSC_FREQ_KHZ_FRAC_MASK)
+            bits: (self.bits & !LposcFreqKhzFrac::LPOSC_FREQ_KHZ_FRAC_MASK)
+                | ((value << LposcFreqKhzFrac::LPOSC_FREQ_KHZ_FRAC_OFFSET)
+                    & LposcFreqKhzFrac::LPOSC_FREQ_KHZ_FRAC_MASK),
         }
     }
 }
@@ -7268,7 +7334,10 @@ impl XoscFreqKhzInt {
     /// Integer component of the XOSC frequency in kHz. Default = 12000 Must be >1 This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=0
     #[inline(always)]
     pub fn write_xosc_freq_khz_int(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::XOSC_FREQ_KHZ_INT_MASK) | ((value << Self::XOSC_FREQ_KHZ_INT_OFFSET) & Self::XOSC_FREQ_KHZ_INT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::XOSC_FREQ_KHZ_INT_MASK)
+                | ((value << Self::XOSC_FREQ_KHZ_INT_OFFSET) & Self::XOSC_FREQ_KHZ_INT_MASK)
+        });
     }
 }
 
@@ -7305,7 +7374,8 @@ impl XoscFreqKhzIntVal {
     /// Integer component of the XOSC frequency in kHz. Default = 12000 Must be >1 This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=0
     #[inline(always)]
     pub const fn xosc_freq_khz_int(&self) -> u32 {
-        (self.bits & XoscFreqKhzInt::XOSC_FREQ_KHZ_INT_MASK) >> XoscFreqKhzInt::XOSC_FREQ_KHZ_INT_OFFSET
+        (self.bits & XoscFreqKhzInt::XOSC_FREQ_KHZ_INT_MASK)
+            >> XoscFreqKhzInt::XOSC_FREQ_KHZ_INT_OFFSET
     }
 
     /// Set **XOSC_FREQ_KHZ_INT** `[15:0]`
@@ -7314,7 +7384,9 @@ impl XoscFreqKhzIntVal {
     #[inline(always)]
     pub const fn with_xosc_freq_khz_int(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !XoscFreqKhzInt::XOSC_FREQ_KHZ_INT_MASK) | ((value << XoscFreqKhzInt::XOSC_FREQ_KHZ_INT_OFFSET) & XoscFreqKhzInt::XOSC_FREQ_KHZ_INT_MASK)
+            bits: (self.bits & !XoscFreqKhzInt::XOSC_FREQ_KHZ_INT_MASK)
+                | ((value << XoscFreqKhzInt::XOSC_FREQ_KHZ_INT_OFFSET)
+                    & XoscFreqKhzInt::XOSC_FREQ_KHZ_INT_MASK),
         }
     }
 }
@@ -7396,7 +7468,10 @@ impl XoscFreqKhzFrac {
     /// Fractional component of the XOSC frequency in kHz. This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=0
     #[inline(always)]
     pub fn write_xosc_freq_khz_frac(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::XOSC_FREQ_KHZ_FRAC_MASK) | ((value << Self::XOSC_FREQ_KHZ_FRAC_OFFSET) & Self::XOSC_FREQ_KHZ_FRAC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::XOSC_FREQ_KHZ_FRAC_MASK)
+                | ((value << Self::XOSC_FREQ_KHZ_FRAC_OFFSET) & Self::XOSC_FREQ_KHZ_FRAC_MASK)
+        });
     }
 }
 
@@ -7433,7 +7508,8 @@ impl XoscFreqKhzFracVal {
     /// Fractional component of the XOSC frequency in kHz. This field must only be written when POWMAN_TIMER_RUN=0 or POWMAN_TIMER_USING_XOSC=0
     #[inline(always)]
     pub const fn xosc_freq_khz_frac(&self) -> u32 {
-        (self.bits & XoscFreqKhzFrac::XOSC_FREQ_KHZ_FRAC_MASK) >> XoscFreqKhzFrac::XOSC_FREQ_KHZ_FRAC_OFFSET
+        (self.bits & XoscFreqKhzFrac::XOSC_FREQ_KHZ_FRAC_MASK)
+            >> XoscFreqKhzFrac::XOSC_FREQ_KHZ_FRAC_OFFSET
     }
 
     /// Set **XOSC_FREQ_KHZ_FRAC** `[15:0]`
@@ -7442,7 +7518,9 @@ impl XoscFreqKhzFracVal {
     #[inline(always)]
     pub const fn with_xosc_freq_khz_frac(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !XoscFreqKhzFrac::XOSC_FREQ_KHZ_FRAC_MASK) | ((value << XoscFreqKhzFrac::XOSC_FREQ_KHZ_FRAC_OFFSET) & XoscFreqKhzFrac::XOSC_FREQ_KHZ_FRAC_MASK)
+            bits: (self.bits & !XoscFreqKhzFrac::XOSC_FREQ_KHZ_FRAC_MASK)
+                | ((value << XoscFreqKhzFrac::XOSC_FREQ_KHZ_FRAC_OFFSET)
+                    & XoscFreqKhzFrac::XOSC_FREQ_KHZ_FRAC_MASK),
         }
     }
 }
@@ -7522,7 +7600,10 @@ impl SetTime63to48 {
     /// For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
     #[inline(always)]
     pub fn write_set_time_63to48(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SET_TIME_63TO48_MASK) | ((value << Self::SET_TIME_63TO48_OFFSET) & Self::SET_TIME_63TO48_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SET_TIME_63TO48_MASK)
+                | ((value << Self::SET_TIME_63TO48_OFFSET) & Self::SET_TIME_63TO48_MASK)
+        });
     }
 }
 
@@ -7568,7 +7649,9 @@ impl SetTime63to48Val {
     #[inline(always)]
     pub const fn with_set_time_63to48(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SetTime63to48::SET_TIME_63TO48_MASK) | ((value << SetTime63to48::SET_TIME_63TO48_OFFSET) & SetTime63to48::SET_TIME_63TO48_MASK)
+            bits: (self.bits & !SetTime63to48::SET_TIME_63TO48_MASK)
+                | ((value << SetTime63to48::SET_TIME_63TO48_OFFSET)
+                    & SetTime63to48::SET_TIME_63TO48_MASK),
         }
     }
 }
@@ -7648,7 +7731,10 @@ impl SetTime47to32 {
     /// For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
     #[inline(always)]
     pub fn write_set_time_47to32(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SET_TIME_47TO32_MASK) | ((value << Self::SET_TIME_47TO32_OFFSET) & Self::SET_TIME_47TO32_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SET_TIME_47TO32_MASK)
+                | ((value << Self::SET_TIME_47TO32_OFFSET) & Self::SET_TIME_47TO32_MASK)
+        });
     }
 }
 
@@ -7694,7 +7780,9 @@ impl SetTime47to32Val {
     #[inline(always)]
     pub const fn with_set_time_47to32(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SetTime47to32::SET_TIME_47TO32_MASK) | ((value << SetTime47to32::SET_TIME_47TO32_OFFSET) & SetTime47to32::SET_TIME_47TO32_MASK)
+            bits: (self.bits & !SetTime47to32::SET_TIME_47TO32_MASK)
+                | ((value << SetTime47to32::SET_TIME_47TO32_OFFSET)
+                    & SetTime47to32::SET_TIME_47TO32_MASK),
         }
     }
 }
@@ -7774,7 +7862,10 @@ impl SetTime31to16 {
     /// For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
     #[inline(always)]
     pub fn write_set_time_31to16(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SET_TIME_31TO16_MASK) | ((value << Self::SET_TIME_31TO16_OFFSET) & Self::SET_TIME_31TO16_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SET_TIME_31TO16_MASK)
+                | ((value << Self::SET_TIME_31TO16_OFFSET) & Self::SET_TIME_31TO16_MASK)
+        });
     }
 }
 
@@ -7820,7 +7911,9 @@ impl SetTime31to16Val {
     #[inline(always)]
     pub const fn with_set_time_31to16(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SetTime31to16::SET_TIME_31TO16_MASK) | ((value << SetTime31to16::SET_TIME_31TO16_OFFSET) & SetTime31to16::SET_TIME_31TO16_MASK)
+            bits: (self.bits & !SetTime31to16::SET_TIME_31TO16_MASK)
+                | ((value << SetTime31to16::SET_TIME_31TO16_OFFSET)
+                    & SetTime31to16::SET_TIME_31TO16_MASK),
         }
     }
 }
@@ -7900,7 +7993,10 @@ impl SetTime15to0 {
     /// For setting the time, do not use for reading the time, use POWMAN_READ_TIME_UPPER and POWMAN_READ_TIME_LOWER. This field must only be written when POWMAN_TIMER_RUN=0
     #[inline(always)]
     pub fn write_set_time_15to0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SET_TIME_15TO0_MASK) | ((value << Self::SET_TIME_15TO0_OFFSET) & Self::SET_TIME_15TO0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SET_TIME_15TO0_MASK)
+                | ((value << Self::SET_TIME_15TO0_OFFSET) & Self::SET_TIME_15TO0_MASK)
+        });
     }
 }
 
@@ -7946,7 +8042,9 @@ impl SetTime15to0Val {
     #[inline(always)]
     pub const fn with_set_time_15to0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SetTime15to0::SET_TIME_15TO0_MASK) | ((value << SetTime15to0::SET_TIME_15TO0_OFFSET) & SetTime15to0::SET_TIME_15TO0_MASK)
+            bits: (self.bits & !SetTime15to0::SET_TIME_15TO0_MASK)
+                | ((value << SetTime15to0::SET_TIME_15TO0_OFFSET)
+                    & SetTime15to0::SET_TIME_15TO0_MASK),
         }
     }
 }
@@ -8218,7 +8316,10 @@ impl AlarmTime63to48 {
     /// This field must only be written when POWMAN_ALARM_ENAB=0
     #[inline(always)]
     pub fn write_alarm_time_63to48(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ALARM_TIME_63TO48_MASK) | ((value << Self::ALARM_TIME_63TO48_OFFSET) & Self::ALARM_TIME_63TO48_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ALARM_TIME_63TO48_MASK)
+                | ((value << Self::ALARM_TIME_63TO48_OFFSET) & Self::ALARM_TIME_63TO48_MASK)
+        });
     }
 }
 
@@ -8255,7 +8356,8 @@ impl AlarmTime63to48Val {
     /// This field must only be written when POWMAN_ALARM_ENAB=0
     #[inline(always)]
     pub const fn alarm_time_63to48(&self) -> u32 {
-        (self.bits & AlarmTime63to48::ALARM_TIME_63TO48_MASK) >> AlarmTime63to48::ALARM_TIME_63TO48_OFFSET
+        (self.bits & AlarmTime63to48::ALARM_TIME_63TO48_MASK)
+            >> AlarmTime63to48::ALARM_TIME_63TO48_OFFSET
     }
 
     /// Set **ALARM_TIME_63TO48** `[15:0]`
@@ -8264,7 +8366,9 @@ impl AlarmTime63to48Val {
     #[inline(always)]
     pub const fn with_alarm_time_63to48(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AlarmTime63to48::ALARM_TIME_63TO48_MASK) | ((value << AlarmTime63to48::ALARM_TIME_63TO48_OFFSET) & AlarmTime63to48::ALARM_TIME_63TO48_MASK)
+            bits: (self.bits & !AlarmTime63to48::ALARM_TIME_63TO48_MASK)
+                | ((value << AlarmTime63to48::ALARM_TIME_63TO48_OFFSET)
+                    & AlarmTime63to48::ALARM_TIME_63TO48_MASK),
         }
     }
 }
@@ -8344,7 +8448,10 @@ impl AlarmTime47to32 {
     /// This field must only be written when POWMAN_ALARM_ENAB=0
     #[inline(always)]
     pub fn write_alarm_time_47to32(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ALARM_TIME_47TO32_MASK) | ((value << Self::ALARM_TIME_47TO32_OFFSET) & Self::ALARM_TIME_47TO32_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ALARM_TIME_47TO32_MASK)
+                | ((value << Self::ALARM_TIME_47TO32_OFFSET) & Self::ALARM_TIME_47TO32_MASK)
+        });
     }
 }
 
@@ -8381,7 +8488,8 @@ impl AlarmTime47to32Val {
     /// This field must only be written when POWMAN_ALARM_ENAB=0
     #[inline(always)]
     pub const fn alarm_time_47to32(&self) -> u32 {
-        (self.bits & AlarmTime47to32::ALARM_TIME_47TO32_MASK) >> AlarmTime47to32::ALARM_TIME_47TO32_OFFSET
+        (self.bits & AlarmTime47to32::ALARM_TIME_47TO32_MASK)
+            >> AlarmTime47to32::ALARM_TIME_47TO32_OFFSET
     }
 
     /// Set **ALARM_TIME_47TO32** `[15:0]`
@@ -8390,7 +8498,9 @@ impl AlarmTime47to32Val {
     #[inline(always)]
     pub const fn with_alarm_time_47to32(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AlarmTime47to32::ALARM_TIME_47TO32_MASK) | ((value << AlarmTime47to32::ALARM_TIME_47TO32_OFFSET) & AlarmTime47to32::ALARM_TIME_47TO32_MASK)
+            bits: (self.bits & !AlarmTime47to32::ALARM_TIME_47TO32_MASK)
+                | ((value << AlarmTime47to32::ALARM_TIME_47TO32_OFFSET)
+                    & AlarmTime47to32::ALARM_TIME_47TO32_MASK),
         }
     }
 }
@@ -8470,7 +8580,10 @@ impl AlarmTime31to16 {
     /// This field must only be written when POWMAN_ALARM_ENAB=0
     #[inline(always)]
     pub fn write_alarm_time_31to16(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ALARM_TIME_31TO16_MASK) | ((value << Self::ALARM_TIME_31TO16_OFFSET) & Self::ALARM_TIME_31TO16_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ALARM_TIME_31TO16_MASK)
+                | ((value << Self::ALARM_TIME_31TO16_OFFSET) & Self::ALARM_TIME_31TO16_MASK)
+        });
     }
 }
 
@@ -8507,7 +8620,8 @@ impl AlarmTime31to16Val {
     /// This field must only be written when POWMAN_ALARM_ENAB=0
     #[inline(always)]
     pub const fn alarm_time_31to16(&self) -> u32 {
-        (self.bits & AlarmTime31to16::ALARM_TIME_31TO16_MASK) >> AlarmTime31to16::ALARM_TIME_31TO16_OFFSET
+        (self.bits & AlarmTime31to16::ALARM_TIME_31TO16_MASK)
+            >> AlarmTime31to16::ALARM_TIME_31TO16_OFFSET
     }
 
     /// Set **ALARM_TIME_31TO16** `[15:0]`
@@ -8516,7 +8630,9 @@ impl AlarmTime31to16Val {
     #[inline(always)]
     pub const fn with_alarm_time_31to16(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AlarmTime31to16::ALARM_TIME_31TO16_MASK) | ((value << AlarmTime31to16::ALARM_TIME_31TO16_OFFSET) & AlarmTime31to16::ALARM_TIME_31TO16_MASK)
+            bits: (self.bits & !AlarmTime31to16::ALARM_TIME_31TO16_MASK)
+                | ((value << AlarmTime31to16::ALARM_TIME_31TO16_OFFSET)
+                    & AlarmTime31to16::ALARM_TIME_31TO16_MASK),
         }
     }
 }
@@ -8596,7 +8712,10 @@ impl AlarmTime15to0 {
     /// This field must only be written when POWMAN_ALARM_ENAB=0
     #[inline(always)]
     pub fn write_alarm_time_15to0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ALARM_TIME_15TO0_MASK) | ((value << Self::ALARM_TIME_15TO0_OFFSET) & Self::ALARM_TIME_15TO0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ALARM_TIME_15TO0_MASK)
+                | ((value << Self::ALARM_TIME_15TO0_OFFSET) & Self::ALARM_TIME_15TO0_MASK)
+        });
     }
 }
 
@@ -8633,7 +8752,8 @@ impl AlarmTime15to0Val {
     /// This field must only be written when POWMAN_ALARM_ENAB=0
     #[inline(always)]
     pub const fn alarm_time_15to0(&self) -> u32 {
-        (self.bits & AlarmTime15to0::ALARM_TIME_15TO0_MASK) >> AlarmTime15to0::ALARM_TIME_15TO0_OFFSET
+        (self.bits & AlarmTime15to0::ALARM_TIME_15TO0_MASK)
+            >> AlarmTime15to0::ALARM_TIME_15TO0_OFFSET
     }
 
     /// Set **ALARM_TIME_15TO0** `[15:0]`
@@ -8642,7 +8762,9 @@ impl AlarmTime15to0Val {
     #[inline(always)]
     pub const fn with_alarm_time_15to0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AlarmTime15to0::ALARM_TIME_15TO0_MASK) | ((value << AlarmTime15to0::ALARM_TIME_15TO0_OFFSET) & AlarmTime15to0::ALARM_TIME_15TO0_MASK)
+            bits: (self.bits & !AlarmTime15to0::ALARM_TIME_15TO0_MASK)
+                | ((value << AlarmTime15to0::ALARM_TIME_15TO0_OFFSET)
+                    & AlarmTime15to0::ALARM_TIME_15TO0_MASK),
         }
     }
 }
@@ -9190,7 +9312,7 @@ impl TimerVal {
                 self.bits | Timer::USE_GPIO_1HZ_MASK
             } else {
                 self.bits & !Timer::USE_GPIO_1HZ_MASK
-            }
+            },
         }
     }
 
@@ -9204,7 +9326,7 @@ impl TimerVal {
                 self.bits | Timer::USE_GPIO_1KHZ_MASK
             } else {
                 self.bits & !Timer::USE_GPIO_1KHZ_MASK
-            }
+            },
         }
     }
 
@@ -9218,7 +9340,7 @@ impl TimerVal {
                 self.bits | Timer::USE_XOSC_MASK
             } else {
                 self.bits & !Timer::USE_XOSC_MASK
-            }
+            },
         }
     }
 
@@ -9232,7 +9354,7 @@ impl TimerVal {
                 self.bits | Timer::USE_LPOSC_MASK
             } else {
                 self.bits & !Timer::USE_LPOSC_MASK
-            }
+            },
         }
     }
 
@@ -9246,7 +9368,7 @@ impl TimerVal {
                 self.bits | Timer::ALARM_MASK
             } else {
                 self.bits & !Timer::ALARM_MASK
-            }
+            },
         }
     }
 
@@ -9260,7 +9382,7 @@ impl TimerVal {
                 self.bits | Timer::PWRUP_ON_ALARM_MASK
             } else {
                 self.bits & !Timer::PWRUP_ON_ALARM_MASK
-            }
+            },
         }
     }
 
@@ -9274,7 +9396,7 @@ impl TimerVal {
                 self.bits | Timer::ALARM_ENAB_MASK
             } else {
                 self.bits & !Timer::ALARM_ENAB_MASK
-            }
+            },
         }
     }
 
@@ -9288,7 +9410,7 @@ impl TimerVal {
                 self.bits | Timer::CLEAR_MASK
             } else {
                 self.bits & !Timer::CLEAR_MASK
-            }
+            },
         }
     }
 
@@ -9304,7 +9426,7 @@ impl TimerVal {
                 self.bits | Timer::RUN_MASK
             } else {
                 self.bits & !Timer::RUN_MASK
-            }
+            },
         }
     }
 
@@ -9318,7 +9440,7 @@ impl TimerVal {
                 self.bits | Timer::NONSEC_WRITE_MASK
             } else {
                 self.bits & !Timer::NONSEC_WRITE_MASK
-            }
+            },
         }
     }
 }
@@ -9562,7 +9684,9 @@ impl Pwrup0 {
     /// Write **SOURCE** `[5:0]` (RW)
     #[inline(always)]
     pub fn write_source(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SOURCE_MASK) | ((value << Self::SOURCE_OFFSET) & Self::SOURCE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SOURCE_MASK) | ((value << Self::SOURCE_OFFSET) & Self::SOURCE_MASK)
+        });
     }
 }
 
@@ -9649,7 +9773,7 @@ impl Pwrup0Val {
                 self.bits | Pwrup0::STATUS_MASK
             } else {
                 self.bits & !Pwrup0::STATUS_MASK
-            }
+            },
         }
     }
 
@@ -9663,7 +9787,7 @@ impl Pwrup0Val {
                 self.bits | Pwrup0::MODE_MASK
             } else {
                 self.bits & !Pwrup0::MODE_MASK
-            }
+            },
         }
     }
 
@@ -9675,7 +9799,7 @@ impl Pwrup0Val {
                 self.bits | Pwrup0::DIRECTION_MASK
             } else {
                 self.bits & !Pwrup0::DIRECTION_MASK
-            }
+            },
         }
     }
 
@@ -9690,7 +9814,7 @@ impl Pwrup0Val {
                 self.bits | Pwrup0::ENABLE_MASK
             } else {
                 self.bits & !Pwrup0::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -9698,7 +9822,8 @@ impl Pwrup0Val {
     #[inline(always)]
     pub const fn with_source(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Pwrup0::SOURCE_MASK) | ((value << Pwrup0::SOURCE_OFFSET) & Pwrup0::SOURCE_MASK)
+            bits: (self.bits & !Pwrup0::SOURCE_MASK)
+                | ((value << Pwrup0::SOURCE_OFFSET) & Pwrup0::SOURCE_MASK),
         }
     }
 }
@@ -9942,7 +10067,9 @@ impl Pwrup1 {
     /// Write **SOURCE** `[5:0]` (RW)
     #[inline(always)]
     pub fn write_source(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SOURCE_MASK) | ((value << Self::SOURCE_OFFSET) & Self::SOURCE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SOURCE_MASK) | ((value << Self::SOURCE_OFFSET) & Self::SOURCE_MASK)
+        });
     }
 }
 
@@ -10029,7 +10156,7 @@ impl Pwrup1Val {
                 self.bits | Pwrup1::STATUS_MASK
             } else {
                 self.bits & !Pwrup1::STATUS_MASK
-            }
+            },
         }
     }
 
@@ -10043,7 +10170,7 @@ impl Pwrup1Val {
                 self.bits | Pwrup1::MODE_MASK
             } else {
                 self.bits & !Pwrup1::MODE_MASK
-            }
+            },
         }
     }
 
@@ -10055,7 +10182,7 @@ impl Pwrup1Val {
                 self.bits | Pwrup1::DIRECTION_MASK
             } else {
                 self.bits & !Pwrup1::DIRECTION_MASK
-            }
+            },
         }
     }
 
@@ -10070,7 +10197,7 @@ impl Pwrup1Val {
                 self.bits | Pwrup1::ENABLE_MASK
             } else {
                 self.bits & !Pwrup1::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -10078,7 +10205,8 @@ impl Pwrup1Val {
     #[inline(always)]
     pub const fn with_source(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Pwrup1::SOURCE_MASK) | ((value << Pwrup1::SOURCE_OFFSET) & Pwrup1::SOURCE_MASK)
+            bits: (self.bits & !Pwrup1::SOURCE_MASK)
+                | ((value << Pwrup1::SOURCE_OFFSET) & Pwrup1::SOURCE_MASK),
         }
     }
 }
@@ -10322,7 +10450,9 @@ impl Pwrup2 {
     /// Write **SOURCE** `[5:0]` (RW)
     #[inline(always)]
     pub fn write_source(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SOURCE_MASK) | ((value << Self::SOURCE_OFFSET) & Self::SOURCE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SOURCE_MASK) | ((value << Self::SOURCE_OFFSET) & Self::SOURCE_MASK)
+        });
     }
 }
 
@@ -10409,7 +10539,7 @@ impl Pwrup2Val {
                 self.bits | Pwrup2::STATUS_MASK
             } else {
                 self.bits & !Pwrup2::STATUS_MASK
-            }
+            },
         }
     }
 
@@ -10423,7 +10553,7 @@ impl Pwrup2Val {
                 self.bits | Pwrup2::MODE_MASK
             } else {
                 self.bits & !Pwrup2::MODE_MASK
-            }
+            },
         }
     }
 
@@ -10435,7 +10565,7 @@ impl Pwrup2Val {
                 self.bits | Pwrup2::DIRECTION_MASK
             } else {
                 self.bits & !Pwrup2::DIRECTION_MASK
-            }
+            },
         }
     }
 
@@ -10450,7 +10580,7 @@ impl Pwrup2Val {
                 self.bits | Pwrup2::ENABLE_MASK
             } else {
                 self.bits & !Pwrup2::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -10458,7 +10588,8 @@ impl Pwrup2Val {
     #[inline(always)]
     pub const fn with_source(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Pwrup2::SOURCE_MASK) | ((value << Pwrup2::SOURCE_OFFSET) & Pwrup2::SOURCE_MASK)
+            bits: (self.bits & !Pwrup2::SOURCE_MASK)
+                | ((value << Pwrup2::SOURCE_OFFSET) & Pwrup2::SOURCE_MASK),
         }
     }
 }
@@ -10702,7 +10833,9 @@ impl Pwrup3 {
     /// Write **SOURCE** `[5:0]` (RW)
     #[inline(always)]
     pub fn write_source(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SOURCE_MASK) | ((value << Self::SOURCE_OFFSET) & Self::SOURCE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SOURCE_MASK) | ((value << Self::SOURCE_OFFSET) & Self::SOURCE_MASK)
+        });
     }
 }
 
@@ -10789,7 +10922,7 @@ impl Pwrup3Val {
                 self.bits | Pwrup3::STATUS_MASK
             } else {
                 self.bits & !Pwrup3::STATUS_MASK
-            }
+            },
         }
     }
 
@@ -10803,7 +10936,7 @@ impl Pwrup3Val {
                 self.bits | Pwrup3::MODE_MASK
             } else {
                 self.bits & !Pwrup3::MODE_MASK
-            }
+            },
         }
     }
 
@@ -10815,7 +10948,7 @@ impl Pwrup3Val {
                 self.bits | Pwrup3::DIRECTION_MASK
             } else {
                 self.bits & !Pwrup3::DIRECTION_MASK
-            }
+            },
         }
     }
 
@@ -10830,7 +10963,7 @@ impl Pwrup3Val {
                 self.bits | Pwrup3::ENABLE_MASK
             } else {
                 self.bits & !Pwrup3::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -10838,7 +10971,8 @@ impl Pwrup3Val {
     #[inline(always)]
     pub const fn with_source(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Pwrup3::SOURCE_MASK) | ((value << Pwrup3::SOURCE_OFFSET) & Pwrup3::SOURCE_MASK)
+            bits: (self.bits & !Pwrup3::SOURCE_MASK)
+                | ((value << Pwrup3::SOURCE_OFFSET) & Pwrup3::SOURCE_MASK),
         }
     }
 }
@@ -10948,7 +11082,8 @@ impl CurrentPwrupReqVal {
     /// Read **CURRENT_PWRUP_REQ** `[6:0]`
     #[inline(always)]
     pub const fn current_pwrup_req(&self) -> u32 {
-        (self.bits & CurrentPwrupReq::CURRENT_PWRUP_REQ_MASK) >> CurrentPwrupReq::CURRENT_PWRUP_REQ_OFFSET
+        (self.bits & CurrentPwrupReq::CURRENT_PWRUP_REQ_MASK)
+            >> CurrentPwrupReq::CURRENT_PWRUP_REQ_OFFSET
     }
 }
 
@@ -11044,7 +11179,8 @@ impl LastSwcorePwrupVal {
     /// Read **LAST_SWCORE_PWRUP** `[6:0]`
     #[inline(always)]
     pub const fn last_swcore_pwrup(&self) -> u32 {
-        (self.bits & LastSwcorePwrup::LAST_SWCORE_PWRUP_MASK) >> LastSwcorePwrup::LAST_SWCORE_PWRUP_OFFSET
+        (self.bits & LastSwcorePwrup::LAST_SWCORE_PWRUP_MASK)
+            >> LastSwcorePwrup::LAST_SWCORE_PWRUP_OFFSET
     }
 }
 
@@ -11166,7 +11302,7 @@ impl DbgPwrcfgVal {
                 self.bits | DbgPwrcfg::IGNORE_MASK
             } else {
                 self.bits & !DbgPwrcfg::IGNORE_MASK
-            }
+            },
         }
     }
 }
@@ -11361,7 +11497,7 @@ impl BootdisVal {
                 self.bits | Bootdis::NEXT_MASK
             } else {
                 self.bits & !Bootdis::NEXT_MASK
-            }
+            },
         }
     }
 
@@ -11376,7 +11512,7 @@ impl BootdisVal {
                 self.bits | Bootdis::NOW_MASK
             } else {
                 self.bits & !Bootdis::NOW_MASK
-            }
+            },
         }
     }
 }
@@ -11460,7 +11596,9 @@ impl Dbgconfig {
     /// Recommend that this is NOT changed until you require debug access in multi-chip environment
     #[inline(always)]
     pub fn write_dp_instid(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DP_INSTID_MASK) | ((value << Self::DP_INSTID_OFFSET) & Self::DP_INSTID_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DP_INSTID_MASK) | ((value << Self::DP_INSTID_OFFSET) & Self::DP_INSTID_MASK)
+        });
     }
 }
 
@@ -11508,7 +11646,8 @@ impl DbgconfigVal {
     #[inline(always)]
     pub const fn with_dp_instid(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Dbgconfig::DP_INSTID_MASK) | ((value << Dbgconfig::DP_INSTID_OFFSET) & Dbgconfig::DP_INSTID_MASK)
+            bits: (self.bits & !Dbgconfig::DP_INSTID_MASK)
+                | ((value << Dbgconfig::DP_INSTID_OFFSET) & Dbgconfig::DP_INSTID_MASK),
         }
     }
 }
@@ -11581,7 +11720,9 @@ impl Scratch0 {
     /// Write **SCRATCH0** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_scratch0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SCRATCH0_MASK) | ((value << Self::SCRATCH0_OFFSET) & Self::SCRATCH0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SCRATCH0_MASK) | ((value << Self::SCRATCH0_OFFSET) & Self::SCRATCH0_MASK)
+        });
     }
 }
 
@@ -11623,7 +11764,8 @@ impl Scratch0Val {
     #[inline(always)]
     pub const fn with_scratch0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Scratch0::SCRATCH0_MASK) | ((value << Scratch0::SCRATCH0_OFFSET) & Scratch0::SCRATCH0_MASK)
+            bits: (self.bits & !Scratch0::SCRATCH0_MASK)
+                | ((value << Scratch0::SCRATCH0_OFFSET) & Scratch0::SCRATCH0_MASK),
         }
     }
 }
@@ -11696,7 +11838,9 @@ impl Scratch1 {
     /// Write **SCRATCH1** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_scratch1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SCRATCH1_MASK) | ((value << Self::SCRATCH1_OFFSET) & Self::SCRATCH1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SCRATCH1_MASK) | ((value << Self::SCRATCH1_OFFSET) & Self::SCRATCH1_MASK)
+        });
     }
 }
 
@@ -11738,7 +11882,8 @@ impl Scratch1Val {
     #[inline(always)]
     pub const fn with_scratch1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Scratch1::SCRATCH1_MASK) | ((value << Scratch1::SCRATCH1_OFFSET) & Scratch1::SCRATCH1_MASK)
+            bits: (self.bits & !Scratch1::SCRATCH1_MASK)
+                | ((value << Scratch1::SCRATCH1_OFFSET) & Scratch1::SCRATCH1_MASK),
         }
     }
 }
@@ -11811,7 +11956,9 @@ impl Scratch2 {
     /// Write **SCRATCH2** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_scratch2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SCRATCH2_MASK) | ((value << Self::SCRATCH2_OFFSET) & Self::SCRATCH2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SCRATCH2_MASK) | ((value << Self::SCRATCH2_OFFSET) & Self::SCRATCH2_MASK)
+        });
     }
 }
 
@@ -11853,7 +12000,8 @@ impl Scratch2Val {
     #[inline(always)]
     pub const fn with_scratch2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Scratch2::SCRATCH2_MASK) | ((value << Scratch2::SCRATCH2_OFFSET) & Scratch2::SCRATCH2_MASK)
+            bits: (self.bits & !Scratch2::SCRATCH2_MASK)
+                | ((value << Scratch2::SCRATCH2_OFFSET) & Scratch2::SCRATCH2_MASK),
         }
     }
 }
@@ -11926,7 +12074,9 @@ impl Scratch3 {
     /// Write **SCRATCH3** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_scratch3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SCRATCH3_MASK) | ((value << Self::SCRATCH3_OFFSET) & Self::SCRATCH3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SCRATCH3_MASK) | ((value << Self::SCRATCH3_OFFSET) & Self::SCRATCH3_MASK)
+        });
     }
 }
 
@@ -11968,7 +12118,8 @@ impl Scratch3Val {
     #[inline(always)]
     pub const fn with_scratch3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Scratch3::SCRATCH3_MASK) | ((value << Scratch3::SCRATCH3_OFFSET) & Scratch3::SCRATCH3_MASK)
+            bits: (self.bits & !Scratch3::SCRATCH3_MASK)
+                | ((value << Scratch3::SCRATCH3_OFFSET) & Scratch3::SCRATCH3_MASK),
         }
     }
 }
@@ -12041,7 +12192,9 @@ impl Scratch4 {
     /// Write **SCRATCH4** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_scratch4(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SCRATCH4_MASK) | ((value << Self::SCRATCH4_OFFSET) & Self::SCRATCH4_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SCRATCH4_MASK) | ((value << Self::SCRATCH4_OFFSET) & Self::SCRATCH4_MASK)
+        });
     }
 }
 
@@ -12083,7 +12236,8 @@ impl Scratch4Val {
     #[inline(always)]
     pub const fn with_scratch4(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Scratch4::SCRATCH4_MASK) | ((value << Scratch4::SCRATCH4_OFFSET) & Scratch4::SCRATCH4_MASK)
+            bits: (self.bits & !Scratch4::SCRATCH4_MASK)
+                | ((value << Scratch4::SCRATCH4_OFFSET) & Scratch4::SCRATCH4_MASK),
         }
     }
 }
@@ -12156,7 +12310,9 @@ impl Scratch5 {
     /// Write **SCRATCH5** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_scratch5(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SCRATCH5_MASK) | ((value << Self::SCRATCH5_OFFSET) & Self::SCRATCH5_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SCRATCH5_MASK) | ((value << Self::SCRATCH5_OFFSET) & Self::SCRATCH5_MASK)
+        });
     }
 }
 
@@ -12198,7 +12354,8 @@ impl Scratch5Val {
     #[inline(always)]
     pub const fn with_scratch5(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Scratch5::SCRATCH5_MASK) | ((value << Scratch5::SCRATCH5_OFFSET) & Scratch5::SCRATCH5_MASK)
+            bits: (self.bits & !Scratch5::SCRATCH5_MASK)
+                | ((value << Scratch5::SCRATCH5_OFFSET) & Scratch5::SCRATCH5_MASK),
         }
     }
 }
@@ -12271,7 +12428,9 @@ impl Scratch6 {
     /// Write **SCRATCH6** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_scratch6(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SCRATCH6_MASK) | ((value << Self::SCRATCH6_OFFSET) & Self::SCRATCH6_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SCRATCH6_MASK) | ((value << Self::SCRATCH6_OFFSET) & Self::SCRATCH6_MASK)
+        });
     }
 }
 
@@ -12313,7 +12472,8 @@ impl Scratch6Val {
     #[inline(always)]
     pub const fn with_scratch6(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Scratch6::SCRATCH6_MASK) | ((value << Scratch6::SCRATCH6_OFFSET) & Scratch6::SCRATCH6_MASK)
+            bits: (self.bits & !Scratch6::SCRATCH6_MASK)
+                | ((value << Scratch6::SCRATCH6_OFFSET) & Scratch6::SCRATCH6_MASK),
         }
     }
 }
@@ -12386,7 +12546,9 @@ impl Scratch7 {
     /// Write **SCRATCH7** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_scratch7(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SCRATCH7_MASK) | ((value << Self::SCRATCH7_OFFSET) & Self::SCRATCH7_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SCRATCH7_MASK) | ((value << Self::SCRATCH7_OFFSET) & Self::SCRATCH7_MASK)
+        });
     }
 }
 
@@ -12428,7 +12590,8 @@ impl Scratch7Val {
     #[inline(always)]
     pub const fn with_scratch7(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Scratch7::SCRATCH7_MASK) | ((value << Scratch7::SCRATCH7_OFFSET) & Scratch7::SCRATCH7_MASK)
+            bits: (self.bits & !Scratch7::SCRATCH7_MASK)
+                | ((value << Scratch7::SCRATCH7_OFFSET) & Scratch7::SCRATCH7_MASK),
         }
     }
 }
@@ -12501,7 +12664,9 @@ impl Boot0 {
     /// Write **BOOT0** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_boot0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BOOT0_MASK) | ((value << Self::BOOT0_OFFSET) & Self::BOOT0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BOOT0_MASK) | ((value << Self::BOOT0_OFFSET) & Self::BOOT0_MASK)
+        });
     }
 }
 
@@ -12543,7 +12708,8 @@ impl Boot0Val {
     #[inline(always)]
     pub const fn with_boot0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Boot0::BOOT0_MASK) | ((value << Boot0::BOOT0_OFFSET) & Boot0::BOOT0_MASK)
+            bits: (self.bits & !Boot0::BOOT0_MASK)
+                | ((value << Boot0::BOOT0_OFFSET) & Boot0::BOOT0_MASK),
         }
     }
 }
@@ -12616,7 +12782,9 @@ impl Boot1 {
     /// Write **BOOT1** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_boot1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BOOT1_MASK) | ((value << Self::BOOT1_OFFSET) & Self::BOOT1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BOOT1_MASK) | ((value << Self::BOOT1_OFFSET) & Self::BOOT1_MASK)
+        });
     }
 }
 
@@ -12658,7 +12826,8 @@ impl Boot1Val {
     #[inline(always)]
     pub const fn with_boot1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Boot1::BOOT1_MASK) | ((value << Boot1::BOOT1_OFFSET) & Boot1::BOOT1_MASK)
+            bits: (self.bits & !Boot1::BOOT1_MASK)
+                | ((value << Boot1::BOOT1_OFFSET) & Boot1::BOOT1_MASK),
         }
     }
 }
@@ -12731,7 +12900,9 @@ impl Boot2 {
     /// Write **BOOT2** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_boot2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BOOT2_MASK) | ((value << Self::BOOT2_OFFSET) & Self::BOOT2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BOOT2_MASK) | ((value << Self::BOOT2_OFFSET) & Self::BOOT2_MASK)
+        });
     }
 }
 
@@ -12773,7 +12944,8 @@ impl Boot2Val {
     #[inline(always)]
     pub const fn with_boot2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Boot2::BOOT2_MASK) | ((value << Boot2::BOOT2_OFFSET) & Boot2::BOOT2_MASK)
+            bits: (self.bits & !Boot2::BOOT2_MASK)
+                | ((value << Boot2::BOOT2_OFFSET) & Boot2::BOOT2_MASK),
         }
     }
 }
@@ -12846,7 +13018,9 @@ impl Boot3 {
     /// Write **BOOT3** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_boot3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BOOT3_MASK) | ((value << Self::BOOT3_OFFSET) & Self::BOOT3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BOOT3_MASK) | ((value << Self::BOOT3_OFFSET) & Self::BOOT3_MASK)
+        });
     }
 }
 
@@ -12888,7 +13062,8 @@ impl Boot3Val {
     #[inline(always)]
     pub const fn with_boot3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Boot3::BOOT3_MASK) | ((value << Boot3::BOOT3_OFFSET) & Boot3::BOOT3_MASK)
+            bits: (self.bits & !Boot3::BOOT3_MASK)
+                | ((value << Boot3::BOOT3_OFFSET) & Boot3::BOOT3_MASK),
         }
     }
 }
@@ -13092,7 +13267,7 @@ impl IntrVal {
                 self.bits | Intr::VREG_OUTPUT_LOW_MASK
             } else {
                 self.bits & !Intr::VREG_OUTPUT_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -13334,7 +13509,7 @@ impl InteVal {
                 self.bits | Inte::PWRUP_WHILE_WAITING_MASK
             } else {
                 self.bits & !Inte::PWRUP_WHILE_WAITING_MASK
-            }
+            },
         }
     }
 
@@ -13348,7 +13523,7 @@ impl InteVal {
                 self.bits | Inte::STATE_REQ_IGNORED_MASK
             } else {
                 self.bits & !Inte::STATE_REQ_IGNORED_MASK
-            }
+            },
         }
     }
 
@@ -13360,7 +13535,7 @@ impl InteVal {
                 self.bits | Inte::TIMER_MASK
             } else {
                 self.bits & !Inte::TIMER_MASK
-            }
+            },
         }
     }
 
@@ -13372,7 +13547,7 @@ impl InteVal {
                 self.bits | Inte::VREG_OUTPUT_LOW_MASK
             } else {
                 self.bits & !Inte::VREG_OUTPUT_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -13614,7 +13789,7 @@ impl IntfVal {
                 self.bits | Intf::PWRUP_WHILE_WAITING_MASK
             } else {
                 self.bits & !Intf::PWRUP_WHILE_WAITING_MASK
-            }
+            },
         }
     }
 
@@ -13628,7 +13803,7 @@ impl IntfVal {
                 self.bits | Intf::STATE_REQ_IGNORED_MASK
             } else {
                 self.bits & !Intf::STATE_REQ_IGNORED_MASK
-            }
+            },
         }
     }
 
@@ -13640,7 +13815,7 @@ impl IntfVal {
                 self.bits | Intf::TIMER_MASK
             } else {
                 self.bits & !Intf::TIMER_MASK
-            }
+            },
         }
     }
 
@@ -13652,7 +13827,7 @@ impl IntfVal {
                 self.bits | Intf::VREG_OUTPUT_LOW_MASK
             } else {
                 self.bits & !Intf::VREG_OUTPUT_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -14108,4 +14283,3 @@ pub struct RegisterBlock {
     /// Interrupt status after masking & forcing
     pub ints: Ints,
 }
-

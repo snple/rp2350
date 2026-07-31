@@ -353,7 +353,9 @@ impl Gpio0Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -365,7 +367,9 @@ impl Gpio0Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -377,7 +381,9 @@ impl Gpio0Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -389,7 +395,9 @@ impl Gpio0Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -407,7 +415,9 @@ impl Gpio0Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -476,7 +486,8 @@ impl Gpio0CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio0Ctrl::IRQOVER_MASK) | ((value << Gpio0Ctrl::IRQOVER_OFFSET) & Gpio0Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio0Ctrl::IRQOVER_MASK)
+                | ((value << Gpio0Ctrl::IRQOVER_OFFSET) & Gpio0Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -484,7 +495,8 @@ impl Gpio0CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio0Ctrl::INOVER_MASK) | ((value << Gpio0Ctrl::INOVER_OFFSET) & Gpio0Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio0Ctrl::INOVER_MASK)
+                | ((value << Gpio0Ctrl::INOVER_OFFSET) & Gpio0Ctrl::INOVER_MASK),
         }
     }
 
@@ -492,7 +504,8 @@ impl Gpio0CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio0Ctrl::OEOVER_MASK) | ((value << Gpio0Ctrl::OEOVER_OFFSET) & Gpio0Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio0Ctrl::OEOVER_MASK)
+                | ((value << Gpio0Ctrl::OEOVER_OFFSET) & Gpio0Ctrl::OEOVER_MASK),
         }
     }
 
@@ -500,7 +513,8 @@ impl Gpio0CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio0Ctrl::OUTOVER_MASK) | ((value << Gpio0Ctrl::OUTOVER_OFFSET) & Gpio0Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio0Ctrl::OUTOVER_MASK)
+                | ((value << Gpio0Ctrl::OUTOVER_OFFSET) & Gpio0Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -511,7 +525,8 @@ impl Gpio0CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio0Ctrl::FUNCSEL_MASK) | ((value << Gpio0Ctrl::FUNCSEL_OFFSET) & Gpio0Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio0Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio0Ctrl::FUNCSEL_OFFSET) & Gpio0Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -889,7 +904,9 @@ impl Gpio1Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -901,7 +918,9 @@ impl Gpio1Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -913,7 +932,9 @@ impl Gpio1Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -925,7 +946,9 @@ impl Gpio1Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -943,7 +966,9 @@ impl Gpio1Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -1012,7 +1037,8 @@ impl Gpio1CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio1Ctrl::IRQOVER_MASK) | ((value << Gpio1Ctrl::IRQOVER_OFFSET) & Gpio1Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio1Ctrl::IRQOVER_MASK)
+                | ((value << Gpio1Ctrl::IRQOVER_OFFSET) & Gpio1Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -1020,7 +1046,8 @@ impl Gpio1CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio1Ctrl::INOVER_MASK) | ((value << Gpio1Ctrl::INOVER_OFFSET) & Gpio1Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio1Ctrl::INOVER_MASK)
+                | ((value << Gpio1Ctrl::INOVER_OFFSET) & Gpio1Ctrl::INOVER_MASK),
         }
     }
 
@@ -1028,7 +1055,8 @@ impl Gpio1CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio1Ctrl::OEOVER_MASK) | ((value << Gpio1Ctrl::OEOVER_OFFSET) & Gpio1Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio1Ctrl::OEOVER_MASK)
+                | ((value << Gpio1Ctrl::OEOVER_OFFSET) & Gpio1Ctrl::OEOVER_MASK),
         }
     }
 
@@ -1036,7 +1064,8 @@ impl Gpio1CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio1Ctrl::OUTOVER_MASK) | ((value << Gpio1Ctrl::OUTOVER_OFFSET) & Gpio1Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio1Ctrl::OUTOVER_MASK)
+                | ((value << Gpio1Ctrl::OUTOVER_OFFSET) & Gpio1Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -1047,7 +1076,8 @@ impl Gpio1CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio1Ctrl::FUNCSEL_MASK) | ((value << Gpio1Ctrl::FUNCSEL_OFFSET) & Gpio1Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio1Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio1Ctrl::FUNCSEL_OFFSET) & Gpio1Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -1427,7 +1457,9 @@ impl Gpio2Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -1439,7 +1471,9 @@ impl Gpio2Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -1451,7 +1485,9 @@ impl Gpio2Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -1463,7 +1499,9 @@ impl Gpio2Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -1481,7 +1519,9 @@ impl Gpio2Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -1550,7 +1590,8 @@ impl Gpio2CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio2Ctrl::IRQOVER_MASK) | ((value << Gpio2Ctrl::IRQOVER_OFFSET) & Gpio2Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio2Ctrl::IRQOVER_MASK)
+                | ((value << Gpio2Ctrl::IRQOVER_OFFSET) & Gpio2Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -1558,7 +1599,8 @@ impl Gpio2CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio2Ctrl::INOVER_MASK) | ((value << Gpio2Ctrl::INOVER_OFFSET) & Gpio2Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio2Ctrl::INOVER_MASK)
+                | ((value << Gpio2Ctrl::INOVER_OFFSET) & Gpio2Ctrl::INOVER_MASK),
         }
     }
 
@@ -1566,7 +1608,8 @@ impl Gpio2CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio2Ctrl::OEOVER_MASK) | ((value << Gpio2Ctrl::OEOVER_OFFSET) & Gpio2Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio2Ctrl::OEOVER_MASK)
+                | ((value << Gpio2Ctrl::OEOVER_OFFSET) & Gpio2Ctrl::OEOVER_MASK),
         }
     }
 
@@ -1574,7 +1617,8 @@ impl Gpio2CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio2Ctrl::OUTOVER_MASK) | ((value << Gpio2Ctrl::OUTOVER_OFFSET) & Gpio2Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio2Ctrl::OUTOVER_MASK)
+                | ((value << Gpio2Ctrl::OUTOVER_OFFSET) & Gpio2Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -1585,7 +1629,8 @@ impl Gpio2CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio2Ctrl::FUNCSEL_MASK) | ((value << Gpio2Ctrl::FUNCSEL_OFFSET) & Gpio2Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio2Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio2Ctrl::FUNCSEL_OFFSET) & Gpio2Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -1965,7 +2010,9 @@ impl Gpio3Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -1977,7 +2024,9 @@ impl Gpio3Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -1989,7 +2038,9 @@ impl Gpio3Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -2001,7 +2052,9 @@ impl Gpio3Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -2019,7 +2072,9 @@ impl Gpio3Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -2088,7 +2143,8 @@ impl Gpio3CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio3Ctrl::IRQOVER_MASK) | ((value << Gpio3Ctrl::IRQOVER_OFFSET) & Gpio3Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio3Ctrl::IRQOVER_MASK)
+                | ((value << Gpio3Ctrl::IRQOVER_OFFSET) & Gpio3Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -2096,7 +2152,8 @@ impl Gpio3CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio3Ctrl::INOVER_MASK) | ((value << Gpio3Ctrl::INOVER_OFFSET) & Gpio3Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio3Ctrl::INOVER_MASK)
+                | ((value << Gpio3Ctrl::INOVER_OFFSET) & Gpio3Ctrl::INOVER_MASK),
         }
     }
 
@@ -2104,7 +2161,8 @@ impl Gpio3CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio3Ctrl::OEOVER_MASK) | ((value << Gpio3Ctrl::OEOVER_OFFSET) & Gpio3Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio3Ctrl::OEOVER_MASK)
+                | ((value << Gpio3Ctrl::OEOVER_OFFSET) & Gpio3Ctrl::OEOVER_MASK),
         }
     }
 
@@ -2112,7 +2170,8 @@ impl Gpio3CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio3Ctrl::OUTOVER_MASK) | ((value << Gpio3Ctrl::OUTOVER_OFFSET) & Gpio3Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio3Ctrl::OUTOVER_MASK)
+                | ((value << Gpio3Ctrl::OUTOVER_OFFSET) & Gpio3Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -2123,7 +2182,8 @@ impl Gpio3CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio3Ctrl::FUNCSEL_MASK) | ((value << Gpio3Ctrl::FUNCSEL_OFFSET) & Gpio3Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio3Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio3Ctrl::FUNCSEL_OFFSET) & Gpio3Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -2499,7 +2559,9 @@ impl Gpio4Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -2511,7 +2573,9 @@ impl Gpio4Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -2523,7 +2587,9 @@ impl Gpio4Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -2535,7 +2601,9 @@ impl Gpio4Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -2553,7 +2621,9 @@ impl Gpio4Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -2622,7 +2692,8 @@ impl Gpio4CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio4Ctrl::IRQOVER_MASK) | ((value << Gpio4Ctrl::IRQOVER_OFFSET) & Gpio4Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio4Ctrl::IRQOVER_MASK)
+                | ((value << Gpio4Ctrl::IRQOVER_OFFSET) & Gpio4Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -2630,7 +2701,8 @@ impl Gpio4CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio4Ctrl::INOVER_MASK) | ((value << Gpio4Ctrl::INOVER_OFFSET) & Gpio4Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio4Ctrl::INOVER_MASK)
+                | ((value << Gpio4Ctrl::INOVER_OFFSET) & Gpio4Ctrl::INOVER_MASK),
         }
     }
 
@@ -2638,7 +2710,8 @@ impl Gpio4CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio4Ctrl::OEOVER_MASK) | ((value << Gpio4Ctrl::OEOVER_OFFSET) & Gpio4Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio4Ctrl::OEOVER_MASK)
+                | ((value << Gpio4Ctrl::OEOVER_OFFSET) & Gpio4Ctrl::OEOVER_MASK),
         }
     }
 
@@ -2646,7 +2719,8 @@ impl Gpio4CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio4Ctrl::OUTOVER_MASK) | ((value << Gpio4Ctrl::OUTOVER_OFFSET) & Gpio4Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio4Ctrl::OUTOVER_MASK)
+                | ((value << Gpio4Ctrl::OUTOVER_OFFSET) & Gpio4Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -2657,7 +2731,8 @@ impl Gpio4CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio4Ctrl::FUNCSEL_MASK) | ((value << Gpio4Ctrl::FUNCSEL_OFFSET) & Gpio4Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio4Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio4Ctrl::FUNCSEL_OFFSET) & Gpio4Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -3033,7 +3108,9 @@ impl Gpio5Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -3045,7 +3122,9 @@ impl Gpio5Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -3057,7 +3136,9 @@ impl Gpio5Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -3069,7 +3150,9 @@ impl Gpio5Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -3087,7 +3170,9 @@ impl Gpio5Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -3156,7 +3241,8 @@ impl Gpio5CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio5Ctrl::IRQOVER_MASK) | ((value << Gpio5Ctrl::IRQOVER_OFFSET) & Gpio5Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio5Ctrl::IRQOVER_MASK)
+                | ((value << Gpio5Ctrl::IRQOVER_OFFSET) & Gpio5Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -3164,7 +3250,8 @@ impl Gpio5CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio5Ctrl::INOVER_MASK) | ((value << Gpio5Ctrl::INOVER_OFFSET) & Gpio5Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio5Ctrl::INOVER_MASK)
+                | ((value << Gpio5Ctrl::INOVER_OFFSET) & Gpio5Ctrl::INOVER_MASK),
         }
     }
 
@@ -3172,7 +3259,8 @@ impl Gpio5CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio5Ctrl::OEOVER_MASK) | ((value << Gpio5Ctrl::OEOVER_OFFSET) & Gpio5Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio5Ctrl::OEOVER_MASK)
+                | ((value << Gpio5Ctrl::OEOVER_OFFSET) & Gpio5Ctrl::OEOVER_MASK),
         }
     }
 
@@ -3180,7 +3268,8 @@ impl Gpio5CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio5Ctrl::OUTOVER_MASK) | ((value << Gpio5Ctrl::OUTOVER_OFFSET) & Gpio5Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio5Ctrl::OUTOVER_MASK)
+                | ((value << Gpio5Ctrl::OUTOVER_OFFSET) & Gpio5Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -3191,7 +3280,8 @@ impl Gpio5CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio5Ctrl::FUNCSEL_MASK) | ((value << Gpio5Ctrl::FUNCSEL_OFFSET) & Gpio5Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio5Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio5Ctrl::FUNCSEL_OFFSET) & Gpio5Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -3567,7 +3657,9 @@ impl Gpio6Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -3579,7 +3671,9 @@ impl Gpio6Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -3591,7 +3685,9 @@ impl Gpio6Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -3603,7 +3699,9 @@ impl Gpio6Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -3621,7 +3719,9 @@ impl Gpio6Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -3690,7 +3790,8 @@ impl Gpio6CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio6Ctrl::IRQOVER_MASK) | ((value << Gpio6Ctrl::IRQOVER_OFFSET) & Gpio6Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio6Ctrl::IRQOVER_MASK)
+                | ((value << Gpio6Ctrl::IRQOVER_OFFSET) & Gpio6Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -3698,7 +3799,8 @@ impl Gpio6CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio6Ctrl::INOVER_MASK) | ((value << Gpio6Ctrl::INOVER_OFFSET) & Gpio6Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio6Ctrl::INOVER_MASK)
+                | ((value << Gpio6Ctrl::INOVER_OFFSET) & Gpio6Ctrl::INOVER_MASK),
         }
     }
 
@@ -3706,7 +3808,8 @@ impl Gpio6CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio6Ctrl::OEOVER_MASK) | ((value << Gpio6Ctrl::OEOVER_OFFSET) & Gpio6Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio6Ctrl::OEOVER_MASK)
+                | ((value << Gpio6Ctrl::OEOVER_OFFSET) & Gpio6Ctrl::OEOVER_MASK),
         }
     }
 
@@ -3714,7 +3817,8 @@ impl Gpio6CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio6Ctrl::OUTOVER_MASK) | ((value << Gpio6Ctrl::OUTOVER_OFFSET) & Gpio6Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio6Ctrl::OUTOVER_MASK)
+                | ((value << Gpio6Ctrl::OUTOVER_OFFSET) & Gpio6Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -3725,7 +3829,8 @@ impl Gpio6CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio6Ctrl::FUNCSEL_MASK) | ((value << Gpio6Ctrl::FUNCSEL_OFFSET) & Gpio6Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio6Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio6Ctrl::FUNCSEL_OFFSET) & Gpio6Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -4101,7 +4206,9 @@ impl Gpio7Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -4113,7 +4220,9 @@ impl Gpio7Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -4125,7 +4234,9 @@ impl Gpio7Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -4137,7 +4248,9 @@ impl Gpio7Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -4155,7 +4268,9 @@ impl Gpio7Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -4224,7 +4339,8 @@ impl Gpio7CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio7Ctrl::IRQOVER_MASK) | ((value << Gpio7Ctrl::IRQOVER_OFFSET) & Gpio7Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio7Ctrl::IRQOVER_MASK)
+                | ((value << Gpio7Ctrl::IRQOVER_OFFSET) & Gpio7Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -4232,7 +4348,8 @@ impl Gpio7CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio7Ctrl::INOVER_MASK) | ((value << Gpio7Ctrl::INOVER_OFFSET) & Gpio7Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio7Ctrl::INOVER_MASK)
+                | ((value << Gpio7Ctrl::INOVER_OFFSET) & Gpio7Ctrl::INOVER_MASK),
         }
     }
 
@@ -4240,7 +4357,8 @@ impl Gpio7CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio7Ctrl::OEOVER_MASK) | ((value << Gpio7Ctrl::OEOVER_OFFSET) & Gpio7Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio7Ctrl::OEOVER_MASK)
+                | ((value << Gpio7Ctrl::OEOVER_OFFSET) & Gpio7Ctrl::OEOVER_MASK),
         }
     }
 
@@ -4248,7 +4366,8 @@ impl Gpio7CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio7Ctrl::OUTOVER_MASK) | ((value << Gpio7Ctrl::OUTOVER_OFFSET) & Gpio7Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio7Ctrl::OUTOVER_MASK)
+                | ((value << Gpio7Ctrl::OUTOVER_OFFSET) & Gpio7Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -4259,7 +4378,8 @@ impl Gpio7CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio7Ctrl::FUNCSEL_MASK) | ((value << Gpio7Ctrl::FUNCSEL_OFFSET) & Gpio7Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio7Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio7Ctrl::FUNCSEL_OFFSET) & Gpio7Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -4635,7 +4755,9 @@ impl Gpio8Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -4647,7 +4769,9 @@ impl Gpio8Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -4659,7 +4783,9 @@ impl Gpio8Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -4671,7 +4797,9 @@ impl Gpio8Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -4689,7 +4817,9 @@ impl Gpio8Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -4758,7 +4888,8 @@ impl Gpio8CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio8Ctrl::IRQOVER_MASK) | ((value << Gpio8Ctrl::IRQOVER_OFFSET) & Gpio8Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio8Ctrl::IRQOVER_MASK)
+                | ((value << Gpio8Ctrl::IRQOVER_OFFSET) & Gpio8Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -4766,7 +4897,8 @@ impl Gpio8CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio8Ctrl::INOVER_MASK) | ((value << Gpio8Ctrl::INOVER_OFFSET) & Gpio8Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio8Ctrl::INOVER_MASK)
+                | ((value << Gpio8Ctrl::INOVER_OFFSET) & Gpio8Ctrl::INOVER_MASK),
         }
     }
 
@@ -4774,7 +4906,8 @@ impl Gpio8CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio8Ctrl::OEOVER_MASK) | ((value << Gpio8Ctrl::OEOVER_OFFSET) & Gpio8Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio8Ctrl::OEOVER_MASK)
+                | ((value << Gpio8Ctrl::OEOVER_OFFSET) & Gpio8Ctrl::OEOVER_MASK),
         }
     }
 
@@ -4782,7 +4915,8 @@ impl Gpio8CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio8Ctrl::OUTOVER_MASK) | ((value << Gpio8Ctrl::OUTOVER_OFFSET) & Gpio8Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio8Ctrl::OUTOVER_MASK)
+                | ((value << Gpio8Ctrl::OUTOVER_OFFSET) & Gpio8Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -4793,7 +4927,8 @@ impl Gpio8CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio8Ctrl::FUNCSEL_MASK) | ((value << Gpio8Ctrl::FUNCSEL_OFFSET) & Gpio8Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio8Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio8Ctrl::FUNCSEL_OFFSET) & Gpio8Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -5167,7 +5302,9 @@ impl Gpio9Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -5179,7 +5316,9 @@ impl Gpio9Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -5191,7 +5330,9 @@ impl Gpio9Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -5203,7 +5344,9 @@ impl Gpio9Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -5221,7 +5364,9 @@ impl Gpio9Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -5290,7 +5435,8 @@ impl Gpio9CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio9Ctrl::IRQOVER_MASK) | ((value << Gpio9Ctrl::IRQOVER_OFFSET) & Gpio9Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio9Ctrl::IRQOVER_MASK)
+                | ((value << Gpio9Ctrl::IRQOVER_OFFSET) & Gpio9Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -5298,7 +5444,8 @@ impl Gpio9CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio9Ctrl::INOVER_MASK) | ((value << Gpio9Ctrl::INOVER_OFFSET) & Gpio9Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio9Ctrl::INOVER_MASK)
+                | ((value << Gpio9Ctrl::INOVER_OFFSET) & Gpio9Ctrl::INOVER_MASK),
         }
     }
 
@@ -5306,7 +5453,8 @@ impl Gpio9CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio9Ctrl::OEOVER_MASK) | ((value << Gpio9Ctrl::OEOVER_OFFSET) & Gpio9Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio9Ctrl::OEOVER_MASK)
+                | ((value << Gpio9Ctrl::OEOVER_OFFSET) & Gpio9Ctrl::OEOVER_MASK),
         }
     }
 
@@ -5314,7 +5462,8 @@ impl Gpio9CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio9Ctrl::OUTOVER_MASK) | ((value << Gpio9Ctrl::OUTOVER_OFFSET) & Gpio9Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio9Ctrl::OUTOVER_MASK)
+                | ((value << Gpio9Ctrl::OUTOVER_OFFSET) & Gpio9Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -5325,7 +5474,8 @@ impl Gpio9CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio9Ctrl::FUNCSEL_MASK) | ((value << Gpio9Ctrl::FUNCSEL_OFFSET) & Gpio9Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio9Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio9Ctrl::FUNCSEL_OFFSET) & Gpio9Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -5701,7 +5851,9 @@ impl Gpio10Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -5713,7 +5865,9 @@ impl Gpio10Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -5725,7 +5879,9 @@ impl Gpio10Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -5737,7 +5893,9 @@ impl Gpio10Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -5755,7 +5913,9 @@ impl Gpio10Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -5824,7 +5984,8 @@ impl Gpio10CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio10Ctrl::IRQOVER_MASK) | ((value << Gpio10Ctrl::IRQOVER_OFFSET) & Gpio10Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio10Ctrl::IRQOVER_MASK)
+                | ((value << Gpio10Ctrl::IRQOVER_OFFSET) & Gpio10Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -5832,7 +5993,8 @@ impl Gpio10CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio10Ctrl::INOVER_MASK) | ((value << Gpio10Ctrl::INOVER_OFFSET) & Gpio10Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio10Ctrl::INOVER_MASK)
+                | ((value << Gpio10Ctrl::INOVER_OFFSET) & Gpio10Ctrl::INOVER_MASK),
         }
     }
 
@@ -5840,7 +6002,8 @@ impl Gpio10CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio10Ctrl::OEOVER_MASK) | ((value << Gpio10Ctrl::OEOVER_OFFSET) & Gpio10Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio10Ctrl::OEOVER_MASK)
+                | ((value << Gpio10Ctrl::OEOVER_OFFSET) & Gpio10Ctrl::OEOVER_MASK),
         }
     }
 
@@ -5848,7 +6011,8 @@ impl Gpio10CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio10Ctrl::OUTOVER_MASK) | ((value << Gpio10Ctrl::OUTOVER_OFFSET) & Gpio10Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio10Ctrl::OUTOVER_MASK)
+                | ((value << Gpio10Ctrl::OUTOVER_OFFSET) & Gpio10Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -5859,7 +6023,8 @@ impl Gpio10CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio10Ctrl::FUNCSEL_MASK) | ((value << Gpio10Ctrl::FUNCSEL_OFFSET) & Gpio10Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio10Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio10Ctrl::FUNCSEL_OFFSET) & Gpio10Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -6235,7 +6400,9 @@ impl Gpio11Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -6247,7 +6414,9 @@ impl Gpio11Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -6259,7 +6428,9 @@ impl Gpio11Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -6271,7 +6442,9 @@ impl Gpio11Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -6289,7 +6462,9 @@ impl Gpio11Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -6358,7 +6533,8 @@ impl Gpio11CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio11Ctrl::IRQOVER_MASK) | ((value << Gpio11Ctrl::IRQOVER_OFFSET) & Gpio11Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio11Ctrl::IRQOVER_MASK)
+                | ((value << Gpio11Ctrl::IRQOVER_OFFSET) & Gpio11Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -6366,7 +6542,8 @@ impl Gpio11CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio11Ctrl::INOVER_MASK) | ((value << Gpio11Ctrl::INOVER_OFFSET) & Gpio11Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio11Ctrl::INOVER_MASK)
+                | ((value << Gpio11Ctrl::INOVER_OFFSET) & Gpio11Ctrl::INOVER_MASK),
         }
     }
 
@@ -6374,7 +6551,8 @@ impl Gpio11CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio11Ctrl::OEOVER_MASK) | ((value << Gpio11Ctrl::OEOVER_OFFSET) & Gpio11Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio11Ctrl::OEOVER_MASK)
+                | ((value << Gpio11Ctrl::OEOVER_OFFSET) & Gpio11Ctrl::OEOVER_MASK),
         }
     }
 
@@ -6382,7 +6560,8 @@ impl Gpio11CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio11Ctrl::OUTOVER_MASK) | ((value << Gpio11Ctrl::OUTOVER_OFFSET) & Gpio11Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio11Ctrl::OUTOVER_MASK)
+                | ((value << Gpio11Ctrl::OUTOVER_OFFSET) & Gpio11Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -6393,7 +6572,8 @@ impl Gpio11CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio11Ctrl::FUNCSEL_MASK) | ((value << Gpio11Ctrl::FUNCSEL_OFFSET) & Gpio11Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio11Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio11Ctrl::FUNCSEL_OFFSET) & Gpio11Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -6771,7 +6951,9 @@ impl Gpio12Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -6783,7 +6965,9 @@ impl Gpio12Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -6795,7 +6979,9 @@ impl Gpio12Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -6807,7 +6993,9 @@ impl Gpio12Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -6825,7 +7013,9 @@ impl Gpio12Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -6894,7 +7084,8 @@ impl Gpio12CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio12Ctrl::IRQOVER_MASK) | ((value << Gpio12Ctrl::IRQOVER_OFFSET) & Gpio12Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio12Ctrl::IRQOVER_MASK)
+                | ((value << Gpio12Ctrl::IRQOVER_OFFSET) & Gpio12Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -6902,7 +7093,8 @@ impl Gpio12CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio12Ctrl::INOVER_MASK) | ((value << Gpio12Ctrl::INOVER_OFFSET) & Gpio12Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio12Ctrl::INOVER_MASK)
+                | ((value << Gpio12Ctrl::INOVER_OFFSET) & Gpio12Ctrl::INOVER_MASK),
         }
     }
 
@@ -6910,7 +7102,8 @@ impl Gpio12CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio12Ctrl::OEOVER_MASK) | ((value << Gpio12Ctrl::OEOVER_OFFSET) & Gpio12Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio12Ctrl::OEOVER_MASK)
+                | ((value << Gpio12Ctrl::OEOVER_OFFSET) & Gpio12Ctrl::OEOVER_MASK),
         }
     }
 
@@ -6918,7 +7111,8 @@ impl Gpio12CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio12Ctrl::OUTOVER_MASK) | ((value << Gpio12Ctrl::OUTOVER_OFFSET) & Gpio12Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio12Ctrl::OUTOVER_MASK)
+                | ((value << Gpio12Ctrl::OUTOVER_OFFSET) & Gpio12Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -6929,7 +7123,8 @@ impl Gpio12CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio12Ctrl::FUNCSEL_MASK) | ((value << Gpio12Ctrl::FUNCSEL_OFFSET) & Gpio12Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio12Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio12Ctrl::FUNCSEL_OFFSET) & Gpio12Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -7307,7 +7502,9 @@ impl Gpio13Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -7319,7 +7516,9 @@ impl Gpio13Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -7331,7 +7530,9 @@ impl Gpio13Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -7343,7 +7544,9 @@ impl Gpio13Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -7361,7 +7564,9 @@ impl Gpio13Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -7430,7 +7635,8 @@ impl Gpio13CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio13Ctrl::IRQOVER_MASK) | ((value << Gpio13Ctrl::IRQOVER_OFFSET) & Gpio13Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio13Ctrl::IRQOVER_MASK)
+                | ((value << Gpio13Ctrl::IRQOVER_OFFSET) & Gpio13Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -7438,7 +7644,8 @@ impl Gpio13CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio13Ctrl::INOVER_MASK) | ((value << Gpio13Ctrl::INOVER_OFFSET) & Gpio13Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio13Ctrl::INOVER_MASK)
+                | ((value << Gpio13Ctrl::INOVER_OFFSET) & Gpio13Ctrl::INOVER_MASK),
         }
     }
 
@@ -7446,7 +7653,8 @@ impl Gpio13CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio13Ctrl::OEOVER_MASK) | ((value << Gpio13Ctrl::OEOVER_OFFSET) & Gpio13Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio13Ctrl::OEOVER_MASK)
+                | ((value << Gpio13Ctrl::OEOVER_OFFSET) & Gpio13Ctrl::OEOVER_MASK),
         }
     }
 
@@ -7454,7 +7662,8 @@ impl Gpio13CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio13Ctrl::OUTOVER_MASK) | ((value << Gpio13Ctrl::OUTOVER_OFFSET) & Gpio13Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio13Ctrl::OUTOVER_MASK)
+                | ((value << Gpio13Ctrl::OUTOVER_OFFSET) & Gpio13Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -7465,7 +7674,8 @@ impl Gpio13CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio13Ctrl::FUNCSEL_MASK) | ((value << Gpio13Ctrl::FUNCSEL_OFFSET) & Gpio13Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio13Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio13Ctrl::FUNCSEL_OFFSET) & Gpio13Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -7845,7 +8055,9 @@ impl Gpio14Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -7857,7 +8069,9 @@ impl Gpio14Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -7869,7 +8083,9 @@ impl Gpio14Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -7881,7 +8097,9 @@ impl Gpio14Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -7899,7 +8117,9 @@ impl Gpio14Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -7968,7 +8188,8 @@ impl Gpio14CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio14Ctrl::IRQOVER_MASK) | ((value << Gpio14Ctrl::IRQOVER_OFFSET) & Gpio14Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio14Ctrl::IRQOVER_MASK)
+                | ((value << Gpio14Ctrl::IRQOVER_OFFSET) & Gpio14Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -7976,7 +8197,8 @@ impl Gpio14CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio14Ctrl::INOVER_MASK) | ((value << Gpio14Ctrl::INOVER_OFFSET) & Gpio14Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio14Ctrl::INOVER_MASK)
+                | ((value << Gpio14Ctrl::INOVER_OFFSET) & Gpio14Ctrl::INOVER_MASK),
         }
     }
 
@@ -7984,7 +8206,8 @@ impl Gpio14CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio14Ctrl::OEOVER_MASK) | ((value << Gpio14Ctrl::OEOVER_OFFSET) & Gpio14Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio14Ctrl::OEOVER_MASK)
+                | ((value << Gpio14Ctrl::OEOVER_OFFSET) & Gpio14Ctrl::OEOVER_MASK),
         }
     }
 
@@ -7992,7 +8215,8 @@ impl Gpio14CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio14Ctrl::OUTOVER_MASK) | ((value << Gpio14Ctrl::OUTOVER_OFFSET) & Gpio14Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio14Ctrl::OUTOVER_MASK)
+                | ((value << Gpio14Ctrl::OUTOVER_OFFSET) & Gpio14Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -8003,7 +8227,8 @@ impl Gpio14CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio14Ctrl::FUNCSEL_MASK) | ((value << Gpio14Ctrl::FUNCSEL_OFFSET) & Gpio14Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio14Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio14Ctrl::FUNCSEL_OFFSET) & Gpio14Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -8383,7 +8608,9 @@ impl Gpio15Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -8395,7 +8622,9 @@ impl Gpio15Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -8407,7 +8636,9 @@ impl Gpio15Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -8419,7 +8650,9 @@ impl Gpio15Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -8437,7 +8670,9 @@ impl Gpio15Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -8506,7 +8741,8 @@ impl Gpio15CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio15Ctrl::IRQOVER_MASK) | ((value << Gpio15Ctrl::IRQOVER_OFFSET) & Gpio15Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio15Ctrl::IRQOVER_MASK)
+                | ((value << Gpio15Ctrl::IRQOVER_OFFSET) & Gpio15Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -8514,7 +8750,8 @@ impl Gpio15CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio15Ctrl::INOVER_MASK) | ((value << Gpio15Ctrl::INOVER_OFFSET) & Gpio15Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio15Ctrl::INOVER_MASK)
+                | ((value << Gpio15Ctrl::INOVER_OFFSET) & Gpio15Ctrl::INOVER_MASK),
         }
     }
 
@@ -8522,7 +8759,8 @@ impl Gpio15CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio15Ctrl::OEOVER_MASK) | ((value << Gpio15Ctrl::OEOVER_OFFSET) & Gpio15Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio15Ctrl::OEOVER_MASK)
+                | ((value << Gpio15Ctrl::OEOVER_OFFSET) & Gpio15Ctrl::OEOVER_MASK),
         }
     }
 
@@ -8530,7 +8768,8 @@ impl Gpio15CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio15Ctrl::OUTOVER_MASK) | ((value << Gpio15Ctrl::OUTOVER_OFFSET) & Gpio15Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio15Ctrl::OUTOVER_MASK)
+                | ((value << Gpio15Ctrl::OUTOVER_OFFSET) & Gpio15Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -8541,7 +8780,8 @@ impl Gpio15CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio15Ctrl::FUNCSEL_MASK) | ((value << Gpio15Ctrl::FUNCSEL_OFFSET) & Gpio15Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio15Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio15Ctrl::FUNCSEL_OFFSET) & Gpio15Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -8917,7 +9157,9 @@ impl Gpio16Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -8929,7 +9171,9 @@ impl Gpio16Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -8941,7 +9185,9 @@ impl Gpio16Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -8953,7 +9199,9 @@ impl Gpio16Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -8971,7 +9219,9 @@ impl Gpio16Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -9040,7 +9290,8 @@ impl Gpio16CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio16Ctrl::IRQOVER_MASK) | ((value << Gpio16Ctrl::IRQOVER_OFFSET) & Gpio16Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio16Ctrl::IRQOVER_MASK)
+                | ((value << Gpio16Ctrl::IRQOVER_OFFSET) & Gpio16Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -9048,7 +9299,8 @@ impl Gpio16CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio16Ctrl::INOVER_MASK) | ((value << Gpio16Ctrl::INOVER_OFFSET) & Gpio16Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio16Ctrl::INOVER_MASK)
+                | ((value << Gpio16Ctrl::INOVER_OFFSET) & Gpio16Ctrl::INOVER_MASK),
         }
     }
 
@@ -9056,7 +9308,8 @@ impl Gpio16CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio16Ctrl::OEOVER_MASK) | ((value << Gpio16Ctrl::OEOVER_OFFSET) & Gpio16Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio16Ctrl::OEOVER_MASK)
+                | ((value << Gpio16Ctrl::OEOVER_OFFSET) & Gpio16Ctrl::OEOVER_MASK),
         }
     }
 
@@ -9064,7 +9317,8 @@ impl Gpio16CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio16Ctrl::OUTOVER_MASK) | ((value << Gpio16Ctrl::OUTOVER_OFFSET) & Gpio16Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio16Ctrl::OUTOVER_MASK)
+                | ((value << Gpio16Ctrl::OUTOVER_OFFSET) & Gpio16Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -9075,7 +9329,8 @@ impl Gpio16CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio16Ctrl::FUNCSEL_MASK) | ((value << Gpio16Ctrl::FUNCSEL_OFFSET) & Gpio16Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio16Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio16Ctrl::FUNCSEL_OFFSET) & Gpio16Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -9451,7 +9706,9 @@ impl Gpio17Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -9463,7 +9720,9 @@ impl Gpio17Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -9475,7 +9734,9 @@ impl Gpio17Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -9487,7 +9748,9 @@ impl Gpio17Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -9505,7 +9768,9 @@ impl Gpio17Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -9574,7 +9839,8 @@ impl Gpio17CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio17Ctrl::IRQOVER_MASK) | ((value << Gpio17Ctrl::IRQOVER_OFFSET) & Gpio17Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio17Ctrl::IRQOVER_MASK)
+                | ((value << Gpio17Ctrl::IRQOVER_OFFSET) & Gpio17Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -9582,7 +9848,8 @@ impl Gpio17CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio17Ctrl::INOVER_MASK) | ((value << Gpio17Ctrl::INOVER_OFFSET) & Gpio17Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio17Ctrl::INOVER_MASK)
+                | ((value << Gpio17Ctrl::INOVER_OFFSET) & Gpio17Ctrl::INOVER_MASK),
         }
     }
 
@@ -9590,7 +9857,8 @@ impl Gpio17CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio17Ctrl::OEOVER_MASK) | ((value << Gpio17Ctrl::OEOVER_OFFSET) & Gpio17Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio17Ctrl::OEOVER_MASK)
+                | ((value << Gpio17Ctrl::OEOVER_OFFSET) & Gpio17Ctrl::OEOVER_MASK),
         }
     }
 
@@ -9598,7 +9866,8 @@ impl Gpio17CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio17Ctrl::OUTOVER_MASK) | ((value << Gpio17Ctrl::OUTOVER_OFFSET) & Gpio17Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio17Ctrl::OUTOVER_MASK)
+                | ((value << Gpio17Ctrl::OUTOVER_OFFSET) & Gpio17Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -9609,7 +9878,8 @@ impl Gpio17CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio17Ctrl::FUNCSEL_MASK) | ((value << Gpio17Ctrl::FUNCSEL_OFFSET) & Gpio17Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio17Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio17Ctrl::FUNCSEL_OFFSET) & Gpio17Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -9987,7 +10257,9 @@ impl Gpio18Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -9999,7 +10271,9 @@ impl Gpio18Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -10011,7 +10285,9 @@ impl Gpio18Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -10023,7 +10299,9 @@ impl Gpio18Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -10041,7 +10319,9 @@ impl Gpio18Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -10110,7 +10390,8 @@ impl Gpio18CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio18Ctrl::IRQOVER_MASK) | ((value << Gpio18Ctrl::IRQOVER_OFFSET) & Gpio18Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio18Ctrl::IRQOVER_MASK)
+                | ((value << Gpio18Ctrl::IRQOVER_OFFSET) & Gpio18Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -10118,7 +10399,8 @@ impl Gpio18CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio18Ctrl::INOVER_MASK) | ((value << Gpio18Ctrl::INOVER_OFFSET) & Gpio18Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio18Ctrl::INOVER_MASK)
+                | ((value << Gpio18Ctrl::INOVER_OFFSET) & Gpio18Ctrl::INOVER_MASK),
         }
     }
 
@@ -10126,7 +10408,8 @@ impl Gpio18CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio18Ctrl::OEOVER_MASK) | ((value << Gpio18Ctrl::OEOVER_OFFSET) & Gpio18Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio18Ctrl::OEOVER_MASK)
+                | ((value << Gpio18Ctrl::OEOVER_OFFSET) & Gpio18Ctrl::OEOVER_MASK),
         }
     }
 
@@ -10134,7 +10417,8 @@ impl Gpio18CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio18Ctrl::OUTOVER_MASK) | ((value << Gpio18Ctrl::OUTOVER_OFFSET) & Gpio18Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio18Ctrl::OUTOVER_MASK)
+                | ((value << Gpio18Ctrl::OUTOVER_OFFSET) & Gpio18Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -10145,7 +10429,8 @@ impl Gpio18CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio18Ctrl::FUNCSEL_MASK) | ((value << Gpio18Ctrl::FUNCSEL_OFFSET) & Gpio18Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio18Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio18Ctrl::FUNCSEL_OFFSET) & Gpio18Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -10525,7 +10810,9 @@ impl Gpio19Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -10537,7 +10824,9 @@ impl Gpio19Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -10549,7 +10838,9 @@ impl Gpio19Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -10561,7 +10852,9 @@ impl Gpio19Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -10579,7 +10872,9 @@ impl Gpio19Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -10648,7 +10943,8 @@ impl Gpio19CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio19Ctrl::IRQOVER_MASK) | ((value << Gpio19Ctrl::IRQOVER_OFFSET) & Gpio19Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio19Ctrl::IRQOVER_MASK)
+                | ((value << Gpio19Ctrl::IRQOVER_OFFSET) & Gpio19Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -10656,7 +10952,8 @@ impl Gpio19CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio19Ctrl::INOVER_MASK) | ((value << Gpio19Ctrl::INOVER_OFFSET) & Gpio19Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio19Ctrl::INOVER_MASK)
+                | ((value << Gpio19Ctrl::INOVER_OFFSET) & Gpio19Ctrl::INOVER_MASK),
         }
     }
 
@@ -10664,7 +10961,8 @@ impl Gpio19CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio19Ctrl::OEOVER_MASK) | ((value << Gpio19Ctrl::OEOVER_OFFSET) & Gpio19Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio19Ctrl::OEOVER_MASK)
+                | ((value << Gpio19Ctrl::OEOVER_OFFSET) & Gpio19Ctrl::OEOVER_MASK),
         }
     }
 
@@ -10672,7 +10970,8 @@ impl Gpio19CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio19Ctrl::OUTOVER_MASK) | ((value << Gpio19Ctrl::OUTOVER_OFFSET) & Gpio19Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio19Ctrl::OUTOVER_MASK)
+                | ((value << Gpio19Ctrl::OUTOVER_OFFSET) & Gpio19Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -10683,7 +10982,8 @@ impl Gpio19CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio19Ctrl::FUNCSEL_MASK) | ((value << Gpio19Ctrl::FUNCSEL_OFFSET) & Gpio19Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio19Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio19Ctrl::FUNCSEL_OFFSET) & Gpio19Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -11059,7 +11359,9 @@ impl Gpio20Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -11071,7 +11373,9 @@ impl Gpio20Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -11083,7 +11387,9 @@ impl Gpio20Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -11095,7 +11401,9 @@ impl Gpio20Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -11113,7 +11421,9 @@ impl Gpio20Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -11182,7 +11492,8 @@ impl Gpio20CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio20Ctrl::IRQOVER_MASK) | ((value << Gpio20Ctrl::IRQOVER_OFFSET) & Gpio20Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio20Ctrl::IRQOVER_MASK)
+                | ((value << Gpio20Ctrl::IRQOVER_OFFSET) & Gpio20Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -11190,7 +11501,8 @@ impl Gpio20CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio20Ctrl::INOVER_MASK) | ((value << Gpio20Ctrl::INOVER_OFFSET) & Gpio20Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio20Ctrl::INOVER_MASK)
+                | ((value << Gpio20Ctrl::INOVER_OFFSET) & Gpio20Ctrl::INOVER_MASK),
         }
     }
 
@@ -11198,7 +11510,8 @@ impl Gpio20CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio20Ctrl::OEOVER_MASK) | ((value << Gpio20Ctrl::OEOVER_OFFSET) & Gpio20Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio20Ctrl::OEOVER_MASK)
+                | ((value << Gpio20Ctrl::OEOVER_OFFSET) & Gpio20Ctrl::OEOVER_MASK),
         }
     }
 
@@ -11206,7 +11519,8 @@ impl Gpio20CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio20Ctrl::OUTOVER_MASK) | ((value << Gpio20Ctrl::OUTOVER_OFFSET) & Gpio20Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio20Ctrl::OUTOVER_MASK)
+                | ((value << Gpio20Ctrl::OUTOVER_OFFSET) & Gpio20Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -11217,7 +11531,8 @@ impl Gpio20CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio20Ctrl::FUNCSEL_MASK) | ((value << Gpio20Ctrl::FUNCSEL_OFFSET) & Gpio20Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio20Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio20Ctrl::FUNCSEL_OFFSET) & Gpio20Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -11593,7 +11908,9 @@ impl Gpio21Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -11605,7 +11922,9 @@ impl Gpio21Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -11617,7 +11936,9 @@ impl Gpio21Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -11629,7 +11950,9 @@ impl Gpio21Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -11647,7 +11970,9 @@ impl Gpio21Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -11716,7 +12041,8 @@ impl Gpio21CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio21Ctrl::IRQOVER_MASK) | ((value << Gpio21Ctrl::IRQOVER_OFFSET) & Gpio21Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio21Ctrl::IRQOVER_MASK)
+                | ((value << Gpio21Ctrl::IRQOVER_OFFSET) & Gpio21Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -11724,7 +12050,8 @@ impl Gpio21CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio21Ctrl::INOVER_MASK) | ((value << Gpio21Ctrl::INOVER_OFFSET) & Gpio21Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio21Ctrl::INOVER_MASK)
+                | ((value << Gpio21Ctrl::INOVER_OFFSET) & Gpio21Ctrl::INOVER_MASK),
         }
     }
 
@@ -11732,7 +12059,8 @@ impl Gpio21CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio21Ctrl::OEOVER_MASK) | ((value << Gpio21Ctrl::OEOVER_OFFSET) & Gpio21Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio21Ctrl::OEOVER_MASK)
+                | ((value << Gpio21Ctrl::OEOVER_OFFSET) & Gpio21Ctrl::OEOVER_MASK),
         }
     }
 
@@ -11740,7 +12068,8 @@ impl Gpio21CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio21Ctrl::OUTOVER_MASK) | ((value << Gpio21Ctrl::OUTOVER_OFFSET) & Gpio21Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio21Ctrl::OUTOVER_MASK)
+                | ((value << Gpio21Ctrl::OUTOVER_OFFSET) & Gpio21Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -11751,7 +12080,8 @@ impl Gpio21CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio21Ctrl::FUNCSEL_MASK) | ((value << Gpio21Ctrl::FUNCSEL_OFFSET) & Gpio21Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio21Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio21Ctrl::FUNCSEL_OFFSET) & Gpio21Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -12129,7 +12459,9 @@ impl Gpio22Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -12141,7 +12473,9 @@ impl Gpio22Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -12153,7 +12487,9 @@ impl Gpio22Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -12165,7 +12501,9 @@ impl Gpio22Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -12183,7 +12521,9 @@ impl Gpio22Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -12252,7 +12592,8 @@ impl Gpio22CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio22Ctrl::IRQOVER_MASK) | ((value << Gpio22Ctrl::IRQOVER_OFFSET) & Gpio22Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio22Ctrl::IRQOVER_MASK)
+                | ((value << Gpio22Ctrl::IRQOVER_OFFSET) & Gpio22Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -12260,7 +12601,8 @@ impl Gpio22CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio22Ctrl::INOVER_MASK) | ((value << Gpio22Ctrl::INOVER_OFFSET) & Gpio22Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio22Ctrl::INOVER_MASK)
+                | ((value << Gpio22Ctrl::INOVER_OFFSET) & Gpio22Ctrl::INOVER_MASK),
         }
     }
 
@@ -12268,7 +12610,8 @@ impl Gpio22CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio22Ctrl::OEOVER_MASK) | ((value << Gpio22Ctrl::OEOVER_OFFSET) & Gpio22Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio22Ctrl::OEOVER_MASK)
+                | ((value << Gpio22Ctrl::OEOVER_OFFSET) & Gpio22Ctrl::OEOVER_MASK),
         }
     }
 
@@ -12276,7 +12619,8 @@ impl Gpio22CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio22Ctrl::OUTOVER_MASK) | ((value << Gpio22Ctrl::OUTOVER_OFFSET) & Gpio22Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio22Ctrl::OUTOVER_MASK)
+                | ((value << Gpio22Ctrl::OUTOVER_OFFSET) & Gpio22Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -12287,7 +12631,8 @@ impl Gpio22CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio22Ctrl::FUNCSEL_MASK) | ((value << Gpio22Ctrl::FUNCSEL_OFFSET) & Gpio22Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio22Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio22Ctrl::FUNCSEL_OFFSET) & Gpio22Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -12665,7 +13010,9 @@ impl Gpio23Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -12677,7 +13024,9 @@ impl Gpio23Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -12689,7 +13038,9 @@ impl Gpio23Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -12701,7 +13052,9 @@ impl Gpio23Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -12719,7 +13072,9 @@ impl Gpio23Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -12788,7 +13143,8 @@ impl Gpio23CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio23Ctrl::IRQOVER_MASK) | ((value << Gpio23Ctrl::IRQOVER_OFFSET) & Gpio23Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio23Ctrl::IRQOVER_MASK)
+                | ((value << Gpio23Ctrl::IRQOVER_OFFSET) & Gpio23Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -12796,7 +13152,8 @@ impl Gpio23CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio23Ctrl::INOVER_MASK) | ((value << Gpio23Ctrl::INOVER_OFFSET) & Gpio23Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio23Ctrl::INOVER_MASK)
+                | ((value << Gpio23Ctrl::INOVER_OFFSET) & Gpio23Ctrl::INOVER_MASK),
         }
     }
 
@@ -12804,7 +13161,8 @@ impl Gpio23CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio23Ctrl::OEOVER_MASK) | ((value << Gpio23Ctrl::OEOVER_OFFSET) & Gpio23Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio23Ctrl::OEOVER_MASK)
+                | ((value << Gpio23Ctrl::OEOVER_OFFSET) & Gpio23Ctrl::OEOVER_MASK),
         }
     }
 
@@ -12812,7 +13170,8 @@ impl Gpio23CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio23Ctrl::OUTOVER_MASK) | ((value << Gpio23Ctrl::OUTOVER_OFFSET) & Gpio23Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio23Ctrl::OUTOVER_MASK)
+                | ((value << Gpio23Ctrl::OUTOVER_OFFSET) & Gpio23Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -12823,7 +13182,8 @@ impl Gpio23CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio23Ctrl::FUNCSEL_MASK) | ((value << Gpio23Ctrl::FUNCSEL_OFFSET) & Gpio23Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio23Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio23Ctrl::FUNCSEL_OFFSET) & Gpio23Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -13199,7 +13559,9 @@ impl Gpio24Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -13211,7 +13573,9 @@ impl Gpio24Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -13223,7 +13587,9 @@ impl Gpio24Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -13235,7 +13601,9 @@ impl Gpio24Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -13253,7 +13621,9 @@ impl Gpio24Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -13322,7 +13692,8 @@ impl Gpio24CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio24Ctrl::IRQOVER_MASK) | ((value << Gpio24Ctrl::IRQOVER_OFFSET) & Gpio24Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio24Ctrl::IRQOVER_MASK)
+                | ((value << Gpio24Ctrl::IRQOVER_OFFSET) & Gpio24Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -13330,7 +13701,8 @@ impl Gpio24CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio24Ctrl::INOVER_MASK) | ((value << Gpio24Ctrl::INOVER_OFFSET) & Gpio24Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio24Ctrl::INOVER_MASK)
+                | ((value << Gpio24Ctrl::INOVER_OFFSET) & Gpio24Ctrl::INOVER_MASK),
         }
     }
 
@@ -13338,7 +13710,8 @@ impl Gpio24CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio24Ctrl::OEOVER_MASK) | ((value << Gpio24Ctrl::OEOVER_OFFSET) & Gpio24Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio24Ctrl::OEOVER_MASK)
+                | ((value << Gpio24Ctrl::OEOVER_OFFSET) & Gpio24Ctrl::OEOVER_MASK),
         }
     }
 
@@ -13346,7 +13719,8 @@ impl Gpio24CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio24Ctrl::OUTOVER_MASK) | ((value << Gpio24Ctrl::OUTOVER_OFFSET) & Gpio24Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio24Ctrl::OUTOVER_MASK)
+                | ((value << Gpio24Ctrl::OUTOVER_OFFSET) & Gpio24Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -13357,7 +13731,8 @@ impl Gpio24CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio24Ctrl::FUNCSEL_MASK) | ((value << Gpio24Ctrl::FUNCSEL_OFFSET) & Gpio24Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio24Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio24Ctrl::FUNCSEL_OFFSET) & Gpio24Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -13733,7 +14108,9 @@ impl Gpio25Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -13745,7 +14122,9 @@ impl Gpio25Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -13757,7 +14136,9 @@ impl Gpio25Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -13769,7 +14150,9 @@ impl Gpio25Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -13787,7 +14170,9 @@ impl Gpio25Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -13856,7 +14241,8 @@ impl Gpio25CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio25Ctrl::IRQOVER_MASK) | ((value << Gpio25Ctrl::IRQOVER_OFFSET) & Gpio25Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio25Ctrl::IRQOVER_MASK)
+                | ((value << Gpio25Ctrl::IRQOVER_OFFSET) & Gpio25Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -13864,7 +14250,8 @@ impl Gpio25CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio25Ctrl::INOVER_MASK) | ((value << Gpio25Ctrl::INOVER_OFFSET) & Gpio25Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio25Ctrl::INOVER_MASK)
+                | ((value << Gpio25Ctrl::INOVER_OFFSET) & Gpio25Ctrl::INOVER_MASK),
         }
     }
 
@@ -13872,7 +14259,8 @@ impl Gpio25CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio25Ctrl::OEOVER_MASK) | ((value << Gpio25Ctrl::OEOVER_OFFSET) & Gpio25Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio25Ctrl::OEOVER_MASK)
+                | ((value << Gpio25Ctrl::OEOVER_OFFSET) & Gpio25Ctrl::OEOVER_MASK),
         }
     }
 
@@ -13880,7 +14268,8 @@ impl Gpio25CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio25Ctrl::OUTOVER_MASK) | ((value << Gpio25Ctrl::OUTOVER_OFFSET) & Gpio25Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio25Ctrl::OUTOVER_MASK)
+                | ((value << Gpio25Ctrl::OUTOVER_OFFSET) & Gpio25Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -13891,7 +14280,8 @@ impl Gpio25CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio25Ctrl::FUNCSEL_MASK) | ((value << Gpio25Ctrl::FUNCSEL_OFFSET) & Gpio25Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio25Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio25Ctrl::FUNCSEL_OFFSET) & Gpio25Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -14267,7 +14657,9 @@ impl Gpio26Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -14279,7 +14671,9 @@ impl Gpio26Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -14291,7 +14685,9 @@ impl Gpio26Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -14303,7 +14699,9 @@ impl Gpio26Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -14321,7 +14719,9 @@ impl Gpio26Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -14390,7 +14790,8 @@ impl Gpio26CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio26Ctrl::IRQOVER_MASK) | ((value << Gpio26Ctrl::IRQOVER_OFFSET) & Gpio26Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio26Ctrl::IRQOVER_MASK)
+                | ((value << Gpio26Ctrl::IRQOVER_OFFSET) & Gpio26Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -14398,7 +14799,8 @@ impl Gpio26CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio26Ctrl::INOVER_MASK) | ((value << Gpio26Ctrl::INOVER_OFFSET) & Gpio26Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio26Ctrl::INOVER_MASK)
+                | ((value << Gpio26Ctrl::INOVER_OFFSET) & Gpio26Ctrl::INOVER_MASK),
         }
     }
 
@@ -14406,7 +14808,8 @@ impl Gpio26CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio26Ctrl::OEOVER_MASK) | ((value << Gpio26Ctrl::OEOVER_OFFSET) & Gpio26Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio26Ctrl::OEOVER_MASK)
+                | ((value << Gpio26Ctrl::OEOVER_OFFSET) & Gpio26Ctrl::OEOVER_MASK),
         }
     }
 
@@ -14414,7 +14817,8 @@ impl Gpio26CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio26Ctrl::OUTOVER_MASK) | ((value << Gpio26Ctrl::OUTOVER_OFFSET) & Gpio26Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio26Ctrl::OUTOVER_MASK)
+                | ((value << Gpio26Ctrl::OUTOVER_OFFSET) & Gpio26Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -14425,7 +14829,8 @@ impl Gpio26CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio26Ctrl::FUNCSEL_MASK) | ((value << Gpio26Ctrl::FUNCSEL_OFFSET) & Gpio26Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio26Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio26Ctrl::FUNCSEL_OFFSET) & Gpio26Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -14801,7 +15206,9 @@ impl Gpio27Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -14813,7 +15220,9 @@ impl Gpio27Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -14825,7 +15234,9 @@ impl Gpio27Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -14837,7 +15248,9 @@ impl Gpio27Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -14855,7 +15268,9 @@ impl Gpio27Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -14924,7 +15339,8 @@ impl Gpio27CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio27Ctrl::IRQOVER_MASK) | ((value << Gpio27Ctrl::IRQOVER_OFFSET) & Gpio27Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio27Ctrl::IRQOVER_MASK)
+                | ((value << Gpio27Ctrl::IRQOVER_OFFSET) & Gpio27Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -14932,7 +15348,8 @@ impl Gpio27CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio27Ctrl::INOVER_MASK) | ((value << Gpio27Ctrl::INOVER_OFFSET) & Gpio27Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio27Ctrl::INOVER_MASK)
+                | ((value << Gpio27Ctrl::INOVER_OFFSET) & Gpio27Ctrl::INOVER_MASK),
         }
     }
 
@@ -14940,7 +15357,8 @@ impl Gpio27CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio27Ctrl::OEOVER_MASK) | ((value << Gpio27Ctrl::OEOVER_OFFSET) & Gpio27Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio27Ctrl::OEOVER_MASK)
+                | ((value << Gpio27Ctrl::OEOVER_OFFSET) & Gpio27Ctrl::OEOVER_MASK),
         }
     }
 
@@ -14948,7 +15366,8 @@ impl Gpio27CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio27Ctrl::OUTOVER_MASK) | ((value << Gpio27Ctrl::OUTOVER_OFFSET) & Gpio27Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio27Ctrl::OUTOVER_MASK)
+                | ((value << Gpio27Ctrl::OUTOVER_OFFSET) & Gpio27Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -14959,7 +15378,8 @@ impl Gpio27CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio27Ctrl::FUNCSEL_MASK) | ((value << Gpio27Ctrl::FUNCSEL_OFFSET) & Gpio27Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio27Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio27Ctrl::FUNCSEL_OFFSET) & Gpio27Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -15333,7 +15753,9 @@ impl Gpio28Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -15345,7 +15767,9 @@ impl Gpio28Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -15357,7 +15781,9 @@ impl Gpio28Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -15369,7 +15795,9 @@ impl Gpio28Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -15387,7 +15815,9 @@ impl Gpio28Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -15456,7 +15886,8 @@ impl Gpio28CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio28Ctrl::IRQOVER_MASK) | ((value << Gpio28Ctrl::IRQOVER_OFFSET) & Gpio28Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio28Ctrl::IRQOVER_MASK)
+                | ((value << Gpio28Ctrl::IRQOVER_OFFSET) & Gpio28Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -15464,7 +15895,8 @@ impl Gpio28CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio28Ctrl::INOVER_MASK) | ((value << Gpio28Ctrl::INOVER_OFFSET) & Gpio28Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio28Ctrl::INOVER_MASK)
+                | ((value << Gpio28Ctrl::INOVER_OFFSET) & Gpio28Ctrl::INOVER_MASK),
         }
     }
 
@@ -15472,7 +15904,8 @@ impl Gpio28CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio28Ctrl::OEOVER_MASK) | ((value << Gpio28Ctrl::OEOVER_OFFSET) & Gpio28Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio28Ctrl::OEOVER_MASK)
+                | ((value << Gpio28Ctrl::OEOVER_OFFSET) & Gpio28Ctrl::OEOVER_MASK),
         }
     }
 
@@ -15480,7 +15913,8 @@ impl Gpio28CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio28Ctrl::OUTOVER_MASK) | ((value << Gpio28Ctrl::OUTOVER_OFFSET) & Gpio28Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio28Ctrl::OUTOVER_MASK)
+                | ((value << Gpio28Ctrl::OUTOVER_OFFSET) & Gpio28Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -15491,7 +15925,8 @@ impl Gpio28CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio28Ctrl::FUNCSEL_MASK) | ((value << Gpio28Ctrl::FUNCSEL_OFFSET) & Gpio28Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio28Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio28Ctrl::FUNCSEL_OFFSET) & Gpio28Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -15865,7 +16300,9 @@ impl Gpio29Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -15877,7 +16314,9 @@ impl Gpio29Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -15889,7 +16328,9 @@ impl Gpio29Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -15901,7 +16342,9 @@ impl Gpio29Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -15919,7 +16362,9 @@ impl Gpio29Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -15988,7 +16433,8 @@ impl Gpio29CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio29Ctrl::IRQOVER_MASK) | ((value << Gpio29Ctrl::IRQOVER_OFFSET) & Gpio29Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio29Ctrl::IRQOVER_MASK)
+                | ((value << Gpio29Ctrl::IRQOVER_OFFSET) & Gpio29Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -15996,7 +16442,8 @@ impl Gpio29CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio29Ctrl::INOVER_MASK) | ((value << Gpio29Ctrl::INOVER_OFFSET) & Gpio29Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio29Ctrl::INOVER_MASK)
+                | ((value << Gpio29Ctrl::INOVER_OFFSET) & Gpio29Ctrl::INOVER_MASK),
         }
     }
 
@@ -16004,7 +16451,8 @@ impl Gpio29CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio29Ctrl::OEOVER_MASK) | ((value << Gpio29Ctrl::OEOVER_OFFSET) & Gpio29Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio29Ctrl::OEOVER_MASK)
+                | ((value << Gpio29Ctrl::OEOVER_OFFSET) & Gpio29Ctrl::OEOVER_MASK),
         }
     }
 
@@ -16012,7 +16460,8 @@ impl Gpio29CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio29Ctrl::OUTOVER_MASK) | ((value << Gpio29Ctrl::OUTOVER_OFFSET) & Gpio29Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio29Ctrl::OUTOVER_MASK)
+                | ((value << Gpio29Ctrl::OUTOVER_OFFSET) & Gpio29Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -16023,7 +16472,8 @@ impl Gpio29CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio29Ctrl::FUNCSEL_MASK) | ((value << Gpio29Ctrl::FUNCSEL_OFFSET) & Gpio29Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio29Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio29Ctrl::FUNCSEL_OFFSET) & Gpio29Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -16399,7 +16849,9 @@ impl Gpio30Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -16411,7 +16863,9 @@ impl Gpio30Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -16423,7 +16877,9 @@ impl Gpio30Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -16435,7 +16891,9 @@ impl Gpio30Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -16453,7 +16911,9 @@ impl Gpio30Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -16522,7 +16982,8 @@ impl Gpio30CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio30Ctrl::IRQOVER_MASK) | ((value << Gpio30Ctrl::IRQOVER_OFFSET) & Gpio30Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio30Ctrl::IRQOVER_MASK)
+                | ((value << Gpio30Ctrl::IRQOVER_OFFSET) & Gpio30Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -16530,7 +16991,8 @@ impl Gpio30CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio30Ctrl::INOVER_MASK) | ((value << Gpio30Ctrl::INOVER_OFFSET) & Gpio30Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio30Ctrl::INOVER_MASK)
+                | ((value << Gpio30Ctrl::INOVER_OFFSET) & Gpio30Ctrl::INOVER_MASK),
         }
     }
 
@@ -16538,7 +17000,8 @@ impl Gpio30CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio30Ctrl::OEOVER_MASK) | ((value << Gpio30Ctrl::OEOVER_OFFSET) & Gpio30Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio30Ctrl::OEOVER_MASK)
+                | ((value << Gpio30Ctrl::OEOVER_OFFSET) & Gpio30Ctrl::OEOVER_MASK),
         }
     }
 
@@ -16546,7 +17009,8 @@ impl Gpio30CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio30Ctrl::OUTOVER_MASK) | ((value << Gpio30Ctrl::OUTOVER_OFFSET) & Gpio30Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio30Ctrl::OUTOVER_MASK)
+                | ((value << Gpio30Ctrl::OUTOVER_OFFSET) & Gpio30Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -16557,7 +17021,8 @@ impl Gpio30CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio30Ctrl::FUNCSEL_MASK) | ((value << Gpio30Ctrl::FUNCSEL_OFFSET) & Gpio30Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio30Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio30Ctrl::FUNCSEL_OFFSET) & Gpio30Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -16933,7 +17398,9 @@ impl Gpio31Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -16945,7 +17412,9 @@ impl Gpio31Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -16957,7 +17426,9 @@ impl Gpio31Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -16969,7 +17440,9 @@ impl Gpio31Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -16987,7 +17460,9 @@ impl Gpio31Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -17056,7 +17531,8 @@ impl Gpio31CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio31Ctrl::IRQOVER_MASK) | ((value << Gpio31Ctrl::IRQOVER_OFFSET) & Gpio31Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio31Ctrl::IRQOVER_MASK)
+                | ((value << Gpio31Ctrl::IRQOVER_OFFSET) & Gpio31Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -17064,7 +17540,8 @@ impl Gpio31CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio31Ctrl::INOVER_MASK) | ((value << Gpio31Ctrl::INOVER_OFFSET) & Gpio31Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio31Ctrl::INOVER_MASK)
+                | ((value << Gpio31Ctrl::INOVER_OFFSET) & Gpio31Ctrl::INOVER_MASK),
         }
     }
 
@@ -17072,7 +17549,8 @@ impl Gpio31CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio31Ctrl::OEOVER_MASK) | ((value << Gpio31Ctrl::OEOVER_OFFSET) & Gpio31Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio31Ctrl::OEOVER_MASK)
+                | ((value << Gpio31Ctrl::OEOVER_OFFSET) & Gpio31Ctrl::OEOVER_MASK),
         }
     }
 
@@ -17080,7 +17558,8 @@ impl Gpio31CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio31Ctrl::OUTOVER_MASK) | ((value << Gpio31Ctrl::OUTOVER_OFFSET) & Gpio31Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio31Ctrl::OUTOVER_MASK)
+                | ((value << Gpio31Ctrl::OUTOVER_OFFSET) & Gpio31Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -17091,7 +17570,8 @@ impl Gpio31CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio31Ctrl::FUNCSEL_MASK) | ((value << Gpio31Ctrl::FUNCSEL_OFFSET) & Gpio31Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio31Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio31Ctrl::FUNCSEL_OFFSET) & Gpio31Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -17465,7 +17945,9 @@ impl Gpio32Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -17477,7 +17959,9 @@ impl Gpio32Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -17489,7 +17973,9 @@ impl Gpio32Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -17501,7 +17987,9 @@ impl Gpio32Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -17519,7 +18007,9 @@ impl Gpio32Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -17588,7 +18078,8 @@ impl Gpio32CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio32Ctrl::IRQOVER_MASK) | ((value << Gpio32Ctrl::IRQOVER_OFFSET) & Gpio32Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio32Ctrl::IRQOVER_MASK)
+                | ((value << Gpio32Ctrl::IRQOVER_OFFSET) & Gpio32Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -17596,7 +18087,8 @@ impl Gpio32CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio32Ctrl::INOVER_MASK) | ((value << Gpio32Ctrl::INOVER_OFFSET) & Gpio32Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio32Ctrl::INOVER_MASK)
+                | ((value << Gpio32Ctrl::INOVER_OFFSET) & Gpio32Ctrl::INOVER_MASK),
         }
     }
 
@@ -17604,7 +18096,8 @@ impl Gpio32CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio32Ctrl::OEOVER_MASK) | ((value << Gpio32Ctrl::OEOVER_OFFSET) & Gpio32Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio32Ctrl::OEOVER_MASK)
+                | ((value << Gpio32Ctrl::OEOVER_OFFSET) & Gpio32Ctrl::OEOVER_MASK),
         }
     }
 
@@ -17612,7 +18105,8 @@ impl Gpio32CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio32Ctrl::OUTOVER_MASK) | ((value << Gpio32Ctrl::OUTOVER_OFFSET) & Gpio32Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio32Ctrl::OUTOVER_MASK)
+                | ((value << Gpio32Ctrl::OUTOVER_OFFSET) & Gpio32Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -17623,7 +18117,8 @@ impl Gpio32CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio32Ctrl::FUNCSEL_MASK) | ((value << Gpio32Ctrl::FUNCSEL_OFFSET) & Gpio32Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio32Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio32Ctrl::FUNCSEL_OFFSET) & Gpio32Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -17997,7 +18492,9 @@ impl Gpio33Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -18009,7 +18506,9 @@ impl Gpio33Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -18021,7 +18520,9 @@ impl Gpio33Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -18033,7 +18534,9 @@ impl Gpio33Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -18051,7 +18554,9 @@ impl Gpio33Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -18120,7 +18625,8 @@ impl Gpio33CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio33Ctrl::IRQOVER_MASK) | ((value << Gpio33Ctrl::IRQOVER_OFFSET) & Gpio33Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio33Ctrl::IRQOVER_MASK)
+                | ((value << Gpio33Ctrl::IRQOVER_OFFSET) & Gpio33Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -18128,7 +18634,8 @@ impl Gpio33CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio33Ctrl::INOVER_MASK) | ((value << Gpio33Ctrl::INOVER_OFFSET) & Gpio33Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio33Ctrl::INOVER_MASK)
+                | ((value << Gpio33Ctrl::INOVER_OFFSET) & Gpio33Ctrl::INOVER_MASK),
         }
     }
 
@@ -18136,7 +18643,8 @@ impl Gpio33CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio33Ctrl::OEOVER_MASK) | ((value << Gpio33Ctrl::OEOVER_OFFSET) & Gpio33Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio33Ctrl::OEOVER_MASK)
+                | ((value << Gpio33Ctrl::OEOVER_OFFSET) & Gpio33Ctrl::OEOVER_MASK),
         }
     }
 
@@ -18144,7 +18652,8 @@ impl Gpio33CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio33Ctrl::OUTOVER_MASK) | ((value << Gpio33Ctrl::OUTOVER_OFFSET) & Gpio33Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio33Ctrl::OUTOVER_MASK)
+                | ((value << Gpio33Ctrl::OUTOVER_OFFSET) & Gpio33Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -18155,7 +18664,8 @@ impl Gpio33CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio33Ctrl::FUNCSEL_MASK) | ((value << Gpio33Ctrl::FUNCSEL_OFFSET) & Gpio33Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio33Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio33Ctrl::FUNCSEL_OFFSET) & Gpio33Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -18531,7 +19041,9 @@ impl Gpio34Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -18543,7 +19055,9 @@ impl Gpio34Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -18555,7 +19069,9 @@ impl Gpio34Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -18567,7 +19083,9 @@ impl Gpio34Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -18585,7 +19103,9 @@ impl Gpio34Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -18654,7 +19174,8 @@ impl Gpio34CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio34Ctrl::IRQOVER_MASK) | ((value << Gpio34Ctrl::IRQOVER_OFFSET) & Gpio34Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio34Ctrl::IRQOVER_MASK)
+                | ((value << Gpio34Ctrl::IRQOVER_OFFSET) & Gpio34Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -18662,7 +19183,8 @@ impl Gpio34CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio34Ctrl::INOVER_MASK) | ((value << Gpio34Ctrl::INOVER_OFFSET) & Gpio34Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio34Ctrl::INOVER_MASK)
+                | ((value << Gpio34Ctrl::INOVER_OFFSET) & Gpio34Ctrl::INOVER_MASK),
         }
     }
 
@@ -18670,7 +19192,8 @@ impl Gpio34CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio34Ctrl::OEOVER_MASK) | ((value << Gpio34Ctrl::OEOVER_OFFSET) & Gpio34Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio34Ctrl::OEOVER_MASK)
+                | ((value << Gpio34Ctrl::OEOVER_OFFSET) & Gpio34Ctrl::OEOVER_MASK),
         }
     }
 
@@ -18678,7 +19201,8 @@ impl Gpio34CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio34Ctrl::OUTOVER_MASK) | ((value << Gpio34Ctrl::OUTOVER_OFFSET) & Gpio34Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio34Ctrl::OUTOVER_MASK)
+                | ((value << Gpio34Ctrl::OUTOVER_OFFSET) & Gpio34Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -18689,7 +19213,8 @@ impl Gpio34CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio34Ctrl::FUNCSEL_MASK) | ((value << Gpio34Ctrl::FUNCSEL_OFFSET) & Gpio34Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio34Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio34Ctrl::FUNCSEL_OFFSET) & Gpio34Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -19065,7 +19590,9 @@ impl Gpio35Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -19077,7 +19604,9 @@ impl Gpio35Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -19089,7 +19618,9 @@ impl Gpio35Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -19101,7 +19632,9 @@ impl Gpio35Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -19119,7 +19652,9 @@ impl Gpio35Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -19188,7 +19723,8 @@ impl Gpio35CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio35Ctrl::IRQOVER_MASK) | ((value << Gpio35Ctrl::IRQOVER_OFFSET) & Gpio35Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio35Ctrl::IRQOVER_MASK)
+                | ((value << Gpio35Ctrl::IRQOVER_OFFSET) & Gpio35Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -19196,7 +19732,8 @@ impl Gpio35CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio35Ctrl::INOVER_MASK) | ((value << Gpio35Ctrl::INOVER_OFFSET) & Gpio35Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio35Ctrl::INOVER_MASK)
+                | ((value << Gpio35Ctrl::INOVER_OFFSET) & Gpio35Ctrl::INOVER_MASK),
         }
     }
 
@@ -19204,7 +19741,8 @@ impl Gpio35CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio35Ctrl::OEOVER_MASK) | ((value << Gpio35Ctrl::OEOVER_OFFSET) & Gpio35Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio35Ctrl::OEOVER_MASK)
+                | ((value << Gpio35Ctrl::OEOVER_OFFSET) & Gpio35Ctrl::OEOVER_MASK),
         }
     }
 
@@ -19212,7 +19750,8 @@ impl Gpio35CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio35Ctrl::OUTOVER_MASK) | ((value << Gpio35Ctrl::OUTOVER_OFFSET) & Gpio35Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio35Ctrl::OUTOVER_MASK)
+                | ((value << Gpio35Ctrl::OUTOVER_OFFSET) & Gpio35Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -19223,7 +19762,8 @@ impl Gpio35CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio35Ctrl::FUNCSEL_MASK) | ((value << Gpio35Ctrl::FUNCSEL_OFFSET) & Gpio35Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio35Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio35Ctrl::FUNCSEL_OFFSET) & Gpio35Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -19597,7 +20137,9 @@ impl Gpio36Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -19609,7 +20151,9 @@ impl Gpio36Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -19621,7 +20165,9 @@ impl Gpio36Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -19633,7 +20179,9 @@ impl Gpio36Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -19651,7 +20199,9 @@ impl Gpio36Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -19720,7 +20270,8 @@ impl Gpio36CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio36Ctrl::IRQOVER_MASK) | ((value << Gpio36Ctrl::IRQOVER_OFFSET) & Gpio36Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio36Ctrl::IRQOVER_MASK)
+                | ((value << Gpio36Ctrl::IRQOVER_OFFSET) & Gpio36Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -19728,7 +20279,8 @@ impl Gpio36CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio36Ctrl::INOVER_MASK) | ((value << Gpio36Ctrl::INOVER_OFFSET) & Gpio36Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio36Ctrl::INOVER_MASK)
+                | ((value << Gpio36Ctrl::INOVER_OFFSET) & Gpio36Ctrl::INOVER_MASK),
         }
     }
 
@@ -19736,7 +20288,8 @@ impl Gpio36CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio36Ctrl::OEOVER_MASK) | ((value << Gpio36Ctrl::OEOVER_OFFSET) & Gpio36Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio36Ctrl::OEOVER_MASK)
+                | ((value << Gpio36Ctrl::OEOVER_OFFSET) & Gpio36Ctrl::OEOVER_MASK),
         }
     }
 
@@ -19744,7 +20297,8 @@ impl Gpio36CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio36Ctrl::OUTOVER_MASK) | ((value << Gpio36Ctrl::OUTOVER_OFFSET) & Gpio36Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio36Ctrl::OUTOVER_MASK)
+                | ((value << Gpio36Ctrl::OUTOVER_OFFSET) & Gpio36Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -19755,7 +20309,8 @@ impl Gpio36CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio36Ctrl::FUNCSEL_MASK) | ((value << Gpio36Ctrl::FUNCSEL_OFFSET) & Gpio36Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio36Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio36Ctrl::FUNCSEL_OFFSET) & Gpio36Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -20129,7 +20684,9 @@ impl Gpio37Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -20141,7 +20698,9 @@ impl Gpio37Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -20153,7 +20712,9 @@ impl Gpio37Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -20165,7 +20726,9 @@ impl Gpio37Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -20183,7 +20746,9 @@ impl Gpio37Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -20252,7 +20817,8 @@ impl Gpio37CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio37Ctrl::IRQOVER_MASK) | ((value << Gpio37Ctrl::IRQOVER_OFFSET) & Gpio37Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio37Ctrl::IRQOVER_MASK)
+                | ((value << Gpio37Ctrl::IRQOVER_OFFSET) & Gpio37Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -20260,7 +20826,8 @@ impl Gpio37CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio37Ctrl::INOVER_MASK) | ((value << Gpio37Ctrl::INOVER_OFFSET) & Gpio37Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio37Ctrl::INOVER_MASK)
+                | ((value << Gpio37Ctrl::INOVER_OFFSET) & Gpio37Ctrl::INOVER_MASK),
         }
     }
 
@@ -20268,7 +20835,8 @@ impl Gpio37CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio37Ctrl::OEOVER_MASK) | ((value << Gpio37Ctrl::OEOVER_OFFSET) & Gpio37Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio37Ctrl::OEOVER_MASK)
+                | ((value << Gpio37Ctrl::OEOVER_OFFSET) & Gpio37Ctrl::OEOVER_MASK),
         }
     }
 
@@ -20276,7 +20844,8 @@ impl Gpio37CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio37Ctrl::OUTOVER_MASK) | ((value << Gpio37Ctrl::OUTOVER_OFFSET) & Gpio37Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio37Ctrl::OUTOVER_MASK)
+                | ((value << Gpio37Ctrl::OUTOVER_OFFSET) & Gpio37Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -20287,7 +20856,8 @@ impl Gpio37CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio37Ctrl::FUNCSEL_MASK) | ((value << Gpio37Ctrl::FUNCSEL_OFFSET) & Gpio37Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio37Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio37Ctrl::FUNCSEL_OFFSET) & Gpio37Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -20663,7 +21233,9 @@ impl Gpio38Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -20675,7 +21247,9 @@ impl Gpio38Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -20687,7 +21261,9 @@ impl Gpio38Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -20699,7 +21275,9 @@ impl Gpio38Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -20717,7 +21295,9 @@ impl Gpio38Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -20786,7 +21366,8 @@ impl Gpio38CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio38Ctrl::IRQOVER_MASK) | ((value << Gpio38Ctrl::IRQOVER_OFFSET) & Gpio38Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio38Ctrl::IRQOVER_MASK)
+                | ((value << Gpio38Ctrl::IRQOVER_OFFSET) & Gpio38Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -20794,7 +21375,8 @@ impl Gpio38CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio38Ctrl::INOVER_MASK) | ((value << Gpio38Ctrl::INOVER_OFFSET) & Gpio38Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio38Ctrl::INOVER_MASK)
+                | ((value << Gpio38Ctrl::INOVER_OFFSET) & Gpio38Ctrl::INOVER_MASK),
         }
     }
 
@@ -20802,7 +21384,8 @@ impl Gpio38CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio38Ctrl::OEOVER_MASK) | ((value << Gpio38Ctrl::OEOVER_OFFSET) & Gpio38Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio38Ctrl::OEOVER_MASK)
+                | ((value << Gpio38Ctrl::OEOVER_OFFSET) & Gpio38Ctrl::OEOVER_MASK),
         }
     }
 
@@ -20810,7 +21393,8 @@ impl Gpio38CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio38Ctrl::OUTOVER_MASK) | ((value << Gpio38Ctrl::OUTOVER_OFFSET) & Gpio38Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio38Ctrl::OUTOVER_MASK)
+                | ((value << Gpio38Ctrl::OUTOVER_OFFSET) & Gpio38Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -20821,7 +21405,8 @@ impl Gpio38CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio38Ctrl::FUNCSEL_MASK) | ((value << Gpio38Ctrl::FUNCSEL_OFFSET) & Gpio38Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio38Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio38Ctrl::FUNCSEL_OFFSET) & Gpio38Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -21197,7 +21782,9 @@ impl Gpio39Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -21209,7 +21796,9 @@ impl Gpio39Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -21221,7 +21810,9 @@ impl Gpio39Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -21233,7 +21824,9 @@ impl Gpio39Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -21251,7 +21844,9 @@ impl Gpio39Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -21320,7 +21915,8 @@ impl Gpio39CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio39Ctrl::IRQOVER_MASK) | ((value << Gpio39Ctrl::IRQOVER_OFFSET) & Gpio39Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio39Ctrl::IRQOVER_MASK)
+                | ((value << Gpio39Ctrl::IRQOVER_OFFSET) & Gpio39Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -21328,7 +21924,8 @@ impl Gpio39CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio39Ctrl::INOVER_MASK) | ((value << Gpio39Ctrl::INOVER_OFFSET) & Gpio39Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio39Ctrl::INOVER_MASK)
+                | ((value << Gpio39Ctrl::INOVER_OFFSET) & Gpio39Ctrl::INOVER_MASK),
         }
     }
 
@@ -21336,7 +21933,8 @@ impl Gpio39CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio39Ctrl::OEOVER_MASK) | ((value << Gpio39Ctrl::OEOVER_OFFSET) & Gpio39Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio39Ctrl::OEOVER_MASK)
+                | ((value << Gpio39Ctrl::OEOVER_OFFSET) & Gpio39Ctrl::OEOVER_MASK),
         }
     }
 
@@ -21344,7 +21942,8 @@ impl Gpio39CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio39Ctrl::OUTOVER_MASK) | ((value << Gpio39Ctrl::OUTOVER_OFFSET) & Gpio39Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio39Ctrl::OUTOVER_MASK)
+                | ((value << Gpio39Ctrl::OUTOVER_OFFSET) & Gpio39Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -21355,7 +21954,8 @@ impl Gpio39CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio39Ctrl::FUNCSEL_MASK) | ((value << Gpio39Ctrl::FUNCSEL_OFFSET) & Gpio39Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio39Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio39Ctrl::FUNCSEL_OFFSET) & Gpio39Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -21729,7 +22329,9 @@ impl Gpio40Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -21741,7 +22343,9 @@ impl Gpio40Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -21753,7 +22357,9 @@ impl Gpio40Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -21765,7 +22371,9 @@ impl Gpio40Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -21783,7 +22391,9 @@ impl Gpio40Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -21852,7 +22462,8 @@ impl Gpio40CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio40Ctrl::IRQOVER_MASK) | ((value << Gpio40Ctrl::IRQOVER_OFFSET) & Gpio40Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio40Ctrl::IRQOVER_MASK)
+                | ((value << Gpio40Ctrl::IRQOVER_OFFSET) & Gpio40Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -21860,7 +22471,8 @@ impl Gpio40CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio40Ctrl::INOVER_MASK) | ((value << Gpio40Ctrl::INOVER_OFFSET) & Gpio40Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio40Ctrl::INOVER_MASK)
+                | ((value << Gpio40Ctrl::INOVER_OFFSET) & Gpio40Ctrl::INOVER_MASK),
         }
     }
 
@@ -21868,7 +22480,8 @@ impl Gpio40CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio40Ctrl::OEOVER_MASK) | ((value << Gpio40Ctrl::OEOVER_OFFSET) & Gpio40Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio40Ctrl::OEOVER_MASK)
+                | ((value << Gpio40Ctrl::OEOVER_OFFSET) & Gpio40Ctrl::OEOVER_MASK),
         }
     }
 
@@ -21876,7 +22489,8 @@ impl Gpio40CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio40Ctrl::OUTOVER_MASK) | ((value << Gpio40Ctrl::OUTOVER_OFFSET) & Gpio40Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio40Ctrl::OUTOVER_MASK)
+                | ((value << Gpio40Ctrl::OUTOVER_OFFSET) & Gpio40Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -21887,7 +22501,8 @@ impl Gpio40CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio40Ctrl::FUNCSEL_MASK) | ((value << Gpio40Ctrl::FUNCSEL_OFFSET) & Gpio40Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio40Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio40Ctrl::FUNCSEL_OFFSET) & Gpio40Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -22261,7 +22876,9 @@ impl Gpio41Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -22273,7 +22890,9 @@ impl Gpio41Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -22285,7 +22904,9 @@ impl Gpio41Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -22297,7 +22918,9 @@ impl Gpio41Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -22315,7 +22938,9 @@ impl Gpio41Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -22384,7 +23009,8 @@ impl Gpio41CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio41Ctrl::IRQOVER_MASK) | ((value << Gpio41Ctrl::IRQOVER_OFFSET) & Gpio41Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio41Ctrl::IRQOVER_MASK)
+                | ((value << Gpio41Ctrl::IRQOVER_OFFSET) & Gpio41Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -22392,7 +23018,8 @@ impl Gpio41CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio41Ctrl::INOVER_MASK) | ((value << Gpio41Ctrl::INOVER_OFFSET) & Gpio41Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio41Ctrl::INOVER_MASK)
+                | ((value << Gpio41Ctrl::INOVER_OFFSET) & Gpio41Ctrl::INOVER_MASK),
         }
     }
 
@@ -22400,7 +23027,8 @@ impl Gpio41CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio41Ctrl::OEOVER_MASK) | ((value << Gpio41Ctrl::OEOVER_OFFSET) & Gpio41Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio41Ctrl::OEOVER_MASK)
+                | ((value << Gpio41Ctrl::OEOVER_OFFSET) & Gpio41Ctrl::OEOVER_MASK),
         }
     }
 
@@ -22408,7 +23036,8 @@ impl Gpio41CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio41Ctrl::OUTOVER_MASK) | ((value << Gpio41Ctrl::OUTOVER_OFFSET) & Gpio41Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio41Ctrl::OUTOVER_MASK)
+                | ((value << Gpio41Ctrl::OUTOVER_OFFSET) & Gpio41Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -22419,7 +23048,8 @@ impl Gpio41CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio41Ctrl::FUNCSEL_MASK) | ((value << Gpio41Ctrl::FUNCSEL_OFFSET) & Gpio41Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio41Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio41Ctrl::FUNCSEL_OFFSET) & Gpio41Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -22795,7 +23425,9 @@ impl Gpio42Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -22807,7 +23439,9 @@ impl Gpio42Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -22819,7 +23453,9 @@ impl Gpio42Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -22831,7 +23467,9 @@ impl Gpio42Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -22849,7 +23487,9 @@ impl Gpio42Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -22918,7 +23558,8 @@ impl Gpio42CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio42Ctrl::IRQOVER_MASK) | ((value << Gpio42Ctrl::IRQOVER_OFFSET) & Gpio42Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio42Ctrl::IRQOVER_MASK)
+                | ((value << Gpio42Ctrl::IRQOVER_OFFSET) & Gpio42Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -22926,7 +23567,8 @@ impl Gpio42CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio42Ctrl::INOVER_MASK) | ((value << Gpio42Ctrl::INOVER_OFFSET) & Gpio42Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio42Ctrl::INOVER_MASK)
+                | ((value << Gpio42Ctrl::INOVER_OFFSET) & Gpio42Ctrl::INOVER_MASK),
         }
     }
 
@@ -22934,7 +23576,8 @@ impl Gpio42CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio42Ctrl::OEOVER_MASK) | ((value << Gpio42Ctrl::OEOVER_OFFSET) & Gpio42Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio42Ctrl::OEOVER_MASK)
+                | ((value << Gpio42Ctrl::OEOVER_OFFSET) & Gpio42Ctrl::OEOVER_MASK),
         }
     }
 
@@ -22942,7 +23585,8 @@ impl Gpio42CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio42Ctrl::OUTOVER_MASK) | ((value << Gpio42Ctrl::OUTOVER_OFFSET) & Gpio42Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio42Ctrl::OUTOVER_MASK)
+                | ((value << Gpio42Ctrl::OUTOVER_OFFSET) & Gpio42Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -22953,7 +23597,8 @@ impl Gpio42CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio42Ctrl::FUNCSEL_MASK) | ((value << Gpio42Ctrl::FUNCSEL_OFFSET) & Gpio42Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio42Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio42Ctrl::FUNCSEL_OFFSET) & Gpio42Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -23329,7 +23974,9 @@ impl Gpio43Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -23341,7 +23988,9 @@ impl Gpio43Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -23353,7 +24002,9 @@ impl Gpio43Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -23365,7 +24016,9 @@ impl Gpio43Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -23383,7 +24036,9 @@ impl Gpio43Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -23452,7 +24107,8 @@ impl Gpio43CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio43Ctrl::IRQOVER_MASK) | ((value << Gpio43Ctrl::IRQOVER_OFFSET) & Gpio43Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio43Ctrl::IRQOVER_MASK)
+                | ((value << Gpio43Ctrl::IRQOVER_OFFSET) & Gpio43Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -23460,7 +24116,8 @@ impl Gpio43CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio43Ctrl::INOVER_MASK) | ((value << Gpio43Ctrl::INOVER_OFFSET) & Gpio43Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio43Ctrl::INOVER_MASK)
+                | ((value << Gpio43Ctrl::INOVER_OFFSET) & Gpio43Ctrl::INOVER_MASK),
         }
     }
 
@@ -23468,7 +24125,8 @@ impl Gpio43CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio43Ctrl::OEOVER_MASK) | ((value << Gpio43Ctrl::OEOVER_OFFSET) & Gpio43Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio43Ctrl::OEOVER_MASK)
+                | ((value << Gpio43Ctrl::OEOVER_OFFSET) & Gpio43Ctrl::OEOVER_MASK),
         }
     }
 
@@ -23476,7 +24134,8 @@ impl Gpio43CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio43Ctrl::OUTOVER_MASK) | ((value << Gpio43Ctrl::OUTOVER_OFFSET) & Gpio43Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio43Ctrl::OUTOVER_MASK)
+                | ((value << Gpio43Ctrl::OUTOVER_OFFSET) & Gpio43Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -23487,7 +24146,8 @@ impl Gpio43CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio43Ctrl::FUNCSEL_MASK) | ((value << Gpio43Ctrl::FUNCSEL_OFFSET) & Gpio43Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio43Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio43Ctrl::FUNCSEL_OFFSET) & Gpio43Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -23861,7 +24521,9 @@ impl Gpio44Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -23873,7 +24535,9 @@ impl Gpio44Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -23885,7 +24549,9 @@ impl Gpio44Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -23897,7 +24563,9 @@ impl Gpio44Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -23915,7 +24583,9 @@ impl Gpio44Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -23984,7 +24654,8 @@ impl Gpio44CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio44Ctrl::IRQOVER_MASK) | ((value << Gpio44Ctrl::IRQOVER_OFFSET) & Gpio44Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio44Ctrl::IRQOVER_MASK)
+                | ((value << Gpio44Ctrl::IRQOVER_OFFSET) & Gpio44Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -23992,7 +24663,8 @@ impl Gpio44CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio44Ctrl::INOVER_MASK) | ((value << Gpio44Ctrl::INOVER_OFFSET) & Gpio44Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio44Ctrl::INOVER_MASK)
+                | ((value << Gpio44Ctrl::INOVER_OFFSET) & Gpio44Ctrl::INOVER_MASK),
         }
     }
 
@@ -24000,7 +24672,8 @@ impl Gpio44CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio44Ctrl::OEOVER_MASK) | ((value << Gpio44Ctrl::OEOVER_OFFSET) & Gpio44Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio44Ctrl::OEOVER_MASK)
+                | ((value << Gpio44Ctrl::OEOVER_OFFSET) & Gpio44Ctrl::OEOVER_MASK),
         }
     }
 
@@ -24008,7 +24681,8 @@ impl Gpio44CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio44Ctrl::OUTOVER_MASK) | ((value << Gpio44Ctrl::OUTOVER_OFFSET) & Gpio44Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio44Ctrl::OUTOVER_MASK)
+                | ((value << Gpio44Ctrl::OUTOVER_OFFSET) & Gpio44Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -24019,7 +24693,8 @@ impl Gpio44CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio44Ctrl::FUNCSEL_MASK) | ((value << Gpio44Ctrl::FUNCSEL_OFFSET) & Gpio44Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio44Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio44Ctrl::FUNCSEL_OFFSET) & Gpio44Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -24393,7 +25068,9 @@ impl Gpio45Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -24405,7 +25082,9 @@ impl Gpio45Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -24417,7 +25096,9 @@ impl Gpio45Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -24429,7 +25110,9 @@ impl Gpio45Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -24447,7 +25130,9 @@ impl Gpio45Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -24516,7 +25201,8 @@ impl Gpio45CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio45Ctrl::IRQOVER_MASK) | ((value << Gpio45Ctrl::IRQOVER_OFFSET) & Gpio45Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio45Ctrl::IRQOVER_MASK)
+                | ((value << Gpio45Ctrl::IRQOVER_OFFSET) & Gpio45Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -24524,7 +25210,8 @@ impl Gpio45CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio45Ctrl::INOVER_MASK) | ((value << Gpio45Ctrl::INOVER_OFFSET) & Gpio45Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio45Ctrl::INOVER_MASK)
+                | ((value << Gpio45Ctrl::INOVER_OFFSET) & Gpio45Ctrl::INOVER_MASK),
         }
     }
 
@@ -24532,7 +25219,8 @@ impl Gpio45CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio45Ctrl::OEOVER_MASK) | ((value << Gpio45Ctrl::OEOVER_OFFSET) & Gpio45Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio45Ctrl::OEOVER_MASK)
+                | ((value << Gpio45Ctrl::OEOVER_OFFSET) & Gpio45Ctrl::OEOVER_MASK),
         }
     }
 
@@ -24540,7 +25228,8 @@ impl Gpio45CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio45Ctrl::OUTOVER_MASK) | ((value << Gpio45Ctrl::OUTOVER_OFFSET) & Gpio45Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio45Ctrl::OUTOVER_MASK)
+                | ((value << Gpio45Ctrl::OUTOVER_OFFSET) & Gpio45Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -24551,7 +25240,8 @@ impl Gpio45CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio45Ctrl::FUNCSEL_MASK) | ((value << Gpio45Ctrl::FUNCSEL_OFFSET) & Gpio45Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio45Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio45Ctrl::FUNCSEL_OFFSET) & Gpio45Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -24927,7 +25617,9 @@ impl Gpio46Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -24939,7 +25631,9 @@ impl Gpio46Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -24951,7 +25645,9 @@ impl Gpio46Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -24963,7 +25659,9 @@ impl Gpio46Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -24981,7 +25679,9 @@ impl Gpio46Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -25050,7 +25750,8 @@ impl Gpio46CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio46Ctrl::IRQOVER_MASK) | ((value << Gpio46Ctrl::IRQOVER_OFFSET) & Gpio46Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio46Ctrl::IRQOVER_MASK)
+                | ((value << Gpio46Ctrl::IRQOVER_OFFSET) & Gpio46Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -25058,7 +25759,8 @@ impl Gpio46CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio46Ctrl::INOVER_MASK) | ((value << Gpio46Ctrl::INOVER_OFFSET) & Gpio46Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio46Ctrl::INOVER_MASK)
+                | ((value << Gpio46Ctrl::INOVER_OFFSET) & Gpio46Ctrl::INOVER_MASK),
         }
     }
 
@@ -25066,7 +25768,8 @@ impl Gpio46CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio46Ctrl::OEOVER_MASK) | ((value << Gpio46Ctrl::OEOVER_OFFSET) & Gpio46Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio46Ctrl::OEOVER_MASK)
+                | ((value << Gpio46Ctrl::OEOVER_OFFSET) & Gpio46Ctrl::OEOVER_MASK),
         }
     }
 
@@ -25074,7 +25777,8 @@ impl Gpio46CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio46Ctrl::OUTOVER_MASK) | ((value << Gpio46Ctrl::OUTOVER_OFFSET) & Gpio46Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio46Ctrl::OUTOVER_MASK)
+                | ((value << Gpio46Ctrl::OUTOVER_OFFSET) & Gpio46Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -25085,7 +25789,8 @@ impl Gpio46CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio46Ctrl::FUNCSEL_MASK) | ((value << Gpio46Ctrl::FUNCSEL_OFFSET) & Gpio46Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio46Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio46Ctrl::FUNCSEL_OFFSET) & Gpio46Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -25463,7 +26168,9 @@ impl Gpio47Ctrl {
     /// Write **IRQOVER** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_irqover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQOVER_MASK) | ((value << Self::IRQOVER_OFFSET) & Self::IRQOVER_MASK)
+        });
     }
 
     /// **INOVER** `[17:16]` (RW)
@@ -25475,7 +26182,9 @@ impl Gpio47Ctrl {
     /// Write **INOVER** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_inover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INOVER_MASK) | ((value << Self::INOVER_OFFSET) & Self::INOVER_MASK)
+        });
     }
 
     /// **OEOVER** `[15:14]` (RW)
@@ -25487,7 +26196,9 @@ impl Gpio47Ctrl {
     /// Write **OEOVER** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_oeover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OEOVER_MASK) | ((value << Self::OEOVER_OFFSET) & Self::OEOVER_MASK)
+        });
     }
 
     /// **OUTOVER** `[13:12]` (RW)
@@ -25499,7 +26210,9 @@ impl Gpio47Ctrl {
     /// Write **OUTOVER** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_outover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUTOVER_MASK) | ((value << Self::OUTOVER_OFFSET) & Self::OUTOVER_MASK)
+        });
     }
 
     /// **FUNCSEL** `[4:0]` (RW)
@@ -25517,7 +26230,9 @@ impl Gpio47Ctrl {
     /// 31 == NULL
     #[inline(always)]
     pub fn write_funcsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FUNCSEL_MASK) | ((value << Self::FUNCSEL_OFFSET) & Self::FUNCSEL_MASK)
+        });
     }
 }
 
@@ -25586,7 +26301,8 @@ impl Gpio47CtrlVal {
     #[inline(always)]
     pub const fn with_irqover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio47Ctrl::IRQOVER_MASK) | ((value << Gpio47Ctrl::IRQOVER_OFFSET) & Gpio47Ctrl::IRQOVER_MASK)
+            bits: (self.bits & !Gpio47Ctrl::IRQOVER_MASK)
+                | ((value << Gpio47Ctrl::IRQOVER_OFFSET) & Gpio47Ctrl::IRQOVER_MASK),
         }
     }
 
@@ -25594,7 +26310,8 @@ impl Gpio47CtrlVal {
     #[inline(always)]
     pub const fn with_inover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio47Ctrl::INOVER_MASK) | ((value << Gpio47Ctrl::INOVER_OFFSET) & Gpio47Ctrl::INOVER_MASK)
+            bits: (self.bits & !Gpio47Ctrl::INOVER_MASK)
+                | ((value << Gpio47Ctrl::INOVER_OFFSET) & Gpio47Ctrl::INOVER_MASK),
         }
     }
 
@@ -25602,7 +26319,8 @@ impl Gpio47CtrlVal {
     #[inline(always)]
     pub const fn with_oeover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio47Ctrl::OEOVER_MASK) | ((value << Gpio47Ctrl::OEOVER_OFFSET) & Gpio47Ctrl::OEOVER_MASK)
+            bits: (self.bits & !Gpio47Ctrl::OEOVER_MASK)
+                | ((value << Gpio47Ctrl::OEOVER_OFFSET) & Gpio47Ctrl::OEOVER_MASK),
         }
     }
 
@@ -25610,7 +26328,8 @@ impl Gpio47CtrlVal {
     #[inline(always)]
     pub const fn with_outover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio47Ctrl::OUTOVER_MASK) | ((value << Gpio47Ctrl::OUTOVER_OFFSET) & Gpio47Ctrl::OUTOVER_MASK)
+            bits: (self.bits & !Gpio47Ctrl::OUTOVER_MASK)
+                | ((value << Gpio47Ctrl::OUTOVER_OFFSET) & Gpio47Ctrl::OUTOVER_MASK),
         }
     }
 
@@ -25621,7 +26340,8 @@ impl Gpio47CtrlVal {
     #[inline(always)]
     pub const fn with_funcsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Gpio47Ctrl::FUNCSEL_MASK) | ((value << Gpio47Ctrl::FUNCSEL_OFFSET) & Gpio47Ctrl::FUNCSEL_MASK)
+            bits: (self.bits & !Gpio47Ctrl::FUNCSEL_MASK)
+                | ((value << Gpio47Ctrl::FUNCSEL_OFFSET) & Gpio47Ctrl::FUNCSEL_MASK),
         }
     }
 }
@@ -33123,7 +33843,7 @@ impl Intr0Val {
                 self.bits | Intr0::GPIO7_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr0::GPIO7_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -33135,7 +33855,7 @@ impl Intr0Val {
                 self.bits | Intr0::GPIO7_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr0::GPIO7_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -33147,7 +33867,7 @@ impl Intr0Val {
                 self.bits | Intr0::GPIO6_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr0::GPIO6_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -33159,7 +33879,7 @@ impl Intr0Val {
                 self.bits | Intr0::GPIO6_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr0::GPIO6_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -33171,7 +33891,7 @@ impl Intr0Val {
                 self.bits | Intr0::GPIO5_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr0::GPIO5_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -33183,7 +33903,7 @@ impl Intr0Val {
                 self.bits | Intr0::GPIO5_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr0::GPIO5_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -33195,7 +33915,7 @@ impl Intr0Val {
                 self.bits | Intr0::GPIO4_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr0::GPIO4_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -33207,7 +33927,7 @@ impl Intr0Val {
                 self.bits | Intr0::GPIO4_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr0::GPIO4_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -33219,7 +33939,7 @@ impl Intr0Val {
                 self.bits | Intr0::GPIO3_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr0::GPIO3_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -33231,7 +33951,7 @@ impl Intr0Val {
                 self.bits | Intr0::GPIO3_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr0::GPIO3_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -33243,7 +33963,7 @@ impl Intr0Val {
                 self.bits | Intr0::GPIO2_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr0::GPIO2_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -33255,7 +33975,7 @@ impl Intr0Val {
                 self.bits | Intr0::GPIO2_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr0::GPIO2_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -33267,7 +33987,7 @@ impl Intr0Val {
                 self.bits | Intr0::GPIO1_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr0::GPIO1_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -33279,7 +33999,7 @@ impl Intr0Val {
                 self.bits | Intr0::GPIO1_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr0::GPIO1_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -33291,7 +34011,7 @@ impl Intr0Val {
                 self.bits | Intr0::GPIO0_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr0::GPIO0_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -33303,7 +34023,7 @@ impl Intr0Val {
                 self.bits | Intr0::GPIO0_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr0::GPIO0_EDGE_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -34229,7 +34949,7 @@ impl Intr1Val {
                 self.bits | Intr1::GPIO15_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr1::GPIO15_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -34241,7 +34961,7 @@ impl Intr1Val {
                 self.bits | Intr1::GPIO15_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr1::GPIO15_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -34253,7 +34973,7 @@ impl Intr1Val {
                 self.bits | Intr1::GPIO14_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr1::GPIO14_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -34265,7 +34985,7 @@ impl Intr1Val {
                 self.bits | Intr1::GPIO14_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr1::GPIO14_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -34277,7 +34997,7 @@ impl Intr1Val {
                 self.bits | Intr1::GPIO13_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr1::GPIO13_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -34289,7 +35009,7 @@ impl Intr1Val {
                 self.bits | Intr1::GPIO13_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr1::GPIO13_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -34301,7 +35021,7 @@ impl Intr1Val {
                 self.bits | Intr1::GPIO12_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr1::GPIO12_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -34313,7 +35033,7 @@ impl Intr1Val {
                 self.bits | Intr1::GPIO12_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr1::GPIO12_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -34325,7 +35045,7 @@ impl Intr1Val {
                 self.bits | Intr1::GPIO11_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr1::GPIO11_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -34337,7 +35057,7 @@ impl Intr1Val {
                 self.bits | Intr1::GPIO11_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr1::GPIO11_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -34349,7 +35069,7 @@ impl Intr1Val {
                 self.bits | Intr1::GPIO10_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr1::GPIO10_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -34361,7 +35081,7 @@ impl Intr1Val {
                 self.bits | Intr1::GPIO10_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr1::GPIO10_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -34373,7 +35093,7 @@ impl Intr1Val {
                 self.bits | Intr1::GPIO9_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr1::GPIO9_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -34385,7 +35105,7 @@ impl Intr1Val {
                 self.bits | Intr1::GPIO9_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr1::GPIO9_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -34397,7 +35117,7 @@ impl Intr1Val {
                 self.bits | Intr1::GPIO8_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr1::GPIO8_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -34409,7 +35129,7 @@ impl Intr1Val {
                 self.bits | Intr1::GPIO8_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr1::GPIO8_EDGE_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -35335,7 +36055,7 @@ impl Intr2Val {
                 self.bits | Intr2::GPIO23_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr2::GPIO23_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -35347,7 +36067,7 @@ impl Intr2Val {
                 self.bits | Intr2::GPIO23_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr2::GPIO23_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -35359,7 +36079,7 @@ impl Intr2Val {
                 self.bits | Intr2::GPIO22_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr2::GPIO22_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -35371,7 +36091,7 @@ impl Intr2Val {
                 self.bits | Intr2::GPIO22_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr2::GPIO22_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -35383,7 +36103,7 @@ impl Intr2Val {
                 self.bits | Intr2::GPIO21_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr2::GPIO21_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -35395,7 +36115,7 @@ impl Intr2Val {
                 self.bits | Intr2::GPIO21_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr2::GPIO21_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -35407,7 +36127,7 @@ impl Intr2Val {
                 self.bits | Intr2::GPIO20_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr2::GPIO20_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -35419,7 +36139,7 @@ impl Intr2Val {
                 self.bits | Intr2::GPIO20_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr2::GPIO20_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -35431,7 +36151,7 @@ impl Intr2Val {
                 self.bits | Intr2::GPIO19_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr2::GPIO19_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -35443,7 +36163,7 @@ impl Intr2Val {
                 self.bits | Intr2::GPIO19_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr2::GPIO19_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -35455,7 +36175,7 @@ impl Intr2Val {
                 self.bits | Intr2::GPIO18_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr2::GPIO18_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -35467,7 +36187,7 @@ impl Intr2Val {
                 self.bits | Intr2::GPIO18_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr2::GPIO18_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -35479,7 +36199,7 @@ impl Intr2Val {
                 self.bits | Intr2::GPIO17_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr2::GPIO17_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -35491,7 +36211,7 @@ impl Intr2Val {
                 self.bits | Intr2::GPIO17_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr2::GPIO17_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -35503,7 +36223,7 @@ impl Intr2Val {
                 self.bits | Intr2::GPIO16_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr2::GPIO16_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -35515,7 +36235,7 @@ impl Intr2Val {
                 self.bits | Intr2::GPIO16_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr2::GPIO16_EDGE_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -36441,7 +37161,7 @@ impl Intr3Val {
                 self.bits | Intr3::GPIO31_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr3::GPIO31_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -36453,7 +37173,7 @@ impl Intr3Val {
                 self.bits | Intr3::GPIO31_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr3::GPIO31_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -36465,7 +37185,7 @@ impl Intr3Val {
                 self.bits | Intr3::GPIO30_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr3::GPIO30_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -36477,7 +37197,7 @@ impl Intr3Val {
                 self.bits | Intr3::GPIO30_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr3::GPIO30_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -36489,7 +37209,7 @@ impl Intr3Val {
                 self.bits | Intr3::GPIO29_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr3::GPIO29_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -36501,7 +37221,7 @@ impl Intr3Val {
                 self.bits | Intr3::GPIO29_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr3::GPIO29_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -36513,7 +37233,7 @@ impl Intr3Val {
                 self.bits | Intr3::GPIO28_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr3::GPIO28_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -36525,7 +37245,7 @@ impl Intr3Val {
                 self.bits | Intr3::GPIO28_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr3::GPIO28_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -36537,7 +37257,7 @@ impl Intr3Val {
                 self.bits | Intr3::GPIO27_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr3::GPIO27_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -36549,7 +37269,7 @@ impl Intr3Val {
                 self.bits | Intr3::GPIO27_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr3::GPIO27_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -36561,7 +37281,7 @@ impl Intr3Val {
                 self.bits | Intr3::GPIO26_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr3::GPIO26_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -36573,7 +37293,7 @@ impl Intr3Val {
                 self.bits | Intr3::GPIO26_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr3::GPIO26_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -36585,7 +37305,7 @@ impl Intr3Val {
                 self.bits | Intr3::GPIO25_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr3::GPIO25_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -36597,7 +37317,7 @@ impl Intr3Val {
                 self.bits | Intr3::GPIO25_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr3::GPIO25_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -36609,7 +37329,7 @@ impl Intr3Val {
                 self.bits | Intr3::GPIO24_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr3::GPIO24_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -36621,7 +37341,7 @@ impl Intr3Val {
                 self.bits | Intr3::GPIO24_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr3::GPIO24_EDGE_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -37547,7 +38267,7 @@ impl Intr4Val {
                 self.bits | Intr4::GPIO39_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr4::GPIO39_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -37559,7 +38279,7 @@ impl Intr4Val {
                 self.bits | Intr4::GPIO39_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr4::GPIO39_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -37571,7 +38291,7 @@ impl Intr4Val {
                 self.bits | Intr4::GPIO38_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr4::GPIO38_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -37583,7 +38303,7 @@ impl Intr4Val {
                 self.bits | Intr4::GPIO38_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr4::GPIO38_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -37595,7 +38315,7 @@ impl Intr4Val {
                 self.bits | Intr4::GPIO37_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr4::GPIO37_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -37607,7 +38327,7 @@ impl Intr4Val {
                 self.bits | Intr4::GPIO37_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr4::GPIO37_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -37619,7 +38339,7 @@ impl Intr4Val {
                 self.bits | Intr4::GPIO36_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr4::GPIO36_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -37631,7 +38351,7 @@ impl Intr4Val {
                 self.bits | Intr4::GPIO36_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr4::GPIO36_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -37643,7 +38363,7 @@ impl Intr4Val {
                 self.bits | Intr4::GPIO35_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr4::GPIO35_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -37655,7 +38375,7 @@ impl Intr4Val {
                 self.bits | Intr4::GPIO35_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr4::GPIO35_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -37667,7 +38387,7 @@ impl Intr4Val {
                 self.bits | Intr4::GPIO34_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr4::GPIO34_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -37679,7 +38399,7 @@ impl Intr4Val {
                 self.bits | Intr4::GPIO34_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr4::GPIO34_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -37691,7 +38411,7 @@ impl Intr4Val {
                 self.bits | Intr4::GPIO33_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr4::GPIO33_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -37703,7 +38423,7 @@ impl Intr4Val {
                 self.bits | Intr4::GPIO33_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr4::GPIO33_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -37715,7 +38435,7 @@ impl Intr4Val {
                 self.bits | Intr4::GPIO32_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr4::GPIO32_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -37727,7 +38447,7 @@ impl Intr4Val {
                 self.bits | Intr4::GPIO32_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr4::GPIO32_EDGE_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -38653,7 +39373,7 @@ impl Intr5Val {
                 self.bits | Intr5::GPIO47_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr5::GPIO47_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -38665,7 +39385,7 @@ impl Intr5Val {
                 self.bits | Intr5::GPIO47_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr5::GPIO47_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -38677,7 +39397,7 @@ impl Intr5Val {
                 self.bits | Intr5::GPIO46_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr5::GPIO46_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -38689,7 +39409,7 @@ impl Intr5Val {
                 self.bits | Intr5::GPIO46_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr5::GPIO46_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -38701,7 +39421,7 @@ impl Intr5Val {
                 self.bits | Intr5::GPIO45_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr5::GPIO45_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -38713,7 +39433,7 @@ impl Intr5Val {
                 self.bits | Intr5::GPIO45_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr5::GPIO45_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -38725,7 +39445,7 @@ impl Intr5Val {
                 self.bits | Intr5::GPIO44_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr5::GPIO44_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -38737,7 +39457,7 @@ impl Intr5Val {
                 self.bits | Intr5::GPIO44_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr5::GPIO44_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -38749,7 +39469,7 @@ impl Intr5Val {
                 self.bits | Intr5::GPIO43_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr5::GPIO43_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -38761,7 +39481,7 @@ impl Intr5Val {
                 self.bits | Intr5::GPIO43_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr5::GPIO43_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -38773,7 +39493,7 @@ impl Intr5Val {
                 self.bits | Intr5::GPIO42_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr5::GPIO42_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -38785,7 +39505,7 @@ impl Intr5Val {
                 self.bits | Intr5::GPIO42_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr5::GPIO42_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -38797,7 +39517,7 @@ impl Intr5Val {
                 self.bits | Intr5::GPIO41_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr5::GPIO41_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -38809,7 +39529,7 @@ impl Intr5Val {
                 self.bits | Intr5::GPIO41_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr5::GPIO41_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -38821,7 +39541,7 @@ impl Intr5Val {
                 self.bits | Intr5::GPIO40_EDGE_HIGH_MASK
             } else {
                 self.bits & !Intr5::GPIO40_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -38833,7 +39553,7 @@ impl Intr5Val {
                 self.bits | Intr5::GPIO40_EDGE_LOW_MASK
             } else {
                 self.bits & !Intr5::GPIO40_EDGE_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -39951,7 +40671,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO7_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO7_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -39963,7 +40683,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO7_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO7_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -39975,7 +40695,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO7_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO7_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -39987,7 +40707,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO7_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO7_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -39999,7 +40719,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO6_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO6_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -40011,7 +40731,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO6_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO6_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -40023,7 +40743,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO6_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO6_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -40035,7 +40755,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO6_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO6_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -40047,7 +40767,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO5_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO5_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -40059,7 +40779,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO5_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO5_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -40071,7 +40791,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO5_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO5_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -40083,7 +40803,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO5_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO5_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -40095,7 +40815,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO4_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO4_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -40107,7 +40827,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO4_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO4_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -40119,7 +40839,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO4_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO4_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -40131,7 +40851,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO4_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO4_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -40143,7 +40863,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO3_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO3_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -40155,7 +40875,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO3_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO3_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -40167,7 +40887,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO3_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO3_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -40179,7 +40899,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO3_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO3_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -40191,7 +40911,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO2_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO2_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -40203,7 +40923,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO2_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO2_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -40215,7 +40935,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO2_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO2_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -40227,7 +40947,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO2_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO2_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -40239,7 +40959,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO1_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO1_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -40251,7 +40971,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO1_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO1_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -40263,7 +40983,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO1_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO1_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -40275,7 +40995,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO1_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO1_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -40287,7 +41007,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO0_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO0_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -40299,7 +41019,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO0_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO0_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -40311,7 +41031,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO0_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO0_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -40323,7 +41043,7 @@ impl Proc0Inte0Val {
                 self.bits | Proc0Inte0::GPIO0_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte0::GPIO0_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -41441,7 +42161,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO15_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO15_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -41453,7 +42173,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO15_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO15_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -41465,7 +42185,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO15_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO15_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -41477,7 +42197,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO15_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO15_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -41489,7 +42209,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO14_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO14_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -41501,7 +42221,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO14_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO14_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -41513,7 +42233,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO14_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO14_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -41525,7 +42245,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO14_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO14_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -41537,7 +42257,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO13_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO13_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -41549,7 +42269,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO13_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO13_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -41561,7 +42281,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO13_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO13_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -41573,7 +42293,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO13_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO13_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -41585,7 +42305,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO12_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO12_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -41597,7 +42317,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO12_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO12_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -41609,7 +42329,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO12_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO12_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -41621,7 +42341,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO12_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO12_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -41633,7 +42353,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO11_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO11_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -41645,7 +42365,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO11_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO11_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -41657,7 +42377,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO11_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO11_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -41669,7 +42389,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO11_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO11_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -41681,7 +42401,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO10_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO10_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -41693,7 +42413,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO10_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO10_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -41705,7 +42425,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO10_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO10_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -41717,7 +42437,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO10_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO10_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -41729,7 +42449,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO9_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO9_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -41741,7 +42461,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO9_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO9_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -41753,7 +42473,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO9_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO9_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -41765,7 +42485,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO9_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO9_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -41777,7 +42497,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO8_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO8_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -41789,7 +42509,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO8_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO8_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -41801,7 +42521,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO8_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO8_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -41813,7 +42533,7 @@ impl Proc0Inte1Val {
                 self.bits | Proc0Inte1::GPIO8_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte1::GPIO8_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -42931,7 +43651,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO23_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO23_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -42943,7 +43663,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO23_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO23_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -42955,7 +43675,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO23_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO23_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -42967,7 +43687,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO23_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO23_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -42979,7 +43699,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO22_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO22_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -42991,7 +43711,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO22_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO22_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -43003,7 +43723,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO22_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO22_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -43015,7 +43735,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO22_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO22_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -43027,7 +43747,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO21_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO21_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -43039,7 +43759,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO21_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO21_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -43051,7 +43771,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO21_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO21_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -43063,7 +43783,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO21_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO21_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -43075,7 +43795,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO20_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO20_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -43087,7 +43807,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO20_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO20_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -43099,7 +43819,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO20_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO20_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -43111,7 +43831,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO20_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO20_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -43123,7 +43843,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO19_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO19_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -43135,7 +43855,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO19_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO19_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -43147,7 +43867,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO19_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO19_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -43159,7 +43879,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO19_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO19_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -43171,7 +43891,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO18_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO18_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -43183,7 +43903,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO18_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO18_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -43195,7 +43915,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO18_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO18_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -43207,7 +43927,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO18_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO18_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -43219,7 +43939,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO17_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO17_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -43231,7 +43951,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO17_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO17_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -43243,7 +43963,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO17_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO17_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -43255,7 +43975,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO17_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO17_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -43267,7 +43987,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO16_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO16_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -43279,7 +43999,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO16_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO16_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -43291,7 +44011,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO16_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO16_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -43303,7 +44023,7 @@ impl Proc0Inte2Val {
                 self.bits | Proc0Inte2::GPIO16_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte2::GPIO16_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -44421,7 +45141,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO31_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO31_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -44433,7 +45153,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO31_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO31_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -44445,7 +45165,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO31_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO31_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -44457,7 +45177,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO31_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO31_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -44469,7 +45189,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO30_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO30_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -44481,7 +45201,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO30_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO30_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -44493,7 +45213,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO30_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO30_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -44505,7 +45225,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO30_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO30_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -44517,7 +45237,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO29_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO29_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -44529,7 +45249,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO29_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO29_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -44541,7 +45261,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO29_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO29_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -44553,7 +45273,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO29_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO29_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -44565,7 +45285,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO28_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO28_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -44577,7 +45297,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO28_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO28_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -44589,7 +45309,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO28_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO28_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -44601,7 +45321,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO28_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO28_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -44613,7 +45333,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO27_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO27_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -44625,7 +45345,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO27_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO27_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -44637,7 +45357,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO27_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO27_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -44649,7 +45369,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO27_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO27_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -44661,7 +45381,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO26_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO26_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -44673,7 +45393,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO26_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO26_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -44685,7 +45405,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO26_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO26_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -44697,7 +45417,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO26_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO26_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -44709,7 +45429,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO25_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO25_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -44721,7 +45441,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO25_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO25_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -44733,7 +45453,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO25_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO25_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -44745,7 +45465,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO25_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO25_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -44757,7 +45477,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO24_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO24_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -44769,7 +45489,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO24_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO24_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -44781,7 +45501,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO24_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO24_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -44793,7 +45513,7 @@ impl Proc0Inte3Val {
                 self.bits | Proc0Inte3::GPIO24_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte3::GPIO24_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -45911,7 +46631,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO39_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO39_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -45923,7 +46643,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO39_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO39_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -45935,7 +46655,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO39_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO39_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -45947,7 +46667,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO39_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO39_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -45959,7 +46679,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO38_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO38_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -45971,7 +46691,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO38_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO38_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -45983,7 +46703,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO38_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO38_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -45995,7 +46715,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO38_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO38_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -46007,7 +46727,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO37_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO37_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -46019,7 +46739,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO37_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO37_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -46031,7 +46751,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO37_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO37_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -46043,7 +46763,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO37_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO37_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -46055,7 +46775,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO36_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO36_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -46067,7 +46787,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO36_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO36_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -46079,7 +46799,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO36_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO36_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -46091,7 +46811,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO36_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO36_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -46103,7 +46823,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO35_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO35_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -46115,7 +46835,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO35_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO35_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -46127,7 +46847,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO35_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO35_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -46139,7 +46859,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO35_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO35_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -46151,7 +46871,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO34_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO34_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -46163,7 +46883,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO34_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO34_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -46175,7 +46895,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO34_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO34_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -46187,7 +46907,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO34_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO34_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -46199,7 +46919,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO33_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO33_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -46211,7 +46931,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO33_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO33_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -46223,7 +46943,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO33_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO33_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -46235,7 +46955,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO33_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO33_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -46247,7 +46967,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO32_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO32_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -46259,7 +46979,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO32_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO32_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -46271,7 +46991,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO32_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO32_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -46283,7 +47003,7 @@ impl Proc0Inte4Val {
                 self.bits | Proc0Inte4::GPIO32_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte4::GPIO32_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -47401,7 +48121,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO47_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO47_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -47413,7 +48133,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO47_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO47_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -47425,7 +48145,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO47_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO47_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -47437,7 +48157,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO47_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO47_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -47449,7 +48169,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO46_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO46_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -47461,7 +48181,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO46_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO46_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -47473,7 +48193,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO46_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO46_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -47485,7 +48205,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO46_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO46_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -47497,7 +48217,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO45_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO45_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -47509,7 +48229,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO45_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO45_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -47521,7 +48241,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO45_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO45_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -47533,7 +48253,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO45_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO45_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -47545,7 +48265,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO44_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO44_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -47557,7 +48277,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO44_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO44_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -47569,7 +48289,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO44_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO44_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -47581,7 +48301,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO44_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO44_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -47593,7 +48313,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO43_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO43_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -47605,7 +48325,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO43_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO43_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -47617,7 +48337,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO43_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO43_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -47629,7 +48349,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO43_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO43_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -47641,7 +48361,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO42_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO42_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -47653,7 +48373,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO42_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO42_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -47665,7 +48385,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO42_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO42_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -47677,7 +48397,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO42_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO42_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -47689,7 +48409,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO41_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO41_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -47701,7 +48421,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO41_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO41_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -47713,7 +48433,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO41_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO41_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -47725,7 +48445,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO41_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO41_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -47737,7 +48457,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO40_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO40_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -47749,7 +48469,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO40_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO40_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -47761,7 +48481,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO40_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO40_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -47773,7 +48493,7 @@ impl Proc0Inte5Val {
                 self.bits | Proc0Inte5::GPIO40_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Inte5::GPIO40_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -48891,7 +49611,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO7_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO7_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -48903,7 +49623,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO7_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO7_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -48915,7 +49635,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO7_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO7_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -48927,7 +49647,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO7_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO7_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -48939,7 +49659,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO6_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO6_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -48951,7 +49671,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO6_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO6_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -48963,7 +49683,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO6_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO6_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -48975,7 +49695,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO6_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO6_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -48987,7 +49707,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO5_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO5_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -48999,7 +49719,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO5_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO5_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -49011,7 +49731,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO5_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO5_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -49023,7 +49743,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO5_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO5_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -49035,7 +49755,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO4_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO4_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -49047,7 +49767,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO4_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO4_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -49059,7 +49779,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO4_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO4_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -49071,7 +49791,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO4_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO4_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -49083,7 +49803,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO3_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO3_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -49095,7 +49815,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO3_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO3_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -49107,7 +49827,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO3_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO3_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -49119,7 +49839,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO3_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO3_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -49131,7 +49851,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO2_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO2_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -49143,7 +49863,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO2_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO2_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -49155,7 +49875,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO2_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO2_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -49167,7 +49887,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO2_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO2_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -49179,7 +49899,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO1_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO1_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -49191,7 +49911,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO1_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO1_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -49203,7 +49923,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO1_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO1_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -49215,7 +49935,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO1_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO1_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -49227,7 +49947,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO0_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO0_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -49239,7 +49959,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO0_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO0_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -49251,7 +49971,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO0_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO0_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -49263,7 +49983,7 @@ impl Proc0Intf0Val {
                 self.bits | Proc0Intf0::GPIO0_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf0::GPIO0_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -50381,7 +51101,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO15_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO15_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -50393,7 +51113,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO15_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO15_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -50405,7 +51125,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO15_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO15_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -50417,7 +51137,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO15_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO15_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -50429,7 +51149,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO14_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO14_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -50441,7 +51161,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO14_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO14_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -50453,7 +51173,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO14_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO14_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -50465,7 +51185,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO14_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO14_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -50477,7 +51197,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO13_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO13_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -50489,7 +51209,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO13_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO13_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -50501,7 +51221,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO13_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO13_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -50513,7 +51233,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO13_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO13_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -50525,7 +51245,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO12_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO12_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -50537,7 +51257,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO12_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO12_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -50549,7 +51269,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO12_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO12_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -50561,7 +51281,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO12_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO12_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -50573,7 +51293,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO11_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO11_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -50585,7 +51305,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO11_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO11_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -50597,7 +51317,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO11_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO11_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -50609,7 +51329,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO11_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO11_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -50621,7 +51341,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO10_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO10_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -50633,7 +51353,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO10_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO10_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -50645,7 +51365,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO10_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO10_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -50657,7 +51377,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO10_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO10_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -50669,7 +51389,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO9_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO9_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -50681,7 +51401,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO9_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO9_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -50693,7 +51413,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO9_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO9_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -50705,7 +51425,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO9_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO9_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -50717,7 +51437,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO8_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO8_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -50729,7 +51449,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO8_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO8_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -50741,7 +51461,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO8_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO8_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -50753,7 +51473,7 @@ impl Proc0Intf1Val {
                 self.bits | Proc0Intf1::GPIO8_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf1::GPIO8_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -51871,7 +52591,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO23_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO23_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -51883,7 +52603,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO23_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO23_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -51895,7 +52615,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO23_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO23_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -51907,7 +52627,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO23_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO23_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -51919,7 +52639,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO22_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO22_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -51931,7 +52651,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO22_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO22_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -51943,7 +52663,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO22_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO22_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -51955,7 +52675,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO22_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO22_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -51967,7 +52687,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO21_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO21_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -51979,7 +52699,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO21_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO21_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -51991,7 +52711,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO21_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO21_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -52003,7 +52723,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO21_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO21_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -52015,7 +52735,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO20_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO20_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -52027,7 +52747,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO20_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO20_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -52039,7 +52759,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO20_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO20_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -52051,7 +52771,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO20_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO20_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -52063,7 +52783,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO19_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO19_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -52075,7 +52795,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO19_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO19_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -52087,7 +52807,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO19_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO19_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -52099,7 +52819,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO19_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO19_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -52111,7 +52831,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO18_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO18_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -52123,7 +52843,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO18_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO18_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -52135,7 +52855,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO18_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO18_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -52147,7 +52867,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO18_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO18_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -52159,7 +52879,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO17_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO17_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -52171,7 +52891,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO17_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO17_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -52183,7 +52903,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO17_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO17_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -52195,7 +52915,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO17_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO17_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -52207,7 +52927,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO16_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO16_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -52219,7 +52939,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO16_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO16_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -52231,7 +52951,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO16_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO16_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -52243,7 +52963,7 @@ impl Proc0Intf2Val {
                 self.bits | Proc0Intf2::GPIO16_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf2::GPIO16_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -53361,7 +54081,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO31_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO31_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -53373,7 +54093,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO31_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO31_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -53385,7 +54105,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO31_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO31_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -53397,7 +54117,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO31_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO31_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -53409,7 +54129,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO30_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO30_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -53421,7 +54141,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO30_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO30_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -53433,7 +54153,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO30_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO30_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -53445,7 +54165,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO30_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO30_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -53457,7 +54177,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO29_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO29_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -53469,7 +54189,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO29_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO29_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -53481,7 +54201,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO29_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO29_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -53493,7 +54213,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO29_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO29_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -53505,7 +54225,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO28_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO28_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -53517,7 +54237,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO28_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO28_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -53529,7 +54249,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO28_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO28_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -53541,7 +54261,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO28_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO28_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -53553,7 +54273,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO27_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO27_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -53565,7 +54285,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO27_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO27_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -53577,7 +54297,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO27_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO27_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -53589,7 +54309,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO27_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO27_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -53601,7 +54321,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO26_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO26_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -53613,7 +54333,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO26_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO26_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -53625,7 +54345,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO26_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO26_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -53637,7 +54357,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO26_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO26_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -53649,7 +54369,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO25_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO25_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -53661,7 +54381,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO25_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO25_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -53673,7 +54393,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO25_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO25_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -53685,7 +54405,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO25_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO25_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -53697,7 +54417,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO24_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO24_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -53709,7 +54429,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO24_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO24_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -53721,7 +54441,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO24_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO24_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -53733,7 +54453,7 @@ impl Proc0Intf3Val {
                 self.bits | Proc0Intf3::GPIO24_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf3::GPIO24_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -54851,7 +55571,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO39_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO39_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -54863,7 +55583,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO39_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO39_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -54875,7 +55595,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO39_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO39_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -54887,7 +55607,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO39_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO39_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -54899,7 +55619,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO38_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO38_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -54911,7 +55631,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO38_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO38_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -54923,7 +55643,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO38_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO38_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -54935,7 +55655,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO38_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO38_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -54947,7 +55667,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO37_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO37_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -54959,7 +55679,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO37_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO37_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -54971,7 +55691,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO37_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO37_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -54983,7 +55703,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO37_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO37_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -54995,7 +55715,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO36_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO36_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -55007,7 +55727,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO36_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO36_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -55019,7 +55739,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO36_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO36_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -55031,7 +55751,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO36_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO36_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -55043,7 +55763,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO35_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO35_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -55055,7 +55775,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO35_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO35_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -55067,7 +55787,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO35_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO35_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -55079,7 +55799,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO35_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO35_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -55091,7 +55811,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO34_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO34_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -55103,7 +55823,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO34_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO34_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -55115,7 +55835,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO34_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO34_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -55127,7 +55847,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO34_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO34_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -55139,7 +55859,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO33_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO33_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -55151,7 +55871,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO33_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO33_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -55163,7 +55883,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO33_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO33_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -55175,7 +55895,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO33_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO33_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -55187,7 +55907,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO32_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO32_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -55199,7 +55919,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO32_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO32_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -55211,7 +55931,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO32_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO32_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -55223,7 +55943,7 @@ impl Proc0Intf4Val {
                 self.bits | Proc0Intf4::GPIO32_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf4::GPIO32_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -56341,7 +57061,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO47_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO47_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -56353,7 +57073,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO47_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO47_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -56365,7 +57085,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO47_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO47_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -56377,7 +57097,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO47_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO47_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -56389,7 +57109,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO46_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO46_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -56401,7 +57121,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO46_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO46_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -56413,7 +57133,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO46_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO46_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -56425,7 +57145,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO46_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO46_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -56437,7 +57157,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO45_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO45_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -56449,7 +57169,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO45_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO45_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -56461,7 +57181,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO45_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO45_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -56473,7 +57193,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO45_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO45_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -56485,7 +57205,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO44_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO44_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -56497,7 +57217,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO44_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO44_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -56509,7 +57229,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO44_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO44_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -56521,7 +57241,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO44_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO44_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -56533,7 +57253,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO43_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO43_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -56545,7 +57265,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO43_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO43_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -56557,7 +57277,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO43_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO43_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -56569,7 +57289,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO43_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO43_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -56581,7 +57301,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO42_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO42_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -56593,7 +57313,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO42_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO42_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -56605,7 +57325,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO42_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO42_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -56617,7 +57337,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO42_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO42_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -56629,7 +57349,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO41_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO41_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -56641,7 +57361,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO41_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO41_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -56653,7 +57373,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO41_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO41_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -56665,7 +57385,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO41_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO41_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -56677,7 +57397,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO40_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO40_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -56689,7 +57409,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO40_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO40_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -56701,7 +57421,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO40_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO40_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -56713,7 +57433,7 @@ impl Proc0Intf5Val {
                 self.bits | Proc0Intf5::GPIO40_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc0Intf5::GPIO40_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -62091,7 +62811,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO7_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO7_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -62103,7 +62823,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO7_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO7_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -62115,7 +62835,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO7_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO7_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -62127,7 +62847,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO7_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO7_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -62139,7 +62859,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO6_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO6_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -62151,7 +62871,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO6_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO6_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -62163,7 +62883,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO6_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO6_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -62175,7 +62895,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO6_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO6_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -62187,7 +62907,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO5_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO5_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -62199,7 +62919,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO5_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO5_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -62211,7 +62931,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO5_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO5_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -62223,7 +62943,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO5_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO5_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -62235,7 +62955,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO4_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO4_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -62247,7 +62967,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO4_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO4_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -62259,7 +62979,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO4_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO4_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -62271,7 +62991,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO4_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO4_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -62283,7 +63003,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO3_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO3_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -62295,7 +63015,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO3_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO3_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -62307,7 +63027,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO3_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO3_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -62319,7 +63039,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO3_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO3_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -62331,7 +63051,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO2_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO2_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -62343,7 +63063,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO2_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO2_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -62355,7 +63075,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO2_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO2_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -62367,7 +63087,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO2_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO2_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -62379,7 +63099,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO1_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO1_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -62391,7 +63111,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO1_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO1_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -62403,7 +63123,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO1_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO1_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -62415,7 +63135,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO1_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO1_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -62427,7 +63147,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO0_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO0_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -62439,7 +63159,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO0_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO0_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -62451,7 +63171,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO0_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO0_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -62463,7 +63183,7 @@ impl Proc1Inte0Val {
                 self.bits | Proc1Inte0::GPIO0_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte0::GPIO0_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -63581,7 +64301,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO15_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO15_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -63593,7 +64313,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO15_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO15_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -63605,7 +64325,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO15_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO15_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -63617,7 +64337,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO15_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO15_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -63629,7 +64349,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO14_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO14_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -63641,7 +64361,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO14_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO14_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -63653,7 +64373,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO14_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO14_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -63665,7 +64385,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO14_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO14_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -63677,7 +64397,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO13_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO13_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -63689,7 +64409,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO13_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO13_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -63701,7 +64421,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO13_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO13_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -63713,7 +64433,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO13_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO13_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -63725,7 +64445,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO12_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO12_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -63737,7 +64457,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO12_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO12_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -63749,7 +64469,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO12_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO12_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -63761,7 +64481,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO12_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO12_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -63773,7 +64493,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO11_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO11_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -63785,7 +64505,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO11_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO11_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -63797,7 +64517,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO11_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO11_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -63809,7 +64529,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO11_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO11_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -63821,7 +64541,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO10_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO10_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -63833,7 +64553,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO10_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO10_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -63845,7 +64565,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO10_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO10_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -63857,7 +64577,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO10_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO10_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -63869,7 +64589,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO9_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO9_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -63881,7 +64601,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO9_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO9_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -63893,7 +64613,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO9_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO9_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -63905,7 +64625,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO9_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO9_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -63917,7 +64637,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO8_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO8_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -63929,7 +64649,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO8_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO8_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -63941,7 +64661,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO8_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO8_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -63953,7 +64673,7 @@ impl Proc1Inte1Val {
                 self.bits | Proc1Inte1::GPIO8_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte1::GPIO8_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -65071,7 +65791,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO23_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO23_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -65083,7 +65803,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO23_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO23_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -65095,7 +65815,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO23_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO23_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -65107,7 +65827,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO23_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO23_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -65119,7 +65839,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO22_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO22_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -65131,7 +65851,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO22_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO22_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -65143,7 +65863,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO22_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO22_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -65155,7 +65875,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO22_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO22_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -65167,7 +65887,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO21_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO21_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -65179,7 +65899,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO21_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO21_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -65191,7 +65911,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO21_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO21_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -65203,7 +65923,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO21_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO21_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -65215,7 +65935,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO20_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO20_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -65227,7 +65947,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO20_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO20_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -65239,7 +65959,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO20_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO20_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -65251,7 +65971,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO20_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO20_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -65263,7 +65983,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO19_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO19_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -65275,7 +65995,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO19_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO19_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -65287,7 +66007,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO19_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO19_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -65299,7 +66019,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO19_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO19_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -65311,7 +66031,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO18_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO18_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -65323,7 +66043,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO18_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO18_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -65335,7 +66055,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO18_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO18_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -65347,7 +66067,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO18_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO18_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -65359,7 +66079,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO17_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO17_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -65371,7 +66091,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO17_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO17_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -65383,7 +66103,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO17_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO17_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -65395,7 +66115,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO17_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO17_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -65407,7 +66127,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO16_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO16_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -65419,7 +66139,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO16_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO16_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -65431,7 +66151,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO16_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO16_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -65443,7 +66163,7 @@ impl Proc1Inte2Val {
                 self.bits | Proc1Inte2::GPIO16_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte2::GPIO16_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -66561,7 +67281,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO31_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO31_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -66573,7 +67293,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO31_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO31_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -66585,7 +67305,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO31_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO31_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -66597,7 +67317,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO31_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO31_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -66609,7 +67329,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO30_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO30_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -66621,7 +67341,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO30_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO30_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -66633,7 +67353,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO30_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO30_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -66645,7 +67365,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO30_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO30_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -66657,7 +67377,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO29_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO29_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -66669,7 +67389,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO29_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO29_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -66681,7 +67401,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO29_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO29_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -66693,7 +67413,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO29_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO29_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -66705,7 +67425,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO28_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO28_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -66717,7 +67437,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO28_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO28_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -66729,7 +67449,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO28_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO28_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -66741,7 +67461,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO28_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO28_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -66753,7 +67473,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO27_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO27_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -66765,7 +67485,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO27_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO27_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -66777,7 +67497,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO27_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO27_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -66789,7 +67509,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO27_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO27_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -66801,7 +67521,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO26_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO26_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -66813,7 +67533,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO26_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO26_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -66825,7 +67545,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO26_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO26_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -66837,7 +67557,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO26_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO26_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -66849,7 +67569,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO25_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO25_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -66861,7 +67581,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO25_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO25_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -66873,7 +67593,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO25_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO25_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -66885,7 +67605,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO25_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO25_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -66897,7 +67617,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO24_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO24_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -66909,7 +67629,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO24_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO24_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -66921,7 +67641,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO24_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO24_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -66933,7 +67653,7 @@ impl Proc1Inte3Val {
                 self.bits | Proc1Inte3::GPIO24_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte3::GPIO24_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -68051,7 +68771,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO39_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO39_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -68063,7 +68783,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO39_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO39_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -68075,7 +68795,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO39_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO39_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -68087,7 +68807,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO39_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO39_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -68099,7 +68819,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO38_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO38_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -68111,7 +68831,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO38_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO38_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -68123,7 +68843,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO38_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO38_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -68135,7 +68855,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO38_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO38_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -68147,7 +68867,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO37_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO37_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -68159,7 +68879,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO37_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO37_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -68171,7 +68891,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO37_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO37_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -68183,7 +68903,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO37_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO37_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -68195,7 +68915,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO36_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO36_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -68207,7 +68927,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO36_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO36_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -68219,7 +68939,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO36_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO36_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -68231,7 +68951,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO36_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO36_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -68243,7 +68963,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO35_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO35_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -68255,7 +68975,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO35_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO35_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -68267,7 +68987,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO35_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO35_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -68279,7 +68999,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO35_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO35_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -68291,7 +69011,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO34_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO34_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -68303,7 +69023,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO34_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO34_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -68315,7 +69035,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO34_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO34_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -68327,7 +69047,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO34_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO34_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -68339,7 +69059,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO33_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO33_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -68351,7 +69071,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO33_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO33_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -68363,7 +69083,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO33_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO33_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -68375,7 +69095,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO33_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO33_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -68387,7 +69107,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO32_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO32_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -68399,7 +69119,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO32_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO32_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -68411,7 +69131,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO32_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO32_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -68423,7 +69143,7 @@ impl Proc1Inte4Val {
                 self.bits | Proc1Inte4::GPIO32_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte4::GPIO32_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -69541,7 +70261,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO47_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO47_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -69553,7 +70273,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO47_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO47_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -69565,7 +70285,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO47_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO47_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -69577,7 +70297,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO47_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO47_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -69589,7 +70309,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO46_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO46_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -69601,7 +70321,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO46_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO46_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -69613,7 +70333,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO46_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO46_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -69625,7 +70345,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO46_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO46_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -69637,7 +70357,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO45_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO45_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -69649,7 +70369,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO45_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO45_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -69661,7 +70381,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO45_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO45_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -69673,7 +70393,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO45_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO45_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -69685,7 +70405,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO44_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO44_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -69697,7 +70417,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO44_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO44_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -69709,7 +70429,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO44_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO44_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -69721,7 +70441,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO44_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO44_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -69733,7 +70453,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO43_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO43_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -69745,7 +70465,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO43_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO43_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -69757,7 +70477,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO43_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO43_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -69769,7 +70489,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO43_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO43_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -69781,7 +70501,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO42_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO42_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -69793,7 +70513,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO42_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO42_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -69805,7 +70525,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO42_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO42_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -69817,7 +70537,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO42_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO42_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -69829,7 +70549,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO41_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO41_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -69841,7 +70561,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO41_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO41_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -69853,7 +70573,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO41_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO41_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -69865,7 +70585,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO41_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO41_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -69877,7 +70597,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO40_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO40_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -69889,7 +70609,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO40_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO40_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -69901,7 +70621,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO40_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO40_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -69913,7 +70633,7 @@ impl Proc1Inte5Val {
                 self.bits | Proc1Inte5::GPIO40_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Inte5::GPIO40_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -71031,7 +71751,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO7_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO7_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -71043,7 +71763,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO7_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO7_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -71055,7 +71775,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO7_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO7_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -71067,7 +71787,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO7_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO7_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -71079,7 +71799,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO6_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO6_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -71091,7 +71811,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO6_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO6_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -71103,7 +71823,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO6_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO6_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -71115,7 +71835,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO6_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO6_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -71127,7 +71847,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO5_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO5_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -71139,7 +71859,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO5_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO5_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -71151,7 +71871,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO5_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO5_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -71163,7 +71883,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO5_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO5_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -71175,7 +71895,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO4_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO4_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -71187,7 +71907,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO4_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO4_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -71199,7 +71919,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO4_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO4_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -71211,7 +71931,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO4_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO4_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -71223,7 +71943,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO3_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO3_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -71235,7 +71955,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO3_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO3_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -71247,7 +71967,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO3_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO3_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -71259,7 +71979,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO3_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO3_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -71271,7 +71991,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO2_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO2_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -71283,7 +72003,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO2_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO2_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -71295,7 +72015,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO2_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO2_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -71307,7 +72027,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO2_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO2_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -71319,7 +72039,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO1_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO1_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -71331,7 +72051,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO1_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO1_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -71343,7 +72063,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO1_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO1_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -71355,7 +72075,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO1_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO1_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -71367,7 +72087,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO0_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO0_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -71379,7 +72099,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO0_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO0_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -71391,7 +72111,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO0_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO0_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -71403,7 +72123,7 @@ impl Proc1Intf0Val {
                 self.bits | Proc1Intf0::GPIO0_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf0::GPIO0_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -72521,7 +73241,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO15_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO15_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -72533,7 +73253,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO15_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO15_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -72545,7 +73265,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO15_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO15_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -72557,7 +73277,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO15_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO15_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -72569,7 +73289,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO14_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO14_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -72581,7 +73301,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO14_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO14_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -72593,7 +73313,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO14_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO14_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -72605,7 +73325,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO14_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO14_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -72617,7 +73337,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO13_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO13_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -72629,7 +73349,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO13_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO13_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -72641,7 +73361,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO13_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO13_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -72653,7 +73373,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO13_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO13_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -72665,7 +73385,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO12_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO12_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -72677,7 +73397,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO12_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO12_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -72689,7 +73409,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO12_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO12_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -72701,7 +73421,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO12_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO12_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -72713,7 +73433,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO11_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO11_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -72725,7 +73445,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO11_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO11_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -72737,7 +73457,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO11_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO11_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -72749,7 +73469,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO11_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO11_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -72761,7 +73481,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO10_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO10_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -72773,7 +73493,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO10_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO10_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -72785,7 +73505,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO10_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO10_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -72797,7 +73517,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO10_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO10_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -72809,7 +73529,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO9_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO9_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -72821,7 +73541,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO9_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO9_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -72833,7 +73553,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO9_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO9_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -72845,7 +73565,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO9_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO9_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -72857,7 +73577,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO8_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO8_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -72869,7 +73589,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO8_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO8_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -72881,7 +73601,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO8_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO8_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -72893,7 +73613,7 @@ impl Proc1Intf1Val {
                 self.bits | Proc1Intf1::GPIO8_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf1::GPIO8_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -74011,7 +74731,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO23_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO23_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -74023,7 +74743,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO23_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO23_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -74035,7 +74755,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO23_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO23_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -74047,7 +74767,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO23_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO23_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -74059,7 +74779,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO22_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO22_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -74071,7 +74791,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO22_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO22_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -74083,7 +74803,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO22_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO22_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -74095,7 +74815,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO22_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO22_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -74107,7 +74827,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO21_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO21_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -74119,7 +74839,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO21_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO21_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -74131,7 +74851,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO21_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO21_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -74143,7 +74863,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO21_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO21_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -74155,7 +74875,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO20_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO20_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -74167,7 +74887,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO20_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO20_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -74179,7 +74899,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO20_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO20_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -74191,7 +74911,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO20_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO20_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -74203,7 +74923,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO19_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO19_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -74215,7 +74935,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO19_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO19_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -74227,7 +74947,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO19_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO19_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -74239,7 +74959,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO19_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO19_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -74251,7 +74971,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO18_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO18_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -74263,7 +74983,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO18_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO18_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -74275,7 +74995,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO18_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO18_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -74287,7 +75007,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO18_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO18_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -74299,7 +75019,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO17_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO17_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -74311,7 +75031,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO17_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO17_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -74323,7 +75043,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO17_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO17_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -74335,7 +75055,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO17_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO17_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -74347,7 +75067,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO16_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO16_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -74359,7 +75079,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO16_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO16_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -74371,7 +75091,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO16_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO16_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -74383,7 +75103,7 @@ impl Proc1Intf2Val {
                 self.bits | Proc1Intf2::GPIO16_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf2::GPIO16_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -75501,7 +76221,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO31_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO31_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -75513,7 +76233,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO31_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO31_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -75525,7 +76245,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO31_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO31_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -75537,7 +76257,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO31_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO31_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -75549,7 +76269,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO30_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO30_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -75561,7 +76281,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO30_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO30_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -75573,7 +76293,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO30_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO30_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -75585,7 +76305,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO30_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO30_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -75597,7 +76317,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO29_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO29_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -75609,7 +76329,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO29_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO29_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -75621,7 +76341,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO29_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO29_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -75633,7 +76353,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO29_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO29_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -75645,7 +76365,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO28_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO28_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -75657,7 +76377,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO28_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO28_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -75669,7 +76389,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO28_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO28_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -75681,7 +76401,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO28_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO28_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -75693,7 +76413,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO27_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO27_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -75705,7 +76425,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO27_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO27_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -75717,7 +76437,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO27_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO27_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -75729,7 +76449,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO27_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO27_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -75741,7 +76461,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO26_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO26_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -75753,7 +76473,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO26_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO26_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -75765,7 +76485,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO26_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO26_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -75777,7 +76497,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO26_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO26_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -75789,7 +76509,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO25_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO25_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -75801,7 +76521,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO25_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO25_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -75813,7 +76533,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO25_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO25_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -75825,7 +76545,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO25_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO25_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -75837,7 +76557,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO24_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO24_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -75849,7 +76569,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO24_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO24_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -75861,7 +76581,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO24_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO24_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -75873,7 +76593,7 @@ impl Proc1Intf3Val {
                 self.bits | Proc1Intf3::GPIO24_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf3::GPIO24_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -76991,7 +77711,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO39_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO39_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -77003,7 +77723,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO39_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO39_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -77015,7 +77735,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO39_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO39_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -77027,7 +77747,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO39_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO39_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -77039,7 +77759,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO38_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO38_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -77051,7 +77771,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO38_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO38_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -77063,7 +77783,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO38_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO38_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -77075,7 +77795,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO38_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO38_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -77087,7 +77807,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO37_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO37_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -77099,7 +77819,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO37_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO37_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -77111,7 +77831,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO37_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO37_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -77123,7 +77843,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO37_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO37_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -77135,7 +77855,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO36_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO36_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -77147,7 +77867,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO36_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO36_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -77159,7 +77879,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO36_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO36_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -77171,7 +77891,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO36_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO36_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -77183,7 +77903,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO35_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO35_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -77195,7 +77915,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO35_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO35_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -77207,7 +77927,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO35_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO35_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -77219,7 +77939,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO35_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO35_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -77231,7 +77951,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO34_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO34_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -77243,7 +77963,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO34_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO34_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -77255,7 +77975,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO34_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO34_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -77267,7 +77987,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO34_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO34_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -77279,7 +77999,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO33_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO33_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -77291,7 +78011,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO33_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO33_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -77303,7 +78023,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO33_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO33_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -77315,7 +78035,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO33_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO33_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -77327,7 +78047,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO32_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO32_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -77339,7 +78059,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO32_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO32_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -77351,7 +78071,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO32_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO32_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -77363,7 +78083,7 @@ impl Proc1Intf4Val {
                 self.bits | Proc1Intf4::GPIO32_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf4::GPIO32_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -78481,7 +79201,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO47_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO47_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -78493,7 +79213,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO47_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO47_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -78505,7 +79225,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO47_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO47_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -78517,7 +79237,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO47_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO47_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -78529,7 +79249,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO46_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO46_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -78541,7 +79261,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO46_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO46_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -78553,7 +79273,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO46_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO46_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -78565,7 +79285,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO46_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO46_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -78577,7 +79297,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO45_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO45_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -78589,7 +79309,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO45_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO45_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -78601,7 +79321,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO45_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO45_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -78613,7 +79333,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO45_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO45_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -78625,7 +79345,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO44_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO44_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -78637,7 +79357,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO44_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO44_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -78649,7 +79369,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO44_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO44_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -78661,7 +79381,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO44_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO44_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -78673,7 +79393,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO43_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO43_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -78685,7 +79405,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO43_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO43_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -78697,7 +79417,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO43_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO43_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -78709,7 +79429,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO43_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO43_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -78721,7 +79441,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO42_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO42_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -78733,7 +79453,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO42_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO42_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -78745,7 +79465,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO42_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO42_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -78757,7 +79477,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO42_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO42_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -78769,7 +79489,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO41_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO41_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -78781,7 +79501,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO41_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO41_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -78793,7 +79513,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO41_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO41_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -78805,7 +79525,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO41_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO41_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -78817,7 +79537,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO40_EDGE_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO40_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -78829,7 +79549,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO40_EDGE_LOW_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO40_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -78841,7 +79561,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO40_LEVEL_HIGH_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO40_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -78853,7 +79573,7 @@ impl Proc1Intf5Val {
                 self.bits | Proc1Intf5::GPIO40_LEVEL_LOW_MASK
             } else {
                 self.bits & !Proc1Intf5::GPIO40_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -84231,7 +84951,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO7_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO7_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -84243,7 +84963,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO7_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO7_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -84255,7 +84975,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO7_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO7_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -84267,7 +84987,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO7_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO7_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -84279,7 +84999,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO6_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO6_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -84291,7 +85011,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO6_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO6_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -84303,7 +85023,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO6_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO6_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -84315,7 +85035,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO6_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO6_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -84327,7 +85047,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO5_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO5_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -84339,7 +85059,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO5_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO5_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -84351,7 +85071,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO5_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO5_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -84363,7 +85083,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO5_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO5_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -84375,7 +85095,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO4_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO4_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -84387,7 +85107,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO4_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO4_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -84399,7 +85119,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO4_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO4_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -84411,7 +85131,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO4_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO4_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -84423,7 +85143,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO3_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO3_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -84435,7 +85155,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO3_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO3_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -84447,7 +85167,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO3_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO3_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -84459,7 +85179,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO3_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO3_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -84471,7 +85191,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO2_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO2_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -84483,7 +85203,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO2_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO2_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -84495,7 +85215,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO2_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO2_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -84507,7 +85227,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO2_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO2_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -84519,7 +85239,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO1_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO1_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -84531,7 +85251,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO1_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO1_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -84543,7 +85263,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO1_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO1_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -84555,7 +85275,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO1_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO1_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -84567,7 +85287,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO0_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO0_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -84579,7 +85299,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO0_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO0_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -84591,7 +85311,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO0_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO0_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -84603,7 +85323,7 @@ impl DormantWakeInte0Val {
                 self.bits | DormantWakeInte0::GPIO0_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte0::GPIO0_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -85721,7 +86441,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO15_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO15_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -85733,7 +86453,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO15_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO15_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -85745,7 +86465,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO15_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO15_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -85757,7 +86477,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO15_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO15_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -85769,7 +86489,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO14_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO14_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -85781,7 +86501,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO14_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO14_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -85793,7 +86513,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO14_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO14_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -85805,7 +86525,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO14_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO14_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -85817,7 +86537,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO13_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO13_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -85829,7 +86549,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO13_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO13_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -85841,7 +86561,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO13_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO13_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -85853,7 +86573,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO13_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO13_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -85865,7 +86585,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO12_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO12_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -85877,7 +86597,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO12_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO12_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -85889,7 +86609,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO12_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO12_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -85901,7 +86621,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO12_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO12_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -85913,7 +86633,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO11_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO11_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -85925,7 +86645,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO11_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO11_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -85937,7 +86657,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO11_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO11_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -85949,7 +86669,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO11_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO11_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -85961,7 +86681,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO10_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO10_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -85973,7 +86693,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO10_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO10_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -85985,7 +86705,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO10_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO10_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -85997,7 +86717,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO10_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO10_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -86009,7 +86729,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO9_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO9_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -86021,7 +86741,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO9_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO9_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -86033,7 +86753,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO9_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO9_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -86045,7 +86765,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO9_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO9_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -86057,7 +86777,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO8_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO8_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -86069,7 +86789,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO8_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO8_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -86081,7 +86801,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO8_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO8_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -86093,7 +86813,7 @@ impl DormantWakeInte1Val {
                 self.bits | DormantWakeInte1::GPIO8_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte1::GPIO8_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -87211,7 +87931,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO23_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO23_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -87223,7 +87943,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO23_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO23_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -87235,7 +87955,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO23_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO23_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -87247,7 +87967,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO23_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO23_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -87259,7 +87979,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO22_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO22_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -87271,7 +87991,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO22_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO22_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -87283,7 +88003,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO22_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO22_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -87295,7 +88015,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO22_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO22_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -87307,7 +88027,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO21_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO21_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -87319,7 +88039,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO21_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO21_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -87331,7 +88051,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO21_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO21_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -87343,7 +88063,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO21_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO21_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -87355,7 +88075,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO20_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO20_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -87367,7 +88087,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO20_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO20_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -87379,7 +88099,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO20_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO20_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -87391,7 +88111,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO20_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO20_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -87403,7 +88123,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO19_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO19_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -87415,7 +88135,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO19_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO19_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -87427,7 +88147,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO19_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO19_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -87439,7 +88159,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO19_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO19_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -87451,7 +88171,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO18_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO18_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -87463,7 +88183,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO18_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO18_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -87475,7 +88195,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO18_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO18_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -87487,7 +88207,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO18_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO18_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -87499,7 +88219,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO17_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO17_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -87511,7 +88231,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO17_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO17_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -87523,7 +88243,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO17_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO17_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -87535,7 +88255,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO17_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO17_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -87547,7 +88267,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO16_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO16_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -87559,7 +88279,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO16_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO16_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -87571,7 +88291,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO16_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO16_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -87583,7 +88303,7 @@ impl DormantWakeInte2Val {
                 self.bits | DormantWakeInte2::GPIO16_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte2::GPIO16_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -88701,7 +89421,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO31_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO31_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -88713,7 +89433,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO31_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO31_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -88725,7 +89445,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO31_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO31_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -88737,7 +89457,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO31_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO31_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -88749,7 +89469,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO30_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO30_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -88761,7 +89481,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO30_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO30_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -88773,7 +89493,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO30_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO30_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -88785,7 +89505,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO30_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO30_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -88797,7 +89517,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO29_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO29_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -88809,7 +89529,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO29_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO29_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -88821,7 +89541,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO29_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO29_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -88833,7 +89553,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO29_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO29_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -88845,7 +89565,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO28_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO28_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -88857,7 +89577,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO28_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO28_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -88869,7 +89589,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO28_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO28_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -88881,7 +89601,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO28_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO28_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -88893,7 +89613,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO27_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO27_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -88905,7 +89625,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO27_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO27_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -88917,7 +89637,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO27_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO27_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -88929,7 +89649,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO27_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO27_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -88941,7 +89661,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO26_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO26_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -88953,7 +89673,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO26_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO26_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -88965,7 +89685,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO26_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO26_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -88977,7 +89697,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO26_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO26_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -88989,7 +89709,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO25_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO25_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -89001,7 +89721,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO25_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO25_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -89013,7 +89733,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO25_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO25_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -89025,7 +89745,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO25_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO25_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -89037,7 +89757,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO24_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO24_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -89049,7 +89769,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO24_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO24_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -89061,7 +89781,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO24_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO24_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -89073,7 +89793,7 @@ impl DormantWakeInte3Val {
                 self.bits | DormantWakeInte3::GPIO24_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte3::GPIO24_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -90191,7 +90911,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO39_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO39_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -90203,7 +90923,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO39_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO39_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -90215,7 +90935,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO39_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO39_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -90227,7 +90947,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO39_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO39_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -90239,7 +90959,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO38_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO38_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -90251,7 +90971,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO38_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO38_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -90263,7 +90983,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO38_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO38_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -90275,7 +90995,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO38_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO38_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -90287,7 +91007,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO37_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO37_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -90299,7 +91019,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO37_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO37_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -90311,7 +91031,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO37_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO37_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -90323,7 +91043,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO37_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO37_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -90335,7 +91055,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO36_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO36_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -90347,7 +91067,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO36_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO36_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -90359,7 +91079,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO36_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO36_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -90371,7 +91091,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO36_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO36_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -90383,7 +91103,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO35_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO35_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -90395,7 +91115,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO35_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO35_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -90407,7 +91127,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO35_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO35_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -90419,7 +91139,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO35_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO35_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -90431,7 +91151,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO34_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO34_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -90443,7 +91163,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO34_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO34_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -90455,7 +91175,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO34_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO34_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -90467,7 +91187,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO34_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO34_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -90479,7 +91199,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO33_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO33_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -90491,7 +91211,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO33_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO33_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -90503,7 +91223,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO33_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO33_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -90515,7 +91235,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO33_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO33_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -90527,7 +91247,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO32_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO32_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -90539,7 +91259,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO32_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO32_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -90551,7 +91271,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO32_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO32_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -90563,7 +91283,7 @@ impl DormantWakeInte4Val {
                 self.bits | DormantWakeInte4::GPIO32_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte4::GPIO32_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -91681,7 +92401,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO47_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO47_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -91693,7 +92413,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO47_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO47_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -91705,7 +92425,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO47_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO47_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -91717,7 +92437,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO47_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO47_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -91729,7 +92449,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO46_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO46_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -91741,7 +92461,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO46_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO46_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -91753,7 +92473,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO46_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO46_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -91765,7 +92485,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO46_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO46_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -91777,7 +92497,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO45_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO45_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -91789,7 +92509,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO45_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO45_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -91801,7 +92521,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO45_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO45_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -91813,7 +92533,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO45_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO45_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -91825,7 +92545,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO44_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO44_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -91837,7 +92557,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO44_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO44_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -91849,7 +92569,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO44_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO44_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -91861,7 +92581,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO44_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO44_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -91873,7 +92593,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO43_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO43_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -91885,7 +92605,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO43_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO43_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -91897,7 +92617,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO43_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO43_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -91909,7 +92629,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO43_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO43_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -91921,7 +92641,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO42_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO42_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -91933,7 +92653,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO42_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO42_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -91945,7 +92665,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO42_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO42_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -91957,7 +92677,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO42_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO42_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -91969,7 +92689,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO41_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO41_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -91981,7 +92701,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO41_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO41_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -91993,7 +92713,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO41_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO41_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -92005,7 +92725,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO41_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO41_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -92017,7 +92737,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO40_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO40_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -92029,7 +92749,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO40_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO40_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -92041,7 +92761,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO40_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO40_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -92053,7 +92773,7 @@ impl DormantWakeInte5Val {
                 self.bits | DormantWakeInte5::GPIO40_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeInte5::GPIO40_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -93171,7 +93891,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO7_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO7_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -93183,7 +93903,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO7_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO7_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -93195,7 +93915,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO7_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO7_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -93207,7 +93927,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO7_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO7_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -93219,7 +93939,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO6_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO6_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -93231,7 +93951,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO6_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO6_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -93243,7 +93963,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO6_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO6_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -93255,7 +93975,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO6_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO6_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -93267,7 +93987,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO5_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO5_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -93279,7 +93999,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO5_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO5_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -93291,7 +94011,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO5_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO5_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -93303,7 +94023,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO5_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO5_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -93315,7 +94035,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO4_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO4_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -93327,7 +94047,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO4_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO4_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -93339,7 +94059,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO4_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO4_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -93351,7 +94071,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO4_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO4_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -93363,7 +94083,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO3_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO3_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -93375,7 +94095,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO3_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO3_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -93387,7 +94107,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO3_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO3_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -93399,7 +94119,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO3_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO3_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -93411,7 +94131,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO2_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO2_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -93423,7 +94143,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO2_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO2_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -93435,7 +94155,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO2_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO2_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -93447,7 +94167,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO2_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO2_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -93459,7 +94179,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO1_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO1_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -93471,7 +94191,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO1_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO1_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -93483,7 +94203,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO1_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO1_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -93495,7 +94215,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO1_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO1_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -93507,7 +94227,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO0_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO0_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -93519,7 +94239,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO0_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO0_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -93531,7 +94251,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO0_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO0_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -93543,7 +94263,7 @@ impl DormantWakeIntf0Val {
                 self.bits | DormantWakeIntf0::GPIO0_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf0::GPIO0_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -94661,7 +95381,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO15_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO15_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -94673,7 +95393,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO15_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO15_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -94685,7 +95405,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO15_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO15_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -94697,7 +95417,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO15_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO15_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -94709,7 +95429,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO14_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO14_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -94721,7 +95441,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO14_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO14_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -94733,7 +95453,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO14_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO14_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -94745,7 +95465,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO14_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO14_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -94757,7 +95477,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO13_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO13_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -94769,7 +95489,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO13_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO13_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -94781,7 +95501,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO13_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO13_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -94793,7 +95513,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO13_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO13_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -94805,7 +95525,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO12_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO12_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -94817,7 +95537,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO12_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO12_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -94829,7 +95549,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO12_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO12_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -94841,7 +95561,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO12_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO12_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -94853,7 +95573,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO11_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO11_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -94865,7 +95585,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO11_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO11_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -94877,7 +95597,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO11_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO11_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -94889,7 +95609,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO11_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO11_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -94901,7 +95621,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO10_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO10_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -94913,7 +95633,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO10_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO10_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -94925,7 +95645,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO10_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO10_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -94937,7 +95657,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO10_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO10_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -94949,7 +95669,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO9_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO9_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -94961,7 +95681,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO9_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO9_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -94973,7 +95693,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO9_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO9_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -94985,7 +95705,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO9_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO9_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -94997,7 +95717,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO8_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO8_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -95009,7 +95729,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO8_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO8_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -95021,7 +95741,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO8_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO8_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -95033,7 +95753,7 @@ impl DormantWakeIntf1Val {
                 self.bits | DormantWakeIntf1::GPIO8_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf1::GPIO8_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -96151,7 +96871,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO23_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO23_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -96163,7 +96883,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO23_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO23_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -96175,7 +96895,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO23_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO23_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -96187,7 +96907,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO23_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO23_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -96199,7 +96919,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO22_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO22_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -96211,7 +96931,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO22_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO22_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -96223,7 +96943,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO22_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO22_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -96235,7 +96955,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO22_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO22_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -96247,7 +96967,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO21_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO21_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -96259,7 +96979,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO21_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO21_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -96271,7 +96991,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO21_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO21_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -96283,7 +97003,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO21_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO21_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -96295,7 +97015,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO20_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO20_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -96307,7 +97027,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO20_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO20_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -96319,7 +97039,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO20_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO20_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -96331,7 +97051,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO20_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO20_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -96343,7 +97063,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO19_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO19_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -96355,7 +97075,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO19_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO19_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -96367,7 +97087,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO19_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO19_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -96379,7 +97099,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO19_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO19_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -96391,7 +97111,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO18_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO18_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -96403,7 +97123,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO18_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO18_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -96415,7 +97135,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO18_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO18_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -96427,7 +97147,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO18_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO18_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -96439,7 +97159,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO17_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO17_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -96451,7 +97171,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO17_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO17_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -96463,7 +97183,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO17_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO17_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -96475,7 +97195,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO17_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO17_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -96487,7 +97207,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO16_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO16_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -96499,7 +97219,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO16_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO16_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -96511,7 +97231,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO16_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO16_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -96523,7 +97243,7 @@ impl DormantWakeIntf2Val {
                 self.bits | DormantWakeIntf2::GPIO16_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf2::GPIO16_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -97641,7 +98361,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO31_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO31_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -97653,7 +98373,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO31_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO31_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -97665,7 +98385,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO31_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO31_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -97677,7 +98397,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO31_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO31_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -97689,7 +98409,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO30_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO30_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -97701,7 +98421,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO30_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO30_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -97713,7 +98433,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO30_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO30_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -97725,7 +98445,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO30_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO30_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -97737,7 +98457,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO29_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO29_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -97749,7 +98469,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO29_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO29_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -97761,7 +98481,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO29_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO29_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -97773,7 +98493,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO29_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO29_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -97785,7 +98505,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO28_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO28_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -97797,7 +98517,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO28_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO28_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -97809,7 +98529,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO28_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO28_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -97821,7 +98541,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO28_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO28_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -97833,7 +98553,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO27_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO27_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -97845,7 +98565,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO27_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO27_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -97857,7 +98577,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO27_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO27_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -97869,7 +98589,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO27_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO27_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -97881,7 +98601,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO26_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO26_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -97893,7 +98613,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO26_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO26_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -97905,7 +98625,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO26_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO26_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -97917,7 +98637,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO26_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO26_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -97929,7 +98649,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO25_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO25_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -97941,7 +98661,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO25_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO25_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -97953,7 +98673,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO25_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO25_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -97965,7 +98685,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO25_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO25_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -97977,7 +98697,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO24_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO24_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -97989,7 +98709,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO24_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO24_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -98001,7 +98721,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO24_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO24_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -98013,7 +98733,7 @@ impl DormantWakeIntf3Val {
                 self.bits | DormantWakeIntf3::GPIO24_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf3::GPIO24_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -99131,7 +99851,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO39_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO39_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -99143,7 +99863,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO39_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO39_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -99155,7 +99875,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO39_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO39_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -99167,7 +99887,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO39_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO39_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -99179,7 +99899,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO38_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO38_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -99191,7 +99911,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO38_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO38_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -99203,7 +99923,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO38_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO38_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -99215,7 +99935,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO38_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO38_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -99227,7 +99947,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO37_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO37_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -99239,7 +99959,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO37_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO37_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -99251,7 +99971,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO37_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO37_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -99263,7 +99983,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO37_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO37_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -99275,7 +99995,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO36_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO36_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -99287,7 +100007,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO36_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO36_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -99299,7 +100019,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO36_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO36_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -99311,7 +100031,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO36_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO36_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -99323,7 +100043,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO35_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO35_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -99335,7 +100055,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO35_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO35_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -99347,7 +100067,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO35_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO35_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -99359,7 +100079,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO35_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO35_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -99371,7 +100091,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO34_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO34_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -99383,7 +100103,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO34_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO34_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -99395,7 +100115,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO34_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO34_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -99407,7 +100127,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO34_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO34_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -99419,7 +100139,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO33_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO33_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -99431,7 +100151,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO33_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO33_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -99443,7 +100163,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO33_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO33_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -99455,7 +100175,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO33_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO33_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -99467,7 +100187,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO32_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO32_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -99479,7 +100199,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO32_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO32_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -99491,7 +100211,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO32_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO32_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -99503,7 +100223,7 @@ impl DormantWakeIntf4Val {
                 self.bits | DormantWakeIntf4::GPIO32_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf4::GPIO32_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -100621,7 +101341,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO47_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO47_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -100633,7 +101353,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO47_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO47_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -100645,7 +101365,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO47_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO47_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -100657,7 +101377,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO47_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO47_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -100669,7 +101389,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO46_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO46_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -100681,7 +101401,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO46_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO46_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -100693,7 +101413,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO46_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO46_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -100705,7 +101425,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO46_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO46_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -100717,7 +101437,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO45_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO45_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -100729,7 +101449,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO45_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO45_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -100741,7 +101461,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO45_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO45_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -100753,7 +101473,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO45_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO45_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -100765,7 +101485,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO44_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO44_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -100777,7 +101497,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO44_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO44_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -100789,7 +101509,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO44_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO44_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -100801,7 +101521,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO44_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO44_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -100813,7 +101533,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO43_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO43_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -100825,7 +101545,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO43_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO43_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -100837,7 +101557,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO43_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO43_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -100849,7 +101569,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO43_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO43_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -100861,7 +101581,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO42_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO42_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -100873,7 +101593,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO42_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO42_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -100885,7 +101605,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO42_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO42_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -100897,7 +101617,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO42_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO42_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -100909,7 +101629,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO41_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO41_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -100921,7 +101641,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO41_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO41_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -100933,7 +101653,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO41_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO41_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -100945,7 +101665,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO41_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO41_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 
@@ -100957,7 +101677,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO40_EDGE_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO40_EDGE_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -100969,7 +101689,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO40_EDGE_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO40_EDGE_LOW_MASK
-            }
+            },
         }
     }
 
@@ -100981,7 +101701,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO40_LEVEL_HIGH_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO40_LEVEL_HIGH_MASK
-            }
+            },
         }
     }
 
@@ -100993,7 +101713,7 @@ impl DormantWakeIntf5Val {
                 self.bits | DormantWakeIntf5::GPIO40_LEVEL_LOW_MASK
             } else {
                 self.bits & !DormantWakeIntf5::GPIO40_LEVEL_LOW_MASK
-            }
+            },
         }
     }
 }
@@ -105685,4 +106405,3 @@ pub struct RegisterBlock {
     /// Interrupt status after masking & forcing for dormant_wake
     pub dormant_wake_ints5: DormantWakeInts5,
 }
-

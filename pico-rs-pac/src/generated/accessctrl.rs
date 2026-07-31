@@ -188,7 +188,7 @@ impl LockVal {
                 self.bits | Lock::DEBUG_MASK
             } else {
                 self.bits & !Lock::DEBUG_MASK
-            }
+            },
         }
     }
 
@@ -200,7 +200,7 @@ impl LockVal {
                 self.bits | Lock::CORE1_MASK
             } else {
                 self.bits & !Lock::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -212,7 +212,7 @@ impl LockVal {
                 self.bits | Lock::CORE0_MASK
             } else {
                 self.bits & !Lock::CORE0_MASK
-            }
+            },
         }
     }
 }
@@ -339,7 +339,7 @@ impl ForceCoreNsVal {
                 self.bits | ForceCoreNs::CORE1_MASK
             } else {
                 self.bits & !ForceCoreNs::CORE1_MASK
-            }
+            },
         }
     }
 }
@@ -449,7 +449,7 @@ impl CfgresetVal {
                 self.bits | Cfgreset::CFGRESET_MASK
             } else {
                 self.bits & !Cfgreset::CFGRESET_MASK
-            }
+            },
         }
     }
 }
@@ -512,7 +512,10 @@ impl GpioNsmask0 {
     /// Write **GPIO_NSMASK0** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_gpio_nsmask0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::GPIO_NSMASK0_MASK) | ((value << Self::GPIO_NSMASK0_OFFSET) & Self::GPIO_NSMASK0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::GPIO_NSMASK0_MASK)
+                | ((value << Self::GPIO_NSMASK0_OFFSET) & Self::GPIO_NSMASK0_MASK)
+        });
     }
 }
 
@@ -554,7 +557,8 @@ impl GpioNsmask0Val {
     #[inline(always)]
     pub const fn with_gpio_nsmask0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !GpioNsmask0::GPIO_NSMASK0_MASK) | ((value << GpioNsmask0::GPIO_NSMASK0_OFFSET) & GpioNsmask0::GPIO_NSMASK0_MASK)
+            bits: (self.bits & !GpioNsmask0::GPIO_NSMASK0_MASK)
+                | ((value << GpioNsmask0::GPIO_NSMASK0_OFFSET) & GpioNsmask0::GPIO_NSMASK0_MASK),
         }
     }
 }
@@ -666,7 +670,9 @@ impl GpioNsmask1 {
     /// Write **QSPI_SD** `[31:28]` (RW)
     #[inline(always)]
     pub fn write_qspi_sd(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::QSPI_SD_MASK) | ((value << Self::QSPI_SD_OFFSET) & Self::QSPI_SD_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::QSPI_SD_MASK) | ((value << Self::QSPI_SD_OFFSET) & Self::QSPI_SD_MASK)
+        });
     }
 
     /// **QSPI_CSN** `[27]` (RW)
@@ -750,7 +756,9 @@ impl GpioNsmask1 {
     /// Write **GPIO** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_gpio(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::GPIO_MASK) | ((value << Self::GPIO_OFFSET) & Self::GPIO_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::GPIO_MASK) | ((value << Self::GPIO_OFFSET) & Self::GPIO_MASK)
+        });
     }
 }
 
@@ -822,7 +830,8 @@ impl GpioNsmask1Val {
     #[inline(always)]
     pub const fn with_qspi_sd(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !GpioNsmask1::QSPI_SD_MASK) | ((value << GpioNsmask1::QSPI_SD_OFFSET) & GpioNsmask1::QSPI_SD_MASK)
+            bits: (self.bits & !GpioNsmask1::QSPI_SD_MASK)
+                | ((value << GpioNsmask1::QSPI_SD_OFFSET) & GpioNsmask1::QSPI_SD_MASK),
         }
     }
 
@@ -834,7 +843,7 @@ impl GpioNsmask1Val {
                 self.bits | GpioNsmask1::QSPI_CSN_MASK
             } else {
                 self.bits & !GpioNsmask1::QSPI_CSN_MASK
-            }
+            },
         }
     }
 
@@ -846,7 +855,7 @@ impl GpioNsmask1Val {
                 self.bits | GpioNsmask1::QSPI_SCK_MASK
             } else {
                 self.bits & !GpioNsmask1::QSPI_SCK_MASK
-            }
+            },
         }
     }
 
@@ -858,7 +867,7 @@ impl GpioNsmask1Val {
                 self.bits | GpioNsmask1::USB_DM_MASK
             } else {
                 self.bits & !GpioNsmask1::USB_DM_MASK
-            }
+            },
         }
     }
 
@@ -870,7 +879,7 @@ impl GpioNsmask1Val {
                 self.bits | GpioNsmask1::USB_DP_MASK
             } else {
                 self.bits & !GpioNsmask1::USB_DP_MASK
-            }
+            },
         }
     }
 
@@ -878,7 +887,8 @@ impl GpioNsmask1Val {
     #[inline(always)]
     pub const fn with_gpio(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !GpioNsmask1::GPIO_MASK) | ((value << GpioNsmask1::GPIO_OFFSET) & GpioNsmask1::GPIO_MASK)
+            bits: (self.bits & !GpioNsmask1::GPIO_MASK)
+                | ((value << GpioNsmask1::GPIO_OFFSET) & GpioNsmask1::GPIO_MASK),
         }
     }
 }
@@ -1308,7 +1318,7 @@ impl RomVal {
                 self.bits | Rom::DBG_MASK
             } else {
                 self.bits & !Rom::DBG_MASK
-            }
+            },
         }
     }
 
@@ -1322,7 +1332,7 @@ impl RomVal {
                 self.bits | Rom::DMA_MASK
             } else {
                 self.bits & !Rom::DMA_MASK
-            }
+            },
         }
     }
 
@@ -1336,7 +1346,7 @@ impl RomVal {
                 self.bits | Rom::CORE1_MASK
             } else {
                 self.bits & !Rom::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -1350,7 +1360,7 @@ impl RomVal {
                 self.bits | Rom::CORE0_MASK
             } else {
                 self.bits & !Rom::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -1364,7 +1374,7 @@ impl RomVal {
                 self.bits | Rom::SP_MASK
             } else {
                 self.bits & !Rom::SP_MASK
-            }
+            },
         }
     }
 
@@ -1378,7 +1388,7 @@ impl RomVal {
                 self.bits | Rom::SU_MASK
             } else {
                 self.bits & !Rom::SU_MASK
-            }
+            },
         }
     }
 
@@ -1392,7 +1402,7 @@ impl RomVal {
                 self.bits | Rom::NSP_MASK
             } else {
                 self.bits & !Rom::NSP_MASK
-            }
+            },
         }
     }
 
@@ -1407,7 +1417,7 @@ impl RomVal {
                 self.bits | Rom::NSU_MASK
             } else {
                 self.bits & !Rom::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -1837,7 +1847,7 @@ impl XipMainVal {
                 self.bits | XipMain::DBG_MASK
             } else {
                 self.bits & !XipMain::DBG_MASK
-            }
+            },
         }
     }
 
@@ -1851,7 +1861,7 @@ impl XipMainVal {
                 self.bits | XipMain::DMA_MASK
             } else {
                 self.bits & !XipMain::DMA_MASK
-            }
+            },
         }
     }
 
@@ -1865,7 +1875,7 @@ impl XipMainVal {
                 self.bits | XipMain::CORE1_MASK
             } else {
                 self.bits & !XipMain::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -1879,7 +1889,7 @@ impl XipMainVal {
                 self.bits | XipMain::CORE0_MASK
             } else {
                 self.bits & !XipMain::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -1893,7 +1903,7 @@ impl XipMainVal {
                 self.bits | XipMain::SP_MASK
             } else {
                 self.bits & !XipMain::SP_MASK
-            }
+            },
         }
     }
 
@@ -1907,7 +1917,7 @@ impl XipMainVal {
                 self.bits | XipMain::SU_MASK
             } else {
                 self.bits & !XipMain::SU_MASK
-            }
+            },
         }
     }
 
@@ -1921,7 +1931,7 @@ impl XipMainVal {
                 self.bits | XipMain::NSP_MASK
             } else {
                 self.bits & !XipMain::NSP_MASK
-            }
+            },
         }
     }
 
@@ -1936,7 +1946,7 @@ impl XipMainVal {
                 self.bits | XipMain::NSU_MASK
             } else {
                 self.bits & !XipMain::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -2366,7 +2376,7 @@ impl Sram0Val {
                 self.bits | Sram0::DBG_MASK
             } else {
                 self.bits & !Sram0::DBG_MASK
-            }
+            },
         }
     }
 
@@ -2380,7 +2390,7 @@ impl Sram0Val {
                 self.bits | Sram0::DMA_MASK
             } else {
                 self.bits & !Sram0::DMA_MASK
-            }
+            },
         }
     }
 
@@ -2394,7 +2404,7 @@ impl Sram0Val {
                 self.bits | Sram0::CORE1_MASK
             } else {
                 self.bits & !Sram0::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -2408,7 +2418,7 @@ impl Sram0Val {
                 self.bits | Sram0::CORE0_MASK
             } else {
                 self.bits & !Sram0::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -2422,7 +2432,7 @@ impl Sram0Val {
                 self.bits | Sram0::SP_MASK
             } else {
                 self.bits & !Sram0::SP_MASK
-            }
+            },
         }
     }
 
@@ -2436,7 +2446,7 @@ impl Sram0Val {
                 self.bits | Sram0::SU_MASK
             } else {
                 self.bits & !Sram0::SU_MASK
-            }
+            },
         }
     }
 
@@ -2450,7 +2460,7 @@ impl Sram0Val {
                 self.bits | Sram0::NSP_MASK
             } else {
                 self.bits & !Sram0::NSP_MASK
-            }
+            },
         }
     }
 
@@ -2465,7 +2475,7 @@ impl Sram0Val {
                 self.bits | Sram0::NSU_MASK
             } else {
                 self.bits & !Sram0::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -2895,7 +2905,7 @@ impl Sram1Val {
                 self.bits | Sram1::DBG_MASK
             } else {
                 self.bits & !Sram1::DBG_MASK
-            }
+            },
         }
     }
 
@@ -2909,7 +2919,7 @@ impl Sram1Val {
                 self.bits | Sram1::DMA_MASK
             } else {
                 self.bits & !Sram1::DMA_MASK
-            }
+            },
         }
     }
 
@@ -2923,7 +2933,7 @@ impl Sram1Val {
                 self.bits | Sram1::CORE1_MASK
             } else {
                 self.bits & !Sram1::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -2937,7 +2947,7 @@ impl Sram1Val {
                 self.bits | Sram1::CORE0_MASK
             } else {
                 self.bits & !Sram1::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -2951,7 +2961,7 @@ impl Sram1Val {
                 self.bits | Sram1::SP_MASK
             } else {
                 self.bits & !Sram1::SP_MASK
-            }
+            },
         }
     }
 
@@ -2965,7 +2975,7 @@ impl Sram1Val {
                 self.bits | Sram1::SU_MASK
             } else {
                 self.bits & !Sram1::SU_MASK
-            }
+            },
         }
     }
 
@@ -2979,7 +2989,7 @@ impl Sram1Val {
                 self.bits | Sram1::NSP_MASK
             } else {
                 self.bits & !Sram1::NSP_MASK
-            }
+            },
         }
     }
 
@@ -2994,7 +3004,7 @@ impl Sram1Val {
                 self.bits | Sram1::NSU_MASK
             } else {
                 self.bits & !Sram1::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -3424,7 +3434,7 @@ impl Sram2Val {
                 self.bits | Sram2::DBG_MASK
             } else {
                 self.bits & !Sram2::DBG_MASK
-            }
+            },
         }
     }
 
@@ -3438,7 +3448,7 @@ impl Sram2Val {
                 self.bits | Sram2::DMA_MASK
             } else {
                 self.bits & !Sram2::DMA_MASK
-            }
+            },
         }
     }
 
@@ -3452,7 +3462,7 @@ impl Sram2Val {
                 self.bits | Sram2::CORE1_MASK
             } else {
                 self.bits & !Sram2::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -3466,7 +3476,7 @@ impl Sram2Val {
                 self.bits | Sram2::CORE0_MASK
             } else {
                 self.bits & !Sram2::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -3480,7 +3490,7 @@ impl Sram2Val {
                 self.bits | Sram2::SP_MASK
             } else {
                 self.bits & !Sram2::SP_MASK
-            }
+            },
         }
     }
 
@@ -3494,7 +3504,7 @@ impl Sram2Val {
                 self.bits | Sram2::SU_MASK
             } else {
                 self.bits & !Sram2::SU_MASK
-            }
+            },
         }
     }
 
@@ -3508,7 +3518,7 @@ impl Sram2Val {
                 self.bits | Sram2::NSP_MASK
             } else {
                 self.bits & !Sram2::NSP_MASK
-            }
+            },
         }
     }
 
@@ -3523,7 +3533,7 @@ impl Sram2Val {
                 self.bits | Sram2::NSU_MASK
             } else {
                 self.bits & !Sram2::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -3953,7 +3963,7 @@ impl Sram3Val {
                 self.bits | Sram3::DBG_MASK
             } else {
                 self.bits & !Sram3::DBG_MASK
-            }
+            },
         }
     }
 
@@ -3967,7 +3977,7 @@ impl Sram3Val {
                 self.bits | Sram3::DMA_MASK
             } else {
                 self.bits & !Sram3::DMA_MASK
-            }
+            },
         }
     }
 
@@ -3981,7 +3991,7 @@ impl Sram3Val {
                 self.bits | Sram3::CORE1_MASK
             } else {
                 self.bits & !Sram3::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -3995,7 +4005,7 @@ impl Sram3Val {
                 self.bits | Sram3::CORE0_MASK
             } else {
                 self.bits & !Sram3::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -4009,7 +4019,7 @@ impl Sram3Val {
                 self.bits | Sram3::SP_MASK
             } else {
                 self.bits & !Sram3::SP_MASK
-            }
+            },
         }
     }
 
@@ -4023,7 +4033,7 @@ impl Sram3Val {
                 self.bits | Sram3::SU_MASK
             } else {
                 self.bits & !Sram3::SU_MASK
-            }
+            },
         }
     }
 
@@ -4037,7 +4047,7 @@ impl Sram3Val {
                 self.bits | Sram3::NSP_MASK
             } else {
                 self.bits & !Sram3::NSP_MASK
-            }
+            },
         }
     }
 
@@ -4052,7 +4062,7 @@ impl Sram3Val {
                 self.bits | Sram3::NSU_MASK
             } else {
                 self.bits & !Sram3::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -4482,7 +4492,7 @@ impl Sram4Val {
                 self.bits | Sram4::DBG_MASK
             } else {
                 self.bits & !Sram4::DBG_MASK
-            }
+            },
         }
     }
 
@@ -4496,7 +4506,7 @@ impl Sram4Val {
                 self.bits | Sram4::DMA_MASK
             } else {
                 self.bits & !Sram4::DMA_MASK
-            }
+            },
         }
     }
 
@@ -4510,7 +4520,7 @@ impl Sram4Val {
                 self.bits | Sram4::CORE1_MASK
             } else {
                 self.bits & !Sram4::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -4524,7 +4534,7 @@ impl Sram4Val {
                 self.bits | Sram4::CORE0_MASK
             } else {
                 self.bits & !Sram4::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -4538,7 +4548,7 @@ impl Sram4Val {
                 self.bits | Sram4::SP_MASK
             } else {
                 self.bits & !Sram4::SP_MASK
-            }
+            },
         }
     }
 
@@ -4552,7 +4562,7 @@ impl Sram4Val {
                 self.bits | Sram4::SU_MASK
             } else {
                 self.bits & !Sram4::SU_MASK
-            }
+            },
         }
     }
 
@@ -4566,7 +4576,7 @@ impl Sram4Val {
                 self.bits | Sram4::NSP_MASK
             } else {
                 self.bits & !Sram4::NSP_MASK
-            }
+            },
         }
     }
 
@@ -4581,7 +4591,7 @@ impl Sram4Val {
                 self.bits | Sram4::NSU_MASK
             } else {
                 self.bits & !Sram4::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -5011,7 +5021,7 @@ impl Sram5Val {
                 self.bits | Sram5::DBG_MASK
             } else {
                 self.bits & !Sram5::DBG_MASK
-            }
+            },
         }
     }
 
@@ -5025,7 +5035,7 @@ impl Sram5Val {
                 self.bits | Sram5::DMA_MASK
             } else {
                 self.bits & !Sram5::DMA_MASK
-            }
+            },
         }
     }
 
@@ -5039,7 +5049,7 @@ impl Sram5Val {
                 self.bits | Sram5::CORE1_MASK
             } else {
                 self.bits & !Sram5::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -5053,7 +5063,7 @@ impl Sram5Val {
                 self.bits | Sram5::CORE0_MASK
             } else {
                 self.bits & !Sram5::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -5067,7 +5077,7 @@ impl Sram5Val {
                 self.bits | Sram5::SP_MASK
             } else {
                 self.bits & !Sram5::SP_MASK
-            }
+            },
         }
     }
 
@@ -5081,7 +5091,7 @@ impl Sram5Val {
                 self.bits | Sram5::SU_MASK
             } else {
                 self.bits & !Sram5::SU_MASK
-            }
+            },
         }
     }
 
@@ -5095,7 +5105,7 @@ impl Sram5Val {
                 self.bits | Sram5::NSP_MASK
             } else {
                 self.bits & !Sram5::NSP_MASK
-            }
+            },
         }
     }
 
@@ -5110,7 +5120,7 @@ impl Sram5Val {
                 self.bits | Sram5::NSU_MASK
             } else {
                 self.bits & !Sram5::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -5540,7 +5550,7 @@ impl Sram6Val {
                 self.bits | Sram6::DBG_MASK
             } else {
                 self.bits & !Sram6::DBG_MASK
-            }
+            },
         }
     }
 
@@ -5554,7 +5564,7 @@ impl Sram6Val {
                 self.bits | Sram6::DMA_MASK
             } else {
                 self.bits & !Sram6::DMA_MASK
-            }
+            },
         }
     }
 
@@ -5568,7 +5578,7 @@ impl Sram6Val {
                 self.bits | Sram6::CORE1_MASK
             } else {
                 self.bits & !Sram6::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -5582,7 +5592,7 @@ impl Sram6Val {
                 self.bits | Sram6::CORE0_MASK
             } else {
                 self.bits & !Sram6::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -5596,7 +5606,7 @@ impl Sram6Val {
                 self.bits | Sram6::SP_MASK
             } else {
                 self.bits & !Sram6::SP_MASK
-            }
+            },
         }
     }
 
@@ -5610,7 +5620,7 @@ impl Sram6Val {
                 self.bits | Sram6::SU_MASK
             } else {
                 self.bits & !Sram6::SU_MASK
-            }
+            },
         }
     }
 
@@ -5624,7 +5634,7 @@ impl Sram6Val {
                 self.bits | Sram6::NSP_MASK
             } else {
                 self.bits & !Sram6::NSP_MASK
-            }
+            },
         }
     }
 
@@ -5639,7 +5649,7 @@ impl Sram6Val {
                 self.bits | Sram6::NSU_MASK
             } else {
                 self.bits & !Sram6::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -6069,7 +6079,7 @@ impl Sram7Val {
                 self.bits | Sram7::DBG_MASK
             } else {
                 self.bits & !Sram7::DBG_MASK
-            }
+            },
         }
     }
 
@@ -6083,7 +6093,7 @@ impl Sram7Val {
                 self.bits | Sram7::DMA_MASK
             } else {
                 self.bits & !Sram7::DMA_MASK
-            }
+            },
         }
     }
 
@@ -6097,7 +6107,7 @@ impl Sram7Val {
                 self.bits | Sram7::CORE1_MASK
             } else {
                 self.bits & !Sram7::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -6111,7 +6121,7 @@ impl Sram7Val {
                 self.bits | Sram7::CORE0_MASK
             } else {
                 self.bits & !Sram7::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -6125,7 +6135,7 @@ impl Sram7Val {
                 self.bits | Sram7::SP_MASK
             } else {
                 self.bits & !Sram7::SP_MASK
-            }
+            },
         }
     }
 
@@ -6139,7 +6149,7 @@ impl Sram7Val {
                 self.bits | Sram7::SU_MASK
             } else {
                 self.bits & !Sram7::SU_MASK
-            }
+            },
         }
     }
 
@@ -6153,7 +6163,7 @@ impl Sram7Val {
                 self.bits | Sram7::NSP_MASK
             } else {
                 self.bits & !Sram7::NSP_MASK
-            }
+            },
         }
     }
 
@@ -6168,7 +6178,7 @@ impl Sram7Val {
                 self.bits | Sram7::NSU_MASK
             } else {
                 self.bits & !Sram7::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -6598,7 +6608,7 @@ impl Sram8Val {
                 self.bits | Sram8::DBG_MASK
             } else {
                 self.bits & !Sram8::DBG_MASK
-            }
+            },
         }
     }
 
@@ -6612,7 +6622,7 @@ impl Sram8Val {
                 self.bits | Sram8::DMA_MASK
             } else {
                 self.bits & !Sram8::DMA_MASK
-            }
+            },
         }
     }
 
@@ -6626,7 +6636,7 @@ impl Sram8Val {
                 self.bits | Sram8::CORE1_MASK
             } else {
                 self.bits & !Sram8::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -6640,7 +6650,7 @@ impl Sram8Val {
                 self.bits | Sram8::CORE0_MASK
             } else {
                 self.bits & !Sram8::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -6654,7 +6664,7 @@ impl Sram8Val {
                 self.bits | Sram8::SP_MASK
             } else {
                 self.bits & !Sram8::SP_MASK
-            }
+            },
         }
     }
 
@@ -6668,7 +6678,7 @@ impl Sram8Val {
                 self.bits | Sram8::SU_MASK
             } else {
                 self.bits & !Sram8::SU_MASK
-            }
+            },
         }
     }
 
@@ -6682,7 +6692,7 @@ impl Sram8Val {
                 self.bits | Sram8::NSP_MASK
             } else {
                 self.bits & !Sram8::NSP_MASK
-            }
+            },
         }
     }
 
@@ -6697,7 +6707,7 @@ impl Sram8Val {
                 self.bits | Sram8::NSU_MASK
             } else {
                 self.bits & !Sram8::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -7127,7 +7137,7 @@ impl Sram9Val {
                 self.bits | Sram9::DBG_MASK
             } else {
                 self.bits & !Sram9::DBG_MASK
-            }
+            },
         }
     }
 
@@ -7141,7 +7151,7 @@ impl Sram9Val {
                 self.bits | Sram9::DMA_MASK
             } else {
                 self.bits & !Sram9::DMA_MASK
-            }
+            },
         }
     }
 
@@ -7155,7 +7165,7 @@ impl Sram9Val {
                 self.bits | Sram9::CORE1_MASK
             } else {
                 self.bits & !Sram9::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -7169,7 +7179,7 @@ impl Sram9Val {
                 self.bits | Sram9::CORE0_MASK
             } else {
                 self.bits & !Sram9::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -7183,7 +7193,7 @@ impl Sram9Val {
                 self.bits | Sram9::SP_MASK
             } else {
                 self.bits & !Sram9::SP_MASK
-            }
+            },
         }
     }
 
@@ -7197,7 +7207,7 @@ impl Sram9Val {
                 self.bits | Sram9::SU_MASK
             } else {
                 self.bits & !Sram9::SU_MASK
-            }
+            },
         }
     }
 
@@ -7211,7 +7221,7 @@ impl Sram9Val {
                 self.bits | Sram9::NSP_MASK
             } else {
                 self.bits & !Sram9::NSP_MASK
-            }
+            },
         }
     }
 
@@ -7226,7 +7236,7 @@ impl Sram9Val {
                 self.bits | Sram9::NSU_MASK
             } else {
                 self.bits & !Sram9::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -7656,7 +7666,7 @@ impl DmaVal {
                 self.bits | Dma::DBG_MASK
             } else {
                 self.bits & !Dma::DBG_MASK
-            }
+            },
         }
     }
 
@@ -7670,7 +7680,7 @@ impl DmaVal {
                 self.bits | Dma::DMA_MASK
             } else {
                 self.bits & !Dma::DMA_MASK
-            }
+            },
         }
     }
 
@@ -7684,7 +7694,7 @@ impl DmaVal {
                 self.bits | Dma::CORE1_MASK
             } else {
                 self.bits & !Dma::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -7698,7 +7708,7 @@ impl DmaVal {
                 self.bits | Dma::CORE0_MASK
             } else {
                 self.bits & !Dma::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -7712,7 +7722,7 @@ impl DmaVal {
                 self.bits | Dma::SP_MASK
             } else {
                 self.bits & !Dma::SP_MASK
-            }
+            },
         }
     }
 
@@ -7726,7 +7736,7 @@ impl DmaVal {
                 self.bits | Dma::SU_MASK
             } else {
                 self.bits & !Dma::SU_MASK
-            }
+            },
         }
     }
 
@@ -7740,7 +7750,7 @@ impl DmaVal {
                 self.bits | Dma::NSP_MASK
             } else {
                 self.bits & !Dma::NSP_MASK
-            }
+            },
         }
     }
 
@@ -7755,7 +7765,7 @@ impl DmaVal {
                 self.bits | Dma::NSU_MASK
             } else {
                 self.bits & !Dma::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -8185,7 +8195,7 @@ impl UsbctrlVal {
                 self.bits | Usbctrl::DBG_MASK
             } else {
                 self.bits & !Usbctrl::DBG_MASK
-            }
+            },
         }
     }
 
@@ -8199,7 +8209,7 @@ impl UsbctrlVal {
                 self.bits | Usbctrl::DMA_MASK
             } else {
                 self.bits & !Usbctrl::DMA_MASK
-            }
+            },
         }
     }
 
@@ -8213,7 +8223,7 @@ impl UsbctrlVal {
                 self.bits | Usbctrl::CORE1_MASK
             } else {
                 self.bits & !Usbctrl::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -8227,7 +8237,7 @@ impl UsbctrlVal {
                 self.bits | Usbctrl::CORE0_MASK
             } else {
                 self.bits & !Usbctrl::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -8241,7 +8251,7 @@ impl UsbctrlVal {
                 self.bits | Usbctrl::SP_MASK
             } else {
                 self.bits & !Usbctrl::SP_MASK
-            }
+            },
         }
     }
 
@@ -8255,7 +8265,7 @@ impl UsbctrlVal {
                 self.bits | Usbctrl::SU_MASK
             } else {
                 self.bits & !Usbctrl::SU_MASK
-            }
+            },
         }
     }
 
@@ -8269,7 +8279,7 @@ impl UsbctrlVal {
                 self.bits | Usbctrl::NSP_MASK
             } else {
                 self.bits & !Usbctrl::NSP_MASK
-            }
+            },
         }
     }
 
@@ -8284,7 +8294,7 @@ impl UsbctrlVal {
                 self.bits | Usbctrl::NSU_MASK
             } else {
                 self.bits & !Usbctrl::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -8714,7 +8724,7 @@ impl Pio0Val {
                 self.bits | Pio0::DBG_MASK
             } else {
                 self.bits & !Pio0::DBG_MASK
-            }
+            },
         }
     }
 
@@ -8728,7 +8738,7 @@ impl Pio0Val {
                 self.bits | Pio0::DMA_MASK
             } else {
                 self.bits & !Pio0::DMA_MASK
-            }
+            },
         }
     }
 
@@ -8742,7 +8752,7 @@ impl Pio0Val {
                 self.bits | Pio0::CORE1_MASK
             } else {
                 self.bits & !Pio0::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -8756,7 +8766,7 @@ impl Pio0Val {
                 self.bits | Pio0::CORE0_MASK
             } else {
                 self.bits & !Pio0::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -8770,7 +8780,7 @@ impl Pio0Val {
                 self.bits | Pio0::SP_MASK
             } else {
                 self.bits & !Pio0::SP_MASK
-            }
+            },
         }
     }
 
@@ -8784,7 +8794,7 @@ impl Pio0Val {
                 self.bits | Pio0::SU_MASK
             } else {
                 self.bits & !Pio0::SU_MASK
-            }
+            },
         }
     }
 
@@ -8798,7 +8808,7 @@ impl Pio0Val {
                 self.bits | Pio0::NSP_MASK
             } else {
                 self.bits & !Pio0::NSP_MASK
-            }
+            },
         }
     }
 
@@ -8813,7 +8823,7 @@ impl Pio0Val {
                 self.bits | Pio0::NSU_MASK
             } else {
                 self.bits & !Pio0::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -9243,7 +9253,7 @@ impl Pio1Val {
                 self.bits | Pio1::DBG_MASK
             } else {
                 self.bits & !Pio1::DBG_MASK
-            }
+            },
         }
     }
 
@@ -9257,7 +9267,7 @@ impl Pio1Val {
                 self.bits | Pio1::DMA_MASK
             } else {
                 self.bits & !Pio1::DMA_MASK
-            }
+            },
         }
     }
 
@@ -9271,7 +9281,7 @@ impl Pio1Val {
                 self.bits | Pio1::CORE1_MASK
             } else {
                 self.bits & !Pio1::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -9285,7 +9295,7 @@ impl Pio1Val {
                 self.bits | Pio1::CORE0_MASK
             } else {
                 self.bits & !Pio1::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -9299,7 +9309,7 @@ impl Pio1Val {
                 self.bits | Pio1::SP_MASK
             } else {
                 self.bits & !Pio1::SP_MASK
-            }
+            },
         }
     }
 
@@ -9313,7 +9323,7 @@ impl Pio1Val {
                 self.bits | Pio1::SU_MASK
             } else {
                 self.bits & !Pio1::SU_MASK
-            }
+            },
         }
     }
 
@@ -9327,7 +9337,7 @@ impl Pio1Val {
                 self.bits | Pio1::NSP_MASK
             } else {
                 self.bits & !Pio1::NSP_MASK
-            }
+            },
         }
     }
 
@@ -9342,7 +9352,7 @@ impl Pio1Val {
                 self.bits | Pio1::NSU_MASK
             } else {
                 self.bits & !Pio1::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -9772,7 +9782,7 @@ impl Pio2Val {
                 self.bits | Pio2::DBG_MASK
             } else {
                 self.bits & !Pio2::DBG_MASK
-            }
+            },
         }
     }
 
@@ -9786,7 +9796,7 @@ impl Pio2Val {
                 self.bits | Pio2::DMA_MASK
             } else {
                 self.bits & !Pio2::DMA_MASK
-            }
+            },
         }
     }
 
@@ -9800,7 +9810,7 @@ impl Pio2Val {
                 self.bits | Pio2::CORE1_MASK
             } else {
                 self.bits & !Pio2::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -9814,7 +9824,7 @@ impl Pio2Val {
                 self.bits | Pio2::CORE0_MASK
             } else {
                 self.bits & !Pio2::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -9828,7 +9838,7 @@ impl Pio2Val {
                 self.bits | Pio2::SP_MASK
             } else {
                 self.bits & !Pio2::SP_MASK
-            }
+            },
         }
     }
 
@@ -9842,7 +9852,7 @@ impl Pio2Val {
                 self.bits | Pio2::SU_MASK
             } else {
                 self.bits & !Pio2::SU_MASK
-            }
+            },
         }
     }
 
@@ -9856,7 +9866,7 @@ impl Pio2Val {
                 self.bits | Pio2::NSP_MASK
             } else {
                 self.bits & !Pio2::NSP_MASK
-            }
+            },
         }
     }
 
@@ -9871,7 +9881,7 @@ impl Pio2Val {
                 self.bits | Pio2::NSU_MASK
             } else {
                 self.bits & !Pio2::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -10301,7 +10311,7 @@ impl CoresightTraceVal {
                 self.bits | CoresightTrace::DBG_MASK
             } else {
                 self.bits & !CoresightTrace::DBG_MASK
-            }
+            },
         }
     }
 
@@ -10315,7 +10325,7 @@ impl CoresightTraceVal {
                 self.bits | CoresightTrace::DMA_MASK
             } else {
                 self.bits & !CoresightTrace::DMA_MASK
-            }
+            },
         }
     }
 
@@ -10329,7 +10339,7 @@ impl CoresightTraceVal {
                 self.bits | CoresightTrace::CORE1_MASK
             } else {
                 self.bits & !CoresightTrace::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -10343,7 +10353,7 @@ impl CoresightTraceVal {
                 self.bits | CoresightTrace::CORE0_MASK
             } else {
                 self.bits & !CoresightTrace::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -10357,7 +10367,7 @@ impl CoresightTraceVal {
                 self.bits | CoresightTrace::SP_MASK
             } else {
                 self.bits & !CoresightTrace::SP_MASK
-            }
+            },
         }
     }
 
@@ -10371,7 +10381,7 @@ impl CoresightTraceVal {
                 self.bits | CoresightTrace::SU_MASK
             } else {
                 self.bits & !CoresightTrace::SU_MASK
-            }
+            },
         }
     }
 
@@ -10385,7 +10395,7 @@ impl CoresightTraceVal {
                 self.bits | CoresightTrace::NSP_MASK
             } else {
                 self.bits & !CoresightTrace::NSP_MASK
-            }
+            },
         }
     }
 
@@ -10400,7 +10410,7 @@ impl CoresightTraceVal {
                 self.bits | CoresightTrace::NSU_MASK
             } else {
                 self.bits & !CoresightTrace::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -10830,7 +10840,7 @@ impl CoresightPeriphVal {
                 self.bits | CoresightPeriph::DBG_MASK
             } else {
                 self.bits & !CoresightPeriph::DBG_MASK
-            }
+            },
         }
     }
 
@@ -10844,7 +10854,7 @@ impl CoresightPeriphVal {
                 self.bits | CoresightPeriph::DMA_MASK
             } else {
                 self.bits & !CoresightPeriph::DMA_MASK
-            }
+            },
         }
     }
 
@@ -10858,7 +10868,7 @@ impl CoresightPeriphVal {
                 self.bits | CoresightPeriph::CORE1_MASK
             } else {
                 self.bits & !CoresightPeriph::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -10872,7 +10882,7 @@ impl CoresightPeriphVal {
                 self.bits | CoresightPeriph::CORE0_MASK
             } else {
                 self.bits & !CoresightPeriph::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -10886,7 +10896,7 @@ impl CoresightPeriphVal {
                 self.bits | CoresightPeriph::SP_MASK
             } else {
                 self.bits & !CoresightPeriph::SP_MASK
-            }
+            },
         }
     }
 
@@ -10900,7 +10910,7 @@ impl CoresightPeriphVal {
                 self.bits | CoresightPeriph::SU_MASK
             } else {
                 self.bits & !CoresightPeriph::SU_MASK
-            }
+            },
         }
     }
 
@@ -10914,7 +10924,7 @@ impl CoresightPeriphVal {
                 self.bits | CoresightPeriph::NSP_MASK
             } else {
                 self.bits & !CoresightPeriph::NSP_MASK
-            }
+            },
         }
     }
 
@@ -10929,7 +10939,7 @@ impl CoresightPeriphVal {
                 self.bits | CoresightPeriph::NSU_MASK
             } else {
                 self.bits & !CoresightPeriph::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -11359,7 +11369,7 @@ impl SysinfoVal {
                 self.bits | Sysinfo::DBG_MASK
             } else {
                 self.bits & !Sysinfo::DBG_MASK
-            }
+            },
         }
     }
 
@@ -11373,7 +11383,7 @@ impl SysinfoVal {
                 self.bits | Sysinfo::DMA_MASK
             } else {
                 self.bits & !Sysinfo::DMA_MASK
-            }
+            },
         }
     }
 
@@ -11387,7 +11397,7 @@ impl SysinfoVal {
                 self.bits | Sysinfo::CORE1_MASK
             } else {
                 self.bits & !Sysinfo::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -11401,7 +11411,7 @@ impl SysinfoVal {
                 self.bits | Sysinfo::CORE0_MASK
             } else {
                 self.bits & !Sysinfo::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -11415,7 +11425,7 @@ impl SysinfoVal {
                 self.bits | Sysinfo::SP_MASK
             } else {
                 self.bits & !Sysinfo::SP_MASK
-            }
+            },
         }
     }
 
@@ -11429,7 +11439,7 @@ impl SysinfoVal {
                 self.bits | Sysinfo::SU_MASK
             } else {
                 self.bits & !Sysinfo::SU_MASK
-            }
+            },
         }
     }
 
@@ -11443,7 +11453,7 @@ impl SysinfoVal {
                 self.bits | Sysinfo::NSP_MASK
             } else {
                 self.bits & !Sysinfo::NSP_MASK
-            }
+            },
         }
     }
 
@@ -11458,7 +11468,7 @@ impl SysinfoVal {
                 self.bits | Sysinfo::NSU_MASK
             } else {
                 self.bits & !Sysinfo::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -11888,7 +11898,7 @@ impl ResetsVal {
                 self.bits | Resets::DBG_MASK
             } else {
                 self.bits & !Resets::DBG_MASK
-            }
+            },
         }
     }
 
@@ -11902,7 +11912,7 @@ impl ResetsVal {
                 self.bits | Resets::DMA_MASK
             } else {
                 self.bits & !Resets::DMA_MASK
-            }
+            },
         }
     }
 
@@ -11916,7 +11926,7 @@ impl ResetsVal {
                 self.bits | Resets::CORE1_MASK
             } else {
                 self.bits & !Resets::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -11930,7 +11940,7 @@ impl ResetsVal {
                 self.bits | Resets::CORE0_MASK
             } else {
                 self.bits & !Resets::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -11944,7 +11954,7 @@ impl ResetsVal {
                 self.bits | Resets::SP_MASK
             } else {
                 self.bits & !Resets::SP_MASK
-            }
+            },
         }
     }
 
@@ -11958,7 +11968,7 @@ impl ResetsVal {
                 self.bits | Resets::SU_MASK
             } else {
                 self.bits & !Resets::SU_MASK
-            }
+            },
         }
     }
 
@@ -11972,7 +11982,7 @@ impl ResetsVal {
                 self.bits | Resets::NSP_MASK
             } else {
                 self.bits & !Resets::NSP_MASK
-            }
+            },
         }
     }
 
@@ -11987,7 +11997,7 @@ impl ResetsVal {
                 self.bits | Resets::NSU_MASK
             } else {
                 self.bits & !Resets::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -12417,7 +12427,7 @@ impl IoBank0Val {
                 self.bits | IoBank0::DBG_MASK
             } else {
                 self.bits & !IoBank0::DBG_MASK
-            }
+            },
         }
     }
 
@@ -12431,7 +12441,7 @@ impl IoBank0Val {
                 self.bits | IoBank0::DMA_MASK
             } else {
                 self.bits & !IoBank0::DMA_MASK
-            }
+            },
         }
     }
 
@@ -12445,7 +12455,7 @@ impl IoBank0Val {
                 self.bits | IoBank0::CORE1_MASK
             } else {
                 self.bits & !IoBank0::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -12459,7 +12469,7 @@ impl IoBank0Val {
                 self.bits | IoBank0::CORE0_MASK
             } else {
                 self.bits & !IoBank0::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -12473,7 +12483,7 @@ impl IoBank0Val {
                 self.bits | IoBank0::SP_MASK
             } else {
                 self.bits & !IoBank0::SP_MASK
-            }
+            },
         }
     }
 
@@ -12487,7 +12497,7 @@ impl IoBank0Val {
                 self.bits | IoBank0::SU_MASK
             } else {
                 self.bits & !IoBank0::SU_MASK
-            }
+            },
         }
     }
 
@@ -12501,7 +12511,7 @@ impl IoBank0Val {
                 self.bits | IoBank0::NSP_MASK
             } else {
                 self.bits & !IoBank0::NSP_MASK
-            }
+            },
         }
     }
 
@@ -12516,7 +12526,7 @@ impl IoBank0Val {
                 self.bits | IoBank0::NSU_MASK
             } else {
                 self.bits & !IoBank0::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -12946,7 +12956,7 @@ impl IoBank1Val {
                 self.bits | IoBank1::DBG_MASK
             } else {
                 self.bits & !IoBank1::DBG_MASK
-            }
+            },
         }
     }
 
@@ -12960,7 +12970,7 @@ impl IoBank1Val {
                 self.bits | IoBank1::DMA_MASK
             } else {
                 self.bits & !IoBank1::DMA_MASK
-            }
+            },
         }
     }
 
@@ -12974,7 +12984,7 @@ impl IoBank1Val {
                 self.bits | IoBank1::CORE1_MASK
             } else {
                 self.bits & !IoBank1::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -12988,7 +12998,7 @@ impl IoBank1Val {
                 self.bits | IoBank1::CORE0_MASK
             } else {
                 self.bits & !IoBank1::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -13002,7 +13012,7 @@ impl IoBank1Val {
                 self.bits | IoBank1::SP_MASK
             } else {
                 self.bits & !IoBank1::SP_MASK
-            }
+            },
         }
     }
 
@@ -13016,7 +13026,7 @@ impl IoBank1Val {
                 self.bits | IoBank1::SU_MASK
             } else {
                 self.bits & !IoBank1::SU_MASK
-            }
+            },
         }
     }
 
@@ -13030,7 +13040,7 @@ impl IoBank1Val {
                 self.bits | IoBank1::NSP_MASK
             } else {
                 self.bits & !IoBank1::NSP_MASK
-            }
+            },
         }
     }
 
@@ -13045,7 +13055,7 @@ impl IoBank1Val {
                 self.bits | IoBank1::NSU_MASK
             } else {
                 self.bits & !IoBank1::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -13475,7 +13485,7 @@ impl PadsBank0Val {
                 self.bits | PadsBank0::DBG_MASK
             } else {
                 self.bits & !PadsBank0::DBG_MASK
-            }
+            },
         }
     }
 
@@ -13489,7 +13499,7 @@ impl PadsBank0Val {
                 self.bits | PadsBank0::DMA_MASK
             } else {
                 self.bits & !PadsBank0::DMA_MASK
-            }
+            },
         }
     }
 
@@ -13503,7 +13513,7 @@ impl PadsBank0Val {
                 self.bits | PadsBank0::CORE1_MASK
             } else {
                 self.bits & !PadsBank0::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -13517,7 +13527,7 @@ impl PadsBank0Val {
                 self.bits | PadsBank0::CORE0_MASK
             } else {
                 self.bits & !PadsBank0::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -13531,7 +13541,7 @@ impl PadsBank0Val {
                 self.bits | PadsBank0::SP_MASK
             } else {
                 self.bits & !PadsBank0::SP_MASK
-            }
+            },
         }
     }
 
@@ -13545,7 +13555,7 @@ impl PadsBank0Val {
                 self.bits | PadsBank0::SU_MASK
             } else {
                 self.bits & !PadsBank0::SU_MASK
-            }
+            },
         }
     }
 
@@ -13559,7 +13569,7 @@ impl PadsBank0Val {
                 self.bits | PadsBank0::NSP_MASK
             } else {
                 self.bits & !PadsBank0::NSP_MASK
-            }
+            },
         }
     }
 
@@ -13574,7 +13584,7 @@ impl PadsBank0Val {
                 self.bits | PadsBank0::NSU_MASK
             } else {
                 self.bits & !PadsBank0::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -14004,7 +14014,7 @@ impl PadsQspiVal {
                 self.bits | PadsQspi::DBG_MASK
             } else {
                 self.bits & !PadsQspi::DBG_MASK
-            }
+            },
         }
     }
 
@@ -14018,7 +14028,7 @@ impl PadsQspiVal {
                 self.bits | PadsQspi::DMA_MASK
             } else {
                 self.bits & !PadsQspi::DMA_MASK
-            }
+            },
         }
     }
 
@@ -14032,7 +14042,7 @@ impl PadsQspiVal {
                 self.bits | PadsQspi::CORE1_MASK
             } else {
                 self.bits & !PadsQspi::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -14046,7 +14056,7 @@ impl PadsQspiVal {
                 self.bits | PadsQspi::CORE0_MASK
             } else {
                 self.bits & !PadsQspi::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -14060,7 +14070,7 @@ impl PadsQspiVal {
                 self.bits | PadsQspi::SP_MASK
             } else {
                 self.bits & !PadsQspi::SP_MASK
-            }
+            },
         }
     }
 
@@ -14074,7 +14084,7 @@ impl PadsQspiVal {
                 self.bits | PadsQspi::SU_MASK
             } else {
                 self.bits & !PadsQspi::SU_MASK
-            }
+            },
         }
     }
 
@@ -14088,7 +14098,7 @@ impl PadsQspiVal {
                 self.bits | PadsQspi::NSP_MASK
             } else {
                 self.bits & !PadsQspi::NSP_MASK
-            }
+            },
         }
     }
 
@@ -14103,7 +14113,7 @@ impl PadsQspiVal {
                 self.bits | PadsQspi::NSU_MASK
             } else {
                 self.bits & !PadsQspi::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -14533,7 +14543,7 @@ impl BusctrlVal {
                 self.bits | Busctrl::DBG_MASK
             } else {
                 self.bits & !Busctrl::DBG_MASK
-            }
+            },
         }
     }
 
@@ -14547,7 +14557,7 @@ impl BusctrlVal {
                 self.bits | Busctrl::DMA_MASK
             } else {
                 self.bits & !Busctrl::DMA_MASK
-            }
+            },
         }
     }
 
@@ -14561,7 +14571,7 @@ impl BusctrlVal {
                 self.bits | Busctrl::CORE1_MASK
             } else {
                 self.bits & !Busctrl::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -14575,7 +14585,7 @@ impl BusctrlVal {
                 self.bits | Busctrl::CORE0_MASK
             } else {
                 self.bits & !Busctrl::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -14589,7 +14599,7 @@ impl BusctrlVal {
                 self.bits | Busctrl::SP_MASK
             } else {
                 self.bits & !Busctrl::SP_MASK
-            }
+            },
         }
     }
 
@@ -14603,7 +14613,7 @@ impl BusctrlVal {
                 self.bits | Busctrl::SU_MASK
             } else {
                 self.bits & !Busctrl::SU_MASK
-            }
+            },
         }
     }
 
@@ -14617,7 +14627,7 @@ impl BusctrlVal {
                 self.bits | Busctrl::NSP_MASK
             } else {
                 self.bits & !Busctrl::NSP_MASK
-            }
+            },
         }
     }
 
@@ -14632,7 +14642,7 @@ impl BusctrlVal {
                 self.bits | Busctrl::NSU_MASK
             } else {
                 self.bits & !Busctrl::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -15062,7 +15072,7 @@ impl Adc0Val {
                 self.bits | Adc0::DBG_MASK
             } else {
                 self.bits & !Adc0::DBG_MASK
-            }
+            },
         }
     }
 
@@ -15076,7 +15086,7 @@ impl Adc0Val {
                 self.bits | Adc0::DMA_MASK
             } else {
                 self.bits & !Adc0::DMA_MASK
-            }
+            },
         }
     }
 
@@ -15090,7 +15100,7 @@ impl Adc0Val {
                 self.bits | Adc0::CORE1_MASK
             } else {
                 self.bits & !Adc0::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -15104,7 +15114,7 @@ impl Adc0Val {
                 self.bits | Adc0::CORE0_MASK
             } else {
                 self.bits & !Adc0::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -15118,7 +15128,7 @@ impl Adc0Val {
                 self.bits | Adc0::SP_MASK
             } else {
                 self.bits & !Adc0::SP_MASK
-            }
+            },
         }
     }
 
@@ -15132,7 +15142,7 @@ impl Adc0Val {
                 self.bits | Adc0::SU_MASK
             } else {
                 self.bits & !Adc0::SU_MASK
-            }
+            },
         }
     }
 
@@ -15146,7 +15156,7 @@ impl Adc0Val {
                 self.bits | Adc0::NSP_MASK
             } else {
                 self.bits & !Adc0::NSP_MASK
-            }
+            },
         }
     }
 
@@ -15161,7 +15171,7 @@ impl Adc0Val {
                 self.bits | Adc0::NSU_MASK
             } else {
                 self.bits & !Adc0::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -15591,7 +15601,7 @@ impl HstxVal {
                 self.bits | Hstx::DBG_MASK
             } else {
                 self.bits & !Hstx::DBG_MASK
-            }
+            },
         }
     }
 
@@ -15605,7 +15615,7 @@ impl HstxVal {
                 self.bits | Hstx::DMA_MASK
             } else {
                 self.bits & !Hstx::DMA_MASK
-            }
+            },
         }
     }
 
@@ -15619,7 +15629,7 @@ impl HstxVal {
                 self.bits | Hstx::CORE1_MASK
             } else {
                 self.bits & !Hstx::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -15633,7 +15643,7 @@ impl HstxVal {
                 self.bits | Hstx::CORE0_MASK
             } else {
                 self.bits & !Hstx::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -15647,7 +15657,7 @@ impl HstxVal {
                 self.bits | Hstx::SP_MASK
             } else {
                 self.bits & !Hstx::SP_MASK
-            }
+            },
         }
     }
 
@@ -15661,7 +15671,7 @@ impl HstxVal {
                 self.bits | Hstx::SU_MASK
             } else {
                 self.bits & !Hstx::SU_MASK
-            }
+            },
         }
     }
 
@@ -15675,7 +15685,7 @@ impl HstxVal {
                 self.bits | Hstx::NSP_MASK
             } else {
                 self.bits & !Hstx::NSP_MASK
-            }
+            },
         }
     }
 
@@ -15690,7 +15700,7 @@ impl HstxVal {
                 self.bits | Hstx::NSU_MASK
             } else {
                 self.bits & !Hstx::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -16120,7 +16130,7 @@ impl I2c0Val {
                 self.bits | I2c0::DBG_MASK
             } else {
                 self.bits & !I2c0::DBG_MASK
-            }
+            },
         }
     }
 
@@ -16134,7 +16144,7 @@ impl I2c0Val {
                 self.bits | I2c0::DMA_MASK
             } else {
                 self.bits & !I2c0::DMA_MASK
-            }
+            },
         }
     }
 
@@ -16148,7 +16158,7 @@ impl I2c0Val {
                 self.bits | I2c0::CORE1_MASK
             } else {
                 self.bits & !I2c0::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -16162,7 +16172,7 @@ impl I2c0Val {
                 self.bits | I2c0::CORE0_MASK
             } else {
                 self.bits & !I2c0::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -16176,7 +16186,7 @@ impl I2c0Val {
                 self.bits | I2c0::SP_MASK
             } else {
                 self.bits & !I2c0::SP_MASK
-            }
+            },
         }
     }
 
@@ -16190,7 +16200,7 @@ impl I2c0Val {
                 self.bits | I2c0::SU_MASK
             } else {
                 self.bits & !I2c0::SU_MASK
-            }
+            },
         }
     }
 
@@ -16204,7 +16214,7 @@ impl I2c0Val {
                 self.bits | I2c0::NSP_MASK
             } else {
                 self.bits & !I2c0::NSP_MASK
-            }
+            },
         }
     }
 
@@ -16219,7 +16229,7 @@ impl I2c0Val {
                 self.bits | I2c0::NSU_MASK
             } else {
                 self.bits & !I2c0::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -16649,7 +16659,7 @@ impl I2c1Val {
                 self.bits | I2c1::DBG_MASK
             } else {
                 self.bits & !I2c1::DBG_MASK
-            }
+            },
         }
     }
 
@@ -16663,7 +16673,7 @@ impl I2c1Val {
                 self.bits | I2c1::DMA_MASK
             } else {
                 self.bits & !I2c1::DMA_MASK
-            }
+            },
         }
     }
 
@@ -16677,7 +16687,7 @@ impl I2c1Val {
                 self.bits | I2c1::CORE1_MASK
             } else {
                 self.bits & !I2c1::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -16691,7 +16701,7 @@ impl I2c1Val {
                 self.bits | I2c1::CORE0_MASK
             } else {
                 self.bits & !I2c1::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -16705,7 +16715,7 @@ impl I2c1Val {
                 self.bits | I2c1::SP_MASK
             } else {
                 self.bits & !I2c1::SP_MASK
-            }
+            },
         }
     }
 
@@ -16719,7 +16729,7 @@ impl I2c1Val {
                 self.bits | I2c1::SU_MASK
             } else {
                 self.bits & !I2c1::SU_MASK
-            }
+            },
         }
     }
 
@@ -16733,7 +16743,7 @@ impl I2c1Val {
                 self.bits | I2c1::NSP_MASK
             } else {
                 self.bits & !I2c1::NSP_MASK
-            }
+            },
         }
     }
 
@@ -16748,7 +16758,7 @@ impl I2c1Val {
                 self.bits | I2c1::NSU_MASK
             } else {
                 self.bits & !I2c1::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -17178,7 +17188,7 @@ impl PwmVal {
                 self.bits | Pwm::DBG_MASK
             } else {
                 self.bits & !Pwm::DBG_MASK
-            }
+            },
         }
     }
 
@@ -17192,7 +17202,7 @@ impl PwmVal {
                 self.bits | Pwm::DMA_MASK
             } else {
                 self.bits & !Pwm::DMA_MASK
-            }
+            },
         }
     }
 
@@ -17206,7 +17216,7 @@ impl PwmVal {
                 self.bits | Pwm::CORE1_MASK
             } else {
                 self.bits & !Pwm::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -17220,7 +17230,7 @@ impl PwmVal {
                 self.bits | Pwm::CORE0_MASK
             } else {
                 self.bits & !Pwm::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -17234,7 +17244,7 @@ impl PwmVal {
                 self.bits | Pwm::SP_MASK
             } else {
                 self.bits & !Pwm::SP_MASK
-            }
+            },
         }
     }
 
@@ -17248,7 +17258,7 @@ impl PwmVal {
                 self.bits | Pwm::SU_MASK
             } else {
                 self.bits & !Pwm::SU_MASK
-            }
+            },
         }
     }
 
@@ -17262,7 +17272,7 @@ impl PwmVal {
                 self.bits | Pwm::NSP_MASK
             } else {
                 self.bits & !Pwm::NSP_MASK
-            }
+            },
         }
     }
 
@@ -17277,7 +17287,7 @@ impl PwmVal {
                 self.bits | Pwm::NSU_MASK
             } else {
                 self.bits & !Pwm::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -17707,7 +17717,7 @@ impl Spi0Val {
                 self.bits | Spi0::DBG_MASK
             } else {
                 self.bits & !Spi0::DBG_MASK
-            }
+            },
         }
     }
 
@@ -17721,7 +17731,7 @@ impl Spi0Val {
                 self.bits | Spi0::DMA_MASK
             } else {
                 self.bits & !Spi0::DMA_MASK
-            }
+            },
         }
     }
 
@@ -17735,7 +17745,7 @@ impl Spi0Val {
                 self.bits | Spi0::CORE1_MASK
             } else {
                 self.bits & !Spi0::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -17749,7 +17759,7 @@ impl Spi0Val {
                 self.bits | Spi0::CORE0_MASK
             } else {
                 self.bits & !Spi0::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -17763,7 +17773,7 @@ impl Spi0Val {
                 self.bits | Spi0::SP_MASK
             } else {
                 self.bits & !Spi0::SP_MASK
-            }
+            },
         }
     }
 
@@ -17777,7 +17787,7 @@ impl Spi0Val {
                 self.bits | Spi0::SU_MASK
             } else {
                 self.bits & !Spi0::SU_MASK
-            }
+            },
         }
     }
 
@@ -17791,7 +17801,7 @@ impl Spi0Val {
                 self.bits | Spi0::NSP_MASK
             } else {
                 self.bits & !Spi0::NSP_MASK
-            }
+            },
         }
     }
 
@@ -17806,7 +17816,7 @@ impl Spi0Val {
                 self.bits | Spi0::NSU_MASK
             } else {
                 self.bits & !Spi0::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -18236,7 +18246,7 @@ impl Spi1Val {
                 self.bits | Spi1::DBG_MASK
             } else {
                 self.bits & !Spi1::DBG_MASK
-            }
+            },
         }
     }
 
@@ -18250,7 +18260,7 @@ impl Spi1Val {
                 self.bits | Spi1::DMA_MASK
             } else {
                 self.bits & !Spi1::DMA_MASK
-            }
+            },
         }
     }
 
@@ -18264,7 +18274,7 @@ impl Spi1Val {
                 self.bits | Spi1::CORE1_MASK
             } else {
                 self.bits & !Spi1::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -18278,7 +18288,7 @@ impl Spi1Val {
                 self.bits | Spi1::CORE0_MASK
             } else {
                 self.bits & !Spi1::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -18292,7 +18302,7 @@ impl Spi1Val {
                 self.bits | Spi1::SP_MASK
             } else {
                 self.bits & !Spi1::SP_MASK
-            }
+            },
         }
     }
 
@@ -18306,7 +18316,7 @@ impl Spi1Val {
                 self.bits | Spi1::SU_MASK
             } else {
                 self.bits & !Spi1::SU_MASK
-            }
+            },
         }
     }
 
@@ -18320,7 +18330,7 @@ impl Spi1Val {
                 self.bits | Spi1::NSP_MASK
             } else {
                 self.bits & !Spi1::NSP_MASK
-            }
+            },
         }
     }
 
@@ -18335,7 +18345,7 @@ impl Spi1Val {
                 self.bits | Spi1::NSU_MASK
             } else {
                 self.bits & !Spi1::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -18765,7 +18775,7 @@ impl Timer0Val {
                 self.bits | Timer0::DBG_MASK
             } else {
                 self.bits & !Timer0::DBG_MASK
-            }
+            },
         }
     }
 
@@ -18779,7 +18789,7 @@ impl Timer0Val {
                 self.bits | Timer0::DMA_MASK
             } else {
                 self.bits & !Timer0::DMA_MASK
-            }
+            },
         }
     }
 
@@ -18793,7 +18803,7 @@ impl Timer0Val {
                 self.bits | Timer0::CORE1_MASK
             } else {
                 self.bits & !Timer0::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -18807,7 +18817,7 @@ impl Timer0Val {
                 self.bits | Timer0::CORE0_MASK
             } else {
                 self.bits & !Timer0::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -18821,7 +18831,7 @@ impl Timer0Val {
                 self.bits | Timer0::SP_MASK
             } else {
                 self.bits & !Timer0::SP_MASK
-            }
+            },
         }
     }
 
@@ -18835,7 +18845,7 @@ impl Timer0Val {
                 self.bits | Timer0::SU_MASK
             } else {
                 self.bits & !Timer0::SU_MASK
-            }
+            },
         }
     }
 
@@ -18849,7 +18859,7 @@ impl Timer0Val {
                 self.bits | Timer0::NSP_MASK
             } else {
                 self.bits & !Timer0::NSP_MASK
-            }
+            },
         }
     }
 
@@ -18864,7 +18874,7 @@ impl Timer0Val {
                 self.bits | Timer0::NSU_MASK
             } else {
                 self.bits & !Timer0::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -19294,7 +19304,7 @@ impl Timer1Val {
                 self.bits | Timer1::DBG_MASK
             } else {
                 self.bits & !Timer1::DBG_MASK
-            }
+            },
         }
     }
 
@@ -19308,7 +19318,7 @@ impl Timer1Val {
                 self.bits | Timer1::DMA_MASK
             } else {
                 self.bits & !Timer1::DMA_MASK
-            }
+            },
         }
     }
 
@@ -19322,7 +19332,7 @@ impl Timer1Val {
                 self.bits | Timer1::CORE1_MASK
             } else {
                 self.bits & !Timer1::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -19336,7 +19346,7 @@ impl Timer1Val {
                 self.bits | Timer1::CORE0_MASK
             } else {
                 self.bits & !Timer1::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -19350,7 +19360,7 @@ impl Timer1Val {
                 self.bits | Timer1::SP_MASK
             } else {
                 self.bits & !Timer1::SP_MASK
-            }
+            },
         }
     }
 
@@ -19364,7 +19374,7 @@ impl Timer1Val {
                 self.bits | Timer1::SU_MASK
             } else {
                 self.bits & !Timer1::SU_MASK
-            }
+            },
         }
     }
 
@@ -19378,7 +19388,7 @@ impl Timer1Val {
                 self.bits | Timer1::NSP_MASK
             } else {
                 self.bits & !Timer1::NSP_MASK
-            }
+            },
         }
     }
 
@@ -19393,7 +19403,7 @@ impl Timer1Val {
                 self.bits | Timer1::NSU_MASK
             } else {
                 self.bits & !Timer1::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -19823,7 +19833,7 @@ impl Uart0Val {
                 self.bits | Uart0::DBG_MASK
             } else {
                 self.bits & !Uart0::DBG_MASK
-            }
+            },
         }
     }
 
@@ -19837,7 +19847,7 @@ impl Uart0Val {
                 self.bits | Uart0::DMA_MASK
             } else {
                 self.bits & !Uart0::DMA_MASK
-            }
+            },
         }
     }
 
@@ -19851,7 +19861,7 @@ impl Uart0Val {
                 self.bits | Uart0::CORE1_MASK
             } else {
                 self.bits & !Uart0::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -19865,7 +19875,7 @@ impl Uart0Val {
                 self.bits | Uart0::CORE0_MASK
             } else {
                 self.bits & !Uart0::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -19879,7 +19889,7 @@ impl Uart0Val {
                 self.bits | Uart0::SP_MASK
             } else {
                 self.bits & !Uart0::SP_MASK
-            }
+            },
         }
     }
 
@@ -19893,7 +19903,7 @@ impl Uart0Val {
                 self.bits | Uart0::SU_MASK
             } else {
                 self.bits & !Uart0::SU_MASK
-            }
+            },
         }
     }
 
@@ -19907,7 +19917,7 @@ impl Uart0Val {
                 self.bits | Uart0::NSP_MASK
             } else {
                 self.bits & !Uart0::NSP_MASK
-            }
+            },
         }
     }
 
@@ -19922,7 +19932,7 @@ impl Uart0Val {
                 self.bits | Uart0::NSU_MASK
             } else {
                 self.bits & !Uart0::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -20352,7 +20362,7 @@ impl Uart1Val {
                 self.bits | Uart1::DBG_MASK
             } else {
                 self.bits & !Uart1::DBG_MASK
-            }
+            },
         }
     }
 
@@ -20366,7 +20376,7 @@ impl Uart1Val {
                 self.bits | Uart1::DMA_MASK
             } else {
                 self.bits & !Uart1::DMA_MASK
-            }
+            },
         }
     }
 
@@ -20380,7 +20390,7 @@ impl Uart1Val {
                 self.bits | Uart1::CORE1_MASK
             } else {
                 self.bits & !Uart1::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -20394,7 +20404,7 @@ impl Uart1Val {
                 self.bits | Uart1::CORE0_MASK
             } else {
                 self.bits & !Uart1::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -20408,7 +20418,7 @@ impl Uart1Val {
                 self.bits | Uart1::SP_MASK
             } else {
                 self.bits & !Uart1::SP_MASK
-            }
+            },
         }
     }
 
@@ -20422,7 +20432,7 @@ impl Uart1Val {
                 self.bits | Uart1::SU_MASK
             } else {
                 self.bits & !Uart1::SU_MASK
-            }
+            },
         }
     }
 
@@ -20436,7 +20446,7 @@ impl Uart1Val {
                 self.bits | Uart1::NSP_MASK
             } else {
                 self.bits & !Uart1::NSP_MASK
-            }
+            },
         }
     }
 
@@ -20451,7 +20461,7 @@ impl Uart1Val {
                 self.bits | Uart1::NSU_MASK
             } else {
                 self.bits & !Uart1::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -20881,7 +20891,7 @@ impl OtpVal {
                 self.bits | Otp::DBG_MASK
             } else {
                 self.bits & !Otp::DBG_MASK
-            }
+            },
         }
     }
 
@@ -20895,7 +20905,7 @@ impl OtpVal {
                 self.bits | Otp::DMA_MASK
             } else {
                 self.bits & !Otp::DMA_MASK
-            }
+            },
         }
     }
 
@@ -20909,7 +20919,7 @@ impl OtpVal {
                 self.bits | Otp::CORE1_MASK
             } else {
                 self.bits & !Otp::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -20923,7 +20933,7 @@ impl OtpVal {
                 self.bits | Otp::CORE0_MASK
             } else {
                 self.bits & !Otp::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -20937,7 +20947,7 @@ impl OtpVal {
                 self.bits | Otp::SP_MASK
             } else {
                 self.bits & !Otp::SP_MASK
-            }
+            },
         }
     }
 
@@ -20951,7 +20961,7 @@ impl OtpVal {
                 self.bits | Otp::SU_MASK
             } else {
                 self.bits & !Otp::SU_MASK
-            }
+            },
         }
     }
 
@@ -20965,7 +20975,7 @@ impl OtpVal {
                 self.bits | Otp::NSP_MASK
             } else {
                 self.bits & !Otp::NSP_MASK
-            }
+            },
         }
     }
 
@@ -20980,7 +20990,7 @@ impl OtpVal {
                 self.bits | Otp::NSU_MASK
             } else {
                 self.bits & !Otp::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -21410,7 +21420,7 @@ impl TbmanVal {
                 self.bits | Tbman::DBG_MASK
             } else {
                 self.bits & !Tbman::DBG_MASK
-            }
+            },
         }
     }
 
@@ -21424,7 +21434,7 @@ impl TbmanVal {
                 self.bits | Tbman::DMA_MASK
             } else {
                 self.bits & !Tbman::DMA_MASK
-            }
+            },
         }
     }
 
@@ -21438,7 +21448,7 @@ impl TbmanVal {
                 self.bits | Tbman::CORE1_MASK
             } else {
                 self.bits & !Tbman::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -21452,7 +21462,7 @@ impl TbmanVal {
                 self.bits | Tbman::CORE0_MASK
             } else {
                 self.bits & !Tbman::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -21466,7 +21476,7 @@ impl TbmanVal {
                 self.bits | Tbman::SP_MASK
             } else {
                 self.bits & !Tbman::SP_MASK
-            }
+            },
         }
     }
 
@@ -21480,7 +21490,7 @@ impl TbmanVal {
                 self.bits | Tbman::SU_MASK
             } else {
                 self.bits & !Tbman::SU_MASK
-            }
+            },
         }
     }
 
@@ -21494,7 +21504,7 @@ impl TbmanVal {
                 self.bits | Tbman::NSP_MASK
             } else {
                 self.bits & !Tbman::NSP_MASK
-            }
+            },
         }
     }
 
@@ -21509,7 +21519,7 @@ impl TbmanVal {
                 self.bits | Tbman::NSU_MASK
             } else {
                 self.bits & !Tbman::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -21939,7 +21949,7 @@ impl PowmanVal {
                 self.bits | Powman::DBG_MASK
             } else {
                 self.bits & !Powman::DBG_MASK
-            }
+            },
         }
     }
 
@@ -21953,7 +21963,7 @@ impl PowmanVal {
                 self.bits | Powman::DMA_MASK
             } else {
                 self.bits & !Powman::DMA_MASK
-            }
+            },
         }
     }
 
@@ -21967,7 +21977,7 @@ impl PowmanVal {
                 self.bits | Powman::CORE1_MASK
             } else {
                 self.bits & !Powman::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -21981,7 +21991,7 @@ impl PowmanVal {
                 self.bits | Powman::CORE0_MASK
             } else {
                 self.bits & !Powman::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -21995,7 +22005,7 @@ impl PowmanVal {
                 self.bits | Powman::SP_MASK
             } else {
                 self.bits & !Powman::SP_MASK
-            }
+            },
         }
     }
 
@@ -22009,7 +22019,7 @@ impl PowmanVal {
                 self.bits | Powman::SU_MASK
             } else {
                 self.bits & !Powman::SU_MASK
-            }
+            },
         }
     }
 
@@ -22023,7 +22033,7 @@ impl PowmanVal {
                 self.bits | Powman::NSP_MASK
             } else {
                 self.bits & !Powman::NSP_MASK
-            }
+            },
         }
     }
 
@@ -22038,7 +22048,7 @@ impl PowmanVal {
                 self.bits | Powman::NSU_MASK
             } else {
                 self.bits & !Powman::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -22468,7 +22478,7 @@ impl TrngVal {
                 self.bits | Trng::DBG_MASK
             } else {
                 self.bits & !Trng::DBG_MASK
-            }
+            },
         }
     }
 
@@ -22482,7 +22492,7 @@ impl TrngVal {
                 self.bits | Trng::DMA_MASK
             } else {
                 self.bits & !Trng::DMA_MASK
-            }
+            },
         }
     }
 
@@ -22496,7 +22506,7 @@ impl TrngVal {
                 self.bits | Trng::CORE1_MASK
             } else {
                 self.bits & !Trng::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -22510,7 +22520,7 @@ impl TrngVal {
                 self.bits | Trng::CORE0_MASK
             } else {
                 self.bits & !Trng::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -22524,7 +22534,7 @@ impl TrngVal {
                 self.bits | Trng::SP_MASK
             } else {
                 self.bits & !Trng::SP_MASK
-            }
+            },
         }
     }
 
@@ -22538,7 +22548,7 @@ impl TrngVal {
                 self.bits | Trng::SU_MASK
             } else {
                 self.bits & !Trng::SU_MASK
-            }
+            },
         }
     }
 
@@ -22552,7 +22562,7 @@ impl TrngVal {
                 self.bits | Trng::NSP_MASK
             } else {
                 self.bits & !Trng::NSP_MASK
-            }
+            },
         }
     }
 
@@ -22567,7 +22577,7 @@ impl TrngVal {
                 self.bits | Trng::NSU_MASK
             } else {
                 self.bits & !Trng::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -22997,7 +23007,7 @@ impl Sha256Val {
                 self.bits | Sha256::DBG_MASK
             } else {
                 self.bits & !Sha256::DBG_MASK
-            }
+            },
         }
     }
 
@@ -23011,7 +23021,7 @@ impl Sha256Val {
                 self.bits | Sha256::DMA_MASK
             } else {
                 self.bits & !Sha256::DMA_MASK
-            }
+            },
         }
     }
 
@@ -23025,7 +23035,7 @@ impl Sha256Val {
                 self.bits | Sha256::CORE1_MASK
             } else {
                 self.bits & !Sha256::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -23039,7 +23049,7 @@ impl Sha256Val {
                 self.bits | Sha256::CORE0_MASK
             } else {
                 self.bits & !Sha256::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -23053,7 +23063,7 @@ impl Sha256Val {
                 self.bits | Sha256::SP_MASK
             } else {
                 self.bits & !Sha256::SP_MASK
-            }
+            },
         }
     }
 
@@ -23067,7 +23077,7 @@ impl Sha256Val {
                 self.bits | Sha256::SU_MASK
             } else {
                 self.bits & !Sha256::SU_MASK
-            }
+            },
         }
     }
 
@@ -23081,7 +23091,7 @@ impl Sha256Val {
                 self.bits | Sha256::NSP_MASK
             } else {
                 self.bits & !Sha256::NSP_MASK
-            }
+            },
         }
     }
 
@@ -23096,7 +23106,7 @@ impl Sha256Val {
                 self.bits | Sha256::NSU_MASK
             } else {
                 self.bits & !Sha256::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -23526,7 +23536,7 @@ impl SyscfgVal {
                 self.bits | Syscfg::DBG_MASK
             } else {
                 self.bits & !Syscfg::DBG_MASK
-            }
+            },
         }
     }
 
@@ -23540,7 +23550,7 @@ impl SyscfgVal {
                 self.bits | Syscfg::DMA_MASK
             } else {
                 self.bits & !Syscfg::DMA_MASK
-            }
+            },
         }
     }
 
@@ -23554,7 +23564,7 @@ impl SyscfgVal {
                 self.bits | Syscfg::CORE1_MASK
             } else {
                 self.bits & !Syscfg::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -23568,7 +23578,7 @@ impl SyscfgVal {
                 self.bits | Syscfg::CORE0_MASK
             } else {
                 self.bits & !Syscfg::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -23582,7 +23592,7 @@ impl SyscfgVal {
                 self.bits | Syscfg::SP_MASK
             } else {
                 self.bits & !Syscfg::SP_MASK
-            }
+            },
         }
     }
 
@@ -23596,7 +23606,7 @@ impl SyscfgVal {
                 self.bits | Syscfg::SU_MASK
             } else {
                 self.bits & !Syscfg::SU_MASK
-            }
+            },
         }
     }
 
@@ -23610,7 +23620,7 @@ impl SyscfgVal {
                 self.bits | Syscfg::NSP_MASK
             } else {
                 self.bits & !Syscfg::NSP_MASK
-            }
+            },
         }
     }
 
@@ -23625,7 +23635,7 @@ impl SyscfgVal {
                 self.bits | Syscfg::NSU_MASK
             } else {
                 self.bits & !Syscfg::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -24055,7 +24065,7 @@ impl ClocksVal {
                 self.bits | Clocks::DBG_MASK
             } else {
                 self.bits & !Clocks::DBG_MASK
-            }
+            },
         }
     }
 
@@ -24069,7 +24079,7 @@ impl ClocksVal {
                 self.bits | Clocks::DMA_MASK
             } else {
                 self.bits & !Clocks::DMA_MASK
-            }
+            },
         }
     }
 
@@ -24083,7 +24093,7 @@ impl ClocksVal {
                 self.bits | Clocks::CORE1_MASK
             } else {
                 self.bits & !Clocks::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -24097,7 +24107,7 @@ impl ClocksVal {
                 self.bits | Clocks::CORE0_MASK
             } else {
                 self.bits & !Clocks::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -24111,7 +24121,7 @@ impl ClocksVal {
                 self.bits | Clocks::SP_MASK
             } else {
                 self.bits & !Clocks::SP_MASK
-            }
+            },
         }
     }
 
@@ -24125,7 +24135,7 @@ impl ClocksVal {
                 self.bits | Clocks::SU_MASK
             } else {
                 self.bits & !Clocks::SU_MASK
-            }
+            },
         }
     }
 
@@ -24139,7 +24149,7 @@ impl ClocksVal {
                 self.bits | Clocks::NSP_MASK
             } else {
                 self.bits & !Clocks::NSP_MASK
-            }
+            },
         }
     }
 
@@ -24154,7 +24164,7 @@ impl ClocksVal {
                 self.bits | Clocks::NSU_MASK
             } else {
                 self.bits & !Clocks::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -24584,7 +24594,7 @@ impl XoscVal {
                 self.bits | Xosc::DBG_MASK
             } else {
                 self.bits & !Xosc::DBG_MASK
-            }
+            },
         }
     }
 
@@ -24598,7 +24608,7 @@ impl XoscVal {
                 self.bits | Xosc::DMA_MASK
             } else {
                 self.bits & !Xosc::DMA_MASK
-            }
+            },
         }
     }
 
@@ -24612,7 +24622,7 @@ impl XoscVal {
                 self.bits | Xosc::CORE1_MASK
             } else {
                 self.bits & !Xosc::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -24626,7 +24636,7 @@ impl XoscVal {
                 self.bits | Xosc::CORE0_MASK
             } else {
                 self.bits & !Xosc::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -24640,7 +24650,7 @@ impl XoscVal {
                 self.bits | Xosc::SP_MASK
             } else {
                 self.bits & !Xosc::SP_MASK
-            }
+            },
         }
     }
 
@@ -24654,7 +24664,7 @@ impl XoscVal {
                 self.bits | Xosc::SU_MASK
             } else {
                 self.bits & !Xosc::SU_MASK
-            }
+            },
         }
     }
 
@@ -24668,7 +24678,7 @@ impl XoscVal {
                 self.bits | Xosc::NSP_MASK
             } else {
                 self.bits & !Xosc::NSP_MASK
-            }
+            },
         }
     }
 
@@ -24683,7 +24693,7 @@ impl XoscVal {
                 self.bits | Xosc::NSU_MASK
             } else {
                 self.bits & !Xosc::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -25113,7 +25123,7 @@ impl RoscVal {
                 self.bits | Rosc::DBG_MASK
             } else {
                 self.bits & !Rosc::DBG_MASK
-            }
+            },
         }
     }
 
@@ -25127,7 +25137,7 @@ impl RoscVal {
                 self.bits | Rosc::DMA_MASK
             } else {
                 self.bits & !Rosc::DMA_MASK
-            }
+            },
         }
     }
 
@@ -25141,7 +25151,7 @@ impl RoscVal {
                 self.bits | Rosc::CORE1_MASK
             } else {
                 self.bits & !Rosc::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -25155,7 +25165,7 @@ impl RoscVal {
                 self.bits | Rosc::CORE0_MASK
             } else {
                 self.bits & !Rosc::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -25169,7 +25179,7 @@ impl RoscVal {
                 self.bits | Rosc::SP_MASK
             } else {
                 self.bits & !Rosc::SP_MASK
-            }
+            },
         }
     }
 
@@ -25183,7 +25193,7 @@ impl RoscVal {
                 self.bits | Rosc::SU_MASK
             } else {
                 self.bits & !Rosc::SU_MASK
-            }
+            },
         }
     }
 
@@ -25197,7 +25207,7 @@ impl RoscVal {
                 self.bits | Rosc::NSP_MASK
             } else {
                 self.bits & !Rosc::NSP_MASK
-            }
+            },
         }
     }
 
@@ -25212,7 +25222,7 @@ impl RoscVal {
                 self.bits | Rosc::NSU_MASK
             } else {
                 self.bits & !Rosc::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -25642,7 +25652,7 @@ impl PllSysVal {
                 self.bits | PllSys::DBG_MASK
             } else {
                 self.bits & !PllSys::DBG_MASK
-            }
+            },
         }
     }
 
@@ -25656,7 +25666,7 @@ impl PllSysVal {
                 self.bits | PllSys::DMA_MASK
             } else {
                 self.bits & !PllSys::DMA_MASK
-            }
+            },
         }
     }
 
@@ -25670,7 +25680,7 @@ impl PllSysVal {
                 self.bits | PllSys::CORE1_MASK
             } else {
                 self.bits & !PllSys::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -25684,7 +25694,7 @@ impl PllSysVal {
                 self.bits | PllSys::CORE0_MASK
             } else {
                 self.bits & !PllSys::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -25698,7 +25708,7 @@ impl PllSysVal {
                 self.bits | PllSys::SP_MASK
             } else {
                 self.bits & !PllSys::SP_MASK
-            }
+            },
         }
     }
 
@@ -25712,7 +25722,7 @@ impl PllSysVal {
                 self.bits | PllSys::SU_MASK
             } else {
                 self.bits & !PllSys::SU_MASK
-            }
+            },
         }
     }
 
@@ -25726,7 +25736,7 @@ impl PllSysVal {
                 self.bits | PllSys::NSP_MASK
             } else {
                 self.bits & !PllSys::NSP_MASK
-            }
+            },
         }
     }
 
@@ -25741,7 +25751,7 @@ impl PllSysVal {
                 self.bits | PllSys::NSU_MASK
             } else {
                 self.bits & !PllSys::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -26171,7 +26181,7 @@ impl PllUsbVal {
                 self.bits | PllUsb::DBG_MASK
             } else {
                 self.bits & !PllUsb::DBG_MASK
-            }
+            },
         }
     }
 
@@ -26185,7 +26195,7 @@ impl PllUsbVal {
                 self.bits | PllUsb::DMA_MASK
             } else {
                 self.bits & !PllUsb::DMA_MASK
-            }
+            },
         }
     }
 
@@ -26199,7 +26209,7 @@ impl PllUsbVal {
                 self.bits | PllUsb::CORE1_MASK
             } else {
                 self.bits & !PllUsb::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -26213,7 +26223,7 @@ impl PllUsbVal {
                 self.bits | PllUsb::CORE0_MASK
             } else {
                 self.bits & !PllUsb::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -26227,7 +26237,7 @@ impl PllUsbVal {
                 self.bits | PllUsb::SP_MASK
             } else {
                 self.bits & !PllUsb::SP_MASK
-            }
+            },
         }
     }
 
@@ -26241,7 +26251,7 @@ impl PllUsbVal {
                 self.bits | PllUsb::SU_MASK
             } else {
                 self.bits & !PllUsb::SU_MASK
-            }
+            },
         }
     }
 
@@ -26255,7 +26265,7 @@ impl PllUsbVal {
                 self.bits | PllUsb::NSP_MASK
             } else {
                 self.bits & !PllUsb::NSP_MASK
-            }
+            },
         }
     }
 
@@ -26270,7 +26280,7 @@ impl PllUsbVal {
                 self.bits | PllUsb::NSU_MASK
             } else {
                 self.bits & !PllUsb::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -26700,7 +26710,7 @@ impl TicksVal {
                 self.bits | Ticks::DBG_MASK
             } else {
                 self.bits & !Ticks::DBG_MASK
-            }
+            },
         }
     }
 
@@ -26714,7 +26724,7 @@ impl TicksVal {
                 self.bits | Ticks::DMA_MASK
             } else {
                 self.bits & !Ticks::DMA_MASK
-            }
+            },
         }
     }
 
@@ -26728,7 +26738,7 @@ impl TicksVal {
                 self.bits | Ticks::CORE1_MASK
             } else {
                 self.bits & !Ticks::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -26742,7 +26752,7 @@ impl TicksVal {
                 self.bits | Ticks::CORE0_MASK
             } else {
                 self.bits & !Ticks::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -26756,7 +26766,7 @@ impl TicksVal {
                 self.bits | Ticks::SP_MASK
             } else {
                 self.bits & !Ticks::SP_MASK
-            }
+            },
         }
     }
 
@@ -26770,7 +26780,7 @@ impl TicksVal {
                 self.bits | Ticks::SU_MASK
             } else {
                 self.bits & !Ticks::SU_MASK
-            }
+            },
         }
     }
 
@@ -26784,7 +26794,7 @@ impl TicksVal {
                 self.bits | Ticks::NSP_MASK
             } else {
                 self.bits & !Ticks::NSP_MASK
-            }
+            },
         }
     }
 
@@ -26799,7 +26809,7 @@ impl TicksVal {
                 self.bits | Ticks::NSU_MASK
             } else {
                 self.bits & !Ticks::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -27229,7 +27239,7 @@ impl WatchdogVal {
                 self.bits | Watchdog::DBG_MASK
             } else {
                 self.bits & !Watchdog::DBG_MASK
-            }
+            },
         }
     }
 
@@ -27243,7 +27253,7 @@ impl WatchdogVal {
                 self.bits | Watchdog::DMA_MASK
             } else {
                 self.bits & !Watchdog::DMA_MASK
-            }
+            },
         }
     }
 
@@ -27257,7 +27267,7 @@ impl WatchdogVal {
                 self.bits | Watchdog::CORE1_MASK
             } else {
                 self.bits & !Watchdog::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -27271,7 +27281,7 @@ impl WatchdogVal {
                 self.bits | Watchdog::CORE0_MASK
             } else {
                 self.bits & !Watchdog::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -27285,7 +27295,7 @@ impl WatchdogVal {
                 self.bits | Watchdog::SP_MASK
             } else {
                 self.bits & !Watchdog::SP_MASK
-            }
+            },
         }
     }
 
@@ -27299,7 +27309,7 @@ impl WatchdogVal {
                 self.bits | Watchdog::SU_MASK
             } else {
                 self.bits & !Watchdog::SU_MASK
-            }
+            },
         }
     }
 
@@ -27313,7 +27323,7 @@ impl WatchdogVal {
                 self.bits | Watchdog::NSP_MASK
             } else {
                 self.bits & !Watchdog::NSP_MASK
-            }
+            },
         }
     }
 
@@ -27328,7 +27338,7 @@ impl WatchdogVal {
                 self.bits | Watchdog::NSU_MASK
             } else {
                 self.bits & !Watchdog::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -27758,7 +27768,7 @@ impl RsmVal {
                 self.bits | Rsm::DBG_MASK
             } else {
                 self.bits & !Rsm::DBG_MASK
-            }
+            },
         }
     }
 
@@ -27772,7 +27782,7 @@ impl RsmVal {
                 self.bits | Rsm::DMA_MASK
             } else {
                 self.bits & !Rsm::DMA_MASK
-            }
+            },
         }
     }
 
@@ -27786,7 +27796,7 @@ impl RsmVal {
                 self.bits | Rsm::CORE1_MASK
             } else {
                 self.bits & !Rsm::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -27800,7 +27810,7 @@ impl RsmVal {
                 self.bits | Rsm::CORE0_MASK
             } else {
                 self.bits & !Rsm::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -27814,7 +27824,7 @@ impl RsmVal {
                 self.bits | Rsm::SP_MASK
             } else {
                 self.bits & !Rsm::SP_MASK
-            }
+            },
         }
     }
 
@@ -27828,7 +27838,7 @@ impl RsmVal {
                 self.bits | Rsm::SU_MASK
             } else {
                 self.bits & !Rsm::SU_MASK
-            }
+            },
         }
     }
 
@@ -27842,7 +27852,7 @@ impl RsmVal {
                 self.bits | Rsm::NSP_MASK
             } else {
                 self.bits & !Rsm::NSP_MASK
-            }
+            },
         }
     }
 
@@ -27857,7 +27867,7 @@ impl RsmVal {
                 self.bits | Rsm::NSU_MASK
             } else {
                 self.bits & !Rsm::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -28287,7 +28297,7 @@ impl XipCtrlVal {
                 self.bits | XipCtrl::DBG_MASK
             } else {
                 self.bits & !XipCtrl::DBG_MASK
-            }
+            },
         }
     }
 
@@ -28301,7 +28311,7 @@ impl XipCtrlVal {
                 self.bits | XipCtrl::DMA_MASK
             } else {
                 self.bits & !XipCtrl::DMA_MASK
-            }
+            },
         }
     }
 
@@ -28315,7 +28325,7 @@ impl XipCtrlVal {
                 self.bits | XipCtrl::CORE1_MASK
             } else {
                 self.bits & !XipCtrl::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -28329,7 +28339,7 @@ impl XipCtrlVal {
                 self.bits | XipCtrl::CORE0_MASK
             } else {
                 self.bits & !XipCtrl::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -28343,7 +28353,7 @@ impl XipCtrlVal {
                 self.bits | XipCtrl::SP_MASK
             } else {
                 self.bits & !XipCtrl::SP_MASK
-            }
+            },
         }
     }
 
@@ -28357,7 +28367,7 @@ impl XipCtrlVal {
                 self.bits | XipCtrl::SU_MASK
             } else {
                 self.bits & !XipCtrl::SU_MASK
-            }
+            },
         }
     }
 
@@ -28371,7 +28381,7 @@ impl XipCtrlVal {
                 self.bits | XipCtrl::NSP_MASK
             } else {
                 self.bits & !XipCtrl::NSP_MASK
-            }
+            },
         }
     }
 
@@ -28386,7 +28396,7 @@ impl XipCtrlVal {
                 self.bits | XipCtrl::NSU_MASK
             } else {
                 self.bits & !XipCtrl::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -28816,7 +28826,7 @@ impl XipQmiVal {
                 self.bits | XipQmi::DBG_MASK
             } else {
                 self.bits & !XipQmi::DBG_MASK
-            }
+            },
         }
     }
 
@@ -28830,7 +28840,7 @@ impl XipQmiVal {
                 self.bits | XipQmi::DMA_MASK
             } else {
                 self.bits & !XipQmi::DMA_MASK
-            }
+            },
         }
     }
 
@@ -28844,7 +28854,7 @@ impl XipQmiVal {
                 self.bits | XipQmi::CORE1_MASK
             } else {
                 self.bits & !XipQmi::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -28858,7 +28868,7 @@ impl XipQmiVal {
                 self.bits | XipQmi::CORE0_MASK
             } else {
                 self.bits & !XipQmi::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -28872,7 +28882,7 @@ impl XipQmiVal {
                 self.bits | XipQmi::SP_MASK
             } else {
                 self.bits & !XipQmi::SP_MASK
-            }
+            },
         }
     }
 
@@ -28886,7 +28896,7 @@ impl XipQmiVal {
                 self.bits | XipQmi::SU_MASK
             } else {
                 self.bits & !XipQmi::SU_MASK
-            }
+            },
         }
     }
 
@@ -28900,7 +28910,7 @@ impl XipQmiVal {
                 self.bits | XipQmi::NSP_MASK
             } else {
                 self.bits & !XipQmi::NSP_MASK
-            }
+            },
         }
     }
 
@@ -28915,7 +28925,7 @@ impl XipQmiVal {
                 self.bits | XipQmi::NSU_MASK
             } else {
                 self.bits & !XipQmi::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -29345,7 +29355,7 @@ impl XipAuxVal {
                 self.bits | XipAux::DBG_MASK
             } else {
                 self.bits & !XipAux::DBG_MASK
-            }
+            },
         }
     }
 
@@ -29359,7 +29369,7 @@ impl XipAuxVal {
                 self.bits | XipAux::DMA_MASK
             } else {
                 self.bits & !XipAux::DMA_MASK
-            }
+            },
         }
     }
 
@@ -29373,7 +29383,7 @@ impl XipAuxVal {
                 self.bits | XipAux::CORE1_MASK
             } else {
                 self.bits & !XipAux::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -29387,7 +29397,7 @@ impl XipAuxVal {
                 self.bits | XipAux::CORE0_MASK
             } else {
                 self.bits & !XipAux::CORE0_MASK
-            }
+            },
         }
     }
 
@@ -29401,7 +29411,7 @@ impl XipAuxVal {
                 self.bits | XipAux::SP_MASK
             } else {
                 self.bits & !XipAux::SP_MASK
-            }
+            },
         }
     }
 
@@ -29415,7 +29425,7 @@ impl XipAuxVal {
                 self.bits | XipAux::SU_MASK
             } else {
                 self.bits & !XipAux::SU_MASK
-            }
+            },
         }
     }
 
@@ -29429,7 +29439,7 @@ impl XipAuxVal {
                 self.bits | XipAux::NSP_MASK
             } else {
                 self.bits & !XipAux::NSP_MASK
-            }
+            },
         }
     }
 
@@ -29444,7 +29454,7 @@ impl XipAuxVal {
                 self.bits | XipAux::NSU_MASK
             } else {
                 self.bits & !XipAux::NSU_MASK
-            }
+            },
         }
     }
 }
@@ -29771,4 +29781,3 @@ pub struct RegisterBlock {
     /// This register is writable only from a Secure, Privileged processor or debugger, with the exception of the NSU bit, which becomes Non-secure-Privileged-writable when the NSP bit is set.
     pub xip_aux: XipAux,
 }
-

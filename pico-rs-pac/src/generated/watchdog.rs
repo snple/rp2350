@@ -286,7 +286,7 @@ impl CtrlVal {
                 self.bits | Ctrl::TRIGGER_MASK
             } else {
                 self.bits & !Ctrl::TRIGGER_MASK
-            }
+            },
         }
     }
 
@@ -300,7 +300,7 @@ impl CtrlVal {
                 self.bits | Ctrl::ENABLE_MASK
             } else {
                 self.bits & !Ctrl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -314,7 +314,7 @@ impl CtrlVal {
                 self.bits | Ctrl::PAUSE_DBG1_MASK
             } else {
                 self.bits & !Ctrl::PAUSE_DBG1_MASK
-            }
+            },
         }
     }
 
@@ -328,7 +328,7 @@ impl CtrlVal {
                 self.bits | Ctrl::PAUSE_DBG0_MASK
             } else {
                 self.bits & !Ctrl::PAUSE_DBG0_MASK
-            }
+            },
         }
     }
 
@@ -342,7 +342,7 @@ impl CtrlVal {
                 self.bits | Ctrl::PAUSE_JTAG_MASK
             } else {
                 self.bits & !Ctrl::PAUSE_JTAG_MASK
-            }
+            },
         }
     }
 }
@@ -409,7 +409,8 @@ impl Load {
     /// Write **LOAD** `[23:0]` (WO)
     #[inline(always)]
     pub fn write_load(&self, value: u32) {
-        self.value.write_bits((value << Self::LOAD_OFFSET) & Self::LOAD_MASK);
+        self.value
+            .write_bits((value << Self::LOAD_OFFSET) & Self::LOAD_MASK);
     }
 }
 
@@ -445,7 +446,7 @@ impl LoadVal {
     #[inline(always)]
     pub const fn with_load(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Load::LOAD_MASK) | ((value << Load::LOAD_OFFSET) & Load::LOAD_MASK)
+            bits: (self.bits & !Load::LOAD_MASK) | ((value << Load::LOAD_OFFSET) & Load::LOAD_MASK),
         }
     }
 }
@@ -617,7 +618,9 @@ impl Scratch0 {
     /// Write **SCRATCH0** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_scratch0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SCRATCH0_MASK) | ((value << Self::SCRATCH0_OFFSET) & Self::SCRATCH0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SCRATCH0_MASK) | ((value << Self::SCRATCH0_OFFSET) & Self::SCRATCH0_MASK)
+        });
     }
 }
 
@@ -659,7 +662,8 @@ impl Scratch0Val {
     #[inline(always)]
     pub const fn with_scratch0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Scratch0::SCRATCH0_MASK) | ((value << Scratch0::SCRATCH0_OFFSET) & Scratch0::SCRATCH0_MASK)
+            bits: (self.bits & !Scratch0::SCRATCH0_MASK)
+                | ((value << Scratch0::SCRATCH0_OFFSET) & Scratch0::SCRATCH0_MASK),
         }
     }
 }
@@ -732,7 +736,9 @@ impl Scratch1 {
     /// Write **SCRATCH1** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_scratch1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SCRATCH1_MASK) | ((value << Self::SCRATCH1_OFFSET) & Self::SCRATCH1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SCRATCH1_MASK) | ((value << Self::SCRATCH1_OFFSET) & Self::SCRATCH1_MASK)
+        });
     }
 }
 
@@ -774,7 +780,8 @@ impl Scratch1Val {
     #[inline(always)]
     pub const fn with_scratch1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Scratch1::SCRATCH1_MASK) | ((value << Scratch1::SCRATCH1_OFFSET) & Scratch1::SCRATCH1_MASK)
+            bits: (self.bits & !Scratch1::SCRATCH1_MASK)
+                | ((value << Scratch1::SCRATCH1_OFFSET) & Scratch1::SCRATCH1_MASK),
         }
     }
 }
@@ -847,7 +854,9 @@ impl Scratch2 {
     /// Write **SCRATCH2** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_scratch2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SCRATCH2_MASK) | ((value << Self::SCRATCH2_OFFSET) & Self::SCRATCH2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SCRATCH2_MASK) | ((value << Self::SCRATCH2_OFFSET) & Self::SCRATCH2_MASK)
+        });
     }
 }
 
@@ -889,7 +898,8 @@ impl Scratch2Val {
     #[inline(always)]
     pub const fn with_scratch2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Scratch2::SCRATCH2_MASK) | ((value << Scratch2::SCRATCH2_OFFSET) & Scratch2::SCRATCH2_MASK)
+            bits: (self.bits & !Scratch2::SCRATCH2_MASK)
+                | ((value << Scratch2::SCRATCH2_OFFSET) & Scratch2::SCRATCH2_MASK),
         }
     }
 }
@@ -962,7 +972,9 @@ impl Scratch3 {
     /// Write **SCRATCH3** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_scratch3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SCRATCH3_MASK) | ((value << Self::SCRATCH3_OFFSET) & Self::SCRATCH3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SCRATCH3_MASK) | ((value << Self::SCRATCH3_OFFSET) & Self::SCRATCH3_MASK)
+        });
     }
 }
 
@@ -1004,7 +1016,8 @@ impl Scratch3Val {
     #[inline(always)]
     pub const fn with_scratch3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Scratch3::SCRATCH3_MASK) | ((value << Scratch3::SCRATCH3_OFFSET) & Scratch3::SCRATCH3_MASK)
+            bits: (self.bits & !Scratch3::SCRATCH3_MASK)
+                | ((value << Scratch3::SCRATCH3_OFFSET) & Scratch3::SCRATCH3_MASK),
         }
     }
 }
@@ -1077,7 +1090,9 @@ impl Scratch4 {
     /// Write **SCRATCH4** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_scratch4(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SCRATCH4_MASK) | ((value << Self::SCRATCH4_OFFSET) & Self::SCRATCH4_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SCRATCH4_MASK) | ((value << Self::SCRATCH4_OFFSET) & Self::SCRATCH4_MASK)
+        });
     }
 }
 
@@ -1119,7 +1134,8 @@ impl Scratch4Val {
     #[inline(always)]
     pub const fn with_scratch4(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Scratch4::SCRATCH4_MASK) | ((value << Scratch4::SCRATCH4_OFFSET) & Scratch4::SCRATCH4_MASK)
+            bits: (self.bits & !Scratch4::SCRATCH4_MASK)
+                | ((value << Scratch4::SCRATCH4_OFFSET) & Scratch4::SCRATCH4_MASK),
         }
     }
 }
@@ -1192,7 +1208,9 @@ impl Scratch5 {
     /// Write **SCRATCH5** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_scratch5(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SCRATCH5_MASK) | ((value << Self::SCRATCH5_OFFSET) & Self::SCRATCH5_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SCRATCH5_MASK) | ((value << Self::SCRATCH5_OFFSET) & Self::SCRATCH5_MASK)
+        });
     }
 }
 
@@ -1234,7 +1252,8 @@ impl Scratch5Val {
     #[inline(always)]
     pub const fn with_scratch5(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Scratch5::SCRATCH5_MASK) | ((value << Scratch5::SCRATCH5_OFFSET) & Scratch5::SCRATCH5_MASK)
+            bits: (self.bits & !Scratch5::SCRATCH5_MASK)
+                | ((value << Scratch5::SCRATCH5_OFFSET) & Scratch5::SCRATCH5_MASK),
         }
     }
 }
@@ -1307,7 +1326,9 @@ impl Scratch6 {
     /// Write **SCRATCH6** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_scratch6(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SCRATCH6_MASK) | ((value << Self::SCRATCH6_OFFSET) & Self::SCRATCH6_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SCRATCH6_MASK) | ((value << Self::SCRATCH6_OFFSET) & Self::SCRATCH6_MASK)
+        });
     }
 }
 
@@ -1349,7 +1370,8 @@ impl Scratch6Val {
     #[inline(always)]
     pub const fn with_scratch6(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Scratch6::SCRATCH6_MASK) | ((value << Scratch6::SCRATCH6_OFFSET) & Scratch6::SCRATCH6_MASK)
+            bits: (self.bits & !Scratch6::SCRATCH6_MASK)
+                | ((value << Scratch6::SCRATCH6_OFFSET) & Scratch6::SCRATCH6_MASK),
         }
     }
 }
@@ -1422,7 +1444,9 @@ impl Scratch7 {
     /// Write **SCRATCH7** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_scratch7(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SCRATCH7_MASK) | ((value << Self::SCRATCH7_OFFSET) & Self::SCRATCH7_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SCRATCH7_MASK) | ((value << Self::SCRATCH7_OFFSET) & Self::SCRATCH7_MASK)
+        });
     }
 }
 
@@ -1464,7 +1488,8 @@ impl Scratch7Val {
     #[inline(always)]
     pub const fn with_scratch7(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Scratch7::SCRATCH7_MASK) | ((value << Scratch7::SCRATCH7_OFFSET) & Scratch7::SCRATCH7_MASK)
+            bits: (self.bits & !Scratch7::SCRATCH7_MASK)
+                | ((value << Scratch7::SCRATCH7_OFFSET) & Scratch7::SCRATCH7_MASK),
         }
     }
 }
@@ -1535,4 +1560,3 @@ pub struct RegisterBlock {
     /// Scratch register. Information persists through soft reset of the chip.
     pub scratch7: Scratch7,
 }
-

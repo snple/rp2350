@@ -10,8 +10,8 @@ use crate::error::{UsbError, UsbResult};
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum RequestType {
     Standard = 0,
-    Class    = 1,
-    Vendor   = 2,
+    Class = 1,
+    Vendor = 2,
     Reserved = 3,
 }
 
@@ -30,11 +30,11 @@ impl From<u8> for RequestType {
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum Recipient {
-    Device    = 0,
+    Device = 0,
     Interface = 1,
-    Endpoint  = 2,
-    Other     = 3,
-    Reserved  = 4,
+    Endpoint = 2,
+    Other = 3,
+    Reserved = 4,
 }
 
 impl From<u8> for Recipient {
@@ -54,25 +54,25 @@ impl From<u8> for Recipient {
 /// Standard USB request codes (`bRequest`).
 #[allow(non_snake_case)]
 pub mod StandardRequest {
-    pub const GET_STATUS:        u8 = 0;
-    pub const CLEAR_FEATURE:     u8 = 1;
-    pub const SET_FEATURE:       u8 = 3;
-    pub const SET_ADDRESS:       u8 = 5;
-    pub const GET_DESCRIPTOR:    u8 = 6;
-    pub const SET_DESCRIPTOR:    u8 = 7;
+    pub const GET_STATUS: u8 = 0;
+    pub const CLEAR_FEATURE: u8 = 1;
+    pub const SET_FEATURE: u8 = 3;
+    pub const SET_ADDRESS: u8 = 5;
+    pub const GET_DESCRIPTOR: u8 = 6;
+    pub const SET_DESCRIPTOR: u8 = 7;
     pub const GET_CONFIGURATION: u8 = 8;
     pub const SET_CONFIGURATION: u8 = 9;
-    pub const GET_INTERFACE:     u8 = 10;
-    pub const SET_INTERFACE:     u8 = 11;
-    pub const SYNCH_FRAME:       u8 = 12;
+    pub const GET_INTERFACE: u8 = 10;
+    pub const SET_INTERFACE: u8 = 11;
+    pub const SYNCH_FRAME: u8 = 12;
 }
 
 /// Standard feature selectors (`wValue`).
 #[allow(non_snake_case)]
 pub mod Feature {
-    pub const ENDPOINT_HALT:        u16 = 0;
+    pub const ENDPOINT_HALT: u16 = 0;
     pub const DEVICE_REMOTE_WAKEUP: u16 = 1;
-    pub const TEST_MODE:            u16 = 2;
+    pub const TEST_MODE: u16 = 2;
 }
 
 // ─── Request ─────────────────────────────────────────────────────────────────
@@ -114,8 +114,8 @@ impl Request {
                 Recipient::Reserved
             },
             request: buf[1],
-            value:  u16::from_le_bytes([buf[2], buf[3]]),
-            index:  u16::from_le_bytes([buf[4], buf[5]]),
+            value: u16::from_le_bytes([buf[2], buf[3]]),
+            index: u16::from_le_bytes([buf[4], buf[5]]),
             length: u16::from_le_bytes([buf[6], buf[7]]),
         })
     }

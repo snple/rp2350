@@ -52,7 +52,6 @@ pub enum Error {
 ///
 /// Provides access to the True Random Number Generator.
 pub struct Trng {
-    // regs: &'static pico_rs_pac::trng::RegisterBlock,
     trng: TRNG,
 }
 

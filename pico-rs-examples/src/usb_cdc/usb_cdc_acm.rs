@@ -21,7 +21,7 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::SysTick;
-use pico_rs::clocks::{ClockBuilder};
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::main;
 use pico_rs::pac::Peripherals;
 use pico_rs::rt::peripheral::Peripherals as CorePeripherals;

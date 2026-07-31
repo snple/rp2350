@@ -14,11 +14,13 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::Delay;
-use pico_rs::main;
 use pico_rs::gpio::Pins;
 use pico_rs::gpioc;
+use pico_rs::main;
 use pico_rs::pac;
-use pico_rs::rt::peripheral::Peripherals as CorePeripherals;const CLOCK_FREQ_HZ: u32 = 12_000_000;
+use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
+
+const CLOCK_FREQ_HZ: u32 = 12_000_000;
 const LED: u32 = 6;
 const TEST_OUT: u32 = 7;
 const TEST_IN: u32 = 8;

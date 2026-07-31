@@ -19,6 +19,20 @@
 //!
 //! - `rt` - Runtime support (startup code, vector table, linker script)
 //!
+//! ## Linker scripts and `device.x`
+//!
+//! This crate ships `link.x` / `link_ram.x`, which `INCLUDE device.x` for the
+//! device-specific interrupt handler symbols. `device.x` is **not** provided by
+//! this crate: it is generated and exposed by [`pico-rs-pac`]'s build script
+//! (`cargo:rustc-link-search`).
+//!
+//! As a result, any binary that links against `pico-rs-rt` (and uses its linker
+//! script) must also depend on `pico-rs-pac` so the linker can find `device.x`.
+//! In practice this happens automatically when you use the `pico-rs` HAL, which
+//! depends on both crates.
+//!
+//! [`pico-rs-pac`]: https://crates.io/crates/pico-rs-pac
+//!
 //! ## Example
 //!
 //! ```ignore
@@ -45,8 +59,8 @@ pub mod peripheral;
 pub mod register;
 mod rt;
 
-pub use rt::Vector;
 pub use rt::ExceptionFrame;
+pub use rt::Vector;
 
 // Re-export commonly used items
 pub use peripheral::Peripherals;

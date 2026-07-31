@@ -162,7 +162,7 @@ impl CtrlStatusVal {
                 self.bits | CtrlStatus::TRACE_CAPTURE_FIFO_OVERFLOW_MASK
             } else {
                 self.bits & !CtrlStatus::TRACE_CAPTURE_FIFO_OVERFLOW_MASK
-            }
+            },
         }
     }
 
@@ -178,7 +178,7 @@ impl CtrlStatusVal {
                 self.bits | CtrlStatus::TRACE_CAPTURE_FIFO_FLUSH_MASK
             } else {
                 self.bits & !CtrlStatus::TRACE_CAPTURE_FIFO_FLUSH_MASK
-            }
+            },
         }
     }
 }
@@ -337,4 +337,3 @@ pub struct RegisterBlock {
     /// FIFO for trace data captured from the TPIU
     pub trace_capture_fifo: TraceCaptureFifo,
 }
-

@@ -181,7 +181,9 @@ impl ProcInSyncBypass {
     /// Write **GPIO** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_gpio(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::GPIO_MASK) | ((value << Self::GPIO_OFFSET) & Self::GPIO_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::GPIO_MASK) | ((value << Self::GPIO_OFFSET) & Self::GPIO_MASK)
+        });
     }
 }
 
@@ -223,7 +225,8 @@ impl ProcInSyncBypassVal {
     #[inline(always)]
     pub const fn with_gpio(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ProcInSyncBypass::GPIO_MASK) | ((value << ProcInSyncBypass::GPIO_OFFSET) & ProcInSyncBypass::GPIO_MASK)
+            bits: (self.bits & !ProcInSyncBypass::GPIO_MASK)
+                | ((value << ProcInSyncBypass::GPIO_OFFSET) & ProcInSyncBypass::GPIO_MASK),
         }
     }
 }
@@ -339,7 +342,9 @@ impl ProcInSyncBypassHi {
     /// Write **QSPI_SD** `[31:28]` (RW)
     #[inline(always)]
     pub fn write_qspi_sd(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::QSPI_SD_MASK) | ((value << Self::QSPI_SD_OFFSET) & Self::QSPI_SD_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::QSPI_SD_MASK) | ((value << Self::QSPI_SD_OFFSET) & Self::QSPI_SD_MASK)
+        });
     }
 
     /// **QSPI_CSN** `[27]` (RW)
@@ -423,7 +428,9 @@ impl ProcInSyncBypassHi {
     /// Write **GPIO** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_gpio(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::GPIO_MASK) | ((value << Self::GPIO_OFFSET) & Self::GPIO_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::GPIO_MASK) | ((value << Self::GPIO_OFFSET) & Self::GPIO_MASK)
+        });
     }
 }
 
@@ -495,7 +502,9 @@ impl ProcInSyncBypassHiVal {
     #[inline(always)]
     pub const fn with_qspi_sd(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ProcInSyncBypassHi::QSPI_SD_MASK) | ((value << ProcInSyncBypassHi::QSPI_SD_OFFSET) & ProcInSyncBypassHi::QSPI_SD_MASK)
+            bits: (self.bits & !ProcInSyncBypassHi::QSPI_SD_MASK)
+                | ((value << ProcInSyncBypassHi::QSPI_SD_OFFSET)
+                    & ProcInSyncBypassHi::QSPI_SD_MASK),
         }
     }
 
@@ -507,7 +516,7 @@ impl ProcInSyncBypassHiVal {
                 self.bits | ProcInSyncBypassHi::QSPI_CSN_MASK
             } else {
                 self.bits & !ProcInSyncBypassHi::QSPI_CSN_MASK
-            }
+            },
         }
     }
 
@@ -519,7 +528,7 @@ impl ProcInSyncBypassHiVal {
                 self.bits | ProcInSyncBypassHi::QSPI_SCK_MASK
             } else {
                 self.bits & !ProcInSyncBypassHi::QSPI_SCK_MASK
-            }
+            },
         }
     }
 
@@ -531,7 +540,7 @@ impl ProcInSyncBypassHiVal {
                 self.bits | ProcInSyncBypassHi::USB_DM_MASK
             } else {
                 self.bits & !ProcInSyncBypassHi::USB_DM_MASK
-            }
+            },
         }
     }
 
@@ -543,7 +552,7 @@ impl ProcInSyncBypassHiVal {
                 self.bits | ProcInSyncBypassHi::USB_DP_MASK
             } else {
                 self.bits & !ProcInSyncBypassHi::USB_DP_MASK
-            }
+            },
         }
     }
 
@@ -551,7 +560,8 @@ impl ProcInSyncBypassHiVal {
     #[inline(always)]
     pub const fn with_gpio(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ProcInSyncBypassHi::GPIO_MASK) | ((value << ProcInSyncBypassHi::GPIO_OFFSET) & ProcInSyncBypassHi::GPIO_MASK)
+            bits: (self.bits & !ProcInSyncBypassHi::GPIO_MASK)
+                | ((value << ProcInSyncBypassHi::GPIO_OFFSET) & ProcInSyncBypassHi::GPIO_MASK),
         }
     }
 }
@@ -799,7 +809,7 @@ impl DbgforceVal {
                 self.bits | Dbgforce::ATTACH_MASK
             } else {
                 self.bits & !Dbgforce::ATTACH_MASK
-            }
+            },
         }
     }
 
@@ -813,7 +823,7 @@ impl DbgforceVal {
                 self.bits | Dbgforce::SWCLK_MASK
             } else {
                 self.bits & !Dbgforce::SWCLK_MASK
-            }
+            },
         }
     }
 
@@ -827,7 +837,7 @@ impl DbgforceVal {
                 self.bits | Dbgforce::SWDI_MASK
             } else {
                 self.bits & !Dbgforce::SWDI_MASK
-            }
+            },
         }
     }
 }
@@ -1339,7 +1349,7 @@ impl MempowerdownVal {
                 self.bits | Mempowerdown::BOOTRAM_MASK
             } else {
                 self.bits & !Mempowerdown::BOOTRAM_MASK
-            }
+            },
         }
     }
 
@@ -1351,7 +1361,7 @@ impl MempowerdownVal {
                 self.bits | Mempowerdown::ROM_MASK
             } else {
                 self.bits & !Mempowerdown::ROM_MASK
-            }
+            },
         }
     }
 
@@ -1363,7 +1373,7 @@ impl MempowerdownVal {
                 self.bits | Mempowerdown::USB_MASK
             } else {
                 self.bits & !Mempowerdown::USB_MASK
-            }
+            },
         }
     }
 
@@ -1375,7 +1385,7 @@ impl MempowerdownVal {
                 self.bits | Mempowerdown::SRAM9_MASK
             } else {
                 self.bits & !Mempowerdown::SRAM9_MASK
-            }
+            },
         }
     }
 
@@ -1387,7 +1397,7 @@ impl MempowerdownVal {
                 self.bits | Mempowerdown::SRAM8_MASK
             } else {
                 self.bits & !Mempowerdown::SRAM8_MASK
-            }
+            },
         }
     }
 
@@ -1399,7 +1409,7 @@ impl MempowerdownVal {
                 self.bits | Mempowerdown::SRAM7_MASK
             } else {
                 self.bits & !Mempowerdown::SRAM7_MASK
-            }
+            },
         }
     }
 
@@ -1411,7 +1421,7 @@ impl MempowerdownVal {
                 self.bits | Mempowerdown::SRAM6_MASK
             } else {
                 self.bits & !Mempowerdown::SRAM6_MASK
-            }
+            },
         }
     }
 
@@ -1423,7 +1433,7 @@ impl MempowerdownVal {
                 self.bits | Mempowerdown::SRAM5_MASK
             } else {
                 self.bits & !Mempowerdown::SRAM5_MASK
-            }
+            },
         }
     }
 
@@ -1435,7 +1445,7 @@ impl MempowerdownVal {
                 self.bits | Mempowerdown::SRAM4_MASK
             } else {
                 self.bits & !Mempowerdown::SRAM4_MASK
-            }
+            },
         }
     }
 
@@ -1447,7 +1457,7 @@ impl MempowerdownVal {
                 self.bits | Mempowerdown::SRAM3_MASK
             } else {
                 self.bits & !Mempowerdown::SRAM3_MASK
-            }
+            },
         }
     }
 
@@ -1459,7 +1469,7 @@ impl MempowerdownVal {
                 self.bits | Mempowerdown::SRAM2_MASK
             } else {
                 self.bits & !Mempowerdown::SRAM2_MASK
-            }
+            },
         }
     }
 
@@ -1471,7 +1481,7 @@ impl MempowerdownVal {
                 self.bits | Mempowerdown::SRAM1_MASK
             } else {
                 self.bits & !Mempowerdown::SRAM1_MASK
-            }
+            },
         }
     }
 
@@ -1483,7 +1493,7 @@ impl MempowerdownVal {
                 self.bits | Mempowerdown::SRAM0_MASK
             } else {
                 self.bits & !Mempowerdown::SRAM0_MASK
-            }
+            },
         }
     }
 }
@@ -1577,7 +1587,9 @@ impl Auxctrl {
     /// * Bit 0: Force POWMAN clock to switch to LPOSC, by asserting its WDRESET input. This must be set before initiating a watchdog reset of the RSM from a stage that includes CLOCKS, if POWMAN is running from clk_ref at the point that the watchdog reset takes place. Otherwise, the short pulse generated on clk_ref by the reset of the CLOCKS block may affect POWMAN register state.
     #[inline(always)]
     pub fn write_auxctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::AUXCTRL_MASK) | ((value << Self::AUXCTRL_OFFSET) & Self::AUXCTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::AUXCTRL_MASK) | ((value << Self::AUXCTRL_OFFSET) & Self::AUXCTRL_MASK)
+        });
     }
 }
 
@@ -1629,7 +1641,8 @@ impl AuxctrlVal {
     #[inline(always)]
     pub const fn with_auxctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Auxctrl::AUXCTRL_MASK) | ((value << Auxctrl::AUXCTRL_OFFSET) & Auxctrl::AUXCTRL_MASK)
+            bits: (self.bits & !Auxctrl::AUXCTRL_MASK)
+                | ((value << Auxctrl::AUXCTRL_OFFSET) & Auxctrl::AUXCTRL_MASK),
         }
     }
 }
@@ -1692,4 +1705,3 @@ pub struct RegisterBlock {
     /// Auxiliary system control register
     pub auxctrl: Auxctrl,
 }
-

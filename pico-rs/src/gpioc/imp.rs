@@ -1,10 +1,10 @@
 //! Low-level GPIOC register access — private implementation detail.
 //!
 //! These macros and functions map directly to Cortex-M33 coprocessor
-//! instructions. They are safe to call because GPIOC operations are
-//! inherently atomic and concurrency-safe. However, they are private
-//! because the public API is the unified set of `unsafe` functions
-//! in the parent module.
+//! instructions. They are marked `unsafe` because they perform raw hardware
+//! register access that bypasses the HAL's safety guarantees; callers must
+//! ensure no conflicting access races with them. They are private because
+//! the public API is the unified set of functions in the parent module.
 
 #![allow(dead_code)]
 #![allow(asm_sub_register)]

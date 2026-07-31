@@ -995,7 +995,7 @@ impl ResetVal {
                 self.bits | Reset::USBCTRL_MASK
             } else {
                 self.bits & !Reset::USBCTRL_MASK
-            }
+            },
         }
     }
 
@@ -1007,7 +1007,7 @@ impl ResetVal {
                 self.bits | Reset::UART1_MASK
             } else {
                 self.bits & !Reset::UART1_MASK
-            }
+            },
         }
     }
 
@@ -1019,7 +1019,7 @@ impl ResetVal {
                 self.bits | Reset::UART0_MASK
             } else {
                 self.bits & !Reset::UART0_MASK
-            }
+            },
         }
     }
 
@@ -1031,7 +1031,7 @@ impl ResetVal {
                 self.bits | Reset::TRNG_MASK
             } else {
                 self.bits & !Reset::TRNG_MASK
-            }
+            },
         }
     }
 
@@ -1043,7 +1043,7 @@ impl ResetVal {
                 self.bits | Reset::TIMER1_MASK
             } else {
                 self.bits & !Reset::TIMER1_MASK
-            }
+            },
         }
     }
 
@@ -1055,7 +1055,7 @@ impl ResetVal {
                 self.bits | Reset::TIMER0_MASK
             } else {
                 self.bits & !Reset::TIMER0_MASK
-            }
+            },
         }
     }
 
@@ -1067,7 +1067,7 @@ impl ResetVal {
                 self.bits | Reset::TBMAN_MASK
             } else {
                 self.bits & !Reset::TBMAN_MASK
-            }
+            },
         }
     }
 
@@ -1079,7 +1079,7 @@ impl ResetVal {
                 self.bits | Reset::SYSINFO_MASK
             } else {
                 self.bits & !Reset::SYSINFO_MASK
-            }
+            },
         }
     }
 
@@ -1091,7 +1091,7 @@ impl ResetVal {
                 self.bits | Reset::SYSCFG_MASK
             } else {
                 self.bits & !Reset::SYSCFG_MASK
-            }
+            },
         }
     }
 
@@ -1103,7 +1103,7 @@ impl ResetVal {
                 self.bits | Reset::SPI1_MASK
             } else {
                 self.bits & !Reset::SPI1_MASK
-            }
+            },
         }
     }
 
@@ -1115,7 +1115,7 @@ impl ResetVal {
                 self.bits | Reset::SPI0_MASK
             } else {
                 self.bits & !Reset::SPI0_MASK
-            }
+            },
         }
     }
 
@@ -1127,7 +1127,7 @@ impl ResetVal {
                 self.bits | Reset::SHA256_MASK
             } else {
                 self.bits & !Reset::SHA256_MASK
-            }
+            },
         }
     }
 
@@ -1139,7 +1139,7 @@ impl ResetVal {
                 self.bits | Reset::PWM_MASK
             } else {
                 self.bits & !Reset::PWM_MASK
-            }
+            },
         }
     }
 
@@ -1151,7 +1151,7 @@ impl ResetVal {
                 self.bits | Reset::PLL_USB_MASK
             } else {
                 self.bits & !Reset::PLL_USB_MASK
-            }
+            },
         }
     }
 
@@ -1163,7 +1163,7 @@ impl ResetVal {
                 self.bits | Reset::PLL_SYS_MASK
             } else {
                 self.bits & !Reset::PLL_SYS_MASK
-            }
+            },
         }
     }
 
@@ -1175,7 +1175,7 @@ impl ResetVal {
                 self.bits | Reset::PIO2_MASK
             } else {
                 self.bits & !Reset::PIO2_MASK
-            }
+            },
         }
     }
 
@@ -1187,7 +1187,7 @@ impl ResetVal {
                 self.bits | Reset::PIO1_MASK
             } else {
                 self.bits & !Reset::PIO1_MASK
-            }
+            },
         }
     }
 
@@ -1199,7 +1199,7 @@ impl ResetVal {
                 self.bits | Reset::PIO0_MASK
             } else {
                 self.bits & !Reset::PIO0_MASK
-            }
+            },
         }
     }
 
@@ -1211,7 +1211,7 @@ impl ResetVal {
                 self.bits | Reset::PADS_QSPI_MASK
             } else {
                 self.bits & !Reset::PADS_QSPI_MASK
-            }
+            },
         }
     }
 
@@ -1223,7 +1223,7 @@ impl ResetVal {
                 self.bits | Reset::PADS_BANK0_MASK
             } else {
                 self.bits & !Reset::PADS_BANK0_MASK
-            }
+            },
         }
     }
 
@@ -1235,7 +1235,7 @@ impl ResetVal {
                 self.bits | Reset::JTAG_MASK
             } else {
                 self.bits & !Reset::JTAG_MASK
-            }
+            },
         }
     }
 
@@ -1247,7 +1247,7 @@ impl ResetVal {
                 self.bits | Reset::IO_QSPI_MASK
             } else {
                 self.bits & !Reset::IO_QSPI_MASK
-            }
+            },
         }
     }
 
@@ -1259,7 +1259,7 @@ impl ResetVal {
                 self.bits | Reset::IO_BANK0_MASK
             } else {
                 self.bits & !Reset::IO_BANK0_MASK
-            }
+            },
         }
     }
 
@@ -1271,7 +1271,7 @@ impl ResetVal {
                 self.bits | Reset::I2C1_MASK
             } else {
                 self.bits & !Reset::I2C1_MASK
-            }
+            },
         }
     }
 
@@ -1283,7 +1283,7 @@ impl ResetVal {
                 self.bits | Reset::I2C0_MASK
             } else {
                 self.bits & !Reset::I2C0_MASK
-            }
+            },
         }
     }
 
@@ -1295,7 +1295,7 @@ impl ResetVal {
                 self.bits | Reset::HSTX_MASK
             } else {
                 self.bits & !Reset::HSTX_MASK
-            }
+            },
         }
     }
 
@@ -1307,7 +1307,7 @@ impl ResetVal {
                 self.bits | Reset::DMA_MASK
             } else {
                 self.bits & !Reset::DMA_MASK
-            }
+            },
         }
     }
 
@@ -1319,7 +1319,7 @@ impl ResetVal {
                 self.bits | Reset::BUSCTRL_MASK
             } else {
                 self.bits & !Reset::BUSCTRL_MASK
-            }
+            },
         }
     }
 
@@ -1331,7 +1331,7 @@ impl ResetVal {
                 self.bits | Reset::ADC_MASK
             } else {
                 self.bits & !Reset::ADC_MASK
-            }
+            },
         }
     }
 }
@@ -2351,7 +2351,7 @@ impl WdselVal {
                 self.bits | Wdsel::USBCTRL_MASK
             } else {
                 self.bits & !Wdsel::USBCTRL_MASK
-            }
+            },
         }
     }
 
@@ -2363,7 +2363,7 @@ impl WdselVal {
                 self.bits | Wdsel::UART1_MASK
             } else {
                 self.bits & !Wdsel::UART1_MASK
-            }
+            },
         }
     }
 
@@ -2375,7 +2375,7 @@ impl WdselVal {
                 self.bits | Wdsel::UART0_MASK
             } else {
                 self.bits & !Wdsel::UART0_MASK
-            }
+            },
         }
     }
 
@@ -2387,7 +2387,7 @@ impl WdselVal {
                 self.bits | Wdsel::TRNG_MASK
             } else {
                 self.bits & !Wdsel::TRNG_MASK
-            }
+            },
         }
     }
 
@@ -2399,7 +2399,7 @@ impl WdselVal {
                 self.bits | Wdsel::TIMER1_MASK
             } else {
                 self.bits & !Wdsel::TIMER1_MASK
-            }
+            },
         }
     }
 
@@ -2411,7 +2411,7 @@ impl WdselVal {
                 self.bits | Wdsel::TIMER0_MASK
             } else {
                 self.bits & !Wdsel::TIMER0_MASK
-            }
+            },
         }
     }
 
@@ -2423,7 +2423,7 @@ impl WdselVal {
                 self.bits | Wdsel::TBMAN_MASK
             } else {
                 self.bits & !Wdsel::TBMAN_MASK
-            }
+            },
         }
     }
 
@@ -2435,7 +2435,7 @@ impl WdselVal {
                 self.bits | Wdsel::SYSINFO_MASK
             } else {
                 self.bits & !Wdsel::SYSINFO_MASK
-            }
+            },
         }
     }
 
@@ -2447,7 +2447,7 @@ impl WdselVal {
                 self.bits | Wdsel::SYSCFG_MASK
             } else {
                 self.bits & !Wdsel::SYSCFG_MASK
-            }
+            },
         }
     }
 
@@ -2459,7 +2459,7 @@ impl WdselVal {
                 self.bits | Wdsel::SPI1_MASK
             } else {
                 self.bits & !Wdsel::SPI1_MASK
-            }
+            },
         }
     }
 
@@ -2471,7 +2471,7 @@ impl WdselVal {
                 self.bits | Wdsel::SPI0_MASK
             } else {
                 self.bits & !Wdsel::SPI0_MASK
-            }
+            },
         }
     }
 
@@ -2483,7 +2483,7 @@ impl WdselVal {
                 self.bits | Wdsel::SHA256_MASK
             } else {
                 self.bits & !Wdsel::SHA256_MASK
-            }
+            },
         }
     }
 
@@ -2495,7 +2495,7 @@ impl WdselVal {
                 self.bits | Wdsel::PWM_MASK
             } else {
                 self.bits & !Wdsel::PWM_MASK
-            }
+            },
         }
     }
 
@@ -2507,7 +2507,7 @@ impl WdselVal {
                 self.bits | Wdsel::PLL_USB_MASK
             } else {
                 self.bits & !Wdsel::PLL_USB_MASK
-            }
+            },
         }
     }
 
@@ -2519,7 +2519,7 @@ impl WdselVal {
                 self.bits | Wdsel::PLL_SYS_MASK
             } else {
                 self.bits & !Wdsel::PLL_SYS_MASK
-            }
+            },
         }
     }
 
@@ -2531,7 +2531,7 @@ impl WdselVal {
                 self.bits | Wdsel::PIO2_MASK
             } else {
                 self.bits & !Wdsel::PIO2_MASK
-            }
+            },
         }
     }
 
@@ -2543,7 +2543,7 @@ impl WdselVal {
                 self.bits | Wdsel::PIO1_MASK
             } else {
                 self.bits & !Wdsel::PIO1_MASK
-            }
+            },
         }
     }
 
@@ -2555,7 +2555,7 @@ impl WdselVal {
                 self.bits | Wdsel::PIO0_MASK
             } else {
                 self.bits & !Wdsel::PIO0_MASK
-            }
+            },
         }
     }
 
@@ -2567,7 +2567,7 @@ impl WdselVal {
                 self.bits | Wdsel::PADS_QSPI_MASK
             } else {
                 self.bits & !Wdsel::PADS_QSPI_MASK
-            }
+            },
         }
     }
 
@@ -2579,7 +2579,7 @@ impl WdselVal {
                 self.bits | Wdsel::PADS_BANK0_MASK
             } else {
                 self.bits & !Wdsel::PADS_BANK0_MASK
-            }
+            },
         }
     }
 
@@ -2591,7 +2591,7 @@ impl WdselVal {
                 self.bits | Wdsel::JTAG_MASK
             } else {
                 self.bits & !Wdsel::JTAG_MASK
-            }
+            },
         }
     }
 
@@ -2603,7 +2603,7 @@ impl WdselVal {
                 self.bits | Wdsel::IO_QSPI_MASK
             } else {
                 self.bits & !Wdsel::IO_QSPI_MASK
-            }
+            },
         }
     }
 
@@ -2615,7 +2615,7 @@ impl WdselVal {
                 self.bits | Wdsel::IO_BANK0_MASK
             } else {
                 self.bits & !Wdsel::IO_BANK0_MASK
-            }
+            },
         }
     }
 
@@ -2627,7 +2627,7 @@ impl WdselVal {
                 self.bits | Wdsel::I2C1_MASK
             } else {
                 self.bits & !Wdsel::I2C1_MASK
-            }
+            },
         }
     }
 
@@ -2639,7 +2639,7 @@ impl WdselVal {
                 self.bits | Wdsel::I2C0_MASK
             } else {
                 self.bits & !Wdsel::I2C0_MASK
-            }
+            },
         }
     }
 
@@ -2651,7 +2651,7 @@ impl WdselVal {
                 self.bits | Wdsel::HSTX_MASK
             } else {
                 self.bits & !Wdsel::HSTX_MASK
-            }
+            },
         }
     }
 
@@ -2663,7 +2663,7 @@ impl WdselVal {
                 self.bits | Wdsel::DMA_MASK
             } else {
                 self.bits & !Wdsel::DMA_MASK
-            }
+            },
         }
     }
 
@@ -2675,7 +2675,7 @@ impl WdselVal {
                 self.bits | Wdsel::BUSCTRL_MASK
             } else {
                 self.bits & !Wdsel::BUSCTRL_MASK
-            }
+            },
         }
     }
 
@@ -2687,7 +2687,7 @@ impl WdselVal {
                 self.bits | Wdsel::ADC_MASK
             } else {
                 self.bits & !Wdsel::ADC_MASK
-            }
+            },
         }
     }
 }
@@ -3376,4 +3376,3 @@ pub struct RegisterBlock {
     /// 0x0008
     pub reset_done: ResetDone,
 }
-

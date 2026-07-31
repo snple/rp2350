@@ -869,7 +869,7 @@ impl FrceOnVal {
                 self.bits | FrceOn::PROC1_MASK
             } else {
                 self.bits & !FrceOn::PROC1_MASK
-            }
+            },
         }
     }
 
@@ -881,7 +881,7 @@ impl FrceOnVal {
                 self.bits | FrceOn::PROC0_MASK
             } else {
                 self.bits & !FrceOn::PROC0_MASK
-            }
+            },
         }
     }
 
@@ -893,7 +893,7 @@ impl FrceOnVal {
                 self.bits | FrceOn::ACCESSCTRL_MASK
             } else {
                 self.bits & !FrceOn::ACCESSCTRL_MASK
-            }
+            },
         }
     }
 
@@ -905,7 +905,7 @@ impl FrceOnVal {
                 self.bits | FrceOn::SIO_MASK
             } else {
                 self.bits & !FrceOn::SIO_MASK
-            }
+            },
         }
     }
 
@@ -917,7 +917,7 @@ impl FrceOnVal {
                 self.bits | FrceOn::XIP_MASK
             } else {
                 self.bits & !FrceOn::XIP_MASK
-            }
+            },
         }
     }
 
@@ -929,7 +929,7 @@ impl FrceOnVal {
                 self.bits | FrceOn::SRAM9_MASK
             } else {
                 self.bits & !FrceOn::SRAM9_MASK
-            }
+            },
         }
     }
 
@@ -941,7 +941,7 @@ impl FrceOnVal {
                 self.bits | FrceOn::SRAM8_MASK
             } else {
                 self.bits & !FrceOn::SRAM8_MASK
-            }
+            },
         }
     }
 
@@ -953,7 +953,7 @@ impl FrceOnVal {
                 self.bits | FrceOn::SRAM7_MASK
             } else {
                 self.bits & !FrceOn::SRAM7_MASK
-            }
+            },
         }
     }
 
@@ -965,7 +965,7 @@ impl FrceOnVal {
                 self.bits | FrceOn::SRAM6_MASK
             } else {
                 self.bits & !FrceOn::SRAM6_MASK
-            }
+            },
         }
     }
 
@@ -977,7 +977,7 @@ impl FrceOnVal {
                 self.bits | FrceOn::SRAM5_MASK
             } else {
                 self.bits & !FrceOn::SRAM5_MASK
-            }
+            },
         }
     }
 
@@ -989,7 +989,7 @@ impl FrceOnVal {
                 self.bits | FrceOn::SRAM4_MASK
             } else {
                 self.bits & !FrceOn::SRAM4_MASK
-            }
+            },
         }
     }
 
@@ -1001,7 +1001,7 @@ impl FrceOnVal {
                 self.bits | FrceOn::SRAM3_MASK
             } else {
                 self.bits & !FrceOn::SRAM3_MASK
-            }
+            },
         }
     }
 
@@ -1013,7 +1013,7 @@ impl FrceOnVal {
                 self.bits | FrceOn::SRAM2_MASK
             } else {
                 self.bits & !FrceOn::SRAM2_MASK
-            }
+            },
         }
     }
 
@@ -1025,7 +1025,7 @@ impl FrceOnVal {
                 self.bits | FrceOn::SRAM1_MASK
             } else {
                 self.bits & !FrceOn::SRAM1_MASK
-            }
+            },
         }
     }
 
@@ -1037,7 +1037,7 @@ impl FrceOnVal {
                 self.bits | FrceOn::SRAM0_MASK
             } else {
                 self.bits & !FrceOn::SRAM0_MASK
-            }
+            },
         }
     }
 
@@ -1049,7 +1049,7 @@ impl FrceOnVal {
                 self.bits | FrceOn::BOOTRAM_MASK
             } else {
                 self.bits & !FrceOn::BOOTRAM_MASK
-            }
+            },
         }
     }
 
@@ -1061,7 +1061,7 @@ impl FrceOnVal {
                 self.bits | FrceOn::ROM_MASK
             } else {
                 self.bits & !FrceOn::ROM_MASK
-            }
+            },
         }
     }
 
@@ -1073,7 +1073,7 @@ impl FrceOnVal {
                 self.bits | FrceOn::BUSFABRIC_MASK
             } else {
                 self.bits & !FrceOn::BUSFABRIC_MASK
-            }
+            },
         }
     }
 
@@ -1085,7 +1085,7 @@ impl FrceOnVal {
                 self.bits | FrceOn::PSM_READY_MASK
             } else {
                 self.bits & !FrceOn::PSM_READY_MASK
-            }
+            },
         }
     }
 
@@ -1097,7 +1097,7 @@ impl FrceOnVal {
                 self.bits | FrceOn::CLOCKS_MASK
             } else {
                 self.bits & !FrceOn::CLOCKS_MASK
-            }
+            },
         }
     }
 
@@ -1109,7 +1109,7 @@ impl FrceOnVal {
                 self.bits | FrceOn::RESETS_MASK
             } else {
                 self.bits & !FrceOn::RESETS_MASK
-            }
+            },
         }
     }
 
@@ -1121,7 +1121,7 @@ impl FrceOnVal {
                 self.bits | FrceOn::XOSC_MASK
             } else {
                 self.bits & !FrceOn::XOSC_MASK
-            }
+            },
         }
     }
 
@@ -1133,7 +1133,7 @@ impl FrceOnVal {
                 self.bits | FrceOn::ROSC_MASK
             } else {
                 self.bits & !FrceOn::ROSC_MASK
-            }
+            },
         }
     }
 
@@ -1145,7 +1145,7 @@ impl FrceOnVal {
                 self.bits | FrceOn::OTP_MASK
             } else {
                 self.bits & !FrceOn::OTP_MASK
-            }
+            },
         }
     }
 
@@ -1157,7 +1157,7 @@ impl FrceOnVal {
                 self.bits | FrceOn::PROC_COLD_MASK
             } else {
                 self.bits & !FrceOn::PROC_COLD_MASK
-            }
+            },
         }
     }
 }
@@ -2051,7 +2051,7 @@ impl FrceOffVal {
                 self.bits | FrceOff::PROC1_MASK
             } else {
                 self.bits & !FrceOff::PROC1_MASK
-            }
+            },
         }
     }
 
@@ -2063,7 +2063,7 @@ impl FrceOffVal {
                 self.bits | FrceOff::PROC0_MASK
             } else {
                 self.bits & !FrceOff::PROC0_MASK
-            }
+            },
         }
     }
 
@@ -2075,7 +2075,7 @@ impl FrceOffVal {
                 self.bits | FrceOff::ACCESSCTRL_MASK
             } else {
                 self.bits & !FrceOff::ACCESSCTRL_MASK
-            }
+            },
         }
     }
 
@@ -2087,7 +2087,7 @@ impl FrceOffVal {
                 self.bits | FrceOff::SIO_MASK
             } else {
                 self.bits & !FrceOff::SIO_MASK
-            }
+            },
         }
     }
 
@@ -2099,7 +2099,7 @@ impl FrceOffVal {
                 self.bits | FrceOff::XIP_MASK
             } else {
                 self.bits & !FrceOff::XIP_MASK
-            }
+            },
         }
     }
 
@@ -2111,7 +2111,7 @@ impl FrceOffVal {
                 self.bits | FrceOff::SRAM9_MASK
             } else {
                 self.bits & !FrceOff::SRAM9_MASK
-            }
+            },
         }
     }
 
@@ -2123,7 +2123,7 @@ impl FrceOffVal {
                 self.bits | FrceOff::SRAM8_MASK
             } else {
                 self.bits & !FrceOff::SRAM8_MASK
-            }
+            },
         }
     }
 
@@ -2135,7 +2135,7 @@ impl FrceOffVal {
                 self.bits | FrceOff::SRAM7_MASK
             } else {
                 self.bits & !FrceOff::SRAM7_MASK
-            }
+            },
         }
     }
 
@@ -2147,7 +2147,7 @@ impl FrceOffVal {
                 self.bits | FrceOff::SRAM6_MASK
             } else {
                 self.bits & !FrceOff::SRAM6_MASK
-            }
+            },
         }
     }
 
@@ -2159,7 +2159,7 @@ impl FrceOffVal {
                 self.bits | FrceOff::SRAM5_MASK
             } else {
                 self.bits & !FrceOff::SRAM5_MASK
-            }
+            },
         }
     }
 
@@ -2171,7 +2171,7 @@ impl FrceOffVal {
                 self.bits | FrceOff::SRAM4_MASK
             } else {
                 self.bits & !FrceOff::SRAM4_MASK
-            }
+            },
         }
     }
 
@@ -2183,7 +2183,7 @@ impl FrceOffVal {
                 self.bits | FrceOff::SRAM3_MASK
             } else {
                 self.bits & !FrceOff::SRAM3_MASK
-            }
+            },
         }
     }
 
@@ -2195,7 +2195,7 @@ impl FrceOffVal {
                 self.bits | FrceOff::SRAM2_MASK
             } else {
                 self.bits & !FrceOff::SRAM2_MASK
-            }
+            },
         }
     }
 
@@ -2207,7 +2207,7 @@ impl FrceOffVal {
                 self.bits | FrceOff::SRAM1_MASK
             } else {
                 self.bits & !FrceOff::SRAM1_MASK
-            }
+            },
         }
     }
 
@@ -2219,7 +2219,7 @@ impl FrceOffVal {
                 self.bits | FrceOff::SRAM0_MASK
             } else {
                 self.bits & !FrceOff::SRAM0_MASK
-            }
+            },
         }
     }
 
@@ -2231,7 +2231,7 @@ impl FrceOffVal {
                 self.bits | FrceOff::BOOTRAM_MASK
             } else {
                 self.bits & !FrceOff::BOOTRAM_MASK
-            }
+            },
         }
     }
 
@@ -2243,7 +2243,7 @@ impl FrceOffVal {
                 self.bits | FrceOff::ROM_MASK
             } else {
                 self.bits & !FrceOff::ROM_MASK
-            }
+            },
         }
     }
 
@@ -2255,7 +2255,7 @@ impl FrceOffVal {
                 self.bits | FrceOff::BUSFABRIC_MASK
             } else {
                 self.bits & !FrceOff::BUSFABRIC_MASK
-            }
+            },
         }
     }
 
@@ -2267,7 +2267,7 @@ impl FrceOffVal {
                 self.bits | FrceOff::PSM_READY_MASK
             } else {
                 self.bits & !FrceOff::PSM_READY_MASK
-            }
+            },
         }
     }
 
@@ -2279,7 +2279,7 @@ impl FrceOffVal {
                 self.bits | FrceOff::CLOCKS_MASK
             } else {
                 self.bits & !FrceOff::CLOCKS_MASK
-            }
+            },
         }
     }
 
@@ -2291,7 +2291,7 @@ impl FrceOffVal {
                 self.bits | FrceOff::RESETS_MASK
             } else {
                 self.bits & !FrceOff::RESETS_MASK
-            }
+            },
         }
     }
 
@@ -2303,7 +2303,7 @@ impl FrceOffVal {
                 self.bits | FrceOff::XOSC_MASK
             } else {
                 self.bits & !FrceOff::XOSC_MASK
-            }
+            },
         }
     }
 
@@ -2315,7 +2315,7 @@ impl FrceOffVal {
                 self.bits | FrceOff::ROSC_MASK
             } else {
                 self.bits & !FrceOff::ROSC_MASK
-            }
+            },
         }
     }
 
@@ -2327,7 +2327,7 @@ impl FrceOffVal {
                 self.bits | FrceOff::OTP_MASK
             } else {
                 self.bits & !FrceOff::OTP_MASK
-            }
+            },
         }
     }
 
@@ -2339,7 +2339,7 @@ impl FrceOffVal {
                 self.bits | FrceOff::PROC_COLD_MASK
             } else {
                 self.bits & !FrceOff::PROC_COLD_MASK
-            }
+            },
         }
     }
 }
@@ -3233,7 +3233,7 @@ impl WdselVal {
                 self.bits | Wdsel::PROC1_MASK
             } else {
                 self.bits & !Wdsel::PROC1_MASK
-            }
+            },
         }
     }
 
@@ -3245,7 +3245,7 @@ impl WdselVal {
                 self.bits | Wdsel::PROC0_MASK
             } else {
                 self.bits & !Wdsel::PROC0_MASK
-            }
+            },
         }
     }
 
@@ -3257,7 +3257,7 @@ impl WdselVal {
                 self.bits | Wdsel::ACCESSCTRL_MASK
             } else {
                 self.bits & !Wdsel::ACCESSCTRL_MASK
-            }
+            },
         }
     }
 
@@ -3269,7 +3269,7 @@ impl WdselVal {
                 self.bits | Wdsel::SIO_MASK
             } else {
                 self.bits & !Wdsel::SIO_MASK
-            }
+            },
         }
     }
 
@@ -3281,7 +3281,7 @@ impl WdselVal {
                 self.bits | Wdsel::XIP_MASK
             } else {
                 self.bits & !Wdsel::XIP_MASK
-            }
+            },
         }
     }
 
@@ -3293,7 +3293,7 @@ impl WdselVal {
                 self.bits | Wdsel::SRAM9_MASK
             } else {
                 self.bits & !Wdsel::SRAM9_MASK
-            }
+            },
         }
     }
 
@@ -3305,7 +3305,7 @@ impl WdselVal {
                 self.bits | Wdsel::SRAM8_MASK
             } else {
                 self.bits & !Wdsel::SRAM8_MASK
-            }
+            },
         }
     }
 
@@ -3317,7 +3317,7 @@ impl WdselVal {
                 self.bits | Wdsel::SRAM7_MASK
             } else {
                 self.bits & !Wdsel::SRAM7_MASK
-            }
+            },
         }
     }
 
@@ -3329,7 +3329,7 @@ impl WdselVal {
                 self.bits | Wdsel::SRAM6_MASK
             } else {
                 self.bits & !Wdsel::SRAM6_MASK
-            }
+            },
         }
     }
 
@@ -3341,7 +3341,7 @@ impl WdselVal {
                 self.bits | Wdsel::SRAM5_MASK
             } else {
                 self.bits & !Wdsel::SRAM5_MASK
-            }
+            },
         }
     }
 
@@ -3353,7 +3353,7 @@ impl WdselVal {
                 self.bits | Wdsel::SRAM4_MASK
             } else {
                 self.bits & !Wdsel::SRAM4_MASK
-            }
+            },
         }
     }
 
@@ -3365,7 +3365,7 @@ impl WdselVal {
                 self.bits | Wdsel::SRAM3_MASK
             } else {
                 self.bits & !Wdsel::SRAM3_MASK
-            }
+            },
         }
     }
 
@@ -3377,7 +3377,7 @@ impl WdselVal {
                 self.bits | Wdsel::SRAM2_MASK
             } else {
                 self.bits & !Wdsel::SRAM2_MASK
-            }
+            },
         }
     }
 
@@ -3389,7 +3389,7 @@ impl WdselVal {
                 self.bits | Wdsel::SRAM1_MASK
             } else {
                 self.bits & !Wdsel::SRAM1_MASK
-            }
+            },
         }
     }
 
@@ -3401,7 +3401,7 @@ impl WdselVal {
                 self.bits | Wdsel::SRAM0_MASK
             } else {
                 self.bits & !Wdsel::SRAM0_MASK
-            }
+            },
         }
     }
 
@@ -3413,7 +3413,7 @@ impl WdselVal {
                 self.bits | Wdsel::BOOTRAM_MASK
             } else {
                 self.bits & !Wdsel::BOOTRAM_MASK
-            }
+            },
         }
     }
 
@@ -3425,7 +3425,7 @@ impl WdselVal {
                 self.bits | Wdsel::ROM_MASK
             } else {
                 self.bits & !Wdsel::ROM_MASK
-            }
+            },
         }
     }
 
@@ -3437,7 +3437,7 @@ impl WdselVal {
                 self.bits | Wdsel::BUSFABRIC_MASK
             } else {
                 self.bits & !Wdsel::BUSFABRIC_MASK
-            }
+            },
         }
     }
 
@@ -3449,7 +3449,7 @@ impl WdselVal {
                 self.bits | Wdsel::PSM_READY_MASK
             } else {
                 self.bits & !Wdsel::PSM_READY_MASK
-            }
+            },
         }
     }
 
@@ -3461,7 +3461,7 @@ impl WdselVal {
                 self.bits | Wdsel::CLOCKS_MASK
             } else {
                 self.bits & !Wdsel::CLOCKS_MASK
-            }
+            },
         }
     }
 
@@ -3473,7 +3473,7 @@ impl WdselVal {
                 self.bits | Wdsel::RESETS_MASK
             } else {
                 self.bits & !Wdsel::RESETS_MASK
-            }
+            },
         }
     }
 
@@ -3485,7 +3485,7 @@ impl WdselVal {
                 self.bits | Wdsel::XOSC_MASK
             } else {
                 self.bits & !Wdsel::XOSC_MASK
-            }
+            },
         }
     }
 
@@ -3497,7 +3497,7 @@ impl WdselVal {
                 self.bits | Wdsel::ROSC_MASK
             } else {
                 self.bits & !Wdsel::ROSC_MASK
-            }
+            },
         }
     }
 
@@ -3509,7 +3509,7 @@ impl WdselVal {
                 self.bits | Wdsel::OTP_MASK
             } else {
                 self.bits & !Wdsel::OTP_MASK
-            }
+            },
         }
     }
 
@@ -3521,7 +3521,7 @@ impl WdselVal {
                 self.bits | Wdsel::PROC_COLD_MASK
             } else {
                 self.bits & !Wdsel::PROC_COLD_MASK
-            }
+            },
         }
     }
 }
@@ -4138,4 +4138,3 @@ pub struct RegisterBlock {
     /// Is the subsystem ready?
     pub done: Done,
 }
-

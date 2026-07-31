@@ -22,8 +22,8 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::Delay;
-use pico_rs::main;
 use pico_rs::gpio::Pins;
+use pico_rs::main;
 use pico_rs::pac::Peripherals;
 use pico_rs::pac::WATCHDOG;
 use pico_rs::rt::peripheral::Peripherals as CorePeripherals;

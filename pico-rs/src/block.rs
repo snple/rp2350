@@ -123,8 +123,8 @@ const fn image_type_riscv() -> u32 {
 /// This structure must be placed in the `.start_block` section in the first 4K
 /// of flash. It tells the Boot ROM that this is a valid executable image.
 ///
-/// Security mode is selected automatically at compile time by the `non-secure`
-/// Cargo feature — no need to choose between constructors.
+/// All images are built in Secure mode (TrustZone-M enabled); there is
+/// currently no `non-secure` Cargo feature to override this.
 ///
 /// # Example
 ///
@@ -148,8 +148,7 @@ unsafe impl Sync for ImageDef {}
 impl ImageDef {
     /// Construct an Image Definition for an ARM executable.
     ///
-    /// Security mode (Secure / Non-Secure) is determined at compile time
-    /// by the `non-secure` Cargo feature.
+    /// Images are always built in Secure mode (TrustZone-M enabled).
     pub const fn exe() -> Self {
         Self {
             marker_start: BLOCK_MARKER_START,
@@ -162,8 +161,7 @@ impl ImageDef {
 
     /// Construct an Image Definition for a RISC-V executable.
     ///
-    /// Security mode is determined at compile time by the `non-secure`
-    /// Cargo feature.
+    /// Images are always built in Secure mode (TrustZone-M enabled).
     pub const fn riscv_exe() -> Self {
         Self {
             marker_start: BLOCK_MARKER_START,
@@ -207,8 +205,7 @@ unsafe impl Sync for ImageDefWithVersion {}
 impl ImageDefWithVersion {
     /// Construct an Image Definition with version for an ARM executable.
     ///
-    /// Security mode is determined at compile time by the `non-secure`
-    /// Cargo feature.
+    /// Images are always built in Secure mode (TrustZone-M enabled).
     ///
     /// # Arguments
     /// * `major` — Major version number (0–65535)

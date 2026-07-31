@@ -173,6 +173,8 @@ macro_rules! with_interp_reg {
     // Accumulator registers (2 interps × 2 lanes = 4 variants)
     ($idx:expr, $lane:expr, accum, $reg:ident, $expr:expr) => {{
         let r = unsafe { &*crate::sio::REGS };
+        debug_assert!(matches!($idx, 0 | 1), "interp index must be 0 or 1");
+        debug_assert!(matches!($lane, 0 | 1), "interp lane must be 0 or 1");
         match ($idx, $lane) {
             (0, 0) => {
                 let $reg = &r.interp0_accum0;
@@ -195,6 +197,8 @@ macro_rules! with_interp_reg {
     // Base registers (2 interps × 3 bases = 6 variants)
     ($idx:expr, $base:expr, base, $reg:ident, $expr:expr) => {{
         let r = unsafe { &*crate::sio::REGS };
+        debug_assert!(matches!($idx, 0 | 1), "interp index must be 0 or 1");
+        debug_assert!(matches!($base, 0..=2), "interp base must be 0..=2");
         match ($idx, $base) {
             (0, 0) => {
                 let $reg = &r.interp0_base0;
@@ -225,6 +229,8 @@ macro_rules! with_interp_reg {
     // Pop lane (2 interps × 2 lanes = 4)
     ($idx:expr, $lane:expr, pop_lane, $reg:ident, $expr:expr) => {{
         let r = unsafe { &*crate::sio::REGS };
+        debug_assert!(matches!($idx, 0 | 1), "interp index must be 0 or 1");
+        debug_assert!(matches!($lane, 0 | 1), "interp lane must be 0 or 1");
         match ($idx, $lane) {
             (0, 0) => {
                 let $reg = &r.interp0_pop_lane0;
@@ -247,6 +253,8 @@ macro_rules! with_interp_reg {
     // Peek lane (2 interps × 2 lanes = 4)
     ($idx:expr, $lane:expr, peek_lane, $reg:ident, $expr:expr) => {{
         let r = unsafe { &*crate::sio::REGS };
+        debug_assert!(matches!($idx, 0 | 1), "interp index must be 0 or 1");
+        debug_assert!(matches!($lane, 0 | 1), "interp lane must be 0 or 1");
         match ($idx, $lane) {
             (0, 0) => {
                 let $reg = &r.interp0_peek_lane0;
@@ -269,6 +277,7 @@ macro_rules! with_interp_reg {
     // Pop full (2 interps)
     ($idx:expr, pop_full, $reg:ident, $expr:expr) => {{
         let r = unsafe { &*crate::sio::REGS };
+        debug_assert!(matches!($idx, 0 | 1), "interp index must be 0 or 1");
         match $idx {
             0 => {
                 let $reg = &r.interp0_pop_full;
@@ -283,6 +292,7 @@ macro_rules! with_interp_reg {
     // Peek full (2 interps)
     ($idx:expr, peek_full, $reg:ident, $expr:expr) => {{
         let r = unsafe { &*crate::sio::REGS };
+        debug_assert!(matches!($idx, 0 | 1), "interp index must be 0 or 1");
         match $idx {
             0 => {
                 let $reg = &r.interp0_peek_full;
@@ -297,6 +307,8 @@ macro_rules! with_interp_reg {
     // Control registers (2 interps × 2 lanes = 4)
     ($idx:expr, $lane:expr, ctrl, $reg:ident, $expr:expr) => {{
         let r = unsafe { &*crate::sio::REGS };
+        debug_assert!(matches!($idx, 0 | 1), "interp index must be 0 or 1");
+        debug_assert!(matches!($lane, 0 | 1), "interp lane must be 0 or 1");
         match ($idx, $lane) {
             (0, 0) => {
                 let $reg = &r.interp0_ctrl_lane0;
@@ -319,6 +331,8 @@ macro_rules! with_interp_reg {
     // Add raw registers (2 interps × 2 lanes = 4)
     ($idx:expr, $lane:expr, add_raw, $reg:ident, $expr:expr) => {{
         let r = unsafe { &*crate::sio::REGS };
+        debug_assert!(matches!($idx, 0 | 1), "interp index must be 0 or 1");
+        debug_assert!(matches!($lane, 0 | 1), "interp lane must be 0 or 1");
         match ($idx, $lane) {
             (0, 0) => {
                 let $reg = &r.interp0_accum0_add;

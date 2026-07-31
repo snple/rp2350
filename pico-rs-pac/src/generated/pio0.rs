@@ -194,7 +194,8 @@ impl Ctrl {
     /// Neighbouring PIO blocks are disconnected (status signals tied to 0 and control signals ignored) if one block is accessible to NonSecure code, and one is not.
     #[inline(always)]
     pub fn write_next_pio_mask(&self, value: u32) {
-        self.value.write_bits((value << Self::NEXT_PIO_MASK_OFFSET) & Self::NEXT_PIO_MASK_MASK);
+        self.value
+            .write_bits((value << Self::NEXT_PIO_MASK_OFFSET) & Self::NEXT_PIO_MASK_MASK);
     }
 
     /// Write **PREV_PIO_MASK** `[19:16]` (WO)
@@ -204,7 +205,8 @@ impl Ctrl {
     /// Neighbouring PIO blocks are disconnected (status signals tied to 0 and control signals ignored) if one block is accessible to NonSecure code, and one is not.
     #[inline(always)]
     pub fn write_prev_pio_mask(&self, value: u32) {
-        self.value.write_bits((value << Self::PREV_PIO_MASK_OFFSET) & Self::PREV_PIO_MASK_MASK);
+        self.value
+            .write_bits((value << Self::PREV_PIO_MASK_OFFSET) & Self::PREV_PIO_MASK_MASK);
     }
 
     /// Write **CLKDIV_RESTART** `[11:8]` (WO)
@@ -214,7 +216,8 @@ impl Ctrl {
     /// Note also that CLKDIV_RESTART can be written to whilst the state machine is running, and this is useful to resynchronise clock dividers after the divisors (SMx_CLKDIV) have been changed on-the-fly.
     #[inline(always)]
     pub fn write_clkdiv_restart(&self, value: u32) {
-        self.value.write_bits((value << Self::CLKDIV_RESTART_OFFSET) & Self::CLKDIV_RESTART_MASK);
+        self.value
+            .write_bits((value << Self::CLKDIV_RESTART_OFFSET) & Self::CLKDIV_RESTART_MASK);
     }
 
     /// Write **SM_RESTART** `[7:4]` (WO)
@@ -224,7 +227,8 @@ impl Ctrl {
     /// The contents of the output shift register and the X/Y scratch registers are not affected.
     #[inline(always)]
     pub fn write_sm_restart(&self, value: u32) {
-        self.value.write_bits((value << Self::SM_RESTART_OFFSET) & Self::SM_RESTART_MASK);
+        self.value
+            .write_bits((value << Self::SM_RESTART_OFFSET) & Self::SM_RESTART_MASK);
     }
 
     /// **SM_ENABLE** `[3:0]` (RW)
@@ -240,7 +244,9 @@ impl Ctrl {
     /// Enable/disable each of the four state machines by writing 1/0 to each of these four bits. When disabled, a state machine will cease executing instructions, except those written directly to SMx_INSTR by the system. Multiple bits can be set/cleared at once to run/halt multiple state machines simultaneously.
     #[inline(always)]
     pub fn write_sm_enable(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SM_ENABLE_MASK) | ((value << Self::SM_ENABLE_OFFSET) & Self::SM_ENABLE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SM_ENABLE_MASK) | ((value << Self::SM_ENABLE_OFFSET) & Self::SM_ENABLE_MASK)
+        });
     }
 }
 
@@ -291,7 +297,7 @@ impl CtrlVal {
                 self.bits | Ctrl::NEXTPREV_CLKDIV_RESTART_MASK
             } else {
                 self.bits & !Ctrl::NEXTPREV_CLKDIV_RESTART_MASK
-            }
+            },
         }
     }
 
@@ -306,7 +312,7 @@ impl CtrlVal {
                 self.bits | Ctrl::NEXTPREV_SM_DISABLE_MASK
             } else {
                 self.bits & !Ctrl::NEXTPREV_SM_DISABLE_MASK
-            }
+            },
         }
     }
 
@@ -322,7 +328,7 @@ impl CtrlVal {
                 self.bits | Ctrl::NEXTPREV_SM_ENABLE_MASK
             } else {
                 self.bits & !Ctrl::NEXTPREV_SM_ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -335,7 +341,8 @@ impl CtrlVal {
     #[inline(always)]
     pub const fn with_next_pio_mask(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ctrl::NEXT_PIO_MASK_MASK) | ((value << Ctrl::NEXT_PIO_MASK_OFFSET) & Ctrl::NEXT_PIO_MASK_MASK)
+            bits: (self.bits & !Ctrl::NEXT_PIO_MASK_MASK)
+                | ((value << Ctrl::NEXT_PIO_MASK_OFFSET) & Ctrl::NEXT_PIO_MASK_MASK),
         }
     }
 
@@ -347,7 +354,8 @@ impl CtrlVal {
     #[inline(always)]
     pub const fn with_prev_pio_mask(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ctrl::PREV_PIO_MASK_MASK) | ((value << Ctrl::PREV_PIO_MASK_OFFSET) & Ctrl::PREV_PIO_MASK_MASK)
+            bits: (self.bits & !Ctrl::PREV_PIO_MASK_MASK)
+                | ((value << Ctrl::PREV_PIO_MASK_OFFSET) & Ctrl::PREV_PIO_MASK_MASK),
         }
     }
 
@@ -359,7 +367,8 @@ impl CtrlVal {
     #[inline(always)]
     pub const fn with_clkdiv_restart(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ctrl::CLKDIV_RESTART_MASK) | ((value << Ctrl::CLKDIV_RESTART_OFFSET) & Ctrl::CLKDIV_RESTART_MASK)
+            bits: (self.bits & !Ctrl::CLKDIV_RESTART_MASK)
+                | ((value << Ctrl::CLKDIV_RESTART_OFFSET) & Ctrl::CLKDIV_RESTART_MASK),
         }
     }
 
@@ -371,7 +380,8 @@ impl CtrlVal {
     #[inline(always)]
     pub const fn with_sm_restart(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ctrl::SM_RESTART_MASK) | ((value << Ctrl::SM_RESTART_OFFSET) & Ctrl::SM_RESTART_MASK)
+            bits: (self.bits & !Ctrl::SM_RESTART_MASK)
+                | ((value << Ctrl::SM_RESTART_OFFSET) & Ctrl::SM_RESTART_MASK),
         }
     }
 
@@ -381,7 +391,8 @@ impl CtrlVal {
     #[inline(always)]
     pub const fn with_sm_enable(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ctrl::SM_ENABLE_MASK) | ((value << Ctrl::SM_ENABLE_OFFSET) & Ctrl::SM_ENABLE_MASK)
+            bits: (self.bits & !Ctrl::SM_ENABLE_MASK)
+                | ((value << Ctrl::SM_ENABLE_OFFSET) & Ctrl::SM_ENABLE_MASK),
         }
     }
 }
@@ -681,7 +692,9 @@ impl Fdebug {
     /// State machine has stalled on empty TX FIFO during a blocking PULL, or an OUT with autopull enabled. Write 1 to clear.
     #[inline(always)]
     pub fn write_txstall(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TXSTALL_MASK) | ((value << Self::TXSTALL_OFFSET) & Self::TXSTALL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TXSTALL_MASK) | ((value << Self::TXSTALL_OFFSET) & Self::TXSTALL_MASK)
+        });
     }
 
     /// **TXOVER** `[19:16]` (RW)
@@ -697,7 +710,9 @@ impl Fdebug {
     /// TX FIFO overflow (i.e. write-on-full by the system) has occurred. Write 1 to clear. Note that write-on-full does not alter the state or contents of the FIFO in any way, but the data that the system attempted to write is dropped, so if this flag is set, your software has quite likely dropped some data on the floor.
     #[inline(always)]
     pub fn write_txover(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TXOVER_MASK) | ((value << Self::TXOVER_OFFSET) & Self::TXOVER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TXOVER_MASK) | ((value << Self::TXOVER_OFFSET) & Self::TXOVER_MASK)
+        });
     }
 
     /// **RXUNDER** `[11:8]` (RW)
@@ -713,7 +728,9 @@ impl Fdebug {
     /// RX FIFO underflow (i.e. read-on-empty by the system) has occurred. Write 1 to clear. Note that read-on-empty does not perturb the state of the FIFO in any way, but the data returned by reading from an empty FIFO is undefined, so this flag generally only becomes set due to some kind of software error.
     #[inline(always)]
     pub fn write_rxunder(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RXUNDER_MASK) | ((value << Self::RXUNDER_OFFSET) & Self::RXUNDER_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RXUNDER_MASK) | ((value << Self::RXUNDER_OFFSET) & Self::RXUNDER_MASK)
+        });
     }
 
     /// **RXSTALL** `[3:0]` (RW)
@@ -729,7 +746,9 @@ impl Fdebug {
     /// State machine has stalled on full RX FIFO during a blocking PUSH, or an IN with autopush enabled. This flag is also set when a nonblocking PUSH to a full FIFO took place, in which case the state machine has dropped data. Write 1 to clear.
     #[inline(always)]
     pub fn write_rxstall(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RXSTALL_MASK) | ((value << Self::RXSTALL_OFFSET) & Self::RXSTALL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RXSTALL_MASK) | ((value << Self::RXSTALL_OFFSET) & Self::RXSTALL_MASK)
+        });
     }
 }
 
@@ -799,7 +818,8 @@ impl FdebugVal {
     #[inline(always)]
     pub const fn with_txstall(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Fdebug::TXSTALL_MASK) | ((value << Fdebug::TXSTALL_OFFSET) & Fdebug::TXSTALL_MASK)
+            bits: (self.bits & !Fdebug::TXSTALL_MASK)
+                | ((value << Fdebug::TXSTALL_OFFSET) & Fdebug::TXSTALL_MASK),
         }
     }
 
@@ -809,7 +829,8 @@ impl FdebugVal {
     #[inline(always)]
     pub const fn with_txover(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Fdebug::TXOVER_MASK) | ((value << Fdebug::TXOVER_OFFSET) & Fdebug::TXOVER_MASK)
+            bits: (self.bits & !Fdebug::TXOVER_MASK)
+                | ((value << Fdebug::TXOVER_OFFSET) & Fdebug::TXOVER_MASK),
         }
     }
 
@@ -819,7 +840,8 @@ impl FdebugVal {
     #[inline(always)]
     pub const fn with_rxunder(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Fdebug::RXUNDER_MASK) | ((value << Fdebug::RXUNDER_OFFSET) & Fdebug::RXUNDER_MASK)
+            bits: (self.bits & !Fdebug::RXUNDER_MASK)
+                | ((value << Fdebug::RXUNDER_OFFSET) & Fdebug::RXUNDER_MASK),
         }
     }
 
@@ -829,7 +851,8 @@ impl FdebugVal {
     #[inline(always)]
     pub const fn with_rxstall(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Fdebug::RXSTALL_MASK) | ((value << Fdebug::RXSTALL_OFFSET) & Fdebug::RXSTALL_MASK)
+            bits: (self.bits & !Fdebug::RXSTALL_MASK)
+                | ((value << Fdebug::RXSTALL_OFFSET) & Fdebug::RXSTALL_MASK),
         }
     }
 }
@@ -1118,7 +1141,8 @@ impl Txf0 {
     /// Write **TXF0** `[31:0]` (WO)
     #[inline(always)]
     pub fn write_txf0(&self, value: u32) {
-        self.value.write_bits((value << Self::TXF0_OFFSET) & Self::TXF0_MASK);
+        self.value
+            .write_bits((value << Self::TXF0_OFFSET) & Self::TXF0_MASK);
     }
 }
 
@@ -1154,7 +1178,7 @@ impl Txf0Val {
     #[inline(always)]
     pub const fn with_txf0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Txf0::TXF0_MASK) | ((value << Txf0::TXF0_OFFSET) & Txf0::TXF0_MASK)
+            bits: (self.bits & !Txf0::TXF0_MASK) | ((value << Txf0::TXF0_OFFSET) & Txf0::TXF0_MASK),
         }
     }
 }
@@ -1209,7 +1233,8 @@ impl Txf1 {
     /// Write **TXF1** `[31:0]` (WO)
     #[inline(always)]
     pub fn write_txf1(&self, value: u32) {
-        self.value.write_bits((value << Self::TXF1_OFFSET) & Self::TXF1_MASK);
+        self.value
+            .write_bits((value << Self::TXF1_OFFSET) & Self::TXF1_MASK);
     }
 }
 
@@ -1245,7 +1270,7 @@ impl Txf1Val {
     #[inline(always)]
     pub const fn with_txf1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Txf1::TXF1_MASK) | ((value << Txf1::TXF1_OFFSET) & Txf1::TXF1_MASK)
+            bits: (self.bits & !Txf1::TXF1_MASK) | ((value << Txf1::TXF1_OFFSET) & Txf1::TXF1_MASK),
         }
     }
 }
@@ -1300,7 +1325,8 @@ impl Txf2 {
     /// Write **TXF2** `[31:0]` (WO)
     #[inline(always)]
     pub fn write_txf2(&self, value: u32) {
-        self.value.write_bits((value << Self::TXF2_OFFSET) & Self::TXF2_MASK);
+        self.value
+            .write_bits((value << Self::TXF2_OFFSET) & Self::TXF2_MASK);
     }
 }
 
@@ -1336,7 +1362,7 @@ impl Txf2Val {
     #[inline(always)]
     pub const fn with_txf2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Txf2::TXF2_MASK) | ((value << Txf2::TXF2_OFFSET) & Txf2::TXF2_MASK)
+            bits: (self.bits & !Txf2::TXF2_MASK) | ((value << Txf2::TXF2_OFFSET) & Txf2::TXF2_MASK),
         }
     }
 }
@@ -1391,7 +1417,8 @@ impl Txf3 {
     /// Write **TXF3** `[31:0]` (WO)
     #[inline(always)]
     pub fn write_txf3(&self, value: u32) {
-        self.value.write_bits((value << Self::TXF3_OFFSET) & Self::TXF3_MASK);
+        self.value
+            .write_bits((value << Self::TXF3_OFFSET) & Self::TXF3_MASK);
     }
 }
 
@@ -1427,7 +1454,7 @@ impl Txf3Val {
     #[inline(always)]
     pub const fn with_txf3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Txf3::TXF3_MASK) | ((value << Txf3::TXF3_OFFSET) & Txf3::TXF3_MASK)
+            bits: (self.bits & !Txf3::TXF3_MASK) | ((value << Txf3::TXF3_OFFSET) & Txf3::TXF3_MASK),
         }
     }
 }
@@ -1817,7 +1844,9 @@ impl Irq {
     /// Write **IRQ** `[7:0]` (RW)
     #[inline(always)]
     pub fn write_irq(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IRQ_MASK) | ((value << Self::IRQ_OFFSET) & Self::IRQ_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IRQ_MASK) | ((value << Self::IRQ_OFFSET) & Self::IRQ_MASK)
+        });
     }
 }
 
@@ -1859,7 +1888,7 @@ impl IrqVal {
     #[inline(always)]
     pub const fn with_irq(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Irq::IRQ_MASK) | ((value << Irq::IRQ_OFFSET) & Irq::IRQ_MASK)
+            bits: (self.bits & !Irq::IRQ_MASK) | ((value << Irq::IRQ_OFFSET) & Irq::IRQ_MASK),
         }
     }
 }
@@ -1926,7 +1955,8 @@ impl IrqForce {
     /// Write **IRQ_FORCE** `[7:0]` (WO)
     #[inline(always)]
     pub fn write_irq_force(&self, value: u32) {
-        self.value.write_bits((value << Self::IRQ_FORCE_OFFSET) & Self::IRQ_FORCE_MASK);
+        self.value
+            .write_bits((value << Self::IRQ_FORCE_OFFSET) & Self::IRQ_FORCE_MASK);
     }
 }
 
@@ -1962,7 +1992,8 @@ impl IrqForceVal {
     #[inline(always)]
     pub const fn with_irq_force(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !IrqForce::IRQ_FORCE_MASK) | ((value << IrqForce::IRQ_FORCE_OFFSET) & IrqForce::IRQ_FORCE_MASK)
+            bits: (self.bits & !IrqForce::IRQ_FORCE_MASK)
+                | ((value << IrqForce::IRQ_FORCE_OFFSET) & IrqForce::IRQ_FORCE_MASK),
         }
     }
 }
@@ -2026,7 +2057,10 @@ impl InputSyncBypass {
     /// Write **INPUT_SYNC_BYPASS** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_input_sync_bypass(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INPUT_SYNC_BYPASS_MASK) | ((value << Self::INPUT_SYNC_BYPASS_OFFSET) & Self::INPUT_SYNC_BYPASS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INPUT_SYNC_BYPASS_MASK)
+                | ((value << Self::INPUT_SYNC_BYPASS_OFFSET) & Self::INPUT_SYNC_BYPASS_MASK)
+        });
     }
 }
 
@@ -2061,14 +2095,17 @@ impl InputSyncBypassVal {
     /// Read **INPUT_SYNC_BYPASS** `[31:0]`
     #[inline(always)]
     pub const fn input_sync_bypass(&self) -> u32 {
-        (self.bits & InputSyncBypass::INPUT_SYNC_BYPASS_MASK) >> InputSyncBypass::INPUT_SYNC_BYPASS_OFFSET
+        (self.bits & InputSyncBypass::INPUT_SYNC_BYPASS_MASK)
+            >> InputSyncBypass::INPUT_SYNC_BYPASS_OFFSET
     }
 
     /// Set **INPUT_SYNC_BYPASS** `[31:0]`
     #[inline(always)]
     pub const fn with_input_sync_bypass(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InputSyncBypass::INPUT_SYNC_BYPASS_MASK) | ((value << InputSyncBypass::INPUT_SYNC_BYPASS_OFFSET) & InputSyncBypass::INPUT_SYNC_BYPASS_MASK)
+            bits: (self.bits & !InputSyncBypass::INPUT_SYNC_BYPASS_MASK)
+                | ((value << InputSyncBypass::INPUT_SYNC_BYPASS_OFFSET)
+                    & InputSyncBypass::INPUT_SYNC_BYPASS_MASK),
         }
     }
 }
@@ -2512,7 +2549,8 @@ impl InstrMem0 {
     /// Write **INSTR_MEM0** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem0(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM0_OFFSET) & Self::INSTR_MEM0_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM0_OFFSET) & Self::INSTR_MEM0_MASK);
     }
 }
 
@@ -2548,7 +2586,8 @@ impl InstrMem0Val {
     #[inline(always)]
     pub const fn with_instr_mem0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem0::INSTR_MEM0_MASK) | ((value << InstrMem0::INSTR_MEM0_OFFSET) & InstrMem0::INSTR_MEM0_MASK)
+            bits: (self.bits & !InstrMem0::INSTR_MEM0_MASK)
+                | ((value << InstrMem0::INSTR_MEM0_OFFSET) & InstrMem0::INSTR_MEM0_MASK),
         }
     }
 }
@@ -2603,7 +2642,8 @@ impl InstrMem1 {
     /// Write **INSTR_MEM1** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem1(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM1_OFFSET) & Self::INSTR_MEM1_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM1_OFFSET) & Self::INSTR_MEM1_MASK);
     }
 }
 
@@ -2639,7 +2679,8 @@ impl InstrMem1Val {
     #[inline(always)]
     pub const fn with_instr_mem1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem1::INSTR_MEM1_MASK) | ((value << InstrMem1::INSTR_MEM1_OFFSET) & InstrMem1::INSTR_MEM1_MASK)
+            bits: (self.bits & !InstrMem1::INSTR_MEM1_MASK)
+                | ((value << InstrMem1::INSTR_MEM1_OFFSET) & InstrMem1::INSTR_MEM1_MASK),
         }
     }
 }
@@ -2694,7 +2735,8 @@ impl InstrMem2 {
     /// Write **INSTR_MEM2** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem2(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM2_OFFSET) & Self::INSTR_MEM2_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM2_OFFSET) & Self::INSTR_MEM2_MASK);
     }
 }
 
@@ -2730,7 +2772,8 @@ impl InstrMem2Val {
     #[inline(always)]
     pub const fn with_instr_mem2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem2::INSTR_MEM2_MASK) | ((value << InstrMem2::INSTR_MEM2_OFFSET) & InstrMem2::INSTR_MEM2_MASK)
+            bits: (self.bits & !InstrMem2::INSTR_MEM2_MASK)
+                | ((value << InstrMem2::INSTR_MEM2_OFFSET) & InstrMem2::INSTR_MEM2_MASK),
         }
     }
 }
@@ -2785,7 +2828,8 @@ impl InstrMem3 {
     /// Write **INSTR_MEM3** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem3(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM3_OFFSET) & Self::INSTR_MEM3_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM3_OFFSET) & Self::INSTR_MEM3_MASK);
     }
 }
 
@@ -2821,7 +2865,8 @@ impl InstrMem3Val {
     #[inline(always)]
     pub const fn with_instr_mem3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem3::INSTR_MEM3_MASK) | ((value << InstrMem3::INSTR_MEM3_OFFSET) & InstrMem3::INSTR_MEM3_MASK)
+            bits: (self.bits & !InstrMem3::INSTR_MEM3_MASK)
+                | ((value << InstrMem3::INSTR_MEM3_OFFSET) & InstrMem3::INSTR_MEM3_MASK),
         }
     }
 }
@@ -2876,7 +2921,8 @@ impl InstrMem4 {
     /// Write **INSTR_MEM4** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem4(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM4_OFFSET) & Self::INSTR_MEM4_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM4_OFFSET) & Self::INSTR_MEM4_MASK);
     }
 }
 
@@ -2912,7 +2958,8 @@ impl InstrMem4Val {
     #[inline(always)]
     pub const fn with_instr_mem4(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem4::INSTR_MEM4_MASK) | ((value << InstrMem4::INSTR_MEM4_OFFSET) & InstrMem4::INSTR_MEM4_MASK)
+            bits: (self.bits & !InstrMem4::INSTR_MEM4_MASK)
+                | ((value << InstrMem4::INSTR_MEM4_OFFSET) & InstrMem4::INSTR_MEM4_MASK),
         }
     }
 }
@@ -2967,7 +3014,8 @@ impl InstrMem5 {
     /// Write **INSTR_MEM5** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem5(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM5_OFFSET) & Self::INSTR_MEM5_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM5_OFFSET) & Self::INSTR_MEM5_MASK);
     }
 }
 
@@ -3003,7 +3051,8 @@ impl InstrMem5Val {
     #[inline(always)]
     pub const fn with_instr_mem5(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem5::INSTR_MEM5_MASK) | ((value << InstrMem5::INSTR_MEM5_OFFSET) & InstrMem5::INSTR_MEM5_MASK)
+            bits: (self.bits & !InstrMem5::INSTR_MEM5_MASK)
+                | ((value << InstrMem5::INSTR_MEM5_OFFSET) & InstrMem5::INSTR_MEM5_MASK),
         }
     }
 }
@@ -3058,7 +3107,8 @@ impl InstrMem6 {
     /// Write **INSTR_MEM6** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem6(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM6_OFFSET) & Self::INSTR_MEM6_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM6_OFFSET) & Self::INSTR_MEM6_MASK);
     }
 }
 
@@ -3094,7 +3144,8 @@ impl InstrMem6Val {
     #[inline(always)]
     pub const fn with_instr_mem6(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem6::INSTR_MEM6_MASK) | ((value << InstrMem6::INSTR_MEM6_OFFSET) & InstrMem6::INSTR_MEM6_MASK)
+            bits: (self.bits & !InstrMem6::INSTR_MEM6_MASK)
+                | ((value << InstrMem6::INSTR_MEM6_OFFSET) & InstrMem6::INSTR_MEM6_MASK),
         }
     }
 }
@@ -3149,7 +3200,8 @@ impl InstrMem7 {
     /// Write **INSTR_MEM7** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem7(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM7_OFFSET) & Self::INSTR_MEM7_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM7_OFFSET) & Self::INSTR_MEM7_MASK);
     }
 }
 
@@ -3185,7 +3237,8 @@ impl InstrMem7Val {
     #[inline(always)]
     pub const fn with_instr_mem7(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem7::INSTR_MEM7_MASK) | ((value << InstrMem7::INSTR_MEM7_OFFSET) & InstrMem7::INSTR_MEM7_MASK)
+            bits: (self.bits & !InstrMem7::INSTR_MEM7_MASK)
+                | ((value << InstrMem7::INSTR_MEM7_OFFSET) & InstrMem7::INSTR_MEM7_MASK),
         }
     }
 }
@@ -3240,7 +3293,8 @@ impl InstrMem8 {
     /// Write **INSTR_MEM8** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem8(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM8_OFFSET) & Self::INSTR_MEM8_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM8_OFFSET) & Self::INSTR_MEM8_MASK);
     }
 }
 
@@ -3276,7 +3330,8 @@ impl InstrMem8Val {
     #[inline(always)]
     pub const fn with_instr_mem8(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem8::INSTR_MEM8_MASK) | ((value << InstrMem8::INSTR_MEM8_OFFSET) & InstrMem8::INSTR_MEM8_MASK)
+            bits: (self.bits & !InstrMem8::INSTR_MEM8_MASK)
+                | ((value << InstrMem8::INSTR_MEM8_OFFSET) & InstrMem8::INSTR_MEM8_MASK),
         }
     }
 }
@@ -3331,7 +3386,8 @@ impl InstrMem9 {
     /// Write **INSTR_MEM9** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem9(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM9_OFFSET) & Self::INSTR_MEM9_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM9_OFFSET) & Self::INSTR_MEM9_MASK);
     }
 }
 
@@ -3367,7 +3423,8 @@ impl InstrMem9Val {
     #[inline(always)]
     pub const fn with_instr_mem9(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem9::INSTR_MEM9_MASK) | ((value << InstrMem9::INSTR_MEM9_OFFSET) & InstrMem9::INSTR_MEM9_MASK)
+            bits: (self.bits & !InstrMem9::INSTR_MEM9_MASK)
+                | ((value << InstrMem9::INSTR_MEM9_OFFSET) & InstrMem9::INSTR_MEM9_MASK),
         }
     }
 }
@@ -3422,7 +3479,8 @@ impl InstrMem10 {
     /// Write **INSTR_MEM10** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem10(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM10_OFFSET) & Self::INSTR_MEM10_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM10_OFFSET) & Self::INSTR_MEM10_MASK);
     }
 }
 
@@ -3458,7 +3516,8 @@ impl InstrMem10Val {
     #[inline(always)]
     pub const fn with_instr_mem10(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem10::INSTR_MEM10_MASK) | ((value << InstrMem10::INSTR_MEM10_OFFSET) & InstrMem10::INSTR_MEM10_MASK)
+            bits: (self.bits & !InstrMem10::INSTR_MEM10_MASK)
+                | ((value << InstrMem10::INSTR_MEM10_OFFSET) & InstrMem10::INSTR_MEM10_MASK),
         }
     }
 }
@@ -3513,7 +3572,8 @@ impl InstrMem11 {
     /// Write **INSTR_MEM11** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem11(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM11_OFFSET) & Self::INSTR_MEM11_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM11_OFFSET) & Self::INSTR_MEM11_MASK);
     }
 }
 
@@ -3549,7 +3609,8 @@ impl InstrMem11Val {
     #[inline(always)]
     pub const fn with_instr_mem11(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem11::INSTR_MEM11_MASK) | ((value << InstrMem11::INSTR_MEM11_OFFSET) & InstrMem11::INSTR_MEM11_MASK)
+            bits: (self.bits & !InstrMem11::INSTR_MEM11_MASK)
+                | ((value << InstrMem11::INSTR_MEM11_OFFSET) & InstrMem11::INSTR_MEM11_MASK),
         }
     }
 }
@@ -3604,7 +3665,8 @@ impl InstrMem12 {
     /// Write **INSTR_MEM12** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem12(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM12_OFFSET) & Self::INSTR_MEM12_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM12_OFFSET) & Self::INSTR_MEM12_MASK);
     }
 }
 
@@ -3640,7 +3702,8 @@ impl InstrMem12Val {
     #[inline(always)]
     pub const fn with_instr_mem12(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem12::INSTR_MEM12_MASK) | ((value << InstrMem12::INSTR_MEM12_OFFSET) & InstrMem12::INSTR_MEM12_MASK)
+            bits: (self.bits & !InstrMem12::INSTR_MEM12_MASK)
+                | ((value << InstrMem12::INSTR_MEM12_OFFSET) & InstrMem12::INSTR_MEM12_MASK),
         }
     }
 }
@@ -3695,7 +3758,8 @@ impl InstrMem13 {
     /// Write **INSTR_MEM13** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem13(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM13_OFFSET) & Self::INSTR_MEM13_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM13_OFFSET) & Self::INSTR_MEM13_MASK);
     }
 }
 
@@ -3731,7 +3795,8 @@ impl InstrMem13Val {
     #[inline(always)]
     pub const fn with_instr_mem13(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem13::INSTR_MEM13_MASK) | ((value << InstrMem13::INSTR_MEM13_OFFSET) & InstrMem13::INSTR_MEM13_MASK)
+            bits: (self.bits & !InstrMem13::INSTR_MEM13_MASK)
+                | ((value << InstrMem13::INSTR_MEM13_OFFSET) & InstrMem13::INSTR_MEM13_MASK),
         }
     }
 }
@@ -3786,7 +3851,8 @@ impl InstrMem14 {
     /// Write **INSTR_MEM14** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem14(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM14_OFFSET) & Self::INSTR_MEM14_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM14_OFFSET) & Self::INSTR_MEM14_MASK);
     }
 }
 
@@ -3822,7 +3888,8 @@ impl InstrMem14Val {
     #[inline(always)]
     pub const fn with_instr_mem14(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem14::INSTR_MEM14_MASK) | ((value << InstrMem14::INSTR_MEM14_OFFSET) & InstrMem14::INSTR_MEM14_MASK)
+            bits: (self.bits & !InstrMem14::INSTR_MEM14_MASK)
+                | ((value << InstrMem14::INSTR_MEM14_OFFSET) & InstrMem14::INSTR_MEM14_MASK),
         }
     }
 }
@@ -3877,7 +3944,8 @@ impl InstrMem15 {
     /// Write **INSTR_MEM15** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem15(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM15_OFFSET) & Self::INSTR_MEM15_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM15_OFFSET) & Self::INSTR_MEM15_MASK);
     }
 }
 
@@ -3913,7 +3981,8 @@ impl InstrMem15Val {
     #[inline(always)]
     pub const fn with_instr_mem15(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem15::INSTR_MEM15_MASK) | ((value << InstrMem15::INSTR_MEM15_OFFSET) & InstrMem15::INSTR_MEM15_MASK)
+            bits: (self.bits & !InstrMem15::INSTR_MEM15_MASK)
+                | ((value << InstrMem15::INSTR_MEM15_OFFSET) & InstrMem15::INSTR_MEM15_MASK),
         }
     }
 }
@@ -3968,7 +4037,8 @@ impl InstrMem16 {
     /// Write **INSTR_MEM16** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem16(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM16_OFFSET) & Self::INSTR_MEM16_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM16_OFFSET) & Self::INSTR_MEM16_MASK);
     }
 }
 
@@ -4004,7 +4074,8 @@ impl InstrMem16Val {
     #[inline(always)]
     pub const fn with_instr_mem16(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem16::INSTR_MEM16_MASK) | ((value << InstrMem16::INSTR_MEM16_OFFSET) & InstrMem16::INSTR_MEM16_MASK)
+            bits: (self.bits & !InstrMem16::INSTR_MEM16_MASK)
+                | ((value << InstrMem16::INSTR_MEM16_OFFSET) & InstrMem16::INSTR_MEM16_MASK),
         }
     }
 }
@@ -4059,7 +4130,8 @@ impl InstrMem17 {
     /// Write **INSTR_MEM17** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem17(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM17_OFFSET) & Self::INSTR_MEM17_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM17_OFFSET) & Self::INSTR_MEM17_MASK);
     }
 }
 
@@ -4095,7 +4167,8 @@ impl InstrMem17Val {
     #[inline(always)]
     pub const fn with_instr_mem17(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem17::INSTR_MEM17_MASK) | ((value << InstrMem17::INSTR_MEM17_OFFSET) & InstrMem17::INSTR_MEM17_MASK)
+            bits: (self.bits & !InstrMem17::INSTR_MEM17_MASK)
+                | ((value << InstrMem17::INSTR_MEM17_OFFSET) & InstrMem17::INSTR_MEM17_MASK),
         }
     }
 }
@@ -4150,7 +4223,8 @@ impl InstrMem18 {
     /// Write **INSTR_MEM18** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem18(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM18_OFFSET) & Self::INSTR_MEM18_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM18_OFFSET) & Self::INSTR_MEM18_MASK);
     }
 }
 
@@ -4186,7 +4260,8 @@ impl InstrMem18Val {
     #[inline(always)]
     pub const fn with_instr_mem18(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem18::INSTR_MEM18_MASK) | ((value << InstrMem18::INSTR_MEM18_OFFSET) & InstrMem18::INSTR_MEM18_MASK)
+            bits: (self.bits & !InstrMem18::INSTR_MEM18_MASK)
+                | ((value << InstrMem18::INSTR_MEM18_OFFSET) & InstrMem18::INSTR_MEM18_MASK),
         }
     }
 }
@@ -4241,7 +4316,8 @@ impl InstrMem19 {
     /// Write **INSTR_MEM19** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem19(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM19_OFFSET) & Self::INSTR_MEM19_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM19_OFFSET) & Self::INSTR_MEM19_MASK);
     }
 }
 
@@ -4277,7 +4353,8 @@ impl InstrMem19Val {
     #[inline(always)]
     pub const fn with_instr_mem19(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem19::INSTR_MEM19_MASK) | ((value << InstrMem19::INSTR_MEM19_OFFSET) & InstrMem19::INSTR_MEM19_MASK)
+            bits: (self.bits & !InstrMem19::INSTR_MEM19_MASK)
+                | ((value << InstrMem19::INSTR_MEM19_OFFSET) & InstrMem19::INSTR_MEM19_MASK),
         }
     }
 }
@@ -4332,7 +4409,8 @@ impl InstrMem20 {
     /// Write **INSTR_MEM20** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem20(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM20_OFFSET) & Self::INSTR_MEM20_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM20_OFFSET) & Self::INSTR_MEM20_MASK);
     }
 }
 
@@ -4368,7 +4446,8 @@ impl InstrMem20Val {
     #[inline(always)]
     pub const fn with_instr_mem20(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem20::INSTR_MEM20_MASK) | ((value << InstrMem20::INSTR_MEM20_OFFSET) & InstrMem20::INSTR_MEM20_MASK)
+            bits: (self.bits & !InstrMem20::INSTR_MEM20_MASK)
+                | ((value << InstrMem20::INSTR_MEM20_OFFSET) & InstrMem20::INSTR_MEM20_MASK),
         }
     }
 }
@@ -4423,7 +4502,8 @@ impl InstrMem21 {
     /// Write **INSTR_MEM21** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem21(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM21_OFFSET) & Self::INSTR_MEM21_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM21_OFFSET) & Self::INSTR_MEM21_MASK);
     }
 }
 
@@ -4459,7 +4539,8 @@ impl InstrMem21Val {
     #[inline(always)]
     pub const fn with_instr_mem21(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem21::INSTR_MEM21_MASK) | ((value << InstrMem21::INSTR_MEM21_OFFSET) & InstrMem21::INSTR_MEM21_MASK)
+            bits: (self.bits & !InstrMem21::INSTR_MEM21_MASK)
+                | ((value << InstrMem21::INSTR_MEM21_OFFSET) & InstrMem21::INSTR_MEM21_MASK),
         }
     }
 }
@@ -4514,7 +4595,8 @@ impl InstrMem22 {
     /// Write **INSTR_MEM22** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem22(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM22_OFFSET) & Self::INSTR_MEM22_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM22_OFFSET) & Self::INSTR_MEM22_MASK);
     }
 }
 
@@ -4550,7 +4632,8 @@ impl InstrMem22Val {
     #[inline(always)]
     pub const fn with_instr_mem22(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem22::INSTR_MEM22_MASK) | ((value << InstrMem22::INSTR_MEM22_OFFSET) & InstrMem22::INSTR_MEM22_MASK)
+            bits: (self.bits & !InstrMem22::INSTR_MEM22_MASK)
+                | ((value << InstrMem22::INSTR_MEM22_OFFSET) & InstrMem22::INSTR_MEM22_MASK),
         }
     }
 }
@@ -4605,7 +4688,8 @@ impl InstrMem23 {
     /// Write **INSTR_MEM23** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem23(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM23_OFFSET) & Self::INSTR_MEM23_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM23_OFFSET) & Self::INSTR_MEM23_MASK);
     }
 }
 
@@ -4641,7 +4725,8 @@ impl InstrMem23Val {
     #[inline(always)]
     pub const fn with_instr_mem23(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem23::INSTR_MEM23_MASK) | ((value << InstrMem23::INSTR_MEM23_OFFSET) & InstrMem23::INSTR_MEM23_MASK)
+            bits: (self.bits & !InstrMem23::INSTR_MEM23_MASK)
+                | ((value << InstrMem23::INSTR_MEM23_OFFSET) & InstrMem23::INSTR_MEM23_MASK),
         }
     }
 }
@@ -4696,7 +4781,8 @@ impl InstrMem24 {
     /// Write **INSTR_MEM24** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem24(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM24_OFFSET) & Self::INSTR_MEM24_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM24_OFFSET) & Self::INSTR_MEM24_MASK);
     }
 }
 
@@ -4732,7 +4818,8 @@ impl InstrMem24Val {
     #[inline(always)]
     pub const fn with_instr_mem24(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem24::INSTR_MEM24_MASK) | ((value << InstrMem24::INSTR_MEM24_OFFSET) & InstrMem24::INSTR_MEM24_MASK)
+            bits: (self.bits & !InstrMem24::INSTR_MEM24_MASK)
+                | ((value << InstrMem24::INSTR_MEM24_OFFSET) & InstrMem24::INSTR_MEM24_MASK),
         }
     }
 }
@@ -4787,7 +4874,8 @@ impl InstrMem25 {
     /// Write **INSTR_MEM25** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem25(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM25_OFFSET) & Self::INSTR_MEM25_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM25_OFFSET) & Self::INSTR_MEM25_MASK);
     }
 }
 
@@ -4823,7 +4911,8 @@ impl InstrMem25Val {
     #[inline(always)]
     pub const fn with_instr_mem25(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem25::INSTR_MEM25_MASK) | ((value << InstrMem25::INSTR_MEM25_OFFSET) & InstrMem25::INSTR_MEM25_MASK)
+            bits: (self.bits & !InstrMem25::INSTR_MEM25_MASK)
+                | ((value << InstrMem25::INSTR_MEM25_OFFSET) & InstrMem25::INSTR_MEM25_MASK),
         }
     }
 }
@@ -4878,7 +4967,8 @@ impl InstrMem26 {
     /// Write **INSTR_MEM26** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem26(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM26_OFFSET) & Self::INSTR_MEM26_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM26_OFFSET) & Self::INSTR_MEM26_MASK);
     }
 }
 
@@ -4914,7 +5004,8 @@ impl InstrMem26Val {
     #[inline(always)]
     pub const fn with_instr_mem26(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem26::INSTR_MEM26_MASK) | ((value << InstrMem26::INSTR_MEM26_OFFSET) & InstrMem26::INSTR_MEM26_MASK)
+            bits: (self.bits & !InstrMem26::INSTR_MEM26_MASK)
+                | ((value << InstrMem26::INSTR_MEM26_OFFSET) & InstrMem26::INSTR_MEM26_MASK),
         }
     }
 }
@@ -4969,7 +5060,8 @@ impl InstrMem27 {
     /// Write **INSTR_MEM27** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem27(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM27_OFFSET) & Self::INSTR_MEM27_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM27_OFFSET) & Self::INSTR_MEM27_MASK);
     }
 }
 
@@ -5005,7 +5097,8 @@ impl InstrMem27Val {
     #[inline(always)]
     pub const fn with_instr_mem27(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem27::INSTR_MEM27_MASK) | ((value << InstrMem27::INSTR_MEM27_OFFSET) & InstrMem27::INSTR_MEM27_MASK)
+            bits: (self.bits & !InstrMem27::INSTR_MEM27_MASK)
+                | ((value << InstrMem27::INSTR_MEM27_OFFSET) & InstrMem27::INSTR_MEM27_MASK),
         }
     }
 }
@@ -5060,7 +5153,8 @@ impl InstrMem28 {
     /// Write **INSTR_MEM28** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem28(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM28_OFFSET) & Self::INSTR_MEM28_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM28_OFFSET) & Self::INSTR_MEM28_MASK);
     }
 }
 
@@ -5096,7 +5190,8 @@ impl InstrMem28Val {
     #[inline(always)]
     pub const fn with_instr_mem28(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem28::INSTR_MEM28_MASK) | ((value << InstrMem28::INSTR_MEM28_OFFSET) & InstrMem28::INSTR_MEM28_MASK)
+            bits: (self.bits & !InstrMem28::INSTR_MEM28_MASK)
+                | ((value << InstrMem28::INSTR_MEM28_OFFSET) & InstrMem28::INSTR_MEM28_MASK),
         }
     }
 }
@@ -5151,7 +5246,8 @@ impl InstrMem29 {
     /// Write **INSTR_MEM29** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem29(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM29_OFFSET) & Self::INSTR_MEM29_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM29_OFFSET) & Self::INSTR_MEM29_MASK);
     }
 }
 
@@ -5187,7 +5283,8 @@ impl InstrMem29Val {
     #[inline(always)]
     pub const fn with_instr_mem29(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem29::INSTR_MEM29_MASK) | ((value << InstrMem29::INSTR_MEM29_OFFSET) & InstrMem29::INSTR_MEM29_MASK)
+            bits: (self.bits & !InstrMem29::INSTR_MEM29_MASK)
+                | ((value << InstrMem29::INSTR_MEM29_OFFSET) & InstrMem29::INSTR_MEM29_MASK),
         }
     }
 }
@@ -5242,7 +5339,8 @@ impl InstrMem30 {
     /// Write **INSTR_MEM30** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem30(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM30_OFFSET) & Self::INSTR_MEM30_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM30_OFFSET) & Self::INSTR_MEM30_MASK);
     }
 }
 
@@ -5278,7 +5376,8 @@ impl InstrMem30Val {
     #[inline(always)]
     pub const fn with_instr_mem30(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem30::INSTR_MEM30_MASK) | ((value << InstrMem30::INSTR_MEM30_OFFSET) & InstrMem30::INSTR_MEM30_MASK)
+            bits: (self.bits & !InstrMem30::INSTR_MEM30_MASK)
+                | ((value << InstrMem30::INSTR_MEM30_OFFSET) & InstrMem30::INSTR_MEM30_MASK),
         }
     }
 }
@@ -5333,7 +5432,8 @@ impl InstrMem31 {
     /// Write **INSTR_MEM31** `[15:0]` (WO)
     #[inline(always)]
     pub fn write_instr_mem31(&self, value: u32) {
-        self.value.write_bits((value << Self::INSTR_MEM31_OFFSET) & Self::INSTR_MEM31_MASK);
+        self.value
+            .write_bits((value << Self::INSTR_MEM31_OFFSET) & Self::INSTR_MEM31_MASK);
     }
 }
 
@@ -5369,7 +5469,8 @@ impl InstrMem31Val {
     #[inline(always)]
     pub const fn with_instr_mem31(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !InstrMem31::INSTR_MEM31_MASK) | ((value << InstrMem31::INSTR_MEM31_OFFSET) & InstrMem31::INSTR_MEM31_MASK)
+            bits: (self.bits & !InstrMem31::INSTR_MEM31_MASK)
+                | ((value << InstrMem31::INSTR_MEM31_OFFSET) & InstrMem31::INSTR_MEM31_MASK),
         }
     }
 }
@@ -5456,7 +5557,9 @@ impl Sm0Clkdiv {
     /// Value of 0 is interpreted as 65536. If INT is 0, FRAC must also be 0.
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK)
+        });
     }
 
     /// **FRAC** `[15:8]` (RW)
@@ -5472,7 +5575,9 @@ impl Sm0Clkdiv {
     /// Fractional part of clock divisor
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK)
+        });
     }
 }
 
@@ -5528,7 +5633,8 @@ impl Sm0ClkdivVal {
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm0Clkdiv::INT_MASK) | ((value << Sm0Clkdiv::INT_OFFSET) & Sm0Clkdiv::INT_MASK)
+            bits: (self.bits & !Sm0Clkdiv::INT_MASK)
+                | ((value << Sm0Clkdiv::INT_OFFSET) & Sm0Clkdiv::INT_MASK),
         }
     }
 
@@ -5538,7 +5644,8 @@ impl Sm0ClkdivVal {
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm0Clkdiv::FRAC_MASK) | ((value << Sm0Clkdiv::FRAC_OFFSET) & Sm0Clkdiv::FRAC_MASK)
+            bits: (self.bits & !Sm0Clkdiv::FRAC_MASK)
+                | ((value << Sm0Clkdiv::FRAC_OFFSET) & Sm0Clkdiv::FRAC_MASK),
         }
     }
 }
@@ -5827,7 +5934,9 @@ impl Sm0Execctrl {
     /// The GPIO number to use as condition for JMP PIN. Unaffected by input mapping.
     #[inline(always)]
     pub fn write_jmp_pin(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::JMP_PIN_MASK) | ((value << Self::JMP_PIN_OFFSET) & Self::JMP_PIN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::JMP_PIN_MASK) | ((value << Self::JMP_PIN_OFFSET) & Self::JMP_PIN_MASK)
+        });
     }
 
     /// **OUT_EN_SEL** `[23:19]` (RW)
@@ -5843,7 +5952,10 @@ impl Sm0Execctrl {
     /// Which data bit to use for inline OUT enable
     #[inline(always)]
     pub fn write_out_en_sel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUT_EN_SEL_MASK) | ((value << Self::OUT_EN_SEL_OFFSET) & Self::OUT_EN_SEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUT_EN_SEL_MASK)
+                | ((value << Self::OUT_EN_SEL_OFFSET) & Self::OUT_EN_SEL_MASK)
+        });
     }
 
     /// **INLINE_OUT_EN** `[18]` (RW)
@@ -5904,7 +6016,9 @@ impl Sm0Execctrl {
     /// If the instruction is a jump, and the jump condition is true, the jump takes priority.
     #[inline(always)]
     pub fn write_wrap_top(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::WRAP_TOP_MASK) | ((value << Self::WRAP_TOP_OFFSET) & Self::WRAP_TOP_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::WRAP_TOP_MASK) | ((value << Self::WRAP_TOP_OFFSET) & Self::WRAP_TOP_MASK)
+        });
     }
 
     /// **WRAP_BOTTOM** `[11:7]` (RW)
@@ -5920,7 +6034,10 @@ impl Sm0Execctrl {
     /// After reaching wrap_top, execution is wrapped to this address.
     #[inline(always)]
     pub fn write_wrap_bottom(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::WRAP_BOTTOM_MASK) | ((value << Self::WRAP_BOTTOM_OFFSET) & Self::WRAP_BOTTOM_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::WRAP_BOTTOM_MASK)
+                | ((value << Self::WRAP_BOTTOM_OFFSET) & Self::WRAP_BOTTOM_MASK)
+        });
     }
 
     /// **STATUS_SEL** `[6:5]` (RW)
@@ -5936,7 +6053,10 @@ impl Sm0Execctrl {
     /// Comparison used for the MOV x, STATUS instruction.
     #[inline(always)]
     pub fn write_status_sel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STATUS_SEL_MASK) | ((value << Self::STATUS_SEL_OFFSET) & Self::STATUS_SEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STATUS_SEL_MASK)
+                | ((value << Self::STATUS_SEL_OFFSET) & Self::STATUS_SEL_MASK)
+        });
     }
 
     /// **STATUS_N** `[4:0]` (RW)
@@ -5954,7 +6074,9 @@ impl Sm0Execctrl {
     /// If STATUS_SEL is TXLEVEL or RXLEVEL, then values of STATUS_N greater than the current FIFO depth are reserved, and have undefined behaviour.
     #[inline(always)]
     pub fn write_status_n(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STATUS_N_MASK) | ((value << Self::STATUS_N_OFFSET) & Self::STATUS_N_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STATUS_N_MASK) | ((value << Self::STATUS_N_OFFSET) & Self::STATUS_N_MASK)
+        });
     }
 }
 
@@ -6089,7 +6211,7 @@ impl Sm0ExecctrlVal {
                 self.bits | Sm0Execctrl::SIDE_EN_MASK
             } else {
                 self.bits & !Sm0Execctrl::SIDE_EN_MASK
-            }
+            },
         }
     }
 
@@ -6103,7 +6225,7 @@ impl Sm0ExecctrlVal {
                 self.bits | Sm0Execctrl::SIDE_PINDIR_MASK
             } else {
                 self.bits & !Sm0Execctrl::SIDE_PINDIR_MASK
-            }
+            },
         }
     }
 
@@ -6113,7 +6235,8 @@ impl Sm0ExecctrlVal {
     #[inline(always)]
     pub const fn with_jmp_pin(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm0Execctrl::JMP_PIN_MASK) | ((value << Sm0Execctrl::JMP_PIN_OFFSET) & Sm0Execctrl::JMP_PIN_MASK)
+            bits: (self.bits & !Sm0Execctrl::JMP_PIN_MASK)
+                | ((value << Sm0Execctrl::JMP_PIN_OFFSET) & Sm0Execctrl::JMP_PIN_MASK),
         }
     }
 
@@ -6123,7 +6246,8 @@ impl Sm0ExecctrlVal {
     #[inline(always)]
     pub const fn with_out_en_sel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm0Execctrl::OUT_EN_SEL_MASK) | ((value << Sm0Execctrl::OUT_EN_SEL_OFFSET) & Sm0Execctrl::OUT_EN_SEL_MASK)
+            bits: (self.bits & !Sm0Execctrl::OUT_EN_SEL_MASK)
+                | ((value << Sm0Execctrl::OUT_EN_SEL_OFFSET) & Sm0Execctrl::OUT_EN_SEL_MASK),
         }
     }
 
@@ -6140,7 +6264,7 @@ impl Sm0ExecctrlVal {
                 self.bits | Sm0Execctrl::INLINE_OUT_EN_MASK
             } else {
                 self.bits & !Sm0Execctrl::INLINE_OUT_EN_MASK
-            }
+            },
         }
     }
 
@@ -6154,7 +6278,7 @@ impl Sm0ExecctrlVal {
                 self.bits | Sm0Execctrl::OUT_STICKY_MASK
             } else {
                 self.bits & !Sm0Execctrl::OUT_STICKY_MASK
-            }
+            },
         }
     }
 
@@ -6165,7 +6289,8 @@ impl Sm0ExecctrlVal {
     #[inline(always)]
     pub const fn with_wrap_top(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm0Execctrl::WRAP_TOP_MASK) | ((value << Sm0Execctrl::WRAP_TOP_OFFSET) & Sm0Execctrl::WRAP_TOP_MASK)
+            bits: (self.bits & !Sm0Execctrl::WRAP_TOP_MASK)
+                | ((value << Sm0Execctrl::WRAP_TOP_OFFSET) & Sm0Execctrl::WRAP_TOP_MASK),
         }
     }
 
@@ -6175,7 +6300,8 @@ impl Sm0ExecctrlVal {
     #[inline(always)]
     pub const fn with_wrap_bottom(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm0Execctrl::WRAP_BOTTOM_MASK) | ((value << Sm0Execctrl::WRAP_BOTTOM_OFFSET) & Sm0Execctrl::WRAP_BOTTOM_MASK)
+            bits: (self.bits & !Sm0Execctrl::WRAP_BOTTOM_MASK)
+                | ((value << Sm0Execctrl::WRAP_BOTTOM_OFFSET) & Sm0Execctrl::WRAP_BOTTOM_MASK),
         }
     }
 
@@ -6185,7 +6311,8 @@ impl Sm0ExecctrlVal {
     #[inline(always)]
     pub const fn with_status_sel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm0Execctrl::STATUS_SEL_MASK) | ((value << Sm0Execctrl::STATUS_SEL_OFFSET) & Sm0Execctrl::STATUS_SEL_MASK)
+            bits: (self.bits & !Sm0Execctrl::STATUS_SEL_MASK)
+                | ((value << Sm0Execctrl::STATUS_SEL_OFFSET) & Sm0Execctrl::STATUS_SEL_MASK),
         }
     }
 
@@ -6196,7 +6323,8 @@ impl Sm0ExecctrlVal {
     #[inline(always)]
     pub const fn with_status_n(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm0Execctrl::STATUS_N_MASK) | ((value << Sm0Execctrl::STATUS_N_OFFSET) & Sm0Execctrl::STATUS_N_MASK)
+            bits: (self.bits & !Sm0Execctrl::STATUS_N_MASK)
+                | ((value << Sm0Execctrl::STATUS_N_OFFSET) & Sm0Execctrl::STATUS_N_MASK),
         }
     }
 }
@@ -6476,7 +6604,10 @@ impl Sm0Shiftctrl {
     /// Write 0 for value of 32.
     #[inline(always)]
     pub fn write_pull_thresh(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PULL_THRESH_MASK) | ((value << Self::PULL_THRESH_OFFSET) & Self::PULL_THRESH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PULL_THRESH_MASK)
+                | ((value << Self::PULL_THRESH_OFFSET) & Self::PULL_THRESH_MASK)
+        });
     }
 
     /// **PUSH_THRESH** `[24:20]` (RW)
@@ -6494,7 +6625,10 @@ impl Sm0Shiftctrl {
     /// Write 0 for value of 32.
     #[inline(always)]
     pub fn write_push_thresh(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PUSH_THRESH_MASK) | ((value << Self::PUSH_THRESH_OFFSET) & Self::PUSH_THRESH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PUSH_THRESH_MASK)
+                | ((value << Self::PUSH_THRESH_OFFSET) & Self::PUSH_THRESH_MASK)
+        });
     }
 
     /// **OUT_SHIFTDIR** `[19]` (RW)
@@ -6638,7 +6772,9 @@ impl Sm0Shiftctrl {
     /// Note this masking is applied in addition to the masking usually performed by the IN instruction. This is mainly useful for the MOV x, PINS instruction, which otherwise has no way of masking pins.
     #[inline(always)]
     pub fn write_in_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IN_COUNT_MASK) | ((value << Self::IN_COUNT_OFFSET) & Self::IN_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IN_COUNT_MASK) | ((value << Self::IN_COUNT_OFFSET) & Self::IN_COUNT_MASK)
+        });
     }
 }
 
@@ -6782,7 +6918,7 @@ impl Sm0ShiftctrlVal {
                 self.bits | Sm0Shiftctrl::FJOIN_RX_MASK
             } else {
                 self.bits & !Sm0Shiftctrl::FJOIN_RX_MASK
-            }
+            },
         }
     }
 
@@ -6798,7 +6934,7 @@ impl Sm0ShiftctrlVal {
                 self.bits | Sm0Shiftctrl::FJOIN_TX_MASK
             } else {
                 self.bits & !Sm0Shiftctrl::FJOIN_TX_MASK
-            }
+            },
         }
     }
 
@@ -6809,7 +6945,8 @@ impl Sm0ShiftctrlVal {
     #[inline(always)]
     pub const fn with_pull_thresh(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm0Shiftctrl::PULL_THRESH_MASK) | ((value << Sm0Shiftctrl::PULL_THRESH_OFFSET) & Sm0Shiftctrl::PULL_THRESH_MASK)
+            bits: (self.bits & !Sm0Shiftctrl::PULL_THRESH_MASK)
+                | ((value << Sm0Shiftctrl::PULL_THRESH_OFFSET) & Sm0Shiftctrl::PULL_THRESH_MASK),
         }
     }
 
@@ -6820,7 +6957,8 @@ impl Sm0ShiftctrlVal {
     #[inline(always)]
     pub const fn with_push_thresh(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm0Shiftctrl::PUSH_THRESH_MASK) | ((value << Sm0Shiftctrl::PUSH_THRESH_OFFSET) & Sm0Shiftctrl::PUSH_THRESH_MASK)
+            bits: (self.bits & !Sm0Shiftctrl::PUSH_THRESH_MASK)
+                | ((value << Sm0Shiftctrl::PUSH_THRESH_OFFSET) & Sm0Shiftctrl::PUSH_THRESH_MASK),
         }
     }
 
@@ -6834,7 +6972,7 @@ impl Sm0ShiftctrlVal {
                 self.bits | Sm0Shiftctrl::OUT_SHIFTDIR_MASK
             } else {
                 self.bits & !Sm0Shiftctrl::OUT_SHIFTDIR_MASK
-            }
+            },
         }
     }
 
@@ -6848,7 +6986,7 @@ impl Sm0ShiftctrlVal {
                 self.bits | Sm0Shiftctrl::IN_SHIFTDIR_MASK
             } else {
                 self.bits & !Sm0Shiftctrl::IN_SHIFTDIR_MASK
-            }
+            },
         }
     }
 
@@ -6862,7 +7000,7 @@ impl Sm0ShiftctrlVal {
                 self.bits | Sm0Shiftctrl::AUTOPULL_MASK
             } else {
                 self.bits & !Sm0Shiftctrl::AUTOPULL_MASK
-            }
+            },
         }
     }
 
@@ -6876,7 +7014,7 @@ impl Sm0ShiftctrlVal {
                 self.bits | Sm0Shiftctrl::AUTOPUSH_MASK
             } else {
                 self.bits & !Sm0Shiftctrl::AUTOPUSH_MASK
-            }
+            },
         }
     }
 
@@ -6892,7 +7030,7 @@ impl Sm0ShiftctrlVal {
                 self.bits | Sm0Shiftctrl::FJOIN_RX_PUT_MASK
             } else {
                 self.bits & !Sm0Shiftctrl::FJOIN_RX_PUT_MASK
-            }
+            },
         }
     }
 
@@ -6908,7 +7046,7 @@ impl Sm0ShiftctrlVal {
                 self.bits | Sm0Shiftctrl::FJOIN_RX_GET_MASK
             } else {
                 self.bits & !Sm0Shiftctrl::FJOIN_RX_GET_MASK
-            }
+            },
         }
     }
 
@@ -6920,7 +7058,8 @@ impl Sm0ShiftctrlVal {
     #[inline(always)]
     pub const fn with_in_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm0Shiftctrl::IN_COUNT_MASK) | ((value << Sm0Shiftctrl::IN_COUNT_OFFSET) & Sm0Shiftctrl::IN_COUNT_MASK)
+            bits: (self.bits & !Sm0Shiftctrl::IN_COUNT_MASK)
+                | ((value << Sm0Shiftctrl::IN_COUNT_OFFSET) & Sm0Shiftctrl::IN_COUNT_MASK),
         }
     }
 }
@@ -7082,7 +7221,9 @@ impl Sm0Instr {
     /// Write **SM0_INSTR** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_sm0_instr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SM0_INSTR_MASK) | ((value << Self::SM0_INSTR_OFFSET) & Self::SM0_INSTR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SM0_INSTR_MASK) | ((value << Self::SM0_INSTR_OFFSET) & Self::SM0_INSTR_MASK)
+        });
     }
 }
 
@@ -7118,7 +7259,8 @@ impl Sm0InstrVal {
     #[inline(always)]
     pub const fn with_sm0_instr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm0Instr::SM0_INSTR_MASK) | ((value << Sm0Instr::SM0_INSTR_OFFSET) & Sm0Instr::SM0_INSTR_MASK)
+            bits: (self.bits & !Sm0Instr::SM0_INSTR_MASK)
+                | ((value << Sm0Instr::SM0_INSTR_OFFSET) & Sm0Instr::SM0_INSTR_MASK),
         }
     }
 }
@@ -7272,7 +7414,10 @@ impl Sm0Pinctrl {
     /// The number of MSBs of the Delay/Side-set instruction field which are used for side-set. Inclusive of the enable bit, if present. Minimum of 0 (all delay bits, no side-set) and maximum of 5 (all side-set, no delay).
     #[inline(always)]
     pub fn write_sideset_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SIDESET_COUNT_MASK) | ((value << Self::SIDESET_COUNT_OFFSET) & Self::SIDESET_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SIDESET_COUNT_MASK)
+                | ((value << Self::SIDESET_COUNT_OFFSET) & Self::SIDESET_COUNT_MASK)
+        });
     }
 
     /// **SET_COUNT** `[28:26]` (RW)
@@ -7288,7 +7433,9 @@ impl Sm0Pinctrl {
     /// The number of pins asserted by a SET. In the range 0 to 5 inclusive.
     #[inline(always)]
     pub fn write_set_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SET_COUNT_MASK) | ((value << Self::SET_COUNT_OFFSET) & Self::SET_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SET_COUNT_MASK) | ((value << Self::SET_COUNT_OFFSET) & Self::SET_COUNT_MASK)
+        });
     }
 
     /// **OUT_COUNT** `[25:20]` (RW)
@@ -7304,7 +7451,9 @@ impl Sm0Pinctrl {
     /// The number of pins asserted by an OUT PINS, OUT PINDIRS or MOV PINS instruction. In the range 0 to 32 inclusive.
     #[inline(always)]
     pub fn write_out_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUT_COUNT_MASK) | ((value << Self::OUT_COUNT_OFFSET) & Self::OUT_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUT_COUNT_MASK) | ((value << Self::OUT_COUNT_OFFSET) & Self::OUT_COUNT_MASK)
+        });
     }
 
     /// **IN_BASE** `[19:15]` (RW)
@@ -7320,7 +7469,9 @@ impl Sm0Pinctrl {
     /// The pin which is mapped to the least-significant bit of a state machine's IN data bus. Higher-numbered pins are mapped to consecutively more-significant data bits, with a modulo of 32 applied to pin number.
     #[inline(always)]
     pub fn write_in_base(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IN_BASE_MASK) | ((value << Self::IN_BASE_OFFSET) & Self::IN_BASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IN_BASE_MASK) | ((value << Self::IN_BASE_OFFSET) & Self::IN_BASE_MASK)
+        });
     }
 
     /// **SIDESET_BASE** `[14:10]` (RW)
@@ -7336,7 +7487,10 @@ impl Sm0Pinctrl {
     /// The lowest-numbered pin that will be affected by a side-set operation. The MSBs of an instruction's side-set/delay field (up to 5, determined by SIDESET_COUNT) are used for side-set data, with the remaining LSBs used for delay. The least-significant bit of the side-set portion is the bit written to this pin, with more-significant bits written to higher-numbered pins.
     #[inline(always)]
     pub fn write_sideset_base(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SIDESET_BASE_MASK) | ((value << Self::SIDESET_BASE_OFFSET) & Self::SIDESET_BASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SIDESET_BASE_MASK)
+                | ((value << Self::SIDESET_BASE_OFFSET) & Self::SIDESET_BASE_MASK)
+        });
     }
 
     /// **SET_BASE** `[9:5]` (RW)
@@ -7352,7 +7506,9 @@ impl Sm0Pinctrl {
     /// The lowest-numbered pin that will be affected by a SET PINS or SET PINDIRS instruction. The data written to this pin is the least-significant bit of the SET data.
     #[inline(always)]
     pub fn write_set_base(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SET_BASE_MASK) | ((value << Self::SET_BASE_OFFSET) & Self::SET_BASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SET_BASE_MASK) | ((value << Self::SET_BASE_OFFSET) & Self::SET_BASE_MASK)
+        });
     }
 
     /// **OUT_BASE** `[4:0]` (RW)
@@ -7368,7 +7524,9 @@ impl Sm0Pinctrl {
     /// The lowest-numbered pin that will be affected by an OUT PINS, OUT PINDIRS or MOV PINS instruction. The data written to this pin will always be the least-significant bit of the OUT or MOV data.
     #[inline(always)]
     pub fn write_out_base(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUT_BASE_MASK) | ((value << Self::OUT_BASE_OFFSET) & Self::OUT_BASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUT_BASE_MASK) | ((value << Self::OUT_BASE_OFFSET) & Self::OUT_BASE_MASK)
+        });
     }
 }
 
@@ -7462,7 +7620,8 @@ impl Sm0PinctrlVal {
     #[inline(always)]
     pub const fn with_sideset_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm0Pinctrl::SIDESET_COUNT_MASK) | ((value << Sm0Pinctrl::SIDESET_COUNT_OFFSET) & Sm0Pinctrl::SIDESET_COUNT_MASK)
+            bits: (self.bits & !Sm0Pinctrl::SIDESET_COUNT_MASK)
+                | ((value << Sm0Pinctrl::SIDESET_COUNT_OFFSET) & Sm0Pinctrl::SIDESET_COUNT_MASK),
         }
     }
 
@@ -7472,7 +7631,8 @@ impl Sm0PinctrlVal {
     #[inline(always)]
     pub const fn with_set_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm0Pinctrl::SET_COUNT_MASK) | ((value << Sm0Pinctrl::SET_COUNT_OFFSET) & Sm0Pinctrl::SET_COUNT_MASK)
+            bits: (self.bits & !Sm0Pinctrl::SET_COUNT_MASK)
+                | ((value << Sm0Pinctrl::SET_COUNT_OFFSET) & Sm0Pinctrl::SET_COUNT_MASK),
         }
     }
 
@@ -7482,7 +7642,8 @@ impl Sm0PinctrlVal {
     #[inline(always)]
     pub const fn with_out_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm0Pinctrl::OUT_COUNT_MASK) | ((value << Sm0Pinctrl::OUT_COUNT_OFFSET) & Sm0Pinctrl::OUT_COUNT_MASK)
+            bits: (self.bits & !Sm0Pinctrl::OUT_COUNT_MASK)
+                | ((value << Sm0Pinctrl::OUT_COUNT_OFFSET) & Sm0Pinctrl::OUT_COUNT_MASK),
         }
     }
 
@@ -7492,7 +7653,8 @@ impl Sm0PinctrlVal {
     #[inline(always)]
     pub const fn with_in_base(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm0Pinctrl::IN_BASE_MASK) | ((value << Sm0Pinctrl::IN_BASE_OFFSET) & Sm0Pinctrl::IN_BASE_MASK)
+            bits: (self.bits & !Sm0Pinctrl::IN_BASE_MASK)
+                | ((value << Sm0Pinctrl::IN_BASE_OFFSET) & Sm0Pinctrl::IN_BASE_MASK),
         }
     }
 
@@ -7502,7 +7664,8 @@ impl Sm0PinctrlVal {
     #[inline(always)]
     pub const fn with_sideset_base(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm0Pinctrl::SIDESET_BASE_MASK) | ((value << Sm0Pinctrl::SIDESET_BASE_OFFSET) & Sm0Pinctrl::SIDESET_BASE_MASK)
+            bits: (self.bits & !Sm0Pinctrl::SIDESET_BASE_MASK)
+                | ((value << Sm0Pinctrl::SIDESET_BASE_OFFSET) & Sm0Pinctrl::SIDESET_BASE_MASK),
         }
     }
 
@@ -7512,7 +7675,8 @@ impl Sm0PinctrlVal {
     #[inline(always)]
     pub const fn with_set_base(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm0Pinctrl::SET_BASE_MASK) | ((value << Sm0Pinctrl::SET_BASE_OFFSET) & Sm0Pinctrl::SET_BASE_MASK)
+            bits: (self.bits & !Sm0Pinctrl::SET_BASE_MASK)
+                | ((value << Sm0Pinctrl::SET_BASE_OFFSET) & Sm0Pinctrl::SET_BASE_MASK),
         }
     }
 
@@ -7522,7 +7686,8 @@ impl Sm0PinctrlVal {
     #[inline(always)]
     pub const fn with_out_base(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm0Pinctrl::OUT_BASE_MASK) | ((value << Sm0Pinctrl::OUT_BASE_OFFSET) & Sm0Pinctrl::OUT_BASE_MASK)
+            bits: (self.bits & !Sm0Pinctrl::OUT_BASE_MASK)
+                | ((value << Sm0Pinctrl::OUT_BASE_OFFSET) & Sm0Pinctrl::OUT_BASE_MASK),
         }
     }
 }
@@ -7621,7 +7786,9 @@ impl Sm1Clkdiv {
     /// Value of 0 is interpreted as 65536. If INT is 0, FRAC must also be 0.
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK)
+        });
     }
 
     /// **FRAC** `[15:8]` (RW)
@@ -7637,7 +7804,9 @@ impl Sm1Clkdiv {
     /// Fractional part of clock divisor
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK)
+        });
     }
 }
 
@@ -7693,7 +7862,8 @@ impl Sm1ClkdivVal {
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm1Clkdiv::INT_MASK) | ((value << Sm1Clkdiv::INT_OFFSET) & Sm1Clkdiv::INT_MASK)
+            bits: (self.bits & !Sm1Clkdiv::INT_MASK)
+                | ((value << Sm1Clkdiv::INT_OFFSET) & Sm1Clkdiv::INT_MASK),
         }
     }
 
@@ -7703,7 +7873,8 @@ impl Sm1ClkdivVal {
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm1Clkdiv::FRAC_MASK) | ((value << Sm1Clkdiv::FRAC_OFFSET) & Sm1Clkdiv::FRAC_MASK)
+            bits: (self.bits & !Sm1Clkdiv::FRAC_MASK)
+                | ((value << Sm1Clkdiv::FRAC_OFFSET) & Sm1Clkdiv::FRAC_MASK),
         }
     }
 }
@@ -7992,7 +8163,9 @@ impl Sm1Execctrl {
     /// The GPIO number to use as condition for JMP PIN. Unaffected by input mapping.
     #[inline(always)]
     pub fn write_jmp_pin(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::JMP_PIN_MASK) | ((value << Self::JMP_PIN_OFFSET) & Self::JMP_PIN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::JMP_PIN_MASK) | ((value << Self::JMP_PIN_OFFSET) & Self::JMP_PIN_MASK)
+        });
     }
 
     /// **OUT_EN_SEL** `[23:19]` (RW)
@@ -8008,7 +8181,10 @@ impl Sm1Execctrl {
     /// Which data bit to use for inline OUT enable
     #[inline(always)]
     pub fn write_out_en_sel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUT_EN_SEL_MASK) | ((value << Self::OUT_EN_SEL_OFFSET) & Self::OUT_EN_SEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUT_EN_SEL_MASK)
+                | ((value << Self::OUT_EN_SEL_OFFSET) & Self::OUT_EN_SEL_MASK)
+        });
     }
 
     /// **INLINE_OUT_EN** `[18]` (RW)
@@ -8069,7 +8245,9 @@ impl Sm1Execctrl {
     /// If the instruction is a jump, and the jump condition is true, the jump takes priority.
     #[inline(always)]
     pub fn write_wrap_top(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::WRAP_TOP_MASK) | ((value << Self::WRAP_TOP_OFFSET) & Self::WRAP_TOP_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::WRAP_TOP_MASK) | ((value << Self::WRAP_TOP_OFFSET) & Self::WRAP_TOP_MASK)
+        });
     }
 
     /// **WRAP_BOTTOM** `[11:7]` (RW)
@@ -8085,7 +8263,10 @@ impl Sm1Execctrl {
     /// After reaching wrap_top, execution is wrapped to this address.
     #[inline(always)]
     pub fn write_wrap_bottom(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::WRAP_BOTTOM_MASK) | ((value << Self::WRAP_BOTTOM_OFFSET) & Self::WRAP_BOTTOM_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::WRAP_BOTTOM_MASK)
+                | ((value << Self::WRAP_BOTTOM_OFFSET) & Self::WRAP_BOTTOM_MASK)
+        });
     }
 
     /// **STATUS_SEL** `[6:5]` (RW)
@@ -8101,7 +8282,10 @@ impl Sm1Execctrl {
     /// Comparison used for the MOV x, STATUS instruction.
     #[inline(always)]
     pub fn write_status_sel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STATUS_SEL_MASK) | ((value << Self::STATUS_SEL_OFFSET) & Self::STATUS_SEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STATUS_SEL_MASK)
+                | ((value << Self::STATUS_SEL_OFFSET) & Self::STATUS_SEL_MASK)
+        });
     }
 
     /// **STATUS_N** `[4:0]` (RW)
@@ -8119,7 +8303,9 @@ impl Sm1Execctrl {
     /// If STATUS_SEL is TXLEVEL or RXLEVEL, then values of STATUS_N greater than the current FIFO depth are reserved, and have undefined behaviour.
     #[inline(always)]
     pub fn write_status_n(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STATUS_N_MASK) | ((value << Self::STATUS_N_OFFSET) & Self::STATUS_N_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STATUS_N_MASK) | ((value << Self::STATUS_N_OFFSET) & Self::STATUS_N_MASK)
+        });
     }
 }
 
@@ -8254,7 +8440,7 @@ impl Sm1ExecctrlVal {
                 self.bits | Sm1Execctrl::SIDE_EN_MASK
             } else {
                 self.bits & !Sm1Execctrl::SIDE_EN_MASK
-            }
+            },
         }
     }
 
@@ -8268,7 +8454,7 @@ impl Sm1ExecctrlVal {
                 self.bits | Sm1Execctrl::SIDE_PINDIR_MASK
             } else {
                 self.bits & !Sm1Execctrl::SIDE_PINDIR_MASK
-            }
+            },
         }
     }
 
@@ -8278,7 +8464,8 @@ impl Sm1ExecctrlVal {
     #[inline(always)]
     pub const fn with_jmp_pin(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm1Execctrl::JMP_PIN_MASK) | ((value << Sm1Execctrl::JMP_PIN_OFFSET) & Sm1Execctrl::JMP_PIN_MASK)
+            bits: (self.bits & !Sm1Execctrl::JMP_PIN_MASK)
+                | ((value << Sm1Execctrl::JMP_PIN_OFFSET) & Sm1Execctrl::JMP_PIN_MASK),
         }
     }
 
@@ -8288,7 +8475,8 @@ impl Sm1ExecctrlVal {
     #[inline(always)]
     pub const fn with_out_en_sel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm1Execctrl::OUT_EN_SEL_MASK) | ((value << Sm1Execctrl::OUT_EN_SEL_OFFSET) & Sm1Execctrl::OUT_EN_SEL_MASK)
+            bits: (self.bits & !Sm1Execctrl::OUT_EN_SEL_MASK)
+                | ((value << Sm1Execctrl::OUT_EN_SEL_OFFSET) & Sm1Execctrl::OUT_EN_SEL_MASK),
         }
     }
 
@@ -8305,7 +8493,7 @@ impl Sm1ExecctrlVal {
                 self.bits | Sm1Execctrl::INLINE_OUT_EN_MASK
             } else {
                 self.bits & !Sm1Execctrl::INLINE_OUT_EN_MASK
-            }
+            },
         }
     }
 
@@ -8319,7 +8507,7 @@ impl Sm1ExecctrlVal {
                 self.bits | Sm1Execctrl::OUT_STICKY_MASK
             } else {
                 self.bits & !Sm1Execctrl::OUT_STICKY_MASK
-            }
+            },
         }
     }
 
@@ -8330,7 +8518,8 @@ impl Sm1ExecctrlVal {
     #[inline(always)]
     pub const fn with_wrap_top(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm1Execctrl::WRAP_TOP_MASK) | ((value << Sm1Execctrl::WRAP_TOP_OFFSET) & Sm1Execctrl::WRAP_TOP_MASK)
+            bits: (self.bits & !Sm1Execctrl::WRAP_TOP_MASK)
+                | ((value << Sm1Execctrl::WRAP_TOP_OFFSET) & Sm1Execctrl::WRAP_TOP_MASK),
         }
     }
 
@@ -8340,7 +8529,8 @@ impl Sm1ExecctrlVal {
     #[inline(always)]
     pub const fn with_wrap_bottom(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm1Execctrl::WRAP_BOTTOM_MASK) | ((value << Sm1Execctrl::WRAP_BOTTOM_OFFSET) & Sm1Execctrl::WRAP_BOTTOM_MASK)
+            bits: (self.bits & !Sm1Execctrl::WRAP_BOTTOM_MASK)
+                | ((value << Sm1Execctrl::WRAP_BOTTOM_OFFSET) & Sm1Execctrl::WRAP_BOTTOM_MASK),
         }
     }
 
@@ -8350,7 +8540,8 @@ impl Sm1ExecctrlVal {
     #[inline(always)]
     pub const fn with_status_sel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm1Execctrl::STATUS_SEL_MASK) | ((value << Sm1Execctrl::STATUS_SEL_OFFSET) & Sm1Execctrl::STATUS_SEL_MASK)
+            bits: (self.bits & !Sm1Execctrl::STATUS_SEL_MASK)
+                | ((value << Sm1Execctrl::STATUS_SEL_OFFSET) & Sm1Execctrl::STATUS_SEL_MASK),
         }
     }
 
@@ -8361,7 +8552,8 @@ impl Sm1ExecctrlVal {
     #[inline(always)]
     pub const fn with_status_n(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm1Execctrl::STATUS_N_MASK) | ((value << Sm1Execctrl::STATUS_N_OFFSET) & Sm1Execctrl::STATUS_N_MASK)
+            bits: (self.bits & !Sm1Execctrl::STATUS_N_MASK)
+                | ((value << Sm1Execctrl::STATUS_N_OFFSET) & Sm1Execctrl::STATUS_N_MASK),
         }
     }
 }
@@ -8641,7 +8833,10 @@ impl Sm1Shiftctrl {
     /// Write 0 for value of 32.
     #[inline(always)]
     pub fn write_pull_thresh(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PULL_THRESH_MASK) | ((value << Self::PULL_THRESH_OFFSET) & Self::PULL_THRESH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PULL_THRESH_MASK)
+                | ((value << Self::PULL_THRESH_OFFSET) & Self::PULL_THRESH_MASK)
+        });
     }
 
     /// **PUSH_THRESH** `[24:20]` (RW)
@@ -8659,7 +8854,10 @@ impl Sm1Shiftctrl {
     /// Write 0 for value of 32.
     #[inline(always)]
     pub fn write_push_thresh(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PUSH_THRESH_MASK) | ((value << Self::PUSH_THRESH_OFFSET) & Self::PUSH_THRESH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PUSH_THRESH_MASK)
+                | ((value << Self::PUSH_THRESH_OFFSET) & Self::PUSH_THRESH_MASK)
+        });
     }
 
     /// **OUT_SHIFTDIR** `[19]` (RW)
@@ -8803,7 +9001,9 @@ impl Sm1Shiftctrl {
     /// Note this masking is applied in addition to the masking usually performed by the IN instruction. This is mainly useful for the MOV x, PINS instruction, which otherwise has no way of masking pins.
     #[inline(always)]
     pub fn write_in_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IN_COUNT_MASK) | ((value << Self::IN_COUNT_OFFSET) & Self::IN_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IN_COUNT_MASK) | ((value << Self::IN_COUNT_OFFSET) & Self::IN_COUNT_MASK)
+        });
     }
 }
 
@@ -8947,7 +9147,7 @@ impl Sm1ShiftctrlVal {
                 self.bits | Sm1Shiftctrl::FJOIN_RX_MASK
             } else {
                 self.bits & !Sm1Shiftctrl::FJOIN_RX_MASK
-            }
+            },
         }
     }
 
@@ -8963,7 +9163,7 @@ impl Sm1ShiftctrlVal {
                 self.bits | Sm1Shiftctrl::FJOIN_TX_MASK
             } else {
                 self.bits & !Sm1Shiftctrl::FJOIN_TX_MASK
-            }
+            },
         }
     }
 
@@ -8974,7 +9174,8 @@ impl Sm1ShiftctrlVal {
     #[inline(always)]
     pub const fn with_pull_thresh(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm1Shiftctrl::PULL_THRESH_MASK) | ((value << Sm1Shiftctrl::PULL_THRESH_OFFSET) & Sm1Shiftctrl::PULL_THRESH_MASK)
+            bits: (self.bits & !Sm1Shiftctrl::PULL_THRESH_MASK)
+                | ((value << Sm1Shiftctrl::PULL_THRESH_OFFSET) & Sm1Shiftctrl::PULL_THRESH_MASK),
         }
     }
 
@@ -8985,7 +9186,8 @@ impl Sm1ShiftctrlVal {
     #[inline(always)]
     pub const fn with_push_thresh(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm1Shiftctrl::PUSH_THRESH_MASK) | ((value << Sm1Shiftctrl::PUSH_THRESH_OFFSET) & Sm1Shiftctrl::PUSH_THRESH_MASK)
+            bits: (self.bits & !Sm1Shiftctrl::PUSH_THRESH_MASK)
+                | ((value << Sm1Shiftctrl::PUSH_THRESH_OFFSET) & Sm1Shiftctrl::PUSH_THRESH_MASK),
         }
     }
 
@@ -8999,7 +9201,7 @@ impl Sm1ShiftctrlVal {
                 self.bits | Sm1Shiftctrl::OUT_SHIFTDIR_MASK
             } else {
                 self.bits & !Sm1Shiftctrl::OUT_SHIFTDIR_MASK
-            }
+            },
         }
     }
 
@@ -9013,7 +9215,7 @@ impl Sm1ShiftctrlVal {
                 self.bits | Sm1Shiftctrl::IN_SHIFTDIR_MASK
             } else {
                 self.bits & !Sm1Shiftctrl::IN_SHIFTDIR_MASK
-            }
+            },
         }
     }
 
@@ -9027,7 +9229,7 @@ impl Sm1ShiftctrlVal {
                 self.bits | Sm1Shiftctrl::AUTOPULL_MASK
             } else {
                 self.bits & !Sm1Shiftctrl::AUTOPULL_MASK
-            }
+            },
         }
     }
 
@@ -9041,7 +9243,7 @@ impl Sm1ShiftctrlVal {
                 self.bits | Sm1Shiftctrl::AUTOPUSH_MASK
             } else {
                 self.bits & !Sm1Shiftctrl::AUTOPUSH_MASK
-            }
+            },
         }
     }
 
@@ -9057,7 +9259,7 @@ impl Sm1ShiftctrlVal {
                 self.bits | Sm1Shiftctrl::FJOIN_RX_PUT_MASK
             } else {
                 self.bits & !Sm1Shiftctrl::FJOIN_RX_PUT_MASK
-            }
+            },
         }
     }
 
@@ -9073,7 +9275,7 @@ impl Sm1ShiftctrlVal {
                 self.bits | Sm1Shiftctrl::FJOIN_RX_GET_MASK
             } else {
                 self.bits & !Sm1Shiftctrl::FJOIN_RX_GET_MASK
-            }
+            },
         }
     }
 
@@ -9085,7 +9287,8 @@ impl Sm1ShiftctrlVal {
     #[inline(always)]
     pub const fn with_in_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm1Shiftctrl::IN_COUNT_MASK) | ((value << Sm1Shiftctrl::IN_COUNT_OFFSET) & Sm1Shiftctrl::IN_COUNT_MASK)
+            bits: (self.bits & !Sm1Shiftctrl::IN_COUNT_MASK)
+                | ((value << Sm1Shiftctrl::IN_COUNT_OFFSET) & Sm1Shiftctrl::IN_COUNT_MASK),
         }
     }
 }
@@ -9247,7 +9450,9 @@ impl Sm1Instr {
     /// Write **SM1_INSTR** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_sm1_instr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SM1_INSTR_MASK) | ((value << Self::SM1_INSTR_OFFSET) & Self::SM1_INSTR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SM1_INSTR_MASK) | ((value << Self::SM1_INSTR_OFFSET) & Self::SM1_INSTR_MASK)
+        });
     }
 }
 
@@ -9283,7 +9488,8 @@ impl Sm1InstrVal {
     #[inline(always)]
     pub const fn with_sm1_instr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm1Instr::SM1_INSTR_MASK) | ((value << Sm1Instr::SM1_INSTR_OFFSET) & Sm1Instr::SM1_INSTR_MASK)
+            bits: (self.bits & !Sm1Instr::SM1_INSTR_MASK)
+                | ((value << Sm1Instr::SM1_INSTR_OFFSET) & Sm1Instr::SM1_INSTR_MASK),
         }
     }
 }
@@ -9437,7 +9643,10 @@ impl Sm1Pinctrl {
     /// The number of MSBs of the Delay/Side-set instruction field which are used for side-set. Inclusive of the enable bit, if present. Minimum of 0 (all delay bits, no side-set) and maximum of 5 (all side-set, no delay).
     #[inline(always)]
     pub fn write_sideset_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SIDESET_COUNT_MASK) | ((value << Self::SIDESET_COUNT_OFFSET) & Self::SIDESET_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SIDESET_COUNT_MASK)
+                | ((value << Self::SIDESET_COUNT_OFFSET) & Self::SIDESET_COUNT_MASK)
+        });
     }
 
     /// **SET_COUNT** `[28:26]` (RW)
@@ -9453,7 +9662,9 @@ impl Sm1Pinctrl {
     /// The number of pins asserted by a SET. In the range 0 to 5 inclusive.
     #[inline(always)]
     pub fn write_set_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SET_COUNT_MASK) | ((value << Self::SET_COUNT_OFFSET) & Self::SET_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SET_COUNT_MASK) | ((value << Self::SET_COUNT_OFFSET) & Self::SET_COUNT_MASK)
+        });
     }
 
     /// **OUT_COUNT** `[25:20]` (RW)
@@ -9469,7 +9680,9 @@ impl Sm1Pinctrl {
     /// The number of pins asserted by an OUT PINS, OUT PINDIRS or MOV PINS instruction. In the range 0 to 32 inclusive.
     #[inline(always)]
     pub fn write_out_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUT_COUNT_MASK) | ((value << Self::OUT_COUNT_OFFSET) & Self::OUT_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUT_COUNT_MASK) | ((value << Self::OUT_COUNT_OFFSET) & Self::OUT_COUNT_MASK)
+        });
     }
 
     /// **IN_BASE** `[19:15]` (RW)
@@ -9485,7 +9698,9 @@ impl Sm1Pinctrl {
     /// The pin which is mapped to the least-significant bit of a state machine's IN data bus. Higher-numbered pins are mapped to consecutively more-significant data bits, with a modulo of 32 applied to pin number.
     #[inline(always)]
     pub fn write_in_base(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IN_BASE_MASK) | ((value << Self::IN_BASE_OFFSET) & Self::IN_BASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IN_BASE_MASK) | ((value << Self::IN_BASE_OFFSET) & Self::IN_BASE_MASK)
+        });
     }
 
     /// **SIDESET_BASE** `[14:10]` (RW)
@@ -9501,7 +9716,10 @@ impl Sm1Pinctrl {
     /// The lowest-numbered pin that will be affected by a side-set operation. The MSBs of an instruction's side-set/delay field (up to 5, determined by SIDESET_COUNT) are used for side-set data, with the remaining LSBs used for delay. The least-significant bit of the side-set portion is the bit written to this pin, with more-significant bits written to higher-numbered pins.
     #[inline(always)]
     pub fn write_sideset_base(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SIDESET_BASE_MASK) | ((value << Self::SIDESET_BASE_OFFSET) & Self::SIDESET_BASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SIDESET_BASE_MASK)
+                | ((value << Self::SIDESET_BASE_OFFSET) & Self::SIDESET_BASE_MASK)
+        });
     }
 
     /// **SET_BASE** `[9:5]` (RW)
@@ -9517,7 +9735,9 @@ impl Sm1Pinctrl {
     /// The lowest-numbered pin that will be affected by a SET PINS or SET PINDIRS instruction. The data written to this pin is the least-significant bit of the SET data.
     #[inline(always)]
     pub fn write_set_base(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SET_BASE_MASK) | ((value << Self::SET_BASE_OFFSET) & Self::SET_BASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SET_BASE_MASK) | ((value << Self::SET_BASE_OFFSET) & Self::SET_BASE_MASK)
+        });
     }
 
     /// **OUT_BASE** `[4:0]` (RW)
@@ -9533,7 +9753,9 @@ impl Sm1Pinctrl {
     /// The lowest-numbered pin that will be affected by an OUT PINS, OUT PINDIRS or MOV PINS instruction. The data written to this pin will always be the least-significant bit of the OUT or MOV data.
     #[inline(always)]
     pub fn write_out_base(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUT_BASE_MASK) | ((value << Self::OUT_BASE_OFFSET) & Self::OUT_BASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUT_BASE_MASK) | ((value << Self::OUT_BASE_OFFSET) & Self::OUT_BASE_MASK)
+        });
     }
 }
 
@@ -9627,7 +9849,8 @@ impl Sm1PinctrlVal {
     #[inline(always)]
     pub const fn with_sideset_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm1Pinctrl::SIDESET_COUNT_MASK) | ((value << Sm1Pinctrl::SIDESET_COUNT_OFFSET) & Sm1Pinctrl::SIDESET_COUNT_MASK)
+            bits: (self.bits & !Sm1Pinctrl::SIDESET_COUNT_MASK)
+                | ((value << Sm1Pinctrl::SIDESET_COUNT_OFFSET) & Sm1Pinctrl::SIDESET_COUNT_MASK),
         }
     }
 
@@ -9637,7 +9860,8 @@ impl Sm1PinctrlVal {
     #[inline(always)]
     pub const fn with_set_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm1Pinctrl::SET_COUNT_MASK) | ((value << Sm1Pinctrl::SET_COUNT_OFFSET) & Sm1Pinctrl::SET_COUNT_MASK)
+            bits: (self.bits & !Sm1Pinctrl::SET_COUNT_MASK)
+                | ((value << Sm1Pinctrl::SET_COUNT_OFFSET) & Sm1Pinctrl::SET_COUNT_MASK),
         }
     }
 
@@ -9647,7 +9871,8 @@ impl Sm1PinctrlVal {
     #[inline(always)]
     pub const fn with_out_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm1Pinctrl::OUT_COUNT_MASK) | ((value << Sm1Pinctrl::OUT_COUNT_OFFSET) & Sm1Pinctrl::OUT_COUNT_MASK)
+            bits: (self.bits & !Sm1Pinctrl::OUT_COUNT_MASK)
+                | ((value << Sm1Pinctrl::OUT_COUNT_OFFSET) & Sm1Pinctrl::OUT_COUNT_MASK),
         }
     }
 
@@ -9657,7 +9882,8 @@ impl Sm1PinctrlVal {
     #[inline(always)]
     pub const fn with_in_base(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm1Pinctrl::IN_BASE_MASK) | ((value << Sm1Pinctrl::IN_BASE_OFFSET) & Sm1Pinctrl::IN_BASE_MASK)
+            bits: (self.bits & !Sm1Pinctrl::IN_BASE_MASK)
+                | ((value << Sm1Pinctrl::IN_BASE_OFFSET) & Sm1Pinctrl::IN_BASE_MASK),
         }
     }
 
@@ -9667,7 +9893,8 @@ impl Sm1PinctrlVal {
     #[inline(always)]
     pub const fn with_sideset_base(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm1Pinctrl::SIDESET_BASE_MASK) | ((value << Sm1Pinctrl::SIDESET_BASE_OFFSET) & Sm1Pinctrl::SIDESET_BASE_MASK)
+            bits: (self.bits & !Sm1Pinctrl::SIDESET_BASE_MASK)
+                | ((value << Sm1Pinctrl::SIDESET_BASE_OFFSET) & Sm1Pinctrl::SIDESET_BASE_MASK),
         }
     }
 
@@ -9677,7 +9904,8 @@ impl Sm1PinctrlVal {
     #[inline(always)]
     pub const fn with_set_base(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm1Pinctrl::SET_BASE_MASK) | ((value << Sm1Pinctrl::SET_BASE_OFFSET) & Sm1Pinctrl::SET_BASE_MASK)
+            bits: (self.bits & !Sm1Pinctrl::SET_BASE_MASK)
+                | ((value << Sm1Pinctrl::SET_BASE_OFFSET) & Sm1Pinctrl::SET_BASE_MASK),
         }
     }
 
@@ -9687,7 +9915,8 @@ impl Sm1PinctrlVal {
     #[inline(always)]
     pub const fn with_out_base(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm1Pinctrl::OUT_BASE_MASK) | ((value << Sm1Pinctrl::OUT_BASE_OFFSET) & Sm1Pinctrl::OUT_BASE_MASK)
+            bits: (self.bits & !Sm1Pinctrl::OUT_BASE_MASK)
+                | ((value << Sm1Pinctrl::OUT_BASE_OFFSET) & Sm1Pinctrl::OUT_BASE_MASK),
         }
     }
 }
@@ -9786,7 +10015,9 @@ impl Sm2Clkdiv {
     /// Value of 0 is interpreted as 65536. If INT is 0, FRAC must also be 0.
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK)
+        });
     }
 
     /// **FRAC** `[15:8]` (RW)
@@ -9802,7 +10033,9 @@ impl Sm2Clkdiv {
     /// Fractional part of clock divisor
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK)
+        });
     }
 }
 
@@ -9858,7 +10091,8 @@ impl Sm2ClkdivVal {
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm2Clkdiv::INT_MASK) | ((value << Sm2Clkdiv::INT_OFFSET) & Sm2Clkdiv::INT_MASK)
+            bits: (self.bits & !Sm2Clkdiv::INT_MASK)
+                | ((value << Sm2Clkdiv::INT_OFFSET) & Sm2Clkdiv::INT_MASK),
         }
     }
 
@@ -9868,7 +10102,8 @@ impl Sm2ClkdivVal {
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm2Clkdiv::FRAC_MASK) | ((value << Sm2Clkdiv::FRAC_OFFSET) & Sm2Clkdiv::FRAC_MASK)
+            bits: (self.bits & !Sm2Clkdiv::FRAC_MASK)
+                | ((value << Sm2Clkdiv::FRAC_OFFSET) & Sm2Clkdiv::FRAC_MASK),
         }
     }
 }
@@ -10157,7 +10392,9 @@ impl Sm2Execctrl {
     /// The GPIO number to use as condition for JMP PIN. Unaffected by input mapping.
     #[inline(always)]
     pub fn write_jmp_pin(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::JMP_PIN_MASK) | ((value << Self::JMP_PIN_OFFSET) & Self::JMP_PIN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::JMP_PIN_MASK) | ((value << Self::JMP_PIN_OFFSET) & Self::JMP_PIN_MASK)
+        });
     }
 
     /// **OUT_EN_SEL** `[23:19]` (RW)
@@ -10173,7 +10410,10 @@ impl Sm2Execctrl {
     /// Which data bit to use for inline OUT enable
     #[inline(always)]
     pub fn write_out_en_sel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUT_EN_SEL_MASK) | ((value << Self::OUT_EN_SEL_OFFSET) & Self::OUT_EN_SEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUT_EN_SEL_MASK)
+                | ((value << Self::OUT_EN_SEL_OFFSET) & Self::OUT_EN_SEL_MASK)
+        });
     }
 
     /// **INLINE_OUT_EN** `[18]` (RW)
@@ -10234,7 +10474,9 @@ impl Sm2Execctrl {
     /// If the instruction is a jump, and the jump condition is true, the jump takes priority.
     #[inline(always)]
     pub fn write_wrap_top(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::WRAP_TOP_MASK) | ((value << Self::WRAP_TOP_OFFSET) & Self::WRAP_TOP_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::WRAP_TOP_MASK) | ((value << Self::WRAP_TOP_OFFSET) & Self::WRAP_TOP_MASK)
+        });
     }
 
     /// **WRAP_BOTTOM** `[11:7]` (RW)
@@ -10250,7 +10492,10 @@ impl Sm2Execctrl {
     /// After reaching wrap_top, execution is wrapped to this address.
     #[inline(always)]
     pub fn write_wrap_bottom(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::WRAP_BOTTOM_MASK) | ((value << Self::WRAP_BOTTOM_OFFSET) & Self::WRAP_BOTTOM_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::WRAP_BOTTOM_MASK)
+                | ((value << Self::WRAP_BOTTOM_OFFSET) & Self::WRAP_BOTTOM_MASK)
+        });
     }
 
     /// **STATUS_SEL** `[6:5]` (RW)
@@ -10266,7 +10511,10 @@ impl Sm2Execctrl {
     /// Comparison used for the MOV x, STATUS instruction.
     #[inline(always)]
     pub fn write_status_sel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STATUS_SEL_MASK) | ((value << Self::STATUS_SEL_OFFSET) & Self::STATUS_SEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STATUS_SEL_MASK)
+                | ((value << Self::STATUS_SEL_OFFSET) & Self::STATUS_SEL_MASK)
+        });
     }
 
     /// **STATUS_N** `[4:0]` (RW)
@@ -10284,7 +10532,9 @@ impl Sm2Execctrl {
     /// If STATUS_SEL is TXLEVEL or RXLEVEL, then values of STATUS_N greater than the current FIFO depth are reserved, and have undefined behaviour.
     #[inline(always)]
     pub fn write_status_n(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STATUS_N_MASK) | ((value << Self::STATUS_N_OFFSET) & Self::STATUS_N_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STATUS_N_MASK) | ((value << Self::STATUS_N_OFFSET) & Self::STATUS_N_MASK)
+        });
     }
 }
 
@@ -10419,7 +10669,7 @@ impl Sm2ExecctrlVal {
                 self.bits | Sm2Execctrl::SIDE_EN_MASK
             } else {
                 self.bits & !Sm2Execctrl::SIDE_EN_MASK
-            }
+            },
         }
     }
 
@@ -10433,7 +10683,7 @@ impl Sm2ExecctrlVal {
                 self.bits | Sm2Execctrl::SIDE_PINDIR_MASK
             } else {
                 self.bits & !Sm2Execctrl::SIDE_PINDIR_MASK
-            }
+            },
         }
     }
 
@@ -10443,7 +10693,8 @@ impl Sm2ExecctrlVal {
     #[inline(always)]
     pub const fn with_jmp_pin(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm2Execctrl::JMP_PIN_MASK) | ((value << Sm2Execctrl::JMP_PIN_OFFSET) & Sm2Execctrl::JMP_PIN_MASK)
+            bits: (self.bits & !Sm2Execctrl::JMP_PIN_MASK)
+                | ((value << Sm2Execctrl::JMP_PIN_OFFSET) & Sm2Execctrl::JMP_PIN_MASK),
         }
     }
 
@@ -10453,7 +10704,8 @@ impl Sm2ExecctrlVal {
     #[inline(always)]
     pub const fn with_out_en_sel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm2Execctrl::OUT_EN_SEL_MASK) | ((value << Sm2Execctrl::OUT_EN_SEL_OFFSET) & Sm2Execctrl::OUT_EN_SEL_MASK)
+            bits: (self.bits & !Sm2Execctrl::OUT_EN_SEL_MASK)
+                | ((value << Sm2Execctrl::OUT_EN_SEL_OFFSET) & Sm2Execctrl::OUT_EN_SEL_MASK),
         }
     }
 
@@ -10470,7 +10722,7 @@ impl Sm2ExecctrlVal {
                 self.bits | Sm2Execctrl::INLINE_OUT_EN_MASK
             } else {
                 self.bits & !Sm2Execctrl::INLINE_OUT_EN_MASK
-            }
+            },
         }
     }
 
@@ -10484,7 +10736,7 @@ impl Sm2ExecctrlVal {
                 self.bits | Sm2Execctrl::OUT_STICKY_MASK
             } else {
                 self.bits & !Sm2Execctrl::OUT_STICKY_MASK
-            }
+            },
         }
     }
 
@@ -10495,7 +10747,8 @@ impl Sm2ExecctrlVal {
     #[inline(always)]
     pub const fn with_wrap_top(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm2Execctrl::WRAP_TOP_MASK) | ((value << Sm2Execctrl::WRAP_TOP_OFFSET) & Sm2Execctrl::WRAP_TOP_MASK)
+            bits: (self.bits & !Sm2Execctrl::WRAP_TOP_MASK)
+                | ((value << Sm2Execctrl::WRAP_TOP_OFFSET) & Sm2Execctrl::WRAP_TOP_MASK),
         }
     }
 
@@ -10505,7 +10758,8 @@ impl Sm2ExecctrlVal {
     #[inline(always)]
     pub const fn with_wrap_bottom(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm2Execctrl::WRAP_BOTTOM_MASK) | ((value << Sm2Execctrl::WRAP_BOTTOM_OFFSET) & Sm2Execctrl::WRAP_BOTTOM_MASK)
+            bits: (self.bits & !Sm2Execctrl::WRAP_BOTTOM_MASK)
+                | ((value << Sm2Execctrl::WRAP_BOTTOM_OFFSET) & Sm2Execctrl::WRAP_BOTTOM_MASK),
         }
     }
 
@@ -10515,7 +10769,8 @@ impl Sm2ExecctrlVal {
     #[inline(always)]
     pub const fn with_status_sel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm2Execctrl::STATUS_SEL_MASK) | ((value << Sm2Execctrl::STATUS_SEL_OFFSET) & Sm2Execctrl::STATUS_SEL_MASK)
+            bits: (self.bits & !Sm2Execctrl::STATUS_SEL_MASK)
+                | ((value << Sm2Execctrl::STATUS_SEL_OFFSET) & Sm2Execctrl::STATUS_SEL_MASK),
         }
     }
 
@@ -10526,7 +10781,8 @@ impl Sm2ExecctrlVal {
     #[inline(always)]
     pub const fn with_status_n(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm2Execctrl::STATUS_N_MASK) | ((value << Sm2Execctrl::STATUS_N_OFFSET) & Sm2Execctrl::STATUS_N_MASK)
+            bits: (self.bits & !Sm2Execctrl::STATUS_N_MASK)
+                | ((value << Sm2Execctrl::STATUS_N_OFFSET) & Sm2Execctrl::STATUS_N_MASK),
         }
     }
 }
@@ -10806,7 +11062,10 @@ impl Sm2Shiftctrl {
     /// Write 0 for value of 32.
     #[inline(always)]
     pub fn write_pull_thresh(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PULL_THRESH_MASK) | ((value << Self::PULL_THRESH_OFFSET) & Self::PULL_THRESH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PULL_THRESH_MASK)
+                | ((value << Self::PULL_THRESH_OFFSET) & Self::PULL_THRESH_MASK)
+        });
     }
 
     /// **PUSH_THRESH** `[24:20]` (RW)
@@ -10824,7 +11083,10 @@ impl Sm2Shiftctrl {
     /// Write 0 for value of 32.
     #[inline(always)]
     pub fn write_push_thresh(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PUSH_THRESH_MASK) | ((value << Self::PUSH_THRESH_OFFSET) & Self::PUSH_THRESH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PUSH_THRESH_MASK)
+                | ((value << Self::PUSH_THRESH_OFFSET) & Self::PUSH_THRESH_MASK)
+        });
     }
 
     /// **OUT_SHIFTDIR** `[19]` (RW)
@@ -10968,7 +11230,9 @@ impl Sm2Shiftctrl {
     /// Note this masking is applied in addition to the masking usually performed by the IN instruction. This is mainly useful for the MOV x, PINS instruction, which otherwise has no way of masking pins.
     #[inline(always)]
     pub fn write_in_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IN_COUNT_MASK) | ((value << Self::IN_COUNT_OFFSET) & Self::IN_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IN_COUNT_MASK) | ((value << Self::IN_COUNT_OFFSET) & Self::IN_COUNT_MASK)
+        });
     }
 }
 
@@ -11112,7 +11376,7 @@ impl Sm2ShiftctrlVal {
                 self.bits | Sm2Shiftctrl::FJOIN_RX_MASK
             } else {
                 self.bits & !Sm2Shiftctrl::FJOIN_RX_MASK
-            }
+            },
         }
     }
 
@@ -11128,7 +11392,7 @@ impl Sm2ShiftctrlVal {
                 self.bits | Sm2Shiftctrl::FJOIN_TX_MASK
             } else {
                 self.bits & !Sm2Shiftctrl::FJOIN_TX_MASK
-            }
+            },
         }
     }
 
@@ -11139,7 +11403,8 @@ impl Sm2ShiftctrlVal {
     #[inline(always)]
     pub const fn with_pull_thresh(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm2Shiftctrl::PULL_THRESH_MASK) | ((value << Sm2Shiftctrl::PULL_THRESH_OFFSET) & Sm2Shiftctrl::PULL_THRESH_MASK)
+            bits: (self.bits & !Sm2Shiftctrl::PULL_THRESH_MASK)
+                | ((value << Sm2Shiftctrl::PULL_THRESH_OFFSET) & Sm2Shiftctrl::PULL_THRESH_MASK),
         }
     }
 
@@ -11150,7 +11415,8 @@ impl Sm2ShiftctrlVal {
     #[inline(always)]
     pub const fn with_push_thresh(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm2Shiftctrl::PUSH_THRESH_MASK) | ((value << Sm2Shiftctrl::PUSH_THRESH_OFFSET) & Sm2Shiftctrl::PUSH_THRESH_MASK)
+            bits: (self.bits & !Sm2Shiftctrl::PUSH_THRESH_MASK)
+                | ((value << Sm2Shiftctrl::PUSH_THRESH_OFFSET) & Sm2Shiftctrl::PUSH_THRESH_MASK),
         }
     }
 
@@ -11164,7 +11430,7 @@ impl Sm2ShiftctrlVal {
                 self.bits | Sm2Shiftctrl::OUT_SHIFTDIR_MASK
             } else {
                 self.bits & !Sm2Shiftctrl::OUT_SHIFTDIR_MASK
-            }
+            },
         }
     }
 
@@ -11178,7 +11444,7 @@ impl Sm2ShiftctrlVal {
                 self.bits | Sm2Shiftctrl::IN_SHIFTDIR_MASK
             } else {
                 self.bits & !Sm2Shiftctrl::IN_SHIFTDIR_MASK
-            }
+            },
         }
     }
 
@@ -11192,7 +11458,7 @@ impl Sm2ShiftctrlVal {
                 self.bits | Sm2Shiftctrl::AUTOPULL_MASK
             } else {
                 self.bits & !Sm2Shiftctrl::AUTOPULL_MASK
-            }
+            },
         }
     }
 
@@ -11206,7 +11472,7 @@ impl Sm2ShiftctrlVal {
                 self.bits | Sm2Shiftctrl::AUTOPUSH_MASK
             } else {
                 self.bits & !Sm2Shiftctrl::AUTOPUSH_MASK
-            }
+            },
         }
     }
 
@@ -11222,7 +11488,7 @@ impl Sm2ShiftctrlVal {
                 self.bits | Sm2Shiftctrl::FJOIN_RX_PUT_MASK
             } else {
                 self.bits & !Sm2Shiftctrl::FJOIN_RX_PUT_MASK
-            }
+            },
         }
     }
 
@@ -11238,7 +11504,7 @@ impl Sm2ShiftctrlVal {
                 self.bits | Sm2Shiftctrl::FJOIN_RX_GET_MASK
             } else {
                 self.bits & !Sm2Shiftctrl::FJOIN_RX_GET_MASK
-            }
+            },
         }
     }
 
@@ -11250,7 +11516,8 @@ impl Sm2ShiftctrlVal {
     #[inline(always)]
     pub const fn with_in_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm2Shiftctrl::IN_COUNT_MASK) | ((value << Sm2Shiftctrl::IN_COUNT_OFFSET) & Sm2Shiftctrl::IN_COUNT_MASK)
+            bits: (self.bits & !Sm2Shiftctrl::IN_COUNT_MASK)
+                | ((value << Sm2Shiftctrl::IN_COUNT_OFFSET) & Sm2Shiftctrl::IN_COUNT_MASK),
         }
     }
 }
@@ -11412,7 +11679,9 @@ impl Sm2Instr {
     /// Write **SM2_INSTR** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_sm2_instr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SM2_INSTR_MASK) | ((value << Self::SM2_INSTR_OFFSET) & Self::SM2_INSTR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SM2_INSTR_MASK) | ((value << Self::SM2_INSTR_OFFSET) & Self::SM2_INSTR_MASK)
+        });
     }
 }
 
@@ -11448,7 +11717,8 @@ impl Sm2InstrVal {
     #[inline(always)]
     pub const fn with_sm2_instr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm2Instr::SM2_INSTR_MASK) | ((value << Sm2Instr::SM2_INSTR_OFFSET) & Sm2Instr::SM2_INSTR_MASK)
+            bits: (self.bits & !Sm2Instr::SM2_INSTR_MASK)
+                | ((value << Sm2Instr::SM2_INSTR_OFFSET) & Sm2Instr::SM2_INSTR_MASK),
         }
     }
 }
@@ -11602,7 +11872,10 @@ impl Sm2Pinctrl {
     /// The number of MSBs of the Delay/Side-set instruction field which are used for side-set. Inclusive of the enable bit, if present. Minimum of 0 (all delay bits, no side-set) and maximum of 5 (all side-set, no delay).
     #[inline(always)]
     pub fn write_sideset_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SIDESET_COUNT_MASK) | ((value << Self::SIDESET_COUNT_OFFSET) & Self::SIDESET_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SIDESET_COUNT_MASK)
+                | ((value << Self::SIDESET_COUNT_OFFSET) & Self::SIDESET_COUNT_MASK)
+        });
     }
 
     /// **SET_COUNT** `[28:26]` (RW)
@@ -11618,7 +11891,9 @@ impl Sm2Pinctrl {
     /// The number of pins asserted by a SET. In the range 0 to 5 inclusive.
     #[inline(always)]
     pub fn write_set_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SET_COUNT_MASK) | ((value << Self::SET_COUNT_OFFSET) & Self::SET_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SET_COUNT_MASK) | ((value << Self::SET_COUNT_OFFSET) & Self::SET_COUNT_MASK)
+        });
     }
 
     /// **OUT_COUNT** `[25:20]` (RW)
@@ -11634,7 +11909,9 @@ impl Sm2Pinctrl {
     /// The number of pins asserted by an OUT PINS, OUT PINDIRS or MOV PINS instruction. In the range 0 to 32 inclusive.
     #[inline(always)]
     pub fn write_out_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUT_COUNT_MASK) | ((value << Self::OUT_COUNT_OFFSET) & Self::OUT_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUT_COUNT_MASK) | ((value << Self::OUT_COUNT_OFFSET) & Self::OUT_COUNT_MASK)
+        });
     }
 
     /// **IN_BASE** `[19:15]` (RW)
@@ -11650,7 +11927,9 @@ impl Sm2Pinctrl {
     /// The pin which is mapped to the least-significant bit of a state machine's IN data bus. Higher-numbered pins are mapped to consecutively more-significant data bits, with a modulo of 32 applied to pin number.
     #[inline(always)]
     pub fn write_in_base(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IN_BASE_MASK) | ((value << Self::IN_BASE_OFFSET) & Self::IN_BASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IN_BASE_MASK) | ((value << Self::IN_BASE_OFFSET) & Self::IN_BASE_MASK)
+        });
     }
 
     /// **SIDESET_BASE** `[14:10]` (RW)
@@ -11666,7 +11945,10 @@ impl Sm2Pinctrl {
     /// The lowest-numbered pin that will be affected by a side-set operation. The MSBs of an instruction's side-set/delay field (up to 5, determined by SIDESET_COUNT) are used for side-set data, with the remaining LSBs used for delay. The least-significant bit of the side-set portion is the bit written to this pin, with more-significant bits written to higher-numbered pins.
     #[inline(always)]
     pub fn write_sideset_base(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SIDESET_BASE_MASK) | ((value << Self::SIDESET_BASE_OFFSET) & Self::SIDESET_BASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SIDESET_BASE_MASK)
+                | ((value << Self::SIDESET_BASE_OFFSET) & Self::SIDESET_BASE_MASK)
+        });
     }
 
     /// **SET_BASE** `[9:5]` (RW)
@@ -11682,7 +11964,9 @@ impl Sm2Pinctrl {
     /// The lowest-numbered pin that will be affected by a SET PINS or SET PINDIRS instruction. The data written to this pin is the least-significant bit of the SET data.
     #[inline(always)]
     pub fn write_set_base(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SET_BASE_MASK) | ((value << Self::SET_BASE_OFFSET) & Self::SET_BASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SET_BASE_MASK) | ((value << Self::SET_BASE_OFFSET) & Self::SET_BASE_MASK)
+        });
     }
 
     /// **OUT_BASE** `[4:0]` (RW)
@@ -11698,7 +11982,9 @@ impl Sm2Pinctrl {
     /// The lowest-numbered pin that will be affected by an OUT PINS, OUT PINDIRS or MOV PINS instruction. The data written to this pin will always be the least-significant bit of the OUT or MOV data.
     #[inline(always)]
     pub fn write_out_base(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUT_BASE_MASK) | ((value << Self::OUT_BASE_OFFSET) & Self::OUT_BASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUT_BASE_MASK) | ((value << Self::OUT_BASE_OFFSET) & Self::OUT_BASE_MASK)
+        });
     }
 }
 
@@ -11792,7 +12078,8 @@ impl Sm2PinctrlVal {
     #[inline(always)]
     pub const fn with_sideset_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm2Pinctrl::SIDESET_COUNT_MASK) | ((value << Sm2Pinctrl::SIDESET_COUNT_OFFSET) & Sm2Pinctrl::SIDESET_COUNT_MASK)
+            bits: (self.bits & !Sm2Pinctrl::SIDESET_COUNT_MASK)
+                | ((value << Sm2Pinctrl::SIDESET_COUNT_OFFSET) & Sm2Pinctrl::SIDESET_COUNT_MASK),
         }
     }
 
@@ -11802,7 +12089,8 @@ impl Sm2PinctrlVal {
     #[inline(always)]
     pub const fn with_set_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm2Pinctrl::SET_COUNT_MASK) | ((value << Sm2Pinctrl::SET_COUNT_OFFSET) & Sm2Pinctrl::SET_COUNT_MASK)
+            bits: (self.bits & !Sm2Pinctrl::SET_COUNT_MASK)
+                | ((value << Sm2Pinctrl::SET_COUNT_OFFSET) & Sm2Pinctrl::SET_COUNT_MASK),
         }
     }
 
@@ -11812,7 +12100,8 @@ impl Sm2PinctrlVal {
     #[inline(always)]
     pub const fn with_out_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm2Pinctrl::OUT_COUNT_MASK) | ((value << Sm2Pinctrl::OUT_COUNT_OFFSET) & Sm2Pinctrl::OUT_COUNT_MASK)
+            bits: (self.bits & !Sm2Pinctrl::OUT_COUNT_MASK)
+                | ((value << Sm2Pinctrl::OUT_COUNT_OFFSET) & Sm2Pinctrl::OUT_COUNT_MASK),
         }
     }
 
@@ -11822,7 +12111,8 @@ impl Sm2PinctrlVal {
     #[inline(always)]
     pub const fn with_in_base(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm2Pinctrl::IN_BASE_MASK) | ((value << Sm2Pinctrl::IN_BASE_OFFSET) & Sm2Pinctrl::IN_BASE_MASK)
+            bits: (self.bits & !Sm2Pinctrl::IN_BASE_MASK)
+                | ((value << Sm2Pinctrl::IN_BASE_OFFSET) & Sm2Pinctrl::IN_BASE_MASK),
         }
     }
 
@@ -11832,7 +12122,8 @@ impl Sm2PinctrlVal {
     #[inline(always)]
     pub const fn with_sideset_base(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm2Pinctrl::SIDESET_BASE_MASK) | ((value << Sm2Pinctrl::SIDESET_BASE_OFFSET) & Sm2Pinctrl::SIDESET_BASE_MASK)
+            bits: (self.bits & !Sm2Pinctrl::SIDESET_BASE_MASK)
+                | ((value << Sm2Pinctrl::SIDESET_BASE_OFFSET) & Sm2Pinctrl::SIDESET_BASE_MASK),
         }
     }
 
@@ -11842,7 +12133,8 @@ impl Sm2PinctrlVal {
     #[inline(always)]
     pub const fn with_set_base(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm2Pinctrl::SET_BASE_MASK) | ((value << Sm2Pinctrl::SET_BASE_OFFSET) & Sm2Pinctrl::SET_BASE_MASK)
+            bits: (self.bits & !Sm2Pinctrl::SET_BASE_MASK)
+                | ((value << Sm2Pinctrl::SET_BASE_OFFSET) & Sm2Pinctrl::SET_BASE_MASK),
         }
     }
 
@@ -11852,7 +12144,8 @@ impl Sm2PinctrlVal {
     #[inline(always)]
     pub const fn with_out_base(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm2Pinctrl::OUT_BASE_MASK) | ((value << Sm2Pinctrl::OUT_BASE_OFFSET) & Sm2Pinctrl::OUT_BASE_MASK)
+            bits: (self.bits & !Sm2Pinctrl::OUT_BASE_MASK)
+                | ((value << Sm2Pinctrl::OUT_BASE_OFFSET) & Sm2Pinctrl::OUT_BASE_MASK),
         }
     }
 }
@@ -11951,7 +12244,9 @@ impl Sm3Clkdiv {
     /// Value of 0 is interpreted as 65536. If INT is 0, FRAC must also be 0.
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK)
+        });
     }
 
     /// **FRAC** `[15:8]` (RW)
@@ -11967,7 +12262,9 @@ impl Sm3Clkdiv {
     /// Fractional part of clock divisor
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK)
+        });
     }
 }
 
@@ -12023,7 +12320,8 @@ impl Sm3ClkdivVal {
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm3Clkdiv::INT_MASK) | ((value << Sm3Clkdiv::INT_OFFSET) & Sm3Clkdiv::INT_MASK)
+            bits: (self.bits & !Sm3Clkdiv::INT_MASK)
+                | ((value << Sm3Clkdiv::INT_OFFSET) & Sm3Clkdiv::INT_MASK),
         }
     }
 
@@ -12033,7 +12331,8 @@ impl Sm3ClkdivVal {
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm3Clkdiv::FRAC_MASK) | ((value << Sm3Clkdiv::FRAC_OFFSET) & Sm3Clkdiv::FRAC_MASK)
+            bits: (self.bits & !Sm3Clkdiv::FRAC_MASK)
+                | ((value << Sm3Clkdiv::FRAC_OFFSET) & Sm3Clkdiv::FRAC_MASK),
         }
     }
 }
@@ -12322,7 +12621,9 @@ impl Sm3Execctrl {
     /// The GPIO number to use as condition for JMP PIN. Unaffected by input mapping.
     #[inline(always)]
     pub fn write_jmp_pin(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::JMP_PIN_MASK) | ((value << Self::JMP_PIN_OFFSET) & Self::JMP_PIN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::JMP_PIN_MASK) | ((value << Self::JMP_PIN_OFFSET) & Self::JMP_PIN_MASK)
+        });
     }
 
     /// **OUT_EN_SEL** `[23:19]` (RW)
@@ -12338,7 +12639,10 @@ impl Sm3Execctrl {
     /// Which data bit to use for inline OUT enable
     #[inline(always)]
     pub fn write_out_en_sel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUT_EN_SEL_MASK) | ((value << Self::OUT_EN_SEL_OFFSET) & Self::OUT_EN_SEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUT_EN_SEL_MASK)
+                | ((value << Self::OUT_EN_SEL_OFFSET) & Self::OUT_EN_SEL_MASK)
+        });
     }
 
     /// **INLINE_OUT_EN** `[18]` (RW)
@@ -12399,7 +12703,9 @@ impl Sm3Execctrl {
     /// If the instruction is a jump, and the jump condition is true, the jump takes priority.
     #[inline(always)]
     pub fn write_wrap_top(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::WRAP_TOP_MASK) | ((value << Self::WRAP_TOP_OFFSET) & Self::WRAP_TOP_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::WRAP_TOP_MASK) | ((value << Self::WRAP_TOP_OFFSET) & Self::WRAP_TOP_MASK)
+        });
     }
 
     /// **WRAP_BOTTOM** `[11:7]` (RW)
@@ -12415,7 +12721,10 @@ impl Sm3Execctrl {
     /// After reaching wrap_top, execution is wrapped to this address.
     #[inline(always)]
     pub fn write_wrap_bottom(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::WRAP_BOTTOM_MASK) | ((value << Self::WRAP_BOTTOM_OFFSET) & Self::WRAP_BOTTOM_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::WRAP_BOTTOM_MASK)
+                | ((value << Self::WRAP_BOTTOM_OFFSET) & Self::WRAP_BOTTOM_MASK)
+        });
     }
 
     /// **STATUS_SEL** `[6:5]` (RW)
@@ -12431,7 +12740,10 @@ impl Sm3Execctrl {
     /// Comparison used for the MOV x, STATUS instruction.
     #[inline(always)]
     pub fn write_status_sel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STATUS_SEL_MASK) | ((value << Self::STATUS_SEL_OFFSET) & Self::STATUS_SEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STATUS_SEL_MASK)
+                | ((value << Self::STATUS_SEL_OFFSET) & Self::STATUS_SEL_MASK)
+        });
     }
 
     /// **STATUS_N** `[4:0]` (RW)
@@ -12449,7 +12761,9 @@ impl Sm3Execctrl {
     /// If STATUS_SEL is TXLEVEL or RXLEVEL, then values of STATUS_N greater than the current FIFO depth are reserved, and have undefined behaviour.
     #[inline(always)]
     pub fn write_status_n(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STATUS_N_MASK) | ((value << Self::STATUS_N_OFFSET) & Self::STATUS_N_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STATUS_N_MASK) | ((value << Self::STATUS_N_OFFSET) & Self::STATUS_N_MASK)
+        });
     }
 }
 
@@ -12584,7 +12898,7 @@ impl Sm3ExecctrlVal {
                 self.bits | Sm3Execctrl::SIDE_EN_MASK
             } else {
                 self.bits & !Sm3Execctrl::SIDE_EN_MASK
-            }
+            },
         }
     }
 
@@ -12598,7 +12912,7 @@ impl Sm3ExecctrlVal {
                 self.bits | Sm3Execctrl::SIDE_PINDIR_MASK
             } else {
                 self.bits & !Sm3Execctrl::SIDE_PINDIR_MASK
-            }
+            },
         }
     }
 
@@ -12608,7 +12922,8 @@ impl Sm3ExecctrlVal {
     #[inline(always)]
     pub const fn with_jmp_pin(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm3Execctrl::JMP_PIN_MASK) | ((value << Sm3Execctrl::JMP_PIN_OFFSET) & Sm3Execctrl::JMP_PIN_MASK)
+            bits: (self.bits & !Sm3Execctrl::JMP_PIN_MASK)
+                | ((value << Sm3Execctrl::JMP_PIN_OFFSET) & Sm3Execctrl::JMP_PIN_MASK),
         }
     }
 
@@ -12618,7 +12933,8 @@ impl Sm3ExecctrlVal {
     #[inline(always)]
     pub const fn with_out_en_sel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm3Execctrl::OUT_EN_SEL_MASK) | ((value << Sm3Execctrl::OUT_EN_SEL_OFFSET) & Sm3Execctrl::OUT_EN_SEL_MASK)
+            bits: (self.bits & !Sm3Execctrl::OUT_EN_SEL_MASK)
+                | ((value << Sm3Execctrl::OUT_EN_SEL_OFFSET) & Sm3Execctrl::OUT_EN_SEL_MASK),
         }
     }
 
@@ -12635,7 +12951,7 @@ impl Sm3ExecctrlVal {
                 self.bits | Sm3Execctrl::INLINE_OUT_EN_MASK
             } else {
                 self.bits & !Sm3Execctrl::INLINE_OUT_EN_MASK
-            }
+            },
         }
     }
 
@@ -12649,7 +12965,7 @@ impl Sm3ExecctrlVal {
                 self.bits | Sm3Execctrl::OUT_STICKY_MASK
             } else {
                 self.bits & !Sm3Execctrl::OUT_STICKY_MASK
-            }
+            },
         }
     }
 
@@ -12660,7 +12976,8 @@ impl Sm3ExecctrlVal {
     #[inline(always)]
     pub const fn with_wrap_top(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm3Execctrl::WRAP_TOP_MASK) | ((value << Sm3Execctrl::WRAP_TOP_OFFSET) & Sm3Execctrl::WRAP_TOP_MASK)
+            bits: (self.bits & !Sm3Execctrl::WRAP_TOP_MASK)
+                | ((value << Sm3Execctrl::WRAP_TOP_OFFSET) & Sm3Execctrl::WRAP_TOP_MASK),
         }
     }
 
@@ -12670,7 +12987,8 @@ impl Sm3ExecctrlVal {
     #[inline(always)]
     pub const fn with_wrap_bottom(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm3Execctrl::WRAP_BOTTOM_MASK) | ((value << Sm3Execctrl::WRAP_BOTTOM_OFFSET) & Sm3Execctrl::WRAP_BOTTOM_MASK)
+            bits: (self.bits & !Sm3Execctrl::WRAP_BOTTOM_MASK)
+                | ((value << Sm3Execctrl::WRAP_BOTTOM_OFFSET) & Sm3Execctrl::WRAP_BOTTOM_MASK),
         }
     }
 
@@ -12680,7 +12998,8 @@ impl Sm3ExecctrlVal {
     #[inline(always)]
     pub const fn with_status_sel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm3Execctrl::STATUS_SEL_MASK) | ((value << Sm3Execctrl::STATUS_SEL_OFFSET) & Sm3Execctrl::STATUS_SEL_MASK)
+            bits: (self.bits & !Sm3Execctrl::STATUS_SEL_MASK)
+                | ((value << Sm3Execctrl::STATUS_SEL_OFFSET) & Sm3Execctrl::STATUS_SEL_MASK),
         }
     }
 
@@ -12691,7 +13010,8 @@ impl Sm3ExecctrlVal {
     #[inline(always)]
     pub const fn with_status_n(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm3Execctrl::STATUS_N_MASK) | ((value << Sm3Execctrl::STATUS_N_OFFSET) & Sm3Execctrl::STATUS_N_MASK)
+            bits: (self.bits & !Sm3Execctrl::STATUS_N_MASK)
+                | ((value << Sm3Execctrl::STATUS_N_OFFSET) & Sm3Execctrl::STATUS_N_MASK),
         }
     }
 }
@@ -12971,7 +13291,10 @@ impl Sm3Shiftctrl {
     /// Write 0 for value of 32.
     #[inline(always)]
     pub fn write_pull_thresh(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PULL_THRESH_MASK) | ((value << Self::PULL_THRESH_OFFSET) & Self::PULL_THRESH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PULL_THRESH_MASK)
+                | ((value << Self::PULL_THRESH_OFFSET) & Self::PULL_THRESH_MASK)
+        });
     }
 
     /// **PUSH_THRESH** `[24:20]` (RW)
@@ -12989,7 +13312,10 @@ impl Sm3Shiftctrl {
     /// Write 0 for value of 32.
     #[inline(always)]
     pub fn write_push_thresh(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PUSH_THRESH_MASK) | ((value << Self::PUSH_THRESH_OFFSET) & Self::PUSH_THRESH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PUSH_THRESH_MASK)
+                | ((value << Self::PUSH_THRESH_OFFSET) & Self::PUSH_THRESH_MASK)
+        });
     }
 
     /// **OUT_SHIFTDIR** `[19]` (RW)
@@ -13133,7 +13459,9 @@ impl Sm3Shiftctrl {
     /// Note this masking is applied in addition to the masking usually performed by the IN instruction. This is mainly useful for the MOV x, PINS instruction, which otherwise has no way of masking pins.
     #[inline(always)]
     pub fn write_in_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IN_COUNT_MASK) | ((value << Self::IN_COUNT_OFFSET) & Self::IN_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IN_COUNT_MASK) | ((value << Self::IN_COUNT_OFFSET) & Self::IN_COUNT_MASK)
+        });
     }
 }
 
@@ -13277,7 +13605,7 @@ impl Sm3ShiftctrlVal {
                 self.bits | Sm3Shiftctrl::FJOIN_RX_MASK
             } else {
                 self.bits & !Sm3Shiftctrl::FJOIN_RX_MASK
-            }
+            },
         }
     }
 
@@ -13293,7 +13621,7 @@ impl Sm3ShiftctrlVal {
                 self.bits | Sm3Shiftctrl::FJOIN_TX_MASK
             } else {
                 self.bits & !Sm3Shiftctrl::FJOIN_TX_MASK
-            }
+            },
         }
     }
 
@@ -13304,7 +13632,8 @@ impl Sm3ShiftctrlVal {
     #[inline(always)]
     pub const fn with_pull_thresh(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm3Shiftctrl::PULL_THRESH_MASK) | ((value << Sm3Shiftctrl::PULL_THRESH_OFFSET) & Sm3Shiftctrl::PULL_THRESH_MASK)
+            bits: (self.bits & !Sm3Shiftctrl::PULL_THRESH_MASK)
+                | ((value << Sm3Shiftctrl::PULL_THRESH_OFFSET) & Sm3Shiftctrl::PULL_THRESH_MASK),
         }
     }
 
@@ -13315,7 +13644,8 @@ impl Sm3ShiftctrlVal {
     #[inline(always)]
     pub const fn with_push_thresh(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm3Shiftctrl::PUSH_THRESH_MASK) | ((value << Sm3Shiftctrl::PUSH_THRESH_OFFSET) & Sm3Shiftctrl::PUSH_THRESH_MASK)
+            bits: (self.bits & !Sm3Shiftctrl::PUSH_THRESH_MASK)
+                | ((value << Sm3Shiftctrl::PUSH_THRESH_OFFSET) & Sm3Shiftctrl::PUSH_THRESH_MASK),
         }
     }
 
@@ -13329,7 +13659,7 @@ impl Sm3ShiftctrlVal {
                 self.bits | Sm3Shiftctrl::OUT_SHIFTDIR_MASK
             } else {
                 self.bits & !Sm3Shiftctrl::OUT_SHIFTDIR_MASK
-            }
+            },
         }
     }
 
@@ -13343,7 +13673,7 @@ impl Sm3ShiftctrlVal {
                 self.bits | Sm3Shiftctrl::IN_SHIFTDIR_MASK
             } else {
                 self.bits & !Sm3Shiftctrl::IN_SHIFTDIR_MASK
-            }
+            },
         }
     }
 
@@ -13357,7 +13687,7 @@ impl Sm3ShiftctrlVal {
                 self.bits | Sm3Shiftctrl::AUTOPULL_MASK
             } else {
                 self.bits & !Sm3Shiftctrl::AUTOPULL_MASK
-            }
+            },
         }
     }
 
@@ -13371,7 +13701,7 @@ impl Sm3ShiftctrlVal {
                 self.bits | Sm3Shiftctrl::AUTOPUSH_MASK
             } else {
                 self.bits & !Sm3Shiftctrl::AUTOPUSH_MASK
-            }
+            },
         }
     }
 
@@ -13387,7 +13717,7 @@ impl Sm3ShiftctrlVal {
                 self.bits | Sm3Shiftctrl::FJOIN_RX_PUT_MASK
             } else {
                 self.bits & !Sm3Shiftctrl::FJOIN_RX_PUT_MASK
-            }
+            },
         }
     }
 
@@ -13403,7 +13733,7 @@ impl Sm3ShiftctrlVal {
                 self.bits | Sm3Shiftctrl::FJOIN_RX_GET_MASK
             } else {
                 self.bits & !Sm3Shiftctrl::FJOIN_RX_GET_MASK
-            }
+            },
         }
     }
 
@@ -13415,7 +13745,8 @@ impl Sm3ShiftctrlVal {
     #[inline(always)]
     pub const fn with_in_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm3Shiftctrl::IN_COUNT_MASK) | ((value << Sm3Shiftctrl::IN_COUNT_OFFSET) & Sm3Shiftctrl::IN_COUNT_MASK)
+            bits: (self.bits & !Sm3Shiftctrl::IN_COUNT_MASK)
+                | ((value << Sm3Shiftctrl::IN_COUNT_OFFSET) & Sm3Shiftctrl::IN_COUNT_MASK),
         }
     }
 }
@@ -13577,7 +13908,9 @@ impl Sm3Instr {
     /// Write **SM3_INSTR** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_sm3_instr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SM3_INSTR_MASK) | ((value << Self::SM3_INSTR_OFFSET) & Self::SM3_INSTR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SM3_INSTR_MASK) | ((value << Self::SM3_INSTR_OFFSET) & Self::SM3_INSTR_MASK)
+        });
     }
 }
 
@@ -13613,7 +13946,8 @@ impl Sm3InstrVal {
     #[inline(always)]
     pub const fn with_sm3_instr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm3Instr::SM3_INSTR_MASK) | ((value << Sm3Instr::SM3_INSTR_OFFSET) & Sm3Instr::SM3_INSTR_MASK)
+            bits: (self.bits & !Sm3Instr::SM3_INSTR_MASK)
+                | ((value << Sm3Instr::SM3_INSTR_OFFSET) & Sm3Instr::SM3_INSTR_MASK),
         }
     }
 }
@@ -13767,7 +14101,10 @@ impl Sm3Pinctrl {
     /// The number of MSBs of the Delay/Side-set instruction field which are used for side-set. Inclusive of the enable bit, if present. Minimum of 0 (all delay bits, no side-set) and maximum of 5 (all side-set, no delay).
     #[inline(always)]
     pub fn write_sideset_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SIDESET_COUNT_MASK) | ((value << Self::SIDESET_COUNT_OFFSET) & Self::SIDESET_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SIDESET_COUNT_MASK)
+                | ((value << Self::SIDESET_COUNT_OFFSET) & Self::SIDESET_COUNT_MASK)
+        });
     }
 
     /// **SET_COUNT** `[28:26]` (RW)
@@ -13783,7 +14120,9 @@ impl Sm3Pinctrl {
     /// The number of pins asserted by a SET. In the range 0 to 5 inclusive.
     #[inline(always)]
     pub fn write_set_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SET_COUNT_MASK) | ((value << Self::SET_COUNT_OFFSET) & Self::SET_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SET_COUNT_MASK) | ((value << Self::SET_COUNT_OFFSET) & Self::SET_COUNT_MASK)
+        });
     }
 
     /// **OUT_COUNT** `[25:20]` (RW)
@@ -13799,7 +14138,9 @@ impl Sm3Pinctrl {
     /// The number of pins asserted by an OUT PINS, OUT PINDIRS or MOV PINS instruction. In the range 0 to 32 inclusive.
     #[inline(always)]
     pub fn write_out_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUT_COUNT_MASK) | ((value << Self::OUT_COUNT_OFFSET) & Self::OUT_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUT_COUNT_MASK) | ((value << Self::OUT_COUNT_OFFSET) & Self::OUT_COUNT_MASK)
+        });
     }
 
     /// **IN_BASE** `[19:15]` (RW)
@@ -13815,7 +14156,9 @@ impl Sm3Pinctrl {
     /// The pin which is mapped to the least-significant bit of a state machine's IN data bus. Higher-numbered pins are mapped to consecutively more-significant data bits, with a modulo of 32 applied to pin number.
     #[inline(always)]
     pub fn write_in_base(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IN_BASE_MASK) | ((value << Self::IN_BASE_OFFSET) & Self::IN_BASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IN_BASE_MASK) | ((value << Self::IN_BASE_OFFSET) & Self::IN_BASE_MASK)
+        });
     }
 
     /// **SIDESET_BASE** `[14:10]` (RW)
@@ -13831,7 +14174,10 @@ impl Sm3Pinctrl {
     /// The lowest-numbered pin that will be affected by a side-set operation. The MSBs of an instruction's side-set/delay field (up to 5, determined by SIDESET_COUNT) are used for side-set data, with the remaining LSBs used for delay. The least-significant bit of the side-set portion is the bit written to this pin, with more-significant bits written to higher-numbered pins.
     #[inline(always)]
     pub fn write_sideset_base(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SIDESET_BASE_MASK) | ((value << Self::SIDESET_BASE_OFFSET) & Self::SIDESET_BASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SIDESET_BASE_MASK)
+                | ((value << Self::SIDESET_BASE_OFFSET) & Self::SIDESET_BASE_MASK)
+        });
     }
 
     /// **SET_BASE** `[9:5]` (RW)
@@ -13847,7 +14193,9 @@ impl Sm3Pinctrl {
     /// The lowest-numbered pin that will be affected by a SET PINS or SET PINDIRS instruction. The data written to this pin is the least-significant bit of the SET data.
     #[inline(always)]
     pub fn write_set_base(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SET_BASE_MASK) | ((value << Self::SET_BASE_OFFSET) & Self::SET_BASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SET_BASE_MASK) | ((value << Self::SET_BASE_OFFSET) & Self::SET_BASE_MASK)
+        });
     }
 
     /// **OUT_BASE** `[4:0]` (RW)
@@ -13863,7 +14211,9 @@ impl Sm3Pinctrl {
     /// The lowest-numbered pin that will be affected by an OUT PINS, OUT PINDIRS or MOV PINS instruction. The data written to this pin will always be the least-significant bit of the OUT or MOV data.
     #[inline(always)]
     pub fn write_out_base(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::OUT_BASE_MASK) | ((value << Self::OUT_BASE_OFFSET) & Self::OUT_BASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::OUT_BASE_MASK) | ((value << Self::OUT_BASE_OFFSET) & Self::OUT_BASE_MASK)
+        });
     }
 }
 
@@ -13957,7 +14307,8 @@ impl Sm3PinctrlVal {
     #[inline(always)]
     pub const fn with_sideset_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm3Pinctrl::SIDESET_COUNT_MASK) | ((value << Sm3Pinctrl::SIDESET_COUNT_OFFSET) & Sm3Pinctrl::SIDESET_COUNT_MASK)
+            bits: (self.bits & !Sm3Pinctrl::SIDESET_COUNT_MASK)
+                | ((value << Sm3Pinctrl::SIDESET_COUNT_OFFSET) & Sm3Pinctrl::SIDESET_COUNT_MASK),
         }
     }
 
@@ -13967,7 +14318,8 @@ impl Sm3PinctrlVal {
     #[inline(always)]
     pub const fn with_set_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm3Pinctrl::SET_COUNT_MASK) | ((value << Sm3Pinctrl::SET_COUNT_OFFSET) & Sm3Pinctrl::SET_COUNT_MASK)
+            bits: (self.bits & !Sm3Pinctrl::SET_COUNT_MASK)
+                | ((value << Sm3Pinctrl::SET_COUNT_OFFSET) & Sm3Pinctrl::SET_COUNT_MASK),
         }
     }
 
@@ -13977,7 +14329,8 @@ impl Sm3PinctrlVal {
     #[inline(always)]
     pub const fn with_out_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm3Pinctrl::OUT_COUNT_MASK) | ((value << Sm3Pinctrl::OUT_COUNT_OFFSET) & Sm3Pinctrl::OUT_COUNT_MASK)
+            bits: (self.bits & !Sm3Pinctrl::OUT_COUNT_MASK)
+                | ((value << Sm3Pinctrl::OUT_COUNT_OFFSET) & Sm3Pinctrl::OUT_COUNT_MASK),
         }
     }
 
@@ -13987,7 +14340,8 @@ impl Sm3PinctrlVal {
     #[inline(always)]
     pub const fn with_in_base(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm3Pinctrl::IN_BASE_MASK) | ((value << Sm3Pinctrl::IN_BASE_OFFSET) & Sm3Pinctrl::IN_BASE_MASK)
+            bits: (self.bits & !Sm3Pinctrl::IN_BASE_MASK)
+                | ((value << Sm3Pinctrl::IN_BASE_OFFSET) & Sm3Pinctrl::IN_BASE_MASK),
         }
     }
 
@@ -13997,7 +14351,8 @@ impl Sm3PinctrlVal {
     #[inline(always)]
     pub const fn with_sideset_base(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm3Pinctrl::SIDESET_BASE_MASK) | ((value << Sm3Pinctrl::SIDESET_BASE_OFFSET) & Sm3Pinctrl::SIDESET_BASE_MASK)
+            bits: (self.bits & !Sm3Pinctrl::SIDESET_BASE_MASK)
+                | ((value << Sm3Pinctrl::SIDESET_BASE_OFFSET) & Sm3Pinctrl::SIDESET_BASE_MASK),
         }
     }
 
@@ -14007,7 +14362,8 @@ impl Sm3PinctrlVal {
     #[inline(always)]
     pub const fn with_set_base(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm3Pinctrl::SET_BASE_MASK) | ((value << Sm3Pinctrl::SET_BASE_OFFSET) & Sm3Pinctrl::SET_BASE_MASK)
+            bits: (self.bits & !Sm3Pinctrl::SET_BASE_MASK)
+                | ((value << Sm3Pinctrl::SET_BASE_OFFSET) & Sm3Pinctrl::SET_BASE_MASK),
         }
     }
 
@@ -14017,7 +14373,8 @@ impl Sm3PinctrlVal {
     #[inline(always)]
     pub const fn with_out_base(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sm3Pinctrl::OUT_BASE_MASK) | ((value << Sm3Pinctrl::OUT_BASE_OFFSET) & Sm3Pinctrl::OUT_BASE_MASK)
+            bits: (self.bits & !Sm3Pinctrl::OUT_BASE_MASK)
+                | ((value << Sm3Pinctrl::OUT_BASE_OFFSET) & Sm3Pinctrl::OUT_BASE_MASK),
         }
     }
 }
@@ -14090,7 +14447,10 @@ impl Rxf0Putget0 {
     /// Write **RXF0_PUTGET0** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_rxf0_putget0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RXF0_PUTGET0_MASK) | ((value << Self::RXF0_PUTGET0_OFFSET) & Self::RXF0_PUTGET0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RXF0_PUTGET0_MASK)
+                | ((value << Self::RXF0_PUTGET0_OFFSET) & Self::RXF0_PUTGET0_MASK)
+        });
     }
 }
 
@@ -14132,7 +14492,8 @@ impl Rxf0Putget0Val {
     #[inline(always)]
     pub const fn with_rxf0_putget0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Rxf0Putget0::RXF0_PUTGET0_MASK) | ((value << Rxf0Putget0::RXF0_PUTGET0_OFFSET) & Rxf0Putget0::RXF0_PUTGET0_MASK)
+            bits: (self.bits & !Rxf0Putget0::RXF0_PUTGET0_MASK)
+                | ((value << Rxf0Putget0::RXF0_PUTGET0_OFFSET) & Rxf0Putget0::RXF0_PUTGET0_MASK),
         }
     }
 }
@@ -14205,7 +14566,10 @@ impl Rxf0Putget1 {
     /// Write **RXF0_PUTGET1** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_rxf0_putget1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RXF0_PUTGET1_MASK) | ((value << Self::RXF0_PUTGET1_OFFSET) & Self::RXF0_PUTGET1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RXF0_PUTGET1_MASK)
+                | ((value << Self::RXF0_PUTGET1_OFFSET) & Self::RXF0_PUTGET1_MASK)
+        });
     }
 }
 
@@ -14247,7 +14611,8 @@ impl Rxf0Putget1Val {
     #[inline(always)]
     pub const fn with_rxf0_putget1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Rxf0Putget1::RXF0_PUTGET1_MASK) | ((value << Rxf0Putget1::RXF0_PUTGET1_OFFSET) & Rxf0Putget1::RXF0_PUTGET1_MASK)
+            bits: (self.bits & !Rxf0Putget1::RXF0_PUTGET1_MASK)
+                | ((value << Rxf0Putget1::RXF0_PUTGET1_OFFSET) & Rxf0Putget1::RXF0_PUTGET1_MASK),
         }
     }
 }
@@ -14320,7 +14685,10 @@ impl Rxf0Putget2 {
     /// Write **RXF0_PUTGET2** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_rxf0_putget2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RXF0_PUTGET2_MASK) | ((value << Self::RXF0_PUTGET2_OFFSET) & Self::RXF0_PUTGET2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RXF0_PUTGET2_MASK)
+                | ((value << Self::RXF0_PUTGET2_OFFSET) & Self::RXF0_PUTGET2_MASK)
+        });
     }
 }
 
@@ -14362,7 +14730,8 @@ impl Rxf0Putget2Val {
     #[inline(always)]
     pub const fn with_rxf0_putget2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Rxf0Putget2::RXF0_PUTGET2_MASK) | ((value << Rxf0Putget2::RXF0_PUTGET2_OFFSET) & Rxf0Putget2::RXF0_PUTGET2_MASK)
+            bits: (self.bits & !Rxf0Putget2::RXF0_PUTGET2_MASK)
+                | ((value << Rxf0Putget2::RXF0_PUTGET2_OFFSET) & Rxf0Putget2::RXF0_PUTGET2_MASK),
         }
     }
 }
@@ -14435,7 +14804,10 @@ impl Rxf0Putget3 {
     /// Write **RXF0_PUTGET3** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_rxf0_putget3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RXF0_PUTGET3_MASK) | ((value << Self::RXF0_PUTGET3_OFFSET) & Self::RXF0_PUTGET3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RXF0_PUTGET3_MASK)
+                | ((value << Self::RXF0_PUTGET3_OFFSET) & Self::RXF0_PUTGET3_MASK)
+        });
     }
 }
 
@@ -14477,7 +14849,8 @@ impl Rxf0Putget3Val {
     #[inline(always)]
     pub const fn with_rxf0_putget3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Rxf0Putget3::RXF0_PUTGET3_MASK) | ((value << Rxf0Putget3::RXF0_PUTGET3_OFFSET) & Rxf0Putget3::RXF0_PUTGET3_MASK)
+            bits: (self.bits & !Rxf0Putget3::RXF0_PUTGET3_MASK)
+                | ((value << Rxf0Putget3::RXF0_PUTGET3_OFFSET) & Rxf0Putget3::RXF0_PUTGET3_MASK),
         }
     }
 }
@@ -14550,7 +14923,10 @@ impl Rxf1Putget0 {
     /// Write **RXF1_PUTGET0** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_rxf1_putget0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RXF1_PUTGET0_MASK) | ((value << Self::RXF1_PUTGET0_OFFSET) & Self::RXF1_PUTGET0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RXF1_PUTGET0_MASK)
+                | ((value << Self::RXF1_PUTGET0_OFFSET) & Self::RXF1_PUTGET0_MASK)
+        });
     }
 }
 
@@ -14592,7 +14968,8 @@ impl Rxf1Putget0Val {
     #[inline(always)]
     pub const fn with_rxf1_putget0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Rxf1Putget0::RXF1_PUTGET0_MASK) | ((value << Rxf1Putget0::RXF1_PUTGET0_OFFSET) & Rxf1Putget0::RXF1_PUTGET0_MASK)
+            bits: (self.bits & !Rxf1Putget0::RXF1_PUTGET0_MASK)
+                | ((value << Rxf1Putget0::RXF1_PUTGET0_OFFSET) & Rxf1Putget0::RXF1_PUTGET0_MASK),
         }
     }
 }
@@ -14665,7 +15042,10 @@ impl Rxf1Putget1 {
     /// Write **RXF1_PUTGET1** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_rxf1_putget1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RXF1_PUTGET1_MASK) | ((value << Self::RXF1_PUTGET1_OFFSET) & Self::RXF1_PUTGET1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RXF1_PUTGET1_MASK)
+                | ((value << Self::RXF1_PUTGET1_OFFSET) & Self::RXF1_PUTGET1_MASK)
+        });
     }
 }
 
@@ -14707,7 +15087,8 @@ impl Rxf1Putget1Val {
     #[inline(always)]
     pub const fn with_rxf1_putget1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Rxf1Putget1::RXF1_PUTGET1_MASK) | ((value << Rxf1Putget1::RXF1_PUTGET1_OFFSET) & Rxf1Putget1::RXF1_PUTGET1_MASK)
+            bits: (self.bits & !Rxf1Putget1::RXF1_PUTGET1_MASK)
+                | ((value << Rxf1Putget1::RXF1_PUTGET1_OFFSET) & Rxf1Putget1::RXF1_PUTGET1_MASK),
         }
     }
 }
@@ -14780,7 +15161,10 @@ impl Rxf1Putget2 {
     /// Write **RXF1_PUTGET2** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_rxf1_putget2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RXF1_PUTGET2_MASK) | ((value << Self::RXF1_PUTGET2_OFFSET) & Self::RXF1_PUTGET2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RXF1_PUTGET2_MASK)
+                | ((value << Self::RXF1_PUTGET2_OFFSET) & Self::RXF1_PUTGET2_MASK)
+        });
     }
 }
 
@@ -14822,7 +15206,8 @@ impl Rxf1Putget2Val {
     #[inline(always)]
     pub const fn with_rxf1_putget2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Rxf1Putget2::RXF1_PUTGET2_MASK) | ((value << Rxf1Putget2::RXF1_PUTGET2_OFFSET) & Rxf1Putget2::RXF1_PUTGET2_MASK)
+            bits: (self.bits & !Rxf1Putget2::RXF1_PUTGET2_MASK)
+                | ((value << Rxf1Putget2::RXF1_PUTGET2_OFFSET) & Rxf1Putget2::RXF1_PUTGET2_MASK),
         }
     }
 }
@@ -14895,7 +15280,10 @@ impl Rxf1Putget3 {
     /// Write **RXF1_PUTGET3** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_rxf1_putget3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RXF1_PUTGET3_MASK) | ((value << Self::RXF1_PUTGET3_OFFSET) & Self::RXF1_PUTGET3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RXF1_PUTGET3_MASK)
+                | ((value << Self::RXF1_PUTGET3_OFFSET) & Self::RXF1_PUTGET3_MASK)
+        });
     }
 }
 
@@ -14937,7 +15325,8 @@ impl Rxf1Putget3Val {
     #[inline(always)]
     pub const fn with_rxf1_putget3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Rxf1Putget3::RXF1_PUTGET3_MASK) | ((value << Rxf1Putget3::RXF1_PUTGET3_OFFSET) & Rxf1Putget3::RXF1_PUTGET3_MASK)
+            bits: (self.bits & !Rxf1Putget3::RXF1_PUTGET3_MASK)
+                | ((value << Rxf1Putget3::RXF1_PUTGET3_OFFSET) & Rxf1Putget3::RXF1_PUTGET3_MASK),
         }
     }
 }
@@ -15010,7 +15399,10 @@ impl Rxf2Putget0 {
     /// Write **RXF2_PUTGET0** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_rxf2_putget0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RXF2_PUTGET0_MASK) | ((value << Self::RXF2_PUTGET0_OFFSET) & Self::RXF2_PUTGET0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RXF2_PUTGET0_MASK)
+                | ((value << Self::RXF2_PUTGET0_OFFSET) & Self::RXF2_PUTGET0_MASK)
+        });
     }
 }
 
@@ -15052,7 +15444,8 @@ impl Rxf2Putget0Val {
     #[inline(always)]
     pub const fn with_rxf2_putget0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Rxf2Putget0::RXF2_PUTGET0_MASK) | ((value << Rxf2Putget0::RXF2_PUTGET0_OFFSET) & Rxf2Putget0::RXF2_PUTGET0_MASK)
+            bits: (self.bits & !Rxf2Putget0::RXF2_PUTGET0_MASK)
+                | ((value << Rxf2Putget0::RXF2_PUTGET0_OFFSET) & Rxf2Putget0::RXF2_PUTGET0_MASK),
         }
     }
 }
@@ -15125,7 +15518,10 @@ impl Rxf2Putget1 {
     /// Write **RXF2_PUTGET1** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_rxf2_putget1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RXF2_PUTGET1_MASK) | ((value << Self::RXF2_PUTGET1_OFFSET) & Self::RXF2_PUTGET1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RXF2_PUTGET1_MASK)
+                | ((value << Self::RXF2_PUTGET1_OFFSET) & Self::RXF2_PUTGET1_MASK)
+        });
     }
 }
 
@@ -15167,7 +15563,8 @@ impl Rxf2Putget1Val {
     #[inline(always)]
     pub const fn with_rxf2_putget1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Rxf2Putget1::RXF2_PUTGET1_MASK) | ((value << Rxf2Putget1::RXF2_PUTGET1_OFFSET) & Rxf2Putget1::RXF2_PUTGET1_MASK)
+            bits: (self.bits & !Rxf2Putget1::RXF2_PUTGET1_MASK)
+                | ((value << Rxf2Putget1::RXF2_PUTGET1_OFFSET) & Rxf2Putget1::RXF2_PUTGET1_MASK),
         }
     }
 }
@@ -15240,7 +15637,10 @@ impl Rxf2Putget2 {
     /// Write **RXF2_PUTGET2** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_rxf2_putget2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RXF2_PUTGET2_MASK) | ((value << Self::RXF2_PUTGET2_OFFSET) & Self::RXF2_PUTGET2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RXF2_PUTGET2_MASK)
+                | ((value << Self::RXF2_PUTGET2_OFFSET) & Self::RXF2_PUTGET2_MASK)
+        });
     }
 }
 
@@ -15282,7 +15682,8 @@ impl Rxf2Putget2Val {
     #[inline(always)]
     pub const fn with_rxf2_putget2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Rxf2Putget2::RXF2_PUTGET2_MASK) | ((value << Rxf2Putget2::RXF2_PUTGET2_OFFSET) & Rxf2Putget2::RXF2_PUTGET2_MASK)
+            bits: (self.bits & !Rxf2Putget2::RXF2_PUTGET2_MASK)
+                | ((value << Rxf2Putget2::RXF2_PUTGET2_OFFSET) & Rxf2Putget2::RXF2_PUTGET2_MASK),
         }
     }
 }
@@ -15355,7 +15756,10 @@ impl Rxf2Putget3 {
     /// Write **RXF2_PUTGET3** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_rxf2_putget3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RXF2_PUTGET3_MASK) | ((value << Self::RXF2_PUTGET3_OFFSET) & Self::RXF2_PUTGET3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RXF2_PUTGET3_MASK)
+                | ((value << Self::RXF2_PUTGET3_OFFSET) & Self::RXF2_PUTGET3_MASK)
+        });
     }
 }
 
@@ -15397,7 +15801,8 @@ impl Rxf2Putget3Val {
     #[inline(always)]
     pub const fn with_rxf2_putget3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Rxf2Putget3::RXF2_PUTGET3_MASK) | ((value << Rxf2Putget3::RXF2_PUTGET3_OFFSET) & Rxf2Putget3::RXF2_PUTGET3_MASK)
+            bits: (self.bits & !Rxf2Putget3::RXF2_PUTGET3_MASK)
+                | ((value << Rxf2Putget3::RXF2_PUTGET3_OFFSET) & Rxf2Putget3::RXF2_PUTGET3_MASK),
         }
     }
 }
@@ -15470,7 +15875,10 @@ impl Rxf3Putget0 {
     /// Write **RXF3_PUTGET0** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_rxf3_putget0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RXF3_PUTGET0_MASK) | ((value << Self::RXF3_PUTGET0_OFFSET) & Self::RXF3_PUTGET0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RXF3_PUTGET0_MASK)
+                | ((value << Self::RXF3_PUTGET0_OFFSET) & Self::RXF3_PUTGET0_MASK)
+        });
     }
 }
 
@@ -15512,7 +15920,8 @@ impl Rxf3Putget0Val {
     #[inline(always)]
     pub const fn with_rxf3_putget0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Rxf3Putget0::RXF3_PUTGET0_MASK) | ((value << Rxf3Putget0::RXF3_PUTGET0_OFFSET) & Rxf3Putget0::RXF3_PUTGET0_MASK)
+            bits: (self.bits & !Rxf3Putget0::RXF3_PUTGET0_MASK)
+                | ((value << Rxf3Putget0::RXF3_PUTGET0_OFFSET) & Rxf3Putget0::RXF3_PUTGET0_MASK),
         }
     }
 }
@@ -15585,7 +15994,10 @@ impl Rxf3Putget1 {
     /// Write **RXF3_PUTGET1** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_rxf3_putget1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RXF3_PUTGET1_MASK) | ((value << Self::RXF3_PUTGET1_OFFSET) & Self::RXF3_PUTGET1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RXF3_PUTGET1_MASK)
+                | ((value << Self::RXF3_PUTGET1_OFFSET) & Self::RXF3_PUTGET1_MASK)
+        });
     }
 }
 
@@ -15627,7 +16039,8 @@ impl Rxf3Putget1Val {
     #[inline(always)]
     pub const fn with_rxf3_putget1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Rxf3Putget1::RXF3_PUTGET1_MASK) | ((value << Rxf3Putget1::RXF3_PUTGET1_OFFSET) & Rxf3Putget1::RXF3_PUTGET1_MASK)
+            bits: (self.bits & !Rxf3Putget1::RXF3_PUTGET1_MASK)
+                | ((value << Rxf3Putget1::RXF3_PUTGET1_OFFSET) & Rxf3Putget1::RXF3_PUTGET1_MASK),
         }
     }
 }
@@ -15700,7 +16113,10 @@ impl Rxf3Putget2 {
     /// Write **RXF3_PUTGET2** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_rxf3_putget2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RXF3_PUTGET2_MASK) | ((value << Self::RXF3_PUTGET2_OFFSET) & Self::RXF3_PUTGET2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RXF3_PUTGET2_MASK)
+                | ((value << Self::RXF3_PUTGET2_OFFSET) & Self::RXF3_PUTGET2_MASK)
+        });
     }
 }
 
@@ -15742,7 +16158,8 @@ impl Rxf3Putget2Val {
     #[inline(always)]
     pub const fn with_rxf3_putget2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Rxf3Putget2::RXF3_PUTGET2_MASK) | ((value << Rxf3Putget2::RXF3_PUTGET2_OFFSET) & Rxf3Putget2::RXF3_PUTGET2_MASK)
+            bits: (self.bits & !Rxf3Putget2::RXF3_PUTGET2_MASK)
+                | ((value << Rxf3Putget2::RXF3_PUTGET2_OFFSET) & Rxf3Putget2::RXF3_PUTGET2_MASK),
         }
     }
 }
@@ -15815,7 +16232,10 @@ impl Rxf3Putget3 {
     /// Write **RXF3_PUTGET3** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_rxf3_putget3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RXF3_PUTGET3_MASK) | ((value << Self::RXF3_PUTGET3_OFFSET) & Self::RXF3_PUTGET3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RXF3_PUTGET3_MASK)
+                | ((value << Self::RXF3_PUTGET3_OFFSET) & Self::RXF3_PUTGET3_MASK)
+        });
     }
 }
 
@@ -15857,7 +16277,8 @@ impl Rxf3Putget3Val {
     #[inline(always)]
     pub const fn with_rxf3_putget3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Rxf3Putget3::RXF3_PUTGET3_MASK) | ((value << Rxf3Putget3::RXF3_PUTGET3_OFFSET) & Rxf3Putget3::RXF3_PUTGET3_MASK)
+            bits: (self.bits & !Rxf3Putget3::RXF3_PUTGET3_MASK)
+                | ((value << Rxf3Putget3::RXF3_PUTGET3_OFFSET) & Rxf3Putget3::RXF3_PUTGET3_MASK),
         }
     }
 }
@@ -15984,7 +16405,7 @@ impl GpiobaseVal {
                 self.bits | Gpiobase::GPIOBASE_MASK
             } else {
                 self.bits & !Gpiobase::GPIOBASE_MASK
-            }
+            },
         }
     }
 }
@@ -16980,7 +17401,7 @@ impl Irq0InteVal {
                 self.bits | Irq0Inte::SM7_MASK
             } else {
                 self.bits & !Irq0Inte::SM7_MASK
-            }
+            },
         }
     }
 
@@ -16992,7 +17413,7 @@ impl Irq0InteVal {
                 self.bits | Irq0Inte::SM6_MASK
             } else {
                 self.bits & !Irq0Inte::SM6_MASK
-            }
+            },
         }
     }
 
@@ -17004,7 +17425,7 @@ impl Irq0InteVal {
                 self.bits | Irq0Inte::SM5_MASK
             } else {
                 self.bits & !Irq0Inte::SM5_MASK
-            }
+            },
         }
     }
 
@@ -17016,7 +17437,7 @@ impl Irq0InteVal {
                 self.bits | Irq0Inte::SM4_MASK
             } else {
                 self.bits & !Irq0Inte::SM4_MASK
-            }
+            },
         }
     }
 
@@ -17028,7 +17449,7 @@ impl Irq0InteVal {
                 self.bits | Irq0Inte::SM3_MASK
             } else {
                 self.bits & !Irq0Inte::SM3_MASK
-            }
+            },
         }
     }
 
@@ -17040,7 +17461,7 @@ impl Irq0InteVal {
                 self.bits | Irq0Inte::SM2_MASK
             } else {
                 self.bits & !Irq0Inte::SM2_MASK
-            }
+            },
         }
     }
 
@@ -17052,7 +17473,7 @@ impl Irq0InteVal {
                 self.bits | Irq0Inte::SM1_MASK
             } else {
                 self.bits & !Irq0Inte::SM1_MASK
-            }
+            },
         }
     }
 
@@ -17064,7 +17485,7 @@ impl Irq0InteVal {
                 self.bits | Irq0Inte::SM0_MASK
             } else {
                 self.bits & !Irq0Inte::SM0_MASK
-            }
+            },
         }
     }
 
@@ -17076,7 +17497,7 @@ impl Irq0InteVal {
                 self.bits | Irq0Inte::SM3_TXNFULL_MASK
             } else {
                 self.bits & !Irq0Inte::SM3_TXNFULL_MASK
-            }
+            },
         }
     }
 
@@ -17088,7 +17509,7 @@ impl Irq0InteVal {
                 self.bits | Irq0Inte::SM2_TXNFULL_MASK
             } else {
                 self.bits & !Irq0Inte::SM2_TXNFULL_MASK
-            }
+            },
         }
     }
 
@@ -17100,7 +17521,7 @@ impl Irq0InteVal {
                 self.bits | Irq0Inte::SM1_TXNFULL_MASK
             } else {
                 self.bits & !Irq0Inte::SM1_TXNFULL_MASK
-            }
+            },
         }
     }
 
@@ -17112,7 +17533,7 @@ impl Irq0InteVal {
                 self.bits | Irq0Inte::SM0_TXNFULL_MASK
             } else {
                 self.bits & !Irq0Inte::SM0_TXNFULL_MASK
-            }
+            },
         }
     }
 
@@ -17124,7 +17545,7 @@ impl Irq0InteVal {
                 self.bits | Irq0Inte::SM3_RXNEMPTY_MASK
             } else {
                 self.bits & !Irq0Inte::SM3_RXNEMPTY_MASK
-            }
+            },
         }
     }
 
@@ -17136,7 +17557,7 @@ impl Irq0InteVal {
                 self.bits | Irq0Inte::SM2_RXNEMPTY_MASK
             } else {
                 self.bits & !Irq0Inte::SM2_RXNEMPTY_MASK
-            }
+            },
         }
     }
 
@@ -17148,7 +17569,7 @@ impl Irq0InteVal {
                 self.bits | Irq0Inte::SM1_RXNEMPTY_MASK
             } else {
                 self.bits & !Irq0Inte::SM1_RXNEMPTY_MASK
-            }
+            },
         }
     }
 
@@ -17160,7 +17581,7 @@ impl Irq0InteVal {
                 self.bits | Irq0Inte::SM0_RXNEMPTY_MASK
             } else {
                 self.bits & !Irq0Inte::SM0_RXNEMPTY_MASK
-            }
+            },
         }
     }
 }
@@ -17766,7 +18187,7 @@ impl Irq0IntfVal {
                 self.bits | Irq0Intf::SM7_MASK
             } else {
                 self.bits & !Irq0Intf::SM7_MASK
-            }
+            },
         }
     }
 
@@ -17778,7 +18199,7 @@ impl Irq0IntfVal {
                 self.bits | Irq0Intf::SM6_MASK
             } else {
                 self.bits & !Irq0Intf::SM6_MASK
-            }
+            },
         }
     }
 
@@ -17790,7 +18211,7 @@ impl Irq0IntfVal {
                 self.bits | Irq0Intf::SM5_MASK
             } else {
                 self.bits & !Irq0Intf::SM5_MASK
-            }
+            },
         }
     }
 
@@ -17802,7 +18223,7 @@ impl Irq0IntfVal {
                 self.bits | Irq0Intf::SM4_MASK
             } else {
                 self.bits & !Irq0Intf::SM4_MASK
-            }
+            },
         }
     }
 
@@ -17814,7 +18235,7 @@ impl Irq0IntfVal {
                 self.bits | Irq0Intf::SM3_MASK
             } else {
                 self.bits & !Irq0Intf::SM3_MASK
-            }
+            },
         }
     }
 
@@ -17826,7 +18247,7 @@ impl Irq0IntfVal {
                 self.bits | Irq0Intf::SM2_MASK
             } else {
                 self.bits & !Irq0Intf::SM2_MASK
-            }
+            },
         }
     }
 
@@ -17838,7 +18259,7 @@ impl Irq0IntfVal {
                 self.bits | Irq0Intf::SM1_MASK
             } else {
                 self.bits & !Irq0Intf::SM1_MASK
-            }
+            },
         }
     }
 
@@ -17850,7 +18271,7 @@ impl Irq0IntfVal {
                 self.bits | Irq0Intf::SM0_MASK
             } else {
                 self.bits & !Irq0Intf::SM0_MASK
-            }
+            },
         }
     }
 
@@ -17862,7 +18283,7 @@ impl Irq0IntfVal {
                 self.bits | Irq0Intf::SM3_TXNFULL_MASK
             } else {
                 self.bits & !Irq0Intf::SM3_TXNFULL_MASK
-            }
+            },
         }
     }
 
@@ -17874,7 +18295,7 @@ impl Irq0IntfVal {
                 self.bits | Irq0Intf::SM2_TXNFULL_MASK
             } else {
                 self.bits & !Irq0Intf::SM2_TXNFULL_MASK
-            }
+            },
         }
     }
 
@@ -17886,7 +18307,7 @@ impl Irq0IntfVal {
                 self.bits | Irq0Intf::SM1_TXNFULL_MASK
             } else {
                 self.bits & !Irq0Intf::SM1_TXNFULL_MASK
-            }
+            },
         }
     }
 
@@ -17898,7 +18319,7 @@ impl Irq0IntfVal {
                 self.bits | Irq0Intf::SM0_TXNFULL_MASK
             } else {
                 self.bits & !Irq0Intf::SM0_TXNFULL_MASK
-            }
+            },
         }
     }
 
@@ -17910,7 +18331,7 @@ impl Irq0IntfVal {
                 self.bits | Irq0Intf::SM3_RXNEMPTY_MASK
             } else {
                 self.bits & !Irq0Intf::SM3_RXNEMPTY_MASK
-            }
+            },
         }
     }
 
@@ -17922,7 +18343,7 @@ impl Irq0IntfVal {
                 self.bits | Irq0Intf::SM2_RXNEMPTY_MASK
             } else {
                 self.bits & !Irq0Intf::SM2_RXNEMPTY_MASK
-            }
+            },
         }
     }
 
@@ -17934,7 +18355,7 @@ impl Irq0IntfVal {
                 self.bits | Irq0Intf::SM1_RXNEMPTY_MASK
             } else {
                 self.bits & !Irq0Intf::SM1_RXNEMPTY_MASK
-            }
+            },
         }
     }
 
@@ -17946,7 +18367,7 @@ impl Irq0IntfVal {
                 self.bits | Irq0Intf::SM0_RXNEMPTY_MASK
             } else {
                 self.bits & !Irq0Intf::SM0_RXNEMPTY_MASK
-            }
+            },
         }
     }
 }
@@ -18942,7 +19363,7 @@ impl Irq1InteVal {
                 self.bits | Irq1Inte::SM7_MASK
             } else {
                 self.bits & !Irq1Inte::SM7_MASK
-            }
+            },
         }
     }
 
@@ -18954,7 +19375,7 @@ impl Irq1InteVal {
                 self.bits | Irq1Inte::SM6_MASK
             } else {
                 self.bits & !Irq1Inte::SM6_MASK
-            }
+            },
         }
     }
 
@@ -18966,7 +19387,7 @@ impl Irq1InteVal {
                 self.bits | Irq1Inte::SM5_MASK
             } else {
                 self.bits & !Irq1Inte::SM5_MASK
-            }
+            },
         }
     }
 
@@ -18978,7 +19399,7 @@ impl Irq1InteVal {
                 self.bits | Irq1Inte::SM4_MASK
             } else {
                 self.bits & !Irq1Inte::SM4_MASK
-            }
+            },
         }
     }
 
@@ -18990,7 +19411,7 @@ impl Irq1InteVal {
                 self.bits | Irq1Inte::SM3_MASK
             } else {
                 self.bits & !Irq1Inte::SM3_MASK
-            }
+            },
         }
     }
 
@@ -19002,7 +19423,7 @@ impl Irq1InteVal {
                 self.bits | Irq1Inte::SM2_MASK
             } else {
                 self.bits & !Irq1Inte::SM2_MASK
-            }
+            },
         }
     }
 
@@ -19014,7 +19435,7 @@ impl Irq1InteVal {
                 self.bits | Irq1Inte::SM1_MASK
             } else {
                 self.bits & !Irq1Inte::SM1_MASK
-            }
+            },
         }
     }
 
@@ -19026,7 +19447,7 @@ impl Irq1InteVal {
                 self.bits | Irq1Inte::SM0_MASK
             } else {
                 self.bits & !Irq1Inte::SM0_MASK
-            }
+            },
         }
     }
 
@@ -19038,7 +19459,7 @@ impl Irq1InteVal {
                 self.bits | Irq1Inte::SM3_TXNFULL_MASK
             } else {
                 self.bits & !Irq1Inte::SM3_TXNFULL_MASK
-            }
+            },
         }
     }
 
@@ -19050,7 +19471,7 @@ impl Irq1InteVal {
                 self.bits | Irq1Inte::SM2_TXNFULL_MASK
             } else {
                 self.bits & !Irq1Inte::SM2_TXNFULL_MASK
-            }
+            },
         }
     }
 
@@ -19062,7 +19483,7 @@ impl Irq1InteVal {
                 self.bits | Irq1Inte::SM1_TXNFULL_MASK
             } else {
                 self.bits & !Irq1Inte::SM1_TXNFULL_MASK
-            }
+            },
         }
     }
 
@@ -19074,7 +19495,7 @@ impl Irq1InteVal {
                 self.bits | Irq1Inte::SM0_TXNFULL_MASK
             } else {
                 self.bits & !Irq1Inte::SM0_TXNFULL_MASK
-            }
+            },
         }
     }
 
@@ -19086,7 +19507,7 @@ impl Irq1InteVal {
                 self.bits | Irq1Inte::SM3_RXNEMPTY_MASK
             } else {
                 self.bits & !Irq1Inte::SM3_RXNEMPTY_MASK
-            }
+            },
         }
     }
 
@@ -19098,7 +19519,7 @@ impl Irq1InteVal {
                 self.bits | Irq1Inte::SM2_RXNEMPTY_MASK
             } else {
                 self.bits & !Irq1Inte::SM2_RXNEMPTY_MASK
-            }
+            },
         }
     }
 
@@ -19110,7 +19531,7 @@ impl Irq1InteVal {
                 self.bits | Irq1Inte::SM1_RXNEMPTY_MASK
             } else {
                 self.bits & !Irq1Inte::SM1_RXNEMPTY_MASK
-            }
+            },
         }
     }
 
@@ -19122,7 +19543,7 @@ impl Irq1InteVal {
                 self.bits | Irq1Inte::SM0_RXNEMPTY_MASK
             } else {
                 self.bits & !Irq1Inte::SM0_RXNEMPTY_MASK
-            }
+            },
         }
     }
 }
@@ -19728,7 +20149,7 @@ impl Irq1IntfVal {
                 self.bits | Irq1Intf::SM7_MASK
             } else {
                 self.bits & !Irq1Intf::SM7_MASK
-            }
+            },
         }
     }
 
@@ -19740,7 +20161,7 @@ impl Irq1IntfVal {
                 self.bits | Irq1Intf::SM6_MASK
             } else {
                 self.bits & !Irq1Intf::SM6_MASK
-            }
+            },
         }
     }
 
@@ -19752,7 +20173,7 @@ impl Irq1IntfVal {
                 self.bits | Irq1Intf::SM5_MASK
             } else {
                 self.bits & !Irq1Intf::SM5_MASK
-            }
+            },
         }
     }
 
@@ -19764,7 +20185,7 @@ impl Irq1IntfVal {
                 self.bits | Irq1Intf::SM4_MASK
             } else {
                 self.bits & !Irq1Intf::SM4_MASK
-            }
+            },
         }
     }
 
@@ -19776,7 +20197,7 @@ impl Irq1IntfVal {
                 self.bits | Irq1Intf::SM3_MASK
             } else {
                 self.bits & !Irq1Intf::SM3_MASK
-            }
+            },
         }
     }
 
@@ -19788,7 +20209,7 @@ impl Irq1IntfVal {
                 self.bits | Irq1Intf::SM2_MASK
             } else {
                 self.bits & !Irq1Intf::SM2_MASK
-            }
+            },
         }
     }
 
@@ -19800,7 +20221,7 @@ impl Irq1IntfVal {
                 self.bits | Irq1Intf::SM1_MASK
             } else {
                 self.bits & !Irq1Intf::SM1_MASK
-            }
+            },
         }
     }
 
@@ -19812,7 +20233,7 @@ impl Irq1IntfVal {
                 self.bits | Irq1Intf::SM0_MASK
             } else {
                 self.bits & !Irq1Intf::SM0_MASK
-            }
+            },
         }
     }
 
@@ -19824,7 +20245,7 @@ impl Irq1IntfVal {
                 self.bits | Irq1Intf::SM3_TXNFULL_MASK
             } else {
                 self.bits & !Irq1Intf::SM3_TXNFULL_MASK
-            }
+            },
         }
     }
 
@@ -19836,7 +20257,7 @@ impl Irq1IntfVal {
                 self.bits | Irq1Intf::SM2_TXNFULL_MASK
             } else {
                 self.bits & !Irq1Intf::SM2_TXNFULL_MASK
-            }
+            },
         }
     }
 
@@ -19848,7 +20269,7 @@ impl Irq1IntfVal {
                 self.bits | Irq1Intf::SM1_TXNFULL_MASK
             } else {
                 self.bits & !Irq1Intf::SM1_TXNFULL_MASK
-            }
+            },
         }
     }
 
@@ -19860,7 +20281,7 @@ impl Irq1IntfVal {
                 self.bits | Irq1Intf::SM0_TXNFULL_MASK
             } else {
                 self.bits & !Irq1Intf::SM0_TXNFULL_MASK
-            }
+            },
         }
     }
 
@@ -19872,7 +20293,7 @@ impl Irq1IntfVal {
                 self.bits | Irq1Intf::SM3_RXNEMPTY_MASK
             } else {
                 self.bits & !Irq1Intf::SM3_RXNEMPTY_MASK
-            }
+            },
         }
     }
 
@@ -19884,7 +20305,7 @@ impl Irq1IntfVal {
                 self.bits | Irq1Intf::SM2_RXNEMPTY_MASK
             } else {
                 self.bits & !Irq1Intf::SM2_RXNEMPTY_MASK
-            }
+            },
         }
     }
 
@@ -19896,7 +20317,7 @@ impl Irq1IntfVal {
                 self.bits | Irq1Intf::SM1_RXNEMPTY_MASK
             } else {
                 self.bits & !Irq1Intf::SM1_RXNEMPTY_MASK
-            }
+            },
         }
     }
 
@@ -19908,7 +20329,7 @@ impl Irq1IntfVal {
                 self.bits | Irq1Intf::SM0_RXNEMPTY_MASK
             } else {
                 self.bits & !Irq1Intf::SM0_RXNEMPTY_MASK
-            }
+            },
         }
     }
 }
@@ -20641,4 +21062,3 @@ pub struct RegisterBlock {
     /// Interrupt status after masking & forcing for irq1
     pub irq1_ints: Irq1Ints,
 }
-

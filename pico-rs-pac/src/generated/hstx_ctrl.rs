@@ -181,7 +181,9 @@ impl Csr {
     /// A CLKDIV value of 0 is mapped to a period of 16 HSTX clock cycles.
     #[inline(always)]
     pub fn write_clkdiv(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CLKDIV_MASK) | ((value << Self::CLKDIV_OFFSET) & Self::CLKDIV_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CLKDIV_MASK) | ((value << Self::CLKDIV_OFFSET) & Self::CLKDIV_MASK)
+        });
     }
 
     /// **CLKPHASE** `[27:24]` (RW)
@@ -211,7 +213,9 @@ impl Csr {
     /// Note CLKPHASE must be strictly less than double the value of CLKDIV (one full period), else its operation is undefined.
     #[inline(always)]
     pub fn write_clkphase(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CLKPHASE_MASK) | ((value << Self::CLKPHASE_OFFSET) & Self::CLKPHASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CLKPHASE_MASK) | ((value << Self::CLKPHASE_OFFSET) & Self::CLKPHASE_MASK)
+        });
     }
 
     /// **N_SHIFTS** `[20:16]` (RW)
@@ -229,7 +233,9 @@ impl Csr {
     /// A register value of 0 means shift 32 times.
     #[inline(always)]
     pub fn write_n_shifts(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::N_SHIFTS_MASK) | ((value << Self::N_SHIFTS_OFFSET) & Self::N_SHIFTS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::N_SHIFTS_MASK) | ((value << Self::N_SHIFTS_OFFSET) & Self::N_SHIFTS_MASK)
+        });
     }
 
     /// **SHIFT** `[12:8]` (RW)
@@ -247,7 +253,9 @@ impl Csr {
     /// The use of a rotate rather than a shift allows left shifts to be emulated, by subtracting the left-shift amount from 32. It also allows data to be repeated, when the product of SHIFT and N_SHIFTS is greater than 32.
     #[inline(always)]
     pub fn write_shift(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SHIFT_MASK) | ((value << Self::SHIFT_OFFSET) & Self::SHIFT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SHIFT_MASK) | ((value << Self::SHIFT_OFFSET) & Self::SHIFT_MASK)
+        });
     }
 
     /// **COUPLED_SEL** `[6:5]` (RW)
@@ -263,7 +271,10 @@ impl Csr {
     /// Select which PIO to use for coupled mode operation.
     #[inline(always)]
     pub fn write_coupled_sel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::COUPLED_SEL_MASK) | ((value << Self::COUPLED_SEL_OFFSET) & Self::COUPLED_SEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::COUPLED_SEL_MASK)
+                | ((value << Self::COUPLED_SEL_OFFSET) & Self::COUPLED_SEL_MASK)
+        });
     }
 
     /// **COUPLED_MODE** `[4]` (RW)
@@ -450,7 +461,8 @@ impl CsrVal {
     #[inline(always)]
     pub const fn with_clkdiv(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Csr::CLKDIV_MASK) | ((value << Csr::CLKDIV_OFFSET) & Csr::CLKDIV_MASK)
+            bits: (self.bits & !Csr::CLKDIV_MASK)
+                | ((value << Csr::CLKDIV_OFFSET) & Csr::CLKDIV_MASK),
         }
     }
 
@@ -467,7 +479,8 @@ impl CsrVal {
     #[inline(always)]
     pub const fn with_clkphase(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Csr::CLKPHASE_MASK) | ((value << Csr::CLKPHASE_OFFSET) & Csr::CLKPHASE_MASK)
+            bits: (self.bits & !Csr::CLKPHASE_MASK)
+                | ((value << Csr::CLKPHASE_OFFSET) & Csr::CLKPHASE_MASK),
         }
     }
 
@@ -478,7 +491,8 @@ impl CsrVal {
     #[inline(always)]
     pub const fn with_n_shifts(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Csr::N_SHIFTS_MASK) | ((value << Csr::N_SHIFTS_OFFSET) & Csr::N_SHIFTS_MASK)
+            bits: (self.bits & !Csr::N_SHIFTS_MASK)
+                | ((value << Csr::N_SHIFTS_OFFSET) & Csr::N_SHIFTS_MASK),
         }
     }
 
@@ -489,7 +503,7 @@ impl CsrVal {
     #[inline(always)]
     pub const fn with_shift(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Csr::SHIFT_MASK) | ((value << Csr::SHIFT_OFFSET) & Csr::SHIFT_MASK)
+            bits: (self.bits & !Csr::SHIFT_MASK) | ((value << Csr::SHIFT_OFFSET) & Csr::SHIFT_MASK),
         }
     }
 
@@ -499,7 +513,8 @@ impl CsrVal {
     #[inline(always)]
     pub const fn with_coupled_sel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Csr::COUPLED_SEL_MASK) | ((value << Csr::COUPLED_SEL_OFFSET) & Csr::COUPLED_SEL_MASK)
+            bits: (self.bits & !Csr::COUPLED_SEL_MASK)
+                | ((value << Csr::COUPLED_SEL_OFFSET) & Csr::COUPLED_SEL_MASK),
         }
     }
 
@@ -516,7 +531,7 @@ impl CsrVal {
                 self.bits | Csr::COUPLED_MODE_MASK
             } else {
                 self.bits & !Csr::COUPLED_MODE_MASK
-            }
+            },
         }
     }
 
@@ -531,7 +546,7 @@ impl CsrVal {
                 self.bits | Csr::EXPAND_EN_MASK
             } else {
                 self.bits & !Csr::EXPAND_EN_MASK
-            }
+            },
         }
     }
 
@@ -547,7 +562,7 @@ impl CsrVal {
                 self.bits | Csr::EN_MASK
             } else {
                 self.bits & !Csr::EN_MASK
-            }
+            },
         }
     }
 }
@@ -707,7 +722,9 @@ impl Bit0 {
     /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_n(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK)
+        });
     }
 
     /// **SEL_P** `[4:0]` (RW)
@@ -723,7 +740,9 @@ impl Bit0 {
     /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_p(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK)
+        });
     }
 }
 
@@ -797,7 +816,7 @@ impl Bit0Val {
                 self.bits | Bit0::CLK_MASK
             } else {
                 self.bits & !Bit0::CLK_MASK
-            }
+            },
         }
     }
 
@@ -811,7 +830,7 @@ impl Bit0Val {
                 self.bits | Bit0::INV_MASK
             } else {
                 self.bits & !Bit0::INV_MASK
-            }
+            },
         }
     }
 
@@ -821,7 +840,8 @@ impl Bit0Val {
     #[inline(always)]
     pub const fn with_sel_n(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Bit0::SEL_N_MASK) | ((value << Bit0::SEL_N_OFFSET) & Bit0::SEL_N_MASK)
+            bits: (self.bits & !Bit0::SEL_N_MASK)
+                | ((value << Bit0::SEL_N_OFFSET) & Bit0::SEL_N_MASK),
         }
     }
 
@@ -831,7 +851,8 @@ impl Bit0Val {
     #[inline(always)]
     pub const fn with_sel_p(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Bit0::SEL_P_MASK) | ((value << Bit0::SEL_P_OFFSET) & Bit0::SEL_P_MASK)
+            bits: (self.bits & !Bit0::SEL_P_MASK)
+                | ((value << Bit0::SEL_P_OFFSET) & Bit0::SEL_P_MASK),
         }
     }
 }
@@ -991,7 +1012,9 @@ impl Bit1 {
     /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_n(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK)
+        });
     }
 
     /// **SEL_P** `[4:0]` (RW)
@@ -1007,7 +1030,9 @@ impl Bit1 {
     /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_p(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK)
+        });
     }
 }
 
@@ -1081,7 +1106,7 @@ impl Bit1Val {
                 self.bits | Bit1::CLK_MASK
             } else {
                 self.bits & !Bit1::CLK_MASK
-            }
+            },
         }
     }
 
@@ -1095,7 +1120,7 @@ impl Bit1Val {
                 self.bits | Bit1::INV_MASK
             } else {
                 self.bits & !Bit1::INV_MASK
-            }
+            },
         }
     }
 
@@ -1105,7 +1130,8 @@ impl Bit1Val {
     #[inline(always)]
     pub const fn with_sel_n(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Bit1::SEL_N_MASK) | ((value << Bit1::SEL_N_OFFSET) & Bit1::SEL_N_MASK)
+            bits: (self.bits & !Bit1::SEL_N_MASK)
+                | ((value << Bit1::SEL_N_OFFSET) & Bit1::SEL_N_MASK),
         }
     }
 
@@ -1115,7 +1141,8 @@ impl Bit1Val {
     #[inline(always)]
     pub const fn with_sel_p(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Bit1::SEL_P_MASK) | ((value << Bit1::SEL_P_OFFSET) & Bit1::SEL_P_MASK)
+            bits: (self.bits & !Bit1::SEL_P_MASK)
+                | ((value << Bit1::SEL_P_OFFSET) & Bit1::SEL_P_MASK),
         }
     }
 }
@@ -1275,7 +1302,9 @@ impl Bit2 {
     /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_n(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK)
+        });
     }
 
     /// **SEL_P** `[4:0]` (RW)
@@ -1291,7 +1320,9 @@ impl Bit2 {
     /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_p(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK)
+        });
     }
 }
 
@@ -1365,7 +1396,7 @@ impl Bit2Val {
                 self.bits | Bit2::CLK_MASK
             } else {
                 self.bits & !Bit2::CLK_MASK
-            }
+            },
         }
     }
 
@@ -1379,7 +1410,7 @@ impl Bit2Val {
                 self.bits | Bit2::INV_MASK
             } else {
                 self.bits & !Bit2::INV_MASK
-            }
+            },
         }
     }
 
@@ -1389,7 +1420,8 @@ impl Bit2Val {
     #[inline(always)]
     pub const fn with_sel_n(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Bit2::SEL_N_MASK) | ((value << Bit2::SEL_N_OFFSET) & Bit2::SEL_N_MASK)
+            bits: (self.bits & !Bit2::SEL_N_MASK)
+                | ((value << Bit2::SEL_N_OFFSET) & Bit2::SEL_N_MASK),
         }
     }
 
@@ -1399,7 +1431,8 @@ impl Bit2Val {
     #[inline(always)]
     pub const fn with_sel_p(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Bit2::SEL_P_MASK) | ((value << Bit2::SEL_P_OFFSET) & Bit2::SEL_P_MASK)
+            bits: (self.bits & !Bit2::SEL_P_MASK)
+                | ((value << Bit2::SEL_P_OFFSET) & Bit2::SEL_P_MASK),
         }
     }
 }
@@ -1559,7 +1592,9 @@ impl Bit3 {
     /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_n(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK)
+        });
     }
 
     /// **SEL_P** `[4:0]` (RW)
@@ -1575,7 +1610,9 @@ impl Bit3 {
     /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_p(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK)
+        });
     }
 }
 
@@ -1649,7 +1686,7 @@ impl Bit3Val {
                 self.bits | Bit3::CLK_MASK
             } else {
                 self.bits & !Bit3::CLK_MASK
-            }
+            },
         }
     }
 
@@ -1663,7 +1700,7 @@ impl Bit3Val {
                 self.bits | Bit3::INV_MASK
             } else {
                 self.bits & !Bit3::INV_MASK
-            }
+            },
         }
     }
 
@@ -1673,7 +1710,8 @@ impl Bit3Val {
     #[inline(always)]
     pub const fn with_sel_n(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Bit3::SEL_N_MASK) | ((value << Bit3::SEL_N_OFFSET) & Bit3::SEL_N_MASK)
+            bits: (self.bits & !Bit3::SEL_N_MASK)
+                | ((value << Bit3::SEL_N_OFFSET) & Bit3::SEL_N_MASK),
         }
     }
 
@@ -1683,7 +1721,8 @@ impl Bit3Val {
     #[inline(always)]
     pub const fn with_sel_p(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Bit3::SEL_P_MASK) | ((value << Bit3::SEL_P_OFFSET) & Bit3::SEL_P_MASK)
+            bits: (self.bits & !Bit3::SEL_P_MASK)
+                | ((value << Bit3::SEL_P_OFFSET) & Bit3::SEL_P_MASK),
         }
     }
 }
@@ -1843,7 +1882,9 @@ impl Bit4 {
     /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_n(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK)
+        });
     }
 
     /// **SEL_P** `[4:0]` (RW)
@@ -1859,7 +1900,9 @@ impl Bit4 {
     /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_p(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK)
+        });
     }
 }
 
@@ -1933,7 +1976,7 @@ impl Bit4Val {
                 self.bits | Bit4::CLK_MASK
             } else {
                 self.bits & !Bit4::CLK_MASK
-            }
+            },
         }
     }
 
@@ -1947,7 +1990,7 @@ impl Bit4Val {
                 self.bits | Bit4::INV_MASK
             } else {
                 self.bits & !Bit4::INV_MASK
-            }
+            },
         }
     }
 
@@ -1957,7 +2000,8 @@ impl Bit4Val {
     #[inline(always)]
     pub const fn with_sel_n(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Bit4::SEL_N_MASK) | ((value << Bit4::SEL_N_OFFSET) & Bit4::SEL_N_MASK)
+            bits: (self.bits & !Bit4::SEL_N_MASK)
+                | ((value << Bit4::SEL_N_OFFSET) & Bit4::SEL_N_MASK),
         }
     }
 
@@ -1967,7 +2011,8 @@ impl Bit4Val {
     #[inline(always)]
     pub const fn with_sel_p(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Bit4::SEL_P_MASK) | ((value << Bit4::SEL_P_OFFSET) & Bit4::SEL_P_MASK)
+            bits: (self.bits & !Bit4::SEL_P_MASK)
+                | ((value << Bit4::SEL_P_OFFSET) & Bit4::SEL_P_MASK),
         }
     }
 }
@@ -2127,7 +2172,9 @@ impl Bit5 {
     /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_n(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK)
+        });
     }
 
     /// **SEL_P** `[4:0]` (RW)
@@ -2143,7 +2190,9 @@ impl Bit5 {
     /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_p(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK)
+        });
     }
 }
 
@@ -2217,7 +2266,7 @@ impl Bit5Val {
                 self.bits | Bit5::CLK_MASK
             } else {
                 self.bits & !Bit5::CLK_MASK
-            }
+            },
         }
     }
 
@@ -2231,7 +2280,7 @@ impl Bit5Val {
                 self.bits | Bit5::INV_MASK
             } else {
                 self.bits & !Bit5::INV_MASK
-            }
+            },
         }
     }
 
@@ -2241,7 +2290,8 @@ impl Bit5Val {
     #[inline(always)]
     pub const fn with_sel_n(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Bit5::SEL_N_MASK) | ((value << Bit5::SEL_N_OFFSET) & Bit5::SEL_N_MASK)
+            bits: (self.bits & !Bit5::SEL_N_MASK)
+                | ((value << Bit5::SEL_N_OFFSET) & Bit5::SEL_N_MASK),
         }
     }
 
@@ -2251,7 +2301,8 @@ impl Bit5Val {
     #[inline(always)]
     pub const fn with_sel_p(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Bit5::SEL_P_MASK) | ((value << Bit5::SEL_P_OFFSET) & Bit5::SEL_P_MASK)
+            bits: (self.bits & !Bit5::SEL_P_MASK)
+                | ((value << Bit5::SEL_P_OFFSET) & Bit5::SEL_P_MASK),
         }
     }
 }
@@ -2411,7 +2462,9 @@ impl Bit6 {
     /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_n(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK)
+        });
     }
 
     /// **SEL_P** `[4:0]` (RW)
@@ -2427,7 +2480,9 @@ impl Bit6 {
     /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_p(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK)
+        });
     }
 }
 
@@ -2501,7 +2556,7 @@ impl Bit6Val {
                 self.bits | Bit6::CLK_MASK
             } else {
                 self.bits & !Bit6::CLK_MASK
-            }
+            },
         }
     }
 
@@ -2515,7 +2570,7 @@ impl Bit6Val {
                 self.bits | Bit6::INV_MASK
             } else {
                 self.bits & !Bit6::INV_MASK
-            }
+            },
         }
     }
 
@@ -2525,7 +2580,8 @@ impl Bit6Val {
     #[inline(always)]
     pub const fn with_sel_n(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Bit6::SEL_N_MASK) | ((value << Bit6::SEL_N_OFFSET) & Bit6::SEL_N_MASK)
+            bits: (self.bits & !Bit6::SEL_N_MASK)
+                | ((value << Bit6::SEL_N_OFFSET) & Bit6::SEL_N_MASK),
         }
     }
 
@@ -2535,7 +2591,8 @@ impl Bit6Val {
     #[inline(always)]
     pub const fn with_sel_p(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Bit6::SEL_P_MASK) | ((value << Bit6::SEL_P_OFFSET) & Bit6::SEL_P_MASK)
+            bits: (self.bits & !Bit6::SEL_P_MASK)
+                | ((value << Bit6::SEL_P_OFFSET) & Bit6::SEL_P_MASK),
         }
     }
 }
@@ -2695,7 +2752,9 @@ impl Bit7 {
     /// Shift register data bit select for the second half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_n(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEL_N_MASK) | ((value << Self::SEL_N_OFFSET) & Self::SEL_N_MASK)
+        });
     }
 
     /// **SEL_P** `[4:0]` (RW)
@@ -2711,7 +2770,9 @@ impl Bit7 {
     /// Shift register data bit select for the first half of the HSTX clock cycle
     #[inline(always)]
     pub fn write_sel_p(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEL_P_MASK) | ((value << Self::SEL_P_OFFSET) & Self::SEL_P_MASK)
+        });
     }
 }
 
@@ -2785,7 +2846,7 @@ impl Bit7Val {
                 self.bits | Bit7::CLK_MASK
             } else {
                 self.bits & !Bit7::CLK_MASK
-            }
+            },
         }
     }
 
@@ -2799,7 +2860,7 @@ impl Bit7Val {
                 self.bits | Bit7::INV_MASK
             } else {
                 self.bits & !Bit7::INV_MASK
-            }
+            },
         }
     }
 
@@ -2809,7 +2870,8 @@ impl Bit7Val {
     #[inline(always)]
     pub const fn with_sel_n(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Bit7::SEL_N_MASK) | ((value << Bit7::SEL_N_OFFSET) & Bit7::SEL_N_MASK)
+            bits: (self.bits & !Bit7::SEL_N_MASK)
+                | ((value << Bit7::SEL_N_OFFSET) & Bit7::SEL_N_MASK),
         }
     }
 
@@ -2819,7 +2881,8 @@ impl Bit7Val {
     #[inline(always)]
     pub const fn with_sel_p(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Bit7::SEL_P_MASK) | ((value << Bit7::SEL_P_OFFSET) & Bit7::SEL_P_MASK)
+            bits: (self.bits & !Bit7::SEL_P_MASK)
+                | ((value << Bit7::SEL_P_OFFSET) & Bit7::SEL_P_MASK),
         }
     }
 }
@@ -2937,7 +3000,10 @@ impl ExpandShift {
     /// Number of times to consume from the shift register before refilling it from the FIFO, when the current command is an encoded data command (e.g. TMDS). A register value of 0 means shift 32 times.
     #[inline(always)]
     pub fn write_enc_n_shifts(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENC_N_SHIFTS_MASK) | ((value << Self::ENC_N_SHIFTS_OFFSET) & Self::ENC_N_SHIFTS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENC_N_SHIFTS_MASK)
+                | ((value << Self::ENC_N_SHIFTS_OFFSET) & Self::ENC_N_SHIFTS_MASK)
+        });
     }
 
     /// **ENC_SHIFT** `[20:16]` (RW)
@@ -2953,7 +3019,9 @@ impl ExpandShift {
     /// How many bits to right-rotate the shift register by each time data is pushed to the output shifter, when the current command is an encoded data command (e.g. TMDS).
     #[inline(always)]
     pub fn write_enc_shift(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENC_SHIFT_MASK) | ((value << Self::ENC_SHIFT_OFFSET) & Self::ENC_SHIFT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENC_SHIFT_MASK) | ((value << Self::ENC_SHIFT_OFFSET) & Self::ENC_SHIFT_MASK)
+        });
     }
 
     /// **RAW_N_SHIFTS** `[12:8]` (RW)
@@ -2969,7 +3037,10 @@ impl ExpandShift {
     /// Number of times to consume from the shift register before refilling it from the FIFO, when the current command is a raw data command. A register value of 0 means shift 32 times.
     #[inline(always)]
     pub fn write_raw_n_shifts(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RAW_N_SHIFTS_MASK) | ((value << Self::RAW_N_SHIFTS_OFFSET) & Self::RAW_N_SHIFTS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RAW_N_SHIFTS_MASK)
+                | ((value << Self::RAW_N_SHIFTS_OFFSET) & Self::RAW_N_SHIFTS_MASK)
+        });
     }
 
     /// **RAW_SHIFT** `[4:0]` (RW)
@@ -2985,7 +3056,9 @@ impl ExpandShift {
     /// How many bits to right-rotate the shift register by each time data is pushed to the output shifter, when the current command is a raw data command.
     #[inline(always)]
     pub fn write_raw_shift(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RAW_SHIFT_MASK) | ((value << Self::RAW_SHIFT_OFFSET) & Self::RAW_SHIFT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RAW_SHIFT_MASK) | ((value << Self::RAW_SHIFT_OFFSET) & Self::RAW_SHIFT_MASK)
+        });
     }
 }
 
@@ -3055,7 +3128,8 @@ impl ExpandShiftVal {
     #[inline(always)]
     pub const fn with_enc_n_shifts(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ExpandShift::ENC_N_SHIFTS_MASK) | ((value << ExpandShift::ENC_N_SHIFTS_OFFSET) & ExpandShift::ENC_N_SHIFTS_MASK)
+            bits: (self.bits & !ExpandShift::ENC_N_SHIFTS_MASK)
+                | ((value << ExpandShift::ENC_N_SHIFTS_OFFSET) & ExpandShift::ENC_N_SHIFTS_MASK),
         }
     }
 
@@ -3065,7 +3139,8 @@ impl ExpandShiftVal {
     #[inline(always)]
     pub const fn with_enc_shift(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ExpandShift::ENC_SHIFT_MASK) | ((value << ExpandShift::ENC_SHIFT_OFFSET) & ExpandShift::ENC_SHIFT_MASK)
+            bits: (self.bits & !ExpandShift::ENC_SHIFT_MASK)
+                | ((value << ExpandShift::ENC_SHIFT_OFFSET) & ExpandShift::ENC_SHIFT_MASK),
         }
     }
 
@@ -3075,7 +3150,8 @@ impl ExpandShiftVal {
     #[inline(always)]
     pub const fn with_raw_n_shifts(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ExpandShift::RAW_N_SHIFTS_MASK) | ((value << ExpandShift::RAW_N_SHIFTS_OFFSET) & ExpandShift::RAW_N_SHIFTS_MASK)
+            bits: (self.bits & !ExpandShift::RAW_N_SHIFTS_MASK)
+                | ((value << ExpandShift::RAW_N_SHIFTS_OFFSET) & ExpandShift::RAW_N_SHIFTS_MASK),
         }
     }
 
@@ -3085,7 +3161,8 @@ impl ExpandShiftVal {
     #[inline(always)]
     pub const fn with_raw_shift(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ExpandShift::RAW_SHIFT_MASK) | ((value << ExpandShift::RAW_SHIFT_OFFSET) & ExpandShift::RAW_SHIFT_MASK)
+            bits: (self.bits & !ExpandShift::RAW_SHIFT_MASK)
+                | ((value << ExpandShift::RAW_SHIFT_OFFSET) & ExpandShift::RAW_SHIFT_MASK),
         }
     }
 }
@@ -3227,7 +3304,9 @@ impl ExpandTmds {
     /// Number of valid data bits for the lane 2 TMDS encoder, starting from bit 7 of the rotated data. Field values of 0 -> 7 encode counts of 1 -> 8 bits.
     #[inline(always)]
     pub fn write_l2_nbits(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::L2_NBITS_MASK) | ((value << Self::L2_NBITS_OFFSET) & Self::L2_NBITS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::L2_NBITS_MASK) | ((value << Self::L2_NBITS_OFFSET) & Self::L2_NBITS_MASK)
+        });
     }
 
     /// **L2_ROT** `[20:16]` (RW)
@@ -3243,7 +3322,9 @@ impl ExpandTmds {
     /// Right-rotate applied to the current shifter data before the lane 2 TMDS encoder.
     #[inline(always)]
     pub fn write_l2_rot(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::L2_ROT_MASK) | ((value << Self::L2_ROT_OFFSET) & Self::L2_ROT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::L2_ROT_MASK) | ((value << Self::L2_ROT_OFFSET) & Self::L2_ROT_MASK)
+        });
     }
 
     /// **L1_NBITS** `[15:13]` (RW)
@@ -3259,7 +3340,9 @@ impl ExpandTmds {
     /// Number of valid data bits for the lane 1 TMDS encoder, starting from bit 7 of the rotated data. Field values of 0 -> 7 encode counts of 1 -> 8 bits.
     #[inline(always)]
     pub fn write_l1_nbits(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::L1_NBITS_MASK) | ((value << Self::L1_NBITS_OFFSET) & Self::L1_NBITS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::L1_NBITS_MASK) | ((value << Self::L1_NBITS_OFFSET) & Self::L1_NBITS_MASK)
+        });
     }
 
     /// **L1_ROT** `[12:8]` (RW)
@@ -3275,7 +3358,9 @@ impl ExpandTmds {
     /// Right-rotate applied to the current shifter data before the lane 1 TMDS encoder.
     #[inline(always)]
     pub fn write_l1_rot(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::L1_ROT_MASK) | ((value << Self::L1_ROT_OFFSET) & Self::L1_ROT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::L1_ROT_MASK) | ((value << Self::L1_ROT_OFFSET) & Self::L1_ROT_MASK)
+        });
     }
 
     /// **L0_NBITS** `[7:5]` (RW)
@@ -3291,7 +3376,9 @@ impl ExpandTmds {
     /// Number of valid data bits for the lane 0 TMDS encoder, starting from bit 7 of the rotated data. Field values of 0 -> 7 encode counts of 1 -> 8 bits.
     #[inline(always)]
     pub fn write_l0_nbits(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::L0_NBITS_MASK) | ((value << Self::L0_NBITS_OFFSET) & Self::L0_NBITS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::L0_NBITS_MASK) | ((value << Self::L0_NBITS_OFFSET) & Self::L0_NBITS_MASK)
+        });
     }
 
     /// **L0_ROT** `[4:0]` (RW)
@@ -3307,7 +3394,9 @@ impl ExpandTmds {
     /// Right-rotate applied to the current shifter data before the lane 0 TMDS encoder.
     #[inline(always)]
     pub fn write_l0_rot(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::L0_ROT_MASK) | ((value << Self::L0_ROT_OFFSET) & Self::L0_ROT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::L0_ROT_MASK) | ((value << Self::L0_ROT_OFFSET) & Self::L0_ROT_MASK)
+        });
     }
 }
 
@@ -3393,7 +3482,8 @@ impl ExpandTmdsVal {
     #[inline(always)]
     pub const fn with_l2_nbits(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ExpandTmds::L2_NBITS_MASK) | ((value << ExpandTmds::L2_NBITS_OFFSET) & ExpandTmds::L2_NBITS_MASK)
+            bits: (self.bits & !ExpandTmds::L2_NBITS_MASK)
+                | ((value << ExpandTmds::L2_NBITS_OFFSET) & ExpandTmds::L2_NBITS_MASK),
         }
     }
 
@@ -3403,7 +3493,8 @@ impl ExpandTmdsVal {
     #[inline(always)]
     pub const fn with_l2_rot(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ExpandTmds::L2_ROT_MASK) | ((value << ExpandTmds::L2_ROT_OFFSET) & ExpandTmds::L2_ROT_MASK)
+            bits: (self.bits & !ExpandTmds::L2_ROT_MASK)
+                | ((value << ExpandTmds::L2_ROT_OFFSET) & ExpandTmds::L2_ROT_MASK),
         }
     }
 
@@ -3413,7 +3504,8 @@ impl ExpandTmdsVal {
     #[inline(always)]
     pub const fn with_l1_nbits(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ExpandTmds::L1_NBITS_MASK) | ((value << ExpandTmds::L1_NBITS_OFFSET) & ExpandTmds::L1_NBITS_MASK)
+            bits: (self.bits & !ExpandTmds::L1_NBITS_MASK)
+                | ((value << ExpandTmds::L1_NBITS_OFFSET) & ExpandTmds::L1_NBITS_MASK),
         }
     }
 
@@ -3423,7 +3515,8 @@ impl ExpandTmdsVal {
     #[inline(always)]
     pub const fn with_l1_rot(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ExpandTmds::L1_ROT_MASK) | ((value << ExpandTmds::L1_ROT_OFFSET) & ExpandTmds::L1_ROT_MASK)
+            bits: (self.bits & !ExpandTmds::L1_ROT_MASK)
+                | ((value << ExpandTmds::L1_ROT_OFFSET) & ExpandTmds::L1_ROT_MASK),
         }
     }
 
@@ -3433,7 +3526,8 @@ impl ExpandTmdsVal {
     #[inline(always)]
     pub const fn with_l0_nbits(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ExpandTmds::L0_NBITS_MASK) | ((value << ExpandTmds::L0_NBITS_OFFSET) & ExpandTmds::L0_NBITS_MASK)
+            bits: (self.bits & !ExpandTmds::L0_NBITS_MASK)
+                | ((value << ExpandTmds::L0_NBITS_OFFSET) & ExpandTmds::L0_NBITS_MASK),
         }
     }
 
@@ -3443,7 +3537,8 @@ impl ExpandTmdsVal {
     #[inline(always)]
     pub const fn with_l0_rot(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ExpandTmds::L0_ROT_MASK) | ((value << ExpandTmds::L0_ROT_OFFSET) & ExpandTmds::L0_ROT_MASK)
+            bits: (self.bits & !ExpandTmds::L0_ROT_MASK)
+                | ((value << ExpandTmds::L0_ROT_OFFSET) & ExpandTmds::L0_ROT_MASK),
         }
     }
 }
@@ -3510,4 +3605,3 @@ pub struct RegisterBlock {
     /// Configure the optional TMDS encoder inside the command expander
     pub expand_tmds: ExpandTmds,
 }
-

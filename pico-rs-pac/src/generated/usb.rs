@@ -70,7 +70,9 @@ impl AddrEndp {
     /// Device endpoint to send data to. Only valid for HOST mode.
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK)
+        });
     }
 
     /// **ADDRESS** `[6:0]` (RW)
@@ -86,7 +88,9 @@ impl AddrEndp {
     /// In device mode, the address that the device should respond to. Set in response to a SET_ADDR setup packet from the host. In host mode set to the address of the device to communicate with.
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK)
+        });
     }
 }
 
@@ -140,7 +144,8 @@ impl AddrEndpVal {
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp::ENDPOINT_MASK) | ((value << AddrEndp::ENDPOINT_OFFSET) & AddrEndp::ENDPOINT_MASK)
+            bits: (self.bits & !AddrEndp::ENDPOINT_MASK)
+                | ((value << AddrEndp::ENDPOINT_OFFSET) & AddrEndp::ENDPOINT_MASK),
         }
     }
 
@@ -150,7 +155,8 @@ impl AddrEndpVal {
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp::ADDRESS_MASK) | ((value << AddrEndp::ADDRESS_OFFSET) & AddrEndp::ADDRESS_MASK)
+            bits: (self.bits & !AddrEndp::ADDRESS_MASK)
+                | ((value << AddrEndp::ADDRESS_OFFSET) & AddrEndp::ADDRESS_MASK),
         }
     }
 }
@@ -310,7 +316,9 @@ impl AddrEndp1 {
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK)
+        });
     }
 
     /// **ADDRESS** `[6:0]` (RW)
@@ -326,7 +334,9 @@ impl AddrEndp1 {
     /// Device address
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK)
+        });
     }
 }
 
@@ -400,7 +410,7 @@ impl AddrEndp1Val {
                 self.bits | AddrEndp1::INTEP_PREAMBLE_MASK
             } else {
                 self.bits & !AddrEndp1::INTEP_PREAMBLE_MASK
-            }
+            },
         }
     }
 
@@ -414,7 +424,7 @@ impl AddrEndp1Val {
                 self.bits | AddrEndp1::INTEP_DIR_MASK
             } else {
                 self.bits & !AddrEndp1::INTEP_DIR_MASK
-            }
+            },
         }
     }
 
@@ -424,7 +434,8 @@ impl AddrEndp1Val {
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp1::ENDPOINT_MASK) | ((value << AddrEndp1::ENDPOINT_OFFSET) & AddrEndp1::ENDPOINT_MASK)
+            bits: (self.bits & !AddrEndp1::ENDPOINT_MASK)
+                | ((value << AddrEndp1::ENDPOINT_OFFSET) & AddrEndp1::ENDPOINT_MASK),
         }
     }
 
@@ -434,7 +445,8 @@ impl AddrEndp1Val {
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp1::ADDRESS_MASK) | ((value << AddrEndp1::ADDRESS_OFFSET) & AddrEndp1::ADDRESS_MASK)
+            bits: (self.bits & !AddrEndp1::ADDRESS_MASK)
+                | ((value << AddrEndp1::ADDRESS_OFFSET) & AddrEndp1::ADDRESS_MASK),
         }
     }
 }
@@ -594,7 +606,9 @@ impl AddrEndp2 {
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK)
+        });
     }
 
     /// **ADDRESS** `[6:0]` (RW)
@@ -610,7 +624,9 @@ impl AddrEndp2 {
     /// Device address
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK)
+        });
     }
 }
 
@@ -684,7 +700,7 @@ impl AddrEndp2Val {
                 self.bits | AddrEndp2::INTEP_PREAMBLE_MASK
             } else {
                 self.bits & !AddrEndp2::INTEP_PREAMBLE_MASK
-            }
+            },
         }
     }
 
@@ -698,7 +714,7 @@ impl AddrEndp2Val {
                 self.bits | AddrEndp2::INTEP_DIR_MASK
             } else {
                 self.bits & !AddrEndp2::INTEP_DIR_MASK
-            }
+            },
         }
     }
 
@@ -708,7 +724,8 @@ impl AddrEndp2Val {
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp2::ENDPOINT_MASK) | ((value << AddrEndp2::ENDPOINT_OFFSET) & AddrEndp2::ENDPOINT_MASK)
+            bits: (self.bits & !AddrEndp2::ENDPOINT_MASK)
+                | ((value << AddrEndp2::ENDPOINT_OFFSET) & AddrEndp2::ENDPOINT_MASK),
         }
     }
 
@@ -718,7 +735,8 @@ impl AddrEndp2Val {
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp2::ADDRESS_MASK) | ((value << AddrEndp2::ADDRESS_OFFSET) & AddrEndp2::ADDRESS_MASK)
+            bits: (self.bits & !AddrEndp2::ADDRESS_MASK)
+                | ((value << AddrEndp2::ADDRESS_OFFSET) & AddrEndp2::ADDRESS_MASK),
         }
     }
 }
@@ -878,7 +896,9 @@ impl AddrEndp3 {
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK)
+        });
     }
 
     /// **ADDRESS** `[6:0]` (RW)
@@ -894,7 +914,9 @@ impl AddrEndp3 {
     /// Device address
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK)
+        });
     }
 }
 
@@ -968,7 +990,7 @@ impl AddrEndp3Val {
                 self.bits | AddrEndp3::INTEP_PREAMBLE_MASK
             } else {
                 self.bits & !AddrEndp3::INTEP_PREAMBLE_MASK
-            }
+            },
         }
     }
 
@@ -982,7 +1004,7 @@ impl AddrEndp3Val {
                 self.bits | AddrEndp3::INTEP_DIR_MASK
             } else {
                 self.bits & !AddrEndp3::INTEP_DIR_MASK
-            }
+            },
         }
     }
 
@@ -992,7 +1014,8 @@ impl AddrEndp3Val {
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp3::ENDPOINT_MASK) | ((value << AddrEndp3::ENDPOINT_OFFSET) & AddrEndp3::ENDPOINT_MASK)
+            bits: (self.bits & !AddrEndp3::ENDPOINT_MASK)
+                | ((value << AddrEndp3::ENDPOINT_OFFSET) & AddrEndp3::ENDPOINT_MASK),
         }
     }
 
@@ -1002,7 +1025,8 @@ impl AddrEndp3Val {
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp3::ADDRESS_MASK) | ((value << AddrEndp3::ADDRESS_OFFSET) & AddrEndp3::ADDRESS_MASK)
+            bits: (self.bits & !AddrEndp3::ADDRESS_MASK)
+                | ((value << AddrEndp3::ADDRESS_OFFSET) & AddrEndp3::ADDRESS_MASK),
         }
     }
 }
@@ -1162,7 +1186,9 @@ impl AddrEndp4 {
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK)
+        });
     }
 
     /// **ADDRESS** `[6:0]` (RW)
@@ -1178,7 +1204,9 @@ impl AddrEndp4 {
     /// Device address
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK)
+        });
     }
 }
 
@@ -1252,7 +1280,7 @@ impl AddrEndp4Val {
                 self.bits | AddrEndp4::INTEP_PREAMBLE_MASK
             } else {
                 self.bits & !AddrEndp4::INTEP_PREAMBLE_MASK
-            }
+            },
         }
     }
 
@@ -1266,7 +1294,7 @@ impl AddrEndp4Val {
                 self.bits | AddrEndp4::INTEP_DIR_MASK
             } else {
                 self.bits & !AddrEndp4::INTEP_DIR_MASK
-            }
+            },
         }
     }
 
@@ -1276,7 +1304,8 @@ impl AddrEndp4Val {
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp4::ENDPOINT_MASK) | ((value << AddrEndp4::ENDPOINT_OFFSET) & AddrEndp4::ENDPOINT_MASK)
+            bits: (self.bits & !AddrEndp4::ENDPOINT_MASK)
+                | ((value << AddrEndp4::ENDPOINT_OFFSET) & AddrEndp4::ENDPOINT_MASK),
         }
     }
 
@@ -1286,7 +1315,8 @@ impl AddrEndp4Val {
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp4::ADDRESS_MASK) | ((value << AddrEndp4::ADDRESS_OFFSET) & AddrEndp4::ADDRESS_MASK)
+            bits: (self.bits & !AddrEndp4::ADDRESS_MASK)
+                | ((value << AddrEndp4::ADDRESS_OFFSET) & AddrEndp4::ADDRESS_MASK),
         }
     }
 }
@@ -1446,7 +1476,9 @@ impl AddrEndp5 {
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK)
+        });
     }
 
     /// **ADDRESS** `[6:0]` (RW)
@@ -1462,7 +1494,9 @@ impl AddrEndp5 {
     /// Device address
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK)
+        });
     }
 }
 
@@ -1536,7 +1570,7 @@ impl AddrEndp5Val {
                 self.bits | AddrEndp5::INTEP_PREAMBLE_MASK
             } else {
                 self.bits & !AddrEndp5::INTEP_PREAMBLE_MASK
-            }
+            },
         }
     }
 
@@ -1550,7 +1584,7 @@ impl AddrEndp5Val {
                 self.bits | AddrEndp5::INTEP_DIR_MASK
             } else {
                 self.bits & !AddrEndp5::INTEP_DIR_MASK
-            }
+            },
         }
     }
 
@@ -1560,7 +1594,8 @@ impl AddrEndp5Val {
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp5::ENDPOINT_MASK) | ((value << AddrEndp5::ENDPOINT_OFFSET) & AddrEndp5::ENDPOINT_MASK)
+            bits: (self.bits & !AddrEndp5::ENDPOINT_MASK)
+                | ((value << AddrEndp5::ENDPOINT_OFFSET) & AddrEndp5::ENDPOINT_MASK),
         }
     }
 
@@ -1570,7 +1605,8 @@ impl AddrEndp5Val {
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp5::ADDRESS_MASK) | ((value << AddrEndp5::ADDRESS_OFFSET) & AddrEndp5::ADDRESS_MASK)
+            bits: (self.bits & !AddrEndp5::ADDRESS_MASK)
+                | ((value << AddrEndp5::ADDRESS_OFFSET) & AddrEndp5::ADDRESS_MASK),
         }
     }
 }
@@ -1730,7 +1766,9 @@ impl AddrEndp6 {
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK)
+        });
     }
 
     /// **ADDRESS** `[6:0]` (RW)
@@ -1746,7 +1784,9 @@ impl AddrEndp6 {
     /// Device address
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK)
+        });
     }
 }
 
@@ -1820,7 +1860,7 @@ impl AddrEndp6Val {
                 self.bits | AddrEndp6::INTEP_PREAMBLE_MASK
             } else {
                 self.bits & !AddrEndp6::INTEP_PREAMBLE_MASK
-            }
+            },
         }
     }
 
@@ -1834,7 +1874,7 @@ impl AddrEndp6Val {
                 self.bits | AddrEndp6::INTEP_DIR_MASK
             } else {
                 self.bits & !AddrEndp6::INTEP_DIR_MASK
-            }
+            },
         }
     }
 
@@ -1844,7 +1884,8 @@ impl AddrEndp6Val {
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp6::ENDPOINT_MASK) | ((value << AddrEndp6::ENDPOINT_OFFSET) & AddrEndp6::ENDPOINT_MASK)
+            bits: (self.bits & !AddrEndp6::ENDPOINT_MASK)
+                | ((value << AddrEndp6::ENDPOINT_OFFSET) & AddrEndp6::ENDPOINT_MASK),
         }
     }
 
@@ -1854,7 +1895,8 @@ impl AddrEndp6Val {
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp6::ADDRESS_MASK) | ((value << AddrEndp6::ADDRESS_OFFSET) & AddrEndp6::ADDRESS_MASK)
+            bits: (self.bits & !AddrEndp6::ADDRESS_MASK)
+                | ((value << AddrEndp6::ADDRESS_OFFSET) & AddrEndp6::ADDRESS_MASK),
         }
     }
 }
@@ -2014,7 +2056,9 @@ impl AddrEndp7 {
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK)
+        });
     }
 
     /// **ADDRESS** `[6:0]` (RW)
@@ -2030,7 +2074,9 @@ impl AddrEndp7 {
     /// Device address
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK)
+        });
     }
 }
 
@@ -2104,7 +2150,7 @@ impl AddrEndp7Val {
                 self.bits | AddrEndp7::INTEP_PREAMBLE_MASK
             } else {
                 self.bits & !AddrEndp7::INTEP_PREAMBLE_MASK
-            }
+            },
         }
     }
 
@@ -2118,7 +2164,7 @@ impl AddrEndp7Val {
                 self.bits | AddrEndp7::INTEP_DIR_MASK
             } else {
                 self.bits & !AddrEndp7::INTEP_DIR_MASK
-            }
+            },
         }
     }
 
@@ -2128,7 +2174,8 @@ impl AddrEndp7Val {
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp7::ENDPOINT_MASK) | ((value << AddrEndp7::ENDPOINT_OFFSET) & AddrEndp7::ENDPOINT_MASK)
+            bits: (self.bits & !AddrEndp7::ENDPOINT_MASK)
+                | ((value << AddrEndp7::ENDPOINT_OFFSET) & AddrEndp7::ENDPOINT_MASK),
         }
     }
 
@@ -2138,7 +2185,8 @@ impl AddrEndp7Val {
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp7::ADDRESS_MASK) | ((value << AddrEndp7::ADDRESS_OFFSET) & AddrEndp7::ADDRESS_MASK)
+            bits: (self.bits & !AddrEndp7::ADDRESS_MASK)
+                | ((value << AddrEndp7::ADDRESS_OFFSET) & AddrEndp7::ADDRESS_MASK),
         }
     }
 }
@@ -2298,7 +2346,9 @@ impl AddrEndp8 {
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK)
+        });
     }
 
     /// **ADDRESS** `[6:0]` (RW)
@@ -2314,7 +2364,9 @@ impl AddrEndp8 {
     /// Device address
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK)
+        });
     }
 }
 
@@ -2388,7 +2440,7 @@ impl AddrEndp8Val {
                 self.bits | AddrEndp8::INTEP_PREAMBLE_MASK
             } else {
                 self.bits & !AddrEndp8::INTEP_PREAMBLE_MASK
-            }
+            },
         }
     }
 
@@ -2402,7 +2454,7 @@ impl AddrEndp8Val {
                 self.bits | AddrEndp8::INTEP_DIR_MASK
             } else {
                 self.bits & !AddrEndp8::INTEP_DIR_MASK
-            }
+            },
         }
     }
 
@@ -2412,7 +2464,8 @@ impl AddrEndp8Val {
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp8::ENDPOINT_MASK) | ((value << AddrEndp8::ENDPOINT_OFFSET) & AddrEndp8::ENDPOINT_MASK)
+            bits: (self.bits & !AddrEndp8::ENDPOINT_MASK)
+                | ((value << AddrEndp8::ENDPOINT_OFFSET) & AddrEndp8::ENDPOINT_MASK),
         }
     }
 
@@ -2422,7 +2475,8 @@ impl AddrEndp8Val {
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp8::ADDRESS_MASK) | ((value << AddrEndp8::ADDRESS_OFFSET) & AddrEndp8::ADDRESS_MASK)
+            bits: (self.bits & !AddrEndp8::ADDRESS_MASK)
+                | ((value << AddrEndp8::ADDRESS_OFFSET) & AddrEndp8::ADDRESS_MASK),
         }
     }
 }
@@ -2582,7 +2636,9 @@ impl AddrEndp9 {
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK)
+        });
     }
 
     /// **ADDRESS** `[6:0]` (RW)
@@ -2598,7 +2654,9 @@ impl AddrEndp9 {
     /// Device address
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK)
+        });
     }
 }
 
@@ -2672,7 +2730,7 @@ impl AddrEndp9Val {
                 self.bits | AddrEndp9::INTEP_PREAMBLE_MASK
             } else {
                 self.bits & !AddrEndp9::INTEP_PREAMBLE_MASK
-            }
+            },
         }
     }
 
@@ -2686,7 +2744,7 @@ impl AddrEndp9Val {
                 self.bits | AddrEndp9::INTEP_DIR_MASK
             } else {
                 self.bits & !AddrEndp9::INTEP_DIR_MASK
-            }
+            },
         }
     }
 
@@ -2696,7 +2754,8 @@ impl AddrEndp9Val {
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp9::ENDPOINT_MASK) | ((value << AddrEndp9::ENDPOINT_OFFSET) & AddrEndp9::ENDPOINT_MASK)
+            bits: (self.bits & !AddrEndp9::ENDPOINT_MASK)
+                | ((value << AddrEndp9::ENDPOINT_OFFSET) & AddrEndp9::ENDPOINT_MASK),
         }
     }
 
@@ -2706,7 +2765,8 @@ impl AddrEndp9Val {
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp9::ADDRESS_MASK) | ((value << AddrEndp9::ADDRESS_OFFSET) & AddrEndp9::ADDRESS_MASK)
+            bits: (self.bits & !AddrEndp9::ADDRESS_MASK)
+                | ((value << AddrEndp9::ADDRESS_OFFSET) & AddrEndp9::ADDRESS_MASK),
         }
     }
 }
@@ -2866,7 +2926,9 @@ impl AddrEndp10 {
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK)
+        });
     }
 
     /// **ADDRESS** `[6:0]` (RW)
@@ -2882,7 +2944,9 @@ impl AddrEndp10 {
     /// Device address
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK)
+        });
     }
 }
 
@@ -2956,7 +3020,7 @@ impl AddrEndp10Val {
                 self.bits | AddrEndp10::INTEP_PREAMBLE_MASK
             } else {
                 self.bits & !AddrEndp10::INTEP_PREAMBLE_MASK
-            }
+            },
         }
     }
 
@@ -2970,7 +3034,7 @@ impl AddrEndp10Val {
                 self.bits | AddrEndp10::INTEP_DIR_MASK
             } else {
                 self.bits & !AddrEndp10::INTEP_DIR_MASK
-            }
+            },
         }
     }
 
@@ -2980,7 +3044,8 @@ impl AddrEndp10Val {
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp10::ENDPOINT_MASK) | ((value << AddrEndp10::ENDPOINT_OFFSET) & AddrEndp10::ENDPOINT_MASK)
+            bits: (self.bits & !AddrEndp10::ENDPOINT_MASK)
+                | ((value << AddrEndp10::ENDPOINT_OFFSET) & AddrEndp10::ENDPOINT_MASK),
         }
     }
 
@@ -2990,7 +3055,8 @@ impl AddrEndp10Val {
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp10::ADDRESS_MASK) | ((value << AddrEndp10::ADDRESS_OFFSET) & AddrEndp10::ADDRESS_MASK)
+            bits: (self.bits & !AddrEndp10::ADDRESS_MASK)
+                | ((value << AddrEndp10::ADDRESS_OFFSET) & AddrEndp10::ADDRESS_MASK),
         }
     }
 }
@@ -3150,7 +3216,9 @@ impl AddrEndp11 {
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK)
+        });
     }
 
     /// **ADDRESS** `[6:0]` (RW)
@@ -3166,7 +3234,9 @@ impl AddrEndp11 {
     /// Device address
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK)
+        });
     }
 }
 
@@ -3240,7 +3310,7 @@ impl AddrEndp11Val {
                 self.bits | AddrEndp11::INTEP_PREAMBLE_MASK
             } else {
                 self.bits & !AddrEndp11::INTEP_PREAMBLE_MASK
-            }
+            },
         }
     }
 
@@ -3254,7 +3324,7 @@ impl AddrEndp11Val {
                 self.bits | AddrEndp11::INTEP_DIR_MASK
             } else {
                 self.bits & !AddrEndp11::INTEP_DIR_MASK
-            }
+            },
         }
     }
 
@@ -3264,7 +3334,8 @@ impl AddrEndp11Val {
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp11::ENDPOINT_MASK) | ((value << AddrEndp11::ENDPOINT_OFFSET) & AddrEndp11::ENDPOINT_MASK)
+            bits: (self.bits & !AddrEndp11::ENDPOINT_MASK)
+                | ((value << AddrEndp11::ENDPOINT_OFFSET) & AddrEndp11::ENDPOINT_MASK),
         }
     }
 
@@ -3274,7 +3345,8 @@ impl AddrEndp11Val {
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp11::ADDRESS_MASK) | ((value << AddrEndp11::ADDRESS_OFFSET) & AddrEndp11::ADDRESS_MASK)
+            bits: (self.bits & !AddrEndp11::ADDRESS_MASK)
+                | ((value << AddrEndp11::ADDRESS_OFFSET) & AddrEndp11::ADDRESS_MASK),
         }
     }
 }
@@ -3434,7 +3506,9 @@ impl AddrEndp12 {
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK)
+        });
     }
 
     /// **ADDRESS** `[6:0]` (RW)
@@ -3450,7 +3524,9 @@ impl AddrEndp12 {
     /// Device address
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK)
+        });
     }
 }
 
@@ -3524,7 +3600,7 @@ impl AddrEndp12Val {
                 self.bits | AddrEndp12::INTEP_PREAMBLE_MASK
             } else {
                 self.bits & !AddrEndp12::INTEP_PREAMBLE_MASK
-            }
+            },
         }
     }
 
@@ -3538,7 +3614,7 @@ impl AddrEndp12Val {
                 self.bits | AddrEndp12::INTEP_DIR_MASK
             } else {
                 self.bits & !AddrEndp12::INTEP_DIR_MASK
-            }
+            },
         }
     }
 
@@ -3548,7 +3624,8 @@ impl AddrEndp12Val {
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp12::ENDPOINT_MASK) | ((value << AddrEndp12::ENDPOINT_OFFSET) & AddrEndp12::ENDPOINT_MASK)
+            bits: (self.bits & !AddrEndp12::ENDPOINT_MASK)
+                | ((value << AddrEndp12::ENDPOINT_OFFSET) & AddrEndp12::ENDPOINT_MASK),
         }
     }
 
@@ -3558,7 +3635,8 @@ impl AddrEndp12Val {
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp12::ADDRESS_MASK) | ((value << AddrEndp12::ADDRESS_OFFSET) & AddrEndp12::ADDRESS_MASK)
+            bits: (self.bits & !AddrEndp12::ADDRESS_MASK)
+                | ((value << AddrEndp12::ADDRESS_OFFSET) & AddrEndp12::ADDRESS_MASK),
         }
     }
 }
@@ -3718,7 +3796,9 @@ impl AddrEndp13 {
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK)
+        });
     }
 
     /// **ADDRESS** `[6:0]` (RW)
@@ -3734,7 +3814,9 @@ impl AddrEndp13 {
     /// Device address
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK)
+        });
     }
 }
 
@@ -3808,7 +3890,7 @@ impl AddrEndp13Val {
                 self.bits | AddrEndp13::INTEP_PREAMBLE_MASK
             } else {
                 self.bits & !AddrEndp13::INTEP_PREAMBLE_MASK
-            }
+            },
         }
     }
 
@@ -3822,7 +3904,7 @@ impl AddrEndp13Val {
                 self.bits | AddrEndp13::INTEP_DIR_MASK
             } else {
                 self.bits & !AddrEndp13::INTEP_DIR_MASK
-            }
+            },
         }
     }
 
@@ -3832,7 +3914,8 @@ impl AddrEndp13Val {
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp13::ENDPOINT_MASK) | ((value << AddrEndp13::ENDPOINT_OFFSET) & AddrEndp13::ENDPOINT_MASK)
+            bits: (self.bits & !AddrEndp13::ENDPOINT_MASK)
+                | ((value << AddrEndp13::ENDPOINT_OFFSET) & AddrEndp13::ENDPOINT_MASK),
         }
     }
 
@@ -3842,7 +3925,8 @@ impl AddrEndp13Val {
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp13::ADDRESS_MASK) | ((value << AddrEndp13::ADDRESS_OFFSET) & AddrEndp13::ADDRESS_MASK)
+            bits: (self.bits & !AddrEndp13::ADDRESS_MASK)
+                | ((value << AddrEndp13::ADDRESS_OFFSET) & AddrEndp13::ADDRESS_MASK),
         }
     }
 }
@@ -4002,7 +4086,9 @@ impl AddrEndp14 {
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK)
+        });
     }
 
     /// **ADDRESS** `[6:0]` (RW)
@@ -4018,7 +4104,9 @@ impl AddrEndp14 {
     /// Device address
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK)
+        });
     }
 }
 
@@ -4092,7 +4180,7 @@ impl AddrEndp14Val {
                 self.bits | AddrEndp14::INTEP_PREAMBLE_MASK
             } else {
                 self.bits & !AddrEndp14::INTEP_PREAMBLE_MASK
-            }
+            },
         }
     }
 
@@ -4106,7 +4194,7 @@ impl AddrEndp14Val {
                 self.bits | AddrEndp14::INTEP_DIR_MASK
             } else {
                 self.bits & !AddrEndp14::INTEP_DIR_MASK
-            }
+            },
         }
     }
 
@@ -4116,7 +4204,8 @@ impl AddrEndp14Val {
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp14::ENDPOINT_MASK) | ((value << AddrEndp14::ENDPOINT_OFFSET) & AddrEndp14::ENDPOINT_MASK)
+            bits: (self.bits & !AddrEndp14::ENDPOINT_MASK)
+                | ((value << AddrEndp14::ENDPOINT_OFFSET) & AddrEndp14::ENDPOINT_MASK),
         }
     }
 
@@ -4126,7 +4215,8 @@ impl AddrEndp14Val {
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp14::ADDRESS_MASK) | ((value << AddrEndp14::ADDRESS_OFFSET) & AddrEndp14::ADDRESS_MASK)
+            bits: (self.bits & !AddrEndp14::ADDRESS_MASK)
+                | ((value << AddrEndp14::ADDRESS_OFFSET) & AddrEndp14::ADDRESS_MASK),
         }
     }
 }
@@ -4286,7 +4376,9 @@ impl AddrEndp15 {
     /// Endpoint number of the interrupt endpoint
     #[inline(always)]
     pub fn write_endpoint(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_MASK) | ((value << Self::ENDPOINT_OFFSET) & Self::ENDPOINT_MASK)
+        });
     }
 
     /// **ADDRESS** `[6:0]` (RW)
@@ -4302,7 +4394,9 @@ impl AddrEndp15 {
     /// Device address
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK)
+        });
     }
 }
 
@@ -4376,7 +4470,7 @@ impl AddrEndp15Val {
                 self.bits | AddrEndp15::INTEP_PREAMBLE_MASK
             } else {
                 self.bits & !AddrEndp15::INTEP_PREAMBLE_MASK
-            }
+            },
         }
     }
 
@@ -4390,7 +4484,7 @@ impl AddrEndp15Val {
                 self.bits | AddrEndp15::INTEP_DIR_MASK
             } else {
                 self.bits & !AddrEndp15::INTEP_DIR_MASK
-            }
+            },
         }
     }
 
@@ -4400,7 +4494,8 @@ impl AddrEndp15Val {
     #[inline(always)]
     pub const fn with_endpoint(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp15::ENDPOINT_MASK) | ((value << AddrEndp15::ENDPOINT_OFFSET) & AddrEndp15::ENDPOINT_MASK)
+            bits: (self.bits & !AddrEndp15::ENDPOINT_MASK)
+                | ((value << AddrEndp15::ENDPOINT_OFFSET) & AddrEndp15::ENDPOINT_MASK),
         }
     }
 
@@ -4410,7 +4505,8 @@ impl AddrEndp15Val {
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AddrEndp15::ADDRESS_MASK) | ((value << AddrEndp15::ADDRESS_OFFSET) & AddrEndp15::ADDRESS_MASK)
+            bits: (self.bits & !AddrEndp15::ADDRESS_MASK)
+                | ((value << AddrEndp15::ADDRESS_OFFSET) & AddrEndp15::ADDRESS_MASK),
         }
     }
 }
@@ -4678,7 +4774,7 @@ impl MainCtrlVal {
                 self.bits | MainCtrl::SIM_TIMING_MASK
             } else {
                 self.bits & !MainCtrl::SIM_TIMING_MASK
-            }
+            },
         }
     }
 
@@ -4694,7 +4790,7 @@ impl MainCtrlVal {
                 self.bits | MainCtrl::PHY_ISO_MASK
             } else {
                 self.bits & !MainCtrl::PHY_ISO_MASK
-            }
+            },
         }
     }
 
@@ -4708,7 +4804,7 @@ impl MainCtrlVal {
                 self.bits | MainCtrl::HOST_NDEVICE_MASK
             } else {
                 self.bits & !MainCtrl::HOST_NDEVICE_MASK
-            }
+            },
         }
     }
 
@@ -4722,7 +4818,7 @@ impl MainCtrlVal {
                 self.bits | MainCtrl::CONTROLLER_EN_MASK
             } else {
                 self.bits & !MainCtrl::CONTROLLER_EN_MASK
-            }
+            },
         }
     }
 }
@@ -4789,7 +4885,8 @@ impl SofWr {
     /// Write **COUNT** `[10:0]` (WO)
     #[inline(always)]
     pub fn write_count(&self, value: u32) {
-        self.value.write_bits((value << Self::COUNT_OFFSET) & Self::COUNT_MASK);
+        self.value
+            .write_bits((value << Self::COUNT_OFFSET) & Self::COUNT_MASK);
     }
 }
 
@@ -4825,7 +4922,8 @@ impl SofWrVal {
     #[inline(always)]
     pub const fn with_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SofWr::COUNT_MASK) | ((value << SofWr::COUNT_OFFSET) & SofWr::COUNT_MASK)
+            bits: (self.bits & !SofWr::COUNT_MASK)
+                | ((value << SofWr::COUNT_OFFSET) & SofWr::COUNT_MASK),
         }
     }
 }
@@ -5943,7 +6041,7 @@ impl SieCtrlVal {
                 self.bits | SieCtrl::EP0_INT_STALL_MASK
             } else {
                 self.bits & !SieCtrl::EP0_INT_STALL_MASK
-            }
+            },
         }
     }
 
@@ -5957,7 +6055,7 @@ impl SieCtrlVal {
                 self.bits | SieCtrl::EP0_DOUBLE_BUF_MASK
             } else {
                 self.bits & !SieCtrl::EP0_DOUBLE_BUF_MASK
-            }
+            },
         }
     }
 
@@ -5971,7 +6069,7 @@ impl SieCtrlVal {
                 self.bits | SieCtrl::EP0_INT_1BUF_MASK
             } else {
                 self.bits & !SieCtrl::EP0_INT_1BUF_MASK
-            }
+            },
         }
     }
 
@@ -5985,7 +6083,7 @@ impl SieCtrlVal {
                 self.bits | SieCtrl::EP0_INT_2BUF_MASK
             } else {
                 self.bits & !SieCtrl::EP0_INT_2BUF_MASK
-            }
+            },
         }
     }
 
@@ -5999,7 +6097,7 @@ impl SieCtrlVal {
                 self.bits | SieCtrl::EP0_INT_NAK_MASK
             } else {
                 self.bits & !SieCtrl::EP0_INT_NAK_MASK
-            }
+            },
         }
     }
 
@@ -6013,7 +6111,7 @@ impl SieCtrlVal {
                 self.bits | SieCtrl::DIRECT_EN_MASK
             } else {
                 self.bits & !SieCtrl::DIRECT_EN_MASK
-            }
+            },
         }
     }
 
@@ -6027,7 +6125,7 @@ impl SieCtrlVal {
                 self.bits | SieCtrl::DIRECT_DP_MASK
             } else {
                 self.bits & !SieCtrl::DIRECT_DP_MASK
-            }
+            },
         }
     }
 
@@ -6041,7 +6139,7 @@ impl SieCtrlVal {
                 self.bits | SieCtrl::DIRECT_DM_MASK
             } else {
                 self.bits & !SieCtrl::DIRECT_DM_MASK
-            }
+            },
         }
     }
 
@@ -6055,7 +6153,7 @@ impl SieCtrlVal {
                 self.bits | SieCtrl::EP0_STOP_ON_SHORT_PACKET_MASK
             } else {
                 self.bits & !SieCtrl::EP0_STOP_ON_SHORT_PACKET_MASK
-            }
+            },
         }
     }
 
@@ -6069,7 +6167,7 @@ impl SieCtrlVal {
                 self.bits | SieCtrl::TRANSCEIVER_PD_MASK
             } else {
                 self.bits & !SieCtrl::TRANSCEIVER_PD_MASK
-            }
+            },
         }
     }
 
@@ -6083,7 +6181,7 @@ impl SieCtrlVal {
                 self.bits | SieCtrl::RPU_OPT_MASK
             } else {
                 self.bits & !SieCtrl::RPU_OPT_MASK
-            }
+            },
         }
     }
 
@@ -6097,7 +6195,7 @@ impl SieCtrlVal {
                 self.bits | SieCtrl::PULLUP_EN_MASK
             } else {
                 self.bits & !SieCtrl::PULLUP_EN_MASK
-            }
+            },
         }
     }
 
@@ -6111,7 +6209,7 @@ impl SieCtrlVal {
                 self.bits | SieCtrl::PULLDOWN_EN_MASK
             } else {
                 self.bits & !SieCtrl::PULLDOWN_EN_MASK
-            }
+            },
         }
     }
 
@@ -6125,7 +6223,7 @@ impl SieCtrlVal {
                 self.bits | SieCtrl::RESET_BUS_MASK
             } else {
                 self.bits & !SieCtrl::RESET_BUS_MASK
-            }
+            },
         }
     }
 
@@ -6139,7 +6237,7 @@ impl SieCtrlVal {
                 self.bits | SieCtrl::RESUME_MASK
             } else {
                 self.bits & !SieCtrl::RESUME_MASK
-            }
+            },
         }
     }
 
@@ -6153,7 +6251,7 @@ impl SieCtrlVal {
                 self.bits | SieCtrl::VBUS_EN_MASK
             } else {
                 self.bits & !SieCtrl::VBUS_EN_MASK
-            }
+            },
         }
     }
 
@@ -6167,7 +6265,7 @@ impl SieCtrlVal {
                 self.bits | SieCtrl::KEEP_ALIVE_EN_MASK
             } else {
                 self.bits & !SieCtrl::KEEP_ALIVE_EN_MASK
-            }
+            },
         }
     }
 
@@ -6181,7 +6279,7 @@ impl SieCtrlVal {
                 self.bits | SieCtrl::SOF_EN_MASK
             } else {
                 self.bits & !SieCtrl::SOF_EN_MASK
-            }
+            },
         }
     }
 
@@ -6195,7 +6293,7 @@ impl SieCtrlVal {
                 self.bits | SieCtrl::SOF_SYNC_MASK
             } else {
                 self.bits & !SieCtrl::SOF_SYNC_MASK
-            }
+            },
         }
     }
 
@@ -6209,7 +6307,7 @@ impl SieCtrlVal {
                 self.bits | SieCtrl::PREAMBLE_EN_MASK
             } else {
                 self.bits & !SieCtrl::PREAMBLE_EN_MASK
-            }
+            },
         }
     }
 
@@ -6223,7 +6321,7 @@ impl SieCtrlVal {
                 self.bits | SieCtrl::STOP_TRANS_MASK
             } else {
                 self.bits & !SieCtrl::STOP_TRANS_MASK
-            }
+            },
         }
     }
 
@@ -6237,7 +6335,7 @@ impl SieCtrlVal {
                 self.bits | SieCtrl::RECEIVE_DATA_MASK
             } else {
                 self.bits & !SieCtrl::RECEIVE_DATA_MASK
-            }
+            },
         }
     }
 
@@ -6251,7 +6349,7 @@ impl SieCtrlVal {
                 self.bits | SieCtrl::SEND_DATA_MASK
             } else {
                 self.bits & !SieCtrl::SEND_DATA_MASK
-            }
+            },
         }
     }
 
@@ -6265,7 +6363,7 @@ impl SieCtrlVal {
                 self.bits | SieCtrl::SEND_SETUP_MASK
             } else {
                 self.bits & !SieCtrl::SEND_SETUP_MASK
-            }
+            },
         }
     }
 
@@ -6279,7 +6377,7 @@ impl SieCtrlVal {
                 self.bits | SieCtrl::START_TRANS_MASK
             } else {
                 self.bits & !SieCtrl::START_TRANS_MASK
-            }
+            },
         }
     }
 }
@@ -7169,7 +7267,7 @@ impl SieStatusVal {
                 self.bits | SieStatus::DATA_SEQ_ERROR_MASK
             } else {
                 self.bits & !SieStatus::DATA_SEQ_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -7183,7 +7281,7 @@ impl SieStatusVal {
                 self.bits | SieStatus::ACK_REC_MASK
             } else {
                 self.bits & !SieStatus::ACK_REC_MASK
-            }
+            },
         }
     }
 
@@ -7197,7 +7295,7 @@ impl SieStatusVal {
                 self.bits | SieStatus::STALL_REC_MASK
             } else {
                 self.bits & !SieStatus::STALL_REC_MASK
-            }
+            },
         }
     }
 
@@ -7211,7 +7309,7 @@ impl SieStatusVal {
                 self.bits | SieStatus::NAK_REC_MASK
             } else {
                 self.bits & !SieStatus::NAK_REC_MASK
-            }
+            },
         }
     }
 
@@ -7225,7 +7323,7 @@ impl SieStatusVal {
                 self.bits | SieStatus::RX_TIMEOUT_MASK
             } else {
                 self.bits & !SieStatus::RX_TIMEOUT_MASK
-            }
+            },
         }
     }
 
@@ -7239,7 +7337,7 @@ impl SieStatusVal {
                 self.bits | SieStatus::RX_OVERFLOW_MASK
             } else {
                 self.bits & !SieStatus::RX_OVERFLOW_MASK
-            }
+            },
         }
     }
 
@@ -7253,7 +7351,7 @@ impl SieStatusVal {
                 self.bits | SieStatus::BIT_STUFF_ERROR_MASK
             } else {
                 self.bits & !SieStatus::BIT_STUFF_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -7267,7 +7365,7 @@ impl SieStatusVal {
                 self.bits | SieStatus::CRC_ERROR_MASK
             } else {
                 self.bits & !SieStatus::CRC_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -7281,7 +7379,7 @@ impl SieStatusVal {
                 self.bits | SieStatus::ENDPOINT_ERROR_MASK
             } else {
                 self.bits & !SieStatus::ENDPOINT_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -7295,7 +7393,7 @@ impl SieStatusVal {
                 self.bits | SieStatus::BUS_RESET_MASK
             } else {
                 self.bits & !SieStatus::BUS_RESET_MASK
-            }
+            },
         }
     }
 
@@ -7313,7 +7411,7 @@ impl SieStatusVal {
                 self.bits | SieStatus::TRANS_COMPLETE_MASK
             } else {
                 self.bits & !SieStatus::TRANS_COMPLETE_MASK
-            }
+            },
         }
     }
 
@@ -7327,7 +7425,7 @@ impl SieStatusVal {
                 self.bits | SieStatus::SETUP_REC_MASK
             } else {
                 self.bits & !SieStatus::SETUP_REC_MASK
-            }
+            },
         }
     }
 
@@ -7341,7 +7439,7 @@ impl SieStatusVal {
                 self.bits | SieStatus::RX_SHORT_PACKET_MASK
             } else {
                 self.bits & !SieStatus::RX_SHORT_PACKET_MASK
-            }
+            },
         }
     }
 
@@ -7355,7 +7453,7 @@ impl SieStatusVal {
                 self.bits | SieStatus::RESUME_MASK
             } else {
                 self.bits & !SieStatus::RESUME_MASK
-            }
+            },
         }
     }
 
@@ -7369,7 +7467,7 @@ impl SieStatusVal {
                 self.bits | SieStatus::SUSPENDED_MASK
             } else {
                 self.bits & !SieStatus::SUSPENDED_MASK
-            }
+            },
         }
     }
 }
@@ -7451,7 +7549,10 @@ impl IntEpCtrl {
     /// Host: Enable interrupt endpoint 1 -> 15
     #[inline(always)]
     pub fn write_int_ep_active(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INT_EP_ACTIVE_MASK) | ((value << Self::INT_EP_ACTIVE_OFFSET) & Self::INT_EP_ACTIVE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INT_EP_ACTIVE_MASK)
+                | ((value << Self::INT_EP_ACTIVE_OFFSET) & Self::INT_EP_ACTIVE_MASK)
+        });
     }
 }
 
@@ -7497,7 +7598,8 @@ impl IntEpCtrlVal {
     #[inline(always)]
     pub const fn with_int_ep_active(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !IntEpCtrl::INT_EP_ACTIVE_MASK) | ((value << IntEpCtrl::INT_EP_ACTIVE_OFFSET) & IntEpCtrl::INT_EP_ACTIVE_MASK)
+            bits: (self.bits & !IntEpCtrl::INT_EP_ACTIVE_MASK)
+                | ((value << IntEpCtrl::INT_EP_ACTIVE_OFFSET) & IntEpCtrl::INT_EP_ACTIVE_MASK),
         }
     }
 }
@@ -8615,7 +8717,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP15_OUT_MASK
             } else {
                 self.bits & !BuffStatus::EP15_OUT_MASK
-            }
+            },
         }
     }
 
@@ -8627,7 +8729,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP15_IN_MASK
             } else {
                 self.bits & !BuffStatus::EP15_IN_MASK
-            }
+            },
         }
     }
 
@@ -8639,7 +8741,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP14_OUT_MASK
             } else {
                 self.bits & !BuffStatus::EP14_OUT_MASK
-            }
+            },
         }
     }
 
@@ -8651,7 +8753,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP14_IN_MASK
             } else {
                 self.bits & !BuffStatus::EP14_IN_MASK
-            }
+            },
         }
     }
 
@@ -8663,7 +8765,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP13_OUT_MASK
             } else {
                 self.bits & !BuffStatus::EP13_OUT_MASK
-            }
+            },
         }
     }
 
@@ -8675,7 +8777,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP13_IN_MASK
             } else {
                 self.bits & !BuffStatus::EP13_IN_MASK
-            }
+            },
         }
     }
 
@@ -8687,7 +8789,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP12_OUT_MASK
             } else {
                 self.bits & !BuffStatus::EP12_OUT_MASK
-            }
+            },
         }
     }
 
@@ -8699,7 +8801,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP12_IN_MASK
             } else {
                 self.bits & !BuffStatus::EP12_IN_MASK
-            }
+            },
         }
     }
 
@@ -8711,7 +8813,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP11_OUT_MASK
             } else {
                 self.bits & !BuffStatus::EP11_OUT_MASK
-            }
+            },
         }
     }
 
@@ -8723,7 +8825,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP11_IN_MASK
             } else {
                 self.bits & !BuffStatus::EP11_IN_MASK
-            }
+            },
         }
     }
 
@@ -8735,7 +8837,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP10_OUT_MASK
             } else {
                 self.bits & !BuffStatus::EP10_OUT_MASK
-            }
+            },
         }
     }
 
@@ -8747,7 +8849,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP10_IN_MASK
             } else {
                 self.bits & !BuffStatus::EP10_IN_MASK
-            }
+            },
         }
     }
 
@@ -8759,7 +8861,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP9_OUT_MASK
             } else {
                 self.bits & !BuffStatus::EP9_OUT_MASK
-            }
+            },
         }
     }
 
@@ -8771,7 +8873,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP9_IN_MASK
             } else {
                 self.bits & !BuffStatus::EP9_IN_MASK
-            }
+            },
         }
     }
 
@@ -8783,7 +8885,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP8_OUT_MASK
             } else {
                 self.bits & !BuffStatus::EP8_OUT_MASK
-            }
+            },
         }
     }
 
@@ -8795,7 +8897,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP8_IN_MASK
             } else {
                 self.bits & !BuffStatus::EP8_IN_MASK
-            }
+            },
         }
     }
 
@@ -8807,7 +8909,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP7_OUT_MASK
             } else {
                 self.bits & !BuffStatus::EP7_OUT_MASK
-            }
+            },
         }
     }
 
@@ -8819,7 +8921,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP7_IN_MASK
             } else {
                 self.bits & !BuffStatus::EP7_IN_MASK
-            }
+            },
         }
     }
 
@@ -8831,7 +8933,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP6_OUT_MASK
             } else {
                 self.bits & !BuffStatus::EP6_OUT_MASK
-            }
+            },
         }
     }
 
@@ -8843,7 +8945,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP6_IN_MASK
             } else {
                 self.bits & !BuffStatus::EP6_IN_MASK
-            }
+            },
         }
     }
 
@@ -8855,7 +8957,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP5_OUT_MASK
             } else {
                 self.bits & !BuffStatus::EP5_OUT_MASK
-            }
+            },
         }
     }
 
@@ -8867,7 +8969,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP5_IN_MASK
             } else {
                 self.bits & !BuffStatus::EP5_IN_MASK
-            }
+            },
         }
     }
 
@@ -8879,7 +8981,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP4_OUT_MASK
             } else {
                 self.bits & !BuffStatus::EP4_OUT_MASK
-            }
+            },
         }
     }
 
@@ -8891,7 +8993,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP4_IN_MASK
             } else {
                 self.bits & !BuffStatus::EP4_IN_MASK
-            }
+            },
         }
     }
 
@@ -8903,7 +9005,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP3_OUT_MASK
             } else {
                 self.bits & !BuffStatus::EP3_OUT_MASK
-            }
+            },
         }
     }
 
@@ -8915,7 +9017,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP3_IN_MASK
             } else {
                 self.bits & !BuffStatus::EP3_IN_MASK
-            }
+            },
         }
     }
 
@@ -8927,7 +9029,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP2_OUT_MASK
             } else {
                 self.bits & !BuffStatus::EP2_OUT_MASK
-            }
+            },
         }
     }
 
@@ -8939,7 +9041,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP2_IN_MASK
             } else {
                 self.bits & !BuffStatus::EP2_IN_MASK
-            }
+            },
         }
     }
 
@@ -8951,7 +9053,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP1_OUT_MASK
             } else {
                 self.bits & !BuffStatus::EP1_OUT_MASK
-            }
+            },
         }
     }
 
@@ -8963,7 +9065,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP1_IN_MASK
             } else {
                 self.bits & !BuffStatus::EP1_IN_MASK
-            }
+            },
         }
     }
 
@@ -8975,7 +9077,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP0_OUT_MASK
             } else {
                 self.bits & !BuffStatus::EP0_OUT_MASK
-            }
+            },
         }
     }
 
@@ -8987,7 +9089,7 @@ impl BuffStatusVal {
                 self.bits | BuffStatus::EP0_IN_MASK
             } else {
                 self.bits & !BuffStatus::EP0_IN_MASK
-            }
+            },
         }
     }
 }
@@ -10815,7 +10917,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP15_OUT_MASK
             } else {
                 self.bits & !EpAbort::EP15_OUT_MASK
-            }
+            },
         }
     }
 
@@ -10827,7 +10929,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP15_IN_MASK
             } else {
                 self.bits & !EpAbort::EP15_IN_MASK
-            }
+            },
         }
     }
 
@@ -10839,7 +10941,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP14_OUT_MASK
             } else {
                 self.bits & !EpAbort::EP14_OUT_MASK
-            }
+            },
         }
     }
 
@@ -10851,7 +10953,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP14_IN_MASK
             } else {
                 self.bits & !EpAbort::EP14_IN_MASK
-            }
+            },
         }
     }
 
@@ -10863,7 +10965,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP13_OUT_MASK
             } else {
                 self.bits & !EpAbort::EP13_OUT_MASK
-            }
+            },
         }
     }
 
@@ -10875,7 +10977,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP13_IN_MASK
             } else {
                 self.bits & !EpAbort::EP13_IN_MASK
-            }
+            },
         }
     }
 
@@ -10887,7 +10989,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP12_OUT_MASK
             } else {
                 self.bits & !EpAbort::EP12_OUT_MASK
-            }
+            },
         }
     }
 
@@ -10899,7 +11001,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP12_IN_MASK
             } else {
                 self.bits & !EpAbort::EP12_IN_MASK
-            }
+            },
         }
     }
 
@@ -10911,7 +11013,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP11_OUT_MASK
             } else {
                 self.bits & !EpAbort::EP11_OUT_MASK
-            }
+            },
         }
     }
 
@@ -10923,7 +11025,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP11_IN_MASK
             } else {
                 self.bits & !EpAbort::EP11_IN_MASK
-            }
+            },
         }
     }
 
@@ -10935,7 +11037,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP10_OUT_MASK
             } else {
                 self.bits & !EpAbort::EP10_OUT_MASK
-            }
+            },
         }
     }
 
@@ -10947,7 +11049,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP10_IN_MASK
             } else {
                 self.bits & !EpAbort::EP10_IN_MASK
-            }
+            },
         }
     }
 
@@ -10959,7 +11061,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP9_OUT_MASK
             } else {
                 self.bits & !EpAbort::EP9_OUT_MASK
-            }
+            },
         }
     }
 
@@ -10971,7 +11073,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP9_IN_MASK
             } else {
                 self.bits & !EpAbort::EP9_IN_MASK
-            }
+            },
         }
     }
 
@@ -10983,7 +11085,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP8_OUT_MASK
             } else {
                 self.bits & !EpAbort::EP8_OUT_MASK
-            }
+            },
         }
     }
 
@@ -10995,7 +11097,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP8_IN_MASK
             } else {
                 self.bits & !EpAbort::EP8_IN_MASK
-            }
+            },
         }
     }
 
@@ -11007,7 +11109,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP7_OUT_MASK
             } else {
                 self.bits & !EpAbort::EP7_OUT_MASK
-            }
+            },
         }
     }
 
@@ -11019,7 +11121,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP7_IN_MASK
             } else {
                 self.bits & !EpAbort::EP7_IN_MASK
-            }
+            },
         }
     }
 
@@ -11031,7 +11133,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP6_OUT_MASK
             } else {
                 self.bits & !EpAbort::EP6_OUT_MASK
-            }
+            },
         }
     }
 
@@ -11043,7 +11145,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP6_IN_MASK
             } else {
                 self.bits & !EpAbort::EP6_IN_MASK
-            }
+            },
         }
     }
 
@@ -11055,7 +11157,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP5_OUT_MASK
             } else {
                 self.bits & !EpAbort::EP5_OUT_MASK
-            }
+            },
         }
     }
 
@@ -11067,7 +11169,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP5_IN_MASK
             } else {
                 self.bits & !EpAbort::EP5_IN_MASK
-            }
+            },
         }
     }
 
@@ -11079,7 +11181,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP4_OUT_MASK
             } else {
                 self.bits & !EpAbort::EP4_OUT_MASK
-            }
+            },
         }
     }
 
@@ -11091,7 +11193,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP4_IN_MASK
             } else {
                 self.bits & !EpAbort::EP4_IN_MASK
-            }
+            },
         }
     }
 
@@ -11103,7 +11205,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP3_OUT_MASK
             } else {
                 self.bits & !EpAbort::EP3_OUT_MASK
-            }
+            },
         }
     }
 
@@ -11115,7 +11217,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP3_IN_MASK
             } else {
                 self.bits & !EpAbort::EP3_IN_MASK
-            }
+            },
         }
     }
 
@@ -11127,7 +11229,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP2_OUT_MASK
             } else {
                 self.bits & !EpAbort::EP2_OUT_MASK
-            }
+            },
         }
     }
 
@@ -11139,7 +11241,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP2_IN_MASK
             } else {
                 self.bits & !EpAbort::EP2_IN_MASK
-            }
+            },
         }
     }
 
@@ -11151,7 +11253,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP1_OUT_MASK
             } else {
                 self.bits & !EpAbort::EP1_OUT_MASK
-            }
+            },
         }
     }
 
@@ -11163,7 +11265,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP1_IN_MASK
             } else {
                 self.bits & !EpAbort::EP1_IN_MASK
-            }
+            },
         }
     }
 
@@ -11175,7 +11277,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP0_OUT_MASK
             } else {
                 self.bits & !EpAbort::EP0_OUT_MASK
-            }
+            },
         }
     }
 
@@ -11187,7 +11289,7 @@ impl EpAbortVal {
                 self.bits | EpAbort::EP0_IN_MASK
             } else {
                 self.bits & !EpAbort::EP0_IN_MASK
-            }
+            },
         }
     }
 }
@@ -12305,7 +12407,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP15_OUT_MASK
             } else {
                 self.bits & !EpAbortDone::EP15_OUT_MASK
-            }
+            },
         }
     }
 
@@ -12317,7 +12419,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP15_IN_MASK
             } else {
                 self.bits & !EpAbortDone::EP15_IN_MASK
-            }
+            },
         }
     }
 
@@ -12329,7 +12431,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP14_OUT_MASK
             } else {
                 self.bits & !EpAbortDone::EP14_OUT_MASK
-            }
+            },
         }
     }
 
@@ -12341,7 +12443,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP14_IN_MASK
             } else {
                 self.bits & !EpAbortDone::EP14_IN_MASK
-            }
+            },
         }
     }
 
@@ -12353,7 +12455,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP13_OUT_MASK
             } else {
                 self.bits & !EpAbortDone::EP13_OUT_MASK
-            }
+            },
         }
     }
 
@@ -12365,7 +12467,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP13_IN_MASK
             } else {
                 self.bits & !EpAbortDone::EP13_IN_MASK
-            }
+            },
         }
     }
 
@@ -12377,7 +12479,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP12_OUT_MASK
             } else {
                 self.bits & !EpAbortDone::EP12_OUT_MASK
-            }
+            },
         }
     }
 
@@ -12389,7 +12491,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP12_IN_MASK
             } else {
                 self.bits & !EpAbortDone::EP12_IN_MASK
-            }
+            },
         }
     }
 
@@ -12401,7 +12503,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP11_OUT_MASK
             } else {
                 self.bits & !EpAbortDone::EP11_OUT_MASK
-            }
+            },
         }
     }
 
@@ -12413,7 +12515,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP11_IN_MASK
             } else {
                 self.bits & !EpAbortDone::EP11_IN_MASK
-            }
+            },
         }
     }
 
@@ -12425,7 +12527,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP10_OUT_MASK
             } else {
                 self.bits & !EpAbortDone::EP10_OUT_MASK
-            }
+            },
         }
     }
 
@@ -12437,7 +12539,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP10_IN_MASK
             } else {
                 self.bits & !EpAbortDone::EP10_IN_MASK
-            }
+            },
         }
     }
 
@@ -12449,7 +12551,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP9_OUT_MASK
             } else {
                 self.bits & !EpAbortDone::EP9_OUT_MASK
-            }
+            },
         }
     }
 
@@ -12461,7 +12563,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP9_IN_MASK
             } else {
                 self.bits & !EpAbortDone::EP9_IN_MASK
-            }
+            },
         }
     }
 
@@ -12473,7 +12575,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP8_OUT_MASK
             } else {
                 self.bits & !EpAbortDone::EP8_OUT_MASK
-            }
+            },
         }
     }
 
@@ -12485,7 +12587,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP8_IN_MASK
             } else {
                 self.bits & !EpAbortDone::EP8_IN_MASK
-            }
+            },
         }
     }
 
@@ -12497,7 +12599,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP7_OUT_MASK
             } else {
                 self.bits & !EpAbortDone::EP7_OUT_MASK
-            }
+            },
         }
     }
 
@@ -12509,7 +12611,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP7_IN_MASK
             } else {
                 self.bits & !EpAbortDone::EP7_IN_MASK
-            }
+            },
         }
     }
 
@@ -12521,7 +12623,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP6_OUT_MASK
             } else {
                 self.bits & !EpAbortDone::EP6_OUT_MASK
-            }
+            },
         }
     }
 
@@ -12533,7 +12635,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP6_IN_MASK
             } else {
                 self.bits & !EpAbortDone::EP6_IN_MASK
-            }
+            },
         }
     }
 
@@ -12545,7 +12647,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP5_OUT_MASK
             } else {
                 self.bits & !EpAbortDone::EP5_OUT_MASK
-            }
+            },
         }
     }
 
@@ -12557,7 +12659,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP5_IN_MASK
             } else {
                 self.bits & !EpAbortDone::EP5_IN_MASK
-            }
+            },
         }
     }
 
@@ -12569,7 +12671,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP4_OUT_MASK
             } else {
                 self.bits & !EpAbortDone::EP4_OUT_MASK
-            }
+            },
         }
     }
 
@@ -12581,7 +12683,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP4_IN_MASK
             } else {
                 self.bits & !EpAbortDone::EP4_IN_MASK
-            }
+            },
         }
     }
 
@@ -12593,7 +12695,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP3_OUT_MASK
             } else {
                 self.bits & !EpAbortDone::EP3_OUT_MASK
-            }
+            },
         }
     }
 
@@ -12605,7 +12707,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP3_IN_MASK
             } else {
                 self.bits & !EpAbortDone::EP3_IN_MASK
-            }
+            },
         }
     }
 
@@ -12617,7 +12719,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP2_OUT_MASK
             } else {
                 self.bits & !EpAbortDone::EP2_OUT_MASK
-            }
+            },
         }
     }
 
@@ -12629,7 +12731,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP2_IN_MASK
             } else {
                 self.bits & !EpAbortDone::EP2_IN_MASK
-            }
+            },
         }
     }
 
@@ -12641,7 +12743,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP1_OUT_MASK
             } else {
                 self.bits & !EpAbortDone::EP1_OUT_MASK
-            }
+            },
         }
     }
 
@@ -12653,7 +12755,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP1_IN_MASK
             } else {
                 self.bits & !EpAbortDone::EP1_IN_MASK
-            }
+            },
         }
     }
 
@@ -12665,7 +12767,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP0_OUT_MASK
             } else {
                 self.bits & !EpAbortDone::EP0_OUT_MASK
-            }
+            },
         }
     }
 
@@ -12677,7 +12779,7 @@ impl EpAbortDoneVal {
                 self.bits | EpAbortDone::EP0_IN_MASK
             } else {
                 self.bits & !EpAbortDone::EP0_IN_MASK
-            }
+            },
         }
     }
 }
@@ -12835,7 +12937,7 @@ impl EpStallArmVal {
                 self.bits | EpStallArm::EP0_OUT_MASK
             } else {
                 self.bits & !EpStallArm::EP0_OUT_MASK
-            }
+            },
         }
     }
 
@@ -12847,7 +12949,7 @@ impl EpStallArmVal {
                 self.bits | EpStallArm::EP0_IN_MASK
             } else {
                 self.bits & !EpStallArm::EP0_IN_MASK
-            }
+            },
         }
     }
 }
@@ -13039,7 +13141,9 @@ impl NakPoll {
     /// NAK polling interval for a full speed device
     #[inline(always)]
     pub fn write_delay_fs(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DELAY_FS_MASK) | ((value << Self::DELAY_FS_OFFSET) & Self::DELAY_FS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DELAY_FS_MASK) | ((value << Self::DELAY_FS_OFFSET) & Self::DELAY_FS_MASK)
+        });
     }
 
     /// **RETRY_COUNT_LO** `[15:10]` (RO)
@@ -13063,7 +13167,9 @@ impl NakPoll {
     /// NAK polling interval for a low speed device
     #[inline(always)]
     pub fn write_delay_ls(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DELAY_LS_MASK) | ((value << Self::DELAY_LS_OFFSET) & Self::DELAY_LS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DELAY_LS_MASK) | ((value << Self::DELAY_LS_OFFSET) & Self::DELAY_LS_MASK)
+        });
     }
 }
 
@@ -13153,7 +13259,7 @@ impl NakPollVal {
                 self.bits | NakPoll::EPX_STOPPED_ON_NAK_MASK
             } else {
                 self.bits & !NakPoll::EPX_STOPPED_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -13167,7 +13273,7 @@ impl NakPollVal {
                 self.bits | NakPoll::STOP_EPX_ON_NAK_MASK
             } else {
                 self.bits & !NakPoll::STOP_EPX_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -13177,7 +13283,8 @@ impl NakPollVal {
     #[inline(always)]
     pub const fn with_delay_fs(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NakPoll::DELAY_FS_MASK) | ((value << NakPoll::DELAY_FS_OFFSET) & NakPoll::DELAY_FS_MASK)
+            bits: (self.bits & !NakPoll::DELAY_FS_MASK)
+                | ((value << NakPoll::DELAY_FS_OFFSET) & NakPoll::DELAY_FS_MASK),
         }
     }
 
@@ -13187,7 +13294,8 @@ impl NakPollVal {
     #[inline(always)]
     pub const fn with_delay_ls(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NakPoll::DELAY_LS_MASK) | ((value << NakPoll::DELAY_LS_OFFSET) & NakPoll::DELAY_LS_MASK)
+            bits: (self.bits & !NakPoll::DELAY_LS_MASK)
+                | ((value << NakPoll::DELAY_LS_OFFSET) & NakPoll::DELAY_LS_MASK),
         }
     }
 }
@@ -14305,7 +14413,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP15_OUT_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP15_OUT_MASK
-            }
+            },
         }
     }
 
@@ -14317,7 +14425,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP15_IN_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP15_IN_MASK
-            }
+            },
         }
     }
 
@@ -14329,7 +14437,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP14_OUT_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP14_OUT_MASK
-            }
+            },
         }
     }
 
@@ -14341,7 +14449,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP14_IN_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP14_IN_MASK
-            }
+            },
         }
     }
 
@@ -14353,7 +14461,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP13_OUT_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP13_OUT_MASK
-            }
+            },
         }
     }
 
@@ -14365,7 +14473,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP13_IN_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP13_IN_MASK
-            }
+            },
         }
     }
 
@@ -14377,7 +14485,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP12_OUT_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP12_OUT_MASK
-            }
+            },
         }
     }
 
@@ -14389,7 +14497,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP12_IN_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP12_IN_MASK
-            }
+            },
         }
     }
 
@@ -14401,7 +14509,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP11_OUT_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP11_OUT_MASK
-            }
+            },
         }
     }
 
@@ -14413,7 +14521,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP11_IN_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP11_IN_MASK
-            }
+            },
         }
     }
 
@@ -14425,7 +14533,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP10_OUT_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP10_OUT_MASK
-            }
+            },
         }
     }
 
@@ -14437,7 +14545,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP10_IN_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP10_IN_MASK
-            }
+            },
         }
     }
 
@@ -14449,7 +14557,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP9_OUT_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP9_OUT_MASK
-            }
+            },
         }
     }
 
@@ -14461,7 +14569,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP9_IN_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP9_IN_MASK
-            }
+            },
         }
     }
 
@@ -14473,7 +14581,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP8_OUT_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP8_OUT_MASK
-            }
+            },
         }
     }
 
@@ -14485,7 +14593,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP8_IN_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP8_IN_MASK
-            }
+            },
         }
     }
 
@@ -14497,7 +14605,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP7_OUT_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP7_OUT_MASK
-            }
+            },
         }
     }
 
@@ -14509,7 +14617,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP7_IN_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP7_IN_MASK
-            }
+            },
         }
     }
 
@@ -14521,7 +14629,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP6_OUT_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP6_OUT_MASK
-            }
+            },
         }
     }
 
@@ -14533,7 +14641,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP6_IN_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP6_IN_MASK
-            }
+            },
         }
     }
 
@@ -14545,7 +14653,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP5_OUT_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP5_OUT_MASK
-            }
+            },
         }
     }
 
@@ -14557,7 +14665,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP5_IN_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP5_IN_MASK
-            }
+            },
         }
     }
 
@@ -14569,7 +14677,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP4_OUT_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP4_OUT_MASK
-            }
+            },
         }
     }
 
@@ -14581,7 +14689,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP4_IN_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP4_IN_MASK
-            }
+            },
         }
     }
 
@@ -14593,7 +14701,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP3_OUT_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP3_OUT_MASK
-            }
+            },
         }
     }
 
@@ -14605,7 +14713,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP3_IN_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP3_IN_MASK
-            }
+            },
         }
     }
 
@@ -14617,7 +14725,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP2_OUT_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP2_OUT_MASK
-            }
+            },
         }
     }
 
@@ -14629,7 +14737,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP2_IN_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP2_IN_MASK
-            }
+            },
         }
     }
 
@@ -14641,7 +14749,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP1_OUT_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP1_OUT_MASK
-            }
+            },
         }
     }
 
@@ -14653,7 +14761,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP1_IN_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP1_IN_MASK
-            }
+            },
         }
     }
 
@@ -14665,7 +14773,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP0_OUT_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP0_OUT_MASK
-            }
+            },
         }
     }
 
@@ -14677,7 +14785,7 @@ impl EpStatusStallNakVal {
                 self.bits | EpStatusStallNak::EP0_IN_MASK
             } else {
                 self.bits & !EpStatusStallNak::EP0_IN_MASK
-            }
+            },
         }
     }
 }
@@ -14988,7 +15096,7 @@ impl UsbMuxingVal {
                 self.bits | UsbMuxing::SWAP_DPDM_MASK
             } else {
                 self.bits & !UsbMuxing::SWAP_DPDM_MASK
-            }
+            },
         }
     }
 
@@ -15002,7 +15110,7 @@ impl UsbMuxingVal {
                 self.bits | UsbMuxing::USBPHY_AS_GPIO_MASK
             } else {
                 self.bits & !UsbMuxing::USBPHY_AS_GPIO_MASK
-            }
+            },
         }
     }
 
@@ -15014,7 +15122,7 @@ impl UsbMuxingVal {
                 self.bits | UsbMuxing::SOFTCON_MASK
             } else {
                 self.bits & !UsbMuxing::SOFTCON_MASK
-            }
+            },
         }
     }
 
@@ -15026,7 +15134,7 @@ impl UsbMuxingVal {
                 self.bits | UsbMuxing::TO_DIGITAL_PAD_MASK
             } else {
                 self.bits & !UsbMuxing::TO_DIGITAL_PAD_MASK
-            }
+            },
         }
     }
 
@@ -15038,7 +15146,7 @@ impl UsbMuxingVal {
                 self.bits | UsbMuxing::TO_EXTPHY_MASK
             } else {
                 self.bits & !UsbMuxing::TO_EXTPHY_MASK
-            }
+            },
         }
     }
 
@@ -15050,7 +15158,7 @@ impl UsbMuxingVal {
                 self.bits | UsbMuxing::TO_PHY_MASK
             } else {
                 self.bits & !UsbMuxing::TO_PHY_MASK
-            }
+            },
         }
     }
 }
@@ -15336,7 +15444,7 @@ impl UsbPwrVal {
                 self.bits | UsbPwr::OVERCURR_DETECT_EN_MASK
             } else {
                 self.bits & !UsbPwr::OVERCURR_DETECT_EN_MASK
-            }
+            },
         }
     }
 
@@ -15348,7 +15456,7 @@ impl UsbPwrVal {
                 self.bits | UsbPwr::OVERCURR_DETECT_MASK
             } else {
                 self.bits & !UsbPwr::OVERCURR_DETECT_MASK
-            }
+            },
         }
     }
 
@@ -15360,7 +15468,7 @@ impl UsbPwrVal {
                 self.bits | UsbPwr::VBUS_DETECT_OVERRIDE_EN_MASK
             } else {
                 self.bits & !UsbPwr::VBUS_DETECT_OVERRIDE_EN_MASK
-            }
+            },
         }
     }
 
@@ -15372,7 +15480,7 @@ impl UsbPwrVal {
                 self.bits | UsbPwr::VBUS_DETECT_MASK
             } else {
                 self.bits & !UsbPwr::VBUS_DETECT_MASK
-            }
+            },
         }
     }
 
@@ -15384,7 +15492,7 @@ impl UsbPwrVal {
                 self.bits | UsbPwr::VBUS_EN_OVERRIDE_EN_MASK
             } else {
                 self.bits & !UsbPwr::VBUS_EN_OVERRIDE_EN_MASK
-            }
+            },
         }
     }
 
@@ -15396,7 +15504,7 @@ impl UsbPwrVal {
                 self.bits | UsbPwr::VBUS_EN_MASK
             } else {
                 self.bits & !UsbPwr::VBUS_EN_MASK
-            }
+            },
         }
     }
 }
@@ -16416,7 +16524,7 @@ impl UsbphyDirectVal {
                 self.bits | UsbphyDirect::RX_DM_OVERRIDE_MASK
             } else {
                 self.bits & !UsbphyDirect::RX_DM_OVERRIDE_MASK
-            }
+            },
         }
     }
 
@@ -16430,7 +16538,7 @@ impl UsbphyDirectVal {
                 self.bits | UsbphyDirect::RX_DP_OVERRIDE_MASK
             } else {
                 self.bits & !UsbphyDirect::RX_DP_OVERRIDE_MASK
-            }
+            },
         }
     }
 
@@ -16444,7 +16552,7 @@ impl UsbphyDirectVal {
                 self.bits | UsbphyDirect::RX_DD_OVERRIDE_MASK
             } else {
                 self.bits & !UsbphyDirect::RX_DD_OVERRIDE_MASK
-            }
+            },
         }
     }
 
@@ -16459,7 +16567,7 @@ impl UsbphyDirectVal {
                 self.bits | UsbphyDirect::TX_DIFFMODE_MASK
             } else {
                 self.bits & !UsbphyDirect::TX_DIFFMODE_MASK
-            }
+            },
         }
     }
 
@@ -16474,7 +16582,7 @@ impl UsbphyDirectVal {
                 self.bits | UsbphyDirect::TX_FSSLEW_MASK
             } else {
                 self.bits & !UsbphyDirect::TX_FSSLEW_MASK
-            }
+            },
         }
     }
 
@@ -16488,7 +16596,7 @@ impl UsbphyDirectVal {
                 self.bits | UsbphyDirect::TX_PD_MASK
             } else {
                 self.bits & !UsbphyDirect::TX_PD_MASK
-            }
+            },
         }
     }
 
@@ -16502,7 +16610,7 @@ impl UsbphyDirectVal {
                 self.bits | UsbphyDirect::RX_PD_MASK
             } else {
                 self.bits & !UsbphyDirect::RX_PD_MASK
-            }
+            },
         }
     }
 
@@ -16517,7 +16625,7 @@ impl UsbphyDirectVal {
                 self.bits | UsbphyDirect::TX_DM_MASK
             } else {
                 self.bits & !UsbphyDirect::TX_DM_MASK
-            }
+            },
         }
     }
 
@@ -16532,7 +16640,7 @@ impl UsbphyDirectVal {
                 self.bits | UsbphyDirect::TX_DP_MASK
             } else {
                 self.bits & !UsbphyDirect::TX_DP_MASK
-            }
+            },
         }
     }
 
@@ -16547,7 +16655,7 @@ impl UsbphyDirectVal {
                 self.bits | UsbphyDirect::TX_DM_OE_MASK
             } else {
                 self.bits & !UsbphyDirect::TX_DM_OE_MASK
-            }
+            },
         }
     }
 
@@ -16562,7 +16670,7 @@ impl UsbphyDirectVal {
                 self.bits | UsbphyDirect::TX_DP_OE_MASK
             } else {
                 self.bits & !UsbphyDirect::TX_DP_OE_MASK
-            }
+            },
         }
     }
 
@@ -16576,7 +16684,7 @@ impl UsbphyDirectVal {
                 self.bits | UsbphyDirect::DM_PULLDN_EN_MASK
             } else {
                 self.bits & !UsbphyDirect::DM_PULLDN_EN_MASK
-            }
+            },
         }
     }
 
@@ -16590,7 +16698,7 @@ impl UsbphyDirectVal {
                 self.bits | UsbphyDirect::DM_PULLUP_EN_MASK
             } else {
                 self.bits & !UsbphyDirect::DM_PULLUP_EN_MASK
-            }
+            },
         }
     }
 
@@ -16604,7 +16712,7 @@ impl UsbphyDirectVal {
                 self.bits | UsbphyDirect::DM_PULLUP_HISEL_MASK
             } else {
                 self.bits & !UsbphyDirect::DM_PULLUP_HISEL_MASK
-            }
+            },
         }
     }
 
@@ -16618,7 +16726,7 @@ impl UsbphyDirectVal {
                 self.bits | UsbphyDirect::DP_PULLDN_EN_MASK
             } else {
                 self.bits & !UsbphyDirect::DP_PULLDN_EN_MASK
-            }
+            },
         }
     }
 
@@ -16632,7 +16740,7 @@ impl UsbphyDirectVal {
                 self.bits | UsbphyDirect::DP_PULLUP_EN_MASK
             } else {
                 self.bits & !UsbphyDirect::DP_PULLUP_EN_MASK
-            }
+            },
         }
     }
 
@@ -16646,7 +16754,7 @@ impl UsbphyDirectVal {
                 self.bits | UsbphyDirect::DP_PULLUP_HISEL_MASK
             } else {
                 self.bits & !UsbphyDirect::DP_PULLUP_HISEL_MASK
-            }
+            },
         }
     }
 }
@@ -17284,7 +17392,7 @@ impl UsbphyDirectOverrideVal {
                 self.bits | UsbphyDirectOverride::RX_DM_OVERRIDE_EN_MASK
             } else {
                 self.bits & !UsbphyDirectOverride::RX_DM_OVERRIDE_EN_MASK
-            }
+            },
         }
     }
 
@@ -17296,7 +17404,7 @@ impl UsbphyDirectOverrideVal {
                 self.bits | UsbphyDirectOverride::RX_DP_OVERRIDE_EN_MASK
             } else {
                 self.bits & !UsbphyDirectOverride::RX_DP_OVERRIDE_EN_MASK
-            }
+            },
         }
     }
 
@@ -17308,7 +17416,7 @@ impl UsbphyDirectOverrideVal {
                 self.bits | UsbphyDirectOverride::RX_DD_OVERRIDE_EN_MASK
             } else {
                 self.bits & !UsbphyDirectOverride::RX_DD_OVERRIDE_EN_MASK
-            }
+            },
         }
     }
 
@@ -17320,7 +17428,7 @@ impl UsbphyDirectOverrideVal {
                 self.bits | UsbphyDirectOverride::TX_DIFFMODE_OVERRIDE_EN_MASK
             } else {
                 self.bits & !UsbphyDirectOverride::TX_DIFFMODE_OVERRIDE_EN_MASK
-            }
+            },
         }
     }
 
@@ -17332,7 +17440,7 @@ impl UsbphyDirectOverrideVal {
                 self.bits | UsbphyDirectOverride::DM_PULLUP_OVERRIDE_EN_MASK
             } else {
                 self.bits & !UsbphyDirectOverride::DM_PULLUP_OVERRIDE_EN_MASK
-            }
+            },
         }
     }
 
@@ -17344,7 +17452,7 @@ impl UsbphyDirectOverrideVal {
                 self.bits | UsbphyDirectOverride::TX_FSSLEW_OVERRIDE_EN_MASK
             } else {
                 self.bits & !UsbphyDirectOverride::TX_FSSLEW_OVERRIDE_EN_MASK
-            }
+            },
         }
     }
 
@@ -17356,7 +17464,7 @@ impl UsbphyDirectOverrideVal {
                 self.bits | UsbphyDirectOverride::TX_PD_OVERRIDE_EN_MASK
             } else {
                 self.bits & !UsbphyDirectOverride::TX_PD_OVERRIDE_EN_MASK
-            }
+            },
         }
     }
 
@@ -17368,7 +17476,7 @@ impl UsbphyDirectOverrideVal {
                 self.bits | UsbphyDirectOverride::RX_PD_OVERRIDE_EN_MASK
             } else {
                 self.bits & !UsbphyDirectOverride::RX_PD_OVERRIDE_EN_MASK
-            }
+            },
         }
     }
 
@@ -17380,7 +17488,7 @@ impl UsbphyDirectOverrideVal {
                 self.bits | UsbphyDirectOverride::TX_DM_OVERRIDE_EN_MASK
             } else {
                 self.bits & !UsbphyDirectOverride::TX_DM_OVERRIDE_EN_MASK
-            }
+            },
         }
     }
 
@@ -17392,7 +17500,7 @@ impl UsbphyDirectOverrideVal {
                 self.bits | UsbphyDirectOverride::TX_DP_OVERRIDE_EN_MASK
             } else {
                 self.bits & !UsbphyDirectOverride::TX_DP_OVERRIDE_EN_MASK
-            }
+            },
         }
     }
 
@@ -17404,7 +17512,7 @@ impl UsbphyDirectOverrideVal {
                 self.bits | UsbphyDirectOverride::TX_DM_OE_OVERRIDE_EN_MASK
             } else {
                 self.bits & !UsbphyDirectOverride::TX_DM_OE_OVERRIDE_EN_MASK
-            }
+            },
         }
     }
 
@@ -17416,7 +17524,7 @@ impl UsbphyDirectOverrideVal {
                 self.bits | UsbphyDirectOverride::TX_DP_OE_OVERRIDE_EN_MASK
             } else {
                 self.bits & !UsbphyDirectOverride::TX_DP_OE_OVERRIDE_EN_MASK
-            }
+            },
         }
     }
 
@@ -17428,7 +17536,7 @@ impl UsbphyDirectOverrideVal {
                 self.bits | UsbphyDirectOverride::DM_PULLDN_EN_OVERRIDE_EN_MASK
             } else {
                 self.bits & !UsbphyDirectOverride::DM_PULLDN_EN_OVERRIDE_EN_MASK
-            }
+            },
         }
     }
 
@@ -17440,7 +17548,7 @@ impl UsbphyDirectOverrideVal {
                 self.bits | UsbphyDirectOverride::DP_PULLDN_EN_OVERRIDE_EN_MASK
             } else {
                 self.bits & !UsbphyDirectOverride::DP_PULLDN_EN_OVERRIDE_EN_MASK
-            }
+            },
         }
     }
 
@@ -17452,7 +17560,7 @@ impl UsbphyDirectOverrideVal {
                 self.bits | UsbphyDirectOverride::DP_PULLUP_EN_OVERRIDE_EN_MASK
             } else {
                 self.bits & !UsbphyDirectOverride::DP_PULLUP_EN_OVERRIDE_EN_MASK
-            }
+            },
         }
     }
 
@@ -17464,7 +17572,7 @@ impl UsbphyDirectOverrideVal {
                 self.bits | UsbphyDirectOverride::DM_PULLUP_HISEL_OVERRIDE_EN_MASK
             } else {
                 self.bits & !UsbphyDirectOverride::DM_PULLUP_HISEL_OVERRIDE_EN_MASK
-            }
+            },
         }
     }
 
@@ -17476,7 +17584,7 @@ impl UsbphyDirectOverrideVal {
                 self.bits | UsbphyDirectOverride::DP_PULLUP_HISEL_OVERRIDE_EN_MASK
             } else {
                 self.bits & !UsbphyDirectOverride::DP_PULLUP_HISEL_OVERRIDE_EN_MASK
-            }
+            },
         }
     }
 }
@@ -17582,7 +17690,10 @@ impl UsbphyTrim {
     /// Experimental data suggests that the reset value will work, but this register allows adjustment if required
     #[inline(always)]
     pub fn write_dm_pulldn_trim(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DM_PULLDN_TRIM_MASK) | ((value << Self::DM_PULLDN_TRIM_OFFSET) & Self::DM_PULLDN_TRIM_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DM_PULLDN_TRIM_MASK)
+                | ((value << Self::DM_PULLDN_TRIM_OFFSET) & Self::DM_PULLDN_TRIM_MASK)
+        });
     }
 
     /// **DP_PULLDN_TRIM** `[4:0]` (RW)
@@ -17602,7 +17713,10 @@ impl UsbphyTrim {
     /// Experimental data suggests that the reset value will work, but this register allows adjustment if required
     #[inline(always)]
     pub fn write_dp_pulldn_trim(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DP_PULLDN_TRIM_MASK) | ((value << Self::DP_PULLDN_TRIM_OFFSET) & Self::DP_PULLDN_TRIM_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DP_PULLDN_TRIM_MASK)
+                | ((value << Self::DP_PULLDN_TRIM_OFFSET) & Self::DP_PULLDN_TRIM_MASK)
+        });
     }
 }
 
@@ -17662,7 +17776,8 @@ impl UsbphyTrimVal {
     #[inline(always)]
     pub const fn with_dm_pulldn_trim(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !UsbphyTrim::DM_PULLDN_TRIM_MASK) | ((value << UsbphyTrim::DM_PULLDN_TRIM_OFFSET) & UsbphyTrim::DM_PULLDN_TRIM_MASK)
+            bits: (self.bits & !UsbphyTrim::DM_PULLDN_TRIM_MASK)
+                | ((value << UsbphyTrim::DM_PULLDN_TRIM_OFFSET) & UsbphyTrim::DM_PULLDN_TRIM_MASK),
         }
     }
 
@@ -17674,7 +17789,8 @@ impl UsbphyTrimVal {
     #[inline(always)]
     pub const fn with_dp_pulldn_trim(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !UsbphyTrim::DP_PULLDN_TRIM_MASK) | ((value << UsbphyTrim::DP_PULLDN_TRIM_OFFSET) & UsbphyTrim::DP_PULLDN_TRIM_MASK)
+            bits: (self.bits & !UsbphyTrim::DP_PULLDN_TRIM_MASK)
+                | ((value << UsbphyTrim::DP_PULLDN_TRIM_OFFSET) & UsbphyTrim::DP_PULLDN_TRIM_MASK),
         }
     }
 }
@@ -17857,7 +17973,9 @@ impl LinestateTuning {
     /// Write **SPARE_FIX** `[11:8]` (RW)
     #[inline(always)]
     pub fn write_spare_fix(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SPARE_FIX_MASK) | ((value << Self::SPARE_FIX_OFFSET) & Self::SPARE_FIX_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SPARE_FIX_MASK) | ((value << Self::SPARE_FIX_OFFSET) & Self::SPARE_FIX_MASK)
+        });
     }
 
     /// **DEV_LS_WAKE_FIX** `[7]` (RW)
@@ -18129,7 +18247,8 @@ impl LinestateTuningVal {
     #[inline(always)]
     pub const fn with_spare_fix(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !LinestateTuning::SPARE_FIX_MASK) | ((value << LinestateTuning::SPARE_FIX_OFFSET) & LinestateTuning::SPARE_FIX_MASK)
+            bits: (self.bits & !LinestateTuning::SPARE_FIX_MASK)
+                | ((value << LinestateTuning::SPARE_FIX_OFFSET) & LinestateTuning::SPARE_FIX_MASK),
         }
     }
 
@@ -18143,7 +18262,7 @@ impl LinestateTuningVal {
                 self.bits | LinestateTuning::DEV_LS_WAKE_FIX_MASK
             } else {
                 self.bits & !LinestateTuning::DEV_LS_WAKE_FIX_MASK
-            }
+            },
         }
     }
 
@@ -18157,7 +18276,7 @@ impl LinestateTuningVal {
                 self.bits | LinestateTuning::DEV_RX_ERR_QUIESCE_MASK
             } else {
                 self.bits & !LinestateTuning::DEV_RX_ERR_QUIESCE_MASK
-            }
+            },
         }
     }
 
@@ -18172,7 +18291,7 @@ impl LinestateTuningVal {
                 self.bits | LinestateTuning::SIE_RX_CHATTER_SE0_FIX_MASK
             } else {
                 self.bits & !LinestateTuning::SIE_RX_CHATTER_SE0_FIX_MASK
-            }
+            },
         }
     }
 
@@ -18187,7 +18306,7 @@ impl LinestateTuningVal {
                 self.bits | LinestateTuning::SIE_RX_BITSTUFF_FIX_MASK
             } else {
                 self.bits & !LinestateTuning::SIE_RX_BITSTUFF_FIX_MASK
-            }
+            },
         }
     }
 
@@ -18202,7 +18321,7 @@ impl LinestateTuningVal {
                 self.bits | LinestateTuning::DEV_BUFF_CONTROL_DOUBLE_READ_FIX_MASK
             } else {
                 self.bits & !LinestateTuning::DEV_BUFF_CONTROL_DOUBLE_READ_FIX_MASK
-            }
+            },
         }
     }
 
@@ -18216,7 +18335,7 @@ impl LinestateTuningVal {
                 self.bits | LinestateTuning::MULTI_HUB_FIX_MASK
             } else {
                 self.bits & !LinestateTuning::MULTI_HUB_FIX_MASK
-            }
+            },
         }
     }
 
@@ -18230,7 +18349,7 @@ impl LinestateTuningVal {
                 self.bits | LinestateTuning::LINESTATE_DELAY_MASK
             } else {
                 self.bits & !LinestateTuning::LINESTATE_DELAY_MASK
-            }
+            },
         }
     }
 
@@ -18244,7 +18363,7 @@ impl LinestateTuningVal {
                 self.bits | LinestateTuning::RCV_DELAY_MASK
             } else {
                 self.bits & !LinestateTuning::RCV_DELAY_MASK
-            }
+            },
         }
     }
 }
@@ -20090,7 +20209,7 @@ impl InteVal {
                 self.bits | Inte::EPX_STOPPED_ON_NAK_MASK
             } else {
                 self.bits & !Inte::EPX_STOPPED_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -20104,7 +20223,7 @@ impl InteVal {
                 self.bits | Inte::DEV_SM_WATCHDOG_FIRED_MASK
             } else {
                 self.bits & !Inte::DEV_SM_WATCHDOG_FIRED_MASK
-            }
+            },
         }
     }
 
@@ -20118,7 +20237,7 @@ impl InteVal {
                 self.bits | Inte::ENDPOINT_ERROR_MASK
             } else {
                 self.bits & !Inte::ENDPOINT_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -20132,7 +20251,7 @@ impl InteVal {
                 self.bits | Inte::RX_SHORT_PACKET_MASK
             } else {
                 self.bits & !Inte::RX_SHORT_PACKET_MASK
-            }
+            },
         }
     }
 
@@ -20146,7 +20265,7 @@ impl InteVal {
                 self.bits | Inte::EP_STALL_NAK_MASK
             } else {
                 self.bits & !Inte::EP_STALL_NAK_MASK
-            }
+            },
         }
     }
 
@@ -20160,7 +20279,7 @@ impl InteVal {
                 self.bits | Inte::ABORT_DONE_MASK
             } else {
                 self.bits & !Inte::ABORT_DONE_MASK
-            }
+            },
         }
     }
 
@@ -20174,7 +20293,7 @@ impl InteVal {
                 self.bits | Inte::DEV_SOF_MASK
             } else {
                 self.bits & !Inte::DEV_SOF_MASK
-            }
+            },
         }
     }
 
@@ -20188,7 +20307,7 @@ impl InteVal {
                 self.bits | Inte::SETUP_REQ_MASK
             } else {
                 self.bits & !Inte::SETUP_REQ_MASK
-            }
+            },
         }
     }
 
@@ -20202,7 +20321,7 @@ impl InteVal {
                 self.bits | Inte::DEV_RESUME_FROM_HOST_MASK
             } else {
                 self.bits & !Inte::DEV_RESUME_FROM_HOST_MASK
-            }
+            },
         }
     }
 
@@ -20216,7 +20335,7 @@ impl InteVal {
                 self.bits | Inte::DEV_SUSPEND_MASK
             } else {
                 self.bits & !Inte::DEV_SUSPEND_MASK
-            }
+            },
         }
     }
 
@@ -20230,7 +20349,7 @@ impl InteVal {
                 self.bits | Inte::DEV_CONN_DIS_MASK
             } else {
                 self.bits & !Inte::DEV_CONN_DIS_MASK
-            }
+            },
         }
     }
 
@@ -20244,7 +20363,7 @@ impl InteVal {
                 self.bits | Inte::BUS_RESET_MASK
             } else {
                 self.bits & !Inte::BUS_RESET_MASK
-            }
+            },
         }
     }
 
@@ -20258,7 +20377,7 @@ impl InteVal {
                 self.bits | Inte::VBUS_DETECT_MASK
             } else {
                 self.bits & !Inte::VBUS_DETECT_MASK
-            }
+            },
         }
     }
 
@@ -20272,7 +20391,7 @@ impl InteVal {
                 self.bits | Inte::STALL_MASK
             } else {
                 self.bits & !Inte::STALL_MASK
-            }
+            },
         }
     }
 
@@ -20286,7 +20405,7 @@ impl InteVal {
                 self.bits | Inte::ERROR_CRC_MASK
             } else {
                 self.bits & !Inte::ERROR_CRC_MASK
-            }
+            },
         }
     }
 
@@ -20300,7 +20419,7 @@ impl InteVal {
                 self.bits | Inte::ERROR_BIT_STUFF_MASK
             } else {
                 self.bits & !Inte::ERROR_BIT_STUFF_MASK
-            }
+            },
         }
     }
 
@@ -20314,7 +20433,7 @@ impl InteVal {
                 self.bits | Inte::ERROR_RX_OVERFLOW_MASK
             } else {
                 self.bits & !Inte::ERROR_RX_OVERFLOW_MASK
-            }
+            },
         }
     }
 
@@ -20328,7 +20447,7 @@ impl InteVal {
                 self.bits | Inte::ERROR_RX_TIMEOUT_MASK
             } else {
                 self.bits & !Inte::ERROR_RX_TIMEOUT_MASK
-            }
+            },
         }
     }
 
@@ -20342,7 +20461,7 @@ impl InteVal {
                 self.bits | Inte::ERROR_DATA_SEQ_MASK
             } else {
                 self.bits & !Inte::ERROR_DATA_SEQ_MASK
-            }
+            },
         }
     }
 
@@ -20356,7 +20475,7 @@ impl InteVal {
                 self.bits | Inte::BUFF_STATUS_MASK
             } else {
                 self.bits & !Inte::BUFF_STATUS_MASK
-            }
+            },
         }
     }
 
@@ -20370,7 +20489,7 @@ impl InteVal {
                 self.bits | Inte::TRANS_COMPLETE_MASK
             } else {
                 self.bits & !Inte::TRANS_COMPLETE_MASK
-            }
+            },
         }
     }
 
@@ -20384,7 +20503,7 @@ impl InteVal {
                 self.bits | Inte::HOST_SOF_MASK
             } else {
                 self.bits & !Inte::HOST_SOF_MASK
-            }
+            },
         }
     }
 
@@ -20398,7 +20517,7 @@ impl InteVal {
                 self.bits | Inte::HOST_RESUME_MASK
             } else {
                 self.bits & !Inte::HOST_RESUME_MASK
-            }
+            },
         }
     }
 
@@ -20412,7 +20531,7 @@ impl InteVal {
                 self.bits | Inte::HOST_CONN_DIS_MASK
             } else {
                 self.bits & !Inte::HOST_CONN_DIS_MASK
-            }
+            },
         }
     }
 }
@@ -21492,7 +21611,7 @@ impl IntfVal {
                 self.bits | Intf::EPX_STOPPED_ON_NAK_MASK
             } else {
                 self.bits & !Intf::EPX_STOPPED_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -21506,7 +21625,7 @@ impl IntfVal {
                 self.bits | Intf::DEV_SM_WATCHDOG_FIRED_MASK
             } else {
                 self.bits & !Intf::DEV_SM_WATCHDOG_FIRED_MASK
-            }
+            },
         }
     }
 
@@ -21520,7 +21639,7 @@ impl IntfVal {
                 self.bits | Intf::ENDPOINT_ERROR_MASK
             } else {
                 self.bits & !Intf::ENDPOINT_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -21534,7 +21653,7 @@ impl IntfVal {
                 self.bits | Intf::RX_SHORT_PACKET_MASK
             } else {
                 self.bits & !Intf::RX_SHORT_PACKET_MASK
-            }
+            },
         }
     }
 
@@ -21548,7 +21667,7 @@ impl IntfVal {
                 self.bits | Intf::EP_STALL_NAK_MASK
             } else {
                 self.bits & !Intf::EP_STALL_NAK_MASK
-            }
+            },
         }
     }
 
@@ -21562,7 +21681,7 @@ impl IntfVal {
                 self.bits | Intf::ABORT_DONE_MASK
             } else {
                 self.bits & !Intf::ABORT_DONE_MASK
-            }
+            },
         }
     }
 
@@ -21576,7 +21695,7 @@ impl IntfVal {
                 self.bits | Intf::DEV_SOF_MASK
             } else {
                 self.bits & !Intf::DEV_SOF_MASK
-            }
+            },
         }
     }
 
@@ -21590,7 +21709,7 @@ impl IntfVal {
                 self.bits | Intf::SETUP_REQ_MASK
             } else {
                 self.bits & !Intf::SETUP_REQ_MASK
-            }
+            },
         }
     }
 
@@ -21604,7 +21723,7 @@ impl IntfVal {
                 self.bits | Intf::DEV_RESUME_FROM_HOST_MASK
             } else {
                 self.bits & !Intf::DEV_RESUME_FROM_HOST_MASK
-            }
+            },
         }
     }
 
@@ -21618,7 +21737,7 @@ impl IntfVal {
                 self.bits | Intf::DEV_SUSPEND_MASK
             } else {
                 self.bits & !Intf::DEV_SUSPEND_MASK
-            }
+            },
         }
     }
 
@@ -21632,7 +21751,7 @@ impl IntfVal {
                 self.bits | Intf::DEV_CONN_DIS_MASK
             } else {
                 self.bits & !Intf::DEV_CONN_DIS_MASK
-            }
+            },
         }
     }
 
@@ -21646,7 +21765,7 @@ impl IntfVal {
                 self.bits | Intf::BUS_RESET_MASK
             } else {
                 self.bits & !Intf::BUS_RESET_MASK
-            }
+            },
         }
     }
 
@@ -21660,7 +21779,7 @@ impl IntfVal {
                 self.bits | Intf::VBUS_DETECT_MASK
             } else {
                 self.bits & !Intf::VBUS_DETECT_MASK
-            }
+            },
         }
     }
 
@@ -21674,7 +21793,7 @@ impl IntfVal {
                 self.bits | Intf::STALL_MASK
             } else {
                 self.bits & !Intf::STALL_MASK
-            }
+            },
         }
     }
 
@@ -21688,7 +21807,7 @@ impl IntfVal {
                 self.bits | Intf::ERROR_CRC_MASK
             } else {
                 self.bits & !Intf::ERROR_CRC_MASK
-            }
+            },
         }
     }
 
@@ -21702,7 +21821,7 @@ impl IntfVal {
                 self.bits | Intf::ERROR_BIT_STUFF_MASK
             } else {
                 self.bits & !Intf::ERROR_BIT_STUFF_MASK
-            }
+            },
         }
     }
 
@@ -21716,7 +21835,7 @@ impl IntfVal {
                 self.bits | Intf::ERROR_RX_OVERFLOW_MASK
             } else {
                 self.bits & !Intf::ERROR_RX_OVERFLOW_MASK
-            }
+            },
         }
     }
 
@@ -21730,7 +21849,7 @@ impl IntfVal {
                 self.bits | Intf::ERROR_RX_TIMEOUT_MASK
             } else {
                 self.bits & !Intf::ERROR_RX_TIMEOUT_MASK
-            }
+            },
         }
     }
 
@@ -21744,7 +21863,7 @@ impl IntfVal {
                 self.bits | Intf::ERROR_DATA_SEQ_MASK
             } else {
                 self.bits & !Intf::ERROR_DATA_SEQ_MASK
-            }
+            },
         }
     }
 
@@ -21758,7 +21877,7 @@ impl IntfVal {
                 self.bits | Intf::BUFF_STATUS_MASK
             } else {
                 self.bits & !Intf::BUFF_STATUS_MASK
-            }
+            },
         }
     }
 
@@ -21772,7 +21891,7 @@ impl IntfVal {
                 self.bits | Intf::TRANS_COMPLETE_MASK
             } else {
                 self.bits & !Intf::TRANS_COMPLETE_MASK
-            }
+            },
         }
     }
 
@@ -21786,7 +21905,7 @@ impl IntfVal {
                 self.bits | Intf::HOST_SOF_MASK
             } else {
                 self.bits & !Intf::HOST_SOF_MASK
-            }
+            },
         }
     }
 
@@ -21800,7 +21919,7 @@ impl IntfVal {
                 self.bits | Intf::HOST_RESUME_MASK
             } else {
                 self.bits & !Intf::HOST_RESUME_MASK
-            }
+            },
         }
     }
 
@@ -21814,7 +21933,7 @@ impl IntfVal {
                 self.bits | Intf::HOST_CONN_DIS_MASK
             } else {
                 self.bits & !Intf::HOST_CONN_DIS_MASK
-            }
+            },
         }
     }
 }
@@ -22682,7 +22801,8 @@ impl SofTimestampRawVal {
     /// Read **SOF_TIMESTAMP_RAW** `[20:0]`
     #[inline(always)]
     pub const fn sof_timestamp_raw(&self) -> u32 {
-        (self.bits & SofTimestampRaw::SOF_TIMESTAMP_RAW_MASK) >> SofTimestampRaw::SOF_TIMESTAMP_RAW_OFFSET
+        (self.bits & SofTimestampRaw::SOF_TIMESTAMP_RAW_MASK)
+            >> SofTimestampRaw::SOF_TIMESTAMP_RAW_OFFSET
     }
 }
 
@@ -22771,7 +22891,8 @@ impl SofTimestampLastVal {
     /// Read **SOF_TIMESTAMP_LAST** `[20:0]`
     #[inline(always)]
     pub const fn sof_timestamp_last(&self) -> u32 {
-        (self.bits & SofTimestampLast::SOF_TIMESTAMP_LAST_MASK) >> SofTimestampLast::SOF_TIMESTAMP_LAST_OFFSET
+        (self.bits & SofTimestampLast::SOF_TIMESTAMP_LAST_MASK)
+            >> SofTimestampLast::SOF_TIMESTAMP_LAST_OFFSET
     }
 }
 
@@ -23061,7 +23182,9 @@ impl EpTxError {
     /// Write **EP15** `[31:30]` (RW)
     #[inline(always)]
     pub fn write_ep15(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::EP15_MASK) | ((value << Self::EP15_OFFSET) & Self::EP15_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::EP15_MASK) | ((value << Self::EP15_OFFSET) & Self::EP15_MASK)
+        });
     }
 
     /// **EP14** `[29:28]` (RW)
@@ -23073,7 +23196,9 @@ impl EpTxError {
     /// Write **EP14** `[29:28]` (RW)
     #[inline(always)]
     pub fn write_ep14(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::EP14_MASK) | ((value << Self::EP14_OFFSET) & Self::EP14_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::EP14_MASK) | ((value << Self::EP14_OFFSET) & Self::EP14_MASK)
+        });
     }
 
     /// **EP13** `[27:26]` (RW)
@@ -23085,7 +23210,9 @@ impl EpTxError {
     /// Write **EP13** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_ep13(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::EP13_MASK) | ((value << Self::EP13_OFFSET) & Self::EP13_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::EP13_MASK) | ((value << Self::EP13_OFFSET) & Self::EP13_MASK)
+        });
     }
 
     /// **EP12** `[25:24]` (RW)
@@ -23097,7 +23224,9 @@ impl EpTxError {
     /// Write **EP12** `[25:24]` (RW)
     #[inline(always)]
     pub fn write_ep12(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::EP12_MASK) | ((value << Self::EP12_OFFSET) & Self::EP12_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::EP12_MASK) | ((value << Self::EP12_OFFSET) & Self::EP12_MASK)
+        });
     }
 
     /// **EP11** `[23:22]` (RW)
@@ -23109,7 +23238,9 @@ impl EpTxError {
     /// Write **EP11** `[23:22]` (RW)
     #[inline(always)]
     pub fn write_ep11(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::EP11_MASK) | ((value << Self::EP11_OFFSET) & Self::EP11_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::EP11_MASK) | ((value << Self::EP11_OFFSET) & Self::EP11_MASK)
+        });
     }
 
     /// **EP10** `[21:20]` (RW)
@@ -23121,7 +23252,9 @@ impl EpTxError {
     /// Write **EP10** `[21:20]` (RW)
     #[inline(always)]
     pub fn write_ep10(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::EP10_MASK) | ((value << Self::EP10_OFFSET) & Self::EP10_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::EP10_MASK) | ((value << Self::EP10_OFFSET) & Self::EP10_MASK)
+        });
     }
 
     /// **EP9** `[19:18]` (RW)
@@ -23133,7 +23266,9 @@ impl EpTxError {
     /// Write **EP9** `[19:18]` (RW)
     #[inline(always)]
     pub fn write_ep9(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::EP9_MASK) | ((value << Self::EP9_OFFSET) & Self::EP9_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::EP9_MASK) | ((value << Self::EP9_OFFSET) & Self::EP9_MASK)
+        });
     }
 
     /// **EP8** `[17:16]` (RW)
@@ -23145,7 +23280,9 @@ impl EpTxError {
     /// Write **EP8** `[17:16]` (RW)
     #[inline(always)]
     pub fn write_ep8(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::EP8_MASK) | ((value << Self::EP8_OFFSET) & Self::EP8_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::EP8_MASK) | ((value << Self::EP8_OFFSET) & Self::EP8_MASK)
+        });
     }
 
     /// **EP7** `[15:14]` (RW)
@@ -23157,7 +23294,9 @@ impl EpTxError {
     /// Write **EP7** `[15:14]` (RW)
     #[inline(always)]
     pub fn write_ep7(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::EP7_MASK) | ((value << Self::EP7_OFFSET) & Self::EP7_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::EP7_MASK) | ((value << Self::EP7_OFFSET) & Self::EP7_MASK)
+        });
     }
 
     /// **EP6** `[13:12]` (RW)
@@ -23169,7 +23308,9 @@ impl EpTxError {
     /// Write **EP6** `[13:12]` (RW)
     #[inline(always)]
     pub fn write_ep6(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::EP6_MASK) | ((value << Self::EP6_OFFSET) & Self::EP6_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::EP6_MASK) | ((value << Self::EP6_OFFSET) & Self::EP6_MASK)
+        });
     }
 
     /// **EP5** `[11:10]` (RW)
@@ -23181,7 +23322,9 @@ impl EpTxError {
     /// Write **EP5** `[11:10]` (RW)
     #[inline(always)]
     pub fn write_ep5(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::EP5_MASK) | ((value << Self::EP5_OFFSET) & Self::EP5_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::EP5_MASK) | ((value << Self::EP5_OFFSET) & Self::EP5_MASK)
+        });
     }
 
     /// **EP4** `[9:8]` (RW)
@@ -23193,7 +23336,9 @@ impl EpTxError {
     /// Write **EP4** `[9:8]` (RW)
     #[inline(always)]
     pub fn write_ep4(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::EP4_MASK) | ((value << Self::EP4_OFFSET) & Self::EP4_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::EP4_MASK) | ((value << Self::EP4_OFFSET) & Self::EP4_MASK)
+        });
     }
 
     /// **EP3** `[7:6]` (RW)
@@ -23205,7 +23350,9 @@ impl EpTxError {
     /// Write **EP3** `[7:6]` (RW)
     #[inline(always)]
     pub fn write_ep3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::EP3_MASK) | ((value << Self::EP3_OFFSET) & Self::EP3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::EP3_MASK) | ((value << Self::EP3_OFFSET) & Self::EP3_MASK)
+        });
     }
 
     /// **EP2** `[5:4]` (RW)
@@ -23217,7 +23364,9 @@ impl EpTxError {
     /// Write **EP2** `[5:4]` (RW)
     #[inline(always)]
     pub fn write_ep2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::EP2_MASK) | ((value << Self::EP2_OFFSET) & Self::EP2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::EP2_MASK) | ((value << Self::EP2_OFFSET) & Self::EP2_MASK)
+        });
     }
 
     /// **EP1** `[3:2]` (RW)
@@ -23229,7 +23378,9 @@ impl EpTxError {
     /// Write **EP1** `[3:2]` (RW)
     #[inline(always)]
     pub fn write_ep1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::EP1_MASK) | ((value << Self::EP1_OFFSET) & Self::EP1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::EP1_MASK) | ((value << Self::EP1_OFFSET) & Self::EP1_MASK)
+        });
     }
 
     /// **EP0** `[1:0]` (RW)
@@ -23241,7 +23392,9 @@ impl EpTxError {
     /// Write **EP0** `[1:0]` (RW)
     #[inline(always)]
     pub fn write_ep0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::EP0_MASK) | ((value << Self::EP0_OFFSET) & Self::EP0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::EP0_MASK) | ((value << Self::EP0_OFFSET) & Self::EP0_MASK)
+        });
     }
 }
 
@@ -23373,7 +23526,8 @@ impl EpTxErrorVal {
     #[inline(always)]
     pub const fn with_ep15(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !EpTxError::EP15_MASK) | ((value << EpTxError::EP15_OFFSET) & EpTxError::EP15_MASK)
+            bits: (self.bits & !EpTxError::EP15_MASK)
+                | ((value << EpTxError::EP15_OFFSET) & EpTxError::EP15_MASK),
         }
     }
 
@@ -23381,7 +23535,8 @@ impl EpTxErrorVal {
     #[inline(always)]
     pub const fn with_ep14(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !EpTxError::EP14_MASK) | ((value << EpTxError::EP14_OFFSET) & EpTxError::EP14_MASK)
+            bits: (self.bits & !EpTxError::EP14_MASK)
+                | ((value << EpTxError::EP14_OFFSET) & EpTxError::EP14_MASK),
         }
     }
 
@@ -23389,7 +23544,8 @@ impl EpTxErrorVal {
     #[inline(always)]
     pub const fn with_ep13(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !EpTxError::EP13_MASK) | ((value << EpTxError::EP13_OFFSET) & EpTxError::EP13_MASK)
+            bits: (self.bits & !EpTxError::EP13_MASK)
+                | ((value << EpTxError::EP13_OFFSET) & EpTxError::EP13_MASK),
         }
     }
 
@@ -23397,7 +23553,8 @@ impl EpTxErrorVal {
     #[inline(always)]
     pub const fn with_ep12(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !EpTxError::EP12_MASK) | ((value << EpTxError::EP12_OFFSET) & EpTxError::EP12_MASK)
+            bits: (self.bits & !EpTxError::EP12_MASK)
+                | ((value << EpTxError::EP12_OFFSET) & EpTxError::EP12_MASK),
         }
     }
 
@@ -23405,7 +23562,8 @@ impl EpTxErrorVal {
     #[inline(always)]
     pub const fn with_ep11(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !EpTxError::EP11_MASK) | ((value << EpTxError::EP11_OFFSET) & EpTxError::EP11_MASK)
+            bits: (self.bits & !EpTxError::EP11_MASK)
+                | ((value << EpTxError::EP11_OFFSET) & EpTxError::EP11_MASK),
         }
     }
 
@@ -23413,7 +23571,8 @@ impl EpTxErrorVal {
     #[inline(always)]
     pub const fn with_ep10(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !EpTxError::EP10_MASK) | ((value << EpTxError::EP10_OFFSET) & EpTxError::EP10_MASK)
+            bits: (self.bits & !EpTxError::EP10_MASK)
+                | ((value << EpTxError::EP10_OFFSET) & EpTxError::EP10_MASK),
         }
     }
 
@@ -23421,7 +23580,8 @@ impl EpTxErrorVal {
     #[inline(always)]
     pub const fn with_ep9(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !EpTxError::EP9_MASK) | ((value << EpTxError::EP9_OFFSET) & EpTxError::EP9_MASK)
+            bits: (self.bits & !EpTxError::EP9_MASK)
+                | ((value << EpTxError::EP9_OFFSET) & EpTxError::EP9_MASK),
         }
     }
 
@@ -23429,7 +23589,8 @@ impl EpTxErrorVal {
     #[inline(always)]
     pub const fn with_ep8(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !EpTxError::EP8_MASK) | ((value << EpTxError::EP8_OFFSET) & EpTxError::EP8_MASK)
+            bits: (self.bits & !EpTxError::EP8_MASK)
+                | ((value << EpTxError::EP8_OFFSET) & EpTxError::EP8_MASK),
         }
     }
 
@@ -23437,7 +23598,8 @@ impl EpTxErrorVal {
     #[inline(always)]
     pub const fn with_ep7(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !EpTxError::EP7_MASK) | ((value << EpTxError::EP7_OFFSET) & EpTxError::EP7_MASK)
+            bits: (self.bits & !EpTxError::EP7_MASK)
+                | ((value << EpTxError::EP7_OFFSET) & EpTxError::EP7_MASK),
         }
     }
 
@@ -23445,7 +23607,8 @@ impl EpTxErrorVal {
     #[inline(always)]
     pub const fn with_ep6(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !EpTxError::EP6_MASK) | ((value << EpTxError::EP6_OFFSET) & EpTxError::EP6_MASK)
+            bits: (self.bits & !EpTxError::EP6_MASK)
+                | ((value << EpTxError::EP6_OFFSET) & EpTxError::EP6_MASK),
         }
     }
 
@@ -23453,7 +23616,8 @@ impl EpTxErrorVal {
     #[inline(always)]
     pub const fn with_ep5(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !EpTxError::EP5_MASK) | ((value << EpTxError::EP5_OFFSET) & EpTxError::EP5_MASK)
+            bits: (self.bits & !EpTxError::EP5_MASK)
+                | ((value << EpTxError::EP5_OFFSET) & EpTxError::EP5_MASK),
         }
     }
 
@@ -23461,7 +23625,8 @@ impl EpTxErrorVal {
     #[inline(always)]
     pub const fn with_ep4(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !EpTxError::EP4_MASK) | ((value << EpTxError::EP4_OFFSET) & EpTxError::EP4_MASK)
+            bits: (self.bits & !EpTxError::EP4_MASK)
+                | ((value << EpTxError::EP4_OFFSET) & EpTxError::EP4_MASK),
         }
     }
 
@@ -23469,7 +23634,8 @@ impl EpTxErrorVal {
     #[inline(always)]
     pub const fn with_ep3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !EpTxError::EP3_MASK) | ((value << EpTxError::EP3_OFFSET) & EpTxError::EP3_MASK)
+            bits: (self.bits & !EpTxError::EP3_MASK)
+                | ((value << EpTxError::EP3_OFFSET) & EpTxError::EP3_MASK),
         }
     }
 
@@ -23477,7 +23643,8 @@ impl EpTxErrorVal {
     #[inline(always)]
     pub const fn with_ep2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !EpTxError::EP2_MASK) | ((value << EpTxError::EP2_OFFSET) & EpTxError::EP2_MASK)
+            bits: (self.bits & !EpTxError::EP2_MASK)
+                | ((value << EpTxError::EP2_OFFSET) & EpTxError::EP2_MASK),
         }
     }
 
@@ -23485,7 +23652,8 @@ impl EpTxErrorVal {
     #[inline(always)]
     pub const fn with_ep1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !EpTxError::EP1_MASK) | ((value << EpTxError::EP1_OFFSET) & EpTxError::EP1_MASK)
+            bits: (self.bits & !EpTxError::EP1_MASK)
+                | ((value << EpTxError::EP1_OFFSET) & EpTxError::EP1_MASK),
         }
     }
 
@@ -23493,7 +23661,8 @@ impl EpTxErrorVal {
     #[inline(always)]
     pub const fn with_ep0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !EpTxError::EP0_MASK) | ((value << EpTxError::EP0_OFFSET) & EpTxError::EP0_MASK)
+            bits: (self.bits & !EpTxError::EP0_MASK)
+                | ((value << EpTxError::EP0_OFFSET) & EpTxError::EP0_MASK),
         }
     }
 }
@@ -24611,7 +24780,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP15_SEQ_MASK
             } else {
                 self.bits & !EpRxError::EP15_SEQ_MASK
-            }
+            },
         }
     }
 
@@ -24623,7 +24792,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP15_TRANSACTION_MASK
             } else {
                 self.bits & !EpRxError::EP15_TRANSACTION_MASK
-            }
+            },
         }
     }
 
@@ -24635,7 +24804,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP14_SEQ_MASK
             } else {
                 self.bits & !EpRxError::EP14_SEQ_MASK
-            }
+            },
         }
     }
 
@@ -24647,7 +24816,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP14_TRANSACTION_MASK
             } else {
                 self.bits & !EpRxError::EP14_TRANSACTION_MASK
-            }
+            },
         }
     }
 
@@ -24659,7 +24828,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP13_SEQ_MASK
             } else {
                 self.bits & !EpRxError::EP13_SEQ_MASK
-            }
+            },
         }
     }
 
@@ -24671,7 +24840,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP13_TRANSACTION_MASK
             } else {
                 self.bits & !EpRxError::EP13_TRANSACTION_MASK
-            }
+            },
         }
     }
 
@@ -24683,7 +24852,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP12_SEQ_MASK
             } else {
                 self.bits & !EpRxError::EP12_SEQ_MASK
-            }
+            },
         }
     }
 
@@ -24695,7 +24864,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP12_TRANSACTION_MASK
             } else {
                 self.bits & !EpRxError::EP12_TRANSACTION_MASK
-            }
+            },
         }
     }
 
@@ -24707,7 +24876,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP11_SEQ_MASK
             } else {
                 self.bits & !EpRxError::EP11_SEQ_MASK
-            }
+            },
         }
     }
 
@@ -24719,7 +24888,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP11_TRANSACTION_MASK
             } else {
                 self.bits & !EpRxError::EP11_TRANSACTION_MASK
-            }
+            },
         }
     }
 
@@ -24731,7 +24900,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP10_SEQ_MASK
             } else {
                 self.bits & !EpRxError::EP10_SEQ_MASK
-            }
+            },
         }
     }
 
@@ -24743,7 +24912,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP10_TRANSACTION_MASK
             } else {
                 self.bits & !EpRxError::EP10_TRANSACTION_MASK
-            }
+            },
         }
     }
 
@@ -24755,7 +24924,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP9_SEQ_MASK
             } else {
                 self.bits & !EpRxError::EP9_SEQ_MASK
-            }
+            },
         }
     }
 
@@ -24767,7 +24936,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP9_TRANSACTION_MASK
             } else {
                 self.bits & !EpRxError::EP9_TRANSACTION_MASK
-            }
+            },
         }
     }
 
@@ -24779,7 +24948,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP8_SEQ_MASK
             } else {
                 self.bits & !EpRxError::EP8_SEQ_MASK
-            }
+            },
         }
     }
 
@@ -24791,7 +24960,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP8_TRANSACTION_MASK
             } else {
                 self.bits & !EpRxError::EP8_TRANSACTION_MASK
-            }
+            },
         }
     }
 
@@ -24803,7 +24972,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP7_SEQ_MASK
             } else {
                 self.bits & !EpRxError::EP7_SEQ_MASK
-            }
+            },
         }
     }
 
@@ -24815,7 +24984,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP7_TRANSACTION_MASK
             } else {
                 self.bits & !EpRxError::EP7_TRANSACTION_MASK
-            }
+            },
         }
     }
 
@@ -24827,7 +24996,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP6_SEQ_MASK
             } else {
                 self.bits & !EpRxError::EP6_SEQ_MASK
-            }
+            },
         }
     }
 
@@ -24839,7 +25008,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP6_TRANSACTION_MASK
             } else {
                 self.bits & !EpRxError::EP6_TRANSACTION_MASK
-            }
+            },
         }
     }
 
@@ -24851,7 +25020,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP5_SEQ_MASK
             } else {
                 self.bits & !EpRxError::EP5_SEQ_MASK
-            }
+            },
         }
     }
 
@@ -24863,7 +25032,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP5_TRANSACTION_MASK
             } else {
                 self.bits & !EpRxError::EP5_TRANSACTION_MASK
-            }
+            },
         }
     }
 
@@ -24875,7 +25044,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP4_SEQ_MASK
             } else {
                 self.bits & !EpRxError::EP4_SEQ_MASK
-            }
+            },
         }
     }
 
@@ -24887,7 +25056,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP4_TRANSACTION_MASK
             } else {
                 self.bits & !EpRxError::EP4_TRANSACTION_MASK
-            }
+            },
         }
     }
 
@@ -24899,7 +25068,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP3_SEQ_MASK
             } else {
                 self.bits & !EpRxError::EP3_SEQ_MASK
-            }
+            },
         }
     }
 
@@ -24911,7 +25080,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP3_TRANSACTION_MASK
             } else {
                 self.bits & !EpRxError::EP3_TRANSACTION_MASK
-            }
+            },
         }
     }
 
@@ -24923,7 +25092,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP2_SEQ_MASK
             } else {
                 self.bits & !EpRxError::EP2_SEQ_MASK
-            }
+            },
         }
     }
 
@@ -24935,7 +25104,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP2_TRANSACTION_MASK
             } else {
                 self.bits & !EpRxError::EP2_TRANSACTION_MASK
-            }
+            },
         }
     }
 
@@ -24947,7 +25116,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP1_SEQ_MASK
             } else {
                 self.bits & !EpRxError::EP1_SEQ_MASK
-            }
+            },
         }
     }
 
@@ -24959,7 +25128,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP1_TRANSACTION_MASK
             } else {
                 self.bits & !EpRxError::EP1_TRANSACTION_MASK
-            }
+            },
         }
     }
 
@@ -24971,7 +25140,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP0_SEQ_MASK
             } else {
                 self.bits & !EpRxError::EP0_SEQ_MASK
-            }
+            },
         }
     }
 
@@ -24983,7 +25152,7 @@ impl EpRxErrorVal {
                 self.bits | EpRxError::EP0_TRANSACTION_MASK
             } else {
                 self.bits & !EpRxError::EP0_TRANSACTION_MASK
-            }
+            },
         }
     }
 }
@@ -25142,7 +25311,9 @@ impl DevSmWatchdog {
     /// Write **LIMIT** `[17:0]` (RW)
     #[inline(always)]
     pub fn write_limit(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LIMIT_MASK) | ((value << Self::LIMIT_OFFSET) & Self::LIMIT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LIMIT_MASK) | ((value << Self::LIMIT_OFFSET) & Self::LIMIT_MASK)
+        });
     }
 }
 
@@ -25202,7 +25373,7 @@ impl DevSmWatchdogVal {
                 self.bits | DevSmWatchdog::FIRED_MASK
             } else {
                 self.bits & !DevSmWatchdog::FIRED_MASK
-            }
+            },
         }
     }
 
@@ -25216,7 +25387,7 @@ impl DevSmWatchdogVal {
                 self.bits | DevSmWatchdog::RESET_MASK
             } else {
                 self.bits & !DevSmWatchdog::RESET_MASK
-            }
+            },
         }
     }
 
@@ -25228,7 +25399,7 @@ impl DevSmWatchdogVal {
                 self.bits | DevSmWatchdog::ENABLE_MASK
             } else {
                 self.bits & !DevSmWatchdog::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -25236,7 +25407,8 @@ impl DevSmWatchdogVal {
     #[inline(always)]
     pub const fn with_limit(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DevSmWatchdog::LIMIT_MASK) | ((value << DevSmWatchdog::LIMIT_OFFSET) & DevSmWatchdog::LIMIT_MASK)
+            bits: (self.bits & !DevSmWatchdog::LIMIT_MASK)
+                | ((value << DevSmWatchdog::LIMIT_OFFSET) & DevSmWatchdog::LIMIT_MASK),
         }
     }
 }
@@ -25407,4 +25579,3 @@ pub struct RegisterBlock {
     /// Set limit while enable is low and then set the enable.
     pub dev_sm_watchdog: DevSmWatchdog,
 }
-

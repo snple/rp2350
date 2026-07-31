@@ -172,7 +172,7 @@ impl StatVal {
                 self.bits | Stat::WOF_MASK
             } else {
                 self.bits & !Stat::WOF_MASK
-            }
+            },
         }
     }
 }
@@ -239,7 +239,8 @@ impl Fifo {
     /// Write **FIFO** `[31:0]` (WO)
     #[inline(always)]
     pub fn write_fifo(&self, value: u32) {
-        self.value.write_bits((value << Self::FIFO_OFFSET) & Self::FIFO_MASK);
+        self.value
+            .write_bits((value << Self::FIFO_OFFSET) & Self::FIFO_MASK);
     }
 }
 
@@ -275,7 +276,7 @@ impl FifoVal {
     #[inline(always)]
     pub const fn with_fifo(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Fifo::FIFO_MASK) | ((value << Fifo::FIFO_OFFSET) & Fifo::FIFO_MASK)
+            bits: (self.bits & !Fifo::FIFO_MASK) | ((value << Fifo::FIFO_OFFSET) & Fifo::FIFO_MASK),
         }
     }
 }
@@ -304,4 +305,3 @@ pub struct RegisterBlock {
     /// Write access to FIFO
     pub fifo: Fifo,
 }
-

@@ -75,14 +75,30 @@ pub unsafe fn reset(mask: u32) {
 ///
 /// `mask` must only contain valid RESETS register bits (bits 0..=28).
 /// Prefer [`Resettable::unreset()`] for type-safe single-peripheral unreset.
+///
+/// # Panics
+///
+/// Panics if the peripheral does not leave reset within
+/// [`RESET_TIMEOUT_SPINS`] spin iterations. This normally indicates a
+/// configuration error, such as the peripheral being held in reset by
+/// ACCESSCTRL or its clock being gated — reporting the failure is preferable
+/// to hanging indefinitely.
 #[inline]
 pub unsafe fn unreset(mask: u32) {
     let resets = unsafe { RESETS::steal() };
     resets.reset.clr_bits(mask);
+    let mut spins = 0u32;
     while (resets.reset_done.read_bits() & mask) != mask {
         core::hint::spin_loop();
+        spins += 1;
+        if spins >= RESET_TIMEOUT_SPINS {
+            panic!("timed out waiting for peripheral to leave reset (mask=0x{mask:08x})");
+        }
     }
 }
+
+/// Maximum spin iterations before [`unreset`] reports a timeout.
+pub const RESET_TIMEOUT_SPINS: u32 = 1_000_000;
 
 // ============================================================================
 // Implement Resettable for each PAC peripheral type

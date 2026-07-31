@@ -63,7 +63,9 @@ impl SetupPacketLow {
     /// Write **WVALUE** `[31:16]` (RW)
     #[inline(always)]
     pub fn write_wvalue(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::WVALUE_MASK) | ((value << Self::WVALUE_OFFSET) & Self::WVALUE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::WVALUE_MASK) | ((value << Self::WVALUE_OFFSET) & Self::WVALUE_MASK)
+        });
     }
 
     /// **BREQUEST** `[15:8]` (RW)
@@ -75,7 +77,9 @@ impl SetupPacketLow {
     /// Write **BREQUEST** `[15:8]` (RW)
     #[inline(always)]
     pub fn write_brequest(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BREQUEST_MASK) | ((value << Self::BREQUEST_OFFSET) & Self::BREQUEST_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BREQUEST_MASK) | ((value << Self::BREQUEST_OFFSET) & Self::BREQUEST_MASK)
+        });
     }
 
     /// **BMREQUESTTYPE** `[7:0]` (RW)
@@ -87,7 +91,10 @@ impl SetupPacketLow {
     /// Write **BMREQUESTTYPE** `[7:0]` (RW)
     #[inline(always)]
     pub fn write_bmrequesttype(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BMREQUESTTYPE_MASK) | ((value << Self::BMREQUESTTYPE_OFFSET) & Self::BMREQUESTTYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BMREQUESTTYPE_MASK)
+                | ((value << Self::BMREQUESTTYPE_OFFSET) & Self::BMREQUESTTYPE_MASK)
+        });
     }
 }
 
@@ -141,7 +148,8 @@ impl SetupPacketLowVal {
     #[inline(always)]
     pub const fn with_wvalue(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SetupPacketLow::WVALUE_MASK) | ((value << SetupPacketLow::WVALUE_OFFSET) & SetupPacketLow::WVALUE_MASK)
+            bits: (self.bits & !SetupPacketLow::WVALUE_MASK)
+                | ((value << SetupPacketLow::WVALUE_OFFSET) & SetupPacketLow::WVALUE_MASK),
         }
     }
 
@@ -149,7 +157,8 @@ impl SetupPacketLowVal {
     #[inline(always)]
     pub const fn with_brequest(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SetupPacketLow::BREQUEST_MASK) | ((value << SetupPacketLow::BREQUEST_OFFSET) & SetupPacketLow::BREQUEST_MASK)
+            bits: (self.bits & !SetupPacketLow::BREQUEST_MASK)
+                | ((value << SetupPacketLow::BREQUEST_OFFSET) & SetupPacketLow::BREQUEST_MASK),
         }
     }
 
@@ -157,7 +166,9 @@ impl SetupPacketLowVal {
     #[inline(always)]
     pub const fn with_bmrequesttype(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SetupPacketLow::BMREQUESTTYPE_MASK) | ((value << SetupPacketLow::BMREQUESTTYPE_OFFSET) & SetupPacketLow::BMREQUESTTYPE_MASK)
+            bits: (self.bits & !SetupPacketLow::BMREQUESTTYPE_MASK)
+                | ((value << SetupPacketLow::BMREQUESTTYPE_OFFSET)
+                    & SetupPacketLow::BMREQUESTTYPE_MASK),
         }
     }
 }
@@ -237,7 +248,9 @@ impl SetupPacketHigh {
     /// Write **WLENGTH** `[31:16]` (RW)
     #[inline(always)]
     pub fn write_wlength(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::WLENGTH_MASK) | ((value << Self::WLENGTH_OFFSET) & Self::WLENGTH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::WLENGTH_MASK) | ((value << Self::WLENGTH_OFFSET) & Self::WLENGTH_MASK)
+        });
     }
 
     /// **WINDEX** `[15:0]` (RW)
@@ -249,7 +262,9 @@ impl SetupPacketHigh {
     /// Write **WINDEX** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_windex(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::WINDEX_MASK) | ((value << Self::WINDEX_OFFSET) & Self::WINDEX_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::WINDEX_MASK) | ((value << Self::WINDEX_OFFSET) & Self::WINDEX_MASK)
+        });
     }
 }
 
@@ -297,7 +312,8 @@ impl SetupPacketHighVal {
     #[inline(always)]
     pub const fn with_wlength(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SetupPacketHigh::WLENGTH_MASK) | ((value << SetupPacketHigh::WLENGTH_OFFSET) & SetupPacketHigh::WLENGTH_MASK)
+            bits: (self.bits & !SetupPacketHigh::WLENGTH_MASK)
+                | ((value << SetupPacketHigh::WLENGTH_OFFSET) & SetupPacketHigh::WLENGTH_MASK),
         }
     }
 
@@ -305,7 +321,8 @@ impl SetupPacketHighVal {
     #[inline(always)]
     pub const fn with_windex(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SetupPacketHigh::WINDEX_MASK) | ((value << SetupPacketHigh::WINDEX_OFFSET) & SetupPacketHigh::WINDEX_MASK)
+            bits: (self.bits & !SetupPacketHigh::WINDEX_MASK)
+                | ((value << SetupPacketHigh::WINDEX_OFFSET) & SetupPacketHigh::WINDEX_MASK),
         }
     }
 }
@@ -554,7 +571,10 @@ impl Ep1InControl {
     /// Write **ENDPOINT_TYPE** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_endpoint_type(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_TYPE_MASK) | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_TYPE_MASK)
+                | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK)
+        });
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
@@ -610,7 +630,10 @@ impl Ep1InControl {
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BUFFER_ADDRESS_MASK)
+                | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK)
+        });
     }
 }
 
@@ -714,7 +737,7 @@ impl Ep1InControlVal {
                 self.bits | Ep1InControl::ENABLE_MASK
             } else {
                 self.bits & !Ep1InControl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -728,7 +751,7 @@ impl Ep1InControlVal {
                 self.bits | Ep1InControl::DOUBLE_BUFFERED_MASK
             } else {
                 self.bits & !Ep1InControl::DOUBLE_BUFFERED_MASK
-            }
+            },
         }
     }
 
@@ -742,7 +765,7 @@ impl Ep1InControlVal {
                 self.bits | Ep1InControl::INTERRUPT_PER_BUFF_MASK
             } else {
                 self.bits & !Ep1InControl::INTERRUPT_PER_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -756,7 +779,7 @@ impl Ep1InControlVal {
                 self.bits | Ep1InControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
             } else {
                 self.bits & !Ep1InControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -764,7 +787,9 @@ impl Ep1InControlVal {
     #[inline(always)]
     pub const fn with_endpoint_type(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep1InControl::ENDPOINT_TYPE_MASK) | ((value << Ep1InControl::ENDPOINT_TYPE_OFFSET) & Ep1InControl::ENDPOINT_TYPE_MASK)
+            bits: (self.bits & !Ep1InControl::ENDPOINT_TYPE_MASK)
+                | ((value << Ep1InControl::ENDPOINT_TYPE_OFFSET)
+                    & Ep1InControl::ENDPOINT_TYPE_MASK),
         }
     }
 
@@ -778,7 +803,7 @@ impl Ep1InControlVal {
                 self.bits | Ep1InControl::INTERRUPT_ON_STALL_MASK
             } else {
                 self.bits & !Ep1InControl::INTERRUPT_ON_STALL_MASK
-            }
+            },
         }
     }
 
@@ -792,7 +817,7 @@ impl Ep1InControlVal {
                 self.bits | Ep1InControl::INTERRUPT_ON_NAK_MASK
             } else {
                 self.bits & !Ep1InControl::INTERRUPT_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -802,7 +827,9 @@ impl Ep1InControlVal {
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep1InControl::BUFFER_ADDRESS_MASK) | ((value << Ep1InControl::BUFFER_ADDRESS_OFFSET) & Ep1InControl::BUFFER_ADDRESS_MASK)
+            bits: (self.bits & !Ep1InControl::BUFFER_ADDRESS_MASK)
+                | ((value << Ep1InControl::BUFFER_ADDRESS_OFFSET)
+                    & Ep1InControl::BUFFER_ADDRESS_MASK),
         }
     }
 }
@@ -1051,7 +1078,10 @@ impl Ep1OutControl {
     /// Write **ENDPOINT_TYPE** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_endpoint_type(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_TYPE_MASK) | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_TYPE_MASK)
+                | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK)
+        });
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
@@ -1107,7 +1137,10 @@ impl Ep1OutControl {
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BUFFER_ADDRESS_MASK)
+                | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK)
+        });
     }
 }
 
@@ -1211,7 +1244,7 @@ impl Ep1OutControlVal {
                 self.bits | Ep1OutControl::ENABLE_MASK
             } else {
                 self.bits & !Ep1OutControl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -1225,7 +1258,7 @@ impl Ep1OutControlVal {
                 self.bits | Ep1OutControl::DOUBLE_BUFFERED_MASK
             } else {
                 self.bits & !Ep1OutControl::DOUBLE_BUFFERED_MASK
-            }
+            },
         }
     }
 
@@ -1239,7 +1272,7 @@ impl Ep1OutControlVal {
                 self.bits | Ep1OutControl::INTERRUPT_PER_BUFF_MASK
             } else {
                 self.bits & !Ep1OutControl::INTERRUPT_PER_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -1253,7 +1286,7 @@ impl Ep1OutControlVal {
                 self.bits | Ep1OutControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
             } else {
                 self.bits & !Ep1OutControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -1261,7 +1294,9 @@ impl Ep1OutControlVal {
     #[inline(always)]
     pub const fn with_endpoint_type(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep1OutControl::ENDPOINT_TYPE_MASK) | ((value << Ep1OutControl::ENDPOINT_TYPE_OFFSET) & Ep1OutControl::ENDPOINT_TYPE_MASK)
+            bits: (self.bits & !Ep1OutControl::ENDPOINT_TYPE_MASK)
+                | ((value << Ep1OutControl::ENDPOINT_TYPE_OFFSET)
+                    & Ep1OutControl::ENDPOINT_TYPE_MASK),
         }
     }
 
@@ -1275,7 +1310,7 @@ impl Ep1OutControlVal {
                 self.bits | Ep1OutControl::INTERRUPT_ON_STALL_MASK
             } else {
                 self.bits & !Ep1OutControl::INTERRUPT_ON_STALL_MASK
-            }
+            },
         }
     }
 
@@ -1289,7 +1324,7 @@ impl Ep1OutControlVal {
                 self.bits | Ep1OutControl::INTERRUPT_ON_NAK_MASK
             } else {
                 self.bits & !Ep1OutControl::INTERRUPT_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -1299,7 +1334,9 @@ impl Ep1OutControlVal {
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep1OutControl::BUFFER_ADDRESS_MASK) | ((value << Ep1OutControl::BUFFER_ADDRESS_OFFSET) & Ep1OutControl::BUFFER_ADDRESS_MASK)
+            bits: (self.bits & !Ep1OutControl::BUFFER_ADDRESS_MASK)
+                | ((value << Ep1OutControl::BUFFER_ADDRESS_OFFSET)
+                    & Ep1OutControl::BUFFER_ADDRESS_MASK),
         }
     }
 }
@@ -1548,7 +1585,10 @@ impl Ep2InControl {
     /// Write **ENDPOINT_TYPE** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_endpoint_type(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_TYPE_MASK) | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_TYPE_MASK)
+                | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK)
+        });
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
@@ -1604,7 +1644,10 @@ impl Ep2InControl {
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BUFFER_ADDRESS_MASK)
+                | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK)
+        });
     }
 }
 
@@ -1708,7 +1751,7 @@ impl Ep2InControlVal {
                 self.bits | Ep2InControl::ENABLE_MASK
             } else {
                 self.bits & !Ep2InControl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -1722,7 +1765,7 @@ impl Ep2InControlVal {
                 self.bits | Ep2InControl::DOUBLE_BUFFERED_MASK
             } else {
                 self.bits & !Ep2InControl::DOUBLE_BUFFERED_MASK
-            }
+            },
         }
     }
 
@@ -1736,7 +1779,7 @@ impl Ep2InControlVal {
                 self.bits | Ep2InControl::INTERRUPT_PER_BUFF_MASK
             } else {
                 self.bits & !Ep2InControl::INTERRUPT_PER_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -1750,7 +1793,7 @@ impl Ep2InControlVal {
                 self.bits | Ep2InControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
             } else {
                 self.bits & !Ep2InControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -1758,7 +1801,9 @@ impl Ep2InControlVal {
     #[inline(always)]
     pub const fn with_endpoint_type(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep2InControl::ENDPOINT_TYPE_MASK) | ((value << Ep2InControl::ENDPOINT_TYPE_OFFSET) & Ep2InControl::ENDPOINT_TYPE_MASK)
+            bits: (self.bits & !Ep2InControl::ENDPOINT_TYPE_MASK)
+                | ((value << Ep2InControl::ENDPOINT_TYPE_OFFSET)
+                    & Ep2InControl::ENDPOINT_TYPE_MASK),
         }
     }
 
@@ -1772,7 +1817,7 @@ impl Ep2InControlVal {
                 self.bits | Ep2InControl::INTERRUPT_ON_STALL_MASK
             } else {
                 self.bits & !Ep2InControl::INTERRUPT_ON_STALL_MASK
-            }
+            },
         }
     }
 
@@ -1786,7 +1831,7 @@ impl Ep2InControlVal {
                 self.bits | Ep2InControl::INTERRUPT_ON_NAK_MASK
             } else {
                 self.bits & !Ep2InControl::INTERRUPT_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -1796,7 +1841,9 @@ impl Ep2InControlVal {
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep2InControl::BUFFER_ADDRESS_MASK) | ((value << Ep2InControl::BUFFER_ADDRESS_OFFSET) & Ep2InControl::BUFFER_ADDRESS_MASK)
+            bits: (self.bits & !Ep2InControl::BUFFER_ADDRESS_MASK)
+                | ((value << Ep2InControl::BUFFER_ADDRESS_OFFSET)
+                    & Ep2InControl::BUFFER_ADDRESS_MASK),
         }
     }
 }
@@ -2045,7 +2092,10 @@ impl Ep2OutControl {
     /// Write **ENDPOINT_TYPE** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_endpoint_type(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_TYPE_MASK) | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_TYPE_MASK)
+                | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK)
+        });
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
@@ -2101,7 +2151,10 @@ impl Ep2OutControl {
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BUFFER_ADDRESS_MASK)
+                | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK)
+        });
     }
 }
 
@@ -2205,7 +2258,7 @@ impl Ep2OutControlVal {
                 self.bits | Ep2OutControl::ENABLE_MASK
             } else {
                 self.bits & !Ep2OutControl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -2219,7 +2272,7 @@ impl Ep2OutControlVal {
                 self.bits | Ep2OutControl::DOUBLE_BUFFERED_MASK
             } else {
                 self.bits & !Ep2OutControl::DOUBLE_BUFFERED_MASK
-            }
+            },
         }
     }
 
@@ -2233,7 +2286,7 @@ impl Ep2OutControlVal {
                 self.bits | Ep2OutControl::INTERRUPT_PER_BUFF_MASK
             } else {
                 self.bits & !Ep2OutControl::INTERRUPT_PER_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -2247,7 +2300,7 @@ impl Ep2OutControlVal {
                 self.bits | Ep2OutControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
             } else {
                 self.bits & !Ep2OutControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -2255,7 +2308,9 @@ impl Ep2OutControlVal {
     #[inline(always)]
     pub const fn with_endpoint_type(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep2OutControl::ENDPOINT_TYPE_MASK) | ((value << Ep2OutControl::ENDPOINT_TYPE_OFFSET) & Ep2OutControl::ENDPOINT_TYPE_MASK)
+            bits: (self.bits & !Ep2OutControl::ENDPOINT_TYPE_MASK)
+                | ((value << Ep2OutControl::ENDPOINT_TYPE_OFFSET)
+                    & Ep2OutControl::ENDPOINT_TYPE_MASK),
         }
     }
 
@@ -2269,7 +2324,7 @@ impl Ep2OutControlVal {
                 self.bits | Ep2OutControl::INTERRUPT_ON_STALL_MASK
             } else {
                 self.bits & !Ep2OutControl::INTERRUPT_ON_STALL_MASK
-            }
+            },
         }
     }
 
@@ -2283,7 +2338,7 @@ impl Ep2OutControlVal {
                 self.bits | Ep2OutControl::INTERRUPT_ON_NAK_MASK
             } else {
                 self.bits & !Ep2OutControl::INTERRUPT_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -2293,7 +2348,9 @@ impl Ep2OutControlVal {
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep2OutControl::BUFFER_ADDRESS_MASK) | ((value << Ep2OutControl::BUFFER_ADDRESS_OFFSET) & Ep2OutControl::BUFFER_ADDRESS_MASK)
+            bits: (self.bits & !Ep2OutControl::BUFFER_ADDRESS_MASK)
+                | ((value << Ep2OutControl::BUFFER_ADDRESS_OFFSET)
+                    & Ep2OutControl::BUFFER_ADDRESS_MASK),
         }
     }
 }
@@ -2542,7 +2599,10 @@ impl Ep3InControl {
     /// Write **ENDPOINT_TYPE** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_endpoint_type(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_TYPE_MASK) | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_TYPE_MASK)
+                | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK)
+        });
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
@@ -2598,7 +2658,10 @@ impl Ep3InControl {
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BUFFER_ADDRESS_MASK)
+                | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK)
+        });
     }
 }
 
@@ -2702,7 +2765,7 @@ impl Ep3InControlVal {
                 self.bits | Ep3InControl::ENABLE_MASK
             } else {
                 self.bits & !Ep3InControl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -2716,7 +2779,7 @@ impl Ep3InControlVal {
                 self.bits | Ep3InControl::DOUBLE_BUFFERED_MASK
             } else {
                 self.bits & !Ep3InControl::DOUBLE_BUFFERED_MASK
-            }
+            },
         }
     }
 
@@ -2730,7 +2793,7 @@ impl Ep3InControlVal {
                 self.bits | Ep3InControl::INTERRUPT_PER_BUFF_MASK
             } else {
                 self.bits & !Ep3InControl::INTERRUPT_PER_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -2744,7 +2807,7 @@ impl Ep3InControlVal {
                 self.bits | Ep3InControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
             } else {
                 self.bits & !Ep3InControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -2752,7 +2815,9 @@ impl Ep3InControlVal {
     #[inline(always)]
     pub const fn with_endpoint_type(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep3InControl::ENDPOINT_TYPE_MASK) | ((value << Ep3InControl::ENDPOINT_TYPE_OFFSET) & Ep3InControl::ENDPOINT_TYPE_MASK)
+            bits: (self.bits & !Ep3InControl::ENDPOINT_TYPE_MASK)
+                | ((value << Ep3InControl::ENDPOINT_TYPE_OFFSET)
+                    & Ep3InControl::ENDPOINT_TYPE_MASK),
         }
     }
 
@@ -2766,7 +2831,7 @@ impl Ep3InControlVal {
                 self.bits | Ep3InControl::INTERRUPT_ON_STALL_MASK
             } else {
                 self.bits & !Ep3InControl::INTERRUPT_ON_STALL_MASK
-            }
+            },
         }
     }
 
@@ -2780,7 +2845,7 @@ impl Ep3InControlVal {
                 self.bits | Ep3InControl::INTERRUPT_ON_NAK_MASK
             } else {
                 self.bits & !Ep3InControl::INTERRUPT_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -2790,7 +2855,9 @@ impl Ep3InControlVal {
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep3InControl::BUFFER_ADDRESS_MASK) | ((value << Ep3InControl::BUFFER_ADDRESS_OFFSET) & Ep3InControl::BUFFER_ADDRESS_MASK)
+            bits: (self.bits & !Ep3InControl::BUFFER_ADDRESS_MASK)
+                | ((value << Ep3InControl::BUFFER_ADDRESS_OFFSET)
+                    & Ep3InControl::BUFFER_ADDRESS_MASK),
         }
     }
 }
@@ -3039,7 +3106,10 @@ impl Ep3OutControl {
     /// Write **ENDPOINT_TYPE** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_endpoint_type(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_TYPE_MASK) | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_TYPE_MASK)
+                | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK)
+        });
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
@@ -3095,7 +3165,10 @@ impl Ep3OutControl {
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BUFFER_ADDRESS_MASK)
+                | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK)
+        });
     }
 }
 
@@ -3199,7 +3272,7 @@ impl Ep3OutControlVal {
                 self.bits | Ep3OutControl::ENABLE_MASK
             } else {
                 self.bits & !Ep3OutControl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -3213,7 +3286,7 @@ impl Ep3OutControlVal {
                 self.bits | Ep3OutControl::DOUBLE_BUFFERED_MASK
             } else {
                 self.bits & !Ep3OutControl::DOUBLE_BUFFERED_MASK
-            }
+            },
         }
     }
 
@@ -3227,7 +3300,7 @@ impl Ep3OutControlVal {
                 self.bits | Ep3OutControl::INTERRUPT_PER_BUFF_MASK
             } else {
                 self.bits & !Ep3OutControl::INTERRUPT_PER_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -3241,7 +3314,7 @@ impl Ep3OutControlVal {
                 self.bits | Ep3OutControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
             } else {
                 self.bits & !Ep3OutControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -3249,7 +3322,9 @@ impl Ep3OutControlVal {
     #[inline(always)]
     pub const fn with_endpoint_type(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep3OutControl::ENDPOINT_TYPE_MASK) | ((value << Ep3OutControl::ENDPOINT_TYPE_OFFSET) & Ep3OutControl::ENDPOINT_TYPE_MASK)
+            bits: (self.bits & !Ep3OutControl::ENDPOINT_TYPE_MASK)
+                | ((value << Ep3OutControl::ENDPOINT_TYPE_OFFSET)
+                    & Ep3OutControl::ENDPOINT_TYPE_MASK),
         }
     }
 
@@ -3263,7 +3338,7 @@ impl Ep3OutControlVal {
                 self.bits | Ep3OutControl::INTERRUPT_ON_STALL_MASK
             } else {
                 self.bits & !Ep3OutControl::INTERRUPT_ON_STALL_MASK
-            }
+            },
         }
     }
 
@@ -3277,7 +3352,7 @@ impl Ep3OutControlVal {
                 self.bits | Ep3OutControl::INTERRUPT_ON_NAK_MASK
             } else {
                 self.bits & !Ep3OutControl::INTERRUPT_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -3287,7 +3362,9 @@ impl Ep3OutControlVal {
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep3OutControl::BUFFER_ADDRESS_MASK) | ((value << Ep3OutControl::BUFFER_ADDRESS_OFFSET) & Ep3OutControl::BUFFER_ADDRESS_MASK)
+            bits: (self.bits & !Ep3OutControl::BUFFER_ADDRESS_MASK)
+                | ((value << Ep3OutControl::BUFFER_ADDRESS_OFFSET)
+                    & Ep3OutControl::BUFFER_ADDRESS_MASK),
         }
     }
 }
@@ -3536,7 +3613,10 @@ impl Ep4InControl {
     /// Write **ENDPOINT_TYPE** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_endpoint_type(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_TYPE_MASK) | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_TYPE_MASK)
+                | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK)
+        });
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
@@ -3592,7 +3672,10 @@ impl Ep4InControl {
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BUFFER_ADDRESS_MASK)
+                | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK)
+        });
     }
 }
 
@@ -3696,7 +3779,7 @@ impl Ep4InControlVal {
                 self.bits | Ep4InControl::ENABLE_MASK
             } else {
                 self.bits & !Ep4InControl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -3710,7 +3793,7 @@ impl Ep4InControlVal {
                 self.bits | Ep4InControl::DOUBLE_BUFFERED_MASK
             } else {
                 self.bits & !Ep4InControl::DOUBLE_BUFFERED_MASK
-            }
+            },
         }
     }
 
@@ -3724,7 +3807,7 @@ impl Ep4InControlVal {
                 self.bits | Ep4InControl::INTERRUPT_PER_BUFF_MASK
             } else {
                 self.bits & !Ep4InControl::INTERRUPT_PER_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -3738,7 +3821,7 @@ impl Ep4InControlVal {
                 self.bits | Ep4InControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
             } else {
                 self.bits & !Ep4InControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -3746,7 +3829,9 @@ impl Ep4InControlVal {
     #[inline(always)]
     pub const fn with_endpoint_type(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep4InControl::ENDPOINT_TYPE_MASK) | ((value << Ep4InControl::ENDPOINT_TYPE_OFFSET) & Ep4InControl::ENDPOINT_TYPE_MASK)
+            bits: (self.bits & !Ep4InControl::ENDPOINT_TYPE_MASK)
+                | ((value << Ep4InControl::ENDPOINT_TYPE_OFFSET)
+                    & Ep4InControl::ENDPOINT_TYPE_MASK),
         }
     }
 
@@ -3760,7 +3845,7 @@ impl Ep4InControlVal {
                 self.bits | Ep4InControl::INTERRUPT_ON_STALL_MASK
             } else {
                 self.bits & !Ep4InControl::INTERRUPT_ON_STALL_MASK
-            }
+            },
         }
     }
 
@@ -3774,7 +3859,7 @@ impl Ep4InControlVal {
                 self.bits | Ep4InControl::INTERRUPT_ON_NAK_MASK
             } else {
                 self.bits & !Ep4InControl::INTERRUPT_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -3784,7 +3869,9 @@ impl Ep4InControlVal {
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep4InControl::BUFFER_ADDRESS_MASK) | ((value << Ep4InControl::BUFFER_ADDRESS_OFFSET) & Ep4InControl::BUFFER_ADDRESS_MASK)
+            bits: (self.bits & !Ep4InControl::BUFFER_ADDRESS_MASK)
+                | ((value << Ep4InControl::BUFFER_ADDRESS_OFFSET)
+                    & Ep4InControl::BUFFER_ADDRESS_MASK),
         }
     }
 }
@@ -4033,7 +4120,10 @@ impl Ep4OutControl {
     /// Write **ENDPOINT_TYPE** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_endpoint_type(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_TYPE_MASK) | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_TYPE_MASK)
+                | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK)
+        });
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
@@ -4089,7 +4179,10 @@ impl Ep4OutControl {
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BUFFER_ADDRESS_MASK)
+                | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK)
+        });
     }
 }
 
@@ -4193,7 +4286,7 @@ impl Ep4OutControlVal {
                 self.bits | Ep4OutControl::ENABLE_MASK
             } else {
                 self.bits & !Ep4OutControl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -4207,7 +4300,7 @@ impl Ep4OutControlVal {
                 self.bits | Ep4OutControl::DOUBLE_BUFFERED_MASK
             } else {
                 self.bits & !Ep4OutControl::DOUBLE_BUFFERED_MASK
-            }
+            },
         }
     }
 
@@ -4221,7 +4314,7 @@ impl Ep4OutControlVal {
                 self.bits | Ep4OutControl::INTERRUPT_PER_BUFF_MASK
             } else {
                 self.bits & !Ep4OutControl::INTERRUPT_PER_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -4235,7 +4328,7 @@ impl Ep4OutControlVal {
                 self.bits | Ep4OutControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
             } else {
                 self.bits & !Ep4OutControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -4243,7 +4336,9 @@ impl Ep4OutControlVal {
     #[inline(always)]
     pub const fn with_endpoint_type(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep4OutControl::ENDPOINT_TYPE_MASK) | ((value << Ep4OutControl::ENDPOINT_TYPE_OFFSET) & Ep4OutControl::ENDPOINT_TYPE_MASK)
+            bits: (self.bits & !Ep4OutControl::ENDPOINT_TYPE_MASK)
+                | ((value << Ep4OutControl::ENDPOINT_TYPE_OFFSET)
+                    & Ep4OutControl::ENDPOINT_TYPE_MASK),
         }
     }
 
@@ -4257,7 +4352,7 @@ impl Ep4OutControlVal {
                 self.bits | Ep4OutControl::INTERRUPT_ON_STALL_MASK
             } else {
                 self.bits & !Ep4OutControl::INTERRUPT_ON_STALL_MASK
-            }
+            },
         }
     }
 
@@ -4271,7 +4366,7 @@ impl Ep4OutControlVal {
                 self.bits | Ep4OutControl::INTERRUPT_ON_NAK_MASK
             } else {
                 self.bits & !Ep4OutControl::INTERRUPT_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -4281,7 +4376,9 @@ impl Ep4OutControlVal {
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep4OutControl::BUFFER_ADDRESS_MASK) | ((value << Ep4OutControl::BUFFER_ADDRESS_OFFSET) & Ep4OutControl::BUFFER_ADDRESS_MASK)
+            bits: (self.bits & !Ep4OutControl::BUFFER_ADDRESS_MASK)
+                | ((value << Ep4OutControl::BUFFER_ADDRESS_OFFSET)
+                    & Ep4OutControl::BUFFER_ADDRESS_MASK),
         }
     }
 }
@@ -4530,7 +4627,10 @@ impl Ep5InControl {
     /// Write **ENDPOINT_TYPE** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_endpoint_type(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_TYPE_MASK) | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_TYPE_MASK)
+                | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK)
+        });
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
@@ -4586,7 +4686,10 @@ impl Ep5InControl {
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BUFFER_ADDRESS_MASK)
+                | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK)
+        });
     }
 }
 
@@ -4690,7 +4793,7 @@ impl Ep5InControlVal {
                 self.bits | Ep5InControl::ENABLE_MASK
             } else {
                 self.bits & !Ep5InControl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -4704,7 +4807,7 @@ impl Ep5InControlVal {
                 self.bits | Ep5InControl::DOUBLE_BUFFERED_MASK
             } else {
                 self.bits & !Ep5InControl::DOUBLE_BUFFERED_MASK
-            }
+            },
         }
     }
 
@@ -4718,7 +4821,7 @@ impl Ep5InControlVal {
                 self.bits | Ep5InControl::INTERRUPT_PER_BUFF_MASK
             } else {
                 self.bits & !Ep5InControl::INTERRUPT_PER_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -4732,7 +4835,7 @@ impl Ep5InControlVal {
                 self.bits | Ep5InControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
             } else {
                 self.bits & !Ep5InControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -4740,7 +4843,9 @@ impl Ep5InControlVal {
     #[inline(always)]
     pub const fn with_endpoint_type(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep5InControl::ENDPOINT_TYPE_MASK) | ((value << Ep5InControl::ENDPOINT_TYPE_OFFSET) & Ep5InControl::ENDPOINT_TYPE_MASK)
+            bits: (self.bits & !Ep5InControl::ENDPOINT_TYPE_MASK)
+                | ((value << Ep5InControl::ENDPOINT_TYPE_OFFSET)
+                    & Ep5InControl::ENDPOINT_TYPE_MASK),
         }
     }
 
@@ -4754,7 +4859,7 @@ impl Ep5InControlVal {
                 self.bits | Ep5InControl::INTERRUPT_ON_STALL_MASK
             } else {
                 self.bits & !Ep5InControl::INTERRUPT_ON_STALL_MASK
-            }
+            },
         }
     }
 
@@ -4768,7 +4873,7 @@ impl Ep5InControlVal {
                 self.bits | Ep5InControl::INTERRUPT_ON_NAK_MASK
             } else {
                 self.bits & !Ep5InControl::INTERRUPT_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -4778,7 +4883,9 @@ impl Ep5InControlVal {
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep5InControl::BUFFER_ADDRESS_MASK) | ((value << Ep5InControl::BUFFER_ADDRESS_OFFSET) & Ep5InControl::BUFFER_ADDRESS_MASK)
+            bits: (self.bits & !Ep5InControl::BUFFER_ADDRESS_MASK)
+                | ((value << Ep5InControl::BUFFER_ADDRESS_OFFSET)
+                    & Ep5InControl::BUFFER_ADDRESS_MASK),
         }
     }
 }
@@ -5027,7 +5134,10 @@ impl Ep5OutControl {
     /// Write **ENDPOINT_TYPE** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_endpoint_type(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_TYPE_MASK) | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_TYPE_MASK)
+                | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK)
+        });
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
@@ -5083,7 +5193,10 @@ impl Ep5OutControl {
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BUFFER_ADDRESS_MASK)
+                | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK)
+        });
     }
 }
 
@@ -5187,7 +5300,7 @@ impl Ep5OutControlVal {
                 self.bits | Ep5OutControl::ENABLE_MASK
             } else {
                 self.bits & !Ep5OutControl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -5201,7 +5314,7 @@ impl Ep5OutControlVal {
                 self.bits | Ep5OutControl::DOUBLE_BUFFERED_MASK
             } else {
                 self.bits & !Ep5OutControl::DOUBLE_BUFFERED_MASK
-            }
+            },
         }
     }
 
@@ -5215,7 +5328,7 @@ impl Ep5OutControlVal {
                 self.bits | Ep5OutControl::INTERRUPT_PER_BUFF_MASK
             } else {
                 self.bits & !Ep5OutControl::INTERRUPT_PER_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -5229,7 +5342,7 @@ impl Ep5OutControlVal {
                 self.bits | Ep5OutControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
             } else {
                 self.bits & !Ep5OutControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -5237,7 +5350,9 @@ impl Ep5OutControlVal {
     #[inline(always)]
     pub const fn with_endpoint_type(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep5OutControl::ENDPOINT_TYPE_MASK) | ((value << Ep5OutControl::ENDPOINT_TYPE_OFFSET) & Ep5OutControl::ENDPOINT_TYPE_MASK)
+            bits: (self.bits & !Ep5OutControl::ENDPOINT_TYPE_MASK)
+                | ((value << Ep5OutControl::ENDPOINT_TYPE_OFFSET)
+                    & Ep5OutControl::ENDPOINT_TYPE_MASK),
         }
     }
 
@@ -5251,7 +5366,7 @@ impl Ep5OutControlVal {
                 self.bits | Ep5OutControl::INTERRUPT_ON_STALL_MASK
             } else {
                 self.bits & !Ep5OutControl::INTERRUPT_ON_STALL_MASK
-            }
+            },
         }
     }
 
@@ -5265,7 +5380,7 @@ impl Ep5OutControlVal {
                 self.bits | Ep5OutControl::INTERRUPT_ON_NAK_MASK
             } else {
                 self.bits & !Ep5OutControl::INTERRUPT_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -5275,7 +5390,9 @@ impl Ep5OutControlVal {
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep5OutControl::BUFFER_ADDRESS_MASK) | ((value << Ep5OutControl::BUFFER_ADDRESS_OFFSET) & Ep5OutControl::BUFFER_ADDRESS_MASK)
+            bits: (self.bits & !Ep5OutControl::BUFFER_ADDRESS_MASK)
+                | ((value << Ep5OutControl::BUFFER_ADDRESS_OFFSET)
+                    & Ep5OutControl::BUFFER_ADDRESS_MASK),
         }
     }
 }
@@ -5524,7 +5641,10 @@ impl Ep6InControl {
     /// Write **ENDPOINT_TYPE** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_endpoint_type(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_TYPE_MASK) | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_TYPE_MASK)
+                | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK)
+        });
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
@@ -5580,7 +5700,10 @@ impl Ep6InControl {
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BUFFER_ADDRESS_MASK)
+                | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK)
+        });
     }
 }
 
@@ -5684,7 +5807,7 @@ impl Ep6InControlVal {
                 self.bits | Ep6InControl::ENABLE_MASK
             } else {
                 self.bits & !Ep6InControl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -5698,7 +5821,7 @@ impl Ep6InControlVal {
                 self.bits | Ep6InControl::DOUBLE_BUFFERED_MASK
             } else {
                 self.bits & !Ep6InControl::DOUBLE_BUFFERED_MASK
-            }
+            },
         }
     }
 
@@ -5712,7 +5835,7 @@ impl Ep6InControlVal {
                 self.bits | Ep6InControl::INTERRUPT_PER_BUFF_MASK
             } else {
                 self.bits & !Ep6InControl::INTERRUPT_PER_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -5726,7 +5849,7 @@ impl Ep6InControlVal {
                 self.bits | Ep6InControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
             } else {
                 self.bits & !Ep6InControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -5734,7 +5857,9 @@ impl Ep6InControlVal {
     #[inline(always)]
     pub const fn with_endpoint_type(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep6InControl::ENDPOINT_TYPE_MASK) | ((value << Ep6InControl::ENDPOINT_TYPE_OFFSET) & Ep6InControl::ENDPOINT_TYPE_MASK)
+            bits: (self.bits & !Ep6InControl::ENDPOINT_TYPE_MASK)
+                | ((value << Ep6InControl::ENDPOINT_TYPE_OFFSET)
+                    & Ep6InControl::ENDPOINT_TYPE_MASK),
         }
     }
 
@@ -5748,7 +5873,7 @@ impl Ep6InControlVal {
                 self.bits | Ep6InControl::INTERRUPT_ON_STALL_MASK
             } else {
                 self.bits & !Ep6InControl::INTERRUPT_ON_STALL_MASK
-            }
+            },
         }
     }
 
@@ -5762,7 +5887,7 @@ impl Ep6InControlVal {
                 self.bits | Ep6InControl::INTERRUPT_ON_NAK_MASK
             } else {
                 self.bits & !Ep6InControl::INTERRUPT_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -5772,7 +5897,9 @@ impl Ep6InControlVal {
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep6InControl::BUFFER_ADDRESS_MASK) | ((value << Ep6InControl::BUFFER_ADDRESS_OFFSET) & Ep6InControl::BUFFER_ADDRESS_MASK)
+            bits: (self.bits & !Ep6InControl::BUFFER_ADDRESS_MASK)
+                | ((value << Ep6InControl::BUFFER_ADDRESS_OFFSET)
+                    & Ep6InControl::BUFFER_ADDRESS_MASK),
         }
     }
 }
@@ -6021,7 +6148,10 @@ impl Ep6OutControl {
     /// Write **ENDPOINT_TYPE** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_endpoint_type(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_TYPE_MASK) | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_TYPE_MASK)
+                | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK)
+        });
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
@@ -6077,7 +6207,10 @@ impl Ep6OutControl {
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BUFFER_ADDRESS_MASK)
+                | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK)
+        });
     }
 }
 
@@ -6181,7 +6314,7 @@ impl Ep6OutControlVal {
                 self.bits | Ep6OutControl::ENABLE_MASK
             } else {
                 self.bits & !Ep6OutControl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -6195,7 +6328,7 @@ impl Ep6OutControlVal {
                 self.bits | Ep6OutControl::DOUBLE_BUFFERED_MASK
             } else {
                 self.bits & !Ep6OutControl::DOUBLE_BUFFERED_MASK
-            }
+            },
         }
     }
 
@@ -6209,7 +6342,7 @@ impl Ep6OutControlVal {
                 self.bits | Ep6OutControl::INTERRUPT_PER_BUFF_MASK
             } else {
                 self.bits & !Ep6OutControl::INTERRUPT_PER_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -6223,7 +6356,7 @@ impl Ep6OutControlVal {
                 self.bits | Ep6OutControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
             } else {
                 self.bits & !Ep6OutControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -6231,7 +6364,9 @@ impl Ep6OutControlVal {
     #[inline(always)]
     pub const fn with_endpoint_type(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep6OutControl::ENDPOINT_TYPE_MASK) | ((value << Ep6OutControl::ENDPOINT_TYPE_OFFSET) & Ep6OutControl::ENDPOINT_TYPE_MASK)
+            bits: (self.bits & !Ep6OutControl::ENDPOINT_TYPE_MASK)
+                | ((value << Ep6OutControl::ENDPOINT_TYPE_OFFSET)
+                    & Ep6OutControl::ENDPOINT_TYPE_MASK),
         }
     }
 
@@ -6245,7 +6380,7 @@ impl Ep6OutControlVal {
                 self.bits | Ep6OutControl::INTERRUPT_ON_STALL_MASK
             } else {
                 self.bits & !Ep6OutControl::INTERRUPT_ON_STALL_MASK
-            }
+            },
         }
     }
 
@@ -6259,7 +6394,7 @@ impl Ep6OutControlVal {
                 self.bits | Ep6OutControl::INTERRUPT_ON_NAK_MASK
             } else {
                 self.bits & !Ep6OutControl::INTERRUPT_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -6269,7 +6404,9 @@ impl Ep6OutControlVal {
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep6OutControl::BUFFER_ADDRESS_MASK) | ((value << Ep6OutControl::BUFFER_ADDRESS_OFFSET) & Ep6OutControl::BUFFER_ADDRESS_MASK)
+            bits: (self.bits & !Ep6OutControl::BUFFER_ADDRESS_MASK)
+                | ((value << Ep6OutControl::BUFFER_ADDRESS_OFFSET)
+                    & Ep6OutControl::BUFFER_ADDRESS_MASK),
         }
     }
 }
@@ -6518,7 +6655,10 @@ impl Ep7InControl {
     /// Write **ENDPOINT_TYPE** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_endpoint_type(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_TYPE_MASK) | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_TYPE_MASK)
+                | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK)
+        });
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
@@ -6574,7 +6714,10 @@ impl Ep7InControl {
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BUFFER_ADDRESS_MASK)
+                | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK)
+        });
     }
 }
 
@@ -6678,7 +6821,7 @@ impl Ep7InControlVal {
                 self.bits | Ep7InControl::ENABLE_MASK
             } else {
                 self.bits & !Ep7InControl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -6692,7 +6835,7 @@ impl Ep7InControlVal {
                 self.bits | Ep7InControl::DOUBLE_BUFFERED_MASK
             } else {
                 self.bits & !Ep7InControl::DOUBLE_BUFFERED_MASK
-            }
+            },
         }
     }
 
@@ -6706,7 +6849,7 @@ impl Ep7InControlVal {
                 self.bits | Ep7InControl::INTERRUPT_PER_BUFF_MASK
             } else {
                 self.bits & !Ep7InControl::INTERRUPT_PER_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -6720,7 +6863,7 @@ impl Ep7InControlVal {
                 self.bits | Ep7InControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
             } else {
                 self.bits & !Ep7InControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -6728,7 +6871,9 @@ impl Ep7InControlVal {
     #[inline(always)]
     pub const fn with_endpoint_type(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep7InControl::ENDPOINT_TYPE_MASK) | ((value << Ep7InControl::ENDPOINT_TYPE_OFFSET) & Ep7InControl::ENDPOINT_TYPE_MASK)
+            bits: (self.bits & !Ep7InControl::ENDPOINT_TYPE_MASK)
+                | ((value << Ep7InControl::ENDPOINT_TYPE_OFFSET)
+                    & Ep7InControl::ENDPOINT_TYPE_MASK),
         }
     }
 
@@ -6742,7 +6887,7 @@ impl Ep7InControlVal {
                 self.bits | Ep7InControl::INTERRUPT_ON_STALL_MASK
             } else {
                 self.bits & !Ep7InControl::INTERRUPT_ON_STALL_MASK
-            }
+            },
         }
     }
 
@@ -6756,7 +6901,7 @@ impl Ep7InControlVal {
                 self.bits | Ep7InControl::INTERRUPT_ON_NAK_MASK
             } else {
                 self.bits & !Ep7InControl::INTERRUPT_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -6766,7 +6911,9 @@ impl Ep7InControlVal {
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep7InControl::BUFFER_ADDRESS_MASK) | ((value << Ep7InControl::BUFFER_ADDRESS_OFFSET) & Ep7InControl::BUFFER_ADDRESS_MASK)
+            bits: (self.bits & !Ep7InControl::BUFFER_ADDRESS_MASK)
+                | ((value << Ep7InControl::BUFFER_ADDRESS_OFFSET)
+                    & Ep7InControl::BUFFER_ADDRESS_MASK),
         }
     }
 }
@@ -7015,7 +7162,10 @@ impl Ep7OutControl {
     /// Write **ENDPOINT_TYPE** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_endpoint_type(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_TYPE_MASK) | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_TYPE_MASK)
+                | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK)
+        });
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
@@ -7071,7 +7221,10 @@ impl Ep7OutControl {
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BUFFER_ADDRESS_MASK)
+                | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK)
+        });
     }
 }
 
@@ -7175,7 +7328,7 @@ impl Ep7OutControlVal {
                 self.bits | Ep7OutControl::ENABLE_MASK
             } else {
                 self.bits & !Ep7OutControl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -7189,7 +7342,7 @@ impl Ep7OutControlVal {
                 self.bits | Ep7OutControl::DOUBLE_BUFFERED_MASK
             } else {
                 self.bits & !Ep7OutControl::DOUBLE_BUFFERED_MASK
-            }
+            },
         }
     }
 
@@ -7203,7 +7356,7 @@ impl Ep7OutControlVal {
                 self.bits | Ep7OutControl::INTERRUPT_PER_BUFF_MASK
             } else {
                 self.bits & !Ep7OutControl::INTERRUPT_PER_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -7217,7 +7370,7 @@ impl Ep7OutControlVal {
                 self.bits | Ep7OutControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
             } else {
                 self.bits & !Ep7OutControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -7225,7 +7378,9 @@ impl Ep7OutControlVal {
     #[inline(always)]
     pub const fn with_endpoint_type(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep7OutControl::ENDPOINT_TYPE_MASK) | ((value << Ep7OutControl::ENDPOINT_TYPE_OFFSET) & Ep7OutControl::ENDPOINT_TYPE_MASK)
+            bits: (self.bits & !Ep7OutControl::ENDPOINT_TYPE_MASK)
+                | ((value << Ep7OutControl::ENDPOINT_TYPE_OFFSET)
+                    & Ep7OutControl::ENDPOINT_TYPE_MASK),
         }
     }
 
@@ -7239,7 +7394,7 @@ impl Ep7OutControlVal {
                 self.bits | Ep7OutControl::INTERRUPT_ON_STALL_MASK
             } else {
                 self.bits & !Ep7OutControl::INTERRUPT_ON_STALL_MASK
-            }
+            },
         }
     }
 
@@ -7253,7 +7408,7 @@ impl Ep7OutControlVal {
                 self.bits | Ep7OutControl::INTERRUPT_ON_NAK_MASK
             } else {
                 self.bits & !Ep7OutControl::INTERRUPT_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -7263,7 +7418,9 @@ impl Ep7OutControlVal {
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep7OutControl::BUFFER_ADDRESS_MASK) | ((value << Ep7OutControl::BUFFER_ADDRESS_OFFSET) & Ep7OutControl::BUFFER_ADDRESS_MASK)
+            bits: (self.bits & !Ep7OutControl::BUFFER_ADDRESS_MASK)
+                | ((value << Ep7OutControl::BUFFER_ADDRESS_OFFSET)
+                    & Ep7OutControl::BUFFER_ADDRESS_MASK),
         }
     }
 }
@@ -7512,7 +7669,10 @@ impl Ep8InControl {
     /// Write **ENDPOINT_TYPE** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_endpoint_type(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_TYPE_MASK) | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_TYPE_MASK)
+                | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK)
+        });
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
@@ -7568,7 +7728,10 @@ impl Ep8InControl {
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BUFFER_ADDRESS_MASK)
+                | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK)
+        });
     }
 }
 
@@ -7672,7 +7835,7 @@ impl Ep8InControlVal {
                 self.bits | Ep8InControl::ENABLE_MASK
             } else {
                 self.bits & !Ep8InControl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -7686,7 +7849,7 @@ impl Ep8InControlVal {
                 self.bits | Ep8InControl::DOUBLE_BUFFERED_MASK
             } else {
                 self.bits & !Ep8InControl::DOUBLE_BUFFERED_MASK
-            }
+            },
         }
     }
 
@@ -7700,7 +7863,7 @@ impl Ep8InControlVal {
                 self.bits | Ep8InControl::INTERRUPT_PER_BUFF_MASK
             } else {
                 self.bits & !Ep8InControl::INTERRUPT_PER_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -7714,7 +7877,7 @@ impl Ep8InControlVal {
                 self.bits | Ep8InControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
             } else {
                 self.bits & !Ep8InControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -7722,7 +7885,9 @@ impl Ep8InControlVal {
     #[inline(always)]
     pub const fn with_endpoint_type(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep8InControl::ENDPOINT_TYPE_MASK) | ((value << Ep8InControl::ENDPOINT_TYPE_OFFSET) & Ep8InControl::ENDPOINT_TYPE_MASK)
+            bits: (self.bits & !Ep8InControl::ENDPOINT_TYPE_MASK)
+                | ((value << Ep8InControl::ENDPOINT_TYPE_OFFSET)
+                    & Ep8InControl::ENDPOINT_TYPE_MASK),
         }
     }
 
@@ -7736,7 +7901,7 @@ impl Ep8InControlVal {
                 self.bits | Ep8InControl::INTERRUPT_ON_STALL_MASK
             } else {
                 self.bits & !Ep8InControl::INTERRUPT_ON_STALL_MASK
-            }
+            },
         }
     }
 
@@ -7750,7 +7915,7 @@ impl Ep8InControlVal {
                 self.bits | Ep8InControl::INTERRUPT_ON_NAK_MASK
             } else {
                 self.bits & !Ep8InControl::INTERRUPT_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -7760,7 +7925,9 @@ impl Ep8InControlVal {
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep8InControl::BUFFER_ADDRESS_MASK) | ((value << Ep8InControl::BUFFER_ADDRESS_OFFSET) & Ep8InControl::BUFFER_ADDRESS_MASK)
+            bits: (self.bits & !Ep8InControl::BUFFER_ADDRESS_MASK)
+                | ((value << Ep8InControl::BUFFER_ADDRESS_OFFSET)
+                    & Ep8InControl::BUFFER_ADDRESS_MASK),
         }
     }
 }
@@ -8009,7 +8176,10 @@ impl Ep8OutControl {
     /// Write **ENDPOINT_TYPE** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_endpoint_type(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_TYPE_MASK) | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_TYPE_MASK)
+                | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK)
+        });
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
@@ -8065,7 +8235,10 @@ impl Ep8OutControl {
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BUFFER_ADDRESS_MASK)
+                | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK)
+        });
     }
 }
 
@@ -8169,7 +8342,7 @@ impl Ep8OutControlVal {
                 self.bits | Ep8OutControl::ENABLE_MASK
             } else {
                 self.bits & !Ep8OutControl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -8183,7 +8356,7 @@ impl Ep8OutControlVal {
                 self.bits | Ep8OutControl::DOUBLE_BUFFERED_MASK
             } else {
                 self.bits & !Ep8OutControl::DOUBLE_BUFFERED_MASK
-            }
+            },
         }
     }
 
@@ -8197,7 +8370,7 @@ impl Ep8OutControlVal {
                 self.bits | Ep8OutControl::INTERRUPT_PER_BUFF_MASK
             } else {
                 self.bits & !Ep8OutControl::INTERRUPT_PER_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -8211,7 +8384,7 @@ impl Ep8OutControlVal {
                 self.bits | Ep8OutControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
             } else {
                 self.bits & !Ep8OutControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -8219,7 +8392,9 @@ impl Ep8OutControlVal {
     #[inline(always)]
     pub const fn with_endpoint_type(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep8OutControl::ENDPOINT_TYPE_MASK) | ((value << Ep8OutControl::ENDPOINT_TYPE_OFFSET) & Ep8OutControl::ENDPOINT_TYPE_MASK)
+            bits: (self.bits & !Ep8OutControl::ENDPOINT_TYPE_MASK)
+                | ((value << Ep8OutControl::ENDPOINT_TYPE_OFFSET)
+                    & Ep8OutControl::ENDPOINT_TYPE_MASK),
         }
     }
 
@@ -8233,7 +8408,7 @@ impl Ep8OutControlVal {
                 self.bits | Ep8OutControl::INTERRUPT_ON_STALL_MASK
             } else {
                 self.bits & !Ep8OutControl::INTERRUPT_ON_STALL_MASK
-            }
+            },
         }
     }
 
@@ -8247,7 +8422,7 @@ impl Ep8OutControlVal {
                 self.bits | Ep8OutControl::INTERRUPT_ON_NAK_MASK
             } else {
                 self.bits & !Ep8OutControl::INTERRUPT_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -8257,7 +8432,9 @@ impl Ep8OutControlVal {
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep8OutControl::BUFFER_ADDRESS_MASK) | ((value << Ep8OutControl::BUFFER_ADDRESS_OFFSET) & Ep8OutControl::BUFFER_ADDRESS_MASK)
+            bits: (self.bits & !Ep8OutControl::BUFFER_ADDRESS_MASK)
+                | ((value << Ep8OutControl::BUFFER_ADDRESS_OFFSET)
+                    & Ep8OutControl::BUFFER_ADDRESS_MASK),
         }
     }
 }
@@ -8506,7 +8683,10 @@ impl Ep9InControl {
     /// Write **ENDPOINT_TYPE** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_endpoint_type(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_TYPE_MASK) | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_TYPE_MASK)
+                | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK)
+        });
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
@@ -8562,7 +8742,10 @@ impl Ep9InControl {
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BUFFER_ADDRESS_MASK)
+                | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK)
+        });
     }
 }
 
@@ -8666,7 +8849,7 @@ impl Ep9InControlVal {
                 self.bits | Ep9InControl::ENABLE_MASK
             } else {
                 self.bits & !Ep9InControl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -8680,7 +8863,7 @@ impl Ep9InControlVal {
                 self.bits | Ep9InControl::DOUBLE_BUFFERED_MASK
             } else {
                 self.bits & !Ep9InControl::DOUBLE_BUFFERED_MASK
-            }
+            },
         }
     }
 
@@ -8694,7 +8877,7 @@ impl Ep9InControlVal {
                 self.bits | Ep9InControl::INTERRUPT_PER_BUFF_MASK
             } else {
                 self.bits & !Ep9InControl::INTERRUPT_PER_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -8708,7 +8891,7 @@ impl Ep9InControlVal {
                 self.bits | Ep9InControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
             } else {
                 self.bits & !Ep9InControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -8716,7 +8899,9 @@ impl Ep9InControlVal {
     #[inline(always)]
     pub const fn with_endpoint_type(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep9InControl::ENDPOINT_TYPE_MASK) | ((value << Ep9InControl::ENDPOINT_TYPE_OFFSET) & Ep9InControl::ENDPOINT_TYPE_MASK)
+            bits: (self.bits & !Ep9InControl::ENDPOINT_TYPE_MASK)
+                | ((value << Ep9InControl::ENDPOINT_TYPE_OFFSET)
+                    & Ep9InControl::ENDPOINT_TYPE_MASK),
         }
     }
 
@@ -8730,7 +8915,7 @@ impl Ep9InControlVal {
                 self.bits | Ep9InControl::INTERRUPT_ON_STALL_MASK
             } else {
                 self.bits & !Ep9InControl::INTERRUPT_ON_STALL_MASK
-            }
+            },
         }
     }
 
@@ -8744,7 +8929,7 @@ impl Ep9InControlVal {
                 self.bits | Ep9InControl::INTERRUPT_ON_NAK_MASK
             } else {
                 self.bits & !Ep9InControl::INTERRUPT_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -8754,7 +8939,9 @@ impl Ep9InControlVal {
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep9InControl::BUFFER_ADDRESS_MASK) | ((value << Ep9InControl::BUFFER_ADDRESS_OFFSET) & Ep9InControl::BUFFER_ADDRESS_MASK)
+            bits: (self.bits & !Ep9InControl::BUFFER_ADDRESS_MASK)
+                | ((value << Ep9InControl::BUFFER_ADDRESS_OFFSET)
+                    & Ep9InControl::BUFFER_ADDRESS_MASK),
         }
     }
 }
@@ -9003,7 +9190,10 @@ impl Ep9OutControl {
     /// Write **ENDPOINT_TYPE** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_endpoint_type(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_TYPE_MASK) | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_TYPE_MASK)
+                | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK)
+        });
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
@@ -9059,7 +9249,10 @@ impl Ep9OutControl {
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BUFFER_ADDRESS_MASK)
+                | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK)
+        });
     }
 }
 
@@ -9163,7 +9356,7 @@ impl Ep9OutControlVal {
                 self.bits | Ep9OutControl::ENABLE_MASK
             } else {
                 self.bits & !Ep9OutControl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -9177,7 +9370,7 @@ impl Ep9OutControlVal {
                 self.bits | Ep9OutControl::DOUBLE_BUFFERED_MASK
             } else {
                 self.bits & !Ep9OutControl::DOUBLE_BUFFERED_MASK
-            }
+            },
         }
     }
 
@@ -9191,7 +9384,7 @@ impl Ep9OutControlVal {
                 self.bits | Ep9OutControl::INTERRUPT_PER_BUFF_MASK
             } else {
                 self.bits & !Ep9OutControl::INTERRUPT_PER_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -9205,7 +9398,7 @@ impl Ep9OutControlVal {
                 self.bits | Ep9OutControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
             } else {
                 self.bits & !Ep9OutControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -9213,7 +9406,9 @@ impl Ep9OutControlVal {
     #[inline(always)]
     pub const fn with_endpoint_type(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep9OutControl::ENDPOINT_TYPE_MASK) | ((value << Ep9OutControl::ENDPOINT_TYPE_OFFSET) & Ep9OutControl::ENDPOINT_TYPE_MASK)
+            bits: (self.bits & !Ep9OutControl::ENDPOINT_TYPE_MASK)
+                | ((value << Ep9OutControl::ENDPOINT_TYPE_OFFSET)
+                    & Ep9OutControl::ENDPOINT_TYPE_MASK),
         }
     }
 
@@ -9227,7 +9422,7 @@ impl Ep9OutControlVal {
                 self.bits | Ep9OutControl::INTERRUPT_ON_STALL_MASK
             } else {
                 self.bits & !Ep9OutControl::INTERRUPT_ON_STALL_MASK
-            }
+            },
         }
     }
 
@@ -9241,7 +9436,7 @@ impl Ep9OutControlVal {
                 self.bits | Ep9OutControl::INTERRUPT_ON_NAK_MASK
             } else {
                 self.bits & !Ep9OutControl::INTERRUPT_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -9251,7 +9446,9 @@ impl Ep9OutControlVal {
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep9OutControl::BUFFER_ADDRESS_MASK) | ((value << Ep9OutControl::BUFFER_ADDRESS_OFFSET) & Ep9OutControl::BUFFER_ADDRESS_MASK)
+            bits: (self.bits & !Ep9OutControl::BUFFER_ADDRESS_MASK)
+                | ((value << Ep9OutControl::BUFFER_ADDRESS_OFFSET)
+                    & Ep9OutControl::BUFFER_ADDRESS_MASK),
         }
     }
 }
@@ -9500,7 +9697,10 @@ impl Ep10InControl {
     /// Write **ENDPOINT_TYPE** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_endpoint_type(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_TYPE_MASK) | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_TYPE_MASK)
+                | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK)
+        });
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
@@ -9556,7 +9756,10 @@ impl Ep10InControl {
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BUFFER_ADDRESS_MASK)
+                | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK)
+        });
     }
 }
 
@@ -9660,7 +9863,7 @@ impl Ep10InControlVal {
                 self.bits | Ep10InControl::ENABLE_MASK
             } else {
                 self.bits & !Ep10InControl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -9674,7 +9877,7 @@ impl Ep10InControlVal {
                 self.bits | Ep10InControl::DOUBLE_BUFFERED_MASK
             } else {
                 self.bits & !Ep10InControl::DOUBLE_BUFFERED_MASK
-            }
+            },
         }
     }
 
@@ -9688,7 +9891,7 @@ impl Ep10InControlVal {
                 self.bits | Ep10InControl::INTERRUPT_PER_BUFF_MASK
             } else {
                 self.bits & !Ep10InControl::INTERRUPT_PER_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -9702,7 +9905,7 @@ impl Ep10InControlVal {
                 self.bits | Ep10InControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
             } else {
                 self.bits & !Ep10InControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -9710,7 +9913,9 @@ impl Ep10InControlVal {
     #[inline(always)]
     pub const fn with_endpoint_type(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep10InControl::ENDPOINT_TYPE_MASK) | ((value << Ep10InControl::ENDPOINT_TYPE_OFFSET) & Ep10InControl::ENDPOINT_TYPE_MASK)
+            bits: (self.bits & !Ep10InControl::ENDPOINT_TYPE_MASK)
+                | ((value << Ep10InControl::ENDPOINT_TYPE_OFFSET)
+                    & Ep10InControl::ENDPOINT_TYPE_MASK),
         }
     }
 
@@ -9724,7 +9929,7 @@ impl Ep10InControlVal {
                 self.bits | Ep10InControl::INTERRUPT_ON_STALL_MASK
             } else {
                 self.bits & !Ep10InControl::INTERRUPT_ON_STALL_MASK
-            }
+            },
         }
     }
 
@@ -9738,7 +9943,7 @@ impl Ep10InControlVal {
                 self.bits | Ep10InControl::INTERRUPT_ON_NAK_MASK
             } else {
                 self.bits & !Ep10InControl::INTERRUPT_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -9748,7 +9953,9 @@ impl Ep10InControlVal {
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep10InControl::BUFFER_ADDRESS_MASK) | ((value << Ep10InControl::BUFFER_ADDRESS_OFFSET) & Ep10InControl::BUFFER_ADDRESS_MASK)
+            bits: (self.bits & !Ep10InControl::BUFFER_ADDRESS_MASK)
+                | ((value << Ep10InControl::BUFFER_ADDRESS_OFFSET)
+                    & Ep10InControl::BUFFER_ADDRESS_MASK),
         }
     }
 }
@@ -9997,7 +10204,10 @@ impl Ep10OutControl {
     /// Write **ENDPOINT_TYPE** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_endpoint_type(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_TYPE_MASK) | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_TYPE_MASK)
+                | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK)
+        });
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
@@ -10053,7 +10263,10 @@ impl Ep10OutControl {
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BUFFER_ADDRESS_MASK)
+                | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK)
+        });
     }
 }
 
@@ -10157,7 +10370,7 @@ impl Ep10OutControlVal {
                 self.bits | Ep10OutControl::ENABLE_MASK
             } else {
                 self.bits & !Ep10OutControl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -10171,7 +10384,7 @@ impl Ep10OutControlVal {
                 self.bits | Ep10OutControl::DOUBLE_BUFFERED_MASK
             } else {
                 self.bits & !Ep10OutControl::DOUBLE_BUFFERED_MASK
-            }
+            },
         }
     }
 
@@ -10185,7 +10398,7 @@ impl Ep10OutControlVal {
                 self.bits | Ep10OutControl::INTERRUPT_PER_BUFF_MASK
             } else {
                 self.bits & !Ep10OutControl::INTERRUPT_PER_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -10199,7 +10412,7 @@ impl Ep10OutControlVal {
                 self.bits | Ep10OutControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
             } else {
                 self.bits & !Ep10OutControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -10207,7 +10420,9 @@ impl Ep10OutControlVal {
     #[inline(always)]
     pub const fn with_endpoint_type(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep10OutControl::ENDPOINT_TYPE_MASK) | ((value << Ep10OutControl::ENDPOINT_TYPE_OFFSET) & Ep10OutControl::ENDPOINT_TYPE_MASK)
+            bits: (self.bits & !Ep10OutControl::ENDPOINT_TYPE_MASK)
+                | ((value << Ep10OutControl::ENDPOINT_TYPE_OFFSET)
+                    & Ep10OutControl::ENDPOINT_TYPE_MASK),
         }
     }
 
@@ -10221,7 +10436,7 @@ impl Ep10OutControlVal {
                 self.bits | Ep10OutControl::INTERRUPT_ON_STALL_MASK
             } else {
                 self.bits & !Ep10OutControl::INTERRUPT_ON_STALL_MASK
-            }
+            },
         }
     }
 
@@ -10235,7 +10450,7 @@ impl Ep10OutControlVal {
                 self.bits | Ep10OutControl::INTERRUPT_ON_NAK_MASK
             } else {
                 self.bits & !Ep10OutControl::INTERRUPT_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -10245,7 +10460,9 @@ impl Ep10OutControlVal {
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep10OutControl::BUFFER_ADDRESS_MASK) | ((value << Ep10OutControl::BUFFER_ADDRESS_OFFSET) & Ep10OutControl::BUFFER_ADDRESS_MASK)
+            bits: (self.bits & !Ep10OutControl::BUFFER_ADDRESS_MASK)
+                | ((value << Ep10OutControl::BUFFER_ADDRESS_OFFSET)
+                    & Ep10OutControl::BUFFER_ADDRESS_MASK),
         }
     }
 }
@@ -10494,7 +10711,10 @@ impl Ep11InControl {
     /// Write **ENDPOINT_TYPE** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_endpoint_type(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_TYPE_MASK) | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_TYPE_MASK)
+                | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK)
+        });
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
@@ -10550,7 +10770,10 @@ impl Ep11InControl {
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BUFFER_ADDRESS_MASK)
+                | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK)
+        });
     }
 }
 
@@ -10654,7 +10877,7 @@ impl Ep11InControlVal {
                 self.bits | Ep11InControl::ENABLE_MASK
             } else {
                 self.bits & !Ep11InControl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -10668,7 +10891,7 @@ impl Ep11InControlVal {
                 self.bits | Ep11InControl::DOUBLE_BUFFERED_MASK
             } else {
                 self.bits & !Ep11InControl::DOUBLE_BUFFERED_MASK
-            }
+            },
         }
     }
 
@@ -10682,7 +10905,7 @@ impl Ep11InControlVal {
                 self.bits | Ep11InControl::INTERRUPT_PER_BUFF_MASK
             } else {
                 self.bits & !Ep11InControl::INTERRUPT_PER_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -10696,7 +10919,7 @@ impl Ep11InControlVal {
                 self.bits | Ep11InControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
             } else {
                 self.bits & !Ep11InControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -10704,7 +10927,9 @@ impl Ep11InControlVal {
     #[inline(always)]
     pub const fn with_endpoint_type(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep11InControl::ENDPOINT_TYPE_MASK) | ((value << Ep11InControl::ENDPOINT_TYPE_OFFSET) & Ep11InControl::ENDPOINT_TYPE_MASK)
+            bits: (self.bits & !Ep11InControl::ENDPOINT_TYPE_MASK)
+                | ((value << Ep11InControl::ENDPOINT_TYPE_OFFSET)
+                    & Ep11InControl::ENDPOINT_TYPE_MASK),
         }
     }
 
@@ -10718,7 +10943,7 @@ impl Ep11InControlVal {
                 self.bits | Ep11InControl::INTERRUPT_ON_STALL_MASK
             } else {
                 self.bits & !Ep11InControl::INTERRUPT_ON_STALL_MASK
-            }
+            },
         }
     }
 
@@ -10732,7 +10957,7 @@ impl Ep11InControlVal {
                 self.bits | Ep11InControl::INTERRUPT_ON_NAK_MASK
             } else {
                 self.bits & !Ep11InControl::INTERRUPT_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -10742,7 +10967,9 @@ impl Ep11InControlVal {
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep11InControl::BUFFER_ADDRESS_MASK) | ((value << Ep11InControl::BUFFER_ADDRESS_OFFSET) & Ep11InControl::BUFFER_ADDRESS_MASK)
+            bits: (self.bits & !Ep11InControl::BUFFER_ADDRESS_MASK)
+                | ((value << Ep11InControl::BUFFER_ADDRESS_OFFSET)
+                    & Ep11InControl::BUFFER_ADDRESS_MASK),
         }
     }
 }
@@ -10991,7 +11218,10 @@ impl Ep11OutControl {
     /// Write **ENDPOINT_TYPE** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_endpoint_type(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_TYPE_MASK) | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_TYPE_MASK)
+                | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK)
+        });
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
@@ -11047,7 +11277,10 @@ impl Ep11OutControl {
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BUFFER_ADDRESS_MASK)
+                | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK)
+        });
     }
 }
 
@@ -11151,7 +11384,7 @@ impl Ep11OutControlVal {
                 self.bits | Ep11OutControl::ENABLE_MASK
             } else {
                 self.bits & !Ep11OutControl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -11165,7 +11398,7 @@ impl Ep11OutControlVal {
                 self.bits | Ep11OutControl::DOUBLE_BUFFERED_MASK
             } else {
                 self.bits & !Ep11OutControl::DOUBLE_BUFFERED_MASK
-            }
+            },
         }
     }
 
@@ -11179,7 +11412,7 @@ impl Ep11OutControlVal {
                 self.bits | Ep11OutControl::INTERRUPT_PER_BUFF_MASK
             } else {
                 self.bits & !Ep11OutControl::INTERRUPT_PER_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -11193,7 +11426,7 @@ impl Ep11OutControlVal {
                 self.bits | Ep11OutControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
             } else {
                 self.bits & !Ep11OutControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -11201,7 +11434,9 @@ impl Ep11OutControlVal {
     #[inline(always)]
     pub const fn with_endpoint_type(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep11OutControl::ENDPOINT_TYPE_MASK) | ((value << Ep11OutControl::ENDPOINT_TYPE_OFFSET) & Ep11OutControl::ENDPOINT_TYPE_MASK)
+            bits: (self.bits & !Ep11OutControl::ENDPOINT_TYPE_MASK)
+                | ((value << Ep11OutControl::ENDPOINT_TYPE_OFFSET)
+                    & Ep11OutControl::ENDPOINT_TYPE_MASK),
         }
     }
 
@@ -11215,7 +11450,7 @@ impl Ep11OutControlVal {
                 self.bits | Ep11OutControl::INTERRUPT_ON_STALL_MASK
             } else {
                 self.bits & !Ep11OutControl::INTERRUPT_ON_STALL_MASK
-            }
+            },
         }
     }
 
@@ -11229,7 +11464,7 @@ impl Ep11OutControlVal {
                 self.bits | Ep11OutControl::INTERRUPT_ON_NAK_MASK
             } else {
                 self.bits & !Ep11OutControl::INTERRUPT_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -11239,7 +11474,9 @@ impl Ep11OutControlVal {
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep11OutControl::BUFFER_ADDRESS_MASK) | ((value << Ep11OutControl::BUFFER_ADDRESS_OFFSET) & Ep11OutControl::BUFFER_ADDRESS_MASK)
+            bits: (self.bits & !Ep11OutControl::BUFFER_ADDRESS_MASK)
+                | ((value << Ep11OutControl::BUFFER_ADDRESS_OFFSET)
+                    & Ep11OutControl::BUFFER_ADDRESS_MASK),
         }
     }
 }
@@ -11488,7 +11725,10 @@ impl Ep12InControl {
     /// Write **ENDPOINT_TYPE** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_endpoint_type(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_TYPE_MASK) | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_TYPE_MASK)
+                | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK)
+        });
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
@@ -11544,7 +11784,10 @@ impl Ep12InControl {
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BUFFER_ADDRESS_MASK)
+                | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK)
+        });
     }
 }
 
@@ -11648,7 +11891,7 @@ impl Ep12InControlVal {
                 self.bits | Ep12InControl::ENABLE_MASK
             } else {
                 self.bits & !Ep12InControl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -11662,7 +11905,7 @@ impl Ep12InControlVal {
                 self.bits | Ep12InControl::DOUBLE_BUFFERED_MASK
             } else {
                 self.bits & !Ep12InControl::DOUBLE_BUFFERED_MASK
-            }
+            },
         }
     }
 
@@ -11676,7 +11919,7 @@ impl Ep12InControlVal {
                 self.bits | Ep12InControl::INTERRUPT_PER_BUFF_MASK
             } else {
                 self.bits & !Ep12InControl::INTERRUPT_PER_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -11690,7 +11933,7 @@ impl Ep12InControlVal {
                 self.bits | Ep12InControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
             } else {
                 self.bits & !Ep12InControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -11698,7 +11941,9 @@ impl Ep12InControlVal {
     #[inline(always)]
     pub const fn with_endpoint_type(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep12InControl::ENDPOINT_TYPE_MASK) | ((value << Ep12InControl::ENDPOINT_TYPE_OFFSET) & Ep12InControl::ENDPOINT_TYPE_MASK)
+            bits: (self.bits & !Ep12InControl::ENDPOINT_TYPE_MASK)
+                | ((value << Ep12InControl::ENDPOINT_TYPE_OFFSET)
+                    & Ep12InControl::ENDPOINT_TYPE_MASK),
         }
     }
 
@@ -11712,7 +11957,7 @@ impl Ep12InControlVal {
                 self.bits | Ep12InControl::INTERRUPT_ON_STALL_MASK
             } else {
                 self.bits & !Ep12InControl::INTERRUPT_ON_STALL_MASK
-            }
+            },
         }
     }
 
@@ -11726,7 +11971,7 @@ impl Ep12InControlVal {
                 self.bits | Ep12InControl::INTERRUPT_ON_NAK_MASK
             } else {
                 self.bits & !Ep12InControl::INTERRUPT_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -11736,7 +11981,9 @@ impl Ep12InControlVal {
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep12InControl::BUFFER_ADDRESS_MASK) | ((value << Ep12InControl::BUFFER_ADDRESS_OFFSET) & Ep12InControl::BUFFER_ADDRESS_MASK)
+            bits: (self.bits & !Ep12InControl::BUFFER_ADDRESS_MASK)
+                | ((value << Ep12InControl::BUFFER_ADDRESS_OFFSET)
+                    & Ep12InControl::BUFFER_ADDRESS_MASK),
         }
     }
 }
@@ -11985,7 +12232,10 @@ impl Ep12OutControl {
     /// Write **ENDPOINT_TYPE** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_endpoint_type(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_TYPE_MASK) | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_TYPE_MASK)
+                | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK)
+        });
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
@@ -12041,7 +12291,10 @@ impl Ep12OutControl {
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BUFFER_ADDRESS_MASK)
+                | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK)
+        });
     }
 }
 
@@ -12145,7 +12398,7 @@ impl Ep12OutControlVal {
                 self.bits | Ep12OutControl::ENABLE_MASK
             } else {
                 self.bits & !Ep12OutControl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -12159,7 +12412,7 @@ impl Ep12OutControlVal {
                 self.bits | Ep12OutControl::DOUBLE_BUFFERED_MASK
             } else {
                 self.bits & !Ep12OutControl::DOUBLE_BUFFERED_MASK
-            }
+            },
         }
     }
 
@@ -12173,7 +12426,7 @@ impl Ep12OutControlVal {
                 self.bits | Ep12OutControl::INTERRUPT_PER_BUFF_MASK
             } else {
                 self.bits & !Ep12OutControl::INTERRUPT_PER_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -12187,7 +12440,7 @@ impl Ep12OutControlVal {
                 self.bits | Ep12OutControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
             } else {
                 self.bits & !Ep12OutControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -12195,7 +12448,9 @@ impl Ep12OutControlVal {
     #[inline(always)]
     pub const fn with_endpoint_type(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep12OutControl::ENDPOINT_TYPE_MASK) | ((value << Ep12OutControl::ENDPOINT_TYPE_OFFSET) & Ep12OutControl::ENDPOINT_TYPE_MASK)
+            bits: (self.bits & !Ep12OutControl::ENDPOINT_TYPE_MASK)
+                | ((value << Ep12OutControl::ENDPOINT_TYPE_OFFSET)
+                    & Ep12OutControl::ENDPOINT_TYPE_MASK),
         }
     }
 
@@ -12209,7 +12464,7 @@ impl Ep12OutControlVal {
                 self.bits | Ep12OutControl::INTERRUPT_ON_STALL_MASK
             } else {
                 self.bits & !Ep12OutControl::INTERRUPT_ON_STALL_MASK
-            }
+            },
         }
     }
 
@@ -12223,7 +12478,7 @@ impl Ep12OutControlVal {
                 self.bits | Ep12OutControl::INTERRUPT_ON_NAK_MASK
             } else {
                 self.bits & !Ep12OutControl::INTERRUPT_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -12233,7 +12488,9 @@ impl Ep12OutControlVal {
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep12OutControl::BUFFER_ADDRESS_MASK) | ((value << Ep12OutControl::BUFFER_ADDRESS_OFFSET) & Ep12OutControl::BUFFER_ADDRESS_MASK)
+            bits: (self.bits & !Ep12OutControl::BUFFER_ADDRESS_MASK)
+                | ((value << Ep12OutControl::BUFFER_ADDRESS_OFFSET)
+                    & Ep12OutControl::BUFFER_ADDRESS_MASK),
         }
     }
 }
@@ -12482,7 +12739,10 @@ impl Ep13InControl {
     /// Write **ENDPOINT_TYPE** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_endpoint_type(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_TYPE_MASK) | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_TYPE_MASK)
+                | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK)
+        });
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
@@ -12538,7 +12798,10 @@ impl Ep13InControl {
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BUFFER_ADDRESS_MASK)
+                | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK)
+        });
     }
 }
 
@@ -12642,7 +12905,7 @@ impl Ep13InControlVal {
                 self.bits | Ep13InControl::ENABLE_MASK
             } else {
                 self.bits & !Ep13InControl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -12656,7 +12919,7 @@ impl Ep13InControlVal {
                 self.bits | Ep13InControl::DOUBLE_BUFFERED_MASK
             } else {
                 self.bits & !Ep13InControl::DOUBLE_BUFFERED_MASK
-            }
+            },
         }
     }
 
@@ -12670,7 +12933,7 @@ impl Ep13InControlVal {
                 self.bits | Ep13InControl::INTERRUPT_PER_BUFF_MASK
             } else {
                 self.bits & !Ep13InControl::INTERRUPT_PER_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -12684,7 +12947,7 @@ impl Ep13InControlVal {
                 self.bits | Ep13InControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
             } else {
                 self.bits & !Ep13InControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -12692,7 +12955,9 @@ impl Ep13InControlVal {
     #[inline(always)]
     pub const fn with_endpoint_type(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep13InControl::ENDPOINT_TYPE_MASK) | ((value << Ep13InControl::ENDPOINT_TYPE_OFFSET) & Ep13InControl::ENDPOINT_TYPE_MASK)
+            bits: (self.bits & !Ep13InControl::ENDPOINT_TYPE_MASK)
+                | ((value << Ep13InControl::ENDPOINT_TYPE_OFFSET)
+                    & Ep13InControl::ENDPOINT_TYPE_MASK),
         }
     }
 
@@ -12706,7 +12971,7 @@ impl Ep13InControlVal {
                 self.bits | Ep13InControl::INTERRUPT_ON_STALL_MASK
             } else {
                 self.bits & !Ep13InControl::INTERRUPT_ON_STALL_MASK
-            }
+            },
         }
     }
 
@@ -12720,7 +12985,7 @@ impl Ep13InControlVal {
                 self.bits | Ep13InControl::INTERRUPT_ON_NAK_MASK
             } else {
                 self.bits & !Ep13InControl::INTERRUPT_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -12730,7 +12995,9 @@ impl Ep13InControlVal {
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep13InControl::BUFFER_ADDRESS_MASK) | ((value << Ep13InControl::BUFFER_ADDRESS_OFFSET) & Ep13InControl::BUFFER_ADDRESS_MASK)
+            bits: (self.bits & !Ep13InControl::BUFFER_ADDRESS_MASK)
+                | ((value << Ep13InControl::BUFFER_ADDRESS_OFFSET)
+                    & Ep13InControl::BUFFER_ADDRESS_MASK),
         }
     }
 }
@@ -12979,7 +13246,10 @@ impl Ep13OutControl {
     /// Write **ENDPOINT_TYPE** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_endpoint_type(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_TYPE_MASK) | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_TYPE_MASK)
+                | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK)
+        });
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
@@ -13035,7 +13305,10 @@ impl Ep13OutControl {
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BUFFER_ADDRESS_MASK)
+                | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK)
+        });
     }
 }
 
@@ -13139,7 +13412,7 @@ impl Ep13OutControlVal {
                 self.bits | Ep13OutControl::ENABLE_MASK
             } else {
                 self.bits & !Ep13OutControl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -13153,7 +13426,7 @@ impl Ep13OutControlVal {
                 self.bits | Ep13OutControl::DOUBLE_BUFFERED_MASK
             } else {
                 self.bits & !Ep13OutControl::DOUBLE_BUFFERED_MASK
-            }
+            },
         }
     }
 
@@ -13167,7 +13440,7 @@ impl Ep13OutControlVal {
                 self.bits | Ep13OutControl::INTERRUPT_PER_BUFF_MASK
             } else {
                 self.bits & !Ep13OutControl::INTERRUPT_PER_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -13181,7 +13454,7 @@ impl Ep13OutControlVal {
                 self.bits | Ep13OutControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
             } else {
                 self.bits & !Ep13OutControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -13189,7 +13462,9 @@ impl Ep13OutControlVal {
     #[inline(always)]
     pub const fn with_endpoint_type(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep13OutControl::ENDPOINT_TYPE_MASK) | ((value << Ep13OutControl::ENDPOINT_TYPE_OFFSET) & Ep13OutControl::ENDPOINT_TYPE_MASK)
+            bits: (self.bits & !Ep13OutControl::ENDPOINT_TYPE_MASK)
+                | ((value << Ep13OutControl::ENDPOINT_TYPE_OFFSET)
+                    & Ep13OutControl::ENDPOINT_TYPE_MASK),
         }
     }
 
@@ -13203,7 +13478,7 @@ impl Ep13OutControlVal {
                 self.bits | Ep13OutControl::INTERRUPT_ON_STALL_MASK
             } else {
                 self.bits & !Ep13OutControl::INTERRUPT_ON_STALL_MASK
-            }
+            },
         }
     }
 
@@ -13217,7 +13492,7 @@ impl Ep13OutControlVal {
                 self.bits | Ep13OutControl::INTERRUPT_ON_NAK_MASK
             } else {
                 self.bits & !Ep13OutControl::INTERRUPT_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -13227,7 +13502,9 @@ impl Ep13OutControlVal {
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep13OutControl::BUFFER_ADDRESS_MASK) | ((value << Ep13OutControl::BUFFER_ADDRESS_OFFSET) & Ep13OutControl::BUFFER_ADDRESS_MASK)
+            bits: (self.bits & !Ep13OutControl::BUFFER_ADDRESS_MASK)
+                | ((value << Ep13OutControl::BUFFER_ADDRESS_OFFSET)
+                    & Ep13OutControl::BUFFER_ADDRESS_MASK),
         }
     }
 }
@@ -13476,7 +13753,10 @@ impl Ep14InControl {
     /// Write **ENDPOINT_TYPE** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_endpoint_type(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_TYPE_MASK) | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_TYPE_MASK)
+                | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK)
+        });
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
@@ -13532,7 +13812,10 @@ impl Ep14InControl {
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BUFFER_ADDRESS_MASK)
+                | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK)
+        });
     }
 }
 
@@ -13636,7 +13919,7 @@ impl Ep14InControlVal {
                 self.bits | Ep14InControl::ENABLE_MASK
             } else {
                 self.bits & !Ep14InControl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -13650,7 +13933,7 @@ impl Ep14InControlVal {
                 self.bits | Ep14InControl::DOUBLE_BUFFERED_MASK
             } else {
                 self.bits & !Ep14InControl::DOUBLE_BUFFERED_MASK
-            }
+            },
         }
     }
 
@@ -13664,7 +13947,7 @@ impl Ep14InControlVal {
                 self.bits | Ep14InControl::INTERRUPT_PER_BUFF_MASK
             } else {
                 self.bits & !Ep14InControl::INTERRUPT_PER_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -13678,7 +13961,7 @@ impl Ep14InControlVal {
                 self.bits | Ep14InControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
             } else {
                 self.bits & !Ep14InControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -13686,7 +13969,9 @@ impl Ep14InControlVal {
     #[inline(always)]
     pub const fn with_endpoint_type(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep14InControl::ENDPOINT_TYPE_MASK) | ((value << Ep14InControl::ENDPOINT_TYPE_OFFSET) & Ep14InControl::ENDPOINT_TYPE_MASK)
+            bits: (self.bits & !Ep14InControl::ENDPOINT_TYPE_MASK)
+                | ((value << Ep14InControl::ENDPOINT_TYPE_OFFSET)
+                    & Ep14InControl::ENDPOINT_TYPE_MASK),
         }
     }
 
@@ -13700,7 +13985,7 @@ impl Ep14InControlVal {
                 self.bits | Ep14InControl::INTERRUPT_ON_STALL_MASK
             } else {
                 self.bits & !Ep14InControl::INTERRUPT_ON_STALL_MASK
-            }
+            },
         }
     }
 
@@ -13714,7 +13999,7 @@ impl Ep14InControlVal {
                 self.bits | Ep14InControl::INTERRUPT_ON_NAK_MASK
             } else {
                 self.bits & !Ep14InControl::INTERRUPT_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -13724,7 +14009,9 @@ impl Ep14InControlVal {
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep14InControl::BUFFER_ADDRESS_MASK) | ((value << Ep14InControl::BUFFER_ADDRESS_OFFSET) & Ep14InControl::BUFFER_ADDRESS_MASK)
+            bits: (self.bits & !Ep14InControl::BUFFER_ADDRESS_MASK)
+                | ((value << Ep14InControl::BUFFER_ADDRESS_OFFSET)
+                    & Ep14InControl::BUFFER_ADDRESS_MASK),
         }
     }
 }
@@ -13973,7 +14260,10 @@ impl Ep14OutControl {
     /// Write **ENDPOINT_TYPE** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_endpoint_type(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_TYPE_MASK) | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_TYPE_MASK)
+                | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK)
+        });
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
@@ -14029,7 +14319,10 @@ impl Ep14OutControl {
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BUFFER_ADDRESS_MASK)
+                | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK)
+        });
     }
 }
 
@@ -14133,7 +14426,7 @@ impl Ep14OutControlVal {
                 self.bits | Ep14OutControl::ENABLE_MASK
             } else {
                 self.bits & !Ep14OutControl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -14147,7 +14440,7 @@ impl Ep14OutControlVal {
                 self.bits | Ep14OutControl::DOUBLE_BUFFERED_MASK
             } else {
                 self.bits & !Ep14OutControl::DOUBLE_BUFFERED_MASK
-            }
+            },
         }
     }
 
@@ -14161,7 +14454,7 @@ impl Ep14OutControlVal {
                 self.bits | Ep14OutControl::INTERRUPT_PER_BUFF_MASK
             } else {
                 self.bits & !Ep14OutControl::INTERRUPT_PER_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -14175,7 +14468,7 @@ impl Ep14OutControlVal {
                 self.bits | Ep14OutControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
             } else {
                 self.bits & !Ep14OutControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -14183,7 +14476,9 @@ impl Ep14OutControlVal {
     #[inline(always)]
     pub const fn with_endpoint_type(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep14OutControl::ENDPOINT_TYPE_MASK) | ((value << Ep14OutControl::ENDPOINT_TYPE_OFFSET) & Ep14OutControl::ENDPOINT_TYPE_MASK)
+            bits: (self.bits & !Ep14OutControl::ENDPOINT_TYPE_MASK)
+                | ((value << Ep14OutControl::ENDPOINT_TYPE_OFFSET)
+                    & Ep14OutControl::ENDPOINT_TYPE_MASK),
         }
     }
 
@@ -14197,7 +14492,7 @@ impl Ep14OutControlVal {
                 self.bits | Ep14OutControl::INTERRUPT_ON_STALL_MASK
             } else {
                 self.bits & !Ep14OutControl::INTERRUPT_ON_STALL_MASK
-            }
+            },
         }
     }
 
@@ -14211,7 +14506,7 @@ impl Ep14OutControlVal {
                 self.bits | Ep14OutControl::INTERRUPT_ON_NAK_MASK
             } else {
                 self.bits & !Ep14OutControl::INTERRUPT_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -14221,7 +14516,9 @@ impl Ep14OutControlVal {
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep14OutControl::BUFFER_ADDRESS_MASK) | ((value << Ep14OutControl::BUFFER_ADDRESS_OFFSET) & Ep14OutControl::BUFFER_ADDRESS_MASK)
+            bits: (self.bits & !Ep14OutControl::BUFFER_ADDRESS_MASK)
+                | ((value << Ep14OutControl::BUFFER_ADDRESS_OFFSET)
+                    & Ep14OutControl::BUFFER_ADDRESS_MASK),
         }
     }
 }
@@ -14470,7 +14767,10 @@ impl Ep15InControl {
     /// Write **ENDPOINT_TYPE** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_endpoint_type(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_TYPE_MASK) | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_TYPE_MASK)
+                | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK)
+        });
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
@@ -14526,7 +14826,10 @@ impl Ep15InControl {
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BUFFER_ADDRESS_MASK)
+                | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK)
+        });
     }
 }
 
@@ -14630,7 +14933,7 @@ impl Ep15InControlVal {
                 self.bits | Ep15InControl::ENABLE_MASK
             } else {
                 self.bits & !Ep15InControl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -14644,7 +14947,7 @@ impl Ep15InControlVal {
                 self.bits | Ep15InControl::DOUBLE_BUFFERED_MASK
             } else {
                 self.bits & !Ep15InControl::DOUBLE_BUFFERED_MASK
-            }
+            },
         }
     }
 
@@ -14658,7 +14961,7 @@ impl Ep15InControlVal {
                 self.bits | Ep15InControl::INTERRUPT_PER_BUFF_MASK
             } else {
                 self.bits & !Ep15InControl::INTERRUPT_PER_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -14672,7 +14975,7 @@ impl Ep15InControlVal {
                 self.bits | Ep15InControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
             } else {
                 self.bits & !Ep15InControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -14680,7 +14983,9 @@ impl Ep15InControlVal {
     #[inline(always)]
     pub const fn with_endpoint_type(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep15InControl::ENDPOINT_TYPE_MASK) | ((value << Ep15InControl::ENDPOINT_TYPE_OFFSET) & Ep15InControl::ENDPOINT_TYPE_MASK)
+            bits: (self.bits & !Ep15InControl::ENDPOINT_TYPE_MASK)
+                | ((value << Ep15InControl::ENDPOINT_TYPE_OFFSET)
+                    & Ep15InControl::ENDPOINT_TYPE_MASK),
         }
     }
 
@@ -14694,7 +14999,7 @@ impl Ep15InControlVal {
                 self.bits | Ep15InControl::INTERRUPT_ON_STALL_MASK
             } else {
                 self.bits & !Ep15InControl::INTERRUPT_ON_STALL_MASK
-            }
+            },
         }
     }
 
@@ -14708,7 +15013,7 @@ impl Ep15InControlVal {
                 self.bits | Ep15InControl::INTERRUPT_ON_NAK_MASK
             } else {
                 self.bits & !Ep15InControl::INTERRUPT_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -14718,7 +15023,9 @@ impl Ep15InControlVal {
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep15InControl::BUFFER_ADDRESS_MASK) | ((value << Ep15InControl::BUFFER_ADDRESS_OFFSET) & Ep15InControl::BUFFER_ADDRESS_MASK)
+            bits: (self.bits & !Ep15InControl::BUFFER_ADDRESS_MASK)
+                | ((value << Ep15InControl::BUFFER_ADDRESS_OFFSET)
+                    & Ep15InControl::BUFFER_ADDRESS_MASK),
         }
     }
 }
@@ -14967,7 +15274,10 @@ impl Ep15OutControl {
     /// Write **ENDPOINT_TYPE** `[27:26]` (RW)
     #[inline(always)]
     pub fn write_endpoint_type(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENDPOINT_TYPE_MASK) | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENDPOINT_TYPE_MASK)
+                | ((value << Self::ENDPOINT_TYPE_OFFSET) & Self::ENDPOINT_TYPE_MASK)
+        });
     }
 
     /// **INTERRUPT_ON_STALL** `[17]` (RW)
@@ -15023,7 +15333,10 @@ impl Ep15OutControl {
     /// 64 byte aligned buffer address for this EP (bits 0-5 are ignored). Relative to the start of the DPRAM.
     #[inline(always)]
     pub fn write_buffer_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BUFFER_ADDRESS_MASK) | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BUFFER_ADDRESS_MASK)
+                | ((value << Self::BUFFER_ADDRESS_OFFSET) & Self::BUFFER_ADDRESS_MASK)
+        });
     }
 }
 
@@ -15127,7 +15440,7 @@ impl Ep15OutControlVal {
                 self.bits | Ep15OutControl::ENABLE_MASK
             } else {
                 self.bits & !Ep15OutControl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -15141,7 +15454,7 @@ impl Ep15OutControlVal {
                 self.bits | Ep15OutControl::DOUBLE_BUFFERED_MASK
             } else {
                 self.bits & !Ep15OutControl::DOUBLE_BUFFERED_MASK
-            }
+            },
         }
     }
 
@@ -15155,7 +15468,7 @@ impl Ep15OutControlVal {
                 self.bits | Ep15OutControl::INTERRUPT_PER_BUFF_MASK
             } else {
                 self.bits & !Ep15OutControl::INTERRUPT_PER_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -15169,7 +15482,7 @@ impl Ep15OutControlVal {
                 self.bits | Ep15OutControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
             } else {
                 self.bits & !Ep15OutControl::INTERRUPT_PER_DOUBLE_BUFF_MASK
-            }
+            },
         }
     }
 
@@ -15177,7 +15490,9 @@ impl Ep15OutControlVal {
     #[inline(always)]
     pub const fn with_endpoint_type(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep15OutControl::ENDPOINT_TYPE_MASK) | ((value << Ep15OutControl::ENDPOINT_TYPE_OFFSET) & Ep15OutControl::ENDPOINT_TYPE_MASK)
+            bits: (self.bits & !Ep15OutControl::ENDPOINT_TYPE_MASK)
+                | ((value << Ep15OutControl::ENDPOINT_TYPE_OFFSET)
+                    & Ep15OutControl::ENDPOINT_TYPE_MASK),
         }
     }
 
@@ -15191,7 +15506,7 @@ impl Ep15OutControlVal {
                 self.bits | Ep15OutControl::INTERRUPT_ON_STALL_MASK
             } else {
                 self.bits & !Ep15OutControl::INTERRUPT_ON_STALL_MASK
-            }
+            },
         }
     }
 
@@ -15205,7 +15520,7 @@ impl Ep15OutControlVal {
                 self.bits | Ep15OutControl::INTERRUPT_ON_NAK_MASK
             } else {
                 self.bits & !Ep15OutControl::INTERRUPT_ON_NAK_MASK
-            }
+            },
         }
     }
 
@@ -15215,7 +15530,9 @@ impl Ep15OutControlVal {
     #[inline(always)]
     pub const fn with_buffer_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep15OutControl::BUFFER_ADDRESS_MASK) | ((value << Ep15OutControl::BUFFER_ADDRESS_OFFSET) & Ep15OutControl::BUFFER_ADDRESS_MASK)
+            bits: (self.bits & !Ep15OutControl::BUFFER_ADDRESS_MASK)
+                | ((value << Ep15OutControl::BUFFER_ADDRESS_OFFSET)
+                    & Ep15OutControl::BUFFER_ADDRESS_MASK),
         }
     }
 }
@@ -15515,7 +15832,8 @@ impl Ep0InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -15524,7 +15842,11 @@ impl Ep0InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -15560,7 +15882,9 @@ impl Ep0InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -15696,7 +16020,9 @@ impl Ep0InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -15752,7 +16078,8 @@ impl Ep0InBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep0InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep0InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep0InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep0InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -15837,7 +16164,7 @@ impl Ep0InBufferControlVal {
                 self.bits | Ep0InBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep0InBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -15851,7 +16178,7 @@ impl Ep0InBufferControlVal {
                 self.bits | Ep0InBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep0InBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -15865,7 +16192,7 @@ impl Ep0InBufferControlVal {
                 self.bits | Ep0InBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep0InBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -15876,7 +16203,9 @@ impl Ep0InBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep0InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep0InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep0InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep0InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep0InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep0InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -15890,7 +16219,7 @@ impl Ep0InBufferControlVal {
                 self.bits | Ep0InBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep0InBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -15900,7 +16229,9 @@ impl Ep0InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep0InBufferControl::LENGTH_1_MASK) | ((value << Ep0InBufferControl::LENGTH_1_OFFSET) & Ep0InBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep0InBufferControl::LENGTH_1_MASK)
+                | ((value << Ep0InBufferControl::LENGTH_1_OFFSET)
+                    & Ep0InBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -15914,7 +16245,7 @@ impl Ep0InBufferControlVal {
                 self.bits | Ep0InBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep0InBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -15928,7 +16259,7 @@ impl Ep0InBufferControlVal {
                 self.bits | Ep0InBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep0InBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -15942,7 +16273,7 @@ impl Ep0InBufferControlVal {
                 self.bits | Ep0InBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep0InBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -15956,7 +16287,7 @@ impl Ep0InBufferControlVal {
                 self.bits | Ep0InBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep0InBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -15970,7 +16301,7 @@ impl Ep0InBufferControlVal {
                 self.bits | Ep0InBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep0InBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -15984,7 +16315,7 @@ impl Ep0InBufferControlVal {
                 self.bits | Ep0InBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep0InBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -15994,7 +16325,9 @@ impl Ep0InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep0InBufferControl::LENGTH_0_MASK) | ((value << Ep0InBufferControl::LENGTH_0_OFFSET) & Ep0InBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep0InBufferControl::LENGTH_0_MASK)
+                | ((value << Ep0InBufferControl::LENGTH_0_OFFSET)
+                    & Ep0InBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -16294,7 +16627,8 @@ impl Ep0OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -16303,7 +16637,11 @@ impl Ep0OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -16339,7 +16677,9 @@ impl Ep0OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -16475,7 +16815,9 @@ impl Ep0OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -16531,7 +16873,8 @@ impl Ep0OutBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep0OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep0OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep0OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep0OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -16616,7 +16959,7 @@ impl Ep0OutBufferControlVal {
                 self.bits | Ep0OutBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep0OutBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -16630,7 +16973,7 @@ impl Ep0OutBufferControlVal {
                 self.bits | Ep0OutBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep0OutBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -16644,7 +16987,7 @@ impl Ep0OutBufferControlVal {
                 self.bits | Ep0OutBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep0OutBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -16655,7 +16998,9 @@ impl Ep0OutBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep0OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep0OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep0OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep0OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep0OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep0OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -16669,7 +17014,7 @@ impl Ep0OutBufferControlVal {
                 self.bits | Ep0OutBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep0OutBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -16679,7 +17024,9 @@ impl Ep0OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep0OutBufferControl::LENGTH_1_MASK) | ((value << Ep0OutBufferControl::LENGTH_1_OFFSET) & Ep0OutBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep0OutBufferControl::LENGTH_1_MASK)
+                | ((value << Ep0OutBufferControl::LENGTH_1_OFFSET)
+                    & Ep0OutBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -16693,7 +17040,7 @@ impl Ep0OutBufferControlVal {
                 self.bits | Ep0OutBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep0OutBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -16707,7 +17054,7 @@ impl Ep0OutBufferControlVal {
                 self.bits | Ep0OutBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep0OutBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -16721,7 +17068,7 @@ impl Ep0OutBufferControlVal {
                 self.bits | Ep0OutBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep0OutBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -16735,7 +17082,7 @@ impl Ep0OutBufferControlVal {
                 self.bits | Ep0OutBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep0OutBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -16749,7 +17096,7 @@ impl Ep0OutBufferControlVal {
                 self.bits | Ep0OutBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep0OutBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -16763,7 +17110,7 @@ impl Ep0OutBufferControlVal {
                 self.bits | Ep0OutBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep0OutBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -16773,7 +17120,9 @@ impl Ep0OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep0OutBufferControl::LENGTH_0_MASK) | ((value << Ep0OutBufferControl::LENGTH_0_OFFSET) & Ep0OutBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep0OutBufferControl::LENGTH_0_MASK)
+                | ((value << Ep0OutBufferControl::LENGTH_0_OFFSET)
+                    & Ep0OutBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -17073,7 +17422,8 @@ impl Ep1InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -17082,7 +17432,11 @@ impl Ep1InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -17118,7 +17472,9 @@ impl Ep1InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -17254,7 +17610,9 @@ impl Ep1InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -17310,7 +17668,8 @@ impl Ep1InBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep1InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep1InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep1InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep1InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -17395,7 +17754,7 @@ impl Ep1InBufferControlVal {
                 self.bits | Ep1InBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep1InBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -17409,7 +17768,7 @@ impl Ep1InBufferControlVal {
                 self.bits | Ep1InBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep1InBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -17423,7 +17782,7 @@ impl Ep1InBufferControlVal {
                 self.bits | Ep1InBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep1InBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -17434,7 +17793,9 @@ impl Ep1InBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep1InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep1InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep1InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep1InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep1InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep1InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -17448,7 +17809,7 @@ impl Ep1InBufferControlVal {
                 self.bits | Ep1InBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep1InBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -17458,7 +17819,9 @@ impl Ep1InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep1InBufferControl::LENGTH_1_MASK) | ((value << Ep1InBufferControl::LENGTH_1_OFFSET) & Ep1InBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep1InBufferControl::LENGTH_1_MASK)
+                | ((value << Ep1InBufferControl::LENGTH_1_OFFSET)
+                    & Ep1InBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -17472,7 +17835,7 @@ impl Ep1InBufferControlVal {
                 self.bits | Ep1InBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep1InBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -17486,7 +17849,7 @@ impl Ep1InBufferControlVal {
                 self.bits | Ep1InBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep1InBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -17500,7 +17863,7 @@ impl Ep1InBufferControlVal {
                 self.bits | Ep1InBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep1InBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -17514,7 +17877,7 @@ impl Ep1InBufferControlVal {
                 self.bits | Ep1InBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep1InBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -17528,7 +17891,7 @@ impl Ep1InBufferControlVal {
                 self.bits | Ep1InBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep1InBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -17542,7 +17905,7 @@ impl Ep1InBufferControlVal {
                 self.bits | Ep1InBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep1InBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -17552,7 +17915,9 @@ impl Ep1InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep1InBufferControl::LENGTH_0_MASK) | ((value << Ep1InBufferControl::LENGTH_0_OFFSET) & Ep1InBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep1InBufferControl::LENGTH_0_MASK)
+                | ((value << Ep1InBufferControl::LENGTH_0_OFFSET)
+                    & Ep1InBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -17852,7 +18217,8 @@ impl Ep1OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -17861,7 +18227,11 @@ impl Ep1OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -17897,7 +18267,9 @@ impl Ep1OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -18033,7 +18405,9 @@ impl Ep1OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -18089,7 +18463,8 @@ impl Ep1OutBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep1OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep1OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep1OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep1OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -18174,7 +18549,7 @@ impl Ep1OutBufferControlVal {
                 self.bits | Ep1OutBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep1OutBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -18188,7 +18563,7 @@ impl Ep1OutBufferControlVal {
                 self.bits | Ep1OutBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep1OutBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -18202,7 +18577,7 @@ impl Ep1OutBufferControlVal {
                 self.bits | Ep1OutBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep1OutBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -18213,7 +18588,9 @@ impl Ep1OutBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep1OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep1OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep1OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep1OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep1OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep1OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -18227,7 +18604,7 @@ impl Ep1OutBufferControlVal {
                 self.bits | Ep1OutBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep1OutBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -18237,7 +18614,9 @@ impl Ep1OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep1OutBufferControl::LENGTH_1_MASK) | ((value << Ep1OutBufferControl::LENGTH_1_OFFSET) & Ep1OutBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep1OutBufferControl::LENGTH_1_MASK)
+                | ((value << Ep1OutBufferControl::LENGTH_1_OFFSET)
+                    & Ep1OutBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -18251,7 +18630,7 @@ impl Ep1OutBufferControlVal {
                 self.bits | Ep1OutBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep1OutBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -18265,7 +18644,7 @@ impl Ep1OutBufferControlVal {
                 self.bits | Ep1OutBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep1OutBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -18279,7 +18658,7 @@ impl Ep1OutBufferControlVal {
                 self.bits | Ep1OutBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep1OutBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -18293,7 +18672,7 @@ impl Ep1OutBufferControlVal {
                 self.bits | Ep1OutBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep1OutBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -18307,7 +18686,7 @@ impl Ep1OutBufferControlVal {
                 self.bits | Ep1OutBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep1OutBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -18321,7 +18700,7 @@ impl Ep1OutBufferControlVal {
                 self.bits | Ep1OutBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep1OutBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -18331,7 +18710,9 @@ impl Ep1OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep1OutBufferControl::LENGTH_0_MASK) | ((value << Ep1OutBufferControl::LENGTH_0_OFFSET) & Ep1OutBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep1OutBufferControl::LENGTH_0_MASK)
+                | ((value << Ep1OutBufferControl::LENGTH_0_OFFSET)
+                    & Ep1OutBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -18631,7 +19012,8 @@ impl Ep2InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -18640,7 +19022,11 @@ impl Ep2InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -18676,7 +19062,9 @@ impl Ep2InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -18812,7 +19200,9 @@ impl Ep2InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -18868,7 +19258,8 @@ impl Ep2InBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep2InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep2InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep2InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep2InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -18953,7 +19344,7 @@ impl Ep2InBufferControlVal {
                 self.bits | Ep2InBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep2InBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -18967,7 +19358,7 @@ impl Ep2InBufferControlVal {
                 self.bits | Ep2InBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep2InBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -18981,7 +19372,7 @@ impl Ep2InBufferControlVal {
                 self.bits | Ep2InBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep2InBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -18992,7 +19383,9 @@ impl Ep2InBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep2InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep2InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep2InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep2InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep2InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep2InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -19006,7 +19399,7 @@ impl Ep2InBufferControlVal {
                 self.bits | Ep2InBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep2InBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -19016,7 +19409,9 @@ impl Ep2InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep2InBufferControl::LENGTH_1_MASK) | ((value << Ep2InBufferControl::LENGTH_1_OFFSET) & Ep2InBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep2InBufferControl::LENGTH_1_MASK)
+                | ((value << Ep2InBufferControl::LENGTH_1_OFFSET)
+                    & Ep2InBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -19030,7 +19425,7 @@ impl Ep2InBufferControlVal {
                 self.bits | Ep2InBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep2InBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -19044,7 +19439,7 @@ impl Ep2InBufferControlVal {
                 self.bits | Ep2InBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep2InBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -19058,7 +19453,7 @@ impl Ep2InBufferControlVal {
                 self.bits | Ep2InBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep2InBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -19072,7 +19467,7 @@ impl Ep2InBufferControlVal {
                 self.bits | Ep2InBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep2InBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -19086,7 +19481,7 @@ impl Ep2InBufferControlVal {
                 self.bits | Ep2InBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep2InBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -19100,7 +19495,7 @@ impl Ep2InBufferControlVal {
                 self.bits | Ep2InBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep2InBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -19110,7 +19505,9 @@ impl Ep2InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep2InBufferControl::LENGTH_0_MASK) | ((value << Ep2InBufferControl::LENGTH_0_OFFSET) & Ep2InBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep2InBufferControl::LENGTH_0_MASK)
+                | ((value << Ep2InBufferControl::LENGTH_0_OFFSET)
+                    & Ep2InBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -19410,7 +19807,8 @@ impl Ep2OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -19419,7 +19817,11 @@ impl Ep2OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -19455,7 +19857,9 @@ impl Ep2OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -19591,7 +19995,9 @@ impl Ep2OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -19647,7 +20053,8 @@ impl Ep2OutBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep2OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep2OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep2OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep2OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -19732,7 +20139,7 @@ impl Ep2OutBufferControlVal {
                 self.bits | Ep2OutBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep2OutBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -19746,7 +20153,7 @@ impl Ep2OutBufferControlVal {
                 self.bits | Ep2OutBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep2OutBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -19760,7 +20167,7 @@ impl Ep2OutBufferControlVal {
                 self.bits | Ep2OutBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep2OutBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -19771,7 +20178,9 @@ impl Ep2OutBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep2OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep2OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep2OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep2OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep2OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep2OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -19785,7 +20194,7 @@ impl Ep2OutBufferControlVal {
                 self.bits | Ep2OutBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep2OutBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -19795,7 +20204,9 @@ impl Ep2OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep2OutBufferControl::LENGTH_1_MASK) | ((value << Ep2OutBufferControl::LENGTH_1_OFFSET) & Ep2OutBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep2OutBufferControl::LENGTH_1_MASK)
+                | ((value << Ep2OutBufferControl::LENGTH_1_OFFSET)
+                    & Ep2OutBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -19809,7 +20220,7 @@ impl Ep2OutBufferControlVal {
                 self.bits | Ep2OutBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep2OutBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -19823,7 +20234,7 @@ impl Ep2OutBufferControlVal {
                 self.bits | Ep2OutBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep2OutBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -19837,7 +20248,7 @@ impl Ep2OutBufferControlVal {
                 self.bits | Ep2OutBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep2OutBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -19851,7 +20262,7 @@ impl Ep2OutBufferControlVal {
                 self.bits | Ep2OutBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep2OutBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -19865,7 +20276,7 @@ impl Ep2OutBufferControlVal {
                 self.bits | Ep2OutBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep2OutBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -19879,7 +20290,7 @@ impl Ep2OutBufferControlVal {
                 self.bits | Ep2OutBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep2OutBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -19889,7 +20300,9 @@ impl Ep2OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep2OutBufferControl::LENGTH_0_MASK) | ((value << Ep2OutBufferControl::LENGTH_0_OFFSET) & Ep2OutBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep2OutBufferControl::LENGTH_0_MASK)
+                | ((value << Ep2OutBufferControl::LENGTH_0_OFFSET)
+                    & Ep2OutBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -20189,7 +20602,8 @@ impl Ep3InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -20198,7 +20612,11 @@ impl Ep3InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -20234,7 +20652,9 @@ impl Ep3InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -20370,7 +20790,9 @@ impl Ep3InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -20426,7 +20848,8 @@ impl Ep3InBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep3InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep3InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep3InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep3InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -20511,7 +20934,7 @@ impl Ep3InBufferControlVal {
                 self.bits | Ep3InBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep3InBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -20525,7 +20948,7 @@ impl Ep3InBufferControlVal {
                 self.bits | Ep3InBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep3InBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -20539,7 +20962,7 @@ impl Ep3InBufferControlVal {
                 self.bits | Ep3InBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep3InBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -20550,7 +20973,9 @@ impl Ep3InBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep3InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep3InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep3InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep3InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep3InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep3InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -20564,7 +20989,7 @@ impl Ep3InBufferControlVal {
                 self.bits | Ep3InBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep3InBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -20574,7 +20999,9 @@ impl Ep3InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep3InBufferControl::LENGTH_1_MASK) | ((value << Ep3InBufferControl::LENGTH_1_OFFSET) & Ep3InBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep3InBufferControl::LENGTH_1_MASK)
+                | ((value << Ep3InBufferControl::LENGTH_1_OFFSET)
+                    & Ep3InBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -20588,7 +21015,7 @@ impl Ep3InBufferControlVal {
                 self.bits | Ep3InBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep3InBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -20602,7 +21029,7 @@ impl Ep3InBufferControlVal {
                 self.bits | Ep3InBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep3InBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -20616,7 +21043,7 @@ impl Ep3InBufferControlVal {
                 self.bits | Ep3InBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep3InBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -20630,7 +21057,7 @@ impl Ep3InBufferControlVal {
                 self.bits | Ep3InBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep3InBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -20644,7 +21071,7 @@ impl Ep3InBufferControlVal {
                 self.bits | Ep3InBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep3InBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -20658,7 +21085,7 @@ impl Ep3InBufferControlVal {
                 self.bits | Ep3InBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep3InBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -20668,7 +21095,9 @@ impl Ep3InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep3InBufferControl::LENGTH_0_MASK) | ((value << Ep3InBufferControl::LENGTH_0_OFFSET) & Ep3InBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep3InBufferControl::LENGTH_0_MASK)
+                | ((value << Ep3InBufferControl::LENGTH_0_OFFSET)
+                    & Ep3InBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -20968,7 +21397,8 @@ impl Ep3OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -20977,7 +21407,11 @@ impl Ep3OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -21013,7 +21447,9 @@ impl Ep3OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -21149,7 +21585,9 @@ impl Ep3OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -21205,7 +21643,8 @@ impl Ep3OutBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep3OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep3OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep3OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep3OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -21290,7 +21729,7 @@ impl Ep3OutBufferControlVal {
                 self.bits | Ep3OutBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep3OutBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -21304,7 +21743,7 @@ impl Ep3OutBufferControlVal {
                 self.bits | Ep3OutBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep3OutBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -21318,7 +21757,7 @@ impl Ep3OutBufferControlVal {
                 self.bits | Ep3OutBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep3OutBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -21329,7 +21768,9 @@ impl Ep3OutBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep3OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep3OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep3OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep3OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep3OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep3OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -21343,7 +21784,7 @@ impl Ep3OutBufferControlVal {
                 self.bits | Ep3OutBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep3OutBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -21353,7 +21794,9 @@ impl Ep3OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep3OutBufferControl::LENGTH_1_MASK) | ((value << Ep3OutBufferControl::LENGTH_1_OFFSET) & Ep3OutBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep3OutBufferControl::LENGTH_1_MASK)
+                | ((value << Ep3OutBufferControl::LENGTH_1_OFFSET)
+                    & Ep3OutBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -21367,7 +21810,7 @@ impl Ep3OutBufferControlVal {
                 self.bits | Ep3OutBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep3OutBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -21381,7 +21824,7 @@ impl Ep3OutBufferControlVal {
                 self.bits | Ep3OutBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep3OutBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -21395,7 +21838,7 @@ impl Ep3OutBufferControlVal {
                 self.bits | Ep3OutBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep3OutBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -21409,7 +21852,7 @@ impl Ep3OutBufferControlVal {
                 self.bits | Ep3OutBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep3OutBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -21423,7 +21866,7 @@ impl Ep3OutBufferControlVal {
                 self.bits | Ep3OutBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep3OutBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -21437,7 +21880,7 @@ impl Ep3OutBufferControlVal {
                 self.bits | Ep3OutBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep3OutBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -21447,7 +21890,9 @@ impl Ep3OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep3OutBufferControl::LENGTH_0_MASK) | ((value << Ep3OutBufferControl::LENGTH_0_OFFSET) & Ep3OutBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep3OutBufferControl::LENGTH_0_MASK)
+                | ((value << Ep3OutBufferControl::LENGTH_0_OFFSET)
+                    & Ep3OutBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -21747,7 +22192,8 @@ impl Ep4InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -21756,7 +22202,11 @@ impl Ep4InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -21792,7 +22242,9 @@ impl Ep4InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -21928,7 +22380,9 @@ impl Ep4InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -21984,7 +22438,8 @@ impl Ep4InBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep4InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep4InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep4InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep4InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -22069,7 +22524,7 @@ impl Ep4InBufferControlVal {
                 self.bits | Ep4InBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep4InBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -22083,7 +22538,7 @@ impl Ep4InBufferControlVal {
                 self.bits | Ep4InBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep4InBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -22097,7 +22552,7 @@ impl Ep4InBufferControlVal {
                 self.bits | Ep4InBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep4InBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -22108,7 +22563,9 @@ impl Ep4InBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep4InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep4InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep4InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep4InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep4InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep4InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -22122,7 +22579,7 @@ impl Ep4InBufferControlVal {
                 self.bits | Ep4InBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep4InBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -22132,7 +22589,9 @@ impl Ep4InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep4InBufferControl::LENGTH_1_MASK) | ((value << Ep4InBufferControl::LENGTH_1_OFFSET) & Ep4InBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep4InBufferControl::LENGTH_1_MASK)
+                | ((value << Ep4InBufferControl::LENGTH_1_OFFSET)
+                    & Ep4InBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -22146,7 +22605,7 @@ impl Ep4InBufferControlVal {
                 self.bits | Ep4InBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep4InBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -22160,7 +22619,7 @@ impl Ep4InBufferControlVal {
                 self.bits | Ep4InBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep4InBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -22174,7 +22633,7 @@ impl Ep4InBufferControlVal {
                 self.bits | Ep4InBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep4InBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -22188,7 +22647,7 @@ impl Ep4InBufferControlVal {
                 self.bits | Ep4InBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep4InBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -22202,7 +22661,7 @@ impl Ep4InBufferControlVal {
                 self.bits | Ep4InBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep4InBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -22216,7 +22675,7 @@ impl Ep4InBufferControlVal {
                 self.bits | Ep4InBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep4InBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -22226,7 +22685,9 @@ impl Ep4InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep4InBufferControl::LENGTH_0_MASK) | ((value << Ep4InBufferControl::LENGTH_0_OFFSET) & Ep4InBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep4InBufferControl::LENGTH_0_MASK)
+                | ((value << Ep4InBufferControl::LENGTH_0_OFFSET)
+                    & Ep4InBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -22526,7 +22987,8 @@ impl Ep4OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -22535,7 +22997,11 @@ impl Ep4OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -22571,7 +23037,9 @@ impl Ep4OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -22707,7 +23175,9 @@ impl Ep4OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -22763,7 +23233,8 @@ impl Ep4OutBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep4OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep4OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep4OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep4OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -22848,7 +23319,7 @@ impl Ep4OutBufferControlVal {
                 self.bits | Ep4OutBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep4OutBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -22862,7 +23333,7 @@ impl Ep4OutBufferControlVal {
                 self.bits | Ep4OutBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep4OutBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -22876,7 +23347,7 @@ impl Ep4OutBufferControlVal {
                 self.bits | Ep4OutBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep4OutBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -22887,7 +23358,9 @@ impl Ep4OutBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep4OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep4OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep4OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep4OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep4OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep4OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -22901,7 +23374,7 @@ impl Ep4OutBufferControlVal {
                 self.bits | Ep4OutBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep4OutBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -22911,7 +23384,9 @@ impl Ep4OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep4OutBufferControl::LENGTH_1_MASK) | ((value << Ep4OutBufferControl::LENGTH_1_OFFSET) & Ep4OutBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep4OutBufferControl::LENGTH_1_MASK)
+                | ((value << Ep4OutBufferControl::LENGTH_1_OFFSET)
+                    & Ep4OutBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -22925,7 +23400,7 @@ impl Ep4OutBufferControlVal {
                 self.bits | Ep4OutBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep4OutBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -22939,7 +23414,7 @@ impl Ep4OutBufferControlVal {
                 self.bits | Ep4OutBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep4OutBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -22953,7 +23428,7 @@ impl Ep4OutBufferControlVal {
                 self.bits | Ep4OutBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep4OutBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -22967,7 +23442,7 @@ impl Ep4OutBufferControlVal {
                 self.bits | Ep4OutBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep4OutBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -22981,7 +23456,7 @@ impl Ep4OutBufferControlVal {
                 self.bits | Ep4OutBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep4OutBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -22995,7 +23470,7 @@ impl Ep4OutBufferControlVal {
                 self.bits | Ep4OutBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep4OutBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -23005,7 +23480,9 @@ impl Ep4OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep4OutBufferControl::LENGTH_0_MASK) | ((value << Ep4OutBufferControl::LENGTH_0_OFFSET) & Ep4OutBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep4OutBufferControl::LENGTH_0_MASK)
+                | ((value << Ep4OutBufferControl::LENGTH_0_OFFSET)
+                    & Ep4OutBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -23305,7 +23782,8 @@ impl Ep5InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -23314,7 +23792,11 @@ impl Ep5InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -23350,7 +23832,9 @@ impl Ep5InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -23486,7 +23970,9 @@ impl Ep5InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -23542,7 +24028,8 @@ impl Ep5InBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep5InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep5InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep5InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep5InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -23627,7 +24114,7 @@ impl Ep5InBufferControlVal {
                 self.bits | Ep5InBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep5InBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -23641,7 +24128,7 @@ impl Ep5InBufferControlVal {
                 self.bits | Ep5InBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep5InBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -23655,7 +24142,7 @@ impl Ep5InBufferControlVal {
                 self.bits | Ep5InBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep5InBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -23666,7 +24153,9 @@ impl Ep5InBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep5InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep5InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep5InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep5InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep5InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep5InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -23680,7 +24169,7 @@ impl Ep5InBufferControlVal {
                 self.bits | Ep5InBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep5InBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -23690,7 +24179,9 @@ impl Ep5InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep5InBufferControl::LENGTH_1_MASK) | ((value << Ep5InBufferControl::LENGTH_1_OFFSET) & Ep5InBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep5InBufferControl::LENGTH_1_MASK)
+                | ((value << Ep5InBufferControl::LENGTH_1_OFFSET)
+                    & Ep5InBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -23704,7 +24195,7 @@ impl Ep5InBufferControlVal {
                 self.bits | Ep5InBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep5InBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -23718,7 +24209,7 @@ impl Ep5InBufferControlVal {
                 self.bits | Ep5InBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep5InBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -23732,7 +24223,7 @@ impl Ep5InBufferControlVal {
                 self.bits | Ep5InBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep5InBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -23746,7 +24237,7 @@ impl Ep5InBufferControlVal {
                 self.bits | Ep5InBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep5InBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -23760,7 +24251,7 @@ impl Ep5InBufferControlVal {
                 self.bits | Ep5InBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep5InBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -23774,7 +24265,7 @@ impl Ep5InBufferControlVal {
                 self.bits | Ep5InBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep5InBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -23784,7 +24275,9 @@ impl Ep5InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep5InBufferControl::LENGTH_0_MASK) | ((value << Ep5InBufferControl::LENGTH_0_OFFSET) & Ep5InBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep5InBufferControl::LENGTH_0_MASK)
+                | ((value << Ep5InBufferControl::LENGTH_0_OFFSET)
+                    & Ep5InBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -24084,7 +24577,8 @@ impl Ep5OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -24093,7 +24587,11 @@ impl Ep5OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -24129,7 +24627,9 @@ impl Ep5OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -24265,7 +24765,9 @@ impl Ep5OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -24321,7 +24823,8 @@ impl Ep5OutBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep5OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep5OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep5OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep5OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -24406,7 +24909,7 @@ impl Ep5OutBufferControlVal {
                 self.bits | Ep5OutBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep5OutBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -24420,7 +24923,7 @@ impl Ep5OutBufferControlVal {
                 self.bits | Ep5OutBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep5OutBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -24434,7 +24937,7 @@ impl Ep5OutBufferControlVal {
                 self.bits | Ep5OutBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep5OutBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -24445,7 +24948,9 @@ impl Ep5OutBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep5OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep5OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep5OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep5OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep5OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep5OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -24459,7 +24964,7 @@ impl Ep5OutBufferControlVal {
                 self.bits | Ep5OutBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep5OutBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -24469,7 +24974,9 @@ impl Ep5OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep5OutBufferControl::LENGTH_1_MASK) | ((value << Ep5OutBufferControl::LENGTH_1_OFFSET) & Ep5OutBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep5OutBufferControl::LENGTH_1_MASK)
+                | ((value << Ep5OutBufferControl::LENGTH_1_OFFSET)
+                    & Ep5OutBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -24483,7 +24990,7 @@ impl Ep5OutBufferControlVal {
                 self.bits | Ep5OutBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep5OutBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -24497,7 +25004,7 @@ impl Ep5OutBufferControlVal {
                 self.bits | Ep5OutBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep5OutBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -24511,7 +25018,7 @@ impl Ep5OutBufferControlVal {
                 self.bits | Ep5OutBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep5OutBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -24525,7 +25032,7 @@ impl Ep5OutBufferControlVal {
                 self.bits | Ep5OutBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep5OutBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -24539,7 +25046,7 @@ impl Ep5OutBufferControlVal {
                 self.bits | Ep5OutBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep5OutBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -24553,7 +25060,7 @@ impl Ep5OutBufferControlVal {
                 self.bits | Ep5OutBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep5OutBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -24563,7 +25070,9 @@ impl Ep5OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep5OutBufferControl::LENGTH_0_MASK) | ((value << Ep5OutBufferControl::LENGTH_0_OFFSET) & Ep5OutBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep5OutBufferControl::LENGTH_0_MASK)
+                | ((value << Ep5OutBufferControl::LENGTH_0_OFFSET)
+                    & Ep5OutBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -24863,7 +25372,8 @@ impl Ep6InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -24872,7 +25382,11 @@ impl Ep6InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -24908,7 +25422,9 @@ impl Ep6InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -25044,7 +25560,9 @@ impl Ep6InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -25100,7 +25618,8 @@ impl Ep6InBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep6InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep6InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep6InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep6InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -25185,7 +25704,7 @@ impl Ep6InBufferControlVal {
                 self.bits | Ep6InBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep6InBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -25199,7 +25718,7 @@ impl Ep6InBufferControlVal {
                 self.bits | Ep6InBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep6InBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -25213,7 +25732,7 @@ impl Ep6InBufferControlVal {
                 self.bits | Ep6InBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep6InBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -25224,7 +25743,9 @@ impl Ep6InBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep6InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep6InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep6InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep6InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep6InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep6InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -25238,7 +25759,7 @@ impl Ep6InBufferControlVal {
                 self.bits | Ep6InBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep6InBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -25248,7 +25769,9 @@ impl Ep6InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep6InBufferControl::LENGTH_1_MASK) | ((value << Ep6InBufferControl::LENGTH_1_OFFSET) & Ep6InBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep6InBufferControl::LENGTH_1_MASK)
+                | ((value << Ep6InBufferControl::LENGTH_1_OFFSET)
+                    & Ep6InBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -25262,7 +25785,7 @@ impl Ep6InBufferControlVal {
                 self.bits | Ep6InBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep6InBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -25276,7 +25799,7 @@ impl Ep6InBufferControlVal {
                 self.bits | Ep6InBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep6InBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -25290,7 +25813,7 @@ impl Ep6InBufferControlVal {
                 self.bits | Ep6InBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep6InBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -25304,7 +25827,7 @@ impl Ep6InBufferControlVal {
                 self.bits | Ep6InBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep6InBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -25318,7 +25841,7 @@ impl Ep6InBufferControlVal {
                 self.bits | Ep6InBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep6InBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -25332,7 +25855,7 @@ impl Ep6InBufferControlVal {
                 self.bits | Ep6InBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep6InBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -25342,7 +25865,9 @@ impl Ep6InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep6InBufferControl::LENGTH_0_MASK) | ((value << Ep6InBufferControl::LENGTH_0_OFFSET) & Ep6InBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep6InBufferControl::LENGTH_0_MASK)
+                | ((value << Ep6InBufferControl::LENGTH_0_OFFSET)
+                    & Ep6InBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -25642,7 +26167,8 @@ impl Ep6OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -25651,7 +26177,11 @@ impl Ep6OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -25687,7 +26217,9 @@ impl Ep6OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -25823,7 +26355,9 @@ impl Ep6OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -25879,7 +26413,8 @@ impl Ep6OutBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep6OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep6OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep6OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep6OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -25964,7 +26499,7 @@ impl Ep6OutBufferControlVal {
                 self.bits | Ep6OutBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep6OutBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -25978,7 +26513,7 @@ impl Ep6OutBufferControlVal {
                 self.bits | Ep6OutBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep6OutBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -25992,7 +26527,7 @@ impl Ep6OutBufferControlVal {
                 self.bits | Ep6OutBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep6OutBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -26003,7 +26538,9 @@ impl Ep6OutBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep6OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep6OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep6OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep6OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep6OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep6OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -26017,7 +26554,7 @@ impl Ep6OutBufferControlVal {
                 self.bits | Ep6OutBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep6OutBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -26027,7 +26564,9 @@ impl Ep6OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep6OutBufferControl::LENGTH_1_MASK) | ((value << Ep6OutBufferControl::LENGTH_1_OFFSET) & Ep6OutBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep6OutBufferControl::LENGTH_1_MASK)
+                | ((value << Ep6OutBufferControl::LENGTH_1_OFFSET)
+                    & Ep6OutBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -26041,7 +26580,7 @@ impl Ep6OutBufferControlVal {
                 self.bits | Ep6OutBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep6OutBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -26055,7 +26594,7 @@ impl Ep6OutBufferControlVal {
                 self.bits | Ep6OutBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep6OutBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -26069,7 +26608,7 @@ impl Ep6OutBufferControlVal {
                 self.bits | Ep6OutBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep6OutBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -26083,7 +26622,7 @@ impl Ep6OutBufferControlVal {
                 self.bits | Ep6OutBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep6OutBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -26097,7 +26636,7 @@ impl Ep6OutBufferControlVal {
                 self.bits | Ep6OutBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep6OutBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -26111,7 +26650,7 @@ impl Ep6OutBufferControlVal {
                 self.bits | Ep6OutBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep6OutBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -26121,7 +26660,9 @@ impl Ep6OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep6OutBufferControl::LENGTH_0_MASK) | ((value << Ep6OutBufferControl::LENGTH_0_OFFSET) & Ep6OutBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep6OutBufferControl::LENGTH_0_MASK)
+                | ((value << Ep6OutBufferControl::LENGTH_0_OFFSET)
+                    & Ep6OutBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -26421,7 +26962,8 @@ impl Ep7InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -26430,7 +26972,11 @@ impl Ep7InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -26466,7 +27012,9 @@ impl Ep7InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -26602,7 +27150,9 @@ impl Ep7InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -26658,7 +27208,8 @@ impl Ep7InBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep7InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep7InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep7InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep7InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -26743,7 +27294,7 @@ impl Ep7InBufferControlVal {
                 self.bits | Ep7InBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep7InBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -26757,7 +27308,7 @@ impl Ep7InBufferControlVal {
                 self.bits | Ep7InBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep7InBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -26771,7 +27322,7 @@ impl Ep7InBufferControlVal {
                 self.bits | Ep7InBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep7InBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -26782,7 +27333,9 @@ impl Ep7InBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep7InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep7InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep7InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep7InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep7InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep7InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -26796,7 +27349,7 @@ impl Ep7InBufferControlVal {
                 self.bits | Ep7InBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep7InBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -26806,7 +27359,9 @@ impl Ep7InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep7InBufferControl::LENGTH_1_MASK) | ((value << Ep7InBufferControl::LENGTH_1_OFFSET) & Ep7InBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep7InBufferControl::LENGTH_1_MASK)
+                | ((value << Ep7InBufferControl::LENGTH_1_OFFSET)
+                    & Ep7InBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -26820,7 +27375,7 @@ impl Ep7InBufferControlVal {
                 self.bits | Ep7InBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep7InBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -26834,7 +27389,7 @@ impl Ep7InBufferControlVal {
                 self.bits | Ep7InBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep7InBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -26848,7 +27403,7 @@ impl Ep7InBufferControlVal {
                 self.bits | Ep7InBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep7InBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -26862,7 +27417,7 @@ impl Ep7InBufferControlVal {
                 self.bits | Ep7InBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep7InBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -26876,7 +27431,7 @@ impl Ep7InBufferControlVal {
                 self.bits | Ep7InBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep7InBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -26890,7 +27445,7 @@ impl Ep7InBufferControlVal {
                 self.bits | Ep7InBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep7InBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -26900,7 +27455,9 @@ impl Ep7InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep7InBufferControl::LENGTH_0_MASK) | ((value << Ep7InBufferControl::LENGTH_0_OFFSET) & Ep7InBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep7InBufferControl::LENGTH_0_MASK)
+                | ((value << Ep7InBufferControl::LENGTH_0_OFFSET)
+                    & Ep7InBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -27200,7 +27757,8 @@ impl Ep7OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -27209,7 +27767,11 @@ impl Ep7OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -27245,7 +27807,9 @@ impl Ep7OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -27381,7 +27945,9 @@ impl Ep7OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -27437,7 +28003,8 @@ impl Ep7OutBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep7OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep7OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep7OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep7OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -27522,7 +28089,7 @@ impl Ep7OutBufferControlVal {
                 self.bits | Ep7OutBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep7OutBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -27536,7 +28103,7 @@ impl Ep7OutBufferControlVal {
                 self.bits | Ep7OutBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep7OutBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -27550,7 +28117,7 @@ impl Ep7OutBufferControlVal {
                 self.bits | Ep7OutBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep7OutBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -27561,7 +28128,9 @@ impl Ep7OutBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep7OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep7OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep7OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep7OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep7OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep7OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -27575,7 +28144,7 @@ impl Ep7OutBufferControlVal {
                 self.bits | Ep7OutBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep7OutBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -27585,7 +28154,9 @@ impl Ep7OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep7OutBufferControl::LENGTH_1_MASK) | ((value << Ep7OutBufferControl::LENGTH_1_OFFSET) & Ep7OutBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep7OutBufferControl::LENGTH_1_MASK)
+                | ((value << Ep7OutBufferControl::LENGTH_1_OFFSET)
+                    & Ep7OutBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -27599,7 +28170,7 @@ impl Ep7OutBufferControlVal {
                 self.bits | Ep7OutBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep7OutBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -27613,7 +28184,7 @@ impl Ep7OutBufferControlVal {
                 self.bits | Ep7OutBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep7OutBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -27627,7 +28198,7 @@ impl Ep7OutBufferControlVal {
                 self.bits | Ep7OutBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep7OutBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -27641,7 +28212,7 @@ impl Ep7OutBufferControlVal {
                 self.bits | Ep7OutBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep7OutBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -27655,7 +28226,7 @@ impl Ep7OutBufferControlVal {
                 self.bits | Ep7OutBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep7OutBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -27669,7 +28240,7 @@ impl Ep7OutBufferControlVal {
                 self.bits | Ep7OutBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep7OutBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -27679,7 +28250,9 @@ impl Ep7OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep7OutBufferControl::LENGTH_0_MASK) | ((value << Ep7OutBufferControl::LENGTH_0_OFFSET) & Ep7OutBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep7OutBufferControl::LENGTH_0_MASK)
+                | ((value << Ep7OutBufferControl::LENGTH_0_OFFSET)
+                    & Ep7OutBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -27979,7 +28552,8 @@ impl Ep8InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -27988,7 +28562,11 @@ impl Ep8InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -28024,7 +28602,9 @@ impl Ep8InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -28160,7 +28740,9 @@ impl Ep8InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -28216,7 +28798,8 @@ impl Ep8InBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep8InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep8InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep8InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep8InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -28301,7 +28884,7 @@ impl Ep8InBufferControlVal {
                 self.bits | Ep8InBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep8InBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -28315,7 +28898,7 @@ impl Ep8InBufferControlVal {
                 self.bits | Ep8InBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep8InBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -28329,7 +28912,7 @@ impl Ep8InBufferControlVal {
                 self.bits | Ep8InBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep8InBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -28340,7 +28923,9 @@ impl Ep8InBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep8InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep8InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep8InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep8InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep8InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep8InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -28354,7 +28939,7 @@ impl Ep8InBufferControlVal {
                 self.bits | Ep8InBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep8InBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -28364,7 +28949,9 @@ impl Ep8InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep8InBufferControl::LENGTH_1_MASK) | ((value << Ep8InBufferControl::LENGTH_1_OFFSET) & Ep8InBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep8InBufferControl::LENGTH_1_MASK)
+                | ((value << Ep8InBufferControl::LENGTH_1_OFFSET)
+                    & Ep8InBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -28378,7 +28965,7 @@ impl Ep8InBufferControlVal {
                 self.bits | Ep8InBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep8InBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -28392,7 +28979,7 @@ impl Ep8InBufferControlVal {
                 self.bits | Ep8InBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep8InBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -28406,7 +28993,7 @@ impl Ep8InBufferControlVal {
                 self.bits | Ep8InBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep8InBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -28420,7 +29007,7 @@ impl Ep8InBufferControlVal {
                 self.bits | Ep8InBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep8InBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -28434,7 +29021,7 @@ impl Ep8InBufferControlVal {
                 self.bits | Ep8InBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep8InBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -28448,7 +29035,7 @@ impl Ep8InBufferControlVal {
                 self.bits | Ep8InBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep8InBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -28458,7 +29045,9 @@ impl Ep8InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep8InBufferControl::LENGTH_0_MASK) | ((value << Ep8InBufferControl::LENGTH_0_OFFSET) & Ep8InBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep8InBufferControl::LENGTH_0_MASK)
+                | ((value << Ep8InBufferControl::LENGTH_0_OFFSET)
+                    & Ep8InBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -28758,7 +29347,8 @@ impl Ep8OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -28767,7 +29357,11 @@ impl Ep8OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -28803,7 +29397,9 @@ impl Ep8OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -28939,7 +29535,9 @@ impl Ep8OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -28995,7 +29593,8 @@ impl Ep8OutBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep8OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep8OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep8OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep8OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -29080,7 +29679,7 @@ impl Ep8OutBufferControlVal {
                 self.bits | Ep8OutBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep8OutBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -29094,7 +29693,7 @@ impl Ep8OutBufferControlVal {
                 self.bits | Ep8OutBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep8OutBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -29108,7 +29707,7 @@ impl Ep8OutBufferControlVal {
                 self.bits | Ep8OutBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep8OutBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -29119,7 +29718,9 @@ impl Ep8OutBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep8OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep8OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep8OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep8OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep8OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep8OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -29133,7 +29734,7 @@ impl Ep8OutBufferControlVal {
                 self.bits | Ep8OutBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep8OutBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -29143,7 +29744,9 @@ impl Ep8OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep8OutBufferControl::LENGTH_1_MASK) | ((value << Ep8OutBufferControl::LENGTH_1_OFFSET) & Ep8OutBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep8OutBufferControl::LENGTH_1_MASK)
+                | ((value << Ep8OutBufferControl::LENGTH_1_OFFSET)
+                    & Ep8OutBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -29157,7 +29760,7 @@ impl Ep8OutBufferControlVal {
                 self.bits | Ep8OutBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep8OutBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -29171,7 +29774,7 @@ impl Ep8OutBufferControlVal {
                 self.bits | Ep8OutBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep8OutBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -29185,7 +29788,7 @@ impl Ep8OutBufferControlVal {
                 self.bits | Ep8OutBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep8OutBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -29199,7 +29802,7 @@ impl Ep8OutBufferControlVal {
                 self.bits | Ep8OutBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep8OutBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -29213,7 +29816,7 @@ impl Ep8OutBufferControlVal {
                 self.bits | Ep8OutBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep8OutBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -29227,7 +29830,7 @@ impl Ep8OutBufferControlVal {
                 self.bits | Ep8OutBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep8OutBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -29237,7 +29840,9 @@ impl Ep8OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep8OutBufferControl::LENGTH_0_MASK) | ((value << Ep8OutBufferControl::LENGTH_0_OFFSET) & Ep8OutBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep8OutBufferControl::LENGTH_0_MASK)
+                | ((value << Ep8OutBufferControl::LENGTH_0_OFFSET)
+                    & Ep8OutBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -29537,7 +30142,8 @@ impl Ep9InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -29546,7 +30152,11 @@ impl Ep9InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -29582,7 +30192,9 @@ impl Ep9InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -29718,7 +30330,9 @@ impl Ep9InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -29774,7 +30388,8 @@ impl Ep9InBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep9InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep9InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep9InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep9InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -29859,7 +30474,7 @@ impl Ep9InBufferControlVal {
                 self.bits | Ep9InBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep9InBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -29873,7 +30488,7 @@ impl Ep9InBufferControlVal {
                 self.bits | Ep9InBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep9InBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -29887,7 +30502,7 @@ impl Ep9InBufferControlVal {
                 self.bits | Ep9InBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep9InBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -29898,7 +30513,9 @@ impl Ep9InBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep9InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep9InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep9InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep9InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep9InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep9InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -29912,7 +30529,7 @@ impl Ep9InBufferControlVal {
                 self.bits | Ep9InBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep9InBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -29922,7 +30539,9 @@ impl Ep9InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep9InBufferControl::LENGTH_1_MASK) | ((value << Ep9InBufferControl::LENGTH_1_OFFSET) & Ep9InBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep9InBufferControl::LENGTH_1_MASK)
+                | ((value << Ep9InBufferControl::LENGTH_1_OFFSET)
+                    & Ep9InBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -29936,7 +30555,7 @@ impl Ep9InBufferControlVal {
                 self.bits | Ep9InBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep9InBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -29950,7 +30569,7 @@ impl Ep9InBufferControlVal {
                 self.bits | Ep9InBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep9InBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -29964,7 +30583,7 @@ impl Ep9InBufferControlVal {
                 self.bits | Ep9InBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep9InBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -29978,7 +30597,7 @@ impl Ep9InBufferControlVal {
                 self.bits | Ep9InBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep9InBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -29992,7 +30611,7 @@ impl Ep9InBufferControlVal {
                 self.bits | Ep9InBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep9InBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -30006,7 +30625,7 @@ impl Ep9InBufferControlVal {
                 self.bits | Ep9InBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep9InBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -30016,7 +30635,9 @@ impl Ep9InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep9InBufferControl::LENGTH_0_MASK) | ((value << Ep9InBufferControl::LENGTH_0_OFFSET) & Ep9InBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep9InBufferControl::LENGTH_0_MASK)
+                | ((value << Ep9InBufferControl::LENGTH_0_OFFSET)
+                    & Ep9InBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -30316,7 +30937,8 @@ impl Ep9OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -30325,7 +30947,11 @@ impl Ep9OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -30361,7 +30987,9 @@ impl Ep9OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -30497,7 +31125,9 @@ impl Ep9OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -30553,7 +31183,8 @@ impl Ep9OutBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep9OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep9OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep9OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep9OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -30638,7 +31269,7 @@ impl Ep9OutBufferControlVal {
                 self.bits | Ep9OutBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep9OutBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -30652,7 +31283,7 @@ impl Ep9OutBufferControlVal {
                 self.bits | Ep9OutBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep9OutBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -30666,7 +31297,7 @@ impl Ep9OutBufferControlVal {
                 self.bits | Ep9OutBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep9OutBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -30677,7 +31308,9 @@ impl Ep9OutBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep9OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep9OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep9OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep9OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep9OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep9OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -30691,7 +31324,7 @@ impl Ep9OutBufferControlVal {
                 self.bits | Ep9OutBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep9OutBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -30701,7 +31334,9 @@ impl Ep9OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep9OutBufferControl::LENGTH_1_MASK) | ((value << Ep9OutBufferControl::LENGTH_1_OFFSET) & Ep9OutBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep9OutBufferControl::LENGTH_1_MASK)
+                | ((value << Ep9OutBufferControl::LENGTH_1_OFFSET)
+                    & Ep9OutBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -30715,7 +31350,7 @@ impl Ep9OutBufferControlVal {
                 self.bits | Ep9OutBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep9OutBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -30729,7 +31364,7 @@ impl Ep9OutBufferControlVal {
                 self.bits | Ep9OutBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep9OutBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -30743,7 +31378,7 @@ impl Ep9OutBufferControlVal {
                 self.bits | Ep9OutBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep9OutBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -30757,7 +31392,7 @@ impl Ep9OutBufferControlVal {
                 self.bits | Ep9OutBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep9OutBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -30771,7 +31406,7 @@ impl Ep9OutBufferControlVal {
                 self.bits | Ep9OutBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep9OutBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -30785,7 +31420,7 @@ impl Ep9OutBufferControlVal {
                 self.bits | Ep9OutBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep9OutBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -30795,7 +31430,9 @@ impl Ep9OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep9OutBufferControl::LENGTH_0_MASK) | ((value << Ep9OutBufferControl::LENGTH_0_OFFSET) & Ep9OutBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep9OutBufferControl::LENGTH_0_MASK)
+                | ((value << Ep9OutBufferControl::LENGTH_0_OFFSET)
+                    & Ep9OutBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -31095,7 +31732,8 @@ impl Ep10InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -31104,7 +31742,11 @@ impl Ep10InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -31140,7 +31782,9 @@ impl Ep10InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -31276,7 +31920,9 @@ impl Ep10InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -31332,7 +31978,8 @@ impl Ep10InBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep10InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep10InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep10InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep10InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -31417,7 +32064,7 @@ impl Ep10InBufferControlVal {
                 self.bits | Ep10InBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep10InBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -31431,7 +32078,7 @@ impl Ep10InBufferControlVal {
                 self.bits | Ep10InBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep10InBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -31445,7 +32092,7 @@ impl Ep10InBufferControlVal {
                 self.bits | Ep10InBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep10InBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -31456,7 +32103,9 @@ impl Ep10InBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep10InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep10InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep10InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep10InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep10InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep10InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -31470,7 +32119,7 @@ impl Ep10InBufferControlVal {
                 self.bits | Ep10InBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep10InBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -31480,7 +32129,9 @@ impl Ep10InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep10InBufferControl::LENGTH_1_MASK) | ((value << Ep10InBufferControl::LENGTH_1_OFFSET) & Ep10InBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep10InBufferControl::LENGTH_1_MASK)
+                | ((value << Ep10InBufferControl::LENGTH_1_OFFSET)
+                    & Ep10InBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -31494,7 +32145,7 @@ impl Ep10InBufferControlVal {
                 self.bits | Ep10InBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep10InBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -31508,7 +32159,7 @@ impl Ep10InBufferControlVal {
                 self.bits | Ep10InBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep10InBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -31522,7 +32173,7 @@ impl Ep10InBufferControlVal {
                 self.bits | Ep10InBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep10InBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -31536,7 +32187,7 @@ impl Ep10InBufferControlVal {
                 self.bits | Ep10InBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep10InBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -31550,7 +32201,7 @@ impl Ep10InBufferControlVal {
                 self.bits | Ep10InBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep10InBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -31564,7 +32215,7 @@ impl Ep10InBufferControlVal {
                 self.bits | Ep10InBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep10InBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -31574,7 +32225,9 @@ impl Ep10InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep10InBufferControl::LENGTH_0_MASK) | ((value << Ep10InBufferControl::LENGTH_0_OFFSET) & Ep10InBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep10InBufferControl::LENGTH_0_MASK)
+                | ((value << Ep10InBufferControl::LENGTH_0_OFFSET)
+                    & Ep10InBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -31874,7 +32527,8 @@ impl Ep10OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -31883,7 +32537,11 @@ impl Ep10OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -31919,7 +32577,9 @@ impl Ep10OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -32055,7 +32715,9 @@ impl Ep10OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -32111,7 +32773,8 @@ impl Ep10OutBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep10OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep10OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep10OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep10OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -32196,7 +32859,7 @@ impl Ep10OutBufferControlVal {
                 self.bits | Ep10OutBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep10OutBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -32210,7 +32873,7 @@ impl Ep10OutBufferControlVal {
                 self.bits | Ep10OutBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep10OutBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -32224,7 +32887,7 @@ impl Ep10OutBufferControlVal {
                 self.bits | Ep10OutBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep10OutBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -32235,7 +32898,9 @@ impl Ep10OutBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep10OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep10OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep10OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep10OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep10OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep10OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -32249,7 +32914,7 @@ impl Ep10OutBufferControlVal {
                 self.bits | Ep10OutBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep10OutBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -32259,7 +32924,9 @@ impl Ep10OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep10OutBufferControl::LENGTH_1_MASK) | ((value << Ep10OutBufferControl::LENGTH_1_OFFSET) & Ep10OutBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep10OutBufferControl::LENGTH_1_MASK)
+                | ((value << Ep10OutBufferControl::LENGTH_1_OFFSET)
+                    & Ep10OutBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -32273,7 +32940,7 @@ impl Ep10OutBufferControlVal {
                 self.bits | Ep10OutBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep10OutBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -32287,7 +32954,7 @@ impl Ep10OutBufferControlVal {
                 self.bits | Ep10OutBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep10OutBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -32301,7 +32968,7 @@ impl Ep10OutBufferControlVal {
                 self.bits | Ep10OutBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep10OutBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -32315,7 +32982,7 @@ impl Ep10OutBufferControlVal {
                 self.bits | Ep10OutBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep10OutBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -32329,7 +32996,7 @@ impl Ep10OutBufferControlVal {
                 self.bits | Ep10OutBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep10OutBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -32343,7 +33010,7 @@ impl Ep10OutBufferControlVal {
                 self.bits | Ep10OutBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep10OutBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -32353,7 +33020,9 @@ impl Ep10OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep10OutBufferControl::LENGTH_0_MASK) | ((value << Ep10OutBufferControl::LENGTH_0_OFFSET) & Ep10OutBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep10OutBufferControl::LENGTH_0_MASK)
+                | ((value << Ep10OutBufferControl::LENGTH_0_OFFSET)
+                    & Ep10OutBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -32653,7 +33322,8 @@ impl Ep11InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -32662,7 +33332,11 @@ impl Ep11InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -32698,7 +33372,9 @@ impl Ep11InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -32834,7 +33510,9 @@ impl Ep11InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -32890,7 +33568,8 @@ impl Ep11InBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep11InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep11InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep11InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep11InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -32975,7 +33654,7 @@ impl Ep11InBufferControlVal {
                 self.bits | Ep11InBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep11InBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -32989,7 +33668,7 @@ impl Ep11InBufferControlVal {
                 self.bits | Ep11InBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep11InBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -33003,7 +33682,7 @@ impl Ep11InBufferControlVal {
                 self.bits | Ep11InBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep11InBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -33014,7 +33693,9 @@ impl Ep11InBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep11InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep11InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep11InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep11InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep11InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep11InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -33028,7 +33709,7 @@ impl Ep11InBufferControlVal {
                 self.bits | Ep11InBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep11InBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -33038,7 +33719,9 @@ impl Ep11InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep11InBufferControl::LENGTH_1_MASK) | ((value << Ep11InBufferControl::LENGTH_1_OFFSET) & Ep11InBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep11InBufferControl::LENGTH_1_MASK)
+                | ((value << Ep11InBufferControl::LENGTH_1_OFFSET)
+                    & Ep11InBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -33052,7 +33735,7 @@ impl Ep11InBufferControlVal {
                 self.bits | Ep11InBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep11InBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -33066,7 +33749,7 @@ impl Ep11InBufferControlVal {
                 self.bits | Ep11InBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep11InBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -33080,7 +33763,7 @@ impl Ep11InBufferControlVal {
                 self.bits | Ep11InBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep11InBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -33094,7 +33777,7 @@ impl Ep11InBufferControlVal {
                 self.bits | Ep11InBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep11InBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -33108,7 +33791,7 @@ impl Ep11InBufferControlVal {
                 self.bits | Ep11InBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep11InBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -33122,7 +33805,7 @@ impl Ep11InBufferControlVal {
                 self.bits | Ep11InBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep11InBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -33132,7 +33815,9 @@ impl Ep11InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep11InBufferControl::LENGTH_0_MASK) | ((value << Ep11InBufferControl::LENGTH_0_OFFSET) & Ep11InBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep11InBufferControl::LENGTH_0_MASK)
+                | ((value << Ep11InBufferControl::LENGTH_0_OFFSET)
+                    & Ep11InBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -33432,7 +34117,8 @@ impl Ep11OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -33441,7 +34127,11 @@ impl Ep11OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -33477,7 +34167,9 @@ impl Ep11OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -33613,7 +34305,9 @@ impl Ep11OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -33669,7 +34363,8 @@ impl Ep11OutBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep11OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep11OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep11OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep11OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -33754,7 +34449,7 @@ impl Ep11OutBufferControlVal {
                 self.bits | Ep11OutBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep11OutBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -33768,7 +34463,7 @@ impl Ep11OutBufferControlVal {
                 self.bits | Ep11OutBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep11OutBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -33782,7 +34477,7 @@ impl Ep11OutBufferControlVal {
                 self.bits | Ep11OutBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep11OutBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -33793,7 +34488,9 @@ impl Ep11OutBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep11OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep11OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep11OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep11OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep11OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep11OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -33807,7 +34504,7 @@ impl Ep11OutBufferControlVal {
                 self.bits | Ep11OutBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep11OutBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -33817,7 +34514,9 @@ impl Ep11OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep11OutBufferControl::LENGTH_1_MASK) | ((value << Ep11OutBufferControl::LENGTH_1_OFFSET) & Ep11OutBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep11OutBufferControl::LENGTH_1_MASK)
+                | ((value << Ep11OutBufferControl::LENGTH_1_OFFSET)
+                    & Ep11OutBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -33831,7 +34530,7 @@ impl Ep11OutBufferControlVal {
                 self.bits | Ep11OutBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep11OutBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -33845,7 +34544,7 @@ impl Ep11OutBufferControlVal {
                 self.bits | Ep11OutBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep11OutBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -33859,7 +34558,7 @@ impl Ep11OutBufferControlVal {
                 self.bits | Ep11OutBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep11OutBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -33873,7 +34572,7 @@ impl Ep11OutBufferControlVal {
                 self.bits | Ep11OutBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep11OutBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -33887,7 +34586,7 @@ impl Ep11OutBufferControlVal {
                 self.bits | Ep11OutBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep11OutBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -33901,7 +34600,7 @@ impl Ep11OutBufferControlVal {
                 self.bits | Ep11OutBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep11OutBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -33911,7 +34610,9 @@ impl Ep11OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep11OutBufferControl::LENGTH_0_MASK) | ((value << Ep11OutBufferControl::LENGTH_0_OFFSET) & Ep11OutBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep11OutBufferControl::LENGTH_0_MASK)
+                | ((value << Ep11OutBufferControl::LENGTH_0_OFFSET)
+                    & Ep11OutBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -34211,7 +34912,8 @@ impl Ep12InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -34220,7 +34922,11 @@ impl Ep12InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -34256,7 +34962,9 @@ impl Ep12InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -34392,7 +35100,9 @@ impl Ep12InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -34448,7 +35158,8 @@ impl Ep12InBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep12InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep12InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep12InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep12InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -34533,7 +35244,7 @@ impl Ep12InBufferControlVal {
                 self.bits | Ep12InBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep12InBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -34547,7 +35258,7 @@ impl Ep12InBufferControlVal {
                 self.bits | Ep12InBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep12InBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -34561,7 +35272,7 @@ impl Ep12InBufferControlVal {
                 self.bits | Ep12InBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep12InBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -34572,7 +35283,9 @@ impl Ep12InBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep12InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep12InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep12InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep12InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep12InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep12InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -34586,7 +35299,7 @@ impl Ep12InBufferControlVal {
                 self.bits | Ep12InBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep12InBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -34596,7 +35309,9 @@ impl Ep12InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep12InBufferControl::LENGTH_1_MASK) | ((value << Ep12InBufferControl::LENGTH_1_OFFSET) & Ep12InBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep12InBufferControl::LENGTH_1_MASK)
+                | ((value << Ep12InBufferControl::LENGTH_1_OFFSET)
+                    & Ep12InBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -34610,7 +35325,7 @@ impl Ep12InBufferControlVal {
                 self.bits | Ep12InBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep12InBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -34624,7 +35339,7 @@ impl Ep12InBufferControlVal {
                 self.bits | Ep12InBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep12InBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -34638,7 +35353,7 @@ impl Ep12InBufferControlVal {
                 self.bits | Ep12InBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep12InBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -34652,7 +35367,7 @@ impl Ep12InBufferControlVal {
                 self.bits | Ep12InBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep12InBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -34666,7 +35381,7 @@ impl Ep12InBufferControlVal {
                 self.bits | Ep12InBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep12InBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -34680,7 +35395,7 @@ impl Ep12InBufferControlVal {
                 self.bits | Ep12InBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep12InBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -34690,7 +35405,9 @@ impl Ep12InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep12InBufferControl::LENGTH_0_MASK) | ((value << Ep12InBufferControl::LENGTH_0_OFFSET) & Ep12InBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep12InBufferControl::LENGTH_0_MASK)
+                | ((value << Ep12InBufferControl::LENGTH_0_OFFSET)
+                    & Ep12InBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -34990,7 +35707,8 @@ impl Ep12OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -34999,7 +35717,11 @@ impl Ep12OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -35035,7 +35757,9 @@ impl Ep12OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -35171,7 +35895,9 @@ impl Ep12OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -35227,7 +35953,8 @@ impl Ep12OutBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep12OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep12OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep12OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep12OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -35312,7 +36039,7 @@ impl Ep12OutBufferControlVal {
                 self.bits | Ep12OutBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep12OutBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -35326,7 +36053,7 @@ impl Ep12OutBufferControlVal {
                 self.bits | Ep12OutBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep12OutBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -35340,7 +36067,7 @@ impl Ep12OutBufferControlVal {
                 self.bits | Ep12OutBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep12OutBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -35351,7 +36078,9 @@ impl Ep12OutBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep12OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep12OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep12OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep12OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep12OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep12OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -35365,7 +36094,7 @@ impl Ep12OutBufferControlVal {
                 self.bits | Ep12OutBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep12OutBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -35375,7 +36104,9 @@ impl Ep12OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep12OutBufferControl::LENGTH_1_MASK) | ((value << Ep12OutBufferControl::LENGTH_1_OFFSET) & Ep12OutBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep12OutBufferControl::LENGTH_1_MASK)
+                | ((value << Ep12OutBufferControl::LENGTH_1_OFFSET)
+                    & Ep12OutBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -35389,7 +36120,7 @@ impl Ep12OutBufferControlVal {
                 self.bits | Ep12OutBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep12OutBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -35403,7 +36134,7 @@ impl Ep12OutBufferControlVal {
                 self.bits | Ep12OutBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep12OutBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -35417,7 +36148,7 @@ impl Ep12OutBufferControlVal {
                 self.bits | Ep12OutBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep12OutBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -35431,7 +36162,7 @@ impl Ep12OutBufferControlVal {
                 self.bits | Ep12OutBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep12OutBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -35445,7 +36176,7 @@ impl Ep12OutBufferControlVal {
                 self.bits | Ep12OutBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep12OutBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -35459,7 +36190,7 @@ impl Ep12OutBufferControlVal {
                 self.bits | Ep12OutBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep12OutBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -35469,7 +36200,9 @@ impl Ep12OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep12OutBufferControl::LENGTH_0_MASK) | ((value << Ep12OutBufferControl::LENGTH_0_OFFSET) & Ep12OutBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep12OutBufferControl::LENGTH_0_MASK)
+                | ((value << Ep12OutBufferControl::LENGTH_0_OFFSET)
+                    & Ep12OutBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -35769,7 +36502,8 @@ impl Ep13InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -35778,7 +36512,11 @@ impl Ep13InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -35814,7 +36552,9 @@ impl Ep13InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -35950,7 +36690,9 @@ impl Ep13InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -36006,7 +36748,8 @@ impl Ep13InBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep13InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep13InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep13InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep13InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -36091,7 +36834,7 @@ impl Ep13InBufferControlVal {
                 self.bits | Ep13InBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep13InBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -36105,7 +36848,7 @@ impl Ep13InBufferControlVal {
                 self.bits | Ep13InBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep13InBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -36119,7 +36862,7 @@ impl Ep13InBufferControlVal {
                 self.bits | Ep13InBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep13InBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -36130,7 +36873,9 @@ impl Ep13InBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep13InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep13InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep13InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep13InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep13InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep13InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -36144,7 +36889,7 @@ impl Ep13InBufferControlVal {
                 self.bits | Ep13InBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep13InBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -36154,7 +36899,9 @@ impl Ep13InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep13InBufferControl::LENGTH_1_MASK) | ((value << Ep13InBufferControl::LENGTH_1_OFFSET) & Ep13InBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep13InBufferControl::LENGTH_1_MASK)
+                | ((value << Ep13InBufferControl::LENGTH_1_OFFSET)
+                    & Ep13InBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -36168,7 +36915,7 @@ impl Ep13InBufferControlVal {
                 self.bits | Ep13InBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep13InBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -36182,7 +36929,7 @@ impl Ep13InBufferControlVal {
                 self.bits | Ep13InBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep13InBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -36196,7 +36943,7 @@ impl Ep13InBufferControlVal {
                 self.bits | Ep13InBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep13InBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -36210,7 +36957,7 @@ impl Ep13InBufferControlVal {
                 self.bits | Ep13InBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep13InBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -36224,7 +36971,7 @@ impl Ep13InBufferControlVal {
                 self.bits | Ep13InBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep13InBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -36238,7 +36985,7 @@ impl Ep13InBufferControlVal {
                 self.bits | Ep13InBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep13InBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -36248,7 +36995,9 @@ impl Ep13InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep13InBufferControl::LENGTH_0_MASK) | ((value << Ep13InBufferControl::LENGTH_0_OFFSET) & Ep13InBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep13InBufferControl::LENGTH_0_MASK)
+                | ((value << Ep13InBufferControl::LENGTH_0_OFFSET)
+                    & Ep13InBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -36548,7 +37297,8 @@ impl Ep13OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -36557,7 +37307,11 @@ impl Ep13OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -36593,7 +37347,9 @@ impl Ep13OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -36729,7 +37485,9 @@ impl Ep13OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -36785,7 +37543,8 @@ impl Ep13OutBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep13OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep13OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep13OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep13OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -36870,7 +37629,7 @@ impl Ep13OutBufferControlVal {
                 self.bits | Ep13OutBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep13OutBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -36884,7 +37643,7 @@ impl Ep13OutBufferControlVal {
                 self.bits | Ep13OutBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep13OutBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -36898,7 +37657,7 @@ impl Ep13OutBufferControlVal {
                 self.bits | Ep13OutBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep13OutBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -36909,7 +37668,9 @@ impl Ep13OutBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep13OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep13OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep13OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep13OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep13OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep13OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -36923,7 +37684,7 @@ impl Ep13OutBufferControlVal {
                 self.bits | Ep13OutBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep13OutBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -36933,7 +37694,9 @@ impl Ep13OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep13OutBufferControl::LENGTH_1_MASK) | ((value << Ep13OutBufferControl::LENGTH_1_OFFSET) & Ep13OutBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep13OutBufferControl::LENGTH_1_MASK)
+                | ((value << Ep13OutBufferControl::LENGTH_1_OFFSET)
+                    & Ep13OutBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -36947,7 +37710,7 @@ impl Ep13OutBufferControlVal {
                 self.bits | Ep13OutBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep13OutBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -36961,7 +37724,7 @@ impl Ep13OutBufferControlVal {
                 self.bits | Ep13OutBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep13OutBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -36975,7 +37738,7 @@ impl Ep13OutBufferControlVal {
                 self.bits | Ep13OutBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep13OutBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -36989,7 +37752,7 @@ impl Ep13OutBufferControlVal {
                 self.bits | Ep13OutBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep13OutBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -37003,7 +37766,7 @@ impl Ep13OutBufferControlVal {
                 self.bits | Ep13OutBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep13OutBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -37017,7 +37780,7 @@ impl Ep13OutBufferControlVal {
                 self.bits | Ep13OutBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep13OutBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -37027,7 +37790,9 @@ impl Ep13OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep13OutBufferControl::LENGTH_0_MASK) | ((value << Ep13OutBufferControl::LENGTH_0_OFFSET) & Ep13OutBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep13OutBufferControl::LENGTH_0_MASK)
+                | ((value << Ep13OutBufferControl::LENGTH_0_OFFSET)
+                    & Ep13OutBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -37327,7 +38092,8 @@ impl Ep14InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -37336,7 +38102,11 @@ impl Ep14InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -37372,7 +38142,9 @@ impl Ep14InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -37508,7 +38280,9 @@ impl Ep14InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -37564,7 +38338,8 @@ impl Ep14InBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep14InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep14InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep14InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep14InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -37649,7 +38424,7 @@ impl Ep14InBufferControlVal {
                 self.bits | Ep14InBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep14InBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -37663,7 +38438,7 @@ impl Ep14InBufferControlVal {
                 self.bits | Ep14InBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep14InBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -37677,7 +38452,7 @@ impl Ep14InBufferControlVal {
                 self.bits | Ep14InBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep14InBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -37688,7 +38463,9 @@ impl Ep14InBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep14InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep14InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep14InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep14InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep14InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep14InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -37702,7 +38479,7 @@ impl Ep14InBufferControlVal {
                 self.bits | Ep14InBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep14InBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -37712,7 +38489,9 @@ impl Ep14InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep14InBufferControl::LENGTH_1_MASK) | ((value << Ep14InBufferControl::LENGTH_1_OFFSET) & Ep14InBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep14InBufferControl::LENGTH_1_MASK)
+                | ((value << Ep14InBufferControl::LENGTH_1_OFFSET)
+                    & Ep14InBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -37726,7 +38505,7 @@ impl Ep14InBufferControlVal {
                 self.bits | Ep14InBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep14InBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -37740,7 +38519,7 @@ impl Ep14InBufferControlVal {
                 self.bits | Ep14InBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep14InBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -37754,7 +38533,7 @@ impl Ep14InBufferControlVal {
                 self.bits | Ep14InBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep14InBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -37768,7 +38547,7 @@ impl Ep14InBufferControlVal {
                 self.bits | Ep14InBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep14InBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -37782,7 +38561,7 @@ impl Ep14InBufferControlVal {
                 self.bits | Ep14InBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep14InBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -37796,7 +38575,7 @@ impl Ep14InBufferControlVal {
                 self.bits | Ep14InBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep14InBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -37806,7 +38585,9 @@ impl Ep14InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep14InBufferControl::LENGTH_0_MASK) | ((value << Ep14InBufferControl::LENGTH_0_OFFSET) & Ep14InBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep14InBufferControl::LENGTH_0_MASK)
+                | ((value << Ep14InBufferControl::LENGTH_0_OFFSET)
+                    & Ep14InBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -38106,7 +38887,8 @@ impl Ep14OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -38115,7 +38897,11 @@ impl Ep14OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -38151,7 +38937,9 @@ impl Ep14OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -38287,7 +39075,9 @@ impl Ep14OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -38343,7 +39133,8 @@ impl Ep14OutBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep14OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep14OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep14OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep14OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -38428,7 +39219,7 @@ impl Ep14OutBufferControlVal {
                 self.bits | Ep14OutBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep14OutBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -38442,7 +39233,7 @@ impl Ep14OutBufferControlVal {
                 self.bits | Ep14OutBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep14OutBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -38456,7 +39247,7 @@ impl Ep14OutBufferControlVal {
                 self.bits | Ep14OutBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep14OutBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -38467,7 +39258,9 @@ impl Ep14OutBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep14OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep14OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep14OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep14OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep14OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep14OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -38481,7 +39274,7 @@ impl Ep14OutBufferControlVal {
                 self.bits | Ep14OutBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep14OutBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -38491,7 +39284,9 @@ impl Ep14OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep14OutBufferControl::LENGTH_1_MASK) | ((value << Ep14OutBufferControl::LENGTH_1_OFFSET) & Ep14OutBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep14OutBufferControl::LENGTH_1_MASK)
+                | ((value << Ep14OutBufferControl::LENGTH_1_OFFSET)
+                    & Ep14OutBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -38505,7 +39300,7 @@ impl Ep14OutBufferControlVal {
                 self.bits | Ep14OutBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep14OutBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -38519,7 +39314,7 @@ impl Ep14OutBufferControlVal {
                 self.bits | Ep14OutBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep14OutBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -38533,7 +39328,7 @@ impl Ep14OutBufferControlVal {
                 self.bits | Ep14OutBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep14OutBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -38547,7 +39342,7 @@ impl Ep14OutBufferControlVal {
                 self.bits | Ep14OutBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep14OutBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -38561,7 +39356,7 @@ impl Ep14OutBufferControlVal {
                 self.bits | Ep14OutBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep14OutBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -38575,7 +39370,7 @@ impl Ep14OutBufferControlVal {
                 self.bits | Ep14OutBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep14OutBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -38585,7 +39380,9 @@ impl Ep14OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep14OutBufferControl::LENGTH_0_MASK) | ((value << Ep14OutBufferControl::LENGTH_0_OFFSET) & Ep14OutBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep14OutBufferControl::LENGTH_0_MASK)
+                | ((value << Ep14OutBufferControl::LENGTH_0_OFFSET)
+                    & Ep14OutBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -38885,7 +39682,8 @@ impl Ep15InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -38894,7 +39692,11 @@ impl Ep15InBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -38930,7 +39732,9 @@ impl Ep15InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -39066,7 +39870,9 @@ impl Ep15InBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -39122,7 +39928,8 @@ impl Ep15InBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep15InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep15InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep15InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep15InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -39207,7 +40014,7 @@ impl Ep15InBufferControlVal {
                 self.bits | Ep15InBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep15InBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -39221,7 +40028,7 @@ impl Ep15InBufferControlVal {
                 self.bits | Ep15InBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep15InBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -39235,7 +40042,7 @@ impl Ep15InBufferControlVal {
                 self.bits | Ep15InBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep15InBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -39246,7 +40053,9 @@ impl Ep15InBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep15InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep15InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep15InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep15InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep15InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep15InBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -39260,7 +40069,7 @@ impl Ep15InBufferControlVal {
                 self.bits | Ep15InBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep15InBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -39270,7 +40079,9 @@ impl Ep15InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep15InBufferControl::LENGTH_1_MASK) | ((value << Ep15InBufferControl::LENGTH_1_OFFSET) & Ep15InBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep15InBufferControl::LENGTH_1_MASK)
+                | ((value << Ep15InBufferControl::LENGTH_1_OFFSET)
+                    & Ep15InBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -39284,7 +40095,7 @@ impl Ep15InBufferControlVal {
                 self.bits | Ep15InBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep15InBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -39298,7 +40109,7 @@ impl Ep15InBufferControlVal {
                 self.bits | Ep15InBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep15InBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -39312,7 +40123,7 @@ impl Ep15InBufferControlVal {
                 self.bits | Ep15InBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep15InBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -39326,7 +40137,7 @@ impl Ep15InBufferControlVal {
                 self.bits | Ep15InBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep15InBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -39340,7 +40151,7 @@ impl Ep15InBufferControlVal {
                 self.bits | Ep15InBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep15InBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -39354,7 +40165,7 @@ impl Ep15InBufferControlVal {
                 self.bits | Ep15InBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep15InBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -39364,7 +40175,9 @@ impl Ep15InBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep15InBufferControl::LENGTH_0_MASK) | ((value << Ep15InBufferControl::LENGTH_0_OFFSET) & Ep15InBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep15InBufferControl::LENGTH_0_MASK)
+                | ((value << Ep15InBufferControl::LENGTH_0_OFFSET)
+                    & Ep15InBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -39664,7 +40477,8 @@ impl Ep15OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn double_buffer_iso_offset(&self) -> u32 {
-        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.value.read_bits() & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Write **DOUBLE_BUFFER_ISO_OFFSET** `[28:27]` (RW)
@@ -39673,7 +40487,11 @@ impl Ep15OutBufferControl {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub fn write_double_buffer_iso_offset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Self::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Self::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+        });
     }
 
     /// **AVAILABLE_1** `[26]` (RW)
@@ -39709,7 +40527,9 @@ impl Ep15OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_1_MASK) | ((value << Self::LENGTH_1_OFFSET) & Self::LENGTH_1_MASK)
+        });
     }
 
     /// **FULL_0** `[15]` (RW)
@@ -39845,7 +40665,9 @@ impl Ep15OutBufferControl {
     /// The length of the data in buffer 1.
     #[inline(always)]
     pub fn write_length_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LENGTH_0_MASK) | ((value << Self::LENGTH_0_OFFSET) & Self::LENGTH_0_MASK)
+        });
     }
 }
 
@@ -39901,7 +40723,8 @@ impl Ep15OutBufferControlVal {
     /// For a non Isochronous endpoint the offset is always 64 bytes.
     #[inline(always)]
     pub const fn double_buffer_iso_offset(&self) -> u32 {
-        (self.bits & Ep15OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) >> Ep15OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
+        (self.bits & Ep15OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            >> Ep15OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET
     }
 
     /// Read **AVAILABLE_1** `[26:26]`
@@ -39986,7 +40809,7 @@ impl Ep15OutBufferControlVal {
                 self.bits | Ep15OutBufferControl::FULL_1_MASK
             } else {
                 self.bits & !Ep15OutBufferControl::FULL_1_MASK
-            }
+            },
         }
     }
 
@@ -40000,7 +40823,7 @@ impl Ep15OutBufferControlVal {
                 self.bits | Ep15OutBufferControl::LAST_1_MASK
             } else {
                 self.bits & !Ep15OutBufferControl::LAST_1_MASK
-            }
+            },
         }
     }
 
@@ -40014,7 +40837,7 @@ impl Ep15OutBufferControlVal {
                 self.bits | Ep15OutBufferControl::PID_1_MASK
             } else {
                 self.bits & !Ep15OutBufferControl::PID_1_MASK
-            }
+            },
         }
     }
 
@@ -40025,7 +40848,9 @@ impl Ep15OutBufferControlVal {
     #[inline(always)]
     pub const fn with_double_buffer_iso_offset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep15OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK) | ((value << Ep15OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET) & Ep15OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+            bits: (self.bits & !Ep15OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK)
+                | ((value << Ep15OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_OFFSET)
+                    & Ep15OutBufferControl::DOUBLE_BUFFER_ISO_OFFSET_MASK),
         }
     }
 
@@ -40039,7 +40864,7 @@ impl Ep15OutBufferControlVal {
                 self.bits | Ep15OutBufferControl::AVAILABLE_1_MASK
             } else {
                 self.bits & !Ep15OutBufferControl::AVAILABLE_1_MASK
-            }
+            },
         }
     }
 
@@ -40049,7 +40874,9 @@ impl Ep15OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep15OutBufferControl::LENGTH_1_MASK) | ((value << Ep15OutBufferControl::LENGTH_1_OFFSET) & Ep15OutBufferControl::LENGTH_1_MASK)
+            bits: (self.bits & !Ep15OutBufferControl::LENGTH_1_MASK)
+                | ((value << Ep15OutBufferControl::LENGTH_1_OFFSET)
+                    & Ep15OutBufferControl::LENGTH_1_MASK),
         }
     }
 
@@ -40063,7 +40890,7 @@ impl Ep15OutBufferControlVal {
                 self.bits | Ep15OutBufferControl::FULL_0_MASK
             } else {
                 self.bits & !Ep15OutBufferControl::FULL_0_MASK
-            }
+            },
         }
     }
 
@@ -40077,7 +40904,7 @@ impl Ep15OutBufferControlVal {
                 self.bits | Ep15OutBufferControl::LAST_0_MASK
             } else {
                 self.bits & !Ep15OutBufferControl::LAST_0_MASK
-            }
+            },
         }
     }
 
@@ -40091,7 +40918,7 @@ impl Ep15OutBufferControlVal {
                 self.bits | Ep15OutBufferControl::PID_0_MASK
             } else {
                 self.bits & !Ep15OutBufferControl::PID_0_MASK
-            }
+            },
         }
     }
 
@@ -40105,7 +40932,7 @@ impl Ep15OutBufferControlVal {
                 self.bits | Ep15OutBufferControl::RESET_MASK
             } else {
                 self.bits & !Ep15OutBufferControl::RESET_MASK
-            }
+            },
         }
     }
 
@@ -40119,7 +40946,7 @@ impl Ep15OutBufferControlVal {
                 self.bits | Ep15OutBufferControl::STALL_MASK
             } else {
                 self.bits & !Ep15OutBufferControl::STALL_MASK
-            }
+            },
         }
     }
 
@@ -40133,7 +40960,7 @@ impl Ep15OutBufferControlVal {
                 self.bits | Ep15OutBufferControl::AVAILABLE_0_MASK
             } else {
                 self.bits & !Ep15OutBufferControl::AVAILABLE_0_MASK
-            }
+            },
         }
     }
 
@@ -40143,7 +40970,9 @@ impl Ep15OutBufferControlVal {
     #[inline(always)]
     pub const fn with_length_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ep15OutBufferControl::LENGTH_0_MASK) | ((value << Ep15OutBufferControl::LENGTH_0_OFFSET) & Ep15OutBufferControl::LENGTH_0_MASK)
+            bits: (self.bits & !Ep15OutBufferControl::LENGTH_0_MASK)
+                | ((value << Ep15OutBufferControl::LENGTH_0_OFFSET)
+                    & Ep15OutBufferControl::LENGTH_0_MASK),
         }
     }
 }
@@ -40372,4 +41201,3 @@ pub struct RegisterBlock {
     /// Fields ending in a _0 are for buffer 0. Buffer 1 controls are only valid if the endpoint is in double buffered mode.
     pub ep15_out_buffer_control: Ep15OutBufferControl,
 }
-

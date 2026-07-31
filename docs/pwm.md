@@ -47,8 +47,8 @@ RP2350 的 PWM 外设由多个 slice 组成。
 
 GPIO 到 PWM slice 和通道的映射规律是：
 
-- `slice = (gpio_num / 2) % 8`，用于 RP2350A
-- `slice = (gpio_num / 2) % 12`，用于 RP2350B
+- `slice = (gpio_num / 2) % 8`，用于 RP2350A（GPIO 0–29）
+- RP2350B：GPIO 0–31 用 `slice = (gpio_num / 2) % 8`（GPIO 30/31 归 slice 7）；GPIO 32–47 用 `slice = 8 + ((gpio_num - 32) / 2) % 4`（归 slice 8–11）
 - `channel = gpio_num % 2`，偶数脚是 A，奇数脚是 B
 
 例如：

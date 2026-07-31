@@ -22,9 +22,9 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::Delay;
-use pico_rs::clocks::{ClockBuilder};
-use pico_rs::main;
+use pico_rs::clocks::ClockBuilder;
 use pico_rs::gpio::Pins;
+use pico_rs::main;
 use pico_rs::pac::Peripherals;
 use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 
@@ -32,7 +32,6 @@ use pico_rs_usb::UsbBusAllocator;
 use pico_rs_usb::class::hid::{HidClass, KeyboardReport, modifier};
 use pico_rs_usb::device::UsbDeviceBuilder;
 use pico_rs_usb::rp2350::Rp2350Bus;
-
 
 mod keycode {
     pub const A: u8 = 0x04;

@@ -595,7 +595,7 @@ impl CtrlVal {
                 self.bits | Ctrl::WRITABLE_M1_MASK
             } else {
                 self.bits & !Ctrl::WRITABLE_M1_MASK
-            }
+            },
         }
     }
 
@@ -613,7 +613,7 @@ impl CtrlVal {
                 self.bits | Ctrl::WRITABLE_M0_MASK
             } else {
                 self.bits & !Ctrl::WRITABLE_M0_MASK
-            }
+            },
         }
     }
 
@@ -629,7 +629,7 @@ impl CtrlVal {
                 self.bits | Ctrl::SPLIT_WAYS_MASK
             } else {
                 self.bits & !Ctrl::SPLIT_WAYS_MASK
-            }
+            },
         }
     }
 
@@ -645,7 +645,7 @@ impl CtrlVal {
                 self.bits | Ctrl::MAINT_NONSEC_MASK
             } else {
                 self.bits & !Ctrl::MAINT_NONSEC_MASK
-            }
+            },
         }
     }
 
@@ -659,7 +659,7 @@ impl CtrlVal {
                 self.bits | Ctrl::NO_UNTRANSLATED_NONSEC_MASK
             } else {
                 self.bits & !Ctrl::NO_UNTRANSLATED_NONSEC_MASK
-            }
+            },
         }
     }
 
@@ -673,7 +673,7 @@ impl CtrlVal {
                 self.bits | Ctrl::NO_UNTRANSLATED_SEC_MASK
             } else {
                 self.bits & !Ctrl::NO_UNTRANSLATED_SEC_MASK
-            }
+            },
         }
     }
 
@@ -688,7 +688,7 @@ impl CtrlVal {
                 self.bits | Ctrl::NO_UNCACHED_NONSEC_MASK
             } else {
                 self.bits & !Ctrl::NO_UNCACHED_NONSEC_MASK
-            }
+            },
         }
     }
 
@@ -703,7 +703,7 @@ impl CtrlVal {
                 self.bits | Ctrl::NO_UNCACHED_SEC_MASK
             } else {
                 self.bits & !Ctrl::NO_UNCACHED_SEC_MASK
-            }
+            },
         }
     }
 
@@ -717,7 +717,7 @@ impl CtrlVal {
                 self.bits | Ctrl::POWER_DOWN_MASK
             } else {
                 self.bits & !Ctrl::POWER_DOWN_MASK
-            }
+            },
         }
     }
 
@@ -732,7 +732,7 @@ impl CtrlVal {
                 self.bits | Ctrl::EN_NONSECURE_MASK
             } else {
                 self.bits & !Ctrl::EN_NONSECURE_MASK
-            }
+            },
         }
     }
 
@@ -748,7 +748,7 @@ impl CtrlVal {
                 self.bits | Ctrl::EN_SECURE_MASK
             } else {
                 self.bits & !Ctrl::EN_SECURE_MASK
-            }
+            },
         }
     }
 }
@@ -972,7 +972,9 @@ impl CtrHit {
     /// Write any value to clear.
     #[inline(always)]
     pub fn write_ctr_hit(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CTR_HIT_MASK) | ((value << Self::CTR_HIT_OFFSET) & Self::CTR_HIT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CTR_HIT_MASK) | ((value << Self::CTR_HIT_OFFSET) & Self::CTR_HIT_MASK)
+        });
     }
 }
 
@@ -1022,7 +1024,8 @@ impl CtrHitVal {
     #[inline(always)]
     pub const fn with_ctr_hit(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !CtrHit::CTR_HIT_MASK) | ((value << CtrHit::CTR_HIT_OFFSET) & CtrHit::CTR_HIT_MASK)
+            bits: (self.bits & !CtrHit::CTR_HIT_MASK)
+                | ((value << CtrHit::CTR_HIT_OFFSET) & CtrHit::CTR_HIT_MASK),
         }
     }
 }
@@ -1112,7 +1115,9 @@ impl CtrAcc {
     /// Write any value to clear.
     #[inline(always)]
     pub fn write_ctr_acc(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CTR_ACC_MASK) | ((value << Self::CTR_ACC_OFFSET) & Self::CTR_ACC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CTR_ACC_MASK) | ((value << Self::CTR_ACC_OFFSET) & Self::CTR_ACC_MASK)
+        });
     }
 }
 
@@ -1162,7 +1167,8 @@ impl CtrAccVal {
     #[inline(always)]
     pub const fn with_ctr_acc(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !CtrAcc::CTR_ACC_MASK) | ((value << CtrAcc::CTR_ACC_OFFSET) & CtrAcc::CTR_ACC_MASK)
+            bits: (self.bits & !CtrAcc::CTR_ACC_MASK)
+                | ((value << CtrAcc::CTR_ACC_OFFSET) & CtrAcc::CTR_ACC_MASK),
         }
     }
 }
@@ -1252,7 +1258,10 @@ impl StreamAddr {
     /// Write the initial access address here before starting a streaming read.
     #[inline(always)]
     pub fn write_stream_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STREAM_ADDR_MASK) | ((value << Self::STREAM_ADDR_OFFSET) & Self::STREAM_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STREAM_ADDR_MASK)
+                | ((value << Self::STREAM_ADDR_OFFSET) & Self::STREAM_ADDR_MASK)
+        });
     }
 }
 
@@ -1302,7 +1311,8 @@ impl StreamAddrVal {
     #[inline(always)]
     pub const fn with_stream_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !StreamAddr::STREAM_ADDR_MASK) | ((value << StreamAddr::STREAM_ADDR_OFFSET) & StreamAddr::STREAM_ADDR_MASK)
+            bits: (self.bits & !StreamAddr::STREAM_ADDR_MASK)
+                | ((value << StreamAddr::STREAM_ADDR_OFFSET) & StreamAddr::STREAM_ADDR_MASK),
         }
     }
 }
@@ -1412,7 +1422,10 @@ impl StreamCtr {
     /// draining the FIFO and reinitialising STREAM_ADDR)
     #[inline(always)]
     pub fn write_stream_ctr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STREAM_CTR_MASK) | ((value << Self::STREAM_CTR_OFFSET) & Self::STREAM_CTR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STREAM_CTR_MASK)
+                | ((value << Self::STREAM_CTR_OFFSET) & Self::STREAM_CTR_MASK)
+        });
     }
 }
 
@@ -1472,7 +1485,8 @@ impl StreamCtrVal {
     #[inline(always)]
     pub const fn with_stream_ctr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !StreamCtr::STREAM_CTR_MASK) | ((value << StreamCtr::STREAM_CTR_OFFSET) & StreamCtr::STREAM_CTR_MASK)
+            bits: (self.bits & !StreamCtr::STREAM_CTR_MASK)
+                | ((value << StreamCtr::STREAM_CTR_OFFSET) & StreamCtr::STREAM_CTR_MASK),
         }
     }
 }
@@ -1634,4 +1648,3 @@ pub struct RegisterBlock {
     /// FIFO stream data
     pub stream_fifo: StreamFifo,
 }
-

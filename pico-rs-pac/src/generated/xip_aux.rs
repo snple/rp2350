@@ -234,7 +234,8 @@ impl QmiDirectTx {
     /// Configure whether this FIFO record is transferred with single/dual/quad interface width (0/1/2). Different widths can be mixed freely.
     #[inline(always)]
     pub fn write_iwidth(&self, value: u32) {
-        self.value.write_bits((value << Self::IWIDTH_OFFSET) & Self::IWIDTH_MASK);
+        self.value
+            .write_bits((value << Self::IWIDTH_OFFSET) & Self::IWIDTH_MASK);
     }
 
     /// Write **DATA** `[15:0]` (WO)
@@ -243,7 +244,8 @@ impl QmiDirectTx {
     /// For 16-bit data, the least-significant byte is transmitted first.
     #[inline(always)]
     pub fn write_data(&self, value: u32) {
-        self.value.write_bits((value << Self::DATA_OFFSET) & Self::DATA_MASK);
+        self.value
+            .write_bits((value << Self::DATA_OFFSET) & Self::DATA_MASK);
     }
 }
 
@@ -286,7 +288,7 @@ impl QmiDirectTxVal {
                 self.bits | QmiDirectTx::NOPUSH_MASK
             } else {
                 self.bits & !QmiDirectTx::NOPUSH_MASK
-            }
+            },
         }
     }
 
@@ -301,7 +303,7 @@ impl QmiDirectTxVal {
                 self.bits | QmiDirectTx::OE_MASK
             } else {
                 self.bits & !QmiDirectTx::OE_MASK
-            }
+            },
         }
     }
 
@@ -315,7 +317,7 @@ impl QmiDirectTxVal {
                 self.bits | QmiDirectTx::DWIDTH_MASK
             } else {
                 self.bits & !QmiDirectTx::DWIDTH_MASK
-            }
+            },
         }
     }
 
@@ -325,7 +327,8 @@ impl QmiDirectTxVal {
     #[inline(always)]
     pub const fn with_iwidth(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !QmiDirectTx::IWIDTH_MASK) | ((value << QmiDirectTx::IWIDTH_OFFSET) & QmiDirectTx::IWIDTH_MASK)
+            bits: (self.bits & !QmiDirectTx::IWIDTH_MASK)
+                | ((value << QmiDirectTx::IWIDTH_OFFSET) & QmiDirectTx::IWIDTH_MASK),
         }
     }
 
@@ -336,7 +339,8 @@ impl QmiDirectTxVal {
     #[inline(always)]
     pub const fn with_data(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !QmiDirectTx::DATA_MASK) | ((value << QmiDirectTx::DATA_OFFSET) & QmiDirectTx::DATA_MASK)
+            bits: (self.bits & !QmiDirectTx::DATA_MASK)
+                | ((value << QmiDirectTx::DATA_OFFSET) & QmiDirectTx::DATA_MASK),
         }
     }
 }
@@ -470,4 +474,3 @@ pub struct RegisterBlock {
     /// Read from the QMI direct-mode RX FIFO (fast bus access to QMI_DIRECT_RX)
     pub qmi_direct_rx: QmiDirectRx,
 }
-

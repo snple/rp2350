@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  check:
+    name: Build & lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: thumbv8m.main-none-eabihf
+          components: rustfmt, clippy
+
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+
+      - name: Check generated PAC is up to date with SVD
+        run: cargo xtask gen-pac --check
+
+      - name: Build embedded workspace
+        run: cargo build --workspace --target thumbv8m.main-none-eabihf --exclude xtask
+
+      - name: Build drivers without default features
+        run: cargo build -p pico-rs-drivers --no-default-features --target thumbv8m.main-none-eabihf
+
+      - name: Clippy (embedded)
+        run: cargo clippy --workspace --target thumbv8m.main-none-eabihf --exclude xtask -- -D warnings
+
+      - name: Clippy (host xtask)
+        run: cargo clippy -p xtask -- -D warnings

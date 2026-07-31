@@ -59,7 +59,9 @@ impl Arm {
     /// Write **ARM** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_arm(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ARM_MASK) | ((value << Self::ARM_OFFSET) & Self::ARM_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ARM_MASK) | ((value << Self::ARM_OFFSET) & Self::ARM_MASK)
+        });
     }
 }
 
@@ -101,7 +103,7 @@ impl ArmVal {
     #[inline(always)]
     pub const fn with_arm(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Arm::ARM_MASK) | ((value << Arm::ARM_OFFSET) & Arm::ARM_MASK)
+            bits: (self.bits & !Arm::ARM_MASK) | ((value << Arm::ARM_OFFSET) & Arm::ARM_MASK),
         }
     }
 }
@@ -193,7 +195,9 @@ impl Disarm {
     /// This register is Secure read/write only.
     #[inline(always)]
     pub fn write_disarm(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DISARM_MASK) | ((value << Self::DISARM_OFFSET) & Self::DISARM_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DISARM_MASK) | ((value << Self::DISARM_OFFSET) & Self::DISARM_MASK)
+        });
     }
 }
 
@@ -241,7 +245,8 @@ impl DisarmVal {
     #[inline(always)]
     pub const fn with_disarm(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Disarm::DISARM_MASK) | ((value << Disarm::DISARM_OFFSET) & Disarm::DISARM_MASK)
+            bits: (self.bits & !Disarm::DISARM_MASK)
+                | ((value << Disarm::DISARM_OFFSET) & Disarm::DISARM_MASK),
         }
     }
 }
@@ -419,7 +424,9 @@ impl Sensitivity {
     /// Write **DEFAULT** `[31:24]` (RW)
     #[inline(always)]
     pub fn write_default(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DEFAULT_MASK) | ((value << Self::DEFAULT_OFFSET) & Self::DEFAULT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DEFAULT_MASK) | ((value << Self::DEFAULT_OFFSET) & Self::DEFAULT_MASK)
+        });
     }
 
     /// **DET3_INV** `[15:14]` (RW)
@@ -435,7 +442,9 @@ impl Sensitivity {
     /// Must be the inverse of DET3, else the default value is used.
     #[inline(always)]
     pub fn write_det3_inv(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DET3_INV_MASK) | ((value << Self::DET3_INV_OFFSET) & Self::DET3_INV_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DET3_INV_MASK) | ((value << Self::DET3_INV_OFFSET) & Self::DET3_INV_MASK)
+        });
     }
 
     /// **DET2_INV** `[13:12]` (RW)
@@ -451,7 +460,9 @@ impl Sensitivity {
     /// Must be the inverse of DET2, else the default value is used.
     #[inline(always)]
     pub fn write_det2_inv(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DET2_INV_MASK) | ((value << Self::DET2_INV_OFFSET) & Self::DET2_INV_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DET2_INV_MASK) | ((value << Self::DET2_INV_OFFSET) & Self::DET2_INV_MASK)
+        });
     }
 
     /// **DET1_INV** `[11:10]` (RW)
@@ -467,7 +478,9 @@ impl Sensitivity {
     /// Must be the inverse of DET1, else the default value is used.
     #[inline(always)]
     pub fn write_det1_inv(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DET1_INV_MASK) | ((value << Self::DET1_INV_OFFSET) & Self::DET1_INV_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DET1_INV_MASK) | ((value << Self::DET1_INV_OFFSET) & Self::DET1_INV_MASK)
+        });
     }
 
     /// **DET0_INV** `[9:8]` (RW)
@@ -483,7 +496,9 @@ impl Sensitivity {
     /// Must be the inverse of DET0, else the default value is used.
     #[inline(always)]
     pub fn write_det0_inv(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DET0_INV_MASK) | ((value << Self::DET0_INV_OFFSET) & Self::DET0_INV_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DET0_INV_MASK) | ((value << Self::DET0_INV_OFFSET) & Self::DET0_INV_MASK)
+        });
     }
 
     /// **DET3** `[7:6]` (RW)
@@ -499,7 +514,9 @@ impl Sensitivity {
     /// Set sensitivity for detector 3. Higher values are more sensitive.
     #[inline(always)]
     pub fn write_det3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DET3_MASK) | ((value << Self::DET3_OFFSET) & Self::DET3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DET3_MASK) | ((value << Self::DET3_OFFSET) & Self::DET3_MASK)
+        });
     }
 
     /// **DET2** `[5:4]` (RW)
@@ -515,7 +532,9 @@ impl Sensitivity {
     /// Set sensitivity for detector 2. Higher values are more sensitive.
     #[inline(always)]
     pub fn write_det2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DET2_MASK) | ((value << Self::DET2_OFFSET) & Self::DET2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DET2_MASK) | ((value << Self::DET2_OFFSET) & Self::DET2_MASK)
+        });
     }
 
     /// **DET1** `[3:2]` (RW)
@@ -531,7 +550,9 @@ impl Sensitivity {
     /// Set sensitivity for detector 1. Higher values are more sensitive.
     #[inline(always)]
     pub fn write_det1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DET1_MASK) | ((value << Self::DET1_OFFSET) & Self::DET1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DET1_MASK) | ((value << Self::DET1_OFFSET) & Self::DET1_MASK)
+        });
     }
 
     /// **DET0** `[1:0]` (RW)
@@ -547,7 +568,9 @@ impl Sensitivity {
     /// Set sensitivity for detector 0. Higher values are more sensitive.
     #[inline(always)]
     pub fn write_det0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DET0_MASK) | ((value << Self::DET0_OFFSET) & Self::DET0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DET0_MASK) | ((value << Self::DET0_OFFSET) & Self::DET0_MASK)
+        });
     }
 }
 
@@ -653,7 +676,8 @@ impl SensitivityVal {
     #[inline(always)]
     pub const fn with_default(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sensitivity::DEFAULT_MASK) | ((value << Sensitivity::DEFAULT_OFFSET) & Sensitivity::DEFAULT_MASK)
+            bits: (self.bits & !Sensitivity::DEFAULT_MASK)
+                | ((value << Sensitivity::DEFAULT_OFFSET) & Sensitivity::DEFAULT_MASK),
         }
     }
 
@@ -663,7 +687,8 @@ impl SensitivityVal {
     #[inline(always)]
     pub const fn with_det3_inv(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sensitivity::DET3_INV_MASK) | ((value << Sensitivity::DET3_INV_OFFSET) & Sensitivity::DET3_INV_MASK)
+            bits: (self.bits & !Sensitivity::DET3_INV_MASK)
+                | ((value << Sensitivity::DET3_INV_OFFSET) & Sensitivity::DET3_INV_MASK),
         }
     }
 
@@ -673,7 +698,8 @@ impl SensitivityVal {
     #[inline(always)]
     pub const fn with_det2_inv(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sensitivity::DET2_INV_MASK) | ((value << Sensitivity::DET2_INV_OFFSET) & Sensitivity::DET2_INV_MASK)
+            bits: (self.bits & !Sensitivity::DET2_INV_MASK)
+                | ((value << Sensitivity::DET2_INV_OFFSET) & Sensitivity::DET2_INV_MASK),
         }
     }
 
@@ -683,7 +709,8 @@ impl SensitivityVal {
     #[inline(always)]
     pub const fn with_det1_inv(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sensitivity::DET1_INV_MASK) | ((value << Sensitivity::DET1_INV_OFFSET) & Sensitivity::DET1_INV_MASK)
+            bits: (self.bits & !Sensitivity::DET1_INV_MASK)
+                | ((value << Sensitivity::DET1_INV_OFFSET) & Sensitivity::DET1_INV_MASK),
         }
     }
 
@@ -693,7 +720,8 @@ impl SensitivityVal {
     #[inline(always)]
     pub const fn with_det0_inv(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sensitivity::DET0_INV_MASK) | ((value << Sensitivity::DET0_INV_OFFSET) & Sensitivity::DET0_INV_MASK)
+            bits: (self.bits & !Sensitivity::DET0_INV_MASK)
+                | ((value << Sensitivity::DET0_INV_OFFSET) & Sensitivity::DET0_INV_MASK),
         }
     }
 
@@ -703,7 +731,8 @@ impl SensitivityVal {
     #[inline(always)]
     pub const fn with_det3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sensitivity::DET3_MASK) | ((value << Sensitivity::DET3_OFFSET) & Sensitivity::DET3_MASK)
+            bits: (self.bits & !Sensitivity::DET3_MASK)
+                | ((value << Sensitivity::DET3_OFFSET) & Sensitivity::DET3_MASK),
         }
     }
 
@@ -713,7 +742,8 @@ impl SensitivityVal {
     #[inline(always)]
     pub const fn with_det2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sensitivity::DET2_MASK) | ((value << Sensitivity::DET2_OFFSET) & Sensitivity::DET2_MASK)
+            bits: (self.bits & !Sensitivity::DET2_MASK)
+                | ((value << Sensitivity::DET2_OFFSET) & Sensitivity::DET2_MASK),
         }
     }
 
@@ -723,7 +753,8 @@ impl SensitivityVal {
     #[inline(always)]
     pub const fn with_det1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sensitivity::DET1_MASK) | ((value << Sensitivity::DET1_OFFSET) & Sensitivity::DET1_MASK)
+            bits: (self.bits & !Sensitivity::DET1_MASK)
+                | ((value << Sensitivity::DET1_OFFSET) & Sensitivity::DET1_MASK),
         }
     }
 
@@ -733,7 +764,8 @@ impl SensitivityVal {
     #[inline(always)]
     pub const fn with_det0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sensitivity::DET0_MASK) | ((value << Sensitivity::DET0_OFFSET) & Sensitivity::DET0_MASK)
+            bits: (self.bits & !Sensitivity::DET0_MASK)
+                | ((value << Sensitivity::DET0_OFFSET) & Sensitivity::DET0_MASK),
         }
     }
 }
@@ -813,7 +845,9 @@ impl Lock {
     /// Write any nonzero value to disable writes to ARM, DISARM, SENSITIVITY and LOCK. This register is Secure read/write only.
     #[inline(always)]
     pub fn write_lock(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LOCK_MASK) | ((value << Self::LOCK_OFFSET) & Self::LOCK_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LOCK_MASK) | ((value << Self::LOCK_OFFSET) & Self::LOCK_MASK)
+        });
     }
 }
 
@@ -859,7 +893,7 @@ impl LockVal {
     #[inline(always)]
     pub const fn with_lock(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Lock::LOCK_MASK) | ((value << Lock::LOCK_OFFSET) & Lock::LOCK_MASK)
+            bits: (self.bits & !Lock::LOCK_MASK) | ((value << Lock::LOCK_OFFSET) & Lock::LOCK_MASK),
         }
     }
 }
@@ -1083,7 +1117,7 @@ impl TrigStatusVal {
                 self.bits | TrigStatus::DET3_MASK
             } else {
                 self.bits & !TrigStatus::DET3_MASK
-            }
+            },
         }
     }
 
@@ -1095,7 +1129,7 @@ impl TrigStatusVal {
                 self.bits | TrigStatus::DET2_MASK
             } else {
                 self.bits & !TrigStatus::DET2_MASK
-            }
+            },
         }
     }
 
@@ -1107,7 +1141,7 @@ impl TrigStatusVal {
                 self.bits | TrigStatus::DET1_MASK
             } else {
                 self.bits & !TrigStatus::DET1_MASK
-            }
+            },
         }
     }
 
@@ -1119,7 +1153,7 @@ impl TrigStatusVal {
                 self.bits | TrigStatus::DET0_MASK
             } else {
                 self.bits & !TrigStatus::DET0_MASK
-            }
+            },
         }
     }
 }
@@ -1188,7 +1222,8 @@ impl TrigForce {
     /// Write **TRIG_FORCE** `[3:0]` (WO)
     #[inline(always)]
     pub fn write_trig_force(&self, value: u32) {
-        self.value.write_bits((value << Self::TRIG_FORCE_OFFSET) & Self::TRIG_FORCE_MASK);
+        self.value
+            .write_bits((value << Self::TRIG_FORCE_OFFSET) & Self::TRIG_FORCE_MASK);
     }
 }
 
@@ -1224,7 +1259,8 @@ impl TrigForceVal {
     #[inline(always)]
     pub const fn with_trig_force(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !TrigForce::TRIG_FORCE_MASK) | ((value << TrigForce::TRIG_FORCE_OFFSET) & TrigForce::TRIG_FORCE_MASK)
+            bits: (self.bits & !TrigForce::TRIG_FORCE_MASK)
+                | ((value << TrigForce::TRIG_FORCE_OFFSET) & TrigForce::TRIG_FORCE_MASK),
         }
     }
 }
@@ -1270,4 +1306,3 @@ pub struct RegisterBlock {
     /// This register is Secure read/write only.
     pub trig_force: TrigForce,
 }
-

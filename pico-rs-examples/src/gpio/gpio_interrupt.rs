@@ -17,9 +17,9 @@ use core::sync::atomic::{AtomicBool, Ordering};
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::main;
 use pico_rs::gpio::{EdgeLevel, Pin, Pins};
 use pico_rs::interrupt;
+use pico_rs::main;
 use pico_rs::pac::{Interrupt, Peripherals};
 
 static LED_STATE: AtomicBool = AtomicBool::new(false);

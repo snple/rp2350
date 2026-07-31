@@ -1,0 +1,29 @@
+# Workspace-wide Cargo configuration for pico-rs.
+#
+# `cargo xtask <command>` now works from any directory in the workspace
+# (the alias was previously only available from inside `xtask/`).
+
+[alias]
+xtask = "run --package xtask --"
+
+# Linker flags for the embedded target. These apply to every crate in the
+# workspace when it is built for `thumbv8m.main-none-eabihf`.
+#
+# * `--nmagic` turns off page alignment of sections (saves flash space)
+# * `-Tlink.x` uses pico-rs-rt's linker script (provided via its build script)
+# * `-Tdefmt.x` is required for defmt-rtt
+# * `target-cpu=cortex-m33` targets the RP2350's M33 core
+#
+# Each crate's own `.cargo/config.toml` selects `thumbv8m.main-none-eabihf`
+# as the default `[build] target`; from the workspace root pass
+# `--target thumbv8m.main-none-eabihf` explicitly (the host-only `xtask`
+# member must keep building for the host, so the default target is not set
+# globally here).
+
+[target.thumbv8m.main-none-eabihf]
+rustflags = [
+    "-C", "link-arg=--nmagic",
+    "-C", "link-arg=-Tlink.x",
+    "-C", "link-arg=-Tdefmt.x",
+    "-C", "target-cpu=cortex-m33",
+]

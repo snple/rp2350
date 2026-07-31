@@ -83,7 +83,9 @@ impl SwLock0 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -99,7 +101,9 @@ impl SwLock0 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -153,7 +157,8 @@ impl SwLock0Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock0::NSEC_MASK) | ((value << SwLock0::NSEC_OFFSET) & SwLock0::NSEC_MASK)
+            bits: (self.bits & !SwLock0::NSEC_MASK)
+                | ((value << SwLock0::NSEC_OFFSET) & SwLock0::NSEC_MASK),
         }
     }
 
@@ -163,7 +168,8 @@ impl SwLock0Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock0::SEC_MASK) | ((value << SwLock0::SEC_OFFSET) & SwLock0::SEC_MASK)
+            bits: (self.bits & !SwLock0::SEC_MASK)
+                | ((value << SwLock0::SEC_OFFSET) & SwLock0::SEC_MASK),
         }
     }
 }
@@ -270,7 +276,9 @@ impl SwLock1 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -286,7 +294,9 @@ impl SwLock1 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -340,7 +350,8 @@ impl SwLock1Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock1::NSEC_MASK) | ((value << SwLock1::NSEC_OFFSET) & SwLock1::NSEC_MASK)
+            bits: (self.bits & !SwLock1::NSEC_MASK)
+                | ((value << SwLock1::NSEC_OFFSET) & SwLock1::NSEC_MASK),
         }
     }
 
@@ -350,7 +361,8 @@ impl SwLock1Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock1::SEC_MASK) | ((value << SwLock1::SEC_OFFSET) & SwLock1::SEC_MASK)
+            bits: (self.bits & !SwLock1::SEC_MASK)
+                | ((value << SwLock1::SEC_OFFSET) & SwLock1::SEC_MASK),
         }
     }
 }
@@ -457,7 +469,9 @@ impl SwLock2 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -473,7 +487,9 @@ impl SwLock2 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -527,7 +543,8 @@ impl SwLock2Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock2::NSEC_MASK) | ((value << SwLock2::NSEC_OFFSET) & SwLock2::NSEC_MASK)
+            bits: (self.bits & !SwLock2::NSEC_MASK)
+                | ((value << SwLock2::NSEC_OFFSET) & SwLock2::NSEC_MASK),
         }
     }
 
@@ -537,7 +554,8 @@ impl SwLock2Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock2::SEC_MASK) | ((value << SwLock2::SEC_OFFSET) & SwLock2::SEC_MASK)
+            bits: (self.bits & !SwLock2::SEC_MASK)
+                | ((value << SwLock2::SEC_OFFSET) & SwLock2::SEC_MASK),
         }
     }
 }
@@ -644,7 +662,9 @@ impl SwLock3 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -660,7 +680,9 @@ impl SwLock3 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -714,7 +736,8 @@ impl SwLock3Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock3::NSEC_MASK) | ((value << SwLock3::NSEC_OFFSET) & SwLock3::NSEC_MASK)
+            bits: (self.bits & !SwLock3::NSEC_MASK)
+                | ((value << SwLock3::NSEC_OFFSET) & SwLock3::NSEC_MASK),
         }
     }
 
@@ -724,7 +747,8 @@ impl SwLock3Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock3::SEC_MASK) | ((value << SwLock3::SEC_OFFSET) & SwLock3::SEC_MASK)
+            bits: (self.bits & !SwLock3::SEC_MASK)
+                | ((value << SwLock3::SEC_OFFSET) & SwLock3::SEC_MASK),
         }
     }
 }
@@ -831,7 +855,9 @@ impl SwLock4 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -847,7 +873,9 @@ impl SwLock4 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -901,7 +929,8 @@ impl SwLock4Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock4::NSEC_MASK) | ((value << SwLock4::NSEC_OFFSET) & SwLock4::NSEC_MASK)
+            bits: (self.bits & !SwLock4::NSEC_MASK)
+                | ((value << SwLock4::NSEC_OFFSET) & SwLock4::NSEC_MASK),
         }
     }
 
@@ -911,7 +940,8 @@ impl SwLock4Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock4::SEC_MASK) | ((value << SwLock4::SEC_OFFSET) & SwLock4::SEC_MASK)
+            bits: (self.bits & !SwLock4::SEC_MASK)
+                | ((value << SwLock4::SEC_OFFSET) & SwLock4::SEC_MASK),
         }
     }
 }
@@ -1018,7 +1048,9 @@ impl SwLock5 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -1034,7 +1066,9 @@ impl SwLock5 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -1088,7 +1122,8 @@ impl SwLock5Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock5::NSEC_MASK) | ((value << SwLock5::NSEC_OFFSET) & SwLock5::NSEC_MASK)
+            bits: (self.bits & !SwLock5::NSEC_MASK)
+                | ((value << SwLock5::NSEC_OFFSET) & SwLock5::NSEC_MASK),
         }
     }
 
@@ -1098,7 +1133,8 @@ impl SwLock5Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock5::SEC_MASK) | ((value << SwLock5::SEC_OFFSET) & SwLock5::SEC_MASK)
+            bits: (self.bits & !SwLock5::SEC_MASK)
+                | ((value << SwLock5::SEC_OFFSET) & SwLock5::SEC_MASK),
         }
     }
 }
@@ -1205,7 +1241,9 @@ impl SwLock6 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -1221,7 +1259,9 @@ impl SwLock6 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -1275,7 +1315,8 @@ impl SwLock6Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock6::NSEC_MASK) | ((value << SwLock6::NSEC_OFFSET) & SwLock6::NSEC_MASK)
+            bits: (self.bits & !SwLock6::NSEC_MASK)
+                | ((value << SwLock6::NSEC_OFFSET) & SwLock6::NSEC_MASK),
         }
     }
 
@@ -1285,7 +1326,8 @@ impl SwLock6Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock6::SEC_MASK) | ((value << SwLock6::SEC_OFFSET) & SwLock6::SEC_MASK)
+            bits: (self.bits & !SwLock6::SEC_MASK)
+                | ((value << SwLock6::SEC_OFFSET) & SwLock6::SEC_MASK),
         }
     }
 }
@@ -1392,7 +1434,9 @@ impl SwLock7 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -1408,7 +1452,9 @@ impl SwLock7 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -1462,7 +1508,8 @@ impl SwLock7Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock7::NSEC_MASK) | ((value << SwLock7::NSEC_OFFSET) & SwLock7::NSEC_MASK)
+            bits: (self.bits & !SwLock7::NSEC_MASK)
+                | ((value << SwLock7::NSEC_OFFSET) & SwLock7::NSEC_MASK),
         }
     }
 
@@ -1472,7 +1519,8 @@ impl SwLock7Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock7::SEC_MASK) | ((value << SwLock7::SEC_OFFSET) & SwLock7::SEC_MASK)
+            bits: (self.bits & !SwLock7::SEC_MASK)
+                | ((value << SwLock7::SEC_OFFSET) & SwLock7::SEC_MASK),
         }
     }
 }
@@ -1579,7 +1627,9 @@ impl SwLock8 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -1595,7 +1645,9 @@ impl SwLock8 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -1649,7 +1701,8 @@ impl SwLock8Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock8::NSEC_MASK) | ((value << SwLock8::NSEC_OFFSET) & SwLock8::NSEC_MASK)
+            bits: (self.bits & !SwLock8::NSEC_MASK)
+                | ((value << SwLock8::NSEC_OFFSET) & SwLock8::NSEC_MASK),
         }
     }
 
@@ -1659,7 +1712,8 @@ impl SwLock8Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock8::SEC_MASK) | ((value << SwLock8::SEC_OFFSET) & SwLock8::SEC_MASK)
+            bits: (self.bits & !SwLock8::SEC_MASK)
+                | ((value << SwLock8::SEC_OFFSET) & SwLock8::SEC_MASK),
         }
     }
 }
@@ -1766,7 +1820,9 @@ impl SwLock9 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -1782,7 +1838,9 @@ impl SwLock9 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -1836,7 +1894,8 @@ impl SwLock9Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock9::NSEC_MASK) | ((value << SwLock9::NSEC_OFFSET) & SwLock9::NSEC_MASK)
+            bits: (self.bits & !SwLock9::NSEC_MASK)
+                | ((value << SwLock9::NSEC_OFFSET) & SwLock9::NSEC_MASK),
         }
     }
 
@@ -1846,7 +1905,8 @@ impl SwLock9Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock9::SEC_MASK) | ((value << SwLock9::SEC_OFFSET) & SwLock9::SEC_MASK)
+            bits: (self.bits & !SwLock9::SEC_MASK)
+                | ((value << SwLock9::SEC_OFFSET) & SwLock9::SEC_MASK),
         }
     }
 }
@@ -1953,7 +2013,9 @@ impl SwLock10 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -1969,7 +2031,9 @@ impl SwLock10 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -2023,7 +2087,8 @@ impl SwLock10Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock10::NSEC_MASK) | ((value << SwLock10::NSEC_OFFSET) & SwLock10::NSEC_MASK)
+            bits: (self.bits & !SwLock10::NSEC_MASK)
+                | ((value << SwLock10::NSEC_OFFSET) & SwLock10::NSEC_MASK),
         }
     }
 
@@ -2033,7 +2098,8 @@ impl SwLock10Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock10::SEC_MASK) | ((value << SwLock10::SEC_OFFSET) & SwLock10::SEC_MASK)
+            bits: (self.bits & !SwLock10::SEC_MASK)
+                | ((value << SwLock10::SEC_OFFSET) & SwLock10::SEC_MASK),
         }
     }
 }
@@ -2140,7 +2206,9 @@ impl SwLock11 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -2156,7 +2224,9 @@ impl SwLock11 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -2210,7 +2280,8 @@ impl SwLock11Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock11::NSEC_MASK) | ((value << SwLock11::NSEC_OFFSET) & SwLock11::NSEC_MASK)
+            bits: (self.bits & !SwLock11::NSEC_MASK)
+                | ((value << SwLock11::NSEC_OFFSET) & SwLock11::NSEC_MASK),
         }
     }
 
@@ -2220,7 +2291,8 @@ impl SwLock11Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock11::SEC_MASK) | ((value << SwLock11::SEC_OFFSET) & SwLock11::SEC_MASK)
+            bits: (self.bits & !SwLock11::SEC_MASK)
+                | ((value << SwLock11::SEC_OFFSET) & SwLock11::SEC_MASK),
         }
     }
 }
@@ -2327,7 +2399,9 @@ impl SwLock12 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -2343,7 +2417,9 @@ impl SwLock12 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -2397,7 +2473,8 @@ impl SwLock12Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock12::NSEC_MASK) | ((value << SwLock12::NSEC_OFFSET) & SwLock12::NSEC_MASK)
+            bits: (self.bits & !SwLock12::NSEC_MASK)
+                | ((value << SwLock12::NSEC_OFFSET) & SwLock12::NSEC_MASK),
         }
     }
 
@@ -2407,7 +2484,8 @@ impl SwLock12Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock12::SEC_MASK) | ((value << SwLock12::SEC_OFFSET) & SwLock12::SEC_MASK)
+            bits: (self.bits & !SwLock12::SEC_MASK)
+                | ((value << SwLock12::SEC_OFFSET) & SwLock12::SEC_MASK),
         }
     }
 }
@@ -2514,7 +2592,9 @@ impl SwLock13 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -2530,7 +2610,9 @@ impl SwLock13 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -2584,7 +2666,8 @@ impl SwLock13Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock13::NSEC_MASK) | ((value << SwLock13::NSEC_OFFSET) & SwLock13::NSEC_MASK)
+            bits: (self.bits & !SwLock13::NSEC_MASK)
+                | ((value << SwLock13::NSEC_OFFSET) & SwLock13::NSEC_MASK),
         }
     }
 
@@ -2594,7 +2677,8 @@ impl SwLock13Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock13::SEC_MASK) | ((value << SwLock13::SEC_OFFSET) & SwLock13::SEC_MASK)
+            bits: (self.bits & !SwLock13::SEC_MASK)
+                | ((value << SwLock13::SEC_OFFSET) & SwLock13::SEC_MASK),
         }
     }
 }
@@ -2701,7 +2785,9 @@ impl SwLock14 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -2717,7 +2803,9 @@ impl SwLock14 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -2771,7 +2859,8 @@ impl SwLock14Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock14::NSEC_MASK) | ((value << SwLock14::NSEC_OFFSET) & SwLock14::NSEC_MASK)
+            bits: (self.bits & !SwLock14::NSEC_MASK)
+                | ((value << SwLock14::NSEC_OFFSET) & SwLock14::NSEC_MASK),
         }
     }
 
@@ -2781,7 +2870,8 @@ impl SwLock14Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock14::SEC_MASK) | ((value << SwLock14::SEC_OFFSET) & SwLock14::SEC_MASK)
+            bits: (self.bits & !SwLock14::SEC_MASK)
+                | ((value << SwLock14::SEC_OFFSET) & SwLock14::SEC_MASK),
         }
     }
 }
@@ -2888,7 +2978,9 @@ impl SwLock15 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -2904,7 +2996,9 @@ impl SwLock15 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -2958,7 +3052,8 @@ impl SwLock15Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock15::NSEC_MASK) | ((value << SwLock15::NSEC_OFFSET) & SwLock15::NSEC_MASK)
+            bits: (self.bits & !SwLock15::NSEC_MASK)
+                | ((value << SwLock15::NSEC_OFFSET) & SwLock15::NSEC_MASK),
         }
     }
 
@@ -2968,7 +3063,8 @@ impl SwLock15Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock15::SEC_MASK) | ((value << SwLock15::SEC_OFFSET) & SwLock15::SEC_MASK)
+            bits: (self.bits & !SwLock15::SEC_MASK)
+                | ((value << SwLock15::SEC_OFFSET) & SwLock15::SEC_MASK),
         }
     }
 }
@@ -3075,7 +3171,9 @@ impl SwLock16 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -3091,7 +3189,9 @@ impl SwLock16 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -3145,7 +3245,8 @@ impl SwLock16Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock16::NSEC_MASK) | ((value << SwLock16::NSEC_OFFSET) & SwLock16::NSEC_MASK)
+            bits: (self.bits & !SwLock16::NSEC_MASK)
+                | ((value << SwLock16::NSEC_OFFSET) & SwLock16::NSEC_MASK),
         }
     }
 
@@ -3155,7 +3256,8 @@ impl SwLock16Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock16::SEC_MASK) | ((value << SwLock16::SEC_OFFSET) & SwLock16::SEC_MASK)
+            bits: (self.bits & !SwLock16::SEC_MASK)
+                | ((value << SwLock16::SEC_OFFSET) & SwLock16::SEC_MASK),
         }
     }
 }
@@ -3262,7 +3364,9 @@ impl SwLock17 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -3278,7 +3382,9 @@ impl SwLock17 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -3332,7 +3438,8 @@ impl SwLock17Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock17::NSEC_MASK) | ((value << SwLock17::NSEC_OFFSET) & SwLock17::NSEC_MASK)
+            bits: (self.bits & !SwLock17::NSEC_MASK)
+                | ((value << SwLock17::NSEC_OFFSET) & SwLock17::NSEC_MASK),
         }
     }
 
@@ -3342,7 +3449,8 @@ impl SwLock17Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock17::SEC_MASK) | ((value << SwLock17::SEC_OFFSET) & SwLock17::SEC_MASK)
+            bits: (self.bits & !SwLock17::SEC_MASK)
+                | ((value << SwLock17::SEC_OFFSET) & SwLock17::SEC_MASK),
         }
     }
 }
@@ -3449,7 +3557,9 @@ impl SwLock18 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -3465,7 +3575,9 @@ impl SwLock18 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -3519,7 +3631,8 @@ impl SwLock18Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock18::NSEC_MASK) | ((value << SwLock18::NSEC_OFFSET) & SwLock18::NSEC_MASK)
+            bits: (self.bits & !SwLock18::NSEC_MASK)
+                | ((value << SwLock18::NSEC_OFFSET) & SwLock18::NSEC_MASK),
         }
     }
 
@@ -3529,7 +3642,8 @@ impl SwLock18Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock18::SEC_MASK) | ((value << SwLock18::SEC_OFFSET) & SwLock18::SEC_MASK)
+            bits: (self.bits & !SwLock18::SEC_MASK)
+                | ((value << SwLock18::SEC_OFFSET) & SwLock18::SEC_MASK),
         }
     }
 }
@@ -3636,7 +3750,9 @@ impl SwLock19 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -3652,7 +3768,9 @@ impl SwLock19 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -3706,7 +3824,8 @@ impl SwLock19Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock19::NSEC_MASK) | ((value << SwLock19::NSEC_OFFSET) & SwLock19::NSEC_MASK)
+            bits: (self.bits & !SwLock19::NSEC_MASK)
+                | ((value << SwLock19::NSEC_OFFSET) & SwLock19::NSEC_MASK),
         }
     }
 
@@ -3716,7 +3835,8 @@ impl SwLock19Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock19::SEC_MASK) | ((value << SwLock19::SEC_OFFSET) & SwLock19::SEC_MASK)
+            bits: (self.bits & !SwLock19::SEC_MASK)
+                | ((value << SwLock19::SEC_OFFSET) & SwLock19::SEC_MASK),
         }
     }
 }
@@ -3823,7 +3943,9 @@ impl SwLock20 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -3839,7 +3961,9 @@ impl SwLock20 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -3893,7 +4017,8 @@ impl SwLock20Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock20::NSEC_MASK) | ((value << SwLock20::NSEC_OFFSET) & SwLock20::NSEC_MASK)
+            bits: (self.bits & !SwLock20::NSEC_MASK)
+                | ((value << SwLock20::NSEC_OFFSET) & SwLock20::NSEC_MASK),
         }
     }
 
@@ -3903,7 +4028,8 @@ impl SwLock20Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock20::SEC_MASK) | ((value << SwLock20::SEC_OFFSET) & SwLock20::SEC_MASK)
+            bits: (self.bits & !SwLock20::SEC_MASK)
+                | ((value << SwLock20::SEC_OFFSET) & SwLock20::SEC_MASK),
         }
     }
 }
@@ -4010,7 +4136,9 @@ impl SwLock21 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -4026,7 +4154,9 @@ impl SwLock21 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -4080,7 +4210,8 @@ impl SwLock21Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock21::NSEC_MASK) | ((value << SwLock21::NSEC_OFFSET) & SwLock21::NSEC_MASK)
+            bits: (self.bits & !SwLock21::NSEC_MASK)
+                | ((value << SwLock21::NSEC_OFFSET) & SwLock21::NSEC_MASK),
         }
     }
 
@@ -4090,7 +4221,8 @@ impl SwLock21Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock21::SEC_MASK) | ((value << SwLock21::SEC_OFFSET) & SwLock21::SEC_MASK)
+            bits: (self.bits & !SwLock21::SEC_MASK)
+                | ((value << SwLock21::SEC_OFFSET) & SwLock21::SEC_MASK),
         }
     }
 }
@@ -4197,7 +4329,9 @@ impl SwLock22 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -4213,7 +4347,9 @@ impl SwLock22 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -4267,7 +4403,8 @@ impl SwLock22Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock22::NSEC_MASK) | ((value << SwLock22::NSEC_OFFSET) & SwLock22::NSEC_MASK)
+            bits: (self.bits & !SwLock22::NSEC_MASK)
+                | ((value << SwLock22::NSEC_OFFSET) & SwLock22::NSEC_MASK),
         }
     }
 
@@ -4277,7 +4414,8 @@ impl SwLock22Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock22::SEC_MASK) | ((value << SwLock22::SEC_OFFSET) & SwLock22::SEC_MASK)
+            bits: (self.bits & !SwLock22::SEC_MASK)
+                | ((value << SwLock22::SEC_OFFSET) & SwLock22::SEC_MASK),
         }
     }
 }
@@ -4384,7 +4522,9 @@ impl SwLock23 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -4400,7 +4540,9 @@ impl SwLock23 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -4454,7 +4596,8 @@ impl SwLock23Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock23::NSEC_MASK) | ((value << SwLock23::NSEC_OFFSET) & SwLock23::NSEC_MASK)
+            bits: (self.bits & !SwLock23::NSEC_MASK)
+                | ((value << SwLock23::NSEC_OFFSET) & SwLock23::NSEC_MASK),
         }
     }
 
@@ -4464,7 +4607,8 @@ impl SwLock23Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock23::SEC_MASK) | ((value << SwLock23::SEC_OFFSET) & SwLock23::SEC_MASK)
+            bits: (self.bits & !SwLock23::SEC_MASK)
+                | ((value << SwLock23::SEC_OFFSET) & SwLock23::SEC_MASK),
         }
     }
 }
@@ -4571,7 +4715,9 @@ impl SwLock24 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -4587,7 +4733,9 @@ impl SwLock24 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -4641,7 +4789,8 @@ impl SwLock24Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock24::NSEC_MASK) | ((value << SwLock24::NSEC_OFFSET) & SwLock24::NSEC_MASK)
+            bits: (self.bits & !SwLock24::NSEC_MASK)
+                | ((value << SwLock24::NSEC_OFFSET) & SwLock24::NSEC_MASK),
         }
     }
 
@@ -4651,7 +4800,8 @@ impl SwLock24Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock24::SEC_MASK) | ((value << SwLock24::SEC_OFFSET) & SwLock24::SEC_MASK)
+            bits: (self.bits & !SwLock24::SEC_MASK)
+                | ((value << SwLock24::SEC_OFFSET) & SwLock24::SEC_MASK),
         }
     }
 }
@@ -4758,7 +4908,9 @@ impl SwLock25 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -4774,7 +4926,9 @@ impl SwLock25 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -4828,7 +4982,8 @@ impl SwLock25Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock25::NSEC_MASK) | ((value << SwLock25::NSEC_OFFSET) & SwLock25::NSEC_MASK)
+            bits: (self.bits & !SwLock25::NSEC_MASK)
+                | ((value << SwLock25::NSEC_OFFSET) & SwLock25::NSEC_MASK),
         }
     }
 
@@ -4838,7 +4993,8 @@ impl SwLock25Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock25::SEC_MASK) | ((value << SwLock25::SEC_OFFSET) & SwLock25::SEC_MASK)
+            bits: (self.bits & !SwLock25::SEC_MASK)
+                | ((value << SwLock25::SEC_OFFSET) & SwLock25::SEC_MASK),
         }
     }
 }
@@ -4945,7 +5101,9 @@ impl SwLock26 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -4961,7 +5119,9 @@ impl SwLock26 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -5015,7 +5175,8 @@ impl SwLock26Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock26::NSEC_MASK) | ((value << SwLock26::NSEC_OFFSET) & SwLock26::NSEC_MASK)
+            bits: (self.bits & !SwLock26::NSEC_MASK)
+                | ((value << SwLock26::NSEC_OFFSET) & SwLock26::NSEC_MASK),
         }
     }
 
@@ -5025,7 +5186,8 @@ impl SwLock26Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock26::SEC_MASK) | ((value << SwLock26::SEC_OFFSET) & SwLock26::SEC_MASK)
+            bits: (self.bits & !SwLock26::SEC_MASK)
+                | ((value << SwLock26::SEC_OFFSET) & SwLock26::SEC_MASK),
         }
     }
 }
@@ -5132,7 +5294,9 @@ impl SwLock27 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -5148,7 +5312,9 @@ impl SwLock27 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -5202,7 +5368,8 @@ impl SwLock27Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock27::NSEC_MASK) | ((value << SwLock27::NSEC_OFFSET) & SwLock27::NSEC_MASK)
+            bits: (self.bits & !SwLock27::NSEC_MASK)
+                | ((value << SwLock27::NSEC_OFFSET) & SwLock27::NSEC_MASK),
         }
     }
 
@@ -5212,7 +5379,8 @@ impl SwLock27Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock27::SEC_MASK) | ((value << SwLock27::SEC_OFFSET) & SwLock27::SEC_MASK)
+            bits: (self.bits & !SwLock27::SEC_MASK)
+                | ((value << SwLock27::SEC_OFFSET) & SwLock27::SEC_MASK),
         }
     }
 }
@@ -5319,7 +5487,9 @@ impl SwLock28 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -5335,7 +5505,9 @@ impl SwLock28 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -5389,7 +5561,8 @@ impl SwLock28Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock28::NSEC_MASK) | ((value << SwLock28::NSEC_OFFSET) & SwLock28::NSEC_MASK)
+            bits: (self.bits & !SwLock28::NSEC_MASK)
+                | ((value << SwLock28::NSEC_OFFSET) & SwLock28::NSEC_MASK),
         }
     }
 
@@ -5399,7 +5572,8 @@ impl SwLock28Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock28::SEC_MASK) | ((value << SwLock28::SEC_OFFSET) & SwLock28::SEC_MASK)
+            bits: (self.bits & !SwLock28::SEC_MASK)
+                | ((value << SwLock28::SEC_OFFSET) & SwLock28::SEC_MASK),
         }
     }
 }
@@ -5506,7 +5680,9 @@ impl SwLock29 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -5522,7 +5698,9 @@ impl SwLock29 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -5576,7 +5754,8 @@ impl SwLock29Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock29::NSEC_MASK) | ((value << SwLock29::NSEC_OFFSET) & SwLock29::NSEC_MASK)
+            bits: (self.bits & !SwLock29::NSEC_MASK)
+                | ((value << SwLock29::NSEC_OFFSET) & SwLock29::NSEC_MASK),
         }
     }
 
@@ -5586,7 +5765,8 @@ impl SwLock29Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock29::SEC_MASK) | ((value << SwLock29::SEC_OFFSET) & SwLock29::SEC_MASK)
+            bits: (self.bits & !SwLock29::SEC_MASK)
+                | ((value << SwLock29::SEC_OFFSET) & SwLock29::SEC_MASK),
         }
     }
 }
@@ -5693,7 +5873,9 @@ impl SwLock30 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -5709,7 +5891,9 @@ impl SwLock30 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -5763,7 +5947,8 @@ impl SwLock30Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock30::NSEC_MASK) | ((value << SwLock30::NSEC_OFFSET) & SwLock30::NSEC_MASK)
+            bits: (self.bits & !SwLock30::NSEC_MASK)
+                | ((value << SwLock30::NSEC_OFFSET) & SwLock30::NSEC_MASK),
         }
     }
 
@@ -5773,7 +5958,8 @@ impl SwLock30Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock30::SEC_MASK) | ((value << SwLock30::SEC_OFFSET) & SwLock30::SEC_MASK)
+            bits: (self.bits & !SwLock30::SEC_MASK)
+                | ((value << SwLock30::SEC_OFFSET) & SwLock30::SEC_MASK),
         }
     }
 }
@@ -5880,7 +6066,9 @@ impl SwLock31 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -5896,7 +6084,9 @@ impl SwLock31 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -5950,7 +6140,8 @@ impl SwLock31Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock31::NSEC_MASK) | ((value << SwLock31::NSEC_OFFSET) & SwLock31::NSEC_MASK)
+            bits: (self.bits & !SwLock31::NSEC_MASK)
+                | ((value << SwLock31::NSEC_OFFSET) & SwLock31::NSEC_MASK),
         }
     }
 
@@ -5960,7 +6151,8 @@ impl SwLock31Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock31::SEC_MASK) | ((value << SwLock31::SEC_OFFSET) & SwLock31::SEC_MASK)
+            bits: (self.bits & !SwLock31::SEC_MASK)
+                | ((value << SwLock31::SEC_OFFSET) & SwLock31::SEC_MASK),
         }
     }
 }
@@ -6067,7 +6259,9 @@ impl SwLock32 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -6083,7 +6277,9 @@ impl SwLock32 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -6137,7 +6333,8 @@ impl SwLock32Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock32::NSEC_MASK) | ((value << SwLock32::NSEC_OFFSET) & SwLock32::NSEC_MASK)
+            bits: (self.bits & !SwLock32::NSEC_MASK)
+                | ((value << SwLock32::NSEC_OFFSET) & SwLock32::NSEC_MASK),
         }
     }
 
@@ -6147,7 +6344,8 @@ impl SwLock32Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock32::SEC_MASK) | ((value << SwLock32::SEC_OFFSET) & SwLock32::SEC_MASK)
+            bits: (self.bits & !SwLock32::SEC_MASK)
+                | ((value << SwLock32::SEC_OFFSET) & SwLock32::SEC_MASK),
         }
     }
 }
@@ -6254,7 +6452,9 @@ impl SwLock33 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -6270,7 +6470,9 @@ impl SwLock33 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -6324,7 +6526,8 @@ impl SwLock33Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock33::NSEC_MASK) | ((value << SwLock33::NSEC_OFFSET) & SwLock33::NSEC_MASK)
+            bits: (self.bits & !SwLock33::NSEC_MASK)
+                | ((value << SwLock33::NSEC_OFFSET) & SwLock33::NSEC_MASK),
         }
     }
 
@@ -6334,7 +6537,8 @@ impl SwLock33Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock33::SEC_MASK) | ((value << SwLock33::SEC_OFFSET) & SwLock33::SEC_MASK)
+            bits: (self.bits & !SwLock33::SEC_MASK)
+                | ((value << SwLock33::SEC_OFFSET) & SwLock33::SEC_MASK),
         }
     }
 }
@@ -6441,7 +6645,9 @@ impl SwLock34 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -6457,7 +6663,9 @@ impl SwLock34 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -6511,7 +6719,8 @@ impl SwLock34Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock34::NSEC_MASK) | ((value << SwLock34::NSEC_OFFSET) & SwLock34::NSEC_MASK)
+            bits: (self.bits & !SwLock34::NSEC_MASK)
+                | ((value << SwLock34::NSEC_OFFSET) & SwLock34::NSEC_MASK),
         }
     }
 
@@ -6521,7 +6730,8 @@ impl SwLock34Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock34::SEC_MASK) | ((value << SwLock34::SEC_OFFSET) & SwLock34::SEC_MASK)
+            bits: (self.bits & !SwLock34::SEC_MASK)
+                | ((value << SwLock34::SEC_OFFSET) & SwLock34::SEC_MASK),
         }
     }
 }
@@ -6628,7 +6838,9 @@ impl SwLock35 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -6644,7 +6856,9 @@ impl SwLock35 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -6698,7 +6912,8 @@ impl SwLock35Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock35::NSEC_MASK) | ((value << SwLock35::NSEC_OFFSET) & SwLock35::NSEC_MASK)
+            bits: (self.bits & !SwLock35::NSEC_MASK)
+                | ((value << SwLock35::NSEC_OFFSET) & SwLock35::NSEC_MASK),
         }
     }
 
@@ -6708,7 +6923,8 @@ impl SwLock35Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock35::SEC_MASK) | ((value << SwLock35::SEC_OFFSET) & SwLock35::SEC_MASK)
+            bits: (self.bits & !SwLock35::SEC_MASK)
+                | ((value << SwLock35::SEC_OFFSET) & SwLock35::SEC_MASK),
         }
     }
 }
@@ -6815,7 +7031,9 @@ impl SwLock36 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -6831,7 +7049,9 @@ impl SwLock36 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -6885,7 +7105,8 @@ impl SwLock36Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock36::NSEC_MASK) | ((value << SwLock36::NSEC_OFFSET) & SwLock36::NSEC_MASK)
+            bits: (self.bits & !SwLock36::NSEC_MASK)
+                | ((value << SwLock36::NSEC_OFFSET) & SwLock36::NSEC_MASK),
         }
     }
 
@@ -6895,7 +7116,8 @@ impl SwLock36Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock36::SEC_MASK) | ((value << SwLock36::SEC_OFFSET) & SwLock36::SEC_MASK)
+            bits: (self.bits & !SwLock36::SEC_MASK)
+                | ((value << SwLock36::SEC_OFFSET) & SwLock36::SEC_MASK),
         }
     }
 }
@@ -7002,7 +7224,9 @@ impl SwLock37 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -7018,7 +7242,9 @@ impl SwLock37 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -7072,7 +7298,8 @@ impl SwLock37Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock37::NSEC_MASK) | ((value << SwLock37::NSEC_OFFSET) & SwLock37::NSEC_MASK)
+            bits: (self.bits & !SwLock37::NSEC_MASK)
+                | ((value << SwLock37::NSEC_OFFSET) & SwLock37::NSEC_MASK),
         }
     }
 
@@ -7082,7 +7309,8 @@ impl SwLock37Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock37::SEC_MASK) | ((value << SwLock37::SEC_OFFSET) & SwLock37::SEC_MASK)
+            bits: (self.bits & !SwLock37::SEC_MASK)
+                | ((value << SwLock37::SEC_OFFSET) & SwLock37::SEC_MASK),
         }
     }
 }
@@ -7189,7 +7417,9 @@ impl SwLock38 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -7205,7 +7435,9 @@ impl SwLock38 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -7259,7 +7491,8 @@ impl SwLock38Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock38::NSEC_MASK) | ((value << SwLock38::NSEC_OFFSET) & SwLock38::NSEC_MASK)
+            bits: (self.bits & !SwLock38::NSEC_MASK)
+                | ((value << SwLock38::NSEC_OFFSET) & SwLock38::NSEC_MASK),
         }
     }
 
@@ -7269,7 +7502,8 @@ impl SwLock38Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock38::SEC_MASK) | ((value << SwLock38::SEC_OFFSET) & SwLock38::SEC_MASK)
+            bits: (self.bits & !SwLock38::SEC_MASK)
+                | ((value << SwLock38::SEC_OFFSET) & SwLock38::SEC_MASK),
         }
     }
 }
@@ -7376,7 +7610,9 @@ impl SwLock39 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -7392,7 +7628,9 @@ impl SwLock39 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -7446,7 +7684,8 @@ impl SwLock39Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock39::NSEC_MASK) | ((value << SwLock39::NSEC_OFFSET) & SwLock39::NSEC_MASK)
+            bits: (self.bits & !SwLock39::NSEC_MASK)
+                | ((value << SwLock39::NSEC_OFFSET) & SwLock39::NSEC_MASK),
         }
     }
 
@@ -7456,7 +7695,8 @@ impl SwLock39Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock39::SEC_MASK) | ((value << SwLock39::SEC_OFFSET) & SwLock39::SEC_MASK)
+            bits: (self.bits & !SwLock39::SEC_MASK)
+                | ((value << SwLock39::SEC_OFFSET) & SwLock39::SEC_MASK),
         }
     }
 }
@@ -7563,7 +7803,9 @@ impl SwLock40 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -7579,7 +7821,9 @@ impl SwLock40 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -7633,7 +7877,8 @@ impl SwLock40Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock40::NSEC_MASK) | ((value << SwLock40::NSEC_OFFSET) & SwLock40::NSEC_MASK)
+            bits: (self.bits & !SwLock40::NSEC_MASK)
+                | ((value << SwLock40::NSEC_OFFSET) & SwLock40::NSEC_MASK),
         }
     }
 
@@ -7643,7 +7888,8 @@ impl SwLock40Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock40::SEC_MASK) | ((value << SwLock40::SEC_OFFSET) & SwLock40::SEC_MASK)
+            bits: (self.bits & !SwLock40::SEC_MASK)
+                | ((value << SwLock40::SEC_OFFSET) & SwLock40::SEC_MASK),
         }
     }
 }
@@ -7750,7 +7996,9 @@ impl SwLock41 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -7766,7 +8014,9 @@ impl SwLock41 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -7820,7 +8070,8 @@ impl SwLock41Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock41::NSEC_MASK) | ((value << SwLock41::NSEC_OFFSET) & SwLock41::NSEC_MASK)
+            bits: (self.bits & !SwLock41::NSEC_MASK)
+                | ((value << SwLock41::NSEC_OFFSET) & SwLock41::NSEC_MASK),
         }
     }
 
@@ -7830,7 +8081,8 @@ impl SwLock41Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock41::SEC_MASK) | ((value << SwLock41::SEC_OFFSET) & SwLock41::SEC_MASK)
+            bits: (self.bits & !SwLock41::SEC_MASK)
+                | ((value << SwLock41::SEC_OFFSET) & SwLock41::SEC_MASK),
         }
     }
 }
@@ -7937,7 +8189,9 @@ impl SwLock42 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -7953,7 +8207,9 @@ impl SwLock42 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -8007,7 +8263,8 @@ impl SwLock42Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock42::NSEC_MASK) | ((value << SwLock42::NSEC_OFFSET) & SwLock42::NSEC_MASK)
+            bits: (self.bits & !SwLock42::NSEC_MASK)
+                | ((value << SwLock42::NSEC_OFFSET) & SwLock42::NSEC_MASK),
         }
     }
 
@@ -8017,7 +8274,8 @@ impl SwLock42Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock42::SEC_MASK) | ((value << SwLock42::SEC_OFFSET) & SwLock42::SEC_MASK)
+            bits: (self.bits & !SwLock42::SEC_MASK)
+                | ((value << SwLock42::SEC_OFFSET) & SwLock42::SEC_MASK),
         }
     }
 }
@@ -8124,7 +8382,9 @@ impl SwLock43 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -8140,7 +8400,9 @@ impl SwLock43 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -8194,7 +8456,8 @@ impl SwLock43Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock43::NSEC_MASK) | ((value << SwLock43::NSEC_OFFSET) & SwLock43::NSEC_MASK)
+            bits: (self.bits & !SwLock43::NSEC_MASK)
+                | ((value << SwLock43::NSEC_OFFSET) & SwLock43::NSEC_MASK),
         }
     }
 
@@ -8204,7 +8467,8 @@ impl SwLock43Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock43::SEC_MASK) | ((value << SwLock43::SEC_OFFSET) & SwLock43::SEC_MASK)
+            bits: (self.bits & !SwLock43::SEC_MASK)
+                | ((value << SwLock43::SEC_OFFSET) & SwLock43::SEC_MASK),
         }
     }
 }
@@ -8311,7 +8575,9 @@ impl SwLock44 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -8327,7 +8593,9 @@ impl SwLock44 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -8381,7 +8649,8 @@ impl SwLock44Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock44::NSEC_MASK) | ((value << SwLock44::NSEC_OFFSET) & SwLock44::NSEC_MASK)
+            bits: (self.bits & !SwLock44::NSEC_MASK)
+                | ((value << SwLock44::NSEC_OFFSET) & SwLock44::NSEC_MASK),
         }
     }
 
@@ -8391,7 +8660,8 @@ impl SwLock44Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock44::SEC_MASK) | ((value << SwLock44::SEC_OFFSET) & SwLock44::SEC_MASK)
+            bits: (self.bits & !SwLock44::SEC_MASK)
+                | ((value << SwLock44::SEC_OFFSET) & SwLock44::SEC_MASK),
         }
     }
 }
@@ -8498,7 +8768,9 @@ impl SwLock45 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -8514,7 +8786,9 @@ impl SwLock45 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -8568,7 +8842,8 @@ impl SwLock45Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock45::NSEC_MASK) | ((value << SwLock45::NSEC_OFFSET) & SwLock45::NSEC_MASK)
+            bits: (self.bits & !SwLock45::NSEC_MASK)
+                | ((value << SwLock45::NSEC_OFFSET) & SwLock45::NSEC_MASK),
         }
     }
 
@@ -8578,7 +8853,8 @@ impl SwLock45Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock45::SEC_MASK) | ((value << SwLock45::SEC_OFFSET) & SwLock45::SEC_MASK)
+            bits: (self.bits & !SwLock45::SEC_MASK)
+                | ((value << SwLock45::SEC_OFFSET) & SwLock45::SEC_MASK),
         }
     }
 }
@@ -8685,7 +8961,9 @@ impl SwLock46 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -8701,7 +8979,9 @@ impl SwLock46 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -8755,7 +9035,8 @@ impl SwLock46Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock46::NSEC_MASK) | ((value << SwLock46::NSEC_OFFSET) & SwLock46::NSEC_MASK)
+            bits: (self.bits & !SwLock46::NSEC_MASK)
+                | ((value << SwLock46::NSEC_OFFSET) & SwLock46::NSEC_MASK),
         }
     }
 
@@ -8765,7 +9046,8 @@ impl SwLock46Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock46::SEC_MASK) | ((value << SwLock46::SEC_OFFSET) & SwLock46::SEC_MASK)
+            bits: (self.bits & !SwLock46::SEC_MASK)
+                | ((value << SwLock46::SEC_OFFSET) & SwLock46::SEC_MASK),
         }
     }
 }
@@ -8872,7 +9154,9 @@ impl SwLock47 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -8888,7 +9172,9 @@ impl SwLock47 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -8942,7 +9228,8 @@ impl SwLock47Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock47::NSEC_MASK) | ((value << SwLock47::NSEC_OFFSET) & SwLock47::NSEC_MASK)
+            bits: (self.bits & !SwLock47::NSEC_MASK)
+                | ((value << SwLock47::NSEC_OFFSET) & SwLock47::NSEC_MASK),
         }
     }
 
@@ -8952,7 +9239,8 @@ impl SwLock47Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock47::SEC_MASK) | ((value << SwLock47::SEC_OFFSET) & SwLock47::SEC_MASK)
+            bits: (self.bits & !SwLock47::SEC_MASK)
+                | ((value << SwLock47::SEC_OFFSET) & SwLock47::SEC_MASK),
         }
     }
 }
@@ -9059,7 +9347,9 @@ impl SwLock48 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -9075,7 +9365,9 @@ impl SwLock48 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -9129,7 +9421,8 @@ impl SwLock48Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock48::NSEC_MASK) | ((value << SwLock48::NSEC_OFFSET) & SwLock48::NSEC_MASK)
+            bits: (self.bits & !SwLock48::NSEC_MASK)
+                | ((value << SwLock48::NSEC_OFFSET) & SwLock48::NSEC_MASK),
         }
     }
 
@@ -9139,7 +9432,8 @@ impl SwLock48Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock48::SEC_MASK) | ((value << SwLock48::SEC_OFFSET) & SwLock48::SEC_MASK)
+            bits: (self.bits & !SwLock48::SEC_MASK)
+                | ((value << SwLock48::SEC_OFFSET) & SwLock48::SEC_MASK),
         }
     }
 }
@@ -9246,7 +9540,9 @@ impl SwLock49 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -9262,7 +9558,9 @@ impl SwLock49 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -9316,7 +9614,8 @@ impl SwLock49Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock49::NSEC_MASK) | ((value << SwLock49::NSEC_OFFSET) & SwLock49::NSEC_MASK)
+            bits: (self.bits & !SwLock49::NSEC_MASK)
+                | ((value << SwLock49::NSEC_OFFSET) & SwLock49::NSEC_MASK),
         }
     }
 
@@ -9326,7 +9625,8 @@ impl SwLock49Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock49::SEC_MASK) | ((value << SwLock49::SEC_OFFSET) & SwLock49::SEC_MASK)
+            bits: (self.bits & !SwLock49::SEC_MASK)
+                | ((value << SwLock49::SEC_OFFSET) & SwLock49::SEC_MASK),
         }
     }
 }
@@ -9433,7 +9733,9 @@ impl SwLock50 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -9449,7 +9751,9 @@ impl SwLock50 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -9503,7 +9807,8 @@ impl SwLock50Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock50::NSEC_MASK) | ((value << SwLock50::NSEC_OFFSET) & SwLock50::NSEC_MASK)
+            bits: (self.bits & !SwLock50::NSEC_MASK)
+                | ((value << SwLock50::NSEC_OFFSET) & SwLock50::NSEC_MASK),
         }
     }
 
@@ -9513,7 +9818,8 @@ impl SwLock50Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock50::SEC_MASK) | ((value << SwLock50::SEC_OFFSET) & SwLock50::SEC_MASK)
+            bits: (self.bits & !SwLock50::SEC_MASK)
+                | ((value << SwLock50::SEC_OFFSET) & SwLock50::SEC_MASK),
         }
     }
 }
@@ -9620,7 +9926,9 @@ impl SwLock51 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -9636,7 +9944,9 @@ impl SwLock51 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -9690,7 +10000,8 @@ impl SwLock51Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock51::NSEC_MASK) | ((value << SwLock51::NSEC_OFFSET) & SwLock51::NSEC_MASK)
+            bits: (self.bits & !SwLock51::NSEC_MASK)
+                | ((value << SwLock51::NSEC_OFFSET) & SwLock51::NSEC_MASK),
         }
     }
 
@@ -9700,7 +10011,8 @@ impl SwLock51Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock51::SEC_MASK) | ((value << SwLock51::SEC_OFFSET) & SwLock51::SEC_MASK)
+            bits: (self.bits & !SwLock51::SEC_MASK)
+                | ((value << SwLock51::SEC_OFFSET) & SwLock51::SEC_MASK),
         }
     }
 }
@@ -9807,7 +10119,9 @@ impl SwLock52 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -9823,7 +10137,9 @@ impl SwLock52 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -9877,7 +10193,8 @@ impl SwLock52Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock52::NSEC_MASK) | ((value << SwLock52::NSEC_OFFSET) & SwLock52::NSEC_MASK)
+            bits: (self.bits & !SwLock52::NSEC_MASK)
+                | ((value << SwLock52::NSEC_OFFSET) & SwLock52::NSEC_MASK),
         }
     }
 
@@ -9887,7 +10204,8 @@ impl SwLock52Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock52::SEC_MASK) | ((value << SwLock52::SEC_OFFSET) & SwLock52::SEC_MASK)
+            bits: (self.bits & !SwLock52::SEC_MASK)
+                | ((value << SwLock52::SEC_OFFSET) & SwLock52::SEC_MASK),
         }
     }
 }
@@ -9994,7 +10312,9 @@ impl SwLock53 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -10010,7 +10330,9 @@ impl SwLock53 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -10064,7 +10386,8 @@ impl SwLock53Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock53::NSEC_MASK) | ((value << SwLock53::NSEC_OFFSET) & SwLock53::NSEC_MASK)
+            bits: (self.bits & !SwLock53::NSEC_MASK)
+                | ((value << SwLock53::NSEC_OFFSET) & SwLock53::NSEC_MASK),
         }
     }
 
@@ -10074,7 +10397,8 @@ impl SwLock53Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock53::SEC_MASK) | ((value << SwLock53::SEC_OFFSET) & SwLock53::SEC_MASK)
+            bits: (self.bits & !SwLock53::SEC_MASK)
+                | ((value << SwLock53::SEC_OFFSET) & SwLock53::SEC_MASK),
         }
     }
 }
@@ -10181,7 +10505,9 @@ impl SwLock54 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -10197,7 +10523,9 @@ impl SwLock54 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -10251,7 +10579,8 @@ impl SwLock54Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock54::NSEC_MASK) | ((value << SwLock54::NSEC_OFFSET) & SwLock54::NSEC_MASK)
+            bits: (self.bits & !SwLock54::NSEC_MASK)
+                | ((value << SwLock54::NSEC_OFFSET) & SwLock54::NSEC_MASK),
         }
     }
 
@@ -10261,7 +10590,8 @@ impl SwLock54Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock54::SEC_MASK) | ((value << SwLock54::SEC_OFFSET) & SwLock54::SEC_MASK)
+            bits: (self.bits & !SwLock54::SEC_MASK)
+                | ((value << SwLock54::SEC_OFFSET) & SwLock54::SEC_MASK),
         }
     }
 }
@@ -10368,7 +10698,9 @@ impl SwLock55 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -10384,7 +10716,9 @@ impl SwLock55 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -10438,7 +10772,8 @@ impl SwLock55Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock55::NSEC_MASK) | ((value << SwLock55::NSEC_OFFSET) & SwLock55::NSEC_MASK)
+            bits: (self.bits & !SwLock55::NSEC_MASK)
+                | ((value << SwLock55::NSEC_OFFSET) & SwLock55::NSEC_MASK),
         }
     }
 
@@ -10448,7 +10783,8 @@ impl SwLock55Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock55::SEC_MASK) | ((value << SwLock55::SEC_OFFSET) & SwLock55::SEC_MASK)
+            bits: (self.bits & !SwLock55::SEC_MASK)
+                | ((value << SwLock55::SEC_OFFSET) & SwLock55::SEC_MASK),
         }
     }
 }
@@ -10555,7 +10891,9 @@ impl SwLock56 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -10571,7 +10909,9 @@ impl SwLock56 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -10625,7 +10965,8 @@ impl SwLock56Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock56::NSEC_MASK) | ((value << SwLock56::NSEC_OFFSET) & SwLock56::NSEC_MASK)
+            bits: (self.bits & !SwLock56::NSEC_MASK)
+                | ((value << SwLock56::NSEC_OFFSET) & SwLock56::NSEC_MASK),
         }
     }
 
@@ -10635,7 +10976,8 @@ impl SwLock56Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock56::SEC_MASK) | ((value << SwLock56::SEC_OFFSET) & SwLock56::SEC_MASK)
+            bits: (self.bits & !SwLock56::SEC_MASK)
+                | ((value << SwLock56::SEC_OFFSET) & SwLock56::SEC_MASK),
         }
     }
 }
@@ -10742,7 +11084,9 @@ impl SwLock57 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -10758,7 +11102,9 @@ impl SwLock57 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -10812,7 +11158,8 @@ impl SwLock57Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock57::NSEC_MASK) | ((value << SwLock57::NSEC_OFFSET) & SwLock57::NSEC_MASK)
+            bits: (self.bits & !SwLock57::NSEC_MASK)
+                | ((value << SwLock57::NSEC_OFFSET) & SwLock57::NSEC_MASK),
         }
     }
 
@@ -10822,7 +11169,8 @@ impl SwLock57Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock57::SEC_MASK) | ((value << SwLock57::SEC_OFFSET) & SwLock57::SEC_MASK)
+            bits: (self.bits & !SwLock57::SEC_MASK)
+                | ((value << SwLock57::SEC_OFFSET) & SwLock57::SEC_MASK),
         }
     }
 }
@@ -10929,7 +11277,9 @@ impl SwLock58 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -10945,7 +11295,9 @@ impl SwLock58 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -10999,7 +11351,8 @@ impl SwLock58Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock58::NSEC_MASK) | ((value << SwLock58::NSEC_OFFSET) & SwLock58::NSEC_MASK)
+            bits: (self.bits & !SwLock58::NSEC_MASK)
+                | ((value << SwLock58::NSEC_OFFSET) & SwLock58::NSEC_MASK),
         }
     }
 
@@ -11009,7 +11362,8 @@ impl SwLock58Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock58::SEC_MASK) | ((value << SwLock58::SEC_OFFSET) & SwLock58::SEC_MASK)
+            bits: (self.bits & !SwLock58::SEC_MASK)
+                | ((value << SwLock58::SEC_OFFSET) & SwLock58::SEC_MASK),
         }
     }
 }
@@ -11116,7 +11470,9 @@ impl SwLock59 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -11132,7 +11488,9 @@ impl SwLock59 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -11186,7 +11544,8 @@ impl SwLock59Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock59::NSEC_MASK) | ((value << SwLock59::NSEC_OFFSET) & SwLock59::NSEC_MASK)
+            bits: (self.bits & !SwLock59::NSEC_MASK)
+                | ((value << SwLock59::NSEC_OFFSET) & SwLock59::NSEC_MASK),
         }
     }
 
@@ -11196,7 +11555,8 @@ impl SwLock59Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock59::SEC_MASK) | ((value << SwLock59::SEC_OFFSET) & SwLock59::SEC_MASK)
+            bits: (self.bits & !SwLock59::SEC_MASK)
+                | ((value << SwLock59::SEC_OFFSET) & SwLock59::SEC_MASK),
         }
     }
 }
@@ -11303,7 +11663,9 @@ impl SwLock60 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -11319,7 +11681,9 @@ impl SwLock60 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -11373,7 +11737,8 @@ impl SwLock60Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock60::NSEC_MASK) | ((value << SwLock60::NSEC_OFFSET) & SwLock60::NSEC_MASK)
+            bits: (self.bits & !SwLock60::NSEC_MASK)
+                | ((value << SwLock60::NSEC_OFFSET) & SwLock60::NSEC_MASK),
         }
     }
 
@@ -11383,7 +11748,8 @@ impl SwLock60Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock60::SEC_MASK) | ((value << SwLock60::SEC_OFFSET) & SwLock60::SEC_MASK)
+            bits: (self.bits & !SwLock60::SEC_MASK)
+                | ((value << SwLock60::SEC_OFFSET) & SwLock60::SEC_MASK),
         }
     }
 }
@@ -11490,7 +11856,9 @@ impl SwLock61 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -11506,7 +11874,9 @@ impl SwLock61 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -11560,7 +11930,8 @@ impl SwLock61Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock61::NSEC_MASK) | ((value << SwLock61::NSEC_OFFSET) & SwLock61::NSEC_MASK)
+            bits: (self.bits & !SwLock61::NSEC_MASK)
+                | ((value << SwLock61::NSEC_OFFSET) & SwLock61::NSEC_MASK),
         }
     }
 
@@ -11570,7 +11941,8 @@ impl SwLock61Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock61::SEC_MASK) | ((value << SwLock61::SEC_OFFSET) & SwLock61::SEC_MASK)
+            bits: (self.bits & !SwLock61::SEC_MASK)
+                | ((value << SwLock61::SEC_OFFSET) & SwLock61::SEC_MASK),
         }
     }
 }
@@ -11677,7 +12049,9 @@ impl SwLock62 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -11693,7 +12067,9 @@ impl SwLock62 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -11747,7 +12123,8 @@ impl SwLock62Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock62::NSEC_MASK) | ((value << SwLock62::NSEC_OFFSET) & SwLock62::NSEC_MASK)
+            bits: (self.bits & !SwLock62::NSEC_MASK)
+                | ((value << SwLock62::NSEC_OFFSET) & SwLock62::NSEC_MASK),
         }
     }
 
@@ -11757,7 +12134,8 @@ impl SwLock62Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock62::SEC_MASK) | ((value << SwLock62::SEC_OFFSET) & SwLock62::SEC_MASK)
+            bits: (self.bits & !SwLock62::SEC_MASK)
+                | ((value << SwLock62::SEC_OFFSET) & SwLock62::SEC_MASK),
         }
     }
 }
@@ -11864,7 +12242,9 @@ impl SwLock63 {
     /// Non-secure lock status. Writes are OR'd with the current value.
     #[inline(always)]
     pub fn write_nsec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NSEC_MASK) | ((value << Self::NSEC_OFFSET) & Self::NSEC_MASK)
+        });
     }
 
     /// **SEC** `[1:0]` (RW)
@@ -11880,7 +12260,9 @@ impl SwLock63 {
     /// Secure lock status. Writes are OR'd with the current value. This field is read-only to Non-secure code.
     #[inline(always)]
     pub fn write_sec(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEC_MASK) | ((value << Self::SEC_OFFSET) & Self::SEC_MASK)
+        });
     }
 }
 
@@ -11934,7 +12316,8 @@ impl SwLock63Val {
     #[inline(always)]
     pub const fn with_nsec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock63::NSEC_MASK) | ((value << SwLock63::NSEC_OFFSET) & SwLock63::NSEC_MASK)
+            bits: (self.bits & !SwLock63::NSEC_MASK)
+                | ((value << SwLock63::NSEC_OFFSET) & SwLock63::NSEC_MASK),
         }
     }
 
@@ -11944,7 +12327,8 @@ impl SwLock63Val {
     #[inline(always)]
     pub const fn with_sec(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SwLock63::SEC_MASK) | ((value << SwLock63::SEC_OFFSET) & SwLock63::SEC_MASK)
+            bits: (self.bits & !SwLock63::SEC_MASK)
+                | ((value << SwLock63::SEC_OFFSET) & SwLock63::SEC_MASK),
         }
     }
 }
@@ -12144,7 +12528,10 @@ impl SbpiInstr {
     /// Instruction payload size in bytes minus 1
     #[inline(always)]
     pub fn write_payload_size_m1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PAYLOAD_SIZE_M1_MASK) | ((value << Self::PAYLOAD_SIZE_M1_OFFSET) & Self::PAYLOAD_SIZE_M1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PAYLOAD_SIZE_M1_MASK)
+                | ((value << Self::PAYLOAD_SIZE_M1_OFFSET) & Self::PAYLOAD_SIZE_M1_MASK)
+        });
     }
 
     /// **TARGET** `[23:16]` (RW)
@@ -12160,7 +12547,9 @@ impl SbpiInstr {
     /// Instruction target, it can be PMC (0x3a) or DAP (0x02)
     #[inline(always)]
     pub fn write_target(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TARGET_MASK) | ((value << Self::TARGET_OFFSET) & Self::TARGET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TARGET_MASK) | ((value << Self::TARGET_OFFSET) & Self::TARGET_MASK)
+        });
     }
 
     /// **CMD** `[15:8]` (RW)
@@ -12172,7 +12561,9 @@ impl SbpiInstr {
     /// Write **CMD** `[15:8]` (RW)
     #[inline(always)]
     pub fn write_cmd(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CMD_MASK) | ((value << Self::CMD_OFFSET) & Self::CMD_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CMD_MASK) | ((value << Self::CMD_OFFSET) & Self::CMD_MASK)
+        });
     }
 
     /// **SHORT_WDATA** `[7:0]` (RW)
@@ -12188,7 +12579,10 @@ impl SbpiInstr {
     /// wdata to be used only when payload_size_m1=0
     #[inline(always)]
     pub fn write_short_wdata(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SHORT_WDATA_MASK) | ((value << Self::SHORT_WDATA_OFFSET) & Self::SHORT_WDATA_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SHORT_WDATA_MASK)
+                | ((value << Self::SHORT_WDATA_OFFSET) & Self::SHORT_WDATA_MASK)
+        });
     }
 }
 
@@ -12276,7 +12670,7 @@ impl SbpiInstrVal {
                 self.bits | SbpiInstr::EXEC_MASK
             } else {
                 self.bits & !SbpiInstr::EXEC_MASK
-            }
+            },
         }
     }
 
@@ -12290,7 +12684,7 @@ impl SbpiInstrVal {
                 self.bits | SbpiInstr::IS_WR_MASK
             } else {
                 self.bits & !SbpiInstr::IS_WR_MASK
-            }
+            },
         }
     }
 
@@ -12304,7 +12698,7 @@ impl SbpiInstrVal {
                 self.bits | SbpiInstr::HAS_PAYLOAD_MASK
             } else {
                 self.bits & !SbpiInstr::HAS_PAYLOAD_MASK
-            }
+            },
         }
     }
 
@@ -12314,7 +12708,8 @@ impl SbpiInstrVal {
     #[inline(always)]
     pub const fn with_payload_size_m1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SbpiInstr::PAYLOAD_SIZE_M1_MASK) | ((value << SbpiInstr::PAYLOAD_SIZE_M1_OFFSET) & SbpiInstr::PAYLOAD_SIZE_M1_MASK)
+            bits: (self.bits & !SbpiInstr::PAYLOAD_SIZE_M1_MASK)
+                | ((value << SbpiInstr::PAYLOAD_SIZE_M1_OFFSET) & SbpiInstr::PAYLOAD_SIZE_M1_MASK),
         }
     }
 
@@ -12324,7 +12719,8 @@ impl SbpiInstrVal {
     #[inline(always)]
     pub const fn with_target(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SbpiInstr::TARGET_MASK) | ((value << SbpiInstr::TARGET_OFFSET) & SbpiInstr::TARGET_MASK)
+            bits: (self.bits & !SbpiInstr::TARGET_MASK)
+                | ((value << SbpiInstr::TARGET_OFFSET) & SbpiInstr::TARGET_MASK),
         }
     }
 
@@ -12332,7 +12728,8 @@ impl SbpiInstrVal {
     #[inline(always)]
     pub const fn with_cmd(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SbpiInstr::CMD_MASK) | ((value << SbpiInstr::CMD_OFFSET) & SbpiInstr::CMD_MASK)
+            bits: (self.bits & !SbpiInstr::CMD_MASK)
+                | ((value << SbpiInstr::CMD_OFFSET) & SbpiInstr::CMD_MASK),
         }
     }
 
@@ -12342,7 +12739,8 @@ impl SbpiInstrVal {
     #[inline(always)]
     pub const fn with_short_wdata(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SbpiInstr::SHORT_WDATA_MASK) | ((value << SbpiInstr::SHORT_WDATA_OFFSET) & SbpiInstr::SHORT_WDATA_MASK)
+            bits: (self.bits & !SbpiInstr::SHORT_WDATA_MASK)
+                | ((value << SbpiInstr::SHORT_WDATA_OFFSET) & SbpiInstr::SHORT_WDATA_MASK),
         }
     }
 }
@@ -12415,7 +12813,10 @@ impl SbpiWdata0 {
     /// Write **SBPI_WDATA_0** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_sbpi_wdata_0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SBPI_WDATA_0_MASK) | ((value << Self::SBPI_WDATA_0_OFFSET) & Self::SBPI_WDATA_0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SBPI_WDATA_0_MASK)
+                | ((value << Self::SBPI_WDATA_0_OFFSET) & Self::SBPI_WDATA_0_MASK)
+        });
     }
 }
 
@@ -12457,7 +12858,8 @@ impl SbpiWdata0Val {
     #[inline(always)]
     pub const fn with_sbpi_wdata_0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SbpiWdata0::SBPI_WDATA_0_MASK) | ((value << SbpiWdata0::SBPI_WDATA_0_OFFSET) & SbpiWdata0::SBPI_WDATA_0_MASK)
+            bits: (self.bits & !SbpiWdata0::SBPI_WDATA_0_MASK)
+                | ((value << SbpiWdata0::SBPI_WDATA_0_OFFSET) & SbpiWdata0::SBPI_WDATA_0_MASK),
         }
     }
 }
@@ -12530,7 +12932,10 @@ impl SbpiWdata1 {
     /// Write **SBPI_WDATA_1** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_sbpi_wdata_1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SBPI_WDATA_1_MASK) | ((value << Self::SBPI_WDATA_1_OFFSET) & Self::SBPI_WDATA_1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SBPI_WDATA_1_MASK)
+                | ((value << Self::SBPI_WDATA_1_OFFSET) & Self::SBPI_WDATA_1_MASK)
+        });
     }
 }
 
@@ -12572,7 +12977,8 @@ impl SbpiWdata1Val {
     #[inline(always)]
     pub const fn with_sbpi_wdata_1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SbpiWdata1::SBPI_WDATA_1_MASK) | ((value << SbpiWdata1::SBPI_WDATA_1_OFFSET) & SbpiWdata1::SBPI_WDATA_1_MASK)
+            bits: (self.bits & !SbpiWdata1::SBPI_WDATA_1_MASK)
+                | ((value << SbpiWdata1::SBPI_WDATA_1_OFFSET) & SbpiWdata1::SBPI_WDATA_1_MASK),
         }
     }
 }
@@ -12645,7 +13051,10 @@ impl SbpiWdata2 {
     /// Write **SBPI_WDATA_2** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_sbpi_wdata_2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SBPI_WDATA_2_MASK) | ((value << Self::SBPI_WDATA_2_OFFSET) & Self::SBPI_WDATA_2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SBPI_WDATA_2_MASK)
+                | ((value << Self::SBPI_WDATA_2_OFFSET) & Self::SBPI_WDATA_2_MASK)
+        });
     }
 }
 
@@ -12687,7 +13096,8 @@ impl SbpiWdata2Val {
     #[inline(always)]
     pub const fn with_sbpi_wdata_2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SbpiWdata2::SBPI_WDATA_2_MASK) | ((value << SbpiWdata2::SBPI_WDATA_2_OFFSET) & SbpiWdata2::SBPI_WDATA_2_MASK)
+            bits: (self.bits & !SbpiWdata2::SBPI_WDATA_2_MASK)
+                | ((value << SbpiWdata2::SBPI_WDATA_2_OFFSET) & SbpiWdata2::SBPI_WDATA_2_MASK),
         }
     }
 }
@@ -12760,7 +13170,10 @@ impl SbpiWdata3 {
     /// Write **SBPI_WDATA_3** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_sbpi_wdata_3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SBPI_WDATA_3_MASK) | ((value << Self::SBPI_WDATA_3_OFFSET) & Self::SBPI_WDATA_3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SBPI_WDATA_3_MASK)
+                | ((value << Self::SBPI_WDATA_3_OFFSET) & Self::SBPI_WDATA_3_MASK)
+        });
     }
 }
 
@@ -12802,7 +13215,8 @@ impl SbpiWdata3Val {
     #[inline(always)]
     pub const fn with_sbpi_wdata_3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SbpiWdata3::SBPI_WDATA_3_MASK) | ((value << SbpiWdata3::SBPI_WDATA_3_OFFSET) & SbpiWdata3::SBPI_WDATA_3_MASK)
+            bits: (self.bits & !SbpiWdata3::SBPI_WDATA_3_MASK)
+                | ((value << SbpiWdata3::SBPI_WDATA_3_OFFSET) & SbpiWdata3::SBPI_WDATA_3_MASK),
         }
     }
 }
@@ -13432,7 +13846,7 @@ impl SbpiStatusVal {
                 self.bits | SbpiStatus::INSTR_MISS_MASK
             } else {
                 self.bits & !SbpiStatus::INSTR_MISS_MASK
-            }
+            },
         }
     }
 
@@ -13446,7 +13860,7 @@ impl SbpiStatusVal {
                 self.bits | SbpiStatus::INSTR_DONE_MASK
             } else {
                 self.bits & !SbpiStatus::INSTR_DONE_MASK
-            }
+            },
         }
     }
 
@@ -13460,7 +13874,7 @@ impl SbpiStatusVal {
                 self.bits | SbpiStatus::RDATA_VLD_MASK
             } else {
                 self.bits & !SbpiStatus::RDATA_VLD_MASK
-            }
+            },
         }
     }
 }
@@ -13642,7 +14056,7 @@ impl UsrVal {
                 self.bits | Usr::PD_MASK
             } else {
                 self.bits & !Usr::PD_MASK
-            }
+            },
         }
     }
 
@@ -13657,7 +14071,7 @@ impl UsrVal {
                 self.bits | Usr::DCTRL_MASK
             } else {
                 self.bits & !Usr::DCTRL_MASK
-            }
+            },
         }
     }
 }
@@ -13938,7 +14352,7 @@ impl DbgVal {
                 self.bits | Dbg::ROSC_UP_SEEN_MASK
             } else {
                 self.bits & !Dbg::ROSC_UP_SEEN_MASK
-            }
+            },
         }
     }
 }
@@ -14107,7 +14521,9 @@ impl Bist {
     /// The cnt_fail flag will be set if the number of leaky locations exceeds this number
     #[inline(always)]
     pub fn write_cnt_max(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CNT_MAX_MASK) | ((value << Self::CNT_MAX_OFFSET) & Self::CNT_MAX_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CNT_MAX_MASK) | ((value << Self::CNT_MAX_OFFSET) & Self::CNT_MAX_MASK)
+        });
     }
 
     /// **CNT** `[12:0]` (RO)
@@ -14189,7 +14605,7 @@ impl BistVal {
                 self.bits | Bist::CNT_CLR_MASK
             } else {
                 self.bits & !Bist::CNT_CLR_MASK
-            }
+            },
         }
     }
 
@@ -14203,7 +14619,7 @@ impl BistVal {
                 self.bits | Bist::CNT_ENA_MASK
             } else {
                 self.bits & !Bist::CNT_ENA_MASK
-            }
+            },
         }
     }
 
@@ -14213,7 +14629,8 @@ impl BistVal {
     #[inline(always)]
     pub const fn with_cnt_max(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Bist::CNT_MAX_MASK) | ((value << Bist::CNT_MAX_OFFSET) & Bist::CNT_MAX_MASK)
+            bits: (self.bits & !Bist::CNT_MAX_MASK)
+                | ((value << Bist::CNT_MAX_OFFSET) & Bist::CNT_MAX_MASK),
         }
     }
 }
@@ -14280,7 +14697,8 @@ impl CrtKeyW0 {
     /// Write **CRT_KEY_W0** `[31:0]` (WO)
     #[inline(always)]
     pub fn write_crt_key_w0(&self, value: u32) {
-        self.value.write_bits((value << Self::CRT_KEY_W0_OFFSET) & Self::CRT_KEY_W0_MASK);
+        self.value
+            .write_bits((value << Self::CRT_KEY_W0_OFFSET) & Self::CRT_KEY_W0_MASK);
     }
 }
 
@@ -14316,7 +14734,8 @@ impl CrtKeyW0Val {
     #[inline(always)]
     pub const fn with_crt_key_w0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !CrtKeyW0::CRT_KEY_W0_MASK) | ((value << CrtKeyW0::CRT_KEY_W0_OFFSET) & CrtKeyW0::CRT_KEY_W0_MASK)
+            bits: (self.bits & !CrtKeyW0::CRT_KEY_W0_MASK)
+                | ((value << CrtKeyW0::CRT_KEY_W0_OFFSET) & CrtKeyW0::CRT_KEY_W0_MASK),
         }
     }
 }
@@ -14371,7 +14790,8 @@ impl CrtKeyW1 {
     /// Write **CRT_KEY_W1** `[31:0]` (WO)
     #[inline(always)]
     pub fn write_crt_key_w1(&self, value: u32) {
-        self.value.write_bits((value << Self::CRT_KEY_W1_OFFSET) & Self::CRT_KEY_W1_MASK);
+        self.value
+            .write_bits((value << Self::CRT_KEY_W1_OFFSET) & Self::CRT_KEY_W1_MASK);
     }
 }
 
@@ -14407,7 +14827,8 @@ impl CrtKeyW1Val {
     #[inline(always)]
     pub const fn with_crt_key_w1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !CrtKeyW1::CRT_KEY_W1_MASK) | ((value << CrtKeyW1::CRT_KEY_W1_OFFSET) & CrtKeyW1::CRT_KEY_W1_MASK)
+            bits: (self.bits & !CrtKeyW1::CRT_KEY_W1_MASK)
+                | ((value << CrtKeyW1::CRT_KEY_W1_OFFSET) & CrtKeyW1::CRT_KEY_W1_MASK),
         }
     }
 }
@@ -14462,7 +14883,8 @@ impl CrtKeyW2 {
     /// Write **CRT_KEY_W2** `[31:0]` (WO)
     #[inline(always)]
     pub fn write_crt_key_w2(&self, value: u32) {
-        self.value.write_bits((value << Self::CRT_KEY_W2_OFFSET) & Self::CRT_KEY_W2_MASK);
+        self.value
+            .write_bits((value << Self::CRT_KEY_W2_OFFSET) & Self::CRT_KEY_W2_MASK);
     }
 }
 
@@ -14498,7 +14920,8 @@ impl CrtKeyW2Val {
     #[inline(always)]
     pub const fn with_crt_key_w2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !CrtKeyW2::CRT_KEY_W2_MASK) | ((value << CrtKeyW2::CRT_KEY_W2_OFFSET) & CrtKeyW2::CRT_KEY_W2_MASK)
+            bits: (self.bits & !CrtKeyW2::CRT_KEY_W2_MASK)
+                | ((value << CrtKeyW2::CRT_KEY_W2_OFFSET) & CrtKeyW2::CRT_KEY_W2_MASK),
         }
     }
 }
@@ -14553,7 +14976,8 @@ impl CrtKeyW3 {
     /// Write **CRT_KEY_W3** `[31:0]` (WO)
     #[inline(always)]
     pub fn write_crt_key_w3(&self, value: u32) {
-        self.value.write_bits((value << Self::CRT_KEY_W3_OFFSET) & Self::CRT_KEY_W3_MASK);
+        self.value
+            .write_bits((value << Self::CRT_KEY_W3_OFFSET) & Self::CRT_KEY_W3_MASK);
     }
 }
 
@@ -14589,7 +15013,8 @@ impl CrtKeyW3Val {
     #[inline(always)]
     pub const fn with_crt_key_w3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !CrtKeyW3::CRT_KEY_W3_MASK) | ((value << CrtKeyW3::CRT_KEY_W3_OFFSET) & CrtKeyW3::CRT_KEY_W3_MASK)
+            bits: (self.bits & !CrtKeyW3::CRT_KEY_W3_MASK)
+                | ((value << CrtKeyW3::CRT_KEY_W3_OFFSET) & CrtKeyW3::CRT_KEY_W3_MASK),
         }
     }
 }
@@ -14712,7 +15137,8 @@ impl Critical {
     /// **GLITCH_DETECTOR_SENS** `[6:5]` (RO)
     #[inline(always)]
     pub fn glitch_detector_sens(&self) -> u32 {
-        (self.value.read_bits() & Self::GLITCH_DETECTOR_SENS_MASK) >> Self::GLITCH_DETECTOR_SENS_OFFSET
+        (self.value.read_bits() & Self::GLITCH_DETECTOR_SENS_MASK)
+            >> Self::GLITCH_DETECTOR_SENS_OFFSET
     }
 
     /// **GLITCH_DETECTOR_ENABLE** `[4]` (RO)
@@ -15231,7 +15657,7 @@ impl DebugenVal {
                 self.bits | Debugen::MISC_MASK
             } else {
                 self.bits & !Debugen::MISC_MASK
-            }
+            },
         }
     }
 
@@ -15246,7 +15672,7 @@ impl DebugenVal {
                 self.bits | Debugen::PROC1_SECURE_MASK
             } else {
                 self.bits & !Debugen::PROC1_SECURE_MASK
-            }
+            },
         }
     }
 
@@ -15261,7 +15687,7 @@ impl DebugenVal {
                 self.bits | Debugen::PROC1_MASK
             } else {
                 self.bits & !Debugen::PROC1_MASK
-            }
+            },
         }
     }
 
@@ -15277,7 +15703,7 @@ impl DebugenVal {
                 self.bits | Debugen::PROC0_SECURE_MASK
             } else {
                 self.bits & !Debugen::PROC0_SECURE_MASK
-            }
+            },
         }
     }
 
@@ -15293,7 +15719,7 @@ impl DebugenVal {
                 self.bits | Debugen::PROC0_MASK
             } else {
                 self.bits & !Debugen::PROC0_MASK
-            }
+            },
         }
     }
 }
@@ -15594,7 +16020,7 @@ impl DebugenLockVal {
                 self.bits | DebugenLock::MISC_MASK
             } else {
                 self.bits & !DebugenLock::MISC_MASK
-            }
+            },
         }
     }
 
@@ -15608,7 +16034,7 @@ impl DebugenLockVal {
                 self.bits | DebugenLock::PROC1_SECURE_MASK
             } else {
                 self.bits & !DebugenLock::PROC1_SECURE_MASK
-            }
+            },
         }
     }
 
@@ -15622,7 +16048,7 @@ impl DebugenLockVal {
                 self.bits | DebugenLock::PROC1_MASK
             } else {
                 self.bits & !DebugenLock::PROC1_MASK
-            }
+            },
         }
     }
 
@@ -15636,7 +16062,7 @@ impl DebugenLockVal {
                 self.bits | DebugenLock::PROC0_SECURE_MASK
             } else {
                 self.bits & !DebugenLock::PROC0_SECURE_MASK
-            }
+            },
         }
     }
 
@@ -15650,7 +16076,7 @@ impl DebugenLockVal {
                 self.bits | DebugenLock::PROC0_MASK
             } else {
                 self.bits & !DebugenLock::PROC0_MASK
-            }
+            },
         }
     }
 }
@@ -15847,7 +16273,7 @@ impl ArchselVal {
                 self.bits | Archsel::CORE1_MASK
             } else {
                 self.bits & !Archsel::CORE1_MASK
-            }
+            },
         }
     }
 
@@ -15861,7 +16287,7 @@ impl ArchselVal {
                 self.bits | Archsel::CORE0_MASK
             } else {
                 self.bits & !Archsel::CORE0_MASK
-            }
+            },
         }
     }
 }
@@ -16200,7 +16626,7 @@ impl BootdisVal {
                 self.bits | Bootdis::NEXT_MASK
             } else {
                 self.bits & !Bootdis::NEXT_MASK
-            }
+            },
         }
     }
 
@@ -16215,7 +16641,7 @@ impl BootdisVal {
                 self.bits | Bootdis::NOW_MASK
             } else {
                 self.bits & !Bootdis::NOW_MASK
-            }
+            },
         }
     }
 }
@@ -16457,7 +16883,7 @@ impl IntrVal {
                 self.bits | Intr::APB_RD_NSEC_FAIL_MASK
             } else {
                 self.bits & !Intr::APB_RD_NSEC_FAIL_MASK
-            }
+            },
         }
     }
 
@@ -16469,7 +16895,7 @@ impl IntrVal {
                 self.bits | Intr::APB_RD_SEC_FAIL_MASK
             } else {
                 self.bits & !Intr::APB_RD_SEC_FAIL_MASK
-            }
+            },
         }
     }
 
@@ -16481,7 +16907,7 @@ impl IntrVal {
                 self.bits | Intr::APB_DCTRL_FAIL_MASK
             } else {
                 self.bits & !Intr::APB_DCTRL_FAIL_MASK
-            }
+            },
         }
     }
 
@@ -16493,7 +16919,7 @@ impl IntrVal {
                 self.bits | Intr::SBPI_WR_FAIL_MASK
             } else {
                 self.bits & !Intr::SBPI_WR_FAIL_MASK
-            }
+            },
         }
     }
 }
@@ -16747,7 +17173,7 @@ impl InteVal {
                 self.bits | Inte::APB_RD_NSEC_FAIL_MASK
             } else {
                 self.bits & !Inte::APB_RD_NSEC_FAIL_MASK
-            }
+            },
         }
     }
 
@@ -16759,7 +17185,7 @@ impl InteVal {
                 self.bits | Inte::APB_RD_SEC_FAIL_MASK
             } else {
                 self.bits & !Inte::APB_RD_SEC_FAIL_MASK
-            }
+            },
         }
     }
 
@@ -16771,7 +17197,7 @@ impl InteVal {
                 self.bits | Inte::APB_DCTRL_FAIL_MASK
             } else {
                 self.bits & !Inte::APB_DCTRL_FAIL_MASK
-            }
+            },
         }
     }
 
@@ -16783,7 +17209,7 @@ impl InteVal {
                 self.bits | Inte::SBPI_WR_FAIL_MASK
             } else {
                 self.bits & !Inte::SBPI_WR_FAIL_MASK
-            }
+            },
         }
     }
 
@@ -16795,7 +17221,7 @@ impl InteVal {
                 self.bits | Inte::SBPI_FLAG_N_MASK
             } else {
                 self.bits & !Inte::SBPI_FLAG_N_MASK
-            }
+            },
         }
     }
 }
@@ -17049,7 +17475,7 @@ impl IntfVal {
                 self.bits | Intf::APB_RD_NSEC_FAIL_MASK
             } else {
                 self.bits & !Intf::APB_RD_NSEC_FAIL_MASK
-            }
+            },
         }
     }
 
@@ -17061,7 +17487,7 @@ impl IntfVal {
                 self.bits | Intf::APB_RD_SEC_FAIL_MASK
             } else {
                 self.bits & !Intf::APB_RD_SEC_FAIL_MASK
-            }
+            },
         }
     }
 
@@ -17073,7 +17499,7 @@ impl IntfVal {
                 self.bits | Intf::APB_DCTRL_FAIL_MASK
             } else {
                 self.bits & !Intf::APB_DCTRL_FAIL_MASK
-            }
+            },
         }
     }
 
@@ -17085,7 +17511,7 @@ impl IntfVal {
                 self.bits | Intf::SBPI_WR_FAIL_MASK
             } else {
                 self.bits & !Intf::SBPI_WR_FAIL_MASK
-            }
+            },
         }
     }
 
@@ -17097,7 +17523,7 @@ impl IntfVal {
                 self.bits | Intf::SBPI_FLAG_N_MASK
             } else {
                 self.bits & !Intf::SBPI_FLAG_N_MASK
-            }
+            },
         }
     }
 }
@@ -17654,4 +18080,3 @@ pub struct RegisterBlock {
     /// Interrupt status after masking & forcing
     pub ints: Ints,
 }
-

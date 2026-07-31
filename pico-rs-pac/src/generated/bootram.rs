@@ -49,7 +49,10 @@ impl WriteOnce0 {
     /// Write **WRITE_ONCE0** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_write_once0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::WRITE_ONCE0_MASK) | ((value << Self::WRITE_ONCE0_OFFSET) & Self::WRITE_ONCE0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::WRITE_ONCE0_MASK)
+                | ((value << Self::WRITE_ONCE0_OFFSET) & Self::WRITE_ONCE0_MASK)
+        });
     }
 }
 
@@ -91,7 +94,8 @@ impl WriteOnce0Val {
     #[inline(always)]
     pub const fn with_write_once0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !WriteOnce0::WRITE_ONCE0_MASK) | ((value << WriteOnce0::WRITE_ONCE0_OFFSET) & WriteOnce0::WRITE_ONCE0_MASK)
+            bits: (self.bits & !WriteOnce0::WRITE_ONCE0_MASK)
+                | ((value << WriteOnce0::WRITE_ONCE0_OFFSET) & WriteOnce0::WRITE_ONCE0_MASK),
         }
     }
 }
@@ -164,7 +168,10 @@ impl WriteOnce1 {
     /// Write **WRITE_ONCE1** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_write_once1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::WRITE_ONCE1_MASK) | ((value << Self::WRITE_ONCE1_OFFSET) & Self::WRITE_ONCE1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::WRITE_ONCE1_MASK)
+                | ((value << Self::WRITE_ONCE1_OFFSET) & Self::WRITE_ONCE1_MASK)
+        });
     }
 }
 
@@ -206,7 +213,8 @@ impl WriteOnce1Val {
     #[inline(always)]
     pub const fn with_write_once1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !WriteOnce1::WRITE_ONCE1_MASK) | ((value << WriteOnce1::WRITE_ONCE1_OFFSET) & WriteOnce1::WRITE_ONCE1_MASK)
+            bits: (self.bits & !WriteOnce1::WRITE_ONCE1_MASK)
+                | ((value << WriteOnce1::WRITE_ONCE1_OFFSET) & WriteOnce1::WRITE_ONCE1_MASK),
         }
     }
 }
@@ -279,7 +287,10 @@ impl BootlockStat {
     /// Write **BOOTLOCK_STAT** `[7:0]` (RW)
     #[inline(always)]
     pub fn write_bootlock_stat(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BOOTLOCK_STAT_MASK) | ((value << Self::BOOTLOCK_STAT_OFFSET) & Self::BOOTLOCK_STAT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BOOTLOCK_STAT_MASK)
+                | ((value << Self::BOOTLOCK_STAT_OFFSET) & Self::BOOTLOCK_STAT_MASK)
+        });
     }
 }
 
@@ -321,7 +332,9 @@ impl BootlockStatVal {
     #[inline(always)]
     pub const fn with_bootlock_stat(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !BootlockStat::BOOTLOCK_STAT_MASK) | ((value << BootlockStat::BOOTLOCK_STAT_OFFSET) & BootlockStat::BOOTLOCK_STAT_MASK)
+            bits: (self.bits & !BootlockStat::BOOTLOCK_STAT_MASK)
+                | ((value << BootlockStat::BOOTLOCK_STAT_OFFSET)
+                    & BootlockStat::BOOTLOCK_STAT_MASK),
         }
     }
 }
@@ -394,7 +407,9 @@ impl Bootlock0 {
     /// Write **BOOTLOCK0** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_bootlock0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BOOTLOCK0_MASK) | ((value << Self::BOOTLOCK0_OFFSET) & Self::BOOTLOCK0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BOOTLOCK0_MASK) | ((value << Self::BOOTLOCK0_OFFSET) & Self::BOOTLOCK0_MASK)
+        });
     }
 }
 
@@ -436,7 +451,8 @@ impl Bootlock0Val {
     #[inline(always)]
     pub const fn with_bootlock0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Bootlock0::BOOTLOCK0_MASK) | ((value << Bootlock0::BOOTLOCK0_OFFSET) & Bootlock0::BOOTLOCK0_MASK)
+            bits: (self.bits & !Bootlock0::BOOTLOCK0_MASK)
+                | ((value << Bootlock0::BOOTLOCK0_OFFSET) & Bootlock0::BOOTLOCK0_MASK),
         }
     }
 }
@@ -509,7 +525,9 @@ impl Bootlock1 {
     /// Write **BOOTLOCK1** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_bootlock1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BOOTLOCK1_MASK) | ((value << Self::BOOTLOCK1_OFFSET) & Self::BOOTLOCK1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BOOTLOCK1_MASK) | ((value << Self::BOOTLOCK1_OFFSET) & Self::BOOTLOCK1_MASK)
+        });
     }
 }
 
@@ -551,7 +569,8 @@ impl Bootlock1Val {
     #[inline(always)]
     pub const fn with_bootlock1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Bootlock1::BOOTLOCK1_MASK) | ((value << Bootlock1::BOOTLOCK1_OFFSET) & Bootlock1::BOOTLOCK1_MASK)
+            bits: (self.bits & !Bootlock1::BOOTLOCK1_MASK)
+                | ((value << Bootlock1::BOOTLOCK1_OFFSET) & Bootlock1::BOOTLOCK1_MASK),
         }
     }
 }
@@ -624,7 +643,9 @@ impl Bootlock2 {
     /// Write **BOOTLOCK2** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_bootlock2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BOOTLOCK2_MASK) | ((value << Self::BOOTLOCK2_OFFSET) & Self::BOOTLOCK2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BOOTLOCK2_MASK) | ((value << Self::BOOTLOCK2_OFFSET) & Self::BOOTLOCK2_MASK)
+        });
     }
 }
 
@@ -666,7 +687,8 @@ impl Bootlock2Val {
     #[inline(always)]
     pub const fn with_bootlock2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Bootlock2::BOOTLOCK2_MASK) | ((value << Bootlock2::BOOTLOCK2_OFFSET) & Bootlock2::BOOTLOCK2_MASK)
+            bits: (self.bits & !Bootlock2::BOOTLOCK2_MASK)
+                | ((value << Bootlock2::BOOTLOCK2_OFFSET) & Bootlock2::BOOTLOCK2_MASK),
         }
     }
 }
@@ -739,7 +761,9 @@ impl Bootlock3 {
     /// Write **BOOTLOCK3** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_bootlock3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BOOTLOCK3_MASK) | ((value << Self::BOOTLOCK3_OFFSET) & Self::BOOTLOCK3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BOOTLOCK3_MASK) | ((value << Self::BOOTLOCK3_OFFSET) & Self::BOOTLOCK3_MASK)
+        });
     }
 }
 
@@ -781,7 +805,8 @@ impl Bootlock3Val {
     #[inline(always)]
     pub const fn with_bootlock3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Bootlock3::BOOTLOCK3_MASK) | ((value << Bootlock3::BOOTLOCK3_OFFSET) & Bootlock3::BOOTLOCK3_MASK)
+            bits: (self.bits & !Bootlock3::BOOTLOCK3_MASK)
+                | ((value << Bootlock3::BOOTLOCK3_OFFSET) & Bootlock3::BOOTLOCK3_MASK),
         }
     }
 }
@@ -854,7 +879,9 @@ impl Bootlock4 {
     /// Write **BOOTLOCK4** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_bootlock4(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BOOTLOCK4_MASK) | ((value << Self::BOOTLOCK4_OFFSET) & Self::BOOTLOCK4_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BOOTLOCK4_MASK) | ((value << Self::BOOTLOCK4_OFFSET) & Self::BOOTLOCK4_MASK)
+        });
     }
 }
 
@@ -896,7 +923,8 @@ impl Bootlock4Val {
     #[inline(always)]
     pub const fn with_bootlock4(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Bootlock4::BOOTLOCK4_MASK) | ((value << Bootlock4::BOOTLOCK4_OFFSET) & Bootlock4::BOOTLOCK4_MASK)
+            bits: (self.bits & !Bootlock4::BOOTLOCK4_MASK)
+                | ((value << Bootlock4::BOOTLOCK4_OFFSET) & Bootlock4::BOOTLOCK4_MASK),
         }
     }
 }
@@ -969,7 +997,9 @@ impl Bootlock5 {
     /// Write **BOOTLOCK5** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_bootlock5(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BOOTLOCK5_MASK) | ((value << Self::BOOTLOCK5_OFFSET) & Self::BOOTLOCK5_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BOOTLOCK5_MASK) | ((value << Self::BOOTLOCK5_OFFSET) & Self::BOOTLOCK5_MASK)
+        });
     }
 }
 
@@ -1011,7 +1041,8 @@ impl Bootlock5Val {
     #[inline(always)]
     pub const fn with_bootlock5(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Bootlock5::BOOTLOCK5_MASK) | ((value << Bootlock5::BOOTLOCK5_OFFSET) & Bootlock5::BOOTLOCK5_MASK)
+            bits: (self.bits & !Bootlock5::BOOTLOCK5_MASK)
+                | ((value << Bootlock5::BOOTLOCK5_OFFSET) & Bootlock5::BOOTLOCK5_MASK),
         }
     }
 }
@@ -1084,7 +1115,9 @@ impl Bootlock6 {
     /// Write **BOOTLOCK6** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_bootlock6(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BOOTLOCK6_MASK) | ((value << Self::BOOTLOCK6_OFFSET) & Self::BOOTLOCK6_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BOOTLOCK6_MASK) | ((value << Self::BOOTLOCK6_OFFSET) & Self::BOOTLOCK6_MASK)
+        });
     }
 }
 
@@ -1126,7 +1159,8 @@ impl Bootlock6Val {
     #[inline(always)]
     pub const fn with_bootlock6(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Bootlock6::BOOTLOCK6_MASK) | ((value << Bootlock6::BOOTLOCK6_OFFSET) & Bootlock6::BOOTLOCK6_MASK)
+            bits: (self.bits & !Bootlock6::BOOTLOCK6_MASK)
+                | ((value << Bootlock6::BOOTLOCK6_OFFSET) & Bootlock6::BOOTLOCK6_MASK),
         }
     }
 }
@@ -1199,7 +1233,9 @@ impl Bootlock7 {
     /// Write **BOOTLOCK7** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_bootlock7(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BOOTLOCK7_MASK) | ((value << Self::BOOTLOCK7_OFFSET) & Self::BOOTLOCK7_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BOOTLOCK7_MASK) | ((value << Self::BOOTLOCK7_OFFSET) & Self::BOOTLOCK7_MASK)
+        });
     }
 }
 
@@ -1241,7 +1277,8 @@ impl Bootlock7Val {
     #[inline(always)]
     pub const fn with_bootlock7(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Bootlock7::BOOTLOCK7_MASK) | ((value << Bootlock7::BOOTLOCK7_OFFSET) & Bootlock7::BOOTLOCK7_MASK)
+            bits: (self.bits & !Bootlock7::BOOTLOCK7_MASK)
+                | ((value << Bootlock7::BOOTLOCK7_OFFSET) & Bootlock7::BOOTLOCK7_MASK),
         }
     }
 }
@@ -1310,4 +1347,3 @@ pub struct RegisterBlock {
     /// Read to claim and check. Write to unclaim. The value returned on successful claim is 1 << n, and on failed claim is zero.
     pub bootlock7: Bootlock7,
 }
-

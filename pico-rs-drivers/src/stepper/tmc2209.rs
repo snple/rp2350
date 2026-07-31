@@ -26,6 +26,7 @@
 use core::marker::PhantomData;
 use core::sync::atomic::{AtomicBool, AtomicU32, Ordering};
 
+#[cfg(feature = "defmt")]
 use defmt::debug;
 use pico_rs::timer::{AlarmTimer, MonotonicTimer};
 
@@ -637,6 +638,7 @@ impl<P: TmcPins> AxisState<P> {
     /// 因为归位是安全关键操作，不应被用户临时禁用。
     fn handle_probing_step<T: AlarmTimer + MonotonicTimer>(&self, timer: &T, step: u32) {
         if step >= self.blanking_steps && self.diag_triggered() {
+            #[cfg(feature = "defmt")]
             debug!(
                 "probe DIAG@step={} pos={} dir={}",
                 step,
@@ -692,11 +694,13 @@ impl<P: TmcPins> AxisState<P> {
         if !diag {
             // DIAG 已清除：标记"曾离开过限位"
             if !self.backoff_diag_cleared.load(Ordering::Relaxed) {
+                #[cfg(feature = "defmt")]
                 debug!("backoff DIAG cleared pos={}", self.axis.position());
             }
             self.backoff_diag_cleared.store(true, Ordering::Relaxed);
         } else if self.backoff_diag_cleared.load(Ordering::Relaxed) {
             // DIAG 高 且 之前已清除过 → 撞上了对面限位
+            #[cfg(feature = "defmt")]
             debug!(
                 "backoff DIAG re-triggered (opposite endstop) pos={} INDEX={}",
                 self.axis.position(),
@@ -707,6 +711,7 @@ impl<P: TmcPins> AxisState<P> {
         }
         let target = self.index_backoff_target.load(Ordering::Relaxed);
         if self.index_count.load(Ordering::Relaxed) >= target {
+            #[cfg(feature = "defmt")]
             debug!(
                 "backoff done INDEX>={} pos={}",
                 target,

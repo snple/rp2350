@@ -179,7 +179,9 @@ impl Cs {
     /// AINSEL will be updated after each conversion with the newly-selected channel.
     #[inline(always)]
     pub fn write_rrobin(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RROBIN_MASK) | ((value << Self::RROBIN_OFFSET) & Self::RROBIN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RROBIN_MASK) | ((value << Self::RROBIN_OFFSET) & Self::RROBIN_MASK)
+        });
     }
 
     /// **AINSEL** `[15:12]` (RW)
@@ -197,7 +199,9 @@ impl Cs {
     /// This is corrected for the package option so only ADC channels which are bonded are available, and in the correct order
     #[inline(always)]
     pub fn write_ainsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::AINSEL_MASK) | ((value << Self::AINSEL_OFFSET) & Self::AINSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::AINSEL_MASK) | ((value << Self::AINSEL_OFFSET) & Self::AINSEL_MASK)
+        });
     }
 
     /// **ERR_STICKY** `[10]` (RW)
@@ -414,7 +418,7 @@ impl CsVal {
     #[inline(always)]
     pub const fn with_rrobin(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Cs::RROBIN_MASK) | ((value << Cs::RROBIN_OFFSET) & Cs::RROBIN_MASK)
+            bits: (self.bits & !Cs::RROBIN_MASK) | ((value << Cs::RROBIN_OFFSET) & Cs::RROBIN_MASK),
         }
     }
 
@@ -425,7 +429,7 @@ impl CsVal {
     #[inline(always)]
     pub const fn with_ainsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Cs::AINSEL_MASK) | ((value << Cs::AINSEL_OFFSET) & Cs::AINSEL_MASK)
+            bits: (self.bits & !Cs::AINSEL_MASK) | ((value << Cs::AINSEL_OFFSET) & Cs::AINSEL_MASK),
         }
     }
 
@@ -439,7 +443,7 @@ impl CsVal {
                 self.bits | Cs::ERR_STICKY_MASK
             } else {
                 self.bits & !Cs::ERR_STICKY_MASK
-            }
+            },
         }
     }
 
@@ -453,7 +457,7 @@ impl CsVal {
                 self.bits | Cs::START_MANY_MASK
             } else {
                 self.bits & !Cs::START_MANY_MASK
-            }
+            },
         }
     }
 
@@ -467,7 +471,7 @@ impl CsVal {
                 self.bits | Cs::START_ONCE_MASK
             } else {
                 self.bits & !Cs::START_ONCE_MASK
-            }
+            },
         }
     }
 
@@ -481,7 +485,7 @@ impl CsVal {
                 self.bits | Cs::TS_EN_MASK
             } else {
                 self.bits & !Cs::TS_EN_MASK
-            }
+            },
         }
     }
 
@@ -496,7 +500,7 @@ impl CsVal {
                 self.bits | Cs::EN_MASK
             } else {
                 self.bits & !Cs::EN_MASK
-            }
+            },
         }
     }
 }
@@ -773,7 +777,9 @@ impl Fcs {
     /// DREQ/IRQ asserted when level >= threshold
     #[inline(always)]
     pub fn write_thresh(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::THRESH_MASK) | ((value << Self::THRESH_OFFSET) & Self::THRESH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::THRESH_MASK) | ((value << Self::THRESH_OFFSET) & Self::THRESH_MASK)
+        });
     }
 
     /// **LEVEL** `[19:16]` (RO)
@@ -1027,7 +1033,8 @@ impl FcsVal {
     #[inline(always)]
     pub const fn with_thresh(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Fcs::THRESH_MASK) | ((value << Fcs::THRESH_OFFSET) & Fcs::THRESH_MASK)
+            bits: (self.bits & !Fcs::THRESH_MASK)
+                | ((value << Fcs::THRESH_OFFSET) & Fcs::THRESH_MASK),
         }
     }
 
@@ -1041,7 +1048,7 @@ impl FcsVal {
                 self.bits | Fcs::OVER_MASK
             } else {
                 self.bits & !Fcs::OVER_MASK
-            }
+            },
         }
     }
 
@@ -1055,7 +1062,7 @@ impl FcsVal {
                 self.bits | Fcs::UNDER_MASK
             } else {
                 self.bits & !Fcs::UNDER_MASK
-            }
+            },
         }
     }
 
@@ -1069,7 +1076,7 @@ impl FcsVal {
                 self.bits | Fcs::DREQ_EN_MASK
             } else {
                 self.bits & !Fcs::DREQ_EN_MASK
-            }
+            },
         }
     }
 
@@ -1083,7 +1090,7 @@ impl FcsVal {
                 self.bits | Fcs::ERR_MASK
             } else {
                 self.bits & !Fcs::ERR_MASK
-            }
+            },
         }
     }
 
@@ -1097,7 +1104,7 @@ impl FcsVal {
                 self.bits | Fcs::SHIFT_MASK
             } else {
                 self.bits & !Fcs::SHIFT_MASK
-            }
+            },
         }
     }
 
@@ -1111,7 +1118,7 @@ impl FcsVal {
                 self.bits | Fcs::EN_MASK
             } else {
                 self.bits & !Fcs::EN_MASK
-            }
+            },
         }
     }
 }
@@ -1326,7 +1333,9 @@ impl Div {
     /// Integer part of clock divisor.
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK)
+        });
     }
 
     /// **FRAC** `[7:0]` (RW)
@@ -1342,7 +1351,9 @@ impl Div {
     /// Fractional part of clock divisor. First-order delta-sigma.
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK)
+        });
     }
 }
 
@@ -1396,7 +1407,7 @@ impl DivVal {
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Div::INT_MASK) | ((value << Div::INT_OFFSET) & Div::INT_MASK)
+            bits: (self.bits & !Div::INT_MASK) | ((value << Div::INT_OFFSET) & Div::INT_MASK),
         }
     }
 
@@ -1406,7 +1417,7 @@ impl DivVal {
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Div::FRAC_MASK) | ((value << Div::FRAC_OFFSET) & Div::FRAC_MASK)
+            bits: (self.bits & !Div::FRAC_MASK) | ((value << Div::FRAC_OFFSET) & Div::FRAC_MASK),
         }
     }
 }
@@ -1651,7 +1662,7 @@ impl InteVal {
                 self.bits | Inte::FIFO_MASK
             } else {
                 self.bits & !Inte::FIFO_MASK
-            }
+            },
         }
     }
 }
@@ -1793,7 +1804,7 @@ impl IntfVal {
                 self.bits | Intf::FIFO_MASK
             } else {
                 self.bits & !Intf::FIFO_MASK
-            }
+            },
         }
     }
 }
@@ -1961,4 +1972,3 @@ pub struct RegisterBlock {
     /// Interrupt status after masking & forcing
     pub ints: Ints,
 }
-

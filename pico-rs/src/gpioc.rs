@@ -124,6 +124,7 @@ mod imp;
 /// See the [module-level safety contract](crate::gpioc#safety).
 #[inline]
 pub unsafe fn get(pin: u32) -> bool {
+    crate::gpio::assert_pin(pin);
     if pin < 32 {
         unsafe { (imp::in_lo() & (1 << pin)) != 0 }
     } else {
@@ -140,6 +141,7 @@ pub unsafe fn get(pin: u32) -> bool {
 /// See the [module-level safety contract](crate::gpioc#safety).
 #[inline]
 pub unsafe fn set_high(pin: u32) {
+    crate::gpio::assert_pin(pin);
     unsafe { imp::bit_out_set(pin) }
 }
 
@@ -152,6 +154,7 @@ pub unsafe fn set_high(pin: u32) {
 /// See the [module-level safety contract](crate::gpioc#safety).
 #[inline]
 pub unsafe fn set_low(pin: u32) {
+    crate::gpio::assert_pin(pin);
     unsafe { imp::bit_out_clr(pin) }
 }
 
@@ -164,6 +167,7 @@ pub unsafe fn set_low(pin: u32) {
 /// See the [module-level safety contract](crate::gpioc#safety).
 #[inline]
 pub unsafe fn toggle(pin: u32) {
+    crate::gpio::assert_pin(pin);
     unsafe { imp::bit_out_toggle(pin) }
 }
 
@@ -174,6 +178,7 @@ pub unsafe fn toggle(pin: u32) {
 /// See the [module-level safety contract](crate::gpioc#safety).
 #[inline]
 pub unsafe fn set(pin: u32, high: bool) {
+    crate::gpio::assert_pin(pin);
     unsafe { imp::bit_out_put(pin, high) }
 }
 
@@ -187,6 +192,7 @@ pub unsafe fn set(pin: u32, high: bool) {
 /// See the [module-level safety contract](crate::gpioc#safety).
 #[inline]
 pub unsafe fn output(pin: u32) -> bool {
+    crate::gpio::assert_pin(pin);
     if pin < 32 {
         unsafe { (imp::out_lo_get() & (1 << pin)) != 0 }
     } else {
@@ -204,6 +210,7 @@ pub unsafe fn output(pin: u32) -> bool {
 /// See the [module-level safety contract](crate::gpioc#safety).
 #[inline]
 pub unsafe fn enable_output(pin: u32) {
+    crate::gpio::assert_pin(pin);
     unsafe { imp::bit_output_enable_set(pin) }
 }
 
@@ -217,6 +224,7 @@ pub unsafe fn enable_output(pin: u32) {
 /// See the [module-level safety contract](crate::gpioc#safety).
 #[inline]
 pub unsafe fn disable_output(pin: u32) {
+    crate::gpio::assert_pin(pin);
     unsafe { imp::bit_output_enable_clr(pin) }
 }
 
@@ -231,6 +239,7 @@ pub unsafe fn disable_output(pin: u32) {
 /// See the [module-level safety contract](crate::gpioc#safety).
 #[inline]
 pub unsafe fn set_output_enable(pin: u32, output: bool) {
+    crate::gpio::assert_pin(pin);
     unsafe { imp::bit_output_enable_put(pin, output) }
 }
 
@@ -243,6 +252,7 @@ pub unsafe fn set_output_enable(pin: u32, output: bool) {
 /// See the [module-level safety contract](crate::gpioc#safety).
 #[inline]
 pub unsafe fn toggle_output_enable(pin: u32) {
+    crate::gpio::assert_pin(pin);
     unsafe { imp::bit_output_enable_toggle(pin) }
 }
 
@@ -253,6 +263,7 @@ pub unsafe fn toggle_output_enable(pin: u32) {
 /// See the [module-level safety contract](crate::gpioc#safety).
 #[inline]
 pub unsafe fn is_output(pin: u32) -> bool {
+    crate::gpio::assert_pin(pin);
     if pin < 32 {
         unsafe { (imp::output_enable_lo_get() & (1 << pin)) != 0 }
     } else {

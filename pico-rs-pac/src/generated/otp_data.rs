@@ -1710,7 +1710,8 @@ impl FlashPartitionSlotSize {
     /// **FLASH_PARTITION_SLOT_SIZE** `[15:0]` (RO)
     #[inline(always)]
     pub fn flash_partition_slot_size(&self) -> u32 {
-        (self.value.read_bits() & Self::FLASH_PARTITION_SLOT_SIZE_MASK) >> Self::FLASH_PARTITION_SLOT_SIZE_OFFSET
+        (self.value.read_bits() & Self::FLASH_PARTITION_SLOT_SIZE_MASK)
+            >> Self::FLASH_PARTITION_SLOT_SIZE_OFFSET
     }
 }
 
@@ -1739,7 +1740,8 @@ impl FlashPartitionSlotSizeVal {
     /// Read **FLASH_PARTITION_SLOT_SIZE** `[15:0]`
     #[inline(always)]
     pub const fn flash_partition_slot_size(&self) -> u32 {
-        (self.bits & FlashPartitionSlotSize::FLASH_PARTITION_SLOT_SIZE_MASK) >> FlashPartitionSlotSize::FLASH_PARTITION_SLOT_SIZE_OFFSET
+        (self.bits & FlashPartitionSlotSize::FLASH_PARTITION_SLOT_SIZE_MASK)
+            >> FlashPartitionSlotSize::FLASH_PARTITION_SLOT_SIZE_OFFSET
     }
 }
 
@@ -2290,7 +2292,8 @@ impl UsbWhiteLabelAddr {
     /// **USB_WHITE_LABEL_ADDR** `[15:0]` (RO)
     #[inline(always)]
     pub fn usb_white_label_addr(&self) -> u32 {
-        (self.value.read_bits() & Self::USB_WHITE_LABEL_ADDR_MASK) >> Self::USB_WHITE_LABEL_ADDR_OFFSET
+        (self.value.read_bits() & Self::USB_WHITE_LABEL_ADDR_MASK)
+            >> Self::USB_WHITE_LABEL_ADDR_OFFSET
     }
 }
 
@@ -2319,7 +2322,8 @@ impl UsbWhiteLabelAddrVal {
     /// Read **USB_WHITE_LABEL_ADDR** `[15:0]`
     #[inline(always)]
     pub const fn usb_white_label_addr(&self) -> u32 {
-        (self.bits & UsbWhiteLabelAddr::USB_WHITE_LABEL_ADDR_MASK) >> UsbWhiteLabelAddr::USB_WHITE_LABEL_ADDR_OFFSET
+        (self.bits & UsbWhiteLabelAddr::USB_WHITE_LABEL_ADDR_MASK)
+            >> UsbWhiteLabelAddr::USB_WHITE_LABEL_ADDR_OFFSET
     }
 }
 
@@ -12312,4 +12316,3 @@ pub struct RegisterBlock {
     /// Bits 127:112 of OTP access key 6 (ECC)
     pub key6_7: Key67,
 }
-

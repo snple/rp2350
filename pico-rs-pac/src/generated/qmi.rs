@@ -240,7 +240,9 @@ impl DirectCsr {
     /// Delay the read data sample timing, in units of one half of a system clock cycle. (Not necessarily half of an SCK cycle.)
     #[inline(always)]
     pub fn write_rxdelay(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RXDELAY_MASK) | ((value << Self::RXDELAY_OFFSET) & Self::RXDELAY_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RXDELAY_MASK) | ((value << Self::RXDELAY_OFFSET) & Self::RXDELAY_MASK)
+        });
     }
 
     /// **CLKDIV** `[29:22]` (RW)
@@ -258,7 +260,9 @@ impl DirectCsr {
     /// The clock divisor can be changed on-the-fly by software, without halting or otherwise coordinating with the serial interface. The serial interface will sample the latest clock divisor each time it begins the transmission of a new byte.
     #[inline(always)]
     pub fn write_clkdiv(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CLKDIV_MASK) | ((value << Self::CLKDIV_OFFSET) & Self::CLKDIV_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CLKDIV_MASK) | ((value << Self::CLKDIV_OFFSET) & Self::CLKDIV_MASK)
+        });
     }
 
     /// **RXLEVEL** `[20:18]` (RO)
@@ -577,7 +581,8 @@ impl DirectCsrVal {
     #[inline(always)]
     pub const fn with_rxdelay(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DirectCsr::RXDELAY_MASK) | ((value << DirectCsr::RXDELAY_OFFSET) & DirectCsr::RXDELAY_MASK)
+            bits: (self.bits & !DirectCsr::RXDELAY_MASK)
+                | ((value << DirectCsr::RXDELAY_OFFSET) & DirectCsr::RXDELAY_MASK),
         }
     }
 
@@ -588,7 +593,8 @@ impl DirectCsrVal {
     #[inline(always)]
     pub const fn with_clkdiv(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DirectCsr::CLKDIV_MASK) | ((value << DirectCsr::CLKDIV_OFFSET) & DirectCsr::CLKDIV_MASK)
+            bits: (self.bits & !DirectCsr::CLKDIV_MASK)
+                | ((value << DirectCsr::CLKDIV_OFFSET) & DirectCsr::CLKDIV_MASK),
         }
     }
 
@@ -602,7 +608,7 @@ impl DirectCsrVal {
                 self.bits | DirectCsr::AUTO_CS1N_MASK
             } else {
                 self.bits & !DirectCsr::AUTO_CS1N_MASK
-            }
+            },
         }
     }
 
@@ -616,7 +622,7 @@ impl DirectCsrVal {
                 self.bits | DirectCsr::AUTO_CS0N_MASK
             } else {
                 self.bits & !DirectCsr::AUTO_CS0N_MASK
-            }
+            },
         }
     }
 
@@ -631,7 +637,7 @@ impl DirectCsrVal {
                 self.bits | DirectCsr::ASSERT_CS1N_MASK
             } else {
                 self.bits & !DirectCsr::ASSERT_CS1N_MASK
-            }
+            },
         }
     }
 
@@ -646,7 +652,7 @@ impl DirectCsrVal {
                 self.bits | DirectCsr::ASSERT_CS0N_MASK
             } else {
                 self.bits & !DirectCsr::ASSERT_CS0N_MASK
-            }
+            },
         }
     }
 
@@ -662,7 +668,7 @@ impl DirectCsrVal {
                 self.bits | DirectCsr::EN_MASK
             } else {
                 self.bits & !DirectCsr::EN_MASK
-            }
+            },
         }
     }
 }
@@ -831,7 +837,8 @@ impl DirectTx {
     /// Configure whether this FIFO record is transferred with single/dual/quad interface width (0/1/2). Different widths can be mixed freely.
     #[inline(always)]
     pub fn write_iwidth(&self, value: u32) {
-        self.value.write_bits((value << Self::IWIDTH_OFFSET) & Self::IWIDTH_MASK);
+        self.value
+            .write_bits((value << Self::IWIDTH_OFFSET) & Self::IWIDTH_MASK);
     }
 
     /// Write **DATA** `[15:0]` (WO)
@@ -840,7 +847,8 @@ impl DirectTx {
     /// For 16-bit data, the least-significant byte is transmitted first.
     #[inline(always)]
     pub fn write_data(&self, value: u32) {
-        self.value.write_bits((value << Self::DATA_OFFSET) & Self::DATA_MASK);
+        self.value
+            .write_bits((value << Self::DATA_OFFSET) & Self::DATA_MASK);
     }
 }
 
@@ -883,7 +891,7 @@ impl DirectTxVal {
                 self.bits | DirectTx::NOPUSH_MASK
             } else {
                 self.bits & !DirectTx::NOPUSH_MASK
-            }
+            },
         }
     }
 
@@ -898,7 +906,7 @@ impl DirectTxVal {
                 self.bits | DirectTx::OE_MASK
             } else {
                 self.bits & !DirectTx::OE_MASK
-            }
+            },
         }
     }
 
@@ -912,7 +920,7 @@ impl DirectTxVal {
                 self.bits | DirectTx::DWIDTH_MASK
             } else {
                 self.bits & !DirectTx::DWIDTH_MASK
-            }
+            },
         }
     }
 
@@ -922,7 +930,8 @@ impl DirectTxVal {
     #[inline(always)]
     pub const fn with_iwidth(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DirectTx::IWIDTH_MASK) | ((value << DirectTx::IWIDTH_OFFSET) & DirectTx::IWIDTH_MASK)
+            bits: (self.bits & !DirectTx::IWIDTH_MASK)
+                | ((value << DirectTx::IWIDTH_OFFSET) & DirectTx::IWIDTH_MASK),
         }
     }
 
@@ -933,7 +942,8 @@ impl DirectTxVal {
     #[inline(always)]
     pub const fn with_data(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DirectTx::DATA_MASK) | ((value << DirectTx::DATA_OFFSET) & DirectTx::DATA_MASK)
+            bits: (self.bits & !DirectTx::DATA_MASK)
+                | ((value << DirectTx::DATA_OFFSET) & DirectTx::DATA_MASK),
         }
     }
 }
@@ -1242,7 +1252,9 @@ impl M0Timing {
     /// If COOLDOWN is 0, the address alignment configured by PAGEBREAK has been reached, or the total chip select assertion limit MAX_SELECT has been reached, the cooldown period is skipped, and the chip select will always be deasserted one half SCK period after the transfer finishes.
     #[inline(always)]
     pub fn write_cooldown(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::COOLDOWN_MASK) | ((value << Self::COOLDOWN_OFFSET) & Self::COOLDOWN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::COOLDOWN_MASK) | ((value << Self::COOLDOWN_OFFSET) & Self::COOLDOWN_MASK)
+        });
     }
 
     /// **PAGEBREAK** `[29:28]` (RW)
@@ -1262,7 +1274,9 @@ impl M0Timing {
     /// This field has no effect when COOLDOWN is disabled.
     #[inline(always)]
     pub fn write_pagebreak(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PAGEBREAK_MASK) | ((value << Self::PAGEBREAK_OFFSET) & Self::PAGEBREAK_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PAGEBREAK_MASK) | ((value << Self::PAGEBREAK_OFFSET) & Self::PAGEBREAK_MASK)
+        });
     }
 
     /// **SELECT_SETUP** `[25]` (RW)
@@ -1305,7 +1319,10 @@ impl M0Timing {
     /// Note also that, in case the final SCK pulse is masked to save energy (true for non-DTR reads when COOLDOWN is disabled or PAGE_BREAK is reached), all of QMI's timing logic behaves as though the clock pulse were still present. The SELECT_HOLD time is applied from the point where the last SCK falling edge would be if the clock pulse were not masked.
     #[inline(always)]
     pub fn write_select_hold(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SELECT_HOLD_MASK) | ((value << Self::SELECT_HOLD_OFFSET) & Self::SELECT_HOLD_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SELECT_HOLD_MASK)
+                | ((value << Self::SELECT_HOLD_OFFSET) & Self::SELECT_HOLD_MASK)
+        });
     }
 
     /// **MAX_SELECT** `[22:17]` (RW)
@@ -1325,7 +1342,10 @@ impl M0Timing {
     /// If a memory access is in progress at the time MAX_SELECT is reached, the QMI will wait for the access to complete before deasserting the chip select. This additional time must be accounted for to calculate a safe MAX_SELECT value. In the worst case, this may be a fully-formed serial transfer, including command prefix and address, with a data payload as large as one cache line.
     #[inline(always)]
     pub fn write_max_select(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::MAX_SELECT_MASK) | ((value << Self::MAX_SELECT_OFFSET) & Self::MAX_SELECT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::MAX_SELECT_MASK)
+                | ((value << Self::MAX_SELECT_OFFSET) & Self::MAX_SELECT_MASK)
+        });
     }
 
     /// **MIN_DESELECT** `[16:12]` (RW)
@@ -1343,7 +1363,10 @@ impl M0Timing {
     /// Nonzero values may be required for PSRAM devices which enforce a longer minimum CS deselect time, so that they can perform internal DRAM refresh cycles whilst deselected.
     #[inline(always)]
     pub fn write_min_deselect(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::MIN_DESELECT_MASK) | ((value << Self::MIN_DESELECT_OFFSET) & Self::MIN_DESELECT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::MIN_DESELECT_MASK)
+                | ((value << Self::MIN_DESELECT_OFFSET) & Self::MIN_DESELECT_MASK)
+        });
     }
 
     /// **RXDELAY** `[10:8]` (RW)
@@ -1361,7 +1384,9 @@ impl M0Timing {
     /// At higher SCK frequencies, RXDELAY may need to be increased to account for the round trip delay of the pads, and the clock-to-Q delay of the QSPI memory device.
     #[inline(always)]
     pub fn write_rxdelay(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RXDELAY_MASK) | ((value << Self::RXDELAY_OFFSET) & Self::RXDELAY_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RXDELAY_MASK) | ((value << Self::RXDELAY_OFFSET) & Self::RXDELAY_MASK)
+        });
     }
 
     /// **CLKDIV** `[7:0]` (RW)
@@ -1381,7 +1406,9 @@ impl M0Timing {
     /// If software is increasing CLKDIV in anticipation of an increase in the system clock frequency, a dummy access to either memory window (and appropriate processor barriers/fences) must be inserted after the Mx_TIMING write to ensure the SCK divisor change is in effect _before_ the system clock is changed.
     #[inline(always)]
     pub fn write_clkdiv(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CLKDIV_MASK) | ((value << Self::CLKDIV_OFFSET) & Self::CLKDIV_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CLKDIV_MASK) | ((value << Self::CLKDIV_OFFSET) & Self::CLKDIV_MASK)
+        });
     }
 }
 
@@ -1501,7 +1528,8 @@ impl M0TimingVal {
     #[inline(always)]
     pub const fn with_cooldown(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M0Timing::COOLDOWN_MASK) | ((value << M0Timing::COOLDOWN_OFFSET) & M0Timing::COOLDOWN_MASK)
+            bits: (self.bits & !M0Timing::COOLDOWN_MASK)
+                | ((value << M0Timing::COOLDOWN_OFFSET) & M0Timing::COOLDOWN_MASK),
         }
     }
 
@@ -1513,7 +1541,8 @@ impl M0TimingVal {
     #[inline(always)]
     pub const fn with_pagebreak(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M0Timing::PAGEBREAK_MASK) | ((value << M0Timing::PAGEBREAK_OFFSET) & M0Timing::PAGEBREAK_MASK)
+            bits: (self.bits & !M0Timing::PAGEBREAK_MASK)
+                | ((value << M0Timing::PAGEBREAK_OFFSET) & M0Timing::PAGEBREAK_MASK),
         }
     }
 
@@ -1528,7 +1557,7 @@ impl M0TimingVal {
                 self.bits | M0Timing::SELECT_SETUP_MASK
             } else {
                 self.bits & !M0Timing::SELECT_SETUP_MASK
-            }
+            },
         }
     }
 
@@ -1541,7 +1570,8 @@ impl M0TimingVal {
     #[inline(always)]
     pub const fn with_select_hold(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M0Timing::SELECT_HOLD_MASK) | ((value << M0Timing::SELECT_HOLD_OFFSET) & M0Timing::SELECT_HOLD_MASK)
+            bits: (self.bits & !M0Timing::SELECT_HOLD_MASK)
+                | ((value << M0Timing::SELECT_HOLD_OFFSET) & M0Timing::SELECT_HOLD_MASK),
         }
     }
 
@@ -1553,7 +1583,8 @@ impl M0TimingVal {
     #[inline(always)]
     pub const fn with_max_select(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M0Timing::MAX_SELECT_MASK) | ((value << M0Timing::MAX_SELECT_OFFSET) & M0Timing::MAX_SELECT_MASK)
+            bits: (self.bits & !M0Timing::MAX_SELECT_MASK)
+                | ((value << M0Timing::MAX_SELECT_OFFSET) & M0Timing::MAX_SELECT_MASK),
         }
     }
 
@@ -1564,7 +1595,8 @@ impl M0TimingVal {
     #[inline(always)]
     pub const fn with_min_deselect(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M0Timing::MIN_DESELECT_MASK) | ((value << M0Timing::MIN_DESELECT_OFFSET) & M0Timing::MIN_DESELECT_MASK)
+            bits: (self.bits & !M0Timing::MIN_DESELECT_MASK)
+                | ((value << M0Timing::MIN_DESELECT_OFFSET) & M0Timing::MIN_DESELECT_MASK),
         }
     }
 
@@ -1575,7 +1607,8 @@ impl M0TimingVal {
     #[inline(always)]
     pub const fn with_rxdelay(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M0Timing::RXDELAY_MASK) | ((value << M0Timing::RXDELAY_OFFSET) & M0Timing::RXDELAY_MASK)
+            bits: (self.bits & !M0Timing::RXDELAY_MASK)
+                | ((value << M0Timing::RXDELAY_OFFSET) & M0Timing::RXDELAY_MASK),
         }
     }
 
@@ -1587,7 +1620,8 @@ impl M0TimingVal {
     #[inline(always)]
     pub const fn with_clkdiv(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M0Timing::CLKDIV_MASK) | ((value << M0Timing::CLKDIV_OFFSET) & M0Timing::CLKDIV_MASK)
+            bits: (self.bits & !M0Timing::CLKDIV_MASK)
+                | ((value << M0Timing::CLKDIV_OFFSET) & M0Timing::CLKDIV_MASK),
         }
     }
 }
@@ -1907,7 +1941,9 @@ impl M0Rfmt {
     /// Length of dummy phase between command suffix and data phase, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     #[inline(always)]
     pub fn write_dummy_len(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DUMMY_LEN_MASK) | ((value << Self::DUMMY_LEN_OFFSET) & Self::DUMMY_LEN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DUMMY_LEN_MASK) | ((value << Self::DUMMY_LEN_OFFSET) & Self::DUMMY_LEN_MASK)
+        });
     }
 
     /// **SUFFIX_LEN** `[15:14]` (RW)
@@ -1925,7 +1961,10 @@ impl M0Rfmt {
     /// Only values of 0 and 8 bits are supported.
     #[inline(always)]
     pub fn write_suffix_len(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SUFFIX_LEN_MASK) | ((value << Self::SUFFIX_LEN_OFFSET) & Self::SUFFIX_LEN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SUFFIX_LEN_MASK)
+                | ((value << Self::SUFFIX_LEN_OFFSET) & Self::SUFFIX_LEN_MASK)
+        });
     }
 
     /// **PREFIX_LEN** `[12]` (RW)
@@ -1961,7 +2000,10 @@ impl M0Rfmt {
     /// The width used for the data transfer
     #[inline(always)]
     pub fn write_data_width(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DATA_WIDTH_MASK) | ((value << Self::DATA_WIDTH_OFFSET) & Self::DATA_WIDTH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DATA_WIDTH_MASK)
+                | ((value << Self::DATA_WIDTH_OFFSET) & Self::DATA_WIDTH_MASK)
+        });
     }
 
     /// **DUMMY_WIDTH** `[7:6]` (RW)
@@ -1979,7 +2021,10 @@ impl M0Rfmt {
     /// If width is single, SD0/MOSI is held asserted low during the dummy phase, and SD1...SD3 are tristated. If width is dual/quad, all IOs are tristated during the dummy phase.
     #[inline(always)]
     pub fn write_dummy_width(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DUMMY_WIDTH_MASK) | ((value << Self::DUMMY_WIDTH_OFFSET) & Self::DUMMY_WIDTH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DUMMY_WIDTH_MASK)
+                | ((value << Self::DUMMY_WIDTH_OFFSET) & Self::DUMMY_WIDTH_MASK)
+        });
     }
 
     /// **SUFFIX_WIDTH** `[5:4]` (RW)
@@ -1995,7 +2040,10 @@ impl M0Rfmt {
     /// The width used for the post-address command suffix, if any
     #[inline(always)]
     pub fn write_suffix_width(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SUFFIX_WIDTH_MASK) | ((value << Self::SUFFIX_WIDTH_OFFSET) & Self::SUFFIX_WIDTH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SUFFIX_WIDTH_MASK)
+                | ((value << Self::SUFFIX_WIDTH_OFFSET) & Self::SUFFIX_WIDTH_MASK)
+        });
     }
 
     /// **ADDR_WIDTH** `[3:2]` (RW)
@@ -2011,7 +2059,10 @@ impl M0Rfmt {
     /// The transfer width used for the address. The address phase always transfers 24 bits in total.
     #[inline(always)]
     pub fn write_addr_width(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDR_WIDTH_MASK) | ((value << Self::ADDR_WIDTH_OFFSET) & Self::ADDR_WIDTH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDR_WIDTH_MASK)
+                | ((value << Self::ADDR_WIDTH_OFFSET) & Self::ADDR_WIDTH_MASK)
+        });
     }
 
     /// **PREFIX_WIDTH** `[1:0]` (RW)
@@ -2027,7 +2078,10 @@ impl M0Rfmt {
     /// The transfer width used for the command prefix, if any
     #[inline(always)]
     pub fn write_prefix_width(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PREFIX_WIDTH_MASK) | ((value << Self::PREFIX_WIDTH_OFFSET) & Self::PREFIX_WIDTH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PREFIX_WIDTH_MASK)
+                | ((value << Self::PREFIX_WIDTH_OFFSET) & Self::PREFIX_WIDTH_MASK)
+        });
     }
 }
 
@@ -2147,7 +2201,7 @@ impl M0RfmtVal {
                 self.bits | M0Rfmt::DTR_MASK
             } else {
                 self.bits & !M0Rfmt::DTR_MASK
-            }
+            },
         }
     }
 
@@ -2157,7 +2211,8 @@ impl M0RfmtVal {
     #[inline(always)]
     pub const fn with_dummy_len(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M0Rfmt::DUMMY_LEN_MASK) | ((value << M0Rfmt::DUMMY_LEN_OFFSET) & M0Rfmt::DUMMY_LEN_MASK)
+            bits: (self.bits & !M0Rfmt::DUMMY_LEN_MASK)
+                | ((value << M0Rfmt::DUMMY_LEN_OFFSET) & M0Rfmt::DUMMY_LEN_MASK),
         }
     }
 
@@ -2168,7 +2223,8 @@ impl M0RfmtVal {
     #[inline(always)]
     pub const fn with_suffix_len(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M0Rfmt::SUFFIX_LEN_MASK) | ((value << M0Rfmt::SUFFIX_LEN_OFFSET) & M0Rfmt::SUFFIX_LEN_MASK)
+            bits: (self.bits & !M0Rfmt::SUFFIX_LEN_MASK)
+                | ((value << M0Rfmt::SUFFIX_LEN_OFFSET) & M0Rfmt::SUFFIX_LEN_MASK),
         }
     }
 
@@ -2182,7 +2238,7 @@ impl M0RfmtVal {
                 self.bits | M0Rfmt::PREFIX_LEN_MASK
             } else {
                 self.bits & !M0Rfmt::PREFIX_LEN_MASK
-            }
+            },
         }
     }
 
@@ -2192,7 +2248,8 @@ impl M0RfmtVal {
     #[inline(always)]
     pub const fn with_data_width(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M0Rfmt::DATA_WIDTH_MASK) | ((value << M0Rfmt::DATA_WIDTH_OFFSET) & M0Rfmt::DATA_WIDTH_MASK)
+            bits: (self.bits & !M0Rfmt::DATA_WIDTH_MASK)
+                | ((value << M0Rfmt::DATA_WIDTH_OFFSET) & M0Rfmt::DATA_WIDTH_MASK),
         }
     }
 
@@ -2203,7 +2260,8 @@ impl M0RfmtVal {
     #[inline(always)]
     pub const fn with_dummy_width(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M0Rfmt::DUMMY_WIDTH_MASK) | ((value << M0Rfmt::DUMMY_WIDTH_OFFSET) & M0Rfmt::DUMMY_WIDTH_MASK)
+            bits: (self.bits & !M0Rfmt::DUMMY_WIDTH_MASK)
+                | ((value << M0Rfmt::DUMMY_WIDTH_OFFSET) & M0Rfmt::DUMMY_WIDTH_MASK),
         }
     }
 
@@ -2213,7 +2271,8 @@ impl M0RfmtVal {
     #[inline(always)]
     pub const fn with_suffix_width(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M0Rfmt::SUFFIX_WIDTH_MASK) | ((value << M0Rfmt::SUFFIX_WIDTH_OFFSET) & M0Rfmt::SUFFIX_WIDTH_MASK)
+            bits: (self.bits & !M0Rfmt::SUFFIX_WIDTH_MASK)
+                | ((value << M0Rfmt::SUFFIX_WIDTH_OFFSET) & M0Rfmt::SUFFIX_WIDTH_MASK),
         }
     }
 
@@ -2223,7 +2282,8 @@ impl M0RfmtVal {
     #[inline(always)]
     pub const fn with_addr_width(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M0Rfmt::ADDR_WIDTH_MASK) | ((value << M0Rfmt::ADDR_WIDTH_OFFSET) & M0Rfmt::ADDR_WIDTH_MASK)
+            bits: (self.bits & !M0Rfmt::ADDR_WIDTH_MASK)
+                | ((value << M0Rfmt::ADDR_WIDTH_OFFSET) & M0Rfmt::ADDR_WIDTH_MASK),
         }
     }
 
@@ -2233,7 +2293,8 @@ impl M0RfmtVal {
     #[inline(always)]
     pub const fn with_prefix_width(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M0Rfmt::PREFIX_WIDTH_MASK) | ((value << M0Rfmt::PREFIX_WIDTH_OFFSET) & M0Rfmt::PREFIX_WIDTH_MASK)
+            bits: (self.bits & !M0Rfmt::PREFIX_WIDTH_MASK)
+                | ((value << M0Rfmt::PREFIX_WIDTH_OFFSET) & M0Rfmt::PREFIX_WIDTH_MASK),
         }
     }
 }
@@ -2328,7 +2389,9 @@ impl M0Rcmd {
     /// The command suffix bits following the address, if Mx_RFMT_SUFFIX_LEN is nonzero.
     #[inline(always)]
     pub fn write_suffix(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SUFFIX_MASK) | ((value << Self::SUFFIX_OFFSET) & Self::SUFFIX_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SUFFIX_MASK) | ((value << Self::SUFFIX_OFFSET) & Self::SUFFIX_MASK)
+        });
     }
 
     /// **PREFIX** `[7:0]` (RW)
@@ -2344,7 +2407,9 @@ impl M0Rcmd {
     /// The command prefix bits to prepend on each new transfer, if Mx_RFMT_PREFIX_LEN is nonzero.
     #[inline(always)]
     pub fn write_prefix(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PREFIX_MASK) | ((value << Self::PREFIX_OFFSET) & Self::PREFIX_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PREFIX_MASK) | ((value << Self::PREFIX_OFFSET) & Self::PREFIX_MASK)
+        });
     }
 }
 
@@ -2398,7 +2463,8 @@ impl M0RcmdVal {
     #[inline(always)]
     pub const fn with_suffix(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M0Rcmd::SUFFIX_MASK) | ((value << M0Rcmd::SUFFIX_OFFSET) & M0Rcmd::SUFFIX_MASK)
+            bits: (self.bits & !M0Rcmd::SUFFIX_MASK)
+                | ((value << M0Rcmd::SUFFIX_OFFSET) & M0Rcmd::SUFFIX_MASK),
         }
     }
 
@@ -2408,7 +2474,8 @@ impl M0RcmdVal {
     #[inline(always)]
     pub const fn with_prefix(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M0Rcmd::PREFIX_MASK) | ((value << M0Rcmd::PREFIX_OFFSET) & M0Rcmd::PREFIX_MASK)
+            bits: (self.bits & !M0Rcmd::PREFIX_MASK)
+                | ((value << M0Rcmd::PREFIX_OFFSET) & M0Rcmd::PREFIX_MASK),
         }
     }
 }
@@ -2728,7 +2795,9 @@ impl M0Wfmt {
     /// Length of dummy phase between command suffix and data phase, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     #[inline(always)]
     pub fn write_dummy_len(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DUMMY_LEN_MASK) | ((value << Self::DUMMY_LEN_OFFSET) & Self::DUMMY_LEN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DUMMY_LEN_MASK) | ((value << Self::DUMMY_LEN_OFFSET) & Self::DUMMY_LEN_MASK)
+        });
     }
 
     /// **SUFFIX_LEN** `[15:14]` (RW)
@@ -2746,7 +2815,10 @@ impl M0Wfmt {
     /// Only values of 0 and 8 bits are supported.
     #[inline(always)]
     pub fn write_suffix_len(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SUFFIX_LEN_MASK) | ((value << Self::SUFFIX_LEN_OFFSET) & Self::SUFFIX_LEN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SUFFIX_LEN_MASK)
+                | ((value << Self::SUFFIX_LEN_OFFSET) & Self::SUFFIX_LEN_MASK)
+        });
     }
 
     /// **PREFIX_LEN** `[12]` (RW)
@@ -2782,7 +2854,10 @@ impl M0Wfmt {
     /// The width used for the data transfer
     #[inline(always)]
     pub fn write_data_width(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DATA_WIDTH_MASK) | ((value << Self::DATA_WIDTH_OFFSET) & Self::DATA_WIDTH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DATA_WIDTH_MASK)
+                | ((value << Self::DATA_WIDTH_OFFSET) & Self::DATA_WIDTH_MASK)
+        });
     }
 
     /// **DUMMY_WIDTH** `[7:6]` (RW)
@@ -2800,7 +2875,10 @@ impl M0Wfmt {
     /// If width is single, SD0/MOSI is held asserted low during the dummy phase, and SD1...SD3 are tristated. If width is dual/quad, all IOs are tristated during the dummy phase.
     #[inline(always)]
     pub fn write_dummy_width(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DUMMY_WIDTH_MASK) | ((value << Self::DUMMY_WIDTH_OFFSET) & Self::DUMMY_WIDTH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DUMMY_WIDTH_MASK)
+                | ((value << Self::DUMMY_WIDTH_OFFSET) & Self::DUMMY_WIDTH_MASK)
+        });
     }
 
     /// **SUFFIX_WIDTH** `[5:4]` (RW)
@@ -2816,7 +2894,10 @@ impl M0Wfmt {
     /// The width used for the post-address command suffix, if any
     #[inline(always)]
     pub fn write_suffix_width(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SUFFIX_WIDTH_MASK) | ((value << Self::SUFFIX_WIDTH_OFFSET) & Self::SUFFIX_WIDTH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SUFFIX_WIDTH_MASK)
+                | ((value << Self::SUFFIX_WIDTH_OFFSET) & Self::SUFFIX_WIDTH_MASK)
+        });
     }
 
     /// **ADDR_WIDTH** `[3:2]` (RW)
@@ -2832,7 +2913,10 @@ impl M0Wfmt {
     /// The transfer width used for the address. The address phase always transfers 24 bits in total.
     #[inline(always)]
     pub fn write_addr_width(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDR_WIDTH_MASK) | ((value << Self::ADDR_WIDTH_OFFSET) & Self::ADDR_WIDTH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDR_WIDTH_MASK)
+                | ((value << Self::ADDR_WIDTH_OFFSET) & Self::ADDR_WIDTH_MASK)
+        });
     }
 
     /// **PREFIX_WIDTH** `[1:0]` (RW)
@@ -2848,7 +2932,10 @@ impl M0Wfmt {
     /// The transfer width used for the command prefix, if any
     #[inline(always)]
     pub fn write_prefix_width(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PREFIX_WIDTH_MASK) | ((value << Self::PREFIX_WIDTH_OFFSET) & Self::PREFIX_WIDTH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PREFIX_WIDTH_MASK)
+                | ((value << Self::PREFIX_WIDTH_OFFSET) & Self::PREFIX_WIDTH_MASK)
+        });
     }
 }
 
@@ -2968,7 +3055,7 @@ impl M0WfmtVal {
                 self.bits | M0Wfmt::DTR_MASK
             } else {
                 self.bits & !M0Wfmt::DTR_MASK
-            }
+            },
         }
     }
 
@@ -2978,7 +3065,8 @@ impl M0WfmtVal {
     #[inline(always)]
     pub const fn with_dummy_len(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M0Wfmt::DUMMY_LEN_MASK) | ((value << M0Wfmt::DUMMY_LEN_OFFSET) & M0Wfmt::DUMMY_LEN_MASK)
+            bits: (self.bits & !M0Wfmt::DUMMY_LEN_MASK)
+                | ((value << M0Wfmt::DUMMY_LEN_OFFSET) & M0Wfmt::DUMMY_LEN_MASK),
         }
     }
 
@@ -2989,7 +3077,8 @@ impl M0WfmtVal {
     #[inline(always)]
     pub const fn with_suffix_len(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M0Wfmt::SUFFIX_LEN_MASK) | ((value << M0Wfmt::SUFFIX_LEN_OFFSET) & M0Wfmt::SUFFIX_LEN_MASK)
+            bits: (self.bits & !M0Wfmt::SUFFIX_LEN_MASK)
+                | ((value << M0Wfmt::SUFFIX_LEN_OFFSET) & M0Wfmt::SUFFIX_LEN_MASK),
         }
     }
 
@@ -3003,7 +3092,7 @@ impl M0WfmtVal {
                 self.bits | M0Wfmt::PREFIX_LEN_MASK
             } else {
                 self.bits & !M0Wfmt::PREFIX_LEN_MASK
-            }
+            },
         }
     }
 
@@ -3013,7 +3102,8 @@ impl M0WfmtVal {
     #[inline(always)]
     pub const fn with_data_width(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M0Wfmt::DATA_WIDTH_MASK) | ((value << M0Wfmt::DATA_WIDTH_OFFSET) & M0Wfmt::DATA_WIDTH_MASK)
+            bits: (self.bits & !M0Wfmt::DATA_WIDTH_MASK)
+                | ((value << M0Wfmt::DATA_WIDTH_OFFSET) & M0Wfmt::DATA_WIDTH_MASK),
         }
     }
 
@@ -3024,7 +3114,8 @@ impl M0WfmtVal {
     #[inline(always)]
     pub const fn with_dummy_width(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M0Wfmt::DUMMY_WIDTH_MASK) | ((value << M0Wfmt::DUMMY_WIDTH_OFFSET) & M0Wfmt::DUMMY_WIDTH_MASK)
+            bits: (self.bits & !M0Wfmt::DUMMY_WIDTH_MASK)
+                | ((value << M0Wfmt::DUMMY_WIDTH_OFFSET) & M0Wfmt::DUMMY_WIDTH_MASK),
         }
     }
 
@@ -3034,7 +3125,8 @@ impl M0WfmtVal {
     #[inline(always)]
     pub const fn with_suffix_width(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M0Wfmt::SUFFIX_WIDTH_MASK) | ((value << M0Wfmt::SUFFIX_WIDTH_OFFSET) & M0Wfmt::SUFFIX_WIDTH_MASK)
+            bits: (self.bits & !M0Wfmt::SUFFIX_WIDTH_MASK)
+                | ((value << M0Wfmt::SUFFIX_WIDTH_OFFSET) & M0Wfmt::SUFFIX_WIDTH_MASK),
         }
     }
 
@@ -3044,7 +3136,8 @@ impl M0WfmtVal {
     #[inline(always)]
     pub const fn with_addr_width(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M0Wfmt::ADDR_WIDTH_MASK) | ((value << M0Wfmt::ADDR_WIDTH_OFFSET) & M0Wfmt::ADDR_WIDTH_MASK)
+            bits: (self.bits & !M0Wfmt::ADDR_WIDTH_MASK)
+                | ((value << M0Wfmt::ADDR_WIDTH_OFFSET) & M0Wfmt::ADDR_WIDTH_MASK),
         }
     }
 
@@ -3054,7 +3147,8 @@ impl M0WfmtVal {
     #[inline(always)]
     pub const fn with_prefix_width(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M0Wfmt::PREFIX_WIDTH_MASK) | ((value << M0Wfmt::PREFIX_WIDTH_OFFSET) & M0Wfmt::PREFIX_WIDTH_MASK)
+            bits: (self.bits & !M0Wfmt::PREFIX_WIDTH_MASK)
+                | ((value << M0Wfmt::PREFIX_WIDTH_OFFSET) & M0Wfmt::PREFIX_WIDTH_MASK),
         }
     }
 }
@@ -3149,7 +3243,9 @@ impl M0Wcmd {
     /// The command suffix bits following the address, if Mx_WFMT_SUFFIX_LEN is nonzero.
     #[inline(always)]
     pub fn write_suffix(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SUFFIX_MASK) | ((value << Self::SUFFIX_OFFSET) & Self::SUFFIX_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SUFFIX_MASK) | ((value << Self::SUFFIX_OFFSET) & Self::SUFFIX_MASK)
+        });
     }
 
     /// **PREFIX** `[7:0]` (RW)
@@ -3165,7 +3261,9 @@ impl M0Wcmd {
     /// The command prefix bits to prepend on each new transfer, if Mx_WFMT_PREFIX_LEN is nonzero.
     #[inline(always)]
     pub fn write_prefix(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PREFIX_MASK) | ((value << Self::PREFIX_OFFSET) & Self::PREFIX_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PREFIX_MASK) | ((value << Self::PREFIX_OFFSET) & Self::PREFIX_MASK)
+        });
     }
 }
 
@@ -3219,7 +3317,8 @@ impl M0WcmdVal {
     #[inline(always)]
     pub const fn with_suffix(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M0Wcmd::SUFFIX_MASK) | ((value << M0Wcmd::SUFFIX_OFFSET) & M0Wcmd::SUFFIX_MASK)
+            bits: (self.bits & !M0Wcmd::SUFFIX_MASK)
+                | ((value << M0Wcmd::SUFFIX_OFFSET) & M0Wcmd::SUFFIX_MASK),
         }
     }
 
@@ -3229,7 +3328,8 @@ impl M0WcmdVal {
     #[inline(always)]
     pub const fn with_prefix(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M0Wcmd::PREFIX_MASK) | ((value << M0Wcmd::PREFIX_OFFSET) & M0Wcmd::PREFIX_MASK)
+            bits: (self.bits & !M0Wcmd::PREFIX_MASK)
+                | ((value << M0Wcmd::PREFIX_OFFSET) & M0Wcmd::PREFIX_MASK),
         }
     }
 }
@@ -3448,7 +3548,9 @@ impl M1Timing {
     /// If COOLDOWN is 0, the address alignment configured by PAGEBREAK has been reached, or the total chip select assertion limit MAX_SELECT has been reached, the cooldown period is skipped, and the chip select will always be deasserted one half SCK period after the transfer finishes.
     #[inline(always)]
     pub fn write_cooldown(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::COOLDOWN_MASK) | ((value << Self::COOLDOWN_OFFSET) & Self::COOLDOWN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::COOLDOWN_MASK) | ((value << Self::COOLDOWN_OFFSET) & Self::COOLDOWN_MASK)
+        });
     }
 
     /// **PAGEBREAK** `[29:28]` (RW)
@@ -3468,7 +3570,9 @@ impl M1Timing {
     /// This field has no effect when COOLDOWN is disabled.
     #[inline(always)]
     pub fn write_pagebreak(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PAGEBREAK_MASK) | ((value << Self::PAGEBREAK_OFFSET) & Self::PAGEBREAK_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PAGEBREAK_MASK) | ((value << Self::PAGEBREAK_OFFSET) & Self::PAGEBREAK_MASK)
+        });
     }
 
     /// **SELECT_SETUP** `[25]` (RW)
@@ -3511,7 +3615,10 @@ impl M1Timing {
     /// Note also that, in case the final SCK pulse is masked to save energy (true for non-DTR reads when COOLDOWN is disabled or PAGE_BREAK is reached), all of QMI's timing logic behaves as though the clock pulse were still present. The SELECT_HOLD time is applied from the point where the last SCK falling edge would be if the clock pulse were not masked.
     #[inline(always)]
     pub fn write_select_hold(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SELECT_HOLD_MASK) | ((value << Self::SELECT_HOLD_OFFSET) & Self::SELECT_HOLD_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SELECT_HOLD_MASK)
+                | ((value << Self::SELECT_HOLD_OFFSET) & Self::SELECT_HOLD_MASK)
+        });
     }
 
     /// **MAX_SELECT** `[22:17]` (RW)
@@ -3531,7 +3638,10 @@ impl M1Timing {
     /// If a memory access is in progress at the time MAX_SELECT is reached, the QMI will wait for the access to complete before deasserting the chip select. This additional time must be accounted for to calculate a safe MAX_SELECT value. In the worst case, this may be a fully-formed serial transfer, including command prefix and address, with a data payload as large as one cache line.
     #[inline(always)]
     pub fn write_max_select(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::MAX_SELECT_MASK) | ((value << Self::MAX_SELECT_OFFSET) & Self::MAX_SELECT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::MAX_SELECT_MASK)
+                | ((value << Self::MAX_SELECT_OFFSET) & Self::MAX_SELECT_MASK)
+        });
     }
 
     /// **MIN_DESELECT** `[16:12]` (RW)
@@ -3549,7 +3659,10 @@ impl M1Timing {
     /// Nonzero values may be required for PSRAM devices which enforce a longer minimum CS deselect time, so that they can perform internal DRAM refresh cycles whilst deselected.
     #[inline(always)]
     pub fn write_min_deselect(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::MIN_DESELECT_MASK) | ((value << Self::MIN_DESELECT_OFFSET) & Self::MIN_DESELECT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::MIN_DESELECT_MASK)
+                | ((value << Self::MIN_DESELECT_OFFSET) & Self::MIN_DESELECT_MASK)
+        });
     }
 
     /// **RXDELAY** `[10:8]` (RW)
@@ -3567,7 +3680,9 @@ impl M1Timing {
     /// At higher SCK frequencies, RXDELAY may need to be increased to account for the round trip delay of the pads, and the clock-to-Q delay of the QSPI memory device.
     #[inline(always)]
     pub fn write_rxdelay(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RXDELAY_MASK) | ((value << Self::RXDELAY_OFFSET) & Self::RXDELAY_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RXDELAY_MASK) | ((value << Self::RXDELAY_OFFSET) & Self::RXDELAY_MASK)
+        });
     }
 
     /// **CLKDIV** `[7:0]` (RW)
@@ -3587,7 +3702,9 @@ impl M1Timing {
     /// If software is increasing CLKDIV in anticipation of an increase in the system clock frequency, a dummy access to either memory window (and appropriate processor barriers/fences) must be inserted after the Mx_TIMING write to ensure the SCK divisor change is in effect _before_ the system clock is changed.
     #[inline(always)]
     pub fn write_clkdiv(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CLKDIV_MASK) | ((value << Self::CLKDIV_OFFSET) & Self::CLKDIV_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CLKDIV_MASK) | ((value << Self::CLKDIV_OFFSET) & Self::CLKDIV_MASK)
+        });
     }
 }
 
@@ -3707,7 +3824,8 @@ impl M1TimingVal {
     #[inline(always)]
     pub const fn with_cooldown(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M1Timing::COOLDOWN_MASK) | ((value << M1Timing::COOLDOWN_OFFSET) & M1Timing::COOLDOWN_MASK)
+            bits: (self.bits & !M1Timing::COOLDOWN_MASK)
+                | ((value << M1Timing::COOLDOWN_OFFSET) & M1Timing::COOLDOWN_MASK),
         }
     }
 
@@ -3719,7 +3837,8 @@ impl M1TimingVal {
     #[inline(always)]
     pub const fn with_pagebreak(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M1Timing::PAGEBREAK_MASK) | ((value << M1Timing::PAGEBREAK_OFFSET) & M1Timing::PAGEBREAK_MASK)
+            bits: (self.bits & !M1Timing::PAGEBREAK_MASK)
+                | ((value << M1Timing::PAGEBREAK_OFFSET) & M1Timing::PAGEBREAK_MASK),
         }
     }
 
@@ -3734,7 +3853,7 @@ impl M1TimingVal {
                 self.bits | M1Timing::SELECT_SETUP_MASK
             } else {
                 self.bits & !M1Timing::SELECT_SETUP_MASK
-            }
+            },
         }
     }
 
@@ -3747,7 +3866,8 @@ impl M1TimingVal {
     #[inline(always)]
     pub const fn with_select_hold(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M1Timing::SELECT_HOLD_MASK) | ((value << M1Timing::SELECT_HOLD_OFFSET) & M1Timing::SELECT_HOLD_MASK)
+            bits: (self.bits & !M1Timing::SELECT_HOLD_MASK)
+                | ((value << M1Timing::SELECT_HOLD_OFFSET) & M1Timing::SELECT_HOLD_MASK),
         }
     }
 
@@ -3759,7 +3879,8 @@ impl M1TimingVal {
     #[inline(always)]
     pub const fn with_max_select(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M1Timing::MAX_SELECT_MASK) | ((value << M1Timing::MAX_SELECT_OFFSET) & M1Timing::MAX_SELECT_MASK)
+            bits: (self.bits & !M1Timing::MAX_SELECT_MASK)
+                | ((value << M1Timing::MAX_SELECT_OFFSET) & M1Timing::MAX_SELECT_MASK),
         }
     }
 
@@ -3770,7 +3891,8 @@ impl M1TimingVal {
     #[inline(always)]
     pub const fn with_min_deselect(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M1Timing::MIN_DESELECT_MASK) | ((value << M1Timing::MIN_DESELECT_OFFSET) & M1Timing::MIN_DESELECT_MASK)
+            bits: (self.bits & !M1Timing::MIN_DESELECT_MASK)
+                | ((value << M1Timing::MIN_DESELECT_OFFSET) & M1Timing::MIN_DESELECT_MASK),
         }
     }
 
@@ -3781,7 +3903,8 @@ impl M1TimingVal {
     #[inline(always)]
     pub const fn with_rxdelay(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M1Timing::RXDELAY_MASK) | ((value << M1Timing::RXDELAY_OFFSET) & M1Timing::RXDELAY_MASK)
+            bits: (self.bits & !M1Timing::RXDELAY_MASK)
+                | ((value << M1Timing::RXDELAY_OFFSET) & M1Timing::RXDELAY_MASK),
         }
     }
 
@@ -3793,7 +3916,8 @@ impl M1TimingVal {
     #[inline(always)]
     pub const fn with_clkdiv(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M1Timing::CLKDIV_MASK) | ((value << M1Timing::CLKDIV_OFFSET) & M1Timing::CLKDIV_MASK)
+            bits: (self.bits & !M1Timing::CLKDIV_MASK)
+                | ((value << M1Timing::CLKDIV_OFFSET) & M1Timing::CLKDIV_MASK),
         }
     }
 }
@@ -4113,7 +4237,9 @@ impl M1Rfmt {
     /// Length of dummy phase between command suffix and data phase, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     #[inline(always)]
     pub fn write_dummy_len(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DUMMY_LEN_MASK) | ((value << Self::DUMMY_LEN_OFFSET) & Self::DUMMY_LEN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DUMMY_LEN_MASK) | ((value << Self::DUMMY_LEN_OFFSET) & Self::DUMMY_LEN_MASK)
+        });
     }
 
     /// **SUFFIX_LEN** `[15:14]` (RW)
@@ -4131,7 +4257,10 @@ impl M1Rfmt {
     /// Only values of 0 and 8 bits are supported.
     #[inline(always)]
     pub fn write_suffix_len(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SUFFIX_LEN_MASK) | ((value << Self::SUFFIX_LEN_OFFSET) & Self::SUFFIX_LEN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SUFFIX_LEN_MASK)
+                | ((value << Self::SUFFIX_LEN_OFFSET) & Self::SUFFIX_LEN_MASK)
+        });
     }
 
     /// **PREFIX_LEN** `[12]` (RW)
@@ -4167,7 +4296,10 @@ impl M1Rfmt {
     /// The width used for the data transfer
     #[inline(always)]
     pub fn write_data_width(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DATA_WIDTH_MASK) | ((value << Self::DATA_WIDTH_OFFSET) & Self::DATA_WIDTH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DATA_WIDTH_MASK)
+                | ((value << Self::DATA_WIDTH_OFFSET) & Self::DATA_WIDTH_MASK)
+        });
     }
 
     /// **DUMMY_WIDTH** `[7:6]` (RW)
@@ -4185,7 +4317,10 @@ impl M1Rfmt {
     /// If width is single, SD0/MOSI is held asserted low during the dummy phase, and SD1...SD3 are tristated. If width is dual/quad, all IOs are tristated during the dummy phase.
     #[inline(always)]
     pub fn write_dummy_width(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DUMMY_WIDTH_MASK) | ((value << Self::DUMMY_WIDTH_OFFSET) & Self::DUMMY_WIDTH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DUMMY_WIDTH_MASK)
+                | ((value << Self::DUMMY_WIDTH_OFFSET) & Self::DUMMY_WIDTH_MASK)
+        });
     }
 
     /// **SUFFIX_WIDTH** `[5:4]` (RW)
@@ -4201,7 +4336,10 @@ impl M1Rfmt {
     /// The width used for the post-address command suffix, if any
     #[inline(always)]
     pub fn write_suffix_width(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SUFFIX_WIDTH_MASK) | ((value << Self::SUFFIX_WIDTH_OFFSET) & Self::SUFFIX_WIDTH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SUFFIX_WIDTH_MASK)
+                | ((value << Self::SUFFIX_WIDTH_OFFSET) & Self::SUFFIX_WIDTH_MASK)
+        });
     }
 
     /// **ADDR_WIDTH** `[3:2]` (RW)
@@ -4217,7 +4355,10 @@ impl M1Rfmt {
     /// The transfer width used for the address. The address phase always transfers 24 bits in total.
     #[inline(always)]
     pub fn write_addr_width(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDR_WIDTH_MASK) | ((value << Self::ADDR_WIDTH_OFFSET) & Self::ADDR_WIDTH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDR_WIDTH_MASK)
+                | ((value << Self::ADDR_WIDTH_OFFSET) & Self::ADDR_WIDTH_MASK)
+        });
     }
 
     /// **PREFIX_WIDTH** `[1:0]` (RW)
@@ -4233,7 +4374,10 @@ impl M1Rfmt {
     /// The transfer width used for the command prefix, if any
     #[inline(always)]
     pub fn write_prefix_width(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PREFIX_WIDTH_MASK) | ((value << Self::PREFIX_WIDTH_OFFSET) & Self::PREFIX_WIDTH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PREFIX_WIDTH_MASK)
+                | ((value << Self::PREFIX_WIDTH_OFFSET) & Self::PREFIX_WIDTH_MASK)
+        });
     }
 }
 
@@ -4353,7 +4497,7 @@ impl M1RfmtVal {
                 self.bits | M1Rfmt::DTR_MASK
             } else {
                 self.bits & !M1Rfmt::DTR_MASK
-            }
+            },
         }
     }
 
@@ -4363,7 +4507,8 @@ impl M1RfmtVal {
     #[inline(always)]
     pub const fn with_dummy_len(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M1Rfmt::DUMMY_LEN_MASK) | ((value << M1Rfmt::DUMMY_LEN_OFFSET) & M1Rfmt::DUMMY_LEN_MASK)
+            bits: (self.bits & !M1Rfmt::DUMMY_LEN_MASK)
+                | ((value << M1Rfmt::DUMMY_LEN_OFFSET) & M1Rfmt::DUMMY_LEN_MASK),
         }
     }
 
@@ -4374,7 +4519,8 @@ impl M1RfmtVal {
     #[inline(always)]
     pub const fn with_suffix_len(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M1Rfmt::SUFFIX_LEN_MASK) | ((value << M1Rfmt::SUFFIX_LEN_OFFSET) & M1Rfmt::SUFFIX_LEN_MASK)
+            bits: (self.bits & !M1Rfmt::SUFFIX_LEN_MASK)
+                | ((value << M1Rfmt::SUFFIX_LEN_OFFSET) & M1Rfmt::SUFFIX_LEN_MASK),
         }
     }
 
@@ -4388,7 +4534,7 @@ impl M1RfmtVal {
                 self.bits | M1Rfmt::PREFIX_LEN_MASK
             } else {
                 self.bits & !M1Rfmt::PREFIX_LEN_MASK
-            }
+            },
         }
     }
 
@@ -4398,7 +4544,8 @@ impl M1RfmtVal {
     #[inline(always)]
     pub const fn with_data_width(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M1Rfmt::DATA_WIDTH_MASK) | ((value << M1Rfmt::DATA_WIDTH_OFFSET) & M1Rfmt::DATA_WIDTH_MASK)
+            bits: (self.bits & !M1Rfmt::DATA_WIDTH_MASK)
+                | ((value << M1Rfmt::DATA_WIDTH_OFFSET) & M1Rfmt::DATA_WIDTH_MASK),
         }
     }
 
@@ -4409,7 +4556,8 @@ impl M1RfmtVal {
     #[inline(always)]
     pub const fn with_dummy_width(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M1Rfmt::DUMMY_WIDTH_MASK) | ((value << M1Rfmt::DUMMY_WIDTH_OFFSET) & M1Rfmt::DUMMY_WIDTH_MASK)
+            bits: (self.bits & !M1Rfmt::DUMMY_WIDTH_MASK)
+                | ((value << M1Rfmt::DUMMY_WIDTH_OFFSET) & M1Rfmt::DUMMY_WIDTH_MASK),
         }
     }
 
@@ -4419,7 +4567,8 @@ impl M1RfmtVal {
     #[inline(always)]
     pub const fn with_suffix_width(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M1Rfmt::SUFFIX_WIDTH_MASK) | ((value << M1Rfmt::SUFFIX_WIDTH_OFFSET) & M1Rfmt::SUFFIX_WIDTH_MASK)
+            bits: (self.bits & !M1Rfmt::SUFFIX_WIDTH_MASK)
+                | ((value << M1Rfmt::SUFFIX_WIDTH_OFFSET) & M1Rfmt::SUFFIX_WIDTH_MASK),
         }
     }
 
@@ -4429,7 +4578,8 @@ impl M1RfmtVal {
     #[inline(always)]
     pub const fn with_addr_width(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M1Rfmt::ADDR_WIDTH_MASK) | ((value << M1Rfmt::ADDR_WIDTH_OFFSET) & M1Rfmt::ADDR_WIDTH_MASK)
+            bits: (self.bits & !M1Rfmt::ADDR_WIDTH_MASK)
+                | ((value << M1Rfmt::ADDR_WIDTH_OFFSET) & M1Rfmt::ADDR_WIDTH_MASK),
         }
     }
 
@@ -4439,7 +4589,8 @@ impl M1RfmtVal {
     #[inline(always)]
     pub const fn with_prefix_width(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M1Rfmt::PREFIX_WIDTH_MASK) | ((value << M1Rfmt::PREFIX_WIDTH_OFFSET) & M1Rfmt::PREFIX_WIDTH_MASK)
+            bits: (self.bits & !M1Rfmt::PREFIX_WIDTH_MASK)
+                | ((value << M1Rfmt::PREFIX_WIDTH_OFFSET) & M1Rfmt::PREFIX_WIDTH_MASK),
         }
     }
 }
@@ -4534,7 +4685,9 @@ impl M1Rcmd {
     /// The command suffix bits following the address, if Mx_RFMT_SUFFIX_LEN is nonzero.
     #[inline(always)]
     pub fn write_suffix(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SUFFIX_MASK) | ((value << Self::SUFFIX_OFFSET) & Self::SUFFIX_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SUFFIX_MASK) | ((value << Self::SUFFIX_OFFSET) & Self::SUFFIX_MASK)
+        });
     }
 
     /// **PREFIX** `[7:0]` (RW)
@@ -4550,7 +4703,9 @@ impl M1Rcmd {
     /// The command prefix bits to prepend on each new transfer, if Mx_RFMT_PREFIX_LEN is nonzero.
     #[inline(always)]
     pub fn write_prefix(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PREFIX_MASK) | ((value << Self::PREFIX_OFFSET) & Self::PREFIX_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PREFIX_MASK) | ((value << Self::PREFIX_OFFSET) & Self::PREFIX_MASK)
+        });
     }
 }
 
@@ -4604,7 +4759,8 @@ impl M1RcmdVal {
     #[inline(always)]
     pub const fn with_suffix(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M1Rcmd::SUFFIX_MASK) | ((value << M1Rcmd::SUFFIX_OFFSET) & M1Rcmd::SUFFIX_MASK)
+            bits: (self.bits & !M1Rcmd::SUFFIX_MASK)
+                | ((value << M1Rcmd::SUFFIX_OFFSET) & M1Rcmd::SUFFIX_MASK),
         }
     }
 
@@ -4614,7 +4770,8 @@ impl M1RcmdVal {
     #[inline(always)]
     pub const fn with_prefix(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M1Rcmd::PREFIX_MASK) | ((value << M1Rcmd::PREFIX_OFFSET) & M1Rcmd::PREFIX_MASK)
+            bits: (self.bits & !M1Rcmd::PREFIX_MASK)
+                | ((value << M1Rcmd::PREFIX_OFFSET) & M1Rcmd::PREFIX_MASK),
         }
     }
 }
@@ -4934,7 +5091,9 @@ impl M1Wfmt {
     /// Length of dummy phase between command suffix and data phase, in units of 4 bits. (i.e. 1 cycle for quad width, 2 for dual, 4 for single)
     #[inline(always)]
     pub fn write_dummy_len(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DUMMY_LEN_MASK) | ((value << Self::DUMMY_LEN_OFFSET) & Self::DUMMY_LEN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DUMMY_LEN_MASK) | ((value << Self::DUMMY_LEN_OFFSET) & Self::DUMMY_LEN_MASK)
+        });
     }
 
     /// **SUFFIX_LEN** `[15:14]` (RW)
@@ -4952,7 +5111,10 @@ impl M1Wfmt {
     /// Only values of 0 and 8 bits are supported.
     #[inline(always)]
     pub fn write_suffix_len(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SUFFIX_LEN_MASK) | ((value << Self::SUFFIX_LEN_OFFSET) & Self::SUFFIX_LEN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SUFFIX_LEN_MASK)
+                | ((value << Self::SUFFIX_LEN_OFFSET) & Self::SUFFIX_LEN_MASK)
+        });
     }
 
     /// **PREFIX_LEN** `[12]` (RW)
@@ -4988,7 +5150,10 @@ impl M1Wfmt {
     /// The width used for the data transfer
     #[inline(always)]
     pub fn write_data_width(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DATA_WIDTH_MASK) | ((value << Self::DATA_WIDTH_OFFSET) & Self::DATA_WIDTH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DATA_WIDTH_MASK)
+                | ((value << Self::DATA_WIDTH_OFFSET) & Self::DATA_WIDTH_MASK)
+        });
     }
 
     /// **DUMMY_WIDTH** `[7:6]` (RW)
@@ -5006,7 +5171,10 @@ impl M1Wfmt {
     /// If width is single, SD0/MOSI is held asserted low during the dummy phase, and SD1...SD3 are tristated. If width is dual/quad, all IOs are tristated during the dummy phase.
     #[inline(always)]
     pub fn write_dummy_width(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DUMMY_WIDTH_MASK) | ((value << Self::DUMMY_WIDTH_OFFSET) & Self::DUMMY_WIDTH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DUMMY_WIDTH_MASK)
+                | ((value << Self::DUMMY_WIDTH_OFFSET) & Self::DUMMY_WIDTH_MASK)
+        });
     }
 
     /// **SUFFIX_WIDTH** `[5:4]` (RW)
@@ -5022,7 +5190,10 @@ impl M1Wfmt {
     /// The width used for the post-address command suffix, if any
     #[inline(always)]
     pub fn write_suffix_width(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SUFFIX_WIDTH_MASK) | ((value << Self::SUFFIX_WIDTH_OFFSET) & Self::SUFFIX_WIDTH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SUFFIX_WIDTH_MASK)
+                | ((value << Self::SUFFIX_WIDTH_OFFSET) & Self::SUFFIX_WIDTH_MASK)
+        });
     }
 
     /// **ADDR_WIDTH** `[3:2]` (RW)
@@ -5038,7 +5209,10 @@ impl M1Wfmt {
     /// The transfer width used for the address. The address phase always transfers 24 bits in total.
     #[inline(always)]
     pub fn write_addr_width(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDR_WIDTH_MASK) | ((value << Self::ADDR_WIDTH_OFFSET) & Self::ADDR_WIDTH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDR_WIDTH_MASK)
+                | ((value << Self::ADDR_WIDTH_OFFSET) & Self::ADDR_WIDTH_MASK)
+        });
     }
 
     /// **PREFIX_WIDTH** `[1:0]` (RW)
@@ -5054,7 +5228,10 @@ impl M1Wfmt {
     /// The transfer width used for the command prefix, if any
     #[inline(always)]
     pub fn write_prefix_width(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PREFIX_WIDTH_MASK) | ((value << Self::PREFIX_WIDTH_OFFSET) & Self::PREFIX_WIDTH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PREFIX_WIDTH_MASK)
+                | ((value << Self::PREFIX_WIDTH_OFFSET) & Self::PREFIX_WIDTH_MASK)
+        });
     }
 }
 
@@ -5174,7 +5351,7 @@ impl M1WfmtVal {
                 self.bits | M1Wfmt::DTR_MASK
             } else {
                 self.bits & !M1Wfmt::DTR_MASK
-            }
+            },
         }
     }
 
@@ -5184,7 +5361,8 @@ impl M1WfmtVal {
     #[inline(always)]
     pub const fn with_dummy_len(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M1Wfmt::DUMMY_LEN_MASK) | ((value << M1Wfmt::DUMMY_LEN_OFFSET) & M1Wfmt::DUMMY_LEN_MASK)
+            bits: (self.bits & !M1Wfmt::DUMMY_LEN_MASK)
+                | ((value << M1Wfmt::DUMMY_LEN_OFFSET) & M1Wfmt::DUMMY_LEN_MASK),
         }
     }
 
@@ -5195,7 +5373,8 @@ impl M1WfmtVal {
     #[inline(always)]
     pub const fn with_suffix_len(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M1Wfmt::SUFFIX_LEN_MASK) | ((value << M1Wfmt::SUFFIX_LEN_OFFSET) & M1Wfmt::SUFFIX_LEN_MASK)
+            bits: (self.bits & !M1Wfmt::SUFFIX_LEN_MASK)
+                | ((value << M1Wfmt::SUFFIX_LEN_OFFSET) & M1Wfmt::SUFFIX_LEN_MASK),
         }
     }
 
@@ -5209,7 +5388,7 @@ impl M1WfmtVal {
                 self.bits | M1Wfmt::PREFIX_LEN_MASK
             } else {
                 self.bits & !M1Wfmt::PREFIX_LEN_MASK
-            }
+            },
         }
     }
 
@@ -5219,7 +5398,8 @@ impl M1WfmtVal {
     #[inline(always)]
     pub const fn with_data_width(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M1Wfmt::DATA_WIDTH_MASK) | ((value << M1Wfmt::DATA_WIDTH_OFFSET) & M1Wfmt::DATA_WIDTH_MASK)
+            bits: (self.bits & !M1Wfmt::DATA_WIDTH_MASK)
+                | ((value << M1Wfmt::DATA_WIDTH_OFFSET) & M1Wfmt::DATA_WIDTH_MASK),
         }
     }
 
@@ -5230,7 +5410,8 @@ impl M1WfmtVal {
     #[inline(always)]
     pub const fn with_dummy_width(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M1Wfmt::DUMMY_WIDTH_MASK) | ((value << M1Wfmt::DUMMY_WIDTH_OFFSET) & M1Wfmt::DUMMY_WIDTH_MASK)
+            bits: (self.bits & !M1Wfmt::DUMMY_WIDTH_MASK)
+                | ((value << M1Wfmt::DUMMY_WIDTH_OFFSET) & M1Wfmt::DUMMY_WIDTH_MASK),
         }
     }
 
@@ -5240,7 +5421,8 @@ impl M1WfmtVal {
     #[inline(always)]
     pub const fn with_suffix_width(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M1Wfmt::SUFFIX_WIDTH_MASK) | ((value << M1Wfmt::SUFFIX_WIDTH_OFFSET) & M1Wfmt::SUFFIX_WIDTH_MASK)
+            bits: (self.bits & !M1Wfmt::SUFFIX_WIDTH_MASK)
+                | ((value << M1Wfmt::SUFFIX_WIDTH_OFFSET) & M1Wfmt::SUFFIX_WIDTH_MASK),
         }
     }
 
@@ -5250,7 +5432,8 @@ impl M1WfmtVal {
     #[inline(always)]
     pub const fn with_addr_width(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M1Wfmt::ADDR_WIDTH_MASK) | ((value << M1Wfmt::ADDR_WIDTH_OFFSET) & M1Wfmt::ADDR_WIDTH_MASK)
+            bits: (self.bits & !M1Wfmt::ADDR_WIDTH_MASK)
+                | ((value << M1Wfmt::ADDR_WIDTH_OFFSET) & M1Wfmt::ADDR_WIDTH_MASK),
         }
     }
 
@@ -5260,7 +5443,8 @@ impl M1WfmtVal {
     #[inline(always)]
     pub const fn with_prefix_width(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M1Wfmt::PREFIX_WIDTH_MASK) | ((value << M1Wfmt::PREFIX_WIDTH_OFFSET) & M1Wfmt::PREFIX_WIDTH_MASK)
+            bits: (self.bits & !M1Wfmt::PREFIX_WIDTH_MASK)
+                | ((value << M1Wfmt::PREFIX_WIDTH_OFFSET) & M1Wfmt::PREFIX_WIDTH_MASK),
         }
     }
 }
@@ -5355,7 +5539,9 @@ impl M1Wcmd {
     /// The command suffix bits following the address, if Mx_WFMT_SUFFIX_LEN is nonzero.
     #[inline(always)]
     pub fn write_suffix(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SUFFIX_MASK) | ((value << Self::SUFFIX_OFFSET) & Self::SUFFIX_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SUFFIX_MASK) | ((value << Self::SUFFIX_OFFSET) & Self::SUFFIX_MASK)
+        });
     }
 
     /// **PREFIX** `[7:0]` (RW)
@@ -5371,7 +5557,9 @@ impl M1Wcmd {
     /// The command prefix bits to prepend on each new transfer, if Mx_WFMT_PREFIX_LEN is nonzero.
     #[inline(always)]
     pub fn write_prefix(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PREFIX_MASK) | ((value << Self::PREFIX_OFFSET) & Self::PREFIX_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PREFIX_MASK) | ((value << Self::PREFIX_OFFSET) & Self::PREFIX_MASK)
+        });
     }
 }
 
@@ -5425,7 +5613,8 @@ impl M1WcmdVal {
     #[inline(always)]
     pub const fn with_suffix(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M1Wcmd::SUFFIX_MASK) | ((value << M1Wcmd::SUFFIX_OFFSET) & M1Wcmd::SUFFIX_MASK)
+            bits: (self.bits & !M1Wcmd::SUFFIX_MASK)
+                | ((value << M1Wcmd::SUFFIX_OFFSET) & M1Wcmd::SUFFIX_MASK),
         }
     }
 
@@ -5435,7 +5624,8 @@ impl M1WcmdVal {
     #[inline(always)]
     pub const fn with_prefix(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !M1Wcmd::PREFIX_MASK) | ((value << M1Wcmd::PREFIX_OFFSET) & M1Wcmd::PREFIX_MASK)
+            bits: (self.bits & !M1Wcmd::PREFIX_MASK)
+                | ((value << M1Wcmd::PREFIX_OFFSET) & M1Wcmd::PREFIX_MASK),
         }
     }
 }
@@ -5538,7 +5728,9 @@ impl Atrans0 {
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
     pub fn write_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SIZE_MASK) | ((value << Self::SIZE_OFFSET) & Self::SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SIZE_MASK) | ((value << Self::SIZE_OFFSET) & Self::SIZE_MASK)
+        });
     }
 
     /// **BASE** `[11:0]` (RW)
@@ -5556,7 +5748,9 @@ impl Atrans0 {
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
     pub fn write_base(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK)
+        });
     }
 }
 
@@ -5613,7 +5807,8 @@ impl Atrans0Val {
     #[inline(always)]
     pub const fn with_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Atrans0::SIZE_MASK) | ((value << Atrans0::SIZE_OFFSET) & Atrans0::SIZE_MASK)
+            bits: (self.bits & !Atrans0::SIZE_MASK)
+                | ((value << Atrans0::SIZE_OFFSET) & Atrans0::SIZE_MASK),
         }
     }
 
@@ -5624,7 +5819,8 @@ impl Atrans0Val {
     #[inline(always)]
     pub const fn with_base(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Atrans0::BASE_MASK) | ((value << Atrans0::BASE_OFFSET) & Atrans0::BASE_MASK)
+            bits: (self.bits & !Atrans0::BASE_MASK)
+                | ((value << Atrans0::BASE_OFFSET) & Atrans0::BASE_MASK),
         }
     }
 }
@@ -5727,7 +5923,9 @@ impl Atrans1 {
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
     pub fn write_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SIZE_MASK) | ((value << Self::SIZE_OFFSET) & Self::SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SIZE_MASK) | ((value << Self::SIZE_OFFSET) & Self::SIZE_MASK)
+        });
     }
 
     /// **BASE** `[11:0]` (RW)
@@ -5745,7 +5943,9 @@ impl Atrans1 {
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
     pub fn write_base(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK)
+        });
     }
 }
 
@@ -5802,7 +6002,8 @@ impl Atrans1Val {
     #[inline(always)]
     pub const fn with_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Atrans1::SIZE_MASK) | ((value << Atrans1::SIZE_OFFSET) & Atrans1::SIZE_MASK)
+            bits: (self.bits & !Atrans1::SIZE_MASK)
+                | ((value << Atrans1::SIZE_OFFSET) & Atrans1::SIZE_MASK),
         }
     }
 
@@ -5813,7 +6014,8 @@ impl Atrans1Val {
     #[inline(always)]
     pub const fn with_base(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Atrans1::BASE_MASK) | ((value << Atrans1::BASE_OFFSET) & Atrans1::BASE_MASK)
+            bits: (self.bits & !Atrans1::BASE_MASK)
+                | ((value << Atrans1::BASE_OFFSET) & Atrans1::BASE_MASK),
         }
     }
 }
@@ -5916,7 +6118,9 @@ impl Atrans2 {
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
     pub fn write_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SIZE_MASK) | ((value << Self::SIZE_OFFSET) & Self::SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SIZE_MASK) | ((value << Self::SIZE_OFFSET) & Self::SIZE_MASK)
+        });
     }
 
     /// **BASE** `[11:0]` (RW)
@@ -5934,7 +6138,9 @@ impl Atrans2 {
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
     pub fn write_base(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK)
+        });
     }
 }
 
@@ -5991,7 +6197,8 @@ impl Atrans2Val {
     #[inline(always)]
     pub const fn with_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Atrans2::SIZE_MASK) | ((value << Atrans2::SIZE_OFFSET) & Atrans2::SIZE_MASK)
+            bits: (self.bits & !Atrans2::SIZE_MASK)
+                | ((value << Atrans2::SIZE_OFFSET) & Atrans2::SIZE_MASK),
         }
     }
 
@@ -6002,7 +6209,8 @@ impl Atrans2Val {
     #[inline(always)]
     pub const fn with_base(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Atrans2::BASE_MASK) | ((value << Atrans2::BASE_OFFSET) & Atrans2::BASE_MASK)
+            bits: (self.bits & !Atrans2::BASE_MASK)
+                | ((value << Atrans2::BASE_OFFSET) & Atrans2::BASE_MASK),
         }
     }
 }
@@ -6105,7 +6313,9 @@ impl Atrans3 {
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
     pub fn write_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SIZE_MASK) | ((value << Self::SIZE_OFFSET) & Self::SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SIZE_MASK) | ((value << Self::SIZE_OFFSET) & Self::SIZE_MASK)
+        });
     }
 
     /// **BASE** `[11:0]` (RW)
@@ -6123,7 +6333,9 @@ impl Atrans3 {
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
     pub fn write_base(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK)
+        });
     }
 }
 
@@ -6180,7 +6392,8 @@ impl Atrans3Val {
     #[inline(always)]
     pub const fn with_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Atrans3::SIZE_MASK) | ((value << Atrans3::SIZE_OFFSET) & Atrans3::SIZE_MASK)
+            bits: (self.bits & !Atrans3::SIZE_MASK)
+                | ((value << Atrans3::SIZE_OFFSET) & Atrans3::SIZE_MASK),
         }
     }
 
@@ -6191,7 +6404,8 @@ impl Atrans3Val {
     #[inline(always)]
     pub const fn with_base(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Atrans3::BASE_MASK) | ((value << Atrans3::BASE_OFFSET) & Atrans3::BASE_MASK)
+            bits: (self.bits & !Atrans3::BASE_MASK)
+                | ((value << Atrans3::BASE_OFFSET) & Atrans3::BASE_MASK),
         }
     }
 }
@@ -6294,7 +6508,9 @@ impl Atrans4 {
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
     pub fn write_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SIZE_MASK) | ((value << Self::SIZE_OFFSET) & Self::SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SIZE_MASK) | ((value << Self::SIZE_OFFSET) & Self::SIZE_MASK)
+        });
     }
 
     /// **BASE** `[11:0]` (RW)
@@ -6312,7 +6528,9 @@ impl Atrans4 {
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
     pub fn write_base(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK)
+        });
     }
 }
 
@@ -6369,7 +6587,8 @@ impl Atrans4Val {
     #[inline(always)]
     pub const fn with_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Atrans4::SIZE_MASK) | ((value << Atrans4::SIZE_OFFSET) & Atrans4::SIZE_MASK)
+            bits: (self.bits & !Atrans4::SIZE_MASK)
+                | ((value << Atrans4::SIZE_OFFSET) & Atrans4::SIZE_MASK),
         }
     }
 
@@ -6380,7 +6599,8 @@ impl Atrans4Val {
     #[inline(always)]
     pub const fn with_base(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Atrans4::BASE_MASK) | ((value << Atrans4::BASE_OFFSET) & Atrans4::BASE_MASK)
+            bits: (self.bits & !Atrans4::BASE_MASK)
+                | ((value << Atrans4::BASE_OFFSET) & Atrans4::BASE_MASK),
         }
     }
 }
@@ -6483,7 +6703,9 @@ impl Atrans5 {
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
     pub fn write_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SIZE_MASK) | ((value << Self::SIZE_OFFSET) & Self::SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SIZE_MASK) | ((value << Self::SIZE_OFFSET) & Self::SIZE_MASK)
+        });
     }
 
     /// **BASE** `[11:0]` (RW)
@@ -6501,7 +6723,9 @@ impl Atrans5 {
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
     pub fn write_base(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK)
+        });
     }
 }
 
@@ -6558,7 +6782,8 @@ impl Atrans5Val {
     #[inline(always)]
     pub const fn with_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Atrans5::SIZE_MASK) | ((value << Atrans5::SIZE_OFFSET) & Atrans5::SIZE_MASK)
+            bits: (self.bits & !Atrans5::SIZE_MASK)
+                | ((value << Atrans5::SIZE_OFFSET) & Atrans5::SIZE_MASK),
         }
     }
 
@@ -6569,7 +6794,8 @@ impl Atrans5Val {
     #[inline(always)]
     pub const fn with_base(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Atrans5::BASE_MASK) | ((value << Atrans5::BASE_OFFSET) & Atrans5::BASE_MASK)
+            bits: (self.bits & !Atrans5::BASE_MASK)
+                | ((value << Atrans5::BASE_OFFSET) & Atrans5::BASE_MASK),
         }
     }
 }
@@ -6672,7 +6898,9 @@ impl Atrans6 {
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
     pub fn write_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SIZE_MASK) | ((value << Self::SIZE_OFFSET) & Self::SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SIZE_MASK) | ((value << Self::SIZE_OFFSET) & Self::SIZE_MASK)
+        });
     }
 
     /// **BASE** `[11:0]` (RW)
@@ -6690,7 +6918,9 @@ impl Atrans6 {
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
     pub fn write_base(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK)
+        });
     }
 }
 
@@ -6747,7 +6977,8 @@ impl Atrans6Val {
     #[inline(always)]
     pub const fn with_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Atrans6::SIZE_MASK) | ((value << Atrans6::SIZE_OFFSET) & Atrans6::SIZE_MASK)
+            bits: (self.bits & !Atrans6::SIZE_MASK)
+                | ((value << Atrans6::SIZE_OFFSET) & Atrans6::SIZE_MASK),
         }
     }
 
@@ -6758,7 +6989,8 @@ impl Atrans6Val {
     #[inline(always)]
     pub const fn with_base(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Atrans6::BASE_MASK) | ((value << Atrans6::BASE_OFFSET) & Atrans6::BASE_MASK)
+            bits: (self.bits & !Atrans6::BASE_MASK)
+                | ((value << Atrans6::BASE_OFFSET) & Atrans6::BASE_MASK),
         }
     }
 }
@@ -6861,7 +7093,9 @@ impl Atrans7 {
     /// Bits 21:12 of the virtual address are compared to SIZE. Offsets greater than SIZE return a bus error, and do not cause a QSPI access.
     #[inline(always)]
     pub fn write_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SIZE_MASK) | ((value << Self::SIZE_OFFSET) & Self::SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SIZE_MASK) | ((value << Self::SIZE_OFFSET) & Self::SIZE_MASK)
+        });
     }
 
     /// **BASE** `[11:0]` (RW)
@@ -6879,7 +7113,9 @@ impl Atrans7 {
     /// Taking a 24-bit virtual address, firstly bits 23:22 (the two MSBs) are masked to zero, and then BASE is added to bits 23:12 (the upper 12 bits) to form the physical address. Translation wraps on a 16 MiB boundary.
     #[inline(always)]
     pub fn write_base(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK)
+        });
     }
 }
 
@@ -6936,7 +7172,8 @@ impl Atrans7Val {
     #[inline(always)]
     pub const fn with_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Atrans7::SIZE_MASK) | ((value << Atrans7::SIZE_OFFSET) & Atrans7::SIZE_MASK)
+            bits: (self.bits & !Atrans7::SIZE_MASK)
+                | ((value << Atrans7::SIZE_OFFSET) & Atrans7::SIZE_MASK),
         }
     }
 
@@ -6947,7 +7184,8 @@ impl Atrans7Val {
     #[inline(always)]
     pub const fn with_base(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Atrans7::BASE_MASK) | ((value << Atrans7::BASE_OFFSET) & Atrans7::BASE_MASK)
+            bits: (self.bits & !Atrans7::BASE_MASK)
+                | ((value << Atrans7::BASE_OFFSET) & Atrans7::BASE_MASK),
         }
     }
 }
@@ -7082,4 +7320,3 @@ pub struct RegisterBlock {
     /// Note that the XIP cache is fully virtually addressed, so a cache flush is required after changing the address translation.
     pub atrans7: Atrans7,
 }
-

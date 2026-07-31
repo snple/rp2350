@@ -1057,7 +1057,9 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
         // 接收 8 字节回复
         let mut reply = [0u8; REPLY_DATAGRAM_LEN];
         for slot in reply.iter_mut() {
-            *slot = self.read_byte_timeout(delay, BYTE_TIMEOUT_US).ok_or(TmcError::Timeout)?;
+            *slot = self
+                .read_byte_timeout(delay, BYTE_TIMEOUT_US)
+                .ok_or(TmcError::Timeout)?;
         }
 
         // CRC 校验
@@ -1396,7 +1398,12 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
     ///
     /// - `run_current`: 运行电流 IRUN (0–31)
     /// - `hold_current`: 保持电流 IHOLD (0–31)
-    pub fn set_run_current(&self, run_current: u8, hold_current: u8, delay: &impl DelayUs) -> Result<(), TmcError> {
+    pub fn set_run_current(
+        &self,
+        run_current: u8,
+        hold_current: u8,
+        delay: &impl DelayUs,
+    ) -> Result<(), TmcError> {
         let mut ihold_irun = IholdIr::default();
         ihold_irun.set_ihold(hold_current);
         ihold_irun.set_irun(run_current);
@@ -1417,7 +1424,11 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
     ///
     /// StallGuard 激活条件: `TSTEP ≤ tcool_thrs`。
     /// 设为最大值 (`0xFFFFF`) 表示任何速度下都激活。
-    pub fn set_tcool_threshold(&self, tcool_thrs: u32, delay: &impl DelayUs) -> Result<(), TmcError> {
+    pub fn set_tcool_threshold(
+        &self,
+        tcool_thrs: u32,
+        delay: &impl DelayUs,
+    ) -> Result<(), TmcError> {
         self.write_reg(REG_TCOOLTHRS, tcool_thrs, delay)
     }
 
@@ -1513,7 +1524,11 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
     /// 设置电机静止时的行为 (PWMCONF.freewheel)。
     ///
     /// 仅在 IHOLD=0 时生效。可选择续流或被动制动。
-    pub fn set_standstill_mode(&self, mode: StandstillMode, delay: &impl DelayUs) -> Result<(), TmcError> {
+    pub fn set_standstill_mode(
+        &self,
+        mode: StandstillMode,
+        delay: &impl DelayUs,
+    ) -> Result<(), TmcError> {
         let mut pwm = self.read_pwmconf(delay)?;
         pwm.set_freewheel(mode.to_bits());
         self.write_pwmconf(&pwm, delay)
@@ -1593,7 +1608,12 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
     /// 使用 `read_raw` 忽略帧错误：电阻网络下回显可能带有
     /// 虚假的 framing error，若用 `read_available` 会提前退出导致
     /// 回显残留并污染后续 TMC2209 回复帧。
-    fn drain_bytes(&self, count: usize, delay: &impl DelayUs, timeout_us: u32) -> Result<(), TmcError> {
+    fn drain_bytes(
+        &self,
+        count: usize,
+        delay: &impl DelayUs,
+        timeout_us: u32,
+    ) -> Result<(), TmcError> {
         let mut buf = [0u8; 8];
         let mut drained = 0;
         let mut remaining = timeout_us;

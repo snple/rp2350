@@ -44,7 +44,11 @@ pub enum Direction {
 impl From<u8> for Direction {
     #[inline]
     fn from(v: u8) -> Self {
-        if v & 0x80 != 0 { Direction::In } else { Direction::Out }
+        if v & 0x80 != 0 {
+            Direction::In
+        } else {
+            Direction::Out
+        }
     }
 }
 
@@ -74,7 +78,10 @@ impl EndpointType {
             EndpointType::Control => 0b00,
             EndpointType::Bulk => 0b10,
             EndpointType::Interrupt => 0b11,
-            EndpointType::Isochronous { synchronization, usage } => {
+            EndpointType::Isochronous {
+                synchronization,
+                usage,
+            } => {
                 let sync = match synchronization {
                     IsoSynchronization::None => 0b00,
                     IsoSynchronization::Asynchronous => 0b01,
@@ -174,24 +181,38 @@ impl EndpointAddress {
 
 impl From<u8> for EndpointAddress {
     #[inline]
-    fn from(v: u8) -> Self { Self(v) }
+    fn from(v: u8) -> Self {
+        Self(v)
+    }
 }
 
 impl From<EndpointAddress> for u8 {
     #[inline]
-    fn from(a: EndpointAddress) -> Self { a.0 }
+    fn from(a: EndpointAddress) -> Self {
+        a.0
+    }
 }
 
 impl core::fmt::Debug for EndpointAddress {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        write!(f, "EP{} {}", self.number(), if self.is_in() { "IN" } else { "OUT" })
+        write!(
+            f,
+            "EP{} {}",
+            self.number(),
+            if self.is_in() { "IN" } else { "OUT" }
+        )
     }
 }
 
 #[cfg(feature = "defmt")]
 impl defmt::Format for EndpointAddress {
     fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "EP{} {}", self.number(), if self.is_in() { "IN" } else { "OUT" });
+        defmt::write!(
+            f,
+            "EP{} {}",
+            self.number(),
+            if self.is_in() { "IN" } else { "OUT" }
+        );
     }
 }
 
@@ -223,24 +244,39 @@ impl<'a, B: UsbBus, D: EndpointDir> Endpoint<'a, B, D> {
         max_packet_size: u16,
         interval: u8,
     ) -> Self {
-        Self { bus, address, ep_type, max_packet_size, interval, _dir: PhantomData }
+        Self {
+            bus,
+            address,
+            ep_type,
+            max_packet_size,
+            interval,
+            _dir: PhantomData,
+        }
     }
 
     /// Endpoint address (number + direction).
     #[inline]
-    pub fn address(&self) -> EndpointAddress { self.address }
+    pub fn address(&self) -> EndpointAddress {
+        self.address
+    }
 
     /// Transfer type of this endpoint.
     #[inline]
-    pub fn ep_type(&self) -> EndpointType { self.ep_type }
+    pub fn ep_type(&self) -> EndpointType {
+        self.ep_type
+    }
 
     /// Maximum packet size in bytes.
     #[inline]
-    pub fn max_packet_size(&self) -> u16 { self.max_packet_size }
+    pub fn max_packet_size(&self) -> u16 {
+        self.max_packet_size
+    }
 
     /// Polling interval for interrupt / isochronous endpoints.
     #[inline]
-    pub fn interval(&self) -> u8 { self.interval }
+    pub fn interval(&self) -> u8 {
+        self.interval
+    }
 
     /// Stall this endpoint.
     pub fn stall(&self) {

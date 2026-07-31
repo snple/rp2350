@@ -25,8 +25,8 @@ use defmt::*;
 use defmt_rtt as _;
 
 use pico_rs::dma::{DataSize, Dma};
-use pico_rs::main;
 use pico_rs::gpio::{Pin, Pins};
+use pico_rs::main;
 use pico_rs::pac::Peripherals;
 use pico_rs::uart::Uart0;
 

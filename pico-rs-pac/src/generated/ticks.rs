@@ -141,7 +141,7 @@ impl Proc0CtrlVal {
                 self.bits | Proc0Ctrl::ENABLE_MASK
             } else {
                 self.bits & !Proc0Ctrl::ENABLE_MASK
-            }
+            },
         }
     }
 }
@@ -221,7 +221,10 @@ impl Proc0Cycles {
     /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub fn write_proc0_cycles(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PROC0_CYCLES_MASK) | ((value << Self::PROC0_CYCLES_OFFSET) & Self::PROC0_CYCLES_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PROC0_CYCLES_MASK)
+                | ((value << Self::PROC0_CYCLES_OFFSET) & Self::PROC0_CYCLES_MASK)
+        });
     }
 }
 
@@ -267,7 +270,8 @@ impl Proc0CyclesVal {
     #[inline(always)]
     pub const fn with_proc0_cycles(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Proc0Cycles::PROC0_CYCLES_MASK) | ((value << Proc0Cycles::PROC0_CYCLES_OFFSET) & Proc0Cycles::PROC0_CYCLES_MASK)
+            bits: (self.bits & !Proc0Cycles::PROC0_CYCLES_MASK)
+                | ((value << Proc0Cycles::PROC0_CYCLES_OFFSET) & Proc0Cycles::PROC0_CYCLES_MASK),
         }
     }
 }
@@ -522,7 +526,7 @@ impl Proc1CtrlVal {
                 self.bits | Proc1Ctrl::ENABLE_MASK
             } else {
                 self.bits & !Proc1Ctrl::ENABLE_MASK
-            }
+            },
         }
     }
 }
@@ -602,7 +606,10 @@ impl Proc1Cycles {
     /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub fn write_proc1_cycles(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PROC1_CYCLES_MASK) | ((value << Self::PROC1_CYCLES_OFFSET) & Self::PROC1_CYCLES_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PROC1_CYCLES_MASK)
+                | ((value << Self::PROC1_CYCLES_OFFSET) & Self::PROC1_CYCLES_MASK)
+        });
     }
 }
 
@@ -648,7 +655,8 @@ impl Proc1CyclesVal {
     #[inline(always)]
     pub const fn with_proc1_cycles(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Proc1Cycles::PROC1_CYCLES_MASK) | ((value << Proc1Cycles::PROC1_CYCLES_OFFSET) & Proc1Cycles::PROC1_CYCLES_MASK)
+            bits: (self.bits & !Proc1Cycles::PROC1_CYCLES_MASK)
+                | ((value << Proc1Cycles::PROC1_CYCLES_OFFSET) & Proc1Cycles::PROC1_CYCLES_MASK),
         }
     }
 }
@@ -903,7 +911,7 @@ impl Timer0CtrlVal {
                 self.bits | Timer0Ctrl::ENABLE_MASK
             } else {
                 self.bits & !Timer0Ctrl::ENABLE_MASK
-            }
+            },
         }
     }
 }
@@ -983,7 +991,10 @@ impl Timer0Cycles {
     /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub fn write_timer0_cycles(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TIMER0_CYCLES_MASK) | ((value << Self::TIMER0_CYCLES_OFFSET) & Self::TIMER0_CYCLES_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TIMER0_CYCLES_MASK)
+                | ((value << Self::TIMER0_CYCLES_OFFSET) & Self::TIMER0_CYCLES_MASK)
+        });
     }
 }
 
@@ -1029,7 +1040,9 @@ impl Timer0CyclesVal {
     #[inline(always)]
     pub const fn with_timer0_cycles(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Timer0Cycles::TIMER0_CYCLES_MASK) | ((value << Timer0Cycles::TIMER0_CYCLES_OFFSET) & Timer0Cycles::TIMER0_CYCLES_MASK)
+            bits: (self.bits & !Timer0Cycles::TIMER0_CYCLES_MASK)
+                | ((value << Timer0Cycles::TIMER0_CYCLES_OFFSET)
+                    & Timer0Cycles::TIMER0_CYCLES_MASK),
         }
     }
 }
@@ -1284,7 +1297,7 @@ impl Timer1CtrlVal {
                 self.bits | Timer1Ctrl::ENABLE_MASK
             } else {
                 self.bits & !Timer1Ctrl::ENABLE_MASK
-            }
+            },
         }
     }
 }
@@ -1364,7 +1377,10 @@ impl Timer1Cycles {
     /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub fn write_timer1_cycles(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TIMER1_CYCLES_MASK) | ((value << Self::TIMER1_CYCLES_OFFSET) & Self::TIMER1_CYCLES_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TIMER1_CYCLES_MASK)
+                | ((value << Self::TIMER1_CYCLES_OFFSET) & Self::TIMER1_CYCLES_MASK)
+        });
     }
 }
 
@@ -1410,7 +1426,9 @@ impl Timer1CyclesVal {
     #[inline(always)]
     pub const fn with_timer1_cycles(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Timer1Cycles::TIMER1_CYCLES_MASK) | ((value << Timer1Cycles::TIMER1_CYCLES_OFFSET) & Timer1Cycles::TIMER1_CYCLES_MASK)
+            bits: (self.bits & !Timer1Cycles::TIMER1_CYCLES_MASK)
+                | ((value << Timer1Cycles::TIMER1_CYCLES_OFFSET)
+                    & Timer1Cycles::TIMER1_CYCLES_MASK),
         }
     }
 }
@@ -1665,7 +1683,7 @@ impl WatchdogCtrlVal {
                 self.bits | WatchdogCtrl::ENABLE_MASK
             } else {
                 self.bits & !WatchdogCtrl::ENABLE_MASK
-            }
+            },
         }
     }
 }
@@ -1745,7 +1763,10 @@ impl WatchdogCycles {
     /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub fn write_watchdog_cycles(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::WATCHDOG_CYCLES_MASK) | ((value << Self::WATCHDOG_CYCLES_OFFSET) & Self::WATCHDOG_CYCLES_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::WATCHDOG_CYCLES_MASK)
+                | ((value << Self::WATCHDOG_CYCLES_OFFSET) & Self::WATCHDOG_CYCLES_MASK)
+        });
     }
 }
 
@@ -1791,7 +1812,9 @@ impl WatchdogCyclesVal {
     #[inline(always)]
     pub const fn with_watchdog_cycles(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !WatchdogCycles::WATCHDOG_CYCLES_MASK) | ((value << WatchdogCycles::WATCHDOG_CYCLES_OFFSET) & WatchdogCycles::WATCHDOG_CYCLES_MASK)
+            bits: (self.bits & !WatchdogCycles::WATCHDOG_CYCLES_MASK)
+                | ((value << WatchdogCycles::WATCHDOG_CYCLES_OFFSET)
+                    & WatchdogCycles::WATCHDOG_CYCLES_MASK),
         }
     }
 }
@@ -2046,7 +2069,7 @@ impl RiscvCtrlVal {
                 self.bits | RiscvCtrl::ENABLE_MASK
             } else {
                 self.bits & !RiscvCtrl::ENABLE_MASK
-            }
+            },
         }
     }
 }
@@ -2126,7 +2149,10 @@ impl RiscvCycles {
     /// Total number of clk_tick cycles before the next tick.
     #[inline(always)]
     pub fn write_riscv_cycles(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RISCV_CYCLES_MASK) | ((value << Self::RISCV_CYCLES_OFFSET) & Self::RISCV_CYCLES_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RISCV_CYCLES_MASK)
+                | ((value << Self::RISCV_CYCLES_OFFSET) & Self::RISCV_CYCLES_MASK)
+        });
     }
 }
 
@@ -2172,7 +2198,8 @@ impl RiscvCyclesVal {
     #[inline(always)]
     pub const fn with_riscv_cycles(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !RiscvCycles::RISCV_CYCLES_MASK) | ((value << RiscvCycles::RISCV_CYCLES_OFFSET) & RiscvCycles::RISCV_CYCLES_MASK)
+            bits: (self.bits & !RiscvCycles::RISCV_CYCLES_MASK)
+                | ((value << RiscvCycles::RISCV_CYCLES_OFFSET) & RiscvCycles::RISCV_CYCLES_MASK),
         }
     }
 }
@@ -2338,4 +2365,3 @@ pub struct RegisterBlock {
     /// 0x0044
     pub riscv_count: RiscvCount,
 }
-

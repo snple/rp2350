@@ -22,7 +22,10 @@ use pico_rs::systick::Delay;
 
 const LED_PIN: u32 = 25;
 
-const CLOCK_FREQ_HZ: u32 = 150_000_000;
+/// At boot, RP2350 runs from ROSC at approximately 12 MHz.
+/// This example does not configure the system clocks, so SysTick must be
+/// initialized with the actual boot frequency.
+const CLOCK_FREQ_HZ: u32 = 12_000_000;
 
 #[main]
 fn main() -> ! {

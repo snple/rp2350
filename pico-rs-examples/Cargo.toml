@@ -4,6 +4,9 @@ version.workspace = true
 edition.workspace = true
 license.workspace = true
 description = "Examples for pico-rs"
+repository.workspace = true
+# Examples are never published to crates.io.
+publish = false
 autobins = false
 
 [features]

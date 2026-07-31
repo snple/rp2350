@@ -109,7 +109,7 @@ impl VoltageSelectVal {
                 self.bits | VoltageSelect::VOLTAGE_SELECT_MASK
             } else {
                 self.bits & !VoltageSelect::VOLTAGE_SELECT_MASK
-            }
+            },
         }
     }
 }
@@ -348,7 +348,9 @@ impl GpioQspiSclk {
     /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK)
+        });
     }
 
     /// **PUE** `[3]` (RW)
@@ -534,7 +536,7 @@ impl GpioQspiSclkVal {
                 self.bits | GpioQspiSclk::ISO_MASK
             } else {
                 self.bits & !GpioQspiSclk::ISO_MASK
-            }
+            },
         }
     }
 
@@ -548,7 +550,7 @@ impl GpioQspiSclkVal {
                 self.bits | GpioQspiSclk::OD_MASK
             } else {
                 self.bits & !GpioQspiSclk::OD_MASK
-            }
+            },
         }
     }
 
@@ -562,7 +564,7 @@ impl GpioQspiSclkVal {
                 self.bits | GpioQspiSclk::IE_MASK
             } else {
                 self.bits & !GpioQspiSclk::IE_MASK
-            }
+            },
         }
     }
 
@@ -572,7 +574,8 @@ impl GpioQspiSclkVal {
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !GpioQspiSclk::DRIVE_MASK) | ((value << GpioQspiSclk::DRIVE_OFFSET) & GpioQspiSclk::DRIVE_MASK)
+            bits: (self.bits & !GpioQspiSclk::DRIVE_MASK)
+                | ((value << GpioQspiSclk::DRIVE_OFFSET) & GpioQspiSclk::DRIVE_MASK),
         }
     }
 
@@ -586,7 +589,7 @@ impl GpioQspiSclkVal {
                 self.bits | GpioQspiSclk::PUE_MASK
             } else {
                 self.bits & !GpioQspiSclk::PUE_MASK
-            }
+            },
         }
     }
 
@@ -600,7 +603,7 @@ impl GpioQspiSclkVal {
                 self.bits | GpioQspiSclk::PDE_MASK
             } else {
                 self.bits & !GpioQspiSclk::PDE_MASK
-            }
+            },
         }
     }
 
@@ -614,7 +617,7 @@ impl GpioQspiSclkVal {
                 self.bits | GpioQspiSclk::SCHMITT_MASK
             } else {
                 self.bits & !GpioQspiSclk::SCHMITT_MASK
-            }
+            },
         }
     }
 
@@ -628,7 +631,7 @@ impl GpioQspiSclkVal {
                 self.bits | GpioQspiSclk::SLEWFAST_MASK
             } else {
                 self.bits & !GpioQspiSclk::SLEWFAST_MASK
-            }
+            },
         }
     }
 }
@@ -867,7 +870,9 @@ impl GpioQspiSd0 {
     /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK)
+        });
     }
 
     /// **PUE** `[3]` (RW)
@@ -1053,7 +1058,7 @@ impl GpioQspiSd0Val {
                 self.bits | GpioQspiSd0::ISO_MASK
             } else {
                 self.bits & !GpioQspiSd0::ISO_MASK
-            }
+            },
         }
     }
 
@@ -1067,7 +1072,7 @@ impl GpioQspiSd0Val {
                 self.bits | GpioQspiSd0::OD_MASK
             } else {
                 self.bits & !GpioQspiSd0::OD_MASK
-            }
+            },
         }
     }
 
@@ -1081,7 +1086,7 @@ impl GpioQspiSd0Val {
                 self.bits | GpioQspiSd0::IE_MASK
             } else {
                 self.bits & !GpioQspiSd0::IE_MASK
-            }
+            },
         }
     }
 
@@ -1091,7 +1096,8 @@ impl GpioQspiSd0Val {
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !GpioQspiSd0::DRIVE_MASK) | ((value << GpioQspiSd0::DRIVE_OFFSET) & GpioQspiSd0::DRIVE_MASK)
+            bits: (self.bits & !GpioQspiSd0::DRIVE_MASK)
+                | ((value << GpioQspiSd0::DRIVE_OFFSET) & GpioQspiSd0::DRIVE_MASK),
         }
     }
 
@@ -1105,7 +1111,7 @@ impl GpioQspiSd0Val {
                 self.bits | GpioQspiSd0::PUE_MASK
             } else {
                 self.bits & !GpioQspiSd0::PUE_MASK
-            }
+            },
         }
     }
 
@@ -1119,7 +1125,7 @@ impl GpioQspiSd0Val {
                 self.bits | GpioQspiSd0::PDE_MASK
             } else {
                 self.bits & !GpioQspiSd0::PDE_MASK
-            }
+            },
         }
     }
 
@@ -1133,7 +1139,7 @@ impl GpioQspiSd0Val {
                 self.bits | GpioQspiSd0::SCHMITT_MASK
             } else {
                 self.bits & !GpioQspiSd0::SCHMITT_MASK
-            }
+            },
         }
     }
 
@@ -1147,7 +1153,7 @@ impl GpioQspiSd0Val {
                 self.bits | GpioQspiSd0::SLEWFAST_MASK
             } else {
                 self.bits & !GpioQspiSd0::SLEWFAST_MASK
-            }
+            },
         }
     }
 }
@@ -1386,7 +1392,9 @@ impl GpioQspiSd1 {
     /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK)
+        });
     }
 
     /// **PUE** `[3]` (RW)
@@ -1572,7 +1580,7 @@ impl GpioQspiSd1Val {
                 self.bits | GpioQspiSd1::ISO_MASK
             } else {
                 self.bits & !GpioQspiSd1::ISO_MASK
-            }
+            },
         }
     }
 
@@ -1586,7 +1594,7 @@ impl GpioQspiSd1Val {
                 self.bits | GpioQspiSd1::OD_MASK
             } else {
                 self.bits & !GpioQspiSd1::OD_MASK
-            }
+            },
         }
     }
 
@@ -1600,7 +1608,7 @@ impl GpioQspiSd1Val {
                 self.bits | GpioQspiSd1::IE_MASK
             } else {
                 self.bits & !GpioQspiSd1::IE_MASK
-            }
+            },
         }
     }
 
@@ -1610,7 +1618,8 @@ impl GpioQspiSd1Val {
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !GpioQspiSd1::DRIVE_MASK) | ((value << GpioQspiSd1::DRIVE_OFFSET) & GpioQspiSd1::DRIVE_MASK)
+            bits: (self.bits & !GpioQspiSd1::DRIVE_MASK)
+                | ((value << GpioQspiSd1::DRIVE_OFFSET) & GpioQspiSd1::DRIVE_MASK),
         }
     }
 
@@ -1624,7 +1633,7 @@ impl GpioQspiSd1Val {
                 self.bits | GpioQspiSd1::PUE_MASK
             } else {
                 self.bits & !GpioQspiSd1::PUE_MASK
-            }
+            },
         }
     }
 
@@ -1638,7 +1647,7 @@ impl GpioQspiSd1Val {
                 self.bits | GpioQspiSd1::PDE_MASK
             } else {
                 self.bits & !GpioQspiSd1::PDE_MASK
-            }
+            },
         }
     }
 
@@ -1652,7 +1661,7 @@ impl GpioQspiSd1Val {
                 self.bits | GpioQspiSd1::SCHMITT_MASK
             } else {
                 self.bits & !GpioQspiSd1::SCHMITT_MASK
-            }
+            },
         }
     }
 
@@ -1666,7 +1675,7 @@ impl GpioQspiSd1Val {
                 self.bits | GpioQspiSd1::SLEWFAST_MASK
             } else {
                 self.bits & !GpioQspiSd1::SLEWFAST_MASK
-            }
+            },
         }
     }
 }
@@ -1905,7 +1914,9 @@ impl GpioQspiSd2 {
     /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK)
+        });
     }
 
     /// **PUE** `[3]` (RW)
@@ -2091,7 +2102,7 @@ impl GpioQspiSd2Val {
                 self.bits | GpioQspiSd2::ISO_MASK
             } else {
                 self.bits & !GpioQspiSd2::ISO_MASK
-            }
+            },
         }
     }
 
@@ -2105,7 +2116,7 @@ impl GpioQspiSd2Val {
                 self.bits | GpioQspiSd2::OD_MASK
             } else {
                 self.bits & !GpioQspiSd2::OD_MASK
-            }
+            },
         }
     }
 
@@ -2119,7 +2130,7 @@ impl GpioQspiSd2Val {
                 self.bits | GpioQspiSd2::IE_MASK
             } else {
                 self.bits & !GpioQspiSd2::IE_MASK
-            }
+            },
         }
     }
 
@@ -2129,7 +2140,8 @@ impl GpioQspiSd2Val {
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !GpioQspiSd2::DRIVE_MASK) | ((value << GpioQspiSd2::DRIVE_OFFSET) & GpioQspiSd2::DRIVE_MASK)
+            bits: (self.bits & !GpioQspiSd2::DRIVE_MASK)
+                | ((value << GpioQspiSd2::DRIVE_OFFSET) & GpioQspiSd2::DRIVE_MASK),
         }
     }
 
@@ -2143,7 +2155,7 @@ impl GpioQspiSd2Val {
                 self.bits | GpioQspiSd2::PUE_MASK
             } else {
                 self.bits & !GpioQspiSd2::PUE_MASK
-            }
+            },
         }
     }
 
@@ -2157,7 +2169,7 @@ impl GpioQspiSd2Val {
                 self.bits | GpioQspiSd2::PDE_MASK
             } else {
                 self.bits & !GpioQspiSd2::PDE_MASK
-            }
+            },
         }
     }
 
@@ -2171,7 +2183,7 @@ impl GpioQspiSd2Val {
                 self.bits | GpioQspiSd2::SCHMITT_MASK
             } else {
                 self.bits & !GpioQspiSd2::SCHMITT_MASK
-            }
+            },
         }
     }
 
@@ -2185,7 +2197,7 @@ impl GpioQspiSd2Val {
                 self.bits | GpioQspiSd2::SLEWFAST_MASK
             } else {
                 self.bits & !GpioQspiSd2::SLEWFAST_MASK
-            }
+            },
         }
     }
 }
@@ -2424,7 +2436,9 @@ impl GpioQspiSd3 {
     /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK)
+        });
     }
 
     /// **PUE** `[3]` (RW)
@@ -2610,7 +2624,7 @@ impl GpioQspiSd3Val {
                 self.bits | GpioQspiSd3::ISO_MASK
             } else {
                 self.bits & !GpioQspiSd3::ISO_MASK
-            }
+            },
         }
     }
 
@@ -2624,7 +2638,7 @@ impl GpioQspiSd3Val {
                 self.bits | GpioQspiSd3::OD_MASK
             } else {
                 self.bits & !GpioQspiSd3::OD_MASK
-            }
+            },
         }
     }
 
@@ -2638,7 +2652,7 @@ impl GpioQspiSd3Val {
                 self.bits | GpioQspiSd3::IE_MASK
             } else {
                 self.bits & !GpioQspiSd3::IE_MASK
-            }
+            },
         }
     }
 
@@ -2648,7 +2662,8 @@ impl GpioQspiSd3Val {
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !GpioQspiSd3::DRIVE_MASK) | ((value << GpioQspiSd3::DRIVE_OFFSET) & GpioQspiSd3::DRIVE_MASK)
+            bits: (self.bits & !GpioQspiSd3::DRIVE_MASK)
+                | ((value << GpioQspiSd3::DRIVE_OFFSET) & GpioQspiSd3::DRIVE_MASK),
         }
     }
 
@@ -2662,7 +2677,7 @@ impl GpioQspiSd3Val {
                 self.bits | GpioQspiSd3::PUE_MASK
             } else {
                 self.bits & !GpioQspiSd3::PUE_MASK
-            }
+            },
         }
     }
 
@@ -2676,7 +2691,7 @@ impl GpioQspiSd3Val {
                 self.bits | GpioQspiSd3::PDE_MASK
             } else {
                 self.bits & !GpioQspiSd3::PDE_MASK
-            }
+            },
         }
     }
 
@@ -2690,7 +2705,7 @@ impl GpioQspiSd3Val {
                 self.bits | GpioQspiSd3::SCHMITT_MASK
             } else {
                 self.bits & !GpioQspiSd3::SCHMITT_MASK
-            }
+            },
         }
     }
 
@@ -2704,7 +2719,7 @@ impl GpioQspiSd3Val {
                 self.bits | GpioQspiSd3::SLEWFAST_MASK
             } else {
                 self.bits & !GpioQspiSd3::SLEWFAST_MASK
-            }
+            },
         }
     }
 }
@@ -2943,7 +2958,9 @@ impl GpioQspiSs {
     /// Drive strength.
     #[inline(always)]
     pub fn write_drive(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DRIVE_MASK) | ((value << Self::DRIVE_OFFSET) & Self::DRIVE_MASK)
+        });
     }
 
     /// **PUE** `[3]` (RW)
@@ -3129,7 +3146,7 @@ impl GpioQspiSsVal {
                 self.bits | GpioQspiSs::ISO_MASK
             } else {
                 self.bits & !GpioQspiSs::ISO_MASK
-            }
+            },
         }
     }
 
@@ -3143,7 +3160,7 @@ impl GpioQspiSsVal {
                 self.bits | GpioQspiSs::OD_MASK
             } else {
                 self.bits & !GpioQspiSs::OD_MASK
-            }
+            },
         }
     }
 
@@ -3157,7 +3174,7 @@ impl GpioQspiSsVal {
                 self.bits | GpioQspiSs::IE_MASK
             } else {
                 self.bits & !GpioQspiSs::IE_MASK
-            }
+            },
         }
     }
 
@@ -3167,7 +3184,8 @@ impl GpioQspiSsVal {
     #[inline(always)]
     pub const fn with_drive(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !GpioQspiSs::DRIVE_MASK) | ((value << GpioQspiSs::DRIVE_OFFSET) & GpioQspiSs::DRIVE_MASK)
+            bits: (self.bits & !GpioQspiSs::DRIVE_MASK)
+                | ((value << GpioQspiSs::DRIVE_OFFSET) & GpioQspiSs::DRIVE_MASK),
         }
     }
 
@@ -3181,7 +3199,7 @@ impl GpioQspiSsVal {
                 self.bits | GpioQspiSs::PUE_MASK
             } else {
                 self.bits & !GpioQspiSs::PUE_MASK
-            }
+            },
         }
     }
 
@@ -3195,7 +3213,7 @@ impl GpioQspiSsVal {
                 self.bits | GpioQspiSs::PDE_MASK
             } else {
                 self.bits & !GpioQspiSs::PDE_MASK
-            }
+            },
         }
     }
 
@@ -3209,7 +3227,7 @@ impl GpioQspiSsVal {
                 self.bits | GpioQspiSs::SCHMITT_MASK
             } else {
                 self.bits & !GpioQspiSs::SCHMITT_MASK
-            }
+            },
         }
     }
 
@@ -3223,7 +3241,7 @@ impl GpioQspiSsVal {
                 self.bits | GpioQspiSs::SLEWFAST_MASK
             } else {
                 self.bits & !GpioQspiSs::SLEWFAST_MASK
-            }
+            },
         }
     }
 }
@@ -3273,4 +3291,3 @@ pub struct RegisterBlock {
     /// 0x0018
     pub gpio_qspi_ss: GpioQspiSs,
 }
-

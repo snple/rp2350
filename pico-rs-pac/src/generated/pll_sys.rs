@@ -159,7 +159,9 @@ impl Cs {
     /// PLL output will be unpredictable during refdiv changes, wait for lock=1 before using it.
     #[inline(always)]
     pub fn write_refdiv(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::REFDIV_MASK) | ((value << Self::REFDIV_OFFSET) & Self::REFDIV_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::REFDIV_MASK) | ((value << Self::REFDIV_OFFSET) & Self::REFDIV_MASK)
+        });
     }
 }
 
@@ -237,7 +239,7 @@ impl CsVal {
                 self.bits | Cs::LOCK_N_MASK
             } else {
                 self.bits & !Cs::LOCK_N_MASK
-            }
+            },
         }
     }
 
@@ -251,7 +253,7 @@ impl CsVal {
                 self.bits | Cs::BYPASS_MASK
             } else {
                 self.bits & !Cs::BYPASS_MASK
-            }
+            },
         }
     }
 
@@ -263,7 +265,7 @@ impl CsVal {
     #[inline(always)]
     pub const fn with_refdiv(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Cs::REFDIV_MASK) | ((value << Cs::REFDIV_OFFSET) & Cs::REFDIV_MASK)
+            bits: (self.bits & !Cs::REFDIV_MASK) | ((value << Cs::REFDIV_OFFSET) & Cs::REFDIV_MASK),
         }
     }
 }
@@ -540,7 +542,7 @@ impl PwrVal {
                 self.bits | Pwr::VCOPD_MASK
             } else {
                 self.bits & !Pwr::VCOPD_MASK
-            }
+            },
         }
     }
 
@@ -555,7 +557,7 @@ impl PwrVal {
                 self.bits | Pwr::POSTDIVPD_MASK
             } else {
                 self.bits & !Pwr::POSTDIVPD_MASK
-            }
+            },
         }
     }
 
@@ -570,7 +572,7 @@ impl PwrVal {
                 self.bits | Pwr::DSMPD_MASK
             } else {
                 self.bits & !Pwr::DSMPD_MASK
-            }
+            },
         }
     }
 
@@ -585,7 +587,7 @@ impl PwrVal {
                 self.bits | Pwr::PD_MASK
             } else {
                 self.bits & !Pwr::PD_MASK
-            }
+            },
         }
     }
 }
@@ -668,7 +670,9 @@ impl FbdivInt {
     /// see ctrl reg description for constraints
     #[inline(always)]
     pub fn write_fbdiv_int(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FBDIV_INT_MASK) | ((value << Self::FBDIV_INT_OFFSET) & Self::FBDIV_INT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FBDIV_INT_MASK) | ((value << Self::FBDIV_INT_OFFSET) & Self::FBDIV_INT_MASK)
+        });
     }
 }
 
@@ -714,7 +718,8 @@ impl FbdivIntVal {
     #[inline(always)]
     pub const fn with_fbdiv_int(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !FbdivInt::FBDIV_INT_MASK) | ((value << FbdivInt::FBDIV_INT_OFFSET) & FbdivInt::FBDIV_INT_MASK)
+            bits: (self.bits & !FbdivInt::FBDIV_INT_MASK)
+                | ((value << FbdivInt::FBDIV_INT_OFFSET) & FbdivInt::FBDIV_INT_MASK),
         }
     }
 }
@@ -810,7 +815,9 @@ impl Prim {
     /// divide by 1-7
     #[inline(always)]
     pub fn write_postdiv1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::POSTDIV1_MASK) | ((value << Self::POSTDIV1_OFFSET) & Self::POSTDIV1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::POSTDIV1_MASK) | ((value << Self::POSTDIV1_OFFSET) & Self::POSTDIV1_MASK)
+        });
     }
 
     /// **POSTDIV2** `[14:12]` (RW)
@@ -826,7 +833,9 @@ impl Prim {
     /// divide by 1-7
     #[inline(always)]
     pub fn write_postdiv2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::POSTDIV2_MASK) | ((value << Self::POSTDIV2_OFFSET) & Self::POSTDIV2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::POSTDIV2_MASK) | ((value << Self::POSTDIV2_OFFSET) & Self::POSTDIV2_MASK)
+        });
     }
 }
 
@@ -880,7 +889,8 @@ impl PrimVal {
     #[inline(always)]
     pub const fn with_postdiv1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Prim::POSTDIV1_MASK) | ((value << Prim::POSTDIV1_OFFSET) & Prim::POSTDIV1_MASK)
+            bits: (self.bits & !Prim::POSTDIV1_MASK)
+                | ((value << Prim::POSTDIV1_OFFSET) & Prim::POSTDIV1_MASK),
         }
     }
 
@@ -890,7 +900,8 @@ impl PrimVal {
     #[inline(always)]
     pub const fn with_postdiv2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Prim::POSTDIV2_MASK) | ((value << Prim::POSTDIV2_OFFSET) & Prim::POSTDIV2_MASK)
+            bits: (self.bits & !Prim::POSTDIV2_MASK)
+                | ((value << Prim::POSTDIV2_OFFSET) & Prim::POSTDIV2_MASK),
         }
     }
 }
@@ -1016,7 +1027,7 @@ impl IntrVal {
                 self.bits | Intr::LOCK_N_STICKY_MASK
             } else {
                 self.bits & !Intr::LOCK_N_STICKY_MASK
-            }
+            },
         }
     }
 }
@@ -1142,7 +1153,7 @@ impl InteVal {
                 self.bits | Inte::LOCK_N_STICKY_MASK
             } else {
                 self.bits & !Inte::LOCK_N_STICKY_MASK
-            }
+            },
         }
     }
 }
@@ -1268,7 +1279,7 @@ impl IntfVal {
                 self.bits | Intf::LOCK_N_STICKY_MASK
             } else {
                 self.bits & !Intf::LOCK_N_STICKY_MASK
-            }
+            },
         }
     }
 }
@@ -1424,4 +1435,3 @@ pub struct RegisterBlock {
     /// Interrupt status after masking & forcing
     pub ints: Ints,
 }
-

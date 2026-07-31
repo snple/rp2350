@@ -348,6 +348,16 @@ fn compile_program(lines: &[String]) -> Result<CompiledProgram, String> {
         instructions.push(instr);
     }
 
+    // Each state machine has 32 instruction slots; exceeding this limit would
+    // silently truncate `wrap`/`wrap_target` (and the program itself) when they
+    // are narrowed to u8 later.
+    if instructions.len() > 32 {
+        return Err(format!(
+            "PIO program too long: {} instructions (maximum is 32)",
+            instructions.len()
+        ));
+    }
+
     Ok(CompiledProgram {
         instructions,
         wrap_target,

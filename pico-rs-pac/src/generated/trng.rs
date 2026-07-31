@@ -264,7 +264,7 @@ impl RngImrVal {
                 self.bits | RngImr::VN_ERR_INT_MASK_MASK
             } else {
                 self.bits & !RngImr::VN_ERR_INT_MASK_MASK
-            }
+            },
         }
     }
 
@@ -278,7 +278,7 @@ impl RngImrVal {
                 self.bits | RngImr::CRNGT_ERR_INT_MASK_MASK
             } else {
                 self.bits & !RngImr::CRNGT_ERR_INT_MASK_MASK
-            }
+            },
         }
     }
 
@@ -292,7 +292,7 @@ impl RngImrVal {
                 self.bits | RngImr::AUTOCORR_ERR_INT_MASK_MASK
             } else {
                 self.bits & !RngImr::AUTOCORR_ERR_INT_MASK_MASK
-            }
+            },
         }
     }
 
@@ -306,7 +306,7 @@ impl RngImrVal {
                 self.bits | RngImr::EHR_VALID_INT_MASK_MASK
             } else {
                 self.bits & !RngImr::EHR_VALID_INT_MASK_MASK
-            }
+            },
         }
     }
 }
@@ -808,7 +808,7 @@ impl RngIcrVal {
                 self.bits | RngIcr::VN_ERR_MASK
             } else {
                 self.bits & !RngIcr::VN_ERR_MASK
-            }
+            },
         }
     }
 
@@ -822,7 +822,7 @@ impl RngIcrVal {
                 self.bits | RngIcr::CRNGT_ERR_MASK
             } else {
                 self.bits & !RngIcr::CRNGT_ERR_MASK
-            }
+            },
         }
     }
 
@@ -836,7 +836,7 @@ impl RngIcrVal {
                 self.bits | RngIcr::AUTOCORR_ERR_MASK
             } else {
                 self.bits & !RngIcr::AUTOCORR_ERR_MASK
-            }
+            },
         }
     }
 
@@ -850,7 +850,7 @@ impl RngIcrVal {
                 self.bits | RngIcr::EHR_VALID_MASK
             } else {
                 self.bits & !RngIcr::EHR_VALID_MASK
-            }
+            },
         }
     }
 }
@@ -952,7 +952,10 @@ impl TrngConfig {
     /// Selects the number of inverters (out of four possible selections) in the ring oscillator (the entropy source).
     #[inline(always)]
     pub fn write_rnd_src_sel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RND_SRC_SEL_MASK) | ((value << Self::RND_SRC_SEL_OFFSET) & Self::RND_SRC_SEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RND_SRC_SEL_MASK)
+                | ((value << Self::RND_SRC_SEL_OFFSET) & Self::RND_SRC_SEL_MASK)
+        });
     }
 }
 
@@ -1006,7 +1009,8 @@ impl TrngConfigVal {
     #[inline(always)]
     pub const fn with_rnd_src_sel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !TrngConfig::RND_SRC_SEL_MASK) | ((value << TrngConfig::RND_SRC_SEL_OFFSET) & TrngConfig::RND_SRC_SEL_MASK)
+            bits: (self.bits & !TrngConfig::RND_SRC_SEL_MASK)
+                | ((value << TrngConfig::RND_SRC_SEL_OFFSET) & TrngConfig::RND_SRC_SEL_MASK),
         }
     }
 }
@@ -1886,7 +1890,7 @@ impl RndSourceEnableVal {
                 self.bits | RndSourceEnable::RND_SRC_EN_MASK
             } else {
                 self.bits & !RndSourceEnable::RND_SRC_EN_MASK
-            }
+            },
         }
     }
 }
@@ -1968,7 +1972,10 @@ impl SampleCnt1 {
     /// Sets the number of rng_clk cycles between two consecutive ring oscillator samples. Note! If the Von-Neuman is bypassed, the minimum value for sample counter must not be less then decimal seventeen
     #[inline(always)]
     pub fn write_sample_cntr1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SAMPLE_CNTR1_MASK) | ((value << Self::SAMPLE_CNTR1_OFFSET) & Self::SAMPLE_CNTR1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SAMPLE_CNTR1_MASK)
+                | ((value << Self::SAMPLE_CNTR1_OFFSET) & Self::SAMPLE_CNTR1_MASK)
+        });
     }
 }
 
@@ -2014,7 +2021,8 @@ impl SampleCnt1Val {
     #[inline(always)]
     pub const fn with_sample_cntr1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SampleCnt1::SAMPLE_CNTR1_MASK) | ((value << SampleCnt1::SAMPLE_CNTR1_OFFSET) & SampleCnt1::SAMPLE_CNTR1_MASK)
+            bits: (self.bits & !SampleCnt1::SAMPLE_CNTR1_MASK)
+                | ((value << SampleCnt1::SAMPLE_CNTR1_OFFSET) & SampleCnt1::SAMPLE_CNTR1_MASK),
         }
     }
 }
@@ -2128,7 +2136,10 @@ impl AutocorrStatistic {
     /// Count each time an autocorrelation test fails. Any write to the register reset the counter. Stop collecting statistic if one of the counters reached the limit.
     #[inline(always)]
     pub fn write_autocorr_fails(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::AUTOCORR_FAILS_MASK) | ((value << Self::AUTOCORR_FAILS_OFFSET) & Self::AUTOCORR_FAILS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::AUTOCORR_FAILS_MASK)
+                | ((value << Self::AUTOCORR_FAILS_OFFSET) & Self::AUTOCORR_FAILS_MASK)
+        });
     }
 
     /// **AUTOCORR_TRYS** `[13:0]` (RW)
@@ -2144,7 +2155,10 @@ impl AutocorrStatistic {
     /// Count each time an autocorrelation test starts. Any write to the register reset the counter. Stop collecting statistic if one of the counters reached the limit.
     #[inline(always)]
     pub fn write_autocorr_trys(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::AUTOCORR_TRYS_MASK) | ((value << Self::AUTOCORR_TRYS_OFFSET) & Self::AUTOCORR_TRYS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::AUTOCORR_TRYS_MASK)
+                | ((value << Self::AUTOCORR_TRYS_OFFSET) & Self::AUTOCORR_TRYS_MASK)
+        });
     }
 }
 
@@ -2189,7 +2203,8 @@ impl AutocorrStatisticVal {
     /// Count each time an autocorrelation test fails. Any write to the register reset the counter. Stop collecting statistic if one of the counters reached the limit.
     #[inline(always)]
     pub const fn autocorr_fails(&self) -> u32 {
-        (self.bits & AutocorrStatistic::AUTOCORR_FAILS_MASK) >> AutocorrStatistic::AUTOCORR_FAILS_OFFSET
+        (self.bits & AutocorrStatistic::AUTOCORR_FAILS_MASK)
+            >> AutocorrStatistic::AUTOCORR_FAILS_OFFSET
     }
 
     /// Read **AUTOCORR_TRYS** `[13:0]`
@@ -2197,7 +2212,8 @@ impl AutocorrStatisticVal {
     /// Count each time an autocorrelation test starts. Any write to the register reset the counter. Stop collecting statistic if one of the counters reached the limit.
     #[inline(always)]
     pub const fn autocorr_trys(&self) -> u32 {
-        (self.bits & AutocorrStatistic::AUTOCORR_TRYS_MASK) >> AutocorrStatistic::AUTOCORR_TRYS_OFFSET
+        (self.bits & AutocorrStatistic::AUTOCORR_TRYS_MASK)
+            >> AutocorrStatistic::AUTOCORR_TRYS_OFFSET
     }
 
     /// Set **AUTOCORR_FAILS** `[21:14]`
@@ -2206,7 +2222,9 @@ impl AutocorrStatisticVal {
     #[inline(always)]
     pub const fn with_autocorr_fails(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AutocorrStatistic::AUTOCORR_FAILS_MASK) | ((value << AutocorrStatistic::AUTOCORR_FAILS_OFFSET) & AutocorrStatistic::AUTOCORR_FAILS_MASK)
+            bits: (self.bits & !AutocorrStatistic::AUTOCORR_FAILS_MASK)
+                | ((value << AutocorrStatistic::AUTOCORR_FAILS_OFFSET)
+                    & AutocorrStatistic::AUTOCORR_FAILS_MASK),
         }
     }
 
@@ -2216,7 +2234,9 @@ impl AutocorrStatisticVal {
     #[inline(always)]
     pub const fn with_autocorr_trys(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !AutocorrStatistic::AUTOCORR_TRYS_MASK) | ((value << AutocorrStatistic::AUTOCORR_TRYS_OFFSET) & AutocorrStatistic::AUTOCORR_TRYS_MASK)
+            bits: (self.bits & !AutocorrStatistic::AUTOCORR_TRYS_MASK)
+                | ((value << AutocorrStatistic::AUTOCORR_TRYS_OFFSET)
+                    & AutocorrStatistic::AUTOCORR_TRYS_MASK),
         }
     }
 }
@@ -2464,7 +2484,7 @@ impl TrngDebugControlVal {
                 self.bits | TrngDebugControl::AUTO_CORRELATE_BYPASS_MASK
             } else {
                 self.bits & !TrngDebugControl::AUTO_CORRELATE_BYPASS_MASK
-            }
+            },
         }
     }
 
@@ -2478,7 +2498,7 @@ impl TrngDebugControlVal {
                 self.bits | TrngDebugControl::TRNG_CRNGT_BYPASS_MASK
             } else {
                 self.bits & !TrngDebugControl::TRNG_CRNGT_BYPASS_MASK
-            }
+            },
         }
     }
 
@@ -2492,7 +2512,7 @@ impl TrngDebugControlVal {
                 self.bits | TrngDebugControl::VNC_BYPASS_MASK
             } else {
                 self.bits & !TrngDebugControl::VNC_BYPASS_MASK
-            }
+            },
         }
     }
 }
@@ -2657,7 +2677,7 @@ impl TrngSwResetVal {
                 self.bits | TrngSwReset::TRNG_SW_RESET_MASK
             } else {
                 self.bits & !TrngSwReset::TRNG_SW_RESET_MASK
-            }
+            },
         }
     }
 }
@@ -2822,7 +2842,7 @@ impl RngDebugEnInputVal {
                 self.bits | RngDebugEnInput::RNG_DEBUG_EN_MASK
             } else {
                 self.bits & !RngDebugEnInput::RNG_DEBUG_EN_MASK
-            }
+            },
         }
     }
 }
@@ -3114,7 +3134,7 @@ impl RstBitsCounterVal {
                 self.bits | RstBitsCounter::RST_BITS_COUNTER_MASK
             } else {
                 self.bits & !RstBitsCounter::RST_BITS_COUNTER_MASK
-            }
+            },
         }
     }
 }
@@ -3930,4 +3950,3 @@ pub struct RegisterBlock {
     /// Collected BIST results.
     pub rng_bist_cntr_2: RngBistCntr2,
 }
-

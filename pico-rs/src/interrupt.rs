@@ -351,16 +351,16 @@ pub mod timer1 {
     use super::Interrupt;
 
     /// Alarm 0 interrupt
-    pub const TIMER0_IRQ_0: Interrupt = Interrupt::TIMER1_IRQ_0;
+    pub const TIMER1_IRQ_0: Interrupt = Interrupt::TIMER1_IRQ_0;
     /// Alarm 1 interrupt
-    pub const TIMER0_IRQ_1: Interrupt = Interrupt::TIMER1_IRQ_1;
+    pub const TIMER1_IRQ_1: Interrupt = Interrupt::TIMER1_IRQ_1;
     /// Alarm 2 interrupt
-    pub const TIMER0_IRQ_2: Interrupt = Interrupt::TIMER1_IRQ_2;
+    pub const TIMER1_IRQ_2: Interrupt = Interrupt::TIMER1_IRQ_2;
     /// Alarm 3 interrupt
-    pub const TIMER0_IRQ_3: Interrupt = Interrupt::TIMER1_IRQ_3;
+    pub const TIMER1_IRQ_3: Interrupt = Interrupt::TIMER1_IRQ_3;
 
     /// All timer1 interrupts
-    pub const ALL: [Interrupt; 4] = [TIMER0_IRQ_0, TIMER0_IRQ_1, TIMER0_IRQ_2, TIMER0_IRQ_3];
+    pub const ALL: [Interrupt; 4] = [TIMER1_IRQ_0, TIMER1_IRQ_1, TIMER1_IRQ_2, TIMER1_IRQ_3];
 }
 
 /// PWM interrupt numbers

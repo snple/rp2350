@@ -90,7 +90,9 @@ impl Ctrl {
     /// The 12-bit code is intended to give some protection against accidental writes. An invalid setting will retain the previous value. The actual value being used can be read from STATUS_ENABLED
     #[inline(always)]
     pub fn write_enable(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENABLE_MASK) | ((value << Self::ENABLE_OFFSET) & Self::ENABLE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENABLE_MASK) | ((value << Self::ENABLE_OFFSET) & Self::ENABLE_MASK)
+        });
     }
 
     /// **FREQ_RANGE** `[11:0]` (RW)
@@ -106,7 +108,10 @@ impl Ctrl {
     /// The 12-bit code is intended to give some protection against accidental writes. An invalid setting will retain the previous value. The actual value being used can be read from STATUS_FREQ_RANGE
     #[inline(always)]
     pub fn write_freq_range(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FREQ_RANGE_MASK) | ((value << Self::FREQ_RANGE_OFFSET) & Self::FREQ_RANGE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FREQ_RANGE_MASK)
+                | ((value << Self::FREQ_RANGE_OFFSET) & Self::FREQ_RANGE_MASK)
+        });
     }
 }
 
@@ -164,7 +169,8 @@ impl CtrlVal {
     #[inline(always)]
     pub const fn with_enable(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ctrl::ENABLE_MASK) | ((value << Ctrl::ENABLE_OFFSET) & Ctrl::ENABLE_MASK)
+            bits: (self.bits & !Ctrl::ENABLE_MASK)
+                | ((value << Ctrl::ENABLE_OFFSET) & Ctrl::ENABLE_MASK),
         }
     }
 
@@ -174,7 +180,8 @@ impl CtrlVal {
     #[inline(always)]
     pub const fn with_freq_range(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ctrl::FREQ_RANGE_MASK) | ((value << Ctrl::FREQ_RANGE_OFFSET) & Ctrl::FREQ_RANGE_MASK)
+            bits: (self.bits & !Ctrl::FREQ_RANGE_MASK)
+                | ((value << Ctrl::FREQ_RANGE_OFFSET) & Ctrl::FREQ_RANGE_MASK),
         }
     }
 }
@@ -405,7 +412,7 @@ impl StatusVal {
                 self.bits | Status::BADWRITE_MASK
             } else {
                 self.bits & !Status::BADWRITE_MASK
-            }
+            },
         }
     }
 }
@@ -506,7 +513,9 @@ impl Dormant {
     /// Warning: setup the irq before selecting dormant mode
     #[inline(always)]
     pub fn write_dormant(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DORMANT_MASK) | ((value << Self::DORMANT_OFFSET) & Self::DORMANT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DORMANT_MASK) | ((value << Self::DORMANT_OFFSET) & Self::DORMANT_MASK)
+        });
     }
 }
 
@@ -554,7 +563,8 @@ impl DormantVal {
     #[inline(always)]
     pub const fn with_dormant(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Dormant::DORMANT_MASK) | ((value << Dormant::DORMANT_OFFSET) & Dormant::DORMANT_MASK)
+            bits: (self.bits & !Dormant::DORMANT_MASK)
+                | ((value << Dormant::DORMANT_OFFSET) & Dormant::DORMANT_MASK),
         }
     }
 }
@@ -669,7 +679,9 @@ impl Startup {
     /// in multiples of 256*xtal_period. The reset value of 0xc4 corresponds to approx 50 000 cycles.
     #[inline(always)]
     pub fn write_delay(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DELAY_MASK) | ((value << Self::DELAY_OFFSET) & Self::DELAY_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DELAY_MASK) | ((value << Self::DELAY_OFFSET) & Self::DELAY_MASK)
+        });
     }
 }
 
@@ -727,7 +739,7 @@ impl StartupVal {
                 self.bits | Startup::X4_MASK
             } else {
                 self.bits & !Startup::X4_MASK
-            }
+            },
         }
     }
 
@@ -737,7 +749,8 @@ impl StartupVal {
     #[inline(always)]
     pub const fn with_delay(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Startup::DELAY_MASK) | ((value << Startup::DELAY_OFFSET) & Startup::DELAY_MASK)
+            bits: (self.bits & !Startup::DELAY_MASK)
+                | ((value << Startup::DELAY_OFFSET) & Startup::DELAY_MASK),
         }
     }
 }
@@ -814,7 +827,9 @@ impl Count {
     /// Write **COUNT** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK)
+        });
     }
 }
 
@@ -856,7 +871,8 @@ impl CountVal {
     #[inline(always)]
     pub const fn with_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Count::COUNT_MASK) | ((value << Count::COUNT_OFFSET) & Count::COUNT_MASK)
+            bits: (self.bits & !Count::COUNT_MASK)
+                | ((value << Count::COUNT_OFFSET) & Count::COUNT_MASK),
         }
     }
 }
@@ -910,4 +926,3 @@ pub struct RegisterBlock {
     /// Note that synchronisation to the register clock domain costs 2 register clock cycles and the counter cannot compensate for that.
     pub count: Count,
 }
-

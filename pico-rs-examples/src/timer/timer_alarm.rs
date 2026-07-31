@@ -149,11 +149,7 @@ fn TIMER0_IRQ_0() {
             // 每 4 次打印一次，避免日志过于频繁。
             // 250ms * 4 = 1s，因此这条日志大约每秒输出一次。
             if (*tick_count).is_multiple_of(4) {
-                info!(
-                    "alarm tick={}, now={} us",
-                    *tick_count,
-                    timer.time_us_32()
-                );
+                info!("alarm tick={}, now={} us", *tick_count, timer.time_us_32());
             }
 
             // 重新调度下一次触发。

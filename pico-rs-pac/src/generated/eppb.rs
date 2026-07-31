@@ -47,7 +47,9 @@ impl NmiMask0 {
     /// Write **NMI_MASK0** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_nmi_mask0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NMI_MASK0_MASK) | ((value << Self::NMI_MASK0_OFFSET) & Self::NMI_MASK0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NMI_MASK0_MASK) | ((value << Self::NMI_MASK0_OFFSET) & Self::NMI_MASK0_MASK)
+        });
     }
 }
 
@@ -89,7 +91,8 @@ impl NmiMask0Val {
     #[inline(always)]
     pub const fn with_nmi_mask0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NmiMask0::NMI_MASK0_MASK) | ((value << NmiMask0::NMI_MASK0_OFFSET) & NmiMask0::NMI_MASK0_MASK)
+            bits: (self.bits & !NmiMask0::NMI_MASK0_MASK)
+                | ((value << NmiMask0::NMI_MASK0_OFFSET) & NmiMask0::NMI_MASK0_MASK),
         }
     }
 }
@@ -162,7 +165,9 @@ impl NmiMask1 {
     /// Write **NMI_MASK1** `[19:0]` (RW)
     #[inline(always)]
     pub fn write_nmi_mask1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::NMI_MASK1_MASK) | ((value << Self::NMI_MASK1_OFFSET) & Self::NMI_MASK1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::NMI_MASK1_MASK) | ((value << Self::NMI_MASK1_OFFSET) & Self::NMI_MASK1_MASK)
+        });
     }
 }
 
@@ -204,7 +209,8 @@ impl NmiMask1Val {
     #[inline(always)]
     pub const fn with_nmi_mask1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NmiMask1::NMI_MASK1_MASK) | ((value << NmiMask1::NMI_MASK1_OFFSET) & NmiMask1::NMI_MASK1_MASK)
+            bits: (self.bits & !NmiMask1::NMI_MASK1_MASK)
+                | ((value << NmiMask1::NMI_MASK1_OFFSET) & NmiMask1::NMI_MASK1_MASK),
         }
     }
 }
@@ -415,7 +421,7 @@ impl SleepctrlVal {
                 self.bits | Sleepctrl::WICENREQ_MASK
             } else {
                 self.bits & !Sleepctrl::WICENREQ_MASK
-            }
+            },
         }
     }
 
@@ -430,7 +436,7 @@ impl SleepctrlVal {
                 self.bits | Sleepctrl::LIGHT_SLEEP_MASK
             } else {
                 self.bits & !Sleepctrl::LIGHT_SLEEP_MASK
-            }
+            },
         }
     }
 }
@@ -474,4 +480,3 @@ pub struct RegisterBlock {
     /// Nonstandard sleep control register
     pub sleepctrl: Sleepctrl,
 }
-

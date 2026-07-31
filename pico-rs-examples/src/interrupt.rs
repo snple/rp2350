@@ -11,10 +11,10 @@ use defmt::info;
 use defmt_rtt as _;
 
 use pico_rs::bind;
-use pico_rs::main;
 use pico_rs::gpio::Pins;
 use pico_rs::interrupt::{self, spare};
 use pico_rs::kit::task::{Event, EventQueue};
+use pico_rs::main;
 use pico_rs::pac::Peripherals;
 
 // Boot block// ============================================================================

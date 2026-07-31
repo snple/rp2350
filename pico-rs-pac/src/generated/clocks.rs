@@ -199,7 +199,9 @@ impl ClkGpout0Ctrl {
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
     pub fn write_phase(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PHASE_MASK) | ((value << Self::PHASE_OFFSET) & Self::PHASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PHASE_MASK) | ((value << Self::PHASE_OFFSET) & Self::PHASE_MASK)
+        });
     }
 
     /// **DC50** `[12]` (RW)
@@ -275,7 +277,9 @@ impl ClkGpout0Ctrl {
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub fn write_auxsrc(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::AUXSRC_MASK) | ((value << Self::AUXSRC_OFFSET) & Self::AUXSRC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::AUXSRC_MASK) | ((value << Self::AUXSRC_OFFSET) & Self::AUXSRC_MASK)
+        });
     }
 }
 
@@ -376,7 +380,7 @@ impl ClkGpout0CtrlVal {
                 self.bits | ClkGpout0Ctrl::NUDGE_MASK
             } else {
                 self.bits & !ClkGpout0Ctrl::NUDGE_MASK
-            }
+            },
         }
     }
 
@@ -387,7 +391,8 @@ impl ClkGpout0CtrlVal {
     #[inline(always)]
     pub const fn with_phase(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkGpout0Ctrl::PHASE_MASK) | ((value << ClkGpout0Ctrl::PHASE_OFFSET) & ClkGpout0Ctrl::PHASE_MASK)
+            bits: (self.bits & !ClkGpout0Ctrl::PHASE_MASK)
+                | ((value << ClkGpout0Ctrl::PHASE_OFFSET) & ClkGpout0Ctrl::PHASE_MASK),
         }
     }
 
@@ -401,7 +406,7 @@ impl ClkGpout0CtrlVal {
                 self.bits | ClkGpout0Ctrl::DC50_MASK
             } else {
                 self.bits & !ClkGpout0Ctrl::DC50_MASK
-            }
+            },
         }
     }
 
@@ -415,7 +420,7 @@ impl ClkGpout0CtrlVal {
                 self.bits | ClkGpout0Ctrl::ENABLE_MASK
             } else {
                 self.bits & !ClkGpout0Ctrl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -429,7 +434,7 @@ impl ClkGpout0CtrlVal {
                 self.bits | ClkGpout0Ctrl::KILL_MASK
             } else {
                 self.bits & !ClkGpout0Ctrl::KILL_MASK
-            }
+            },
         }
     }
 
@@ -439,7 +444,8 @@ impl ClkGpout0CtrlVal {
     #[inline(always)]
     pub const fn with_auxsrc(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkGpout0Ctrl::AUXSRC_MASK) | ((value << ClkGpout0Ctrl::AUXSRC_OFFSET) & ClkGpout0Ctrl::AUXSRC_MASK)
+            bits: (self.bits & !ClkGpout0Ctrl::AUXSRC_MASK)
+                | ((value << ClkGpout0Ctrl::AUXSRC_OFFSET) & ClkGpout0Ctrl::AUXSRC_MASK),
         }
     }
 }
@@ -531,7 +537,9 @@ impl ClkGpout0Div {
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK)
+        });
     }
 
     /// **FRAC** `[15:0]` (RW)
@@ -547,7 +555,9 @@ impl ClkGpout0Div {
     /// Fractional component of the divisor, can be changed on-the-fly
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK)
+        });
     }
 }
 
@@ -601,7 +611,8 @@ impl ClkGpout0DivVal {
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkGpout0Div::INT_MASK) | ((value << ClkGpout0Div::INT_OFFSET) & ClkGpout0Div::INT_MASK)
+            bits: (self.bits & !ClkGpout0Div::INT_MASK)
+                | ((value << ClkGpout0Div::INT_OFFSET) & ClkGpout0Div::INT_MASK),
         }
     }
 
@@ -611,7 +622,8 @@ impl ClkGpout0DivVal {
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkGpout0Div::FRAC_MASK) | ((value << ClkGpout0Div::FRAC_OFFSET) & ClkGpout0Div::FRAC_MASK)
+            bits: (self.bits & !ClkGpout0Div::FRAC_MASK)
+                | ((value << ClkGpout0Div::FRAC_OFFSET) & ClkGpout0Div::FRAC_MASK),
         }
     }
 }
@@ -934,7 +946,9 @@ impl ClkGpout1Ctrl {
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
     pub fn write_phase(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PHASE_MASK) | ((value << Self::PHASE_OFFSET) & Self::PHASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PHASE_MASK) | ((value << Self::PHASE_OFFSET) & Self::PHASE_MASK)
+        });
     }
 
     /// **DC50** `[12]` (RW)
@@ -1010,7 +1024,9 @@ impl ClkGpout1Ctrl {
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub fn write_auxsrc(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::AUXSRC_MASK) | ((value << Self::AUXSRC_OFFSET) & Self::AUXSRC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::AUXSRC_MASK) | ((value << Self::AUXSRC_OFFSET) & Self::AUXSRC_MASK)
+        });
     }
 }
 
@@ -1111,7 +1127,7 @@ impl ClkGpout1CtrlVal {
                 self.bits | ClkGpout1Ctrl::NUDGE_MASK
             } else {
                 self.bits & !ClkGpout1Ctrl::NUDGE_MASK
-            }
+            },
         }
     }
 
@@ -1122,7 +1138,8 @@ impl ClkGpout1CtrlVal {
     #[inline(always)]
     pub const fn with_phase(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkGpout1Ctrl::PHASE_MASK) | ((value << ClkGpout1Ctrl::PHASE_OFFSET) & ClkGpout1Ctrl::PHASE_MASK)
+            bits: (self.bits & !ClkGpout1Ctrl::PHASE_MASK)
+                | ((value << ClkGpout1Ctrl::PHASE_OFFSET) & ClkGpout1Ctrl::PHASE_MASK),
         }
     }
 
@@ -1136,7 +1153,7 @@ impl ClkGpout1CtrlVal {
                 self.bits | ClkGpout1Ctrl::DC50_MASK
             } else {
                 self.bits & !ClkGpout1Ctrl::DC50_MASK
-            }
+            },
         }
     }
 
@@ -1150,7 +1167,7 @@ impl ClkGpout1CtrlVal {
                 self.bits | ClkGpout1Ctrl::ENABLE_MASK
             } else {
                 self.bits & !ClkGpout1Ctrl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -1164,7 +1181,7 @@ impl ClkGpout1CtrlVal {
                 self.bits | ClkGpout1Ctrl::KILL_MASK
             } else {
                 self.bits & !ClkGpout1Ctrl::KILL_MASK
-            }
+            },
         }
     }
 
@@ -1174,7 +1191,8 @@ impl ClkGpout1CtrlVal {
     #[inline(always)]
     pub const fn with_auxsrc(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkGpout1Ctrl::AUXSRC_MASK) | ((value << ClkGpout1Ctrl::AUXSRC_OFFSET) & ClkGpout1Ctrl::AUXSRC_MASK)
+            bits: (self.bits & !ClkGpout1Ctrl::AUXSRC_MASK)
+                | ((value << ClkGpout1Ctrl::AUXSRC_OFFSET) & ClkGpout1Ctrl::AUXSRC_MASK),
         }
     }
 }
@@ -1266,7 +1284,9 @@ impl ClkGpout1Div {
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK)
+        });
     }
 
     /// **FRAC** `[15:0]` (RW)
@@ -1282,7 +1302,9 @@ impl ClkGpout1Div {
     /// Fractional component of the divisor, can be changed on-the-fly
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK)
+        });
     }
 }
 
@@ -1336,7 +1358,8 @@ impl ClkGpout1DivVal {
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkGpout1Div::INT_MASK) | ((value << ClkGpout1Div::INT_OFFSET) & ClkGpout1Div::INT_MASK)
+            bits: (self.bits & !ClkGpout1Div::INT_MASK)
+                | ((value << ClkGpout1Div::INT_OFFSET) & ClkGpout1Div::INT_MASK),
         }
     }
 
@@ -1346,7 +1369,8 @@ impl ClkGpout1DivVal {
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkGpout1Div::FRAC_MASK) | ((value << ClkGpout1Div::FRAC_OFFSET) & ClkGpout1Div::FRAC_MASK)
+            bits: (self.bits & !ClkGpout1Div::FRAC_MASK)
+                | ((value << ClkGpout1Div::FRAC_OFFSET) & ClkGpout1Div::FRAC_MASK),
         }
     }
 }
@@ -1669,7 +1693,9 @@ impl ClkGpout2Ctrl {
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
     pub fn write_phase(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PHASE_MASK) | ((value << Self::PHASE_OFFSET) & Self::PHASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PHASE_MASK) | ((value << Self::PHASE_OFFSET) & Self::PHASE_MASK)
+        });
     }
 
     /// **DC50** `[12]` (RW)
@@ -1745,7 +1771,9 @@ impl ClkGpout2Ctrl {
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub fn write_auxsrc(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::AUXSRC_MASK) | ((value << Self::AUXSRC_OFFSET) & Self::AUXSRC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::AUXSRC_MASK) | ((value << Self::AUXSRC_OFFSET) & Self::AUXSRC_MASK)
+        });
     }
 }
 
@@ -1846,7 +1874,7 @@ impl ClkGpout2CtrlVal {
                 self.bits | ClkGpout2Ctrl::NUDGE_MASK
             } else {
                 self.bits & !ClkGpout2Ctrl::NUDGE_MASK
-            }
+            },
         }
     }
 
@@ -1857,7 +1885,8 @@ impl ClkGpout2CtrlVal {
     #[inline(always)]
     pub const fn with_phase(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkGpout2Ctrl::PHASE_MASK) | ((value << ClkGpout2Ctrl::PHASE_OFFSET) & ClkGpout2Ctrl::PHASE_MASK)
+            bits: (self.bits & !ClkGpout2Ctrl::PHASE_MASK)
+                | ((value << ClkGpout2Ctrl::PHASE_OFFSET) & ClkGpout2Ctrl::PHASE_MASK),
         }
     }
 
@@ -1871,7 +1900,7 @@ impl ClkGpout2CtrlVal {
                 self.bits | ClkGpout2Ctrl::DC50_MASK
             } else {
                 self.bits & !ClkGpout2Ctrl::DC50_MASK
-            }
+            },
         }
     }
 
@@ -1885,7 +1914,7 @@ impl ClkGpout2CtrlVal {
                 self.bits | ClkGpout2Ctrl::ENABLE_MASK
             } else {
                 self.bits & !ClkGpout2Ctrl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -1899,7 +1928,7 @@ impl ClkGpout2CtrlVal {
                 self.bits | ClkGpout2Ctrl::KILL_MASK
             } else {
                 self.bits & !ClkGpout2Ctrl::KILL_MASK
-            }
+            },
         }
     }
 
@@ -1909,7 +1938,8 @@ impl ClkGpout2CtrlVal {
     #[inline(always)]
     pub const fn with_auxsrc(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkGpout2Ctrl::AUXSRC_MASK) | ((value << ClkGpout2Ctrl::AUXSRC_OFFSET) & ClkGpout2Ctrl::AUXSRC_MASK)
+            bits: (self.bits & !ClkGpout2Ctrl::AUXSRC_MASK)
+                | ((value << ClkGpout2Ctrl::AUXSRC_OFFSET) & ClkGpout2Ctrl::AUXSRC_MASK),
         }
     }
 }
@@ -2001,7 +2031,9 @@ impl ClkGpout2Div {
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK)
+        });
     }
 
     /// **FRAC** `[15:0]` (RW)
@@ -2017,7 +2049,9 @@ impl ClkGpout2Div {
     /// Fractional component of the divisor, can be changed on-the-fly
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK)
+        });
     }
 }
 
@@ -2071,7 +2105,8 @@ impl ClkGpout2DivVal {
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkGpout2Div::INT_MASK) | ((value << ClkGpout2Div::INT_OFFSET) & ClkGpout2Div::INT_MASK)
+            bits: (self.bits & !ClkGpout2Div::INT_MASK)
+                | ((value << ClkGpout2Div::INT_OFFSET) & ClkGpout2Div::INT_MASK),
         }
     }
 
@@ -2081,7 +2116,8 @@ impl ClkGpout2DivVal {
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkGpout2Div::FRAC_MASK) | ((value << ClkGpout2Div::FRAC_OFFSET) & ClkGpout2Div::FRAC_MASK)
+            bits: (self.bits & !ClkGpout2Div::FRAC_MASK)
+                | ((value << ClkGpout2Div::FRAC_OFFSET) & ClkGpout2Div::FRAC_MASK),
         }
     }
 }
@@ -2404,7 +2440,9 @@ impl ClkGpout3Ctrl {
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
     pub fn write_phase(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PHASE_MASK) | ((value << Self::PHASE_OFFSET) & Self::PHASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PHASE_MASK) | ((value << Self::PHASE_OFFSET) & Self::PHASE_MASK)
+        });
     }
 
     /// **DC50** `[12]` (RW)
@@ -2480,7 +2518,9 @@ impl ClkGpout3Ctrl {
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub fn write_auxsrc(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::AUXSRC_MASK) | ((value << Self::AUXSRC_OFFSET) & Self::AUXSRC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::AUXSRC_MASK) | ((value << Self::AUXSRC_OFFSET) & Self::AUXSRC_MASK)
+        });
     }
 }
 
@@ -2581,7 +2621,7 @@ impl ClkGpout3CtrlVal {
                 self.bits | ClkGpout3Ctrl::NUDGE_MASK
             } else {
                 self.bits & !ClkGpout3Ctrl::NUDGE_MASK
-            }
+            },
         }
     }
 
@@ -2592,7 +2632,8 @@ impl ClkGpout3CtrlVal {
     #[inline(always)]
     pub const fn with_phase(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkGpout3Ctrl::PHASE_MASK) | ((value << ClkGpout3Ctrl::PHASE_OFFSET) & ClkGpout3Ctrl::PHASE_MASK)
+            bits: (self.bits & !ClkGpout3Ctrl::PHASE_MASK)
+                | ((value << ClkGpout3Ctrl::PHASE_OFFSET) & ClkGpout3Ctrl::PHASE_MASK),
         }
     }
 
@@ -2606,7 +2647,7 @@ impl ClkGpout3CtrlVal {
                 self.bits | ClkGpout3Ctrl::DC50_MASK
             } else {
                 self.bits & !ClkGpout3Ctrl::DC50_MASK
-            }
+            },
         }
     }
 
@@ -2620,7 +2661,7 @@ impl ClkGpout3CtrlVal {
                 self.bits | ClkGpout3Ctrl::ENABLE_MASK
             } else {
                 self.bits & !ClkGpout3Ctrl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -2634,7 +2675,7 @@ impl ClkGpout3CtrlVal {
                 self.bits | ClkGpout3Ctrl::KILL_MASK
             } else {
                 self.bits & !ClkGpout3Ctrl::KILL_MASK
-            }
+            },
         }
     }
 
@@ -2644,7 +2685,8 @@ impl ClkGpout3CtrlVal {
     #[inline(always)]
     pub const fn with_auxsrc(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkGpout3Ctrl::AUXSRC_MASK) | ((value << ClkGpout3Ctrl::AUXSRC_OFFSET) & ClkGpout3Ctrl::AUXSRC_MASK)
+            bits: (self.bits & !ClkGpout3Ctrl::AUXSRC_MASK)
+                | ((value << ClkGpout3Ctrl::AUXSRC_OFFSET) & ClkGpout3Ctrl::AUXSRC_MASK),
         }
     }
 }
@@ -2736,7 +2778,9 @@ impl ClkGpout3Div {
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK)
+        });
     }
 
     /// **FRAC** `[15:0]` (RW)
@@ -2752,7 +2796,9 @@ impl ClkGpout3Div {
     /// Fractional component of the divisor, can be changed on-the-fly
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK)
+        });
     }
 }
 
@@ -2806,7 +2852,8 @@ impl ClkGpout3DivVal {
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkGpout3Div::INT_MASK) | ((value << ClkGpout3Div::INT_OFFSET) & ClkGpout3Div::INT_MASK)
+            bits: (self.bits & !ClkGpout3Div::INT_MASK)
+                | ((value << ClkGpout3Div::INT_OFFSET) & ClkGpout3Div::INT_MASK),
         }
     }
 
@@ -2816,7 +2863,8 @@ impl ClkGpout3DivVal {
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkGpout3Div::FRAC_MASK) | ((value << ClkGpout3Div::FRAC_OFFSET) & ClkGpout3Div::FRAC_MASK)
+            bits: (self.bits & !ClkGpout3Div::FRAC_MASK)
+                | ((value << ClkGpout3Div::FRAC_OFFSET) & ClkGpout3Div::FRAC_MASK),
         }
     }
 }
@@ -3025,7 +3073,9 @@ impl ClkRefCtrl {
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub fn write_auxsrc(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::AUXSRC_MASK) | ((value << Self::AUXSRC_OFFSET) & Self::AUXSRC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::AUXSRC_MASK) | ((value << Self::AUXSRC_OFFSET) & Self::AUXSRC_MASK)
+        });
     }
 
     /// **SRC** `[1:0]` (RW)
@@ -3041,7 +3091,9 @@ impl ClkRefCtrl {
     /// Selects the clock source glitchlessly, can be changed on-the-fly
     #[inline(always)]
     pub fn write_src(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SRC_MASK) | ((value << Self::SRC_OFFSET) & Self::SRC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SRC_MASK) | ((value << Self::SRC_OFFSET) & Self::SRC_MASK)
+        });
     }
 }
 
@@ -3095,7 +3147,8 @@ impl ClkRefCtrlVal {
     #[inline(always)]
     pub const fn with_auxsrc(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkRefCtrl::AUXSRC_MASK) | ((value << ClkRefCtrl::AUXSRC_OFFSET) & ClkRefCtrl::AUXSRC_MASK)
+            bits: (self.bits & !ClkRefCtrl::AUXSRC_MASK)
+                | ((value << ClkRefCtrl::AUXSRC_OFFSET) & ClkRefCtrl::AUXSRC_MASK),
         }
     }
 
@@ -3105,7 +3158,8 @@ impl ClkRefCtrlVal {
     #[inline(always)]
     pub const fn with_src(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkRefCtrl::SRC_MASK) | ((value << ClkRefCtrl::SRC_OFFSET) & ClkRefCtrl::SRC_MASK)
+            bits: (self.bits & !ClkRefCtrl::SRC_MASK)
+                | ((value << ClkRefCtrl::SRC_OFFSET) & ClkRefCtrl::SRC_MASK),
         }
     }
 }
@@ -3185,7 +3239,9 @@ impl ClkRefDiv {
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK)
+        });
     }
 }
 
@@ -3231,7 +3287,8 @@ impl ClkRefDivVal {
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkRefDiv::INT_MASK) | ((value << ClkRefDiv::INT_OFFSET) & ClkRefDiv::INT_MASK)
+            bits: (self.bits & !ClkRefDiv::INT_MASK)
+                | ((value << ClkRefDiv::INT_OFFSET) & ClkRefDiv::INT_MASK),
         }
     }
 }
@@ -3342,7 +3399,8 @@ impl ClkRefSelectedVal {
     /// The glitchless multiplexer does not switch instantaneously (to avoid glitches), so software should poll this register to wait for the switch to complete. This register contains one decoded bit for each of the clock sources enumerated in the CTRL SRC field. At most one of these bits will be set at any time, indicating that clock is currently present at the output of the glitchless mux. Whilst switching is in progress, this register may briefly show all-0s.
     #[inline(always)]
     pub const fn clk_ref_selected(&self) -> u32 {
-        (self.bits & ClkRefSelected::CLK_REF_SELECTED_MASK) >> ClkRefSelected::CLK_REF_SELECTED_OFFSET
+        (self.bits & ClkRefSelected::CLK_REF_SELECTED_MASK)
+            >> ClkRefSelected::CLK_REF_SELECTED_OFFSET
     }
 }
 
@@ -3440,7 +3498,9 @@ impl ClkSysCtrl {
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub fn write_auxsrc(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::AUXSRC_MASK) | ((value << Self::AUXSRC_OFFSET) & Self::AUXSRC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::AUXSRC_MASK) | ((value << Self::AUXSRC_OFFSET) & Self::AUXSRC_MASK)
+        });
     }
 
     /// **SRC** `[0]` (RW)
@@ -3514,7 +3574,8 @@ impl ClkSysCtrlVal {
     #[inline(always)]
     pub const fn with_auxsrc(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkSysCtrl::AUXSRC_MASK) | ((value << ClkSysCtrl::AUXSRC_OFFSET) & ClkSysCtrl::AUXSRC_MASK)
+            bits: (self.bits & !ClkSysCtrl::AUXSRC_MASK)
+                | ((value << ClkSysCtrl::AUXSRC_OFFSET) & ClkSysCtrl::AUXSRC_MASK),
         }
     }
 
@@ -3528,7 +3589,7 @@ impl ClkSysCtrlVal {
                 self.bits | ClkSysCtrl::SRC_MASK
             } else {
                 self.bits & !ClkSysCtrl::SRC_MASK
-            }
+            },
         }
     }
 }
@@ -3620,7 +3681,9 @@ impl ClkSysDiv {
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK)
+        });
     }
 
     /// **FRAC** `[15:0]` (RW)
@@ -3636,7 +3699,9 @@ impl ClkSysDiv {
     /// Fractional component of the divisor, can be changed on-the-fly
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK)
+        });
     }
 }
 
@@ -3690,7 +3755,8 @@ impl ClkSysDivVal {
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkSysDiv::INT_MASK) | ((value << ClkSysDiv::INT_OFFSET) & ClkSysDiv::INT_MASK)
+            bits: (self.bits & !ClkSysDiv::INT_MASK)
+                | ((value << ClkSysDiv::INT_OFFSET) & ClkSysDiv::INT_MASK),
         }
     }
 
@@ -3700,7 +3766,8 @@ impl ClkSysDivVal {
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkSysDiv::FRAC_MASK) | ((value << ClkSysDiv::FRAC_OFFSET) & ClkSysDiv::FRAC_MASK)
+            bits: (self.bits & !ClkSysDiv::FRAC_MASK)
+                | ((value << ClkSysDiv::FRAC_OFFSET) & ClkSysDiv::FRAC_MASK),
         }
     }
 }
@@ -3811,7 +3878,8 @@ impl ClkSysSelectedVal {
     /// The glitchless multiplexer does not switch instantaneously (to avoid glitches), so software should poll this register to wait for the switch to complete. This register contains one decoded bit for each of the clock sources enumerated in the CTRL SRC field. At most one of these bits will be set at any time, indicating that clock is currently present at the output of the glitchless mux. Whilst switching is in progress, this register may briefly show all-0s.
     #[inline(always)]
     pub const fn clk_sys_selected(&self) -> u32 {
-        (self.bits & ClkSysSelected::CLK_SYS_SELECTED_MASK) >> ClkSysSelected::CLK_SYS_SELECTED_OFFSET
+        (self.bits & ClkSysSelected::CLK_SYS_SELECTED_MASK)
+            >> ClkSysSelected::CLK_SYS_SELECTED_OFFSET
     }
 }
 
@@ -3981,7 +4049,9 @@ impl ClkPeriCtrl {
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub fn write_auxsrc(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::AUXSRC_MASK) | ((value << Self::AUXSRC_OFFSET) & Self::AUXSRC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::AUXSRC_MASK) | ((value << Self::AUXSRC_OFFSET) & Self::AUXSRC_MASK)
+        });
     }
 }
 
@@ -4055,7 +4125,7 @@ impl ClkPeriCtrlVal {
                 self.bits | ClkPeriCtrl::ENABLE_MASK
             } else {
                 self.bits & !ClkPeriCtrl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -4069,7 +4139,7 @@ impl ClkPeriCtrlVal {
                 self.bits | ClkPeriCtrl::KILL_MASK
             } else {
                 self.bits & !ClkPeriCtrl::KILL_MASK
-            }
+            },
         }
     }
 
@@ -4079,7 +4149,8 @@ impl ClkPeriCtrlVal {
     #[inline(always)]
     pub const fn with_auxsrc(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkPeriCtrl::AUXSRC_MASK) | ((value << ClkPeriCtrl::AUXSRC_OFFSET) & ClkPeriCtrl::AUXSRC_MASK)
+            bits: (self.bits & !ClkPeriCtrl::AUXSRC_MASK)
+                | ((value << ClkPeriCtrl::AUXSRC_OFFSET) & ClkPeriCtrl::AUXSRC_MASK),
         }
     }
 }
@@ -4159,7 +4230,9 @@ impl ClkPeriDiv {
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK)
+        });
     }
 }
 
@@ -4205,7 +4278,8 @@ impl ClkPeriDivVal {
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkPeriDiv::INT_MASK) | ((value << ClkPeriDiv::INT_OFFSET) & ClkPeriDiv::INT_MASK)
+            bits: (self.bits & !ClkPeriDiv::INT_MASK)
+                | ((value << ClkPeriDiv::INT_OFFSET) & ClkPeriDiv::INT_MASK),
         }
     }
 }
@@ -4495,7 +4569,9 @@ impl ClkHstxCtrl {
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
     pub fn write_phase(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PHASE_MASK) | ((value << Self::PHASE_OFFSET) & Self::PHASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PHASE_MASK) | ((value << Self::PHASE_OFFSET) & Self::PHASE_MASK)
+        });
     }
 
     /// **ENABLE** `[11]` (RW)
@@ -4551,7 +4627,9 @@ impl ClkHstxCtrl {
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub fn write_auxsrc(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::AUXSRC_MASK) | ((value << Self::AUXSRC_OFFSET) & Self::AUXSRC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::AUXSRC_MASK) | ((value << Self::AUXSRC_OFFSET) & Self::AUXSRC_MASK)
+        });
     }
 }
 
@@ -4644,7 +4722,7 @@ impl ClkHstxCtrlVal {
                 self.bits | ClkHstxCtrl::NUDGE_MASK
             } else {
                 self.bits & !ClkHstxCtrl::NUDGE_MASK
-            }
+            },
         }
     }
 
@@ -4655,7 +4733,8 @@ impl ClkHstxCtrlVal {
     #[inline(always)]
     pub const fn with_phase(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkHstxCtrl::PHASE_MASK) | ((value << ClkHstxCtrl::PHASE_OFFSET) & ClkHstxCtrl::PHASE_MASK)
+            bits: (self.bits & !ClkHstxCtrl::PHASE_MASK)
+                | ((value << ClkHstxCtrl::PHASE_OFFSET) & ClkHstxCtrl::PHASE_MASK),
         }
     }
 
@@ -4669,7 +4748,7 @@ impl ClkHstxCtrlVal {
                 self.bits | ClkHstxCtrl::ENABLE_MASK
             } else {
                 self.bits & !ClkHstxCtrl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -4683,7 +4762,7 @@ impl ClkHstxCtrlVal {
                 self.bits | ClkHstxCtrl::KILL_MASK
             } else {
                 self.bits & !ClkHstxCtrl::KILL_MASK
-            }
+            },
         }
     }
 
@@ -4693,7 +4772,8 @@ impl ClkHstxCtrlVal {
     #[inline(always)]
     pub const fn with_auxsrc(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkHstxCtrl::AUXSRC_MASK) | ((value << ClkHstxCtrl::AUXSRC_OFFSET) & ClkHstxCtrl::AUXSRC_MASK)
+            bits: (self.bits & !ClkHstxCtrl::AUXSRC_MASK)
+                | ((value << ClkHstxCtrl::AUXSRC_OFFSET) & ClkHstxCtrl::AUXSRC_MASK),
         }
     }
 }
@@ -4773,7 +4853,9 @@ impl ClkHstxDiv {
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK)
+        });
     }
 }
 
@@ -4819,7 +4901,8 @@ impl ClkHstxDivVal {
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkHstxDiv::INT_MASK) | ((value << ClkHstxDiv::INT_OFFSET) & ClkHstxDiv::INT_MASK)
+            bits: (self.bits & !ClkHstxDiv::INT_MASK)
+                | ((value << ClkHstxDiv::INT_OFFSET) & ClkHstxDiv::INT_MASK),
         }
     }
 }
@@ -5111,7 +5194,9 @@ impl ClkUsbCtrl {
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
     pub fn write_phase(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PHASE_MASK) | ((value << Self::PHASE_OFFSET) & Self::PHASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PHASE_MASK) | ((value << Self::PHASE_OFFSET) & Self::PHASE_MASK)
+        });
     }
 
     /// **ENABLE** `[11]` (RW)
@@ -5167,7 +5252,9 @@ impl ClkUsbCtrl {
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub fn write_auxsrc(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::AUXSRC_MASK) | ((value << Self::AUXSRC_OFFSET) & Self::AUXSRC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::AUXSRC_MASK) | ((value << Self::AUXSRC_OFFSET) & Self::AUXSRC_MASK)
+        });
     }
 }
 
@@ -5260,7 +5347,7 @@ impl ClkUsbCtrlVal {
                 self.bits | ClkUsbCtrl::NUDGE_MASK
             } else {
                 self.bits & !ClkUsbCtrl::NUDGE_MASK
-            }
+            },
         }
     }
 
@@ -5271,7 +5358,8 @@ impl ClkUsbCtrlVal {
     #[inline(always)]
     pub const fn with_phase(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkUsbCtrl::PHASE_MASK) | ((value << ClkUsbCtrl::PHASE_OFFSET) & ClkUsbCtrl::PHASE_MASK)
+            bits: (self.bits & !ClkUsbCtrl::PHASE_MASK)
+                | ((value << ClkUsbCtrl::PHASE_OFFSET) & ClkUsbCtrl::PHASE_MASK),
         }
     }
 
@@ -5285,7 +5373,7 @@ impl ClkUsbCtrlVal {
                 self.bits | ClkUsbCtrl::ENABLE_MASK
             } else {
                 self.bits & !ClkUsbCtrl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -5299,7 +5387,7 @@ impl ClkUsbCtrlVal {
                 self.bits | ClkUsbCtrl::KILL_MASK
             } else {
                 self.bits & !ClkUsbCtrl::KILL_MASK
-            }
+            },
         }
     }
 
@@ -5309,7 +5397,8 @@ impl ClkUsbCtrlVal {
     #[inline(always)]
     pub const fn with_auxsrc(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkUsbCtrl::AUXSRC_MASK) | ((value << ClkUsbCtrl::AUXSRC_OFFSET) & ClkUsbCtrl::AUXSRC_MASK)
+            bits: (self.bits & !ClkUsbCtrl::AUXSRC_MASK)
+                | ((value << ClkUsbCtrl::AUXSRC_OFFSET) & ClkUsbCtrl::AUXSRC_MASK),
         }
     }
 }
@@ -5389,7 +5478,9 @@ impl ClkUsbDiv {
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK)
+        });
     }
 }
 
@@ -5435,7 +5526,8 @@ impl ClkUsbDivVal {
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkUsbDiv::INT_MASK) | ((value << ClkUsbDiv::INT_OFFSET) & ClkUsbDiv::INT_MASK)
+            bits: (self.bits & !ClkUsbDiv::INT_MASK)
+                | ((value << ClkUsbDiv::INT_OFFSET) & ClkUsbDiv::INT_MASK),
         }
     }
 }
@@ -5727,7 +5819,9 @@ impl ClkAdcCtrl {
     /// This must be set before the clock is enabled to have any effect
     #[inline(always)]
     pub fn write_phase(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PHASE_MASK) | ((value << Self::PHASE_OFFSET) & Self::PHASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PHASE_MASK) | ((value << Self::PHASE_OFFSET) & Self::PHASE_MASK)
+        });
     }
 
     /// **ENABLE** `[11]` (RW)
@@ -5783,7 +5877,9 @@ impl ClkAdcCtrl {
     /// Selects the auxiliary clock source, will glitch when switching
     #[inline(always)]
     pub fn write_auxsrc(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::AUXSRC_MASK) | ((value << Self::AUXSRC_OFFSET) & Self::AUXSRC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::AUXSRC_MASK) | ((value << Self::AUXSRC_OFFSET) & Self::AUXSRC_MASK)
+        });
     }
 }
 
@@ -5876,7 +5972,7 @@ impl ClkAdcCtrlVal {
                 self.bits | ClkAdcCtrl::NUDGE_MASK
             } else {
                 self.bits & !ClkAdcCtrl::NUDGE_MASK
-            }
+            },
         }
     }
 
@@ -5887,7 +5983,8 @@ impl ClkAdcCtrlVal {
     #[inline(always)]
     pub const fn with_phase(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkAdcCtrl::PHASE_MASK) | ((value << ClkAdcCtrl::PHASE_OFFSET) & ClkAdcCtrl::PHASE_MASK)
+            bits: (self.bits & !ClkAdcCtrl::PHASE_MASK)
+                | ((value << ClkAdcCtrl::PHASE_OFFSET) & ClkAdcCtrl::PHASE_MASK),
         }
     }
 
@@ -5901,7 +5998,7 @@ impl ClkAdcCtrlVal {
                 self.bits | ClkAdcCtrl::ENABLE_MASK
             } else {
                 self.bits & !ClkAdcCtrl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -5915,7 +6012,7 @@ impl ClkAdcCtrlVal {
                 self.bits | ClkAdcCtrl::KILL_MASK
             } else {
                 self.bits & !ClkAdcCtrl::KILL_MASK
-            }
+            },
         }
     }
 
@@ -5925,7 +6022,8 @@ impl ClkAdcCtrlVal {
     #[inline(always)]
     pub const fn with_auxsrc(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkAdcCtrl::AUXSRC_MASK) | ((value << ClkAdcCtrl::AUXSRC_OFFSET) & ClkAdcCtrl::AUXSRC_MASK)
+            bits: (self.bits & !ClkAdcCtrl::AUXSRC_MASK)
+                | ((value << ClkAdcCtrl::AUXSRC_OFFSET) & ClkAdcCtrl::AUXSRC_MASK),
         }
     }
 }
@@ -6005,7 +6103,9 @@ impl ClkAdcDiv {
     /// Integer part of clock divisor, 0 -> max+1, can be changed on-the-fly
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK)
+        });
     }
 }
 
@@ -6051,7 +6151,8 @@ impl ClkAdcDivVal {
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkAdcDiv::INT_MASK) | ((value << ClkAdcDiv::INT_OFFSET) & ClkAdcDiv::INT_MASK)
+            bits: (self.bits & !ClkAdcDiv::INT_MASK)
+                | ((value << ClkAdcDiv::INT_OFFSET) & ClkAdcDiv::INT_MASK),
         }
     }
 }
@@ -6227,7 +6328,9 @@ impl DftclkXoscCtrl {
     /// Write **SRC** `[1:0]` (RW)
     #[inline(always)]
     pub fn write_src(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SRC_MASK) | ((value << Self::SRC_OFFSET) & Self::SRC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SRC_MASK) | ((value << Self::SRC_OFFSET) & Self::SRC_MASK)
+        });
     }
 }
 
@@ -6269,7 +6372,8 @@ impl DftclkXoscCtrlVal {
     #[inline(always)]
     pub const fn with_src(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DftclkXoscCtrl::SRC_MASK) | ((value << DftclkXoscCtrl::SRC_OFFSET) & DftclkXoscCtrl::SRC_MASK)
+            bits: (self.bits & !DftclkXoscCtrl::SRC_MASK)
+                | ((value << DftclkXoscCtrl::SRC_OFFSET) & DftclkXoscCtrl::SRC_MASK),
         }
     }
 }
@@ -6346,7 +6450,9 @@ impl DftclkRoscCtrl {
     /// Write **SRC** `[1:0]` (RW)
     #[inline(always)]
     pub fn write_src(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SRC_MASK) | ((value << Self::SRC_OFFSET) & Self::SRC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SRC_MASK) | ((value << Self::SRC_OFFSET) & Self::SRC_MASK)
+        });
     }
 }
 
@@ -6388,7 +6494,8 @@ impl DftclkRoscCtrlVal {
     #[inline(always)]
     pub const fn with_src(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DftclkRoscCtrl::SRC_MASK) | ((value << DftclkRoscCtrl::SRC_OFFSET) & DftclkRoscCtrl::SRC_MASK)
+            bits: (self.bits & !DftclkRoscCtrl::SRC_MASK)
+                | ((value << DftclkRoscCtrl::SRC_OFFSET) & DftclkRoscCtrl::SRC_MASK),
         }
     }
 }
@@ -6465,7 +6572,9 @@ impl DftclkLposcCtrl {
     /// Write **SRC** `[1:0]` (RW)
     #[inline(always)]
     pub fn write_src(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SRC_MASK) | ((value << Self::SRC_OFFSET) & Self::SRC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SRC_MASK) | ((value << Self::SRC_OFFSET) & Self::SRC_MASK)
+        });
     }
 }
 
@@ -6507,7 +6616,8 @@ impl DftclkLposcCtrlVal {
     #[inline(always)]
     pub const fn with_src(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DftclkLposcCtrl::SRC_MASK) | ((value << DftclkLposcCtrl::SRC_OFFSET) & DftclkLposcCtrl::SRC_MASK)
+            bits: (self.bits & !DftclkLposcCtrl::SRC_MASK)
+                | ((value << DftclkLposcCtrl::SRC_OFFSET) & DftclkLposcCtrl::SRC_MASK),
         }
     }
 }
@@ -6690,7 +6800,9 @@ impl ClkSysResusCtrl {
     /// and must be >= 2x clk_ref_freq/min_clk_tst_freq
     #[inline(always)]
     pub fn write_timeout(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TIMEOUT_MASK) | ((value << Self::TIMEOUT_OFFSET) & Self::TIMEOUT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TIMEOUT_MASK) | ((value << Self::TIMEOUT_OFFSET) & Self::TIMEOUT_MASK)
+        });
     }
 }
 
@@ -6765,7 +6877,7 @@ impl ClkSysResusCtrlVal {
                 self.bits | ClkSysResusCtrl::CLEAR_MASK
             } else {
                 self.bits & !ClkSysResusCtrl::CLEAR_MASK
-            }
+            },
         }
     }
 
@@ -6779,7 +6891,7 @@ impl ClkSysResusCtrlVal {
                 self.bits | ClkSysResusCtrl::FRCE_MASK
             } else {
                 self.bits & !ClkSysResusCtrl::FRCE_MASK
-            }
+            },
         }
     }
 
@@ -6793,7 +6905,7 @@ impl ClkSysResusCtrlVal {
                 self.bits | ClkSysResusCtrl::ENABLE_MASK
             } else {
                 self.bits & !ClkSysResusCtrl::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -6804,7 +6916,8 @@ impl ClkSysResusCtrlVal {
     #[inline(always)]
     pub const fn with_timeout(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ClkSysResusCtrl::TIMEOUT_MASK) | ((value << ClkSysResusCtrl::TIMEOUT_OFFSET) & ClkSysResusCtrl::TIMEOUT_MASK)
+            bits: (self.bits & !ClkSysResusCtrl::TIMEOUT_MASK)
+                | ((value << ClkSysResusCtrl::TIMEOUT_OFFSET) & ClkSysResusCtrl::TIMEOUT_MASK),
         }
     }
 }
@@ -6974,7 +7087,10 @@ impl Fc0RefKhz {
     /// Write **FC0_REF_KHZ** `[19:0]` (RW)
     #[inline(always)]
     pub fn write_fc0_ref_khz(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FC0_REF_KHZ_MASK) | ((value << Self::FC0_REF_KHZ_OFFSET) & Self::FC0_REF_KHZ_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FC0_REF_KHZ_MASK)
+                | ((value << Self::FC0_REF_KHZ_OFFSET) & Self::FC0_REF_KHZ_MASK)
+        });
     }
 }
 
@@ -7016,7 +7132,8 @@ impl Fc0RefKhzVal {
     #[inline(always)]
     pub const fn with_fc0_ref_khz(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Fc0RefKhz::FC0_REF_KHZ_MASK) | ((value << Fc0RefKhz::FC0_REF_KHZ_OFFSET) & Fc0RefKhz::FC0_REF_KHZ_MASK)
+            bits: (self.bits & !Fc0RefKhz::FC0_REF_KHZ_MASK)
+                | ((value << Fc0RefKhz::FC0_REF_KHZ_OFFSET) & Fc0RefKhz::FC0_REF_KHZ_MASK),
         }
     }
 }
@@ -7089,7 +7206,10 @@ impl Fc0MinKhz {
     /// Write **FC0_MIN_KHZ** `[24:0]` (RW)
     #[inline(always)]
     pub fn write_fc0_min_khz(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FC0_MIN_KHZ_MASK) | ((value << Self::FC0_MIN_KHZ_OFFSET) & Self::FC0_MIN_KHZ_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FC0_MIN_KHZ_MASK)
+                | ((value << Self::FC0_MIN_KHZ_OFFSET) & Self::FC0_MIN_KHZ_MASK)
+        });
     }
 }
 
@@ -7131,7 +7251,8 @@ impl Fc0MinKhzVal {
     #[inline(always)]
     pub const fn with_fc0_min_khz(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Fc0MinKhz::FC0_MIN_KHZ_MASK) | ((value << Fc0MinKhz::FC0_MIN_KHZ_OFFSET) & Fc0MinKhz::FC0_MIN_KHZ_MASK)
+            bits: (self.bits & !Fc0MinKhz::FC0_MIN_KHZ_MASK)
+                | ((value << Fc0MinKhz::FC0_MIN_KHZ_OFFSET) & Fc0MinKhz::FC0_MIN_KHZ_MASK),
         }
     }
 }
@@ -7204,7 +7325,10 @@ impl Fc0MaxKhz {
     /// Write **FC0_MAX_KHZ** `[24:0]` (RW)
     #[inline(always)]
     pub fn write_fc0_max_khz(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FC0_MAX_KHZ_MASK) | ((value << Self::FC0_MAX_KHZ_OFFSET) & Self::FC0_MAX_KHZ_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FC0_MAX_KHZ_MASK)
+                | ((value << Self::FC0_MAX_KHZ_OFFSET) & Self::FC0_MAX_KHZ_MASK)
+        });
     }
 }
 
@@ -7246,7 +7370,8 @@ impl Fc0MaxKhzVal {
     #[inline(always)]
     pub const fn with_fc0_max_khz(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Fc0MaxKhz::FC0_MAX_KHZ_MASK) | ((value << Fc0MaxKhz::FC0_MAX_KHZ_OFFSET) & Fc0MaxKhz::FC0_MAX_KHZ_MASK)
+            bits: (self.bits & !Fc0MaxKhz::FC0_MAX_KHZ_MASK)
+                | ((value << Fc0MaxKhz::FC0_MAX_KHZ_OFFSET) & Fc0MaxKhz::FC0_MAX_KHZ_MASK),
         }
     }
 }
@@ -7320,7 +7445,9 @@ impl Fc0Delay {
     /// Write **FC0_DELAY** `[2:0]` (RW)
     #[inline(always)]
     pub fn write_fc0_delay(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FC0_DELAY_MASK) | ((value << Self::FC0_DELAY_OFFSET) & Self::FC0_DELAY_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FC0_DELAY_MASK) | ((value << Self::FC0_DELAY_OFFSET) & Self::FC0_DELAY_MASK)
+        });
     }
 }
 
@@ -7362,7 +7489,8 @@ impl Fc0DelayVal {
     #[inline(always)]
     pub const fn with_fc0_delay(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Fc0Delay::FC0_DELAY_MASK) | ((value << Fc0Delay::FC0_DELAY_OFFSET) & Fc0Delay::FC0_DELAY_MASK)
+            bits: (self.bits & !Fc0Delay::FC0_DELAY_MASK)
+                | ((value << Fc0Delay::FC0_DELAY_OFFSET) & Fc0Delay::FC0_DELAY_MASK),
         }
     }
 }
@@ -7436,7 +7564,10 @@ impl Fc0Interval {
     /// Write **FC0_INTERVAL** `[3:0]` (RW)
     #[inline(always)]
     pub fn write_fc0_interval(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FC0_INTERVAL_MASK) | ((value << Self::FC0_INTERVAL_OFFSET) & Self::FC0_INTERVAL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FC0_INTERVAL_MASK)
+                | ((value << Self::FC0_INTERVAL_OFFSET) & Self::FC0_INTERVAL_MASK)
+        });
     }
 }
 
@@ -7478,7 +7609,8 @@ impl Fc0IntervalVal {
     #[inline(always)]
     pub const fn with_fc0_interval(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Fc0Interval::FC0_INTERVAL_MASK) | ((value << Fc0Interval::FC0_INTERVAL_OFFSET) & Fc0Interval::FC0_INTERVAL_MASK)
+            bits: (self.bits & !Fc0Interval::FC0_INTERVAL_MASK)
+                | ((value << Fc0Interval::FC0_INTERVAL_OFFSET) & Fc0Interval::FC0_INTERVAL_MASK),
         }
     }
 }
@@ -7586,7 +7718,9 @@ impl Fc0Src {
     /// Write **FC0_SRC** `[7:0]` (RW)
     #[inline(always)]
     pub fn write_fc0_src(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FC0_SRC_MASK) | ((value << Self::FC0_SRC_OFFSET) & Self::FC0_SRC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FC0_SRC_MASK) | ((value << Self::FC0_SRC_OFFSET) & Self::FC0_SRC_MASK)
+        });
     }
 }
 
@@ -7628,7 +7762,8 @@ impl Fc0SrcVal {
     #[inline(always)]
     pub const fn with_fc0_src(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Fc0Src::FC0_SRC_MASK) | ((value << Fc0Src::FC0_SRC_OFFSET) & Fc0Src::FC0_SRC_MASK)
+            bits: (self.bits & !Fc0Src::FC0_SRC_MASK)
+                | ((value << Fc0Src::FC0_SRC_OFFSET) & Fc0Src::FC0_SRC_MASK),
         }
     }
 }
@@ -9156,7 +9291,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_SYS_SIO_MASK
             } else {
                 self.bits & !WakeEn0::CLK_SYS_SIO_MASK
-            }
+            },
         }
     }
 
@@ -9168,7 +9303,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_SYS_SHA256_MASK
             } else {
                 self.bits & !WakeEn0::CLK_SYS_SHA256_MASK
-            }
+            },
         }
     }
 
@@ -9180,7 +9315,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_SYS_PSM_MASK
             } else {
                 self.bits & !WakeEn0::CLK_SYS_PSM_MASK
-            }
+            },
         }
     }
 
@@ -9192,7 +9327,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_SYS_ROSC_MASK
             } else {
                 self.bits & !WakeEn0::CLK_SYS_ROSC_MASK
-            }
+            },
         }
     }
 
@@ -9204,7 +9339,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_SYS_ROM_MASK
             } else {
                 self.bits & !WakeEn0::CLK_SYS_ROM_MASK
-            }
+            },
         }
     }
 
@@ -9216,7 +9351,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_SYS_RESETS_MASK
             } else {
                 self.bits & !WakeEn0::CLK_SYS_RESETS_MASK
-            }
+            },
         }
     }
 
@@ -9228,7 +9363,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_SYS_PWM_MASK
             } else {
                 self.bits & !WakeEn0::CLK_SYS_PWM_MASK
-            }
+            },
         }
     }
 
@@ -9240,7 +9375,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_SYS_POWMAN_MASK
             } else {
                 self.bits & !WakeEn0::CLK_SYS_POWMAN_MASK
-            }
+            },
         }
     }
 
@@ -9252,7 +9387,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_REF_POWMAN_MASK
             } else {
                 self.bits & !WakeEn0::CLK_REF_POWMAN_MASK
-            }
+            },
         }
     }
 
@@ -9264,7 +9399,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_SYS_PLL_USB_MASK
             } else {
                 self.bits & !WakeEn0::CLK_SYS_PLL_USB_MASK
-            }
+            },
         }
     }
 
@@ -9276,7 +9411,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_SYS_PLL_SYS_MASK
             } else {
                 self.bits & !WakeEn0::CLK_SYS_PLL_SYS_MASK
-            }
+            },
         }
     }
 
@@ -9288,7 +9423,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_SYS_PIO2_MASK
             } else {
                 self.bits & !WakeEn0::CLK_SYS_PIO2_MASK
-            }
+            },
         }
     }
 
@@ -9300,7 +9435,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_SYS_PIO1_MASK
             } else {
                 self.bits & !WakeEn0::CLK_SYS_PIO1_MASK
-            }
+            },
         }
     }
 
@@ -9312,7 +9447,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_SYS_PIO0_MASK
             } else {
                 self.bits & !WakeEn0::CLK_SYS_PIO0_MASK
-            }
+            },
         }
     }
 
@@ -9324,7 +9459,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_SYS_PADS_MASK
             } else {
                 self.bits & !WakeEn0::CLK_SYS_PADS_MASK
-            }
+            },
         }
     }
 
@@ -9336,7 +9471,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_SYS_OTP_MASK
             } else {
                 self.bits & !WakeEn0::CLK_SYS_OTP_MASK
-            }
+            },
         }
     }
 
@@ -9348,7 +9483,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_REF_OTP_MASK
             } else {
                 self.bits & !WakeEn0::CLK_REF_OTP_MASK
-            }
+            },
         }
     }
 
@@ -9360,7 +9495,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_SYS_JTAG_MASK
             } else {
                 self.bits & !WakeEn0::CLK_SYS_JTAG_MASK
-            }
+            },
         }
     }
 
@@ -9372,7 +9507,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_SYS_IO_MASK
             } else {
                 self.bits & !WakeEn0::CLK_SYS_IO_MASK
-            }
+            },
         }
     }
 
@@ -9384,7 +9519,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_SYS_I2C1_MASK
             } else {
                 self.bits & !WakeEn0::CLK_SYS_I2C1_MASK
-            }
+            },
         }
     }
 
@@ -9396,7 +9531,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_SYS_I2C0_MASK
             } else {
                 self.bits & !WakeEn0::CLK_SYS_I2C0_MASK
-            }
+            },
         }
     }
 
@@ -9408,7 +9543,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_SYS_HSTX_MASK
             } else {
                 self.bits & !WakeEn0::CLK_SYS_HSTX_MASK
-            }
+            },
         }
     }
 
@@ -9420,7 +9555,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_HSTX_MASK
             } else {
                 self.bits & !WakeEn0::CLK_HSTX_MASK
-            }
+            },
         }
     }
 
@@ -9432,7 +9567,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_SYS_GLITCH_DETECTOR_MASK
             } else {
                 self.bits & !WakeEn0::CLK_SYS_GLITCH_DETECTOR_MASK
-            }
+            },
         }
     }
 
@@ -9444,7 +9579,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_SYS_DMA_MASK
             } else {
                 self.bits & !WakeEn0::CLK_SYS_DMA_MASK
-            }
+            },
         }
     }
 
@@ -9456,7 +9591,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_SYS_BUSFABRIC_MASK
             } else {
                 self.bits & !WakeEn0::CLK_SYS_BUSFABRIC_MASK
-            }
+            },
         }
     }
 
@@ -9468,7 +9603,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_SYS_BUSCTRL_MASK
             } else {
                 self.bits & !WakeEn0::CLK_SYS_BUSCTRL_MASK
-            }
+            },
         }
     }
 
@@ -9480,7 +9615,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_SYS_BOOTRAM_MASK
             } else {
                 self.bits & !WakeEn0::CLK_SYS_BOOTRAM_MASK
-            }
+            },
         }
     }
 
@@ -9492,7 +9627,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_SYS_ADC_MASK
             } else {
                 self.bits & !WakeEn0::CLK_SYS_ADC_MASK
-            }
+            },
         }
     }
 
@@ -9504,7 +9639,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_ADC_MASK
             } else {
                 self.bits & !WakeEn0::CLK_ADC_MASK
-            }
+            },
         }
     }
 
@@ -9516,7 +9651,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_SYS_ACCESSCTRL_MASK
             } else {
                 self.bits & !WakeEn0::CLK_SYS_ACCESSCTRL_MASK
-            }
+            },
         }
     }
 
@@ -9528,7 +9663,7 @@ impl WakeEn0Val {
                 self.bits | WakeEn0::CLK_SYS_CLOCKS_MASK
             } else {
                 self.bits & !WakeEn0::CLK_SYS_CLOCKS_MASK
-            }
+            },
         }
     }
 }
@@ -10614,7 +10749,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_SYS_XOSC_MASK
             } else {
                 self.bits & !WakeEn1::CLK_SYS_XOSC_MASK
-            }
+            },
         }
     }
 
@@ -10626,7 +10761,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_SYS_XIP_MASK
             } else {
                 self.bits & !WakeEn1::CLK_SYS_XIP_MASK
-            }
+            },
         }
     }
 
@@ -10638,7 +10773,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_SYS_WATCHDOG_MASK
             } else {
                 self.bits & !WakeEn1::CLK_SYS_WATCHDOG_MASK
-            }
+            },
         }
     }
 
@@ -10650,7 +10785,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_USB_MASK
             } else {
                 self.bits & !WakeEn1::CLK_USB_MASK
-            }
+            },
         }
     }
 
@@ -10662,7 +10797,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_SYS_USBCTRL_MASK
             } else {
                 self.bits & !WakeEn1::CLK_SYS_USBCTRL_MASK
-            }
+            },
         }
     }
 
@@ -10674,7 +10809,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_SYS_UART1_MASK
             } else {
                 self.bits & !WakeEn1::CLK_SYS_UART1_MASK
-            }
+            },
         }
     }
 
@@ -10686,7 +10821,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_PERI_UART1_MASK
             } else {
                 self.bits & !WakeEn1::CLK_PERI_UART1_MASK
-            }
+            },
         }
     }
 
@@ -10698,7 +10833,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_SYS_UART0_MASK
             } else {
                 self.bits & !WakeEn1::CLK_SYS_UART0_MASK
-            }
+            },
         }
     }
 
@@ -10710,7 +10845,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_PERI_UART0_MASK
             } else {
                 self.bits & !WakeEn1::CLK_PERI_UART0_MASK
-            }
+            },
         }
     }
 
@@ -10722,7 +10857,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_SYS_TRNG_MASK
             } else {
                 self.bits & !WakeEn1::CLK_SYS_TRNG_MASK
-            }
+            },
         }
     }
 
@@ -10734,7 +10869,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_SYS_TIMER1_MASK
             } else {
                 self.bits & !WakeEn1::CLK_SYS_TIMER1_MASK
-            }
+            },
         }
     }
 
@@ -10746,7 +10881,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_SYS_TIMER0_MASK
             } else {
                 self.bits & !WakeEn1::CLK_SYS_TIMER0_MASK
-            }
+            },
         }
     }
 
@@ -10758,7 +10893,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_SYS_TICKS_MASK
             } else {
                 self.bits & !WakeEn1::CLK_SYS_TICKS_MASK
-            }
+            },
         }
     }
 
@@ -10770,7 +10905,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_REF_TICKS_MASK
             } else {
                 self.bits & !WakeEn1::CLK_REF_TICKS_MASK
-            }
+            },
         }
     }
 
@@ -10782,7 +10917,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_SYS_TBMAN_MASK
             } else {
                 self.bits & !WakeEn1::CLK_SYS_TBMAN_MASK
-            }
+            },
         }
     }
 
@@ -10794,7 +10929,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_SYS_SYSINFO_MASK
             } else {
                 self.bits & !WakeEn1::CLK_SYS_SYSINFO_MASK
-            }
+            },
         }
     }
 
@@ -10806,7 +10941,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_SYS_SYSCFG_MASK
             } else {
                 self.bits & !WakeEn1::CLK_SYS_SYSCFG_MASK
-            }
+            },
         }
     }
 
@@ -10818,7 +10953,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_SYS_SRAM9_MASK
             } else {
                 self.bits & !WakeEn1::CLK_SYS_SRAM9_MASK
-            }
+            },
         }
     }
 
@@ -10830,7 +10965,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_SYS_SRAM8_MASK
             } else {
                 self.bits & !WakeEn1::CLK_SYS_SRAM8_MASK
-            }
+            },
         }
     }
 
@@ -10842,7 +10977,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_SYS_SRAM7_MASK
             } else {
                 self.bits & !WakeEn1::CLK_SYS_SRAM7_MASK
-            }
+            },
         }
     }
 
@@ -10854,7 +10989,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_SYS_SRAM6_MASK
             } else {
                 self.bits & !WakeEn1::CLK_SYS_SRAM6_MASK
-            }
+            },
         }
     }
 
@@ -10866,7 +11001,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_SYS_SRAM5_MASK
             } else {
                 self.bits & !WakeEn1::CLK_SYS_SRAM5_MASK
-            }
+            },
         }
     }
 
@@ -10878,7 +11013,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_SYS_SRAM4_MASK
             } else {
                 self.bits & !WakeEn1::CLK_SYS_SRAM4_MASK
-            }
+            },
         }
     }
 
@@ -10890,7 +11025,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_SYS_SRAM3_MASK
             } else {
                 self.bits & !WakeEn1::CLK_SYS_SRAM3_MASK
-            }
+            },
         }
     }
 
@@ -10902,7 +11037,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_SYS_SRAM2_MASK
             } else {
                 self.bits & !WakeEn1::CLK_SYS_SRAM2_MASK
-            }
+            },
         }
     }
 
@@ -10914,7 +11049,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_SYS_SRAM1_MASK
             } else {
                 self.bits & !WakeEn1::CLK_SYS_SRAM1_MASK
-            }
+            },
         }
     }
 
@@ -10926,7 +11061,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_SYS_SRAM0_MASK
             } else {
                 self.bits & !WakeEn1::CLK_SYS_SRAM0_MASK
-            }
+            },
         }
     }
 
@@ -10938,7 +11073,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_SYS_SPI1_MASK
             } else {
                 self.bits & !WakeEn1::CLK_SYS_SPI1_MASK
-            }
+            },
         }
     }
 
@@ -10950,7 +11085,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_PERI_SPI1_MASK
             } else {
                 self.bits & !WakeEn1::CLK_PERI_SPI1_MASK
-            }
+            },
         }
     }
 
@@ -10962,7 +11097,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_SYS_SPI0_MASK
             } else {
                 self.bits & !WakeEn1::CLK_SYS_SPI0_MASK
-            }
+            },
         }
     }
 
@@ -10974,7 +11109,7 @@ impl WakeEn1Val {
                 self.bits | WakeEn1::CLK_PERI_SPI0_MASK
             } else {
                 self.bits & !WakeEn1::CLK_PERI_SPI0_MASK
-            }
+            },
         }
     }
 }
@@ -12092,7 +12227,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_SYS_SIO_MASK
             } else {
                 self.bits & !SleepEn0::CLK_SYS_SIO_MASK
-            }
+            },
         }
     }
 
@@ -12104,7 +12239,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_SYS_SHA256_MASK
             } else {
                 self.bits & !SleepEn0::CLK_SYS_SHA256_MASK
-            }
+            },
         }
     }
 
@@ -12116,7 +12251,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_SYS_PSM_MASK
             } else {
                 self.bits & !SleepEn0::CLK_SYS_PSM_MASK
-            }
+            },
         }
     }
 
@@ -12128,7 +12263,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_SYS_ROSC_MASK
             } else {
                 self.bits & !SleepEn0::CLK_SYS_ROSC_MASK
-            }
+            },
         }
     }
 
@@ -12140,7 +12275,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_SYS_ROM_MASK
             } else {
                 self.bits & !SleepEn0::CLK_SYS_ROM_MASK
-            }
+            },
         }
     }
 
@@ -12152,7 +12287,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_SYS_RESETS_MASK
             } else {
                 self.bits & !SleepEn0::CLK_SYS_RESETS_MASK
-            }
+            },
         }
     }
 
@@ -12164,7 +12299,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_SYS_PWM_MASK
             } else {
                 self.bits & !SleepEn0::CLK_SYS_PWM_MASK
-            }
+            },
         }
     }
 
@@ -12176,7 +12311,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_SYS_POWMAN_MASK
             } else {
                 self.bits & !SleepEn0::CLK_SYS_POWMAN_MASK
-            }
+            },
         }
     }
 
@@ -12188,7 +12323,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_REF_POWMAN_MASK
             } else {
                 self.bits & !SleepEn0::CLK_REF_POWMAN_MASK
-            }
+            },
         }
     }
 
@@ -12200,7 +12335,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_SYS_PLL_USB_MASK
             } else {
                 self.bits & !SleepEn0::CLK_SYS_PLL_USB_MASK
-            }
+            },
         }
     }
 
@@ -12212,7 +12347,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_SYS_PLL_SYS_MASK
             } else {
                 self.bits & !SleepEn0::CLK_SYS_PLL_SYS_MASK
-            }
+            },
         }
     }
 
@@ -12224,7 +12359,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_SYS_PIO2_MASK
             } else {
                 self.bits & !SleepEn0::CLK_SYS_PIO2_MASK
-            }
+            },
         }
     }
 
@@ -12236,7 +12371,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_SYS_PIO1_MASK
             } else {
                 self.bits & !SleepEn0::CLK_SYS_PIO1_MASK
-            }
+            },
         }
     }
 
@@ -12248,7 +12383,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_SYS_PIO0_MASK
             } else {
                 self.bits & !SleepEn0::CLK_SYS_PIO0_MASK
-            }
+            },
         }
     }
 
@@ -12260,7 +12395,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_SYS_PADS_MASK
             } else {
                 self.bits & !SleepEn0::CLK_SYS_PADS_MASK
-            }
+            },
         }
     }
 
@@ -12272,7 +12407,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_SYS_OTP_MASK
             } else {
                 self.bits & !SleepEn0::CLK_SYS_OTP_MASK
-            }
+            },
         }
     }
 
@@ -12284,7 +12419,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_REF_OTP_MASK
             } else {
                 self.bits & !SleepEn0::CLK_REF_OTP_MASK
-            }
+            },
         }
     }
 
@@ -12296,7 +12431,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_SYS_JTAG_MASK
             } else {
                 self.bits & !SleepEn0::CLK_SYS_JTAG_MASK
-            }
+            },
         }
     }
 
@@ -12308,7 +12443,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_SYS_IO_MASK
             } else {
                 self.bits & !SleepEn0::CLK_SYS_IO_MASK
-            }
+            },
         }
     }
 
@@ -12320,7 +12455,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_SYS_I2C1_MASK
             } else {
                 self.bits & !SleepEn0::CLK_SYS_I2C1_MASK
-            }
+            },
         }
     }
 
@@ -12332,7 +12467,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_SYS_I2C0_MASK
             } else {
                 self.bits & !SleepEn0::CLK_SYS_I2C0_MASK
-            }
+            },
         }
     }
 
@@ -12344,7 +12479,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_SYS_HSTX_MASK
             } else {
                 self.bits & !SleepEn0::CLK_SYS_HSTX_MASK
-            }
+            },
         }
     }
 
@@ -12356,7 +12491,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_HSTX_MASK
             } else {
                 self.bits & !SleepEn0::CLK_HSTX_MASK
-            }
+            },
         }
     }
 
@@ -12368,7 +12503,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_SYS_GLITCH_DETECTOR_MASK
             } else {
                 self.bits & !SleepEn0::CLK_SYS_GLITCH_DETECTOR_MASK
-            }
+            },
         }
     }
 
@@ -12380,7 +12515,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_SYS_DMA_MASK
             } else {
                 self.bits & !SleepEn0::CLK_SYS_DMA_MASK
-            }
+            },
         }
     }
 
@@ -12392,7 +12527,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_SYS_BUSFABRIC_MASK
             } else {
                 self.bits & !SleepEn0::CLK_SYS_BUSFABRIC_MASK
-            }
+            },
         }
     }
 
@@ -12404,7 +12539,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_SYS_BUSCTRL_MASK
             } else {
                 self.bits & !SleepEn0::CLK_SYS_BUSCTRL_MASK
-            }
+            },
         }
     }
 
@@ -12416,7 +12551,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_SYS_BOOTRAM_MASK
             } else {
                 self.bits & !SleepEn0::CLK_SYS_BOOTRAM_MASK
-            }
+            },
         }
     }
 
@@ -12428,7 +12563,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_SYS_ADC_MASK
             } else {
                 self.bits & !SleepEn0::CLK_SYS_ADC_MASK
-            }
+            },
         }
     }
 
@@ -12440,7 +12575,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_ADC_MASK
             } else {
                 self.bits & !SleepEn0::CLK_ADC_MASK
-            }
+            },
         }
     }
 
@@ -12452,7 +12587,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_SYS_ACCESSCTRL_MASK
             } else {
                 self.bits & !SleepEn0::CLK_SYS_ACCESSCTRL_MASK
-            }
+            },
         }
     }
 
@@ -12464,7 +12599,7 @@ impl SleepEn0Val {
                 self.bits | SleepEn0::CLK_SYS_CLOCKS_MASK
             } else {
                 self.bits & !SleepEn0::CLK_SYS_CLOCKS_MASK
-            }
+            },
         }
     }
 }
@@ -13550,7 +13685,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_SYS_XOSC_MASK
             } else {
                 self.bits & !SleepEn1::CLK_SYS_XOSC_MASK
-            }
+            },
         }
     }
 
@@ -13562,7 +13697,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_SYS_XIP_MASK
             } else {
                 self.bits & !SleepEn1::CLK_SYS_XIP_MASK
-            }
+            },
         }
     }
 
@@ -13574,7 +13709,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_SYS_WATCHDOG_MASK
             } else {
                 self.bits & !SleepEn1::CLK_SYS_WATCHDOG_MASK
-            }
+            },
         }
     }
 
@@ -13586,7 +13721,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_USB_MASK
             } else {
                 self.bits & !SleepEn1::CLK_USB_MASK
-            }
+            },
         }
     }
 
@@ -13598,7 +13733,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_SYS_USBCTRL_MASK
             } else {
                 self.bits & !SleepEn1::CLK_SYS_USBCTRL_MASK
-            }
+            },
         }
     }
 
@@ -13610,7 +13745,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_SYS_UART1_MASK
             } else {
                 self.bits & !SleepEn1::CLK_SYS_UART1_MASK
-            }
+            },
         }
     }
 
@@ -13622,7 +13757,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_PERI_UART1_MASK
             } else {
                 self.bits & !SleepEn1::CLK_PERI_UART1_MASK
-            }
+            },
         }
     }
 
@@ -13634,7 +13769,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_SYS_UART0_MASK
             } else {
                 self.bits & !SleepEn1::CLK_SYS_UART0_MASK
-            }
+            },
         }
     }
 
@@ -13646,7 +13781,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_PERI_UART0_MASK
             } else {
                 self.bits & !SleepEn1::CLK_PERI_UART0_MASK
-            }
+            },
         }
     }
 
@@ -13658,7 +13793,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_SYS_TRNG_MASK
             } else {
                 self.bits & !SleepEn1::CLK_SYS_TRNG_MASK
-            }
+            },
         }
     }
 
@@ -13670,7 +13805,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_SYS_TIMER1_MASK
             } else {
                 self.bits & !SleepEn1::CLK_SYS_TIMER1_MASK
-            }
+            },
         }
     }
 
@@ -13682,7 +13817,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_SYS_TIMER0_MASK
             } else {
                 self.bits & !SleepEn1::CLK_SYS_TIMER0_MASK
-            }
+            },
         }
     }
 
@@ -13694,7 +13829,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_SYS_TICKS_MASK
             } else {
                 self.bits & !SleepEn1::CLK_SYS_TICKS_MASK
-            }
+            },
         }
     }
 
@@ -13706,7 +13841,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_REF_TICKS_MASK
             } else {
                 self.bits & !SleepEn1::CLK_REF_TICKS_MASK
-            }
+            },
         }
     }
 
@@ -13718,7 +13853,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_SYS_TBMAN_MASK
             } else {
                 self.bits & !SleepEn1::CLK_SYS_TBMAN_MASK
-            }
+            },
         }
     }
 
@@ -13730,7 +13865,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_SYS_SYSINFO_MASK
             } else {
                 self.bits & !SleepEn1::CLK_SYS_SYSINFO_MASK
-            }
+            },
         }
     }
 
@@ -13742,7 +13877,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_SYS_SYSCFG_MASK
             } else {
                 self.bits & !SleepEn1::CLK_SYS_SYSCFG_MASK
-            }
+            },
         }
     }
 
@@ -13754,7 +13889,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_SYS_SRAM9_MASK
             } else {
                 self.bits & !SleepEn1::CLK_SYS_SRAM9_MASK
-            }
+            },
         }
     }
 
@@ -13766,7 +13901,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_SYS_SRAM8_MASK
             } else {
                 self.bits & !SleepEn1::CLK_SYS_SRAM8_MASK
-            }
+            },
         }
     }
 
@@ -13778,7 +13913,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_SYS_SRAM7_MASK
             } else {
                 self.bits & !SleepEn1::CLK_SYS_SRAM7_MASK
-            }
+            },
         }
     }
 
@@ -13790,7 +13925,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_SYS_SRAM6_MASK
             } else {
                 self.bits & !SleepEn1::CLK_SYS_SRAM6_MASK
-            }
+            },
         }
     }
 
@@ -13802,7 +13937,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_SYS_SRAM5_MASK
             } else {
                 self.bits & !SleepEn1::CLK_SYS_SRAM5_MASK
-            }
+            },
         }
     }
 
@@ -13814,7 +13949,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_SYS_SRAM4_MASK
             } else {
                 self.bits & !SleepEn1::CLK_SYS_SRAM4_MASK
-            }
+            },
         }
     }
 
@@ -13826,7 +13961,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_SYS_SRAM3_MASK
             } else {
                 self.bits & !SleepEn1::CLK_SYS_SRAM3_MASK
-            }
+            },
         }
     }
 
@@ -13838,7 +13973,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_SYS_SRAM2_MASK
             } else {
                 self.bits & !SleepEn1::CLK_SYS_SRAM2_MASK
-            }
+            },
         }
     }
 
@@ -13850,7 +13985,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_SYS_SRAM1_MASK
             } else {
                 self.bits & !SleepEn1::CLK_SYS_SRAM1_MASK
-            }
+            },
         }
     }
 
@@ -13862,7 +13997,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_SYS_SRAM0_MASK
             } else {
                 self.bits & !SleepEn1::CLK_SYS_SRAM0_MASK
-            }
+            },
         }
     }
 
@@ -13874,7 +14009,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_SYS_SPI1_MASK
             } else {
                 self.bits & !SleepEn1::CLK_SYS_SPI1_MASK
-            }
+            },
         }
     }
 
@@ -13886,7 +14021,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_PERI_SPI1_MASK
             } else {
                 self.bits & !SleepEn1::CLK_PERI_SPI1_MASK
-            }
+            },
         }
     }
 
@@ -13898,7 +14033,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_SYS_SPI0_MASK
             } else {
                 self.bits & !SleepEn1::CLK_SYS_SPI0_MASK
-            }
+            },
         }
     }
 
@@ -13910,7 +14045,7 @@ impl SleepEn1Val {
                 self.bits | SleepEn1::CLK_PERI_SPI0_MASK
             } else {
                 self.bits & !SleepEn1::CLK_PERI_SPI0_MASK
-            }
+            },
         }
     }
 }
@@ -15526,7 +15661,7 @@ impl InteVal {
                 self.bits | Inte::CLK_SYS_RESUS_MASK
             } else {
                 self.bits & !Inte::CLK_SYS_RESUS_MASK
-            }
+            },
         }
     }
 }
@@ -15652,7 +15787,7 @@ impl IntfVal {
                 self.bits | Intf::CLK_SYS_RESUS_MASK
             } else {
                 self.bits & !Intf::CLK_SYS_RESUS_MASK
-            }
+            },
         }
     }
 }
@@ -15924,4 +16059,3 @@ pub struct RegisterBlock {
     /// Interrupt status after masking & forcing
     pub ints: Ints,
 }
-

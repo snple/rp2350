@@ -168,7 +168,9 @@ impl Ch0Csr {
     /// Write **DIVMODE** `[5:4]` (RW)
     #[inline(always)]
     pub fn write_divmode(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DIVMODE_MASK) | ((value << Self::DIVMODE_OFFSET) & Self::DIVMODE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DIVMODE_MASK) | ((value << Self::DIVMODE_OFFSET) & Self::DIVMODE_MASK)
+        });
     }
 
     /// **B_INV** `[3]` (RW)
@@ -330,7 +332,7 @@ impl Ch0CsrVal {
                 self.bits | Ch0Csr::PH_ADV_MASK
             } else {
                 self.bits & !Ch0Csr::PH_ADV_MASK
-            }
+            },
         }
     }
 
@@ -345,7 +347,7 @@ impl Ch0CsrVal {
                 self.bits | Ch0Csr::PH_RET_MASK
             } else {
                 self.bits & !Ch0Csr::PH_RET_MASK
-            }
+            },
         }
     }
 
@@ -353,7 +355,8 @@ impl Ch0CsrVal {
     #[inline(always)]
     pub const fn with_divmode(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch0Csr::DIVMODE_MASK) | ((value << Ch0Csr::DIVMODE_OFFSET) & Ch0Csr::DIVMODE_MASK)
+            bits: (self.bits & !Ch0Csr::DIVMODE_MASK)
+                | ((value << Ch0Csr::DIVMODE_OFFSET) & Ch0Csr::DIVMODE_MASK),
         }
     }
 
@@ -367,7 +370,7 @@ impl Ch0CsrVal {
                 self.bits | Ch0Csr::B_INV_MASK
             } else {
                 self.bits & !Ch0Csr::B_INV_MASK
-            }
+            },
         }
     }
 
@@ -381,7 +384,7 @@ impl Ch0CsrVal {
                 self.bits | Ch0Csr::A_INV_MASK
             } else {
                 self.bits & !Ch0Csr::A_INV_MASK
-            }
+            },
         }
     }
 
@@ -395,7 +398,7 @@ impl Ch0CsrVal {
                 self.bits | Ch0Csr::PH_CORRECT_MASK
             } else {
                 self.bits & !Ch0Csr::PH_CORRECT_MASK
-            }
+            },
         }
     }
 
@@ -409,7 +412,7 @@ impl Ch0CsrVal {
                 self.bits | Ch0Csr::EN_MASK
             } else {
                 self.bits & !Ch0Csr::EN_MASK
-            }
+            },
         }
     }
 }
@@ -491,7 +494,9 @@ impl Ch0Div {
     /// Write **INT** `[11:4]` (RW)
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK)
+        });
     }
 
     /// **FRAC** `[3:0]` (RW)
@@ -503,7 +508,9 @@ impl Ch0Div {
     /// Write **FRAC** `[3:0]` (RW)
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK)
+        });
     }
 }
 
@@ -551,7 +558,8 @@ impl Ch0DivVal {
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch0Div::INT_MASK) | ((value << Ch0Div::INT_OFFSET) & Ch0Div::INT_MASK)
+            bits: (self.bits & !Ch0Div::INT_MASK)
+                | ((value << Ch0Div::INT_OFFSET) & Ch0Div::INT_MASK),
         }
     }
 
@@ -559,7 +567,8 @@ impl Ch0DivVal {
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch0Div::FRAC_MASK) | ((value << Ch0Div::FRAC_OFFSET) & Ch0Div::FRAC_MASK)
+            bits: (self.bits & !Ch0Div::FRAC_MASK)
+                | ((value << Ch0Div::FRAC_OFFSET) & Ch0Div::FRAC_MASK),
         }
     }
 }
@@ -632,7 +641,9 @@ impl Ch0Ctr {
     /// Write **CH0_CTR** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_ch0_ctr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH0_CTR_MASK) | ((value << Self::CH0_CTR_OFFSET) & Self::CH0_CTR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH0_CTR_MASK) | ((value << Self::CH0_CTR_OFFSET) & Self::CH0_CTR_MASK)
+        });
     }
 }
 
@@ -674,7 +685,8 @@ impl Ch0CtrVal {
     #[inline(always)]
     pub const fn with_ch0_ctr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch0Ctr::CH0_CTR_MASK) | ((value << Ch0Ctr::CH0_CTR_OFFSET) & Ch0Ctr::CH0_CTR_MASK)
+            bits: (self.bits & !Ch0Ctr::CH0_CTR_MASK)
+                | ((value << Ch0Ctr::CH0_CTR_OFFSET) & Ch0Ctr::CH0_CTR_MASK),
         }
     }
 }
@@ -754,7 +766,8 @@ impl Ch0Cc {
     /// Write **B** `[31:16]` (RW)
     #[inline(always)]
     pub fn write_b(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::B_MASK) | ((value << Self::B_OFFSET) & Self::B_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::B_MASK) | ((value << Self::B_OFFSET) & Self::B_MASK));
     }
 
     /// **A** `[15:0]` (RW)
@@ -766,7 +779,8 @@ impl Ch0Cc {
     /// Write **A** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_a(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
     }
 }
 
@@ -814,7 +828,7 @@ impl Ch0CcVal {
     #[inline(always)]
     pub const fn with_b(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch0Cc::B_MASK) | ((value << Ch0Cc::B_OFFSET) & Ch0Cc::B_MASK)
+            bits: (self.bits & !Ch0Cc::B_MASK) | ((value << Ch0Cc::B_OFFSET) & Ch0Cc::B_MASK),
         }
     }
 
@@ -822,7 +836,7 @@ impl Ch0CcVal {
     #[inline(always)]
     pub const fn with_a(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch0Cc::A_MASK) | ((value << Ch0Cc::A_OFFSET) & Ch0Cc::A_MASK)
+            bits: (self.bits & !Ch0Cc::A_MASK) | ((value << Ch0Cc::A_OFFSET) & Ch0Cc::A_MASK),
         }
     }
 }
@@ -895,7 +909,9 @@ impl Ch0Top {
     /// Write **CH0_TOP** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_ch0_top(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH0_TOP_MASK) | ((value << Self::CH0_TOP_OFFSET) & Self::CH0_TOP_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH0_TOP_MASK) | ((value << Self::CH0_TOP_OFFSET) & Self::CH0_TOP_MASK)
+        });
     }
 }
 
@@ -937,7 +953,8 @@ impl Ch0TopVal {
     #[inline(always)]
     pub const fn with_ch0_top(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch0Top::CH0_TOP_MASK) | ((value << Ch0Top::CH0_TOP_OFFSET) & Ch0Top::CH0_TOP_MASK)
+            bits: (self.bits & !Ch0Top::CH0_TOP_MASK)
+                | ((value << Ch0Top::CH0_TOP_OFFSET) & Ch0Top::CH0_TOP_MASK),
         }
     }
 }
@@ -1129,7 +1146,9 @@ impl Ch1Csr {
     /// Write **DIVMODE** `[5:4]` (RW)
     #[inline(always)]
     pub fn write_divmode(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DIVMODE_MASK) | ((value << Self::DIVMODE_OFFSET) & Self::DIVMODE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DIVMODE_MASK) | ((value << Self::DIVMODE_OFFSET) & Self::DIVMODE_MASK)
+        });
     }
 
     /// **B_INV** `[3]` (RW)
@@ -1291,7 +1310,7 @@ impl Ch1CsrVal {
                 self.bits | Ch1Csr::PH_ADV_MASK
             } else {
                 self.bits & !Ch1Csr::PH_ADV_MASK
-            }
+            },
         }
     }
 
@@ -1306,7 +1325,7 @@ impl Ch1CsrVal {
                 self.bits | Ch1Csr::PH_RET_MASK
             } else {
                 self.bits & !Ch1Csr::PH_RET_MASK
-            }
+            },
         }
     }
 
@@ -1314,7 +1333,8 @@ impl Ch1CsrVal {
     #[inline(always)]
     pub const fn with_divmode(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch1Csr::DIVMODE_MASK) | ((value << Ch1Csr::DIVMODE_OFFSET) & Ch1Csr::DIVMODE_MASK)
+            bits: (self.bits & !Ch1Csr::DIVMODE_MASK)
+                | ((value << Ch1Csr::DIVMODE_OFFSET) & Ch1Csr::DIVMODE_MASK),
         }
     }
 
@@ -1328,7 +1348,7 @@ impl Ch1CsrVal {
                 self.bits | Ch1Csr::B_INV_MASK
             } else {
                 self.bits & !Ch1Csr::B_INV_MASK
-            }
+            },
         }
     }
 
@@ -1342,7 +1362,7 @@ impl Ch1CsrVal {
                 self.bits | Ch1Csr::A_INV_MASK
             } else {
                 self.bits & !Ch1Csr::A_INV_MASK
-            }
+            },
         }
     }
 
@@ -1356,7 +1376,7 @@ impl Ch1CsrVal {
                 self.bits | Ch1Csr::PH_CORRECT_MASK
             } else {
                 self.bits & !Ch1Csr::PH_CORRECT_MASK
-            }
+            },
         }
     }
 
@@ -1370,7 +1390,7 @@ impl Ch1CsrVal {
                 self.bits | Ch1Csr::EN_MASK
             } else {
                 self.bits & !Ch1Csr::EN_MASK
-            }
+            },
         }
     }
 }
@@ -1452,7 +1472,9 @@ impl Ch1Div {
     /// Write **INT** `[11:4]` (RW)
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK)
+        });
     }
 
     /// **FRAC** `[3:0]` (RW)
@@ -1464,7 +1486,9 @@ impl Ch1Div {
     /// Write **FRAC** `[3:0]` (RW)
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK)
+        });
     }
 }
 
@@ -1512,7 +1536,8 @@ impl Ch1DivVal {
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch1Div::INT_MASK) | ((value << Ch1Div::INT_OFFSET) & Ch1Div::INT_MASK)
+            bits: (self.bits & !Ch1Div::INT_MASK)
+                | ((value << Ch1Div::INT_OFFSET) & Ch1Div::INT_MASK),
         }
     }
 
@@ -1520,7 +1545,8 @@ impl Ch1DivVal {
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch1Div::FRAC_MASK) | ((value << Ch1Div::FRAC_OFFSET) & Ch1Div::FRAC_MASK)
+            bits: (self.bits & !Ch1Div::FRAC_MASK)
+                | ((value << Ch1Div::FRAC_OFFSET) & Ch1Div::FRAC_MASK),
         }
     }
 }
@@ -1593,7 +1619,9 @@ impl Ch1Ctr {
     /// Write **CH1_CTR** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_ch1_ctr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH1_CTR_MASK) | ((value << Self::CH1_CTR_OFFSET) & Self::CH1_CTR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH1_CTR_MASK) | ((value << Self::CH1_CTR_OFFSET) & Self::CH1_CTR_MASK)
+        });
     }
 }
 
@@ -1635,7 +1663,8 @@ impl Ch1CtrVal {
     #[inline(always)]
     pub const fn with_ch1_ctr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch1Ctr::CH1_CTR_MASK) | ((value << Ch1Ctr::CH1_CTR_OFFSET) & Ch1Ctr::CH1_CTR_MASK)
+            bits: (self.bits & !Ch1Ctr::CH1_CTR_MASK)
+                | ((value << Ch1Ctr::CH1_CTR_OFFSET) & Ch1Ctr::CH1_CTR_MASK),
         }
     }
 }
@@ -1715,7 +1744,8 @@ impl Ch1Cc {
     /// Write **B** `[31:16]` (RW)
     #[inline(always)]
     pub fn write_b(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::B_MASK) | ((value << Self::B_OFFSET) & Self::B_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::B_MASK) | ((value << Self::B_OFFSET) & Self::B_MASK));
     }
 
     /// **A** `[15:0]` (RW)
@@ -1727,7 +1757,8 @@ impl Ch1Cc {
     /// Write **A** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_a(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
     }
 }
 
@@ -1775,7 +1806,7 @@ impl Ch1CcVal {
     #[inline(always)]
     pub const fn with_b(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch1Cc::B_MASK) | ((value << Ch1Cc::B_OFFSET) & Ch1Cc::B_MASK)
+            bits: (self.bits & !Ch1Cc::B_MASK) | ((value << Ch1Cc::B_OFFSET) & Ch1Cc::B_MASK),
         }
     }
 
@@ -1783,7 +1814,7 @@ impl Ch1CcVal {
     #[inline(always)]
     pub const fn with_a(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch1Cc::A_MASK) | ((value << Ch1Cc::A_OFFSET) & Ch1Cc::A_MASK)
+            bits: (self.bits & !Ch1Cc::A_MASK) | ((value << Ch1Cc::A_OFFSET) & Ch1Cc::A_MASK),
         }
     }
 }
@@ -1856,7 +1887,9 @@ impl Ch1Top {
     /// Write **CH1_TOP** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_ch1_top(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH1_TOP_MASK) | ((value << Self::CH1_TOP_OFFSET) & Self::CH1_TOP_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH1_TOP_MASK) | ((value << Self::CH1_TOP_OFFSET) & Self::CH1_TOP_MASK)
+        });
     }
 }
 
@@ -1898,7 +1931,8 @@ impl Ch1TopVal {
     #[inline(always)]
     pub const fn with_ch1_top(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch1Top::CH1_TOP_MASK) | ((value << Ch1Top::CH1_TOP_OFFSET) & Ch1Top::CH1_TOP_MASK)
+            bits: (self.bits & !Ch1Top::CH1_TOP_MASK)
+                | ((value << Ch1Top::CH1_TOP_OFFSET) & Ch1Top::CH1_TOP_MASK),
         }
     }
 }
@@ -2090,7 +2124,9 @@ impl Ch2Csr {
     /// Write **DIVMODE** `[5:4]` (RW)
     #[inline(always)]
     pub fn write_divmode(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DIVMODE_MASK) | ((value << Self::DIVMODE_OFFSET) & Self::DIVMODE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DIVMODE_MASK) | ((value << Self::DIVMODE_OFFSET) & Self::DIVMODE_MASK)
+        });
     }
 
     /// **B_INV** `[3]` (RW)
@@ -2252,7 +2288,7 @@ impl Ch2CsrVal {
                 self.bits | Ch2Csr::PH_ADV_MASK
             } else {
                 self.bits & !Ch2Csr::PH_ADV_MASK
-            }
+            },
         }
     }
 
@@ -2267,7 +2303,7 @@ impl Ch2CsrVal {
                 self.bits | Ch2Csr::PH_RET_MASK
             } else {
                 self.bits & !Ch2Csr::PH_RET_MASK
-            }
+            },
         }
     }
 
@@ -2275,7 +2311,8 @@ impl Ch2CsrVal {
     #[inline(always)]
     pub const fn with_divmode(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch2Csr::DIVMODE_MASK) | ((value << Ch2Csr::DIVMODE_OFFSET) & Ch2Csr::DIVMODE_MASK)
+            bits: (self.bits & !Ch2Csr::DIVMODE_MASK)
+                | ((value << Ch2Csr::DIVMODE_OFFSET) & Ch2Csr::DIVMODE_MASK),
         }
     }
 
@@ -2289,7 +2326,7 @@ impl Ch2CsrVal {
                 self.bits | Ch2Csr::B_INV_MASK
             } else {
                 self.bits & !Ch2Csr::B_INV_MASK
-            }
+            },
         }
     }
 
@@ -2303,7 +2340,7 @@ impl Ch2CsrVal {
                 self.bits | Ch2Csr::A_INV_MASK
             } else {
                 self.bits & !Ch2Csr::A_INV_MASK
-            }
+            },
         }
     }
 
@@ -2317,7 +2354,7 @@ impl Ch2CsrVal {
                 self.bits | Ch2Csr::PH_CORRECT_MASK
             } else {
                 self.bits & !Ch2Csr::PH_CORRECT_MASK
-            }
+            },
         }
     }
 
@@ -2331,7 +2368,7 @@ impl Ch2CsrVal {
                 self.bits | Ch2Csr::EN_MASK
             } else {
                 self.bits & !Ch2Csr::EN_MASK
-            }
+            },
         }
     }
 }
@@ -2413,7 +2450,9 @@ impl Ch2Div {
     /// Write **INT** `[11:4]` (RW)
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK)
+        });
     }
 
     /// **FRAC** `[3:0]` (RW)
@@ -2425,7 +2464,9 @@ impl Ch2Div {
     /// Write **FRAC** `[3:0]` (RW)
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK)
+        });
     }
 }
 
@@ -2473,7 +2514,8 @@ impl Ch2DivVal {
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch2Div::INT_MASK) | ((value << Ch2Div::INT_OFFSET) & Ch2Div::INT_MASK)
+            bits: (self.bits & !Ch2Div::INT_MASK)
+                | ((value << Ch2Div::INT_OFFSET) & Ch2Div::INT_MASK),
         }
     }
 
@@ -2481,7 +2523,8 @@ impl Ch2DivVal {
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch2Div::FRAC_MASK) | ((value << Ch2Div::FRAC_OFFSET) & Ch2Div::FRAC_MASK)
+            bits: (self.bits & !Ch2Div::FRAC_MASK)
+                | ((value << Ch2Div::FRAC_OFFSET) & Ch2Div::FRAC_MASK),
         }
     }
 }
@@ -2554,7 +2597,9 @@ impl Ch2Ctr {
     /// Write **CH2_CTR** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_ch2_ctr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH2_CTR_MASK) | ((value << Self::CH2_CTR_OFFSET) & Self::CH2_CTR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH2_CTR_MASK) | ((value << Self::CH2_CTR_OFFSET) & Self::CH2_CTR_MASK)
+        });
     }
 }
 
@@ -2596,7 +2641,8 @@ impl Ch2CtrVal {
     #[inline(always)]
     pub const fn with_ch2_ctr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch2Ctr::CH2_CTR_MASK) | ((value << Ch2Ctr::CH2_CTR_OFFSET) & Ch2Ctr::CH2_CTR_MASK)
+            bits: (self.bits & !Ch2Ctr::CH2_CTR_MASK)
+                | ((value << Ch2Ctr::CH2_CTR_OFFSET) & Ch2Ctr::CH2_CTR_MASK),
         }
     }
 }
@@ -2676,7 +2722,8 @@ impl Ch2Cc {
     /// Write **B** `[31:16]` (RW)
     #[inline(always)]
     pub fn write_b(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::B_MASK) | ((value << Self::B_OFFSET) & Self::B_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::B_MASK) | ((value << Self::B_OFFSET) & Self::B_MASK));
     }
 
     /// **A** `[15:0]` (RW)
@@ -2688,7 +2735,8 @@ impl Ch2Cc {
     /// Write **A** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_a(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
     }
 }
 
@@ -2736,7 +2784,7 @@ impl Ch2CcVal {
     #[inline(always)]
     pub const fn with_b(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch2Cc::B_MASK) | ((value << Ch2Cc::B_OFFSET) & Ch2Cc::B_MASK)
+            bits: (self.bits & !Ch2Cc::B_MASK) | ((value << Ch2Cc::B_OFFSET) & Ch2Cc::B_MASK),
         }
     }
 
@@ -2744,7 +2792,7 @@ impl Ch2CcVal {
     #[inline(always)]
     pub const fn with_a(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch2Cc::A_MASK) | ((value << Ch2Cc::A_OFFSET) & Ch2Cc::A_MASK)
+            bits: (self.bits & !Ch2Cc::A_MASK) | ((value << Ch2Cc::A_OFFSET) & Ch2Cc::A_MASK),
         }
     }
 }
@@ -2817,7 +2865,9 @@ impl Ch2Top {
     /// Write **CH2_TOP** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_ch2_top(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH2_TOP_MASK) | ((value << Self::CH2_TOP_OFFSET) & Self::CH2_TOP_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH2_TOP_MASK) | ((value << Self::CH2_TOP_OFFSET) & Self::CH2_TOP_MASK)
+        });
     }
 }
 
@@ -2859,7 +2909,8 @@ impl Ch2TopVal {
     #[inline(always)]
     pub const fn with_ch2_top(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch2Top::CH2_TOP_MASK) | ((value << Ch2Top::CH2_TOP_OFFSET) & Ch2Top::CH2_TOP_MASK)
+            bits: (self.bits & !Ch2Top::CH2_TOP_MASK)
+                | ((value << Ch2Top::CH2_TOP_OFFSET) & Ch2Top::CH2_TOP_MASK),
         }
     }
 }
@@ -3051,7 +3102,9 @@ impl Ch3Csr {
     /// Write **DIVMODE** `[5:4]` (RW)
     #[inline(always)]
     pub fn write_divmode(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DIVMODE_MASK) | ((value << Self::DIVMODE_OFFSET) & Self::DIVMODE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DIVMODE_MASK) | ((value << Self::DIVMODE_OFFSET) & Self::DIVMODE_MASK)
+        });
     }
 
     /// **B_INV** `[3]` (RW)
@@ -3213,7 +3266,7 @@ impl Ch3CsrVal {
                 self.bits | Ch3Csr::PH_ADV_MASK
             } else {
                 self.bits & !Ch3Csr::PH_ADV_MASK
-            }
+            },
         }
     }
 
@@ -3228,7 +3281,7 @@ impl Ch3CsrVal {
                 self.bits | Ch3Csr::PH_RET_MASK
             } else {
                 self.bits & !Ch3Csr::PH_RET_MASK
-            }
+            },
         }
     }
 
@@ -3236,7 +3289,8 @@ impl Ch3CsrVal {
     #[inline(always)]
     pub const fn with_divmode(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch3Csr::DIVMODE_MASK) | ((value << Ch3Csr::DIVMODE_OFFSET) & Ch3Csr::DIVMODE_MASK)
+            bits: (self.bits & !Ch3Csr::DIVMODE_MASK)
+                | ((value << Ch3Csr::DIVMODE_OFFSET) & Ch3Csr::DIVMODE_MASK),
         }
     }
 
@@ -3250,7 +3304,7 @@ impl Ch3CsrVal {
                 self.bits | Ch3Csr::B_INV_MASK
             } else {
                 self.bits & !Ch3Csr::B_INV_MASK
-            }
+            },
         }
     }
 
@@ -3264,7 +3318,7 @@ impl Ch3CsrVal {
                 self.bits | Ch3Csr::A_INV_MASK
             } else {
                 self.bits & !Ch3Csr::A_INV_MASK
-            }
+            },
         }
     }
 
@@ -3278,7 +3332,7 @@ impl Ch3CsrVal {
                 self.bits | Ch3Csr::PH_CORRECT_MASK
             } else {
                 self.bits & !Ch3Csr::PH_CORRECT_MASK
-            }
+            },
         }
     }
 
@@ -3292,7 +3346,7 @@ impl Ch3CsrVal {
                 self.bits | Ch3Csr::EN_MASK
             } else {
                 self.bits & !Ch3Csr::EN_MASK
-            }
+            },
         }
     }
 }
@@ -3374,7 +3428,9 @@ impl Ch3Div {
     /// Write **INT** `[11:4]` (RW)
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK)
+        });
     }
 
     /// **FRAC** `[3:0]` (RW)
@@ -3386,7 +3442,9 @@ impl Ch3Div {
     /// Write **FRAC** `[3:0]` (RW)
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK)
+        });
     }
 }
 
@@ -3434,7 +3492,8 @@ impl Ch3DivVal {
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch3Div::INT_MASK) | ((value << Ch3Div::INT_OFFSET) & Ch3Div::INT_MASK)
+            bits: (self.bits & !Ch3Div::INT_MASK)
+                | ((value << Ch3Div::INT_OFFSET) & Ch3Div::INT_MASK),
         }
     }
 
@@ -3442,7 +3501,8 @@ impl Ch3DivVal {
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch3Div::FRAC_MASK) | ((value << Ch3Div::FRAC_OFFSET) & Ch3Div::FRAC_MASK)
+            bits: (self.bits & !Ch3Div::FRAC_MASK)
+                | ((value << Ch3Div::FRAC_OFFSET) & Ch3Div::FRAC_MASK),
         }
     }
 }
@@ -3515,7 +3575,9 @@ impl Ch3Ctr {
     /// Write **CH3_CTR** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_ch3_ctr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH3_CTR_MASK) | ((value << Self::CH3_CTR_OFFSET) & Self::CH3_CTR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH3_CTR_MASK) | ((value << Self::CH3_CTR_OFFSET) & Self::CH3_CTR_MASK)
+        });
     }
 }
 
@@ -3557,7 +3619,8 @@ impl Ch3CtrVal {
     #[inline(always)]
     pub const fn with_ch3_ctr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch3Ctr::CH3_CTR_MASK) | ((value << Ch3Ctr::CH3_CTR_OFFSET) & Ch3Ctr::CH3_CTR_MASK)
+            bits: (self.bits & !Ch3Ctr::CH3_CTR_MASK)
+                | ((value << Ch3Ctr::CH3_CTR_OFFSET) & Ch3Ctr::CH3_CTR_MASK),
         }
     }
 }
@@ -3637,7 +3700,8 @@ impl Ch3Cc {
     /// Write **B** `[31:16]` (RW)
     #[inline(always)]
     pub fn write_b(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::B_MASK) | ((value << Self::B_OFFSET) & Self::B_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::B_MASK) | ((value << Self::B_OFFSET) & Self::B_MASK));
     }
 
     /// **A** `[15:0]` (RW)
@@ -3649,7 +3713,8 @@ impl Ch3Cc {
     /// Write **A** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_a(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
     }
 }
 
@@ -3697,7 +3762,7 @@ impl Ch3CcVal {
     #[inline(always)]
     pub const fn with_b(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch3Cc::B_MASK) | ((value << Ch3Cc::B_OFFSET) & Ch3Cc::B_MASK)
+            bits: (self.bits & !Ch3Cc::B_MASK) | ((value << Ch3Cc::B_OFFSET) & Ch3Cc::B_MASK),
         }
     }
 
@@ -3705,7 +3770,7 @@ impl Ch3CcVal {
     #[inline(always)]
     pub const fn with_a(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch3Cc::A_MASK) | ((value << Ch3Cc::A_OFFSET) & Ch3Cc::A_MASK)
+            bits: (self.bits & !Ch3Cc::A_MASK) | ((value << Ch3Cc::A_OFFSET) & Ch3Cc::A_MASK),
         }
     }
 }
@@ -3778,7 +3843,9 @@ impl Ch3Top {
     /// Write **CH3_TOP** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_ch3_top(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH3_TOP_MASK) | ((value << Self::CH3_TOP_OFFSET) & Self::CH3_TOP_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH3_TOP_MASK) | ((value << Self::CH3_TOP_OFFSET) & Self::CH3_TOP_MASK)
+        });
     }
 }
 
@@ -3820,7 +3887,8 @@ impl Ch3TopVal {
     #[inline(always)]
     pub const fn with_ch3_top(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch3Top::CH3_TOP_MASK) | ((value << Ch3Top::CH3_TOP_OFFSET) & Ch3Top::CH3_TOP_MASK)
+            bits: (self.bits & !Ch3Top::CH3_TOP_MASK)
+                | ((value << Ch3Top::CH3_TOP_OFFSET) & Ch3Top::CH3_TOP_MASK),
         }
     }
 }
@@ -4012,7 +4080,9 @@ impl Ch4Csr {
     /// Write **DIVMODE** `[5:4]` (RW)
     #[inline(always)]
     pub fn write_divmode(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DIVMODE_MASK) | ((value << Self::DIVMODE_OFFSET) & Self::DIVMODE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DIVMODE_MASK) | ((value << Self::DIVMODE_OFFSET) & Self::DIVMODE_MASK)
+        });
     }
 
     /// **B_INV** `[3]` (RW)
@@ -4174,7 +4244,7 @@ impl Ch4CsrVal {
                 self.bits | Ch4Csr::PH_ADV_MASK
             } else {
                 self.bits & !Ch4Csr::PH_ADV_MASK
-            }
+            },
         }
     }
 
@@ -4189,7 +4259,7 @@ impl Ch4CsrVal {
                 self.bits | Ch4Csr::PH_RET_MASK
             } else {
                 self.bits & !Ch4Csr::PH_RET_MASK
-            }
+            },
         }
     }
 
@@ -4197,7 +4267,8 @@ impl Ch4CsrVal {
     #[inline(always)]
     pub const fn with_divmode(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch4Csr::DIVMODE_MASK) | ((value << Ch4Csr::DIVMODE_OFFSET) & Ch4Csr::DIVMODE_MASK)
+            bits: (self.bits & !Ch4Csr::DIVMODE_MASK)
+                | ((value << Ch4Csr::DIVMODE_OFFSET) & Ch4Csr::DIVMODE_MASK),
         }
     }
 
@@ -4211,7 +4282,7 @@ impl Ch4CsrVal {
                 self.bits | Ch4Csr::B_INV_MASK
             } else {
                 self.bits & !Ch4Csr::B_INV_MASK
-            }
+            },
         }
     }
 
@@ -4225,7 +4296,7 @@ impl Ch4CsrVal {
                 self.bits | Ch4Csr::A_INV_MASK
             } else {
                 self.bits & !Ch4Csr::A_INV_MASK
-            }
+            },
         }
     }
 
@@ -4239,7 +4310,7 @@ impl Ch4CsrVal {
                 self.bits | Ch4Csr::PH_CORRECT_MASK
             } else {
                 self.bits & !Ch4Csr::PH_CORRECT_MASK
-            }
+            },
         }
     }
 
@@ -4253,7 +4324,7 @@ impl Ch4CsrVal {
                 self.bits | Ch4Csr::EN_MASK
             } else {
                 self.bits & !Ch4Csr::EN_MASK
-            }
+            },
         }
     }
 }
@@ -4335,7 +4406,9 @@ impl Ch4Div {
     /// Write **INT** `[11:4]` (RW)
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK)
+        });
     }
 
     /// **FRAC** `[3:0]` (RW)
@@ -4347,7 +4420,9 @@ impl Ch4Div {
     /// Write **FRAC** `[3:0]` (RW)
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK)
+        });
     }
 }
 
@@ -4395,7 +4470,8 @@ impl Ch4DivVal {
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch4Div::INT_MASK) | ((value << Ch4Div::INT_OFFSET) & Ch4Div::INT_MASK)
+            bits: (self.bits & !Ch4Div::INT_MASK)
+                | ((value << Ch4Div::INT_OFFSET) & Ch4Div::INT_MASK),
         }
     }
 
@@ -4403,7 +4479,8 @@ impl Ch4DivVal {
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch4Div::FRAC_MASK) | ((value << Ch4Div::FRAC_OFFSET) & Ch4Div::FRAC_MASK)
+            bits: (self.bits & !Ch4Div::FRAC_MASK)
+                | ((value << Ch4Div::FRAC_OFFSET) & Ch4Div::FRAC_MASK),
         }
     }
 }
@@ -4476,7 +4553,9 @@ impl Ch4Ctr {
     /// Write **CH4_CTR** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_ch4_ctr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH4_CTR_MASK) | ((value << Self::CH4_CTR_OFFSET) & Self::CH4_CTR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH4_CTR_MASK) | ((value << Self::CH4_CTR_OFFSET) & Self::CH4_CTR_MASK)
+        });
     }
 }
 
@@ -4518,7 +4597,8 @@ impl Ch4CtrVal {
     #[inline(always)]
     pub const fn with_ch4_ctr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch4Ctr::CH4_CTR_MASK) | ((value << Ch4Ctr::CH4_CTR_OFFSET) & Ch4Ctr::CH4_CTR_MASK)
+            bits: (self.bits & !Ch4Ctr::CH4_CTR_MASK)
+                | ((value << Ch4Ctr::CH4_CTR_OFFSET) & Ch4Ctr::CH4_CTR_MASK),
         }
     }
 }
@@ -4598,7 +4678,8 @@ impl Ch4Cc {
     /// Write **B** `[31:16]` (RW)
     #[inline(always)]
     pub fn write_b(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::B_MASK) | ((value << Self::B_OFFSET) & Self::B_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::B_MASK) | ((value << Self::B_OFFSET) & Self::B_MASK));
     }
 
     /// **A** `[15:0]` (RW)
@@ -4610,7 +4691,8 @@ impl Ch4Cc {
     /// Write **A** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_a(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
     }
 }
 
@@ -4658,7 +4740,7 @@ impl Ch4CcVal {
     #[inline(always)]
     pub const fn with_b(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch4Cc::B_MASK) | ((value << Ch4Cc::B_OFFSET) & Ch4Cc::B_MASK)
+            bits: (self.bits & !Ch4Cc::B_MASK) | ((value << Ch4Cc::B_OFFSET) & Ch4Cc::B_MASK),
         }
     }
 
@@ -4666,7 +4748,7 @@ impl Ch4CcVal {
     #[inline(always)]
     pub const fn with_a(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch4Cc::A_MASK) | ((value << Ch4Cc::A_OFFSET) & Ch4Cc::A_MASK)
+            bits: (self.bits & !Ch4Cc::A_MASK) | ((value << Ch4Cc::A_OFFSET) & Ch4Cc::A_MASK),
         }
     }
 }
@@ -4739,7 +4821,9 @@ impl Ch4Top {
     /// Write **CH4_TOP** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_ch4_top(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH4_TOP_MASK) | ((value << Self::CH4_TOP_OFFSET) & Self::CH4_TOP_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH4_TOP_MASK) | ((value << Self::CH4_TOP_OFFSET) & Self::CH4_TOP_MASK)
+        });
     }
 }
 
@@ -4781,7 +4865,8 @@ impl Ch4TopVal {
     #[inline(always)]
     pub const fn with_ch4_top(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch4Top::CH4_TOP_MASK) | ((value << Ch4Top::CH4_TOP_OFFSET) & Ch4Top::CH4_TOP_MASK)
+            bits: (self.bits & !Ch4Top::CH4_TOP_MASK)
+                | ((value << Ch4Top::CH4_TOP_OFFSET) & Ch4Top::CH4_TOP_MASK),
         }
     }
 }
@@ -4973,7 +5058,9 @@ impl Ch5Csr {
     /// Write **DIVMODE** `[5:4]` (RW)
     #[inline(always)]
     pub fn write_divmode(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DIVMODE_MASK) | ((value << Self::DIVMODE_OFFSET) & Self::DIVMODE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DIVMODE_MASK) | ((value << Self::DIVMODE_OFFSET) & Self::DIVMODE_MASK)
+        });
     }
 
     /// **B_INV** `[3]` (RW)
@@ -5135,7 +5222,7 @@ impl Ch5CsrVal {
                 self.bits | Ch5Csr::PH_ADV_MASK
             } else {
                 self.bits & !Ch5Csr::PH_ADV_MASK
-            }
+            },
         }
     }
 
@@ -5150,7 +5237,7 @@ impl Ch5CsrVal {
                 self.bits | Ch5Csr::PH_RET_MASK
             } else {
                 self.bits & !Ch5Csr::PH_RET_MASK
-            }
+            },
         }
     }
 
@@ -5158,7 +5245,8 @@ impl Ch5CsrVal {
     #[inline(always)]
     pub const fn with_divmode(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch5Csr::DIVMODE_MASK) | ((value << Ch5Csr::DIVMODE_OFFSET) & Ch5Csr::DIVMODE_MASK)
+            bits: (self.bits & !Ch5Csr::DIVMODE_MASK)
+                | ((value << Ch5Csr::DIVMODE_OFFSET) & Ch5Csr::DIVMODE_MASK),
         }
     }
 
@@ -5172,7 +5260,7 @@ impl Ch5CsrVal {
                 self.bits | Ch5Csr::B_INV_MASK
             } else {
                 self.bits & !Ch5Csr::B_INV_MASK
-            }
+            },
         }
     }
 
@@ -5186,7 +5274,7 @@ impl Ch5CsrVal {
                 self.bits | Ch5Csr::A_INV_MASK
             } else {
                 self.bits & !Ch5Csr::A_INV_MASK
-            }
+            },
         }
     }
 
@@ -5200,7 +5288,7 @@ impl Ch5CsrVal {
                 self.bits | Ch5Csr::PH_CORRECT_MASK
             } else {
                 self.bits & !Ch5Csr::PH_CORRECT_MASK
-            }
+            },
         }
     }
 
@@ -5214,7 +5302,7 @@ impl Ch5CsrVal {
                 self.bits | Ch5Csr::EN_MASK
             } else {
                 self.bits & !Ch5Csr::EN_MASK
-            }
+            },
         }
     }
 }
@@ -5296,7 +5384,9 @@ impl Ch5Div {
     /// Write **INT** `[11:4]` (RW)
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK)
+        });
     }
 
     /// **FRAC** `[3:0]` (RW)
@@ -5308,7 +5398,9 @@ impl Ch5Div {
     /// Write **FRAC** `[3:0]` (RW)
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK)
+        });
     }
 }
 
@@ -5356,7 +5448,8 @@ impl Ch5DivVal {
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch5Div::INT_MASK) | ((value << Ch5Div::INT_OFFSET) & Ch5Div::INT_MASK)
+            bits: (self.bits & !Ch5Div::INT_MASK)
+                | ((value << Ch5Div::INT_OFFSET) & Ch5Div::INT_MASK),
         }
     }
 
@@ -5364,7 +5457,8 @@ impl Ch5DivVal {
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch5Div::FRAC_MASK) | ((value << Ch5Div::FRAC_OFFSET) & Ch5Div::FRAC_MASK)
+            bits: (self.bits & !Ch5Div::FRAC_MASK)
+                | ((value << Ch5Div::FRAC_OFFSET) & Ch5Div::FRAC_MASK),
         }
     }
 }
@@ -5437,7 +5531,9 @@ impl Ch5Ctr {
     /// Write **CH5_CTR** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_ch5_ctr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH5_CTR_MASK) | ((value << Self::CH5_CTR_OFFSET) & Self::CH5_CTR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH5_CTR_MASK) | ((value << Self::CH5_CTR_OFFSET) & Self::CH5_CTR_MASK)
+        });
     }
 }
 
@@ -5479,7 +5575,8 @@ impl Ch5CtrVal {
     #[inline(always)]
     pub const fn with_ch5_ctr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch5Ctr::CH5_CTR_MASK) | ((value << Ch5Ctr::CH5_CTR_OFFSET) & Ch5Ctr::CH5_CTR_MASK)
+            bits: (self.bits & !Ch5Ctr::CH5_CTR_MASK)
+                | ((value << Ch5Ctr::CH5_CTR_OFFSET) & Ch5Ctr::CH5_CTR_MASK),
         }
     }
 }
@@ -5559,7 +5656,8 @@ impl Ch5Cc {
     /// Write **B** `[31:16]` (RW)
     #[inline(always)]
     pub fn write_b(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::B_MASK) | ((value << Self::B_OFFSET) & Self::B_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::B_MASK) | ((value << Self::B_OFFSET) & Self::B_MASK));
     }
 
     /// **A** `[15:0]` (RW)
@@ -5571,7 +5669,8 @@ impl Ch5Cc {
     /// Write **A** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_a(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
     }
 }
 
@@ -5619,7 +5718,7 @@ impl Ch5CcVal {
     #[inline(always)]
     pub const fn with_b(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch5Cc::B_MASK) | ((value << Ch5Cc::B_OFFSET) & Ch5Cc::B_MASK)
+            bits: (self.bits & !Ch5Cc::B_MASK) | ((value << Ch5Cc::B_OFFSET) & Ch5Cc::B_MASK),
         }
     }
 
@@ -5627,7 +5726,7 @@ impl Ch5CcVal {
     #[inline(always)]
     pub const fn with_a(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch5Cc::A_MASK) | ((value << Ch5Cc::A_OFFSET) & Ch5Cc::A_MASK)
+            bits: (self.bits & !Ch5Cc::A_MASK) | ((value << Ch5Cc::A_OFFSET) & Ch5Cc::A_MASK),
         }
     }
 }
@@ -5700,7 +5799,9 @@ impl Ch5Top {
     /// Write **CH5_TOP** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_ch5_top(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH5_TOP_MASK) | ((value << Self::CH5_TOP_OFFSET) & Self::CH5_TOP_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH5_TOP_MASK) | ((value << Self::CH5_TOP_OFFSET) & Self::CH5_TOP_MASK)
+        });
     }
 }
 
@@ -5742,7 +5843,8 @@ impl Ch5TopVal {
     #[inline(always)]
     pub const fn with_ch5_top(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch5Top::CH5_TOP_MASK) | ((value << Ch5Top::CH5_TOP_OFFSET) & Ch5Top::CH5_TOP_MASK)
+            bits: (self.bits & !Ch5Top::CH5_TOP_MASK)
+                | ((value << Ch5Top::CH5_TOP_OFFSET) & Ch5Top::CH5_TOP_MASK),
         }
     }
 }
@@ -5934,7 +6036,9 @@ impl Ch6Csr {
     /// Write **DIVMODE** `[5:4]` (RW)
     #[inline(always)]
     pub fn write_divmode(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DIVMODE_MASK) | ((value << Self::DIVMODE_OFFSET) & Self::DIVMODE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DIVMODE_MASK) | ((value << Self::DIVMODE_OFFSET) & Self::DIVMODE_MASK)
+        });
     }
 
     /// **B_INV** `[3]` (RW)
@@ -6096,7 +6200,7 @@ impl Ch6CsrVal {
                 self.bits | Ch6Csr::PH_ADV_MASK
             } else {
                 self.bits & !Ch6Csr::PH_ADV_MASK
-            }
+            },
         }
     }
 
@@ -6111,7 +6215,7 @@ impl Ch6CsrVal {
                 self.bits | Ch6Csr::PH_RET_MASK
             } else {
                 self.bits & !Ch6Csr::PH_RET_MASK
-            }
+            },
         }
     }
 
@@ -6119,7 +6223,8 @@ impl Ch6CsrVal {
     #[inline(always)]
     pub const fn with_divmode(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch6Csr::DIVMODE_MASK) | ((value << Ch6Csr::DIVMODE_OFFSET) & Ch6Csr::DIVMODE_MASK)
+            bits: (self.bits & !Ch6Csr::DIVMODE_MASK)
+                | ((value << Ch6Csr::DIVMODE_OFFSET) & Ch6Csr::DIVMODE_MASK),
         }
     }
 
@@ -6133,7 +6238,7 @@ impl Ch6CsrVal {
                 self.bits | Ch6Csr::B_INV_MASK
             } else {
                 self.bits & !Ch6Csr::B_INV_MASK
-            }
+            },
         }
     }
 
@@ -6147,7 +6252,7 @@ impl Ch6CsrVal {
                 self.bits | Ch6Csr::A_INV_MASK
             } else {
                 self.bits & !Ch6Csr::A_INV_MASK
-            }
+            },
         }
     }
 
@@ -6161,7 +6266,7 @@ impl Ch6CsrVal {
                 self.bits | Ch6Csr::PH_CORRECT_MASK
             } else {
                 self.bits & !Ch6Csr::PH_CORRECT_MASK
-            }
+            },
         }
     }
 
@@ -6175,7 +6280,7 @@ impl Ch6CsrVal {
                 self.bits | Ch6Csr::EN_MASK
             } else {
                 self.bits & !Ch6Csr::EN_MASK
-            }
+            },
         }
     }
 }
@@ -6257,7 +6362,9 @@ impl Ch6Div {
     /// Write **INT** `[11:4]` (RW)
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK)
+        });
     }
 
     /// **FRAC** `[3:0]` (RW)
@@ -6269,7 +6376,9 @@ impl Ch6Div {
     /// Write **FRAC** `[3:0]` (RW)
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK)
+        });
     }
 }
 
@@ -6317,7 +6426,8 @@ impl Ch6DivVal {
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch6Div::INT_MASK) | ((value << Ch6Div::INT_OFFSET) & Ch6Div::INT_MASK)
+            bits: (self.bits & !Ch6Div::INT_MASK)
+                | ((value << Ch6Div::INT_OFFSET) & Ch6Div::INT_MASK),
         }
     }
 
@@ -6325,7 +6435,8 @@ impl Ch6DivVal {
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch6Div::FRAC_MASK) | ((value << Ch6Div::FRAC_OFFSET) & Ch6Div::FRAC_MASK)
+            bits: (self.bits & !Ch6Div::FRAC_MASK)
+                | ((value << Ch6Div::FRAC_OFFSET) & Ch6Div::FRAC_MASK),
         }
     }
 }
@@ -6398,7 +6509,9 @@ impl Ch6Ctr {
     /// Write **CH6_CTR** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_ch6_ctr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH6_CTR_MASK) | ((value << Self::CH6_CTR_OFFSET) & Self::CH6_CTR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH6_CTR_MASK) | ((value << Self::CH6_CTR_OFFSET) & Self::CH6_CTR_MASK)
+        });
     }
 }
 
@@ -6440,7 +6553,8 @@ impl Ch6CtrVal {
     #[inline(always)]
     pub const fn with_ch6_ctr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch6Ctr::CH6_CTR_MASK) | ((value << Ch6Ctr::CH6_CTR_OFFSET) & Ch6Ctr::CH6_CTR_MASK)
+            bits: (self.bits & !Ch6Ctr::CH6_CTR_MASK)
+                | ((value << Ch6Ctr::CH6_CTR_OFFSET) & Ch6Ctr::CH6_CTR_MASK),
         }
     }
 }
@@ -6520,7 +6634,8 @@ impl Ch6Cc {
     /// Write **B** `[31:16]` (RW)
     #[inline(always)]
     pub fn write_b(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::B_MASK) | ((value << Self::B_OFFSET) & Self::B_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::B_MASK) | ((value << Self::B_OFFSET) & Self::B_MASK));
     }
 
     /// **A** `[15:0]` (RW)
@@ -6532,7 +6647,8 @@ impl Ch6Cc {
     /// Write **A** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_a(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
     }
 }
 
@@ -6580,7 +6696,7 @@ impl Ch6CcVal {
     #[inline(always)]
     pub const fn with_b(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch6Cc::B_MASK) | ((value << Ch6Cc::B_OFFSET) & Ch6Cc::B_MASK)
+            bits: (self.bits & !Ch6Cc::B_MASK) | ((value << Ch6Cc::B_OFFSET) & Ch6Cc::B_MASK),
         }
     }
 
@@ -6588,7 +6704,7 @@ impl Ch6CcVal {
     #[inline(always)]
     pub const fn with_a(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch6Cc::A_MASK) | ((value << Ch6Cc::A_OFFSET) & Ch6Cc::A_MASK)
+            bits: (self.bits & !Ch6Cc::A_MASK) | ((value << Ch6Cc::A_OFFSET) & Ch6Cc::A_MASK),
         }
     }
 }
@@ -6661,7 +6777,9 @@ impl Ch6Top {
     /// Write **CH6_TOP** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_ch6_top(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH6_TOP_MASK) | ((value << Self::CH6_TOP_OFFSET) & Self::CH6_TOP_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH6_TOP_MASK) | ((value << Self::CH6_TOP_OFFSET) & Self::CH6_TOP_MASK)
+        });
     }
 }
 
@@ -6703,7 +6821,8 @@ impl Ch6TopVal {
     #[inline(always)]
     pub const fn with_ch6_top(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch6Top::CH6_TOP_MASK) | ((value << Ch6Top::CH6_TOP_OFFSET) & Ch6Top::CH6_TOP_MASK)
+            bits: (self.bits & !Ch6Top::CH6_TOP_MASK)
+                | ((value << Ch6Top::CH6_TOP_OFFSET) & Ch6Top::CH6_TOP_MASK),
         }
     }
 }
@@ -6895,7 +7014,9 @@ impl Ch7Csr {
     /// Write **DIVMODE** `[5:4]` (RW)
     #[inline(always)]
     pub fn write_divmode(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DIVMODE_MASK) | ((value << Self::DIVMODE_OFFSET) & Self::DIVMODE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DIVMODE_MASK) | ((value << Self::DIVMODE_OFFSET) & Self::DIVMODE_MASK)
+        });
     }
 
     /// **B_INV** `[3]` (RW)
@@ -7057,7 +7178,7 @@ impl Ch7CsrVal {
                 self.bits | Ch7Csr::PH_ADV_MASK
             } else {
                 self.bits & !Ch7Csr::PH_ADV_MASK
-            }
+            },
         }
     }
 
@@ -7072,7 +7193,7 @@ impl Ch7CsrVal {
                 self.bits | Ch7Csr::PH_RET_MASK
             } else {
                 self.bits & !Ch7Csr::PH_RET_MASK
-            }
+            },
         }
     }
 
@@ -7080,7 +7201,8 @@ impl Ch7CsrVal {
     #[inline(always)]
     pub const fn with_divmode(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch7Csr::DIVMODE_MASK) | ((value << Ch7Csr::DIVMODE_OFFSET) & Ch7Csr::DIVMODE_MASK)
+            bits: (self.bits & !Ch7Csr::DIVMODE_MASK)
+                | ((value << Ch7Csr::DIVMODE_OFFSET) & Ch7Csr::DIVMODE_MASK),
         }
     }
 
@@ -7094,7 +7216,7 @@ impl Ch7CsrVal {
                 self.bits | Ch7Csr::B_INV_MASK
             } else {
                 self.bits & !Ch7Csr::B_INV_MASK
-            }
+            },
         }
     }
 
@@ -7108,7 +7230,7 @@ impl Ch7CsrVal {
                 self.bits | Ch7Csr::A_INV_MASK
             } else {
                 self.bits & !Ch7Csr::A_INV_MASK
-            }
+            },
         }
     }
 
@@ -7122,7 +7244,7 @@ impl Ch7CsrVal {
                 self.bits | Ch7Csr::PH_CORRECT_MASK
             } else {
                 self.bits & !Ch7Csr::PH_CORRECT_MASK
-            }
+            },
         }
     }
 
@@ -7136,7 +7258,7 @@ impl Ch7CsrVal {
                 self.bits | Ch7Csr::EN_MASK
             } else {
                 self.bits & !Ch7Csr::EN_MASK
-            }
+            },
         }
     }
 }
@@ -7218,7 +7340,9 @@ impl Ch7Div {
     /// Write **INT** `[11:4]` (RW)
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK)
+        });
     }
 
     /// **FRAC** `[3:0]` (RW)
@@ -7230,7 +7354,9 @@ impl Ch7Div {
     /// Write **FRAC** `[3:0]` (RW)
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK)
+        });
     }
 }
 
@@ -7278,7 +7404,8 @@ impl Ch7DivVal {
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch7Div::INT_MASK) | ((value << Ch7Div::INT_OFFSET) & Ch7Div::INT_MASK)
+            bits: (self.bits & !Ch7Div::INT_MASK)
+                | ((value << Ch7Div::INT_OFFSET) & Ch7Div::INT_MASK),
         }
     }
 
@@ -7286,7 +7413,8 @@ impl Ch7DivVal {
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch7Div::FRAC_MASK) | ((value << Ch7Div::FRAC_OFFSET) & Ch7Div::FRAC_MASK)
+            bits: (self.bits & !Ch7Div::FRAC_MASK)
+                | ((value << Ch7Div::FRAC_OFFSET) & Ch7Div::FRAC_MASK),
         }
     }
 }
@@ -7359,7 +7487,9 @@ impl Ch7Ctr {
     /// Write **CH7_CTR** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_ch7_ctr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH7_CTR_MASK) | ((value << Self::CH7_CTR_OFFSET) & Self::CH7_CTR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH7_CTR_MASK) | ((value << Self::CH7_CTR_OFFSET) & Self::CH7_CTR_MASK)
+        });
     }
 }
 
@@ -7401,7 +7531,8 @@ impl Ch7CtrVal {
     #[inline(always)]
     pub const fn with_ch7_ctr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch7Ctr::CH7_CTR_MASK) | ((value << Ch7Ctr::CH7_CTR_OFFSET) & Ch7Ctr::CH7_CTR_MASK)
+            bits: (self.bits & !Ch7Ctr::CH7_CTR_MASK)
+                | ((value << Ch7Ctr::CH7_CTR_OFFSET) & Ch7Ctr::CH7_CTR_MASK),
         }
     }
 }
@@ -7481,7 +7612,8 @@ impl Ch7Cc {
     /// Write **B** `[31:16]` (RW)
     #[inline(always)]
     pub fn write_b(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::B_MASK) | ((value << Self::B_OFFSET) & Self::B_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::B_MASK) | ((value << Self::B_OFFSET) & Self::B_MASK));
     }
 
     /// **A** `[15:0]` (RW)
@@ -7493,7 +7625,8 @@ impl Ch7Cc {
     /// Write **A** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_a(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
     }
 }
 
@@ -7541,7 +7674,7 @@ impl Ch7CcVal {
     #[inline(always)]
     pub const fn with_b(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch7Cc::B_MASK) | ((value << Ch7Cc::B_OFFSET) & Ch7Cc::B_MASK)
+            bits: (self.bits & !Ch7Cc::B_MASK) | ((value << Ch7Cc::B_OFFSET) & Ch7Cc::B_MASK),
         }
     }
 
@@ -7549,7 +7682,7 @@ impl Ch7CcVal {
     #[inline(always)]
     pub const fn with_a(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch7Cc::A_MASK) | ((value << Ch7Cc::A_OFFSET) & Ch7Cc::A_MASK)
+            bits: (self.bits & !Ch7Cc::A_MASK) | ((value << Ch7Cc::A_OFFSET) & Ch7Cc::A_MASK),
         }
     }
 }
@@ -7622,7 +7755,9 @@ impl Ch7Top {
     /// Write **CH7_TOP** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_ch7_top(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH7_TOP_MASK) | ((value << Self::CH7_TOP_OFFSET) & Self::CH7_TOP_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH7_TOP_MASK) | ((value << Self::CH7_TOP_OFFSET) & Self::CH7_TOP_MASK)
+        });
     }
 }
 
@@ -7664,7 +7799,8 @@ impl Ch7TopVal {
     #[inline(always)]
     pub const fn with_ch7_top(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch7Top::CH7_TOP_MASK) | ((value << Ch7Top::CH7_TOP_OFFSET) & Ch7Top::CH7_TOP_MASK)
+            bits: (self.bits & !Ch7Top::CH7_TOP_MASK)
+                | ((value << Ch7Top::CH7_TOP_OFFSET) & Ch7Top::CH7_TOP_MASK),
         }
     }
 }
@@ -7856,7 +7992,9 @@ impl Ch8Csr {
     /// Write **DIVMODE** `[5:4]` (RW)
     #[inline(always)]
     pub fn write_divmode(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DIVMODE_MASK) | ((value << Self::DIVMODE_OFFSET) & Self::DIVMODE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DIVMODE_MASK) | ((value << Self::DIVMODE_OFFSET) & Self::DIVMODE_MASK)
+        });
     }
 
     /// **B_INV** `[3]` (RW)
@@ -8018,7 +8156,7 @@ impl Ch8CsrVal {
                 self.bits | Ch8Csr::PH_ADV_MASK
             } else {
                 self.bits & !Ch8Csr::PH_ADV_MASK
-            }
+            },
         }
     }
 
@@ -8033,7 +8171,7 @@ impl Ch8CsrVal {
                 self.bits | Ch8Csr::PH_RET_MASK
             } else {
                 self.bits & !Ch8Csr::PH_RET_MASK
-            }
+            },
         }
     }
 
@@ -8041,7 +8179,8 @@ impl Ch8CsrVal {
     #[inline(always)]
     pub const fn with_divmode(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch8Csr::DIVMODE_MASK) | ((value << Ch8Csr::DIVMODE_OFFSET) & Ch8Csr::DIVMODE_MASK)
+            bits: (self.bits & !Ch8Csr::DIVMODE_MASK)
+                | ((value << Ch8Csr::DIVMODE_OFFSET) & Ch8Csr::DIVMODE_MASK),
         }
     }
 
@@ -8055,7 +8194,7 @@ impl Ch8CsrVal {
                 self.bits | Ch8Csr::B_INV_MASK
             } else {
                 self.bits & !Ch8Csr::B_INV_MASK
-            }
+            },
         }
     }
 
@@ -8069,7 +8208,7 @@ impl Ch8CsrVal {
                 self.bits | Ch8Csr::A_INV_MASK
             } else {
                 self.bits & !Ch8Csr::A_INV_MASK
-            }
+            },
         }
     }
 
@@ -8083,7 +8222,7 @@ impl Ch8CsrVal {
                 self.bits | Ch8Csr::PH_CORRECT_MASK
             } else {
                 self.bits & !Ch8Csr::PH_CORRECT_MASK
-            }
+            },
         }
     }
 
@@ -8097,7 +8236,7 @@ impl Ch8CsrVal {
                 self.bits | Ch8Csr::EN_MASK
             } else {
                 self.bits & !Ch8Csr::EN_MASK
-            }
+            },
         }
     }
 }
@@ -8179,7 +8318,9 @@ impl Ch8Div {
     /// Write **INT** `[11:4]` (RW)
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK)
+        });
     }
 
     /// **FRAC** `[3:0]` (RW)
@@ -8191,7 +8332,9 @@ impl Ch8Div {
     /// Write **FRAC** `[3:0]` (RW)
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK)
+        });
     }
 }
 
@@ -8239,7 +8382,8 @@ impl Ch8DivVal {
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch8Div::INT_MASK) | ((value << Ch8Div::INT_OFFSET) & Ch8Div::INT_MASK)
+            bits: (self.bits & !Ch8Div::INT_MASK)
+                | ((value << Ch8Div::INT_OFFSET) & Ch8Div::INT_MASK),
         }
     }
 
@@ -8247,7 +8391,8 @@ impl Ch8DivVal {
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch8Div::FRAC_MASK) | ((value << Ch8Div::FRAC_OFFSET) & Ch8Div::FRAC_MASK)
+            bits: (self.bits & !Ch8Div::FRAC_MASK)
+                | ((value << Ch8Div::FRAC_OFFSET) & Ch8Div::FRAC_MASK),
         }
     }
 }
@@ -8320,7 +8465,9 @@ impl Ch8Ctr {
     /// Write **CH8_CTR** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_ch8_ctr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH8_CTR_MASK) | ((value << Self::CH8_CTR_OFFSET) & Self::CH8_CTR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH8_CTR_MASK) | ((value << Self::CH8_CTR_OFFSET) & Self::CH8_CTR_MASK)
+        });
     }
 }
 
@@ -8362,7 +8509,8 @@ impl Ch8CtrVal {
     #[inline(always)]
     pub const fn with_ch8_ctr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch8Ctr::CH8_CTR_MASK) | ((value << Ch8Ctr::CH8_CTR_OFFSET) & Ch8Ctr::CH8_CTR_MASK)
+            bits: (self.bits & !Ch8Ctr::CH8_CTR_MASK)
+                | ((value << Ch8Ctr::CH8_CTR_OFFSET) & Ch8Ctr::CH8_CTR_MASK),
         }
     }
 }
@@ -8442,7 +8590,8 @@ impl Ch8Cc {
     /// Write **B** `[31:16]` (RW)
     #[inline(always)]
     pub fn write_b(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::B_MASK) | ((value << Self::B_OFFSET) & Self::B_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::B_MASK) | ((value << Self::B_OFFSET) & Self::B_MASK));
     }
 
     /// **A** `[15:0]` (RW)
@@ -8454,7 +8603,8 @@ impl Ch8Cc {
     /// Write **A** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_a(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
     }
 }
 
@@ -8502,7 +8652,7 @@ impl Ch8CcVal {
     #[inline(always)]
     pub const fn with_b(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch8Cc::B_MASK) | ((value << Ch8Cc::B_OFFSET) & Ch8Cc::B_MASK)
+            bits: (self.bits & !Ch8Cc::B_MASK) | ((value << Ch8Cc::B_OFFSET) & Ch8Cc::B_MASK),
         }
     }
 
@@ -8510,7 +8660,7 @@ impl Ch8CcVal {
     #[inline(always)]
     pub const fn with_a(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch8Cc::A_MASK) | ((value << Ch8Cc::A_OFFSET) & Ch8Cc::A_MASK)
+            bits: (self.bits & !Ch8Cc::A_MASK) | ((value << Ch8Cc::A_OFFSET) & Ch8Cc::A_MASK),
         }
     }
 }
@@ -8583,7 +8733,9 @@ impl Ch8Top {
     /// Write **CH8_TOP** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_ch8_top(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH8_TOP_MASK) | ((value << Self::CH8_TOP_OFFSET) & Self::CH8_TOP_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH8_TOP_MASK) | ((value << Self::CH8_TOP_OFFSET) & Self::CH8_TOP_MASK)
+        });
     }
 }
 
@@ -8625,7 +8777,8 @@ impl Ch8TopVal {
     #[inline(always)]
     pub const fn with_ch8_top(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch8Top::CH8_TOP_MASK) | ((value << Ch8Top::CH8_TOP_OFFSET) & Ch8Top::CH8_TOP_MASK)
+            bits: (self.bits & !Ch8Top::CH8_TOP_MASK)
+                | ((value << Ch8Top::CH8_TOP_OFFSET) & Ch8Top::CH8_TOP_MASK),
         }
     }
 }
@@ -8817,7 +8970,9 @@ impl Ch9Csr {
     /// Write **DIVMODE** `[5:4]` (RW)
     #[inline(always)]
     pub fn write_divmode(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DIVMODE_MASK) | ((value << Self::DIVMODE_OFFSET) & Self::DIVMODE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DIVMODE_MASK) | ((value << Self::DIVMODE_OFFSET) & Self::DIVMODE_MASK)
+        });
     }
 
     /// **B_INV** `[3]` (RW)
@@ -8979,7 +9134,7 @@ impl Ch9CsrVal {
                 self.bits | Ch9Csr::PH_ADV_MASK
             } else {
                 self.bits & !Ch9Csr::PH_ADV_MASK
-            }
+            },
         }
     }
 
@@ -8994,7 +9149,7 @@ impl Ch9CsrVal {
                 self.bits | Ch9Csr::PH_RET_MASK
             } else {
                 self.bits & !Ch9Csr::PH_RET_MASK
-            }
+            },
         }
     }
 
@@ -9002,7 +9157,8 @@ impl Ch9CsrVal {
     #[inline(always)]
     pub const fn with_divmode(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch9Csr::DIVMODE_MASK) | ((value << Ch9Csr::DIVMODE_OFFSET) & Ch9Csr::DIVMODE_MASK)
+            bits: (self.bits & !Ch9Csr::DIVMODE_MASK)
+                | ((value << Ch9Csr::DIVMODE_OFFSET) & Ch9Csr::DIVMODE_MASK),
         }
     }
 
@@ -9016,7 +9172,7 @@ impl Ch9CsrVal {
                 self.bits | Ch9Csr::B_INV_MASK
             } else {
                 self.bits & !Ch9Csr::B_INV_MASK
-            }
+            },
         }
     }
 
@@ -9030,7 +9186,7 @@ impl Ch9CsrVal {
                 self.bits | Ch9Csr::A_INV_MASK
             } else {
                 self.bits & !Ch9Csr::A_INV_MASK
-            }
+            },
         }
     }
 
@@ -9044,7 +9200,7 @@ impl Ch9CsrVal {
                 self.bits | Ch9Csr::PH_CORRECT_MASK
             } else {
                 self.bits & !Ch9Csr::PH_CORRECT_MASK
-            }
+            },
         }
     }
 
@@ -9058,7 +9214,7 @@ impl Ch9CsrVal {
                 self.bits | Ch9Csr::EN_MASK
             } else {
                 self.bits & !Ch9Csr::EN_MASK
-            }
+            },
         }
     }
 }
@@ -9140,7 +9296,9 @@ impl Ch9Div {
     /// Write **INT** `[11:4]` (RW)
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK)
+        });
     }
 
     /// **FRAC** `[3:0]` (RW)
@@ -9152,7 +9310,9 @@ impl Ch9Div {
     /// Write **FRAC** `[3:0]` (RW)
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK)
+        });
     }
 }
 
@@ -9200,7 +9360,8 @@ impl Ch9DivVal {
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch9Div::INT_MASK) | ((value << Ch9Div::INT_OFFSET) & Ch9Div::INT_MASK)
+            bits: (self.bits & !Ch9Div::INT_MASK)
+                | ((value << Ch9Div::INT_OFFSET) & Ch9Div::INT_MASK),
         }
     }
 
@@ -9208,7 +9369,8 @@ impl Ch9DivVal {
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch9Div::FRAC_MASK) | ((value << Ch9Div::FRAC_OFFSET) & Ch9Div::FRAC_MASK)
+            bits: (self.bits & !Ch9Div::FRAC_MASK)
+                | ((value << Ch9Div::FRAC_OFFSET) & Ch9Div::FRAC_MASK),
         }
     }
 }
@@ -9281,7 +9443,9 @@ impl Ch9Ctr {
     /// Write **CH9_CTR** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_ch9_ctr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH9_CTR_MASK) | ((value << Self::CH9_CTR_OFFSET) & Self::CH9_CTR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH9_CTR_MASK) | ((value << Self::CH9_CTR_OFFSET) & Self::CH9_CTR_MASK)
+        });
     }
 }
 
@@ -9323,7 +9487,8 @@ impl Ch9CtrVal {
     #[inline(always)]
     pub const fn with_ch9_ctr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch9Ctr::CH9_CTR_MASK) | ((value << Ch9Ctr::CH9_CTR_OFFSET) & Ch9Ctr::CH9_CTR_MASK)
+            bits: (self.bits & !Ch9Ctr::CH9_CTR_MASK)
+                | ((value << Ch9Ctr::CH9_CTR_OFFSET) & Ch9Ctr::CH9_CTR_MASK),
         }
     }
 }
@@ -9403,7 +9568,8 @@ impl Ch9Cc {
     /// Write **B** `[31:16]` (RW)
     #[inline(always)]
     pub fn write_b(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::B_MASK) | ((value << Self::B_OFFSET) & Self::B_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::B_MASK) | ((value << Self::B_OFFSET) & Self::B_MASK));
     }
 
     /// **A** `[15:0]` (RW)
@@ -9415,7 +9581,8 @@ impl Ch9Cc {
     /// Write **A** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_a(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
     }
 }
 
@@ -9463,7 +9630,7 @@ impl Ch9CcVal {
     #[inline(always)]
     pub const fn with_b(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch9Cc::B_MASK) | ((value << Ch9Cc::B_OFFSET) & Ch9Cc::B_MASK)
+            bits: (self.bits & !Ch9Cc::B_MASK) | ((value << Ch9Cc::B_OFFSET) & Ch9Cc::B_MASK),
         }
     }
 
@@ -9471,7 +9638,7 @@ impl Ch9CcVal {
     #[inline(always)]
     pub const fn with_a(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch9Cc::A_MASK) | ((value << Ch9Cc::A_OFFSET) & Ch9Cc::A_MASK)
+            bits: (self.bits & !Ch9Cc::A_MASK) | ((value << Ch9Cc::A_OFFSET) & Ch9Cc::A_MASK),
         }
     }
 }
@@ -9544,7 +9711,9 @@ impl Ch9Top {
     /// Write **CH9_TOP** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_ch9_top(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH9_TOP_MASK) | ((value << Self::CH9_TOP_OFFSET) & Self::CH9_TOP_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH9_TOP_MASK) | ((value << Self::CH9_TOP_OFFSET) & Self::CH9_TOP_MASK)
+        });
     }
 }
 
@@ -9586,7 +9755,8 @@ impl Ch9TopVal {
     #[inline(always)]
     pub const fn with_ch9_top(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch9Top::CH9_TOP_MASK) | ((value << Ch9Top::CH9_TOP_OFFSET) & Ch9Top::CH9_TOP_MASK)
+            bits: (self.bits & !Ch9Top::CH9_TOP_MASK)
+                | ((value << Ch9Top::CH9_TOP_OFFSET) & Ch9Top::CH9_TOP_MASK),
         }
     }
 }
@@ -9778,7 +9948,9 @@ impl Ch10Csr {
     /// Write **DIVMODE** `[5:4]` (RW)
     #[inline(always)]
     pub fn write_divmode(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DIVMODE_MASK) | ((value << Self::DIVMODE_OFFSET) & Self::DIVMODE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DIVMODE_MASK) | ((value << Self::DIVMODE_OFFSET) & Self::DIVMODE_MASK)
+        });
     }
 
     /// **B_INV** `[3]` (RW)
@@ -9940,7 +10112,7 @@ impl Ch10CsrVal {
                 self.bits | Ch10Csr::PH_ADV_MASK
             } else {
                 self.bits & !Ch10Csr::PH_ADV_MASK
-            }
+            },
         }
     }
 
@@ -9955,7 +10127,7 @@ impl Ch10CsrVal {
                 self.bits | Ch10Csr::PH_RET_MASK
             } else {
                 self.bits & !Ch10Csr::PH_RET_MASK
-            }
+            },
         }
     }
 
@@ -9963,7 +10135,8 @@ impl Ch10CsrVal {
     #[inline(always)]
     pub const fn with_divmode(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch10Csr::DIVMODE_MASK) | ((value << Ch10Csr::DIVMODE_OFFSET) & Ch10Csr::DIVMODE_MASK)
+            bits: (self.bits & !Ch10Csr::DIVMODE_MASK)
+                | ((value << Ch10Csr::DIVMODE_OFFSET) & Ch10Csr::DIVMODE_MASK),
         }
     }
 
@@ -9977,7 +10150,7 @@ impl Ch10CsrVal {
                 self.bits | Ch10Csr::B_INV_MASK
             } else {
                 self.bits & !Ch10Csr::B_INV_MASK
-            }
+            },
         }
     }
 
@@ -9991,7 +10164,7 @@ impl Ch10CsrVal {
                 self.bits | Ch10Csr::A_INV_MASK
             } else {
                 self.bits & !Ch10Csr::A_INV_MASK
-            }
+            },
         }
     }
 
@@ -10005,7 +10178,7 @@ impl Ch10CsrVal {
                 self.bits | Ch10Csr::PH_CORRECT_MASK
             } else {
                 self.bits & !Ch10Csr::PH_CORRECT_MASK
-            }
+            },
         }
     }
 
@@ -10019,7 +10192,7 @@ impl Ch10CsrVal {
                 self.bits | Ch10Csr::EN_MASK
             } else {
                 self.bits & !Ch10Csr::EN_MASK
-            }
+            },
         }
     }
 }
@@ -10101,7 +10274,9 @@ impl Ch10Div {
     /// Write **INT** `[11:4]` (RW)
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK)
+        });
     }
 
     /// **FRAC** `[3:0]` (RW)
@@ -10113,7 +10288,9 @@ impl Ch10Div {
     /// Write **FRAC** `[3:0]` (RW)
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK)
+        });
     }
 }
 
@@ -10161,7 +10338,8 @@ impl Ch10DivVal {
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch10Div::INT_MASK) | ((value << Ch10Div::INT_OFFSET) & Ch10Div::INT_MASK)
+            bits: (self.bits & !Ch10Div::INT_MASK)
+                | ((value << Ch10Div::INT_OFFSET) & Ch10Div::INT_MASK),
         }
     }
 
@@ -10169,7 +10347,8 @@ impl Ch10DivVal {
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch10Div::FRAC_MASK) | ((value << Ch10Div::FRAC_OFFSET) & Ch10Div::FRAC_MASK)
+            bits: (self.bits & !Ch10Div::FRAC_MASK)
+                | ((value << Ch10Div::FRAC_OFFSET) & Ch10Div::FRAC_MASK),
         }
     }
 }
@@ -10242,7 +10421,9 @@ impl Ch10Ctr {
     /// Write **CH10_CTR** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_ch10_ctr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH10_CTR_MASK) | ((value << Self::CH10_CTR_OFFSET) & Self::CH10_CTR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH10_CTR_MASK) | ((value << Self::CH10_CTR_OFFSET) & Self::CH10_CTR_MASK)
+        });
     }
 }
 
@@ -10284,7 +10465,8 @@ impl Ch10CtrVal {
     #[inline(always)]
     pub const fn with_ch10_ctr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch10Ctr::CH10_CTR_MASK) | ((value << Ch10Ctr::CH10_CTR_OFFSET) & Ch10Ctr::CH10_CTR_MASK)
+            bits: (self.bits & !Ch10Ctr::CH10_CTR_MASK)
+                | ((value << Ch10Ctr::CH10_CTR_OFFSET) & Ch10Ctr::CH10_CTR_MASK),
         }
     }
 }
@@ -10364,7 +10546,8 @@ impl Ch10Cc {
     /// Write **B** `[31:16]` (RW)
     #[inline(always)]
     pub fn write_b(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::B_MASK) | ((value << Self::B_OFFSET) & Self::B_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::B_MASK) | ((value << Self::B_OFFSET) & Self::B_MASK));
     }
 
     /// **A** `[15:0]` (RW)
@@ -10376,7 +10559,8 @@ impl Ch10Cc {
     /// Write **A** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_a(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
     }
 }
 
@@ -10424,7 +10608,7 @@ impl Ch10CcVal {
     #[inline(always)]
     pub const fn with_b(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch10Cc::B_MASK) | ((value << Ch10Cc::B_OFFSET) & Ch10Cc::B_MASK)
+            bits: (self.bits & !Ch10Cc::B_MASK) | ((value << Ch10Cc::B_OFFSET) & Ch10Cc::B_MASK),
         }
     }
 
@@ -10432,7 +10616,7 @@ impl Ch10CcVal {
     #[inline(always)]
     pub const fn with_a(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch10Cc::A_MASK) | ((value << Ch10Cc::A_OFFSET) & Ch10Cc::A_MASK)
+            bits: (self.bits & !Ch10Cc::A_MASK) | ((value << Ch10Cc::A_OFFSET) & Ch10Cc::A_MASK),
         }
     }
 }
@@ -10505,7 +10689,9 @@ impl Ch10Top {
     /// Write **CH10_TOP** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_ch10_top(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH10_TOP_MASK) | ((value << Self::CH10_TOP_OFFSET) & Self::CH10_TOP_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH10_TOP_MASK) | ((value << Self::CH10_TOP_OFFSET) & Self::CH10_TOP_MASK)
+        });
     }
 }
 
@@ -10547,7 +10733,8 @@ impl Ch10TopVal {
     #[inline(always)]
     pub const fn with_ch10_top(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch10Top::CH10_TOP_MASK) | ((value << Ch10Top::CH10_TOP_OFFSET) & Ch10Top::CH10_TOP_MASK)
+            bits: (self.bits & !Ch10Top::CH10_TOP_MASK)
+                | ((value << Ch10Top::CH10_TOP_OFFSET) & Ch10Top::CH10_TOP_MASK),
         }
     }
 }
@@ -10739,7 +10926,9 @@ impl Ch11Csr {
     /// Write **DIVMODE** `[5:4]` (RW)
     #[inline(always)]
     pub fn write_divmode(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DIVMODE_MASK) | ((value << Self::DIVMODE_OFFSET) & Self::DIVMODE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DIVMODE_MASK) | ((value << Self::DIVMODE_OFFSET) & Self::DIVMODE_MASK)
+        });
     }
 
     /// **B_INV** `[3]` (RW)
@@ -10901,7 +11090,7 @@ impl Ch11CsrVal {
                 self.bits | Ch11Csr::PH_ADV_MASK
             } else {
                 self.bits & !Ch11Csr::PH_ADV_MASK
-            }
+            },
         }
     }
 
@@ -10916,7 +11105,7 @@ impl Ch11CsrVal {
                 self.bits | Ch11Csr::PH_RET_MASK
             } else {
                 self.bits & !Ch11Csr::PH_RET_MASK
-            }
+            },
         }
     }
 
@@ -10924,7 +11113,8 @@ impl Ch11CsrVal {
     #[inline(always)]
     pub const fn with_divmode(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch11Csr::DIVMODE_MASK) | ((value << Ch11Csr::DIVMODE_OFFSET) & Ch11Csr::DIVMODE_MASK)
+            bits: (self.bits & !Ch11Csr::DIVMODE_MASK)
+                | ((value << Ch11Csr::DIVMODE_OFFSET) & Ch11Csr::DIVMODE_MASK),
         }
     }
 
@@ -10938,7 +11128,7 @@ impl Ch11CsrVal {
                 self.bits | Ch11Csr::B_INV_MASK
             } else {
                 self.bits & !Ch11Csr::B_INV_MASK
-            }
+            },
         }
     }
 
@@ -10952,7 +11142,7 @@ impl Ch11CsrVal {
                 self.bits | Ch11Csr::A_INV_MASK
             } else {
                 self.bits & !Ch11Csr::A_INV_MASK
-            }
+            },
         }
     }
 
@@ -10966,7 +11156,7 @@ impl Ch11CsrVal {
                 self.bits | Ch11Csr::PH_CORRECT_MASK
             } else {
                 self.bits & !Ch11Csr::PH_CORRECT_MASK
-            }
+            },
         }
     }
 
@@ -10980,7 +11170,7 @@ impl Ch11CsrVal {
                 self.bits | Ch11Csr::EN_MASK
             } else {
                 self.bits & !Ch11Csr::EN_MASK
-            }
+            },
         }
     }
 }
@@ -11062,7 +11252,9 @@ impl Ch11Div {
     /// Write **INT** `[11:4]` (RW)
     #[inline(always)]
     pub fn write_int(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INT_MASK) | ((value << Self::INT_OFFSET) & Self::INT_MASK)
+        });
     }
 
     /// **FRAC** `[3:0]` (RW)
@@ -11074,7 +11266,9 @@ impl Ch11Div {
     /// Write **FRAC** `[3:0]` (RW)
     #[inline(always)]
     pub fn write_frac(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FRAC_MASK) | ((value << Self::FRAC_OFFSET) & Self::FRAC_MASK)
+        });
     }
 }
 
@@ -11122,7 +11316,8 @@ impl Ch11DivVal {
     #[inline(always)]
     pub const fn with_int(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch11Div::INT_MASK) | ((value << Ch11Div::INT_OFFSET) & Ch11Div::INT_MASK)
+            bits: (self.bits & !Ch11Div::INT_MASK)
+                | ((value << Ch11Div::INT_OFFSET) & Ch11Div::INT_MASK),
         }
     }
 
@@ -11130,7 +11325,8 @@ impl Ch11DivVal {
     #[inline(always)]
     pub const fn with_frac(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch11Div::FRAC_MASK) | ((value << Ch11Div::FRAC_OFFSET) & Ch11Div::FRAC_MASK)
+            bits: (self.bits & !Ch11Div::FRAC_MASK)
+                | ((value << Ch11Div::FRAC_OFFSET) & Ch11Div::FRAC_MASK),
         }
     }
 }
@@ -11203,7 +11399,9 @@ impl Ch11Ctr {
     /// Write **CH11_CTR** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_ch11_ctr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH11_CTR_MASK) | ((value << Self::CH11_CTR_OFFSET) & Self::CH11_CTR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH11_CTR_MASK) | ((value << Self::CH11_CTR_OFFSET) & Self::CH11_CTR_MASK)
+        });
     }
 }
 
@@ -11245,7 +11443,8 @@ impl Ch11CtrVal {
     #[inline(always)]
     pub const fn with_ch11_ctr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch11Ctr::CH11_CTR_MASK) | ((value << Ch11Ctr::CH11_CTR_OFFSET) & Ch11Ctr::CH11_CTR_MASK)
+            bits: (self.bits & !Ch11Ctr::CH11_CTR_MASK)
+                | ((value << Ch11Ctr::CH11_CTR_OFFSET) & Ch11Ctr::CH11_CTR_MASK),
         }
     }
 }
@@ -11325,7 +11524,8 @@ impl Ch11Cc {
     /// Write **B** `[31:16]` (RW)
     #[inline(always)]
     pub fn write_b(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::B_MASK) | ((value << Self::B_OFFSET) & Self::B_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::B_MASK) | ((value << Self::B_OFFSET) & Self::B_MASK));
     }
 
     /// **A** `[15:0]` (RW)
@@ -11337,7 +11537,8 @@ impl Ch11Cc {
     /// Write **A** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_a(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::A_MASK) | ((value << Self::A_OFFSET) & Self::A_MASK));
     }
 }
 
@@ -11385,7 +11586,7 @@ impl Ch11CcVal {
     #[inline(always)]
     pub const fn with_b(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch11Cc::B_MASK) | ((value << Ch11Cc::B_OFFSET) & Ch11Cc::B_MASK)
+            bits: (self.bits & !Ch11Cc::B_MASK) | ((value << Ch11Cc::B_OFFSET) & Ch11Cc::B_MASK),
         }
     }
 
@@ -11393,7 +11594,7 @@ impl Ch11CcVal {
     #[inline(always)]
     pub const fn with_a(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch11Cc::A_MASK) | ((value << Ch11Cc::A_OFFSET) & Ch11Cc::A_MASK)
+            bits: (self.bits & !Ch11Cc::A_MASK) | ((value << Ch11Cc::A_OFFSET) & Ch11Cc::A_MASK),
         }
     }
 }
@@ -11466,7 +11667,9 @@ impl Ch11Top {
     /// Write **CH11_TOP** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_ch11_top(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH11_TOP_MASK) | ((value << Self::CH11_TOP_OFFSET) & Self::CH11_TOP_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH11_TOP_MASK) | ((value << Self::CH11_TOP_OFFSET) & Self::CH11_TOP_MASK)
+        });
     }
 }
 
@@ -11508,7 +11711,8 @@ impl Ch11TopVal {
     #[inline(always)]
     pub const fn with_ch11_top(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch11Top::CH11_TOP_MASK) | ((value << Ch11Top::CH11_TOP_OFFSET) & Ch11Top::CH11_TOP_MASK)
+            bits: (self.bits & !Ch11Top::CH11_TOP_MASK)
+                | ((value << Ch11Top::CH11_TOP_OFFSET) & Ch11Top::CH11_TOP_MASK),
         }
     }
 }
@@ -11990,7 +12194,7 @@ impl EnVal {
                 self.bits | En::CH11_MASK
             } else {
                 self.bits & !En::CH11_MASK
-            }
+            },
         }
     }
 
@@ -12002,7 +12206,7 @@ impl EnVal {
                 self.bits | En::CH10_MASK
             } else {
                 self.bits & !En::CH10_MASK
-            }
+            },
         }
     }
 
@@ -12014,7 +12218,7 @@ impl EnVal {
                 self.bits | En::CH9_MASK
             } else {
                 self.bits & !En::CH9_MASK
-            }
+            },
         }
     }
 
@@ -12026,7 +12230,7 @@ impl EnVal {
                 self.bits | En::CH8_MASK
             } else {
                 self.bits & !En::CH8_MASK
-            }
+            },
         }
     }
 
@@ -12038,7 +12242,7 @@ impl EnVal {
                 self.bits | En::CH7_MASK
             } else {
                 self.bits & !En::CH7_MASK
-            }
+            },
         }
     }
 
@@ -12050,7 +12254,7 @@ impl EnVal {
                 self.bits | En::CH6_MASK
             } else {
                 self.bits & !En::CH6_MASK
-            }
+            },
         }
     }
 
@@ -12062,7 +12266,7 @@ impl EnVal {
                 self.bits | En::CH5_MASK
             } else {
                 self.bits & !En::CH5_MASK
-            }
+            },
         }
     }
 
@@ -12074,7 +12278,7 @@ impl EnVal {
                 self.bits | En::CH4_MASK
             } else {
                 self.bits & !En::CH4_MASK
-            }
+            },
         }
     }
 
@@ -12086,7 +12290,7 @@ impl EnVal {
                 self.bits | En::CH3_MASK
             } else {
                 self.bits & !En::CH3_MASK
-            }
+            },
         }
     }
 
@@ -12098,7 +12302,7 @@ impl EnVal {
                 self.bits | En::CH2_MASK
             } else {
                 self.bits & !En::CH2_MASK
-            }
+            },
         }
     }
 
@@ -12110,7 +12314,7 @@ impl EnVal {
                 self.bits | En::CH1_MASK
             } else {
                 self.bits & !En::CH1_MASK
-            }
+            },
         }
     }
 
@@ -12122,7 +12326,7 @@ impl EnVal {
                 self.bits | En::CH0_MASK
             } else {
                 self.bits & !En::CH0_MASK
-            }
+            },
         }
     }
 }
@@ -12600,7 +12804,7 @@ impl IntrVal {
                 self.bits | Intr::CH11_MASK
             } else {
                 self.bits & !Intr::CH11_MASK
-            }
+            },
         }
     }
 
@@ -12612,7 +12816,7 @@ impl IntrVal {
                 self.bits | Intr::CH10_MASK
             } else {
                 self.bits & !Intr::CH10_MASK
-            }
+            },
         }
     }
 
@@ -12624,7 +12828,7 @@ impl IntrVal {
                 self.bits | Intr::CH9_MASK
             } else {
                 self.bits & !Intr::CH9_MASK
-            }
+            },
         }
     }
 
@@ -12636,7 +12840,7 @@ impl IntrVal {
                 self.bits | Intr::CH8_MASK
             } else {
                 self.bits & !Intr::CH8_MASK
-            }
+            },
         }
     }
 
@@ -12648,7 +12852,7 @@ impl IntrVal {
                 self.bits | Intr::CH7_MASK
             } else {
                 self.bits & !Intr::CH7_MASK
-            }
+            },
         }
     }
 
@@ -12660,7 +12864,7 @@ impl IntrVal {
                 self.bits | Intr::CH6_MASK
             } else {
                 self.bits & !Intr::CH6_MASK
-            }
+            },
         }
     }
 
@@ -12672,7 +12876,7 @@ impl IntrVal {
                 self.bits | Intr::CH5_MASK
             } else {
                 self.bits & !Intr::CH5_MASK
-            }
+            },
         }
     }
 
@@ -12684,7 +12888,7 @@ impl IntrVal {
                 self.bits | Intr::CH4_MASK
             } else {
                 self.bits & !Intr::CH4_MASK
-            }
+            },
         }
     }
 
@@ -12696,7 +12900,7 @@ impl IntrVal {
                 self.bits | Intr::CH3_MASK
             } else {
                 self.bits & !Intr::CH3_MASK
-            }
+            },
         }
     }
 
@@ -12708,7 +12912,7 @@ impl IntrVal {
                 self.bits | Intr::CH2_MASK
             } else {
                 self.bits & !Intr::CH2_MASK
-            }
+            },
         }
     }
 
@@ -12720,7 +12924,7 @@ impl IntrVal {
                 self.bits | Intr::CH1_MASK
             } else {
                 self.bits & !Intr::CH1_MASK
-            }
+            },
         }
     }
 
@@ -12732,7 +12936,7 @@ impl IntrVal {
                 self.bits | Intr::CH0_MASK
             } else {
                 self.bits & !Intr::CH0_MASK
-            }
+            },
         }
     }
 }
@@ -13210,7 +13414,7 @@ impl Irq0InteVal {
                 self.bits | Irq0Inte::CH11_MASK
             } else {
                 self.bits & !Irq0Inte::CH11_MASK
-            }
+            },
         }
     }
 
@@ -13222,7 +13426,7 @@ impl Irq0InteVal {
                 self.bits | Irq0Inte::CH10_MASK
             } else {
                 self.bits & !Irq0Inte::CH10_MASK
-            }
+            },
         }
     }
 
@@ -13234,7 +13438,7 @@ impl Irq0InteVal {
                 self.bits | Irq0Inte::CH9_MASK
             } else {
                 self.bits & !Irq0Inte::CH9_MASK
-            }
+            },
         }
     }
 
@@ -13246,7 +13450,7 @@ impl Irq0InteVal {
                 self.bits | Irq0Inte::CH8_MASK
             } else {
                 self.bits & !Irq0Inte::CH8_MASK
-            }
+            },
         }
     }
 
@@ -13258,7 +13462,7 @@ impl Irq0InteVal {
                 self.bits | Irq0Inte::CH7_MASK
             } else {
                 self.bits & !Irq0Inte::CH7_MASK
-            }
+            },
         }
     }
 
@@ -13270,7 +13474,7 @@ impl Irq0InteVal {
                 self.bits | Irq0Inte::CH6_MASK
             } else {
                 self.bits & !Irq0Inte::CH6_MASK
-            }
+            },
         }
     }
 
@@ -13282,7 +13486,7 @@ impl Irq0InteVal {
                 self.bits | Irq0Inte::CH5_MASK
             } else {
                 self.bits & !Irq0Inte::CH5_MASK
-            }
+            },
         }
     }
 
@@ -13294,7 +13498,7 @@ impl Irq0InteVal {
                 self.bits | Irq0Inte::CH4_MASK
             } else {
                 self.bits & !Irq0Inte::CH4_MASK
-            }
+            },
         }
     }
 
@@ -13306,7 +13510,7 @@ impl Irq0InteVal {
                 self.bits | Irq0Inte::CH3_MASK
             } else {
                 self.bits & !Irq0Inte::CH3_MASK
-            }
+            },
         }
     }
 
@@ -13318,7 +13522,7 @@ impl Irq0InteVal {
                 self.bits | Irq0Inte::CH2_MASK
             } else {
                 self.bits & !Irq0Inte::CH2_MASK
-            }
+            },
         }
     }
 
@@ -13330,7 +13534,7 @@ impl Irq0InteVal {
                 self.bits | Irq0Inte::CH1_MASK
             } else {
                 self.bits & !Irq0Inte::CH1_MASK
-            }
+            },
         }
     }
 
@@ -13342,7 +13546,7 @@ impl Irq0InteVal {
                 self.bits | Irq0Inte::CH0_MASK
             } else {
                 self.bits & !Irq0Inte::CH0_MASK
-            }
+            },
         }
     }
 }
@@ -13820,7 +14024,7 @@ impl Irq0IntfVal {
                 self.bits | Irq0Intf::CH11_MASK
             } else {
                 self.bits & !Irq0Intf::CH11_MASK
-            }
+            },
         }
     }
 
@@ -13832,7 +14036,7 @@ impl Irq0IntfVal {
                 self.bits | Irq0Intf::CH10_MASK
             } else {
                 self.bits & !Irq0Intf::CH10_MASK
-            }
+            },
         }
     }
 
@@ -13844,7 +14048,7 @@ impl Irq0IntfVal {
                 self.bits | Irq0Intf::CH9_MASK
             } else {
                 self.bits & !Irq0Intf::CH9_MASK
-            }
+            },
         }
     }
 
@@ -13856,7 +14060,7 @@ impl Irq0IntfVal {
                 self.bits | Irq0Intf::CH8_MASK
             } else {
                 self.bits & !Irq0Intf::CH8_MASK
-            }
+            },
         }
     }
 
@@ -13868,7 +14072,7 @@ impl Irq0IntfVal {
                 self.bits | Irq0Intf::CH7_MASK
             } else {
                 self.bits & !Irq0Intf::CH7_MASK
-            }
+            },
         }
     }
 
@@ -13880,7 +14084,7 @@ impl Irq0IntfVal {
                 self.bits | Irq0Intf::CH6_MASK
             } else {
                 self.bits & !Irq0Intf::CH6_MASK
-            }
+            },
         }
     }
 
@@ -13892,7 +14096,7 @@ impl Irq0IntfVal {
                 self.bits | Irq0Intf::CH5_MASK
             } else {
                 self.bits & !Irq0Intf::CH5_MASK
-            }
+            },
         }
     }
 
@@ -13904,7 +14108,7 @@ impl Irq0IntfVal {
                 self.bits | Irq0Intf::CH4_MASK
             } else {
                 self.bits & !Irq0Intf::CH4_MASK
-            }
+            },
         }
     }
 
@@ -13916,7 +14120,7 @@ impl Irq0IntfVal {
                 self.bits | Irq0Intf::CH3_MASK
             } else {
                 self.bits & !Irq0Intf::CH3_MASK
-            }
+            },
         }
     }
 
@@ -13928,7 +14132,7 @@ impl Irq0IntfVal {
                 self.bits | Irq0Intf::CH2_MASK
             } else {
                 self.bits & !Irq0Intf::CH2_MASK
-            }
+            },
         }
     }
 
@@ -13940,7 +14144,7 @@ impl Irq0IntfVal {
                 self.bits | Irq0Intf::CH1_MASK
             } else {
                 self.bits & !Irq0Intf::CH1_MASK
-            }
+            },
         }
     }
 
@@ -13952,7 +14156,7 @@ impl Irq0IntfVal {
                 self.bits | Irq0Intf::CH0_MASK
             } else {
                 self.bits & !Irq0Intf::CH0_MASK
-            }
+            },
         }
     }
 }
@@ -14740,7 +14944,7 @@ impl Irq1InteVal {
                 self.bits | Irq1Inte::CH11_MASK
             } else {
                 self.bits & !Irq1Inte::CH11_MASK
-            }
+            },
         }
     }
 
@@ -14752,7 +14956,7 @@ impl Irq1InteVal {
                 self.bits | Irq1Inte::CH10_MASK
             } else {
                 self.bits & !Irq1Inte::CH10_MASK
-            }
+            },
         }
     }
 
@@ -14764,7 +14968,7 @@ impl Irq1InteVal {
                 self.bits | Irq1Inte::CH9_MASK
             } else {
                 self.bits & !Irq1Inte::CH9_MASK
-            }
+            },
         }
     }
 
@@ -14776,7 +14980,7 @@ impl Irq1InteVal {
                 self.bits | Irq1Inte::CH8_MASK
             } else {
                 self.bits & !Irq1Inte::CH8_MASK
-            }
+            },
         }
     }
 
@@ -14788,7 +14992,7 @@ impl Irq1InteVal {
                 self.bits | Irq1Inte::CH7_MASK
             } else {
                 self.bits & !Irq1Inte::CH7_MASK
-            }
+            },
         }
     }
 
@@ -14800,7 +15004,7 @@ impl Irq1InteVal {
                 self.bits | Irq1Inte::CH6_MASK
             } else {
                 self.bits & !Irq1Inte::CH6_MASK
-            }
+            },
         }
     }
 
@@ -14812,7 +15016,7 @@ impl Irq1InteVal {
                 self.bits | Irq1Inte::CH5_MASK
             } else {
                 self.bits & !Irq1Inte::CH5_MASK
-            }
+            },
         }
     }
 
@@ -14824,7 +15028,7 @@ impl Irq1InteVal {
                 self.bits | Irq1Inte::CH4_MASK
             } else {
                 self.bits & !Irq1Inte::CH4_MASK
-            }
+            },
         }
     }
 
@@ -14836,7 +15040,7 @@ impl Irq1InteVal {
                 self.bits | Irq1Inte::CH3_MASK
             } else {
                 self.bits & !Irq1Inte::CH3_MASK
-            }
+            },
         }
     }
 
@@ -14848,7 +15052,7 @@ impl Irq1InteVal {
                 self.bits | Irq1Inte::CH2_MASK
             } else {
                 self.bits & !Irq1Inte::CH2_MASK
-            }
+            },
         }
     }
 
@@ -14860,7 +15064,7 @@ impl Irq1InteVal {
                 self.bits | Irq1Inte::CH1_MASK
             } else {
                 self.bits & !Irq1Inte::CH1_MASK
-            }
+            },
         }
     }
 
@@ -14872,7 +15076,7 @@ impl Irq1InteVal {
                 self.bits | Irq1Inte::CH0_MASK
             } else {
                 self.bits & !Irq1Inte::CH0_MASK
-            }
+            },
         }
     }
 }
@@ -15350,7 +15554,7 @@ impl Irq1IntfVal {
                 self.bits | Irq1Intf::CH11_MASK
             } else {
                 self.bits & !Irq1Intf::CH11_MASK
-            }
+            },
         }
     }
 
@@ -15362,7 +15566,7 @@ impl Irq1IntfVal {
                 self.bits | Irq1Intf::CH10_MASK
             } else {
                 self.bits & !Irq1Intf::CH10_MASK
-            }
+            },
         }
     }
 
@@ -15374,7 +15578,7 @@ impl Irq1IntfVal {
                 self.bits | Irq1Intf::CH9_MASK
             } else {
                 self.bits & !Irq1Intf::CH9_MASK
-            }
+            },
         }
     }
 
@@ -15386,7 +15590,7 @@ impl Irq1IntfVal {
                 self.bits | Irq1Intf::CH8_MASK
             } else {
                 self.bits & !Irq1Intf::CH8_MASK
-            }
+            },
         }
     }
 
@@ -15398,7 +15602,7 @@ impl Irq1IntfVal {
                 self.bits | Irq1Intf::CH7_MASK
             } else {
                 self.bits & !Irq1Intf::CH7_MASK
-            }
+            },
         }
     }
 
@@ -15410,7 +15614,7 @@ impl Irq1IntfVal {
                 self.bits | Irq1Intf::CH6_MASK
             } else {
                 self.bits & !Irq1Intf::CH6_MASK
-            }
+            },
         }
     }
 
@@ -15422,7 +15626,7 @@ impl Irq1IntfVal {
                 self.bits | Irq1Intf::CH5_MASK
             } else {
                 self.bits & !Irq1Intf::CH5_MASK
-            }
+            },
         }
     }
 
@@ -15434,7 +15638,7 @@ impl Irq1IntfVal {
                 self.bits | Irq1Intf::CH4_MASK
             } else {
                 self.bits & !Irq1Intf::CH4_MASK
-            }
+            },
         }
     }
 
@@ -15446,7 +15650,7 @@ impl Irq1IntfVal {
                 self.bits | Irq1Intf::CH3_MASK
             } else {
                 self.bits & !Irq1Intf::CH3_MASK
-            }
+            },
         }
     }
 
@@ -15458,7 +15662,7 @@ impl Irq1IntfVal {
                 self.bits | Irq1Intf::CH2_MASK
             } else {
                 self.bits & !Irq1Intf::CH2_MASK
-            }
+            },
         }
     }
 
@@ -15470,7 +15674,7 @@ impl Irq1IntfVal {
                 self.bits | Irq1Intf::CH1_MASK
             } else {
                 self.bits & !Irq1Intf::CH1_MASK
-            }
+            },
         }
     }
 
@@ -15482,7 +15686,7 @@ impl Irq1IntfVal {
                 self.bits | Irq1Intf::CH0_MASK
             } else {
                 self.bits & !Irq1Intf::CH0_MASK
-            }
+            },
         }
     }
 }
@@ -16059,4 +16263,3 @@ pub struct RegisterBlock {
     /// Interrupt status after masking & forcing for irq1
     pub irq1_ints: Irq1Ints,
 }
-

@@ -42,7 +42,8 @@ impl Timehw {
     /// Write **TIMEHW** `[31:0]` (WO)
     #[inline(always)]
     pub fn write_timehw(&self, value: u32) {
-        self.value.write_bits((value << Self::TIMEHW_OFFSET) & Self::TIMEHW_MASK);
+        self.value
+            .write_bits((value << Self::TIMEHW_OFFSET) & Self::TIMEHW_MASK);
     }
 }
 
@@ -78,7 +79,8 @@ impl TimehwVal {
     #[inline(always)]
     pub const fn with_timehw(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Timehw::TIMEHW_MASK) | ((value << Timehw::TIMEHW_OFFSET) & Timehw::TIMEHW_MASK)
+            bits: (self.bits & !Timehw::TIMEHW_MASK)
+                | ((value << Timehw::TIMEHW_OFFSET) & Timehw::TIMEHW_MASK),
         }
     }
 }
@@ -133,7 +135,8 @@ impl Timelw {
     /// Write **TIMELW** `[31:0]` (WO)
     #[inline(always)]
     pub fn write_timelw(&self, value: u32) {
-        self.value.write_bits((value << Self::TIMELW_OFFSET) & Self::TIMELW_MASK);
+        self.value
+            .write_bits((value << Self::TIMELW_OFFSET) & Self::TIMELW_MASK);
     }
 }
 
@@ -169,7 +172,8 @@ impl TimelwVal {
     #[inline(always)]
     pub const fn with_timelw(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Timelw::TIMELW_MASK) | ((value << Timelw::TIMELW_OFFSET) & Timelw::TIMELW_MASK)
+            bits: (self.bits & !Timelw::TIMELW_MASK)
+                | ((value << Timelw::TIMELW_OFFSET) & Timelw::TIMELW_MASK),
         }
     }
 }
@@ -408,7 +412,9 @@ impl Alarm0 {
     /// Write **ALARM0** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_alarm0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ALARM0_MASK) | ((value << Self::ALARM0_OFFSET) & Self::ALARM0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ALARM0_MASK) | ((value << Self::ALARM0_OFFSET) & Self::ALARM0_MASK)
+        });
     }
 }
 
@@ -450,7 +456,8 @@ impl Alarm0Val {
     #[inline(always)]
     pub const fn with_alarm0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Alarm0::ALARM0_MASK) | ((value << Alarm0::ALARM0_OFFSET) & Alarm0::ALARM0_MASK)
+            bits: (self.bits & !Alarm0::ALARM0_MASK)
+                | ((value << Alarm0::ALARM0_OFFSET) & Alarm0::ALARM0_MASK),
         }
     }
 }
@@ -523,7 +530,9 @@ impl Alarm1 {
     /// Write **ALARM1** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_alarm1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ALARM1_MASK) | ((value << Self::ALARM1_OFFSET) & Self::ALARM1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ALARM1_MASK) | ((value << Self::ALARM1_OFFSET) & Self::ALARM1_MASK)
+        });
     }
 }
 
@@ -565,7 +574,8 @@ impl Alarm1Val {
     #[inline(always)]
     pub const fn with_alarm1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Alarm1::ALARM1_MASK) | ((value << Alarm1::ALARM1_OFFSET) & Alarm1::ALARM1_MASK)
+            bits: (self.bits & !Alarm1::ALARM1_MASK)
+                | ((value << Alarm1::ALARM1_OFFSET) & Alarm1::ALARM1_MASK),
         }
     }
 }
@@ -638,7 +648,9 @@ impl Alarm2 {
     /// Write **ALARM2** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_alarm2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ALARM2_MASK) | ((value << Self::ALARM2_OFFSET) & Self::ALARM2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ALARM2_MASK) | ((value << Self::ALARM2_OFFSET) & Self::ALARM2_MASK)
+        });
     }
 }
 
@@ -680,7 +692,8 @@ impl Alarm2Val {
     #[inline(always)]
     pub const fn with_alarm2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Alarm2::ALARM2_MASK) | ((value << Alarm2::ALARM2_OFFSET) & Alarm2::ALARM2_MASK)
+            bits: (self.bits & !Alarm2::ALARM2_MASK)
+                | ((value << Alarm2::ALARM2_OFFSET) & Alarm2::ALARM2_MASK),
         }
     }
 }
@@ -753,7 +766,9 @@ impl Alarm3 {
     /// Write **ALARM3** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_alarm3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ALARM3_MASK) | ((value << Self::ALARM3_OFFSET) & Self::ALARM3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ALARM3_MASK) | ((value << Self::ALARM3_OFFSET) & Self::ALARM3_MASK)
+        });
     }
 }
 
@@ -795,7 +810,8 @@ impl Alarm3Val {
     #[inline(always)]
     pub const fn with_alarm3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Alarm3::ALARM3_MASK) | ((value << Alarm3::ALARM3_OFFSET) & Alarm3::ALARM3_MASK)
+            bits: (self.bits & !Alarm3::ALARM3_MASK)
+                | ((value << Alarm3::ALARM3_OFFSET) & Alarm3::ALARM3_MASK),
         }
     }
 }
@@ -868,7 +884,9 @@ impl Armed {
     /// Write **ARMED** `[3:0]` (RW)
     #[inline(always)]
     pub fn write_armed(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ARMED_MASK) | ((value << Self::ARMED_OFFSET) & Self::ARMED_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ARMED_MASK) | ((value << Self::ARMED_OFFSET) & Self::ARMED_MASK)
+        });
     }
 }
 
@@ -910,7 +928,8 @@ impl ArmedVal {
     #[inline(always)]
     pub const fn with_armed(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Armed::ARMED_MASK) | ((value << Armed::ARMED_OFFSET) & Armed::ARMED_MASK)
+            bits: (self.bits & !Armed::ARMED_MASK)
+                | ((value << Armed::ARMED_OFFSET) & Armed::ARMED_MASK),
         }
     }
 }
@@ -1266,7 +1285,7 @@ impl DbgpauseVal {
                 self.bits | Dbgpause::DBG1_MASK
             } else {
                 self.bits & !Dbgpause::DBG1_MASK
-            }
+            },
         }
     }
 
@@ -1280,7 +1299,7 @@ impl DbgpauseVal {
                 self.bits | Dbgpause::DBG0_MASK
             } else {
                 self.bits & !Dbgpause::DBG0_MASK
-            }
+            },
         }
     }
 }
@@ -1406,7 +1425,7 @@ impl PauseVal {
                 self.bits | Pause::PAUSE_MASK
             } else {
                 self.bits & !Pause::PAUSE_MASK
-            }
+            },
         }
     }
 }
@@ -1532,7 +1551,7 @@ impl LockedVal {
                 self.bits | Locked::LOCKED_MASK
             } else {
                 self.bits & !Locked::LOCKED_MASK
-            }
+            },
         }
     }
 }
@@ -1662,7 +1681,7 @@ impl SourceVal {
                 self.bits | Source::CLK_SYS_MASK
             } else {
                 self.bits & !Source::CLK_SYS_MASK
-            }
+            },
         }
     }
 }
@@ -1884,7 +1903,7 @@ impl IntrVal {
                 self.bits | Intr::ALARM_3_MASK
             } else {
                 self.bits & !Intr::ALARM_3_MASK
-            }
+            },
         }
     }
 
@@ -1896,7 +1915,7 @@ impl IntrVal {
                 self.bits | Intr::ALARM_2_MASK
             } else {
                 self.bits & !Intr::ALARM_2_MASK
-            }
+            },
         }
     }
 
@@ -1908,7 +1927,7 @@ impl IntrVal {
                 self.bits | Intr::ALARM_1_MASK
             } else {
                 self.bits & !Intr::ALARM_1_MASK
-            }
+            },
         }
     }
 
@@ -1920,7 +1939,7 @@ impl IntrVal {
                 self.bits | Intr::ALARM_0_MASK
             } else {
                 self.bits & !Intr::ALARM_0_MASK
-            }
+            },
         }
     }
 }
@@ -2142,7 +2161,7 @@ impl InteVal {
                 self.bits | Inte::ALARM_3_MASK
             } else {
                 self.bits & !Inte::ALARM_3_MASK
-            }
+            },
         }
     }
 
@@ -2154,7 +2173,7 @@ impl InteVal {
                 self.bits | Inte::ALARM_2_MASK
             } else {
                 self.bits & !Inte::ALARM_2_MASK
-            }
+            },
         }
     }
 
@@ -2166,7 +2185,7 @@ impl InteVal {
                 self.bits | Inte::ALARM_1_MASK
             } else {
                 self.bits & !Inte::ALARM_1_MASK
-            }
+            },
         }
     }
 
@@ -2178,7 +2197,7 @@ impl InteVal {
                 self.bits | Inte::ALARM_0_MASK
             } else {
                 self.bits & !Inte::ALARM_0_MASK
-            }
+            },
         }
     }
 }
@@ -2400,7 +2419,7 @@ impl IntfVal {
                 self.bits | Intf::ALARM_3_MASK
             } else {
                 self.bits & !Intf::ALARM_3_MASK
-            }
+            },
         }
     }
 
@@ -2412,7 +2431,7 @@ impl IntfVal {
                 self.bits | Intf::ALARM_2_MASK
             } else {
                 self.bits & !Intf::ALARM_2_MASK
-            }
+            },
         }
     }
 
@@ -2424,7 +2443,7 @@ impl IntfVal {
                 self.bits | Intf::ALARM_1_MASK
             } else {
                 self.bits & !Intf::ALARM_1_MASK
-            }
+            },
         }
     }
 
@@ -2436,7 +2455,7 @@ impl IntfVal {
                 self.bits | Intf::ALARM_0_MASK
             } else {
                 self.bits & !Intf::ALARM_0_MASK
-            }
+            },
         }
     }
 }
@@ -2678,4 +2697,3 @@ pub struct RegisterBlock {
     /// Interrupt status after masking & forcing
     pub ints: Ints,
 }
-

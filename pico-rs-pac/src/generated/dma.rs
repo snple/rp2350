@@ -58,7 +58,10 @@ impl Ch0ReadAddr {
     /// This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
     #[inline(always)]
     pub fn write_ch0_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH0_READ_ADDR_MASK) | ((value << Self::CH0_READ_ADDR_OFFSET) & Self::CH0_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH0_READ_ADDR_MASK)
+                | ((value << Self::CH0_READ_ADDR_OFFSET) & Self::CH0_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -104,7 +107,8 @@ impl Ch0ReadAddrVal {
     #[inline(always)]
     pub const fn with_ch0_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch0ReadAddr::CH0_READ_ADDR_MASK) | ((value << Ch0ReadAddr::CH0_READ_ADDR_OFFSET) & Ch0ReadAddr::CH0_READ_ADDR_MASK)
+            bits: (self.bits & !Ch0ReadAddr::CH0_READ_ADDR_MASK)
+                | ((value << Ch0ReadAddr::CH0_READ_ADDR_OFFSET) & Ch0ReadAddr::CH0_READ_ADDR_MASK),
         }
     }
 }
@@ -186,7 +190,10 @@ impl Ch0WriteAddr {
     /// This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
     #[inline(always)]
     pub fn write_ch0_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH0_WRITE_ADDR_MASK) | ((value << Self::CH0_WRITE_ADDR_OFFSET) & Self::CH0_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH0_WRITE_ADDR_MASK)
+                | ((value << Self::CH0_WRITE_ADDR_OFFSET) & Self::CH0_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -232,7 +239,9 @@ impl Ch0WriteAddrVal {
     #[inline(always)]
     pub const fn with_ch0_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch0WriteAddr::CH0_WRITE_ADDR_MASK) | ((value << Ch0WriteAddr::CH0_WRITE_ADDR_OFFSET) & Ch0WriteAddr::CH0_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch0WriteAddr::CH0_WRITE_ADDR_MASK)
+                | ((value << Ch0WriteAddr::CH0_WRITE_ADDR_OFFSET)
+                    & Ch0WriteAddr::CH0_WRITE_ADDR_MASK),
         }
     }
 }
@@ -352,7 +361,9 @@ impl Ch0TransCount {
     /// All other values are reserved.
     #[inline(always)]
     pub fn write_mode(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK)
+        });
     }
 
     /// **COUNT** `[27:0]` (RW)
@@ -376,7 +387,9 @@ impl Ch0TransCount {
     /// The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
     #[inline(always)]
     pub fn write_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK)
+        });
     }
 }
 
@@ -440,7 +453,8 @@ impl Ch0TransCountVal {
     #[inline(always)]
     pub const fn with_mode(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch0TransCount::MODE_MASK) | ((value << Ch0TransCount::MODE_OFFSET) & Ch0TransCount::MODE_MASK)
+            bits: (self.bits & !Ch0TransCount::MODE_MASK)
+                | ((value << Ch0TransCount::MODE_OFFSET) & Ch0TransCount::MODE_MASK),
         }
     }
 
@@ -454,7 +468,8 @@ impl Ch0TransCountVal {
     #[inline(always)]
     pub const fn with_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch0TransCount::COUNT_MASK) | ((value << Ch0TransCount::COUNT_OFFSET) & Ch0TransCount::COUNT_MASK)
+            bits: (self.bits & !Ch0TransCount::COUNT_MASK)
+                | ((value << Ch0TransCount::COUNT_OFFSET) & Ch0TransCount::COUNT_MASK),
         }
     }
 }
@@ -1162,7 +1177,9 @@ impl Ch0CtrlTrig {
     /// 0x0 to 0x3a -> select DREQ n as TREQ
     #[inline(always)]
     pub fn write_treq_sel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK)
+        });
     }
 
     /// **CHAIN_TO** `[16:13]` (RW)
@@ -1180,7 +1197,9 @@ impl Ch0CtrlTrig {
     /// Note this field resets to 0, so channels 1 and above will chain to channel 0 by default. Set this field to avoid this behaviour.
     #[inline(always)]
     pub fn write_chain_to(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK)
+        });
     }
 
     /// **RING_SEL** `[12]` (RW)
@@ -1219,7 +1238,9 @@ impl Ch0CtrlTrig {
     /// Ring sizes between 2 and 32768 bytes are possible. This can apply to either read or write addresses, based on value of RING_SEL.
     #[inline(always)]
     pub fn write_ring_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK)
+        });
     }
 
     /// **INCR_WRITE_REV** `[7]` (RW)
@@ -1319,7 +1340,9 @@ impl Ch0CtrlTrig {
     /// Set the size of each bus transfer (byte/halfword/word). READ_ADDR and WRITE_ADDR advance by this amount (1/2/4 bytes) with each transfer.
     #[inline(always)]
     pub fn write_data_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK)
+        });
     }
 
     /// **HIGH_PRIORITY** `[1]` (RW)
@@ -1565,7 +1588,7 @@ impl Ch0CtrlTrigVal {
                 self.bits | Ch0CtrlTrig::READ_ERROR_MASK
             } else {
                 self.bits & !Ch0CtrlTrig::READ_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -1580,7 +1603,7 @@ impl Ch0CtrlTrigVal {
                 self.bits | Ch0CtrlTrig::WRITE_ERROR_MASK
             } else {
                 self.bits & !Ch0CtrlTrig::WRITE_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -1595,7 +1618,7 @@ impl Ch0CtrlTrigVal {
                 self.bits | Ch0CtrlTrig::SNIFF_EN_MASK
             } else {
                 self.bits & !Ch0CtrlTrig::SNIFF_EN_MASK
-            }
+            },
         }
     }
 
@@ -1610,7 +1633,7 @@ impl Ch0CtrlTrigVal {
                 self.bits | Ch0CtrlTrig::BSWAP_MASK
             } else {
                 self.bits & !Ch0CtrlTrig::BSWAP_MASK
-            }
+            },
         }
     }
 
@@ -1625,7 +1648,7 @@ impl Ch0CtrlTrigVal {
                 self.bits | Ch0CtrlTrig::IRQ_QUIET_MASK
             } else {
                 self.bits & !Ch0CtrlTrig::IRQ_QUIET_MASK
-            }
+            },
         }
     }
 
@@ -1637,7 +1660,8 @@ impl Ch0CtrlTrigVal {
     #[inline(always)]
     pub const fn with_treq_sel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch0CtrlTrig::TREQ_SEL_MASK) | ((value << Ch0CtrlTrig::TREQ_SEL_OFFSET) & Ch0CtrlTrig::TREQ_SEL_MASK)
+            bits: (self.bits & !Ch0CtrlTrig::TREQ_SEL_MASK)
+                | ((value << Ch0CtrlTrig::TREQ_SEL_OFFSET) & Ch0CtrlTrig::TREQ_SEL_MASK),
         }
     }
 
@@ -1648,7 +1672,8 @@ impl Ch0CtrlTrigVal {
     #[inline(always)]
     pub const fn with_chain_to(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch0CtrlTrig::CHAIN_TO_MASK) | ((value << Ch0CtrlTrig::CHAIN_TO_OFFSET) & Ch0CtrlTrig::CHAIN_TO_MASK)
+            bits: (self.bits & !Ch0CtrlTrig::CHAIN_TO_MASK)
+                | ((value << Ch0CtrlTrig::CHAIN_TO_OFFSET) & Ch0CtrlTrig::CHAIN_TO_MASK),
         }
     }
 
@@ -1663,7 +1688,7 @@ impl Ch0CtrlTrigVal {
                 self.bits | Ch0CtrlTrig::RING_SEL_MASK
             } else {
                 self.bits & !Ch0CtrlTrig::RING_SEL_MASK
-            }
+            },
         }
     }
 
@@ -1674,7 +1699,8 @@ impl Ch0CtrlTrigVal {
     #[inline(always)]
     pub const fn with_ring_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch0CtrlTrig::RING_SIZE_MASK) | ((value << Ch0CtrlTrig::RING_SIZE_OFFSET) & Ch0CtrlTrig::RING_SIZE_MASK)
+            bits: (self.bits & !Ch0CtrlTrig::RING_SIZE_MASK)
+                | ((value << Ch0CtrlTrig::RING_SIZE_OFFSET) & Ch0CtrlTrig::RING_SIZE_MASK),
         }
     }
 
@@ -1689,7 +1715,7 @@ impl Ch0CtrlTrigVal {
                 self.bits | Ch0CtrlTrig::INCR_WRITE_REV_MASK
             } else {
                 self.bits & !Ch0CtrlTrig::INCR_WRITE_REV_MASK
-            }
+            },
         }
     }
 
@@ -1704,7 +1730,7 @@ impl Ch0CtrlTrigVal {
                 self.bits | Ch0CtrlTrig::INCR_WRITE_MASK
             } else {
                 self.bits & !Ch0CtrlTrig::INCR_WRITE_MASK
-            }
+            },
         }
     }
 
@@ -1719,7 +1745,7 @@ impl Ch0CtrlTrigVal {
                 self.bits | Ch0CtrlTrig::INCR_READ_REV_MASK
             } else {
                 self.bits & !Ch0CtrlTrig::INCR_READ_REV_MASK
-            }
+            },
         }
     }
 
@@ -1734,7 +1760,7 @@ impl Ch0CtrlTrigVal {
                 self.bits | Ch0CtrlTrig::INCR_READ_MASK
             } else {
                 self.bits & !Ch0CtrlTrig::INCR_READ_MASK
-            }
+            },
         }
     }
 
@@ -1744,7 +1770,8 @@ impl Ch0CtrlTrigVal {
     #[inline(always)]
     pub const fn with_data_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch0CtrlTrig::DATA_SIZE_MASK) | ((value << Ch0CtrlTrig::DATA_SIZE_OFFSET) & Ch0CtrlTrig::DATA_SIZE_MASK)
+            bits: (self.bits & !Ch0CtrlTrig::DATA_SIZE_MASK)
+                | ((value << Ch0CtrlTrig::DATA_SIZE_OFFSET) & Ch0CtrlTrig::DATA_SIZE_MASK),
         }
     }
 
@@ -1759,7 +1786,7 @@ impl Ch0CtrlTrigVal {
                 self.bits | Ch0CtrlTrig::HIGH_PRIORITY_MASK
             } else {
                 self.bits & !Ch0CtrlTrig::HIGH_PRIORITY_MASK
-            }
+            },
         }
     }
 
@@ -1774,7 +1801,7 @@ impl Ch0CtrlTrigVal {
                 self.bits | Ch0CtrlTrig::EN_MASK
             } else {
                 self.bits & !Ch0CtrlTrig::EN_MASK
-            }
+            },
         }
     }
 }
@@ -1846,7 +1873,10 @@ impl Ch0Al1Ctrl {
     /// Write **CH0_AL1_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch0_al1_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH0_AL1_CTRL_MASK) | ((value << Self::CH0_AL1_CTRL_OFFSET) & Self::CH0_AL1_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH0_AL1_CTRL_MASK)
+                | ((value << Self::CH0_AL1_CTRL_OFFSET) & Self::CH0_AL1_CTRL_MASK)
+        });
     }
 }
 
@@ -1882,7 +1912,8 @@ impl Ch0Al1CtrlVal {
     #[inline(always)]
     pub const fn with_ch0_al1_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch0Al1Ctrl::CH0_AL1_CTRL_MASK) | ((value << Ch0Al1Ctrl::CH0_AL1_CTRL_OFFSET) & Ch0Al1Ctrl::CH0_AL1_CTRL_MASK)
+            bits: (self.bits & !Ch0Al1Ctrl::CH0_AL1_CTRL_MASK)
+                | ((value << Ch0Al1Ctrl::CH0_AL1_CTRL_OFFSET) & Ch0Al1Ctrl::CH0_AL1_CTRL_MASK),
         }
     }
 }
@@ -1954,7 +1985,10 @@ impl Ch0Al1ReadAddr {
     /// Write **CH0_AL1_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch0_al1_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH0_AL1_READ_ADDR_MASK) | ((value << Self::CH0_AL1_READ_ADDR_OFFSET) & Self::CH0_AL1_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH0_AL1_READ_ADDR_MASK)
+                | ((value << Self::CH0_AL1_READ_ADDR_OFFSET) & Self::CH0_AL1_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -1983,14 +2017,17 @@ impl Ch0Al1ReadAddrVal {
     /// Read **CH0_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch0_al1_read_addr(&self) -> u32 {
-        (self.bits & Ch0Al1ReadAddr::CH0_AL1_READ_ADDR_MASK) >> Ch0Al1ReadAddr::CH0_AL1_READ_ADDR_OFFSET
+        (self.bits & Ch0Al1ReadAddr::CH0_AL1_READ_ADDR_MASK)
+            >> Ch0Al1ReadAddr::CH0_AL1_READ_ADDR_OFFSET
     }
 
     /// Set **CH0_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch0_al1_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch0Al1ReadAddr::CH0_AL1_READ_ADDR_MASK) | ((value << Ch0Al1ReadAddr::CH0_AL1_READ_ADDR_OFFSET) & Ch0Al1ReadAddr::CH0_AL1_READ_ADDR_MASK)
+            bits: (self.bits & !Ch0Al1ReadAddr::CH0_AL1_READ_ADDR_MASK)
+                | ((value << Ch0Al1ReadAddr::CH0_AL1_READ_ADDR_OFFSET)
+                    & Ch0Al1ReadAddr::CH0_AL1_READ_ADDR_MASK),
         }
     }
 }
@@ -2062,7 +2099,10 @@ impl Ch0Al1WriteAddr {
     /// Write **CH0_AL1_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch0_al1_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH0_AL1_WRITE_ADDR_MASK) | ((value << Self::CH0_AL1_WRITE_ADDR_OFFSET) & Self::CH0_AL1_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH0_AL1_WRITE_ADDR_MASK)
+                | ((value << Self::CH0_AL1_WRITE_ADDR_OFFSET) & Self::CH0_AL1_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -2091,14 +2131,17 @@ impl Ch0Al1WriteAddrVal {
     /// Read **CH0_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch0_al1_write_addr(&self) -> u32 {
-        (self.bits & Ch0Al1WriteAddr::CH0_AL1_WRITE_ADDR_MASK) >> Ch0Al1WriteAddr::CH0_AL1_WRITE_ADDR_OFFSET
+        (self.bits & Ch0Al1WriteAddr::CH0_AL1_WRITE_ADDR_MASK)
+            >> Ch0Al1WriteAddr::CH0_AL1_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH0_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch0_al1_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch0Al1WriteAddr::CH0_AL1_WRITE_ADDR_MASK) | ((value << Ch0Al1WriteAddr::CH0_AL1_WRITE_ADDR_OFFSET) & Ch0Al1WriteAddr::CH0_AL1_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch0Al1WriteAddr::CH0_AL1_WRITE_ADDR_MASK)
+                | ((value << Ch0Al1WriteAddr::CH0_AL1_WRITE_ADDR_OFFSET)
+                    & Ch0Al1WriteAddr::CH0_AL1_WRITE_ADDR_MASK),
         }
     }
 }
@@ -2166,13 +2209,18 @@ impl Ch0Al1TransCountTrig {
     /// **CH0_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch0_al1_trans_count_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH0_AL1_TRANS_COUNT_TRIG_MASK) >> Self::CH0_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH0_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Self::CH0_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Write **CH0_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch0_al1_trans_count_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH0_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH0_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH0_AL1_TRANS_COUNT_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH0_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Self::CH0_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Self::CH0_AL1_TRANS_COUNT_TRIG_MASK)
+        });
     }
 }
 
@@ -2201,14 +2249,17 @@ impl Ch0Al1TransCountTrigVal {
     /// Read **CH0_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch0_al1_trans_count_trig(&self) -> u32 {
-        (self.bits & Ch0Al1TransCountTrig::CH0_AL1_TRANS_COUNT_TRIG_MASK) >> Ch0Al1TransCountTrig::CH0_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.bits & Ch0Al1TransCountTrig::CH0_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Ch0Al1TransCountTrig::CH0_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Set **CH0_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch0_al1_trans_count_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch0Al1TransCountTrig::CH0_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch0Al1TransCountTrig::CH0_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch0Al1TransCountTrig::CH0_AL1_TRANS_COUNT_TRIG_MASK)
+            bits: (self.bits & !Ch0Al1TransCountTrig::CH0_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Ch0Al1TransCountTrig::CH0_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Ch0Al1TransCountTrig::CH0_AL1_TRANS_COUNT_TRIG_MASK),
         }
     }
 }
@@ -2280,7 +2331,10 @@ impl Ch0Al2Ctrl {
     /// Write **CH0_AL2_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch0_al2_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH0_AL2_CTRL_MASK) | ((value << Self::CH0_AL2_CTRL_OFFSET) & Self::CH0_AL2_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH0_AL2_CTRL_MASK)
+                | ((value << Self::CH0_AL2_CTRL_OFFSET) & Self::CH0_AL2_CTRL_MASK)
+        });
     }
 }
 
@@ -2316,7 +2370,8 @@ impl Ch0Al2CtrlVal {
     #[inline(always)]
     pub const fn with_ch0_al2_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch0Al2Ctrl::CH0_AL2_CTRL_MASK) | ((value << Ch0Al2Ctrl::CH0_AL2_CTRL_OFFSET) & Ch0Al2Ctrl::CH0_AL2_CTRL_MASK)
+            bits: (self.bits & !Ch0Al2Ctrl::CH0_AL2_CTRL_MASK)
+                | ((value << Ch0Al2Ctrl::CH0_AL2_CTRL_OFFSET) & Ch0Al2Ctrl::CH0_AL2_CTRL_MASK),
         }
     }
 }
@@ -2382,13 +2437,17 @@ impl Ch0Al2TransCount {
     /// **CH0_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch0_al2_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH0_AL2_TRANS_COUNT_MASK) >> Self::CH0_AL2_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH0_AL2_TRANS_COUNT_MASK)
+            >> Self::CH0_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH0_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch0_al2_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH0_AL2_TRANS_COUNT_MASK) | ((value << Self::CH0_AL2_TRANS_COUNT_OFFSET) & Self::CH0_AL2_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH0_AL2_TRANS_COUNT_MASK)
+                | ((value << Self::CH0_AL2_TRANS_COUNT_OFFSET) & Self::CH0_AL2_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -2417,14 +2476,17 @@ impl Ch0Al2TransCountVal {
     /// Read **CH0_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch0_al2_trans_count(&self) -> u32 {
-        (self.bits & Ch0Al2TransCount::CH0_AL2_TRANS_COUNT_MASK) >> Ch0Al2TransCount::CH0_AL2_TRANS_COUNT_OFFSET
+        (self.bits & Ch0Al2TransCount::CH0_AL2_TRANS_COUNT_MASK)
+            >> Ch0Al2TransCount::CH0_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH0_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch0_al2_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch0Al2TransCount::CH0_AL2_TRANS_COUNT_MASK) | ((value << Ch0Al2TransCount::CH0_AL2_TRANS_COUNT_OFFSET) & Ch0Al2TransCount::CH0_AL2_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch0Al2TransCount::CH0_AL2_TRANS_COUNT_MASK)
+                | ((value << Ch0Al2TransCount::CH0_AL2_TRANS_COUNT_OFFSET)
+                    & Ch0Al2TransCount::CH0_AL2_TRANS_COUNT_MASK),
         }
     }
 }
@@ -2496,7 +2558,10 @@ impl Ch0Al2ReadAddr {
     /// Write **CH0_AL2_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch0_al2_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH0_AL2_READ_ADDR_MASK) | ((value << Self::CH0_AL2_READ_ADDR_OFFSET) & Self::CH0_AL2_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH0_AL2_READ_ADDR_MASK)
+                | ((value << Self::CH0_AL2_READ_ADDR_OFFSET) & Self::CH0_AL2_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -2525,14 +2590,17 @@ impl Ch0Al2ReadAddrVal {
     /// Read **CH0_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch0_al2_read_addr(&self) -> u32 {
-        (self.bits & Ch0Al2ReadAddr::CH0_AL2_READ_ADDR_MASK) >> Ch0Al2ReadAddr::CH0_AL2_READ_ADDR_OFFSET
+        (self.bits & Ch0Al2ReadAddr::CH0_AL2_READ_ADDR_MASK)
+            >> Ch0Al2ReadAddr::CH0_AL2_READ_ADDR_OFFSET
     }
 
     /// Set **CH0_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch0_al2_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch0Al2ReadAddr::CH0_AL2_READ_ADDR_MASK) | ((value << Ch0Al2ReadAddr::CH0_AL2_READ_ADDR_OFFSET) & Ch0Al2ReadAddr::CH0_AL2_READ_ADDR_MASK)
+            bits: (self.bits & !Ch0Al2ReadAddr::CH0_AL2_READ_ADDR_MASK)
+                | ((value << Ch0Al2ReadAddr::CH0_AL2_READ_ADDR_OFFSET)
+                    & Ch0Al2ReadAddr::CH0_AL2_READ_ADDR_MASK),
         }
     }
 }
@@ -2600,13 +2668,18 @@ impl Ch0Al2WriteAddrTrig {
     /// **CH0_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch0_al2_write_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH0_AL2_WRITE_ADDR_TRIG_MASK) >> Self::CH0_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH0_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Self::CH0_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH0_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch0_al2_write_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH0_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH0_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH0_AL2_WRITE_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH0_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Self::CH0_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Self::CH0_AL2_WRITE_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -2635,14 +2708,17 @@ impl Ch0Al2WriteAddrTrigVal {
     /// Read **CH0_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch0_al2_write_addr_trig(&self) -> u32 {
-        (self.bits & Ch0Al2WriteAddrTrig::CH0_AL2_WRITE_ADDR_TRIG_MASK) >> Ch0Al2WriteAddrTrig::CH0_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.bits & Ch0Al2WriteAddrTrig::CH0_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Ch0Al2WriteAddrTrig::CH0_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH0_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch0_al2_write_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch0Al2WriteAddrTrig::CH0_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch0Al2WriteAddrTrig::CH0_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch0Al2WriteAddrTrig::CH0_AL2_WRITE_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch0Al2WriteAddrTrig::CH0_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Ch0Al2WriteAddrTrig::CH0_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Ch0Al2WriteAddrTrig::CH0_AL2_WRITE_ADDR_TRIG_MASK),
         }
     }
 }
@@ -2714,7 +2790,10 @@ impl Ch0Al3Ctrl {
     /// Write **CH0_AL3_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch0_al3_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH0_AL3_CTRL_MASK) | ((value << Self::CH0_AL3_CTRL_OFFSET) & Self::CH0_AL3_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH0_AL3_CTRL_MASK)
+                | ((value << Self::CH0_AL3_CTRL_OFFSET) & Self::CH0_AL3_CTRL_MASK)
+        });
     }
 }
 
@@ -2750,7 +2829,8 @@ impl Ch0Al3CtrlVal {
     #[inline(always)]
     pub const fn with_ch0_al3_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch0Al3Ctrl::CH0_AL3_CTRL_MASK) | ((value << Ch0Al3Ctrl::CH0_AL3_CTRL_OFFSET) & Ch0Al3Ctrl::CH0_AL3_CTRL_MASK)
+            bits: (self.bits & !Ch0Al3Ctrl::CH0_AL3_CTRL_MASK)
+                | ((value << Ch0Al3Ctrl::CH0_AL3_CTRL_OFFSET) & Ch0Al3Ctrl::CH0_AL3_CTRL_MASK),
         }
     }
 }
@@ -2822,7 +2902,10 @@ impl Ch0Al3WriteAddr {
     /// Write **CH0_AL3_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch0_al3_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH0_AL3_WRITE_ADDR_MASK) | ((value << Self::CH0_AL3_WRITE_ADDR_OFFSET) & Self::CH0_AL3_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH0_AL3_WRITE_ADDR_MASK)
+                | ((value << Self::CH0_AL3_WRITE_ADDR_OFFSET) & Self::CH0_AL3_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -2851,14 +2934,17 @@ impl Ch0Al3WriteAddrVal {
     /// Read **CH0_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch0_al3_write_addr(&self) -> u32 {
-        (self.bits & Ch0Al3WriteAddr::CH0_AL3_WRITE_ADDR_MASK) >> Ch0Al3WriteAddr::CH0_AL3_WRITE_ADDR_OFFSET
+        (self.bits & Ch0Al3WriteAddr::CH0_AL3_WRITE_ADDR_MASK)
+            >> Ch0Al3WriteAddr::CH0_AL3_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH0_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch0_al3_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch0Al3WriteAddr::CH0_AL3_WRITE_ADDR_MASK) | ((value << Ch0Al3WriteAddr::CH0_AL3_WRITE_ADDR_OFFSET) & Ch0Al3WriteAddr::CH0_AL3_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch0Al3WriteAddr::CH0_AL3_WRITE_ADDR_MASK)
+                | ((value << Ch0Al3WriteAddr::CH0_AL3_WRITE_ADDR_OFFSET)
+                    & Ch0Al3WriteAddr::CH0_AL3_WRITE_ADDR_MASK),
         }
     }
 }
@@ -2924,13 +3010,17 @@ impl Ch0Al3TransCount {
     /// **CH0_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch0_al3_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH0_AL3_TRANS_COUNT_MASK) >> Self::CH0_AL3_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH0_AL3_TRANS_COUNT_MASK)
+            >> Self::CH0_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH0_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch0_al3_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH0_AL3_TRANS_COUNT_MASK) | ((value << Self::CH0_AL3_TRANS_COUNT_OFFSET) & Self::CH0_AL3_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH0_AL3_TRANS_COUNT_MASK)
+                | ((value << Self::CH0_AL3_TRANS_COUNT_OFFSET) & Self::CH0_AL3_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -2959,14 +3049,17 @@ impl Ch0Al3TransCountVal {
     /// Read **CH0_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch0_al3_trans_count(&self) -> u32 {
-        (self.bits & Ch0Al3TransCount::CH0_AL3_TRANS_COUNT_MASK) >> Ch0Al3TransCount::CH0_AL3_TRANS_COUNT_OFFSET
+        (self.bits & Ch0Al3TransCount::CH0_AL3_TRANS_COUNT_MASK)
+            >> Ch0Al3TransCount::CH0_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH0_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch0_al3_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch0Al3TransCount::CH0_AL3_TRANS_COUNT_MASK) | ((value << Ch0Al3TransCount::CH0_AL3_TRANS_COUNT_OFFSET) & Ch0Al3TransCount::CH0_AL3_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch0Al3TransCount::CH0_AL3_TRANS_COUNT_MASK)
+                | ((value << Ch0Al3TransCount::CH0_AL3_TRANS_COUNT_OFFSET)
+                    & Ch0Al3TransCount::CH0_AL3_TRANS_COUNT_MASK),
         }
     }
 }
@@ -3034,13 +3127,18 @@ impl Ch0Al3ReadAddrTrig {
     /// **CH0_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch0_al3_read_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH0_AL3_READ_ADDR_TRIG_MASK) >> Self::CH0_AL3_READ_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH0_AL3_READ_ADDR_TRIG_MASK)
+            >> Self::CH0_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH0_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch0_al3_read_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH0_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH0_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH0_AL3_READ_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH0_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Self::CH0_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Self::CH0_AL3_READ_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -3069,14 +3167,17 @@ impl Ch0Al3ReadAddrTrigVal {
     /// Read **CH0_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch0_al3_read_addr_trig(&self) -> u32 {
-        (self.bits & Ch0Al3ReadAddrTrig::CH0_AL3_READ_ADDR_TRIG_MASK) >> Ch0Al3ReadAddrTrig::CH0_AL3_READ_ADDR_TRIG_OFFSET
+        (self.bits & Ch0Al3ReadAddrTrig::CH0_AL3_READ_ADDR_TRIG_MASK)
+            >> Ch0Al3ReadAddrTrig::CH0_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH0_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch0_al3_read_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch0Al3ReadAddrTrig::CH0_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch0Al3ReadAddrTrig::CH0_AL3_READ_ADDR_TRIG_OFFSET) & Ch0Al3ReadAddrTrig::CH0_AL3_READ_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch0Al3ReadAddrTrig::CH0_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Ch0Al3ReadAddrTrig::CH0_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Ch0Al3ReadAddrTrig::CH0_AL3_READ_ADDR_TRIG_MASK),
         }
     }
 }
@@ -3158,7 +3259,10 @@ impl Ch1ReadAddr {
     /// This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
     #[inline(always)]
     pub fn write_ch1_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH1_READ_ADDR_MASK) | ((value << Self::CH1_READ_ADDR_OFFSET) & Self::CH1_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH1_READ_ADDR_MASK)
+                | ((value << Self::CH1_READ_ADDR_OFFSET) & Self::CH1_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -3204,7 +3308,8 @@ impl Ch1ReadAddrVal {
     #[inline(always)]
     pub const fn with_ch1_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch1ReadAddr::CH1_READ_ADDR_MASK) | ((value << Ch1ReadAddr::CH1_READ_ADDR_OFFSET) & Ch1ReadAddr::CH1_READ_ADDR_MASK)
+            bits: (self.bits & !Ch1ReadAddr::CH1_READ_ADDR_MASK)
+                | ((value << Ch1ReadAddr::CH1_READ_ADDR_OFFSET) & Ch1ReadAddr::CH1_READ_ADDR_MASK),
         }
     }
 }
@@ -3286,7 +3391,10 @@ impl Ch1WriteAddr {
     /// This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
     #[inline(always)]
     pub fn write_ch1_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH1_WRITE_ADDR_MASK) | ((value << Self::CH1_WRITE_ADDR_OFFSET) & Self::CH1_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH1_WRITE_ADDR_MASK)
+                | ((value << Self::CH1_WRITE_ADDR_OFFSET) & Self::CH1_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -3332,7 +3440,9 @@ impl Ch1WriteAddrVal {
     #[inline(always)]
     pub const fn with_ch1_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch1WriteAddr::CH1_WRITE_ADDR_MASK) | ((value << Ch1WriteAddr::CH1_WRITE_ADDR_OFFSET) & Ch1WriteAddr::CH1_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch1WriteAddr::CH1_WRITE_ADDR_MASK)
+                | ((value << Ch1WriteAddr::CH1_WRITE_ADDR_OFFSET)
+                    & Ch1WriteAddr::CH1_WRITE_ADDR_MASK),
         }
     }
 }
@@ -3452,7 +3562,9 @@ impl Ch1TransCount {
     /// All other values are reserved.
     #[inline(always)]
     pub fn write_mode(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK)
+        });
     }
 
     /// **COUNT** `[27:0]` (RW)
@@ -3476,7 +3588,9 @@ impl Ch1TransCount {
     /// The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
     #[inline(always)]
     pub fn write_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK)
+        });
     }
 }
 
@@ -3540,7 +3654,8 @@ impl Ch1TransCountVal {
     #[inline(always)]
     pub const fn with_mode(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch1TransCount::MODE_MASK) | ((value << Ch1TransCount::MODE_OFFSET) & Ch1TransCount::MODE_MASK)
+            bits: (self.bits & !Ch1TransCount::MODE_MASK)
+                | ((value << Ch1TransCount::MODE_OFFSET) & Ch1TransCount::MODE_MASK),
         }
     }
 
@@ -3554,7 +3669,8 @@ impl Ch1TransCountVal {
     #[inline(always)]
     pub const fn with_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch1TransCount::COUNT_MASK) | ((value << Ch1TransCount::COUNT_OFFSET) & Ch1TransCount::COUNT_MASK)
+            bits: (self.bits & !Ch1TransCount::COUNT_MASK)
+                | ((value << Ch1TransCount::COUNT_OFFSET) & Ch1TransCount::COUNT_MASK),
         }
     }
 }
@@ -4262,7 +4378,9 @@ impl Ch1CtrlTrig {
     /// 0x0 to 0x3a -> select DREQ n as TREQ
     #[inline(always)]
     pub fn write_treq_sel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK)
+        });
     }
 
     /// **CHAIN_TO** `[16:13]` (RW)
@@ -4280,7 +4398,9 @@ impl Ch1CtrlTrig {
     /// Note this field resets to 0, so channels 1 and above will chain to channel 0 by default. Set this field to avoid this behaviour.
     #[inline(always)]
     pub fn write_chain_to(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK)
+        });
     }
 
     /// **RING_SEL** `[12]` (RW)
@@ -4319,7 +4439,9 @@ impl Ch1CtrlTrig {
     /// Ring sizes between 2 and 32768 bytes are possible. This can apply to either read or write addresses, based on value of RING_SEL.
     #[inline(always)]
     pub fn write_ring_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK)
+        });
     }
 
     /// **INCR_WRITE_REV** `[7]` (RW)
@@ -4419,7 +4541,9 @@ impl Ch1CtrlTrig {
     /// Set the size of each bus transfer (byte/halfword/word). READ_ADDR and WRITE_ADDR advance by this amount (1/2/4 bytes) with each transfer.
     #[inline(always)]
     pub fn write_data_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK)
+        });
     }
 
     /// **HIGH_PRIORITY** `[1]` (RW)
@@ -4665,7 +4789,7 @@ impl Ch1CtrlTrigVal {
                 self.bits | Ch1CtrlTrig::READ_ERROR_MASK
             } else {
                 self.bits & !Ch1CtrlTrig::READ_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -4680,7 +4804,7 @@ impl Ch1CtrlTrigVal {
                 self.bits | Ch1CtrlTrig::WRITE_ERROR_MASK
             } else {
                 self.bits & !Ch1CtrlTrig::WRITE_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -4695,7 +4819,7 @@ impl Ch1CtrlTrigVal {
                 self.bits | Ch1CtrlTrig::SNIFF_EN_MASK
             } else {
                 self.bits & !Ch1CtrlTrig::SNIFF_EN_MASK
-            }
+            },
         }
     }
 
@@ -4710,7 +4834,7 @@ impl Ch1CtrlTrigVal {
                 self.bits | Ch1CtrlTrig::BSWAP_MASK
             } else {
                 self.bits & !Ch1CtrlTrig::BSWAP_MASK
-            }
+            },
         }
     }
 
@@ -4725,7 +4849,7 @@ impl Ch1CtrlTrigVal {
                 self.bits | Ch1CtrlTrig::IRQ_QUIET_MASK
             } else {
                 self.bits & !Ch1CtrlTrig::IRQ_QUIET_MASK
-            }
+            },
         }
     }
 
@@ -4737,7 +4861,8 @@ impl Ch1CtrlTrigVal {
     #[inline(always)]
     pub const fn with_treq_sel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch1CtrlTrig::TREQ_SEL_MASK) | ((value << Ch1CtrlTrig::TREQ_SEL_OFFSET) & Ch1CtrlTrig::TREQ_SEL_MASK)
+            bits: (self.bits & !Ch1CtrlTrig::TREQ_SEL_MASK)
+                | ((value << Ch1CtrlTrig::TREQ_SEL_OFFSET) & Ch1CtrlTrig::TREQ_SEL_MASK),
         }
     }
 
@@ -4748,7 +4873,8 @@ impl Ch1CtrlTrigVal {
     #[inline(always)]
     pub const fn with_chain_to(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch1CtrlTrig::CHAIN_TO_MASK) | ((value << Ch1CtrlTrig::CHAIN_TO_OFFSET) & Ch1CtrlTrig::CHAIN_TO_MASK)
+            bits: (self.bits & !Ch1CtrlTrig::CHAIN_TO_MASK)
+                | ((value << Ch1CtrlTrig::CHAIN_TO_OFFSET) & Ch1CtrlTrig::CHAIN_TO_MASK),
         }
     }
 
@@ -4763,7 +4889,7 @@ impl Ch1CtrlTrigVal {
                 self.bits | Ch1CtrlTrig::RING_SEL_MASK
             } else {
                 self.bits & !Ch1CtrlTrig::RING_SEL_MASK
-            }
+            },
         }
     }
 
@@ -4774,7 +4900,8 @@ impl Ch1CtrlTrigVal {
     #[inline(always)]
     pub const fn with_ring_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch1CtrlTrig::RING_SIZE_MASK) | ((value << Ch1CtrlTrig::RING_SIZE_OFFSET) & Ch1CtrlTrig::RING_SIZE_MASK)
+            bits: (self.bits & !Ch1CtrlTrig::RING_SIZE_MASK)
+                | ((value << Ch1CtrlTrig::RING_SIZE_OFFSET) & Ch1CtrlTrig::RING_SIZE_MASK),
         }
     }
 
@@ -4789,7 +4916,7 @@ impl Ch1CtrlTrigVal {
                 self.bits | Ch1CtrlTrig::INCR_WRITE_REV_MASK
             } else {
                 self.bits & !Ch1CtrlTrig::INCR_WRITE_REV_MASK
-            }
+            },
         }
     }
 
@@ -4804,7 +4931,7 @@ impl Ch1CtrlTrigVal {
                 self.bits | Ch1CtrlTrig::INCR_WRITE_MASK
             } else {
                 self.bits & !Ch1CtrlTrig::INCR_WRITE_MASK
-            }
+            },
         }
     }
 
@@ -4819,7 +4946,7 @@ impl Ch1CtrlTrigVal {
                 self.bits | Ch1CtrlTrig::INCR_READ_REV_MASK
             } else {
                 self.bits & !Ch1CtrlTrig::INCR_READ_REV_MASK
-            }
+            },
         }
     }
 
@@ -4834,7 +4961,7 @@ impl Ch1CtrlTrigVal {
                 self.bits | Ch1CtrlTrig::INCR_READ_MASK
             } else {
                 self.bits & !Ch1CtrlTrig::INCR_READ_MASK
-            }
+            },
         }
     }
 
@@ -4844,7 +4971,8 @@ impl Ch1CtrlTrigVal {
     #[inline(always)]
     pub const fn with_data_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch1CtrlTrig::DATA_SIZE_MASK) | ((value << Ch1CtrlTrig::DATA_SIZE_OFFSET) & Ch1CtrlTrig::DATA_SIZE_MASK)
+            bits: (self.bits & !Ch1CtrlTrig::DATA_SIZE_MASK)
+                | ((value << Ch1CtrlTrig::DATA_SIZE_OFFSET) & Ch1CtrlTrig::DATA_SIZE_MASK),
         }
     }
 
@@ -4859,7 +4987,7 @@ impl Ch1CtrlTrigVal {
                 self.bits | Ch1CtrlTrig::HIGH_PRIORITY_MASK
             } else {
                 self.bits & !Ch1CtrlTrig::HIGH_PRIORITY_MASK
-            }
+            },
         }
     }
 
@@ -4874,7 +5002,7 @@ impl Ch1CtrlTrigVal {
                 self.bits | Ch1CtrlTrig::EN_MASK
             } else {
                 self.bits & !Ch1CtrlTrig::EN_MASK
-            }
+            },
         }
     }
 }
@@ -4946,7 +5074,10 @@ impl Ch1Al1Ctrl {
     /// Write **CH1_AL1_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch1_al1_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH1_AL1_CTRL_MASK) | ((value << Self::CH1_AL1_CTRL_OFFSET) & Self::CH1_AL1_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH1_AL1_CTRL_MASK)
+                | ((value << Self::CH1_AL1_CTRL_OFFSET) & Self::CH1_AL1_CTRL_MASK)
+        });
     }
 }
 
@@ -4982,7 +5113,8 @@ impl Ch1Al1CtrlVal {
     #[inline(always)]
     pub const fn with_ch1_al1_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch1Al1Ctrl::CH1_AL1_CTRL_MASK) | ((value << Ch1Al1Ctrl::CH1_AL1_CTRL_OFFSET) & Ch1Al1Ctrl::CH1_AL1_CTRL_MASK)
+            bits: (self.bits & !Ch1Al1Ctrl::CH1_AL1_CTRL_MASK)
+                | ((value << Ch1Al1Ctrl::CH1_AL1_CTRL_OFFSET) & Ch1Al1Ctrl::CH1_AL1_CTRL_MASK),
         }
     }
 }
@@ -5054,7 +5186,10 @@ impl Ch1Al1ReadAddr {
     /// Write **CH1_AL1_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch1_al1_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH1_AL1_READ_ADDR_MASK) | ((value << Self::CH1_AL1_READ_ADDR_OFFSET) & Self::CH1_AL1_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH1_AL1_READ_ADDR_MASK)
+                | ((value << Self::CH1_AL1_READ_ADDR_OFFSET) & Self::CH1_AL1_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -5083,14 +5218,17 @@ impl Ch1Al1ReadAddrVal {
     /// Read **CH1_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch1_al1_read_addr(&self) -> u32 {
-        (self.bits & Ch1Al1ReadAddr::CH1_AL1_READ_ADDR_MASK) >> Ch1Al1ReadAddr::CH1_AL1_READ_ADDR_OFFSET
+        (self.bits & Ch1Al1ReadAddr::CH1_AL1_READ_ADDR_MASK)
+            >> Ch1Al1ReadAddr::CH1_AL1_READ_ADDR_OFFSET
     }
 
     /// Set **CH1_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch1_al1_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch1Al1ReadAddr::CH1_AL1_READ_ADDR_MASK) | ((value << Ch1Al1ReadAddr::CH1_AL1_READ_ADDR_OFFSET) & Ch1Al1ReadAddr::CH1_AL1_READ_ADDR_MASK)
+            bits: (self.bits & !Ch1Al1ReadAddr::CH1_AL1_READ_ADDR_MASK)
+                | ((value << Ch1Al1ReadAddr::CH1_AL1_READ_ADDR_OFFSET)
+                    & Ch1Al1ReadAddr::CH1_AL1_READ_ADDR_MASK),
         }
     }
 }
@@ -5162,7 +5300,10 @@ impl Ch1Al1WriteAddr {
     /// Write **CH1_AL1_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch1_al1_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH1_AL1_WRITE_ADDR_MASK) | ((value << Self::CH1_AL1_WRITE_ADDR_OFFSET) & Self::CH1_AL1_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH1_AL1_WRITE_ADDR_MASK)
+                | ((value << Self::CH1_AL1_WRITE_ADDR_OFFSET) & Self::CH1_AL1_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -5191,14 +5332,17 @@ impl Ch1Al1WriteAddrVal {
     /// Read **CH1_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch1_al1_write_addr(&self) -> u32 {
-        (self.bits & Ch1Al1WriteAddr::CH1_AL1_WRITE_ADDR_MASK) >> Ch1Al1WriteAddr::CH1_AL1_WRITE_ADDR_OFFSET
+        (self.bits & Ch1Al1WriteAddr::CH1_AL1_WRITE_ADDR_MASK)
+            >> Ch1Al1WriteAddr::CH1_AL1_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH1_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch1_al1_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch1Al1WriteAddr::CH1_AL1_WRITE_ADDR_MASK) | ((value << Ch1Al1WriteAddr::CH1_AL1_WRITE_ADDR_OFFSET) & Ch1Al1WriteAddr::CH1_AL1_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch1Al1WriteAddr::CH1_AL1_WRITE_ADDR_MASK)
+                | ((value << Ch1Al1WriteAddr::CH1_AL1_WRITE_ADDR_OFFSET)
+                    & Ch1Al1WriteAddr::CH1_AL1_WRITE_ADDR_MASK),
         }
     }
 }
@@ -5266,13 +5410,18 @@ impl Ch1Al1TransCountTrig {
     /// **CH1_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch1_al1_trans_count_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH1_AL1_TRANS_COUNT_TRIG_MASK) >> Self::CH1_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH1_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Self::CH1_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Write **CH1_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch1_al1_trans_count_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH1_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH1_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH1_AL1_TRANS_COUNT_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH1_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Self::CH1_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Self::CH1_AL1_TRANS_COUNT_TRIG_MASK)
+        });
     }
 }
 
@@ -5301,14 +5450,17 @@ impl Ch1Al1TransCountTrigVal {
     /// Read **CH1_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch1_al1_trans_count_trig(&self) -> u32 {
-        (self.bits & Ch1Al1TransCountTrig::CH1_AL1_TRANS_COUNT_TRIG_MASK) >> Ch1Al1TransCountTrig::CH1_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.bits & Ch1Al1TransCountTrig::CH1_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Ch1Al1TransCountTrig::CH1_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Set **CH1_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch1_al1_trans_count_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch1Al1TransCountTrig::CH1_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch1Al1TransCountTrig::CH1_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch1Al1TransCountTrig::CH1_AL1_TRANS_COUNT_TRIG_MASK)
+            bits: (self.bits & !Ch1Al1TransCountTrig::CH1_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Ch1Al1TransCountTrig::CH1_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Ch1Al1TransCountTrig::CH1_AL1_TRANS_COUNT_TRIG_MASK),
         }
     }
 }
@@ -5380,7 +5532,10 @@ impl Ch1Al2Ctrl {
     /// Write **CH1_AL2_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch1_al2_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH1_AL2_CTRL_MASK) | ((value << Self::CH1_AL2_CTRL_OFFSET) & Self::CH1_AL2_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH1_AL2_CTRL_MASK)
+                | ((value << Self::CH1_AL2_CTRL_OFFSET) & Self::CH1_AL2_CTRL_MASK)
+        });
     }
 }
 
@@ -5416,7 +5571,8 @@ impl Ch1Al2CtrlVal {
     #[inline(always)]
     pub const fn with_ch1_al2_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch1Al2Ctrl::CH1_AL2_CTRL_MASK) | ((value << Ch1Al2Ctrl::CH1_AL2_CTRL_OFFSET) & Ch1Al2Ctrl::CH1_AL2_CTRL_MASK)
+            bits: (self.bits & !Ch1Al2Ctrl::CH1_AL2_CTRL_MASK)
+                | ((value << Ch1Al2Ctrl::CH1_AL2_CTRL_OFFSET) & Ch1Al2Ctrl::CH1_AL2_CTRL_MASK),
         }
     }
 }
@@ -5482,13 +5638,17 @@ impl Ch1Al2TransCount {
     /// **CH1_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch1_al2_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH1_AL2_TRANS_COUNT_MASK) >> Self::CH1_AL2_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH1_AL2_TRANS_COUNT_MASK)
+            >> Self::CH1_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH1_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch1_al2_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH1_AL2_TRANS_COUNT_MASK) | ((value << Self::CH1_AL2_TRANS_COUNT_OFFSET) & Self::CH1_AL2_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH1_AL2_TRANS_COUNT_MASK)
+                | ((value << Self::CH1_AL2_TRANS_COUNT_OFFSET) & Self::CH1_AL2_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -5517,14 +5677,17 @@ impl Ch1Al2TransCountVal {
     /// Read **CH1_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch1_al2_trans_count(&self) -> u32 {
-        (self.bits & Ch1Al2TransCount::CH1_AL2_TRANS_COUNT_MASK) >> Ch1Al2TransCount::CH1_AL2_TRANS_COUNT_OFFSET
+        (self.bits & Ch1Al2TransCount::CH1_AL2_TRANS_COUNT_MASK)
+            >> Ch1Al2TransCount::CH1_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH1_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch1_al2_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch1Al2TransCount::CH1_AL2_TRANS_COUNT_MASK) | ((value << Ch1Al2TransCount::CH1_AL2_TRANS_COUNT_OFFSET) & Ch1Al2TransCount::CH1_AL2_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch1Al2TransCount::CH1_AL2_TRANS_COUNT_MASK)
+                | ((value << Ch1Al2TransCount::CH1_AL2_TRANS_COUNT_OFFSET)
+                    & Ch1Al2TransCount::CH1_AL2_TRANS_COUNT_MASK),
         }
     }
 }
@@ -5596,7 +5759,10 @@ impl Ch1Al2ReadAddr {
     /// Write **CH1_AL2_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch1_al2_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH1_AL2_READ_ADDR_MASK) | ((value << Self::CH1_AL2_READ_ADDR_OFFSET) & Self::CH1_AL2_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH1_AL2_READ_ADDR_MASK)
+                | ((value << Self::CH1_AL2_READ_ADDR_OFFSET) & Self::CH1_AL2_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -5625,14 +5791,17 @@ impl Ch1Al2ReadAddrVal {
     /// Read **CH1_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch1_al2_read_addr(&self) -> u32 {
-        (self.bits & Ch1Al2ReadAddr::CH1_AL2_READ_ADDR_MASK) >> Ch1Al2ReadAddr::CH1_AL2_READ_ADDR_OFFSET
+        (self.bits & Ch1Al2ReadAddr::CH1_AL2_READ_ADDR_MASK)
+            >> Ch1Al2ReadAddr::CH1_AL2_READ_ADDR_OFFSET
     }
 
     /// Set **CH1_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch1_al2_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch1Al2ReadAddr::CH1_AL2_READ_ADDR_MASK) | ((value << Ch1Al2ReadAddr::CH1_AL2_READ_ADDR_OFFSET) & Ch1Al2ReadAddr::CH1_AL2_READ_ADDR_MASK)
+            bits: (self.bits & !Ch1Al2ReadAddr::CH1_AL2_READ_ADDR_MASK)
+                | ((value << Ch1Al2ReadAddr::CH1_AL2_READ_ADDR_OFFSET)
+                    & Ch1Al2ReadAddr::CH1_AL2_READ_ADDR_MASK),
         }
     }
 }
@@ -5700,13 +5869,18 @@ impl Ch1Al2WriteAddrTrig {
     /// **CH1_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch1_al2_write_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH1_AL2_WRITE_ADDR_TRIG_MASK) >> Self::CH1_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH1_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Self::CH1_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH1_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch1_al2_write_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH1_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH1_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH1_AL2_WRITE_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH1_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Self::CH1_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Self::CH1_AL2_WRITE_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -5735,14 +5909,17 @@ impl Ch1Al2WriteAddrTrigVal {
     /// Read **CH1_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch1_al2_write_addr_trig(&self) -> u32 {
-        (self.bits & Ch1Al2WriteAddrTrig::CH1_AL2_WRITE_ADDR_TRIG_MASK) >> Ch1Al2WriteAddrTrig::CH1_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.bits & Ch1Al2WriteAddrTrig::CH1_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Ch1Al2WriteAddrTrig::CH1_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH1_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch1_al2_write_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch1Al2WriteAddrTrig::CH1_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch1Al2WriteAddrTrig::CH1_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch1Al2WriteAddrTrig::CH1_AL2_WRITE_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch1Al2WriteAddrTrig::CH1_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Ch1Al2WriteAddrTrig::CH1_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Ch1Al2WriteAddrTrig::CH1_AL2_WRITE_ADDR_TRIG_MASK),
         }
     }
 }
@@ -5814,7 +5991,10 @@ impl Ch1Al3Ctrl {
     /// Write **CH1_AL3_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch1_al3_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH1_AL3_CTRL_MASK) | ((value << Self::CH1_AL3_CTRL_OFFSET) & Self::CH1_AL3_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH1_AL3_CTRL_MASK)
+                | ((value << Self::CH1_AL3_CTRL_OFFSET) & Self::CH1_AL3_CTRL_MASK)
+        });
     }
 }
 
@@ -5850,7 +6030,8 @@ impl Ch1Al3CtrlVal {
     #[inline(always)]
     pub const fn with_ch1_al3_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch1Al3Ctrl::CH1_AL3_CTRL_MASK) | ((value << Ch1Al3Ctrl::CH1_AL3_CTRL_OFFSET) & Ch1Al3Ctrl::CH1_AL3_CTRL_MASK)
+            bits: (self.bits & !Ch1Al3Ctrl::CH1_AL3_CTRL_MASK)
+                | ((value << Ch1Al3Ctrl::CH1_AL3_CTRL_OFFSET) & Ch1Al3Ctrl::CH1_AL3_CTRL_MASK),
         }
     }
 }
@@ -5922,7 +6103,10 @@ impl Ch1Al3WriteAddr {
     /// Write **CH1_AL3_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch1_al3_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH1_AL3_WRITE_ADDR_MASK) | ((value << Self::CH1_AL3_WRITE_ADDR_OFFSET) & Self::CH1_AL3_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH1_AL3_WRITE_ADDR_MASK)
+                | ((value << Self::CH1_AL3_WRITE_ADDR_OFFSET) & Self::CH1_AL3_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -5951,14 +6135,17 @@ impl Ch1Al3WriteAddrVal {
     /// Read **CH1_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch1_al3_write_addr(&self) -> u32 {
-        (self.bits & Ch1Al3WriteAddr::CH1_AL3_WRITE_ADDR_MASK) >> Ch1Al3WriteAddr::CH1_AL3_WRITE_ADDR_OFFSET
+        (self.bits & Ch1Al3WriteAddr::CH1_AL3_WRITE_ADDR_MASK)
+            >> Ch1Al3WriteAddr::CH1_AL3_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH1_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch1_al3_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch1Al3WriteAddr::CH1_AL3_WRITE_ADDR_MASK) | ((value << Ch1Al3WriteAddr::CH1_AL3_WRITE_ADDR_OFFSET) & Ch1Al3WriteAddr::CH1_AL3_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch1Al3WriteAddr::CH1_AL3_WRITE_ADDR_MASK)
+                | ((value << Ch1Al3WriteAddr::CH1_AL3_WRITE_ADDR_OFFSET)
+                    & Ch1Al3WriteAddr::CH1_AL3_WRITE_ADDR_MASK),
         }
     }
 }
@@ -6024,13 +6211,17 @@ impl Ch1Al3TransCount {
     /// **CH1_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch1_al3_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH1_AL3_TRANS_COUNT_MASK) >> Self::CH1_AL3_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH1_AL3_TRANS_COUNT_MASK)
+            >> Self::CH1_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH1_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch1_al3_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH1_AL3_TRANS_COUNT_MASK) | ((value << Self::CH1_AL3_TRANS_COUNT_OFFSET) & Self::CH1_AL3_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH1_AL3_TRANS_COUNT_MASK)
+                | ((value << Self::CH1_AL3_TRANS_COUNT_OFFSET) & Self::CH1_AL3_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -6059,14 +6250,17 @@ impl Ch1Al3TransCountVal {
     /// Read **CH1_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch1_al3_trans_count(&self) -> u32 {
-        (self.bits & Ch1Al3TransCount::CH1_AL3_TRANS_COUNT_MASK) >> Ch1Al3TransCount::CH1_AL3_TRANS_COUNT_OFFSET
+        (self.bits & Ch1Al3TransCount::CH1_AL3_TRANS_COUNT_MASK)
+            >> Ch1Al3TransCount::CH1_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH1_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch1_al3_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch1Al3TransCount::CH1_AL3_TRANS_COUNT_MASK) | ((value << Ch1Al3TransCount::CH1_AL3_TRANS_COUNT_OFFSET) & Ch1Al3TransCount::CH1_AL3_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch1Al3TransCount::CH1_AL3_TRANS_COUNT_MASK)
+                | ((value << Ch1Al3TransCount::CH1_AL3_TRANS_COUNT_OFFSET)
+                    & Ch1Al3TransCount::CH1_AL3_TRANS_COUNT_MASK),
         }
     }
 }
@@ -6134,13 +6328,18 @@ impl Ch1Al3ReadAddrTrig {
     /// **CH1_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch1_al3_read_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH1_AL3_READ_ADDR_TRIG_MASK) >> Self::CH1_AL3_READ_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH1_AL3_READ_ADDR_TRIG_MASK)
+            >> Self::CH1_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH1_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch1_al3_read_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH1_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH1_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH1_AL3_READ_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH1_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Self::CH1_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Self::CH1_AL3_READ_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -6169,14 +6368,17 @@ impl Ch1Al3ReadAddrTrigVal {
     /// Read **CH1_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch1_al3_read_addr_trig(&self) -> u32 {
-        (self.bits & Ch1Al3ReadAddrTrig::CH1_AL3_READ_ADDR_TRIG_MASK) >> Ch1Al3ReadAddrTrig::CH1_AL3_READ_ADDR_TRIG_OFFSET
+        (self.bits & Ch1Al3ReadAddrTrig::CH1_AL3_READ_ADDR_TRIG_MASK)
+            >> Ch1Al3ReadAddrTrig::CH1_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH1_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch1_al3_read_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch1Al3ReadAddrTrig::CH1_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch1Al3ReadAddrTrig::CH1_AL3_READ_ADDR_TRIG_OFFSET) & Ch1Al3ReadAddrTrig::CH1_AL3_READ_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch1Al3ReadAddrTrig::CH1_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Ch1Al3ReadAddrTrig::CH1_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Ch1Al3ReadAddrTrig::CH1_AL3_READ_ADDR_TRIG_MASK),
         }
     }
 }
@@ -6258,7 +6460,10 @@ impl Ch2ReadAddr {
     /// This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
     #[inline(always)]
     pub fn write_ch2_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH2_READ_ADDR_MASK) | ((value << Self::CH2_READ_ADDR_OFFSET) & Self::CH2_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH2_READ_ADDR_MASK)
+                | ((value << Self::CH2_READ_ADDR_OFFSET) & Self::CH2_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -6304,7 +6509,8 @@ impl Ch2ReadAddrVal {
     #[inline(always)]
     pub const fn with_ch2_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch2ReadAddr::CH2_READ_ADDR_MASK) | ((value << Ch2ReadAddr::CH2_READ_ADDR_OFFSET) & Ch2ReadAddr::CH2_READ_ADDR_MASK)
+            bits: (self.bits & !Ch2ReadAddr::CH2_READ_ADDR_MASK)
+                | ((value << Ch2ReadAddr::CH2_READ_ADDR_OFFSET) & Ch2ReadAddr::CH2_READ_ADDR_MASK),
         }
     }
 }
@@ -6386,7 +6592,10 @@ impl Ch2WriteAddr {
     /// This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
     #[inline(always)]
     pub fn write_ch2_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH2_WRITE_ADDR_MASK) | ((value << Self::CH2_WRITE_ADDR_OFFSET) & Self::CH2_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH2_WRITE_ADDR_MASK)
+                | ((value << Self::CH2_WRITE_ADDR_OFFSET) & Self::CH2_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -6432,7 +6641,9 @@ impl Ch2WriteAddrVal {
     #[inline(always)]
     pub const fn with_ch2_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch2WriteAddr::CH2_WRITE_ADDR_MASK) | ((value << Ch2WriteAddr::CH2_WRITE_ADDR_OFFSET) & Ch2WriteAddr::CH2_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch2WriteAddr::CH2_WRITE_ADDR_MASK)
+                | ((value << Ch2WriteAddr::CH2_WRITE_ADDR_OFFSET)
+                    & Ch2WriteAddr::CH2_WRITE_ADDR_MASK),
         }
     }
 }
@@ -6552,7 +6763,9 @@ impl Ch2TransCount {
     /// All other values are reserved.
     #[inline(always)]
     pub fn write_mode(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK)
+        });
     }
 
     /// **COUNT** `[27:0]` (RW)
@@ -6576,7 +6789,9 @@ impl Ch2TransCount {
     /// The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
     #[inline(always)]
     pub fn write_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK)
+        });
     }
 }
 
@@ -6640,7 +6855,8 @@ impl Ch2TransCountVal {
     #[inline(always)]
     pub const fn with_mode(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch2TransCount::MODE_MASK) | ((value << Ch2TransCount::MODE_OFFSET) & Ch2TransCount::MODE_MASK)
+            bits: (self.bits & !Ch2TransCount::MODE_MASK)
+                | ((value << Ch2TransCount::MODE_OFFSET) & Ch2TransCount::MODE_MASK),
         }
     }
 
@@ -6654,7 +6870,8 @@ impl Ch2TransCountVal {
     #[inline(always)]
     pub const fn with_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch2TransCount::COUNT_MASK) | ((value << Ch2TransCount::COUNT_OFFSET) & Ch2TransCount::COUNT_MASK)
+            bits: (self.bits & !Ch2TransCount::COUNT_MASK)
+                | ((value << Ch2TransCount::COUNT_OFFSET) & Ch2TransCount::COUNT_MASK),
         }
     }
 }
@@ -7362,7 +7579,9 @@ impl Ch2CtrlTrig {
     /// 0x0 to 0x3a -> select DREQ n as TREQ
     #[inline(always)]
     pub fn write_treq_sel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK)
+        });
     }
 
     /// **CHAIN_TO** `[16:13]` (RW)
@@ -7380,7 +7599,9 @@ impl Ch2CtrlTrig {
     /// Note this field resets to 0, so channels 1 and above will chain to channel 0 by default. Set this field to avoid this behaviour.
     #[inline(always)]
     pub fn write_chain_to(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK)
+        });
     }
 
     /// **RING_SEL** `[12]` (RW)
@@ -7419,7 +7640,9 @@ impl Ch2CtrlTrig {
     /// Ring sizes between 2 and 32768 bytes are possible. This can apply to either read or write addresses, based on value of RING_SEL.
     #[inline(always)]
     pub fn write_ring_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK)
+        });
     }
 
     /// **INCR_WRITE_REV** `[7]` (RW)
@@ -7519,7 +7742,9 @@ impl Ch2CtrlTrig {
     /// Set the size of each bus transfer (byte/halfword/word). READ_ADDR and WRITE_ADDR advance by this amount (1/2/4 bytes) with each transfer.
     #[inline(always)]
     pub fn write_data_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK)
+        });
     }
 
     /// **HIGH_PRIORITY** `[1]` (RW)
@@ -7765,7 +7990,7 @@ impl Ch2CtrlTrigVal {
                 self.bits | Ch2CtrlTrig::READ_ERROR_MASK
             } else {
                 self.bits & !Ch2CtrlTrig::READ_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -7780,7 +8005,7 @@ impl Ch2CtrlTrigVal {
                 self.bits | Ch2CtrlTrig::WRITE_ERROR_MASK
             } else {
                 self.bits & !Ch2CtrlTrig::WRITE_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -7795,7 +8020,7 @@ impl Ch2CtrlTrigVal {
                 self.bits | Ch2CtrlTrig::SNIFF_EN_MASK
             } else {
                 self.bits & !Ch2CtrlTrig::SNIFF_EN_MASK
-            }
+            },
         }
     }
 
@@ -7810,7 +8035,7 @@ impl Ch2CtrlTrigVal {
                 self.bits | Ch2CtrlTrig::BSWAP_MASK
             } else {
                 self.bits & !Ch2CtrlTrig::BSWAP_MASK
-            }
+            },
         }
     }
 
@@ -7825,7 +8050,7 @@ impl Ch2CtrlTrigVal {
                 self.bits | Ch2CtrlTrig::IRQ_QUIET_MASK
             } else {
                 self.bits & !Ch2CtrlTrig::IRQ_QUIET_MASK
-            }
+            },
         }
     }
 
@@ -7837,7 +8062,8 @@ impl Ch2CtrlTrigVal {
     #[inline(always)]
     pub const fn with_treq_sel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch2CtrlTrig::TREQ_SEL_MASK) | ((value << Ch2CtrlTrig::TREQ_SEL_OFFSET) & Ch2CtrlTrig::TREQ_SEL_MASK)
+            bits: (self.bits & !Ch2CtrlTrig::TREQ_SEL_MASK)
+                | ((value << Ch2CtrlTrig::TREQ_SEL_OFFSET) & Ch2CtrlTrig::TREQ_SEL_MASK),
         }
     }
 
@@ -7848,7 +8074,8 @@ impl Ch2CtrlTrigVal {
     #[inline(always)]
     pub const fn with_chain_to(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch2CtrlTrig::CHAIN_TO_MASK) | ((value << Ch2CtrlTrig::CHAIN_TO_OFFSET) & Ch2CtrlTrig::CHAIN_TO_MASK)
+            bits: (self.bits & !Ch2CtrlTrig::CHAIN_TO_MASK)
+                | ((value << Ch2CtrlTrig::CHAIN_TO_OFFSET) & Ch2CtrlTrig::CHAIN_TO_MASK),
         }
     }
 
@@ -7863,7 +8090,7 @@ impl Ch2CtrlTrigVal {
                 self.bits | Ch2CtrlTrig::RING_SEL_MASK
             } else {
                 self.bits & !Ch2CtrlTrig::RING_SEL_MASK
-            }
+            },
         }
     }
 
@@ -7874,7 +8101,8 @@ impl Ch2CtrlTrigVal {
     #[inline(always)]
     pub const fn with_ring_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch2CtrlTrig::RING_SIZE_MASK) | ((value << Ch2CtrlTrig::RING_SIZE_OFFSET) & Ch2CtrlTrig::RING_SIZE_MASK)
+            bits: (self.bits & !Ch2CtrlTrig::RING_SIZE_MASK)
+                | ((value << Ch2CtrlTrig::RING_SIZE_OFFSET) & Ch2CtrlTrig::RING_SIZE_MASK),
         }
     }
 
@@ -7889,7 +8117,7 @@ impl Ch2CtrlTrigVal {
                 self.bits | Ch2CtrlTrig::INCR_WRITE_REV_MASK
             } else {
                 self.bits & !Ch2CtrlTrig::INCR_WRITE_REV_MASK
-            }
+            },
         }
     }
 
@@ -7904,7 +8132,7 @@ impl Ch2CtrlTrigVal {
                 self.bits | Ch2CtrlTrig::INCR_WRITE_MASK
             } else {
                 self.bits & !Ch2CtrlTrig::INCR_WRITE_MASK
-            }
+            },
         }
     }
 
@@ -7919,7 +8147,7 @@ impl Ch2CtrlTrigVal {
                 self.bits | Ch2CtrlTrig::INCR_READ_REV_MASK
             } else {
                 self.bits & !Ch2CtrlTrig::INCR_READ_REV_MASK
-            }
+            },
         }
     }
 
@@ -7934,7 +8162,7 @@ impl Ch2CtrlTrigVal {
                 self.bits | Ch2CtrlTrig::INCR_READ_MASK
             } else {
                 self.bits & !Ch2CtrlTrig::INCR_READ_MASK
-            }
+            },
         }
     }
 
@@ -7944,7 +8172,8 @@ impl Ch2CtrlTrigVal {
     #[inline(always)]
     pub const fn with_data_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch2CtrlTrig::DATA_SIZE_MASK) | ((value << Ch2CtrlTrig::DATA_SIZE_OFFSET) & Ch2CtrlTrig::DATA_SIZE_MASK)
+            bits: (self.bits & !Ch2CtrlTrig::DATA_SIZE_MASK)
+                | ((value << Ch2CtrlTrig::DATA_SIZE_OFFSET) & Ch2CtrlTrig::DATA_SIZE_MASK),
         }
     }
 
@@ -7959,7 +8188,7 @@ impl Ch2CtrlTrigVal {
                 self.bits | Ch2CtrlTrig::HIGH_PRIORITY_MASK
             } else {
                 self.bits & !Ch2CtrlTrig::HIGH_PRIORITY_MASK
-            }
+            },
         }
     }
 
@@ -7974,7 +8203,7 @@ impl Ch2CtrlTrigVal {
                 self.bits | Ch2CtrlTrig::EN_MASK
             } else {
                 self.bits & !Ch2CtrlTrig::EN_MASK
-            }
+            },
         }
     }
 }
@@ -8046,7 +8275,10 @@ impl Ch2Al1Ctrl {
     /// Write **CH2_AL1_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch2_al1_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH2_AL1_CTRL_MASK) | ((value << Self::CH2_AL1_CTRL_OFFSET) & Self::CH2_AL1_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH2_AL1_CTRL_MASK)
+                | ((value << Self::CH2_AL1_CTRL_OFFSET) & Self::CH2_AL1_CTRL_MASK)
+        });
     }
 }
 
@@ -8082,7 +8314,8 @@ impl Ch2Al1CtrlVal {
     #[inline(always)]
     pub const fn with_ch2_al1_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch2Al1Ctrl::CH2_AL1_CTRL_MASK) | ((value << Ch2Al1Ctrl::CH2_AL1_CTRL_OFFSET) & Ch2Al1Ctrl::CH2_AL1_CTRL_MASK)
+            bits: (self.bits & !Ch2Al1Ctrl::CH2_AL1_CTRL_MASK)
+                | ((value << Ch2Al1Ctrl::CH2_AL1_CTRL_OFFSET) & Ch2Al1Ctrl::CH2_AL1_CTRL_MASK),
         }
     }
 }
@@ -8154,7 +8387,10 @@ impl Ch2Al1ReadAddr {
     /// Write **CH2_AL1_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch2_al1_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH2_AL1_READ_ADDR_MASK) | ((value << Self::CH2_AL1_READ_ADDR_OFFSET) & Self::CH2_AL1_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH2_AL1_READ_ADDR_MASK)
+                | ((value << Self::CH2_AL1_READ_ADDR_OFFSET) & Self::CH2_AL1_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -8183,14 +8419,17 @@ impl Ch2Al1ReadAddrVal {
     /// Read **CH2_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch2_al1_read_addr(&self) -> u32 {
-        (self.bits & Ch2Al1ReadAddr::CH2_AL1_READ_ADDR_MASK) >> Ch2Al1ReadAddr::CH2_AL1_READ_ADDR_OFFSET
+        (self.bits & Ch2Al1ReadAddr::CH2_AL1_READ_ADDR_MASK)
+            >> Ch2Al1ReadAddr::CH2_AL1_READ_ADDR_OFFSET
     }
 
     /// Set **CH2_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch2_al1_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch2Al1ReadAddr::CH2_AL1_READ_ADDR_MASK) | ((value << Ch2Al1ReadAddr::CH2_AL1_READ_ADDR_OFFSET) & Ch2Al1ReadAddr::CH2_AL1_READ_ADDR_MASK)
+            bits: (self.bits & !Ch2Al1ReadAddr::CH2_AL1_READ_ADDR_MASK)
+                | ((value << Ch2Al1ReadAddr::CH2_AL1_READ_ADDR_OFFSET)
+                    & Ch2Al1ReadAddr::CH2_AL1_READ_ADDR_MASK),
         }
     }
 }
@@ -8262,7 +8501,10 @@ impl Ch2Al1WriteAddr {
     /// Write **CH2_AL1_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch2_al1_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH2_AL1_WRITE_ADDR_MASK) | ((value << Self::CH2_AL1_WRITE_ADDR_OFFSET) & Self::CH2_AL1_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH2_AL1_WRITE_ADDR_MASK)
+                | ((value << Self::CH2_AL1_WRITE_ADDR_OFFSET) & Self::CH2_AL1_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -8291,14 +8533,17 @@ impl Ch2Al1WriteAddrVal {
     /// Read **CH2_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch2_al1_write_addr(&self) -> u32 {
-        (self.bits & Ch2Al1WriteAddr::CH2_AL1_WRITE_ADDR_MASK) >> Ch2Al1WriteAddr::CH2_AL1_WRITE_ADDR_OFFSET
+        (self.bits & Ch2Al1WriteAddr::CH2_AL1_WRITE_ADDR_MASK)
+            >> Ch2Al1WriteAddr::CH2_AL1_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH2_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch2_al1_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch2Al1WriteAddr::CH2_AL1_WRITE_ADDR_MASK) | ((value << Ch2Al1WriteAddr::CH2_AL1_WRITE_ADDR_OFFSET) & Ch2Al1WriteAddr::CH2_AL1_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch2Al1WriteAddr::CH2_AL1_WRITE_ADDR_MASK)
+                | ((value << Ch2Al1WriteAddr::CH2_AL1_WRITE_ADDR_OFFSET)
+                    & Ch2Al1WriteAddr::CH2_AL1_WRITE_ADDR_MASK),
         }
     }
 }
@@ -8366,13 +8611,18 @@ impl Ch2Al1TransCountTrig {
     /// **CH2_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch2_al1_trans_count_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH2_AL1_TRANS_COUNT_TRIG_MASK) >> Self::CH2_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH2_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Self::CH2_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Write **CH2_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch2_al1_trans_count_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH2_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH2_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH2_AL1_TRANS_COUNT_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH2_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Self::CH2_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Self::CH2_AL1_TRANS_COUNT_TRIG_MASK)
+        });
     }
 }
 
@@ -8401,14 +8651,17 @@ impl Ch2Al1TransCountTrigVal {
     /// Read **CH2_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch2_al1_trans_count_trig(&self) -> u32 {
-        (self.bits & Ch2Al1TransCountTrig::CH2_AL1_TRANS_COUNT_TRIG_MASK) >> Ch2Al1TransCountTrig::CH2_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.bits & Ch2Al1TransCountTrig::CH2_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Ch2Al1TransCountTrig::CH2_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Set **CH2_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch2_al1_trans_count_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch2Al1TransCountTrig::CH2_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch2Al1TransCountTrig::CH2_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch2Al1TransCountTrig::CH2_AL1_TRANS_COUNT_TRIG_MASK)
+            bits: (self.bits & !Ch2Al1TransCountTrig::CH2_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Ch2Al1TransCountTrig::CH2_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Ch2Al1TransCountTrig::CH2_AL1_TRANS_COUNT_TRIG_MASK),
         }
     }
 }
@@ -8480,7 +8733,10 @@ impl Ch2Al2Ctrl {
     /// Write **CH2_AL2_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch2_al2_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH2_AL2_CTRL_MASK) | ((value << Self::CH2_AL2_CTRL_OFFSET) & Self::CH2_AL2_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH2_AL2_CTRL_MASK)
+                | ((value << Self::CH2_AL2_CTRL_OFFSET) & Self::CH2_AL2_CTRL_MASK)
+        });
     }
 }
 
@@ -8516,7 +8772,8 @@ impl Ch2Al2CtrlVal {
     #[inline(always)]
     pub const fn with_ch2_al2_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch2Al2Ctrl::CH2_AL2_CTRL_MASK) | ((value << Ch2Al2Ctrl::CH2_AL2_CTRL_OFFSET) & Ch2Al2Ctrl::CH2_AL2_CTRL_MASK)
+            bits: (self.bits & !Ch2Al2Ctrl::CH2_AL2_CTRL_MASK)
+                | ((value << Ch2Al2Ctrl::CH2_AL2_CTRL_OFFSET) & Ch2Al2Ctrl::CH2_AL2_CTRL_MASK),
         }
     }
 }
@@ -8582,13 +8839,17 @@ impl Ch2Al2TransCount {
     /// **CH2_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch2_al2_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH2_AL2_TRANS_COUNT_MASK) >> Self::CH2_AL2_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH2_AL2_TRANS_COUNT_MASK)
+            >> Self::CH2_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH2_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch2_al2_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH2_AL2_TRANS_COUNT_MASK) | ((value << Self::CH2_AL2_TRANS_COUNT_OFFSET) & Self::CH2_AL2_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH2_AL2_TRANS_COUNT_MASK)
+                | ((value << Self::CH2_AL2_TRANS_COUNT_OFFSET) & Self::CH2_AL2_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -8617,14 +8878,17 @@ impl Ch2Al2TransCountVal {
     /// Read **CH2_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch2_al2_trans_count(&self) -> u32 {
-        (self.bits & Ch2Al2TransCount::CH2_AL2_TRANS_COUNT_MASK) >> Ch2Al2TransCount::CH2_AL2_TRANS_COUNT_OFFSET
+        (self.bits & Ch2Al2TransCount::CH2_AL2_TRANS_COUNT_MASK)
+            >> Ch2Al2TransCount::CH2_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH2_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch2_al2_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch2Al2TransCount::CH2_AL2_TRANS_COUNT_MASK) | ((value << Ch2Al2TransCount::CH2_AL2_TRANS_COUNT_OFFSET) & Ch2Al2TransCount::CH2_AL2_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch2Al2TransCount::CH2_AL2_TRANS_COUNT_MASK)
+                | ((value << Ch2Al2TransCount::CH2_AL2_TRANS_COUNT_OFFSET)
+                    & Ch2Al2TransCount::CH2_AL2_TRANS_COUNT_MASK),
         }
     }
 }
@@ -8696,7 +8960,10 @@ impl Ch2Al2ReadAddr {
     /// Write **CH2_AL2_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch2_al2_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH2_AL2_READ_ADDR_MASK) | ((value << Self::CH2_AL2_READ_ADDR_OFFSET) & Self::CH2_AL2_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH2_AL2_READ_ADDR_MASK)
+                | ((value << Self::CH2_AL2_READ_ADDR_OFFSET) & Self::CH2_AL2_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -8725,14 +8992,17 @@ impl Ch2Al2ReadAddrVal {
     /// Read **CH2_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch2_al2_read_addr(&self) -> u32 {
-        (self.bits & Ch2Al2ReadAddr::CH2_AL2_READ_ADDR_MASK) >> Ch2Al2ReadAddr::CH2_AL2_READ_ADDR_OFFSET
+        (self.bits & Ch2Al2ReadAddr::CH2_AL2_READ_ADDR_MASK)
+            >> Ch2Al2ReadAddr::CH2_AL2_READ_ADDR_OFFSET
     }
 
     /// Set **CH2_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch2_al2_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch2Al2ReadAddr::CH2_AL2_READ_ADDR_MASK) | ((value << Ch2Al2ReadAddr::CH2_AL2_READ_ADDR_OFFSET) & Ch2Al2ReadAddr::CH2_AL2_READ_ADDR_MASK)
+            bits: (self.bits & !Ch2Al2ReadAddr::CH2_AL2_READ_ADDR_MASK)
+                | ((value << Ch2Al2ReadAddr::CH2_AL2_READ_ADDR_OFFSET)
+                    & Ch2Al2ReadAddr::CH2_AL2_READ_ADDR_MASK),
         }
     }
 }
@@ -8800,13 +9070,18 @@ impl Ch2Al2WriteAddrTrig {
     /// **CH2_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch2_al2_write_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH2_AL2_WRITE_ADDR_TRIG_MASK) >> Self::CH2_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH2_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Self::CH2_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH2_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch2_al2_write_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH2_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH2_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH2_AL2_WRITE_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH2_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Self::CH2_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Self::CH2_AL2_WRITE_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -8835,14 +9110,17 @@ impl Ch2Al2WriteAddrTrigVal {
     /// Read **CH2_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch2_al2_write_addr_trig(&self) -> u32 {
-        (self.bits & Ch2Al2WriteAddrTrig::CH2_AL2_WRITE_ADDR_TRIG_MASK) >> Ch2Al2WriteAddrTrig::CH2_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.bits & Ch2Al2WriteAddrTrig::CH2_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Ch2Al2WriteAddrTrig::CH2_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH2_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch2_al2_write_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch2Al2WriteAddrTrig::CH2_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch2Al2WriteAddrTrig::CH2_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch2Al2WriteAddrTrig::CH2_AL2_WRITE_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch2Al2WriteAddrTrig::CH2_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Ch2Al2WriteAddrTrig::CH2_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Ch2Al2WriteAddrTrig::CH2_AL2_WRITE_ADDR_TRIG_MASK),
         }
     }
 }
@@ -8914,7 +9192,10 @@ impl Ch2Al3Ctrl {
     /// Write **CH2_AL3_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch2_al3_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH2_AL3_CTRL_MASK) | ((value << Self::CH2_AL3_CTRL_OFFSET) & Self::CH2_AL3_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH2_AL3_CTRL_MASK)
+                | ((value << Self::CH2_AL3_CTRL_OFFSET) & Self::CH2_AL3_CTRL_MASK)
+        });
     }
 }
 
@@ -8950,7 +9231,8 @@ impl Ch2Al3CtrlVal {
     #[inline(always)]
     pub const fn with_ch2_al3_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch2Al3Ctrl::CH2_AL3_CTRL_MASK) | ((value << Ch2Al3Ctrl::CH2_AL3_CTRL_OFFSET) & Ch2Al3Ctrl::CH2_AL3_CTRL_MASK)
+            bits: (self.bits & !Ch2Al3Ctrl::CH2_AL3_CTRL_MASK)
+                | ((value << Ch2Al3Ctrl::CH2_AL3_CTRL_OFFSET) & Ch2Al3Ctrl::CH2_AL3_CTRL_MASK),
         }
     }
 }
@@ -9022,7 +9304,10 @@ impl Ch2Al3WriteAddr {
     /// Write **CH2_AL3_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch2_al3_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH2_AL3_WRITE_ADDR_MASK) | ((value << Self::CH2_AL3_WRITE_ADDR_OFFSET) & Self::CH2_AL3_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH2_AL3_WRITE_ADDR_MASK)
+                | ((value << Self::CH2_AL3_WRITE_ADDR_OFFSET) & Self::CH2_AL3_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -9051,14 +9336,17 @@ impl Ch2Al3WriteAddrVal {
     /// Read **CH2_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch2_al3_write_addr(&self) -> u32 {
-        (self.bits & Ch2Al3WriteAddr::CH2_AL3_WRITE_ADDR_MASK) >> Ch2Al3WriteAddr::CH2_AL3_WRITE_ADDR_OFFSET
+        (self.bits & Ch2Al3WriteAddr::CH2_AL3_WRITE_ADDR_MASK)
+            >> Ch2Al3WriteAddr::CH2_AL3_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH2_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch2_al3_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch2Al3WriteAddr::CH2_AL3_WRITE_ADDR_MASK) | ((value << Ch2Al3WriteAddr::CH2_AL3_WRITE_ADDR_OFFSET) & Ch2Al3WriteAddr::CH2_AL3_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch2Al3WriteAddr::CH2_AL3_WRITE_ADDR_MASK)
+                | ((value << Ch2Al3WriteAddr::CH2_AL3_WRITE_ADDR_OFFSET)
+                    & Ch2Al3WriteAddr::CH2_AL3_WRITE_ADDR_MASK),
         }
     }
 }
@@ -9124,13 +9412,17 @@ impl Ch2Al3TransCount {
     /// **CH2_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch2_al3_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH2_AL3_TRANS_COUNT_MASK) >> Self::CH2_AL3_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH2_AL3_TRANS_COUNT_MASK)
+            >> Self::CH2_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH2_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch2_al3_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH2_AL3_TRANS_COUNT_MASK) | ((value << Self::CH2_AL3_TRANS_COUNT_OFFSET) & Self::CH2_AL3_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH2_AL3_TRANS_COUNT_MASK)
+                | ((value << Self::CH2_AL3_TRANS_COUNT_OFFSET) & Self::CH2_AL3_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -9159,14 +9451,17 @@ impl Ch2Al3TransCountVal {
     /// Read **CH2_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch2_al3_trans_count(&self) -> u32 {
-        (self.bits & Ch2Al3TransCount::CH2_AL3_TRANS_COUNT_MASK) >> Ch2Al3TransCount::CH2_AL3_TRANS_COUNT_OFFSET
+        (self.bits & Ch2Al3TransCount::CH2_AL3_TRANS_COUNT_MASK)
+            >> Ch2Al3TransCount::CH2_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH2_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch2_al3_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch2Al3TransCount::CH2_AL3_TRANS_COUNT_MASK) | ((value << Ch2Al3TransCount::CH2_AL3_TRANS_COUNT_OFFSET) & Ch2Al3TransCount::CH2_AL3_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch2Al3TransCount::CH2_AL3_TRANS_COUNT_MASK)
+                | ((value << Ch2Al3TransCount::CH2_AL3_TRANS_COUNT_OFFSET)
+                    & Ch2Al3TransCount::CH2_AL3_TRANS_COUNT_MASK),
         }
     }
 }
@@ -9234,13 +9529,18 @@ impl Ch2Al3ReadAddrTrig {
     /// **CH2_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch2_al3_read_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH2_AL3_READ_ADDR_TRIG_MASK) >> Self::CH2_AL3_READ_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH2_AL3_READ_ADDR_TRIG_MASK)
+            >> Self::CH2_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH2_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch2_al3_read_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH2_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH2_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH2_AL3_READ_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH2_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Self::CH2_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Self::CH2_AL3_READ_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -9269,14 +9569,17 @@ impl Ch2Al3ReadAddrTrigVal {
     /// Read **CH2_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch2_al3_read_addr_trig(&self) -> u32 {
-        (self.bits & Ch2Al3ReadAddrTrig::CH2_AL3_READ_ADDR_TRIG_MASK) >> Ch2Al3ReadAddrTrig::CH2_AL3_READ_ADDR_TRIG_OFFSET
+        (self.bits & Ch2Al3ReadAddrTrig::CH2_AL3_READ_ADDR_TRIG_MASK)
+            >> Ch2Al3ReadAddrTrig::CH2_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH2_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch2_al3_read_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch2Al3ReadAddrTrig::CH2_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch2Al3ReadAddrTrig::CH2_AL3_READ_ADDR_TRIG_OFFSET) & Ch2Al3ReadAddrTrig::CH2_AL3_READ_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch2Al3ReadAddrTrig::CH2_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Ch2Al3ReadAddrTrig::CH2_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Ch2Al3ReadAddrTrig::CH2_AL3_READ_ADDR_TRIG_MASK),
         }
     }
 }
@@ -9358,7 +9661,10 @@ impl Ch3ReadAddr {
     /// This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
     #[inline(always)]
     pub fn write_ch3_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH3_READ_ADDR_MASK) | ((value << Self::CH3_READ_ADDR_OFFSET) & Self::CH3_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH3_READ_ADDR_MASK)
+                | ((value << Self::CH3_READ_ADDR_OFFSET) & Self::CH3_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -9404,7 +9710,8 @@ impl Ch3ReadAddrVal {
     #[inline(always)]
     pub const fn with_ch3_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch3ReadAddr::CH3_READ_ADDR_MASK) | ((value << Ch3ReadAddr::CH3_READ_ADDR_OFFSET) & Ch3ReadAddr::CH3_READ_ADDR_MASK)
+            bits: (self.bits & !Ch3ReadAddr::CH3_READ_ADDR_MASK)
+                | ((value << Ch3ReadAddr::CH3_READ_ADDR_OFFSET) & Ch3ReadAddr::CH3_READ_ADDR_MASK),
         }
     }
 }
@@ -9486,7 +9793,10 @@ impl Ch3WriteAddr {
     /// This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
     #[inline(always)]
     pub fn write_ch3_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH3_WRITE_ADDR_MASK) | ((value << Self::CH3_WRITE_ADDR_OFFSET) & Self::CH3_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH3_WRITE_ADDR_MASK)
+                | ((value << Self::CH3_WRITE_ADDR_OFFSET) & Self::CH3_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -9532,7 +9842,9 @@ impl Ch3WriteAddrVal {
     #[inline(always)]
     pub const fn with_ch3_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch3WriteAddr::CH3_WRITE_ADDR_MASK) | ((value << Ch3WriteAddr::CH3_WRITE_ADDR_OFFSET) & Ch3WriteAddr::CH3_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch3WriteAddr::CH3_WRITE_ADDR_MASK)
+                | ((value << Ch3WriteAddr::CH3_WRITE_ADDR_OFFSET)
+                    & Ch3WriteAddr::CH3_WRITE_ADDR_MASK),
         }
     }
 }
@@ -9652,7 +9964,9 @@ impl Ch3TransCount {
     /// All other values are reserved.
     #[inline(always)]
     pub fn write_mode(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK)
+        });
     }
 
     /// **COUNT** `[27:0]` (RW)
@@ -9676,7 +9990,9 @@ impl Ch3TransCount {
     /// The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
     #[inline(always)]
     pub fn write_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK)
+        });
     }
 }
 
@@ -9740,7 +10056,8 @@ impl Ch3TransCountVal {
     #[inline(always)]
     pub const fn with_mode(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch3TransCount::MODE_MASK) | ((value << Ch3TransCount::MODE_OFFSET) & Ch3TransCount::MODE_MASK)
+            bits: (self.bits & !Ch3TransCount::MODE_MASK)
+                | ((value << Ch3TransCount::MODE_OFFSET) & Ch3TransCount::MODE_MASK),
         }
     }
 
@@ -9754,7 +10071,8 @@ impl Ch3TransCountVal {
     #[inline(always)]
     pub const fn with_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch3TransCount::COUNT_MASK) | ((value << Ch3TransCount::COUNT_OFFSET) & Ch3TransCount::COUNT_MASK)
+            bits: (self.bits & !Ch3TransCount::COUNT_MASK)
+                | ((value << Ch3TransCount::COUNT_OFFSET) & Ch3TransCount::COUNT_MASK),
         }
     }
 }
@@ -10462,7 +10780,9 @@ impl Ch3CtrlTrig {
     /// 0x0 to 0x3a -> select DREQ n as TREQ
     #[inline(always)]
     pub fn write_treq_sel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK)
+        });
     }
 
     /// **CHAIN_TO** `[16:13]` (RW)
@@ -10480,7 +10800,9 @@ impl Ch3CtrlTrig {
     /// Note this field resets to 0, so channels 1 and above will chain to channel 0 by default. Set this field to avoid this behaviour.
     #[inline(always)]
     pub fn write_chain_to(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK)
+        });
     }
 
     /// **RING_SEL** `[12]` (RW)
@@ -10519,7 +10841,9 @@ impl Ch3CtrlTrig {
     /// Ring sizes between 2 and 32768 bytes are possible. This can apply to either read or write addresses, based on value of RING_SEL.
     #[inline(always)]
     pub fn write_ring_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK)
+        });
     }
 
     /// **INCR_WRITE_REV** `[7]` (RW)
@@ -10619,7 +10943,9 @@ impl Ch3CtrlTrig {
     /// Set the size of each bus transfer (byte/halfword/word). READ_ADDR and WRITE_ADDR advance by this amount (1/2/4 bytes) with each transfer.
     #[inline(always)]
     pub fn write_data_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK)
+        });
     }
 
     /// **HIGH_PRIORITY** `[1]` (RW)
@@ -10865,7 +11191,7 @@ impl Ch3CtrlTrigVal {
                 self.bits | Ch3CtrlTrig::READ_ERROR_MASK
             } else {
                 self.bits & !Ch3CtrlTrig::READ_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -10880,7 +11206,7 @@ impl Ch3CtrlTrigVal {
                 self.bits | Ch3CtrlTrig::WRITE_ERROR_MASK
             } else {
                 self.bits & !Ch3CtrlTrig::WRITE_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -10895,7 +11221,7 @@ impl Ch3CtrlTrigVal {
                 self.bits | Ch3CtrlTrig::SNIFF_EN_MASK
             } else {
                 self.bits & !Ch3CtrlTrig::SNIFF_EN_MASK
-            }
+            },
         }
     }
 
@@ -10910,7 +11236,7 @@ impl Ch3CtrlTrigVal {
                 self.bits | Ch3CtrlTrig::BSWAP_MASK
             } else {
                 self.bits & !Ch3CtrlTrig::BSWAP_MASK
-            }
+            },
         }
     }
 
@@ -10925,7 +11251,7 @@ impl Ch3CtrlTrigVal {
                 self.bits | Ch3CtrlTrig::IRQ_QUIET_MASK
             } else {
                 self.bits & !Ch3CtrlTrig::IRQ_QUIET_MASK
-            }
+            },
         }
     }
 
@@ -10937,7 +11263,8 @@ impl Ch3CtrlTrigVal {
     #[inline(always)]
     pub const fn with_treq_sel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch3CtrlTrig::TREQ_SEL_MASK) | ((value << Ch3CtrlTrig::TREQ_SEL_OFFSET) & Ch3CtrlTrig::TREQ_SEL_MASK)
+            bits: (self.bits & !Ch3CtrlTrig::TREQ_SEL_MASK)
+                | ((value << Ch3CtrlTrig::TREQ_SEL_OFFSET) & Ch3CtrlTrig::TREQ_SEL_MASK),
         }
     }
 
@@ -10948,7 +11275,8 @@ impl Ch3CtrlTrigVal {
     #[inline(always)]
     pub const fn with_chain_to(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch3CtrlTrig::CHAIN_TO_MASK) | ((value << Ch3CtrlTrig::CHAIN_TO_OFFSET) & Ch3CtrlTrig::CHAIN_TO_MASK)
+            bits: (self.bits & !Ch3CtrlTrig::CHAIN_TO_MASK)
+                | ((value << Ch3CtrlTrig::CHAIN_TO_OFFSET) & Ch3CtrlTrig::CHAIN_TO_MASK),
         }
     }
 
@@ -10963,7 +11291,7 @@ impl Ch3CtrlTrigVal {
                 self.bits | Ch3CtrlTrig::RING_SEL_MASK
             } else {
                 self.bits & !Ch3CtrlTrig::RING_SEL_MASK
-            }
+            },
         }
     }
 
@@ -10974,7 +11302,8 @@ impl Ch3CtrlTrigVal {
     #[inline(always)]
     pub const fn with_ring_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch3CtrlTrig::RING_SIZE_MASK) | ((value << Ch3CtrlTrig::RING_SIZE_OFFSET) & Ch3CtrlTrig::RING_SIZE_MASK)
+            bits: (self.bits & !Ch3CtrlTrig::RING_SIZE_MASK)
+                | ((value << Ch3CtrlTrig::RING_SIZE_OFFSET) & Ch3CtrlTrig::RING_SIZE_MASK),
         }
     }
 
@@ -10989,7 +11318,7 @@ impl Ch3CtrlTrigVal {
                 self.bits | Ch3CtrlTrig::INCR_WRITE_REV_MASK
             } else {
                 self.bits & !Ch3CtrlTrig::INCR_WRITE_REV_MASK
-            }
+            },
         }
     }
 
@@ -11004,7 +11333,7 @@ impl Ch3CtrlTrigVal {
                 self.bits | Ch3CtrlTrig::INCR_WRITE_MASK
             } else {
                 self.bits & !Ch3CtrlTrig::INCR_WRITE_MASK
-            }
+            },
         }
     }
 
@@ -11019,7 +11348,7 @@ impl Ch3CtrlTrigVal {
                 self.bits | Ch3CtrlTrig::INCR_READ_REV_MASK
             } else {
                 self.bits & !Ch3CtrlTrig::INCR_READ_REV_MASK
-            }
+            },
         }
     }
 
@@ -11034,7 +11363,7 @@ impl Ch3CtrlTrigVal {
                 self.bits | Ch3CtrlTrig::INCR_READ_MASK
             } else {
                 self.bits & !Ch3CtrlTrig::INCR_READ_MASK
-            }
+            },
         }
     }
 
@@ -11044,7 +11373,8 @@ impl Ch3CtrlTrigVal {
     #[inline(always)]
     pub const fn with_data_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch3CtrlTrig::DATA_SIZE_MASK) | ((value << Ch3CtrlTrig::DATA_SIZE_OFFSET) & Ch3CtrlTrig::DATA_SIZE_MASK)
+            bits: (self.bits & !Ch3CtrlTrig::DATA_SIZE_MASK)
+                | ((value << Ch3CtrlTrig::DATA_SIZE_OFFSET) & Ch3CtrlTrig::DATA_SIZE_MASK),
         }
     }
 
@@ -11059,7 +11389,7 @@ impl Ch3CtrlTrigVal {
                 self.bits | Ch3CtrlTrig::HIGH_PRIORITY_MASK
             } else {
                 self.bits & !Ch3CtrlTrig::HIGH_PRIORITY_MASK
-            }
+            },
         }
     }
 
@@ -11074,7 +11404,7 @@ impl Ch3CtrlTrigVal {
                 self.bits | Ch3CtrlTrig::EN_MASK
             } else {
                 self.bits & !Ch3CtrlTrig::EN_MASK
-            }
+            },
         }
     }
 }
@@ -11146,7 +11476,10 @@ impl Ch3Al1Ctrl {
     /// Write **CH3_AL1_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch3_al1_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH3_AL1_CTRL_MASK) | ((value << Self::CH3_AL1_CTRL_OFFSET) & Self::CH3_AL1_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH3_AL1_CTRL_MASK)
+                | ((value << Self::CH3_AL1_CTRL_OFFSET) & Self::CH3_AL1_CTRL_MASK)
+        });
     }
 }
 
@@ -11182,7 +11515,8 @@ impl Ch3Al1CtrlVal {
     #[inline(always)]
     pub const fn with_ch3_al1_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch3Al1Ctrl::CH3_AL1_CTRL_MASK) | ((value << Ch3Al1Ctrl::CH3_AL1_CTRL_OFFSET) & Ch3Al1Ctrl::CH3_AL1_CTRL_MASK)
+            bits: (self.bits & !Ch3Al1Ctrl::CH3_AL1_CTRL_MASK)
+                | ((value << Ch3Al1Ctrl::CH3_AL1_CTRL_OFFSET) & Ch3Al1Ctrl::CH3_AL1_CTRL_MASK),
         }
     }
 }
@@ -11254,7 +11588,10 @@ impl Ch3Al1ReadAddr {
     /// Write **CH3_AL1_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch3_al1_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH3_AL1_READ_ADDR_MASK) | ((value << Self::CH3_AL1_READ_ADDR_OFFSET) & Self::CH3_AL1_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH3_AL1_READ_ADDR_MASK)
+                | ((value << Self::CH3_AL1_READ_ADDR_OFFSET) & Self::CH3_AL1_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -11283,14 +11620,17 @@ impl Ch3Al1ReadAddrVal {
     /// Read **CH3_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch3_al1_read_addr(&self) -> u32 {
-        (self.bits & Ch3Al1ReadAddr::CH3_AL1_READ_ADDR_MASK) >> Ch3Al1ReadAddr::CH3_AL1_READ_ADDR_OFFSET
+        (self.bits & Ch3Al1ReadAddr::CH3_AL1_READ_ADDR_MASK)
+            >> Ch3Al1ReadAddr::CH3_AL1_READ_ADDR_OFFSET
     }
 
     /// Set **CH3_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch3_al1_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch3Al1ReadAddr::CH3_AL1_READ_ADDR_MASK) | ((value << Ch3Al1ReadAddr::CH3_AL1_READ_ADDR_OFFSET) & Ch3Al1ReadAddr::CH3_AL1_READ_ADDR_MASK)
+            bits: (self.bits & !Ch3Al1ReadAddr::CH3_AL1_READ_ADDR_MASK)
+                | ((value << Ch3Al1ReadAddr::CH3_AL1_READ_ADDR_OFFSET)
+                    & Ch3Al1ReadAddr::CH3_AL1_READ_ADDR_MASK),
         }
     }
 }
@@ -11362,7 +11702,10 @@ impl Ch3Al1WriteAddr {
     /// Write **CH3_AL1_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch3_al1_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH3_AL1_WRITE_ADDR_MASK) | ((value << Self::CH3_AL1_WRITE_ADDR_OFFSET) & Self::CH3_AL1_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH3_AL1_WRITE_ADDR_MASK)
+                | ((value << Self::CH3_AL1_WRITE_ADDR_OFFSET) & Self::CH3_AL1_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -11391,14 +11734,17 @@ impl Ch3Al1WriteAddrVal {
     /// Read **CH3_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch3_al1_write_addr(&self) -> u32 {
-        (self.bits & Ch3Al1WriteAddr::CH3_AL1_WRITE_ADDR_MASK) >> Ch3Al1WriteAddr::CH3_AL1_WRITE_ADDR_OFFSET
+        (self.bits & Ch3Al1WriteAddr::CH3_AL1_WRITE_ADDR_MASK)
+            >> Ch3Al1WriteAddr::CH3_AL1_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH3_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch3_al1_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch3Al1WriteAddr::CH3_AL1_WRITE_ADDR_MASK) | ((value << Ch3Al1WriteAddr::CH3_AL1_WRITE_ADDR_OFFSET) & Ch3Al1WriteAddr::CH3_AL1_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch3Al1WriteAddr::CH3_AL1_WRITE_ADDR_MASK)
+                | ((value << Ch3Al1WriteAddr::CH3_AL1_WRITE_ADDR_OFFSET)
+                    & Ch3Al1WriteAddr::CH3_AL1_WRITE_ADDR_MASK),
         }
     }
 }
@@ -11466,13 +11812,18 @@ impl Ch3Al1TransCountTrig {
     /// **CH3_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch3_al1_trans_count_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH3_AL1_TRANS_COUNT_TRIG_MASK) >> Self::CH3_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH3_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Self::CH3_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Write **CH3_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch3_al1_trans_count_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH3_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH3_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH3_AL1_TRANS_COUNT_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH3_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Self::CH3_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Self::CH3_AL1_TRANS_COUNT_TRIG_MASK)
+        });
     }
 }
 
@@ -11501,14 +11852,17 @@ impl Ch3Al1TransCountTrigVal {
     /// Read **CH3_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch3_al1_trans_count_trig(&self) -> u32 {
-        (self.bits & Ch3Al1TransCountTrig::CH3_AL1_TRANS_COUNT_TRIG_MASK) >> Ch3Al1TransCountTrig::CH3_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.bits & Ch3Al1TransCountTrig::CH3_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Ch3Al1TransCountTrig::CH3_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Set **CH3_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch3_al1_trans_count_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch3Al1TransCountTrig::CH3_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch3Al1TransCountTrig::CH3_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch3Al1TransCountTrig::CH3_AL1_TRANS_COUNT_TRIG_MASK)
+            bits: (self.bits & !Ch3Al1TransCountTrig::CH3_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Ch3Al1TransCountTrig::CH3_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Ch3Al1TransCountTrig::CH3_AL1_TRANS_COUNT_TRIG_MASK),
         }
     }
 }
@@ -11580,7 +11934,10 @@ impl Ch3Al2Ctrl {
     /// Write **CH3_AL2_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch3_al2_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH3_AL2_CTRL_MASK) | ((value << Self::CH3_AL2_CTRL_OFFSET) & Self::CH3_AL2_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH3_AL2_CTRL_MASK)
+                | ((value << Self::CH3_AL2_CTRL_OFFSET) & Self::CH3_AL2_CTRL_MASK)
+        });
     }
 }
 
@@ -11616,7 +11973,8 @@ impl Ch3Al2CtrlVal {
     #[inline(always)]
     pub const fn with_ch3_al2_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch3Al2Ctrl::CH3_AL2_CTRL_MASK) | ((value << Ch3Al2Ctrl::CH3_AL2_CTRL_OFFSET) & Ch3Al2Ctrl::CH3_AL2_CTRL_MASK)
+            bits: (self.bits & !Ch3Al2Ctrl::CH3_AL2_CTRL_MASK)
+                | ((value << Ch3Al2Ctrl::CH3_AL2_CTRL_OFFSET) & Ch3Al2Ctrl::CH3_AL2_CTRL_MASK),
         }
     }
 }
@@ -11682,13 +12040,17 @@ impl Ch3Al2TransCount {
     /// **CH3_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch3_al2_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH3_AL2_TRANS_COUNT_MASK) >> Self::CH3_AL2_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH3_AL2_TRANS_COUNT_MASK)
+            >> Self::CH3_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH3_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch3_al2_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH3_AL2_TRANS_COUNT_MASK) | ((value << Self::CH3_AL2_TRANS_COUNT_OFFSET) & Self::CH3_AL2_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH3_AL2_TRANS_COUNT_MASK)
+                | ((value << Self::CH3_AL2_TRANS_COUNT_OFFSET) & Self::CH3_AL2_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -11717,14 +12079,17 @@ impl Ch3Al2TransCountVal {
     /// Read **CH3_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch3_al2_trans_count(&self) -> u32 {
-        (self.bits & Ch3Al2TransCount::CH3_AL2_TRANS_COUNT_MASK) >> Ch3Al2TransCount::CH3_AL2_TRANS_COUNT_OFFSET
+        (self.bits & Ch3Al2TransCount::CH3_AL2_TRANS_COUNT_MASK)
+            >> Ch3Al2TransCount::CH3_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH3_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch3_al2_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch3Al2TransCount::CH3_AL2_TRANS_COUNT_MASK) | ((value << Ch3Al2TransCount::CH3_AL2_TRANS_COUNT_OFFSET) & Ch3Al2TransCount::CH3_AL2_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch3Al2TransCount::CH3_AL2_TRANS_COUNT_MASK)
+                | ((value << Ch3Al2TransCount::CH3_AL2_TRANS_COUNT_OFFSET)
+                    & Ch3Al2TransCount::CH3_AL2_TRANS_COUNT_MASK),
         }
     }
 }
@@ -11796,7 +12161,10 @@ impl Ch3Al2ReadAddr {
     /// Write **CH3_AL2_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch3_al2_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH3_AL2_READ_ADDR_MASK) | ((value << Self::CH3_AL2_READ_ADDR_OFFSET) & Self::CH3_AL2_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH3_AL2_READ_ADDR_MASK)
+                | ((value << Self::CH3_AL2_READ_ADDR_OFFSET) & Self::CH3_AL2_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -11825,14 +12193,17 @@ impl Ch3Al2ReadAddrVal {
     /// Read **CH3_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch3_al2_read_addr(&self) -> u32 {
-        (self.bits & Ch3Al2ReadAddr::CH3_AL2_READ_ADDR_MASK) >> Ch3Al2ReadAddr::CH3_AL2_READ_ADDR_OFFSET
+        (self.bits & Ch3Al2ReadAddr::CH3_AL2_READ_ADDR_MASK)
+            >> Ch3Al2ReadAddr::CH3_AL2_READ_ADDR_OFFSET
     }
 
     /// Set **CH3_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch3_al2_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch3Al2ReadAddr::CH3_AL2_READ_ADDR_MASK) | ((value << Ch3Al2ReadAddr::CH3_AL2_READ_ADDR_OFFSET) & Ch3Al2ReadAddr::CH3_AL2_READ_ADDR_MASK)
+            bits: (self.bits & !Ch3Al2ReadAddr::CH3_AL2_READ_ADDR_MASK)
+                | ((value << Ch3Al2ReadAddr::CH3_AL2_READ_ADDR_OFFSET)
+                    & Ch3Al2ReadAddr::CH3_AL2_READ_ADDR_MASK),
         }
     }
 }
@@ -11900,13 +12271,18 @@ impl Ch3Al2WriteAddrTrig {
     /// **CH3_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch3_al2_write_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH3_AL2_WRITE_ADDR_TRIG_MASK) >> Self::CH3_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH3_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Self::CH3_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH3_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch3_al2_write_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH3_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH3_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH3_AL2_WRITE_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH3_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Self::CH3_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Self::CH3_AL2_WRITE_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -11935,14 +12311,17 @@ impl Ch3Al2WriteAddrTrigVal {
     /// Read **CH3_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch3_al2_write_addr_trig(&self) -> u32 {
-        (self.bits & Ch3Al2WriteAddrTrig::CH3_AL2_WRITE_ADDR_TRIG_MASK) >> Ch3Al2WriteAddrTrig::CH3_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.bits & Ch3Al2WriteAddrTrig::CH3_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Ch3Al2WriteAddrTrig::CH3_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH3_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch3_al2_write_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch3Al2WriteAddrTrig::CH3_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch3Al2WriteAddrTrig::CH3_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch3Al2WriteAddrTrig::CH3_AL2_WRITE_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch3Al2WriteAddrTrig::CH3_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Ch3Al2WriteAddrTrig::CH3_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Ch3Al2WriteAddrTrig::CH3_AL2_WRITE_ADDR_TRIG_MASK),
         }
     }
 }
@@ -12014,7 +12393,10 @@ impl Ch3Al3Ctrl {
     /// Write **CH3_AL3_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch3_al3_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH3_AL3_CTRL_MASK) | ((value << Self::CH3_AL3_CTRL_OFFSET) & Self::CH3_AL3_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH3_AL3_CTRL_MASK)
+                | ((value << Self::CH3_AL3_CTRL_OFFSET) & Self::CH3_AL3_CTRL_MASK)
+        });
     }
 }
 
@@ -12050,7 +12432,8 @@ impl Ch3Al3CtrlVal {
     #[inline(always)]
     pub const fn with_ch3_al3_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch3Al3Ctrl::CH3_AL3_CTRL_MASK) | ((value << Ch3Al3Ctrl::CH3_AL3_CTRL_OFFSET) & Ch3Al3Ctrl::CH3_AL3_CTRL_MASK)
+            bits: (self.bits & !Ch3Al3Ctrl::CH3_AL3_CTRL_MASK)
+                | ((value << Ch3Al3Ctrl::CH3_AL3_CTRL_OFFSET) & Ch3Al3Ctrl::CH3_AL3_CTRL_MASK),
         }
     }
 }
@@ -12122,7 +12505,10 @@ impl Ch3Al3WriteAddr {
     /// Write **CH3_AL3_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch3_al3_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH3_AL3_WRITE_ADDR_MASK) | ((value << Self::CH3_AL3_WRITE_ADDR_OFFSET) & Self::CH3_AL3_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH3_AL3_WRITE_ADDR_MASK)
+                | ((value << Self::CH3_AL3_WRITE_ADDR_OFFSET) & Self::CH3_AL3_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -12151,14 +12537,17 @@ impl Ch3Al3WriteAddrVal {
     /// Read **CH3_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch3_al3_write_addr(&self) -> u32 {
-        (self.bits & Ch3Al3WriteAddr::CH3_AL3_WRITE_ADDR_MASK) >> Ch3Al3WriteAddr::CH3_AL3_WRITE_ADDR_OFFSET
+        (self.bits & Ch3Al3WriteAddr::CH3_AL3_WRITE_ADDR_MASK)
+            >> Ch3Al3WriteAddr::CH3_AL3_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH3_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch3_al3_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch3Al3WriteAddr::CH3_AL3_WRITE_ADDR_MASK) | ((value << Ch3Al3WriteAddr::CH3_AL3_WRITE_ADDR_OFFSET) & Ch3Al3WriteAddr::CH3_AL3_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch3Al3WriteAddr::CH3_AL3_WRITE_ADDR_MASK)
+                | ((value << Ch3Al3WriteAddr::CH3_AL3_WRITE_ADDR_OFFSET)
+                    & Ch3Al3WriteAddr::CH3_AL3_WRITE_ADDR_MASK),
         }
     }
 }
@@ -12224,13 +12613,17 @@ impl Ch3Al3TransCount {
     /// **CH3_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch3_al3_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH3_AL3_TRANS_COUNT_MASK) >> Self::CH3_AL3_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH3_AL3_TRANS_COUNT_MASK)
+            >> Self::CH3_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH3_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch3_al3_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH3_AL3_TRANS_COUNT_MASK) | ((value << Self::CH3_AL3_TRANS_COUNT_OFFSET) & Self::CH3_AL3_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH3_AL3_TRANS_COUNT_MASK)
+                | ((value << Self::CH3_AL3_TRANS_COUNT_OFFSET) & Self::CH3_AL3_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -12259,14 +12652,17 @@ impl Ch3Al3TransCountVal {
     /// Read **CH3_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch3_al3_trans_count(&self) -> u32 {
-        (self.bits & Ch3Al3TransCount::CH3_AL3_TRANS_COUNT_MASK) >> Ch3Al3TransCount::CH3_AL3_TRANS_COUNT_OFFSET
+        (self.bits & Ch3Al3TransCount::CH3_AL3_TRANS_COUNT_MASK)
+            >> Ch3Al3TransCount::CH3_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH3_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch3_al3_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch3Al3TransCount::CH3_AL3_TRANS_COUNT_MASK) | ((value << Ch3Al3TransCount::CH3_AL3_TRANS_COUNT_OFFSET) & Ch3Al3TransCount::CH3_AL3_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch3Al3TransCount::CH3_AL3_TRANS_COUNT_MASK)
+                | ((value << Ch3Al3TransCount::CH3_AL3_TRANS_COUNT_OFFSET)
+                    & Ch3Al3TransCount::CH3_AL3_TRANS_COUNT_MASK),
         }
     }
 }
@@ -12334,13 +12730,18 @@ impl Ch3Al3ReadAddrTrig {
     /// **CH3_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch3_al3_read_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH3_AL3_READ_ADDR_TRIG_MASK) >> Self::CH3_AL3_READ_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH3_AL3_READ_ADDR_TRIG_MASK)
+            >> Self::CH3_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH3_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch3_al3_read_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH3_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH3_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH3_AL3_READ_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH3_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Self::CH3_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Self::CH3_AL3_READ_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -12369,14 +12770,17 @@ impl Ch3Al3ReadAddrTrigVal {
     /// Read **CH3_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch3_al3_read_addr_trig(&self) -> u32 {
-        (self.bits & Ch3Al3ReadAddrTrig::CH3_AL3_READ_ADDR_TRIG_MASK) >> Ch3Al3ReadAddrTrig::CH3_AL3_READ_ADDR_TRIG_OFFSET
+        (self.bits & Ch3Al3ReadAddrTrig::CH3_AL3_READ_ADDR_TRIG_MASK)
+            >> Ch3Al3ReadAddrTrig::CH3_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH3_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch3_al3_read_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch3Al3ReadAddrTrig::CH3_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch3Al3ReadAddrTrig::CH3_AL3_READ_ADDR_TRIG_OFFSET) & Ch3Al3ReadAddrTrig::CH3_AL3_READ_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch3Al3ReadAddrTrig::CH3_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Ch3Al3ReadAddrTrig::CH3_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Ch3Al3ReadAddrTrig::CH3_AL3_READ_ADDR_TRIG_MASK),
         }
     }
 }
@@ -12458,7 +12862,10 @@ impl Ch4ReadAddr {
     /// This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
     #[inline(always)]
     pub fn write_ch4_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH4_READ_ADDR_MASK) | ((value << Self::CH4_READ_ADDR_OFFSET) & Self::CH4_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH4_READ_ADDR_MASK)
+                | ((value << Self::CH4_READ_ADDR_OFFSET) & Self::CH4_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -12504,7 +12911,8 @@ impl Ch4ReadAddrVal {
     #[inline(always)]
     pub const fn with_ch4_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch4ReadAddr::CH4_READ_ADDR_MASK) | ((value << Ch4ReadAddr::CH4_READ_ADDR_OFFSET) & Ch4ReadAddr::CH4_READ_ADDR_MASK)
+            bits: (self.bits & !Ch4ReadAddr::CH4_READ_ADDR_MASK)
+                | ((value << Ch4ReadAddr::CH4_READ_ADDR_OFFSET) & Ch4ReadAddr::CH4_READ_ADDR_MASK),
         }
     }
 }
@@ -12586,7 +12994,10 @@ impl Ch4WriteAddr {
     /// This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
     #[inline(always)]
     pub fn write_ch4_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH4_WRITE_ADDR_MASK) | ((value << Self::CH4_WRITE_ADDR_OFFSET) & Self::CH4_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH4_WRITE_ADDR_MASK)
+                | ((value << Self::CH4_WRITE_ADDR_OFFSET) & Self::CH4_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -12632,7 +13043,9 @@ impl Ch4WriteAddrVal {
     #[inline(always)]
     pub const fn with_ch4_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch4WriteAddr::CH4_WRITE_ADDR_MASK) | ((value << Ch4WriteAddr::CH4_WRITE_ADDR_OFFSET) & Ch4WriteAddr::CH4_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch4WriteAddr::CH4_WRITE_ADDR_MASK)
+                | ((value << Ch4WriteAddr::CH4_WRITE_ADDR_OFFSET)
+                    & Ch4WriteAddr::CH4_WRITE_ADDR_MASK),
         }
     }
 }
@@ -12752,7 +13165,9 @@ impl Ch4TransCount {
     /// All other values are reserved.
     #[inline(always)]
     pub fn write_mode(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK)
+        });
     }
 
     /// **COUNT** `[27:0]` (RW)
@@ -12776,7 +13191,9 @@ impl Ch4TransCount {
     /// The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
     #[inline(always)]
     pub fn write_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK)
+        });
     }
 }
 
@@ -12840,7 +13257,8 @@ impl Ch4TransCountVal {
     #[inline(always)]
     pub const fn with_mode(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch4TransCount::MODE_MASK) | ((value << Ch4TransCount::MODE_OFFSET) & Ch4TransCount::MODE_MASK)
+            bits: (self.bits & !Ch4TransCount::MODE_MASK)
+                | ((value << Ch4TransCount::MODE_OFFSET) & Ch4TransCount::MODE_MASK),
         }
     }
 
@@ -12854,7 +13272,8 @@ impl Ch4TransCountVal {
     #[inline(always)]
     pub const fn with_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch4TransCount::COUNT_MASK) | ((value << Ch4TransCount::COUNT_OFFSET) & Ch4TransCount::COUNT_MASK)
+            bits: (self.bits & !Ch4TransCount::COUNT_MASK)
+                | ((value << Ch4TransCount::COUNT_OFFSET) & Ch4TransCount::COUNT_MASK),
         }
     }
 }
@@ -13562,7 +13981,9 @@ impl Ch4CtrlTrig {
     /// 0x0 to 0x3a -> select DREQ n as TREQ
     #[inline(always)]
     pub fn write_treq_sel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK)
+        });
     }
 
     /// **CHAIN_TO** `[16:13]` (RW)
@@ -13580,7 +14001,9 @@ impl Ch4CtrlTrig {
     /// Note this field resets to 0, so channels 1 and above will chain to channel 0 by default. Set this field to avoid this behaviour.
     #[inline(always)]
     pub fn write_chain_to(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK)
+        });
     }
 
     /// **RING_SEL** `[12]` (RW)
@@ -13619,7 +14042,9 @@ impl Ch4CtrlTrig {
     /// Ring sizes between 2 and 32768 bytes are possible. This can apply to either read or write addresses, based on value of RING_SEL.
     #[inline(always)]
     pub fn write_ring_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK)
+        });
     }
 
     /// **INCR_WRITE_REV** `[7]` (RW)
@@ -13719,7 +14144,9 @@ impl Ch4CtrlTrig {
     /// Set the size of each bus transfer (byte/halfword/word). READ_ADDR and WRITE_ADDR advance by this amount (1/2/4 bytes) with each transfer.
     #[inline(always)]
     pub fn write_data_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK)
+        });
     }
 
     /// **HIGH_PRIORITY** `[1]` (RW)
@@ -13965,7 +14392,7 @@ impl Ch4CtrlTrigVal {
                 self.bits | Ch4CtrlTrig::READ_ERROR_MASK
             } else {
                 self.bits & !Ch4CtrlTrig::READ_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -13980,7 +14407,7 @@ impl Ch4CtrlTrigVal {
                 self.bits | Ch4CtrlTrig::WRITE_ERROR_MASK
             } else {
                 self.bits & !Ch4CtrlTrig::WRITE_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -13995,7 +14422,7 @@ impl Ch4CtrlTrigVal {
                 self.bits | Ch4CtrlTrig::SNIFF_EN_MASK
             } else {
                 self.bits & !Ch4CtrlTrig::SNIFF_EN_MASK
-            }
+            },
         }
     }
 
@@ -14010,7 +14437,7 @@ impl Ch4CtrlTrigVal {
                 self.bits | Ch4CtrlTrig::BSWAP_MASK
             } else {
                 self.bits & !Ch4CtrlTrig::BSWAP_MASK
-            }
+            },
         }
     }
 
@@ -14025,7 +14452,7 @@ impl Ch4CtrlTrigVal {
                 self.bits | Ch4CtrlTrig::IRQ_QUIET_MASK
             } else {
                 self.bits & !Ch4CtrlTrig::IRQ_QUIET_MASK
-            }
+            },
         }
     }
 
@@ -14037,7 +14464,8 @@ impl Ch4CtrlTrigVal {
     #[inline(always)]
     pub const fn with_treq_sel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch4CtrlTrig::TREQ_SEL_MASK) | ((value << Ch4CtrlTrig::TREQ_SEL_OFFSET) & Ch4CtrlTrig::TREQ_SEL_MASK)
+            bits: (self.bits & !Ch4CtrlTrig::TREQ_SEL_MASK)
+                | ((value << Ch4CtrlTrig::TREQ_SEL_OFFSET) & Ch4CtrlTrig::TREQ_SEL_MASK),
         }
     }
 
@@ -14048,7 +14476,8 @@ impl Ch4CtrlTrigVal {
     #[inline(always)]
     pub const fn with_chain_to(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch4CtrlTrig::CHAIN_TO_MASK) | ((value << Ch4CtrlTrig::CHAIN_TO_OFFSET) & Ch4CtrlTrig::CHAIN_TO_MASK)
+            bits: (self.bits & !Ch4CtrlTrig::CHAIN_TO_MASK)
+                | ((value << Ch4CtrlTrig::CHAIN_TO_OFFSET) & Ch4CtrlTrig::CHAIN_TO_MASK),
         }
     }
 
@@ -14063,7 +14492,7 @@ impl Ch4CtrlTrigVal {
                 self.bits | Ch4CtrlTrig::RING_SEL_MASK
             } else {
                 self.bits & !Ch4CtrlTrig::RING_SEL_MASK
-            }
+            },
         }
     }
 
@@ -14074,7 +14503,8 @@ impl Ch4CtrlTrigVal {
     #[inline(always)]
     pub const fn with_ring_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch4CtrlTrig::RING_SIZE_MASK) | ((value << Ch4CtrlTrig::RING_SIZE_OFFSET) & Ch4CtrlTrig::RING_SIZE_MASK)
+            bits: (self.bits & !Ch4CtrlTrig::RING_SIZE_MASK)
+                | ((value << Ch4CtrlTrig::RING_SIZE_OFFSET) & Ch4CtrlTrig::RING_SIZE_MASK),
         }
     }
 
@@ -14089,7 +14519,7 @@ impl Ch4CtrlTrigVal {
                 self.bits | Ch4CtrlTrig::INCR_WRITE_REV_MASK
             } else {
                 self.bits & !Ch4CtrlTrig::INCR_WRITE_REV_MASK
-            }
+            },
         }
     }
 
@@ -14104,7 +14534,7 @@ impl Ch4CtrlTrigVal {
                 self.bits | Ch4CtrlTrig::INCR_WRITE_MASK
             } else {
                 self.bits & !Ch4CtrlTrig::INCR_WRITE_MASK
-            }
+            },
         }
     }
 
@@ -14119,7 +14549,7 @@ impl Ch4CtrlTrigVal {
                 self.bits | Ch4CtrlTrig::INCR_READ_REV_MASK
             } else {
                 self.bits & !Ch4CtrlTrig::INCR_READ_REV_MASK
-            }
+            },
         }
     }
 
@@ -14134,7 +14564,7 @@ impl Ch4CtrlTrigVal {
                 self.bits | Ch4CtrlTrig::INCR_READ_MASK
             } else {
                 self.bits & !Ch4CtrlTrig::INCR_READ_MASK
-            }
+            },
         }
     }
 
@@ -14144,7 +14574,8 @@ impl Ch4CtrlTrigVal {
     #[inline(always)]
     pub const fn with_data_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch4CtrlTrig::DATA_SIZE_MASK) | ((value << Ch4CtrlTrig::DATA_SIZE_OFFSET) & Ch4CtrlTrig::DATA_SIZE_MASK)
+            bits: (self.bits & !Ch4CtrlTrig::DATA_SIZE_MASK)
+                | ((value << Ch4CtrlTrig::DATA_SIZE_OFFSET) & Ch4CtrlTrig::DATA_SIZE_MASK),
         }
     }
 
@@ -14159,7 +14590,7 @@ impl Ch4CtrlTrigVal {
                 self.bits | Ch4CtrlTrig::HIGH_PRIORITY_MASK
             } else {
                 self.bits & !Ch4CtrlTrig::HIGH_PRIORITY_MASK
-            }
+            },
         }
     }
 
@@ -14174,7 +14605,7 @@ impl Ch4CtrlTrigVal {
                 self.bits | Ch4CtrlTrig::EN_MASK
             } else {
                 self.bits & !Ch4CtrlTrig::EN_MASK
-            }
+            },
         }
     }
 }
@@ -14246,7 +14677,10 @@ impl Ch4Al1Ctrl {
     /// Write **CH4_AL1_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch4_al1_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH4_AL1_CTRL_MASK) | ((value << Self::CH4_AL1_CTRL_OFFSET) & Self::CH4_AL1_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH4_AL1_CTRL_MASK)
+                | ((value << Self::CH4_AL1_CTRL_OFFSET) & Self::CH4_AL1_CTRL_MASK)
+        });
     }
 }
 
@@ -14282,7 +14716,8 @@ impl Ch4Al1CtrlVal {
     #[inline(always)]
     pub const fn with_ch4_al1_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch4Al1Ctrl::CH4_AL1_CTRL_MASK) | ((value << Ch4Al1Ctrl::CH4_AL1_CTRL_OFFSET) & Ch4Al1Ctrl::CH4_AL1_CTRL_MASK)
+            bits: (self.bits & !Ch4Al1Ctrl::CH4_AL1_CTRL_MASK)
+                | ((value << Ch4Al1Ctrl::CH4_AL1_CTRL_OFFSET) & Ch4Al1Ctrl::CH4_AL1_CTRL_MASK),
         }
     }
 }
@@ -14354,7 +14789,10 @@ impl Ch4Al1ReadAddr {
     /// Write **CH4_AL1_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch4_al1_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH4_AL1_READ_ADDR_MASK) | ((value << Self::CH4_AL1_READ_ADDR_OFFSET) & Self::CH4_AL1_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH4_AL1_READ_ADDR_MASK)
+                | ((value << Self::CH4_AL1_READ_ADDR_OFFSET) & Self::CH4_AL1_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -14383,14 +14821,17 @@ impl Ch4Al1ReadAddrVal {
     /// Read **CH4_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch4_al1_read_addr(&self) -> u32 {
-        (self.bits & Ch4Al1ReadAddr::CH4_AL1_READ_ADDR_MASK) >> Ch4Al1ReadAddr::CH4_AL1_READ_ADDR_OFFSET
+        (self.bits & Ch4Al1ReadAddr::CH4_AL1_READ_ADDR_MASK)
+            >> Ch4Al1ReadAddr::CH4_AL1_READ_ADDR_OFFSET
     }
 
     /// Set **CH4_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch4_al1_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch4Al1ReadAddr::CH4_AL1_READ_ADDR_MASK) | ((value << Ch4Al1ReadAddr::CH4_AL1_READ_ADDR_OFFSET) & Ch4Al1ReadAddr::CH4_AL1_READ_ADDR_MASK)
+            bits: (self.bits & !Ch4Al1ReadAddr::CH4_AL1_READ_ADDR_MASK)
+                | ((value << Ch4Al1ReadAddr::CH4_AL1_READ_ADDR_OFFSET)
+                    & Ch4Al1ReadAddr::CH4_AL1_READ_ADDR_MASK),
         }
     }
 }
@@ -14462,7 +14903,10 @@ impl Ch4Al1WriteAddr {
     /// Write **CH4_AL1_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch4_al1_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH4_AL1_WRITE_ADDR_MASK) | ((value << Self::CH4_AL1_WRITE_ADDR_OFFSET) & Self::CH4_AL1_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH4_AL1_WRITE_ADDR_MASK)
+                | ((value << Self::CH4_AL1_WRITE_ADDR_OFFSET) & Self::CH4_AL1_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -14491,14 +14935,17 @@ impl Ch4Al1WriteAddrVal {
     /// Read **CH4_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch4_al1_write_addr(&self) -> u32 {
-        (self.bits & Ch4Al1WriteAddr::CH4_AL1_WRITE_ADDR_MASK) >> Ch4Al1WriteAddr::CH4_AL1_WRITE_ADDR_OFFSET
+        (self.bits & Ch4Al1WriteAddr::CH4_AL1_WRITE_ADDR_MASK)
+            >> Ch4Al1WriteAddr::CH4_AL1_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH4_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch4_al1_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch4Al1WriteAddr::CH4_AL1_WRITE_ADDR_MASK) | ((value << Ch4Al1WriteAddr::CH4_AL1_WRITE_ADDR_OFFSET) & Ch4Al1WriteAddr::CH4_AL1_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch4Al1WriteAddr::CH4_AL1_WRITE_ADDR_MASK)
+                | ((value << Ch4Al1WriteAddr::CH4_AL1_WRITE_ADDR_OFFSET)
+                    & Ch4Al1WriteAddr::CH4_AL1_WRITE_ADDR_MASK),
         }
     }
 }
@@ -14566,13 +15013,18 @@ impl Ch4Al1TransCountTrig {
     /// **CH4_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch4_al1_trans_count_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH4_AL1_TRANS_COUNT_TRIG_MASK) >> Self::CH4_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH4_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Self::CH4_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Write **CH4_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch4_al1_trans_count_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH4_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH4_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH4_AL1_TRANS_COUNT_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH4_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Self::CH4_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Self::CH4_AL1_TRANS_COUNT_TRIG_MASK)
+        });
     }
 }
 
@@ -14601,14 +15053,17 @@ impl Ch4Al1TransCountTrigVal {
     /// Read **CH4_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch4_al1_trans_count_trig(&self) -> u32 {
-        (self.bits & Ch4Al1TransCountTrig::CH4_AL1_TRANS_COUNT_TRIG_MASK) >> Ch4Al1TransCountTrig::CH4_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.bits & Ch4Al1TransCountTrig::CH4_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Ch4Al1TransCountTrig::CH4_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Set **CH4_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch4_al1_trans_count_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch4Al1TransCountTrig::CH4_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch4Al1TransCountTrig::CH4_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch4Al1TransCountTrig::CH4_AL1_TRANS_COUNT_TRIG_MASK)
+            bits: (self.bits & !Ch4Al1TransCountTrig::CH4_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Ch4Al1TransCountTrig::CH4_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Ch4Al1TransCountTrig::CH4_AL1_TRANS_COUNT_TRIG_MASK),
         }
     }
 }
@@ -14680,7 +15135,10 @@ impl Ch4Al2Ctrl {
     /// Write **CH4_AL2_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch4_al2_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH4_AL2_CTRL_MASK) | ((value << Self::CH4_AL2_CTRL_OFFSET) & Self::CH4_AL2_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH4_AL2_CTRL_MASK)
+                | ((value << Self::CH4_AL2_CTRL_OFFSET) & Self::CH4_AL2_CTRL_MASK)
+        });
     }
 }
 
@@ -14716,7 +15174,8 @@ impl Ch4Al2CtrlVal {
     #[inline(always)]
     pub const fn with_ch4_al2_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch4Al2Ctrl::CH4_AL2_CTRL_MASK) | ((value << Ch4Al2Ctrl::CH4_AL2_CTRL_OFFSET) & Ch4Al2Ctrl::CH4_AL2_CTRL_MASK)
+            bits: (self.bits & !Ch4Al2Ctrl::CH4_AL2_CTRL_MASK)
+                | ((value << Ch4Al2Ctrl::CH4_AL2_CTRL_OFFSET) & Ch4Al2Ctrl::CH4_AL2_CTRL_MASK),
         }
     }
 }
@@ -14782,13 +15241,17 @@ impl Ch4Al2TransCount {
     /// **CH4_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch4_al2_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH4_AL2_TRANS_COUNT_MASK) >> Self::CH4_AL2_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH4_AL2_TRANS_COUNT_MASK)
+            >> Self::CH4_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH4_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch4_al2_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH4_AL2_TRANS_COUNT_MASK) | ((value << Self::CH4_AL2_TRANS_COUNT_OFFSET) & Self::CH4_AL2_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH4_AL2_TRANS_COUNT_MASK)
+                | ((value << Self::CH4_AL2_TRANS_COUNT_OFFSET) & Self::CH4_AL2_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -14817,14 +15280,17 @@ impl Ch4Al2TransCountVal {
     /// Read **CH4_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch4_al2_trans_count(&self) -> u32 {
-        (self.bits & Ch4Al2TransCount::CH4_AL2_TRANS_COUNT_MASK) >> Ch4Al2TransCount::CH4_AL2_TRANS_COUNT_OFFSET
+        (self.bits & Ch4Al2TransCount::CH4_AL2_TRANS_COUNT_MASK)
+            >> Ch4Al2TransCount::CH4_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH4_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch4_al2_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch4Al2TransCount::CH4_AL2_TRANS_COUNT_MASK) | ((value << Ch4Al2TransCount::CH4_AL2_TRANS_COUNT_OFFSET) & Ch4Al2TransCount::CH4_AL2_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch4Al2TransCount::CH4_AL2_TRANS_COUNT_MASK)
+                | ((value << Ch4Al2TransCount::CH4_AL2_TRANS_COUNT_OFFSET)
+                    & Ch4Al2TransCount::CH4_AL2_TRANS_COUNT_MASK),
         }
     }
 }
@@ -14896,7 +15362,10 @@ impl Ch4Al2ReadAddr {
     /// Write **CH4_AL2_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch4_al2_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH4_AL2_READ_ADDR_MASK) | ((value << Self::CH4_AL2_READ_ADDR_OFFSET) & Self::CH4_AL2_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH4_AL2_READ_ADDR_MASK)
+                | ((value << Self::CH4_AL2_READ_ADDR_OFFSET) & Self::CH4_AL2_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -14925,14 +15394,17 @@ impl Ch4Al2ReadAddrVal {
     /// Read **CH4_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch4_al2_read_addr(&self) -> u32 {
-        (self.bits & Ch4Al2ReadAddr::CH4_AL2_READ_ADDR_MASK) >> Ch4Al2ReadAddr::CH4_AL2_READ_ADDR_OFFSET
+        (self.bits & Ch4Al2ReadAddr::CH4_AL2_READ_ADDR_MASK)
+            >> Ch4Al2ReadAddr::CH4_AL2_READ_ADDR_OFFSET
     }
 
     /// Set **CH4_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch4_al2_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch4Al2ReadAddr::CH4_AL2_READ_ADDR_MASK) | ((value << Ch4Al2ReadAddr::CH4_AL2_READ_ADDR_OFFSET) & Ch4Al2ReadAddr::CH4_AL2_READ_ADDR_MASK)
+            bits: (self.bits & !Ch4Al2ReadAddr::CH4_AL2_READ_ADDR_MASK)
+                | ((value << Ch4Al2ReadAddr::CH4_AL2_READ_ADDR_OFFSET)
+                    & Ch4Al2ReadAddr::CH4_AL2_READ_ADDR_MASK),
         }
     }
 }
@@ -15000,13 +15472,18 @@ impl Ch4Al2WriteAddrTrig {
     /// **CH4_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch4_al2_write_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH4_AL2_WRITE_ADDR_TRIG_MASK) >> Self::CH4_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH4_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Self::CH4_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH4_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch4_al2_write_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH4_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH4_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH4_AL2_WRITE_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH4_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Self::CH4_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Self::CH4_AL2_WRITE_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -15035,14 +15512,17 @@ impl Ch4Al2WriteAddrTrigVal {
     /// Read **CH4_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch4_al2_write_addr_trig(&self) -> u32 {
-        (self.bits & Ch4Al2WriteAddrTrig::CH4_AL2_WRITE_ADDR_TRIG_MASK) >> Ch4Al2WriteAddrTrig::CH4_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.bits & Ch4Al2WriteAddrTrig::CH4_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Ch4Al2WriteAddrTrig::CH4_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH4_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch4_al2_write_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch4Al2WriteAddrTrig::CH4_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch4Al2WriteAddrTrig::CH4_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch4Al2WriteAddrTrig::CH4_AL2_WRITE_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch4Al2WriteAddrTrig::CH4_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Ch4Al2WriteAddrTrig::CH4_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Ch4Al2WriteAddrTrig::CH4_AL2_WRITE_ADDR_TRIG_MASK),
         }
     }
 }
@@ -15114,7 +15594,10 @@ impl Ch4Al3Ctrl {
     /// Write **CH4_AL3_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch4_al3_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH4_AL3_CTRL_MASK) | ((value << Self::CH4_AL3_CTRL_OFFSET) & Self::CH4_AL3_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH4_AL3_CTRL_MASK)
+                | ((value << Self::CH4_AL3_CTRL_OFFSET) & Self::CH4_AL3_CTRL_MASK)
+        });
     }
 }
 
@@ -15150,7 +15633,8 @@ impl Ch4Al3CtrlVal {
     #[inline(always)]
     pub const fn with_ch4_al3_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch4Al3Ctrl::CH4_AL3_CTRL_MASK) | ((value << Ch4Al3Ctrl::CH4_AL3_CTRL_OFFSET) & Ch4Al3Ctrl::CH4_AL3_CTRL_MASK)
+            bits: (self.bits & !Ch4Al3Ctrl::CH4_AL3_CTRL_MASK)
+                | ((value << Ch4Al3Ctrl::CH4_AL3_CTRL_OFFSET) & Ch4Al3Ctrl::CH4_AL3_CTRL_MASK),
         }
     }
 }
@@ -15222,7 +15706,10 @@ impl Ch4Al3WriteAddr {
     /// Write **CH4_AL3_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch4_al3_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH4_AL3_WRITE_ADDR_MASK) | ((value << Self::CH4_AL3_WRITE_ADDR_OFFSET) & Self::CH4_AL3_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH4_AL3_WRITE_ADDR_MASK)
+                | ((value << Self::CH4_AL3_WRITE_ADDR_OFFSET) & Self::CH4_AL3_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -15251,14 +15738,17 @@ impl Ch4Al3WriteAddrVal {
     /// Read **CH4_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch4_al3_write_addr(&self) -> u32 {
-        (self.bits & Ch4Al3WriteAddr::CH4_AL3_WRITE_ADDR_MASK) >> Ch4Al3WriteAddr::CH4_AL3_WRITE_ADDR_OFFSET
+        (self.bits & Ch4Al3WriteAddr::CH4_AL3_WRITE_ADDR_MASK)
+            >> Ch4Al3WriteAddr::CH4_AL3_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH4_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch4_al3_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch4Al3WriteAddr::CH4_AL3_WRITE_ADDR_MASK) | ((value << Ch4Al3WriteAddr::CH4_AL3_WRITE_ADDR_OFFSET) & Ch4Al3WriteAddr::CH4_AL3_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch4Al3WriteAddr::CH4_AL3_WRITE_ADDR_MASK)
+                | ((value << Ch4Al3WriteAddr::CH4_AL3_WRITE_ADDR_OFFSET)
+                    & Ch4Al3WriteAddr::CH4_AL3_WRITE_ADDR_MASK),
         }
     }
 }
@@ -15324,13 +15814,17 @@ impl Ch4Al3TransCount {
     /// **CH4_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch4_al3_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH4_AL3_TRANS_COUNT_MASK) >> Self::CH4_AL3_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH4_AL3_TRANS_COUNT_MASK)
+            >> Self::CH4_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH4_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch4_al3_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH4_AL3_TRANS_COUNT_MASK) | ((value << Self::CH4_AL3_TRANS_COUNT_OFFSET) & Self::CH4_AL3_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH4_AL3_TRANS_COUNT_MASK)
+                | ((value << Self::CH4_AL3_TRANS_COUNT_OFFSET) & Self::CH4_AL3_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -15359,14 +15853,17 @@ impl Ch4Al3TransCountVal {
     /// Read **CH4_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch4_al3_trans_count(&self) -> u32 {
-        (self.bits & Ch4Al3TransCount::CH4_AL3_TRANS_COUNT_MASK) >> Ch4Al3TransCount::CH4_AL3_TRANS_COUNT_OFFSET
+        (self.bits & Ch4Al3TransCount::CH4_AL3_TRANS_COUNT_MASK)
+            >> Ch4Al3TransCount::CH4_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH4_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch4_al3_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch4Al3TransCount::CH4_AL3_TRANS_COUNT_MASK) | ((value << Ch4Al3TransCount::CH4_AL3_TRANS_COUNT_OFFSET) & Ch4Al3TransCount::CH4_AL3_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch4Al3TransCount::CH4_AL3_TRANS_COUNT_MASK)
+                | ((value << Ch4Al3TransCount::CH4_AL3_TRANS_COUNT_OFFSET)
+                    & Ch4Al3TransCount::CH4_AL3_TRANS_COUNT_MASK),
         }
     }
 }
@@ -15434,13 +15931,18 @@ impl Ch4Al3ReadAddrTrig {
     /// **CH4_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch4_al3_read_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH4_AL3_READ_ADDR_TRIG_MASK) >> Self::CH4_AL3_READ_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH4_AL3_READ_ADDR_TRIG_MASK)
+            >> Self::CH4_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH4_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch4_al3_read_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH4_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH4_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH4_AL3_READ_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH4_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Self::CH4_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Self::CH4_AL3_READ_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -15469,14 +15971,17 @@ impl Ch4Al3ReadAddrTrigVal {
     /// Read **CH4_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch4_al3_read_addr_trig(&self) -> u32 {
-        (self.bits & Ch4Al3ReadAddrTrig::CH4_AL3_READ_ADDR_TRIG_MASK) >> Ch4Al3ReadAddrTrig::CH4_AL3_READ_ADDR_TRIG_OFFSET
+        (self.bits & Ch4Al3ReadAddrTrig::CH4_AL3_READ_ADDR_TRIG_MASK)
+            >> Ch4Al3ReadAddrTrig::CH4_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH4_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch4_al3_read_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch4Al3ReadAddrTrig::CH4_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch4Al3ReadAddrTrig::CH4_AL3_READ_ADDR_TRIG_OFFSET) & Ch4Al3ReadAddrTrig::CH4_AL3_READ_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch4Al3ReadAddrTrig::CH4_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Ch4Al3ReadAddrTrig::CH4_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Ch4Al3ReadAddrTrig::CH4_AL3_READ_ADDR_TRIG_MASK),
         }
     }
 }
@@ -15558,7 +16063,10 @@ impl Ch5ReadAddr {
     /// This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
     #[inline(always)]
     pub fn write_ch5_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH5_READ_ADDR_MASK) | ((value << Self::CH5_READ_ADDR_OFFSET) & Self::CH5_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH5_READ_ADDR_MASK)
+                | ((value << Self::CH5_READ_ADDR_OFFSET) & Self::CH5_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -15604,7 +16112,8 @@ impl Ch5ReadAddrVal {
     #[inline(always)]
     pub const fn with_ch5_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch5ReadAddr::CH5_READ_ADDR_MASK) | ((value << Ch5ReadAddr::CH5_READ_ADDR_OFFSET) & Ch5ReadAddr::CH5_READ_ADDR_MASK)
+            bits: (self.bits & !Ch5ReadAddr::CH5_READ_ADDR_MASK)
+                | ((value << Ch5ReadAddr::CH5_READ_ADDR_OFFSET) & Ch5ReadAddr::CH5_READ_ADDR_MASK),
         }
     }
 }
@@ -15686,7 +16195,10 @@ impl Ch5WriteAddr {
     /// This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
     #[inline(always)]
     pub fn write_ch5_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH5_WRITE_ADDR_MASK) | ((value << Self::CH5_WRITE_ADDR_OFFSET) & Self::CH5_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH5_WRITE_ADDR_MASK)
+                | ((value << Self::CH5_WRITE_ADDR_OFFSET) & Self::CH5_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -15732,7 +16244,9 @@ impl Ch5WriteAddrVal {
     #[inline(always)]
     pub const fn with_ch5_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch5WriteAddr::CH5_WRITE_ADDR_MASK) | ((value << Ch5WriteAddr::CH5_WRITE_ADDR_OFFSET) & Ch5WriteAddr::CH5_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch5WriteAddr::CH5_WRITE_ADDR_MASK)
+                | ((value << Ch5WriteAddr::CH5_WRITE_ADDR_OFFSET)
+                    & Ch5WriteAddr::CH5_WRITE_ADDR_MASK),
         }
     }
 }
@@ -15852,7 +16366,9 @@ impl Ch5TransCount {
     /// All other values are reserved.
     #[inline(always)]
     pub fn write_mode(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK)
+        });
     }
 
     /// **COUNT** `[27:0]` (RW)
@@ -15876,7 +16392,9 @@ impl Ch5TransCount {
     /// The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
     #[inline(always)]
     pub fn write_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK)
+        });
     }
 }
 
@@ -15940,7 +16458,8 @@ impl Ch5TransCountVal {
     #[inline(always)]
     pub const fn with_mode(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch5TransCount::MODE_MASK) | ((value << Ch5TransCount::MODE_OFFSET) & Ch5TransCount::MODE_MASK)
+            bits: (self.bits & !Ch5TransCount::MODE_MASK)
+                | ((value << Ch5TransCount::MODE_OFFSET) & Ch5TransCount::MODE_MASK),
         }
     }
 
@@ -15954,7 +16473,8 @@ impl Ch5TransCountVal {
     #[inline(always)]
     pub const fn with_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch5TransCount::COUNT_MASK) | ((value << Ch5TransCount::COUNT_OFFSET) & Ch5TransCount::COUNT_MASK)
+            bits: (self.bits & !Ch5TransCount::COUNT_MASK)
+                | ((value << Ch5TransCount::COUNT_OFFSET) & Ch5TransCount::COUNT_MASK),
         }
     }
 }
@@ -16662,7 +17182,9 @@ impl Ch5CtrlTrig {
     /// 0x0 to 0x3a -> select DREQ n as TREQ
     #[inline(always)]
     pub fn write_treq_sel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK)
+        });
     }
 
     /// **CHAIN_TO** `[16:13]` (RW)
@@ -16680,7 +17202,9 @@ impl Ch5CtrlTrig {
     /// Note this field resets to 0, so channels 1 and above will chain to channel 0 by default. Set this field to avoid this behaviour.
     #[inline(always)]
     pub fn write_chain_to(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK)
+        });
     }
 
     /// **RING_SEL** `[12]` (RW)
@@ -16719,7 +17243,9 @@ impl Ch5CtrlTrig {
     /// Ring sizes between 2 and 32768 bytes are possible. This can apply to either read or write addresses, based on value of RING_SEL.
     #[inline(always)]
     pub fn write_ring_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK)
+        });
     }
 
     /// **INCR_WRITE_REV** `[7]` (RW)
@@ -16819,7 +17345,9 @@ impl Ch5CtrlTrig {
     /// Set the size of each bus transfer (byte/halfword/word). READ_ADDR and WRITE_ADDR advance by this amount (1/2/4 bytes) with each transfer.
     #[inline(always)]
     pub fn write_data_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK)
+        });
     }
 
     /// **HIGH_PRIORITY** `[1]` (RW)
@@ -17065,7 +17593,7 @@ impl Ch5CtrlTrigVal {
                 self.bits | Ch5CtrlTrig::READ_ERROR_MASK
             } else {
                 self.bits & !Ch5CtrlTrig::READ_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -17080,7 +17608,7 @@ impl Ch5CtrlTrigVal {
                 self.bits | Ch5CtrlTrig::WRITE_ERROR_MASK
             } else {
                 self.bits & !Ch5CtrlTrig::WRITE_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -17095,7 +17623,7 @@ impl Ch5CtrlTrigVal {
                 self.bits | Ch5CtrlTrig::SNIFF_EN_MASK
             } else {
                 self.bits & !Ch5CtrlTrig::SNIFF_EN_MASK
-            }
+            },
         }
     }
 
@@ -17110,7 +17638,7 @@ impl Ch5CtrlTrigVal {
                 self.bits | Ch5CtrlTrig::BSWAP_MASK
             } else {
                 self.bits & !Ch5CtrlTrig::BSWAP_MASK
-            }
+            },
         }
     }
 
@@ -17125,7 +17653,7 @@ impl Ch5CtrlTrigVal {
                 self.bits | Ch5CtrlTrig::IRQ_QUIET_MASK
             } else {
                 self.bits & !Ch5CtrlTrig::IRQ_QUIET_MASK
-            }
+            },
         }
     }
 
@@ -17137,7 +17665,8 @@ impl Ch5CtrlTrigVal {
     #[inline(always)]
     pub const fn with_treq_sel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch5CtrlTrig::TREQ_SEL_MASK) | ((value << Ch5CtrlTrig::TREQ_SEL_OFFSET) & Ch5CtrlTrig::TREQ_SEL_MASK)
+            bits: (self.bits & !Ch5CtrlTrig::TREQ_SEL_MASK)
+                | ((value << Ch5CtrlTrig::TREQ_SEL_OFFSET) & Ch5CtrlTrig::TREQ_SEL_MASK),
         }
     }
 
@@ -17148,7 +17677,8 @@ impl Ch5CtrlTrigVal {
     #[inline(always)]
     pub const fn with_chain_to(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch5CtrlTrig::CHAIN_TO_MASK) | ((value << Ch5CtrlTrig::CHAIN_TO_OFFSET) & Ch5CtrlTrig::CHAIN_TO_MASK)
+            bits: (self.bits & !Ch5CtrlTrig::CHAIN_TO_MASK)
+                | ((value << Ch5CtrlTrig::CHAIN_TO_OFFSET) & Ch5CtrlTrig::CHAIN_TO_MASK),
         }
     }
 
@@ -17163,7 +17693,7 @@ impl Ch5CtrlTrigVal {
                 self.bits | Ch5CtrlTrig::RING_SEL_MASK
             } else {
                 self.bits & !Ch5CtrlTrig::RING_SEL_MASK
-            }
+            },
         }
     }
 
@@ -17174,7 +17704,8 @@ impl Ch5CtrlTrigVal {
     #[inline(always)]
     pub const fn with_ring_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch5CtrlTrig::RING_SIZE_MASK) | ((value << Ch5CtrlTrig::RING_SIZE_OFFSET) & Ch5CtrlTrig::RING_SIZE_MASK)
+            bits: (self.bits & !Ch5CtrlTrig::RING_SIZE_MASK)
+                | ((value << Ch5CtrlTrig::RING_SIZE_OFFSET) & Ch5CtrlTrig::RING_SIZE_MASK),
         }
     }
 
@@ -17189,7 +17720,7 @@ impl Ch5CtrlTrigVal {
                 self.bits | Ch5CtrlTrig::INCR_WRITE_REV_MASK
             } else {
                 self.bits & !Ch5CtrlTrig::INCR_WRITE_REV_MASK
-            }
+            },
         }
     }
 
@@ -17204,7 +17735,7 @@ impl Ch5CtrlTrigVal {
                 self.bits | Ch5CtrlTrig::INCR_WRITE_MASK
             } else {
                 self.bits & !Ch5CtrlTrig::INCR_WRITE_MASK
-            }
+            },
         }
     }
 
@@ -17219,7 +17750,7 @@ impl Ch5CtrlTrigVal {
                 self.bits | Ch5CtrlTrig::INCR_READ_REV_MASK
             } else {
                 self.bits & !Ch5CtrlTrig::INCR_READ_REV_MASK
-            }
+            },
         }
     }
 
@@ -17234,7 +17765,7 @@ impl Ch5CtrlTrigVal {
                 self.bits | Ch5CtrlTrig::INCR_READ_MASK
             } else {
                 self.bits & !Ch5CtrlTrig::INCR_READ_MASK
-            }
+            },
         }
     }
 
@@ -17244,7 +17775,8 @@ impl Ch5CtrlTrigVal {
     #[inline(always)]
     pub const fn with_data_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch5CtrlTrig::DATA_SIZE_MASK) | ((value << Ch5CtrlTrig::DATA_SIZE_OFFSET) & Ch5CtrlTrig::DATA_SIZE_MASK)
+            bits: (self.bits & !Ch5CtrlTrig::DATA_SIZE_MASK)
+                | ((value << Ch5CtrlTrig::DATA_SIZE_OFFSET) & Ch5CtrlTrig::DATA_SIZE_MASK),
         }
     }
 
@@ -17259,7 +17791,7 @@ impl Ch5CtrlTrigVal {
                 self.bits | Ch5CtrlTrig::HIGH_PRIORITY_MASK
             } else {
                 self.bits & !Ch5CtrlTrig::HIGH_PRIORITY_MASK
-            }
+            },
         }
     }
 
@@ -17274,7 +17806,7 @@ impl Ch5CtrlTrigVal {
                 self.bits | Ch5CtrlTrig::EN_MASK
             } else {
                 self.bits & !Ch5CtrlTrig::EN_MASK
-            }
+            },
         }
     }
 }
@@ -17346,7 +17878,10 @@ impl Ch5Al1Ctrl {
     /// Write **CH5_AL1_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch5_al1_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH5_AL1_CTRL_MASK) | ((value << Self::CH5_AL1_CTRL_OFFSET) & Self::CH5_AL1_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH5_AL1_CTRL_MASK)
+                | ((value << Self::CH5_AL1_CTRL_OFFSET) & Self::CH5_AL1_CTRL_MASK)
+        });
     }
 }
 
@@ -17382,7 +17917,8 @@ impl Ch5Al1CtrlVal {
     #[inline(always)]
     pub const fn with_ch5_al1_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch5Al1Ctrl::CH5_AL1_CTRL_MASK) | ((value << Ch5Al1Ctrl::CH5_AL1_CTRL_OFFSET) & Ch5Al1Ctrl::CH5_AL1_CTRL_MASK)
+            bits: (self.bits & !Ch5Al1Ctrl::CH5_AL1_CTRL_MASK)
+                | ((value << Ch5Al1Ctrl::CH5_AL1_CTRL_OFFSET) & Ch5Al1Ctrl::CH5_AL1_CTRL_MASK),
         }
     }
 }
@@ -17454,7 +17990,10 @@ impl Ch5Al1ReadAddr {
     /// Write **CH5_AL1_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch5_al1_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH5_AL1_READ_ADDR_MASK) | ((value << Self::CH5_AL1_READ_ADDR_OFFSET) & Self::CH5_AL1_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH5_AL1_READ_ADDR_MASK)
+                | ((value << Self::CH5_AL1_READ_ADDR_OFFSET) & Self::CH5_AL1_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -17483,14 +18022,17 @@ impl Ch5Al1ReadAddrVal {
     /// Read **CH5_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch5_al1_read_addr(&self) -> u32 {
-        (self.bits & Ch5Al1ReadAddr::CH5_AL1_READ_ADDR_MASK) >> Ch5Al1ReadAddr::CH5_AL1_READ_ADDR_OFFSET
+        (self.bits & Ch5Al1ReadAddr::CH5_AL1_READ_ADDR_MASK)
+            >> Ch5Al1ReadAddr::CH5_AL1_READ_ADDR_OFFSET
     }
 
     /// Set **CH5_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch5_al1_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch5Al1ReadAddr::CH5_AL1_READ_ADDR_MASK) | ((value << Ch5Al1ReadAddr::CH5_AL1_READ_ADDR_OFFSET) & Ch5Al1ReadAddr::CH5_AL1_READ_ADDR_MASK)
+            bits: (self.bits & !Ch5Al1ReadAddr::CH5_AL1_READ_ADDR_MASK)
+                | ((value << Ch5Al1ReadAddr::CH5_AL1_READ_ADDR_OFFSET)
+                    & Ch5Al1ReadAddr::CH5_AL1_READ_ADDR_MASK),
         }
     }
 }
@@ -17562,7 +18104,10 @@ impl Ch5Al1WriteAddr {
     /// Write **CH5_AL1_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch5_al1_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH5_AL1_WRITE_ADDR_MASK) | ((value << Self::CH5_AL1_WRITE_ADDR_OFFSET) & Self::CH5_AL1_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH5_AL1_WRITE_ADDR_MASK)
+                | ((value << Self::CH5_AL1_WRITE_ADDR_OFFSET) & Self::CH5_AL1_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -17591,14 +18136,17 @@ impl Ch5Al1WriteAddrVal {
     /// Read **CH5_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch5_al1_write_addr(&self) -> u32 {
-        (self.bits & Ch5Al1WriteAddr::CH5_AL1_WRITE_ADDR_MASK) >> Ch5Al1WriteAddr::CH5_AL1_WRITE_ADDR_OFFSET
+        (self.bits & Ch5Al1WriteAddr::CH5_AL1_WRITE_ADDR_MASK)
+            >> Ch5Al1WriteAddr::CH5_AL1_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH5_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch5_al1_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch5Al1WriteAddr::CH5_AL1_WRITE_ADDR_MASK) | ((value << Ch5Al1WriteAddr::CH5_AL1_WRITE_ADDR_OFFSET) & Ch5Al1WriteAddr::CH5_AL1_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch5Al1WriteAddr::CH5_AL1_WRITE_ADDR_MASK)
+                | ((value << Ch5Al1WriteAddr::CH5_AL1_WRITE_ADDR_OFFSET)
+                    & Ch5Al1WriteAddr::CH5_AL1_WRITE_ADDR_MASK),
         }
     }
 }
@@ -17666,13 +18214,18 @@ impl Ch5Al1TransCountTrig {
     /// **CH5_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch5_al1_trans_count_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH5_AL1_TRANS_COUNT_TRIG_MASK) >> Self::CH5_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH5_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Self::CH5_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Write **CH5_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch5_al1_trans_count_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH5_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH5_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH5_AL1_TRANS_COUNT_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH5_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Self::CH5_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Self::CH5_AL1_TRANS_COUNT_TRIG_MASK)
+        });
     }
 }
 
@@ -17701,14 +18254,17 @@ impl Ch5Al1TransCountTrigVal {
     /// Read **CH5_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch5_al1_trans_count_trig(&self) -> u32 {
-        (self.bits & Ch5Al1TransCountTrig::CH5_AL1_TRANS_COUNT_TRIG_MASK) >> Ch5Al1TransCountTrig::CH5_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.bits & Ch5Al1TransCountTrig::CH5_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Ch5Al1TransCountTrig::CH5_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Set **CH5_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch5_al1_trans_count_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch5Al1TransCountTrig::CH5_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch5Al1TransCountTrig::CH5_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch5Al1TransCountTrig::CH5_AL1_TRANS_COUNT_TRIG_MASK)
+            bits: (self.bits & !Ch5Al1TransCountTrig::CH5_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Ch5Al1TransCountTrig::CH5_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Ch5Al1TransCountTrig::CH5_AL1_TRANS_COUNT_TRIG_MASK),
         }
     }
 }
@@ -17780,7 +18336,10 @@ impl Ch5Al2Ctrl {
     /// Write **CH5_AL2_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch5_al2_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH5_AL2_CTRL_MASK) | ((value << Self::CH5_AL2_CTRL_OFFSET) & Self::CH5_AL2_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH5_AL2_CTRL_MASK)
+                | ((value << Self::CH5_AL2_CTRL_OFFSET) & Self::CH5_AL2_CTRL_MASK)
+        });
     }
 }
 
@@ -17816,7 +18375,8 @@ impl Ch5Al2CtrlVal {
     #[inline(always)]
     pub const fn with_ch5_al2_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch5Al2Ctrl::CH5_AL2_CTRL_MASK) | ((value << Ch5Al2Ctrl::CH5_AL2_CTRL_OFFSET) & Ch5Al2Ctrl::CH5_AL2_CTRL_MASK)
+            bits: (self.bits & !Ch5Al2Ctrl::CH5_AL2_CTRL_MASK)
+                | ((value << Ch5Al2Ctrl::CH5_AL2_CTRL_OFFSET) & Ch5Al2Ctrl::CH5_AL2_CTRL_MASK),
         }
     }
 }
@@ -17882,13 +18442,17 @@ impl Ch5Al2TransCount {
     /// **CH5_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch5_al2_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH5_AL2_TRANS_COUNT_MASK) >> Self::CH5_AL2_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH5_AL2_TRANS_COUNT_MASK)
+            >> Self::CH5_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH5_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch5_al2_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH5_AL2_TRANS_COUNT_MASK) | ((value << Self::CH5_AL2_TRANS_COUNT_OFFSET) & Self::CH5_AL2_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH5_AL2_TRANS_COUNT_MASK)
+                | ((value << Self::CH5_AL2_TRANS_COUNT_OFFSET) & Self::CH5_AL2_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -17917,14 +18481,17 @@ impl Ch5Al2TransCountVal {
     /// Read **CH5_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch5_al2_trans_count(&self) -> u32 {
-        (self.bits & Ch5Al2TransCount::CH5_AL2_TRANS_COUNT_MASK) >> Ch5Al2TransCount::CH5_AL2_TRANS_COUNT_OFFSET
+        (self.bits & Ch5Al2TransCount::CH5_AL2_TRANS_COUNT_MASK)
+            >> Ch5Al2TransCount::CH5_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH5_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch5_al2_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch5Al2TransCount::CH5_AL2_TRANS_COUNT_MASK) | ((value << Ch5Al2TransCount::CH5_AL2_TRANS_COUNT_OFFSET) & Ch5Al2TransCount::CH5_AL2_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch5Al2TransCount::CH5_AL2_TRANS_COUNT_MASK)
+                | ((value << Ch5Al2TransCount::CH5_AL2_TRANS_COUNT_OFFSET)
+                    & Ch5Al2TransCount::CH5_AL2_TRANS_COUNT_MASK),
         }
     }
 }
@@ -17996,7 +18563,10 @@ impl Ch5Al2ReadAddr {
     /// Write **CH5_AL2_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch5_al2_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH5_AL2_READ_ADDR_MASK) | ((value << Self::CH5_AL2_READ_ADDR_OFFSET) & Self::CH5_AL2_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH5_AL2_READ_ADDR_MASK)
+                | ((value << Self::CH5_AL2_READ_ADDR_OFFSET) & Self::CH5_AL2_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -18025,14 +18595,17 @@ impl Ch5Al2ReadAddrVal {
     /// Read **CH5_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch5_al2_read_addr(&self) -> u32 {
-        (self.bits & Ch5Al2ReadAddr::CH5_AL2_READ_ADDR_MASK) >> Ch5Al2ReadAddr::CH5_AL2_READ_ADDR_OFFSET
+        (self.bits & Ch5Al2ReadAddr::CH5_AL2_READ_ADDR_MASK)
+            >> Ch5Al2ReadAddr::CH5_AL2_READ_ADDR_OFFSET
     }
 
     /// Set **CH5_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch5_al2_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch5Al2ReadAddr::CH5_AL2_READ_ADDR_MASK) | ((value << Ch5Al2ReadAddr::CH5_AL2_READ_ADDR_OFFSET) & Ch5Al2ReadAddr::CH5_AL2_READ_ADDR_MASK)
+            bits: (self.bits & !Ch5Al2ReadAddr::CH5_AL2_READ_ADDR_MASK)
+                | ((value << Ch5Al2ReadAddr::CH5_AL2_READ_ADDR_OFFSET)
+                    & Ch5Al2ReadAddr::CH5_AL2_READ_ADDR_MASK),
         }
     }
 }
@@ -18100,13 +18673,18 @@ impl Ch5Al2WriteAddrTrig {
     /// **CH5_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch5_al2_write_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH5_AL2_WRITE_ADDR_TRIG_MASK) >> Self::CH5_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH5_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Self::CH5_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH5_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch5_al2_write_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH5_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH5_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH5_AL2_WRITE_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH5_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Self::CH5_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Self::CH5_AL2_WRITE_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -18135,14 +18713,17 @@ impl Ch5Al2WriteAddrTrigVal {
     /// Read **CH5_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch5_al2_write_addr_trig(&self) -> u32 {
-        (self.bits & Ch5Al2WriteAddrTrig::CH5_AL2_WRITE_ADDR_TRIG_MASK) >> Ch5Al2WriteAddrTrig::CH5_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.bits & Ch5Al2WriteAddrTrig::CH5_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Ch5Al2WriteAddrTrig::CH5_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH5_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch5_al2_write_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch5Al2WriteAddrTrig::CH5_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch5Al2WriteAddrTrig::CH5_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch5Al2WriteAddrTrig::CH5_AL2_WRITE_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch5Al2WriteAddrTrig::CH5_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Ch5Al2WriteAddrTrig::CH5_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Ch5Al2WriteAddrTrig::CH5_AL2_WRITE_ADDR_TRIG_MASK),
         }
     }
 }
@@ -18214,7 +18795,10 @@ impl Ch5Al3Ctrl {
     /// Write **CH5_AL3_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch5_al3_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH5_AL3_CTRL_MASK) | ((value << Self::CH5_AL3_CTRL_OFFSET) & Self::CH5_AL3_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH5_AL3_CTRL_MASK)
+                | ((value << Self::CH5_AL3_CTRL_OFFSET) & Self::CH5_AL3_CTRL_MASK)
+        });
     }
 }
 
@@ -18250,7 +18834,8 @@ impl Ch5Al3CtrlVal {
     #[inline(always)]
     pub const fn with_ch5_al3_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch5Al3Ctrl::CH5_AL3_CTRL_MASK) | ((value << Ch5Al3Ctrl::CH5_AL3_CTRL_OFFSET) & Ch5Al3Ctrl::CH5_AL3_CTRL_MASK)
+            bits: (self.bits & !Ch5Al3Ctrl::CH5_AL3_CTRL_MASK)
+                | ((value << Ch5Al3Ctrl::CH5_AL3_CTRL_OFFSET) & Ch5Al3Ctrl::CH5_AL3_CTRL_MASK),
         }
     }
 }
@@ -18322,7 +18907,10 @@ impl Ch5Al3WriteAddr {
     /// Write **CH5_AL3_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch5_al3_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH5_AL3_WRITE_ADDR_MASK) | ((value << Self::CH5_AL3_WRITE_ADDR_OFFSET) & Self::CH5_AL3_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH5_AL3_WRITE_ADDR_MASK)
+                | ((value << Self::CH5_AL3_WRITE_ADDR_OFFSET) & Self::CH5_AL3_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -18351,14 +18939,17 @@ impl Ch5Al3WriteAddrVal {
     /// Read **CH5_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch5_al3_write_addr(&self) -> u32 {
-        (self.bits & Ch5Al3WriteAddr::CH5_AL3_WRITE_ADDR_MASK) >> Ch5Al3WriteAddr::CH5_AL3_WRITE_ADDR_OFFSET
+        (self.bits & Ch5Al3WriteAddr::CH5_AL3_WRITE_ADDR_MASK)
+            >> Ch5Al3WriteAddr::CH5_AL3_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH5_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch5_al3_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch5Al3WriteAddr::CH5_AL3_WRITE_ADDR_MASK) | ((value << Ch5Al3WriteAddr::CH5_AL3_WRITE_ADDR_OFFSET) & Ch5Al3WriteAddr::CH5_AL3_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch5Al3WriteAddr::CH5_AL3_WRITE_ADDR_MASK)
+                | ((value << Ch5Al3WriteAddr::CH5_AL3_WRITE_ADDR_OFFSET)
+                    & Ch5Al3WriteAddr::CH5_AL3_WRITE_ADDR_MASK),
         }
     }
 }
@@ -18424,13 +19015,17 @@ impl Ch5Al3TransCount {
     /// **CH5_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch5_al3_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH5_AL3_TRANS_COUNT_MASK) >> Self::CH5_AL3_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH5_AL3_TRANS_COUNT_MASK)
+            >> Self::CH5_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH5_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch5_al3_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH5_AL3_TRANS_COUNT_MASK) | ((value << Self::CH5_AL3_TRANS_COUNT_OFFSET) & Self::CH5_AL3_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH5_AL3_TRANS_COUNT_MASK)
+                | ((value << Self::CH5_AL3_TRANS_COUNT_OFFSET) & Self::CH5_AL3_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -18459,14 +19054,17 @@ impl Ch5Al3TransCountVal {
     /// Read **CH5_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch5_al3_trans_count(&self) -> u32 {
-        (self.bits & Ch5Al3TransCount::CH5_AL3_TRANS_COUNT_MASK) >> Ch5Al3TransCount::CH5_AL3_TRANS_COUNT_OFFSET
+        (self.bits & Ch5Al3TransCount::CH5_AL3_TRANS_COUNT_MASK)
+            >> Ch5Al3TransCount::CH5_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH5_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch5_al3_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch5Al3TransCount::CH5_AL3_TRANS_COUNT_MASK) | ((value << Ch5Al3TransCount::CH5_AL3_TRANS_COUNT_OFFSET) & Ch5Al3TransCount::CH5_AL3_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch5Al3TransCount::CH5_AL3_TRANS_COUNT_MASK)
+                | ((value << Ch5Al3TransCount::CH5_AL3_TRANS_COUNT_OFFSET)
+                    & Ch5Al3TransCount::CH5_AL3_TRANS_COUNT_MASK),
         }
     }
 }
@@ -18534,13 +19132,18 @@ impl Ch5Al3ReadAddrTrig {
     /// **CH5_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch5_al3_read_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH5_AL3_READ_ADDR_TRIG_MASK) >> Self::CH5_AL3_READ_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH5_AL3_READ_ADDR_TRIG_MASK)
+            >> Self::CH5_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH5_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch5_al3_read_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH5_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH5_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH5_AL3_READ_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH5_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Self::CH5_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Self::CH5_AL3_READ_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -18569,14 +19172,17 @@ impl Ch5Al3ReadAddrTrigVal {
     /// Read **CH5_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch5_al3_read_addr_trig(&self) -> u32 {
-        (self.bits & Ch5Al3ReadAddrTrig::CH5_AL3_READ_ADDR_TRIG_MASK) >> Ch5Al3ReadAddrTrig::CH5_AL3_READ_ADDR_TRIG_OFFSET
+        (self.bits & Ch5Al3ReadAddrTrig::CH5_AL3_READ_ADDR_TRIG_MASK)
+            >> Ch5Al3ReadAddrTrig::CH5_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH5_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch5_al3_read_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch5Al3ReadAddrTrig::CH5_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch5Al3ReadAddrTrig::CH5_AL3_READ_ADDR_TRIG_OFFSET) & Ch5Al3ReadAddrTrig::CH5_AL3_READ_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch5Al3ReadAddrTrig::CH5_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Ch5Al3ReadAddrTrig::CH5_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Ch5Al3ReadAddrTrig::CH5_AL3_READ_ADDR_TRIG_MASK),
         }
     }
 }
@@ -18658,7 +19264,10 @@ impl Ch6ReadAddr {
     /// This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
     #[inline(always)]
     pub fn write_ch6_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH6_READ_ADDR_MASK) | ((value << Self::CH6_READ_ADDR_OFFSET) & Self::CH6_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH6_READ_ADDR_MASK)
+                | ((value << Self::CH6_READ_ADDR_OFFSET) & Self::CH6_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -18704,7 +19313,8 @@ impl Ch6ReadAddrVal {
     #[inline(always)]
     pub const fn with_ch6_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch6ReadAddr::CH6_READ_ADDR_MASK) | ((value << Ch6ReadAddr::CH6_READ_ADDR_OFFSET) & Ch6ReadAddr::CH6_READ_ADDR_MASK)
+            bits: (self.bits & !Ch6ReadAddr::CH6_READ_ADDR_MASK)
+                | ((value << Ch6ReadAddr::CH6_READ_ADDR_OFFSET) & Ch6ReadAddr::CH6_READ_ADDR_MASK),
         }
     }
 }
@@ -18786,7 +19396,10 @@ impl Ch6WriteAddr {
     /// This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
     #[inline(always)]
     pub fn write_ch6_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH6_WRITE_ADDR_MASK) | ((value << Self::CH6_WRITE_ADDR_OFFSET) & Self::CH6_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH6_WRITE_ADDR_MASK)
+                | ((value << Self::CH6_WRITE_ADDR_OFFSET) & Self::CH6_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -18832,7 +19445,9 @@ impl Ch6WriteAddrVal {
     #[inline(always)]
     pub const fn with_ch6_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch6WriteAddr::CH6_WRITE_ADDR_MASK) | ((value << Ch6WriteAddr::CH6_WRITE_ADDR_OFFSET) & Ch6WriteAddr::CH6_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch6WriteAddr::CH6_WRITE_ADDR_MASK)
+                | ((value << Ch6WriteAddr::CH6_WRITE_ADDR_OFFSET)
+                    & Ch6WriteAddr::CH6_WRITE_ADDR_MASK),
         }
     }
 }
@@ -18952,7 +19567,9 @@ impl Ch6TransCount {
     /// All other values are reserved.
     #[inline(always)]
     pub fn write_mode(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK)
+        });
     }
 
     /// **COUNT** `[27:0]` (RW)
@@ -18976,7 +19593,9 @@ impl Ch6TransCount {
     /// The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
     #[inline(always)]
     pub fn write_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK)
+        });
     }
 }
 
@@ -19040,7 +19659,8 @@ impl Ch6TransCountVal {
     #[inline(always)]
     pub const fn with_mode(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch6TransCount::MODE_MASK) | ((value << Ch6TransCount::MODE_OFFSET) & Ch6TransCount::MODE_MASK)
+            bits: (self.bits & !Ch6TransCount::MODE_MASK)
+                | ((value << Ch6TransCount::MODE_OFFSET) & Ch6TransCount::MODE_MASK),
         }
     }
 
@@ -19054,7 +19674,8 @@ impl Ch6TransCountVal {
     #[inline(always)]
     pub const fn with_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch6TransCount::COUNT_MASK) | ((value << Ch6TransCount::COUNT_OFFSET) & Ch6TransCount::COUNT_MASK)
+            bits: (self.bits & !Ch6TransCount::COUNT_MASK)
+                | ((value << Ch6TransCount::COUNT_OFFSET) & Ch6TransCount::COUNT_MASK),
         }
     }
 }
@@ -19762,7 +20383,9 @@ impl Ch6CtrlTrig {
     /// 0x0 to 0x3a -> select DREQ n as TREQ
     #[inline(always)]
     pub fn write_treq_sel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK)
+        });
     }
 
     /// **CHAIN_TO** `[16:13]` (RW)
@@ -19780,7 +20403,9 @@ impl Ch6CtrlTrig {
     /// Note this field resets to 0, so channels 1 and above will chain to channel 0 by default. Set this field to avoid this behaviour.
     #[inline(always)]
     pub fn write_chain_to(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK)
+        });
     }
 
     /// **RING_SEL** `[12]` (RW)
@@ -19819,7 +20444,9 @@ impl Ch6CtrlTrig {
     /// Ring sizes between 2 and 32768 bytes are possible. This can apply to either read or write addresses, based on value of RING_SEL.
     #[inline(always)]
     pub fn write_ring_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK)
+        });
     }
 
     /// **INCR_WRITE_REV** `[7]` (RW)
@@ -19919,7 +20546,9 @@ impl Ch6CtrlTrig {
     /// Set the size of each bus transfer (byte/halfword/word). READ_ADDR and WRITE_ADDR advance by this amount (1/2/4 bytes) with each transfer.
     #[inline(always)]
     pub fn write_data_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK)
+        });
     }
 
     /// **HIGH_PRIORITY** `[1]` (RW)
@@ -20165,7 +20794,7 @@ impl Ch6CtrlTrigVal {
                 self.bits | Ch6CtrlTrig::READ_ERROR_MASK
             } else {
                 self.bits & !Ch6CtrlTrig::READ_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -20180,7 +20809,7 @@ impl Ch6CtrlTrigVal {
                 self.bits | Ch6CtrlTrig::WRITE_ERROR_MASK
             } else {
                 self.bits & !Ch6CtrlTrig::WRITE_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -20195,7 +20824,7 @@ impl Ch6CtrlTrigVal {
                 self.bits | Ch6CtrlTrig::SNIFF_EN_MASK
             } else {
                 self.bits & !Ch6CtrlTrig::SNIFF_EN_MASK
-            }
+            },
         }
     }
 
@@ -20210,7 +20839,7 @@ impl Ch6CtrlTrigVal {
                 self.bits | Ch6CtrlTrig::BSWAP_MASK
             } else {
                 self.bits & !Ch6CtrlTrig::BSWAP_MASK
-            }
+            },
         }
     }
 
@@ -20225,7 +20854,7 @@ impl Ch6CtrlTrigVal {
                 self.bits | Ch6CtrlTrig::IRQ_QUIET_MASK
             } else {
                 self.bits & !Ch6CtrlTrig::IRQ_QUIET_MASK
-            }
+            },
         }
     }
 
@@ -20237,7 +20866,8 @@ impl Ch6CtrlTrigVal {
     #[inline(always)]
     pub const fn with_treq_sel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch6CtrlTrig::TREQ_SEL_MASK) | ((value << Ch6CtrlTrig::TREQ_SEL_OFFSET) & Ch6CtrlTrig::TREQ_SEL_MASK)
+            bits: (self.bits & !Ch6CtrlTrig::TREQ_SEL_MASK)
+                | ((value << Ch6CtrlTrig::TREQ_SEL_OFFSET) & Ch6CtrlTrig::TREQ_SEL_MASK),
         }
     }
 
@@ -20248,7 +20878,8 @@ impl Ch6CtrlTrigVal {
     #[inline(always)]
     pub const fn with_chain_to(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch6CtrlTrig::CHAIN_TO_MASK) | ((value << Ch6CtrlTrig::CHAIN_TO_OFFSET) & Ch6CtrlTrig::CHAIN_TO_MASK)
+            bits: (self.bits & !Ch6CtrlTrig::CHAIN_TO_MASK)
+                | ((value << Ch6CtrlTrig::CHAIN_TO_OFFSET) & Ch6CtrlTrig::CHAIN_TO_MASK),
         }
     }
 
@@ -20263,7 +20894,7 @@ impl Ch6CtrlTrigVal {
                 self.bits | Ch6CtrlTrig::RING_SEL_MASK
             } else {
                 self.bits & !Ch6CtrlTrig::RING_SEL_MASK
-            }
+            },
         }
     }
 
@@ -20274,7 +20905,8 @@ impl Ch6CtrlTrigVal {
     #[inline(always)]
     pub const fn with_ring_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch6CtrlTrig::RING_SIZE_MASK) | ((value << Ch6CtrlTrig::RING_SIZE_OFFSET) & Ch6CtrlTrig::RING_SIZE_MASK)
+            bits: (self.bits & !Ch6CtrlTrig::RING_SIZE_MASK)
+                | ((value << Ch6CtrlTrig::RING_SIZE_OFFSET) & Ch6CtrlTrig::RING_SIZE_MASK),
         }
     }
 
@@ -20289,7 +20921,7 @@ impl Ch6CtrlTrigVal {
                 self.bits | Ch6CtrlTrig::INCR_WRITE_REV_MASK
             } else {
                 self.bits & !Ch6CtrlTrig::INCR_WRITE_REV_MASK
-            }
+            },
         }
     }
 
@@ -20304,7 +20936,7 @@ impl Ch6CtrlTrigVal {
                 self.bits | Ch6CtrlTrig::INCR_WRITE_MASK
             } else {
                 self.bits & !Ch6CtrlTrig::INCR_WRITE_MASK
-            }
+            },
         }
     }
 
@@ -20319,7 +20951,7 @@ impl Ch6CtrlTrigVal {
                 self.bits | Ch6CtrlTrig::INCR_READ_REV_MASK
             } else {
                 self.bits & !Ch6CtrlTrig::INCR_READ_REV_MASK
-            }
+            },
         }
     }
 
@@ -20334,7 +20966,7 @@ impl Ch6CtrlTrigVal {
                 self.bits | Ch6CtrlTrig::INCR_READ_MASK
             } else {
                 self.bits & !Ch6CtrlTrig::INCR_READ_MASK
-            }
+            },
         }
     }
 
@@ -20344,7 +20976,8 @@ impl Ch6CtrlTrigVal {
     #[inline(always)]
     pub const fn with_data_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch6CtrlTrig::DATA_SIZE_MASK) | ((value << Ch6CtrlTrig::DATA_SIZE_OFFSET) & Ch6CtrlTrig::DATA_SIZE_MASK)
+            bits: (self.bits & !Ch6CtrlTrig::DATA_SIZE_MASK)
+                | ((value << Ch6CtrlTrig::DATA_SIZE_OFFSET) & Ch6CtrlTrig::DATA_SIZE_MASK),
         }
     }
 
@@ -20359,7 +20992,7 @@ impl Ch6CtrlTrigVal {
                 self.bits | Ch6CtrlTrig::HIGH_PRIORITY_MASK
             } else {
                 self.bits & !Ch6CtrlTrig::HIGH_PRIORITY_MASK
-            }
+            },
         }
     }
 
@@ -20374,7 +21007,7 @@ impl Ch6CtrlTrigVal {
                 self.bits | Ch6CtrlTrig::EN_MASK
             } else {
                 self.bits & !Ch6CtrlTrig::EN_MASK
-            }
+            },
         }
     }
 }
@@ -20446,7 +21079,10 @@ impl Ch6Al1Ctrl {
     /// Write **CH6_AL1_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch6_al1_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH6_AL1_CTRL_MASK) | ((value << Self::CH6_AL1_CTRL_OFFSET) & Self::CH6_AL1_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH6_AL1_CTRL_MASK)
+                | ((value << Self::CH6_AL1_CTRL_OFFSET) & Self::CH6_AL1_CTRL_MASK)
+        });
     }
 }
 
@@ -20482,7 +21118,8 @@ impl Ch6Al1CtrlVal {
     #[inline(always)]
     pub const fn with_ch6_al1_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch6Al1Ctrl::CH6_AL1_CTRL_MASK) | ((value << Ch6Al1Ctrl::CH6_AL1_CTRL_OFFSET) & Ch6Al1Ctrl::CH6_AL1_CTRL_MASK)
+            bits: (self.bits & !Ch6Al1Ctrl::CH6_AL1_CTRL_MASK)
+                | ((value << Ch6Al1Ctrl::CH6_AL1_CTRL_OFFSET) & Ch6Al1Ctrl::CH6_AL1_CTRL_MASK),
         }
     }
 }
@@ -20554,7 +21191,10 @@ impl Ch6Al1ReadAddr {
     /// Write **CH6_AL1_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch6_al1_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH6_AL1_READ_ADDR_MASK) | ((value << Self::CH6_AL1_READ_ADDR_OFFSET) & Self::CH6_AL1_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH6_AL1_READ_ADDR_MASK)
+                | ((value << Self::CH6_AL1_READ_ADDR_OFFSET) & Self::CH6_AL1_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -20583,14 +21223,17 @@ impl Ch6Al1ReadAddrVal {
     /// Read **CH6_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch6_al1_read_addr(&self) -> u32 {
-        (self.bits & Ch6Al1ReadAddr::CH6_AL1_READ_ADDR_MASK) >> Ch6Al1ReadAddr::CH6_AL1_READ_ADDR_OFFSET
+        (self.bits & Ch6Al1ReadAddr::CH6_AL1_READ_ADDR_MASK)
+            >> Ch6Al1ReadAddr::CH6_AL1_READ_ADDR_OFFSET
     }
 
     /// Set **CH6_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch6_al1_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch6Al1ReadAddr::CH6_AL1_READ_ADDR_MASK) | ((value << Ch6Al1ReadAddr::CH6_AL1_READ_ADDR_OFFSET) & Ch6Al1ReadAddr::CH6_AL1_READ_ADDR_MASK)
+            bits: (self.bits & !Ch6Al1ReadAddr::CH6_AL1_READ_ADDR_MASK)
+                | ((value << Ch6Al1ReadAddr::CH6_AL1_READ_ADDR_OFFSET)
+                    & Ch6Al1ReadAddr::CH6_AL1_READ_ADDR_MASK),
         }
     }
 }
@@ -20662,7 +21305,10 @@ impl Ch6Al1WriteAddr {
     /// Write **CH6_AL1_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch6_al1_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH6_AL1_WRITE_ADDR_MASK) | ((value << Self::CH6_AL1_WRITE_ADDR_OFFSET) & Self::CH6_AL1_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH6_AL1_WRITE_ADDR_MASK)
+                | ((value << Self::CH6_AL1_WRITE_ADDR_OFFSET) & Self::CH6_AL1_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -20691,14 +21337,17 @@ impl Ch6Al1WriteAddrVal {
     /// Read **CH6_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch6_al1_write_addr(&self) -> u32 {
-        (self.bits & Ch6Al1WriteAddr::CH6_AL1_WRITE_ADDR_MASK) >> Ch6Al1WriteAddr::CH6_AL1_WRITE_ADDR_OFFSET
+        (self.bits & Ch6Al1WriteAddr::CH6_AL1_WRITE_ADDR_MASK)
+            >> Ch6Al1WriteAddr::CH6_AL1_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH6_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch6_al1_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch6Al1WriteAddr::CH6_AL1_WRITE_ADDR_MASK) | ((value << Ch6Al1WriteAddr::CH6_AL1_WRITE_ADDR_OFFSET) & Ch6Al1WriteAddr::CH6_AL1_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch6Al1WriteAddr::CH6_AL1_WRITE_ADDR_MASK)
+                | ((value << Ch6Al1WriteAddr::CH6_AL1_WRITE_ADDR_OFFSET)
+                    & Ch6Al1WriteAddr::CH6_AL1_WRITE_ADDR_MASK),
         }
     }
 }
@@ -20766,13 +21415,18 @@ impl Ch6Al1TransCountTrig {
     /// **CH6_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch6_al1_trans_count_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH6_AL1_TRANS_COUNT_TRIG_MASK) >> Self::CH6_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH6_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Self::CH6_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Write **CH6_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch6_al1_trans_count_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH6_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH6_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH6_AL1_TRANS_COUNT_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH6_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Self::CH6_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Self::CH6_AL1_TRANS_COUNT_TRIG_MASK)
+        });
     }
 }
 
@@ -20801,14 +21455,17 @@ impl Ch6Al1TransCountTrigVal {
     /// Read **CH6_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch6_al1_trans_count_trig(&self) -> u32 {
-        (self.bits & Ch6Al1TransCountTrig::CH6_AL1_TRANS_COUNT_TRIG_MASK) >> Ch6Al1TransCountTrig::CH6_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.bits & Ch6Al1TransCountTrig::CH6_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Ch6Al1TransCountTrig::CH6_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Set **CH6_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch6_al1_trans_count_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch6Al1TransCountTrig::CH6_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch6Al1TransCountTrig::CH6_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch6Al1TransCountTrig::CH6_AL1_TRANS_COUNT_TRIG_MASK)
+            bits: (self.bits & !Ch6Al1TransCountTrig::CH6_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Ch6Al1TransCountTrig::CH6_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Ch6Al1TransCountTrig::CH6_AL1_TRANS_COUNT_TRIG_MASK),
         }
     }
 }
@@ -20880,7 +21537,10 @@ impl Ch6Al2Ctrl {
     /// Write **CH6_AL2_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch6_al2_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH6_AL2_CTRL_MASK) | ((value << Self::CH6_AL2_CTRL_OFFSET) & Self::CH6_AL2_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH6_AL2_CTRL_MASK)
+                | ((value << Self::CH6_AL2_CTRL_OFFSET) & Self::CH6_AL2_CTRL_MASK)
+        });
     }
 }
 
@@ -20916,7 +21576,8 @@ impl Ch6Al2CtrlVal {
     #[inline(always)]
     pub const fn with_ch6_al2_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch6Al2Ctrl::CH6_AL2_CTRL_MASK) | ((value << Ch6Al2Ctrl::CH6_AL2_CTRL_OFFSET) & Ch6Al2Ctrl::CH6_AL2_CTRL_MASK)
+            bits: (self.bits & !Ch6Al2Ctrl::CH6_AL2_CTRL_MASK)
+                | ((value << Ch6Al2Ctrl::CH6_AL2_CTRL_OFFSET) & Ch6Al2Ctrl::CH6_AL2_CTRL_MASK),
         }
     }
 }
@@ -20982,13 +21643,17 @@ impl Ch6Al2TransCount {
     /// **CH6_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch6_al2_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH6_AL2_TRANS_COUNT_MASK) >> Self::CH6_AL2_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH6_AL2_TRANS_COUNT_MASK)
+            >> Self::CH6_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH6_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch6_al2_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH6_AL2_TRANS_COUNT_MASK) | ((value << Self::CH6_AL2_TRANS_COUNT_OFFSET) & Self::CH6_AL2_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH6_AL2_TRANS_COUNT_MASK)
+                | ((value << Self::CH6_AL2_TRANS_COUNT_OFFSET) & Self::CH6_AL2_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -21017,14 +21682,17 @@ impl Ch6Al2TransCountVal {
     /// Read **CH6_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch6_al2_trans_count(&self) -> u32 {
-        (self.bits & Ch6Al2TransCount::CH6_AL2_TRANS_COUNT_MASK) >> Ch6Al2TransCount::CH6_AL2_TRANS_COUNT_OFFSET
+        (self.bits & Ch6Al2TransCount::CH6_AL2_TRANS_COUNT_MASK)
+            >> Ch6Al2TransCount::CH6_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH6_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch6_al2_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch6Al2TransCount::CH6_AL2_TRANS_COUNT_MASK) | ((value << Ch6Al2TransCount::CH6_AL2_TRANS_COUNT_OFFSET) & Ch6Al2TransCount::CH6_AL2_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch6Al2TransCount::CH6_AL2_TRANS_COUNT_MASK)
+                | ((value << Ch6Al2TransCount::CH6_AL2_TRANS_COUNT_OFFSET)
+                    & Ch6Al2TransCount::CH6_AL2_TRANS_COUNT_MASK),
         }
     }
 }
@@ -21096,7 +21764,10 @@ impl Ch6Al2ReadAddr {
     /// Write **CH6_AL2_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch6_al2_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH6_AL2_READ_ADDR_MASK) | ((value << Self::CH6_AL2_READ_ADDR_OFFSET) & Self::CH6_AL2_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH6_AL2_READ_ADDR_MASK)
+                | ((value << Self::CH6_AL2_READ_ADDR_OFFSET) & Self::CH6_AL2_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -21125,14 +21796,17 @@ impl Ch6Al2ReadAddrVal {
     /// Read **CH6_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch6_al2_read_addr(&self) -> u32 {
-        (self.bits & Ch6Al2ReadAddr::CH6_AL2_READ_ADDR_MASK) >> Ch6Al2ReadAddr::CH6_AL2_READ_ADDR_OFFSET
+        (self.bits & Ch6Al2ReadAddr::CH6_AL2_READ_ADDR_MASK)
+            >> Ch6Al2ReadAddr::CH6_AL2_READ_ADDR_OFFSET
     }
 
     /// Set **CH6_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch6_al2_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch6Al2ReadAddr::CH6_AL2_READ_ADDR_MASK) | ((value << Ch6Al2ReadAddr::CH6_AL2_READ_ADDR_OFFSET) & Ch6Al2ReadAddr::CH6_AL2_READ_ADDR_MASK)
+            bits: (self.bits & !Ch6Al2ReadAddr::CH6_AL2_READ_ADDR_MASK)
+                | ((value << Ch6Al2ReadAddr::CH6_AL2_READ_ADDR_OFFSET)
+                    & Ch6Al2ReadAddr::CH6_AL2_READ_ADDR_MASK),
         }
     }
 }
@@ -21200,13 +21874,18 @@ impl Ch6Al2WriteAddrTrig {
     /// **CH6_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch6_al2_write_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH6_AL2_WRITE_ADDR_TRIG_MASK) >> Self::CH6_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH6_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Self::CH6_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH6_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch6_al2_write_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH6_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH6_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH6_AL2_WRITE_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH6_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Self::CH6_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Self::CH6_AL2_WRITE_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -21235,14 +21914,17 @@ impl Ch6Al2WriteAddrTrigVal {
     /// Read **CH6_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch6_al2_write_addr_trig(&self) -> u32 {
-        (self.bits & Ch6Al2WriteAddrTrig::CH6_AL2_WRITE_ADDR_TRIG_MASK) >> Ch6Al2WriteAddrTrig::CH6_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.bits & Ch6Al2WriteAddrTrig::CH6_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Ch6Al2WriteAddrTrig::CH6_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH6_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch6_al2_write_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch6Al2WriteAddrTrig::CH6_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch6Al2WriteAddrTrig::CH6_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch6Al2WriteAddrTrig::CH6_AL2_WRITE_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch6Al2WriteAddrTrig::CH6_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Ch6Al2WriteAddrTrig::CH6_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Ch6Al2WriteAddrTrig::CH6_AL2_WRITE_ADDR_TRIG_MASK),
         }
     }
 }
@@ -21314,7 +21996,10 @@ impl Ch6Al3Ctrl {
     /// Write **CH6_AL3_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch6_al3_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH6_AL3_CTRL_MASK) | ((value << Self::CH6_AL3_CTRL_OFFSET) & Self::CH6_AL3_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH6_AL3_CTRL_MASK)
+                | ((value << Self::CH6_AL3_CTRL_OFFSET) & Self::CH6_AL3_CTRL_MASK)
+        });
     }
 }
 
@@ -21350,7 +22035,8 @@ impl Ch6Al3CtrlVal {
     #[inline(always)]
     pub const fn with_ch6_al3_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch6Al3Ctrl::CH6_AL3_CTRL_MASK) | ((value << Ch6Al3Ctrl::CH6_AL3_CTRL_OFFSET) & Ch6Al3Ctrl::CH6_AL3_CTRL_MASK)
+            bits: (self.bits & !Ch6Al3Ctrl::CH6_AL3_CTRL_MASK)
+                | ((value << Ch6Al3Ctrl::CH6_AL3_CTRL_OFFSET) & Ch6Al3Ctrl::CH6_AL3_CTRL_MASK),
         }
     }
 }
@@ -21422,7 +22108,10 @@ impl Ch6Al3WriteAddr {
     /// Write **CH6_AL3_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch6_al3_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH6_AL3_WRITE_ADDR_MASK) | ((value << Self::CH6_AL3_WRITE_ADDR_OFFSET) & Self::CH6_AL3_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH6_AL3_WRITE_ADDR_MASK)
+                | ((value << Self::CH6_AL3_WRITE_ADDR_OFFSET) & Self::CH6_AL3_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -21451,14 +22140,17 @@ impl Ch6Al3WriteAddrVal {
     /// Read **CH6_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch6_al3_write_addr(&self) -> u32 {
-        (self.bits & Ch6Al3WriteAddr::CH6_AL3_WRITE_ADDR_MASK) >> Ch6Al3WriteAddr::CH6_AL3_WRITE_ADDR_OFFSET
+        (self.bits & Ch6Al3WriteAddr::CH6_AL3_WRITE_ADDR_MASK)
+            >> Ch6Al3WriteAddr::CH6_AL3_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH6_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch6_al3_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch6Al3WriteAddr::CH6_AL3_WRITE_ADDR_MASK) | ((value << Ch6Al3WriteAddr::CH6_AL3_WRITE_ADDR_OFFSET) & Ch6Al3WriteAddr::CH6_AL3_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch6Al3WriteAddr::CH6_AL3_WRITE_ADDR_MASK)
+                | ((value << Ch6Al3WriteAddr::CH6_AL3_WRITE_ADDR_OFFSET)
+                    & Ch6Al3WriteAddr::CH6_AL3_WRITE_ADDR_MASK),
         }
     }
 }
@@ -21524,13 +22216,17 @@ impl Ch6Al3TransCount {
     /// **CH6_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch6_al3_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH6_AL3_TRANS_COUNT_MASK) >> Self::CH6_AL3_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH6_AL3_TRANS_COUNT_MASK)
+            >> Self::CH6_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH6_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch6_al3_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH6_AL3_TRANS_COUNT_MASK) | ((value << Self::CH6_AL3_TRANS_COUNT_OFFSET) & Self::CH6_AL3_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH6_AL3_TRANS_COUNT_MASK)
+                | ((value << Self::CH6_AL3_TRANS_COUNT_OFFSET) & Self::CH6_AL3_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -21559,14 +22255,17 @@ impl Ch6Al3TransCountVal {
     /// Read **CH6_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch6_al3_trans_count(&self) -> u32 {
-        (self.bits & Ch6Al3TransCount::CH6_AL3_TRANS_COUNT_MASK) >> Ch6Al3TransCount::CH6_AL3_TRANS_COUNT_OFFSET
+        (self.bits & Ch6Al3TransCount::CH6_AL3_TRANS_COUNT_MASK)
+            >> Ch6Al3TransCount::CH6_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH6_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch6_al3_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch6Al3TransCount::CH6_AL3_TRANS_COUNT_MASK) | ((value << Ch6Al3TransCount::CH6_AL3_TRANS_COUNT_OFFSET) & Ch6Al3TransCount::CH6_AL3_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch6Al3TransCount::CH6_AL3_TRANS_COUNT_MASK)
+                | ((value << Ch6Al3TransCount::CH6_AL3_TRANS_COUNT_OFFSET)
+                    & Ch6Al3TransCount::CH6_AL3_TRANS_COUNT_MASK),
         }
     }
 }
@@ -21634,13 +22333,18 @@ impl Ch6Al3ReadAddrTrig {
     /// **CH6_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch6_al3_read_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH6_AL3_READ_ADDR_TRIG_MASK) >> Self::CH6_AL3_READ_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH6_AL3_READ_ADDR_TRIG_MASK)
+            >> Self::CH6_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH6_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch6_al3_read_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH6_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH6_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH6_AL3_READ_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH6_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Self::CH6_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Self::CH6_AL3_READ_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -21669,14 +22373,17 @@ impl Ch6Al3ReadAddrTrigVal {
     /// Read **CH6_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch6_al3_read_addr_trig(&self) -> u32 {
-        (self.bits & Ch6Al3ReadAddrTrig::CH6_AL3_READ_ADDR_TRIG_MASK) >> Ch6Al3ReadAddrTrig::CH6_AL3_READ_ADDR_TRIG_OFFSET
+        (self.bits & Ch6Al3ReadAddrTrig::CH6_AL3_READ_ADDR_TRIG_MASK)
+            >> Ch6Al3ReadAddrTrig::CH6_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH6_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch6_al3_read_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch6Al3ReadAddrTrig::CH6_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch6Al3ReadAddrTrig::CH6_AL3_READ_ADDR_TRIG_OFFSET) & Ch6Al3ReadAddrTrig::CH6_AL3_READ_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch6Al3ReadAddrTrig::CH6_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Ch6Al3ReadAddrTrig::CH6_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Ch6Al3ReadAddrTrig::CH6_AL3_READ_ADDR_TRIG_MASK),
         }
     }
 }
@@ -21758,7 +22465,10 @@ impl Ch7ReadAddr {
     /// This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
     #[inline(always)]
     pub fn write_ch7_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH7_READ_ADDR_MASK) | ((value << Self::CH7_READ_ADDR_OFFSET) & Self::CH7_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH7_READ_ADDR_MASK)
+                | ((value << Self::CH7_READ_ADDR_OFFSET) & Self::CH7_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -21804,7 +22514,8 @@ impl Ch7ReadAddrVal {
     #[inline(always)]
     pub const fn with_ch7_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch7ReadAddr::CH7_READ_ADDR_MASK) | ((value << Ch7ReadAddr::CH7_READ_ADDR_OFFSET) & Ch7ReadAddr::CH7_READ_ADDR_MASK)
+            bits: (self.bits & !Ch7ReadAddr::CH7_READ_ADDR_MASK)
+                | ((value << Ch7ReadAddr::CH7_READ_ADDR_OFFSET) & Ch7ReadAddr::CH7_READ_ADDR_MASK),
         }
     }
 }
@@ -21886,7 +22597,10 @@ impl Ch7WriteAddr {
     /// This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
     #[inline(always)]
     pub fn write_ch7_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH7_WRITE_ADDR_MASK) | ((value << Self::CH7_WRITE_ADDR_OFFSET) & Self::CH7_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH7_WRITE_ADDR_MASK)
+                | ((value << Self::CH7_WRITE_ADDR_OFFSET) & Self::CH7_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -21932,7 +22646,9 @@ impl Ch7WriteAddrVal {
     #[inline(always)]
     pub const fn with_ch7_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch7WriteAddr::CH7_WRITE_ADDR_MASK) | ((value << Ch7WriteAddr::CH7_WRITE_ADDR_OFFSET) & Ch7WriteAddr::CH7_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch7WriteAddr::CH7_WRITE_ADDR_MASK)
+                | ((value << Ch7WriteAddr::CH7_WRITE_ADDR_OFFSET)
+                    & Ch7WriteAddr::CH7_WRITE_ADDR_MASK),
         }
     }
 }
@@ -22052,7 +22768,9 @@ impl Ch7TransCount {
     /// All other values are reserved.
     #[inline(always)]
     pub fn write_mode(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK)
+        });
     }
 
     /// **COUNT** `[27:0]` (RW)
@@ -22076,7 +22794,9 @@ impl Ch7TransCount {
     /// The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
     #[inline(always)]
     pub fn write_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK)
+        });
     }
 }
 
@@ -22140,7 +22860,8 @@ impl Ch7TransCountVal {
     #[inline(always)]
     pub const fn with_mode(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch7TransCount::MODE_MASK) | ((value << Ch7TransCount::MODE_OFFSET) & Ch7TransCount::MODE_MASK)
+            bits: (self.bits & !Ch7TransCount::MODE_MASK)
+                | ((value << Ch7TransCount::MODE_OFFSET) & Ch7TransCount::MODE_MASK),
         }
     }
 
@@ -22154,7 +22875,8 @@ impl Ch7TransCountVal {
     #[inline(always)]
     pub const fn with_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch7TransCount::COUNT_MASK) | ((value << Ch7TransCount::COUNT_OFFSET) & Ch7TransCount::COUNT_MASK)
+            bits: (self.bits & !Ch7TransCount::COUNT_MASK)
+                | ((value << Ch7TransCount::COUNT_OFFSET) & Ch7TransCount::COUNT_MASK),
         }
     }
 }
@@ -22862,7 +23584,9 @@ impl Ch7CtrlTrig {
     /// 0x0 to 0x3a -> select DREQ n as TREQ
     #[inline(always)]
     pub fn write_treq_sel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK)
+        });
     }
 
     /// **CHAIN_TO** `[16:13]` (RW)
@@ -22880,7 +23604,9 @@ impl Ch7CtrlTrig {
     /// Note this field resets to 0, so channels 1 and above will chain to channel 0 by default. Set this field to avoid this behaviour.
     #[inline(always)]
     pub fn write_chain_to(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK)
+        });
     }
 
     /// **RING_SEL** `[12]` (RW)
@@ -22919,7 +23645,9 @@ impl Ch7CtrlTrig {
     /// Ring sizes between 2 and 32768 bytes are possible. This can apply to either read or write addresses, based on value of RING_SEL.
     #[inline(always)]
     pub fn write_ring_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK)
+        });
     }
 
     /// **INCR_WRITE_REV** `[7]` (RW)
@@ -23019,7 +23747,9 @@ impl Ch7CtrlTrig {
     /// Set the size of each bus transfer (byte/halfword/word). READ_ADDR and WRITE_ADDR advance by this amount (1/2/4 bytes) with each transfer.
     #[inline(always)]
     pub fn write_data_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK)
+        });
     }
 
     /// **HIGH_PRIORITY** `[1]` (RW)
@@ -23265,7 +23995,7 @@ impl Ch7CtrlTrigVal {
                 self.bits | Ch7CtrlTrig::READ_ERROR_MASK
             } else {
                 self.bits & !Ch7CtrlTrig::READ_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -23280,7 +24010,7 @@ impl Ch7CtrlTrigVal {
                 self.bits | Ch7CtrlTrig::WRITE_ERROR_MASK
             } else {
                 self.bits & !Ch7CtrlTrig::WRITE_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -23295,7 +24025,7 @@ impl Ch7CtrlTrigVal {
                 self.bits | Ch7CtrlTrig::SNIFF_EN_MASK
             } else {
                 self.bits & !Ch7CtrlTrig::SNIFF_EN_MASK
-            }
+            },
         }
     }
 
@@ -23310,7 +24040,7 @@ impl Ch7CtrlTrigVal {
                 self.bits | Ch7CtrlTrig::BSWAP_MASK
             } else {
                 self.bits & !Ch7CtrlTrig::BSWAP_MASK
-            }
+            },
         }
     }
 
@@ -23325,7 +24055,7 @@ impl Ch7CtrlTrigVal {
                 self.bits | Ch7CtrlTrig::IRQ_QUIET_MASK
             } else {
                 self.bits & !Ch7CtrlTrig::IRQ_QUIET_MASK
-            }
+            },
         }
     }
 
@@ -23337,7 +24067,8 @@ impl Ch7CtrlTrigVal {
     #[inline(always)]
     pub const fn with_treq_sel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch7CtrlTrig::TREQ_SEL_MASK) | ((value << Ch7CtrlTrig::TREQ_SEL_OFFSET) & Ch7CtrlTrig::TREQ_SEL_MASK)
+            bits: (self.bits & !Ch7CtrlTrig::TREQ_SEL_MASK)
+                | ((value << Ch7CtrlTrig::TREQ_SEL_OFFSET) & Ch7CtrlTrig::TREQ_SEL_MASK),
         }
     }
 
@@ -23348,7 +24079,8 @@ impl Ch7CtrlTrigVal {
     #[inline(always)]
     pub const fn with_chain_to(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch7CtrlTrig::CHAIN_TO_MASK) | ((value << Ch7CtrlTrig::CHAIN_TO_OFFSET) & Ch7CtrlTrig::CHAIN_TO_MASK)
+            bits: (self.bits & !Ch7CtrlTrig::CHAIN_TO_MASK)
+                | ((value << Ch7CtrlTrig::CHAIN_TO_OFFSET) & Ch7CtrlTrig::CHAIN_TO_MASK),
         }
     }
 
@@ -23363,7 +24095,7 @@ impl Ch7CtrlTrigVal {
                 self.bits | Ch7CtrlTrig::RING_SEL_MASK
             } else {
                 self.bits & !Ch7CtrlTrig::RING_SEL_MASK
-            }
+            },
         }
     }
 
@@ -23374,7 +24106,8 @@ impl Ch7CtrlTrigVal {
     #[inline(always)]
     pub const fn with_ring_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch7CtrlTrig::RING_SIZE_MASK) | ((value << Ch7CtrlTrig::RING_SIZE_OFFSET) & Ch7CtrlTrig::RING_SIZE_MASK)
+            bits: (self.bits & !Ch7CtrlTrig::RING_SIZE_MASK)
+                | ((value << Ch7CtrlTrig::RING_SIZE_OFFSET) & Ch7CtrlTrig::RING_SIZE_MASK),
         }
     }
 
@@ -23389,7 +24122,7 @@ impl Ch7CtrlTrigVal {
                 self.bits | Ch7CtrlTrig::INCR_WRITE_REV_MASK
             } else {
                 self.bits & !Ch7CtrlTrig::INCR_WRITE_REV_MASK
-            }
+            },
         }
     }
 
@@ -23404,7 +24137,7 @@ impl Ch7CtrlTrigVal {
                 self.bits | Ch7CtrlTrig::INCR_WRITE_MASK
             } else {
                 self.bits & !Ch7CtrlTrig::INCR_WRITE_MASK
-            }
+            },
         }
     }
 
@@ -23419,7 +24152,7 @@ impl Ch7CtrlTrigVal {
                 self.bits | Ch7CtrlTrig::INCR_READ_REV_MASK
             } else {
                 self.bits & !Ch7CtrlTrig::INCR_READ_REV_MASK
-            }
+            },
         }
     }
 
@@ -23434,7 +24167,7 @@ impl Ch7CtrlTrigVal {
                 self.bits | Ch7CtrlTrig::INCR_READ_MASK
             } else {
                 self.bits & !Ch7CtrlTrig::INCR_READ_MASK
-            }
+            },
         }
     }
 
@@ -23444,7 +24177,8 @@ impl Ch7CtrlTrigVal {
     #[inline(always)]
     pub const fn with_data_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch7CtrlTrig::DATA_SIZE_MASK) | ((value << Ch7CtrlTrig::DATA_SIZE_OFFSET) & Ch7CtrlTrig::DATA_SIZE_MASK)
+            bits: (self.bits & !Ch7CtrlTrig::DATA_SIZE_MASK)
+                | ((value << Ch7CtrlTrig::DATA_SIZE_OFFSET) & Ch7CtrlTrig::DATA_SIZE_MASK),
         }
     }
 
@@ -23459,7 +24193,7 @@ impl Ch7CtrlTrigVal {
                 self.bits | Ch7CtrlTrig::HIGH_PRIORITY_MASK
             } else {
                 self.bits & !Ch7CtrlTrig::HIGH_PRIORITY_MASK
-            }
+            },
         }
     }
 
@@ -23474,7 +24208,7 @@ impl Ch7CtrlTrigVal {
                 self.bits | Ch7CtrlTrig::EN_MASK
             } else {
                 self.bits & !Ch7CtrlTrig::EN_MASK
-            }
+            },
         }
     }
 }
@@ -23546,7 +24280,10 @@ impl Ch7Al1Ctrl {
     /// Write **CH7_AL1_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch7_al1_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH7_AL1_CTRL_MASK) | ((value << Self::CH7_AL1_CTRL_OFFSET) & Self::CH7_AL1_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH7_AL1_CTRL_MASK)
+                | ((value << Self::CH7_AL1_CTRL_OFFSET) & Self::CH7_AL1_CTRL_MASK)
+        });
     }
 }
 
@@ -23582,7 +24319,8 @@ impl Ch7Al1CtrlVal {
     #[inline(always)]
     pub const fn with_ch7_al1_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch7Al1Ctrl::CH7_AL1_CTRL_MASK) | ((value << Ch7Al1Ctrl::CH7_AL1_CTRL_OFFSET) & Ch7Al1Ctrl::CH7_AL1_CTRL_MASK)
+            bits: (self.bits & !Ch7Al1Ctrl::CH7_AL1_CTRL_MASK)
+                | ((value << Ch7Al1Ctrl::CH7_AL1_CTRL_OFFSET) & Ch7Al1Ctrl::CH7_AL1_CTRL_MASK),
         }
     }
 }
@@ -23654,7 +24392,10 @@ impl Ch7Al1ReadAddr {
     /// Write **CH7_AL1_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch7_al1_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH7_AL1_READ_ADDR_MASK) | ((value << Self::CH7_AL1_READ_ADDR_OFFSET) & Self::CH7_AL1_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH7_AL1_READ_ADDR_MASK)
+                | ((value << Self::CH7_AL1_READ_ADDR_OFFSET) & Self::CH7_AL1_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -23683,14 +24424,17 @@ impl Ch7Al1ReadAddrVal {
     /// Read **CH7_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch7_al1_read_addr(&self) -> u32 {
-        (self.bits & Ch7Al1ReadAddr::CH7_AL1_READ_ADDR_MASK) >> Ch7Al1ReadAddr::CH7_AL1_READ_ADDR_OFFSET
+        (self.bits & Ch7Al1ReadAddr::CH7_AL1_READ_ADDR_MASK)
+            >> Ch7Al1ReadAddr::CH7_AL1_READ_ADDR_OFFSET
     }
 
     /// Set **CH7_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch7_al1_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch7Al1ReadAddr::CH7_AL1_READ_ADDR_MASK) | ((value << Ch7Al1ReadAddr::CH7_AL1_READ_ADDR_OFFSET) & Ch7Al1ReadAddr::CH7_AL1_READ_ADDR_MASK)
+            bits: (self.bits & !Ch7Al1ReadAddr::CH7_AL1_READ_ADDR_MASK)
+                | ((value << Ch7Al1ReadAddr::CH7_AL1_READ_ADDR_OFFSET)
+                    & Ch7Al1ReadAddr::CH7_AL1_READ_ADDR_MASK),
         }
     }
 }
@@ -23762,7 +24506,10 @@ impl Ch7Al1WriteAddr {
     /// Write **CH7_AL1_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch7_al1_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH7_AL1_WRITE_ADDR_MASK) | ((value << Self::CH7_AL1_WRITE_ADDR_OFFSET) & Self::CH7_AL1_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH7_AL1_WRITE_ADDR_MASK)
+                | ((value << Self::CH7_AL1_WRITE_ADDR_OFFSET) & Self::CH7_AL1_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -23791,14 +24538,17 @@ impl Ch7Al1WriteAddrVal {
     /// Read **CH7_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch7_al1_write_addr(&self) -> u32 {
-        (self.bits & Ch7Al1WriteAddr::CH7_AL1_WRITE_ADDR_MASK) >> Ch7Al1WriteAddr::CH7_AL1_WRITE_ADDR_OFFSET
+        (self.bits & Ch7Al1WriteAddr::CH7_AL1_WRITE_ADDR_MASK)
+            >> Ch7Al1WriteAddr::CH7_AL1_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH7_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch7_al1_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch7Al1WriteAddr::CH7_AL1_WRITE_ADDR_MASK) | ((value << Ch7Al1WriteAddr::CH7_AL1_WRITE_ADDR_OFFSET) & Ch7Al1WriteAddr::CH7_AL1_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch7Al1WriteAddr::CH7_AL1_WRITE_ADDR_MASK)
+                | ((value << Ch7Al1WriteAddr::CH7_AL1_WRITE_ADDR_OFFSET)
+                    & Ch7Al1WriteAddr::CH7_AL1_WRITE_ADDR_MASK),
         }
     }
 }
@@ -23866,13 +24616,18 @@ impl Ch7Al1TransCountTrig {
     /// **CH7_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch7_al1_trans_count_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH7_AL1_TRANS_COUNT_TRIG_MASK) >> Self::CH7_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH7_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Self::CH7_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Write **CH7_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch7_al1_trans_count_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH7_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH7_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH7_AL1_TRANS_COUNT_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH7_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Self::CH7_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Self::CH7_AL1_TRANS_COUNT_TRIG_MASK)
+        });
     }
 }
 
@@ -23901,14 +24656,17 @@ impl Ch7Al1TransCountTrigVal {
     /// Read **CH7_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch7_al1_trans_count_trig(&self) -> u32 {
-        (self.bits & Ch7Al1TransCountTrig::CH7_AL1_TRANS_COUNT_TRIG_MASK) >> Ch7Al1TransCountTrig::CH7_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.bits & Ch7Al1TransCountTrig::CH7_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Ch7Al1TransCountTrig::CH7_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Set **CH7_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch7_al1_trans_count_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch7Al1TransCountTrig::CH7_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch7Al1TransCountTrig::CH7_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch7Al1TransCountTrig::CH7_AL1_TRANS_COUNT_TRIG_MASK)
+            bits: (self.bits & !Ch7Al1TransCountTrig::CH7_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Ch7Al1TransCountTrig::CH7_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Ch7Al1TransCountTrig::CH7_AL1_TRANS_COUNT_TRIG_MASK),
         }
     }
 }
@@ -23980,7 +24738,10 @@ impl Ch7Al2Ctrl {
     /// Write **CH7_AL2_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch7_al2_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH7_AL2_CTRL_MASK) | ((value << Self::CH7_AL2_CTRL_OFFSET) & Self::CH7_AL2_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH7_AL2_CTRL_MASK)
+                | ((value << Self::CH7_AL2_CTRL_OFFSET) & Self::CH7_AL2_CTRL_MASK)
+        });
     }
 }
 
@@ -24016,7 +24777,8 @@ impl Ch7Al2CtrlVal {
     #[inline(always)]
     pub const fn with_ch7_al2_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch7Al2Ctrl::CH7_AL2_CTRL_MASK) | ((value << Ch7Al2Ctrl::CH7_AL2_CTRL_OFFSET) & Ch7Al2Ctrl::CH7_AL2_CTRL_MASK)
+            bits: (self.bits & !Ch7Al2Ctrl::CH7_AL2_CTRL_MASK)
+                | ((value << Ch7Al2Ctrl::CH7_AL2_CTRL_OFFSET) & Ch7Al2Ctrl::CH7_AL2_CTRL_MASK),
         }
     }
 }
@@ -24082,13 +24844,17 @@ impl Ch7Al2TransCount {
     /// **CH7_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch7_al2_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH7_AL2_TRANS_COUNT_MASK) >> Self::CH7_AL2_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH7_AL2_TRANS_COUNT_MASK)
+            >> Self::CH7_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH7_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch7_al2_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH7_AL2_TRANS_COUNT_MASK) | ((value << Self::CH7_AL2_TRANS_COUNT_OFFSET) & Self::CH7_AL2_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH7_AL2_TRANS_COUNT_MASK)
+                | ((value << Self::CH7_AL2_TRANS_COUNT_OFFSET) & Self::CH7_AL2_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -24117,14 +24883,17 @@ impl Ch7Al2TransCountVal {
     /// Read **CH7_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch7_al2_trans_count(&self) -> u32 {
-        (self.bits & Ch7Al2TransCount::CH7_AL2_TRANS_COUNT_MASK) >> Ch7Al2TransCount::CH7_AL2_TRANS_COUNT_OFFSET
+        (self.bits & Ch7Al2TransCount::CH7_AL2_TRANS_COUNT_MASK)
+            >> Ch7Al2TransCount::CH7_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH7_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch7_al2_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch7Al2TransCount::CH7_AL2_TRANS_COUNT_MASK) | ((value << Ch7Al2TransCount::CH7_AL2_TRANS_COUNT_OFFSET) & Ch7Al2TransCount::CH7_AL2_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch7Al2TransCount::CH7_AL2_TRANS_COUNT_MASK)
+                | ((value << Ch7Al2TransCount::CH7_AL2_TRANS_COUNT_OFFSET)
+                    & Ch7Al2TransCount::CH7_AL2_TRANS_COUNT_MASK),
         }
     }
 }
@@ -24196,7 +24965,10 @@ impl Ch7Al2ReadAddr {
     /// Write **CH7_AL2_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch7_al2_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH7_AL2_READ_ADDR_MASK) | ((value << Self::CH7_AL2_READ_ADDR_OFFSET) & Self::CH7_AL2_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH7_AL2_READ_ADDR_MASK)
+                | ((value << Self::CH7_AL2_READ_ADDR_OFFSET) & Self::CH7_AL2_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -24225,14 +24997,17 @@ impl Ch7Al2ReadAddrVal {
     /// Read **CH7_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch7_al2_read_addr(&self) -> u32 {
-        (self.bits & Ch7Al2ReadAddr::CH7_AL2_READ_ADDR_MASK) >> Ch7Al2ReadAddr::CH7_AL2_READ_ADDR_OFFSET
+        (self.bits & Ch7Al2ReadAddr::CH7_AL2_READ_ADDR_MASK)
+            >> Ch7Al2ReadAddr::CH7_AL2_READ_ADDR_OFFSET
     }
 
     /// Set **CH7_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch7_al2_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch7Al2ReadAddr::CH7_AL2_READ_ADDR_MASK) | ((value << Ch7Al2ReadAddr::CH7_AL2_READ_ADDR_OFFSET) & Ch7Al2ReadAddr::CH7_AL2_READ_ADDR_MASK)
+            bits: (self.bits & !Ch7Al2ReadAddr::CH7_AL2_READ_ADDR_MASK)
+                | ((value << Ch7Al2ReadAddr::CH7_AL2_READ_ADDR_OFFSET)
+                    & Ch7Al2ReadAddr::CH7_AL2_READ_ADDR_MASK),
         }
     }
 }
@@ -24300,13 +25075,18 @@ impl Ch7Al2WriteAddrTrig {
     /// **CH7_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch7_al2_write_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH7_AL2_WRITE_ADDR_TRIG_MASK) >> Self::CH7_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH7_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Self::CH7_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH7_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch7_al2_write_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH7_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH7_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH7_AL2_WRITE_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH7_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Self::CH7_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Self::CH7_AL2_WRITE_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -24335,14 +25115,17 @@ impl Ch7Al2WriteAddrTrigVal {
     /// Read **CH7_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch7_al2_write_addr_trig(&self) -> u32 {
-        (self.bits & Ch7Al2WriteAddrTrig::CH7_AL2_WRITE_ADDR_TRIG_MASK) >> Ch7Al2WriteAddrTrig::CH7_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.bits & Ch7Al2WriteAddrTrig::CH7_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Ch7Al2WriteAddrTrig::CH7_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH7_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch7_al2_write_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch7Al2WriteAddrTrig::CH7_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch7Al2WriteAddrTrig::CH7_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch7Al2WriteAddrTrig::CH7_AL2_WRITE_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch7Al2WriteAddrTrig::CH7_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Ch7Al2WriteAddrTrig::CH7_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Ch7Al2WriteAddrTrig::CH7_AL2_WRITE_ADDR_TRIG_MASK),
         }
     }
 }
@@ -24414,7 +25197,10 @@ impl Ch7Al3Ctrl {
     /// Write **CH7_AL3_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch7_al3_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH7_AL3_CTRL_MASK) | ((value << Self::CH7_AL3_CTRL_OFFSET) & Self::CH7_AL3_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH7_AL3_CTRL_MASK)
+                | ((value << Self::CH7_AL3_CTRL_OFFSET) & Self::CH7_AL3_CTRL_MASK)
+        });
     }
 }
 
@@ -24450,7 +25236,8 @@ impl Ch7Al3CtrlVal {
     #[inline(always)]
     pub const fn with_ch7_al3_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch7Al3Ctrl::CH7_AL3_CTRL_MASK) | ((value << Ch7Al3Ctrl::CH7_AL3_CTRL_OFFSET) & Ch7Al3Ctrl::CH7_AL3_CTRL_MASK)
+            bits: (self.bits & !Ch7Al3Ctrl::CH7_AL3_CTRL_MASK)
+                | ((value << Ch7Al3Ctrl::CH7_AL3_CTRL_OFFSET) & Ch7Al3Ctrl::CH7_AL3_CTRL_MASK),
         }
     }
 }
@@ -24522,7 +25309,10 @@ impl Ch7Al3WriteAddr {
     /// Write **CH7_AL3_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch7_al3_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH7_AL3_WRITE_ADDR_MASK) | ((value << Self::CH7_AL3_WRITE_ADDR_OFFSET) & Self::CH7_AL3_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH7_AL3_WRITE_ADDR_MASK)
+                | ((value << Self::CH7_AL3_WRITE_ADDR_OFFSET) & Self::CH7_AL3_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -24551,14 +25341,17 @@ impl Ch7Al3WriteAddrVal {
     /// Read **CH7_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch7_al3_write_addr(&self) -> u32 {
-        (self.bits & Ch7Al3WriteAddr::CH7_AL3_WRITE_ADDR_MASK) >> Ch7Al3WriteAddr::CH7_AL3_WRITE_ADDR_OFFSET
+        (self.bits & Ch7Al3WriteAddr::CH7_AL3_WRITE_ADDR_MASK)
+            >> Ch7Al3WriteAddr::CH7_AL3_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH7_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch7_al3_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch7Al3WriteAddr::CH7_AL3_WRITE_ADDR_MASK) | ((value << Ch7Al3WriteAddr::CH7_AL3_WRITE_ADDR_OFFSET) & Ch7Al3WriteAddr::CH7_AL3_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch7Al3WriteAddr::CH7_AL3_WRITE_ADDR_MASK)
+                | ((value << Ch7Al3WriteAddr::CH7_AL3_WRITE_ADDR_OFFSET)
+                    & Ch7Al3WriteAddr::CH7_AL3_WRITE_ADDR_MASK),
         }
     }
 }
@@ -24624,13 +25417,17 @@ impl Ch7Al3TransCount {
     /// **CH7_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch7_al3_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH7_AL3_TRANS_COUNT_MASK) >> Self::CH7_AL3_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH7_AL3_TRANS_COUNT_MASK)
+            >> Self::CH7_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH7_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch7_al3_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH7_AL3_TRANS_COUNT_MASK) | ((value << Self::CH7_AL3_TRANS_COUNT_OFFSET) & Self::CH7_AL3_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH7_AL3_TRANS_COUNT_MASK)
+                | ((value << Self::CH7_AL3_TRANS_COUNT_OFFSET) & Self::CH7_AL3_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -24659,14 +25456,17 @@ impl Ch7Al3TransCountVal {
     /// Read **CH7_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch7_al3_trans_count(&self) -> u32 {
-        (self.bits & Ch7Al3TransCount::CH7_AL3_TRANS_COUNT_MASK) >> Ch7Al3TransCount::CH7_AL3_TRANS_COUNT_OFFSET
+        (self.bits & Ch7Al3TransCount::CH7_AL3_TRANS_COUNT_MASK)
+            >> Ch7Al3TransCount::CH7_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH7_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch7_al3_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch7Al3TransCount::CH7_AL3_TRANS_COUNT_MASK) | ((value << Ch7Al3TransCount::CH7_AL3_TRANS_COUNT_OFFSET) & Ch7Al3TransCount::CH7_AL3_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch7Al3TransCount::CH7_AL3_TRANS_COUNT_MASK)
+                | ((value << Ch7Al3TransCount::CH7_AL3_TRANS_COUNT_OFFSET)
+                    & Ch7Al3TransCount::CH7_AL3_TRANS_COUNT_MASK),
         }
     }
 }
@@ -24734,13 +25534,18 @@ impl Ch7Al3ReadAddrTrig {
     /// **CH7_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch7_al3_read_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH7_AL3_READ_ADDR_TRIG_MASK) >> Self::CH7_AL3_READ_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH7_AL3_READ_ADDR_TRIG_MASK)
+            >> Self::CH7_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH7_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch7_al3_read_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH7_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH7_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH7_AL3_READ_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH7_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Self::CH7_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Self::CH7_AL3_READ_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -24769,14 +25574,17 @@ impl Ch7Al3ReadAddrTrigVal {
     /// Read **CH7_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch7_al3_read_addr_trig(&self) -> u32 {
-        (self.bits & Ch7Al3ReadAddrTrig::CH7_AL3_READ_ADDR_TRIG_MASK) >> Ch7Al3ReadAddrTrig::CH7_AL3_READ_ADDR_TRIG_OFFSET
+        (self.bits & Ch7Al3ReadAddrTrig::CH7_AL3_READ_ADDR_TRIG_MASK)
+            >> Ch7Al3ReadAddrTrig::CH7_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH7_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch7_al3_read_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch7Al3ReadAddrTrig::CH7_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch7Al3ReadAddrTrig::CH7_AL3_READ_ADDR_TRIG_OFFSET) & Ch7Al3ReadAddrTrig::CH7_AL3_READ_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch7Al3ReadAddrTrig::CH7_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Ch7Al3ReadAddrTrig::CH7_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Ch7Al3ReadAddrTrig::CH7_AL3_READ_ADDR_TRIG_MASK),
         }
     }
 }
@@ -24858,7 +25666,10 @@ impl Ch8ReadAddr {
     /// This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
     #[inline(always)]
     pub fn write_ch8_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH8_READ_ADDR_MASK) | ((value << Self::CH8_READ_ADDR_OFFSET) & Self::CH8_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH8_READ_ADDR_MASK)
+                | ((value << Self::CH8_READ_ADDR_OFFSET) & Self::CH8_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -24904,7 +25715,8 @@ impl Ch8ReadAddrVal {
     #[inline(always)]
     pub const fn with_ch8_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch8ReadAddr::CH8_READ_ADDR_MASK) | ((value << Ch8ReadAddr::CH8_READ_ADDR_OFFSET) & Ch8ReadAddr::CH8_READ_ADDR_MASK)
+            bits: (self.bits & !Ch8ReadAddr::CH8_READ_ADDR_MASK)
+                | ((value << Ch8ReadAddr::CH8_READ_ADDR_OFFSET) & Ch8ReadAddr::CH8_READ_ADDR_MASK),
         }
     }
 }
@@ -24986,7 +25798,10 @@ impl Ch8WriteAddr {
     /// This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
     #[inline(always)]
     pub fn write_ch8_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH8_WRITE_ADDR_MASK) | ((value << Self::CH8_WRITE_ADDR_OFFSET) & Self::CH8_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH8_WRITE_ADDR_MASK)
+                | ((value << Self::CH8_WRITE_ADDR_OFFSET) & Self::CH8_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -25032,7 +25847,9 @@ impl Ch8WriteAddrVal {
     #[inline(always)]
     pub const fn with_ch8_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch8WriteAddr::CH8_WRITE_ADDR_MASK) | ((value << Ch8WriteAddr::CH8_WRITE_ADDR_OFFSET) & Ch8WriteAddr::CH8_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch8WriteAddr::CH8_WRITE_ADDR_MASK)
+                | ((value << Ch8WriteAddr::CH8_WRITE_ADDR_OFFSET)
+                    & Ch8WriteAddr::CH8_WRITE_ADDR_MASK),
         }
     }
 }
@@ -25152,7 +25969,9 @@ impl Ch8TransCount {
     /// All other values are reserved.
     #[inline(always)]
     pub fn write_mode(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK)
+        });
     }
 
     /// **COUNT** `[27:0]` (RW)
@@ -25176,7 +25995,9 @@ impl Ch8TransCount {
     /// The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
     #[inline(always)]
     pub fn write_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK)
+        });
     }
 }
 
@@ -25240,7 +26061,8 @@ impl Ch8TransCountVal {
     #[inline(always)]
     pub const fn with_mode(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch8TransCount::MODE_MASK) | ((value << Ch8TransCount::MODE_OFFSET) & Ch8TransCount::MODE_MASK)
+            bits: (self.bits & !Ch8TransCount::MODE_MASK)
+                | ((value << Ch8TransCount::MODE_OFFSET) & Ch8TransCount::MODE_MASK),
         }
     }
 
@@ -25254,7 +26076,8 @@ impl Ch8TransCountVal {
     #[inline(always)]
     pub const fn with_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch8TransCount::COUNT_MASK) | ((value << Ch8TransCount::COUNT_OFFSET) & Ch8TransCount::COUNT_MASK)
+            bits: (self.bits & !Ch8TransCount::COUNT_MASK)
+                | ((value << Ch8TransCount::COUNT_OFFSET) & Ch8TransCount::COUNT_MASK),
         }
     }
 }
@@ -25962,7 +26785,9 @@ impl Ch8CtrlTrig {
     /// 0x0 to 0x3a -> select DREQ n as TREQ
     #[inline(always)]
     pub fn write_treq_sel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK)
+        });
     }
 
     /// **CHAIN_TO** `[16:13]` (RW)
@@ -25980,7 +26805,9 @@ impl Ch8CtrlTrig {
     /// Note this field resets to 0, so channels 1 and above will chain to channel 0 by default. Set this field to avoid this behaviour.
     #[inline(always)]
     pub fn write_chain_to(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK)
+        });
     }
 
     /// **RING_SEL** `[12]` (RW)
@@ -26019,7 +26846,9 @@ impl Ch8CtrlTrig {
     /// Ring sizes between 2 and 32768 bytes are possible. This can apply to either read or write addresses, based on value of RING_SEL.
     #[inline(always)]
     pub fn write_ring_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK)
+        });
     }
 
     /// **INCR_WRITE_REV** `[7]` (RW)
@@ -26119,7 +26948,9 @@ impl Ch8CtrlTrig {
     /// Set the size of each bus transfer (byte/halfword/word). READ_ADDR and WRITE_ADDR advance by this amount (1/2/4 bytes) with each transfer.
     #[inline(always)]
     pub fn write_data_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK)
+        });
     }
 
     /// **HIGH_PRIORITY** `[1]` (RW)
@@ -26365,7 +27196,7 @@ impl Ch8CtrlTrigVal {
                 self.bits | Ch8CtrlTrig::READ_ERROR_MASK
             } else {
                 self.bits & !Ch8CtrlTrig::READ_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -26380,7 +27211,7 @@ impl Ch8CtrlTrigVal {
                 self.bits | Ch8CtrlTrig::WRITE_ERROR_MASK
             } else {
                 self.bits & !Ch8CtrlTrig::WRITE_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -26395,7 +27226,7 @@ impl Ch8CtrlTrigVal {
                 self.bits | Ch8CtrlTrig::SNIFF_EN_MASK
             } else {
                 self.bits & !Ch8CtrlTrig::SNIFF_EN_MASK
-            }
+            },
         }
     }
 
@@ -26410,7 +27241,7 @@ impl Ch8CtrlTrigVal {
                 self.bits | Ch8CtrlTrig::BSWAP_MASK
             } else {
                 self.bits & !Ch8CtrlTrig::BSWAP_MASK
-            }
+            },
         }
     }
 
@@ -26425,7 +27256,7 @@ impl Ch8CtrlTrigVal {
                 self.bits | Ch8CtrlTrig::IRQ_QUIET_MASK
             } else {
                 self.bits & !Ch8CtrlTrig::IRQ_QUIET_MASK
-            }
+            },
         }
     }
 
@@ -26437,7 +27268,8 @@ impl Ch8CtrlTrigVal {
     #[inline(always)]
     pub const fn with_treq_sel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch8CtrlTrig::TREQ_SEL_MASK) | ((value << Ch8CtrlTrig::TREQ_SEL_OFFSET) & Ch8CtrlTrig::TREQ_SEL_MASK)
+            bits: (self.bits & !Ch8CtrlTrig::TREQ_SEL_MASK)
+                | ((value << Ch8CtrlTrig::TREQ_SEL_OFFSET) & Ch8CtrlTrig::TREQ_SEL_MASK),
         }
     }
 
@@ -26448,7 +27280,8 @@ impl Ch8CtrlTrigVal {
     #[inline(always)]
     pub const fn with_chain_to(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch8CtrlTrig::CHAIN_TO_MASK) | ((value << Ch8CtrlTrig::CHAIN_TO_OFFSET) & Ch8CtrlTrig::CHAIN_TO_MASK)
+            bits: (self.bits & !Ch8CtrlTrig::CHAIN_TO_MASK)
+                | ((value << Ch8CtrlTrig::CHAIN_TO_OFFSET) & Ch8CtrlTrig::CHAIN_TO_MASK),
         }
     }
 
@@ -26463,7 +27296,7 @@ impl Ch8CtrlTrigVal {
                 self.bits | Ch8CtrlTrig::RING_SEL_MASK
             } else {
                 self.bits & !Ch8CtrlTrig::RING_SEL_MASK
-            }
+            },
         }
     }
 
@@ -26474,7 +27307,8 @@ impl Ch8CtrlTrigVal {
     #[inline(always)]
     pub const fn with_ring_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch8CtrlTrig::RING_SIZE_MASK) | ((value << Ch8CtrlTrig::RING_SIZE_OFFSET) & Ch8CtrlTrig::RING_SIZE_MASK)
+            bits: (self.bits & !Ch8CtrlTrig::RING_SIZE_MASK)
+                | ((value << Ch8CtrlTrig::RING_SIZE_OFFSET) & Ch8CtrlTrig::RING_SIZE_MASK),
         }
     }
 
@@ -26489,7 +27323,7 @@ impl Ch8CtrlTrigVal {
                 self.bits | Ch8CtrlTrig::INCR_WRITE_REV_MASK
             } else {
                 self.bits & !Ch8CtrlTrig::INCR_WRITE_REV_MASK
-            }
+            },
         }
     }
 
@@ -26504,7 +27338,7 @@ impl Ch8CtrlTrigVal {
                 self.bits | Ch8CtrlTrig::INCR_WRITE_MASK
             } else {
                 self.bits & !Ch8CtrlTrig::INCR_WRITE_MASK
-            }
+            },
         }
     }
 
@@ -26519,7 +27353,7 @@ impl Ch8CtrlTrigVal {
                 self.bits | Ch8CtrlTrig::INCR_READ_REV_MASK
             } else {
                 self.bits & !Ch8CtrlTrig::INCR_READ_REV_MASK
-            }
+            },
         }
     }
 
@@ -26534,7 +27368,7 @@ impl Ch8CtrlTrigVal {
                 self.bits | Ch8CtrlTrig::INCR_READ_MASK
             } else {
                 self.bits & !Ch8CtrlTrig::INCR_READ_MASK
-            }
+            },
         }
     }
 
@@ -26544,7 +27378,8 @@ impl Ch8CtrlTrigVal {
     #[inline(always)]
     pub const fn with_data_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch8CtrlTrig::DATA_SIZE_MASK) | ((value << Ch8CtrlTrig::DATA_SIZE_OFFSET) & Ch8CtrlTrig::DATA_SIZE_MASK)
+            bits: (self.bits & !Ch8CtrlTrig::DATA_SIZE_MASK)
+                | ((value << Ch8CtrlTrig::DATA_SIZE_OFFSET) & Ch8CtrlTrig::DATA_SIZE_MASK),
         }
     }
 
@@ -26559,7 +27394,7 @@ impl Ch8CtrlTrigVal {
                 self.bits | Ch8CtrlTrig::HIGH_PRIORITY_MASK
             } else {
                 self.bits & !Ch8CtrlTrig::HIGH_PRIORITY_MASK
-            }
+            },
         }
     }
 
@@ -26574,7 +27409,7 @@ impl Ch8CtrlTrigVal {
                 self.bits | Ch8CtrlTrig::EN_MASK
             } else {
                 self.bits & !Ch8CtrlTrig::EN_MASK
-            }
+            },
         }
     }
 }
@@ -26646,7 +27481,10 @@ impl Ch8Al1Ctrl {
     /// Write **CH8_AL1_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch8_al1_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH8_AL1_CTRL_MASK) | ((value << Self::CH8_AL1_CTRL_OFFSET) & Self::CH8_AL1_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH8_AL1_CTRL_MASK)
+                | ((value << Self::CH8_AL1_CTRL_OFFSET) & Self::CH8_AL1_CTRL_MASK)
+        });
     }
 }
 
@@ -26682,7 +27520,8 @@ impl Ch8Al1CtrlVal {
     #[inline(always)]
     pub const fn with_ch8_al1_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch8Al1Ctrl::CH8_AL1_CTRL_MASK) | ((value << Ch8Al1Ctrl::CH8_AL1_CTRL_OFFSET) & Ch8Al1Ctrl::CH8_AL1_CTRL_MASK)
+            bits: (self.bits & !Ch8Al1Ctrl::CH8_AL1_CTRL_MASK)
+                | ((value << Ch8Al1Ctrl::CH8_AL1_CTRL_OFFSET) & Ch8Al1Ctrl::CH8_AL1_CTRL_MASK),
         }
     }
 }
@@ -26754,7 +27593,10 @@ impl Ch8Al1ReadAddr {
     /// Write **CH8_AL1_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch8_al1_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH8_AL1_READ_ADDR_MASK) | ((value << Self::CH8_AL1_READ_ADDR_OFFSET) & Self::CH8_AL1_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH8_AL1_READ_ADDR_MASK)
+                | ((value << Self::CH8_AL1_READ_ADDR_OFFSET) & Self::CH8_AL1_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -26783,14 +27625,17 @@ impl Ch8Al1ReadAddrVal {
     /// Read **CH8_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch8_al1_read_addr(&self) -> u32 {
-        (self.bits & Ch8Al1ReadAddr::CH8_AL1_READ_ADDR_MASK) >> Ch8Al1ReadAddr::CH8_AL1_READ_ADDR_OFFSET
+        (self.bits & Ch8Al1ReadAddr::CH8_AL1_READ_ADDR_MASK)
+            >> Ch8Al1ReadAddr::CH8_AL1_READ_ADDR_OFFSET
     }
 
     /// Set **CH8_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch8_al1_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch8Al1ReadAddr::CH8_AL1_READ_ADDR_MASK) | ((value << Ch8Al1ReadAddr::CH8_AL1_READ_ADDR_OFFSET) & Ch8Al1ReadAddr::CH8_AL1_READ_ADDR_MASK)
+            bits: (self.bits & !Ch8Al1ReadAddr::CH8_AL1_READ_ADDR_MASK)
+                | ((value << Ch8Al1ReadAddr::CH8_AL1_READ_ADDR_OFFSET)
+                    & Ch8Al1ReadAddr::CH8_AL1_READ_ADDR_MASK),
         }
     }
 }
@@ -26862,7 +27707,10 @@ impl Ch8Al1WriteAddr {
     /// Write **CH8_AL1_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch8_al1_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH8_AL1_WRITE_ADDR_MASK) | ((value << Self::CH8_AL1_WRITE_ADDR_OFFSET) & Self::CH8_AL1_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH8_AL1_WRITE_ADDR_MASK)
+                | ((value << Self::CH8_AL1_WRITE_ADDR_OFFSET) & Self::CH8_AL1_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -26891,14 +27739,17 @@ impl Ch8Al1WriteAddrVal {
     /// Read **CH8_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch8_al1_write_addr(&self) -> u32 {
-        (self.bits & Ch8Al1WriteAddr::CH8_AL1_WRITE_ADDR_MASK) >> Ch8Al1WriteAddr::CH8_AL1_WRITE_ADDR_OFFSET
+        (self.bits & Ch8Al1WriteAddr::CH8_AL1_WRITE_ADDR_MASK)
+            >> Ch8Al1WriteAddr::CH8_AL1_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH8_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch8_al1_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch8Al1WriteAddr::CH8_AL1_WRITE_ADDR_MASK) | ((value << Ch8Al1WriteAddr::CH8_AL1_WRITE_ADDR_OFFSET) & Ch8Al1WriteAddr::CH8_AL1_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch8Al1WriteAddr::CH8_AL1_WRITE_ADDR_MASK)
+                | ((value << Ch8Al1WriteAddr::CH8_AL1_WRITE_ADDR_OFFSET)
+                    & Ch8Al1WriteAddr::CH8_AL1_WRITE_ADDR_MASK),
         }
     }
 }
@@ -26966,13 +27817,18 @@ impl Ch8Al1TransCountTrig {
     /// **CH8_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch8_al1_trans_count_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH8_AL1_TRANS_COUNT_TRIG_MASK) >> Self::CH8_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH8_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Self::CH8_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Write **CH8_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch8_al1_trans_count_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH8_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH8_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH8_AL1_TRANS_COUNT_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH8_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Self::CH8_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Self::CH8_AL1_TRANS_COUNT_TRIG_MASK)
+        });
     }
 }
 
@@ -27001,14 +27857,17 @@ impl Ch8Al1TransCountTrigVal {
     /// Read **CH8_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch8_al1_trans_count_trig(&self) -> u32 {
-        (self.bits & Ch8Al1TransCountTrig::CH8_AL1_TRANS_COUNT_TRIG_MASK) >> Ch8Al1TransCountTrig::CH8_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.bits & Ch8Al1TransCountTrig::CH8_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Ch8Al1TransCountTrig::CH8_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Set **CH8_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch8_al1_trans_count_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch8Al1TransCountTrig::CH8_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch8Al1TransCountTrig::CH8_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch8Al1TransCountTrig::CH8_AL1_TRANS_COUNT_TRIG_MASK)
+            bits: (self.bits & !Ch8Al1TransCountTrig::CH8_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Ch8Al1TransCountTrig::CH8_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Ch8Al1TransCountTrig::CH8_AL1_TRANS_COUNT_TRIG_MASK),
         }
     }
 }
@@ -27080,7 +27939,10 @@ impl Ch8Al2Ctrl {
     /// Write **CH8_AL2_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch8_al2_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH8_AL2_CTRL_MASK) | ((value << Self::CH8_AL2_CTRL_OFFSET) & Self::CH8_AL2_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH8_AL2_CTRL_MASK)
+                | ((value << Self::CH8_AL2_CTRL_OFFSET) & Self::CH8_AL2_CTRL_MASK)
+        });
     }
 }
 
@@ -27116,7 +27978,8 @@ impl Ch8Al2CtrlVal {
     #[inline(always)]
     pub const fn with_ch8_al2_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch8Al2Ctrl::CH8_AL2_CTRL_MASK) | ((value << Ch8Al2Ctrl::CH8_AL2_CTRL_OFFSET) & Ch8Al2Ctrl::CH8_AL2_CTRL_MASK)
+            bits: (self.bits & !Ch8Al2Ctrl::CH8_AL2_CTRL_MASK)
+                | ((value << Ch8Al2Ctrl::CH8_AL2_CTRL_OFFSET) & Ch8Al2Ctrl::CH8_AL2_CTRL_MASK),
         }
     }
 }
@@ -27182,13 +28045,17 @@ impl Ch8Al2TransCount {
     /// **CH8_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch8_al2_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH8_AL2_TRANS_COUNT_MASK) >> Self::CH8_AL2_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH8_AL2_TRANS_COUNT_MASK)
+            >> Self::CH8_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH8_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch8_al2_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH8_AL2_TRANS_COUNT_MASK) | ((value << Self::CH8_AL2_TRANS_COUNT_OFFSET) & Self::CH8_AL2_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH8_AL2_TRANS_COUNT_MASK)
+                | ((value << Self::CH8_AL2_TRANS_COUNT_OFFSET) & Self::CH8_AL2_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -27217,14 +28084,17 @@ impl Ch8Al2TransCountVal {
     /// Read **CH8_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch8_al2_trans_count(&self) -> u32 {
-        (self.bits & Ch8Al2TransCount::CH8_AL2_TRANS_COUNT_MASK) >> Ch8Al2TransCount::CH8_AL2_TRANS_COUNT_OFFSET
+        (self.bits & Ch8Al2TransCount::CH8_AL2_TRANS_COUNT_MASK)
+            >> Ch8Al2TransCount::CH8_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH8_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch8_al2_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch8Al2TransCount::CH8_AL2_TRANS_COUNT_MASK) | ((value << Ch8Al2TransCount::CH8_AL2_TRANS_COUNT_OFFSET) & Ch8Al2TransCount::CH8_AL2_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch8Al2TransCount::CH8_AL2_TRANS_COUNT_MASK)
+                | ((value << Ch8Al2TransCount::CH8_AL2_TRANS_COUNT_OFFSET)
+                    & Ch8Al2TransCount::CH8_AL2_TRANS_COUNT_MASK),
         }
     }
 }
@@ -27296,7 +28166,10 @@ impl Ch8Al2ReadAddr {
     /// Write **CH8_AL2_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch8_al2_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH8_AL2_READ_ADDR_MASK) | ((value << Self::CH8_AL2_READ_ADDR_OFFSET) & Self::CH8_AL2_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH8_AL2_READ_ADDR_MASK)
+                | ((value << Self::CH8_AL2_READ_ADDR_OFFSET) & Self::CH8_AL2_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -27325,14 +28198,17 @@ impl Ch8Al2ReadAddrVal {
     /// Read **CH8_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch8_al2_read_addr(&self) -> u32 {
-        (self.bits & Ch8Al2ReadAddr::CH8_AL2_READ_ADDR_MASK) >> Ch8Al2ReadAddr::CH8_AL2_READ_ADDR_OFFSET
+        (self.bits & Ch8Al2ReadAddr::CH8_AL2_READ_ADDR_MASK)
+            >> Ch8Al2ReadAddr::CH8_AL2_READ_ADDR_OFFSET
     }
 
     /// Set **CH8_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch8_al2_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch8Al2ReadAddr::CH8_AL2_READ_ADDR_MASK) | ((value << Ch8Al2ReadAddr::CH8_AL2_READ_ADDR_OFFSET) & Ch8Al2ReadAddr::CH8_AL2_READ_ADDR_MASK)
+            bits: (self.bits & !Ch8Al2ReadAddr::CH8_AL2_READ_ADDR_MASK)
+                | ((value << Ch8Al2ReadAddr::CH8_AL2_READ_ADDR_OFFSET)
+                    & Ch8Al2ReadAddr::CH8_AL2_READ_ADDR_MASK),
         }
     }
 }
@@ -27400,13 +28276,18 @@ impl Ch8Al2WriteAddrTrig {
     /// **CH8_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch8_al2_write_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH8_AL2_WRITE_ADDR_TRIG_MASK) >> Self::CH8_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH8_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Self::CH8_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH8_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch8_al2_write_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH8_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH8_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH8_AL2_WRITE_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH8_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Self::CH8_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Self::CH8_AL2_WRITE_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -27435,14 +28316,17 @@ impl Ch8Al2WriteAddrTrigVal {
     /// Read **CH8_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch8_al2_write_addr_trig(&self) -> u32 {
-        (self.bits & Ch8Al2WriteAddrTrig::CH8_AL2_WRITE_ADDR_TRIG_MASK) >> Ch8Al2WriteAddrTrig::CH8_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.bits & Ch8Al2WriteAddrTrig::CH8_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Ch8Al2WriteAddrTrig::CH8_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH8_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch8_al2_write_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch8Al2WriteAddrTrig::CH8_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch8Al2WriteAddrTrig::CH8_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch8Al2WriteAddrTrig::CH8_AL2_WRITE_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch8Al2WriteAddrTrig::CH8_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Ch8Al2WriteAddrTrig::CH8_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Ch8Al2WriteAddrTrig::CH8_AL2_WRITE_ADDR_TRIG_MASK),
         }
     }
 }
@@ -27514,7 +28398,10 @@ impl Ch8Al3Ctrl {
     /// Write **CH8_AL3_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch8_al3_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH8_AL3_CTRL_MASK) | ((value << Self::CH8_AL3_CTRL_OFFSET) & Self::CH8_AL3_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH8_AL3_CTRL_MASK)
+                | ((value << Self::CH8_AL3_CTRL_OFFSET) & Self::CH8_AL3_CTRL_MASK)
+        });
     }
 }
 
@@ -27550,7 +28437,8 @@ impl Ch8Al3CtrlVal {
     #[inline(always)]
     pub const fn with_ch8_al3_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch8Al3Ctrl::CH8_AL3_CTRL_MASK) | ((value << Ch8Al3Ctrl::CH8_AL3_CTRL_OFFSET) & Ch8Al3Ctrl::CH8_AL3_CTRL_MASK)
+            bits: (self.bits & !Ch8Al3Ctrl::CH8_AL3_CTRL_MASK)
+                | ((value << Ch8Al3Ctrl::CH8_AL3_CTRL_OFFSET) & Ch8Al3Ctrl::CH8_AL3_CTRL_MASK),
         }
     }
 }
@@ -27622,7 +28510,10 @@ impl Ch8Al3WriteAddr {
     /// Write **CH8_AL3_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch8_al3_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH8_AL3_WRITE_ADDR_MASK) | ((value << Self::CH8_AL3_WRITE_ADDR_OFFSET) & Self::CH8_AL3_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH8_AL3_WRITE_ADDR_MASK)
+                | ((value << Self::CH8_AL3_WRITE_ADDR_OFFSET) & Self::CH8_AL3_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -27651,14 +28542,17 @@ impl Ch8Al3WriteAddrVal {
     /// Read **CH8_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch8_al3_write_addr(&self) -> u32 {
-        (self.bits & Ch8Al3WriteAddr::CH8_AL3_WRITE_ADDR_MASK) >> Ch8Al3WriteAddr::CH8_AL3_WRITE_ADDR_OFFSET
+        (self.bits & Ch8Al3WriteAddr::CH8_AL3_WRITE_ADDR_MASK)
+            >> Ch8Al3WriteAddr::CH8_AL3_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH8_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch8_al3_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch8Al3WriteAddr::CH8_AL3_WRITE_ADDR_MASK) | ((value << Ch8Al3WriteAddr::CH8_AL3_WRITE_ADDR_OFFSET) & Ch8Al3WriteAddr::CH8_AL3_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch8Al3WriteAddr::CH8_AL3_WRITE_ADDR_MASK)
+                | ((value << Ch8Al3WriteAddr::CH8_AL3_WRITE_ADDR_OFFSET)
+                    & Ch8Al3WriteAddr::CH8_AL3_WRITE_ADDR_MASK),
         }
     }
 }
@@ -27724,13 +28618,17 @@ impl Ch8Al3TransCount {
     /// **CH8_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch8_al3_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH8_AL3_TRANS_COUNT_MASK) >> Self::CH8_AL3_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH8_AL3_TRANS_COUNT_MASK)
+            >> Self::CH8_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH8_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch8_al3_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH8_AL3_TRANS_COUNT_MASK) | ((value << Self::CH8_AL3_TRANS_COUNT_OFFSET) & Self::CH8_AL3_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH8_AL3_TRANS_COUNT_MASK)
+                | ((value << Self::CH8_AL3_TRANS_COUNT_OFFSET) & Self::CH8_AL3_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -27759,14 +28657,17 @@ impl Ch8Al3TransCountVal {
     /// Read **CH8_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch8_al3_trans_count(&self) -> u32 {
-        (self.bits & Ch8Al3TransCount::CH8_AL3_TRANS_COUNT_MASK) >> Ch8Al3TransCount::CH8_AL3_TRANS_COUNT_OFFSET
+        (self.bits & Ch8Al3TransCount::CH8_AL3_TRANS_COUNT_MASK)
+            >> Ch8Al3TransCount::CH8_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH8_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch8_al3_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch8Al3TransCount::CH8_AL3_TRANS_COUNT_MASK) | ((value << Ch8Al3TransCount::CH8_AL3_TRANS_COUNT_OFFSET) & Ch8Al3TransCount::CH8_AL3_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch8Al3TransCount::CH8_AL3_TRANS_COUNT_MASK)
+                | ((value << Ch8Al3TransCount::CH8_AL3_TRANS_COUNT_OFFSET)
+                    & Ch8Al3TransCount::CH8_AL3_TRANS_COUNT_MASK),
         }
     }
 }
@@ -27834,13 +28735,18 @@ impl Ch8Al3ReadAddrTrig {
     /// **CH8_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch8_al3_read_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH8_AL3_READ_ADDR_TRIG_MASK) >> Self::CH8_AL3_READ_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH8_AL3_READ_ADDR_TRIG_MASK)
+            >> Self::CH8_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH8_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch8_al3_read_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH8_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH8_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH8_AL3_READ_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH8_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Self::CH8_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Self::CH8_AL3_READ_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -27869,14 +28775,17 @@ impl Ch8Al3ReadAddrTrigVal {
     /// Read **CH8_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch8_al3_read_addr_trig(&self) -> u32 {
-        (self.bits & Ch8Al3ReadAddrTrig::CH8_AL3_READ_ADDR_TRIG_MASK) >> Ch8Al3ReadAddrTrig::CH8_AL3_READ_ADDR_TRIG_OFFSET
+        (self.bits & Ch8Al3ReadAddrTrig::CH8_AL3_READ_ADDR_TRIG_MASK)
+            >> Ch8Al3ReadAddrTrig::CH8_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH8_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch8_al3_read_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch8Al3ReadAddrTrig::CH8_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch8Al3ReadAddrTrig::CH8_AL3_READ_ADDR_TRIG_OFFSET) & Ch8Al3ReadAddrTrig::CH8_AL3_READ_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch8Al3ReadAddrTrig::CH8_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Ch8Al3ReadAddrTrig::CH8_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Ch8Al3ReadAddrTrig::CH8_AL3_READ_ADDR_TRIG_MASK),
         }
     }
 }
@@ -27958,7 +28867,10 @@ impl Ch9ReadAddr {
     /// This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
     #[inline(always)]
     pub fn write_ch9_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH9_READ_ADDR_MASK) | ((value << Self::CH9_READ_ADDR_OFFSET) & Self::CH9_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH9_READ_ADDR_MASK)
+                | ((value << Self::CH9_READ_ADDR_OFFSET) & Self::CH9_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -28004,7 +28916,8 @@ impl Ch9ReadAddrVal {
     #[inline(always)]
     pub const fn with_ch9_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch9ReadAddr::CH9_READ_ADDR_MASK) | ((value << Ch9ReadAddr::CH9_READ_ADDR_OFFSET) & Ch9ReadAddr::CH9_READ_ADDR_MASK)
+            bits: (self.bits & !Ch9ReadAddr::CH9_READ_ADDR_MASK)
+                | ((value << Ch9ReadAddr::CH9_READ_ADDR_OFFSET) & Ch9ReadAddr::CH9_READ_ADDR_MASK),
         }
     }
 }
@@ -28086,7 +28999,10 @@ impl Ch9WriteAddr {
     /// This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
     #[inline(always)]
     pub fn write_ch9_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH9_WRITE_ADDR_MASK) | ((value << Self::CH9_WRITE_ADDR_OFFSET) & Self::CH9_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH9_WRITE_ADDR_MASK)
+                | ((value << Self::CH9_WRITE_ADDR_OFFSET) & Self::CH9_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -28132,7 +29048,9 @@ impl Ch9WriteAddrVal {
     #[inline(always)]
     pub const fn with_ch9_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch9WriteAddr::CH9_WRITE_ADDR_MASK) | ((value << Ch9WriteAddr::CH9_WRITE_ADDR_OFFSET) & Ch9WriteAddr::CH9_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch9WriteAddr::CH9_WRITE_ADDR_MASK)
+                | ((value << Ch9WriteAddr::CH9_WRITE_ADDR_OFFSET)
+                    & Ch9WriteAddr::CH9_WRITE_ADDR_MASK),
         }
     }
 }
@@ -28252,7 +29170,9 @@ impl Ch9TransCount {
     /// All other values are reserved.
     #[inline(always)]
     pub fn write_mode(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK)
+        });
     }
 
     /// **COUNT** `[27:0]` (RW)
@@ -28276,7 +29196,9 @@ impl Ch9TransCount {
     /// The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
     #[inline(always)]
     pub fn write_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK)
+        });
     }
 }
 
@@ -28340,7 +29262,8 @@ impl Ch9TransCountVal {
     #[inline(always)]
     pub const fn with_mode(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch9TransCount::MODE_MASK) | ((value << Ch9TransCount::MODE_OFFSET) & Ch9TransCount::MODE_MASK)
+            bits: (self.bits & !Ch9TransCount::MODE_MASK)
+                | ((value << Ch9TransCount::MODE_OFFSET) & Ch9TransCount::MODE_MASK),
         }
     }
 
@@ -28354,7 +29277,8 @@ impl Ch9TransCountVal {
     #[inline(always)]
     pub const fn with_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch9TransCount::COUNT_MASK) | ((value << Ch9TransCount::COUNT_OFFSET) & Ch9TransCount::COUNT_MASK)
+            bits: (self.bits & !Ch9TransCount::COUNT_MASK)
+                | ((value << Ch9TransCount::COUNT_OFFSET) & Ch9TransCount::COUNT_MASK),
         }
     }
 }
@@ -29062,7 +29986,9 @@ impl Ch9CtrlTrig {
     /// 0x0 to 0x3a -> select DREQ n as TREQ
     #[inline(always)]
     pub fn write_treq_sel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK)
+        });
     }
 
     /// **CHAIN_TO** `[16:13]` (RW)
@@ -29080,7 +30006,9 @@ impl Ch9CtrlTrig {
     /// Note this field resets to 0, so channels 1 and above will chain to channel 0 by default. Set this field to avoid this behaviour.
     #[inline(always)]
     pub fn write_chain_to(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK)
+        });
     }
 
     /// **RING_SEL** `[12]` (RW)
@@ -29119,7 +30047,9 @@ impl Ch9CtrlTrig {
     /// Ring sizes between 2 and 32768 bytes are possible. This can apply to either read or write addresses, based on value of RING_SEL.
     #[inline(always)]
     pub fn write_ring_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK)
+        });
     }
 
     /// **INCR_WRITE_REV** `[7]` (RW)
@@ -29219,7 +30149,9 @@ impl Ch9CtrlTrig {
     /// Set the size of each bus transfer (byte/halfword/word). READ_ADDR and WRITE_ADDR advance by this amount (1/2/4 bytes) with each transfer.
     #[inline(always)]
     pub fn write_data_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK)
+        });
     }
 
     /// **HIGH_PRIORITY** `[1]` (RW)
@@ -29465,7 +30397,7 @@ impl Ch9CtrlTrigVal {
                 self.bits | Ch9CtrlTrig::READ_ERROR_MASK
             } else {
                 self.bits & !Ch9CtrlTrig::READ_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -29480,7 +30412,7 @@ impl Ch9CtrlTrigVal {
                 self.bits | Ch9CtrlTrig::WRITE_ERROR_MASK
             } else {
                 self.bits & !Ch9CtrlTrig::WRITE_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -29495,7 +30427,7 @@ impl Ch9CtrlTrigVal {
                 self.bits | Ch9CtrlTrig::SNIFF_EN_MASK
             } else {
                 self.bits & !Ch9CtrlTrig::SNIFF_EN_MASK
-            }
+            },
         }
     }
 
@@ -29510,7 +30442,7 @@ impl Ch9CtrlTrigVal {
                 self.bits | Ch9CtrlTrig::BSWAP_MASK
             } else {
                 self.bits & !Ch9CtrlTrig::BSWAP_MASK
-            }
+            },
         }
     }
 
@@ -29525,7 +30457,7 @@ impl Ch9CtrlTrigVal {
                 self.bits | Ch9CtrlTrig::IRQ_QUIET_MASK
             } else {
                 self.bits & !Ch9CtrlTrig::IRQ_QUIET_MASK
-            }
+            },
         }
     }
 
@@ -29537,7 +30469,8 @@ impl Ch9CtrlTrigVal {
     #[inline(always)]
     pub const fn with_treq_sel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch9CtrlTrig::TREQ_SEL_MASK) | ((value << Ch9CtrlTrig::TREQ_SEL_OFFSET) & Ch9CtrlTrig::TREQ_SEL_MASK)
+            bits: (self.bits & !Ch9CtrlTrig::TREQ_SEL_MASK)
+                | ((value << Ch9CtrlTrig::TREQ_SEL_OFFSET) & Ch9CtrlTrig::TREQ_SEL_MASK),
         }
     }
 
@@ -29548,7 +30481,8 @@ impl Ch9CtrlTrigVal {
     #[inline(always)]
     pub const fn with_chain_to(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch9CtrlTrig::CHAIN_TO_MASK) | ((value << Ch9CtrlTrig::CHAIN_TO_OFFSET) & Ch9CtrlTrig::CHAIN_TO_MASK)
+            bits: (self.bits & !Ch9CtrlTrig::CHAIN_TO_MASK)
+                | ((value << Ch9CtrlTrig::CHAIN_TO_OFFSET) & Ch9CtrlTrig::CHAIN_TO_MASK),
         }
     }
 
@@ -29563,7 +30497,7 @@ impl Ch9CtrlTrigVal {
                 self.bits | Ch9CtrlTrig::RING_SEL_MASK
             } else {
                 self.bits & !Ch9CtrlTrig::RING_SEL_MASK
-            }
+            },
         }
     }
 
@@ -29574,7 +30508,8 @@ impl Ch9CtrlTrigVal {
     #[inline(always)]
     pub const fn with_ring_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch9CtrlTrig::RING_SIZE_MASK) | ((value << Ch9CtrlTrig::RING_SIZE_OFFSET) & Ch9CtrlTrig::RING_SIZE_MASK)
+            bits: (self.bits & !Ch9CtrlTrig::RING_SIZE_MASK)
+                | ((value << Ch9CtrlTrig::RING_SIZE_OFFSET) & Ch9CtrlTrig::RING_SIZE_MASK),
         }
     }
 
@@ -29589,7 +30524,7 @@ impl Ch9CtrlTrigVal {
                 self.bits | Ch9CtrlTrig::INCR_WRITE_REV_MASK
             } else {
                 self.bits & !Ch9CtrlTrig::INCR_WRITE_REV_MASK
-            }
+            },
         }
     }
 
@@ -29604,7 +30539,7 @@ impl Ch9CtrlTrigVal {
                 self.bits | Ch9CtrlTrig::INCR_WRITE_MASK
             } else {
                 self.bits & !Ch9CtrlTrig::INCR_WRITE_MASK
-            }
+            },
         }
     }
 
@@ -29619,7 +30554,7 @@ impl Ch9CtrlTrigVal {
                 self.bits | Ch9CtrlTrig::INCR_READ_REV_MASK
             } else {
                 self.bits & !Ch9CtrlTrig::INCR_READ_REV_MASK
-            }
+            },
         }
     }
 
@@ -29634,7 +30569,7 @@ impl Ch9CtrlTrigVal {
                 self.bits | Ch9CtrlTrig::INCR_READ_MASK
             } else {
                 self.bits & !Ch9CtrlTrig::INCR_READ_MASK
-            }
+            },
         }
     }
 
@@ -29644,7 +30579,8 @@ impl Ch9CtrlTrigVal {
     #[inline(always)]
     pub const fn with_data_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch9CtrlTrig::DATA_SIZE_MASK) | ((value << Ch9CtrlTrig::DATA_SIZE_OFFSET) & Ch9CtrlTrig::DATA_SIZE_MASK)
+            bits: (self.bits & !Ch9CtrlTrig::DATA_SIZE_MASK)
+                | ((value << Ch9CtrlTrig::DATA_SIZE_OFFSET) & Ch9CtrlTrig::DATA_SIZE_MASK),
         }
     }
 
@@ -29659,7 +30595,7 @@ impl Ch9CtrlTrigVal {
                 self.bits | Ch9CtrlTrig::HIGH_PRIORITY_MASK
             } else {
                 self.bits & !Ch9CtrlTrig::HIGH_PRIORITY_MASK
-            }
+            },
         }
     }
 
@@ -29674,7 +30610,7 @@ impl Ch9CtrlTrigVal {
                 self.bits | Ch9CtrlTrig::EN_MASK
             } else {
                 self.bits & !Ch9CtrlTrig::EN_MASK
-            }
+            },
         }
     }
 }
@@ -29746,7 +30682,10 @@ impl Ch9Al1Ctrl {
     /// Write **CH9_AL1_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch9_al1_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH9_AL1_CTRL_MASK) | ((value << Self::CH9_AL1_CTRL_OFFSET) & Self::CH9_AL1_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH9_AL1_CTRL_MASK)
+                | ((value << Self::CH9_AL1_CTRL_OFFSET) & Self::CH9_AL1_CTRL_MASK)
+        });
     }
 }
 
@@ -29782,7 +30721,8 @@ impl Ch9Al1CtrlVal {
     #[inline(always)]
     pub const fn with_ch9_al1_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch9Al1Ctrl::CH9_AL1_CTRL_MASK) | ((value << Ch9Al1Ctrl::CH9_AL1_CTRL_OFFSET) & Ch9Al1Ctrl::CH9_AL1_CTRL_MASK)
+            bits: (self.bits & !Ch9Al1Ctrl::CH9_AL1_CTRL_MASK)
+                | ((value << Ch9Al1Ctrl::CH9_AL1_CTRL_OFFSET) & Ch9Al1Ctrl::CH9_AL1_CTRL_MASK),
         }
     }
 }
@@ -29854,7 +30794,10 @@ impl Ch9Al1ReadAddr {
     /// Write **CH9_AL1_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch9_al1_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH9_AL1_READ_ADDR_MASK) | ((value << Self::CH9_AL1_READ_ADDR_OFFSET) & Self::CH9_AL1_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH9_AL1_READ_ADDR_MASK)
+                | ((value << Self::CH9_AL1_READ_ADDR_OFFSET) & Self::CH9_AL1_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -29883,14 +30826,17 @@ impl Ch9Al1ReadAddrVal {
     /// Read **CH9_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch9_al1_read_addr(&self) -> u32 {
-        (self.bits & Ch9Al1ReadAddr::CH9_AL1_READ_ADDR_MASK) >> Ch9Al1ReadAddr::CH9_AL1_READ_ADDR_OFFSET
+        (self.bits & Ch9Al1ReadAddr::CH9_AL1_READ_ADDR_MASK)
+            >> Ch9Al1ReadAddr::CH9_AL1_READ_ADDR_OFFSET
     }
 
     /// Set **CH9_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch9_al1_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch9Al1ReadAddr::CH9_AL1_READ_ADDR_MASK) | ((value << Ch9Al1ReadAddr::CH9_AL1_READ_ADDR_OFFSET) & Ch9Al1ReadAddr::CH9_AL1_READ_ADDR_MASK)
+            bits: (self.bits & !Ch9Al1ReadAddr::CH9_AL1_READ_ADDR_MASK)
+                | ((value << Ch9Al1ReadAddr::CH9_AL1_READ_ADDR_OFFSET)
+                    & Ch9Al1ReadAddr::CH9_AL1_READ_ADDR_MASK),
         }
     }
 }
@@ -29962,7 +30908,10 @@ impl Ch9Al1WriteAddr {
     /// Write **CH9_AL1_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch9_al1_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH9_AL1_WRITE_ADDR_MASK) | ((value << Self::CH9_AL1_WRITE_ADDR_OFFSET) & Self::CH9_AL1_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH9_AL1_WRITE_ADDR_MASK)
+                | ((value << Self::CH9_AL1_WRITE_ADDR_OFFSET) & Self::CH9_AL1_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -29991,14 +30940,17 @@ impl Ch9Al1WriteAddrVal {
     /// Read **CH9_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch9_al1_write_addr(&self) -> u32 {
-        (self.bits & Ch9Al1WriteAddr::CH9_AL1_WRITE_ADDR_MASK) >> Ch9Al1WriteAddr::CH9_AL1_WRITE_ADDR_OFFSET
+        (self.bits & Ch9Al1WriteAddr::CH9_AL1_WRITE_ADDR_MASK)
+            >> Ch9Al1WriteAddr::CH9_AL1_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH9_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch9_al1_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch9Al1WriteAddr::CH9_AL1_WRITE_ADDR_MASK) | ((value << Ch9Al1WriteAddr::CH9_AL1_WRITE_ADDR_OFFSET) & Ch9Al1WriteAddr::CH9_AL1_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch9Al1WriteAddr::CH9_AL1_WRITE_ADDR_MASK)
+                | ((value << Ch9Al1WriteAddr::CH9_AL1_WRITE_ADDR_OFFSET)
+                    & Ch9Al1WriteAddr::CH9_AL1_WRITE_ADDR_MASK),
         }
     }
 }
@@ -30066,13 +31018,18 @@ impl Ch9Al1TransCountTrig {
     /// **CH9_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch9_al1_trans_count_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH9_AL1_TRANS_COUNT_TRIG_MASK) >> Self::CH9_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH9_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Self::CH9_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Write **CH9_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch9_al1_trans_count_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH9_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH9_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH9_AL1_TRANS_COUNT_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH9_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Self::CH9_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Self::CH9_AL1_TRANS_COUNT_TRIG_MASK)
+        });
     }
 }
 
@@ -30101,14 +31058,17 @@ impl Ch9Al1TransCountTrigVal {
     /// Read **CH9_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch9_al1_trans_count_trig(&self) -> u32 {
-        (self.bits & Ch9Al1TransCountTrig::CH9_AL1_TRANS_COUNT_TRIG_MASK) >> Ch9Al1TransCountTrig::CH9_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.bits & Ch9Al1TransCountTrig::CH9_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Ch9Al1TransCountTrig::CH9_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Set **CH9_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch9_al1_trans_count_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch9Al1TransCountTrig::CH9_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch9Al1TransCountTrig::CH9_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch9Al1TransCountTrig::CH9_AL1_TRANS_COUNT_TRIG_MASK)
+            bits: (self.bits & !Ch9Al1TransCountTrig::CH9_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Ch9Al1TransCountTrig::CH9_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Ch9Al1TransCountTrig::CH9_AL1_TRANS_COUNT_TRIG_MASK),
         }
     }
 }
@@ -30180,7 +31140,10 @@ impl Ch9Al2Ctrl {
     /// Write **CH9_AL2_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch9_al2_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH9_AL2_CTRL_MASK) | ((value << Self::CH9_AL2_CTRL_OFFSET) & Self::CH9_AL2_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH9_AL2_CTRL_MASK)
+                | ((value << Self::CH9_AL2_CTRL_OFFSET) & Self::CH9_AL2_CTRL_MASK)
+        });
     }
 }
 
@@ -30216,7 +31179,8 @@ impl Ch9Al2CtrlVal {
     #[inline(always)]
     pub const fn with_ch9_al2_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch9Al2Ctrl::CH9_AL2_CTRL_MASK) | ((value << Ch9Al2Ctrl::CH9_AL2_CTRL_OFFSET) & Ch9Al2Ctrl::CH9_AL2_CTRL_MASK)
+            bits: (self.bits & !Ch9Al2Ctrl::CH9_AL2_CTRL_MASK)
+                | ((value << Ch9Al2Ctrl::CH9_AL2_CTRL_OFFSET) & Ch9Al2Ctrl::CH9_AL2_CTRL_MASK),
         }
     }
 }
@@ -30282,13 +31246,17 @@ impl Ch9Al2TransCount {
     /// **CH9_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch9_al2_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH9_AL2_TRANS_COUNT_MASK) >> Self::CH9_AL2_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH9_AL2_TRANS_COUNT_MASK)
+            >> Self::CH9_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH9_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch9_al2_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH9_AL2_TRANS_COUNT_MASK) | ((value << Self::CH9_AL2_TRANS_COUNT_OFFSET) & Self::CH9_AL2_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH9_AL2_TRANS_COUNT_MASK)
+                | ((value << Self::CH9_AL2_TRANS_COUNT_OFFSET) & Self::CH9_AL2_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -30317,14 +31285,17 @@ impl Ch9Al2TransCountVal {
     /// Read **CH9_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch9_al2_trans_count(&self) -> u32 {
-        (self.bits & Ch9Al2TransCount::CH9_AL2_TRANS_COUNT_MASK) >> Ch9Al2TransCount::CH9_AL2_TRANS_COUNT_OFFSET
+        (self.bits & Ch9Al2TransCount::CH9_AL2_TRANS_COUNT_MASK)
+            >> Ch9Al2TransCount::CH9_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH9_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch9_al2_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch9Al2TransCount::CH9_AL2_TRANS_COUNT_MASK) | ((value << Ch9Al2TransCount::CH9_AL2_TRANS_COUNT_OFFSET) & Ch9Al2TransCount::CH9_AL2_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch9Al2TransCount::CH9_AL2_TRANS_COUNT_MASK)
+                | ((value << Ch9Al2TransCount::CH9_AL2_TRANS_COUNT_OFFSET)
+                    & Ch9Al2TransCount::CH9_AL2_TRANS_COUNT_MASK),
         }
     }
 }
@@ -30396,7 +31367,10 @@ impl Ch9Al2ReadAddr {
     /// Write **CH9_AL2_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch9_al2_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH9_AL2_READ_ADDR_MASK) | ((value << Self::CH9_AL2_READ_ADDR_OFFSET) & Self::CH9_AL2_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH9_AL2_READ_ADDR_MASK)
+                | ((value << Self::CH9_AL2_READ_ADDR_OFFSET) & Self::CH9_AL2_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -30425,14 +31399,17 @@ impl Ch9Al2ReadAddrVal {
     /// Read **CH9_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch9_al2_read_addr(&self) -> u32 {
-        (self.bits & Ch9Al2ReadAddr::CH9_AL2_READ_ADDR_MASK) >> Ch9Al2ReadAddr::CH9_AL2_READ_ADDR_OFFSET
+        (self.bits & Ch9Al2ReadAddr::CH9_AL2_READ_ADDR_MASK)
+            >> Ch9Al2ReadAddr::CH9_AL2_READ_ADDR_OFFSET
     }
 
     /// Set **CH9_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch9_al2_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch9Al2ReadAddr::CH9_AL2_READ_ADDR_MASK) | ((value << Ch9Al2ReadAddr::CH9_AL2_READ_ADDR_OFFSET) & Ch9Al2ReadAddr::CH9_AL2_READ_ADDR_MASK)
+            bits: (self.bits & !Ch9Al2ReadAddr::CH9_AL2_READ_ADDR_MASK)
+                | ((value << Ch9Al2ReadAddr::CH9_AL2_READ_ADDR_OFFSET)
+                    & Ch9Al2ReadAddr::CH9_AL2_READ_ADDR_MASK),
         }
     }
 }
@@ -30500,13 +31477,18 @@ impl Ch9Al2WriteAddrTrig {
     /// **CH9_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch9_al2_write_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH9_AL2_WRITE_ADDR_TRIG_MASK) >> Self::CH9_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH9_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Self::CH9_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH9_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch9_al2_write_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH9_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH9_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH9_AL2_WRITE_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH9_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Self::CH9_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Self::CH9_AL2_WRITE_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -30535,14 +31517,17 @@ impl Ch9Al2WriteAddrTrigVal {
     /// Read **CH9_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch9_al2_write_addr_trig(&self) -> u32 {
-        (self.bits & Ch9Al2WriteAddrTrig::CH9_AL2_WRITE_ADDR_TRIG_MASK) >> Ch9Al2WriteAddrTrig::CH9_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.bits & Ch9Al2WriteAddrTrig::CH9_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Ch9Al2WriteAddrTrig::CH9_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH9_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch9_al2_write_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch9Al2WriteAddrTrig::CH9_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch9Al2WriteAddrTrig::CH9_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch9Al2WriteAddrTrig::CH9_AL2_WRITE_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch9Al2WriteAddrTrig::CH9_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Ch9Al2WriteAddrTrig::CH9_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Ch9Al2WriteAddrTrig::CH9_AL2_WRITE_ADDR_TRIG_MASK),
         }
     }
 }
@@ -30614,7 +31599,10 @@ impl Ch9Al3Ctrl {
     /// Write **CH9_AL3_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch9_al3_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH9_AL3_CTRL_MASK) | ((value << Self::CH9_AL3_CTRL_OFFSET) & Self::CH9_AL3_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH9_AL3_CTRL_MASK)
+                | ((value << Self::CH9_AL3_CTRL_OFFSET) & Self::CH9_AL3_CTRL_MASK)
+        });
     }
 }
 
@@ -30650,7 +31638,8 @@ impl Ch9Al3CtrlVal {
     #[inline(always)]
     pub const fn with_ch9_al3_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch9Al3Ctrl::CH9_AL3_CTRL_MASK) | ((value << Ch9Al3Ctrl::CH9_AL3_CTRL_OFFSET) & Ch9Al3Ctrl::CH9_AL3_CTRL_MASK)
+            bits: (self.bits & !Ch9Al3Ctrl::CH9_AL3_CTRL_MASK)
+                | ((value << Ch9Al3Ctrl::CH9_AL3_CTRL_OFFSET) & Ch9Al3Ctrl::CH9_AL3_CTRL_MASK),
         }
     }
 }
@@ -30722,7 +31711,10 @@ impl Ch9Al3WriteAddr {
     /// Write **CH9_AL3_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch9_al3_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH9_AL3_WRITE_ADDR_MASK) | ((value << Self::CH9_AL3_WRITE_ADDR_OFFSET) & Self::CH9_AL3_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH9_AL3_WRITE_ADDR_MASK)
+                | ((value << Self::CH9_AL3_WRITE_ADDR_OFFSET) & Self::CH9_AL3_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -30751,14 +31743,17 @@ impl Ch9Al3WriteAddrVal {
     /// Read **CH9_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch9_al3_write_addr(&self) -> u32 {
-        (self.bits & Ch9Al3WriteAddr::CH9_AL3_WRITE_ADDR_MASK) >> Ch9Al3WriteAddr::CH9_AL3_WRITE_ADDR_OFFSET
+        (self.bits & Ch9Al3WriteAddr::CH9_AL3_WRITE_ADDR_MASK)
+            >> Ch9Al3WriteAddr::CH9_AL3_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH9_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch9_al3_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch9Al3WriteAddr::CH9_AL3_WRITE_ADDR_MASK) | ((value << Ch9Al3WriteAddr::CH9_AL3_WRITE_ADDR_OFFSET) & Ch9Al3WriteAddr::CH9_AL3_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch9Al3WriteAddr::CH9_AL3_WRITE_ADDR_MASK)
+                | ((value << Ch9Al3WriteAddr::CH9_AL3_WRITE_ADDR_OFFSET)
+                    & Ch9Al3WriteAddr::CH9_AL3_WRITE_ADDR_MASK),
         }
     }
 }
@@ -30824,13 +31819,17 @@ impl Ch9Al3TransCount {
     /// **CH9_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch9_al3_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH9_AL3_TRANS_COUNT_MASK) >> Self::CH9_AL3_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH9_AL3_TRANS_COUNT_MASK)
+            >> Self::CH9_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH9_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch9_al3_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH9_AL3_TRANS_COUNT_MASK) | ((value << Self::CH9_AL3_TRANS_COUNT_OFFSET) & Self::CH9_AL3_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH9_AL3_TRANS_COUNT_MASK)
+                | ((value << Self::CH9_AL3_TRANS_COUNT_OFFSET) & Self::CH9_AL3_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -30859,14 +31858,17 @@ impl Ch9Al3TransCountVal {
     /// Read **CH9_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch9_al3_trans_count(&self) -> u32 {
-        (self.bits & Ch9Al3TransCount::CH9_AL3_TRANS_COUNT_MASK) >> Ch9Al3TransCount::CH9_AL3_TRANS_COUNT_OFFSET
+        (self.bits & Ch9Al3TransCount::CH9_AL3_TRANS_COUNT_MASK)
+            >> Ch9Al3TransCount::CH9_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH9_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch9_al3_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch9Al3TransCount::CH9_AL3_TRANS_COUNT_MASK) | ((value << Ch9Al3TransCount::CH9_AL3_TRANS_COUNT_OFFSET) & Ch9Al3TransCount::CH9_AL3_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch9Al3TransCount::CH9_AL3_TRANS_COUNT_MASK)
+                | ((value << Ch9Al3TransCount::CH9_AL3_TRANS_COUNT_OFFSET)
+                    & Ch9Al3TransCount::CH9_AL3_TRANS_COUNT_MASK),
         }
     }
 }
@@ -30934,13 +31936,18 @@ impl Ch9Al3ReadAddrTrig {
     /// **CH9_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch9_al3_read_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH9_AL3_READ_ADDR_TRIG_MASK) >> Self::CH9_AL3_READ_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH9_AL3_READ_ADDR_TRIG_MASK)
+            >> Self::CH9_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH9_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch9_al3_read_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH9_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH9_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH9_AL3_READ_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH9_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Self::CH9_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Self::CH9_AL3_READ_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -30969,14 +31976,17 @@ impl Ch9Al3ReadAddrTrigVal {
     /// Read **CH9_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch9_al3_read_addr_trig(&self) -> u32 {
-        (self.bits & Ch9Al3ReadAddrTrig::CH9_AL3_READ_ADDR_TRIG_MASK) >> Ch9Al3ReadAddrTrig::CH9_AL3_READ_ADDR_TRIG_OFFSET
+        (self.bits & Ch9Al3ReadAddrTrig::CH9_AL3_READ_ADDR_TRIG_MASK)
+            >> Ch9Al3ReadAddrTrig::CH9_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH9_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch9_al3_read_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch9Al3ReadAddrTrig::CH9_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch9Al3ReadAddrTrig::CH9_AL3_READ_ADDR_TRIG_OFFSET) & Ch9Al3ReadAddrTrig::CH9_AL3_READ_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch9Al3ReadAddrTrig::CH9_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Ch9Al3ReadAddrTrig::CH9_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Ch9Al3ReadAddrTrig::CH9_AL3_READ_ADDR_TRIG_MASK),
         }
     }
 }
@@ -31058,7 +32068,10 @@ impl Ch10ReadAddr {
     /// This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
     #[inline(always)]
     pub fn write_ch10_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH10_READ_ADDR_MASK) | ((value << Self::CH10_READ_ADDR_OFFSET) & Self::CH10_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH10_READ_ADDR_MASK)
+                | ((value << Self::CH10_READ_ADDR_OFFSET) & Self::CH10_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -31104,7 +32117,9 @@ impl Ch10ReadAddrVal {
     #[inline(always)]
     pub const fn with_ch10_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch10ReadAddr::CH10_READ_ADDR_MASK) | ((value << Ch10ReadAddr::CH10_READ_ADDR_OFFSET) & Ch10ReadAddr::CH10_READ_ADDR_MASK)
+            bits: (self.bits & !Ch10ReadAddr::CH10_READ_ADDR_MASK)
+                | ((value << Ch10ReadAddr::CH10_READ_ADDR_OFFSET)
+                    & Ch10ReadAddr::CH10_READ_ADDR_MASK),
         }
     }
 }
@@ -31186,7 +32201,10 @@ impl Ch10WriteAddr {
     /// This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
     #[inline(always)]
     pub fn write_ch10_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH10_WRITE_ADDR_MASK) | ((value << Self::CH10_WRITE_ADDR_OFFSET) & Self::CH10_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH10_WRITE_ADDR_MASK)
+                | ((value << Self::CH10_WRITE_ADDR_OFFSET) & Self::CH10_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -31232,7 +32250,9 @@ impl Ch10WriteAddrVal {
     #[inline(always)]
     pub const fn with_ch10_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch10WriteAddr::CH10_WRITE_ADDR_MASK) | ((value << Ch10WriteAddr::CH10_WRITE_ADDR_OFFSET) & Ch10WriteAddr::CH10_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch10WriteAddr::CH10_WRITE_ADDR_MASK)
+                | ((value << Ch10WriteAddr::CH10_WRITE_ADDR_OFFSET)
+                    & Ch10WriteAddr::CH10_WRITE_ADDR_MASK),
         }
     }
 }
@@ -31352,7 +32372,9 @@ impl Ch10TransCount {
     /// All other values are reserved.
     #[inline(always)]
     pub fn write_mode(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK)
+        });
     }
 
     /// **COUNT** `[27:0]` (RW)
@@ -31376,7 +32398,9 @@ impl Ch10TransCount {
     /// The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
     #[inline(always)]
     pub fn write_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK)
+        });
     }
 }
 
@@ -31440,7 +32464,8 @@ impl Ch10TransCountVal {
     #[inline(always)]
     pub const fn with_mode(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch10TransCount::MODE_MASK) | ((value << Ch10TransCount::MODE_OFFSET) & Ch10TransCount::MODE_MASK)
+            bits: (self.bits & !Ch10TransCount::MODE_MASK)
+                | ((value << Ch10TransCount::MODE_OFFSET) & Ch10TransCount::MODE_MASK),
         }
     }
 
@@ -31454,7 +32479,8 @@ impl Ch10TransCountVal {
     #[inline(always)]
     pub const fn with_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch10TransCount::COUNT_MASK) | ((value << Ch10TransCount::COUNT_OFFSET) & Ch10TransCount::COUNT_MASK)
+            bits: (self.bits & !Ch10TransCount::COUNT_MASK)
+                | ((value << Ch10TransCount::COUNT_OFFSET) & Ch10TransCount::COUNT_MASK),
         }
     }
 }
@@ -32162,7 +33188,9 @@ impl Ch10CtrlTrig {
     /// 0x0 to 0x3a -> select DREQ n as TREQ
     #[inline(always)]
     pub fn write_treq_sel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK)
+        });
     }
 
     /// **CHAIN_TO** `[16:13]` (RW)
@@ -32180,7 +33208,9 @@ impl Ch10CtrlTrig {
     /// Note this field resets to 0, so channels 1 and above will chain to channel 0 by default. Set this field to avoid this behaviour.
     #[inline(always)]
     pub fn write_chain_to(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK)
+        });
     }
 
     /// **RING_SEL** `[12]` (RW)
@@ -32219,7 +33249,9 @@ impl Ch10CtrlTrig {
     /// Ring sizes between 2 and 32768 bytes are possible. This can apply to either read or write addresses, based on value of RING_SEL.
     #[inline(always)]
     pub fn write_ring_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK)
+        });
     }
 
     /// **INCR_WRITE_REV** `[7]` (RW)
@@ -32319,7 +33351,9 @@ impl Ch10CtrlTrig {
     /// Set the size of each bus transfer (byte/halfword/word). READ_ADDR and WRITE_ADDR advance by this amount (1/2/4 bytes) with each transfer.
     #[inline(always)]
     pub fn write_data_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK)
+        });
     }
 
     /// **HIGH_PRIORITY** `[1]` (RW)
@@ -32565,7 +33599,7 @@ impl Ch10CtrlTrigVal {
                 self.bits | Ch10CtrlTrig::READ_ERROR_MASK
             } else {
                 self.bits & !Ch10CtrlTrig::READ_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -32580,7 +33614,7 @@ impl Ch10CtrlTrigVal {
                 self.bits | Ch10CtrlTrig::WRITE_ERROR_MASK
             } else {
                 self.bits & !Ch10CtrlTrig::WRITE_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -32595,7 +33629,7 @@ impl Ch10CtrlTrigVal {
                 self.bits | Ch10CtrlTrig::SNIFF_EN_MASK
             } else {
                 self.bits & !Ch10CtrlTrig::SNIFF_EN_MASK
-            }
+            },
         }
     }
 
@@ -32610,7 +33644,7 @@ impl Ch10CtrlTrigVal {
                 self.bits | Ch10CtrlTrig::BSWAP_MASK
             } else {
                 self.bits & !Ch10CtrlTrig::BSWAP_MASK
-            }
+            },
         }
     }
 
@@ -32625,7 +33659,7 @@ impl Ch10CtrlTrigVal {
                 self.bits | Ch10CtrlTrig::IRQ_QUIET_MASK
             } else {
                 self.bits & !Ch10CtrlTrig::IRQ_QUIET_MASK
-            }
+            },
         }
     }
 
@@ -32637,7 +33671,8 @@ impl Ch10CtrlTrigVal {
     #[inline(always)]
     pub const fn with_treq_sel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch10CtrlTrig::TREQ_SEL_MASK) | ((value << Ch10CtrlTrig::TREQ_SEL_OFFSET) & Ch10CtrlTrig::TREQ_SEL_MASK)
+            bits: (self.bits & !Ch10CtrlTrig::TREQ_SEL_MASK)
+                | ((value << Ch10CtrlTrig::TREQ_SEL_OFFSET) & Ch10CtrlTrig::TREQ_SEL_MASK),
         }
     }
 
@@ -32648,7 +33683,8 @@ impl Ch10CtrlTrigVal {
     #[inline(always)]
     pub const fn with_chain_to(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch10CtrlTrig::CHAIN_TO_MASK) | ((value << Ch10CtrlTrig::CHAIN_TO_OFFSET) & Ch10CtrlTrig::CHAIN_TO_MASK)
+            bits: (self.bits & !Ch10CtrlTrig::CHAIN_TO_MASK)
+                | ((value << Ch10CtrlTrig::CHAIN_TO_OFFSET) & Ch10CtrlTrig::CHAIN_TO_MASK),
         }
     }
 
@@ -32663,7 +33699,7 @@ impl Ch10CtrlTrigVal {
                 self.bits | Ch10CtrlTrig::RING_SEL_MASK
             } else {
                 self.bits & !Ch10CtrlTrig::RING_SEL_MASK
-            }
+            },
         }
     }
 
@@ -32674,7 +33710,8 @@ impl Ch10CtrlTrigVal {
     #[inline(always)]
     pub const fn with_ring_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch10CtrlTrig::RING_SIZE_MASK) | ((value << Ch10CtrlTrig::RING_SIZE_OFFSET) & Ch10CtrlTrig::RING_SIZE_MASK)
+            bits: (self.bits & !Ch10CtrlTrig::RING_SIZE_MASK)
+                | ((value << Ch10CtrlTrig::RING_SIZE_OFFSET) & Ch10CtrlTrig::RING_SIZE_MASK),
         }
     }
 
@@ -32689,7 +33726,7 @@ impl Ch10CtrlTrigVal {
                 self.bits | Ch10CtrlTrig::INCR_WRITE_REV_MASK
             } else {
                 self.bits & !Ch10CtrlTrig::INCR_WRITE_REV_MASK
-            }
+            },
         }
     }
 
@@ -32704,7 +33741,7 @@ impl Ch10CtrlTrigVal {
                 self.bits | Ch10CtrlTrig::INCR_WRITE_MASK
             } else {
                 self.bits & !Ch10CtrlTrig::INCR_WRITE_MASK
-            }
+            },
         }
     }
 
@@ -32719,7 +33756,7 @@ impl Ch10CtrlTrigVal {
                 self.bits | Ch10CtrlTrig::INCR_READ_REV_MASK
             } else {
                 self.bits & !Ch10CtrlTrig::INCR_READ_REV_MASK
-            }
+            },
         }
     }
 
@@ -32734,7 +33771,7 @@ impl Ch10CtrlTrigVal {
                 self.bits | Ch10CtrlTrig::INCR_READ_MASK
             } else {
                 self.bits & !Ch10CtrlTrig::INCR_READ_MASK
-            }
+            },
         }
     }
 
@@ -32744,7 +33781,8 @@ impl Ch10CtrlTrigVal {
     #[inline(always)]
     pub const fn with_data_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch10CtrlTrig::DATA_SIZE_MASK) | ((value << Ch10CtrlTrig::DATA_SIZE_OFFSET) & Ch10CtrlTrig::DATA_SIZE_MASK)
+            bits: (self.bits & !Ch10CtrlTrig::DATA_SIZE_MASK)
+                | ((value << Ch10CtrlTrig::DATA_SIZE_OFFSET) & Ch10CtrlTrig::DATA_SIZE_MASK),
         }
     }
 
@@ -32759,7 +33797,7 @@ impl Ch10CtrlTrigVal {
                 self.bits | Ch10CtrlTrig::HIGH_PRIORITY_MASK
             } else {
                 self.bits & !Ch10CtrlTrig::HIGH_PRIORITY_MASK
-            }
+            },
         }
     }
 
@@ -32774,7 +33812,7 @@ impl Ch10CtrlTrigVal {
                 self.bits | Ch10CtrlTrig::EN_MASK
             } else {
                 self.bits & !Ch10CtrlTrig::EN_MASK
-            }
+            },
         }
     }
 }
@@ -32846,7 +33884,10 @@ impl Ch10Al1Ctrl {
     /// Write **CH10_AL1_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch10_al1_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH10_AL1_CTRL_MASK) | ((value << Self::CH10_AL1_CTRL_OFFSET) & Self::CH10_AL1_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH10_AL1_CTRL_MASK)
+                | ((value << Self::CH10_AL1_CTRL_OFFSET) & Self::CH10_AL1_CTRL_MASK)
+        });
     }
 }
 
@@ -32882,7 +33923,8 @@ impl Ch10Al1CtrlVal {
     #[inline(always)]
     pub const fn with_ch10_al1_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch10Al1Ctrl::CH10_AL1_CTRL_MASK) | ((value << Ch10Al1Ctrl::CH10_AL1_CTRL_OFFSET) & Ch10Al1Ctrl::CH10_AL1_CTRL_MASK)
+            bits: (self.bits & !Ch10Al1Ctrl::CH10_AL1_CTRL_MASK)
+                | ((value << Ch10Al1Ctrl::CH10_AL1_CTRL_OFFSET) & Ch10Al1Ctrl::CH10_AL1_CTRL_MASK),
         }
     }
 }
@@ -32954,7 +33996,10 @@ impl Ch10Al1ReadAddr {
     /// Write **CH10_AL1_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch10_al1_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH10_AL1_READ_ADDR_MASK) | ((value << Self::CH10_AL1_READ_ADDR_OFFSET) & Self::CH10_AL1_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH10_AL1_READ_ADDR_MASK)
+                | ((value << Self::CH10_AL1_READ_ADDR_OFFSET) & Self::CH10_AL1_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -32983,14 +34028,17 @@ impl Ch10Al1ReadAddrVal {
     /// Read **CH10_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch10_al1_read_addr(&self) -> u32 {
-        (self.bits & Ch10Al1ReadAddr::CH10_AL1_READ_ADDR_MASK) >> Ch10Al1ReadAddr::CH10_AL1_READ_ADDR_OFFSET
+        (self.bits & Ch10Al1ReadAddr::CH10_AL1_READ_ADDR_MASK)
+            >> Ch10Al1ReadAddr::CH10_AL1_READ_ADDR_OFFSET
     }
 
     /// Set **CH10_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch10_al1_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch10Al1ReadAddr::CH10_AL1_READ_ADDR_MASK) | ((value << Ch10Al1ReadAddr::CH10_AL1_READ_ADDR_OFFSET) & Ch10Al1ReadAddr::CH10_AL1_READ_ADDR_MASK)
+            bits: (self.bits & !Ch10Al1ReadAddr::CH10_AL1_READ_ADDR_MASK)
+                | ((value << Ch10Al1ReadAddr::CH10_AL1_READ_ADDR_OFFSET)
+                    & Ch10Al1ReadAddr::CH10_AL1_READ_ADDR_MASK),
         }
     }
 }
@@ -33056,13 +34104,17 @@ impl Ch10Al1WriteAddr {
     /// **CH10_AL1_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch10_al1_write_addr(&self) -> u32 {
-        (self.value.read_bits() & Self::CH10_AL1_WRITE_ADDR_MASK) >> Self::CH10_AL1_WRITE_ADDR_OFFSET
+        (self.value.read_bits() & Self::CH10_AL1_WRITE_ADDR_MASK)
+            >> Self::CH10_AL1_WRITE_ADDR_OFFSET
     }
 
     /// Write **CH10_AL1_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch10_al1_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH10_AL1_WRITE_ADDR_MASK) | ((value << Self::CH10_AL1_WRITE_ADDR_OFFSET) & Self::CH10_AL1_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH10_AL1_WRITE_ADDR_MASK)
+                | ((value << Self::CH10_AL1_WRITE_ADDR_OFFSET) & Self::CH10_AL1_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -33091,14 +34143,17 @@ impl Ch10Al1WriteAddrVal {
     /// Read **CH10_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch10_al1_write_addr(&self) -> u32 {
-        (self.bits & Ch10Al1WriteAddr::CH10_AL1_WRITE_ADDR_MASK) >> Ch10Al1WriteAddr::CH10_AL1_WRITE_ADDR_OFFSET
+        (self.bits & Ch10Al1WriteAddr::CH10_AL1_WRITE_ADDR_MASK)
+            >> Ch10Al1WriteAddr::CH10_AL1_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH10_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch10_al1_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch10Al1WriteAddr::CH10_AL1_WRITE_ADDR_MASK) | ((value << Ch10Al1WriteAddr::CH10_AL1_WRITE_ADDR_OFFSET) & Ch10Al1WriteAddr::CH10_AL1_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch10Al1WriteAddr::CH10_AL1_WRITE_ADDR_MASK)
+                | ((value << Ch10Al1WriteAddr::CH10_AL1_WRITE_ADDR_OFFSET)
+                    & Ch10Al1WriteAddr::CH10_AL1_WRITE_ADDR_MASK),
         }
     }
 }
@@ -33166,13 +34221,18 @@ impl Ch10Al1TransCountTrig {
     /// **CH10_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch10_al1_trans_count_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH10_AL1_TRANS_COUNT_TRIG_MASK) >> Self::CH10_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH10_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Self::CH10_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Write **CH10_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch10_al1_trans_count_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH10_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH10_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH10_AL1_TRANS_COUNT_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH10_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Self::CH10_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Self::CH10_AL1_TRANS_COUNT_TRIG_MASK)
+        });
     }
 }
 
@@ -33201,14 +34261,17 @@ impl Ch10Al1TransCountTrigVal {
     /// Read **CH10_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch10_al1_trans_count_trig(&self) -> u32 {
-        (self.bits & Ch10Al1TransCountTrig::CH10_AL1_TRANS_COUNT_TRIG_MASK) >> Ch10Al1TransCountTrig::CH10_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.bits & Ch10Al1TransCountTrig::CH10_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Ch10Al1TransCountTrig::CH10_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Set **CH10_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch10_al1_trans_count_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch10Al1TransCountTrig::CH10_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch10Al1TransCountTrig::CH10_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch10Al1TransCountTrig::CH10_AL1_TRANS_COUNT_TRIG_MASK)
+            bits: (self.bits & !Ch10Al1TransCountTrig::CH10_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Ch10Al1TransCountTrig::CH10_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Ch10Al1TransCountTrig::CH10_AL1_TRANS_COUNT_TRIG_MASK),
         }
     }
 }
@@ -33234,7 +34297,10 @@ impl Ch10Al1TransCountTrig {
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify_val<F: FnOnce(Ch10Al1TransCountTrigVal) -> Ch10Al1TransCountTrigVal>(&self, f: F) {
+    pub fn modify_val<F: FnOnce(Ch10Al1TransCountTrigVal) -> Ch10Al1TransCountTrigVal>(
+        &self,
+        f: F,
+    ) {
         self.write_val(f(self.read_val()))
     }
 }
@@ -33280,7 +34346,10 @@ impl Ch10Al2Ctrl {
     /// Write **CH10_AL2_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch10_al2_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH10_AL2_CTRL_MASK) | ((value << Self::CH10_AL2_CTRL_OFFSET) & Self::CH10_AL2_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH10_AL2_CTRL_MASK)
+                | ((value << Self::CH10_AL2_CTRL_OFFSET) & Self::CH10_AL2_CTRL_MASK)
+        });
     }
 }
 
@@ -33316,7 +34385,8 @@ impl Ch10Al2CtrlVal {
     #[inline(always)]
     pub const fn with_ch10_al2_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch10Al2Ctrl::CH10_AL2_CTRL_MASK) | ((value << Ch10Al2Ctrl::CH10_AL2_CTRL_OFFSET) & Ch10Al2Ctrl::CH10_AL2_CTRL_MASK)
+            bits: (self.bits & !Ch10Al2Ctrl::CH10_AL2_CTRL_MASK)
+                | ((value << Ch10Al2Ctrl::CH10_AL2_CTRL_OFFSET) & Ch10Al2Ctrl::CH10_AL2_CTRL_MASK),
         }
     }
 }
@@ -33382,13 +34452,17 @@ impl Ch10Al2TransCount {
     /// **CH10_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch10_al2_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH10_AL2_TRANS_COUNT_MASK) >> Self::CH10_AL2_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH10_AL2_TRANS_COUNT_MASK)
+            >> Self::CH10_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH10_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch10_al2_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH10_AL2_TRANS_COUNT_MASK) | ((value << Self::CH10_AL2_TRANS_COUNT_OFFSET) & Self::CH10_AL2_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH10_AL2_TRANS_COUNT_MASK)
+                | ((value << Self::CH10_AL2_TRANS_COUNT_OFFSET) & Self::CH10_AL2_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -33417,14 +34491,17 @@ impl Ch10Al2TransCountVal {
     /// Read **CH10_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch10_al2_trans_count(&self) -> u32 {
-        (self.bits & Ch10Al2TransCount::CH10_AL2_TRANS_COUNT_MASK) >> Ch10Al2TransCount::CH10_AL2_TRANS_COUNT_OFFSET
+        (self.bits & Ch10Al2TransCount::CH10_AL2_TRANS_COUNT_MASK)
+            >> Ch10Al2TransCount::CH10_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH10_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch10_al2_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch10Al2TransCount::CH10_AL2_TRANS_COUNT_MASK) | ((value << Ch10Al2TransCount::CH10_AL2_TRANS_COUNT_OFFSET) & Ch10Al2TransCount::CH10_AL2_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch10Al2TransCount::CH10_AL2_TRANS_COUNT_MASK)
+                | ((value << Ch10Al2TransCount::CH10_AL2_TRANS_COUNT_OFFSET)
+                    & Ch10Al2TransCount::CH10_AL2_TRANS_COUNT_MASK),
         }
     }
 }
@@ -33496,7 +34573,10 @@ impl Ch10Al2ReadAddr {
     /// Write **CH10_AL2_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch10_al2_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH10_AL2_READ_ADDR_MASK) | ((value << Self::CH10_AL2_READ_ADDR_OFFSET) & Self::CH10_AL2_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH10_AL2_READ_ADDR_MASK)
+                | ((value << Self::CH10_AL2_READ_ADDR_OFFSET) & Self::CH10_AL2_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -33525,14 +34605,17 @@ impl Ch10Al2ReadAddrVal {
     /// Read **CH10_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch10_al2_read_addr(&self) -> u32 {
-        (self.bits & Ch10Al2ReadAddr::CH10_AL2_READ_ADDR_MASK) >> Ch10Al2ReadAddr::CH10_AL2_READ_ADDR_OFFSET
+        (self.bits & Ch10Al2ReadAddr::CH10_AL2_READ_ADDR_MASK)
+            >> Ch10Al2ReadAddr::CH10_AL2_READ_ADDR_OFFSET
     }
 
     /// Set **CH10_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch10_al2_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch10Al2ReadAddr::CH10_AL2_READ_ADDR_MASK) | ((value << Ch10Al2ReadAddr::CH10_AL2_READ_ADDR_OFFSET) & Ch10Al2ReadAddr::CH10_AL2_READ_ADDR_MASK)
+            bits: (self.bits & !Ch10Al2ReadAddr::CH10_AL2_READ_ADDR_MASK)
+                | ((value << Ch10Al2ReadAddr::CH10_AL2_READ_ADDR_OFFSET)
+                    & Ch10Al2ReadAddr::CH10_AL2_READ_ADDR_MASK),
         }
     }
 }
@@ -33600,13 +34683,18 @@ impl Ch10Al2WriteAddrTrig {
     /// **CH10_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch10_al2_write_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH10_AL2_WRITE_ADDR_TRIG_MASK) >> Self::CH10_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH10_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Self::CH10_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH10_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch10_al2_write_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH10_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH10_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH10_AL2_WRITE_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH10_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Self::CH10_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Self::CH10_AL2_WRITE_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -33635,14 +34723,17 @@ impl Ch10Al2WriteAddrTrigVal {
     /// Read **CH10_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch10_al2_write_addr_trig(&self) -> u32 {
-        (self.bits & Ch10Al2WriteAddrTrig::CH10_AL2_WRITE_ADDR_TRIG_MASK) >> Ch10Al2WriteAddrTrig::CH10_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.bits & Ch10Al2WriteAddrTrig::CH10_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Ch10Al2WriteAddrTrig::CH10_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH10_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch10_al2_write_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch10Al2WriteAddrTrig::CH10_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch10Al2WriteAddrTrig::CH10_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch10Al2WriteAddrTrig::CH10_AL2_WRITE_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch10Al2WriteAddrTrig::CH10_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Ch10Al2WriteAddrTrig::CH10_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Ch10Al2WriteAddrTrig::CH10_AL2_WRITE_ADDR_TRIG_MASK),
         }
     }
 }
@@ -33714,7 +34805,10 @@ impl Ch10Al3Ctrl {
     /// Write **CH10_AL3_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch10_al3_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH10_AL3_CTRL_MASK) | ((value << Self::CH10_AL3_CTRL_OFFSET) & Self::CH10_AL3_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH10_AL3_CTRL_MASK)
+                | ((value << Self::CH10_AL3_CTRL_OFFSET) & Self::CH10_AL3_CTRL_MASK)
+        });
     }
 }
 
@@ -33750,7 +34844,8 @@ impl Ch10Al3CtrlVal {
     #[inline(always)]
     pub const fn with_ch10_al3_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch10Al3Ctrl::CH10_AL3_CTRL_MASK) | ((value << Ch10Al3Ctrl::CH10_AL3_CTRL_OFFSET) & Ch10Al3Ctrl::CH10_AL3_CTRL_MASK)
+            bits: (self.bits & !Ch10Al3Ctrl::CH10_AL3_CTRL_MASK)
+                | ((value << Ch10Al3Ctrl::CH10_AL3_CTRL_OFFSET) & Ch10Al3Ctrl::CH10_AL3_CTRL_MASK),
         }
     }
 }
@@ -33816,13 +34911,17 @@ impl Ch10Al3WriteAddr {
     /// **CH10_AL3_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch10_al3_write_addr(&self) -> u32 {
-        (self.value.read_bits() & Self::CH10_AL3_WRITE_ADDR_MASK) >> Self::CH10_AL3_WRITE_ADDR_OFFSET
+        (self.value.read_bits() & Self::CH10_AL3_WRITE_ADDR_MASK)
+            >> Self::CH10_AL3_WRITE_ADDR_OFFSET
     }
 
     /// Write **CH10_AL3_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch10_al3_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH10_AL3_WRITE_ADDR_MASK) | ((value << Self::CH10_AL3_WRITE_ADDR_OFFSET) & Self::CH10_AL3_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH10_AL3_WRITE_ADDR_MASK)
+                | ((value << Self::CH10_AL3_WRITE_ADDR_OFFSET) & Self::CH10_AL3_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -33851,14 +34950,17 @@ impl Ch10Al3WriteAddrVal {
     /// Read **CH10_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch10_al3_write_addr(&self) -> u32 {
-        (self.bits & Ch10Al3WriteAddr::CH10_AL3_WRITE_ADDR_MASK) >> Ch10Al3WriteAddr::CH10_AL3_WRITE_ADDR_OFFSET
+        (self.bits & Ch10Al3WriteAddr::CH10_AL3_WRITE_ADDR_MASK)
+            >> Ch10Al3WriteAddr::CH10_AL3_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH10_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch10_al3_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch10Al3WriteAddr::CH10_AL3_WRITE_ADDR_MASK) | ((value << Ch10Al3WriteAddr::CH10_AL3_WRITE_ADDR_OFFSET) & Ch10Al3WriteAddr::CH10_AL3_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch10Al3WriteAddr::CH10_AL3_WRITE_ADDR_MASK)
+                | ((value << Ch10Al3WriteAddr::CH10_AL3_WRITE_ADDR_OFFSET)
+                    & Ch10Al3WriteAddr::CH10_AL3_WRITE_ADDR_MASK),
         }
     }
 }
@@ -33924,13 +35026,17 @@ impl Ch10Al3TransCount {
     /// **CH10_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch10_al3_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH10_AL3_TRANS_COUNT_MASK) >> Self::CH10_AL3_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH10_AL3_TRANS_COUNT_MASK)
+            >> Self::CH10_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH10_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch10_al3_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH10_AL3_TRANS_COUNT_MASK) | ((value << Self::CH10_AL3_TRANS_COUNT_OFFSET) & Self::CH10_AL3_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH10_AL3_TRANS_COUNT_MASK)
+                | ((value << Self::CH10_AL3_TRANS_COUNT_OFFSET) & Self::CH10_AL3_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -33959,14 +35065,17 @@ impl Ch10Al3TransCountVal {
     /// Read **CH10_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch10_al3_trans_count(&self) -> u32 {
-        (self.bits & Ch10Al3TransCount::CH10_AL3_TRANS_COUNT_MASK) >> Ch10Al3TransCount::CH10_AL3_TRANS_COUNT_OFFSET
+        (self.bits & Ch10Al3TransCount::CH10_AL3_TRANS_COUNT_MASK)
+            >> Ch10Al3TransCount::CH10_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH10_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch10_al3_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch10Al3TransCount::CH10_AL3_TRANS_COUNT_MASK) | ((value << Ch10Al3TransCount::CH10_AL3_TRANS_COUNT_OFFSET) & Ch10Al3TransCount::CH10_AL3_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch10Al3TransCount::CH10_AL3_TRANS_COUNT_MASK)
+                | ((value << Ch10Al3TransCount::CH10_AL3_TRANS_COUNT_OFFSET)
+                    & Ch10Al3TransCount::CH10_AL3_TRANS_COUNT_MASK),
         }
     }
 }
@@ -34034,13 +35143,18 @@ impl Ch10Al3ReadAddrTrig {
     /// **CH10_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch10_al3_read_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH10_AL3_READ_ADDR_TRIG_MASK) >> Self::CH10_AL3_READ_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH10_AL3_READ_ADDR_TRIG_MASK)
+            >> Self::CH10_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH10_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch10_al3_read_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH10_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH10_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH10_AL3_READ_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH10_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Self::CH10_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Self::CH10_AL3_READ_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -34069,14 +35183,17 @@ impl Ch10Al3ReadAddrTrigVal {
     /// Read **CH10_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch10_al3_read_addr_trig(&self) -> u32 {
-        (self.bits & Ch10Al3ReadAddrTrig::CH10_AL3_READ_ADDR_TRIG_MASK) >> Ch10Al3ReadAddrTrig::CH10_AL3_READ_ADDR_TRIG_OFFSET
+        (self.bits & Ch10Al3ReadAddrTrig::CH10_AL3_READ_ADDR_TRIG_MASK)
+            >> Ch10Al3ReadAddrTrig::CH10_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH10_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch10_al3_read_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch10Al3ReadAddrTrig::CH10_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch10Al3ReadAddrTrig::CH10_AL3_READ_ADDR_TRIG_OFFSET) & Ch10Al3ReadAddrTrig::CH10_AL3_READ_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch10Al3ReadAddrTrig::CH10_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Ch10Al3ReadAddrTrig::CH10_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Ch10Al3ReadAddrTrig::CH10_AL3_READ_ADDR_TRIG_MASK),
         }
     }
 }
@@ -34158,7 +35275,10 @@ impl Ch11ReadAddr {
     /// This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
     #[inline(always)]
     pub fn write_ch11_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH11_READ_ADDR_MASK) | ((value << Self::CH11_READ_ADDR_OFFSET) & Self::CH11_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH11_READ_ADDR_MASK)
+                | ((value << Self::CH11_READ_ADDR_OFFSET) & Self::CH11_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -34204,7 +35324,9 @@ impl Ch11ReadAddrVal {
     #[inline(always)]
     pub const fn with_ch11_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch11ReadAddr::CH11_READ_ADDR_MASK) | ((value << Ch11ReadAddr::CH11_READ_ADDR_OFFSET) & Ch11ReadAddr::CH11_READ_ADDR_MASK)
+            bits: (self.bits & !Ch11ReadAddr::CH11_READ_ADDR_MASK)
+                | ((value << Ch11ReadAddr::CH11_READ_ADDR_OFFSET)
+                    & Ch11ReadAddr::CH11_READ_ADDR_MASK),
         }
     }
 }
@@ -34286,7 +35408,10 @@ impl Ch11WriteAddr {
     /// This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
     #[inline(always)]
     pub fn write_ch11_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH11_WRITE_ADDR_MASK) | ((value << Self::CH11_WRITE_ADDR_OFFSET) & Self::CH11_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH11_WRITE_ADDR_MASK)
+                | ((value << Self::CH11_WRITE_ADDR_OFFSET) & Self::CH11_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -34332,7 +35457,9 @@ impl Ch11WriteAddrVal {
     #[inline(always)]
     pub const fn with_ch11_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch11WriteAddr::CH11_WRITE_ADDR_MASK) | ((value << Ch11WriteAddr::CH11_WRITE_ADDR_OFFSET) & Ch11WriteAddr::CH11_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch11WriteAddr::CH11_WRITE_ADDR_MASK)
+                | ((value << Ch11WriteAddr::CH11_WRITE_ADDR_OFFSET)
+                    & Ch11WriteAddr::CH11_WRITE_ADDR_MASK),
         }
     }
 }
@@ -34452,7 +35579,9 @@ impl Ch11TransCount {
     /// All other values are reserved.
     #[inline(always)]
     pub fn write_mode(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK)
+        });
     }
 
     /// **COUNT** `[27:0]` (RW)
@@ -34476,7 +35605,9 @@ impl Ch11TransCount {
     /// The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
     #[inline(always)]
     pub fn write_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK)
+        });
     }
 }
 
@@ -34540,7 +35671,8 @@ impl Ch11TransCountVal {
     #[inline(always)]
     pub const fn with_mode(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch11TransCount::MODE_MASK) | ((value << Ch11TransCount::MODE_OFFSET) & Ch11TransCount::MODE_MASK)
+            bits: (self.bits & !Ch11TransCount::MODE_MASK)
+                | ((value << Ch11TransCount::MODE_OFFSET) & Ch11TransCount::MODE_MASK),
         }
     }
 
@@ -34554,7 +35686,8 @@ impl Ch11TransCountVal {
     #[inline(always)]
     pub const fn with_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch11TransCount::COUNT_MASK) | ((value << Ch11TransCount::COUNT_OFFSET) & Ch11TransCount::COUNT_MASK)
+            bits: (self.bits & !Ch11TransCount::COUNT_MASK)
+                | ((value << Ch11TransCount::COUNT_OFFSET) & Ch11TransCount::COUNT_MASK),
         }
     }
 }
@@ -35262,7 +36395,9 @@ impl Ch11CtrlTrig {
     /// 0x0 to 0x3a -> select DREQ n as TREQ
     #[inline(always)]
     pub fn write_treq_sel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK)
+        });
     }
 
     /// **CHAIN_TO** `[16:13]` (RW)
@@ -35280,7 +36415,9 @@ impl Ch11CtrlTrig {
     /// Note this field resets to 0, so channels 1 and above will chain to channel 0 by default. Set this field to avoid this behaviour.
     #[inline(always)]
     pub fn write_chain_to(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK)
+        });
     }
 
     /// **RING_SEL** `[12]` (RW)
@@ -35319,7 +36456,9 @@ impl Ch11CtrlTrig {
     /// Ring sizes between 2 and 32768 bytes are possible. This can apply to either read or write addresses, based on value of RING_SEL.
     #[inline(always)]
     pub fn write_ring_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK)
+        });
     }
 
     /// **INCR_WRITE_REV** `[7]` (RW)
@@ -35419,7 +36558,9 @@ impl Ch11CtrlTrig {
     /// Set the size of each bus transfer (byte/halfword/word). READ_ADDR and WRITE_ADDR advance by this amount (1/2/4 bytes) with each transfer.
     #[inline(always)]
     pub fn write_data_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK)
+        });
     }
 
     /// **HIGH_PRIORITY** `[1]` (RW)
@@ -35665,7 +36806,7 @@ impl Ch11CtrlTrigVal {
                 self.bits | Ch11CtrlTrig::READ_ERROR_MASK
             } else {
                 self.bits & !Ch11CtrlTrig::READ_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -35680,7 +36821,7 @@ impl Ch11CtrlTrigVal {
                 self.bits | Ch11CtrlTrig::WRITE_ERROR_MASK
             } else {
                 self.bits & !Ch11CtrlTrig::WRITE_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -35695,7 +36836,7 @@ impl Ch11CtrlTrigVal {
                 self.bits | Ch11CtrlTrig::SNIFF_EN_MASK
             } else {
                 self.bits & !Ch11CtrlTrig::SNIFF_EN_MASK
-            }
+            },
         }
     }
 
@@ -35710,7 +36851,7 @@ impl Ch11CtrlTrigVal {
                 self.bits | Ch11CtrlTrig::BSWAP_MASK
             } else {
                 self.bits & !Ch11CtrlTrig::BSWAP_MASK
-            }
+            },
         }
     }
 
@@ -35725,7 +36866,7 @@ impl Ch11CtrlTrigVal {
                 self.bits | Ch11CtrlTrig::IRQ_QUIET_MASK
             } else {
                 self.bits & !Ch11CtrlTrig::IRQ_QUIET_MASK
-            }
+            },
         }
     }
 
@@ -35737,7 +36878,8 @@ impl Ch11CtrlTrigVal {
     #[inline(always)]
     pub const fn with_treq_sel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch11CtrlTrig::TREQ_SEL_MASK) | ((value << Ch11CtrlTrig::TREQ_SEL_OFFSET) & Ch11CtrlTrig::TREQ_SEL_MASK)
+            bits: (self.bits & !Ch11CtrlTrig::TREQ_SEL_MASK)
+                | ((value << Ch11CtrlTrig::TREQ_SEL_OFFSET) & Ch11CtrlTrig::TREQ_SEL_MASK),
         }
     }
 
@@ -35748,7 +36890,8 @@ impl Ch11CtrlTrigVal {
     #[inline(always)]
     pub const fn with_chain_to(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch11CtrlTrig::CHAIN_TO_MASK) | ((value << Ch11CtrlTrig::CHAIN_TO_OFFSET) & Ch11CtrlTrig::CHAIN_TO_MASK)
+            bits: (self.bits & !Ch11CtrlTrig::CHAIN_TO_MASK)
+                | ((value << Ch11CtrlTrig::CHAIN_TO_OFFSET) & Ch11CtrlTrig::CHAIN_TO_MASK),
         }
     }
 
@@ -35763,7 +36906,7 @@ impl Ch11CtrlTrigVal {
                 self.bits | Ch11CtrlTrig::RING_SEL_MASK
             } else {
                 self.bits & !Ch11CtrlTrig::RING_SEL_MASK
-            }
+            },
         }
     }
 
@@ -35774,7 +36917,8 @@ impl Ch11CtrlTrigVal {
     #[inline(always)]
     pub const fn with_ring_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch11CtrlTrig::RING_SIZE_MASK) | ((value << Ch11CtrlTrig::RING_SIZE_OFFSET) & Ch11CtrlTrig::RING_SIZE_MASK)
+            bits: (self.bits & !Ch11CtrlTrig::RING_SIZE_MASK)
+                | ((value << Ch11CtrlTrig::RING_SIZE_OFFSET) & Ch11CtrlTrig::RING_SIZE_MASK),
         }
     }
 
@@ -35789,7 +36933,7 @@ impl Ch11CtrlTrigVal {
                 self.bits | Ch11CtrlTrig::INCR_WRITE_REV_MASK
             } else {
                 self.bits & !Ch11CtrlTrig::INCR_WRITE_REV_MASK
-            }
+            },
         }
     }
 
@@ -35804,7 +36948,7 @@ impl Ch11CtrlTrigVal {
                 self.bits | Ch11CtrlTrig::INCR_WRITE_MASK
             } else {
                 self.bits & !Ch11CtrlTrig::INCR_WRITE_MASK
-            }
+            },
         }
     }
 
@@ -35819,7 +36963,7 @@ impl Ch11CtrlTrigVal {
                 self.bits | Ch11CtrlTrig::INCR_READ_REV_MASK
             } else {
                 self.bits & !Ch11CtrlTrig::INCR_READ_REV_MASK
-            }
+            },
         }
     }
 
@@ -35834,7 +36978,7 @@ impl Ch11CtrlTrigVal {
                 self.bits | Ch11CtrlTrig::INCR_READ_MASK
             } else {
                 self.bits & !Ch11CtrlTrig::INCR_READ_MASK
-            }
+            },
         }
     }
 
@@ -35844,7 +36988,8 @@ impl Ch11CtrlTrigVal {
     #[inline(always)]
     pub const fn with_data_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch11CtrlTrig::DATA_SIZE_MASK) | ((value << Ch11CtrlTrig::DATA_SIZE_OFFSET) & Ch11CtrlTrig::DATA_SIZE_MASK)
+            bits: (self.bits & !Ch11CtrlTrig::DATA_SIZE_MASK)
+                | ((value << Ch11CtrlTrig::DATA_SIZE_OFFSET) & Ch11CtrlTrig::DATA_SIZE_MASK),
         }
     }
 
@@ -35859,7 +37004,7 @@ impl Ch11CtrlTrigVal {
                 self.bits | Ch11CtrlTrig::HIGH_PRIORITY_MASK
             } else {
                 self.bits & !Ch11CtrlTrig::HIGH_PRIORITY_MASK
-            }
+            },
         }
     }
 
@@ -35874,7 +37019,7 @@ impl Ch11CtrlTrigVal {
                 self.bits | Ch11CtrlTrig::EN_MASK
             } else {
                 self.bits & !Ch11CtrlTrig::EN_MASK
-            }
+            },
         }
     }
 }
@@ -35946,7 +37091,10 @@ impl Ch11Al1Ctrl {
     /// Write **CH11_AL1_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch11_al1_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH11_AL1_CTRL_MASK) | ((value << Self::CH11_AL1_CTRL_OFFSET) & Self::CH11_AL1_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH11_AL1_CTRL_MASK)
+                | ((value << Self::CH11_AL1_CTRL_OFFSET) & Self::CH11_AL1_CTRL_MASK)
+        });
     }
 }
 
@@ -35982,7 +37130,8 @@ impl Ch11Al1CtrlVal {
     #[inline(always)]
     pub const fn with_ch11_al1_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch11Al1Ctrl::CH11_AL1_CTRL_MASK) | ((value << Ch11Al1Ctrl::CH11_AL1_CTRL_OFFSET) & Ch11Al1Ctrl::CH11_AL1_CTRL_MASK)
+            bits: (self.bits & !Ch11Al1Ctrl::CH11_AL1_CTRL_MASK)
+                | ((value << Ch11Al1Ctrl::CH11_AL1_CTRL_OFFSET) & Ch11Al1Ctrl::CH11_AL1_CTRL_MASK),
         }
     }
 }
@@ -36054,7 +37203,10 @@ impl Ch11Al1ReadAddr {
     /// Write **CH11_AL1_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch11_al1_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH11_AL1_READ_ADDR_MASK) | ((value << Self::CH11_AL1_READ_ADDR_OFFSET) & Self::CH11_AL1_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH11_AL1_READ_ADDR_MASK)
+                | ((value << Self::CH11_AL1_READ_ADDR_OFFSET) & Self::CH11_AL1_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -36083,14 +37235,17 @@ impl Ch11Al1ReadAddrVal {
     /// Read **CH11_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch11_al1_read_addr(&self) -> u32 {
-        (self.bits & Ch11Al1ReadAddr::CH11_AL1_READ_ADDR_MASK) >> Ch11Al1ReadAddr::CH11_AL1_READ_ADDR_OFFSET
+        (self.bits & Ch11Al1ReadAddr::CH11_AL1_READ_ADDR_MASK)
+            >> Ch11Al1ReadAddr::CH11_AL1_READ_ADDR_OFFSET
     }
 
     /// Set **CH11_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch11_al1_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch11Al1ReadAddr::CH11_AL1_READ_ADDR_MASK) | ((value << Ch11Al1ReadAddr::CH11_AL1_READ_ADDR_OFFSET) & Ch11Al1ReadAddr::CH11_AL1_READ_ADDR_MASK)
+            bits: (self.bits & !Ch11Al1ReadAddr::CH11_AL1_READ_ADDR_MASK)
+                | ((value << Ch11Al1ReadAddr::CH11_AL1_READ_ADDR_OFFSET)
+                    & Ch11Al1ReadAddr::CH11_AL1_READ_ADDR_MASK),
         }
     }
 }
@@ -36156,13 +37311,17 @@ impl Ch11Al1WriteAddr {
     /// **CH11_AL1_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch11_al1_write_addr(&self) -> u32 {
-        (self.value.read_bits() & Self::CH11_AL1_WRITE_ADDR_MASK) >> Self::CH11_AL1_WRITE_ADDR_OFFSET
+        (self.value.read_bits() & Self::CH11_AL1_WRITE_ADDR_MASK)
+            >> Self::CH11_AL1_WRITE_ADDR_OFFSET
     }
 
     /// Write **CH11_AL1_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch11_al1_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH11_AL1_WRITE_ADDR_MASK) | ((value << Self::CH11_AL1_WRITE_ADDR_OFFSET) & Self::CH11_AL1_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH11_AL1_WRITE_ADDR_MASK)
+                | ((value << Self::CH11_AL1_WRITE_ADDR_OFFSET) & Self::CH11_AL1_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -36191,14 +37350,17 @@ impl Ch11Al1WriteAddrVal {
     /// Read **CH11_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch11_al1_write_addr(&self) -> u32 {
-        (self.bits & Ch11Al1WriteAddr::CH11_AL1_WRITE_ADDR_MASK) >> Ch11Al1WriteAddr::CH11_AL1_WRITE_ADDR_OFFSET
+        (self.bits & Ch11Al1WriteAddr::CH11_AL1_WRITE_ADDR_MASK)
+            >> Ch11Al1WriteAddr::CH11_AL1_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH11_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch11_al1_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch11Al1WriteAddr::CH11_AL1_WRITE_ADDR_MASK) | ((value << Ch11Al1WriteAddr::CH11_AL1_WRITE_ADDR_OFFSET) & Ch11Al1WriteAddr::CH11_AL1_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch11Al1WriteAddr::CH11_AL1_WRITE_ADDR_MASK)
+                | ((value << Ch11Al1WriteAddr::CH11_AL1_WRITE_ADDR_OFFSET)
+                    & Ch11Al1WriteAddr::CH11_AL1_WRITE_ADDR_MASK),
         }
     }
 }
@@ -36266,13 +37428,18 @@ impl Ch11Al1TransCountTrig {
     /// **CH11_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch11_al1_trans_count_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH11_AL1_TRANS_COUNT_TRIG_MASK) >> Self::CH11_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH11_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Self::CH11_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Write **CH11_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch11_al1_trans_count_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH11_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH11_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH11_AL1_TRANS_COUNT_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH11_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Self::CH11_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Self::CH11_AL1_TRANS_COUNT_TRIG_MASK)
+        });
     }
 }
 
@@ -36301,14 +37468,17 @@ impl Ch11Al1TransCountTrigVal {
     /// Read **CH11_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch11_al1_trans_count_trig(&self) -> u32 {
-        (self.bits & Ch11Al1TransCountTrig::CH11_AL1_TRANS_COUNT_TRIG_MASK) >> Ch11Al1TransCountTrig::CH11_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.bits & Ch11Al1TransCountTrig::CH11_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Ch11Al1TransCountTrig::CH11_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Set **CH11_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch11_al1_trans_count_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch11Al1TransCountTrig::CH11_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch11Al1TransCountTrig::CH11_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch11Al1TransCountTrig::CH11_AL1_TRANS_COUNT_TRIG_MASK)
+            bits: (self.bits & !Ch11Al1TransCountTrig::CH11_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Ch11Al1TransCountTrig::CH11_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Ch11Al1TransCountTrig::CH11_AL1_TRANS_COUNT_TRIG_MASK),
         }
     }
 }
@@ -36334,7 +37504,10 @@ impl Ch11Al1TransCountTrig {
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify_val<F: FnOnce(Ch11Al1TransCountTrigVal) -> Ch11Al1TransCountTrigVal>(&self, f: F) {
+    pub fn modify_val<F: FnOnce(Ch11Al1TransCountTrigVal) -> Ch11Al1TransCountTrigVal>(
+        &self,
+        f: F,
+    ) {
         self.write_val(f(self.read_val()))
     }
 }
@@ -36380,7 +37553,10 @@ impl Ch11Al2Ctrl {
     /// Write **CH11_AL2_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch11_al2_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH11_AL2_CTRL_MASK) | ((value << Self::CH11_AL2_CTRL_OFFSET) & Self::CH11_AL2_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH11_AL2_CTRL_MASK)
+                | ((value << Self::CH11_AL2_CTRL_OFFSET) & Self::CH11_AL2_CTRL_MASK)
+        });
     }
 }
 
@@ -36416,7 +37592,8 @@ impl Ch11Al2CtrlVal {
     #[inline(always)]
     pub const fn with_ch11_al2_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch11Al2Ctrl::CH11_AL2_CTRL_MASK) | ((value << Ch11Al2Ctrl::CH11_AL2_CTRL_OFFSET) & Ch11Al2Ctrl::CH11_AL2_CTRL_MASK)
+            bits: (self.bits & !Ch11Al2Ctrl::CH11_AL2_CTRL_MASK)
+                | ((value << Ch11Al2Ctrl::CH11_AL2_CTRL_OFFSET) & Ch11Al2Ctrl::CH11_AL2_CTRL_MASK),
         }
     }
 }
@@ -36482,13 +37659,17 @@ impl Ch11Al2TransCount {
     /// **CH11_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch11_al2_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH11_AL2_TRANS_COUNT_MASK) >> Self::CH11_AL2_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH11_AL2_TRANS_COUNT_MASK)
+            >> Self::CH11_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH11_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch11_al2_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH11_AL2_TRANS_COUNT_MASK) | ((value << Self::CH11_AL2_TRANS_COUNT_OFFSET) & Self::CH11_AL2_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH11_AL2_TRANS_COUNT_MASK)
+                | ((value << Self::CH11_AL2_TRANS_COUNT_OFFSET) & Self::CH11_AL2_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -36517,14 +37698,17 @@ impl Ch11Al2TransCountVal {
     /// Read **CH11_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch11_al2_trans_count(&self) -> u32 {
-        (self.bits & Ch11Al2TransCount::CH11_AL2_TRANS_COUNT_MASK) >> Ch11Al2TransCount::CH11_AL2_TRANS_COUNT_OFFSET
+        (self.bits & Ch11Al2TransCount::CH11_AL2_TRANS_COUNT_MASK)
+            >> Ch11Al2TransCount::CH11_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH11_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch11_al2_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch11Al2TransCount::CH11_AL2_TRANS_COUNT_MASK) | ((value << Ch11Al2TransCount::CH11_AL2_TRANS_COUNT_OFFSET) & Ch11Al2TransCount::CH11_AL2_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch11Al2TransCount::CH11_AL2_TRANS_COUNT_MASK)
+                | ((value << Ch11Al2TransCount::CH11_AL2_TRANS_COUNT_OFFSET)
+                    & Ch11Al2TransCount::CH11_AL2_TRANS_COUNT_MASK),
         }
     }
 }
@@ -36596,7 +37780,10 @@ impl Ch11Al2ReadAddr {
     /// Write **CH11_AL2_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch11_al2_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH11_AL2_READ_ADDR_MASK) | ((value << Self::CH11_AL2_READ_ADDR_OFFSET) & Self::CH11_AL2_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH11_AL2_READ_ADDR_MASK)
+                | ((value << Self::CH11_AL2_READ_ADDR_OFFSET) & Self::CH11_AL2_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -36625,14 +37812,17 @@ impl Ch11Al2ReadAddrVal {
     /// Read **CH11_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch11_al2_read_addr(&self) -> u32 {
-        (self.bits & Ch11Al2ReadAddr::CH11_AL2_READ_ADDR_MASK) >> Ch11Al2ReadAddr::CH11_AL2_READ_ADDR_OFFSET
+        (self.bits & Ch11Al2ReadAddr::CH11_AL2_READ_ADDR_MASK)
+            >> Ch11Al2ReadAddr::CH11_AL2_READ_ADDR_OFFSET
     }
 
     /// Set **CH11_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch11_al2_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch11Al2ReadAddr::CH11_AL2_READ_ADDR_MASK) | ((value << Ch11Al2ReadAddr::CH11_AL2_READ_ADDR_OFFSET) & Ch11Al2ReadAddr::CH11_AL2_READ_ADDR_MASK)
+            bits: (self.bits & !Ch11Al2ReadAddr::CH11_AL2_READ_ADDR_MASK)
+                | ((value << Ch11Al2ReadAddr::CH11_AL2_READ_ADDR_OFFSET)
+                    & Ch11Al2ReadAddr::CH11_AL2_READ_ADDR_MASK),
         }
     }
 }
@@ -36700,13 +37890,18 @@ impl Ch11Al2WriteAddrTrig {
     /// **CH11_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch11_al2_write_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH11_AL2_WRITE_ADDR_TRIG_MASK) >> Self::CH11_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH11_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Self::CH11_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH11_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch11_al2_write_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH11_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH11_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH11_AL2_WRITE_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH11_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Self::CH11_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Self::CH11_AL2_WRITE_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -36735,14 +37930,17 @@ impl Ch11Al2WriteAddrTrigVal {
     /// Read **CH11_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch11_al2_write_addr_trig(&self) -> u32 {
-        (self.bits & Ch11Al2WriteAddrTrig::CH11_AL2_WRITE_ADDR_TRIG_MASK) >> Ch11Al2WriteAddrTrig::CH11_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.bits & Ch11Al2WriteAddrTrig::CH11_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Ch11Al2WriteAddrTrig::CH11_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH11_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch11_al2_write_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch11Al2WriteAddrTrig::CH11_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch11Al2WriteAddrTrig::CH11_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch11Al2WriteAddrTrig::CH11_AL2_WRITE_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch11Al2WriteAddrTrig::CH11_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Ch11Al2WriteAddrTrig::CH11_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Ch11Al2WriteAddrTrig::CH11_AL2_WRITE_ADDR_TRIG_MASK),
         }
     }
 }
@@ -36814,7 +38012,10 @@ impl Ch11Al3Ctrl {
     /// Write **CH11_AL3_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch11_al3_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH11_AL3_CTRL_MASK) | ((value << Self::CH11_AL3_CTRL_OFFSET) & Self::CH11_AL3_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH11_AL3_CTRL_MASK)
+                | ((value << Self::CH11_AL3_CTRL_OFFSET) & Self::CH11_AL3_CTRL_MASK)
+        });
     }
 }
 
@@ -36850,7 +38051,8 @@ impl Ch11Al3CtrlVal {
     #[inline(always)]
     pub const fn with_ch11_al3_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch11Al3Ctrl::CH11_AL3_CTRL_MASK) | ((value << Ch11Al3Ctrl::CH11_AL3_CTRL_OFFSET) & Ch11Al3Ctrl::CH11_AL3_CTRL_MASK)
+            bits: (self.bits & !Ch11Al3Ctrl::CH11_AL3_CTRL_MASK)
+                | ((value << Ch11Al3Ctrl::CH11_AL3_CTRL_OFFSET) & Ch11Al3Ctrl::CH11_AL3_CTRL_MASK),
         }
     }
 }
@@ -36916,13 +38118,17 @@ impl Ch11Al3WriteAddr {
     /// **CH11_AL3_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch11_al3_write_addr(&self) -> u32 {
-        (self.value.read_bits() & Self::CH11_AL3_WRITE_ADDR_MASK) >> Self::CH11_AL3_WRITE_ADDR_OFFSET
+        (self.value.read_bits() & Self::CH11_AL3_WRITE_ADDR_MASK)
+            >> Self::CH11_AL3_WRITE_ADDR_OFFSET
     }
 
     /// Write **CH11_AL3_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch11_al3_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH11_AL3_WRITE_ADDR_MASK) | ((value << Self::CH11_AL3_WRITE_ADDR_OFFSET) & Self::CH11_AL3_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH11_AL3_WRITE_ADDR_MASK)
+                | ((value << Self::CH11_AL3_WRITE_ADDR_OFFSET) & Self::CH11_AL3_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -36951,14 +38157,17 @@ impl Ch11Al3WriteAddrVal {
     /// Read **CH11_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch11_al3_write_addr(&self) -> u32 {
-        (self.bits & Ch11Al3WriteAddr::CH11_AL3_WRITE_ADDR_MASK) >> Ch11Al3WriteAddr::CH11_AL3_WRITE_ADDR_OFFSET
+        (self.bits & Ch11Al3WriteAddr::CH11_AL3_WRITE_ADDR_MASK)
+            >> Ch11Al3WriteAddr::CH11_AL3_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH11_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch11_al3_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch11Al3WriteAddr::CH11_AL3_WRITE_ADDR_MASK) | ((value << Ch11Al3WriteAddr::CH11_AL3_WRITE_ADDR_OFFSET) & Ch11Al3WriteAddr::CH11_AL3_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch11Al3WriteAddr::CH11_AL3_WRITE_ADDR_MASK)
+                | ((value << Ch11Al3WriteAddr::CH11_AL3_WRITE_ADDR_OFFSET)
+                    & Ch11Al3WriteAddr::CH11_AL3_WRITE_ADDR_MASK),
         }
     }
 }
@@ -37024,13 +38233,17 @@ impl Ch11Al3TransCount {
     /// **CH11_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch11_al3_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH11_AL3_TRANS_COUNT_MASK) >> Self::CH11_AL3_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH11_AL3_TRANS_COUNT_MASK)
+            >> Self::CH11_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH11_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch11_al3_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH11_AL3_TRANS_COUNT_MASK) | ((value << Self::CH11_AL3_TRANS_COUNT_OFFSET) & Self::CH11_AL3_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH11_AL3_TRANS_COUNT_MASK)
+                | ((value << Self::CH11_AL3_TRANS_COUNT_OFFSET) & Self::CH11_AL3_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -37059,14 +38272,17 @@ impl Ch11Al3TransCountVal {
     /// Read **CH11_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch11_al3_trans_count(&self) -> u32 {
-        (self.bits & Ch11Al3TransCount::CH11_AL3_TRANS_COUNT_MASK) >> Ch11Al3TransCount::CH11_AL3_TRANS_COUNT_OFFSET
+        (self.bits & Ch11Al3TransCount::CH11_AL3_TRANS_COUNT_MASK)
+            >> Ch11Al3TransCount::CH11_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH11_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch11_al3_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch11Al3TransCount::CH11_AL3_TRANS_COUNT_MASK) | ((value << Ch11Al3TransCount::CH11_AL3_TRANS_COUNT_OFFSET) & Ch11Al3TransCount::CH11_AL3_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch11Al3TransCount::CH11_AL3_TRANS_COUNT_MASK)
+                | ((value << Ch11Al3TransCount::CH11_AL3_TRANS_COUNT_OFFSET)
+                    & Ch11Al3TransCount::CH11_AL3_TRANS_COUNT_MASK),
         }
     }
 }
@@ -37134,13 +38350,18 @@ impl Ch11Al3ReadAddrTrig {
     /// **CH11_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch11_al3_read_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH11_AL3_READ_ADDR_TRIG_MASK) >> Self::CH11_AL3_READ_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH11_AL3_READ_ADDR_TRIG_MASK)
+            >> Self::CH11_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH11_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch11_al3_read_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH11_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH11_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH11_AL3_READ_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH11_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Self::CH11_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Self::CH11_AL3_READ_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -37169,14 +38390,17 @@ impl Ch11Al3ReadAddrTrigVal {
     /// Read **CH11_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch11_al3_read_addr_trig(&self) -> u32 {
-        (self.bits & Ch11Al3ReadAddrTrig::CH11_AL3_READ_ADDR_TRIG_MASK) >> Ch11Al3ReadAddrTrig::CH11_AL3_READ_ADDR_TRIG_OFFSET
+        (self.bits & Ch11Al3ReadAddrTrig::CH11_AL3_READ_ADDR_TRIG_MASK)
+            >> Ch11Al3ReadAddrTrig::CH11_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH11_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch11_al3_read_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch11Al3ReadAddrTrig::CH11_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch11Al3ReadAddrTrig::CH11_AL3_READ_ADDR_TRIG_OFFSET) & Ch11Al3ReadAddrTrig::CH11_AL3_READ_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch11Al3ReadAddrTrig::CH11_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Ch11Al3ReadAddrTrig::CH11_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Ch11Al3ReadAddrTrig::CH11_AL3_READ_ADDR_TRIG_MASK),
         }
     }
 }
@@ -37258,7 +38482,10 @@ impl Ch12ReadAddr {
     /// This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
     #[inline(always)]
     pub fn write_ch12_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH12_READ_ADDR_MASK) | ((value << Self::CH12_READ_ADDR_OFFSET) & Self::CH12_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH12_READ_ADDR_MASK)
+                | ((value << Self::CH12_READ_ADDR_OFFSET) & Self::CH12_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -37304,7 +38531,9 @@ impl Ch12ReadAddrVal {
     #[inline(always)]
     pub const fn with_ch12_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch12ReadAddr::CH12_READ_ADDR_MASK) | ((value << Ch12ReadAddr::CH12_READ_ADDR_OFFSET) & Ch12ReadAddr::CH12_READ_ADDR_MASK)
+            bits: (self.bits & !Ch12ReadAddr::CH12_READ_ADDR_MASK)
+                | ((value << Ch12ReadAddr::CH12_READ_ADDR_OFFSET)
+                    & Ch12ReadAddr::CH12_READ_ADDR_MASK),
         }
     }
 }
@@ -37386,7 +38615,10 @@ impl Ch12WriteAddr {
     /// This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
     #[inline(always)]
     pub fn write_ch12_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH12_WRITE_ADDR_MASK) | ((value << Self::CH12_WRITE_ADDR_OFFSET) & Self::CH12_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH12_WRITE_ADDR_MASK)
+                | ((value << Self::CH12_WRITE_ADDR_OFFSET) & Self::CH12_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -37432,7 +38664,9 @@ impl Ch12WriteAddrVal {
     #[inline(always)]
     pub const fn with_ch12_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch12WriteAddr::CH12_WRITE_ADDR_MASK) | ((value << Ch12WriteAddr::CH12_WRITE_ADDR_OFFSET) & Ch12WriteAddr::CH12_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch12WriteAddr::CH12_WRITE_ADDR_MASK)
+                | ((value << Ch12WriteAddr::CH12_WRITE_ADDR_OFFSET)
+                    & Ch12WriteAddr::CH12_WRITE_ADDR_MASK),
         }
     }
 }
@@ -37552,7 +38786,9 @@ impl Ch12TransCount {
     /// All other values are reserved.
     #[inline(always)]
     pub fn write_mode(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK)
+        });
     }
 
     /// **COUNT** `[27:0]` (RW)
@@ -37576,7 +38812,9 @@ impl Ch12TransCount {
     /// The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
     #[inline(always)]
     pub fn write_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK)
+        });
     }
 }
 
@@ -37640,7 +38878,8 @@ impl Ch12TransCountVal {
     #[inline(always)]
     pub const fn with_mode(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch12TransCount::MODE_MASK) | ((value << Ch12TransCount::MODE_OFFSET) & Ch12TransCount::MODE_MASK)
+            bits: (self.bits & !Ch12TransCount::MODE_MASK)
+                | ((value << Ch12TransCount::MODE_OFFSET) & Ch12TransCount::MODE_MASK),
         }
     }
 
@@ -37654,7 +38893,8 @@ impl Ch12TransCountVal {
     #[inline(always)]
     pub const fn with_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch12TransCount::COUNT_MASK) | ((value << Ch12TransCount::COUNT_OFFSET) & Ch12TransCount::COUNT_MASK)
+            bits: (self.bits & !Ch12TransCount::COUNT_MASK)
+                | ((value << Ch12TransCount::COUNT_OFFSET) & Ch12TransCount::COUNT_MASK),
         }
     }
 }
@@ -38362,7 +39602,9 @@ impl Ch12CtrlTrig {
     /// 0x0 to 0x3a -> select DREQ n as TREQ
     #[inline(always)]
     pub fn write_treq_sel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK)
+        });
     }
 
     /// **CHAIN_TO** `[16:13]` (RW)
@@ -38380,7 +39622,9 @@ impl Ch12CtrlTrig {
     /// Note this field resets to 0, so channels 1 and above will chain to channel 0 by default. Set this field to avoid this behaviour.
     #[inline(always)]
     pub fn write_chain_to(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK)
+        });
     }
 
     /// **RING_SEL** `[12]` (RW)
@@ -38419,7 +39663,9 @@ impl Ch12CtrlTrig {
     /// Ring sizes between 2 and 32768 bytes are possible. This can apply to either read or write addresses, based on value of RING_SEL.
     #[inline(always)]
     pub fn write_ring_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK)
+        });
     }
 
     /// **INCR_WRITE_REV** `[7]` (RW)
@@ -38519,7 +39765,9 @@ impl Ch12CtrlTrig {
     /// Set the size of each bus transfer (byte/halfword/word). READ_ADDR and WRITE_ADDR advance by this amount (1/2/4 bytes) with each transfer.
     #[inline(always)]
     pub fn write_data_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK)
+        });
     }
 
     /// **HIGH_PRIORITY** `[1]` (RW)
@@ -38765,7 +40013,7 @@ impl Ch12CtrlTrigVal {
                 self.bits | Ch12CtrlTrig::READ_ERROR_MASK
             } else {
                 self.bits & !Ch12CtrlTrig::READ_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -38780,7 +40028,7 @@ impl Ch12CtrlTrigVal {
                 self.bits | Ch12CtrlTrig::WRITE_ERROR_MASK
             } else {
                 self.bits & !Ch12CtrlTrig::WRITE_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -38795,7 +40043,7 @@ impl Ch12CtrlTrigVal {
                 self.bits | Ch12CtrlTrig::SNIFF_EN_MASK
             } else {
                 self.bits & !Ch12CtrlTrig::SNIFF_EN_MASK
-            }
+            },
         }
     }
 
@@ -38810,7 +40058,7 @@ impl Ch12CtrlTrigVal {
                 self.bits | Ch12CtrlTrig::BSWAP_MASK
             } else {
                 self.bits & !Ch12CtrlTrig::BSWAP_MASK
-            }
+            },
         }
     }
 
@@ -38825,7 +40073,7 @@ impl Ch12CtrlTrigVal {
                 self.bits | Ch12CtrlTrig::IRQ_QUIET_MASK
             } else {
                 self.bits & !Ch12CtrlTrig::IRQ_QUIET_MASK
-            }
+            },
         }
     }
 
@@ -38837,7 +40085,8 @@ impl Ch12CtrlTrigVal {
     #[inline(always)]
     pub const fn with_treq_sel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch12CtrlTrig::TREQ_SEL_MASK) | ((value << Ch12CtrlTrig::TREQ_SEL_OFFSET) & Ch12CtrlTrig::TREQ_SEL_MASK)
+            bits: (self.bits & !Ch12CtrlTrig::TREQ_SEL_MASK)
+                | ((value << Ch12CtrlTrig::TREQ_SEL_OFFSET) & Ch12CtrlTrig::TREQ_SEL_MASK),
         }
     }
 
@@ -38848,7 +40097,8 @@ impl Ch12CtrlTrigVal {
     #[inline(always)]
     pub const fn with_chain_to(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch12CtrlTrig::CHAIN_TO_MASK) | ((value << Ch12CtrlTrig::CHAIN_TO_OFFSET) & Ch12CtrlTrig::CHAIN_TO_MASK)
+            bits: (self.bits & !Ch12CtrlTrig::CHAIN_TO_MASK)
+                | ((value << Ch12CtrlTrig::CHAIN_TO_OFFSET) & Ch12CtrlTrig::CHAIN_TO_MASK),
         }
     }
 
@@ -38863,7 +40113,7 @@ impl Ch12CtrlTrigVal {
                 self.bits | Ch12CtrlTrig::RING_SEL_MASK
             } else {
                 self.bits & !Ch12CtrlTrig::RING_SEL_MASK
-            }
+            },
         }
     }
 
@@ -38874,7 +40124,8 @@ impl Ch12CtrlTrigVal {
     #[inline(always)]
     pub const fn with_ring_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch12CtrlTrig::RING_SIZE_MASK) | ((value << Ch12CtrlTrig::RING_SIZE_OFFSET) & Ch12CtrlTrig::RING_SIZE_MASK)
+            bits: (self.bits & !Ch12CtrlTrig::RING_SIZE_MASK)
+                | ((value << Ch12CtrlTrig::RING_SIZE_OFFSET) & Ch12CtrlTrig::RING_SIZE_MASK),
         }
     }
 
@@ -38889,7 +40140,7 @@ impl Ch12CtrlTrigVal {
                 self.bits | Ch12CtrlTrig::INCR_WRITE_REV_MASK
             } else {
                 self.bits & !Ch12CtrlTrig::INCR_WRITE_REV_MASK
-            }
+            },
         }
     }
 
@@ -38904,7 +40155,7 @@ impl Ch12CtrlTrigVal {
                 self.bits | Ch12CtrlTrig::INCR_WRITE_MASK
             } else {
                 self.bits & !Ch12CtrlTrig::INCR_WRITE_MASK
-            }
+            },
         }
     }
 
@@ -38919,7 +40170,7 @@ impl Ch12CtrlTrigVal {
                 self.bits | Ch12CtrlTrig::INCR_READ_REV_MASK
             } else {
                 self.bits & !Ch12CtrlTrig::INCR_READ_REV_MASK
-            }
+            },
         }
     }
 
@@ -38934,7 +40185,7 @@ impl Ch12CtrlTrigVal {
                 self.bits | Ch12CtrlTrig::INCR_READ_MASK
             } else {
                 self.bits & !Ch12CtrlTrig::INCR_READ_MASK
-            }
+            },
         }
     }
 
@@ -38944,7 +40195,8 @@ impl Ch12CtrlTrigVal {
     #[inline(always)]
     pub const fn with_data_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch12CtrlTrig::DATA_SIZE_MASK) | ((value << Ch12CtrlTrig::DATA_SIZE_OFFSET) & Ch12CtrlTrig::DATA_SIZE_MASK)
+            bits: (self.bits & !Ch12CtrlTrig::DATA_SIZE_MASK)
+                | ((value << Ch12CtrlTrig::DATA_SIZE_OFFSET) & Ch12CtrlTrig::DATA_SIZE_MASK),
         }
     }
 
@@ -38959,7 +40211,7 @@ impl Ch12CtrlTrigVal {
                 self.bits | Ch12CtrlTrig::HIGH_PRIORITY_MASK
             } else {
                 self.bits & !Ch12CtrlTrig::HIGH_PRIORITY_MASK
-            }
+            },
         }
     }
 
@@ -38974,7 +40226,7 @@ impl Ch12CtrlTrigVal {
                 self.bits | Ch12CtrlTrig::EN_MASK
             } else {
                 self.bits & !Ch12CtrlTrig::EN_MASK
-            }
+            },
         }
     }
 }
@@ -39046,7 +40298,10 @@ impl Ch12Al1Ctrl {
     /// Write **CH12_AL1_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch12_al1_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH12_AL1_CTRL_MASK) | ((value << Self::CH12_AL1_CTRL_OFFSET) & Self::CH12_AL1_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH12_AL1_CTRL_MASK)
+                | ((value << Self::CH12_AL1_CTRL_OFFSET) & Self::CH12_AL1_CTRL_MASK)
+        });
     }
 }
 
@@ -39082,7 +40337,8 @@ impl Ch12Al1CtrlVal {
     #[inline(always)]
     pub const fn with_ch12_al1_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch12Al1Ctrl::CH12_AL1_CTRL_MASK) | ((value << Ch12Al1Ctrl::CH12_AL1_CTRL_OFFSET) & Ch12Al1Ctrl::CH12_AL1_CTRL_MASK)
+            bits: (self.bits & !Ch12Al1Ctrl::CH12_AL1_CTRL_MASK)
+                | ((value << Ch12Al1Ctrl::CH12_AL1_CTRL_OFFSET) & Ch12Al1Ctrl::CH12_AL1_CTRL_MASK),
         }
     }
 }
@@ -39154,7 +40410,10 @@ impl Ch12Al1ReadAddr {
     /// Write **CH12_AL1_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch12_al1_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH12_AL1_READ_ADDR_MASK) | ((value << Self::CH12_AL1_READ_ADDR_OFFSET) & Self::CH12_AL1_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH12_AL1_READ_ADDR_MASK)
+                | ((value << Self::CH12_AL1_READ_ADDR_OFFSET) & Self::CH12_AL1_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -39183,14 +40442,17 @@ impl Ch12Al1ReadAddrVal {
     /// Read **CH12_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch12_al1_read_addr(&self) -> u32 {
-        (self.bits & Ch12Al1ReadAddr::CH12_AL1_READ_ADDR_MASK) >> Ch12Al1ReadAddr::CH12_AL1_READ_ADDR_OFFSET
+        (self.bits & Ch12Al1ReadAddr::CH12_AL1_READ_ADDR_MASK)
+            >> Ch12Al1ReadAddr::CH12_AL1_READ_ADDR_OFFSET
     }
 
     /// Set **CH12_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch12_al1_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch12Al1ReadAddr::CH12_AL1_READ_ADDR_MASK) | ((value << Ch12Al1ReadAddr::CH12_AL1_READ_ADDR_OFFSET) & Ch12Al1ReadAddr::CH12_AL1_READ_ADDR_MASK)
+            bits: (self.bits & !Ch12Al1ReadAddr::CH12_AL1_READ_ADDR_MASK)
+                | ((value << Ch12Al1ReadAddr::CH12_AL1_READ_ADDR_OFFSET)
+                    & Ch12Al1ReadAddr::CH12_AL1_READ_ADDR_MASK),
         }
     }
 }
@@ -39256,13 +40518,17 @@ impl Ch12Al1WriteAddr {
     /// **CH12_AL1_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch12_al1_write_addr(&self) -> u32 {
-        (self.value.read_bits() & Self::CH12_AL1_WRITE_ADDR_MASK) >> Self::CH12_AL1_WRITE_ADDR_OFFSET
+        (self.value.read_bits() & Self::CH12_AL1_WRITE_ADDR_MASK)
+            >> Self::CH12_AL1_WRITE_ADDR_OFFSET
     }
 
     /// Write **CH12_AL1_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch12_al1_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH12_AL1_WRITE_ADDR_MASK) | ((value << Self::CH12_AL1_WRITE_ADDR_OFFSET) & Self::CH12_AL1_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH12_AL1_WRITE_ADDR_MASK)
+                | ((value << Self::CH12_AL1_WRITE_ADDR_OFFSET) & Self::CH12_AL1_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -39291,14 +40557,17 @@ impl Ch12Al1WriteAddrVal {
     /// Read **CH12_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch12_al1_write_addr(&self) -> u32 {
-        (self.bits & Ch12Al1WriteAddr::CH12_AL1_WRITE_ADDR_MASK) >> Ch12Al1WriteAddr::CH12_AL1_WRITE_ADDR_OFFSET
+        (self.bits & Ch12Al1WriteAddr::CH12_AL1_WRITE_ADDR_MASK)
+            >> Ch12Al1WriteAddr::CH12_AL1_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH12_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch12_al1_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch12Al1WriteAddr::CH12_AL1_WRITE_ADDR_MASK) | ((value << Ch12Al1WriteAddr::CH12_AL1_WRITE_ADDR_OFFSET) & Ch12Al1WriteAddr::CH12_AL1_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch12Al1WriteAddr::CH12_AL1_WRITE_ADDR_MASK)
+                | ((value << Ch12Al1WriteAddr::CH12_AL1_WRITE_ADDR_OFFSET)
+                    & Ch12Al1WriteAddr::CH12_AL1_WRITE_ADDR_MASK),
         }
     }
 }
@@ -39366,13 +40635,18 @@ impl Ch12Al1TransCountTrig {
     /// **CH12_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch12_al1_trans_count_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH12_AL1_TRANS_COUNT_TRIG_MASK) >> Self::CH12_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH12_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Self::CH12_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Write **CH12_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch12_al1_trans_count_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH12_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH12_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH12_AL1_TRANS_COUNT_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH12_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Self::CH12_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Self::CH12_AL1_TRANS_COUNT_TRIG_MASK)
+        });
     }
 }
 
@@ -39401,14 +40675,17 @@ impl Ch12Al1TransCountTrigVal {
     /// Read **CH12_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch12_al1_trans_count_trig(&self) -> u32 {
-        (self.bits & Ch12Al1TransCountTrig::CH12_AL1_TRANS_COUNT_TRIG_MASK) >> Ch12Al1TransCountTrig::CH12_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.bits & Ch12Al1TransCountTrig::CH12_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Ch12Al1TransCountTrig::CH12_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Set **CH12_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch12_al1_trans_count_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch12Al1TransCountTrig::CH12_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch12Al1TransCountTrig::CH12_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch12Al1TransCountTrig::CH12_AL1_TRANS_COUNT_TRIG_MASK)
+            bits: (self.bits & !Ch12Al1TransCountTrig::CH12_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Ch12Al1TransCountTrig::CH12_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Ch12Al1TransCountTrig::CH12_AL1_TRANS_COUNT_TRIG_MASK),
         }
     }
 }
@@ -39434,7 +40711,10 @@ impl Ch12Al1TransCountTrig {
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify_val<F: FnOnce(Ch12Al1TransCountTrigVal) -> Ch12Al1TransCountTrigVal>(&self, f: F) {
+    pub fn modify_val<F: FnOnce(Ch12Al1TransCountTrigVal) -> Ch12Al1TransCountTrigVal>(
+        &self,
+        f: F,
+    ) {
         self.write_val(f(self.read_val()))
     }
 }
@@ -39480,7 +40760,10 @@ impl Ch12Al2Ctrl {
     /// Write **CH12_AL2_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch12_al2_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH12_AL2_CTRL_MASK) | ((value << Self::CH12_AL2_CTRL_OFFSET) & Self::CH12_AL2_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH12_AL2_CTRL_MASK)
+                | ((value << Self::CH12_AL2_CTRL_OFFSET) & Self::CH12_AL2_CTRL_MASK)
+        });
     }
 }
 
@@ -39516,7 +40799,8 @@ impl Ch12Al2CtrlVal {
     #[inline(always)]
     pub const fn with_ch12_al2_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch12Al2Ctrl::CH12_AL2_CTRL_MASK) | ((value << Ch12Al2Ctrl::CH12_AL2_CTRL_OFFSET) & Ch12Al2Ctrl::CH12_AL2_CTRL_MASK)
+            bits: (self.bits & !Ch12Al2Ctrl::CH12_AL2_CTRL_MASK)
+                | ((value << Ch12Al2Ctrl::CH12_AL2_CTRL_OFFSET) & Ch12Al2Ctrl::CH12_AL2_CTRL_MASK),
         }
     }
 }
@@ -39582,13 +40866,17 @@ impl Ch12Al2TransCount {
     /// **CH12_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch12_al2_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH12_AL2_TRANS_COUNT_MASK) >> Self::CH12_AL2_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH12_AL2_TRANS_COUNT_MASK)
+            >> Self::CH12_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH12_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch12_al2_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH12_AL2_TRANS_COUNT_MASK) | ((value << Self::CH12_AL2_TRANS_COUNT_OFFSET) & Self::CH12_AL2_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH12_AL2_TRANS_COUNT_MASK)
+                | ((value << Self::CH12_AL2_TRANS_COUNT_OFFSET) & Self::CH12_AL2_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -39617,14 +40905,17 @@ impl Ch12Al2TransCountVal {
     /// Read **CH12_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch12_al2_trans_count(&self) -> u32 {
-        (self.bits & Ch12Al2TransCount::CH12_AL2_TRANS_COUNT_MASK) >> Ch12Al2TransCount::CH12_AL2_TRANS_COUNT_OFFSET
+        (self.bits & Ch12Al2TransCount::CH12_AL2_TRANS_COUNT_MASK)
+            >> Ch12Al2TransCount::CH12_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH12_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch12_al2_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch12Al2TransCount::CH12_AL2_TRANS_COUNT_MASK) | ((value << Ch12Al2TransCount::CH12_AL2_TRANS_COUNT_OFFSET) & Ch12Al2TransCount::CH12_AL2_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch12Al2TransCount::CH12_AL2_TRANS_COUNT_MASK)
+                | ((value << Ch12Al2TransCount::CH12_AL2_TRANS_COUNT_OFFSET)
+                    & Ch12Al2TransCount::CH12_AL2_TRANS_COUNT_MASK),
         }
     }
 }
@@ -39696,7 +40987,10 @@ impl Ch12Al2ReadAddr {
     /// Write **CH12_AL2_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch12_al2_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH12_AL2_READ_ADDR_MASK) | ((value << Self::CH12_AL2_READ_ADDR_OFFSET) & Self::CH12_AL2_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH12_AL2_READ_ADDR_MASK)
+                | ((value << Self::CH12_AL2_READ_ADDR_OFFSET) & Self::CH12_AL2_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -39725,14 +41019,17 @@ impl Ch12Al2ReadAddrVal {
     /// Read **CH12_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch12_al2_read_addr(&self) -> u32 {
-        (self.bits & Ch12Al2ReadAddr::CH12_AL2_READ_ADDR_MASK) >> Ch12Al2ReadAddr::CH12_AL2_READ_ADDR_OFFSET
+        (self.bits & Ch12Al2ReadAddr::CH12_AL2_READ_ADDR_MASK)
+            >> Ch12Al2ReadAddr::CH12_AL2_READ_ADDR_OFFSET
     }
 
     /// Set **CH12_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch12_al2_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch12Al2ReadAddr::CH12_AL2_READ_ADDR_MASK) | ((value << Ch12Al2ReadAddr::CH12_AL2_READ_ADDR_OFFSET) & Ch12Al2ReadAddr::CH12_AL2_READ_ADDR_MASK)
+            bits: (self.bits & !Ch12Al2ReadAddr::CH12_AL2_READ_ADDR_MASK)
+                | ((value << Ch12Al2ReadAddr::CH12_AL2_READ_ADDR_OFFSET)
+                    & Ch12Al2ReadAddr::CH12_AL2_READ_ADDR_MASK),
         }
     }
 }
@@ -39800,13 +41097,18 @@ impl Ch12Al2WriteAddrTrig {
     /// **CH12_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch12_al2_write_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH12_AL2_WRITE_ADDR_TRIG_MASK) >> Self::CH12_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH12_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Self::CH12_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH12_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch12_al2_write_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH12_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH12_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH12_AL2_WRITE_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH12_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Self::CH12_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Self::CH12_AL2_WRITE_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -39835,14 +41137,17 @@ impl Ch12Al2WriteAddrTrigVal {
     /// Read **CH12_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch12_al2_write_addr_trig(&self) -> u32 {
-        (self.bits & Ch12Al2WriteAddrTrig::CH12_AL2_WRITE_ADDR_TRIG_MASK) >> Ch12Al2WriteAddrTrig::CH12_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.bits & Ch12Al2WriteAddrTrig::CH12_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Ch12Al2WriteAddrTrig::CH12_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH12_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch12_al2_write_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch12Al2WriteAddrTrig::CH12_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch12Al2WriteAddrTrig::CH12_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch12Al2WriteAddrTrig::CH12_AL2_WRITE_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch12Al2WriteAddrTrig::CH12_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Ch12Al2WriteAddrTrig::CH12_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Ch12Al2WriteAddrTrig::CH12_AL2_WRITE_ADDR_TRIG_MASK),
         }
     }
 }
@@ -39914,7 +41219,10 @@ impl Ch12Al3Ctrl {
     /// Write **CH12_AL3_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch12_al3_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH12_AL3_CTRL_MASK) | ((value << Self::CH12_AL3_CTRL_OFFSET) & Self::CH12_AL3_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH12_AL3_CTRL_MASK)
+                | ((value << Self::CH12_AL3_CTRL_OFFSET) & Self::CH12_AL3_CTRL_MASK)
+        });
     }
 }
 
@@ -39950,7 +41258,8 @@ impl Ch12Al3CtrlVal {
     #[inline(always)]
     pub const fn with_ch12_al3_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch12Al3Ctrl::CH12_AL3_CTRL_MASK) | ((value << Ch12Al3Ctrl::CH12_AL3_CTRL_OFFSET) & Ch12Al3Ctrl::CH12_AL3_CTRL_MASK)
+            bits: (self.bits & !Ch12Al3Ctrl::CH12_AL3_CTRL_MASK)
+                | ((value << Ch12Al3Ctrl::CH12_AL3_CTRL_OFFSET) & Ch12Al3Ctrl::CH12_AL3_CTRL_MASK),
         }
     }
 }
@@ -40016,13 +41325,17 @@ impl Ch12Al3WriteAddr {
     /// **CH12_AL3_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch12_al3_write_addr(&self) -> u32 {
-        (self.value.read_bits() & Self::CH12_AL3_WRITE_ADDR_MASK) >> Self::CH12_AL3_WRITE_ADDR_OFFSET
+        (self.value.read_bits() & Self::CH12_AL3_WRITE_ADDR_MASK)
+            >> Self::CH12_AL3_WRITE_ADDR_OFFSET
     }
 
     /// Write **CH12_AL3_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch12_al3_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH12_AL3_WRITE_ADDR_MASK) | ((value << Self::CH12_AL3_WRITE_ADDR_OFFSET) & Self::CH12_AL3_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH12_AL3_WRITE_ADDR_MASK)
+                | ((value << Self::CH12_AL3_WRITE_ADDR_OFFSET) & Self::CH12_AL3_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -40051,14 +41364,17 @@ impl Ch12Al3WriteAddrVal {
     /// Read **CH12_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch12_al3_write_addr(&self) -> u32 {
-        (self.bits & Ch12Al3WriteAddr::CH12_AL3_WRITE_ADDR_MASK) >> Ch12Al3WriteAddr::CH12_AL3_WRITE_ADDR_OFFSET
+        (self.bits & Ch12Al3WriteAddr::CH12_AL3_WRITE_ADDR_MASK)
+            >> Ch12Al3WriteAddr::CH12_AL3_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH12_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch12_al3_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch12Al3WriteAddr::CH12_AL3_WRITE_ADDR_MASK) | ((value << Ch12Al3WriteAddr::CH12_AL3_WRITE_ADDR_OFFSET) & Ch12Al3WriteAddr::CH12_AL3_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch12Al3WriteAddr::CH12_AL3_WRITE_ADDR_MASK)
+                | ((value << Ch12Al3WriteAddr::CH12_AL3_WRITE_ADDR_OFFSET)
+                    & Ch12Al3WriteAddr::CH12_AL3_WRITE_ADDR_MASK),
         }
     }
 }
@@ -40124,13 +41440,17 @@ impl Ch12Al3TransCount {
     /// **CH12_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch12_al3_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH12_AL3_TRANS_COUNT_MASK) >> Self::CH12_AL3_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH12_AL3_TRANS_COUNT_MASK)
+            >> Self::CH12_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH12_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch12_al3_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH12_AL3_TRANS_COUNT_MASK) | ((value << Self::CH12_AL3_TRANS_COUNT_OFFSET) & Self::CH12_AL3_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH12_AL3_TRANS_COUNT_MASK)
+                | ((value << Self::CH12_AL3_TRANS_COUNT_OFFSET) & Self::CH12_AL3_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -40159,14 +41479,17 @@ impl Ch12Al3TransCountVal {
     /// Read **CH12_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch12_al3_trans_count(&self) -> u32 {
-        (self.bits & Ch12Al3TransCount::CH12_AL3_TRANS_COUNT_MASK) >> Ch12Al3TransCount::CH12_AL3_TRANS_COUNT_OFFSET
+        (self.bits & Ch12Al3TransCount::CH12_AL3_TRANS_COUNT_MASK)
+            >> Ch12Al3TransCount::CH12_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH12_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch12_al3_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch12Al3TransCount::CH12_AL3_TRANS_COUNT_MASK) | ((value << Ch12Al3TransCount::CH12_AL3_TRANS_COUNT_OFFSET) & Ch12Al3TransCount::CH12_AL3_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch12Al3TransCount::CH12_AL3_TRANS_COUNT_MASK)
+                | ((value << Ch12Al3TransCount::CH12_AL3_TRANS_COUNT_OFFSET)
+                    & Ch12Al3TransCount::CH12_AL3_TRANS_COUNT_MASK),
         }
     }
 }
@@ -40234,13 +41557,18 @@ impl Ch12Al3ReadAddrTrig {
     /// **CH12_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch12_al3_read_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH12_AL3_READ_ADDR_TRIG_MASK) >> Self::CH12_AL3_READ_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH12_AL3_READ_ADDR_TRIG_MASK)
+            >> Self::CH12_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH12_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch12_al3_read_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH12_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH12_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH12_AL3_READ_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH12_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Self::CH12_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Self::CH12_AL3_READ_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -40269,14 +41597,17 @@ impl Ch12Al3ReadAddrTrigVal {
     /// Read **CH12_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch12_al3_read_addr_trig(&self) -> u32 {
-        (self.bits & Ch12Al3ReadAddrTrig::CH12_AL3_READ_ADDR_TRIG_MASK) >> Ch12Al3ReadAddrTrig::CH12_AL3_READ_ADDR_TRIG_OFFSET
+        (self.bits & Ch12Al3ReadAddrTrig::CH12_AL3_READ_ADDR_TRIG_MASK)
+            >> Ch12Al3ReadAddrTrig::CH12_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH12_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch12_al3_read_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch12Al3ReadAddrTrig::CH12_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch12Al3ReadAddrTrig::CH12_AL3_READ_ADDR_TRIG_OFFSET) & Ch12Al3ReadAddrTrig::CH12_AL3_READ_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch12Al3ReadAddrTrig::CH12_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Ch12Al3ReadAddrTrig::CH12_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Ch12Al3ReadAddrTrig::CH12_AL3_READ_ADDR_TRIG_MASK),
         }
     }
 }
@@ -40358,7 +41689,10 @@ impl Ch13ReadAddr {
     /// This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
     #[inline(always)]
     pub fn write_ch13_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH13_READ_ADDR_MASK) | ((value << Self::CH13_READ_ADDR_OFFSET) & Self::CH13_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH13_READ_ADDR_MASK)
+                | ((value << Self::CH13_READ_ADDR_OFFSET) & Self::CH13_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -40404,7 +41738,9 @@ impl Ch13ReadAddrVal {
     #[inline(always)]
     pub const fn with_ch13_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch13ReadAddr::CH13_READ_ADDR_MASK) | ((value << Ch13ReadAddr::CH13_READ_ADDR_OFFSET) & Ch13ReadAddr::CH13_READ_ADDR_MASK)
+            bits: (self.bits & !Ch13ReadAddr::CH13_READ_ADDR_MASK)
+                | ((value << Ch13ReadAddr::CH13_READ_ADDR_OFFSET)
+                    & Ch13ReadAddr::CH13_READ_ADDR_MASK),
         }
     }
 }
@@ -40486,7 +41822,10 @@ impl Ch13WriteAddr {
     /// This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
     #[inline(always)]
     pub fn write_ch13_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH13_WRITE_ADDR_MASK) | ((value << Self::CH13_WRITE_ADDR_OFFSET) & Self::CH13_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH13_WRITE_ADDR_MASK)
+                | ((value << Self::CH13_WRITE_ADDR_OFFSET) & Self::CH13_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -40532,7 +41871,9 @@ impl Ch13WriteAddrVal {
     #[inline(always)]
     pub const fn with_ch13_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch13WriteAddr::CH13_WRITE_ADDR_MASK) | ((value << Ch13WriteAddr::CH13_WRITE_ADDR_OFFSET) & Ch13WriteAddr::CH13_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch13WriteAddr::CH13_WRITE_ADDR_MASK)
+                | ((value << Ch13WriteAddr::CH13_WRITE_ADDR_OFFSET)
+                    & Ch13WriteAddr::CH13_WRITE_ADDR_MASK),
         }
     }
 }
@@ -40652,7 +41993,9 @@ impl Ch13TransCount {
     /// All other values are reserved.
     #[inline(always)]
     pub fn write_mode(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK)
+        });
     }
 
     /// **COUNT** `[27:0]` (RW)
@@ -40676,7 +42019,9 @@ impl Ch13TransCount {
     /// The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
     #[inline(always)]
     pub fn write_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK)
+        });
     }
 }
 
@@ -40740,7 +42085,8 @@ impl Ch13TransCountVal {
     #[inline(always)]
     pub const fn with_mode(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch13TransCount::MODE_MASK) | ((value << Ch13TransCount::MODE_OFFSET) & Ch13TransCount::MODE_MASK)
+            bits: (self.bits & !Ch13TransCount::MODE_MASK)
+                | ((value << Ch13TransCount::MODE_OFFSET) & Ch13TransCount::MODE_MASK),
         }
     }
 
@@ -40754,7 +42100,8 @@ impl Ch13TransCountVal {
     #[inline(always)]
     pub const fn with_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch13TransCount::COUNT_MASK) | ((value << Ch13TransCount::COUNT_OFFSET) & Ch13TransCount::COUNT_MASK)
+            bits: (self.bits & !Ch13TransCount::COUNT_MASK)
+                | ((value << Ch13TransCount::COUNT_OFFSET) & Ch13TransCount::COUNT_MASK),
         }
     }
 }
@@ -41462,7 +42809,9 @@ impl Ch13CtrlTrig {
     /// 0x0 to 0x3a -> select DREQ n as TREQ
     #[inline(always)]
     pub fn write_treq_sel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK)
+        });
     }
 
     /// **CHAIN_TO** `[16:13]` (RW)
@@ -41480,7 +42829,9 @@ impl Ch13CtrlTrig {
     /// Note this field resets to 0, so channels 1 and above will chain to channel 0 by default. Set this field to avoid this behaviour.
     #[inline(always)]
     pub fn write_chain_to(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK)
+        });
     }
 
     /// **RING_SEL** `[12]` (RW)
@@ -41519,7 +42870,9 @@ impl Ch13CtrlTrig {
     /// Ring sizes between 2 and 32768 bytes are possible. This can apply to either read or write addresses, based on value of RING_SEL.
     #[inline(always)]
     pub fn write_ring_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK)
+        });
     }
 
     /// **INCR_WRITE_REV** `[7]` (RW)
@@ -41619,7 +42972,9 @@ impl Ch13CtrlTrig {
     /// Set the size of each bus transfer (byte/halfword/word). READ_ADDR and WRITE_ADDR advance by this amount (1/2/4 bytes) with each transfer.
     #[inline(always)]
     pub fn write_data_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK)
+        });
     }
 
     /// **HIGH_PRIORITY** `[1]` (RW)
@@ -41865,7 +43220,7 @@ impl Ch13CtrlTrigVal {
                 self.bits | Ch13CtrlTrig::READ_ERROR_MASK
             } else {
                 self.bits & !Ch13CtrlTrig::READ_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -41880,7 +43235,7 @@ impl Ch13CtrlTrigVal {
                 self.bits | Ch13CtrlTrig::WRITE_ERROR_MASK
             } else {
                 self.bits & !Ch13CtrlTrig::WRITE_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -41895,7 +43250,7 @@ impl Ch13CtrlTrigVal {
                 self.bits | Ch13CtrlTrig::SNIFF_EN_MASK
             } else {
                 self.bits & !Ch13CtrlTrig::SNIFF_EN_MASK
-            }
+            },
         }
     }
 
@@ -41910,7 +43265,7 @@ impl Ch13CtrlTrigVal {
                 self.bits | Ch13CtrlTrig::BSWAP_MASK
             } else {
                 self.bits & !Ch13CtrlTrig::BSWAP_MASK
-            }
+            },
         }
     }
 
@@ -41925,7 +43280,7 @@ impl Ch13CtrlTrigVal {
                 self.bits | Ch13CtrlTrig::IRQ_QUIET_MASK
             } else {
                 self.bits & !Ch13CtrlTrig::IRQ_QUIET_MASK
-            }
+            },
         }
     }
 
@@ -41937,7 +43292,8 @@ impl Ch13CtrlTrigVal {
     #[inline(always)]
     pub const fn with_treq_sel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch13CtrlTrig::TREQ_SEL_MASK) | ((value << Ch13CtrlTrig::TREQ_SEL_OFFSET) & Ch13CtrlTrig::TREQ_SEL_MASK)
+            bits: (self.bits & !Ch13CtrlTrig::TREQ_SEL_MASK)
+                | ((value << Ch13CtrlTrig::TREQ_SEL_OFFSET) & Ch13CtrlTrig::TREQ_SEL_MASK),
         }
     }
 
@@ -41948,7 +43304,8 @@ impl Ch13CtrlTrigVal {
     #[inline(always)]
     pub const fn with_chain_to(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch13CtrlTrig::CHAIN_TO_MASK) | ((value << Ch13CtrlTrig::CHAIN_TO_OFFSET) & Ch13CtrlTrig::CHAIN_TO_MASK)
+            bits: (self.bits & !Ch13CtrlTrig::CHAIN_TO_MASK)
+                | ((value << Ch13CtrlTrig::CHAIN_TO_OFFSET) & Ch13CtrlTrig::CHAIN_TO_MASK),
         }
     }
 
@@ -41963,7 +43320,7 @@ impl Ch13CtrlTrigVal {
                 self.bits | Ch13CtrlTrig::RING_SEL_MASK
             } else {
                 self.bits & !Ch13CtrlTrig::RING_SEL_MASK
-            }
+            },
         }
     }
 
@@ -41974,7 +43331,8 @@ impl Ch13CtrlTrigVal {
     #[inline(always)]
     pub const fn with_ring_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch13CtrlTrig::RING_SIZE_MASK) | ((value << Ch13CtrlTrig::RING_SIZE_OFFSET) & Ch13CtrlTrig::RING_SIZE_MASK)
+            bits: (self.bits & !Ch13CtrlTrig::RING_SIZE_MASK)
+                | ((value << Ch13CtrlTrig::RING_SIZE_OFFSET) & Ch13CtrlTrig::RING_SIZE_MASK),
         }
     }
 
@@ -41989,7 +43347,7 @@ impl Ch13CtrlTrigVal {
                 self.bits | Ch13CtrlTrig::INCR_WRITE_REV_MASK
             } else {
                 self.bits & !Ch13CtrlTrig::INCR_WRITE_REV_MASK
-            }
+            },
         }
     }
 
@@ -42004,7 +43362,7 @@ impl Ch13CtrlTrigVal {
                 self.bits | Ch13CtrlTrig::INCR_WRITE_MASK
             } else {
                 self.bits & !Ch13CtrlTrig::INCR_WRITE_MASK
-            }
+            },
         }
     }
 
@@ -42019,7 +43377,7 @@ impl Ch13CtrlTrigVal {
                 self.bits | Ch13CtrlTrig::INCR_READ_REV_MASK
             } else {
                 self.bits & !Ch13CtrlTrig::INCR_READ_REV_MASK
-            }
+            },
         }
     }
 
@@ -42034,7 +43392,7 @@ impl Ch13CtrlTrigVal {
                 self.bits | Ch13CtrlTrig::INCR_READ_MASK
             } else {
                 self.bits & !Ch13CtrlTrig::INCR_READ_MASK
-            }
+            },
         }
     }
 
@@ -42044,7 +43402,8 @@ impl Ch13CtrlTrigVal {
     #[inline(always)]
     pub const fn with_data_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch13CtrlTrig::DATA_SIZE_MASK) | ((value << Ch13CtrlTrig::DATA_SIZE_OFFSET) & Ch13CtrlTrig::DATA_SIZE_MASK)
+            bits: (self.bits & !Ch13CtrlTrig::DATA_SIZE_MASK)
+                | ((value << Ch13CtrlTrig::DATA_SIZE_OFFSET) & Ch13CtrlTrig::DATA_SIZE_MASK),
         }
     }
 
@@ -42059,7 +43418,7 @@ impl Ch13CtrlTrigVal {
                 self.bits | Ch13CtrlTrig::HIGH_PRIORITY_MASK
             } else {
                 self.bits & !Ch13CtrlTrig::HIGH_PRIORITY_MASK
-            }
+            },
         }
     }
 
@@ -42074,7 +43433,7 @@ impl Ch13CtrlTrigVal {
                 self.bits | Ch13CtrlTrig::EN_MASK
             } else {
                 self.bits & !Ch13CtrlTrig::EN_MASK
-            }
+            },
         }
     }
 }
@@ -42146,7 +43505,10 @@ impl Ch13Al1Ctrl {
     /// Write **CH13_AL1_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch13_al1_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH13_AL1_CTRL_MASK) | ((value << Self::CH13_AL1_CTRL_OFFSET) & Self::CH13_AL1_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH13_AL1_CTRL_MASK)
+                | ((value << Self::CH13_AL1_CTRL_OFFSET) & Self::CH13_AL1_CTRL_MASK)
+        });
     }
 }
 
@@ -42182,7 +43544,8 @@ impl Ch13Al1CtrlVal {
     #[inline(always)]
     pub const fn with_ch13_al1_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch13Al1Ctrl::CH13_AL1_CTRL_MASK) | ((value << Ch13Al1Ctrl::CH13_AL1_CTRL_OFFSET) & Ch13Al1Ctrl::CH13_AL1_CTRL_MASK)
+            bits: (self.bits & !Ch13Al1Ctrl::CH13_AL1_CTRL_MASK)
+                | ((value << Ch13Al1Ctrl::CH13_AL1_CTRL_OFFSET) & Ch13Al1Ctrl::CH13_AL1_CTRL_MASK),
         }
     }
 }
@@ -42254,7 +43617,10 @@ impl Ch13Al1ReadAddr {
     /// Write **CH13_AL1_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch13_al1_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH13_AL1_READ_ADDR_MASK) | ((value << Self::CH13_AL1_READ_ADDR_OFFSET) & Self::CH13_AL1_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH13_AL1_READ_ADDR_MASK)
+                | ((value << Self::CH13_AL1_READ_ADDR_OFFSET) & Self::CH13_AL1_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -42283,14 +43649,17 @@ impl Ch13Al1ReadAddrVal {
     /// Read **CH13_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch13_al1_read_addr(&self) -> u32 {
-        (self.bits & Ch13Al1ReadAddr::CH13_AL1_READ_ADDR_MASK) >> Ch13Al1ReadAddr::CH13_AL1_READ_ADDR_OFFSET
+        (self.bits & Ch13Al1ReadAddr::CH13_AL1_READ_ADDR_MASK)
+            >> Ch13Al1ReadAddr::CH13_AL1_READ_ADDR_OFFSET
     }
 
     /// Set **CH13_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch13_al1_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch13Al1ReadAddr::CH13_AL1_READ_ADDR_MASK) | ((value << Ch13Al1ReadAddr::CH13_AL1_READ_ADDR_OFFSET) & Ch13Al1ReadAddr::CH13_AL1_READ_ADDR_MASK)
+            bits: (self.bits & !Ch13Al1ReadAddr::CH13_AL1_READ_ADDR_MASK)
+                | ((value << Ch13Al1ReadAddr::CH13_AL1_READ_ADDR_OFFSET)
+                    & Ch13Al1ReadAddr::CH13_AL1_READ_ADDR_MASK),
         }
     }
 }
@@ -42356,13 +43725,17 @@ impl Ch13Al1WriteAddr {
     /// **CH13_AL1_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch13_al1_write_addr(&self) -> u32 {
-        (self.value.read_bits() & Self::CH13_AL1_WRITE_ADDR_MASK) >> Self::CH13_AL1_WRITE_ADDR_OFFSET
+        (self.value.read_bits() & Self::CH13_AL1_WRITE_ADDR_MASK)
+            >> Self::CH13_AL1_WRITE_ADDR_OFFSET
     }
 
     /// Write **CH13_AL1_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch13_al1_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH13_AL1_WRITE_ADDR_MASK) | ((value << Self::CH13_AL1_WRITE_ADDR_OFFSET) & Self::CH13_AL1_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH13_AL1_WRITE_ADDR_MASK)
+                | ((value << Self::CH13_AL1_WRITE_ADDR_OFFSET) & Self::CH13_AL1_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -42391,14 +43764,17 @@ impl Ch13Al1WriteAddrVal {
     /// Read **CH13_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch13_al1_write_addr(&self) -> u32 {
-        (self.bits & Ch13Al1WriteAddr::CH13_AL1_WRITE_ADDR_MASK) >> Ch13Al1WriteAddr::CH13_AL1_WRITE_ADDR_OFFSET
+        (self.bits & Ch13Al1WriteAddr::CH13_AL1_WRITE_ADDR_MASK)
+            >> Ch13Al1WriteAddr::CH13_AL1_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH13_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch13_al1_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch13Al1WriteAddr::CH13_AL1_WRITE_ADDR_MASK) | ((value << Ch13Al1WriteAddr::CH13_AL1_WRITE_ADDR_OFFSET) & Ch13Al1WriteAddr::CH13_AL1_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch13Al1WriteAddr::CH13_AL1_WRITE_ADDR_MASK)
+                | ((value << Ch13Al1WriteAddr::CH13_AL1_WRITE_ADDR_OFFSET)
+                    & Ch13Al1WriteAddr::CH13_AL1_WRITE_ADDR_MASK),
         }
     }
 }
@@ -42466,13 +43842,18 @@ impl Ch13Al1TransCountTrig {
     /// **CH13_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch13_al1_trans_count_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH13_AL1_TRANS_COUNT_TRIG_MASK) >> Self::CH13_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH13_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Self::CH13_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Write **CH13_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch13_al1_trans_count_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH13_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH13_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH13_AL1_TRANS_COUNT_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH13_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Self::CH13_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Self::CH13_AL1_TRANS_COUNT_TRIG_MASK)
+        });
     }
 }
 
@@ -42501,14 +43882,17 @@ impl Ch13Al1TransCountTrigVal {
     /// Read **CH13_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch13_al1_trans_count_trig(&self) -> u32 {
-        (self.bits & Ch13Al1TransCountTrig::CH13_AL1_TRANS_COUNT_TRIG_MASK) >> Ch13Al1TransCountTrig::CH13_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.bits & Ch13Al1TransCountTrig::CH13_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Ch13Al1TransCountTrig::CH13_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Set **CH13_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch13_al1_trans_count_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch13Al1TransCountTrig::CH13_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch13Al1TransCountTrig::CH13_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch13Al1TransCountTrig::CH13_AL1_TRANS_COUNT_TRIG_MASK)
+            bits: (self.bits & !Ch13Al1TransCountTrig::CH13_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Ch13Al1TransCountTrig::CH13_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Ch13Al1TransCountTrig::CH13_AL1_TRANS_COUNT_TRIG_MASK),
         }
     }
 }
@@ -42534,7 +43918,10 @@ impl Ch13Al1TransCountTrig {
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify_val<F: FnOnce(Ch13Al1TransCountTrigVal) -> Ch13Al1TransCountTrigVal>(&self, f: F) {
+    pub fn modify_val<F: FnOnce(Ch13Al1TransCountTrigVal) -> Ch13Al1TransCountTrigVal>(
+        &self,
+        f: F,
+    ) {
         self.write_val(f(self.read_val()))
     }
 }
@@ -42580,7 +43967,10 @@ impl Ch13Al2Ctrl {
     /// Write **CH13_AL2_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch13_al2_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH13_AL2_CTRL_MASK) | ((value << Self::CH13_AL2_CTRL_OFFSET) & Self::CH13_AL2_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH13_AL2_CTRL_MASK)
+                | ((value << Self::CH13_AL2_CTRL_OFFSET) & Self::CH13_AL2_CTRL_MASK)
+        });
     }
 }
 
@@ -42616,7 +44006,8 @@ impl Ch13Al2CtrlVal {
     #[inline(always)]
     pub const fn with_ch13_al2_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch13Al2Ctrl::CH13_AL2_CTRL_MASK) | ((value << Ch13Al2Ctrl::CH13_AL2_CTRL_OFFSET) & Ch13Al2Ctrl::CH13_AL2_CTRL_MASK)
+            bits: (self.bits & !Ch13Al2Ctrl::CH13_AL2_CTRL_MASK)
+                | ((value << Ch13Al2Ctrl::CH13_AL2_CTRL_OFFSET) & Ch13Al2Ctrl::CH13_AL2_CTRL_MASK),
         }
     }
 }
@@ -42682,13 +44073,17 @@ impl Ch13Al2TransCount {
     /// **CH13_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch13_al2_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH13_AL2_TRANS_COUNT_MASK) >> Self::CH13_AL2_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH13_AL2_TRANS_COUNT_MASK)
+            >> Self::CH13_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH13_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch13_al2_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH13_AL2_TRANS_COUNT_MASK) | ((value << Self::CH13_AL2_TRANS_COUNT_OFFSET) & Self::CH13_AL2_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH13_AL2_TRANS_COUNT_MASK)
+                | ((value << Self::CH13_AL2_TRANS_COUNT_OFFSET) & Self::CH13_AL2_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -42717,14 +44112,17 @@ impl Ch13Al2TransCountVal {
     /// Read **CH13_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch13_al2_trans_count(&self) -> u32 {
-        (self.bits & Ch13Al2TransCount::CH13_AL2_TRANS_COUNT_MASK) >> Ch13Al2TransCount::CH13_AL2_TRANS_COUNT_OFFSET
+        (self.bits & Ch13Al2TransCount::CH13_AL2_TRANS_COUNT_MASK)
+            >> Ch13Al2TransCount::CH13_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH13_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch13_al2_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch13Al2TransCount::CH13_AL2_TRANS_COUNT_MASK) | ((value << Ch13Al2TransCount::CH13_AL2_TRANS_COUNT_OFFSET) & Ch13Al2TransCount::CH13_AL2_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch13Al2TransCount::CH13_AL2_TRANS_COUNT_MASK)
+                | ((value << Ch13Al2TransCount::CH13_AL2_TRANS_COUNT_OFFSET)
+                    & Ch13Al2TransCount::CH13_AL2_TRANS_COUNT_MASK),
         }
     }
 }
@@ -42796,7 +44194,10 @@ impl Ch13Al2ReadAddr {
     /// Write **CH13_AL2_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch13_al2_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH13_AL2_READ_ADDR_MASK) | ((value << Self::CH13_AL2_READ_ADDR_OFFSET) & Self::CH13_AL2_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH13_AL2_READ_ADDR_MASK)
+                | ((value << Self::CH13_AL2_READ_ADDR_OFFSET) & Self::CH13_AL2_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -42825,14 +44226,17 @@ impl Ch13Al2ReadAddrVal {
     /// Read **CH13_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch13_al2_read_addr(&self) -> u32 {
-        (self.bits & Ch13Al2ReadAddr::CH13_AL2_READ_ADDR_MASK) >> Ch13Al2ReadAddr::CH13_AL2_READ_ADDR_OFFSET
+        (self.bits & Ch13Al2ReadAddr::CH13_AL2_READ_ADDR_MASK)
+            >> Ch13Al2ReadAddr::CH13_AL2_READ_ADDR_OFFSET
     }
 
     /// Set **CH13_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch13_al2_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch13Al2ReadAddr::CH13_AL2_READ_ADDR_MASK) | ((value << Ch13Al2ReadAddr::CH13_AL2_READ_ADDR_OFFSET) & Ch13Al2ReadAddr::CH13_AL2_READ_ADDR_MASK)
+            bits: (self.bits & !Ch13Al2ReadAddr::CH13_AL2_READ_ADDR_MASK)
+                | ((value << Ch13Al2ReadAddr::CH13_AL2_READ_ADDR_OFFSET)
+                    & Ch13Al2ReadAddr::CH13_AL2_READ_ADDR_MASK),
         }
     }
 }
@@ -42900,13 +44304,18 @@ impl Ch13Al2WriteAddrTrig {
     /// **CH13_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch13_al2_write_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH13_AL2_WRITE_ADDR_TRIG_MASK) >> Self::CH13_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH13_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Self::CH13_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH13_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch13_al2_write_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH13_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH13_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH13_AL2_WRITE_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH13_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Self::CH13_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Self::CH13_AL2_WRITE_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -42935,14 +44344,17 @@ impl Ch13Al2WriteAddrTrigVal {
     /// Read **CH13_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch13_al2_write_addr_trig(&self) -> u32 {
-        (self.bits & Ch13Al2WriteAddrTrig::CH13_AL2_WRITE_ADDR_TRIG_MASK) >> Ch13Al2WriteAddrTrig::CH13_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.bits & Ch13Al2WriteAddrTrig::CH13_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Ch13Al2WriteAddrTrig::CH13_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH13_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch13_al2_write_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch13Al2WriteAddrTrig::CH13_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch13Al2WriteAddrTrig::CH13_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch13Al2WriteAddrTrig::CH13_AL2_WRITE_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch13Al2WriteAddrTrig::CH13_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Ch13Al2WriteAddrTrig::CH13_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Ch13Al2WriteAddrTrig::CH13_AL2_WRITE_ADDR_TRIG_MASK),
         }
     }
 }
@@ -43014,7 +44426,10 @@ impl Ch13Al3Ctrl {
     /// Write **CH13_AL3_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch13_al3_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH13_AL3_CTRL_MASK) | ((value << Self::CH13_AL3_CTRL_OFFSET) & Self::CH13_AL3_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH13_AL3_CTRL_MASK)
+                | ((value << Self::CH13_AL3_CTRL_OFFSET) & Self::CH13_AL3_CTRL_MASK)
+        });
     }
 }
 
@@ -43050,7 +44465,8 @@ impl Ch13Al3CtrlVal {
     #[inline(always)]
     pub const fn with_ch13_al3_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch13Al3Ctrl::CH13_AL3_CTRL_MASK) | ((value << Ch13Al3Ctrl::CH13_AL3_CTRL_OFFSET) & Ch13Al3Ctrl::CH13_AL3_CTRL_MASK)
+            bits: (self.bits & !Ch13Al3Ctrl::CH13_AL3_CTRL_MASK)
+                | ((value << Ch13Al3Ctrl::CH13_AL3_CTRL_OFFSET) & Ch13Al3Ctrl::CH13_AL3_CTRL_MASK),
         }
     }
 }
@@ -43116,13 +44532,17 @@ impl Ch13Al3WriteAddr {
     /// **CH13_AL3_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch13_al3_write_addr(&self) -> u32 {
-        (self.value.read_bits() & Self::CH13_AL3_WRITE_ADDR_MASK) >> Self::CH13_AL3_WRITE_ADDR_OFFSET
+        (self.value.read_bits() & Self::CH13_AL3_WRITE_ADDR_MASK)
+            >> Self::CH13_AL3_WRITE_ADDR_OFFSET
     }
 
     /// Write **CH13_AL3_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch13_al3_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH13_AL3_WRITE_ADDR_MASK) | ((value << Self::CH13_AL3_WRITE_ADDR_OFFSET) & Self::CH13_AL3_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH13_AL3_WRITE_ADDR_MASK)
+                | ((value << Self::CH13_AL3_WRITE_ADDR_OFFSET) & Self::CH13_AL3_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -43151,14 +44571,17 @@ impl Ch13Al3WriteAddrVal {
     /// Read **CH13_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch13_al3_write_addr(&self) -> u32 {
-        (self.bits & Ch13Al3WriteAddr::CH13_AL3_WRITE_ADDR_MASK) >> Ch13Al3WriteAddr::CH13_AL3_WRITE_ADDR_OFFSET
+        (self.bits & Ch13Al3WriteAddr::CH13_AL3_WRITE_ADDR_MASK)
+            >> Ch13Al3WriteAddr::CH13_AL3_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH13_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch13_al3_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch13Al3WriteAddr::CH13_AL3_WRITE_ADDR_MASK) | ((value << Ch13Al3WriteAddr::CH13_AL3_WRITE_ADDR_OFFSET) & Ch13Al3WriteAddr::CH13_AL3_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch13Al3WriteAddr::CH13_AL3_WRITE_ADDR_MASK)
+                | ((value << Ch13Al3WriteAddr::CH13_AL3_WRITE_ADDR_OFFSET)
+                    & Ch13Al3WriteAddr::CH13_AL3_WRITE_ADDR_MASK),
         }
     }
 }
@@ -43224,13 +44647,17 @@ impl Ch13Al3TransCount {
     /// **CH13_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch13_al3_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH13_AL3_TRANS_COUNT_MASK) >> Self::CH13_AL3_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH13_AL3_TRANS_COUNT_MASK)
+            >> Self::CH13_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH13_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch13_al3_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH13_AL3_TRANS_COUNT_MASK) | ((value << Self::CH13_AL3_TRANS_COUNT_OFFSET) & Self::CH13_AL3_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH13_AL3_TRANS_COUNT_MASK)
+                | ((value << Self::CH13_AL3_TRANS_COUNT_OFFSET) & Self::CH13_AL3_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -43259,14 +44686,17 @@ impl Ch13Al3TransCountVal {
     /// Read **CH13_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch13_al3_trans_count(&self) -> u32 {
-        (self.bits & Ch13Al3TransCount::CH13_AL3_TRANS_COUNT_MASK) >> Ch13Al3TransCount::CH13_AL3_TRANS_COUNT_OFFSET
+        (self.bits & Ch13Al3TransCount::CH13_AL3_TRANS_COUNT_MASK)
+            >> Ch13Al3TransCount::CH13_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH13_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch13_al3_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch13Al3TransCount::CH13_AL3_TRANS_COUNT_MASK) | ((value << Ch13Al3TransCount::CH13_AL3_TRANS_COUNT_OFFSET) & Ch13Al3TransCount::CH13_AL3_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch13Al3TransCount::CH13_AL3_TRANS_COUNT_MASK)
+                | ((value << Ch13Al3TransCount::CH13_AL3_TRANS_COUNT_OFFSET)
+                    & Ch13Al3TransCount::CH13_AL3_TRANS_COUNT_MASK),
         }
     }
 }
@@ -43334,13 +44764,18 @@ impl Ch13Al3ReadAddrTrig {
     /// **CH13_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch13_al3_read_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH13_AL3_READ_ADDR_TRIG_MASK) >> Self::CH13_AL3_READ_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH13_AL3_READ_ADDR_TRIG_MASK)
+            >> Self::CH13_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH13_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch13_al3_read_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH13_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH13_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH13_AL3_READ_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH13_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Self::CH13_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Self::CH13_AL3_READ_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -43369,14 +44804,17 @@ impl Ch13Al3ReadAddrTrigVal {
     /// Read **CH13_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch13_al3_read_addr_trig(&self) -> u32 {
-        (self.bits & Ch13Al3ReadAddrTrig::CH13_AL3_READ_ADDR_TRIG_MASK) >> Ch13Al3ReadAddrTrig::CH13_AL3_READ_ADDR_TRIG_OFFSET
+        (self.bits & Ch13Al3ReadAddrTrig::CH13_AL3_READ_ADDR_TRIG_MASK)
+            >> Ch13Al3ReadAddrTrig::CH13_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH13_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch13_al3_read_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch13Al3ReadAddrTrig::CH13_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch13Al3ReadAddrTrig::CH13_AL3_READ_ADDR_TRIG_OFFSET) & Ch13Al3ReadAddrTrig::CH13_AL3_READ_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch13Al3ReadAddrTrig::CH13_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Ch13Al3ReadAddrTrig::CH13_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Ch13Al3ReadAddrTrig::CH13_AL3_READ_ADDR_TRIG_MASK),
         }
     }
 }
@@ -43458,7 +44896,10 @@ impl Ch14ReadAddr {
     /// This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
     #[inline(always)]
     pub fn write_ch14_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH14_READ_ADDR_MASK) | ((value << Self::CH14_READ_ADDR_OFFSET) & Self::CH14_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH14_READ_ADDR_MASK)
+                | ((value << Self::CH14_READ_ADDR_OFFSET) & Self::CH14_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -43504,7 +44945,9 @@ impl Ch14ReadAddrVal {
     #[inline(always)]
     pub const fn with_ch14_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch14ReadAddr::CH14_READ_ADDR_MASK) | ((value << Ch14ReadAddr::CH14_READ_ADDR_OFFSET) & Ch14ReadAddr::CH14_READ_ADDR_MASK)
+            bits: (self.bits & !Ch14ReadAddr::CH14_READ_ADDR_MASK)
+                | ((value << Ch14ReadAddr::CH14_READ_ADDR_OFFSET)
+                    & Ch14ReadAddr::CH14_READ_ADDR_MASK),
         }
     }
 }
@@ -43586,7 +45029,10 @@ impl Ch14WriteAddr {
     /// This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
     #[inline(always)]
     pub fn write_ch14_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH14_WRITE_ADDR_MASK) | ((value << Self::CH14_WRITE_ADDR_OFFSET) & Self::CH14_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH14_WRITE_ADDR_MASK)
+                | ((value << Self::CH14_WRITE_ADDR_OFFSET) & Self::CH14_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -43632,7 +45078,9 @@ impl Ch14WriteAddrVal {
     #[inline(always)]
     pub const fn with_ch14_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch14WriteAddr::CH14_WRITE_ADDR_MASK) | ((value << Ch14WriteAddr::CH14_WRITE_ADDR_OFFSET) & Ch14WriteAddr::CH14_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch14WriteAddr::CH14_WRITE_ADDR_MASK)
+                | ((value << Ch14WriteAddr::CH14_WRITE_ADDR_OFFSET)
+                    & Ch14WriteAddr::CH14_WRITE_ADDR_MASK),
         }
     }
 }
@@ -43752,7 +45200,9 @@ impl Ch14TransCount {
     /// All other values are reserved.
     #[inline(always)]
     pub fn write_mode(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK)
+        });
     }
 
     /// **COUNT** `[27:0]` (RW)
@@ -43776,7 +45226,9 @@ impl Ch14TransCount {
     /// The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
     #[inline(always)]
     pub fn write_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK)
+        });
     }
 }
 
@@ -43840,7 +45292,8 @@ impl Ch14TransCountVal {
     #[inline(always)]
     pub const fn with_mode(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch14TransCount::MODE_MASK) | ((value << Ch14TransCount::MODE_OFFSET) & Ch14TransCount::MODE_MASK)
+            bits: (self.bits & !Ch14TransCount::MODE_MASK)
+                | ((value << Ch14TransCount::MODE_OFFSET) & Ch14TransCount::MODE_MASK),
         }
     }
 
@@ -43854,7 +45307,8 @@ impl Ch14TransCountVal {
     #[inline(always)]
     pub const fn with_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch14TransCount::COUNT_MASK) | ((value << Ch14TransCount::COUNT_OFFSET) & Ch14TransCount::COUNT_MASK)
+            bits: (self.bits & !Ch14TransCount::COUNT_MASK)
+                | ((value << Ch14TransCount::COUNT_OFFSET) & Ch14TransCount::COUNT_MASK),
         }
     }
 }
@@ -44562,7 +46016,9 @@ impl Ch14CtrlTrig {
     /// 0x0 to 0x3a -> select DREQ n as TREQ
     #[inline(always)]
     pub fn write_treq_sel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK)
+        });
     }
 
     /// **CHAIN_TO** `[16:13]` (RW)
@@ -44580,7 +46036,9 @@ impl Ch14CtrlTrig {
     /// Note this field resets to 0, so channels 1 and above will chain to channel 0 by default. Set this field to avoid this behaviour.
     #[inline(always)]
     pub fn write_chain_to(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK)
+        });
     }
 
     /// **RING_SEL** `[12]` (RW)
@@ -44619,7 +46077,9 @@ impl Ch14CtrlTrig {
     /// Ring sizes between 2 and 32768 bytes are possible. This can apply to either read or write addresses, based on value of RING_SEL.
     #[inline(always)]
     pub fn write_ring_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK)
+        });
     }
 
     /// **INCR_WRITE_REV** `[7]` (RW)
@@ -44719,7 +46179,9 @@ impl Ch14CtrlTrig {
     /// Set the size of each bus transfer (byte/halfword/word). READ_ADDR and WRITE_ADDR advance by this amount (1/2/4 bytes) with each transfer.
     #[inline(always)]
     pub fn write_data_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK)
+        });
     }
 
     /// **HIGH_PRIORITY** `[1]` (RW)
@@ -44965,7 +46427,7 @@ impl Ch14CtrlTrigVal {
                 self.bits | Ch14CtrlTrig::READ_ERROR_MASK
             } else {
                 self.bits & !Ch14CtrlTrig::READ_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -44980,7 +46442,7 @@ impl Ch14CtrlTrigVal {
                 self.bits | Ch14CtrlTrig::WRITE_ERROR_MASK
             } else {
                 self.bits & !Ch14CtrlTrig::WRITE_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -44995,7 +46457,7 @@ impl Ch14CtrlTrigVal {
                 self.bits | Ch14CtrlTrig::SNIFF_EN_MASK
             } else {
                 self.bits & !Ch14CtrlTrig::SNIFF_EN_MASK
-            }
+            },
         }
     }
 
@@ -45010,7 +46472,7 @@ impl Ch14CtrlTrigVal {
                 self.bits | Ch14CtrlTrig::BSWAP_MASK
             } else {
                 self.bits & !Ch14CtrlTrig::BSWAP_MASK
-            }
+            },
         }
     }
 
@@ -45025,7 +46487,7 @@ impl Ch14CtrlTrigVal {
                 self.bits | Ch14CtrlTrig::IRQ_QUIET_MASK
             } else {
                 self.bits & !Ch14CtrlTrig::IRQ_QUIET_MASK
-            }
+            },
         }
     }
 
@@ -45037,7 +46499,8 @@ impl Ch14CtrlTrigVal {
     #[inline(always)]
     pub const fn with_treq_sel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch14CtrlTrig::TREQ_SEL_MASK) | ((value << Ch14CtrlTrig::TREQ_SEL_OFFSET) & Ch14CtrlTrig::TREQ_SEL_MASK)
+            bits: (self.bits & !Ch14CtrlTrig::TREQ_SEL_MASK)
+                | ((value << Ch14CtrlTrig::TREQ_SEL_OFFSET) & Ch14CtrlTrig::TREQ_SEL_MASK),
         }
     }
 
@@ -45048,7 +46511,8 @@ impl Ch14CtrlTrigVal {
     #[inline(always)]
     pub const fn with_chain_to(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch14CtrlTrig::CHAIN_TO_MASK) | ((value << Ch14CtrlTrig::CHAIN_TO_OFFSET) & Ch14CtrlTrig::CHAIN_TO_MASK)
+            bits: (self.bits & !Ch14CtrlTrig::CHAIN_TO_MASK)
+                | ((value << Ch14CtrlTrig::CHAIN_TO_OFFSET) & Ch14CtrlTrig::CHAIN_TO_MASK),
         }
     }
 
@@ -45063,7 +46527,7 @@ impl Ch14CtrlTrigVal {
                 self.bits | Ch14CtrlTrig::RING_SEL_MASK
             } else {
                 self.bits & !Ch14CtrlTrig::RING_SEL_MASK
-            }
+            },
         }
     }
 
@@ -45074,7 +46538,8 @@ impl Ch14CtrlTrigVal {
     #[inline(always)]
     pub const fn with_ring_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch14CtrlTrig::RING_SIZE_MASK) | ((value << Ch14CtrlTrig::RING_SIZE_OFFSET) & Ch14CtrlTrig::RING_SIZE_MASK)
+            bits: (self.bits & !Ch14CtrlTrig::RING_SIZE_MASK)
+                | ((value << Ch14CtrlTrig::RING_SIZE_OFFSET) & Ch14CtrlTrig::RING_SIZE_MASK),
         }
     }
 
@@ -45089,7 +46554,7 @@ impl Ch14CtrlTrigVal {
                 self.bits | Ch14CtrlTrig::INCR_WRITE_REV_MASK
             } else {
                 self.bits & !Ch14CtrlTrig::INCR_WRITE_REV_MASK
-            }
+            },
         }
     }
 
@@ -45104,7 +46569,7 @@ impl Ch14CtrlTrigVal {
                 self.bits | Ch14CtrlTrig::INCR_WRITE_MASK
             } else {
                 self.bits & !Ch14CtrlTrig::INCR_WRITE_MASK
-            }
+            },
         }
     }
 
@@ -45119,7 +46584,7 @@ impl Ch14CtrlTrigVal {
                 self.bits | Ch14CtrlTrig::INCR_READ_REV_MASK
             } else {
                 self.bits & !Ch14CtrlTrig::INCR_READ_REV_MASK
-            }
+            },
         }
     }
 
@@ -45134,7 +46599,7 @@ impl Ch14CtrlTrigVal {
                 self.bits | Ch14CtrlTrig::INCR_READ_MASK
             } else {
                 self.bits & !Ch14CtrlTrig::INCR_READ_MASK
-            }
+            },
         }
     }
 
@@ -45144,7 +46609,8 @@ impl Ch14CtrlTrigVal {
     #[inline(always)]
     pub const fn with_data_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch14CtrlTrig::DATA_SIZE_MASK) | ((value << Ch14CtrlTrig::DATA_SIZE_OFFSET) & Ch14CtrlTrig::DATA_SIZE_MASK)
+            bits: (self.bits & !Ch14CtrlTrig::DATA_SIZE_MASK)
+                | ((value << Ch14CtrlTrig::DATA_SIZE_OFFSET) & Ch14CtrlTrig::DATA_SIZE_MASK),
         }
     }
 
@@ -45159,7 +46625,7 @@ impl Ch14CtrlTrigVal {
                 self.bits | Ch14CtrlTrig::HIGH_PRIORITY_MASK
             } else {
                 self.bits & !Ch14CtrlTrig::HIGH_PRIORITY_MASK
-            }
+            },
         }
     }
 
@@ -45174,7 +46640,7 @@ impl Ch14CtrlTrigVal {
                 self.bits | Ch14CtrlTrig::EN_MASK
             } else {
                 self.bits & !Ch14CtrlTrig::EN_MASK
-            }
+            },
         }
     }
 }
@@ -45246,7 +46712,10 @@ impl Ch14Al1Ctrl {
     /// Write **CH14_AL1_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch14_al1_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH14_AL1_CTRL_MASK) | ((value << Self::CH14_AL1_CTRL_OFFSET) & Self::CH14_AL1_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH14_AL1_CTRL_MASK)
+                | ((value << Self::CH14_AL1_CTRL_OFFSET) & Self::CH14_AL1_CTRL_MASK)
+        });
     }
 }
 
@@ -45282,7 +46751,8 @@ impl Ch14Al1CtrlVal {
     #[inline(always)]
     pub const fn with_ch14_al1_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch14Al1Ctrl::CH14_AL1_CTRL_MASK) | ((value << Ch14Al1Ctrl::CH14_AL1_CTRL_OFFSET) & Ch14Al1Ctrl::CH14_AL1_CTRL_MASK)
+            bits: (self.bits & !Ch14Al1Ctrl::CH14_AL1_CTRL_MASK)
+                | ((value << Ch14Al1Ctrl::CH14_AL1_CTRL_OFFSET) & Ch14Al1Ctrl::CH14_AL1_CTRL_MASK),
         }
     }
 }
@@ -45354,7 +46824,10 @@ impl Ch14Al1ReadAddr {
     /// Write **CH14_AL1_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch14_al1_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH14_AL1_READ_ADDR_MASK) | ((value << Self::CH14_AL1_READ_ADDR_OFFSET) & Self::CH14_AL1_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH14_AL1_READ_ADDR_MASK)
+                | ((value << Self::CH14_AL1_READ_ADDR_OFFSET) & Self::CH14_AL1_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -45383,14 +46856,17 @@ impl Ch14Al1ReadAddrVal {
     /// Read **CH14_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch14_al1_read_addr(&self) -> u32 {
-        (self.bits & Ch14Al1ReadAddr::CH14_AL1_READ_ADDR_MASK) >> Ch14Al1ReadAddr::CH14_AL1_READ_ADDR_OFFSET
+        (self.bits & Ch14Al1ReadAddr::CH14_AL1_READ_ADDR_MASK)
+            >> Ch14Al1ReadAddr::CH14_AL1_READ_ADDR_OFFSET
     }
 
     /// Set **CH14_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch14_al1_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch14Al1ReadAddr::CH14_AL1_READ_ADDR_MASK) | ((value << Ch14Al1ReadAddr::CH14_AL1_READ_ADDR_OFFSET) & Ch14Al1ReadAddr::CH14_AL1_READ_ADDR_MASK)
+            bits: (self.bits & !Ch14Al1ReadAddr::CH14_AL1_READ_ADDR_MASK)
+                | ((value << Ch14Al1ReadAddr::CH14_AL1_READ_ADDR_OFFSET)
+                    & Ch14Al1ReadAddr::CH14_AL1_READ_ADDR_MASK),
         }
     }
 }
@@ -45456,13 +46932,17 @@ impl Ch14Al1WriteAddr {
     /// **CH14_AL1_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch14_al1_write_addr(&self) -> u32 {
-        (self.value.read_bits() & Self::CH14_AL1_WRITE_ADDR_MASK) >> Self::CH14_AL1_WRITE_ADDR_OFFSET
+        (self.value.read_bits() & Self::CH14_AL1_WRITE_ADDR_MASK)
+            >> Self::CH14_AL1_WRITE_ADDR_OFFSET
     }
 
     /// Write **CH14_AL1_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch14_al1_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH14_AL1_WRITE_ADDR_MASK) | ((value << Self::CH14_AL1_WRITE_ADDR_OFFSET) & Self::CH14_AL1_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH14_AL1_WRITE_ADDR_MASK)
+                | ((value << Self::CH14_AL1_WRITE_ADDR_OFFSET) & Self::CH14_AL1_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -45491,14 +46971,17 @@ impl Ch14Al1WriteAddrVal {
     /// Read **CH14_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch14_al1_write_addr(&self) -> u32 {
-        (self.bits & Ch14Al1WriteAddr::CH14_AL1_WRITE_ADDR_MASK) >> Ch14Al1WriteAddr::CH14_AL1_WRITE_ADDR_OFFSET
+        (self.bits & Ch14Al1WriteAddr::CH14_AL1_WRITE_ADDR_MASK)
+            >> Ch14Al1WriteAddr::CH14_AL1_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH14_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch14_al1_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch14Al1WriteAddr::CH14_AL1_WRITE_ADDR_MASK) | ((value << Ch14Al1WriteAddr::CH14_AL1_WRITE_ADDR_OFFSET) & Ch14Al1WriteAddr::CH14_AL1_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch14Al1WriteAddr::CH14_AL1_WRITE_ADDR_MASK)
+                | ((value << Ch14Al1WriteAddr::CH14_AL1_WRITE_ADDR_OFFSET)
+                    & Ch14Al1WriteAddr::CH14_AL1_WRITE_ADDR_MASK),
         }
     }
 }
@@ -45566,13 +47049,18 @@ impl Ch14Al1TransCountTrig {
     /// **CH14_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch14_al1_trans_count_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH14_AL1_TRANS_COUNT_TRIG_MASK) >> Self::CH14_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH14_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Self::CH14_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Write **CH14_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch14_al1_trans_count_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH14_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH14_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH14_AL1_TRANS_COUNT_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH14_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Self::CH14_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Self::CH14_AL1_TRANS_COUNT_TRIG_MASK)
+        });
     }
 }
 
@@ -45601,14 +47089,17 @@ impl Ch14Al1TransCountTrigVal {
     /// Read **CH14_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch14_al1_trans_count_trig(&self) -> u32 {
-        (self.bits & Ch14Al1TransCountTrig::CH14_AL1_TRANS_COUNT_TRIG_MASK) >> Ch14Al1TransCountTrig::CH14_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.bits & Ch14Al1TransCountTrig::CH14_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Ch14Al1TransCountTrig::CH14_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Set **CH14_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch14_al1_trans_count_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch14Al1TransCountTrig::CH14_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch14Al1TransCountTrig::CH14_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch14Al1TransCountTrig::CH14_AL1_TRANS_COUNT_TRIG_MASK)
+            bits: (self.bits & !Ch14Al1TransCountTrig::CH14_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Ch14Al1TransCountTrig::CH14_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Ch14Al1TransCountTrig::CH14_AL1_TRANS_COUNT_TRIG_MASK),
         }
     }
 }
@@ -45634,7 +47125,10 @@ impl Ch14Al1TransCountTrig {
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify_val<F: FnOnce(Ch14Al1TransCountTrigVal) -> Ch14Al1TransCountTrigVal>(&self, f: F) {
+    pub fn modify_val<F: FnOnce(Ch14Al1TransCountTrigVal) -> Ch14Al1TransCountTrigVal>(
+        &self,
+        f: F,
+    ) {
         self.write_val(f(self.read_val()))
     }
 }
@@ -45680,7 +47174,10 @@ impl Ch14Al2Ctrl {
     /// Write **CH14_AL2_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch14_al2_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH14_AL2_CTRL_MASK) | ((value << Self::CH14_AL2_CTRL_OFFSET) & Self::CH14_AL2_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH14_AL2_CTRL_MASK)
+                | ((value << Self::CH14_AL2_CTRL_OFFSET) & Self::CH14_AL2_CTRL_MASK)
+        });
     }
 }
 
@@ -45716,7 +47213,8 @@ impl Ch14Al2CtrlVal {
     #[inline(always)]
     pub const fn with_ch14_al2_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch14Al2Ctrl::CH14_AL2_CTRL_MASK) | ((value << Ch14Al2Ctrl::CH14_AL2_CTRL_OFFSET) & Ch14Al2Ctrl::CH14_AL2_CTRL_MASK)
+            bits: (self.bits & !Ch14Al2Ctrl::CH14_AL2_CTRL_MASK)
+                | ((value << Ch14Al2Ctrl::CH14_AL2_CTRL_OFFSET) & Ch14Al2Ctrl::CH14_AL2_CTRL_MASK),
         }
     }
 }
@@ -45782,13 +47280,17 @@ impl Ch14Al2TransCount {
     /// **CH14_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch14_al2_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH14_AL2_TRANS_COUNT_MASK) >> Self::CH14_AL2_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH14_AL2_TRANS_COUNT_MASK)
+            >> Self::CH14_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH14_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch14_al2_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH14_AL2_TRANS_COUNT_MASK) | ((value << Self::CH14_AL2_TRANS_COUNT_OFFSET) & Self::CH14_AL2_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH14_AL2_TRANS_COUNT_MASK)
+                | ((value << Self::CH14_AL2_TRANS_COUNT_OFFSET) & Self::CH14_AL2_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -45817,14 +47319,17 @@ impl Ch14Al2TransCountVal {
     /// Read **CH14_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch14_al2_trans_count(&self) -> u32 {
-        (self.bits & Ch14Al2TransCount::CH14_AL2_TRANS_COUNT_MASK) >> Ch14Al2TransCount::CH14_AL2_TRANS_COUNT_OFFSET
+        (self.bits & Ch14Al2TransCount::CH14_AL2_TRANS_COUNT_MASK)
+            >> Ch14Al2TransCount::CH14_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH14_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch14_al2_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch14Al2TransCount::CH14_AL2_TRANS_COUNT_MASK) | ((value << Ch14Al2TransCount::CH14_AL2_TRANS_COUNT_OFFSET) & Ch14Al2TransCount::CH14_AL2_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch14Al2TransCount::CH14_AL2_TRANS_COUNT_MASK)
+                | ((value << Ch14Al2TransCount::CH14_AL2_TRANS_COUNT_OFFSET)
+                    & Ch14Al2TransCount::CH14_AL2_TRANS_COUNT_MASK),
         }
     }
 }
@@ -45896,7 +47401,10 @@ impl Ch14Al2ReadAddr {
     /// Write **CH14_AL2_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch14_al2_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH14_AL2_READ_ADDR_MASK) | ((value << Self::CH14_AL2_READ_ADDR_OFFSET) & Self::CH14_AL2_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH14_AL2_READ_ADDR_MASK)
+                | ((value << Self::CH14_AL2_READ_ADDR_OFFSET) & Self::CH14_AL2_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -45925,14 +47433,17 @@ impl Ch14Al2ReadAddrVal {
     /// Read **CH14_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch14_al2_read_addr(&self) -> u32 {
-        (self.bits & Ch14Al2ReadAddr::CH14_AL2_READ_ADDR_MASK) >> Ch14Al2ReadAddr::CH14_AL2_READ_ADDR_OFFSET
+        (self.bits & Ch14Al2ReadAddr::CH14_AL2_READ_ADDR_MASK)
+            >> Ch14Al2ReadAddr::CH14_AL2_READ_ADDR_OFFSET
     }
 
     /// Set **CH14_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch14_al2_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch14Al2ReadAddr::CH14_AL2_READ_ADDR_MASK) | ((value << Ch14Al2ReadAddr::CH14_AL2_READ_ADDR_OFFSET) & Ch14Al2ReadAddr::CH14_AL2_READ_ADDR_MASK)
+            bits: (self.bits & !Ch14Al2ReadAddr::CH14_AL2_READ_ADDR_MASK)
+                | ((value << Ch14Al2ReadAddr::CH14_AL2_READ_ADDR_OFFSET)
+                    & Ch14Al2ReadAddr::CH14_AL2_READ_ADDR_MASK),
         }
     }
 }
@@ -46000,13 +47511,18 @@ impl Ch14Al2WriteAddrTrig {
     /// **CH14_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch14_al2_write_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH14_AL2_WRITE_ADDR_TRIG_MASK) >> Self::CH14_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH14_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Self::CH14_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH14_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch14_al2_write_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH14_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH14_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH14_AL2_WRITE_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH14_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Self::CH14_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Self::CH14_AL2_WRITE_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -46035,14 +47551,17 @@ impl Ch14Al2WriteAddrTrigVal {
     /// Read **CH14_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch14_al2_write_addr_trig(&self) -> u32 {
-        (self.bits & Ch14Al2WriteAddrTrig::CH14_AL2_WRITE_ADDR_TRIG_MASK) >> Ch14Al2WriteAddrTrig::CH14_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.bits & Ch14Al2WriteAddrTrig::CH14_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Ch14Al2WriteAddrTrig::CH14_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH14_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch14_al2_write_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch14Al2WriteAddrTrig::CH14_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch14Al2WriteAddrTrig::CH14_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch14Al2WriteAddrTrig::CH14_AL2_WRITE_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch14Al2WriteAddrTrig::CH14_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Ch14Al2WriteAddrTrig::CH14_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Ch14Al2WriteAddrTrig::CH14_AL2_WRITE_ADDR_TRIG_MASK),
         }
     }
 }
@@ -46114,7 +47633,10 @@ impl Ch14Al3Ctrl {
     /// Write **CH14_AL3_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch14_al3_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH14_AL3_CTRL_MASK) | ((value << Self::CH14_AL3_CTRL_OFFSET) & Self::CH14_AL3_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH14_AL3_CTRL_MASK)
+                | ((value << Self::CH14_AL3_CTRL_OFFSET) & Self::CH14_AL3_CTRL_MASK)
+        });
     }
 }
 
@@ -46150,7 +47672,8 @@ impl Ch14Al3CtrlVal {
     #[inline(always)]
     pub const fn with_ch14_al3_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch14Al3Ctrl::CH14_AL3_CTRL_MASK) | ((value << Ch14Al3Ctrl::CH14_AL3_CTRL_OFFSET) & Ch14Al3Ctrl::CH14_AL3_CTRL_MASK)
+            bits: (self.bits & !Ch14Al3Ctrl::CH14_AL3_CTRL_MASK)
+                | ((value << Ch14Al3Ctrl::CH14_AL3_CTRL_OFFSET) & Ch14Al3Ctrl::CH14_AL3_CTRL_MASK),
         }
     }
 }
@@ -46216,13 +47739,17 @@ impl Ch14Al3WriteAddr {
     /// **CH14_AL3_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch14_al3_write_addr(&self) -> u32 {
-        (self.value.read_bits() & Self::CH14_AL3_WRITE_ADDR_MASK) >> Self::CH14_AL3_WRITE_ADDR_OFFSET
+        (self.value.read_bits() & Self::CH14_AL3_WRITE_ADDR_MASK)
+            >> Self::CH14_AL3_WRITE_ADDR_OFFSET
     }
 
     /// Write **CH14_AL3_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch14_al3_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH14_AL3_WRITE_ADDR_MASK) | ((value << Self::CH14_AL3_WRITE_ADDR_OFFSET) & Self::CH14_AL3_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH14_AL3_WRITE_ADDR_MASK)
+                | ((value << Self::CH14_AL3_WRITE_ADDR_OFFSET) & Self::CH14_AL3_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -46251,14 +47778,17 @@ impl Ch14Al3WriteAddrVal {
     /// Read **CH14_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch14_al3_write_addr(&self) -> u32 {
-        (self.bits & Ch14Al3WriteAddr::CH14_AL3_WRITE_ADDR_MASK) >> Ch14Al3WriteAddr::CH14_AL3_WRITE_ADDR_OFFSET
+        (self.bits & Ch14Al3WriteAddr::CH14_AL3_WRITE_ADDR_MASK)
+            >> Ch14Al3WriteAddr::CH14_AL3_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH14_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch14_al3_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch14Al3WriteAddr::CH14_AL3_WRITE_ADDR_MASK) | ((value << Ch14Al3WriteAddr::CH14_AL3_WRITE_ADDR_OFFSET) & Ch14Al3WriteAddr::CH14_AL3_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch14Al3WriteAddr::CH14_AL3_WRITE_ADDR_MASK)
+                | ((value << Ch14Al3WriteAddr::CH14_AL3_WRITE_ADDR_OFFSET)
+                    & Ch14Al3WriteAddr::CH14_AL3_WRITE_ADDR_MASK),
         }
     }
 }
@@ -46324,13 +47854,17 @@ impl Ch14Al3TransCount {
     /// **CH14_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch14_al3_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH14_AL3_TRANS_COUNT_MASK) >> Self::CH14_AL3_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH14_AL3_TRANS_COUNT_MASK)
+            >> Self::CH14_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH14_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch14_al3_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH14_AL3_TRANS_COUNT_MASK) | ((value << Self::CH14_AL3_TRANS_COUNT_OFFSET) & Self::CH14_AL3_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH14_AL3_TRANS_COUNT_MASK)
+                | ((value << Self::CH14_AL3_TRANS_COUNT_OFFSET) & Self::CH14_AL3_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -46359,14 +47893,17 @@ impl Ch14Al3TransCountVal {
     /// Read **CH14_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch14_al3_trans_count(&self) -> u32 {
-        (self.bits & Ch14Al3TransCount::CH14_AL3_TRANS_COUNT_MASK) >> Ch14Al3TransCount::CH14_AL3_TRANS_COUNT_OFFSET
+        (self.bits & Ch14Al3TransCount::CH14_AL3_TRANS_COUNT_MASK)
+            >> Ch14Al3TransCount::CH14_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH14_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch14_al3_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch14Al3TransCount::CH14_AL3_TRANS_COUNT_MASK) | ((value << Ch14Al3TransCount::CH14_AL3_TRANS_COUNT_OFFSET) & Ch14Al3TransCount::CH14_AL3_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch14Al3TransCount::CH14_AL3_TRANS_COUNT_MASK)
+                | ((value << Ch14Al3TransCount::CH14_AL3_TRANS_COUNT_OFFSET)
+                    & Ch14Al3TransCount::CH14_AL3_TRANS_COUNT_MASK),
         }
     }
 }
@@ -46434,13 +47971,18 @@ impl Ch14Al3ReadAddrTrig {
     /// **CH14_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch14_al3_read_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH14_AL3_READ_ADDR_TRIG_MASK) >> Self::CH14_AL3_READ_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH14_AL3_READ_ADDR_TRIG_MASK)
+            >> Self::CH14_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH14_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch14_al3_read_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH14_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH14_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH14_AL3_READ_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH14_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Self::CH14_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Self::CH14_AL3_READ_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -46469,14 +48011,17 @@ impl Ch14Al3ReadAddrTrigVal {
     /// Read **CH14_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch14_al3_read_addr_trig(&self) -> u32 {
-        (self.bits & Ch14Al3ReadAddrTrig::CH14_AL3_READ_ADDR_TRIG_MASK) >> Ch14Al3ReadAddrTrig::CH14_AL3_READ_ADDR_TRIG_OFFSET
+        (self.bits & Ch14Al3ReadAddrTrig::CH14_AL3_READ_ADDR_TRIG_MASK)
+            >> Ch14Al3ReadAddrTrig::CH14_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH14_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch14_al3_read_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch14Al3ReadAddrTrig::CH14_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch14Al3ReadAddrTrig::CH14_AL3_READ_ADDR_TRIG_OFFSET) & Ch14Al3ReadAddrTrig::CH14_AL3_READ_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch14Al3ReadAddrTrig::CH14_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Ch14Al3ReadAddrTrig::CH14_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Ch14Al3ReadAddrTrig::CH14_AL3_READ_ADDR_TRIG_MASK),
         }
     }
 }
@@ -46558,7 +48103,10 @@ impl Ch15ReadAddr {
     /// This register updates automatically each time a read completes. The current value is the next address to be read by this channel.
     #[inline(always)]
     pub fn write_ch15_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH15_READ_ADDR_MASK) | ((value << Self::CH15_READ_ADDR_OFFSET) & Self::CH15_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH15_READ_ADDR_MASK)
+                | ((value << Self::CH15_READ_ADDR_OFFSET) & Self::CH15_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -46604,7 +48152,9 @@ impl Ch15ReadAddrVal {
     #[inline(always)]
     pub const fn with_ch15_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch15ReadAddr::CH15_READ_ADDR_MASK) | ((value << Ch15ReadAddr::CH15_READ_ADDR_OFFSET) & Ch15ReadAddr::CH15_READ_ADDR_MASK)
+            bits: (self.bits & !Ch15ReadAddr::CH15_READ_ADDR_MASK)
+                | ((value << Ch15ReadAddr::CH15_READ_ADDR_OFFSET)
+                    & Ch15ReadAddr::CH15_READ_ADDR_MASK),
         }
     }
 }
@@ -46686,7 +48236,10 @@ impl Ch15WriteAddr {
     /// This register updates automatically each time a write completes. The current value is the next address to be written by this channel.
     #[inline(always)]
     pub fn write_ch15_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH15_WRITE_ADDR_MASK) | ((value << Self::CH15_WRITE_ADDR_OFFSET) & Self::CH15_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH15_WRITE_ADDR_MASK)
+                | ((value << Self::CH15_WRITE_ADDR_OFFSET) & Self::CH15_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -46732,7 +48285,9 @@ impl Ch15WriteAddrVal {
     #[inline(always)]
     pub const fn with_ch15_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch15WriteAddr::CH15_WRITE_ADDR_MASK) | ((value << Ch15WriteAddr::CH15_WRITE_ADDR_OFFSET) & Ch15WriteAddr::CH15_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch15WriteAddr::CH15_WRITE_ADDR_MASK)
+                | ((value << Ch15WriteAddr::CH15_WRITE_ADDR_OFFSET)
+                    & Ch15WriteAddr::CH15_WRITE_ADDR_MASK),
         }
     }
 }
@@ -46852,7 +48407,9 @@ impl Ch15TransCount {
     /// All other values are reserved.
     #[inline(always)]
     pub fn write_mode(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::MODE_MASK) | ((value << Self::MODE_OFFSET) & Self::MODE_MASK)
+        });
     }
 
     /// **COUNT** `[27:0]` (RW)
@@ -46876,7 +48433,9 @@ impl Ch15TransCount {
     /// The RELOAD value can be observed at CHx_DBG_TCR. If TRANS_COUNT is used as a trigger, the written value is used immediately as the length of the new transfer sequence, as well as being written to RELOAD.
     #[inline(always)]
     pub fn write_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK)
+        });
     }
 }
 
@@ -46940,7 +48499,8 @@ impl Ch15TransCountVal {
     #[inline(always)]
     pub const fn with_mode(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch15TransCount::MODE_MASK) | ((value << Ch15TransCount::MODE_OFFSET) & Ch15TransCount::MODE_MASK)
+            bits: (self.bits & !Ch15TransCount::MODE_MASK)
+                | ((value << Ch15TransCount::MODE_OFFSET) & Ch15TransCount::MODE_MASK),
         }
     }
 
@@ -46954,7 +48514,8 @@ impl Ch15TransCountVal {
     #[inline(always)]
     pub const fn with_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch15TransCount::COUNT_MASK) | ((value << Ch15TransCount::COUNT_OFFSET) & Ch15TransCount::COUNT_MASK)
+            bits: (self.bits & !Ch15TransCount::COUNT_MASK)
+                | ((value << Ch15TransCount::COUNT_OFFSET) & Ch15TransCount::COUNT_MASK),
         }
     }
 }
@@ -47662,7 +49223,9 @@ impl Ch15CtrlTrig {
     /// 0x0 to 0x3a -> select DREQ n as TREQ
     #[inline(always)]
     pub fn write_treq_sel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TREQ_SEL_MASK) | ((value << Self::TREQ_SEL_OFFSET) & Self::TREQ_SEL_MASK)
+        });
     }
 
     /// **CHAIN_TO** `[16:13]` (RW)
@@ -47680,7 +49243,9 @@ impl Ch15CtrlTrig {
     /// Note this field resets to 0, so channels 1 and above will chain to channel 0 by default. Set this field to avoid this behaviour.
     #[inline(always)]
     pub fn write_chain_to(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CHAIN_TO_MASK) | ((value << Self::CHAIN_TO_OFFSET) & Self::CHAIN_TO_MASK)
+        });
     }
 
     /// **RING_SEL** `[12]` (RW)
@@ -47719,7 +49284,9 @@ impl Ch15CtrlTrig {
     /// Ring sizes between 2 and 32768 bytes are possible. This can apply to either read or write addresses, based on value of RING_SEL.
     #[inline(always)]
     pub fn write_ring_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RING_SIZE_MASK) | ((value << Self::RING_SIZE_OFFSET) & Self::RING_SIZE_MASK)
+        });
     }
 
     /// **INCR_WRITE_REV** `[7]` (RW)
@@ -47819,7 +49386,9 @@ impl Ch15CtrlTrig {
     /// Set the size of each bus transfer (byte/halfword/word). READ_ADDR and WRITE_ADDR advance by this amount (1/2/4 bytes) with each transfer.
     #[inline(always)]
     pub fn write_data_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DATA_SIZE_MASK) | ((value << Self::DATA_SIZE_OFFSET) & Self::DATA_SIZE_MASK)
+        });
     }
 
     /// **HIGH_PRIORITY** `[1]` (RW)
@@ -48065,7 +49634,7 @@ impl Ch15CtrlTrigVal {
                 self.bits | Ch15CtrlTrig::READ_ERROR_MASK
             } else {
                 self.bits & !Ch15CtrlTrig::READ_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -48080,7 +49649,7 @@ impl Ch15CtrlTrigVal {
                 self.bits | Ch15CtrlTrig::WRITE_ERROR_MASK
             } else {
                 self.bits & !Ch15CtrlTrig::WRITE_ERROR_MASK
-            }
+            },
         }
     }
 
@@ -48095,7 +49664,7 @@ impl Ch15CtrlTrigVal {
                 self.bits | Ch15CtrlTrig::SNIFF_EN_MASK
             } else {
                 self.bits & !Ch15CtrlTrig::SNIFF_EN_MASK
-            }
+            },
         }
     }
 
@@ -48110,7 +49679,7 @@ impl Ch15CtrlTrigVal {
                 self.bits | Ch15CtrlTrig::BSWAP_MASK
             } else {
                 self.bits & !Ch15CtrlTrig::BSWAP_MASK
-            }
+            },
         }
     }
 
@@ -48125,7 +49694,7 @@ impl Ch15CtrlTrigVal {
                 self.bits | Ch15CtrlTrig::IRQ_QUIET_MASK
             } else {
                 self.bits & !Ch15CtrlTrig::IRQ_QUIET_MASK
-            }
+            },
         }
     }
 
@@ -48137,7 +49706,8 @@ impl Ch15CtrlTrigVal {
     #[inline(always)]
     pub const fn with_treq_sel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch15CtrlTrig::TREQ_SEL_MASK) | ((value << Ch15CtrlTrig::TREQ_SEL_OFFSET) & Ch15CtrlTrig::TREQ_SEL_MASK)
+            bits: (self.bits & !Ch15CtrlTrig::TREQ_SEL_MASK)
+                | ((value << Ch15CtrlTrig::TREQ_SEL_OFFSET) & Ch15CtrlTrig::TREQ_SEL_MASK),
         }
     }
 
@@ -48148,7 +49718,8 @@ impl Ch15CtrlTrigVal {
     #[inline(always)]
     pub const fn with_chain_to(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch15CtrlTrig::CHAIN_TO_MASK) | ((value << Ch15CtrlTrig::CHAIN_TO_OFFSET) & Ch15CtrlTrig::CHAIN_TO_MASK)
+            bits: (self.bits & !Ch15CtrlTrig::CHAIN_TO_MASK)
+                | ((value << Ch15CtrlTrig::CHAIN_TO_OFFSET) & Ch15CtrlTrig::CHAIN_TO_MASK),
         }
     }
 
@@ -48163,7 +49734,7 @@ impl Ch15CtrlTrigVal {
                 self.bits | Ch15CtrlTrig::RING_SEL_MASK
             } else {
                 self.bits & !Ch15CtrlTrig::RING_SEL_MASK
-            }
+            },
         }
     }
 
@@ -48174,7 +49745,8 @@ impl Ch15CtrlTrigVal {
     #[inline(always)]
     pub const fn with_ring_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch15CtrlTrig::RING_SIZE_MASK) | ((value << Ch15CtrlTrig::RING_SIZE_OFFSET) & Ch15CtrlTrig::RING_SIZE_MASK)
+            bits: (self.bits & !Ch15CtrlTrig::RING_SIZE_MASK)
+                | ((value << Ch15CtrlTrig::RING_SIZE_OFFSET) & Ch15CtrlTrig::RING_SIZE_MASK),
         }
     }
 
@@ -48189,7 +49761,7 @@ impl Ch15CtrlTrigVal {
                 self.bits | Ch15CtrlTrig::INCR_WRITE_REV_MASK
             } else {
                 self.bits & !Ch15CtrlTrig::INCR_WRITE_REV_MASK
-            }
+            },
         }
     }
 
@@ -48204,7 +49776,7 @@ impl Ch15CtrlTrigVal {
                 self.bits | Ch15CtrlTrig::INCR_WRITE_MASK
             } else {
                 self.bits & !Ch15CtrlTrig::INCR_WRITE_MASK
-            }
+            },
         }
     }
 
@@ -48219,7 +49791,7 @@ impl Ch15CtrlTrigVal {
                 self.bits | Ch15CtrlTrig::INCR_READ_REV_MASK
             } else {
                 self.bits & !Ch15CtrlTrig::INCR_READ_REV_MASK
-            }
+            },
         }
     }
 
@@ -48234,7 +49806,7 @@ impl Ch15CtrlTrigVal {
                 self.bits | Ch15CtrlTrig::INCR_READ_MASK
             } else {
                 self.bits & !Ch15CtrlTrig::INCR_READ_MASK
-            }
+            },
         }
     }
 
@@ -48244,7 +49816,8 @@ impl Ch15CtrlTrigVal {
     #[inline(always)]
     pub const fn with_data_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch15CtrlTrig::DATA_SIZE_MASK) | ((value << Ch15CtrlTrig::DATA_SIZE_OFFSET) & Ch15CtrlTrig::DATA_SIZE_MASK)
+            bits: (self.bits & !Ch15CtrlTrig::DATA_SIZE_MASK)
+                | ((value << Ch15CtrlTrig::DATA_SIZE_OFFSET) & Ch15CtrlTrig::DATA_SIZE_MASK),
         }
     }
 
@@ -48259,7 +49832,7 @@ impl Ch15CtrlTrigVal {
                 self.bits | Ch15CtrlTrig::HIGH_PRIORITY_MASK
             } else {
                 self.bits & !Ch15CtrlTrig::HIGH_PRIORITY_MASK
-            }
+            },
         }
     }
 
@@ -48274,7 +49847,7 @@ impl Ch15CtrlTrigVal {
                 self.bits | Ch15CtrlTrig::EN_MASK
             } else {
                 self.bits & !Ch15CtrlTrig::EN_MASK
-            }
+            },
         }
     }
 }
@@ -48346,7 +49919,10 @@ impl Ch15Al1Ctrl {
     /// Write **CH15_AL1_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch15_al1_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH15_AL1_CTRL_MASK) | ((value << Self::CH15_AL1_CTRL_OFFSET) & Self::CH15_AL1_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH15_AL1_CTRL_MASK)
+                | ((value << Self::CH15_AL1_CTRL_OFFSET) & Self::CH15_AL1_CTRL_MASK)
+        });
     }
 }
 
@@ -48382,7 +49958,8 @@ impl Ch15Al1CtrlVal {
     #[inline(always)]
     pub const fn with_ch15_al1_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch15Al1Ctrl::CH15_AL1_CTRL_MASK) | ((value << Ch15Al1Ctrl::CH15_AL1_CTRL_OFFSET) & Ch15Al1Ctrl::CH15_AL1_CTRL_MASK)
+            bits: (self.bits & !Ch15Al1Ctrl::CH15_AL1_CTRL_MASK)
+                | ((value << Ch15Al1Ctrl::CH15_AL1_CTRL_OFFSET) & Ch15Al1Ctrl::CH15_AL1_CTRL_MASK),
         }
     }
 }
@@ -48454,7 +50031,10 @@ impl Ch15Al1ReadAddr {
     /// Write **CH15_AL1_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch15_al1_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH15_AL1_READ_ADDR_MASK) | ((value << Self::CH15_AL1_READ_ADDR_OFFSET) & Self::CH15_AL1_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH15_AL1_READ_ADDR_MASK)
+                | ((value << Self::CH15_AL1_READ_ADDR_OFFSET) & Self::CH15_AL1_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -48483,14 +50063,17 @@ impl Ch15Al1ReadAddrVal {
     /// Read **CH15_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch15_al1_read_addr(&self) -> u32 {
-        (self.bits & Ch15Al1ReadAddr::CH15_AL1_READ_ADDR_MASK) >> Ch15Al1ReadAddr::CH15_AL1_READ_ADDR_OFFSET
+        (self.bits & Ch15Al1ReadAddr::CH15_AL1_READ_ADDR_MASK)
+            >> Ch15Al1ReadAddr::CH15_AL1_READ_ADDR_OFFSET
     }
 
     /// Set **CH15_AL1_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch15_al1_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch15Al1ReadAddr::CH15_AL1_READ_ADDR_MASK) | ((value << Ch15Al1ReadAddr::CH15_AL1_READ_ADDR_OFFSET) & Ch15Al1ReadAddr::CH15_AL1_READ_ADDR_MASK)
+            bits: (self.bits & !Ch15Al1ReadAddr::CH15_AL1_READ_ADDR_MASK)
+                | ((value << Ch15Al1ReadAddr::CH15_AL1_READ_ADDR_OFFSET)
+                    & Ch15Al1ReadAddr::CH15_AL1_READ_ADDR_MASK),
         }
     }
 }
@@ -48556,13 +50139,17 @@ impl Ch15Al1WriteAddr {
     /// **CH15_AL1_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch15_al1_write_addr(&self) -> u32 {
-        (self.value.read_bits() & Self::CH15_AL1_WRITE_ADDR_MASK) >> Self::CH15_AL1_WRITE_ADDR_OFFSET
+        (self.value.read_bits() & Self::CH15_AL1_WRITE_ADDR_MASK)
+            >> Self::CH15_AL1_WRITE_ADDR_OFFSET
     }
 
     /// Write **CH15_AL1_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch15_al1_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH15_AL1_WRITE_ADDR_MASK) | ((value << Self::CH15_AL1_WRITE_ADDR_OFFSET) & Self::CH15_AL1_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH15_AL1_WRITE_ADDR_MASK)
+                | ((value << Self::CH15_AL1_WRITE_ADDR_OFFSET) & Self::CH15_AL1_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -48591,14 +50178,17 @@ impl Ch15Al1WriteAddrVal {
     /// Read **CH15_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch15_al1_write_addr(&self) -> u32 {
-        (self.bits & Ch15Al1WriteAddr::CH15_AL1_WRITE_ADDR_MASK) >> Ch15Al1WriteAddr::CH15_AL1_WRITE_ADDR_OFFSET
+        (self.bits & Ch15Al1WriteAddr::CH15_AL1_WRITE_ADDR_MASK)
+            >> Ch15Al1WriteAddr::CH15_AL1_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH15_AL1_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch15_al1_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch15Al1WriteAddr::CH15_AL1_WRITE_ADDR_MASK) | ((value << Ch15Al1WriteAddr::CH15_AL1_WRITE_ADDR_OFFSET) & Ch15Al1WriteAddr::CH15_AL1_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch15Al1WriteAddr::CH15_AL1_WRITE_ADDR_MASK)
+                | ((value << Ch15Al1WriteAddr::CH15_AL1_WRITE_ADDR_OFFSET)
+                    & Ch15Al1WriteAddr::CH15_AL1_WRITE_ADDR_MASK),
         }
     }
 }
@@ -48666,13 +50256,18 @@ impl Ch15Al1TransCountTrig {
     /// **CH15_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch15_al1_trans_count_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH15_AL1_TRANS_COUNT_TRIG_MASK) >> Self::CH15_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH15_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Self::CH15_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Write **CH15_AL1_TRANS_COUNT_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch15_al1_trans_count_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH15_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Self::CH15_AL1_TRANS_COUNT_TRIG_OFFSET) & Self::CH15_AL1_TRANS_COUNT_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH15_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Self::CH15_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Self::CH15_AL1_TRANS_COUNT_TRIG_MASK)
+        });
     }
 }
 
@@ -48701,14 +50296,17 @@ impl Ch15Al1TransCountTrigVal {
     /// Read **CH15_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch15_al1_trans_count_trig(&self) -> u32 {
-        (self.bits & Ch15Al1TransCountTrig::CH15_AL1_TRANS_COUNT_TRIG_MASK) >> Ch15Al1TransCountTrig::CH15_AL1_TRANS_COUNT_TRIG_OFFSET
+        (self.bits & Ch15Al1TransCountTrig::CH15_AL1_TRANS_COUNT_TRIG_MASK)
+            >> Ch15Al1TransCountTrig::CH15_AL1_TRANS_COUNT_TRIG_OFFSET
     }
 
     /// Set **CH15_AL1_TRANS_COUNT_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch15_al1_trans_count_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch15Al1TransCountTrig::CH15_AL1_TRANS_COUNT_TRIG_MASK) | ((value << Ch15Al1TransCountTrig::CH15_AL1_TRANS_COUNT_TRIG_OFFSET) & Ch15Al1TransCountTrig::CH15_AL1_TRANS_COUNT_TRIG_MASK)
+            bits: (self.bits & !Ch15Al1TransCountTrig::CH15_AL1_TRANS_COUNT_TRIG_MASK)
+                | ((value << Ch15Al1TransCountTrig::CH15_AL1_TRANS_COUNT_TRIG_OFFSET)
+                    & Ch15Al1TransCountTrig::CH15_AL1_TRANS_COUNT_TRIG_MASK),
         }
     }
 }
@@ -48734,7 +50332,10 @@ impl Ch15Al1TransCountTrig {
 
     /// Modify the register using a value struct
     #[inline(always)]
-    pub fn modify_val<F: FnOnce(Ch15Al1TransCountTrigVal) -> Ch15Al1TransCountTrigVal>(&self, f: F) {
+    pub fn modify_val<F: FnOnce(Ch15Al1TransCountTrigVal) -> Ch15Al1TransCountTrigVal>(
+        &self,
+        f: F,
+    ) {
         self.write_val(f(self.read_val()))
     }
 }
@@ -48780,7 +50381,10 @@ impl Ch15Al2Ctrl {
     /// Write **CH15_AL2_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch15_al2_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH15_AL2_CTRL_MASK) | ((value << Self::CH15_AL2_CTRL_OFFSET) & Self::CH15_AL2_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH15_AL2_CTRL_MASK)
+                | ((value << Self::CH15_AL2_CTRL_OFFSET) & Self::CH15_AL2_CTRL_MASK)
+        });
     }
 }
 
@@ -48816,7 +50420,8 @@ impl Ch15Al2CtrlVal {
     #[inline(always)]
     pub const fn with_ch15_al2_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch15Al2Ctrl::CH15_AL2_CTRL_MASK) | ((value << Ch15Al2Ctrl::CH15_AL2_CTRL_OFFSET) & Ch15Al2Ctrl::CH15_AL2_CTRL_MASK)
+            bits: (self.bits & !Ch15Al2Ctrl::CH15_AL2_CTRL_MASK)
+                | ((value << Ch15Al2Ctrl::CH15_AL2_CTRL_OFFSET) & Ch15Al2Ctrl::CH15_AL2_CTRL_MASK),
         }
     }
 }
@@ -48882,13 +50487,17 @@ impl Ch15Al2TransCount {
     /// **CH15_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch15_al2_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH15_AL2_TRANS_COUNT_MASK) >> Self::CH15_AL2_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH15_AL2_TRANS_COUNT_MASK)
+            >> Self::CH15_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH15_AL2_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch15_al2_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH15_AL2_TRANS_COUNT_MASK) | ((value << Self::CH15_AL2_TRANS_COUNT_OFFSET) & Self::CH15_AL2_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH15_AL2_TRANS_COUNT_MASK)
+                | ((value << Self::CH15_AL2_TRANS_COUNT_OFFSET) & Self::CH15_AL2_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -48917,14 +50526,17 @@ impl Ch15Al2TransCountVal {
     /// Read **CH15_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch15_al2_trans_count(&self) -> u32 {
-        (self.bits & Ch15Al2TransCount::CH15_AL2_TRANS_COUNT_MASK) >> Ch15Al2TransCount::CH15_AL2_TRANS_COUNT_OFFSET
+        (self.bits & Ch15Al2TransCount::CH15_AL2_TRANS_COUNT_MASK)
+            >> Ch15Al2TransCount::CH15_AL2_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH15_AL2_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch15_al2_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch15Al2TransCount::CH15_AL2_TRANS_COUNT_MASK) | ((value << Ch15Al2TransCount::CH15_AL2_TRANS_COUNT_OFFSET) & Ch15Al2TransCount::CH15_AL2_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch15Al2TransCount::CH15_AL2_TRANS_COUNT_MASK)
+                | ((value << Ch15Al2TransCount::CH15_AL2_TRANS_COUNT_OFFSET)
+                    & Ch15Al2TransCount::CH15_AL2_TRANS_COUNT_MASK),
         }
     }
 }
@@ -48996,7 +50608,10 @@ impl Ch15Al2ReadAddr {
     /// Write **CH15_AL2_READ_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch15_al2_read_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH15_AL2_READ_ADDR_MASK) | ((value << Self::CH15_AL2_READ_ADDR_OFFSET) & Self::CH15_AL2_READ_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH15_AL2_READ_ADDR_MASK)
+                | ((value << Self::CH15_AL2_READ_ADDR_OFFSET) & Self::CH15_AL2_READ_ADDR_MASK)
+        });
     }
 }
 
@@ -49025,14 +50640,17 @@ impl Ch15Al2ReadAddrVal {
     /// Read **CH15_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch15_al2_read_addr(&self) -> u32 {
-        (self.bits & Ch15Al2ReadAddr::CH15_AL2_READ_ADDR_MASK) >> Ch15Al2ReadAddr::CH15_AL2_READ_ADDR_OFFSET
+        (self.bits & Ch15Al2ReadAddr::CH15_AL2_READ_ADDR_MASK)
+            >> Ch15Al2ReadAddr::CH15_AL2_READ_ADDR_OFFSET
     }
 
     /// Set **CH15_AL2_READ_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch15_al2_read_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch15Al2ReadAddr::CH15_AL2_READ_ADDR_MASK) | ((value << Ch15Al2ReadAddr::CH15_AL2_READ_ADDR_OFFSET) & Ch15Al2ReadAddr::CH15_AL2_READ_ADDR_MASK)
+            bits: (self.bits & !Ch15Al2ReadAddr::CH15_AL2_READ_ADDR_MASK)
+                | ((value << Ch15Al2ReadAddr::CH15_AL2_READ_ADDR_OFFSET)
+                    & Ch15Al2ReadAddr::CH15_AL2_READ_ADDR_MASK),
         }
     }
 }
@@ -49100,13 +50718,18 @@ impl Ch15Al2WriteAddrTrig {
     /// **CH15_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch15_al2_write_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH15_AL2_WRITE_ADDR_TRIG_MASK) >> Self::CH15_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH15_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Self::CH15_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH15_AL2_WRITE_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch15_al2_write_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH15_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Self::CH15_AL2_WRITE_ADDR_TRIG_OFFSET) & Self::CH15_AL2_WRITE_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH15_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Self::CH15_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Self::CH15_AL2_WRITE_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -49135,14 +50758,17 @@ impl Ch15Al2WriteAddrTrigVal {
     /// Read **CH15_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch15_al2_write_addr_trig(&self) -> u32 {
-        (self.bits & Ch15Al2WriteAddrTrig::CH15_AL2_WRITE_ADDR_TRIG_MASK) >> Ch15Al2WriteAddrTrig::CH15_AL2_WRITE_ADDR_TRIG_OFFSET
+        (self.bits & Ch15Al2WriteAddrTrig::CH15_AL2_WRITE_ADDR_TRIG_MASK)
+            >> Ch15Al2WriteAddrTrig::CH15_AL2_WRITE_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH15_AL2_WRITE_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch15_al2_write_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch15Al2WriteAddrTrig::CH15_AL2_WRITE_ADDR_TRIG_MASK) | ((value << Ch15Al2WriteAddrTrig::CH15_AL2_WRITE_ADDR_TRIG_OFFSET) & Ch15Al2WriteAddrTrig::CH15_AL2_WRITE_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch15Al2WriteAddrTrig::CH15_AL2_WRITE_ADDR_TRIG_MASK)
+                | ((value << Ch15Al2WriteAddrTrig::CH15_AL2_WRITE_ADDR_TRIG_OFFSET)
+                    & Ch15Al2WriteAddrTrig::CH15_AL2_WRITE_ADDR_TRIG_MASK),
         }
     }
 }
@@ -49214,7 +50840,10 @@ impl Ch15Al3Ctrl {
     /// Write **CH15_AL3_CTRL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch15_al3_ctrl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH15_AL3_CTRL_MASK) | ((value << Self::CH15_AL3_CTRL_OFFSET) & Self::CH15_AL3_CTRL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH15_AL3_CTRL_MASK)
+                | ((value << Self::CH15_AL3_CTRL_OFFSET) & Self::CH15_AL3_CTRL_MASK)
+        });
     }
 }
 
@@ -49250,7 +50879,8 @@ impl Ch15Al3CtrlVal {
     #[inline(always)]
     pub const fn with_ch15_al3_ctrl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch15Al3Ctrl::CH15_AL3_CTRL_MASK) | ((value << Ch15Al3Ctrl::CH15_AL3_CTRL_OFFSET) & Ch15Al3Ctrl::CH15_AL3_CTRL_MASK)
+            bits: (self.bits & !Ch15Al3Ctrl::CH15_AL3_CTRL_MASK)
+                | ((value << Ch15Al3Ctrl::CH15_AL3_CTRL_OFFSET) & Ch15Al3Ctrl::CH15_AL3_CTRL_MASK),
         }
     }
 }
@@ -49316,13 +50946,17 @@ impl Ch15Al3WriteAddr {
     /// **CH15_AL3_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch15_al3_write_addr(&self) -> u32 {
-        (self.value.read_bits() & Self::CH15_AL3_WRITE_ADDR_MASK) >> Self::CH15_AL3_WRITE_ADDR_OFFSET
+        (self.value.read_bits() & Self::CH15_AL3_WRITE_ADDR_MASK)
+            >> Self::CH15_AL3_WRITE_ADDR_OFFSET
     }
 
     /// Write **CH15_AL3_WRITE_ADDR** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch15_al3_write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH15_AL3_WRITE_ADDR_MASK) | ((value << Self::CH15_AL3_WRITE_ADDR_OFFSET) & Self::CH15_AL3_WRITE_ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH15_AL3_WRITE_ADDR_MASK)
+                | ((value << Self::CH15_AL3_WRITE_ADDR_OFFSET) & Self::CH15_AL3_WRITE_ADDR_MASK)
+        });
     }
 }
 
@@ -49351,14 +50985,17 @@ impl Ch15Al3WriteAddrVal {
     /// Read **CH15_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn ch15_al3_write_addr(&self) -> u32 {
-        (self.bits & Ch15Al3WriteAddr::CH15_AL3_WRITE_ADDR_MASK) >> Ch15Al3WriteAddr::CH15_AL3_WRITE_ADDR_OFFSET
+        (self.bits & Ch15Al3WriteAddr::CH15_AL3_WRITE_ADDR_MASK)
+            >> Ch15Al3WriteAddr::CH15_AL3_WRITE_ADDR_OFFSET
     }
 
     /// Set **CH15_AL3_WRITE_ADDR** `[31:0]`
     #[inline(always)]
     pub const fn with_ch15_al3_write_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch15Al3WriteAddr::CH15_AL3_WRITE_ADDR_MASK) | ((value << Ch15Al3WriteAddr::CH15_AL3_WRITE_ADDR_OFFSET) & Ch15Al3WriteAddr::CH15_AL3_WRITE_ADDR_MASK)
+            bits: (self.bits & !Ch15Al3WriteAddr::CH15_AL3_WRITE_ADDR_MASK)
+                | ((value << Ch15Al3WriteAddr::CH15_AL3_WRITE_ADDR_OFFSET)
+                    & Ch15Al3WriteAddr::CH15_AL3_WRITE_ADDR_MASK),
         }
     }
 }
@@ -49424,13 +51061,17 @@ impl Ch15Al3TransCount {
     /// **CH15_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch15_al3_trans_count(&self) -> u32 {
-        (self.value.read_bits() & Self::CH15_AL3_TRANS_COUNT_MASK) >> Self::CH15_AL3_TRANS_COUNT_OFFSET
+        (self.value.read_bits() & Self::CH15_AL3_TRANS_COUNT_MASK)
+            >> Self::CH15_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Write **CH15_AL3_TRANS_COUNT** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch15_al3_trans_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH15_AL3_TRANS_COUNT_MASK) | ((value << Self::CH15_AL3_TRANS_COUNT_OFFSET) & Self::CH15_AL3_TRANS_COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH15_AL3_TRANS_COUNT_MASK)
+                | ((value << Self::CH15_AL3_TRANS_COUNT_OFFSET) & Self::CH15_AL3_TRANS_COUNT_MASK)
+        });
     }
 }
 
@@ -49459,14 +51100,17 @@ impl Ch15Al3TransCountVal {
     /// Read **CH15_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn ch15_al3_trans_count(&self) -> u32 {
-        (self.bits & Ch15Al3TransCount::CH15_AL3_TRANS_COUNT_MASK) >> Ch15Al3TransCount::CH15_AL3_TRANS_COUNT_OFFSET
+        (self.bits & Ch15Al3TransCount::CH15_AL3_TRANS_COUNT_MASK)
+            >> Ch15Al3TransCount::CH15_AL3_TRANS_COUNT_OFFSET
     }
 
     /// Set **CH15_AL3_TRANS_COUNT** `[31:0]`
     #[inline(always)]
     pub const fn with_ch15_al3_trans_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch15Al3TransCount::CH15_AL3_TRANS_COUNT_MASK) | ((value << Ch15Al3TransCount::CH15_AL3_TRANS_COUNT_OFFSET) & Ch15Al3TransCount::CH15_AL3_TRANS_COUNT_MASK)
+            bits: (self.bits & !Ch15Al3TransCount::CH15_AL3_TRANS_COUNT_MASK)
+                | ((value << Ch15Al3TransCount::CH15_AL3_TRANS_COUNT_OFFSET)
+                    & Ch15Al3TransCount::CH15_AL3_TRANS_COUNT_MASK),
         }
     }
 }
@@ -49534,13 +51178,18 @@ impl Ch15Al3ReadAddrTrig {
     /// **CH15_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn ch15_al3_read_addr_trig(&self) -> u32 {
-        (self.value.read_bits() & Self::CH15_AL3_READ_ADDR_TRIG_MASK) >> Self::CH15_AL3_READ_ADDR_TRIG_OFFSET
+        (self.value.read_bits() & Self::CH15_AL3_READ_ADDR_TRIG_MASK)
+            >> Self::CH15_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Write **CH15_AL3_READ_ADDR_TRIG** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_ch15_al3_read_addr_trig(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH15_AL3_READ_ADDR_TRIG_MASK) | ((value << Self::CH15_AL3_READ_ADDR_TRIG_OFFSET) & Self::CH15_AL3_READ_ADDR_TRIG_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH15_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Self::CH15_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Self::CH15_AL3_READ_ADDR_TRIG_MASK)
+        });
     }
 }
 
@@ -49569,14 +51218,17 @@ impl Ch15Al3ReadAddrTrigVal {
     /// Read **CH15_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn ch15_al3_read_addr_trig(&self) -> u32 {
-        (self.bits & Ch15Al3ReadAddrTrig::CH15_AL3_READ_ADDR_TRIG_MASK) >> Ch15Al3ReadAddrTrig::CH15_AL3_READ_ADDR_TRIG_OFFSET
+        (self.bits & Ch15Al3ReadAddrTrig::CH15_AL3_READ_ADDR_TRIG_MASK)
+            >> Ch15Al3ReadAddrTrig::CH15_AL3_READ_ADDR_TRIG_OFFSET
     }
 
     /// Set **CH15_AL3_READ_ADDR_TRIG** `[31:0]`
     #[inline(always)]
     pub const fn with_ch15_al3_read_addr_trig(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch15Al3ReadAddrTrig::CH15_AL3_READ_ADDR_TRIG_MASK) | ((value << Ch15Al3ReadAddrTrig::CH15_AL3_READ_ADDR_TRIG_OFFSET) & Ch15Al3ReadAddrTrig::CH15_AL3_READ_ADDR_TRIG_MASK)
+            bits: (self.bits & !Ch15Al3ReadAddrTrig::CH15_AL3_READ_ADDR_TRIG_MASK)
+                | ((value << Ch15Al3ReadAddrTrig::CH15_AL3_READ_ADDR_TRIG_OFFSET)
+                    & Ch15Al3ReadAddrTrig::CH15_AL3_READ_ADDR_TRIG_MASK),
         }
     }
 }
@@ -49674,7 +51326,9 @@ impl Intr {
     /// If this register is accessed at a security/privilege level less than that of a given channel (as defined by that channel's SECCFG_CHx register), then that channel's interrupt status will read as 0, ignore writes.
     #[inline(always)]
     pub fn write_intr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INTR_MASK) | ((value << Self::INTR_OFFSET) & Self::INTR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INTR_MASK) | ((value << Self::INTR_OFFSET) & Self::INTR_MASK)
+        });
     }
 }
 
@@ -49728,7 +51382,7 @@ impl IntrVal {
     #[inline(always)]
     pub const fn with_intr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Intr::INTR_MASK) | ((value << Intr::INTR_OFFSET) & Intr::INTR_MASK)
+            bits: (self.bits & !Intr::INTR_MASK) | ((value << Intr::INTR_OFFSET) & Intr::INTR_MASK),
         }
     }
 }
@@ -49814,7 +51468,9 @@ impl Inte0 {
     /// Note this bit has no effect if the channel security/privilege level, defined by SECCFG_CHx, is greater than the IRQ security/privilege defined by SECCFG_IRQ0.
     #[inline(always)]
     pub fn write_inte0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INTE0_MASK) | ((value << Self::INTE0_OFFSET) & Self::INTE0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INTE0_MASK) | ((value << Self::INTE0_OFFSET) & Self::INTE0_MASK)
+        });
     }
 }
 
@@ -49862,7 +51518,8 @@ impl Inte0Val {
     #[inline(always)]
     pub const fn with_inte0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Inte0::INTE0_MASK) | ((value << Inte0::INTE0_OFFSET) & Inte0::INTE0_MASK)
+            bits: (self.bits & !Inte0::INTE0_MASK)
+                | ((value << Inte0::INTE0_OFFSET) & Inte0::INTE0_MASK),
         }
     }
 }
@@ -49944,7 +51601,9 @@ impl Intf0 {
     /// Write 1s to force the corresponding bits in INTS0. The interrupt remains asserted until INTF0 is cleared.
     #[inline(always)]
     pub fn write_intf0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INTF0_MASK) | ((value << Self::INTF0_OFFSET) & Self::INTF0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INTF0_MASK) | ((value << Self::INTF0_OFFSET) & Self::INTF0_MASK)
+        });
     }
 }
 
@@ -49990,7 +51649,8 @@ impl Intf0Val {
     #[inline(always)]
     pub const fn with_intf0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Intf0::INTF0_MASK) | ((value << Intf0::INTF0_OFFSET) & Intf0::INTF0_MASK)
+            bits: (self.bits & !Intf0::INTF0_MASK)
+                | ((value << Intf0::INTF0_OFFSET) & Intf0::INTF0_MASK),
         }
     }
 }
@@ -50080,7 +51740,9 @@ impl Ints0 {
     /// Channels with a security/privilege (SECCFG_CHx) greater SECCFG_IRQ0) read as 0 in this register, and ignore writes.
     #[inline(always)]
     pub fn write_ints0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INTS0_MASK) | ((value << Self::INTS0_OFFSET) & Self::INTS0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INTS0_MASK) | ((value << Self::INTS0_OFFSET) & Self::INTS0_MASK)
+        });
     }
 }
 
@@ -50130,7 +51792,8 @@ impl Ints0Val {
     #[inline(always)]
     pub const fn with_ints0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ints0::INTS0_MASK) | ((value << Ints0::INTS0_OFFSET) & Ints0::INTS0_MASK)
+            bits: (self.bits & !Ints0::INTS0_MASK)
+                | ((value << Ints0::INTS0_OFFSET) & Ints0::INTS0_MASK),
         }
     }
 }
@@ -50228,7 +51891,9 @@ impl Intr1 {
     /// If this register is accessed at a security/privilege level less than that of a given channel (as defined by that channel's SECCFG_CHx register), then that channel's interrupt status will read as 0, ignore writes.
     #[inline(always)]
     pub fn write_intr1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INTR1_MASK) | ((value << Self::INTR1_OFFSET) & Self::INTR1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INTR1_MASK) | ((value << Self::INTR1_OFFSET) & Self::INTR1_MASK)
+        });
     }
 }
 
@@ -50282,7 +51947,8 @@ impl Intr1Val {
     #[inline(always)]
     pub const fn with_intr1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Intr1::INTR1_MASK) | ((value << Intr1::INTR1_OFFSET) & Intr1::INTR1_MASK)
+            bits: (self.bits & !Intr1::INTR1_MASK)
+                | ((value << Intr1::INTR1_OFFSET) & Intr1::INTR1_MASK),
         }
     }
 }
@@ -50368,7 +52034,9 @@ impl Inte1 {
     /// Note this bit has no effect if the channel security/privilege level, defined by SECCFG_CHx, is greater than the IRQ security/privilege defined by SECCFG_IRQ1.
     #[inline(always)]
     pub fn write_inte1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INTE1_MASK) | ((value << Self::INTE1_OFFSET) & Self::INTE1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INTE1_MASK) | ((value << Self::INTE1_OFFSET) & Self::INTE1_MASK)
+        });
     }
 }
 
@@ -50416,7 +52084,8 @@ impl Inte1Val {
     #[inline(always)]
     pub const fn with_inte1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Inte1::INTE1_MASK) | ((value << Inte1::INTE1_OFFSET) & Inte1::INTE1_MASK)
+            bits: (self.bits & !Inte1::INTE1_MASK)
+                | ((value << Inte1::INTE1_OFFSET) & Inte1::INTE1_MASK),
         }
     }
 }
@@ -50498,7 +52167,9 @@ impl Intf1 {
     /// Write 1s to force the corresponding bits in INTS1. The interrupt remains asserted until INTF1 is cleared.
     #[inline(always)]
     pub fn write_intf1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INTF1_MASK) | ((value << Self::INTF1_OFFSET) & Self::INTF1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INTF1_MASK) | ((value << Self::INTF1_OFFSET) & Self::INTF1_MASK)
+        });
     }
 }
 
@@ -50544,7 +52215,8 @@ impl Intf1Val {
     #[inline(always)]
     pub const fn with_intf1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Intf1::INTF1_MASK) | ((value << Intf1::INTF1_OFFSET) & Intf1::INTF1_MASK)
+            bits: (self.bits & !Intf1::INTF1_MASK)
+                | ((value << Intf1::INTF1_OFFSET) & Intf1::INTF1_MASK),
         }
     }
 }
@@ -50634,7 +52306,9 @@ impl Ints1 {
     /// Channels with a security/privilege (SECCFG_CHx) greater SECCFG_IRQ1) read as 0 in this register, and ignore writes.
     #[inline(always)]
     pub fn write_ints1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INTS1_MASK) | ((value << Self::INTS1_OFFSET) & Self::INTS1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INTS1_MASK) | ((value << Self::INTS1_OFFSET) & Self::INTS1_MASK)
+        });
     }
 }
 
@@ -50684,7 +52358,8 @@ impl Ints1Val {
     #[inline(always)]
     pub const fn with_ints1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ints1::INTS1_MASK) | ((value << Ints1::INTS1_OFFSET) & Ints1::INTS1_MASK)
+            bits: (self.bits & !Ints1::INTS1_MASK)
+                | ((value << Ints1::INTS1_OFFSET) & Ints1::INTS1_MASK),
         }
     }
 }
@@ -50782,7 +52457,9 @@ impl Intr2 {
     /// If this register is accessed at a security/privilege level less than that of a given channel (as defined by that channel's SECCFG_CHx register), then that channel's interrupt status will read as 0, ignore writes.
     #[inline(always)]
     pub fn write_intr2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INTR2_MASK) | ((value << Self::INTR2_OFFSET) & Self::INTR2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INTR2_MASK) | ((value << Self::INTR2_OFFSET) & Self::INTR2_MASK)
+        });
     }
 }
 
@@ -50836,7 +52513,8 @@ impl Intr2Val {
     #[inline(always)]
     pub const fn with_intr2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Intr2::INTR2_MASK) | ((value << Intr2::INTR2_OFFSET) & Intr2::INTR2_MASK)
+            bits: (self.bits & !Intr2::INTR2_MASK)
+                | ((value << Intr2::INTR2_OFFSET) & Intr2::INTR2_MASK),
         }
     }
 }
@@ -50922,7 +52600,9 @@ impl Inte2 {
     /// Note this bit has no effect if the channel security/privilege level, defined by SECCFG_CHx, is greater than the IRQ security/privilege defined by SECCFG_IRQ2.
     #[inline(always)]
     pub fn write_inte2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INTE2_MASK) | ((value << Self::INTE2_OFFSET) & Self::INTE2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INTE2_MASK) | ((value << Self::INTE2_OFFSET) & Self::INTE2_MASK)
+        });
     }
 }
 
@@ -50970,7 +52650,8 @@ impl Inte2Val {
     #[inline(always)]
     pub const fn with_inte2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Inte2::INTE2_MASK) | ((value << Inte2::INTE2_OFFSET) & Inte2::INTE2_MASK)
+            bits: (self.bits & !Inte2::INTE2_MASK)
+                | ((value << Inte2::INTE2_OFFSET) & Inte2::INTE2_MASK),
         }
     }
 }
@@ -51052,7 +52733,9 @@ impl Intf2 {
     /// Write 1s to force the corresponding bits in INTS2. The interrupt remains asserted until INTF2 is cleared.
     #[inline(always)]
     pub fn write_intf2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INTF2_MASK) | ((value << Self::INTF2_OFFSET) & Self::INTF2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INTF2_MASK) | ((value << Self::INTF2_OFFSET) & Self::INTF2_MASK)
+        });
     }
 }
 
@@ -51098,7 +52781,8 @@ impl Intf2Val {
     #[inline(always)]
     pub const fn with_intf2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Intf2::INTF2_MASK) | ((value << Intf2::INTF2_OFFSET) & Intf2::INTF2_MASK)
+            bits: (self.bits & !Intf2::INTF2_MASK)
+                | ((value << Intf2::INTF2_OFFSET) & Intf2::INTF2_MASK),
         }
     }
 }
@@ -51188,7 +52872,9 @@ impl Ints2 {
     /// Channels with a security/privilege (SECCFG_CHx) greater SECCFG_IRQ2) read as 0 in this register, and ignore writes.
     #[inline(always)]
     pub fn write_ints2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INTS2_MASK) | ((value << Self::INTS2_OFFSET) & Self::INTS2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INTS2_MASK) | ((value << Self::INTS2_OFFSET) & Self::INTS2_MASK)
+        });
     }
 }
 
@@ -51238,7 +52924,8 @@ impl Ints2Val {
     #[inline(always)]
     pub const fn with_ints2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ints2::INTS2_MASK) | ((value << Ints2::INTS2_OFFSET) & Ints2::INTS2_MASK)
+            bits: (self.bits & !Ints2::INTS2_MASK)
+                | ((value << Ints2::INTS2_OFFSET) & Ints2::INTS2_MASK),
         }
     }
 }
@@ -51336,7 +53023,9 @@ impl Intr3 {
     /// If this register is accessed at a security/privilege level less than that of a given channel (as defined by that channel's SECCFG_CHx register), then that channel's interrupt status will read as 0, ignore writes.
     #[inline(always)]
     pub fn write_intr3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INTR3_MASK) | ((value << Self::INTR3_OFFSET) & Self::INTR3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INTR3_MASK) | ((value << Self::INTR3_OFFSET) & Self::INTR3_MASK)
+        });
     }
 }
 
@@ -51390,7 +53079,8 @@ impl Intr3Val {
     #[inline(always)]
     pub const fn with_intr3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Intr3::INTR3_MASK) | ((value << Intr3::INTR3_OFFSET) & Intr3::INTR3_MASK)
+            bits: (self.bits & !Intr3::INTR3_MASK)
+                | ((value << Intr3::INTR3_OFFSET) & Intr3::INTR3_MASK),
         }
     }
 }
@@ -51476,7 +53166,9 @@ impl Inte3 {
     /// Note this bit has no effect if the channel security/privilege level, defined by SECCFG_CHx, is greater than the IRQ security/privilege defined by SECCFG_IRQ3.
     #[inline(always)]
     pub fn write_inte3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INTE3_MASK) | ((value << Self::INTE3_OFFSET) & Self::INTE3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INTE3_MASK) | ((value << Self::INTE3_OFFSET) & Self::INTE3_MASK)
+        });
     }
 }
 
@@ -51524,7 +53216,8 @@ impl Inte3Val {
     #[inline(always)]
     pub const fn with_inte3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Inte3::INTE3_MASK) | ((value << Inte3::INTE3_OFFSET) & Inte3::INTE3_MASK)
+            bits: (self.bits & !Inte3::INTE3_MASK)
+                | ((value << Inte3::INTE3_OFFSET) & Inte3::INTE3_MASK),
         }
     }
 }
@@ -51606,7 +53299,9 @@ impl Intf3 {
     /// Write 1s to force the corresponding bits in INTS3. The interrupt remains asserted until INTF3 is cleared.
     #[inline(always)]
     pub fn write_intf3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INTF3_MASK) | ((value << Self::INTF3_OFFSET) & Self::INTF3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INTF3_MASK) | ((value << Self::INTF3_OFFSET) & Self::INTF3_MASK)
+        });
     }
 }
 
@@ -51652,7 +53347,8 @@ impl Intf3Val {
     #[inline(always)]
     pub const fn with_intf3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Intf3::INTF3_MASK) | ((value << Intf3::INTF3_OFFSET) & Intf3::INTF3_MASK)
+            bits: (self.bits & !Intf3::INTF3_MASK)
+                | ((value << Intf3::INTF3_OFFSET) & Intf3::INTF3_MASK),
         }
     }
 }
@@ -51742,7 +53438,9 @@ impl Ints3 {
     /// Channels with a security/privilege (SECCFG_CHx) greater SECCFG_IRQ3) read as 0 in this register, and ignore writes.
     #[inline(always)]
     pub fn write_ints3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INTS3_MASK) | ((value << Self::INTS3_OFFSET) & Self::INTS3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INTS3_MASK) | ((value << Self::INTS3_OFFSET) & Self::INTS3_MASK)
+        });
     }
 }
 
@@ -51792,7 +53490,8 @@ impl Ints3Val {
     #[inline(always)]
     pub const fn with_ints3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ints3::INTS3_MASK) | ((value << Ints3::INTS3_OFFSET) & Ints3::INTS3_MASK)
+            bits: (self.bits & !Ints3::INTS3_MASK)
+                | ((value << Ints3::INTS3_OFFSET) & Ints3::INTS3_MASK),
         }
     }
 }
@@ -51887,7 +53586,8 @@ impl Timer0 {
     /// Pacing Timer Dividend. Specifies the X value for the (X/Y) fractional timer.
     #[inline(always)]
     pub fn write_x(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::X_MASK) | ((value << Self::X_OFFSET) & Self::X_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::X_MASK) | ((value << Self::X_OFFSET) & Self::X_MASK));
     }
 
     /// **Y** `[15:0]` (RW)
@@ -51903,7 +53603,8 @@ impl Timer0 {
     /// Pacing Timer Divisor. Specifies the Y value for the (X/Y) fractional timer.
     #[inline(always)]
     pub fn write_y(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::Y_MASK) | ((value << Self::Y_OFFSET) & Self::Y_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::Y_MASK) | ((value << Self::Y_OFFSET) & Self::Y_MASK));
     }
 }
 
@@ -51957,7 +53658,7 @@ impl Timer0Val {
     #[inline(always)]
     pub const fn with_x(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Timer0::X_MASK) | ((value << Timer0::X_OFFSET) & Timer0::X_MASK)
+            bits: (self.bits & !Timer0::X_MASK) | ((value << Timer0::X_OFFSET) & Timer0::X_MASK),
         }
     }
 
@@ -51967,7 +53668,7 @@ impl Timer0Val {
     #[inline(always)]
     pub const fn with_y(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Timer0::Y_MASK) | ((value << Timer0::Y_OFFSET) & Timer0::Y_MASK)
+            bits: (self.bits & !Timer0::Y_MASK) | ((value << Timer0::Y_OFFSET) & Timer0::Y_MASK),
         }
     }
 }
@@ -52062,7 +53763,8 @@ impl Timer1 {
     /// Pacing Timer Dividend. Specifies the X value for the (X/Y) fractional timer.
     #[inline(always)]
     pub fn write_x(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::X_MASK) | ((value << Self::X_OFFSET) & Self::X_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::X_MASK) | ((value << Self::X_OFFSET) & Self::X_MASK));
     }
 
     /// **Y** `[15:0]` (RW)
@@ -52078,7 +53780,8 @@ impl Timer1 {
     /// Pacing Timer Divisor. Specifies the Y value for the (X/Y) fractional timer.
     #[inline(always)]
     pub fn write_y(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::Y_MASK) | ((value << Self::Y_OFFSET) & Self::Y_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::Y_MASK) | ((value << Self::Y_OFFSET) & Self::Y_MASK));
     }
 }
 
@@ -52132,7 +53835,7 @@ impl Timer1Val {
     #[inline(always)]
     pub const fn with_x(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Timer1::X_MASK) | ((value << Timer1::X_OFFSET) & Timer1::X_MASK)
+            bits: (self.bits & !Timer1::X_MASK) | ((value << Timer1::X_OFFSET) & Timer1::X_MASK),
         }
     }
 
@@ -52142,7 +53845,7 @@ impl Timer1Val {
     #[inline(always)]
     pub const fn with_y(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Timer1::Y_MASK) | ((value << Timer1::Y_OFFSET) & Timer1::Y_MASK)
+            bits: (self.bits & !Timer1::Y_MASK) | ((value << Timer1::Y_OFFSET) & Timer1::Y_MASK),
         }
     }
 }
@@ -52237,7 +53940,8 @@ impl Timer2 {
     /// Pacing Timer Dividend. Specifies the X value for the (X/Y) fractional timer.
     #[inline(always)]
     pub fn write_x(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::X_MASK) | ((value << Self::X_OFFSET) & Self::X_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::X_MASK) | ((value << Self::X_OFFSET) & Self::X_MASK));
     }
 
     /// **Y** `[15:0]` (RW)
@@ -52253,7 +53957,8 @@ impl Timer2 {
     /// Pacing Timer Divisor. Specifies the Y value for the (X/Y) fractional timer.
     #[inline(always)]
     pub fn write_y(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::Y_MASK) | ((value << Self::Y_OFFSET) & Self::Y_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::Y_MASK) | ((value << Self::Y_OFFSET) & Self::Y_MASK));
     }
 }
 
@@ -52307,7 +54012,7 @@ impl Timer2Val {
     #[inline(always)]
     pub const fn with_x(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Timer2::X_MASK) | ((value << Timer2::X_OFFSET) & Timer2::X_MASK)
+            bits: (self.bits & !Timer2::X_MASK) | ((value << Timer2::X_OFFSET) & Timer2::X_MASK),
         }
     }
 
@@ -52317,7 +54022,7 @@ impl Timer2Val {
     #[inline(always)]
     pub const fn with_y(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Timer2::Y_MASK) | ((value << Timer2::Y_OFFSET) & Timer2::Y_MASK)
+            bits: (self.bits & !Timer2::Y_MASK) | ((value << Timer2::Y_OFFSET) & Timer2::Y_MASK),
         }
     }
 }
@@ -52412,7 +54117,8 @@ impl Timer3 {
     /// Pacing Timer Dividend. Specifies the X value for the (X/Y) fractional timer.
     #[inline(always)]
     pub fn write_x(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::X_MASK) | ((value << Self::X_OFFSET) & Self::X_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::X_MASK) | ((value << Self::X_OFFSET) & Self::X_MASK));
     }
 
     /// **Y** `[15:0]` (RW)
@@ -52428,7 +54134,8 @@ impl Timer3 {
     /// Pacing Timer Divisor. Specifies the Y value for the (X/Y) fractional timer.
     #[inline(always)]
     pub fn write_y(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::Y_MASK) | ((value << Self::Y_OFFSET) & Self::Y_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::Y_MASK) | ((value << Self::Y_OFFSET) & Self::Y_MASK));
     }
 }
 
@@ -52482,7 +54189,7 @@ impl Timer3Val {
     #[inline(always)]
     pub const fn with_x(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Timer3::X_MASK) | ((value << Timer3::X_OFFSET) & Timer3::X_MASK)
+            bits: (self.bits & !Timer3::X_MASK) | ((value << Timer3::X_OFFSET) & Timer3::X_MASK),
         }
     }
 
@@ -52492,7 +54199,7 @@ impl Timer3Val {
     #[inline(always)]
     pub const fn with_y(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Timer3::Y_MASK) | ((value << Timer3::Y_OFFSET) & Timer3::Y_MASK)
+            bits: (self.bits & !Timer3::Y_MASK) | ((value << Timer3::Y_OFFSET) & Timer3::Y_MASK),
         }
     }
 }
@@ -52566,7 +54273,8 @@ impl MultiChanTrigger {
     /// Each bit in this register corresponds to a DMA channel. Writing a 1 to the relevant bit is the same as writing to that channel's trigger register; the channel will start if it is currently enabled and not already busy.
     #[inline(always)]
     pub fn write_multi_chan_trigger(&self, value: u32) {
-        self.value.write_bits((value << Self::MULTI_CHAN_TRIGGER_OFFSET) & Self::MULTI_CHAN_TRIGGER_MASK);
+        self.value
+            .write_bits((value << Self::MULTI_CHAN_TRIGGER_OFFSET) & Self::MULTI_CHAN_TRIGGER_MASK);
     }
 }
 
@@ -52604,7 +54312,9 @@ impl MultiChanTriggerVal {
     #[inline(always)]
     pub const fn with_multi_chan_trigger(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MultiChanTrigger::MULTI_CHAN_TRIGGER_MASK) | ((value << MultiChanTrigger::MULTI_CHAN_TRIGGER_OFFSET) & MultiChanTrigger::MULTI_CHAN_TRIGGER_MASK)
+            bits: (self.bits & !MultiChanTrigger::MULTI_CHAN_TRIGGER_MASK)
+                | ((value << MultiChanTrigger::MULTI_CHAN_TRIGGER_OFFSET)
+                    & MultiChanTrigger::MULTI_CHAN_TRIGGER_MASK),
         }
     }
 }
@@ -52816,7 +54526,9 @@ impl SniffCtrl {
     /// Write **CALC** `[8:5]` (RW)
     #[inline(always)]
     pub fn write_calc(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CALC_MASK) | ((value << Self::CALC_OFFSET) & Self::CALC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CALC_MASK) | ((value << Self::CALC_OFFSET) & Self::CALC_MASK)
+        });
     }
 
     /// **DMACH** `[4:1]` (RW)
@@ -52832,7 +54544,9 @@ impl SniffCtrl {
     /// DMA channel for Sniffer to observe
     #[inline(always)]
     pub fn write_dmach(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DMACH_MASK) | ((value << Self::DMACH_OFFSET) & Self::DMACH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DMACH_MASK) | ((value << Self::DMACH_OFFSET) & Self::DMACH_MASK)
+        });
     }
 
     /// **EN** `[0]` (RW)
@@ -52941,7 +54655,7 @@ impl SniffCtrlVal {
                 self.bits | SniffCtrl::OUT_INV_MASK
             } else {
                 self.bits & !SniffCtrl::OUT_INV_MASK
-            }
+            },
         }
     }
 
@@ -52955,7 +54669,7 @@ impl SniffCtrlVal {
                 self.bits | SniffCtrl::OUT_REV_MASK
             } else {
                 self.bits & !SniffCtrl::OUT_REV_MASK
-            }
+            },
         }
     }
 
@@ -52970,7 +54684,7 @@ impl SniffCtrlVal {
                 self.bits | SniffCtrl::BSWAP_MASK
             } else {
                 self.bits & !SniffCtrl::BSWAP_MASK
-            }
+            },
         }
     }
 
@@ -52978,7 +54692,8 @@ impl SniffCtrlVal {
     #[inline(always)]
     pub const fn with_calc(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SniffCtrl::CALC_MASK) | ((value << SniffCtrl::CALC_OFFSET) & SniffCtrl::CALC_MASK)
+            bits: (self.bits & !SniffCtrl::CALC_MASK)
+                | ((value << SniffCtrl::CALC_OFFSET) & SniffCtrl::CALC_MASK),
         }
     }
 
@@ -52988,7 +54703,8 @@ impl SniffCtrlVal {
     #[inline(always)]
     pub const fn with_dmach(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SniffCtrl::DMACH_MASK) | ((value << SniffCtrl::DMACH_OFFSET) & SniffCtrl::DMACH_MASK)
+            bits: (self.bits & !SniffCtrl::DMACH_MASK)
+                | ((value << SniffCtrl::DMACH_OFFSET) & SniffCtrl::DMACH_MASK),
         }
     }
 
@@ -53002,7 +54718,7 @@ impl SniffCtrlVal {
                 self.bits | SniffCtrl::EN_MASK
             } else {
                 self.bits & !SniffCtrl::EN_MASK
-            }
+            },
         }
     }
 }
@@ -53084,7 +54800,10 @@ impl SniffData {
     /// Write an initial seed value here before starting a DMA transfer on the channel indicated by SNIFF_CTRL_DMACH. The hardware will update this register each time it observes a read from the indicated channel. Once the channel completes, the final result can be read from this register.
     #[inline(always)]
     pub fn write_sniff_data(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SNIFF_DATA_MASK) | ((value << Self::SNIFF_DATA_OFFSET) & Self::SNIFF_DATA_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SNIFF_DATA_MASK)
+                | ((value << Self::SNIFF_DATA_OFFSET) & Self::SNIFF_DATA_MASK)
+        });
     }
 }
 
@@ -53130,7 +54849,8 @@ impl SniffDataVal {
     #[inline(always)]
     pub const fn with_sniff_data(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SniffData::SNIFF_DATA_MASK) | ((value << SniffData::SNIFF_DATA_OFFSET) & SniffData::SNIFF_DATA_MASK)
+            bits: (self.bits & !SniffData::SNIFF_DATA_MASK)
+                | ((value << SniffData::SNIFF_DATA_OFFSET) & SniffData::SNIFF_DATA_MASK),
         }
     }
 }
@@ -53370,7 +55090,10 @@ impl ChanAbort {
     /// After writing, this register must be polled until it returns all-zero. Until this point, it is unsafe to restart the channel.
     #[inline(always)]
     pub fn write_chan_abort(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CHAN_ABORT_MASK) | ((value << Self::CHAN_ABORT_OFFSET) & Self::CHAN_ABORT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CHAN_ABORT_MASK)
+                | ((value << Self::CHAN_ABORT_OFFSET) & Self::CHAN_ABORT_MASK)
+        });
     }
 }
 
@@ -53418,7 +55141,8 @@ impl ChanAbortVal {
     #[inline(always)]
     pub const fn with_chan_abort(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ChanAbort::CHAN_ABORT_MASK) | ((value << ChanAbort::CHAN_ABORT_OFFSET) & ChanAbort::CHAN_ABORT_MASK)
+            bits: (self.bits & !ChanAbort::CHAN_ABORT_MASK)
+                | ((value << ChanAbort::CHAN_ABORT_OFFSET) & ChanAbort::CHAN_ABORT_MASK),
         }
     }
 }
@@ -53740,7 +55464,7 @@ impl SeccfgCh0Val {
                 self.bits | SeccfgCh0::LOCK_MASK
             } else {
                 self.bits & !SeccfgCh0::LOCK_MASK
-            }
+            },
         }
     }
 
@@ -53755,7 +55479,7 @@ impl SeccfgCh0Val {
                 self.bits | SeccfgCh0::S_MASK
             } else {
                 self.bits & !SeccfgCh0::S_MASK
-            }
+            },
         }
     }
 
@@ -53770,7 +55494,7 @@ impl SeccfgCh0Val {
                 self.bits | SeccfgCh0::P_MASK
             } else {
                 self.bits & !SeccfgCh0::P_MASK
-            }
+            },
         }
     }
 }
@@ -54010,7 +55734,7 @@ impl SeccfgCh1Val {
                 self.bits | SeccfgCh1::LOCK_MASK
             } else {
                 self.bits & !SeccfgCh1::LOCK_MASK
-            }
+            },
         }
     }
 
@@ -54025,7 +55749,7 @@ impl SeccfgCh1Val {
                 self.bits | SeccfgCh1::S_MASK
             } else {
                 self.bits & !SeccfgCh1::S_MASK
-            }
+            },
         }
     }
 
@@ -54040,7 +55764,7 @@ impl SeccfgCh1Val {
                 self.bits | SeccfgCh1::P_MASK
             } else {
                 self.bits & !SeccfgCh1::P_MASK
-            }
+            },
         }
     }
 }
@@ -54280,7 +56004,7 @@ impl SeccfgCh2Val {
                 self.bits | SeccfgCh2::LOCK_MASK
             } else {
                 self.bits & !SeccfgCh2::LOCK_MASK
-            }
+            },
         }
     }
 
@@ -54295,7 +56019,7 @@ impl SeccfgCh2Val {
                 self.bits | SeccfgCh2::S_MASK
             } else {
                 self.bits & !SeccfgCh2::S_MASK
-            }
+            },
         }
     }
 
@@ -54310,7 +56034,7 @@ impl SeccfgCh2Val {
                 self.bits | SeccfgCh2::P_MASK
             } else {
                 self.bits & !SeccfgCh2::P_MASK
-            }
+            },
         }
     }
 }
@@ -54550,7 +56274,7 @@ impl SeccfgCh3Val {
                 self.bits | SeccfgCh3::LOCK_MASK
             } else {
                 self.bits & !SeccfgCh3::LOCK_MASK
-            }
+            },
         }
     }
 
@@ -54565,7 +56289,7 @@ impl SeccfgCh3Val {
                 self.bits | SeccfgCh3::S_MASK
             } else {
                 self.bits & !SeccfgCh3::S_MASK
-            }
+            },
         }
     }
 
@@ -54580,7 +56304,7 @@ impl SeccfgCh3Val {
                 self.bits | SeccfgCh3::P_MASK
             } else {
                 self.bits & !SeccfgCh3::P_MASK
-            }
+            },
         }
     }
 }
@@ -54820,7 +56544,7 @@ impl SeccfgCh4Val {
                 self.bits | SeccfgCh4::LOCK_MASK
             } else {
                 self.bits & !SeccfgCh4::LOCK_MASK
-            }
+            },
         }
     }
 
@@ -54835,7 +56559,7 @@ impl SeccfgCh4Val {
                 self.bits | SeccfgCh4::S_MASK
             } else {
                 self.bits & !SeccfgCh4::S_MASK
-            }
+            },
         }
     }
 
@@ -54850,7 +56574,7 @@ impl SeccfgCh4Val {
                 self.bits | SeccfgCh4::P_MASK
             } else {
                 self.bits & !SeccfgCh4::P_MASK
-            }
+            },
         }
     }
 }
@@ -55090,7 +56814,7 @@ impl SeccfgCh5Val {
                 self.bits | SeccfgCh5::LOCK_MASK
             } else {
                 self.bits & !SeccfgCh5::LOCK_MASK
-            }
+            },
         }
     }
 
@@ -55105,7 +56829,7 @@ impl SeccfgCh5Val {
                 self.bits | SeccfgCh5::S_MASK
             } else {
                 self.bits & !SeccfgCh5::S_MASK
-            }
+            },
         }
     }
 
@@ -55120,7 +56844,7 @@ impl SeccfgCh5Val {
                 self.bits | SeccfgCh5::P_MASK
             } else {
                 self.bits & !SeccfgCh5::P_MASK
-            }
+            },
         }
     }
 }
@@ -55360,7 +57084,7 @@ impl SeccfgCh6Val {
                 self.bits | SeccfgCh6::LOCK_MASK
             } else {
                 self.bits & !SeccfgCh6::LOCK_MASK
-            }
+            },
         }
     }
 
@@ -55375,7 +57099,7 @@ impl SeccfgCh6Val {
                 self.bits | SeccfgCh6::S_MASK
             } else {
                 self.bits & !SeccfgCh6::S_MASK
-            }
+            },
         }
     }
 
@@ -55390,7 +57114,7 @@ impl SeccfgCh6Val {
                 self.bits | SeccfgCh6::P_MASK
             } else {
                 self.bits & !SeccfgCh6::P_MASK
-            }
+            },
         }
     }
 }
@@ -55630,7 +57354,7 @@ impl SeccfgCh7Val {
                 self.bits | SeccfgCh7::LOCK_MASK
             } else {
                 self.bits & !SeccfgCh7::LOCK_MASK
-            }
+            },
         }
     }
 
@@ -55645,7 +57369,7 @@ impl SeccfgCh7Val {
                 self.bits | SeccfgCh7::S_MASK
             } else {
                 self.bits & !SeccfgCh7::S_MASK
-            }
+            },
         }
     }
 
@@ -55660,7 +57384,7 @@ impl SeccfgCh7Val {
                 self.bits | SeccfgCh7::P_MASK
             } else {
                 self.bits & !SeccfgCh7::P_MASK
-            }
+            },
         }
     }
 }
@@ -55900,7 +57624,7 @@ impl SeccfgCh8Val {
                 self.bits | SeccfgCh8::LOCK_MASK
             } else {
                 self.bits & !SeccfgCh8::LOCK_MASK
-            }
+            },
         }
     }
 
@@ -55915,7 +57639,7 @@ impl SeccfgCh8Val {
                 self.bits | SeccfgCh8::S_MASK
             } else {
                 self.bits & !SeccfgCh8::S_MASK
-            }
+            },
         }
     }
 
@@ -55930,7 +57654,7 @@ impl SeccfgCh8Val {
                 self.bits | SeccfgCh8::P_MASK
             } else {
                 self.bits & !SeccfgCh8::P_MASK
-            }
+            },
         }
     }
 }
@@ -56170,7 +57894,7 @@ impl SeccfgCh9Val {
                 self.bits | SeccfgCh9::LOCK_MASK
             } else {
                 self.bits & !SeccfgCh9::LOCK_MASK
-            }
+            },
         }
     }
 
@@ -56185,7 +57909,7 @@ impl SeccfgCh9Val {
                 self.bits | SeccfgCh9::S_MASK
             } else {
                 self.bits & !SeccfgCh9::S_MASK
-            }
+            },
         }
     }
 
@@ -56200,7 +57924,7 @@ impl SeccfgCh9Val {
                 self.bits | SeccfgCh9::P_MASK
             } else {
                 self.bits & !SeccfgCh9::P_MASK
-            }
+            },
         }
     }
 }
@@ -56440,7 +58164,7 @@ impl SeccfgCh10Val {
                 self.bits | SeccfgCh10::LOCK_MASK
             } else {
                 self.bits & !SeccfgCh10::LOCK_MASK
-            }
+            },
         }
     }
 
@@ -56455,7 +58179,7 @@ impl SeccfgCh10Val {
                 self.bits | SeccfgCh10::S_MASK
             } else {
                 self.bits & !SeccfgCh10::S_MASK
-            }
+            },
         }
     }
 
@@ -56470,7 +58194,7 @@ impl SeccfgCh10Val {
                 self.bits | SeccfgCh10::P_MASK
             } else {
                 self.bits & !SeccfgCh10::P_MASK
-            }
+            },
         }
     }
 }
@@ -56710,7 +58434,7 @@ impl SeccfgCh11Val {
                 self.bits | SeccfgCh11::LOCK_MASK
             } else {
                 self.bits & !SeccfgCh11::LOCK_MASK
-            }
+            },
         }
     }
 
@@ -56725,7 +58449,7 @@ impl SeccfgCh11Val {
                 self.bits | SeccfgCh11::S_MASK
             } else {
                 self.bits & !SeccfgCh11::S_MASK
-            }
+            },
         }
     }
 
@@ -56740,7 +58464,7 @@ impl SeccfgCh11Val {
                 self.bits | SeccfgCh11::P_MASK
             } else {
                 self.bits & !SeccfgCh11::P_MASK
-            }
+            },
         }
     }
 }
@@ -56980,7 +58704,7 @@ impl SeccfgCh12Val {
                 self.bits | SeccfgCh12::LOCK_MASK
             } else {
                 self.bits & !SeccfgCh12::LOCK_MASK
-            }
+            },
         }
     }
 
@@ -56995,7 +58719,7 @@ impl SeccfgCh12Val {
                 self.bits | SeccfgCh12::S_MASK
             } else {
                 self.bits & !SeccfgCh12::S_MASK
-            }
+            },
         }
     }
 
@@ -57010,7 +58734,7 @@ impl SeccfgCh12Val {
                 self.bits | SeccfgCh12::P_MASK
             } else {
                 self.bits & !SeccfgCh12::P_MASK
-            }
+            },
         }
     }
 }
@@ -57250,7 +58974,7 @@ impl SeccfgCh13Val {
                 self.bits | SeccfgCh13::LOCK_MASK
             } else {
                 self.bits & !SeccfgCh13::LOCK_MASK
-            }
+            },
         }
     }
 
@@ -57265,7 +58989,7 @@ impl SeccfgCh13Val {
                 self.bits | SeccfgCh13::S_MASK
             } else {
                 self.bits & !SeccfgCh13::S_MASK
-            }
+            },
         }
     }
 
@@ -57280,7 +59004,7 @@ impl SeccfgCh13Val {
                 self.bits | SeccfgCh13::P_MASK
             } else {
                 self.bits & !SeccfgCh13::P_MASK
-            }
+            },
         }
     }
 }
@@ -57520,7 +59244,7 @@ impl SeccfgCh14Val {
                 self.bits | SeccfgCh14::LOCK_MASK
             } else {
                 self.bits & !SeccfgCh14::LOCK_MASK
-            }
+            },
         }
     }
 
@@ -57535,7 +59259,7 @@ impl SeccfgCh14Val {
                 self.bits | SeccfgCh14::S_MASK
             } else {
                 self.bits & !SeccfgCh14::S_MASK
-            }
+            },
         }
     }
 
@@ -57550,7 +59274,7 @@ impl SeccfgCh14Val {
                 self.bits | SeccfgCh14::P_MASK
             } else {
                 self.bits & !SeccfgCh14::P_MASK
-            }
+            },
         }
     }
 }
@@ -57790,7 +59514,7 @@ impl SeccfgCh15Val {
                 self.bits | SeccfgCh15::LOCK_MASK
             } else {
                 self.bits & !SeccfgCh15::LOCK_MASK
-            }
+            },
         }
     }
 
@@ -57805,7 +59529,7 @@ impl SeccfgCh15Val {
                 self.bits | SeccfgCh15::S_MASK
             } else {
                 self.bits & !SeccfgCh15::S_MASK
-            }
+            },
         }
     }
 
@@ -57820,7 +59544,7 @@ impl SeccfgCh15Val {
                 self.bits | SeccfgCh15::P_MASK
             } else {
                 self.bits & !SeccfgCh15::P_MASK
-            }
+            },
         }
     }
 }
@@ -58007,7 +59731,7 @@ impl SeccfgIrq0Val {
                 self.bits | SeccfgIrq0::S_MASK
             } else {
                 self.bits & !SeccfgIrq0::S_MASK
-            }
+            },
         }
     }
 
@@ -58022,7 +59746,7 @@ impl SeccfgIrq0Val {
                 self.bits | SeccfgIrq0::P_MASK
             } else {
                 self.bits & !SeccfgIrq0::P_MASK
-            }
+            },
         }
     }
 }
@@ -58209,7 +59933,7 @@ impl SeccfgIrq1Val {
                 self.bits | SeccfgIrq1::S_MASK
             } else {
                 self.bits & !SeccfgIrq1::S_MASK
-            }
+            },
         }
     }
 
@@ -58224,7 +59948,7 @@ impl SeccfgIrq1Val {
                 self.bits | SeccfgIrq1::P_MASK
             } else {
                 self.bits & !SeccfgIrq1::P_MASK
-            }
+            },
         }
     }
 }
@@ -58411,7 +60135,7 @@ impl SeccfgIrq2Val {
                 self.bits | SeccfgIrq2::S_MASK
             } else {
                 self.bits & !SeccfgIrq2::S_MASK
-            }
+            },
         }
     }
 
@@ -58426,7 +60150,7 @@ impl SeccfgIrq2Val {
                 self.bits | SeccfgIrq2::P_MASK
             } else {
                 self.bits & !SeccfgIrq2::P_MASK
-            }
+            },
         }
     }
 }
@@ -58613,7 +60337,7 @@ impl SeccfgIrq3Val {
                 self.bits | SeccfgIrq3::S_MASK
             } else {
                 self.bits & !SeccfgIrq3::S_MASK
-            }
+            },
         }
     }
 
@@ -58628,7 +60352,7 @@ impl SeccfgIrq3Val {
                 self.bits | SeccfgIrq3::P_MASK
             } else {
                 self.bits & !SeccfgIrq3::P_MASK
-            }
+            },
         }
     }
 }
@@ -59142,7 +60866,7 @@ impl SeccfgMiscVal {
                 self.bits | SeccfgMisc::TIMER3_S_MASK
             } else {
                 self.bits & !SeccfgMisc::TIMER3_S_MASK
-            }
+            },
         }
     }
 
@@ -59156,7 +60880,7 @@ impl SeccfgMiscVal {
                 self.bits | SeccfgMisc::TIMER3_P_MASK
             } else {
                 self.bits & !SeccfgMisc::TIMER3_P_MASK
-            }
+            },
         }
     }
 
@@ -59170,7 +60894,7 @@ impl SeccfgMiscVal {
                 self.bits | SeccfgMisc::TIMER2_S_MASK
             } else {
                 self.bits & !SeccfgMisc::TIMER2_S_MASK
-            }
+            },
         }
     }
 
@@ -59184,7 +60908,7 @@ impl SeccfgMiscVal {
                 self.bits | SeccfgMisc::TIMER2_P_MASK
             } else {
                 self.bits & !SeccfgMisc::TIMER2_P_MASK
-            }
+            },
         }
     }
 
@@ -59198,7 +60922,7 @@ impl SeccfgMiscVal {
                 self.bits | SeccfgMisc::TIMER1_S_MASK
             } else {
                 self.bits & !SeccfgMisc::TIMER1_S_MASK
-            }
+            },
         }
     }
 
@@ -59212,7 +60936,7 @@ impl SeccfgMiscVal {
                 self.bits | SeccfgMisc::TIMER1_P_MASK
             } else {
                 self.bits & !SeccfgMisc::TIMER1_P_MASK
-            }
+            },
         }
     }
 
@@ -59226,7 +60950,7 @@ impl SeccfgMiscVal {
                 self.bits | SeccfgMisc::TIMER0_S_MASK
             } else {
                 self.bits & !SeccfgMisc::TIMER0_S_MASK
-            }
+            },
         }
     }
 
@@ -59240,7 +60964,7 @@ impl SeccfgMiscVal {
                 self.bits | SeccfgMisc::TIMER0_P_MASK
             } else {
                 self.bits & !SeccfgMisc::TIMER0_P_MASK
-            }
+            },
         }
     }
 
@@ -59255,7 +60979,7 @@ impl SeccfgMiscVal {
                 self.bits | SeccfgMisc::SNIFF_S_MASK
             } else {
                 self.bits & !SeccfgMisc::SNIFF_S_MASK
-            }
+            },
         }
     }
 
@@ -59270,7 +60994,7 @@ impl SeccfgMiscVal {
                 self.bits | SeccfgMisc::SNIFF_P_MASK
             } else {
                 self.bits & !SeccfgMisc::SNIFF_P_MASK
-            }
+            },
         }
     }
 }
@@ -59489,7 +61213,7 @@ impl MpuCtrlVal {
                 self.bits | MpuCtrl::NS_HIDE_ADDR_MASK
             } else {
                 self.bits & !MpuCtrl::NS_HIDE_ADDR_MASK
-            }
+            },
         }
     }
 
@@ -59503,7 +61227,7 @@ impl MpuCtrlVal {
                 self.bits | MpuCtrl::S_MASK
             } else {
                 self.bits & !MpuCtrl::S_MASK
-            }
+            },
         }
     }
 
@@ -59517,7 +61241,7 @@ impl MpuCtrlVal {
                 self.bits | MpuCtrl::P_MASK
             } else {
                 self.bits & !MpuCtrl::P_MASK
-            }
+            },
         }
     }
 }
@@ -59603,7 +61327,9 @@ impl MpuBar0 {
     /// Readable from any Privileged context, if and only if this region's S bit is clear, and MPU_CTRL_NS_HIDE_ADDR is clear. Otherwise readable only from a Secure, Privileged context.
     #[inline(always)]
     pub fn write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK)
+        });
     }
 }
 
@@ -59651,7 +61377,8 @@ impl MpuBar0Val {
     #[inline(always)]
     pub const fn with_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuBar0::ADDR_MASK) | ((value << MpuBar0::ADDR_OFFSET) & MpuBar0::ADDR_MASK)
+            bits: (self.bits & !MpuBar0::ADDR_MASK)
+                | ((value << MpuBar0::ADDR_OFFSET) & MpuBar0::ADDR_MASK),
         }
     }
 }
@@ -59772,7 +61499,9 @@ impl MpuLar0 {
     /// Limit address bits 31:5. Readable from any Privileged context, if and only if this region's S bit is clear, and MPU_CTRL_NS_HIDE_ADDR is clear. Otherwise readable only from a Secure, Privileged context.
     #[inline(always)]
     pub fn write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK)
+        });
     }
 
     /// **S** `[2]` (RW)
@@ -59902,7 +61631,8 @@ impl MpuLar0Val {
     #[inline(always)]
     pub const fn with_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuLar0::ADDR_MASK) | ((value << MpuLar0::ADDR_OFFSET) & MpuLar0::ADDR_MASK)
+            bits: (self.bits & !MpuLar0::ADDR_MASK)
+                | ((value << MpuLar0::ADDR_OFFSET) & MpuLar0::ADDR_MASK),
         }
     }
 
@@ -59916,7 +61646,7 @@ impl MpuLar0Val {
                 self.bits | MpuLar0::S_MASK
             } else {
                 self.bits & !MpuLar0::S_MASK
-            }
+            },
         }
     }
 
@@ -59930,7 +61660,7 @@ impl MpuLar0Val {
                 self.bits | MpuLar0::P_MASK
             } else {
                 self.bits & !MpuLar0::P_MASK
-            }
+            },
         }
     }
 
@@ -59944,7 +61674,7 @@ impl MpuLar0Val {
                 self.bits | MpuLar0::EN_MASK
             } else {
                 self.bits & !MpuLar0::EN_MASK
-            }
+            },
         }
     }
 }
@@ -60030,7 +61760,9 @@ impl MpuBar1 {
     /// Readable from any Privileged context, if and only if this region's S bit is clear, and MPU_CTRL_NS_HIDE_ADDR is clear. Otherwise readable only from a Secure, Privileged context.
     #[inline(always)]
     pub fn write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK)
+        });
     }
 }
 
@@ -60078,7 +61810,8 @@ impl MpuBar1Val {
     #[inline(always)]
     pub const fn with_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuBar1::ADDR_MASK) | ((value << MpuBar1::ADDR_OFFSET) & MpuBar1::ADDR_MASK)
+            bits: (self.bits & !MpuBar1::ADDR_MASK)
+                | ((value << MpuBar1::ADDR_OFFSET) & MpuBar1::ADDR_MASK),
         }
     }
 }
@@ -60199,7 +61932,9 @@ impl MpuLar1 {
     /// Limit address bits 31:5. Readable from any Privileged context, if and only if this region's S bit is clear, and MPU_CTRL_NS_HIDE_ADDR is clear. Otherwise readable only from a Secure, Privileged context.
     #[inline(always)]
     pub fn write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK)
+        });
     }
 
     /// **S** `[2]` (RW)
@@ -60329,7 +62064,8 @@ impl MpuLar1Val {
     #[inline(always)]
     pub const fn with_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuLar1::ADDR_MASK) | ((value << MpuLar1::ADDR_OFFSET) & MpuLar1::ADDR_MASK)
+            bits: (self.bits & !MpuLar1::ADDR_MASK)
+                | ((value << MpuLar1::ADDR_OFFSET) & MpuLar1::ADDR_MASK),
         }
     }
 
@@ -60343,7 +62079,7 @@ impl MpuLar1Val {
                 self.bits | MpuLar1::S_MASK
             } else {
                 self.bits & !MpuLar1::S_MASK
-            }
+            },
         }
     }
 
@@ -60357,7 +62093,7 @@ impl MpuLar1Val {
                 self.bits | MpuLar1::P_MASK
             } else {
                 self.bits & !MpuLar1::P_MASK
-            }
+            },
         }
     }
 
@@ -60371,7 +62107,7 @@ impl MpuLar1Val {
                 self.bits | MpuLar1::EN_MASK
             } else {
                 self.bits & !MpuLar1::EN_MASK
-            }
+            },
         }
     }
 }
@@ -60457,7 +62193,9 @@ impl MpuBar2 {
     /// Readable from any Privileged context, if and only if this region's S bit is clear, and MPU_CTRL_NS_HIDE_ADDR is clear. Otherwise readable only from a Secure, Privileged context.
     #[inline(always)]
     pub fn write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK)
+        });
     }
 }
 
@@ -60505,7 +62243,8 @@ impl MpuBar2Val {
     #[inline(always)]
     pub const fn with_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuBar2::ADDR_MASK) | ((value << MpuBar2::ADDR_OFFSET) & MpuBar2::ADDR_MASK)
+            bits: (self.bits & !MpuBar2::ADDR_MASK)
+                | ((value << MpuBar2::ADDR_OFFSET) & MpuBar2::ADDR_MASK),
         }
     }
 }
@@ -60626,7 +62365,9 @@ impl MpuLar2 {
     /// Limit address bits 31:5. Readable from any Privileged context, if and only if this region's S bit is clear, and MPU_CTRL_NS_HIDE_ADDR is clear. Otherwise readable only from a Secure, Privileged context.
     #[inline(always)]
     pub fn write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK)
+        });
     }
 
     /// **S** `[2]` (RW)
@@ -60756,7 +62497,8 @@ impl MpuLar2Val {
     #[inline(always)]
     pub const fn with_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuLar2::ADDR_MASK) | ((value << MpuLar2::ADDR_OFFSET) & MpuLar2::ADDR_MASK)
+            bits: (self.bits & !MpuLar2::ADDR_MASK)
+                | ((value << MpuLar2::ADDR_OFFSET) & MpuLar2::ADDR_MASK),
         }
     }
 
@@ -60770,7 +62512,7 @@ impl MpuLar2Val {
                 self.bits | MpuLar2::S_MASK
             } else {
                 self.bits & !MpuLar2::S_MASK
-            }
+            },
         }
     }
 
@@ -60784,7 +62526,7 @@ impl MpuLar2Val {
                 self.bits | MpuLar2::P_MASK
             } else {
                 self.bits & !MpuLar2::P_MASK
-            }
+            },
         }
     }
 
@@ -60798,7 +62540,7 @@ impl MpuLar2Val {
                 self.bits | MpuLar2::EN_MASK
             } else {
                 self.bits & !MpuLar2::EN_MASK
-            }
+            },
         }
     }
 }
@@ -60884,7 +62626,9 @@ impl MpuBar3 {
     /// Readable from any Privileged context, if and only if this region's S bit is clear, and MPU_CTRL_NS_HIDE_ADDR is clear. Otherwise readable only from a Secure, Privileged context.
     #[inline(always)]
     pub fn write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK)
+        });
     }
 }
 
@@ -60932,7 +62676,8 @@ impl MpuBar3Val {
     #[inline(always)]
     pub const fn with_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuBar3::ADDR_MASK) | ((value << MpuBar3::ADDR_OFFSET) & MpuBar3::ADDR_MASK)
+            bits: (self.bits & !MpuBar3::ADDR_MASK)
+                | ((value << MpuBar3::ADDR_OFFSET) & MpuBar3::ADDR_MASK),
         }
     }
 }
@@ -61053,7 +62798,9 @@ impl MpuLar3 {
     /// Limit address bits 31:5. Readable from any Privileged context, if and only if this region's S bit is clear, and MPU_CTRL_NS_HIDE_ADDR is clear. Otherwise readable only from a Secure, Privileged context.
     #[inline(always)]
     pub fn write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK)
+        });
     }
 
     /// **S** `[2]` (RW)
@@ -61183,7 +62930,8 @@ impl MpuLar3Val {
     #[inline(always)]
     pub const fn with_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuLar3::ADDR_MASK) | ((value << MpuLar3::ADDR_OFFSET) & MpuLar3::ADDR_MASK)
+            bits: (self.bits & !MpuLar3::ADDR_MASK)
+                | ((value << MpuLar3::ADDR_OFFSET) & MpuLar3::ADDR_MASK),
         }
     }
 
@@ -61197,7 +62945,7 @@ impl MpuLar3Val {
                 self.bits | MpuLar3::S_MASK
             } else {
                 self.bits & !MpuLar3::S_MASK
-            }
+            },
         }
     }
 
@@ -61211,7 +62959,7 @@ impl MpuLar3Val {
                 self.bits | MpuLar3::P_MASK
             } else {
                 self.bits & !MpuLar3::P_MASK
-            }
+            },
         }
     }
 
@@ -61225,7 +62973,7 @@ impl MpuLar3Val {
                 self.bits | MpuLar3::EN_MASK
             } else {
                 self.bits & !MpuLar3::EN_MASK
-            }
+            },
         }
     }
 }
@@ -61311,7 +63059,9 @@ impl MpuBar4 {
     /// Readable from any Privileged context, if and only if this region's S bit is clear, and MPU_CTRL_NS_HIDE_ADDR is clear. Otherwise readable only from a Secure, Privileged context.
     #[inline(always)]
     pub fn write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK)
+        });
     }
 }
 
@@ -61359,7 +63109,8 @@ impl MpuBar4Val {
     #[inline(always)]
     pub const fn with_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuBar4::ADDR_MASK) | ((value << MpuBar4::ADDR_OFFSET) & MpuBar4::ADDR_MASK)
+            bits: (self.bits & !MpuBar4::ADDR_MASK)
+                | ((value << MpuBar4::ADDR_OFFSET) & MpuBar4::ADDR_MASK),
         }
     }
 }
@@ -61480,7 +63231,9 @@ impl MpuLar4 {
     /// Limit address bits 31:5. Readable from any Privileged context, if and only if this region's S bit is clear, and MPU_CTRL_NS_HIDE_ADDR is clear. Otherwise readable only from a Secure, Privileged context.
     #[inline(always)]
     pub fn write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK)
+        });
     }
 
     /// **S** `[2]` (RW)
@@ -61610,7 +63363,8 @@ impl MpuLar4Val {
     #[inline(always)]
     pub const fn with_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuLar4::ADDR_MASK) | ((value << MpuLar4::ADDR_OFFSET) & MpuLar4::ADDR_MASK)
+            bits: (self.bits & !MpuLar4::ADDR_MASK)
+                | ((value << MpuLar4::ADDR_OFFSET) & MpuLar4::ADDR_MASK),
         }
     }
 
@@ -61624,7 +63378,7 @@ impl MpuLar4Val {
                 self.bits | MpuLar4::S_MASK
             } else {
                 self.bits & !MpuLar4::S_MASK
-            }
+            },
         }
     }
 
@@ -61638,7 +63392,7 @@ impl MpuLar4Val {
                 self.bits | MpuLar4::P_MASK
             } else {
                 self.bits & !MpuLar4::P_MASK
-            }
+            },
         }
     }
 
@@ -61652,7 +63406,7 @@ impl MpuLar4Val {
                 self.bits | MpuLar4::EN_MASK
             } else {
                 self.bits & !MpuLar4::EN_MASK
-            }
+            },
         }
     }
 }
@@ -61738,7 +63492,9 @@ impl MpuBar5 {
     /// Readable from any Privileged context, if and only if this region's S bit is clear, and MPU_CTRL_NS_HIDE_ADDR is clear. Otherwise readable only from a Secure, Privileged context.
     #[inline(always)]
     pub fn write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK)
+        });
     }
 }
 
@@ -61786,7 +63542,8 @@ impl MpuBar5Val {
     #[inline(always)]
     pub const fn with_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuBar5::ADDR_MASK) | ((value << MpuBar5::ADDR_OFFSET) & MpuBar5::ADDR_MASK)
+            bits: (self.bits & !MpuBar5::ADDR_MASK)
+                | ((value << MpuBar5::ADDR_OFFSET) & MpuBar5::ADDR_MASK),
         }
     }
 }
@@ -61907,7 +63664,9 @@ impl MpuLar5 {
     /// Limit address bits 31:5. Readable from any Privileged context, if and only if this region's S bit is clear, and MPU_CTRL_NS_HIDE_ADDR is clear. Otherwise readable only from a Secure, Privileged context.
     #[inline(always)]
     pub fn write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK)
+        });
     }
 
     /// **S** `[2]` (RW)
@@ -62037,7 +63796,8 @@ impl MpuLar5Val {
     #[inline(always)]
     pub const fn with_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuLar5::ADDR_MASK) | ((value << MpuLar5::ADDR_OFFSET) & MpuLar5::ADDR_MASK)
+            bits: (self.bits & !MpuLar5::ADDR_MASK)
+                | ((value << MpuLar5::ADDR_OFFSET) & MpuLar5::ADDR_MASK),
         }
     }
 
@@ -62051,7 +63811,7 @@ impl MpuLar5Val {
                 self.bits | MpuLar5::S_MASK
             } else {
                 self.bits & !MpuLar5::S_MASK
-            }
+            },
         }
     }
 
@@ -62065,7 +63825,7 @@ impl MpuLar5Val {
                 self.bits | MpuLar5::P_MASK
             } else {
                 self.bits & !MpuLar5::P_MASK
-            }
+            },
         }
     }
 
@@ -62079,7 +63839,7 @@ impl MpuLar5Val {
                 self.bits | MpuLar5::EN_MASK
             } else {
                 self.bits & !MpuLar5::EN_MASK
-            }
+            },
         }
     }
 }
@@ -62165,7 +63925,9 @@ impl MpuBar6 {
     /// Readable from any Privileged context, if and only if this region's S bit is clear, and MPU_CTRL_NS_HIDE_ADDR is clear. Otherwise readable only from a Secure, Privileged context.
     #[inline(always)]
     pub fn write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK)
+        });
     }
 }
 
@@ -62213,7 +63975,8 @@ impl MpuBar6Val {
     #[inline(always)]
     pub const fn with_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuBar6::ADDR_MASK) | ((value << MpuBar6::ADDR_OFFSET) & MpuBar6::ADDR_MASK)
+            bits: (self.bits & !MpuBar6::ADDR_MASK)
+                | ((value << MpuBar6::ADDR_OFFSET) & MpuBar6::ADDR_MASK),
         }
     }
 }
@@ -62334,7 +64097,9 @@ impl MpuLar6 {
     /// Limit address bits 31:5. Readable from any Privileged context, if and only if this region's S bit is clear, and MPU_CTRL_NS_HIDE_ADDR is clear. Otherwise readable only from a Secure, Privileged context.
     #[inline(always)]
     pub fn write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK)
+        });
     }
 
     /// **S** `[2]` (RW)
@@ -62464,7 +64229,8 @@ impl MpuLar6Val {
     #[inline(always)]
     pub const fn with_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuLar6::ADDR_MASK) | ((value << MpuLar6::ADDR_OFFSET) & MpuLar6::ADDR_MASK)
+            bits: (self.bits & !MpuLar6::ADDR_MASK)
+                | ((value << MpuLar6::ADDR_OFFSET) & MpuLar6::ADDR_MASK),
         }
     }
 
@@ -62478,7 +64244,7 @@ impl MpuLar6Val {
                 self.bits | MpuLar6::S_MASK
             } else {
                 self.bits & !MpuLar6::S_MASK
-            }
+            },
         }
     }
 
@@ -62492,7 +64258,7 @@ impl MpuLar6Val {
                 self.bits | MpuLar6::P_MASK
             } else {
                 self.bits & !MpuLar6::P_MASK
-            }
+            },
         }
     }
 
@@ -62506,7 +64272,7 @@ impl MpuLar6Val {
                 self.bits | MpuLar6::EN_MASK
             } else {
                 self.bits & !MpuLar6::EN_MASK
-            }
+            },
         }
     }
 }
@@ -62592,7 +64358,9 @@ impl MpuBar7 {
     /// Readable from any Privileged context, if and only if this region's S bit is clear, and MPU_CTRL_NS_HIDE_ADDR is clear. Otherwise readable only from a Secure, Privileged context.
     #[inline(always)]
     pub fn write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK)
+        });
     }
 }
 
@@ -62640,7 +64408,8 @@ impl MpuBar7Val {
     #[inline(always)]
     pub const fn with_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuBar7::ADDR_MASK) | ((value << MpuBar7::ADDR_OFFSET) & MpuBar7::ADDR_MASK)
+            bits: (self.bits & !MpuBar7::ADDR_MASK)
+                | ((value << MpuBar7::ADDR_OFFSET) & MpuBar7::ADDR_MASK),
         }
     }
 }
@@ -62761,7 +64530,9 @@ impl MpuLar7 {
     /// Limit address bits 31:5. Readable from any Privileged context, if and only if this region's S bit is clear, and MPU_CTRL_NS_HIDE_ADDR is clear. Otherwise readable only from a Secure, Privileged context.
     #[inline(always)]
     pub fn write_addr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDR_MASK) | ((value << Self::ADDR_OFFSET) & Self::ADDR_MASK)
+        });
     }
 
     /// **S** `[2]` (RW)
@@ -62891,7 +64662,8 @@ impl MpuLar7Val {
     #[inline(always)]
     pub const fn with_addr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuLar7::ADDR_MASK) | ((value << MpuLar7::ADDR_OFFSET) & MpuLar7::ADDR_MASK)
+            bits: (self.bits & !MpuLar7::ADDR_MASK)
+                | ((value << MpuLar7::ADDR_OFFSET) & MpuLar7::ADDR_MASK),
         }
     }
 
@@ -62905,7 +64677,7 @@ impl MpuLar7Val {
                 self.bits | MpuLar7::S_MASK
             } else {
                 self.bits & !MpuLar7::S_MASK
-            }
+            },
         }
     }
 
@@ -62919,7 +64691,7 @@ impl MpuLar7Val {
                 self.bits | MpuLar7::P_MASK
             } else {
                 self.bits & !MpuLar7::P_MASK
-            }
+            },
         }
     }
 
@@ -62933,7 +64705,7 @@ impl MpuLar7Val {
                 self.bits | MpuLar7::EN_MASK
             } else {
                 self.bits & !MpuLar7::EN_MASK
-            }
+            },
         }
     }
 }
@@ -63006,7 +64778,10 @@ impl Ch0DbgCtdreq {
     /// Write **CH0_DBG_CTDREQ** `[5:0]` (RW)
     #[inline(always)]
     pub fn write_ch0_dbg_ctdreq(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH0_DBG_CTDREQ_MASK) | ((value << Self::CH0_DBG_CTDREQ_OFFSET) & Self::CH0_DBG_CTDREQ_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH0_DBG_CTDREQ_MASK)
+                | ((value << Self::CH0_DBG_CTDREQ_OFFSET) & Self::CH0_DBG_CTDREQ_MASK)
+        });
     }
 }
 
@@ -63048,7 +64823,9 @@ impl Ch0DbgCtdreqVal {
     #[inline(always)]
     pub const fn with_ch0_dbg_ctdreq(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch0DbgCtdreq::CH0_DBG_CTDREQ_MASK) | ((value << Ch0DbgCtdreq::CH0_DBG_CTDREQ_OFFSET) & Ch0DbgCtdreq::CH0_DBG_CTDREQ_MASK)
+            bits: (self.bits & !Ch0DbgCtdreq::CH0_DBG_CTDREQ_MASK)
+                | ((value << Ch0DbgCtdreq::CH0_DBG_CTDREQ_OFFSET)
+                    & Ch0DbgCtdreq::CH0_DBG_CTDREQ_MASK),
         }
     }
 }
@@ -63210,7 +64987,10 @@ impl Ch1DbgCtdreq {
     /// Write **CH1_DBG_CTDREQ** `[5:0]` (RW)
     #[inline(always)]
     pub fn write_ch1_dbg_ctdreq(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH1_DBG_CTDREQ_MASK) | ((value << Self::CH1_DBG_CTDREQ_OFFSET) & Self::CH1_DBG_CTDREQ_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH1_DBG_CTDREQ_MASK)
+                | ((value << Self::CH1_DBG_CTDREQ_OFFSET) & Self::CH1_DBG_CTDREQ_MASK)
+        });
     }
 }
 
@@ -63252,7 +65032,9 @@ impl Ch1DbgCtdreqVal {
     #[inline(always)]
     pub const fn with_ch1_dbg_ctdreq(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch1DbgCtdreq::CH1_DBG_CTDREQ_MASK) | ((value << Ch1DbgCtdreq::CH1_DBG_CTDREQ_OFFSET) & Ch1DbgCtdreq::CH1_DBG_CTDREQ_MASK)
+            bits: (self.bits & !Ch1DbgCtdreq::CH1_DBG_CTDREQ_MASK)
+                | ((value << Ch1DbgCtdreq::CH1_DBG_CTDREQ_OFFSET)
+                    & Ch1DbgCtdreq::CH1_DBG_CTDREQ_MASK),
         }
     }
 }
@@ -63414,7 +65196,10 @@ impl Ch2DbgCtdreq {
     /// Write **CH2_DBG_CTDREQ** `[5:0]` (RW)
     #[inline(always)]
     pub fn write_ch2_dbg_ctdreq(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH2_DBG_CTDREQ_MASK) | ((value << Self::CH2_DBG_CTDREQ_OFFSET) & Self::CH2_DBG_CTDREQ_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH2_DBG_CTDREQ_MASK)
+                | ((value << Self::CH2_DBG_CTDREQ_OFFSET) & Self::CH2_DBG_CTDREQ_MASK)
+        });
     }
 }
 
@@ -63456,7 +65241,9 @@ impl Ch2DbgCtdreqVal {
     #[inline(always)]
     pub const fn with_ch2_dbg_ctdreq(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch2DbgCtdreq::CH2_DBG_CTDREQ_MASK) | ((value << Ch2DbgCtdreq::CH2_DBG_CTDREQ_OFFSET) & Ch2DbgCtdreq::CH2_DBG_CTDREQ_MASK)
+            bits: (self.bits & !Ch2DbgCtdreq::CH2_DBG_CTDREQ_MASK)
+                | ((value << Ch2DbgCtdreq::CH2_DBG_CTDREQ_OFFSET)
+                    & Ch2DbgCtdreq::CH2_DBG_CTDREQ_MASK),
         }
     }
 }
@@ -63618,7 +65405,10 @@ impl Ch3DbgCtdreq {
     /// Write **CH3_DBG_CTDREQ** `[5:0]` (RW)
     #[inline(always)]
     pub fn write_ch3_dbg_ctdreq(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH3_DBG_CTDREQ_MASK) | ((value << Self::CH3_DBG_CTDREQ_OFFSET) & Self::CH3_DBG_CTDREQ_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH3_DBG_CTDREQ_MASK)
+                | ((value << Self::CH3_DBG_CTDREQ_OFFSET) & Self::CH3_DBG_CTDREQ_MASK)
+        });
     }
 }
 
@@ -63660,7 +65450,9 @@ impl Ch3DbgCtdreqVal {
     #[inline(always)]
     pub const fn with_ch3_dbg_ctdreq(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch3DbgCtdreq::CH3_DBG_CTDREQ_MASK) | ((value << Ch3DbgCtdreq::CH3_DBG_CTDREQ_OFFSET) & Ch3DbgCtdreq::CH3_DBG_CTDREQ_MASK)
+            bits: (self.bits & !Ch3DbgCtdreq::CH3_DBG_CTDREQ_MASK)
+                | ((value << Ch3DbgCtdreq::CH3_DBG_CTDREQ_OFFSET)
+                    & Ch3DbgCtdreq::CH3_DBG_CTDREQ_MASK),
         }
     }
 }
@@ -63822,7 +65614,10 @@ impl Ch4DbgCtdreq {
     /// Write **CH4_DBG_CTDREQ** `[5:0]` (RW)
     #[inline(always)]
     pub fn write_ch4_dbg_ctdreq(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH4_DBG_CTDREQ_MASK) | ((value << Self::CH4_DBG_CTDREQ_OFFSET) & Self::CH4_DBG_CTDREQ_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH4_DBG_CTDREQ_MASK)
+                | ((value << Self::CH4_DBG_CTDREQ_OFFSET) & Self::CH4_DBG_CTDREQ_MASK)
+        });
     }
 }
 
@@ -63864,7 +65659,9 @@ impl Ch4DbgCtdreqVal {
     #[inline(always)]
     pub const fn with_ch4_dbg_ctdreq(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch4DbgCtdreq::CH4_DBG_CTDREQ_MASK) | ((value << Ch4DbgCtdreq::CH4_DBG_CTDREQ_OFFSET) & Ch4DbgCtdreq::CH4_DBG_CTDREQ_MASK)
+            bits: (self.bits & !Ch4DbgCtdreq::CH4_DBG_CTDREQ_MASK)
+                | ((value << Ch4DbgCtdreq::CH4_DBG_CTDREQ_OFFSET)
+                    & Ch4DbgCtdreq::CH4_DBG_CTDREQ_MASK),
         }
     }
 }
@@ -64026,7 +65823,10 @@ impl Ch5DbgCtdreq {
     /// Write **CH5_DBG_CTDREQ** `[5:0]` (RW)
     #[inline(always)]
     pub fn write_ch5_dbg_ctdreq(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH5_DBG_CTDREQ_MASK) | ((value << Self::CH5_DBG_CTDREQ_OFFSET) & Self::CH5_DBG_CTDREQ_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH5_DBG_CTDREQ_MASK)
+                | ((value << Self::CH5_DBG_CTDREQ_OFFSET) & Self::CH5_DBG_CTDREQ_MASK)
+        });
     }
 }
 
@@ -64068,7 +65868,9 @@ impl Ch5DbgCtdreqVal {
     #[inline(always)]
     pub const fn with_ch5_dbg_ctdreq(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch5DbgCtdreq::CH5_DBG_CTDREQ_MASK) | ((value << Ch5DbgCtdreq::CH5_DBG_CTDREQ_OFFSET) & Ch5DbgCtdreq::CH5_DBG_CTDREQ_MASK)
+            bits: (self.bits & !Ch5DbgCtdreq::CH5_DBG_CTDREQ_MASK)
+                | ((value << Ch5DbgCtdreq::CH5_DBG_CTDREQ_OFFSET)
+                    & Ch5DbgCtdreq::CH5_DBG_CTDREQ_MASK),
         }
     }
 }
@@ -64230,7 +66032,10 @@ impl Ch6DbgCtdreq {
     /// Write **CH6_DBG_CTDREQ** `[5:0]` (RW)
     #[inline(always)]
     pub fn write_ch6_dbg_ctdreq(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH6_DBG_CTDREQ_MASK) | ((value << Self::CH6_DBG_CTDREQ_OFFSET) & Self::CH6_DBG_CTDREQ_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH6_DBG_CTDREQ_MASK)
+                | ((value << Self::CH6_DBG_CTDREQ_OFFSET) & Self::CH6_DBG_CTDREQ_MASK)
+        });
     }
 }
 
@@ -64272,7 +66077,9 @@ impl Ch6DbgCtdreqVal {
     #[inline(always)]
     pub const fn with_ch6_dbg_ctdreq(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch6DbgCtdreq::CH6_DBG_CTDREQ_MASK) | ((value << Ch6DbgCtdreq::CH6_DBG_CTDREQ_OFFSET) & Ch6DbgCtdreq::CH6_DBG_CTDREQ_MASK)
+            bits: (self.bits & !Ch6DbgCtdreq::CH6_DBG_CTDREQ_MASK)
+                | ((value << Ch6DbgCtdreq::CH6_DBG_CTDREQ_OFFSET)
+                    & Ch6DbgCtdreq::CH6_DBG_CTDREQ_MASK),
         }
     }
 }
@@ -64434,7 +66241,10 @@ impl Ch7DbgCtdreq {
     /// Write **CH7_DBG_CTDREQ** `[5:0]` (RW)
     #[inline(always)]
     pub fn write_ch7_dbg_ctdreq(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH7_DBG_CTDREQ_MASK) | ((value << Self::CH7_DBG_CTDREQ_OFFSET) & Self::CH7_DBG_CTDREQ_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH7_DBG_CTDREQ_MASK)
+                | ((value << Self::CH7_DBG_CTDREQ_OFFSET) & Self::CH7_DBG_CTDREQ_MASK)
+        });
     }
 }
 
@@ -64476,7 +66286,9 @@ impl Ch7DbgCtdreqVal {
     #[inline(always)]
     pub const fn with_ch7_dbg_ctdreq(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch7DbgCtdreq::CH7_DBG_CTDREQ_MASK) | ((value << Ch7DbgCtdreq::CH7_DBG_CTDREQ_OFFSET) & Ch7DbgCtdreq::CH7_DBG_CTDREQ_MASK)
+            bits: (self.bits & !Ch7DbgCtdreq::CH7_DBG_CTDREQ_MASK)
+                | ((value << Ch7DbgCtdreq::CH7_DBG_CTDREQ_OFFSET)
+                    & Ch7DbgCtdreq::CH7_DBG_CTDREQ_MASK),
         }
     }
 }
@@ -64638,7 +66450,10 @@ impl Ch8DbgCtdreq {
     /// Write **CH8_DBG_CTDREQ** `[5:0]` (RW)
     #[inline(always)]
     pub fn write_ch8_dbg_ctdreq(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH8_DBG_CTDREQ_MASK) | ((value << Self::CH8_DBG_CTDREQ_OFFSET) & Self::CH8_DBG_CTDREQ_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH8_DBG_CTDREQ_MASK)
+                | ((value << Self::CH8_DBG_CTDREQ_OFFSET) & Self::CH8_DBG_CTDREQ_MASK)
+        });
     }
 }
 
@@ -64680,7 +66495,9 @@ impl Ch8DbgCtdreqVal {
     #[inline(always)]
     pub const fn with_ch8_dbg_ctdreq(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch8DbgCtdreq::CH8_DBG_CTDREQ_MASK) | ((value << Ch8DbgCtdreq::CH8_DBG_CTDREQ_OFFSET) & Ch8DbgCtdreq::CH8_DBG_CTDREQ_MASK)
+            bits: (self.bits & !Ch8DbgCtdreq::CH8_DBG_CTDREQ_MASK)
+                | ((value << Ch8DbgCtdreq::CH8_DBG_CTDREQ_OFFSET)
+                    & Ch8DbgCtdreq::CH8_DBG_CTDREQ_MASK),
         }
     }
 }
@@ -64842,7 +66659,10 @@ impl Ch9DbgCtdreq {
     /// Write **CH9_DBG_CTDREQ** `[5:0]` (RW)
     #[inline(always)]
     pub fn write_ch9_dbg_ctdreq(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH9_DBG_CTDREQ_MASK) | ((value << Self::CH9_DBG_CTDREQ_OFFSET) & Self::CH9_DBG_CTDREQ_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH9_DBG_CTDREQ_MASK)
+                | ((value << Self::CH9_DBG_CTDREQ_OFFSET) & Self::CH9_DBG_CTDREQ_MASK)
+        });
     }
 }
 
@@ -64884,7 +66704,9 @@ impl Ch9DbgCtdreqVal {
     #[inline(always)]
     pub const fn with_ch9_dbg_ctdreq(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch9DbgCtdreq::CH9_DBG_CTDREQ_MASK) | ((value << Ch9DbgCtdreq::CH9_DBG_CTDREQ_OFFSET) & Ch9DbgCtdreq::CH9_DBG_CTDREQ_MASK)
+            bits: (self.bits & !Ch9DbgCtdreq::CH9_DBG_CTDREQ_MASK)
+                | ((value << Ch9DbgCtdreq::CH9_DBG_CTDREQ_OFFSET)
+                    & Ch9DbgCtdreq::CH9_DBG_CTDREQ_MASK),
         }
     }
 }
@@ -65046,7 +66868,10 @@ impl Ch10DbgCtdreq {
     /// Write **CH10_DBG_CTDREQ** `[5:0]` (RW)
     #[inline(always)]
     pub fn write_ch10_dbg_ctdreq(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH10_DBG_CTDREQ_MASK) | ((value << Self::CH10_DBG_CTDREQ_OFFSET) & Self::CH10_DBG_CTDREQ_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH10_DBG_CTDREQ_MASK)
+                | ((value << Self::CH10_DBG_CTDREQ_OFFSET) & Self::CH10_DBG_CTDREQ_MASK)
+        });
     }
 }
 
@@ -65088,7 +66913,9 @@ impl Ch10DbgCtdreqVal {
     #[inline(always)]
     pub const fn with_ch10_dbg_ctdreq(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch10DbgCtdreq::CH10_DBG_CTDREQ_MASK) | ((value << Ch10DbgCtdreq::CH10_DBG_CTDREQ_OFFSET) & Ch10DbgCtdreq::CH10_DBG_CTDREQ_MASK)
+            bits: (self.bits & !Ch10DbgCtdreq::CH10_DBG_CTDREQ_MASK)
+                | ((value << Ch10DbgCtdreq::CH10_DBG_CTDREQ_OFFSET)
+                    & Ch10DbgCtdreq::CH10_DBG_CTDREQ_MASK),
         }
     }
 }
@@ -65250,7 +67077,10 @@ impl Ch11DbgCtdreq {
     /// Write **CH11_DBG_CTDREQ** `[5:0]` (RW)
     #[inline(always)]
     pub fn write_ch11_dbg_ctdreq(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH11_DBG_CTDREQ_MASK) | ((value << Self::CH11_DBG_CTDREQ_OFFSET) & Self::CH11_DBG_CTDREQ_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH11_DBG_CTDREQ_MASK)
+                | ((value << Self::CH11_DBG_CTDREQ_OFFSET) & Self::CH11_DBG_CTDREQ_MASK)
+        });
     }
 }
 
@@ -65292,7 +67122,9 @@ impl Ch11DbgCtdreqVal {
     #[inline(always)]
     pub const fn with_ch11_dbg_ctdreq(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch11DbgCtdreq::CH11_DBG_CTDREQ_MASK) | ((value << Ch11DbgCtdreq::CH11_DBG_CTDREQ_OFFSET) & Ch11DbgCtdreq::CH11_DBG_CTDREQ_MASK)
+            bits: (self.bits & !Ch11DbgCtdreq::CH11_DBG_CTDREQ_MASK)
+                | ((value << Ch11DbgCtdreq::CH11_DBG_CTDREQ_OFFSET)
+                    & Ch11DbgCtdreq::CH11_DBG_CTDREQ_MASK),
         }
     }
 }
@@ -65454,7 +67286,10 @@ impl Ch12DbgCtdreq {
     /// Write **CH12_DBG_CTDREQ** `[5:0]` (RW)
     #[inline(always)]
     pub fn write_ch12_dbg_ctdreq(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH12_DBG_CTDREQ_MASK) | ((value << Self::CH12_DBG_CTDREQ_OFFSET) & Self::CH12_DBG_CTDREQ_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH12_DBG_CTDREQ_MASK)
+                | ((value << Self::CH12_DBG_CTDREQ_OFFSET) & Self::CH12_DBG_CTDREQ_MASK)
+        });
     }
 }
 
@@ -65496,7 +67331,9 @@ impl Ch12DbgCtdreqVal {
     #[inline(always)]
     pub const fn with_ch12_dbg_ctdreq(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch12DbgCtdreq::CH12_DBG_CTDREQ_MASK) | ((value << Ch12DbgCtdreq::CH12_DBG_CTDREQ_OFFSET) & Ch12DbgCtdreq::CH12_DBG_CTDREQ_MASK)
+            bits: (self.bits & !Ch12DbgCtdreq::CH12_DBG_CTDREQ_MASK)
+                | ((value << Ch12DbgCtdreq::CH12_DBG_CTDREQ_OFFSET)
+                    & Ch12DbgCtdreq::CH12_DBG_CTDREQ_MASK),
         }
     }
 }
@@ -65658,7 +67495,10 @@ impl Ch13DbgCtdreq {
     /// Write **CH13_DBG_CTDREQ** `[5:0]` (RW)
     #[inline(always)]
     pub fn write_ch13_dbg_ctdreq(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH13_DBG_CTDREQ_MASK) | ((value << Self::CH13_DBG_CTDREQ_OFFSET) & Self::CH13_DBG_CTDREQ_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH13_DBG_CTDREQ_MASK)
+                | ((value << Self::CH13_DBG_CTDREQ_OFFSET) & Self::CH13_DBG_CTDREQ_MASK)
+        });
     }
 }
 
@@ -65700,7 +67540,9 @@ impl Ch13DbgCtdreqVal {
     #[inline(always)]
     pub const fn with_ch13_dbg_ctdreq(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch13DbgCtdreq::CH13_DBG_CTDREQ_MASK) | ((value << Ch13DbgCtdreq::CH13_DBG_CTDREQ_OFFSET) & Ch13DbgCtdreq::CH13_DBG_CTDREQ_MASK)
+            bits: (self.bits & !Ch13DbgCtdreq::CH13_DBG_CTDREQ_MASK)
+                | ((value << Ch13DbgCtdreq::CH13_DBG_CTDREQ_OFFSET)
+                    & Ch13DbgCtdreq::CH13_DBG_CTDREQ_MASK),
         }
     }
 }
@@ -65862,7 +67704,10 @@ impl Ch14DbgCtdreq {
     /// Write **CH14_DBG_CTDREQ** `[5:0]` (RW)
     #[inline(always)]
     pub fn write_ch14_dbg_ctdreq(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH14_DBG_CTDREQ_MASK) | ((value << Self::CH14_DBG_CTDREQ_OFFSET) & Self::CH14_DBG_CTDREQ_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH14_DBG_CTDREQ_MASK)
+                | ((value << Self::CH14_DBG_CTDREQ_OFFSET) & Self::CH14_DBG_CTDREQ_MASK)
+        });
     }
 }
 
@@ -65904,7 +67749,9 @@ impl Ch14DbgCtdreqVal {
     #[inline(always)]
     pub const fn with_ch14_dbg_ctdreq(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch14DbgCtdreq::CH14_DBG_CTDREQ_MASK) | ((value << Ch14DbgCtdreq::CH14_DBG_CTDREQ_OFFSET) & Ch14DbgCtdreq::CH14_DBG_CTDREQ_MASK)
+            bits: (self.bits & !Ch14DbgCtdreq::CH14_DBG_CTDREQ_MASK)
+                | ((value << Ch14DbgCtdreq::CH14_DBG_CTDREQ_OFFSET)
+                    & Ch14DbgCtdreq::CH14_DBG_CTDREQ_MASK),
         }
     }
 }
@@ -66066,7 +67913,10 @@ impl Ch15DbgCtdreq {
     /// Write **CH15_DBG_CTDREQ** `[5:0]` (RW)
     #[inline(always)]
     pub fn write_ch15_dbg_ctdreq(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CH15_DBG_CTDREQ_MASK) | ((value << Self::CH15_DBG_CTDREQ_OFFSET) & Self::CH15_DBG_CTDREQ_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CH15_DBG_CTDREQ_MASK)
+                | ((value << Self::CH15_DBG_CTDREQ_OFFSET) & Self::CH15_DBG_CTDREQ_MASK)
+        });
     }
 }
 
@@ -66108,7 +67958,9 @@ impl Ch15DbgCtdreqVal {
     #[inline(always)]
     pub const fn with_ch15_dbg_ctdreq(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ch15DbgCtdreq::CH15_DBG_CTDREQ_MASK) | ((value << Ch15DbgCtdreq::CH15_DBG_CTDREQ_OFFSET) & Ch15DbgCtdreq::CH15_DBG_CTDREQ_MASK)
+            bits: (self.bits & !Ch15DbgCtdreq::CH15_DBG_CTDREQ_MASK)
+                | ((value << Ch15DbgCtdreq::CH15_DBG_CTDREQ_OFFSET)
+                    & Ch15DbgCtdreq::CH15_DBG_CTDREQ_MASK),
         }
     }
 }
@@ -67455,4 +69307,3 @@ pub struct RegisterBlock {
     /// Read to get channel TRANS_COUNT reload value, i.e. the length of the next transfer
     pub ch15_dbg_tcr: Ch15DbgTcr,
 }
-

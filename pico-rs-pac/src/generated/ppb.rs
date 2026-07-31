@@ -56,7 +56,9 @@ impl ItmStim0 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -102,7 +104,8 @@ impl ItmStim0Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim0::STIMULUS_MASK) | ((value << ItmStim0::STIMULUS_OFFSET) & ItmStim0::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim0::STIMULUS_MASK)
+                | ((value << ItmStim0::STIMULUS_OFFSET) & ItmStim0::STIMULUS_MASK),
         }
     }
 }
@@ -184,7 +187,9 @@ impl ItmStim1 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -230,7 +235,8 @@ impl ItmStim1Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim1::STIMULUS_MASK) | ((value << ItmStim1::STIMULUS_OFFSET) & ItmStim1::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim1::STIMULUS_MASK)
+                | ((value << ItmStim1::STIMULUS_OFFSET) & ItmStim1::STIMULUS_MASK),
         }
     }
 }
@@ -312,7 +318,9 @@ impl ItmStim2 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -358,7 +366,8 @@ impl ItmStim2Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim2::STIMULUS_MASK) | ((value << ItmStim2::STIMULUS_OFFSET) & ItmStim2::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim2::STIMULUS_MASK)
+                | ((value << ItmStim2::STIMULUS_OFFSET) & ItmStim2::STIMULUS_MASK),
         }
     }
 }
@@ -440,7 +449,9 @@ impl ItmStim3 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -486,7 +497,8 @@ impl ItmStim3Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim3::STIMULUS_MASK) | ((value << ItmStim3::STIMULUS_OFFSET) & ItmStim3::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim3::STIMULUS_MASK)
+                | ((value << ItmStim3::STIMULUS_OFFSET) & ItmStim3::STIMULUS_MASK),
         }
     }
 }
@@ -568,7 +580,9 @@ impl ItmStim4 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -614,7 +628,8 @@ impl ItmStim4Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim4::STIMULUS_MASK) | ((value << ItmStim4::STIMULUS_OFFSET) & ItmStim4::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim4::STIMULUS_MASK)
+                | ((value << ItmStim4::STIMULUS_OFFSET) & ItmStim4::STIMULUS_MASK),
         }
     }
 }
@@ -696,7 +711,9 @@ impl ItmStim5 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -742,7 +759,8 @@ impl ItmStim5Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim5::STIMULUS_MASK) | ((value << ItmStim5::STIMULUS_OFFSET) & ItmStim5::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim5::STIMULUS_MASK)
+                | ((value << ItmStim5::STIMULUS_OFFSET) & ItmStim5::STIMULUS_MASK),
         }
     }
 }
@@ -824,7 +842,9 @@ impl ItmStim6 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -870,7 +890,8 @@ impl ItmStim6Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim6::STIMULUS_MASK) | ((value << ItmStim6::STIMULUS_OFFSET) & ItmStim6::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim6::STIMULUS_MASK)
+                | ((value << ItmStim6::STIMULUS_OFFSET) & ItmStim6::STIMULUS_MASK),
         }
     }
 }
@@ -952,7 +973,9 @@ impl ItmStim7 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -998,7 +1021,8 @@ impl ItmStim7Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim7::STIMULUS_MASK) | ((value << ItmStim7::STIMULUS_OFFSET) & ItmStim7::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim7::STIMULUS_MASK)
+                | ((value << ItmStim7::STIMULUS_OFFSET) & ItmStim7::STIMULUS_MASK),
         }
     }
 }
@@ -1080,7 +1104,9 @@ impl ItmStim8 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -1126,7 +1152,8 @@ impl ItmStim8Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim8::STIMULUS_MASK) | ((value << ItmStim8::STIMULUS_OFFSET) & ItmStim8::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim8::STIMULUS_MASK)
+                | ((value << ItmStim8::STIMULUS_OFFSET) & ItmStim8::STIMULUS_MASK),
         }
     }
 }
@@ -1208,7 +1235,9 @@ impl ItmStim9 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -1254,7 +1283,8 @@ impl ItmStim9Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim9::STIMULUS_MASK) | ((value << ItmStim9::STIMULUS_OFFSET) & ItmStim9::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim9::STIMULUS_MASK)
+                | ((value << ItmStim9::STIMULUS_OFFSET) & ItmStim9::STIMULUS_MASK),
         }
     }
 }
@@ -1336,7 +1366,9 @@ impl ItmStim10 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -1382,7 +1414,8 @@ impl ItmStim10Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim10::STIMULUS_MASK) | ((value << ItmStim10::STIMULUS_OFFSET) & ItmStim10::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim10::STIMULUS_MASK)
+                | ((value << ItmStim10::STIMULUS_OFFSET) & ItmStim10::STIMULUS_MASK),
         }
     }
 }
@@ -1464,7 +1497,9 @@ impl ItmStim11 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -1510,7 +1545,8 @@ impl ItmStim11Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim11::STIMULUS_MASK) | ((value << ItmStim11::STIMULUS_OFFSET) & ItmStim11::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim11::STIMULUS_MASK)
+                | ((value << ItmStim11::STIMULUS_OFFSET) & ItmStim11::STIMULUS_MASK),
         }
     }
 }
@@ -1592,7 +1628,9 @@ impl ItmStim12 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -1638,7 +1676,8 @@ impl ItmStim12Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim12::STIMULUS_MASK) | ((value << ItmStim12::STIMULUS_OFFSET) & ItmStim12::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim12::STIMULUS_MASK)
+                | ((value << ItmStim12::STIMULUS_OFFSET) & ItmStim12::STIMULUS_MASK),
         }
     }
 }
@@ -1720,7 +1759,9 @@ impl ItmStim13 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -1766,7 +1807,8 @@ impl ItmStim13Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim13::STIMULUS_MASK) | ((value << ItmStim13::STIMULUS_OFFSET) & ItmStim13::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim13::STIMULUS_MASK)
+                | ((value << ItmStim13::STIMULUS_OFFSET) & ItmStim13::STIMULUS_MASK),
         }
     }
 }
@@ -1848,7 +1890,9 @@ impl ItmStim14 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -1894,7 +1938,8 @@ impl ItmStim14Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim14::STIMULUS_MASK) | ((value << ItmStim14::STIMULUS_OFFSET) & ItmStim14::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim14::STIMULUS_MASK)
+                | ((value << ItmStim14::STIMULUS_OFFSET) & ItmStim14::STIMULUS_MASK),
         }
     }
 }
@@ -1976,7 +2021,9 @@ impl ItmStim15 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -2022,7 +2069,8 @@ impl ItmStim15Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim15::STIMULUS_MASK) | ((value << ItmStim15::STIMULUS_OFFSET) & ItmStim15::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim15::STIMULUS_MASK)
+                | ((value << ItmStim15::STIMULUS_OFFSET) & ItmStim15::STIMULUS_MASK),
         }
     }
 }
@@ -2104,7 +2152,9 @@ impl ItmStim16 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -2150,7 +2200,8 @@ impl ItmStim16Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim16::STIMULUS_MASK) | ((value << ItmStim16::STIMULUS_OFFSET) & ItmStim16::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim16::STIMULUS_MASK)
+                | ((value << ItmStim16::STIMULUS_OFFSET) & ItmStim16::STIMULUS_MASK),
         }
     }
 }
@@ -2232,7 +2283,9 @@ impl ItmStim17 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -2278,7 +2331,8 @@ impl ItmStim17Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim17::STIMULUS_MASK) | ((value << ItmStim17::STIMULUS_OFFSET) & ItmStim17::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim17::STIMULUS_MASK)
+                | ((value << ItmStim17::STIMULUS_OFFSET) & ItmStim17::STIMULUS_MASK),
         }
     }
 }
@@ -2360,7 +2414,9 @@ impl ItmStim18 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -2406,7 +2462,8 @@ impl ItmStim18Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim18::STIMULUS_MASK) | ((value << ItmStim18::STIMULUS_OFFSET) & ItmStim18::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim18::STIMULUS_MASK)
+                | ((value << ItmStim18::STIMULUS_OFFSET) & ItmStim18::STIMULUS_MASK),
         }
     }
 }
@@ -2488,7 +2545,9 @@ impl ItmStim19 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -2534,7 +2593,8 @@ impl ItmStim19Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim19::STIMULUS_MASK) | ((value << ItmStim19::STIMULUS_OFFSET) & ItmStim19::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim19::STIMULUS_MASK)
+                | ((value << ItmStim19::STIMULUS_OFFSET) & ItmStim19::STIMULUS_MASK),
         }
     }
 }
@@ -2616,7 +2676,9 @@ impl ItmStim20 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -2662,7 +2724,8 @@ impl ItmStim20Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim20::STIMULUS_MASK) | ((value << ItmStim20::STIMULUS_OFFSET) & ItmStim20::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim20::STIMULUS_MASK)
+                | ((value << ItmStim20::STIMULUS_OFFSET) & ItmStim20::STIMULUS_MASK),
         }
     }
 }
@@ -2744,7 +2807,9 @@ impl ItmStim21 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -2790,7 +2855,8 @@ impl ItmStim21Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim21::STIMULUS_MASK) | ((value << ItmStim21::STIMULUS_OFFSET) & ItmStim21::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim21::STIMULUS_MASK)
+                | ((value << ItmStim21::STIMULUS_OFFSET) & ItmStim21::STIMULUS_MASK),
         }
     }
 }
@@ -2872,7 +2938,9 @@ impl ItmStim22 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -2918,7 +2986,8 @@ impl ItmStim22Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim22::STIMULUS_MASK) | ((value << ItmStim22::STIMULUS_OFFSET) & ItmStim22::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim22::STIMULUS_MASK)
+                | ((value << ItmStim22::STIMULUS_OFFSET) & ItmStim22::STIMULUS_MASK),
         }
     }
 }
@@ -3000,7 +3069,9 @@ impl ItmStim23 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -3046,7 +3117,8 @@ impl ItmStim23Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim23::STIMULUS_MASK) | ((value << ItmStim23::STIMULUS_OFFSET) & ItmStim23::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim23::STIMULUS_MASK)
+                | ((value << ItmStim23::STIMULUS_OFFSET) & ItmStim23::STIMULUS_MASK),
         }
     }
 }
@@ -3128,7 +3200,9 @@ impl ItmStim24 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -3174,7 +3248,8 @@ impl ItmStim24Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim24::STIMULUS_MASK) | ((value << ItmStim24::STIMULUS_OFFSET) & ItmStim24::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim24::STIMULUS_MASK)
+                | ((value << ItmStim24::STIMULUS_OFFSET) & ItmStim24::STIMULUS_MASK),
         }
     }
 }
@@ -3256,7 +3331,9 @@ impl ItmStim25 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -3302,7 +3379,8 @@ impl ItmStim25Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim25::STIMULUS_MASK) | ((value << ItmStim25::STIMULUS_OFFSET) & ItmStim25::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim25::STIMULUS_MASK)
+                | ((value << ItmStim25::STIMULUS_OFFSET) & ItmStim25::STIMULUS_MASK),
         }
     }
 }
@@ -3384,7 +3462,9 @@ impl ItmStim26 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -3430,7 +3510,8 @@ impl ItmStim26Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim26::STIMULUS_MASK) | ((value << ItmStim26::STIMULUS_OFFSET) & ItmStim26::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim26::STIMULUS_MASK)
+                | ((value << ItmStim26::STIMULUS_OFFSET) & ItmStim26::STIMULUS_MASK),
         }
     }
 }
@@ -3512,7 +3593,9 @@ impl ItmStim27 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -3558,7 +3641,8 @@ impl ItmStim27Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim27::STIMULUS_MASK) | ((value << ItmStim27::STIMULUS_OFFSET) & ItmStim27::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim27::STIMULUS_MASK)
+                | ((value << ItmStim27::STIMULUS_OFFSET) & ItmStim27::STIMULUS_MASK),
         }
     }
 }
@@ -3640,7 +3724,9 @@ impl ItmStim28 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -3686,7 +3772,8 @@ impl ItmStim28Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim28::STIMULUS_MASK) | ((value << ItmStim28::STIMULUS_OFFSET) & ItmStim28::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim28::STIMULUS_MASK)
+                | ((value << ItmStim28::STIMULUS_OFFSET) & ItmStim28::STIMULUS_MASK),
         }
     }
 }
@@ -3768,7 +3855,9 @@ impl ItmStim29 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -3814,7 +3903,8 @@ impl ItmStim29Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim29::STIMULUS_MASK) | ((value << ItmStim29::STIMULUS_OFFSET) & ItmStim29::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim29::STIMULUS_MASK)
+                | ((value << ItmStim29::STIMULUS_OFFSET) & ItmStim29::STIMULUS_MASK),
         }
     }
 }
@@ -3896,7 +3986,9 @@ impl ItmStim30 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -3942,7 +4034,8 @@ impl ItmStim30Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim30::STIMULUS_MASK) | ((value << ItmStim30::STIMULUS_OFFSET) & ItmStim30::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim30::STIMULUS_MASK)
+                | ((value << ItmStim30::STIMULUS_OFFSET) & ItmStim30::STIMULUS_MASK),
         }
     }
 }
@@ -4024,7 +4117,9 @@ impl ItmStim31 {
     /// Data to write to the Stimulus Port FIFO, for forwarding as an Instrumentation packet. The size of write access determines the type of Instrumentation packet generated.
     #[inline(always)]
     pub fn write_stimulus(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMULUS_MASK) | ((value << Self::STIMULUS_OFFSET) & Self::STIMULUS_MASK)
+        });
     }
 }
 
@@ -4070,7 +4165,8 @@ impl ItmStim31Val {
     #[inline(always)]
     pub const fn with_stimulus(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmStim31::STIMULUS_MASK) | ((value << ItmStim31::STIMULUS_OFFSET) & ItmStim31::STIMULUS_MASK)
+            bits: (self.bits & !ItmStim31::STIMULUS_MASK)
+                | ((value << ItmStim31::STIMULUS_OFFSET) & ItmStim31::STIMULUS_MASK),
         }
     }
 }
@@ -4152,7 +4248,9 @@ impl ItmTer0 {
     /// For STIMENA[m] in ITM_TER*n, controls whether ITM_STIM(32*n + m) is enabled
     #[inline(always)]
     pub fn write_stimena(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::STIMENA_MASK) | ((value << Self::STIMENA_OFFSET) & Self::STIMENA_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::STIMENA_MASK) | ((value << Self::STIMENA_OFFSET) & Self::STIMENA_MASK)
+        });
     }
 }
 
@@ -4198,7 +4296,8 @@ impl ItmTer0Val {
     #[inline(always)]
     pub const fn with_stimena(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmTer0::STIMENA_MASK) | ((value << ItmTer0::STIMENA_OFFSET) & ItmTer0::STIMENA_MASK)
+            bits: (self.bits & !ItmTer0::STIMENA_MASK)
+                | ((value << ItmTer0::STIMENA_OFFSET) & ItmTer0::STIMENA_MASK),
         }
     }
 }
@@ -4280,7 +4379,9 @@ impl ItmTpr {
     /// Bit mask to enable tracing on ITM stimulus ports
     #[inline(always)]
     pub fn write_privmask(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRIVMASK_MASK) | ((value << Self::PRIVMASK_OFFSET) & Self::PRIVMASK_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRIVMASK_MASK) | ((value << Self::PRIVMASK_OFFSET) & Self::PRIVMASK_MASK)
+        });
     }
 }
 
@@ -4326,7 +4427,8 @@ impl ItmTprVal {
     #[inline(always)]
     pub const fn with_privmask(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmTpr::PRIVMASK_MASK) | ((value << ItmTpr::PRIVMASK_OFFSET) & ItmTpr::PRIVMASK_MASK)
+            bits: (self.bits & !ItmTpr::PRIVMASK_MASK)
+                | ((value << ItmTpr::PRIVMASK_OFFSET) & ItmTpr::PRIVMASK_MASK),
         }
     }
 }
@@ -4531,7 +4633,10 @@ impl ItmTcr {
     /// Identifier for multi-source trace stream formatting. If multi-source trace is in use, the debugger must write a unique non-zero trace ID value to this field
     #[inline(always)]
     pub fn write_tracebusid(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TRACEBUSID_MASK) | ((value << Self::TRACEBUSID_OFFSET) & Self::TRACEBUSID_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TRACEBUSID_MASK)
+                | ((value << Self::TRACEBUSID_OFFSET) & Self::TRACEBUSID_MASK)
+        });
     }
 
     /// **GTSFREQ** `[11:10]` (RW)
@@ -4547,7 +4652,9 @@ impl ItmTcr {
     /// Defines how often the ITM generates a global timestamp, based on the global timestamp clock frequency, or disables generation of global timestamps
     #[inline(always)]
     pub fn write_gtsfreq(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::GTSFREQ_MASK) | ((value << Self::GTSFREQ_OFFSET) & Self::GTSFREQ_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::GTSFREQ_MASK) | ((value << Self::GTSFREQ_OFFSET) & Self::GTSFREQ_MASK)
+        });
     }
 
     /// **TSPRESCALE** `[9:8]` (RW)
@@ -4563,7 +4670,10 @@ impl ItmTcr {
     /// Local timestamp prescaler, used with the trace packet reference clock
     #[inline(always)]
     pub fn write_tsprescale(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TSPRESCALE_MASK) | ((value << Self::TSPRESCALE_OFFSET) & Self::TSPRESCALE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TSPRESCALE_MASK)
+                | ((value << Self::TSPRESCALE_OFFSET) & Self::TSPRESCALE_MASK)
+        });
     }
 
     /// **STALLENA** `[5]` (RW)
@@ -4801,7 +4911,8 @@ impl ItmTcrVal {
     #[inline(always)]
     pub const fn with_tracebusid(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmTcr::TRACEBUSID_MASK) | ((value << ItmTcr::TRACEBUSID_OFFSET) & ItmTcr::TRACEBUSID_MASK)
+            bits: (self.bits & !ItmTcr::TRACEBUSID_MASK)
+                | ((value << ItmTcr::TRACEBUSID_OFFSET) & ItmTcr::TRACEBUSID_MASK),
         }
     }
 
@@ -4811,7 +4922,8 @@ impl ItmTcrVal {
     #[inline(always)]
     pub const fn with_gtsfreq(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmTcr::GTSFREQ_MASK) | ((value << ItmTcr::GTSFREQ_OFFSET) & ItmTcr::GTSFREQ_MASK)
+            bits: (self.bits & !ItmTcr::GTSFREQ_MASK)
+                | ((value << ItmTcr::GTSFREQ_OFFSET) & ItmTcr::GTSFREQ_MASK),
         }
     }
 
@@ -4821,7 +4933,8 @@ impl ItmTcrVal {
     #[inline(always)]
     pub const fn with_tsprescale(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmTcr::TSPRESCALE_MASK) | ((value << ItmTcr::TSPRESCALE_OFFSET) & ItmTcr::TSPRESCALE_MASK)
+            bits: (self.bits & !ItmTcr::TSPRESCALE_MASK)
+                | ((value << ItmTcr::TSPRESCALE_OFFSET) & ItmTcr::TSPRESCALE_MASK),
         }
     }
 
@@ -4835,7 +4948,7 @@ impl ItmTcrVal {
                 self.bits | ItmTcr::STALLENA_MASK
             } else {
                 self.bits & !ItmTcr::STALLENA_MASK
-            }
+            },
         }
     }
 
@@ -4849,7 +4962,7 @@ impl ItmTcrVal {
                 self.bits | ItmTcr::SWOENA_MASK
             } else {
                 self.bits & !ItmTcr::SWOENA_MASK
-            }
+            },
         }
     }
 
@@ -4863,7 +4976,7 @@ impl ItmTcrVal {
                 self.bits | ItmTcr::TXENA_MASK
             } else {
                 self.bits & !ItmTcr::TXENA_MASK
-            }
+            },
         }
     }
 
@@ -4877,7 +4990,7 @@ impl ItmTcrVal {
                 self.bits | ItmTcr::SYNCENA_MASK
             } else {
                 self.bits & !ItmTcr::SYNCENA_MASK
-            }
+            },
         }
     }
 
@@ -4891,7 +5004,7 @@ impl ItmTcrVal {
                 self.bits | ItmTcr::TSENA_MASK
             } else {
                 self.bits & !ItmTcr::TSENA_MASK
-            }
+            },
         }
     }
 
@@ -4905,7 +5018,7 @@ impl ItmTcrVal {
                 self.bits | ItmTcr::ITMENA_MASK
             } else {
                 self.bits & !ItmTcr::ITMENA_MASK
-            }
+            },
         }
     }
 }
@@ -5211,7 +5324,7 @@ impl IntAtvalidVal {
                 self.bits | IntAtvalid::AFREADY_MASK
             } else {
                 self.bits & !IntAtvalid::AFREADY_MASK
-            }
+            },
         }
     }
 
@@ -5225,7 +5338,7 @@ impl IntAtvalidVal {
                 self.bits | IntAtvalid::ATREADY_MASK
             } else {
                 self.bits & !IntAtvalid::ATREADY_MASK
-            }
+            },
         }
     }
 }
@@ -5362,7 +5475,7 @@ impl ItmItctrlVal {
                 self.bits | ItmItctrl::IME_MASK
             } else {
                 self.bits & !ItmItctrl::IME_MASK
-            }
+            },
         }
     }
 }
@@ -5898,7 +6011,9 @@ impl ItmPidr5 {
     /// Write **ITM_PIDR5** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_itm_pidr5(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ITM_PIDR5_MASK) | ((value << Self::ITM_PIDR5_OFFSET) & Self::ITM_PIDR5_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ITM_PIDR5_MASK) | ((value << Self::ITM_PIDR5_OFFSET) & Self::ITM_PIDR5_MASK)
+        });
     }
 }
 
@@ -5940,7 +6055,8 @@ impl ItmPidr5Val {
     #[inline(always)]
     pub const fn with_itm_pidr5(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmPidr5::ITM_PIDR5_MASK) | ((value << ItmPidr5::ITM_PIDR5_OFFSET) & ItmPidr5::ITM_PIDR5_MASK)
+            bits: (self.bits & !ItmPidr5::ITM_PIDR5_MASK)
+                | ((value << ItmPidr5::ITM_PIDR5_OFFSET) & ItmPidr5::ITM_PIDR5_MASK),
         }
     }
 }
@@ -6013,7 +6129,9 @@ impl ItmPidr6 {
     /// Write **ITM_PIDR6** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_itm_pidr6(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ITM_PIDR6_MASK) | ((value << Self::ITM_PIDR6_OFFSET) & Self::ITM_PIDR6_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ITM_PIDR6_MASK) | ((value << Self::ITM_PIDR6_OFFSET) & Self::ITM_PIDR6_MASK)
+        });
     }
 }
 
@@ -6055,7 +6173,8 @@ impl ItmPidr6Val {
     #[inline(always)]
     pub const fn with_itm_pidr6(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmPidr6::ITM_PIDR6_MASK) | ((value << ItmPidr6::ITM_PIDR6_OFFSET) & ItmPidr6::ITM_PIDR6_MASK)
+            bits: (self.bits & !ItmPidr6::ITM_PIDR6_MASK)
+                | ((value << ItmPidr6::ITM_PIDR6_OFFSET) & ItmPidr6::ITM_PIDR6_MASK),
         }
     }
 }
@@ -6128,7 +6247,9 @@ impl ItmPidr7 {
     /// Write **ITM_PIDR7** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_itm_pidr7(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ITM_PIDR7_MASK) | ((value << Self::ITM_PIDR7_OFFSET) & Self::ITM_PIDR7_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ITM_PIDR7_MASK) | ((value << Self::ITM_PIDR7_OFFSET) & Self::ITM_PIDR7_MASK)
+        });
     }
 }
 
@@ -6170,7 +6291,8 @@ impl ItmPidr7Val {
     #[inline(always)]
     pub const fn with_itm_pidr7(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !ItmPidr7::ITM_PIDR7_MASK) | ((value << ItmPidr7::ITM_PIDR7_OFFSET) & ItmPidr7::ITM_PIDR7_MASK)
+            bits: (self.bits & !ItmPidr7::ITM_PIDR7_MASK)
+                | ((value << ItmPidr7::ITM_PIDR7_OFFSET) & ItmPidr7::ITM_PIDR7_MASK),
         }
     }
 }
@@ -7628,7 +7750,9 @@ impl DwtCtrl {
     /// Selects the position of the synchronization packet counter tap on the CYCCNT counter. This determines the Synchronization packet rate
     #[inline(always)]
     pub fn write_synctap(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SYNCTAP_MASK) | ((value << Self::SYNCTAP_OFFSET) & Self::SYNCTAP_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SYNCTAP_MASK) | ((value << Self::SYNCTAP_OFFSET) & Self::SYNCTAP_MASK)
+        });
     }
 
     /// **CYCTAP** `[9]` (RW)
@@ -7664,7 +7788,9 @@ impl DwtCtrl {
     /// Initial value for the POSTCNT counter
     #[inline(always)]
     pub fn write_postinit(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::POSTINIT_MASK) | ((value << Self::POSTINIT_OFFSET) & Self::POSTINIT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::POSTINIT_MASK) | ((value << Self::POSTINIT_OFFSET) & Self::POSTINIT_MASK)
+        });
     }
 
     /// **POSTPRESET** `[4:1]` (RW)
@@ -7680,7 +7806,10 @@ impl DwtCtrl {
     /// Reload value for the POSTCNT counter
     #[inline(always)]
     pub fn write_postpreset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::POSTPRESET_MASK) | ((value << Self::POSTPRESET_OFFSET) & Self::POSTPRESET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::POSTPRESET_MASK)
+                | ((value << Self::POSTPRESET_OFFSET) & Self::POSTPRESET_MASK)
+        });
     }
 
     /// **CYCCNTENA** `[0]` (RW)
@@ -7894,7 +8023,7 @@ impl DwtCtrlVal {
                 self.bits | DwtCtrl::CYCDISS_MASK
             } else {
                 self.bits & !DwtCtrl::CYCDISS_MASK
-            }
+            },
         }
     }
 
@@ -7908,7 +8037,7 @@ impl DwtCtrlVal {
                 self.bits | DwtCtrl::CYCEVTENA_MASK
             } else {
                 self.bits & !DwtCtrl::CYCEVTENA_MASK
-            }
+            },
         }
     }
 
@@ -7922,7 +8051,7 @@ impl DwtCtrlVal {
                 self.bits | DwtCtrl::FOLDEVTENA_MASK
             } else {
                 self.bits & !DwtCtrl::FOLDEVTENA_MASK
-            }
+            },
         }
     }
 
@@ -7936,7 +8065,7 @@ impl DwtCtrlVal {
                 self.bits | DwtCtrl::LSUEVTENA_MASK
             } else {
                 self.bits & !DwtCtrl::LSUEVTENA_MASK
-            }
+            },
         }
     }
 
@@ -7950,7 +8079,7 @@ impl DwtCtrlVal {
                 self.bits | DwtCtrl::SLEEPEVTENA_MASK
             } else {
                 self.bits & !DwtCtrl::SLEEPEVTENA_MASK
-            }
+            },
         }
     }
 
@@ -7964,7 +8093,7 @@ impl DwtCtrlVal {
                 self.bits | DwtCtrl::EXCEVTENA_MASK
             } else {
                 self.bits & !DwtCtrl::EXCEVTENA_MASK
-            }
+            },
         }
     }
 
@@ -7978,7 +8107,7 @@ impl DwtCtrlVal {
                 self.bits | DwtCtrl::CPIEVTENA_MASK
             } else {
                 self.bits & !DwtCtrl::CPIEVTENA_MASK
-            }
+            },
         }
     }
 
@@ -7992,7 +8121,7 @@ impl DwtCtrlVal {
                 self.bits | DwtCtrl::EXTTRCENA_MASK
             } else {
                 self.bits & !DwtCtrl::EXTTRCENA_MASK
-            }
+            },
         }
     }
 
@@ -8006,7 +8135,7 @@ impl DwtCtrlVal {
                 self.bits | DwtCtrl::PCSAMPLENA_MASK
             } else {
                 self.bits & !DwtCtrl::PCSAMPLENA_MASK
-            }
+            },
         }
     }
 
@@ -8016,7 +8145,8 @@ impl DwtCtrlVal {
     #[inline(always)]
     pub const fn with_synctap(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DwtCtrl::SYNCTAP_MASK) | ((value << DwtCtrl::SYNCTAP_OFFSET) & DwtCtrl::SYNCTAP_MASK)
+            bits: (self.bits & !DwtCtrl::SYNCTAP_MASK)
+                | ((value << DwtCtrl::SYNCTAP_OFFSET) & DwtCtrl::SYNCTAP_MASK),
         }
     }
 
@@ -8030,7 +8160,7 @@ impl DwtCtrlVal {
                 self.bits | DwtCtrl::CYCTAP_MASK
             } else {
                 self.bits & !DwtCtrl::CYCTAP_MASK
-            }
+            },
         }
     }
 
@@ -8040,7 +8170,8 @@ impl DwtCtrlVal {
     #[inline(always)]
     pub const fn with_postinit(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DwtCtrl::POSTINIT_MASK) | ((value << DwtCtrl::POSTINIT_OFFSET) & DwtCtrl::POSTINIT_MASK)
+            bits: (self.bits & !DwtCtrl::POSTINIT_MASK)
+                | ((value << DwtCtrl::POSTINIT_OFFSET) & DwtCtrl::POSTINIT_MASK),
         }
     }
 
@@ -8050,7 +8181,8 @@ impl DwtCtrlVal {
     #[inline(always)]
     pub const fn with_postpreset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DwtCtrl::POSTPRESET_MASK) | ((value << DwtCtrl::POSTPRESET_OFFSET) & DwtCtrl::POSTPRESET_MASK)
+            bits: (self.bits & !DwtCtrl::POSTPRESET_MASK)
+                | ((value << DwtCtrl::POSTPRESET_OFFSET) & DwtCtrl::POSTPRESET_MASK),
         }
     }
 
@@ -8064,7 +8196,7 @@ impl DwtCtrlVal {
                 self.bits | DwtCtrl::CYCCNTENA_MASK
             } else {
                 self.bits & !DwtCtrl::CYCCNTENA_MASK
-            }
+            },
         }
     }
 }
@@ -8146,7 +8278,9 @@ impl DwtCyccnt {
     /// Increments one on each processor clock cycle when DWT_CTRL.CYCCNTENA == 1 and DEMCR.TRCENA == 1. On overflow, CYCCNT wraps to zero
     #[inline(always)]
     pub fn write_cyccnt(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CYCCNT_MASK) | ((value << Self::CYCCNT_OFFSET) & Self::CYCCNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CYCCNT_MASK) | ((value << Self::CYCCNT_OFFSET) & Self::CYCCNT_MASK)
+        });
     }
 }
 
@@ -8192,7 +8326,8 @@ impl DwtCyccntVal {
     #[inline(always)]
     pub const fn with_cyccnt(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DwtCyccnt::CYCCNT_MASK) | ((value << DwtCyccnt::CYCCNT_OFFSET) & DwtCyccnt::CYCCNT_MASK)
+            bits: (self.bits & !DwtCyccnt::CYCCNT_MASK)
+                | ((value << DwtCyccnt::CYCCNT_OFFSET) & DwtCyccnt::CYCCNT_MASK),
         }
     }
 }
@@ -8274,7 +8409,9 @@ impl DwtExccnt {
     /// Counts one on each cycle when all of the following are true: - DWT_CTRL.EXCEVTENA == 1 and DEMCR.TRCENA == 1. - No instruction is executed, see DWT_CPICNT. - An exception-entry or exception-exit related operation is in progress. - Either SecureNoninvasiveDebugAllowed() == TRUE, or NS-Req for the operation is set to Non-secure and NoninvasiveDebugAllowed() == TRUE.
     #[inline(always)]
     pub fn write_exccnt(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::EXCCNT_MASK) | ((value << Self::EXCCNT_OFFSET) & Self::EXCCNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::EXCCNT_MASK) | ((value << Self::EXCCNT_OFFSET) & Self::EXCCNT_MASK)
+        });
     }
 }
 
@@ -8320,7 +8457,8 @@ impl DwtExccntVal {
     #[inline(always)]
     pub const fn with_exccnt(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DwtExccnt::EXCCNT_MASK) | ((value << DwtExccnt::EXCCNT_OFFSET) & DwtExccnt::EXCCNT_MASK)
+            bits: (self.bits & !DwtExccnt::EXCCNT_MASK)
+                | ((value << DwtExccnt::EXCCNT_OFFSET) & DwtExccnt::EXCCNT_MASK),
         }
     }
 }
@@ -8402,7 +8540,9 @@ impl DwtLsucnt {
     /// Counts one on each cycle when all of the following are true: - DWT_CTRL.LSUEVTENA == 1 and DEMCR.TRCENA == 1. - No instruction is executed, see DWT_CPICNT. - No exception-entry or exception-exit operation is in progress, see DWT_EXCCNT. - A load-store operation is in progress. - Either SecureNoninvasiveDebugAllowed() == TRUE, or NS-Req for the operation is set to Non-secure and NoninvasiveDebugAllowed() == TRUE.
     #[inline(always)]
     pub fn write_lsucnt(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LSUCNT_MASK) | ((value << Self::LSUCNT_OFFSET) & Self::LSUCNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LSUCNT_MASK) | ((value << Self::LSUCNT_OFFSET) & Self::LSUCNT_MASK)
+        });
     }
 }
 
@@ -8448,7 +8588,8 @@ impl DwtLsucntVal {
     #[inline(always)]
     pub const fn with_lsucnt(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DwtLsucnt::LSUCNT_MASK) | ((value << DwtLsucnt::LSUCNT_OFFSET) & DwtLsucnt::LSUCNT_MASK)
+            bits: (self.bits & !DwtLsucnt::LSUCNT_MASK)
+                | ((value << DwtLsucnt::LSUCNT_OFFSET) & DwtLsucnt::LSUCNT_MASK),
         }
     }
 }
@@ -8530,7 +8671,9 @@ impl DwtFoldcnt {
     /// Counts on each cycle when all of the following are true: - DWT_CTRL.FOLDEVTENA == 1 and DEMCR.TRCENA == 1. - At least two instructions are executed, see DWT_CPICNT. - Either SecureNoninvasiveDebugAllowed() == TRUE, or the PE is in Non-secure state and NoninvasiveDebugAllowed() == TRUE. The counter is incremented by the number of instructions executed, minus one
     #[inline(always)]
     pub fn write_foldcnt(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FOLDCNT_MASK) | ((value << Self::FOLDCNT_OFFSET) & Self::FOLDCNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FOLDCNT_MASK) | ((value << Self::FOLDCNT_OFFSET) & Self::FOLDCNT_MASK)
+        });
     }
 }
 
@@ -8576,7 +8719,8 @@ impl DwtFoldcntVal {
     #[inline(always)]
     pub const fn with_foldcnt(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DwtFoldcnt::FOLDCNT_MASK) | ((value << DwtFoldcnt::FOLDCNT_OFFSET) & DwtFoldcnt::FOLDCNT_MASK)
+            bits: (self.bits & !DwtFoldcnt::FOLDCNT_MASK)
+                | ((value << DwtFoldcnt::FOLDCNT_OFFSET) & DwtFoldcnt::FOLDCNT_MASK),
         }
     }
 }
@@ -8649,7 +8793,9 @@ impl DwtComp0 {
     /// Write **DWT_COMP0** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_dwt_comp0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DWT_COMP0_MASK) | ((value << Self::DWT_COMP0_OFFSET) & Self::DWT_COMP0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DWT_COMP0_MASK) | ((value << Self::DWT_COMP0_OFFSET) & Self::DWT_COMP0_MASK)
+        });
     }
 }
 
@@ -8691,7 +8837,8 @@ impl DwtComp0Val {
     #[inline(always)]
     pub const fn with_dwt_comp0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DwtComp0::DWT_COMP0_MASK) | ((value << DwtComp0::DWT_COMP0_OFFSET) & DwtComp0::DWT_COMP0_MASK)
+            bits: (self.bits & !DwtComp0::DWT_COMP0_MASK)
+                | ((value << DwtComp0::DWT_COMP0_OFFSET) & DwtComp0::DWT_COMP0_MASK),
         }
     }
 }
@@ -8838,7 +8985,9 @@ impl DwtFunction0 {
     /// Defines the size of the object being watched for by Data Value and Data Address comparators
     #[inline(always)]
     pub fn write_datavsize(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DATAVSIZE_MASK) | ((value << Self::DATAVSIZE_OFFSET) & Self::DATAVSIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DATAVSIZE_MASK) | ((value << Self::DATAVSIZE_OFFSET) & Self::DATAVSIZE_MASK)
+        });
     }
 
     /// **ACTION** `[5:4]` (RW)
@@ -8854,7 +9003,9 @@ impl DwtFunction0 {
     /// Defines the action on a match. This field is ignored and the comparator generates no actions if it is disabled by MATCH
     #[inline(always)]
     pub fn write_action(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ACTION_MASK) | ((value << Self::ACTION_OFFSET) & Self::ACTION_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ACTION_MASK) | ((value << Self::ACTION_OFFSET) & Self::ACTION_MASK)
+        });
     }
 
     /// **MATCH** `[3:0]` (RW)
@@ -8870,7 +9021,9 @@ impl DwtFunction0 {
     /// Controls the type of match generated by this comparator
     #[inline(always)]
     pub fn write_match_(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::MATCH_MASK) | ((value << Self::MATCH_OFFSET) & Self::MATCH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::MATCH_MASK) | ((value << Self::MATCH_OFFSET) & Self::MATCH_MASK)
+        });
     }
 }
 
@@ -8948,7 +9101,8 @@ impl DwtFunction0Val {
     #[inline(always)]
     pub const fn with_datavsize(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DwtFunction0::DATAVSIZE_MASK) | ((value << DwtFunction0::DATAVSIZE_OFFSET) & DwtFunction0::DATAVSIZE_MASK)
+            bits: (self.bits & !DwtFunction0::DATAVSIZE_MASK)
+                | ((value << DwtFunction0::DATAVSIZE_OFFSET) & DwtFunction0::DATAVSIZE_MASK),
         }
     }
 
@@ -8958,7 +9112,8 @@ impl DwtFunction0Val {
     #[inline(always)]
     pub const fn with_action(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DwtFunction0::ACTION_MASK) | ((value << DwtFunction0::ACTION_OFFSET) & DwtFunction0::ACTION_MASK)
+            bits: (self.bits & !DwtFunction0::ACTION_MASK)
+                | ((value << DwtFunction0::ACTION_OFFSET) & DwtFunction0::ACTION_MASK),
         }
     }
 
@@ -8968,7 +9123,8 @@ impl DwtFunction0Val {
     #[inline(always)]
     pub const fn with_match_(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DwtFunction0::MATCH_MASK) | ((value << DwtFunction0::MATCH_OFFSET) & DwtFunction0::MATCH_MASK)
+            bits: (self.bits & !DwtFunction0::MATCH_MASK)
+                | ((value << DwtFunction0::MATCH_OFFSET) & DwtFunction0::MATCH_MASK),
         }
     }
 }
@@ -9041,7 +9197,9 @@ impl DwtComp1 {
     /// Write **DWT_COMP1** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_dwt_comp1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DWT_COMP1_MASK) | ((value << Self::DWT_COMP1_OFFSET) & Self::DWT_COMP1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DWT_COMP1_MASK) | ((value << Self::DWT_COMP1_OFFSET) & Self::DWT_COMP1_MASK)
+        });
     }
 }
 
@@ -9083,7 +9241,8 @@ impl DwtComp1Val {
     #[inline(always)]
     pub const fn with_dwt_comp1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DwtComp1::DWT_COMP1_MASK) | ((value << DwtComp1::DWT_COMP1_OFFSET) & DwtComp1::DWT_COMP1_MASK)
+            bits: (self.bits & !DwtComp1::DWT_COMP1_MASK)
+                | ((value << DwtComp1::DWT_COMP1_OFFSET) & DwtComp1::DWT_COMP1_MASK),
         }
     }
 }
@@ -9230,7 +9389,9 @@ impl DwtFunction1 {
     /// Defines the size of the object being watched for by Data Value and Data Address comparators
     #[inline(always)]
     pub fn write_datavsize(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DATAVSIZE_MASK) | ((value << Self::DATAVSIZE_OFFSET) & Self::DATAVSIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DATAVSIZE_MASK) | ((value << Self::DATAVSIZE_OFFSET) & Self::DATAVSIZE_MASK)
+        });
     }
 
     /// **ACTION** `[5:4]` (RW)
@@ -9246,7 +9407,9 @@ impl DwtFunction1 {
     /// Defines the action on a match. This field is ignored and the comparator generates no actions if it is disabled by MATCH
     #[inline(always)]
     pub fn write_action(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ACTION_MASK) | ((value << Self::ACTION_OFFSET) & Self::ACTION_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ACTION_MASK) | ((value << Self::ACTION_OFFSET) & Self::ACTION_MASK)
+        });
     }
 
     /// **MATCH** `[3:0]` (RW)
@@ -9262,7 +9425,9 @@ impl DwtFunction1 {
     /// Controls the type of match generated by this comparator
     #[inline(always)]
     pub fn write_match_(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::MATCH_MASK) | ((value << Self::MATCH_OFFSET) & Self::MATCH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::MATCH_MASK) | ((value << Self::MATCH_OFFSET) & Self::MATCH_MASK)
+        });
     }
 }
 
@@ -9340,7 +9505,8 @@ impl DwtFunction1Val {
     #[inline(always)]
     pub const fn with_datavsize(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DwtFunction1::DATAVSIZE_MASK) | ((value << DwtFunction1::DATAVSIZE_OFFSET) & DwtFunction1::DATAVSIZE_MASK)
+            bits: (self.bits & !DwtFunction1::DATAVSIZE_MASK)
+                | ((value << DwtFunction1::DATAVSIZE_OFFSET) & DwtFunction1::DATAVSIZE_MASK),
         }
     }
 
@@ -9350,7 +9516,8 @@ impl DwtFunction1Val {
     #[inline(always)]
     pub const fn with_action(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DwtFunction1::ACTION_MASK) | ((value << DwtFunction1::ACTION_OFFSET) & DwtFunction1::ACTION_MASK)
+            bits: (self.bits & !DwtFunction1::ACTION_MASK)
+                | ((value << DwtFunction1::ACTION_OFFSET) & DwtFunction1::ACTION_MASK),
         }
     }
 
@@ -9360,7 +9527,8 @@ impl DwtFunction1Val {
     #[inline(always)]
     pub const fn with_match_(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DwtFunction1::MATCH_MASK) | ((value << DwtFunction1::MATCH_OFFSET) & DwtFunction1::MATCH_MASK)
+            bits: (self.bits & !DwtFunction1::MATCH_MASK)
+                | ((value << DwtFunction1::MATCH_OFFSET) & DwtFunction1::MATCH_MASK),
         }
     }
 }
@@ -9433,7 +9601,9 @@ impl DwtComp2 {
     /// Write **DWT_COMP2** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_dwt_comp2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DWT_COMP2_MASK) | ((value << Self::DWT_COMP2_OFFSET) & Self::DWT_COMP2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DWT_COMP2_MASK) | ((value << Self::DWT_COMP2_OFFSET) & Self::DWT_COMP2_MASK)
+        });
     }
 }
 
@@ -9475,7 +9645,8 @@ impl DwtComp2Val {
     #[inline(always)]
     pub const fn with_dwt_comp2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DwtComp2::DWT_COMP2_MASK) | ((value << DwtComp2::DWT_COMP2_OFFSET) & DwtComp2::DWT_COMP2_MASK)
+            bits: (self.bits & !DwtComp2::DWT_COMP2_MASK)
+                | ((value << DwtComp2::DWT_COMP2_OFFSET) & DwtComp2::DWT_COMP2_MASK),
         }
     }
 }
@@ -9622,7 +9793,9 @@ impl DwtFunction2 {
     /// Defines the size of the object being watched for by Data Value and Data Address comparators
     #[inline(always)]
     pub fn write_datavsize(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DATAVSIZE_MASK) | ((value << Self::DATAVSIZE_OFFSET) & Self::DATAVSIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DATAVSIZE_MASK) | ((value << Self::DATAVSIZE_OFFSET) & Self::DATAVSIZE_MASK)
+        });
     }
 
     /// **ACTION** `[5:4]` (RW)
@@ -9638,7 +9811,9 @@ impl DwtFunction2 {
     /// Defines the action on a match. This field is ignored and the comparator generates no actions if it is disabled by MATCH
     #[inline(always)]
     pub fn write_action(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ACTION_MASK) | ((value << Self::ACTION_OFFSET) & Self::ACTION_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ACTION_MASK) | ((value << Self::ACTION_OFFSET) & Self::ACTION_MASK)
+        });
     }
 
     /// **MATCH** `[3:0]` (RW)
@@ -9654,7 +9829,9 @@ impl DwtFunction2 {
     /// Controls the type of match generated by this comparator
     #[inline(always)]
     pub fn write_match_(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::MATCH_MASK) | ((value << Self::MATCH_OFFSET) & Self::MATCH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::MATCH_MASK) | ((value << Self::MATCH_OFFSET) & Self::MATCH_MASK)
+        });
     }
 }
 
@@ -9732,7 +9909,8 @@ impl DwtFunction2Val {
     #[inline(always)]
     pub const fn with_datavsize(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DwtFunction2::DATAVSIZE_MASK) | ((value << DwtFunction2::DATAVSIZE_OFFSET) & DwtFunction2::DATAVSIZE_MASK)
+            bits: (self.bits & !DwtFunction2::DATAVSIZE_MASK)
+                | ((value << DwtFunction2::DATAVSIZE_OFFSET) & DwtFunction2::DATAVSIZE_MASK),
         }
     }
 
@@ -9742,7 +9920,8 @@ impl DwtFunction2Val {
     #[inline(always)]
     pub const fn with_action(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DwtFunction2::ACTION_MASK) | ((value << DwtFunction2::ACTION_OFFSET) & DwtFunction2::ACTION_MASK)
+            bits: (self.bits & !DwtFunction2::ACTION_MASK)
+                | ((value << DwtFunction2::ACTION_OFFSET) & DwtFunction2::ACTION_MASK),
         }
     }
 
@@ -9752,7 +9931,8 @@ impl DwtFunction2Val {
     #[inline(always)]
     pub const fn with_match_(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DwtFunction2::MATCH_MASK) | ((value << DwtFunction2::MATCH_OFFSET) & DwtFunction2::MATCH_MASK)
+            bits: (self.bits & !DwtFunction2::MATCH_MASK)
+                | ((value << DwtFunction2::MATCH_OFFSET) & DwtFunction2::MATCH_MASK),
         }
     }
 }
@@ -9825,7 +10005,9 @@ impl DwtComp3 {
     /// Write **DWT_COMP3** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_dwt_comp3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DWT_COMP3_MASK) | ((value << Self::DWT_COMP3_OFFSET) & Self::DWT_COMP3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DWT_COMP3_MASK) | ((value << Self::DWT_COMP3_OFFSET) & Self::DWT_COMP3_MASK)
+        });
     }
 }
 
@@ -9867,7 +10049,8 @@ impl DwtComp3Val {
     #[inline(always)]
     pub const fn with_dwt_comp3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DwtComp3::DWT_COMP3_MASK) | ((value << DwtComp3::DWT_COMP3_OFFSET) & DwtComp3::DWT_COMP3_MASK)
+            bits: (self.bits & !DwtComp3::DWT_COMP3_MASK)
+                | ((value << DwtComp3::DWT_COMP3_OFFSET) & DwtComp3::DWT_COMP3_MASK),
         }
     }
 }
@@ -10014,7 +10197,9 @@ impl DwtFunction3 {
     /// Defines the size of the object being watched for by Data Value and Data Address comparators
     #[inline(always)]
     pub fn write_datavsize(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DATAVSIZE_MASK) | ((value << Self::DATAVSIZE_OFFSET) & Self::DATAVSIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DATAVSIZE_MASK) | ((value << Self::DATAVSIZE_OFFSET) & Self::DATAVSIZE_MASK)
+        });
     }
 
     /// **ACTION** `[5:4]` (RW)
@@ -10030,7 +10215,9 @@ impl DwtFunction3 {
     /// Defines the action on a match. This field is ignored and the comparator generates no actions if it is disabled by MATCH
     #[inline(always)]
     pub fn write_action(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ACTION_MASK) | ((value << Self::ACTION_OFFSET) & Self::ACTION_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ACTION_MASK) | ((value << Self::ACTION_OFFSET) & Self::ACTION_MASK)
+        });
     }
 
     /// **MATCH** `[3:0]` (RW)
@@ -10046,7 +10233,9 @@ impl DwtFunction3 {
     /// Controls the type of match generated by this comparator
     #[inline(always)]
     pub fn write_match_(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::MATCH_MASK) | ((value << Self::MATCH_OFFSET) & Self::MATCH_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::MATCH_MASK) | ((value << Self::MATCH_OFFSET) & Self::MATCH_MASK)
+        });
     }
 }
 
@@ -10124,7 +10313,8 @@ impl DwtFunction3Val {
     #[inline(always)]
     pub const fn with_datavsize(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DwtFunction3::DATAVSIZE_MASK) | ((value << DwtFunction3::DATAVSIZE_OFFSET) & DwtFunction3::DATAVSIZE_MASK)
+            bits: (self.bits & !DwtFunction3::DATAVSIZE_MASK)
+                | ((value << DwtFunction3::DATAVSIZE_OFFSET) & DwtFunction3::DATAVSIZE_MASK),
         }
     }
 
@@ -10134,7 +10324,8 @@ impl DwtFunction3Val {
     #[inline(always)]
     pub const fn with_action(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DwtFunction3::ACTION_MASK) | ((value << DwtFunction3::ACTION_OFFSET) & DwtFunction3::ACTION_MASK)
+            bits: (self.bits & !DwtFunction3::ACTION_MASK)
+                | ((value << DwtFunction3::ACTION_OFFSET) & DwtFunction3::ACTION_MASK),
         }
     }
 
@@ -10144,7 +10335,8 @@ impl DwtFunction3Val {
     #[inline(always)]
     pub const fn with_match_(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DwtFunction3::MATCH_MASK) | ((value << DwtFunction3::MATCH_OFFSET) & DwtFunction3::MATCH_MASK)
+            bits: (self.bits & !DwtFunction3::MATCH_MASK)
+                | ((value << DwtFunction3::MATCH_OFFSET) & DwtFunction3::MATCH_MASK),
         }
     }
 }
@@ -10680,7 +10872,9 @@ impl DwtPidr5 {
     /// Write **DWT_PIDR5** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_dwt_pidr5(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DWT_PIDR5_MASK) | ((value << Self::DWT_PIDR5_OFFSET) & Self::DWT_PIDR5_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DWT_PIDR5_MASK) | ((value << Self::DWT_PIDR5_OFFSET) & Self::DWT_PIDR5_MASK)
+        });
     }
 }
 
@@ -10722,7 +10916,8 @@ impl DwtPidr5Val {
     #[inline(always)]
     pub const fn with_dwt_pidr5(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DwtPidr5::DWT_PIDR5_MASK) | ((value << DwtPidr5::DWT_PIDR5_OFFSET) & DwtPidr5::DWT_PIDR5_MASK)
+            bits: (self.bits & !DwtPidr5::DWT_PIDR5_MASK)
+                | ((value << DwtPidr5::DWT_PIDR5_OFFSET) & DwtPidr5::DWT_PIDR5_MASK),
         }
     }
 }
@@ -10795,7 +10990,9 @@ impl DwtPidr6 {
     /// Write **DWT_PIDR6** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_dwt_pidr6(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DWT_PIDR6_MASK) | ((value << Self::DWT_PIDR6_OFFSET) & Self::DWT_PIDR6_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DWT_PIDR6_MASK) | ((value << Self::DWT_PIDR6_OFFSET) & Self::DWT_PIDR6_MASK)
+        });
     }
 }
 
@@ -10837,7 +11034,8 @@ impl DwtPidr6Val {
     #[inline(always)]
     pub const fn with_dwt_pidr6(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DwtPidr6::DWT_PIDR6_MASK) | ((value << DwtPidr6::DWT_PIDR6_OFFSET) & DwtPidr6::DWT_PIDR6_MASK)
+            bits: (self.bits & !DwtPidr6::DWT_PIDR6_MASK)
+                | ((value << DwtPidr6::DWT_PIDR6_OFFSET) & DwtPidr6::DWT_PIDR6_MASK),
         }
     }
 }
@@ -10910,7 +11108,9 @@ impl DwtPidr7 {
     /// Write **DWT_PIDR7** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_dwt_pidr7(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DWT_PIDR7_MASK) | ((value << Self::DWT_PIDR7_OFFSET) & Self::DWT_PIDR7_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DWT_PIDR7_MASK) | ((value << Self::DWT_PIDR7_OFFSET) & Self::DWT_PIDR7_MASK)
+        });
     }
 }
 
@@ -10952,7 +11152,8 @@ impl DwtPidr7Val {
     #[inline(always)]
     pub const fn with_dwt_pidr7(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !DwtPidr7::DWT_PIDR7_MASK) | ((value << DwtPidr7::DWT_PIDR7_OFFSET) & DwtPidr7::DWT_PIDR7_MASK)
+            bits: (self.bits & !DwtPidr7::DWT_PIDR7_MASK)
+                | ((value << DwtPidr7::DWT_PIDR7_OFFSET) & DwtPidr7::DWT_PIDR7_MASK),
         }
     }
 }
@@ -12167,7 +12368,7 @@ impl FpCtrlVal {
                 self.bits | FpCtrl::KEY_MASK
             } else {
                 self.bits & !FpCtrl::KEY_MASK
-            }
+            },
         }
     }
 
@@ -12181,7 +12382,7 @@ impl FpCtrlVal {
                 self.bits | FpCtrl::ENABLE_MASK
             } else {
                 self.bits & !FpCtrl::ENABLE_MASK
-            }
+            },
         }
     }
 }
@@ -12445,7 +12646,7 @@ impl FpComp0Val {
                 self.bits | FpComp0::BE_MASK
             } else {
                 self.bits & !FpComp0::BE_MASK
-            }
+            },
         }
     }
 }
@@ -12582,7 +12783,7 @@ impl FpComp1Val {
                 self.bits | FpComp1::BE_MASK
             } else {
                 self.bits & !FpComp1::BE_MASK
-            }
+            },
         }
     }
 }
@@ -12719,7 +12920,7 @@ impl FpComp2Val {
                 self.bits | FpComp2::BE_MASK
             } else {
                 self.bits & !FpComp2::BE_MASK
-            }
+            },
         }
     }
 }
@@ -12856,7 +13057,7 @@ impl FpComp3Val {
                 self.bits | FpComp3::BE_MASK
             } else {
                 self.bits & !FpComp3::BE_MASK
-            }
+            },
         }
     }
 }
@@ -12993,7 +13194,7 @@ impl FpComp4Val {
                 self.bits | FpComp4::BE_MASK
             } else {
                 self.bits & !FpComp4::BE_MASK
-            }
+            },
         }
     }
 }
@@ -13130,7 +13331,7 @@ impl FpComp5Val {
                 self.bits | FpComp5::BE_MASK
             } else {
                 self.bits & !FpComp5::BE_MASK
-            }
+            },
         }
     }
 }
@@ -13267,7 +13468,7 @@ impl FpComp6Val {
                 self.bits | FpComp6::BE_MASK
             } else {
                 self.bits & !FpComp6::BE_MASK
-            }
+            },
         }
     }
 }
@@ -13404,7 +13605,7 @@ impl FpComp7Val {
                 self.bits | FpComp7::BE_MASK
             } else {
                 self.bits & !FpComp7::BE_MASK
-            }
+            },
         }
     }
 }
@@ -13940,7 +14141,9 @@ impl FpPidr5 {
     /// Write **FP_PIDR5** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_fp_pidr5(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FP_PIDR5_MASK) | ((value << Self::FP_PIDR5_OFFSET) & Self::FP_PIDR5_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FP_PIDR5_MASK) | ((value << Self::FP_PIDR5_OFFSET) & Self::FP_PIDR5_MASK)
+        });
     }
 }
 
@@ -13982,7 +14185,8 @@ impl FpPidr5Val {
     #[inline(always)]
     pub const fn with_fp_pidr5(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !FpPidr5::FP_PIDR5_MASK) | ((value << FpPidr5::FP_PIDR5_OFFSET) & FpPidr5::FP_PIDR5_MASK)
+            bits: (self.bits & !FpPidr5::FP_PIDR5_MASK)
+                | ((value << FpPidr5::FP_PIDR5_OFFSET) & FpPidr5::FP_PIDR5_MASK),
         }
     }
 }
@@ -14055,7 +14259,9 @@ impl FpPidr6 {
     /// Write **FP_PIDR6** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_fp_pidr6(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FP_PIDR6_MASK) | ((value << Self::FP_PIDR6_OFFSET) & Self::FP_PIDR6_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FP_PIDR6_MASK) | ((value << Self::FP_PIDR6_OFFSET) & Self::FP_PIDR6_MASK)
+        });
     }
 }
 
@@ -14097,7 +14303,8 @@ impl FpPidr6Val {
     #[inline(always)]
     pub const fn with_fp_pidr6(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !FpPidr6::FP_PIDR6_MASK) | ((value << FpPidr6::FP_PIDR6_OFFSET) & FpPidr6::FP_PIDR6_MASK)
+            bits: (self.bits & !FpPidr6::FP_PIDR6_MASK)
+                | ((value << FpPidr6::FP_PIDR6_OFFSET) & FpPidr6::FP_PIDR6_MASK),
         }
     }
 }
@@ -14170,7 +14377,9 @@ impl FpPidr7 {
     /// Write **FP_PIDR7** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_fp_pidr7(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FP_PIDR7_MASK) | ((value << Self::FP_PIDR7_OFFSET) & Self::FP_PIDR7_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FP_PIDR7_MASK) | ((value << Self::FP_PIDR7_OFFSET) & Self::FP_PIDR7_MASK)
+        });
     }
 }
 
@@ -14212,7 +14421,8 @@ impl FpPidr7Val {
     #[inline(always)]
     pub const fn with_fp_pidr7(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !FpPidr7::FP_PIDR7_MASK) | ((value << FpPidr7::FP_PIDR7_OFFSET) & FpPidr7::FP_PIDR7_MASK)
+            bits: (self.bits & !FpPidr7::FP_PIDR7_MASK)
+                | ((value << FpPidr7::FP_PIDR7_OFFSET) & FpPidr7::FP_PIDR7_MASK),
         }
     }
 }
@@ -15577,7 +15787,7 @@ impl ActlrVal {
                 self.bits | Actlr::EXTEXCLALL_MASK
             } else {
                 self.bits & !Actlr::EXTEXCLALL_MASK
-            }
+            },
         }
     }
 
@@ -15591,7 +15801,7 @@ impl ActlrVal {
                 self.bits | Actlr::DISITMATBFLUSH_MASK
             } else {
                 self.bits & !Actlr::DISITMATBFLUSH_MASK
-            }
+            },
         }
     }
 
@@ -15605,7 +15815,7 @@ impl ActlrVal {
                 self.bits | Actlr::FPEXCODIS_MASK
             } else {
                 self.bits & !Actlr::FPEXCODIS_MASK
-            }
+            },
         }
     }
 
@@ -15619,7 +15829,7 @@ impl ActlrVal {
                 self.bits | Actlr::DISOOFP_MASK
             } else {
                 self.bits & !Actlr::DISOOFP_MASK
-            }
+            },
         }
     }
 
@@ -15633,7 +15843,7 @@ impl ActlrVal {
                 self.bits | Actlr::DISFOLD_MASK
             } else {
                 self.bits & !Actlr::DISFOLD_MASK
-            }
+            },
         }
     }
 
@@ -15647,7 +15857,7 @@ impl ActlrVal {
                 self.bits | Actlr::DISMCYCINT_MASK
             } else {
                 self.bits & !Actlr::DISMCYCINT_MASK
-            }
+            },
         }
     }
 }
@@ -15926,7 +16136,7 @@ impl SystCsrVal {
                 self.bits | SystCsr::CLKSOURCE_MASK
             } else {
                 self.bits & !SystCsr::CLKSOURCE_MASK
-            }
+            },
         }
     }
 
@@ -15942,7 +16152,7 @@ impl SystCsrVal {
                 self.bits | SystCsr::TICKINT_MASK
             } else {
                 self.bits & !SystCsr::TICKINT_MASK
-            }
+            },
         }
     }
 
@@ -15958,7 +16168,7 @@ impl SystCsrVal {
                 self.bits | SystCsr::ENABLE_MASK
             } else {
                 self.bits & !SystCsr::ENABLE_MASK
-            }
+            },
         }
     }
 }
@@ -16041,7 +16251,9 @@ impl SystRvr {
     /// Value to load into the SysTick Current Value Register when the counter reaches 0.
     #[inline(always)]
     pub fn write_reload(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RELOAD_MASK) | ((value << Self::RELOAD_OFFSET) & Self::RELOAD_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RELOAD_MASK) | ((value << Self::RELOAD_OFFSET) & Self::RELOAD_MASK)
+        });
     }
 }
 
@@ -16087,7 +16299,8 @@ impl SystRvrVal {
     #[inline(always)]
     pub const fn with_reload(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SystRvr::RELOAD_MASK) | ((value << SystRvr::RELOAD_OFFSET) & SystRvr::RELOAD_MASK)
+            bits: (self.bits & !SystRvr::RELOAD_MASK)
+                | ((value << SystRvr::RELOAD_OFFSET) & SystRvr::RELOAD_MASK),
         }
     }
 }
@@ -16169,7 +16382,9 @@ impl SystCvr {
     /// Reads return the current value of the SysTick counter. This register is write-clear. Writing to it with any value clears the register to 0. Clearing this register also clears the COUNTFLAG bit of the SysTick Control and Status Register.
     #[inline(always)]
     pub fn write_current(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CURRENT_MASK) | ((value << Self::CURRENT_OFFSET) & Self::CURRENT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CURRENT_MASK) | ((value << Self::CURRENT_OFFSET) & Self::CURRENT_MASK)
+        });
     }
 }
 
@@ -16215,7 +16430,8 @@ impl SystCvrVal {
     #[inline(always)]
     pub const fn with_current(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SystCvr::CURRENT_MASK) | ((value << SystCvr::CURRENT_OFFSET) & SystCvr::CURRENT_MASK)
+            bits: (self.bits & !SystCvr::CURRENT_MASK)
+                | ((value << SystCvr::CURRENT_OFFSET) & SystCvr::CURRENT_MASK),
         }
     }
 }
@@ -16453,7 +16669,9 @@ impl NvicIser0 {
     /// For SETENA[m] in NVIC_ISER*n, indicates whether interrupt 32*n + m is enabled
     #[inline(always)]
     pub fn write_setena(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SETENA_MASK) | ((value << Self::SETENA_OFFSET) & Self::SETENA_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SETENA_MASK) | ((value << Self::SETENA_OFFSET) & Self::SETENA_MASK)
+        });
     }
 }
 
@@ -16499,7 +16717,8 @@ impl NvicIser0Val {
     #[inline(always)]
     pub const fn with_setena(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIser0::SETENA_MASK) | ((value << NvicIser0::SETENA_OFFSET) & NvicIser0::SETENA_MASK)
+            bits: (self.bits & !NvicIser0::SETENA_MASK)
+                | ((value << NvicIser0::SETENA_OFFSET) & NvicIser0::SETENA_MASK),
         }
     }
 }
@@ -16581,7 +16800,9 @@ impl NvicIser1 {
     /// For SETENA[m] in NVIC_ISER*n, indicates whether interrupt 32*n + m is enabled
     #[inline(always)]
     pub fn write_setena(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SETENA_MASK) | ((value << Self::SETENA_OFFSET) & Self::SETENA_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SETENA_MASK) | ((value << Self::SETENA_OFFSET) & Self::SETENA_MASK)
+        });
     }
 }
 
@@ -16627,7 +16848,8 @@ impl NvicIser1Val {
     #[inline(always)]
     pub const fn with_setena(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIser1::SETENA_MASK) | ((value << NvicIser1::SETENA_OFFSET) & NvicIser1::SETENA_MASK)
+            bits: (self.bits & !NvicIser1::SETENA_MASK)
+                | ((value << NvicIser1::SETENA_OFFSET) & NvicIser1::SETENA_MASK),
         }
     }
 }
@@ -16709,7 +16931,9 @@ impl NvicIcer0 {
     /// For CLRENA[m] in NVIC_ICER*n, indicates whether interrupt 32*n + m is enabled
     #[inline(always)]
     pub fn write_clrena(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CLRENA_MASK) | ((value << Self::CLRENA_OFFSET) & Self::CLRENA_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CLRENA_MASK) | ((value << Self::CLRENA_OFFSET) & Self::CLRENA_MASK)
+        });
     }
 }
 
@@ -16755,7 +16979,8 @@ impl NvicIcer0Val {
     #[inline(always)]
     pub const fn with_clrena(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIcer0::CLRENA_MASK) | ((value << NvicIcer0::CLRENA_OFFSET) & NvicIcer0::CLRENA_MASK)
+            bits: (self.bits & !NvicIcer0::CLRENA_MASK)
+                | ((value << NvicIcer0::CLRENA_OFFSET) & NvicIcer0::CLRENA_MASK),
         }
     }
 }
@@ -16837,7 +17062,9 @@ impl NvicIcer1 {
     /// For CLRENA[m] in NVIC_ICER*n, indicates whether interrupt 32*n + m is enabled
     #[inline(always)]
     pub fn write_clrena(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CLRENA_MASK) | ((value << Self::CLRENA_OFFSET) & Self::CLRENA_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CLRENA_MASK) | ((value << Self::CLRENA_OFFSET) & Self::CLRENA_MASK)
+        });
     }
 }
 
@@ -16883,7 +17110,8 @@ impl NvicIcer1Val {
     #[inline(always)]
     pub const fn with_clrena(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIcer1::CLRENA_MASK) | ((value << NvicIcer1::CLRENA_OFFSET) & NvicIcer1::CLRENA_MASK)
+            bits: (self.bits & !NvicIcer1::CLRENA_MASK)
+                | ((value << NvicIcer1::CLRENA_OFFSET) & NvicIcer1::CLRENA_MASK),
         }
     }
 }
@@ -16965,7 +17193,9 @@ impl NvicIspr0 {
     /// For SETPEND[m] in NVIC_ISPR*n, indicates whether interrupt 32*n + m is pending
     #[inline(always)]
     pub fn write_setpend(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SETPEND_MASK) | ((value << Self::SETPEND_OFFSET) & Self::SETPEND_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SETPEND_MASK) | ((value << Self::SETPEND_OFFSET) & Self::SETPEND_MASK)
+        });
     }
 }
 
@@ -17011,7 +17241,8 @@ impl NvicIspr0Val {
     #[inline(always)]
     pub const fn with_setpend(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIspr0::SETPEND_MASK) | ((value << NvicIspr0::SETPEND_OFFSET) & NvicIspr0::SETPEND_MASK)
+            bits: (self.bits & !NvicIspr0::SETPEND_MASK)
+                | ((value << NvicIspr0::SETPEND_OFFSET) & NvicIspr0::SETPEND_MASK),
         }
     }
 }
@@ -17093,7 +17324,9 @@ impl NvicIspr1 {
     /// For SETPEND[m] in NVIC_ISPR*n, indicates whether interrupt 32*n + m is pending
     #[inline(always)]
     pub fn write_setpend(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SETPEND_MASK) | ((value << Self::SETPEND_OFFSET) & Self::SETPEND_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SETPEND_MASK) | ((value << Self::SETPEND_OFFSET) & Self::SETPEND_MASK)
+        });
     }
 }
 
@@ -17139,7 +17372,8 @@ impl NvicIspr1Val {
     #[inline(always)]
     pub const fn with_setpend(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIspr1::SETPEND_MASK) | ((value << NvicIspr1::SETPEND_OFFSET) & NvicIspr1::SETPEND_MASK)
+            bits: (self.bits & !NvicIspr1::SETPEND_MASK)
+                | ((value << NvicIspr1::SETPEND_OFFSET) & NvicIspr1::SETPEND_MASK),
         }
     }
 }
@@ -17221,7 +17455,9 @@ impl NvicIcpr0 {
     /// For CLRPEND[m] in NVIC_ICPR*n, indicates whether interrupt 32*n + m is pending
     #[inline(always)]
     pub fn write_clrpend(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CLRPEND_MASK) | ((value << Self::CLRPEND_OFFSET) & Self::CLRPEND_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CLRPEND_MASK) | ((value << Self::CLRPEND_OFFSET) & Self::CLRPEND_MASK)
+        });
     }
 }
 
@@ -17267,7 +17503,8 @@ impl NvicIcpr0Val {
     #[inline(always)]
     pub const fn with_clrpend(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIcpr0::CLRPEND_MASK) | ((value << NvicIcpr0::CLRPEND_OFFSET) & NvicIcpr0::CLRPEND_MASK)
+            bits: (self.bits & !NvicIcpr0::CLRPEND_MASK)
+                | ((value << NvicIcpr0::CLRPEND_OFFSET) & NvicIcpr0::CLRPEND_MASK),
         }
     }
 }
@@ -17349,7 +17586,9 @@ impl NvicIcpr1 {
     /// For CLRPEND[m] in NVIC_ICPR*n, indicates whether interrupt 32*n + m is pending
     #[inline(always)]
     pub fn write_clrpend(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CLRPEND_MASK) | ((value << Self::CLRPEND_OFFSET) & Self::CLRPEND_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CLRPEND_MASK) | ((value << Self::CLRPEND_OFFSET) & Self::CLRPEND_MASK)
+        });
     }
 }
 
@@ -17395,7 +17634,8 @@ impl NvicIcpr1Val {
     #[inline(always)]
     pub const fn with_clrpend(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIcpr1::CLRPEND_MASK) | ((value << NvicIcpr1::CLRPEND_OFFSET) & NvicIcpr1::CLRPEND_MASK)
+            bits: (self.bits & !NvicIcpr1::CLRPEND_MASK)
+                | ((value << NvicIcpr1::CLRPEND_OFFSET) & NvicIcpr1::CLRPEND_MASK),
         }
     }
 }
@@ -17477,7 +17717,9 @@ impl NvicIabr0 {
     /// For ACTIVE[m] in NVIC_IABR*n, indicates the active state for interrupt 32*n+m
     #[inline(always)]
     pub fn write_active(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ACTIVE_MASK) | ((value << Self::ACTIVE_OFFSET) & Self::ACTIVE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ACTIVE_MASK) | ((value << Self::ACTIVE_OFFSET) & Self::ACTIVE_MASK)
+        });
     }
 }
 
@@ -17523,7 +17765,8 @@ impl NvicIabr0Val {
     #[inline(always)]
     pub const fn with_active(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIabr0::ACTIVE_MASK) | ((value << NvicIabr0::ACTIVE_OFFSET) & NvicIabr0::ACTIVE_MASK)
+            bits: (self.bits & !NvicIabr0::ACTIVE_MASK)
+                | ((value << NvicIabr0::ACTIVE_OFFSET) & NvicIabr0::ACTIVE_MASK),
         }
     }
 }
@@ -17605,7 +17848,9 @@ impl NvicIabr1 {
     /// For ACTIVE[m] in NVIC_IABR*n, indicates the active state for interrupt 32*n+m
     #[inline(always)]
     pub fn write_active(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ACTIVE_MASK) | ((value << Self::ACTIVE_OFFSET) & Self::ACTIVE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ACTIVE_MASK) | ((value << Self::ACTIVE_OFFSET) & Self::ACTIVE_MASK)
+        });
     }
 }
 
@@ -17651,7 +17896,8 @@ impl NvicIabr1Val {
     #[inline(always)]
     pub const fn with_active(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIabr1::ACTIVE_MASK) | ((value << NvicIabr1::ACTIVE_OFFSET) & NvicIabr1::ACTIVE_MASK)
+            bits: (self.bits & !NvicIabr1::ACTIVE_MASK)
+                | ((value << NvicIabr1::ACTIVE_OFFSET) & NvicIabr1::ACTIVE_MASK),
         }
     }
 }
@@ -17733,7 +17979,9 @@ impl NvicItns0 {
     /// For ITNS[m] in NVIC_ITNS*n, `IAAMO the target Security state for interrupt 32*n+m
     #[inline(always)]
     pub fn write_itns(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ITNS_MASK) | ((value << Self::ITNS_OFFSET) & Self::ITNS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ITNS_MASK) | ((value << Self::ITNS_OFFSET) & Self::ITNS_MASK)
+        });
     }
 }
 
@@ -17779,7 +18027,8 @@ impl NvicItns0Val {
     #[inline(always)]
     pub const fn with_itns(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicItns0::ITNS_MASK) | ((value << NvicItns0::ITNS_OFFSET) & NvicItns0::ITNS_MASK)
+            bits: (self.bits & !NvicItns0::ITNS_MASK)
+                | ((value << NvicItns0::ITNS_OFFSET) & NvicItns0::ITNS_MASK),
         }
     }
 }
@@ -17861,7 +18110,9 @@ impl NvicItns1 {
     /// For ITNS[m] in NVIC_ITNS*n, `IAAMO the target Security state for interrupt 32*n+m
     #[inline(always)]
     pub fn write_itns(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ITNS_MASK) | ((value << Self::ITNS_OFFSET) & Self::ITNS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ITNS_MASK) | ((value << Self::ITNS_OFFSET) & Self::ITNS_MASK)
+        });
     }
 }
 
@@ -17907,7 +18158,8 @@ impl NvicItns1Val {
     #[inline(always)]
     pub const fn with_itns(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicItns1::ITNS_MASK) | ((value << NvicItns1::ITNS_OFFSET) & NvicItns1::ITNS_MASK)
+            bits: (self.bits & !NvicItns1::ITNS_MASK)
+                | ((value << NvicItns1::ITNS_OFFSET) & NvicItns1::ITNS_MASK),
         }
     }
 }
@@ -18025,7 +18277,9 @@ impl NvicIpr0 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK)
+        });
     }
 
     /// **PRI_N2** `[23:20]` (RW)
@@ -18041,7 +18295,9 @@ impl NvicIpr0 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK)
+        });
     }
 
     /// **PRI_N1** `[15:12]` (RW)
@@ -18057,7 +18313,9 @@ impl NvicIpr0 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK)
+        });
     }
 
     /// **PRI_N0** `[7:4]` (RW)
@@ -18073,7 +18331,9 @@ impl NvicIpr0 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK)
+        });
     }
 }
 
@@ -18143,7 +18403,8 @@ impl NvicIpr0Val {
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr0::PRI_N3_MASK) | ((value << NvicIpr0::PRI_N3_OFFSET) & NvicIpr0::PRI_N3_MASK)
+            bits: (self.bits & !NvicIpr0::PRI_N3_MASK)
+                | ((value << NvicIpr0::PRI_N3_OFFSET) & NvicIpr0::PRI_N3_MASK),
         }
     }
 
@@ -18153,7 +18414,8 @@ impl NvicIpr0Val {
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr0::PRI_N2_MASK) | ((value << NvicIpr0::PRI_N2_OFFSET) & NvicIpr0::PRI_N2_MASK)
+            bits: (self.bits & !NvicIpr0::PRI_N2_MASK)
+                | ((value << NvicIpr0::PRI_N2_OFFSET) & NvicIpr0::PRI_N2_MASK),
         }
     }
 
@@ -18163,7 +18425,8 @@ impl NvicIpr0Val {
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr0::PRI_N1_MASK) | ((value << NvicIpr0::PRI_N1_OFFSET) & NvicIpr0::PRI_N1_MASK)
+            bits: (self.bits & !NvicIpr0::PRI_N1_MASK)
+                | ((value << NvicIpr0::PRI_N1_OFFSET) & NvicIpr0::PRI_N1_MASK),
         }
     }
 
@@ -18173,7 +18436,8 @@ impl NvicIpr0Val {
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr0::PRI_N0_MASK) | ((value << NvicIpr0::PRI_N0_OFFSET) & NvicIpr0::PRI_N0_MASK)
+            bits: (self.bits & !NvicIpr0::PRI_N0_MASK)
+                | ((value << NvicIpr0::PRI_N0_OFFSET) & NvicIpr0::PRI_N0_MASK),
         }
     }
 }
@@ -18291,7 +18555,9 @@ impl NvicIpr1 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK)
+        });
     }
 
     /// **PRI_N2** `[23:20]` (RW)
@@ -18307,7 +18573,9 @@ impl NvicIpr1 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK)
+        });
     }
 
     /// **PRI_N1** `[15:12]` (RW)
@@ -18323,7 +18591,9 @@ impl NvicIpr1 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK)
+        });
     }
 
     /// **PRI_N0** `[7:4]` (RW)
@@ -18339,7 +18609,9 @@ impl NvicIpr1 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK)
+        });
     }
 }
 
@@ -18409,7 +18681,8 @@ impl NvicIpr1Val {
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr1::PRI_N3_MASK) | ((value << NvicIpr1::PRI_N3_OFFSET) & NvicIpr1::PRI_N3_MASK)
+            bits: (self.bits & !NvicIpr1::PRI_N3_MASK)
+                | ((value << NvicIpr1::PRI_N3_OFFSET) & NvicIpr1::PRI_N3_MASK),
         }
     }
 
@@ -18419,7 +18692,8 @@ impl NvicIpr1Val {
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr1::PRI_N2_MASK) | ((value << NvicIpr1::PRI_N2_OFFSET) & NvicIpr1::PRI_N2_MASK)
+            bits: (self.bits & !NvicIpr1::PRI_N2_MASK)
+                | ((value << NvicIpr1::PRI_N2_OFFSET) & NvicIpr1::PRI_N2_MASK),
         }
     }
 
@@ -18429,7 +18703,8 @@ impl NvicIpr1Val {
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr1::PRI_N1_MASK) | ((value << NvicIpr1::PRI_N1_OFFSET) & NvicIpr1::PRI_N1_MASK)
+            bits: (self.bits & !NvicIpr1::PRI_N1_MASK)
+                | ((value << NvicIpr1::PRI_N1_OFFSET) & NvicIpr1::PRI_N1_MASK),
         }
     }
 
@@ -18439,7 +18714,8 @@ impl NvicIpr1Val {
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr1::PRI_N0_MASK) | ((value << NvicIpr1::PRI_N0_OFFSET) & NvicIpr1::PRI_N0_MASK)
+            bits: (self.bits & !NvicIpr1::PRI_N0_MASK)
+                | ((value << NvicIpr1::PRI_N0_OFFSET) & NvicIpr1::PRI_N0_MASK),
         }
     }
 }
@@ -18557,7 +18833,9 @@ impl NvicIpr2 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK)
+        });
     }
 
     /// **PRI_N2** `[23:20]` (RW)
@@ -18573,7 +18851,9 @@ impl NvicIpr2 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK)
+        });
     }
 
     /// **PRI_N1** `[15:12]` (RW)
@@ -18589,7 +18869,9 @@ impl NvicIpr2 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK)
+        });
     }
 
     /// **PRI_N0** `[7:4]` (RW)
@@ -18605,7 +18887,9 @@ impl NvicIpr2 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK)
+        });
     }
 }
 
@@ -18675,7 +18959,8 @@ impl NvicIpr2Val {
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr2::PRI_N3_MASK) | ((value << NvicIpr2::PRI_N3_OFFSET) & NvicIpr2::PRI_N3_MASK)
+            bits: (self.bits & !NvicIpr2::PRI_N3_MASK)
+                | ((value << NvicIpr2::PRI_N3_OFFSET) & NvicIpr2::PRI_N3_MASK),
         }
     }
 
@@ -18685,7 +18970,8 @@ impl NvicIpr2Val {
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr2::PRI_N2_MASK) | ((value << NvicIpr2::PRI_N2_OFFSET) & NvicIpr2::PRI_N2_MASK)
+            bits: (self.bits & !NvicIpr2::PRI_N2_MASK)
+                | ((value << NvicIpr2::PRI_N2_OFFSET) & NvicIpr2::PRI_N2_MASK),
         }
     }
 
@@ -18695,7 +18981,8 @@ impl NvicIpr2Val {
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr2::PRI_N1_MASK) | ((value << NvicIpr2::PRI_N1_OFFSET) & NvicIpr2::PRI_N1_MASK)
+            bits: (self.bits & !NvicIpr2::PRI_N1_MASK)
+                | ((value << NvicIpr2::PRI_N1_OFFSET) & NvicIpr2::PRI_N1_MASK),
         }
     }
 
@@ -18705,7 +18992,8 @@ impl NvicIpr2Val {
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr2::PRI_N0_MASK) | ((value << NvicIpr2::PRI_N0_OFFSET) & NvicIpr2::PRI_N0_MASK)
+            bits: (self.bits & !NvicIpr2::PRI_N0_MASK)
+                | ((value << NvicIpr2::PRI_N0_OFFSET) & NvicIpr2::PRI_N0_MASK),
         }
     }
 }
@@ -18823,7 +19111,9 @@ impl NvicIpr3 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK)
+        });
     }
 
     /// **PRI_N2** `[23:20]` (RW)
@@ -18839,7 +19129,9 @@ impl NvicIpr3 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK)
+        });
     }
 
     /// **PRI_N1** `[15:12]` (RW)
@@ -18855,7 +19147,9 @@ impl NvicIpr3 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK)
+        });
     }
 
     /// **PRI_N0** `[7:4]` (RW)
@@ -18871,7 +19165,9 @@ impl NvicIpr3 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK)
+        });
     }
 }
 
@@ -18941,7 +19237,8 @@ impl NvicIpr3Val {
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr3::PRI_N3_MASK) | ((value << NvicIpr3::PRI_N3_OFFSET) & NvicIpr3::PRI_N3_MASK)
+            bits: (self.bits & !NvicIpr3::PRI_N3_MASK)
+                | ((value << NvicIpr3::PRI_N3_OFFSET) & NvicIpr3::PRI_N3_MASK),
         }
     }
 
@@ -18951,7 +19248,8 @@ impl NvicIpr3Val {
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr3::PRI_N2_MASK) | ((value << NvicIpr3::PRI_N2_OFFSET) & NvicIpr3::PRI_N2_MASK)
+            bits: (self.bits & !NvicIpr3::PRI_N2_MASK)
+                | ((value << NvicIpr3::PRI_N2_OFFSET) & NvicIpr3::PRI_N2_MASK),
         }
     }
 
@@ -18961,7 +19259,8 @@ impl NvicIpr3Val {
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr3::PRI_N1_MASK) | ((value << NvicIpr3::PRI_N1_OFFSET) & NvicIpr3::PRI_N1_MASK)
+            bits: (self.bits & !NvicIpr3::PRI_N1_MASK)
+                | ((value << NvicIpr3::PRI_N1_OFFSET) & NvicIpr3::PRI_N1_MASK),
         }
     }
 
@@ -18971,7 +19270,8 @@ impl NvicIpr3Val {
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr3::PRI_N0_MASK) | ((value << NvicIpr3::PRI_N0_OFFSET) & NvicIpr3::PRI_N0_MASK)
+            bits: (self.bits & !NvicIpr3::PRI_N0_MASK)
+                | ((value << NvicIpr3::PRI_N0_OFFSET) & NvicIpr3::PRI_N0_MASK),
         }
     }
 }
@@ -19089,7 +19389,9 @@ impl NvicIpr4 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK)
+        });
     }
 
     /// **PRI_N2** `[23:20]` (RW)
@@ -19105,7 +19407,9 @@ impl NvicIpr4 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK)
+        });
     }
 
     /// **PRI_N1** `[15:12]` (RW)
@@ -19121,7 +19425,9 @@ impl NvicIpr4 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK)
+        });
     }
 
     /// **PRI_N0** `[7:4]` (RW)
@@ -19137,7 +19443,9 @@ impl NvicIpr4 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK)
+        });
     }
 }
 
@@ -19207,7 +19515,8 @@ impl NvicIpr4Val {
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr4::PRI_N3_MASK) | ((value << NvicIpr4::PRI_N3_OFFSET) & NvicIpr4::PRI_N3_MASK)
+            bits: (self.bits & !NvicIpr4::PRI_N3_MASK)
+                | ((value << NvicIpr4::PRI_N3_OFFSET) & NvicIpr4::PRI_N3_MASK),
         }
     }
 
@@ -19217,7 +19526,8 @@ impl NvicIpr4Val {
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr4::PRI_N2_MASK) | ((value << NvicIpr4::PRI_N2_OFFSET) & NvicIpr4::PRI_N2_MASK)
+            bits: (self.bits & !NvicIpr4::PRI_N2_MASK)
+                | ((value << NvicIpr4::PRI_N2_OFFSET) & NvicIpr4::PRI_N2_MASK),
         }
     }
 
@@ -19227,7 +19537,8 @@ impl NvicIpr4Val {
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr4::PRI_N1_MASK) | ((value << NvicIpr4::PRI_N1_OFFSET) & NvicIpr4::PRI_N1_MASK)
+            bits: (self.bits & !NvicIpr4::PRI_N1_MASK)
+                | ((value << NvicIpr4::PRI_N1_OFFSET) & NvicIpr4::PRI_N1_MASK),
         }
     }
 
@@ -19237,7 +19548,8 @@ impl NvicIpr4Val {
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr4::PRI_N0_MASK) | ((value << NvicIpr4::PRI_N0_OFFSET) & NvicIpr4::PRI_N0_MASK)
+            bits: (self.bits & !NvicIpr4::PRI_N0_MASK)
+                | ((value << NvicIpr4::PRI_N0_OFFSET) & NvicIpr4::PRI_N0_MASK),
         }
     }
 }
@@ -19355,7 +19667,9 @@ impl NvicIpr5 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK)
+        });
     }
 
     /// **PRI_N2** `[23:20]` (RW)
@@ -19371,7 +19685,9 @@ impl NvicIpr5 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK)
+        });
     }
 
     /// **PRI_N1** `[15:12]` (RW)
@@ -19387,7 +19703,9 @@ impl NvicIpr5 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK)
+        });
     }
 
     /// **PRI_N0** `[7:4]` (RW)
@@ -19403,7 +19721,9 @@ impl NvicIpr5 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK)
+        });
     }
 }
 
@@ -19473,7 +19793,8 @@ impl NvicIpr5Val {
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr5::PRI_N3_MASK) | ((value << NvicIpr5::PRI_N3_OFFSET) & NvicIpr5::PRI_N3_MASK)
+            bits: (self.bits & !NvicIpr5::PRI_N3_MASK)
+                | ((value << NvicIpr5::PRI_N3_OFFSET) & NvicIpr5::PRI_N3_MASK),
         }
     }
 
@@ -19483,7 +19804,8 @@ impl NvicIpr5Val {
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr5::PRI_N2_MASK) | ((value << NvicIpr5::PRI_N2_OFFSET) & NvicIpr5::PRI_N2_MASK)
+            bits: (self.bits & !NvicIpr5::PRI_N2_MASK)
+                | ((value << NvicIpr5::PRI_N2_OFFSET) & NvicIpr5::PRI_N2_MASK),
         }
     }
 
@@ -19493,7 +19815,8 @@ impl NvicIpr5Val {
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr5::PRI_N1_MASK) | ((value << NvicIpr5::PRI_N1_OFFSET) & NvicIpr5::PRI_N1_MASK)
+            bits: (self.bits & !NvicIpr5::PRI_N1_MASK)
+                | ((value << NvicIpr5::PRI_N1_OFFSET) & NvicIpr5::PRI_N1_MASK),
         }
     }
 
@@ -19503,7 +19826,8 @@ impl NvicIpr5Val {
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr5::PRI_N0_MASK) | ((value << NvicIpr5::PRI_N0_OFFSET) & NvicIpr5::PRI_N0_MASK)
+            bits: (self.bits & !NvicIpr5::PRI_N0_MASK)
+                | ((value << NvicIpr5::PRI_N0_OFFSET) & NvicIpr5::PRI_N0_MASK),
         }
     }
 }
@@ -19621,7 +19945,9 @@ impl NvicIpr6 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK)
+        });
     }
 
     /// **PRI_N2** `[23:20]` (RW)
@@ -19637,7 +19963,9 @@ impl NvicIpr6 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK)
+        });
     }
 
     /// **PRI_N1** `[15:12]` (RW)
@@ -19653,7 +19981,9 @@ impl NvicIpr6 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK)
+        });
     }
 
     /// **PRI_N0** `[7:4]` (RW)
@@ -19669,7 +19999,9 @@ impl NvicIpr6 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK)
+        });
     }
 }
 
@@ -19739,7 +20071,8 @@ impl NvicIpr6Val {
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr6::PRI_N3_MASK) | ((value << NvicIpr6::PRI_N3_OFFSET) & NvicIpr6::PRI_N3_MASK)
+            bits: (self.bits & !NvicIpr6::PRI_N3_MASK)
+                | ((value << NvicIpr6::PRI_N3_OFFSET) & NvicIpr6::PRI_N3_MASK),
         }
     }
 
@@ -19749,7 +20082,8 @@ impl NvicIpr6Val {
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr6::PRI_N2_MASK) | ((value << NvicIpr6::PRI_N2_OFFSET) & NvicIpr6::PRI_N2_MASK)
+            bits: (self.bits & !NvicIpr6::PRI_N2_MASK)
+                | ((value << NvicIpr6::PRI_N2_OFFSET) & NvicIpr6::PRI_N2_MASK),
         }
     }
 
@@ -19759,7 +20093,8 @@ impl NvicIpr6Val {
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr6::PRI_N1_MASK) | ((value << NvicIpr6::PRI_N1_OFFSET) & NvicIpr6::PRI_N1_MASK)
+            bits: (self.bits & !NvicIpr6::PRI_N1_MASK)
+                | ((value << NvicIpr6::PRI_N1_OFFSET) & NvicIpr6::PRI_N1_MASK),
         }
     }
 
@@ -19769,7 +20104,8 @@ impl NvicIpr6Val {
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr6::PRI_N0_MASK) | ((value << NvicIpr6::PRI_N0_OFFSET) & NvicIpr6::PRI_N0_MASK)
+            bits: (self.bits & !NvicIpr6::PRI_N0_MASK)
+                | ((value << NvicIpr6::PRI_N0_OFFSET) & NvicIpr6::PRI_N0_MASK),
         }
     }
 }
@@ -19887,7 +20223,9 @@ impl NvicIpr7 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK)
+        });
     }
 
     /// **PRI_N2** `[23:20]` (RW)
@@ -19903,7 +20241,9 @@ impl NvicIpr7 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK)
+        });
     }
 
     /// **PRI_N1** `[15:12]` (RW)
@@ -19919,7 +20259,9 @@ impl NvicIpr7 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK)
+        });
     }
 
     /// **PRI_N0** `[7:4]` (RW)
@@ -19935,7 +20277,9 @@ impl NvicIpr7 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK)
+        });
     }
 }
 
@@ -20005,7 +20349,8 @@ impl NvicIpr7Val {
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr7::PRI_N3_MASK) | ((value << NvicIpr7::PRI_N3_OFFSET) & NvicIpr7::PRI_N3_MASK)
+            bits: (self.bits & !NvicIpr7::PRI_N3_MASK)
+                | ((value << NvicIpr7::PRI_N3_OFFSET) & NvicIpr7::PRI_N3_MASK),
         }
     }
 
@@ -20015,7 +20360,8 @@ impl NvicIpr7Val {
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr7::PRI_N2_MASK) | ((value << NvicIpr7::PRI_N2_OFFSET) & NvicIpr7::PRI_N2_MASK)
+            bits: (self.bits & !NvicIpr7::PRI_N2_MASK)
+                | ((value << NvicIpr7::PRI_N2_OFFSET) & NvicIpr7::PRI_N2_MASK),
         }
     }
 
@@ -20025,7 +20371,8 @@ impl NvicIpr7Val {
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr7::PRI_N1_MASK) | ((value << NvicIpr7::PRI_N1_OFFSET) & NvicIpr7::PRI_N1_MASK)
+            bits: (self.bits & !NvicIpr7::PRI_N1_MASK)
+                | ((value << NvicIpr7::PRI_N1_OFFSET) & NvicIpr7::PRI_N1_MASK),
         }
     }
 
@@ -20035,7 +20382,8 @@ impl NvicIpr7Val {
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr7::PRI_N0_MASK) | ((value << NvicIpr7::PRI_N0_OFFSET) & NvicIpr7::PRI_N0_MASK)
+            bits: (self.bits & !NvicIpr7::PRI_N0_MASK)
+                | ((value << NvicIpr7::PRI_N0_OFFSET) & NvicIpr7::PRI_N0_MASK),
         }
     }
 }
@@ -20153,7 +20501,9 @@ impl NvicIpr8 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK)
+        });
     }
 
     /// **PRI_N2** `[23:20]` (RW)
@@ -20169,7 +20519,9 @@ impl NvicIpr8 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK)
+        });
     }
 
     /// **PRI_N1** `[15:12]` (RW)
@@ -20185,7 +20537,9 @@ impl NvicIpr8 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK)
+        });
     }
 
     /// **PRI_N0** `[7:4]` (RW)
@@ -20201,7 +20555,9 @@ impl NvicIpr8 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK)
+        });
     }
 }
 
@@ -20271,7 +20627,8 @@ impl NvicIpr8Val {
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr8::PRI_N3_MASK) | ((value << NvicIpr8::PRI_N3_OFFSET) & NvicIpr8::PRI_N3_MASK)
+            bits: (self.bits & !NvicIpr8::PRI_N3_MASK)
+                | ((value << NvicIpr8::PRI_N3_OFFSET) & NvicIpr8::PRI_N3_MASK),
         }
     }
 
@@ -20281,7 +20638,8 @@ impl NvicIpr8Val {
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr8::PRI_N2_MASK) | ((value << NvicIpr8::PRI_N2_OFFSET) & NvicIpr8::PRI_N2_MASK)
+            bits: (self.bits & !NvicIpr8::PRI_N2_MASK)
+                | ((value << NvicIpr8::PRI_N2_OFFSET) & NvicIpr8::PRI_N2_MASK),
         }
     }
 
@@ -20291,7 +20649,8 @@ impl NvicIpr8Val {
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr8::PRI_N1_MASK) | ((value << NvicIpr8::PRI_N1_OFFSET) & NvicIpr8::PRI_N1_MASK)
+            bits: (self.bits & !NvicIpr8::PRI_N1_MASK)
+                | ((value << NvicIpr8::PRI_N1_OFFSET) & NvicIpr8::PRI_N1_MASK),
         }
     }
 
@@ -20301,7 +20660,8 @@ impl NvicIpr8Val {
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr8::PRI_N0_MASK) | ((value << NvicIpr8::PRI_N0_OFFSET) & NvicIpr8::PRI_N0_MASK)
+            bits: (self.bits & !NvicIpr8::PRI_N0_MASK)
+                | ((value << NvicIpr8::PRI_N0_OFFSET) & NvicIpr8::PRI_N0_MASK),
         }
     }
 }
@@ -20419,7 +20779,9 @@ impl NvicIpr9 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK)
+        });
     }
 
     /// **PRI_N2** `[23:20]` (RW)
@@ -20435,7 +20797,9 @@ impl NvicIpr9 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK)
+        });
     }
 
     /// **PRI_N1** `[15:12]` (RW)
@@ -20451,7 +20815,9 @@ impl NvicIpr9 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK)
+        });
     }
 
     /// **PRI_N0** `[7:4]` (RW)
@@ -20467,7 +20833,9 @@ impl NvicIpr9 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK)
+        });
     }
 }
 
@@ -20537,7 +20905,8 @@ impl NvicIpr9Val {
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr9::PRI_N3_MASK) | ((value << NvicIpr9::PRI_N3_OFFSET) & NvicIpr9::PRI_N3_MASK)
+            bits: (self.bits & !NvicIpr9::PRI_N3_MASK)
+                | ((value << NvicIpr9::PRI_N3_OFFSET) & NvicIpr9::PRI_N3_MASK),
         }
     }
 
@@ -20547,7 +20916,8 @@ impl NvicIpr9Val {
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr9::PRI_N2_MASK) | ((value << NvicIpr9::PRI_N2_OFFSET) & NvicIpr9::PRI_N2_MASK)
+            bits: (self.bits & !NvicIpr9::PRI_N2_MASK)
+                | ((value << NvicIpr9::PRI_N2_OFFSET) & NvicIpr9::PRI_N2_MASK),
         }
     }
 
@@ -20557,7 +20927,8 @@ impl NvicIpr9Val {
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr9::PRI_N1_MASK) | ((value << NvicIpr9::PRI_N1_OFFSET) & NvicIpr9::PRI_N1_MASK)
+            bits: (self.bits & !NvicIpr9::PRI_N1_MASK)
+                | ((value << NvicIpr9::PRI_N1_OFFSET) & NvicIpr9::PRI_N1_MASK),
         }
     }
 
@@ -20567,7 +20938,8 @@ impl NvicIpr9Val {
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr9::PRI_N0_MASK) | ((value << NvicIpr9::PRI_N0_OFFSET) & NvicIpr9::PRI_N0_MASK)
+            bits: (self.bits & !NvicIpr9::PRI_N0_MASK)
+                | ((value << NvicIpr9::PRI_N0_OFFSET) & NvicIpr9::PRI_N0_MASK),
         }
     }
 }
@@ -20685,7 +21057,9 @@ impl NvicIpr10 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK)
+        });
     }
 
     /// **PRI_N2** `[23:20]` (RW)
@@ -20701,7 +21075,9 @@ impl NvicIpr10 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK)
+        });
     }
 
     /// **PRI_N1** `[15:12]` (RW)
@@ -20717,7 +21093,9 @@ impl NvicIpr10 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK)
+        });
     }
 
     /// **PRI_N0** `[7:4]` (RW)
@@ -20733,7 +21111,9 @@ impl NvicIpr10 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK)
+        });
     }
 }
 
@@ -20803,7 +21183,8 @@ impl NvicIpr10Val {
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr10::PRI_N3_MASK) | ((value << NvicIpr10::PRI_N3_OFFSET) & NvicIpr10::PRI_N3_MASK)
+            bits: (self.bits & !NvicIpr10::PRI_N3_MASK)
+                | ((value << NvicIpr10::PRI_N3_OFFSET) & NvicIpr10::PRI_N3_MASK),
         }
     }
 
@@ -20813,7 +21194,8 @@ impl NvicIpr10Val {
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr10::PRI_N2_MASK) | ((value << NvicIpr10::PRI_N2_OFFSET) & NvicIpr10::PRI_N2_MASK)
+            bits: (self.bits & !NvicIpr10::PRI_N2_MASK)
+                | ((value << NvicIpr10::PRI_N2_OFFSET) & NvicIpr10::PRI_N2_MASK),
         }
     }
 
@@ -20823,7 +21205,8 @@ impl NvicIpr10Val {
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr10::PRI_N1_MASK) | ((value << NvicIpr10::PRI_N1_OFFSET) & NvicIpr10::PRI_N1_MASK)
+            bits: (self.bits & !NvicIpr10::PRI_N1_MASK)
+                | ((value << NvicIpr10::PRI_N1_OFFSET) & NvicIpr10::PRI_N1_MASK),
         }
     }
 
@@ -20833,7 +21216,8 @@ impl NvicIpr10Val {
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr10::PRI_N0_MASK) | ((value << NvicIpr10::PRI_N0_OFFSET) & NvicIpr10::PRI_N0_MASK)
+            bits: (self.bits & !NvicIpr10::PRI_N0_MASK)
+                | ((value << NvicIpr10::PRI_N0_OFFSET) & NvicIpr10::PRI_N0_MASK),
         }
     }
 }
@@ -20951,7 +21335,9 @@ impl NvicIpr11 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK)
+        });
     }
 
     /// **PRI_N2** `[23:20]` (RW)
@@ -20967,7 +21353,9 @@ impl NvicIpr11 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK)
+        });
     }
 
     /// **PRI_N1** `[15:12]` (RW)
@@ -20983,7 +21371,9 @@ impl NvicIpr11 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK)
+        });
     }
 
     /// **PRI_N0** `[7:4]` (RW)
@@ -20999,7 +21389,9 @@ impl NvicIpr11 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK)
+        });
     }
 }
 
@@ -21069,7 +21461,8 @@ impl NvicIpr11Val {
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr11::PRI_N3_MASK) | ((value << NvicIpr11::PRI_N3_OFFSET) & NvicIpr11::PRI_N3_MASK)
+            bits: (self.bits & !NvicIpr11::PRI_N3_MASK)
+                | ((value << NvicIpr11::PRI_N3_OFFSET) & NvicIpr11::PRI_N3_MASK),
         }
     }
 
@@ -21079,7 +21472,8 @@ impl NvicIpr11Val {
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr11::PRI_N2_MASK) | ((value << NvicIpr11::PRI_N2_OFFSET) & NvicIpr11::PRI_N2_MASK)
+            bits: (self.bits & !NvicIpr11::PRI_N2_MASK)
+                | ((value << NvicIpr11::PRI_N2_OFFSET) & NvicIpr11::PRI_N2_MASK),
         }
     }
 
@@ -21089,7 +21483,8 @@ impl NvicIpr11Val {
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr11::PRI_N1_MASK) | ((value << NvicIpr11::PRI_N1_OFFSET) & NvicIpr11::PRI_N1_MASK)
+            bits: (self.bits & !NvicIpr11::PRI_N1_MASK)
+                | ((value << NvicIpr11::PRI_N1_OFFSET) & NvicIpr11::PRI_N1_MASK),
         }
     }
 
@@ -21099,7 +21494,8 @@ impl NvicIpr11Val {
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr11::PRI_N0_MASK) | ((value << NvicIpr11::PRI_N0_OFFSET) & NvicIpr11::PRI_N0_MASK)
+            bits: (self.bits & !NvicIpr11::PRI_N0_MASK)
+                | ((value << NvicIpr11::PRI_N0_OFFSET) & NvicIpr11::PRI_N0_MASK),
         }
     }
 }
@@ -21217,7 +21613,9 @@ impl NvicIpr12 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK)
+        });
     }
 
     /// **PRI_N2** `[23:20]` (RW)
@@ -21233,7 +21631,9 @@ impl NvicIpr12 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK)
+        });
     }
 
     /// **PRI_N1** `[15:12]` (RW)
@@ -21249,7 +21649,9 @@ impl NvicIpr12 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK)
+        });
     }
 
     /// **PRI_N0** `[7:4]` (RW)
@@ -21265,7 +21667,9 @@ impl NvicIpr12 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK)
+        });
     }
 }
 
@@ -21335,7 +21739,8 @@ impl NvicIpr12Val {
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr12::PRI_N3_MASK) | ((value << NvicIpr12::PRI_N3_OFFSET) & NvicIpr12::PRI_N3_MASK)
+            bits: (self.bits & !NvicIpr12::PRI_N3_MASK)
+                | ((value << NvicIpr12::PRI_N3_OFFSET) & NvicIpr12::PRI_N3_MASK),
         }
     }
 
@@ -21345,7 +21750,8 @@ impl NvicIpr12Val {
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr12::PRI_N2_MASK) | ((value << NvicIpr12::PRI_N2_OFFSET) & NvicIpr12::PRI_N2_MASK)
+            bits: (self.bits & !NvicIpr12::PRI_N2_MASK)
+                | ((value << NvicIpr12::PRI_N2_OFFSET) & NvicIpr12::PRI_N2_MASK),
         }
     }
 
@@ -21355,7 +21761,8 @@ impl NvicIpr12Val {
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr12::PRI_N1_MASK) | ((value << NvicIpr12::PRI_N1_OFFSET) & NvicIpr12::PRI_N1_MASK)
+            bits: (self.bits & !NvicIpr12::PRI_N1_MASK)
+                | ((value << NvicIpr12::PRI_N1_OFFSET) & NvicIpr12::PRI_N1_MASK),
         }
     }
 
@@ -21365,7 +21772,8 @@ impl NvicIpr12Val {
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr12::PRI_N0_MASK) | ((value << NvicIpr12::PRI_N0_OFFSET) & NvicIpr12::PRI_N0_MASK)
+            bits: (self.bits & !NvicIpr12::PRI_N0_MASK)
+                | ((value << NvicIpr12::PRI_N0_OFFSET) & NvicIpr12::PRI_N0_MASK),
         }
     }
 }
@@ -21483,7 +21891,9 @@ impl NvicIpr13 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK)
+        });
     }
 
     /// **PRI_N2** `[23:20]` (RW)
@@ -21499,7 +21909,9 @@ impl NvicIpr13 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK)
+        });
     }
 
     /// **PRI_N1** `[15:12]` (RW)
@@ -21515,7 +21927,9 @@ impl NvicIpr13 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK)
+        });
     }
 
     /// **PRI_N0** `[7:4]` (RW)
@@ -21531,7 +21945,9 @@ impl NvicIpr13 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK)
+        });
     }
 }
 
@@ -21601,7 +22017,8 @@ impl NvicIpr13Val {
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr13::PRI_N3_MASK) | ((value << NvicIpr13::PRI_N3_OFFSET) & NvicIpr13::PRI_N3_MASK)
+            bits: (self.bits & !NvicIpr13::PRI_N3_MASK)
+                | ((value << NvicIpr13::PRI_N3_OFFSET) & NvicIpr13::PRI_N3_MASK),
         }
     }
 
@@ -21611,7 +22028,8 @@ impl NvicIpr13Val {
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr13::PRI_N2_MASK) | ((value << NvicIpr13::PRI_N2_OFFSET) & NvicIpr13::PRI_N2_MASK)
+            bits: (self.bits & !NvicIpr13::PRI_N2_MASK)
+                | ((value << NvicIpr13::PRI_N2_OFFSET) & NvicIpr13::PRI_N2_MASK),
         }
     }
 
@@ -21621,7 +22039,8 @@ impl NvicIpr13Val {
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr13::PRI_N1_MASK) | ((value << NvicIpr13::PRI_N1_OFFSET) & NvicIpr13::PRI_N1_MASK)
+            bits: (self.bits & !NvicIpr13::PRI_N1_MASK)
+                | ((value << NvicIpr13::PRI_N1_OFFSET) & NvicIpr13::PRI_N1_MASK),
         }
     }
 
@@ -21631,7 +22050,8 @@ impl NvicIpr13Val {
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr13::PRI_N0_MASK) | ((value << NvicIpr13::PRI_N0_OFFSET) & NvicIpr13::PRI_N0_MASK)
+            bits: (self.bits & !NvicIpr13::PRI_N0_MASK)
+                | ((value << NvicIpr13::PRI_N0_OFFSET) & NvicIpr13::PRI_N0_MASK),
         }
     }
 }
@@ -21749,7 +22169,9 @@ impl NvicIpr14 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK)
+        });
     }
 
     /// **PRI_N2** `[23:20]` (RW)
@@ -21765,7 +22187,9 @@ impl NvicIpr14 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK)
+        });
     }
 
     /// **PRI_N1** `[15:12]` (RW)
@@ -21781,7 +22205,9 @@ impl NvicIpr14 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK)
+        });
     }
 
     /// **PRI_N0** `[7:4]` (RW)
@@ -21797,7 +22223,9 @@ impl NvicIpr14 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK)
+        });
     }
 }
 
@@ -21867,7 +22295,8 @@ impl NvicIpr14Val {
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr14::PRI_N3_MASK) | ((value << NvicIpr14::PRI_N3_OFFSET) & NvicIpr14::PRI_N3_MASK)
+            bits: (self.bits & !NvicIpr14::PRI_N3_MASK)
+                | ((value << NvicIpr14::PRI_N3_OFFSET) & NvicIpr14::PRI_N3_MASK),
         }
     }
 
@@ -21877,7 +22306,8 @@ impl NvicIpr14Val {
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr14::PRI_N2_MASK) | ((value << NvicIpr14::PRI_N2_OFFSET) & NvicIpr14::PRI_N2_MASK)
+            bits: (self.bits & !NvicIpr14::PRI_N2_MASK)
+                | ((value << NvicIpr14::PRI_N2_OFFSET) & NvicIpr14::PRI_N2_MASK),
         }
     }
 
@@ -21887,7 +22317,8 @@ impl NvicIpr14Val {
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr14::PRI_N1_MASK) | ((value << NvicIpr14::PRI_N1_OFFSET) & NvicIpr14::PRI_N1_MASK)
+            bits: (self.bits & !NvicIpr14::PRI_N1_MASK)
+                | ((value << NvicIpr14::PRI_N1_OFFSET) & NvicIpr14::PRI_N1_MASK),
         }
     }
 
@@ -21897,7 +22328,8 @@ impl NvicIpr14Val {
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr14::PRI_N0_MASK) | ((value << NvicIpr14::PRI_N0_OFFSET) & NvicIpr14::PRI_N0_MASK)
+            bits: (self.bits & !NvicIpr14::PRI_N0_MASK)
+                | ((value << NvicIpr14::PRI_N0_OFFSET) & NvicIpr14::PRI_N0_MASK),
         }
     }
 }
@@ -22015,7 +22447,9 @@ impl NvicIpr15 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+3, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N3_MASK) | ((value << Self::PRI_N3_OFFSET) & Self::PRI_N3_MASK)
+        });
     }
 
     /// **PRI_N2** `[23:20]` (RW)
@@ -22031,7 +22465,9 @@ impl NvicIpr15 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+2, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N2_MASK) | ((value << Self::PRI_N2_OFFSET) & Self::PRI_N2_MASK)
+        });
     }
 
     /// **PRI_N1** `[15:12]` (RW)
@@ -22047,7 +22483,9 @@ impl NvicIpr15 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+1, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N1_MASK) | ((value << Self::PRI_N1_OFFSET) & Self::PRI_N1_MASK)
+        });
     }
 
     /// **PRI_N0** `[7:4]` (RW)
@@ -22063,7 +22501,9 @@ impl NvicIpr15 {
     /// For register NVIC_IPRn, the priority of interrupt number 4*n+0, or RES0 if the PE does not implement this interrupt
     #[inline(always)]
     pub fn write_pri_n0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_N0_MASK) | ((value << Self::PRI_N0_OFFSET) & Self::PRI_N0_MASK)
+        });
     }
 }
 
@@ -22133,7 +22573,8 @@ impl NvicIpr15Val {
     #[inline(always)]
     pub const fn with_pri_n3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr15::PRI_N3_MASK) | ((value << NvicIpr15::PRI_N3_OFFSET) & NvicIpr15::PRI_N3_MASK)
+            bits: (self.bits & !NvicIpr15::PRI_N3_MASK)
+                | ((value << NvicIpr15::PRI_N3_OFFSET) & NvicIpr15::PRI_N3_MASK),
         }
     }
 
@@ -22143,7 +22584,8 @@ impl NvicIpr15Val {
     #[inline(always)]
     pub const fn with_pri_n2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr15::PRI_N2_MASK) | ((value << NvicIpr15::PRI_N2_OFFSET) & NvicIpr15::PRI_N2_MASK)
+            bits: (self.bits & !NvicIpr15::PRI_N2_MASK)
+                | ((value << NvicIpr15::PRI_N2_OFFSET) & NvicIpr15::PRI_N2_MASK),
         }
     }
 
@@ -22153,7 +22595,8 @@ impl NvicIpr15Val {
     #[inline(always)]
     pub const fn with_pri_n1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr15::PRI_N1_MASK) | ((value << NvicIpr15::PRI_N1_OFFSET) & NvicIpr15::PRI_N1_MASK)
+            bits: (self.bits & !NvicIpr15::PRI_N1_MASK)
+                | ((value << NvicIpr15::PRI_N1_OFFSET) & NvicIpr15::PRI_N1_MASK),
         }
     }
 
@@ -22163,7 +22606,8 @@ impl NvicIpr15Val {
     #[inline(always)]
     pub const fn with_pri_n0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !NvicIpr15::PRI_N0_MASK) | ((value << NvicIpr15::PRI_N0_OFFSET) & NvicIpr15::PRI_N0_MASK)
+            bits: (self.bits & !NvicIpr15::PRI_N0_MASK)
+                | ((value << NvicIpr15::PRI_N0_OFFSET) & NvicIpr15::PRI_N0_MASK),
         }
     }
 }
@@ -22863,7 +23307,7 @@ impl IcsrVal {
                 self.bits | Icsr::PENDNMICLR_MASK
             } else {
                 self.bits & !Icsr::PENDNMICLR_MASK
-            }
+            },
         }
     }
 
@@ -22877,7 +23321,7 @@ impl IcsrVal {
                 self.bits | Icsr::PENDSVCLR_MASK
             } else {
                 self.bits & !Icsr::PENDSVCLR_MASK
-            }
+            },
         }
     }
 
@@ -22891,7 +23335,7 @@ impl IcsrVal {
                 self.bits | Icsr::PENDSTCLR_MASK
             } else {
                 self.bits & !Icsr::PENDSTCLR_MASK
-            }
+            },
         }
     }
 
@@ -22905,7 +23349,7 @@ impl IcsrVal {
                 self.bits | Icsr::STTNS_MASK
             } else {
                 self.bits & !Icsr::STTNS_MASK
-            }
+            },
         }
     }
 }
@@ -22987,7 +23431,9 @@ impl Vtor {
     /// Vector table base offset field. It contains bits[31:7] of the offset of the table base from the bottom of the memory map.
     #[inline(always)]
     pub fn write_tbloff(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TBLOFF_MASK) | ((value << Self::TBLOFF_OFFSET) & Self::TBLOFF_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TBLOFF_MASK) | ((value << Self::TBLOFF_OFFSET) & Self::TBLOFF_MASK)
+        });
     }
 }
 
@@ -23033,7 +23479,8 @@ impl VtorVal {
     #[inline(always)]
     pub const fn with_tbloff(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Vtor::TBLOFF_MASK) | ((value << Vtor::TBLOFF_OFFSET) & Vtor::TBLOFF_MASK)
+            bits: (self.bits & !Vtor::TBLOFF_MASK)
+                | ((value << Vtor::TBLOFF_OFFSET) & Vtor::TBLOFF_MASK),
         }
     }
 }
@@ -23229,7 +23676,9 @@ impl Aircr {
     /// On writes, write 0x05FA to VECTKEY, otherwise the write is ignored.
     #[inline(always)]
     pub fn write_vectkey(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::VECTKEY_MASK) | ((value << Self::VECTKEY_OFFSET) & Self::VECTKEY_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::VECTKEY_MASK) | ((value << Self::VECTKEY_OFFSET) & Self::VECTKEY_MASK)
+        });
     }
 
     /// **ENDIANESS** `[15]` (RO)
@@ -23300,7 +23749,9 @@ impl Aircr {
     /// See https://developer.arm.com/documentation/100235/0004/the-cortex-m33-peripherals/system-control-block/application-interrupt-and-reset-control-register?lang=en
     #[inline(always)]
     pub fn write_prigroup(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRIGROUP_MASK) | ((value << Self::PRIGROUP_OFFSET) & Self::PRIGROUP_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRIGROUP_MASK) | ((value << Self::PRIGROUP_OFFSET) & Self::PRIGROUP_MASK)
+        });
     }
 
     /// **SYSRESETREQS** `[3]` (RW)
@@ -23476,7 +23927,8 @@ impl AircrVal {
     #[inline(always)]
     pub const fn with_vectkey(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Aircr::VECTKEY_MASK) | ((value << Aircr::VECTKEY_OFFSET) & Aircr::VECTKEY_MASK)
+            bits: (self.bits & !Aircr::VECTKEY_MASK)
+                | ((value << Aircr::VECTKEY_OFFSET) & Aircr::VECTKEY_MASK),
         }
     }
 
@@ -23492,7 +23944,7 @@ impl AircrVal {
                 self.bits | Aircr::PRIS_MASK
             } else {
                 self.bits & !Aircr::PRIS_MASK
-            }
+            },
         }
     }
 
@@ -23508,7 +23960,7 @@ impl AircrVal {
                 self.bits | Aircr::BFHFNMINS_MASK
             } else {
                 self.bits & !Aircr::BFHFNMINS_MASK
-            }
+            },
         }
     }
 
@@ -23519,7 +23971,8 @@ impl AircrVal {
     #[inline(always)]
     pub const fn with_prigroup(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Aircr::PRIGROUP_MASK) | ((value << Aircr::PRIGROUP_OFFSET) & Aircr::PRIGROUP_MASK)
+            bits: (self.bits & !Aircr::PRIGROUP_MASK)
+                | ((value << Aircr::PRIGROUP_OFFSET) & Aircr::PRIGROUP_MASK),
         }
     }
 
@@ -23535,7 +23988,7 @@ impl AircrVal {
                 self.bits | Aircr::SYSRESETREQS_MASK
             } else {
                 self.bits & !Aircr::SYSRESETREQS_MASK
-            }
+            },
         }
     }
 
@@ -23549,7 +24002,7 @@ impl AircrVal {
                 self.bits | Aircr::SYSRESETREQ_MASK
             } else {
                 self.bits & !Aircr::SYSRESETREQ_MASK
-            }
+            },
         }
     }
 
@@ -23563,7 +24016,7 @@ impl AircrVal {
                 self.bits | Aircr::VECTCLRACTIVE_MASK
             } else {
                 self.bits & !Aircr::VECTCLRACTIVE_MASK
-            }
+            },
         }
     }
 }
@@ -23872,7 +24325,7 @@ impl ScrVal {
                 self.bits | Scr::SEVONPEND_MASK
             } else {
                 self.bits & !Scr::SEVONPEND_MASK
-            }
+            },
         }
     }
 
@@ -23887,7 +24340,7 @@ impl ScrVal {
                 self.bits | Scr::SLEEPDEEPS_MASK
             } else {
                 self.bits & !Scr::SLEEPDEEPS_MASK
-            }
+            },
         }
     }
 
@@ -23903,7 +24356,7 @@ impl ScrVal {
                 self.bits | Scr::SLEEPDEEP_MASK
             } else {
                 self.bits & !Scr::SLEEPDEEP_MASK
-            }
+            },
         }
     }
 
@@ -23920,7 +24373,7 @@ impl ScrVal {
                 self.bits | Scr::SLEEPONEXIT_MASK
             } else {
                 self.bits & !Scr::SLEEPONEXIT_MASK
-            }
+            },
         }
     }
 }
@@ -24366,7 +24819,7 @@ impl CcrVal {
                 self.bits | Ccr::STKOFHFNMIGN_MASK
             } else {
                 self.bits & !Ccr::STKOFHFNMIGN_MASK
-            }
+            },
         }
     }
 
@@ -24380,7 +24833,7 @@ impl CcrVal {
                 self.bits | Ccr::BFHFNMIGN_MASK
             } else {
                 self.bits & !Ccr::BFHFNMIGN_MASK
-            }
+            },
         }
     }
 
@@ -24394,7 +24847,7 @@ impl CcrVal {
                 self.bits | Ccr::DIV_0_TRP_MASK
             } else {
                 self.bits & !Ccr::DIV_0_TRP_MASK
-            }
+            },
         }
     }
 
@@ -24408,7 +24861,7 @@ impl CcrVal {
                 self.bits | Ccr::UNALIGN_TRP_MASK
             } else {
                 self.bits & !Ccr::UNALIGN_TRP_MASK
-            }
+            },
         }
     }
 
@@ -24422,7 +24875,7 @@ impl CcrVal {
                 self.bits | Ccr::USERSETMPEND_MASK
             } else {
                 self.bits & !Ccr::USERSETMPEND_MASK
-            }
+            },
         }
     }
 }
@@ -24540,7 +24993,9 @@ impl Shpr1 {
     /// Priority of system handler 7, SecureFault
     #[inline(always)]
     pub fn write_pri_7_3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_7_3_MASK) | ((value << Self::PRI_7_3_OFFSET) & Self::PRI_7_3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_7_3_MASK) | ((value << Self::PRI_7_3_OFFSET) & Self::PRI_7_3_MASK)
+        });
     }
 
     /// **PRI_6_3** `[23:21]` (RW)
@@ -24556,7 +25011,9 @@ impl Shpr1 {
     /// Priority of system handler 6, SecureFault
     #[inline(always)]
     pub fn write_pri_6_3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_6_3_MASK) | ((value << Self::PRI_6_3_OFFSET) & Self::PRI_6_3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_6_3_MASK) | ((value << Self::PRI_6_3_OFFSET) & Self::PRI_6_3_MASK)
+        });
     }
 
     /// **PRI_5_3** `[15:13]` (RW)
@@ -24572,7 +25029,9 @@ impl Shpr1 {
     /// Priority of system handler 5, SecureFault
     #[inline(always)]
     pub fn write_pri_5_3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_5_3_MASK) | ((value << Self::PRI_5_3_OFFSET) & Self::PRI_5_3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_5_3_MASK) | ((value << Self::PRI_5_3_OFFSET) & Self::PRI_5_3_MASK)
+        });
     }
 
     /// **PRI_4_3** `[7:5]` (RW)
@@ -24588,7 +25047,9 @@ impl Shpr1 {
     /// Priority of system handler 4, SecureFault
     #[inline(always)]
     pub fn write_pri_4_3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_4_3_MASK) | ((value << Self::PRI_4_3_OFFSET) & Self::PRI_4_3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_4_3_MASK) | ((value << Self::PRI_4_3_OFFSET) & Self::PRI_4_3_MASK)
+        });
     }
 }
 
@@ -24658,7 +25119,8 @@ impl Shpr1Val {
     #[inline(always)]
     pub const fn with_pri_7_3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Shpr1::PRI_7_3_MASK) | ((value << Shpr1::PRI_7_3_OFFSET) & Shpr1::PRI_7_3_MASK)
+            bits: (self.bits & !Shpr1::PRI_7_3_MASK)
+                | ((value << Shpr1::PRI_7_3_OFFSET) & Shpr1::PRI_7_3_MASK),
         }
     }
 
@@ -24668,7 +25130,8 @@ impl Shpr1Val {
     #[inline(always)]
     pub const fn with_pri_6_3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Shpr1::PRI_6_3_MASK) | ((value << Shpr1::PRI_6_3_OFFSET) & Shpr1::PRI_6_3_MASK)
+            bits: (self.bits & !Shpr1::PRI_6_3_MASK)
+                | ((value << Shpr1::PRI_6_3_OFFSET) & Shpr1::PRI_6_3_MASK),
         }
     }
 
@@ -24678,7 +25141,8 @@ impl Shpr1Val {
     #[inline(always)]
     pub const fn with_pri_5_3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Shpr1::PRI_5_3_MASK) | ((value << Shpr1::PRI_5_3_OFFSET) & Shpr1::PRI_5_3_MASK)
+            bits: (self.bits & !Shpr1::PRI_5_3_MASK)
+                | ((value << Shpr1::PRI_5_3_OFFSET) & Shpr1::PRI_5_3_MASK),
         }
     }
 
@@ -24688,7 +25152,8 @@ impl Shpr1Val {
     #[inline(always)]
     pub const fn with_pri_4_3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Shpr1::PRI_4_3_MASK) | ((value << Shpr1::PRI_4_3_OFFSET) & Shpr1::PRI_4_3_MASK)
+            bits: (self.bits & !Shpr1::PRI_4_3_MASK)
+                | ((value << Shpr1::PRI_4_3_OFFSET) & Shpr1::PRI_4_3_MASK),
         }
     }
 }
@@ -24806,7 +25271,9 @@ impl Shpr2 {
     /// Priority of system handler 11, SecureFault
     #[inline(always)]
     pub fn write_pri_11_3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_11_3_MASK) | ((value << Self::PRI_11_3_OFFSET) & Self::PRI_11_3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_11_3_MASK) | ((value << Self::PRI_11_3_OFFSET) & Self::PRI_11_3_MASK)
+        });
     }
 
     /// **PRI_10** `[23:16]` (RO)
@@ -24900,7 +25367,8 @@ impl Shpr2Val {
     #[inline(always)]
     pub const fn with_pri_11_3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Shpr2::PRI_11_3_MASK) | ((value << Shpr2::PRI_11_3_OFFSET) & Shpr2::PRI_11_3_MASK)
+            bits: (self.bits & !Shpr2::PRI_11_3_MASK)
+                | ((value << Shpr2::PRI_11_3_OFFSET) & Shpr2::PRI_11_3_MASK),
         }
     }
 }
@@ -25018,7 +25486,9 @@ impl Shpr3 {
     /// Priority of system handler 15, SecureFault
     #[inline(always)]
     pub fn write_pri_15_3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_15_3_MASK) | ((value << Self::PRI_15_3_OFFSET) & Self::PRI_15_3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_15_3_MASK) | ((value << Self::PRI_15_3_OFFSET) & Self::PRI_15_3_MASK)
+        });
     }
 
     /// **PRI_14_3** `[23:21]` (RW)
@@ -25034,7 +25504,9 @@ impl Shpr3 {
     /// Priority of system handler 14, SecureFault
     #[inline(always)]
     pub fn write_pri_14_3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_14_3_MASK) | ((value << Self::PRI_14_3_OFFSET) & Self::PRI_14_3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_14_3_MASK) | ((value << Self::PRI_14_3_OFFSET) & Self::PRI_14_3_MASK)
+        });
     }
 
     /// **PRI_13** `[15:8]` (RO)
@@ -25058,7 +25530,9 @@ impl Shpr3 {
     /// Priority of system handler 12, SecureFault
     #[inline(always)]
     pub fn write_pri_12_3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PRI_12_3_MASK) | ((value << Self::PRI_12_3_OFFSET) & Self::PRI_12_3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PRI_12_3_MASK) | ((value << Self::PRI_12_3_OFFSET) & Self::PRI_12_3_MASK)
+        });
     }
 }
 
@@ -25128,7 +25602,8 @@ impl Shpr3Val {
     #[inline(always)]
     pub const fn with_pri_15_3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Shpr3::PRI_15_3_MASK) | ((value << Shpr3::PRI_15_3_OFFSET) & Shpr3::PRI_15_3_MASK)
+            bits: (self.bits & !Shpr3::PRI_15_3_MASK)
+                | ((value << Shpr3::PRI_15_3_OFFSET) & Shpr3::PRI_15_3_MASK),
         }
     }
 
@@ -25138,7 +25613,8 @@ impl Shpr3Val {
     #[inline(always)]
     pub const fn with_pri_14_3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Shpr3::PRI_14_3_MASK) | ((value << Shpr3::PRI_14_3_OFFSET) & Shpr3::PRI_14_3_MASK)
+            bits: (self.bits & !Shpr3::PRI_14_3_MASK)
+                | ((value << Shpr3::PRI_14_3_OFFSET) & Shpr3::PRI_14_3_MASK),
         }
     }
 
@@ -25148,7 +25624,8 @@ impl Shpr3Val {
     #[inline(always)]
     pub const fn with_pri_12_3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Shpr3::PRI_12_3_MASK) | ((value << Shpr3::PRI_12_3_OFFSET) & Shpr3::PRI_12_3_MASK)
+            bits: (self.bits & !Shpr3::PRI_12_3_MASK)
+                | ((value << Shpr3::PRI_12_3_OFFSET) & Shpr3::PRI_12_3_MASK),
         }
     }
 }
@@ -25502,7 +25979,8 @@ impl Shcsr {
     /// Clear SECUREFAULTPENDED bit (RW) - NOT atomic
     #[inline(always)]
     pub fn clr_securefaultpended(&self) {
-        self.value.modify_bits(|r| r & !Self::SECUREFAULTPENDED_MASK);
+        self.value
+            .modify_bits(|r| r & !Self::SECUREFAULTPENDED_MASK);
     }
 
     /// **SECUREFAULTENA** `[19]` (RW)
@@ -26064,7 +26542,7 @@ impl ShcsrVal {
                 self.bits | Shcsr::HARDFAULTPENDED_MASK
             } else {
                 self.bits & !Shcsr::HARDFAULTPENDED_MASK
-            }
+            },
         }
     }
 
@@ -26078,7 +26556,7 @@ impl ShcsrVal {
                 self.bits | Shcsr::SECUREFAULTPENDED_MASK
             } else {
                 self.bits & !Shcsr::SECUREFAULTPENDED_MASK
-            }
+            },
         }
     }
 
@@ -26092,7 +26570,7 @@ impl ShcsrVal {
                 self.bits | Shcsr::SECUREFAULTENA_MASK
             } else {
                 self.bits & !Shcsr::SECUREFAULTENA_MASK
-            }
+            },
         }
     }
 
@@ -26106,7 +26584,7 @@ impl ShcsrVal {
                 self.bits | Shcsr::USGFAULTENA_MASK
             } else {
                 self.bits & !Shcsr::USGFAULTENA_MASK
-            }
+            },
         }
     }
 
@@ -26120,7 +26598,7 @@ impl ShcsrVal {
                 self.bits | Shcsr::BUSFAULTENA_MASK
             } else {
                 self.bits & !Shcsr::BUSFAULTENA_MASK
-            }
+            },
         }
     }
 
@@ -26134,7 +26612,7 @@ impl ShcsrVal {
                 self.bits | Shcsr::MEMFAULTENA_MASK
             } else {
                 self.bits & !Shcsr::MEMFAULTENA_MASK
-            }
+            },
         }
     }
 
@@ -26148,7 +26626,7 @@ impl ShcsrVal {
                 self.bits | Shcsr::SVCALLPENDED_MASK
             } else {
                 self.bits & !Shcsr::SVCALLPENDED_MASK
-            }
+            },
         }
     }
 
@@ -26162,7 +26640,7 @@ impl ShcsrVal {
                 self.bits | Shcsr::BUSFAULTPENDED_MASK
             } else {
                 self.bits & !Shcsr::BUSFAULTPENDED_MASK
-            }
+            },
         }
     }
 
@@ -26176,7 +26654,7 @@ impl ShcsrVal {
                 self.bits | Shcsr::MEMFAULTPENDED_MASK
             } else {
                 self.bits & !Shcsr::MEMFAULTPENDED_MASK
-            }
+            },
         }
     }
 
@@ -26190,7 +26668,7 @@ impl ShcsrVal {
                 self.bits | Shcsr::USGFAULTPENDED_MASK
             } else {
                 self.bits & !Shcsr::USGFAULTPENDED_MASK
-            }
+            },
         }
     }
 
@@ -26204,7 +26682,7 @@ impl ShcsrVal {
                 self.bits | Shcsr::SYSTICKACT_MASK
             } else {
                 self.bits & !Shcsr::SYSTICKACT_MASK
-            }
+            },
         }
     }
 
@@ -26218,7 +26696,7 @@ impl ShcsrVal {
                 self.bits | Shcsr::PENDSVACT_MASK
             } else {
                 self.bits & !Shcsr::PENDSVACT_MASK
-            }
+            },
         }
     }
 
@@ -26232,7 +26710,7 @@ impl ShcsrVal {
                 self.bits | Shcsr::MONITORACT_MASK
             } else {
                 self.bits & !Shcsr::MONITORACT_MASK
-            }
+            },
         }
     }
 
@@ -26246,7 +26724,7 @@ impl ShcsrVal {
                 self.bits | Shcsr::SVCALLACT_MASK
             } else {
                 self.bits & !Shcsr::SVCALLACT_MASK
-            }
+            },
         }
     }
 
@@ -26260,7 +26738,7 @@ impl ShcsrVal {
                 self.bits | Shcsr::NMIACT_MASK
             } else {
                 self.bits & !Shcsr::NMIACT_MASK
-            }
+            },
         }
     }
 
@@ -26274,7 +26752,7 @@ impl ShcsrVal {
                 self.bits | Shcsr::SECUREFAULTACT_MASK
             } else {
                 self.bits & !Shcsr::SECUREFAULTACT_MASK
-            }
+            },
         }
     }
 
@@ -26288,7 +26766,7 @@ impl ShcsrVal {
                 self.bits | Shcsr::USGFAULTACT_MASK
             } else {
                 self.bits & !Shcsr::USGFAULTACT_MASK
-            }
+            },
         }
     }
 
@@ -26302,7 +26780,7 @@ impl ShcsrVal {
                 self.bits | Shcsr::HARDFAULTACT_MASK
             } else {
                 self.bits & !Shcsr::HARDFAULTACT_MASK
-            }
+            },
         }
     }
 
@@ -26316,7 +26794,7 @@ impl ShcsrVal {
                 self.bits | Shcsr::BUSFAULTACT_MASK
             } else {
                 self.bits & !Shcsr::BUSFAULTACT_MASK
-            }
+            },
         }
     }
 
@@ -26330,7 +26808,7 @@ impl ShcsrVal {
                 self.bits | Shcsr::MEMFAULTACT_MASK
             } else {
                 self.bits & !Shcsr::MEMFAULTACT_MASK
-            }
+            },
         }
     }
 }
@@ -26877,7 +27355,9 @@ impl Cfsr {
     /// Provides information on MemManage exceptions
     #[inline(always)]
     pub fn write_mmfsr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::MMFSR_MASK) | ((value << Self::MMFSR_OFFSET) & Self::MMFSR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::MMFSR_MASK) | ((value << Self::MMFSR_OFFSET) & Self::MMFSR_MASK)
+        });
     }
 }
 
@@ -27039,7 +27519,7 @@ impl CfsrVal {
                 self.bits | Cfsr::UFSR_DIVBYZERO_MASK
             } else {
                 self.bits & !Cfsr::UFSR_DIVBYZERO_MASK
-            }
+            },
         }
     }
 
@@ -27053,7 +27533,7 @@ impl CfsrVal {
                 self.bits | Cfsr::UFSR_UNALIGNED_MASK
             } else {
                 self.bits & !Cfsr::UFSR_UNALIGNED_MASK
-            }
+            },
         }
     }
 
@@ -27067,7 +27547,7 @@ impl CfsrVal {
                 self.bits | Cfsr::UFSR_STKOF_MASK
             } else {
                 self.bits & !Cfsr::UFSR_STKOF_MASK
-            }
+            },
         }
     }
 
@@ -27081,7 +27561,7 @@ impl CfsrVal {
                 self.bits | Cfsr::UFSR_NOCP_MASK
             } else {
                 self.bits & !Cfsr::UFSR_NOCP_MASK
-            }
+            },
         }
     }
 
@@ -27095,7 +27575,7 @@ impl CfsrVal {
                 self.bits | Cfsr::UFSR_INVPC_MASK
             } else {
                 self.bits & !Cfsr::UFSR_INVPC_MASK
-            }
+            },
         }
     }
 
@@ -27109,7 +27589,7 @@ impl CfsrVal {
                 self.bits | Cfsr::UFSR_INVSTATE_MASK
             } else {
                 self.bits & !Cfsr::UFSR_INVSTATE_MASK
-            }
+            },
         }
     }
 
@@ -27123,7 +27603,7 @@ impl CfsrVal {
                 self.bits | Cfsr::UFSR_UNDEFINSTR_MASK
             } else {
                 self.bits & !Cfsr::UFSR_UNDEFINSTR_MASK
-            }
+            },
         }
     }
 
@@ -27137,7 +27617,7 @@ impl CfsrVal {
                 self.bits | Cfsr::BFSR_BFARVALID_MASK
             } else {
                 self.bits & !Cfsr::BFSR_BFARVALID_MASK
-            }
+            },
         }
     }
 
@@ -27151,7 +27631,7 @@ impl CfsrVal {
                 self.bits | Cfsr::BFSR_LSPERR_MASK
             } else {
                 self.bits & !Cfsr::BFSR_LSPERR_MASK
-            }
+            },
         }
     }
 
@@ -27165,7 +27645,7 @@ impl CfsrVal {
                 self.bits | Cfsr::BFSR_STKERR_MASK
             } else {
                 self.bits & !Cfsr::BFSR_STKERR_MASK
-            }
+            },
         }
     }
 
@@ -27179,7 +27659,7 @@ impl CfsrVal {
                 self.bits | Cfsr::BFSR_UNSTKERR_MASK
             } else {
                 self.bits & !Cfsr::BFSR_UNSTKERR_MASK
-            }
+            },
         }
     }
 
@@ -27193,7 +27673,7 @@ impl CfsrVal {
                 self.bits | Cfsr::BFSR_IMPRECISERR_MASK
             } else {
                 self.bits & !Cfsr::BFSR_IMPRECISERR_MASK
-            }
+            },
         }
     }
 
@@ -27207,7 +27687,7 @@ impl CfsrVal {
                 self.bits | Cfsr::BFSR_PRECISERR_MASK
             } else {
                 self.bits & !Cfsr::BFSR_PRECISERR_MASK
-            }
+            },
         }
     }
 
@@ -27221,7 +27701,7 @@ impl CfsrVal {
                 self.bits | Cfsr::BFSR_IBUSERR_MASK
             } else {
                 self.bits & !Cfsr::BFSR_IBUSERR_MASK
-            }
+            },
         }
     }
 
@@ -27231,7 +27711,8 @@ impl CfsrVal {
     #[inline(always)]
     pub const fn with_mmfsr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Cfsr::MMFSR_MASK) | ((value << Cfsr::MMFSR_OFFSET) & Cfsr::MMFSR_MASK)
+            bits: (self.bits & !Cfsr::MMFSR_MASK)
+                | ((value << Cfsr::MMFSR_OFFSET) & Cfsr::MMFSR_MASK),
         }
     }
 }
@@ -27450,7 +27931,7 @@ impl HfsrVal {
                 self.bits | Hfsr::DEBUGEVT_MASK
             } else {
                 self.bits & !Hfsr::DEBUGEVT_MASK
-            }
+            },
         }
     }
 
@@ -27464,7 +27945,7 @@ impl HfsrVal {
                 self.bits | Hfsr::FORCED_MASK
             } else {
                 self.bits & !Hfsr::FORCED_MASK
-            }
+            },
         }
     }
 
@@ -27478,7 +27959,7 @@ impl HfsrVal {
                 self.bits | Hfsr::VECTTBL_MASK
             } else {
                 self.bits & !Hfsr::VECTTBL_MASK
-            }
+            },
         }
     }
 }
@@ -27779,7 +28260,7 @@ impl DfsrVal {
                 self.bits | Dfsr::EXTERNAL_MASK
             } else {
                 self.bits & !Dfsr::EXTERNAL_MASK
-            }
+            },
         }
     }
 
@@ -27793,7 +28274,7 @@ impl DfsrVal {
                 self.bits | Dfsr::VCATCH_MASK
             } else {
                 self.bits & !Dfsr::VCATCH_MASK
-            }
+            },
         }
     }
 
@@ -27807,7 +28288,7 @@ impl DfsrVal {
                 self.bits | Dfsr::DWTTRAP_MASK
             } else {
                 self.bits & !Dfsr::DWTTRAP_MASK
-            }
+            },
         }
     }
 
@@ -27821,7 +28302,7 @@ impl DfsrVal {
                 self.bits | Dfsr::BKPT_MASK
             } else {
                 self.bits & !Dfsr::BKPT_MASK
-            }
+            },
         }
     }
 
@@ -27835,7 +28316,7 @@ impl DfsrVal {
                 self.bits | Dfsr::HALTED_MASK
             } else {
                 self.bits & !Dfsr::HALTED_MASK
-            }
+            },
         }
     }
 }
@@ -27917,7 +28398,9 @@ impl Mmfar {
     /// This register is updated with the address of a location that produced a MemManage fault. The MMFSR shows the cause of the fault, and whether this field is valid. This field is valid only when MMFSR.MMARVALID is set, otherwise it is UNKNOWN
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK)
+        });
     }
 }
 
@@ -27963,7 +28446,8 @@ impl MmfarVal {
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Mmfar::ADDRESS_MASK) | ((value << Mmfar::ADDRESS_OFFSET) & Mmfar::ADDRESS_MASK)
+            bits: (self.bits & !Mmfar::ADDRESS_MASK)
+                | ((value << Mmfar::ADDRESS_OFFSET) & Mmfar::ADDRESS_MASK),
         }
     }
 }
@@ -28045,7 +28529,9 @@ impl Bfar {
     /// This register is updated with the address of a location that produced a BusFault. The BFSR shows the reason for the fault. This field is valid only when BFSR.BFARVALID is set, otherwise it is UNKNOWN
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK)
+        });
     }
 }
 
@@ -28091,7 +28577,8 @@ impl BfarVal {
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Bfar::ADDRESS_MASK) | ((value << Bfar::ADDRESS_OFFSET) & Bfar::ADDRESS_MASK)
+            bits: (self.bits & !Bfar::ADDRESS_MASK)
+                | ((value << Bfar::ADDRESS_OFFSET) & Bfar::ADDRESS_MASK),
         }
     }
 }
@@ -28906,7 +29393,9 @@ impl IdMmfr1 {
     /// Write **ID_MMFR1** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_id_mmfr1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ID_MMFR1_MASK) | ((value << Self::ID_MMFR1_OFFSET) & Self::ID_MMFR1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ID_MMFR1_MASK) | ((value << Self::ID_MMFR1_OFFSET) & Self::ID_MMFR1_MASK)
+        });
     }
 }
 
@@ -28948,7 +29437,8 @@ impl IdMmfr1Val {
     #[inline(always)]
     pub const fn with_id_mmfr1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !IdMmfr1::ID_MMFR1_MASK) | ((value << IdMmfr1::ID_MMFR1_OFFSET) & IdMmfr1::ID_MMFR1_MASK)
+            bits: (self.bits & !IdMmfr1::ID_MMFR1_MASK)
+                | ((value << IdMmfr1::ID_MMFR1_OFFSET) & IdMmfr1::ID_MMFR1_MASK),
         }
     }
 }
@@ -30463,7 +30953,9 @@ impl IdIsar5 {
     /// Write **ID_ISAR5** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_id_isar5(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ID_ISAR5_MASK) | ((value << Self::ID_ISAR5_OFFSET) & Self::ID_ISAR5_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ID_ISAR5_MASK) | ((value << Self::ID_ISAR5_OFFSET) & Self::ID_ISAR5_MASK)
+        });
     }
 }
 
@@ -30505,7 +30997,8 @@ impl IdIsar5Val {
     #[inline(always)]
     pub const fn with_id_isar5(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !IdIsar5::ID_ISAR5_MASK) | ((value << IdIsar5::ID_ISAR5_OFFSET) & IdIsar5::ID_ISAR5_MASK)
+            bits: (self.bits & !IdIsar5::ID_ISAR5_MASK)
+                | ((value << IdIsar5::ID_ISAR5_OFFSET) & IdIsar5::ID_ISAR5_MASK),
         }
     }
 }
@@ -30934,7 +31427,9 @@ impl Cpacr {
     /// The value in this field is ignored. If the implementation does not include the FP Extension, this field is RAZ/WI. If the value of this bit is not programmed to the same value as the CP10 field, then the value is UNKNOWN
     #[inline(always)]
     pub fn write_cp11(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CP11_MASK) | ((value << Self::CP11_OFFSET) & Self::CP11_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CP11_MASK) | ((value << Self::CP11_OFFSET) & Self::CP11_MASK)
+        });
     }
 
     /// **CP10** `[21:20]` (RW)
@@ -30950,7 +31445,9 @@ impl Cpacr {
     /// Defines the access rights for the floating-point functionality
     #[inline(always)]
     pub fn write_cp10(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CP10_MASK) | ((value << Self::CP10_OFFSET) & Self::CP10_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CP10_MASK) | ((value << Self::CP10_OFFSET) & Self::CP10_MASK)
+        });
     }
 
     /// **CP7** `[15:14]` (RW)
@@ -30966,7 +31463,9 @@ impl Cpacr {
     /// Controls access privileges for coprocessor 7
     #[inline(always)]
     pub fn write_cp7(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CP7_MASK) | ((value << Self::CP7_OFFSET) & Self::CP7_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CP7_MASK) | ((value << Self::CP7_OFFSET) & Self::CP7_MASK)
+        });
     }
 
     /// **CP6** `[13:12]` (RW)
@@ -30982,7 +31481,9 @@ impl Cpacr {
     /// Controls access privileges for coprocessor 6
     #[inline(always)]
     pub fn write_cp6(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CP6_MASK) | ((value << Self::CP6_OFFSET) & Self::CP6_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CP6_MASK) | ((value << Self::CP6_OFFSET) & Self::CP6_MASK)
+        });
     }
 
     /// **CP5** `[11:10]` (RW)
@@ -30998,7 +31499,9 @@ impl Cpacr {
     /// Controls access privileges for coprocessor 5
     #[inline(always)]
     pub fn write_cp5(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CP5_MASK) | ((value << Self::CP5_OFFSET) & Self::CP5_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CP5_MASK) | ((value << Self::CP5_OFFSET) & Self::CP5_MASK)
+        });
     }
 
     /// **CP4** `[9:8]` (RW)
@@ -31014,7 +31517,9 @@ impl Cpacr {
     /// Controls access privileges for coprocessor 4
     #[inline(always)]
     pub fn write_cp4(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CP4_MASK) | ((value << Self::CP4_OFFSET) & Self::CP4_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CP4_MASK) | ((value << Self::CP4_OFFSET) & Self::CP4_MASK)
+        });
     }
 
     /// **CP3** `[7:6]` (RW)
@@ -31030,7 +31535,9 @@ impl Cpacr {
     /// Controls access privileges for coprocessor 3
     #[inline(always)]
     pub fn write_cp3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CP3_MASK) | ((value << Self::CP3_OFFSET) & Self::CP3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CP3_MASK) | ((value << Self::CP3_OFFSET) & Self::CP3_MASK)
+        });
     }
 
     /// **CP2** `[5:4]` (RW)
@@ -31046,7 +31553,9 @@ impl Cpacr {
     /// Controls access privileges for coprocessor 2
     #[inline(always)]
     pub fn write_cp2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CP2_MASK) | ((value << Self::CP2_OFFSET) & Self::CP2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CP2_MASK) | ((value << Self::CP2_OFFSET) & Self::CP2_MASK)
+        });
     }
 
     /// **CP1** `[3:2]` (RW)
@@ -31062,7 +31571,9 @@ impl Cpacr {
     /// Controls access privileges for coprocessor 1
     #[inline(always)]
     pub fn write_cp1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CP1_MASK) | ((value << Self::CP1_OFFSET) & Self::CP1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CP1_MASK) | ((value << Self::CP1_OFFSET) & Self::CP1_MASK)
+        });
     }
 
     /// **CP0** `[1:0]` (RW)
@@ -31078,7 +31589,9 @@ impl Cpacr {
     /// Controls access privileges for coprocessor 0
     #[inline(always)]
     pub fn write_cp0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CP0_MASK) | ((value << Self::CP0_OFFSET) & Self::CP0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CP0_MASK) | ((value << Self::CP0_OFFSET) & Self::CP0_MASK)
+        });
     }
 }
 
@@ -31196,7 +31709,8 @@ impl CpacrVal {
     #[inline(always)]
     pub const fn with_cp11(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Cpacr::CP11_MASK) | ((value << Cpacr::CP11_OFFSET) & Cpacr::CP11_MASK)
+            bits: (self.bits & !Cpacr::CP11_MASK)
+                | ((value << Cpacr::CP11_OFFSET) & Cpacr::CP11_MASK),
         }
     }
 
@@ -31206,7 +31720,8 @@ impl CpacrVal {
     #[inline(always)]
     pub const fn with_cp10(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Cpacr::CP10_MASK) | ((value << Cpacr::CP10_OFFSET) & Cpacr::CP10_MASK)
+            bits: (self.bits & !Cpacr::CP10_MASK)
+                | ((value << Cpacr::CP10_OFFSET) & Cpacr::CP10_MASK),
         }
     }
 
@@ -31216,7 +31731,7 @@ impl CpacrVal {
     #[inline(always)]
     pub const fn with_cp7(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Cpacr::CP7_MASK) | ((value << Cpacr::CP7_OFFSET) & Cpacr::CP7_MASK)
+            bits: (self.bits & !Cpacr::CP7_MASK) | ((value << Cpacr::CP7_OFFSET) & Cpacr::CP7_MASK),
         }
     }
 
@@ -31226,7 +31741,7 @@ impl CpacrVal {
     #[inline(always)]
     pub const fn with_cp6(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Cpacr::CP6_MASK) | ((value << Cpacr::CP6_OFFSET) & Cpacr::CP6_MASK)
+            bits: (self.bits & !Cpacr::CP6_MASK) | ((value << Cpacr::CP6_OFFSET) & Cpacr::CP6_MASK),
         }
     }
 
@@ -31236,7 +31751,7 @@ impl CpacrVal {
     #[inline(always)]
     pub const fn with_cp5(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Cpacr::CP5_MASK) | ((value << Cpacr::CP5_OFFSET) & Cpacr::CP5_MASK)
+            bits: (self.bits & !Cpacr::CP5_MASK) | ((value << Cpacr::CP5_OFFSET) & Cpacr::CP5_MASK),
         }
     }
 
@@ -31246,7 +31761,7 @@ impl CpacrVal {
     #[inline(always)]
     pub const fn with_cp4(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Cpacr::CP4_MASK) | ((value << Cpacr::CP4_OFFSET) & Cpacr::CP4_MASK)
+            bits: (self.bits & !Cpacr::CP4_MASK) | ((value << Cpacr::CP4_OFFSET) & Cpacr::CP4_MASK),
         }
     }
 
@@ -31256,7 +31771,7 @@ impl CpacrVal {
     #[inline(always)]
     pub const fn with_cp3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Cpacr::CP3_MASK) | ((value << Cpacr::CP3_OFFSET) & Cpacr::CP3_MASK)
+            bits: (self.bits & !Cpacr::CP3_MASK) | ((value << Cpacr::CP3_OFFSET) & Cpacr::CP3_MASK),
         }
     }
 
@@ -31266,7 +31781,7 @@ impl CpacrVal {
     #[inline(always)]
     pub const fn with_cp2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Cpacr::CP2_MASK) | ((value << Cpacr::CP2_OFFSET) & Cpacr::CP2_MASK)
+            bits: (self.bits & !Cpacr::CP2_MASK) | ((value << Cpacr::CP2_OFFSET) & Cpacr::CP2_MASK),
         }
     }
 
@@ -31276,7 +31791,7 @@ impl CpacrVal {
     #[inline(always)]
     pub const fn with_cp1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Cpacr::CP1_MASK) | ((value << Cpacr::CP1_OFFSET) & Cpacr::CP1_MASK)
+            bits: (self.bits & !Cpacr::CP1_MASK) | ((value << Cpacr::CP1_OFFSET) & Cpacr::CP1_MASK),
         }
     }
 
@@ -31286,7 +31801,7 @@ impl CpacrVal {
     #[inline(always)]
     pub const fn with_cp0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Cpacr::CP0_MASK) | ((value << Cpacr::CP0_OFFSET) & Cpacr::CP0_MASK)
+            bits: (self.bits & !Cpacr::CP0_MASK) | ((value << Cpacr::CP0_OFFSET) & Cpacr::CP0_MASK),
         }
     }
 }
@@ -31792,7 +32307,7 @@ impl NsacrVal {
                 self.bits | Nsacr::CP11_MASK
             } else {
                 self.bits & !Nsacr::CP11_MASK
-            }
+            },
         }
     }
 
@@ -31806,7 +32321,7 @@ impl NsacrVal {
                 self.bits | Nsacr::CP10_MASK
             } else {
                 self.bits & !Nsacr::CP10_MASK
-            }
+            },
         }
     }
 
@@ -31820,7 +32335,7 @@ impl NsacrVal {
                 self.bits | Nsacr::CP7_MASK
             } else {
                 self.bits & !Nsacr::CP7_MASK
-            }
+            },
         }
     }
 
@@ -31834,7 +32349,7 @@ impl NsacrVal {
                 self.bits | Nsacr::CP6_MASK
             } else {
                 self.bits & !Nsacr::CP6_MASK
-            }
+            },
         }
     }
 
@@ -31848,7 +32363,7 @@ impl NsacrVal {
                 self.bits | Nsacr::CP5_MASK
             } else {
                 self.bits & !Nsacr::CP5_MASK
-            }
+            },
         }
     }
 
@@ -31862,7 +32377,7 @@ impl NsacrVal {
                 self.bits | Nsacr::CP4_MASK
             } else {
                 self.bits & !Nsacr::CP4_MASK
-            }
+            },
         }
     }
 
@@ -31876,7 +32391,7 @@ impl NsacrVal {
                 self.bits | Nsacr::CP3_MASK
             } else {
                 self.bits & !Nsacr::CP3_MASK
-            }
+            },
         }
     }
 
@@ -31890,7 +32405,7 @@ impl NsacrVal {
                 self.bits | Nsacr::CP2_MASK
             } else {
                 self.bits & !Nsacr::CP2_MASK
-            }
+            },
         }
     }
 
@@ -31904,7 +32419,7 @@ impl NsacrVal {
                 self.bits | Nsacr::CP1_MASK
             } else {
                 self.bits & !Nsacr::CP1_MASK
-            }
+            },
         }
     }
 
@@ -31918,7 +32433,7 @@ impl NsacrVal {
                 self.bits | Nsacr::CP0_MASK
             } else {
                 self.bits & !Nsacr::CP0_MASK
-            }
+            },
         }
     }
 }
@@ -32264,7 +32779,7 @@ impl MpuCtrlVal {
                 self.bits | MpuCtrl::PRIVDEFENA_MASK
             } else {
                 self.bits & !MpuCtrl::PRIVDEFENA_MASK
-            }
+            },
         }
     }
 
@@ -32278,7 +32793,7 @@ impl MpuCtrlVal {
                 self.bits | MpuCtrl::HFNMIENA_MASK
             } else {
                 self.bits & !MpuCtrl::HFNMIENA_MASK
-            }
+            },
         }
     }
 
@@ -32292,7 +32807,7 @@ impl MpuCtrlVal {
                 self.bits | MpuCtrl::ENABLE_MASK
             } else {
                 self.bits & !MpuCtrl::ENABLE_MASK
-            }
+            },
         }
     }
 }
@@ -32374,7 +32889,9 @@ impl MpuRnr {
     /// Indicates the memory region accessed by MPU_RBAR and MPU_RLAR
     #[inline(always)]
     pub fn write_region(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::REGION_MASK) | ((value << Self::REGION_OFFSET) & Self::REGION_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::REGION_MASK) | ((value << Self::REGION_OFFSET) & Self::REGION_MASK)
+        });
     }
 }
 
@@ -32420,7 +32937,8 @@ impl MpuRnrVal {
     #[inline(always)]
     pub const fn with_region(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuRnr::REGION_MASK) | ((value << MpuRnr::REGION_OFFSET) & MpuRnr::REGION_MASK)
+            bits: (self.bits & !MpuRnr::REGION_MASK)
+                | ((value << MpuRnr::REGION_OFFSET) & MpuRnr::REGION_MASK),
         }
     }
 }
@@ -32539,7 +33057,9 @@ impl MpuRbar {
     /// Contains bits [31:5] of the lower inclusive limit of the selected MPU memory region. This value is zero extended to provide the base address to be checked against
     #[inline(always)]
     pub fn write_base(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK)
+        });
     }
 
     /// **SH** `[4:3]` (RW)
@@ -32555,7 +33075,8 @@ impl MpuRbar {
     /// Defines the Shareability domain of this region for Normal memory
     #[inline(always)]
     pub fn write_sh(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SH_MASK) | ((value << Self::SH_OFFSET) & Self::SH_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::SH_MASK) | ((value << Self::SH_OFFSET) & Self::SH_MASK));
     }
 
     /// **AP** `[2:1]` (RW)
@@ -32571,7 +33092,8 @@ impl MpuRbar {
     /// Defines the access permissions for this region
     #[inline(always)]
     pub fn write_ap(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::AP_MASK) | ((value << Self::AP_OFFSET) & Self::AP_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::AP_MASK) | ((value << Self::AP_OFFSET) & Self::AP_MASK));
     }
 
     /// **XN** `[0]` (RW)
@@ -32661,7 +33183,8 @@ impl MpuRbarVal {
     #[inline(always)]
     pub const fn with_base(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuRbar::BASE_MASK) | ((value << MpuRbar::BASE_OFFSET) & MpuRbar::BASE_MASK)
+            bits: (self.bits & !MpuRbar::BASE_MASK)
+                | ((value << MpuRbar::BASE_OFFSET) & MpuRbar::BASE_MASK),
         }
     }
 
@@ -32671,7 +33194,8 @@ impl MpuRbarVal {
     #[inline(always)]
     pub const fn with_sh(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuRbar::SH_MASK) | ((value << MpuRbar::SH_OFFSET) & MpuRbar::SH_MASK)
+            bits: (self.bits & !MpuRbar::SH_MASK)
+                | ((value << MpuRbar::SH_OFFSET) & MpuRbar::SH_MASK),
         }
     }
 
@@ -32681,7 +33205,8 @@ impl MpuRbarVal {
     #[inline(always)]
     pub const fn with_ap(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuRbar::AP_MASK) | ((value << MpuRbar::AP_OFFSET) & MpuRbar::AP_MASK)
+            bits: (self.bits & !MpuRbar::AP_MASK)
+                | ((value << MpuRbar::AP_OFFSET) & MpuRbar::AP_MASK),
         }
     }
 
@@ -32695,7 +33220,7 @@ impl MpuRbarVal {
                 self.bits | MpuRbar::XN_MASK
             } else {
                 self.bits & !MpuRbar::XN_MASK
-            }
+            },
         }
     }
 }
@@ -32802,7 +33327,9 @@ impl MpuRlar {
     /// Contains bits [31:5] of the upper inclusive limit of the selected MPU memory region. This value is postfixed with 0x1F to provide the limit address to be checked against
     #[inline(always)]
     pub fn write_limit(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LIMIT_MASK) | ((value << Self::LIMIT_OFFSET) & Self::LIMIT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LIMIT_MASK) | ((value << Self::LIMIT_OFFSET) & Self::LIMIT_MASK)
+        });
     }
 
     /// **ATTRINDX** `[3:1]` (RW)
@@ -32818,7 +33345,9 @@ impl MpuRlar {
     /// Associates a set of attributes in the MPU_MAIR0 and MPU_MAIR1 fields
     #[inline(always)]
     pub fn write_attrindx(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ATTRINDX_MASK) | ((value << Self::ATTRINDX_OFFSET) & Self::ATTRINDX_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ATTRINDX_MASK) | ((value << Self::ATTRINDX_OFFSET) & Self::ATTRINDX_MASK)
+        });
     }
 
     /// **EN** `[0]` (RW)
@@ -32900,7 +33429,8 @@ impl MpuRlarVal {
     #[inline(always)]
     pub const fn with_limit(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuRlar::LIMIT_MASK) | ((value << MpuRlar::LIMIT_OFFSET) & MpuRlar::LIMIT_MASK)
+            bits: (self.bits & !MpuRlar::LIMIT_MASK)
+                | ((value << MpuRlar::LIMIT_OFFSET) & MpuRlar::LIMIT_MASK),
         }
     }
 
@@ -32910,7 +33440,8 @@ impl MpuRlarVal {
     #[inline(always)]
     pub const fn with_attrindx(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuRlar::ATTRINDX_MASK) | ((value << MpuRlar::ATTRINDX_OFFSET) & MpuRlar::ATTRINDX_MASK)
+            bits: (self.bits & !MpuRlar::ATTRINDX_MASK)
+                | ((value << MpuRlar::ATTRINDX_OFFSET) & MpuRlar::ATTRINDX_MASK),
         }
     }
 
@@ -32924,7 +33455,7 @@ impl MpuRlarVal {
                 self.bits | MpuRlar::EN_MASK
             } else {
                 self.bits & !MpuRlar::EN_MASK
-            }
+            },
         }
     }
 }
@@ -33043,7 +33574,9 @@ impl MpuRbarA1 {
     /// Contains bits [31:5] of the lower inclusive limit of the selected MPU memory region. This value is zero extended to provide the base address to be checked against
     #[inline(always)]
     pub fn write_base(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK)
+        });
     }
 
     /// **SH** `[4:3]` (RW)
@@ -33059,7 +33592,8 @@ impl MpuRbarA1 {
     /// Defines the Shareability domain of this region for Normal memory
     #[inline(always)]
     pub fn write_sh(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SH_MASK) | ((value << Self::SH_OFFSET) & Self::SH_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::SH_MASK) | ((value << Self::SH_OFFSET) & Self::SH_MASK));
     }
 
     /// **AP** `[2:1]` (RW)
@@ -33075,7 +33609,8 @@ impl MpuRbarA1 {
     /// Defines the access permissions for this region
     #[inline(always)]
     pub fn write_ap(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::AP_MASK) | ((value << Self::AP_OFFSET) & Self::AP_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::AP_MASK) | ((value << Self::AP_OFFSET) & Self::AP_MASK));
     }
 
     /// **XN** `[0]` (RW)
@@ -33165,7 +33700,8 @@ impl MpuRbarA1Val {
     #[inline(always)]
     pub const fn with_base(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuRbarA1::BASE_MASK) | ((value << MpuRbarA1::BASE_OFFSET) & MpuRbarA1::BASE_MASK)
+            bits: (self.bits & !MpuRbarA1::BASE_MASK)
+                | ((value << MpuRbarA1::BASE_OFFSET) & MpuRbarA1::BASE_MASK),
         }
     }
 
@@ -33175,7 +33711,8 @@ impl MpuRbarA1Val {
     #[inline(always)]
     pub const fn with_sh(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuRbarA1::SH_MASK) | ((value << MpuRbarA1::SH_OFFSET) & MpuRbarA1::SH_MASK)
+            bits: (self.bits & !MpuRbarA1::SH_MASK)
+                | ((value << MpuRbarA1::SH_OFFSET) & MpuRbarA1::SH_MASK),
         }
     }
 
@@ -33185,7 +33722,8 @@ impl MpuRbarA1Val {
     #[inline(always)]
     pub const fn with_ap(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuRbarA1::AP_MASK) | ((value << MpuRbarA1::AP_OFFSET) & MpuRbarA1::AP_MASK)
+            bits: (self.bits & !MpuRbarA1::AP_MASK)
+                | ((value << MpuRbarA1::AP_OFFSET) & MpuRbarA1::AP_MASK),
         }
     }
 
@@ -33199,7 +33737,7 @@ impl MpuRbarA1Val {
                 self.bits | MpuRbarA1::XN_MASK
             } else {
                 self.bits & !MpuRbarA1::XN_MASK
-            }
+            },
         }
     }
 }
@@ -33306,7 +33844,9 @@ impl MpuRlarA1 {
     /// Contains bits [31:5] of the upper inclusive limit of the selected MPU memory region. This value is postfixed with 0x1F to provide the limit address to be checked against
     #[inline(always)]
     pub fn write_limit(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LIMIT_MASK) | ((value << Self::LIMIT_OFFSET) & Self::LIMIT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LIMIT_MASK) | ((value << Self::LIMIT_OFFSET) & Self::LIMIT_MASK)
+        });
     }
 
     /// **ATTRINDX** `[3:1]` (RW)
@@ -33322,7 +33862,9 @@ impl MpuRlarA1 {
     /// Associates a set of attributes in the MPU_MAIR0 and MPU_MAIR1 fields
     #[inline(always)]
     pub fn write_attrindx(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ATTRINDX_MASK) | ((value << Self::ATTRINDX_OFFSET) & Self::ATTRINDX_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ATTRINDX_MASK) | ((value << Self::ATTRINDX_OFFSET) & Self::ATTRINDX_MASK)
+        });
     }
 
     /// **EN** `[0]` (RW)
@@ -33404,7 +33946,8 @@ impl MpuRlarA1Val {
     #[inline(always)]
     pub const fn with_limit(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuRlarA1::LIMIT_MASK) | ((value << MpuRlarA1::LIMIT_OFFSET) & MpuRlarA1::LIMIT_MASK)
+            bits: (self.bits & !MpuRlarA1::LIMIT_MASK)
+                | ((value << MpuRlarA1::LIMIT_OFFSET) & MpuRlarA1::LIMIT_MASK),
         }
     }
 
@@ -33414,7 +33957,8 @@ impl MpuRlarA1Val {
     #[inline(always)]
     pub const fn with_attrindx(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuRlarA1::ATTRINDX_MASK) | ((value << MpuRlarA1::ATTRINDX_OFFSET) & MpuRlarA1::ATTRINDX_MASK)
+            bits: (self.bits & !MpuRlarA1::ATTRINDX_MASK)
+                | ((value << MpuRlarA1::ATTRINDX_OFFSET) & MpuRlarA1::ATTRINDX_MASK),
         }
     }
 
@@ -33428,7 +33972,7 @@ impl MpuRlarA1Val {
                 self.bits | MpuRlarA1::EN_MASK
             } else {
                 self.bits & !MpuRlarA1::EN_MASK
-            }
+            },
         }
     }
 }
@@ -33547,7 +34091,9 @@ impl MpuRbarA2 {
     /// Contains bits [31:5] of the lower inclusive limit of the selected MPU memory region. This value is zero extended to provide the base address to be checked against
     #[inline(always)]
     pub fn write_base(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK)
+        });
     }
 
     /// **SH** `[4:3]` (RW)
@@ -33563,7 +34109,8 @@ impl MpuRbarA2 {
     /// Defines the Shareability domain of this region for Normal memory
     #[inline(always)]
     pub fn write_sh(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SH_MASK) | ((value << Self::SH_OFFSET) & Self::SH_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::SH_MASK) | ((value << Self::SH_OFFSET) & Self::SH_MASK));
     }
 
     /// **AP** `[2:1]` (RW)
@@ -33579,7 +34126,8 @@ impl MpuRbarA2 {
     /// Defines the access permissions for this region
     #[inline(always)]
     pub fn write_ap(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::AP_MASK) | ((value << Self::AP_OFFSET) & Self::AP_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::AP_MASK) | ((value << Self::AP_OFFSET) & Self::AP_MASK));
     }
 
     /// **XN** `[0]` (RW)
@@ -33669,7 +34217,8 @@ impl MpuRbarA2Val {
     #[inline(always)]
     pub const fn with_base(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuRbarA2::BASE_MASK) | ((value << MpuRbarA2::BASE_OFFSET) & MpuRbarA2::BASE_MASK)
+            bits: (self.bits & !MpuRbarA2::BASE_MASK)
+                | ((value << MpuRbarA2::BASE_OFFSET) & MpuRbarA2::BASE_MASK),
         }
     }
 
@@ -33679,7 +34228,8 @@ impl MpuRbarA2Val {
     #[inline(always)]
     pub const fn with_sh(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuRbarA2::SH_MASK) | ((value << MpuRbarA2::SH_OFFSET) & MpuRbarA2::SH_MASK)
+            bits: (self.bits & !MpuRbarA2::SH_MASK)
+                | ((value << MpuRbarA2::SH_OFFSET) & MpuRbarA2::SH_MASK),
         }
     }
 
@@ -33689,7 +34239,8 @@ impl MpuRbarA2Val {
     #[inline(always)]
     pub const fn with_ap(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuRbarA2::AP_MASK) | ((value << MpuRbarA2::AP_OFFSET) & MpuRbarA2::AP_MASK)
+            bits: (self.bits & !MpuRbarA2::AP_MASK)
+                | ((value << MpuRbarA2::AP_OFFSET) & MpuRbarA2::AP_MASK),
         }
     }
 
@@ -33703,7 +34254,7 @@ impl MpuRbarA2Val {
                 self.bits | MpuRbarA2::XN_MASK
             } else {
                 self.bits & !MpuRbarA2::XN_MASK
-            }
+            },
         }
     }
 }
@@ -33810,7 +34361,9 @@ impl MpuRlarA2 {
     /// Contains bits [31:5] of the upper inclusive limit of the selected MPU memory region. This value is postfixed with 0x1F to provide the limit address to be checked against
     #[inline(always)]
     pub fn write_limit(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LIMIT_MASK) | ((value << Self::LIMIT_OFFSET) & Self::LIMIT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LIMIT_MASK) | ((value << Self::LIMIT_OFFSET) & Self::LIMIT_MASK)
+        });
     }
 
     /// **ATTRINDX** `[3:1]` (RW)
@@ -33826,7 +34379,9 @@ impl MpuRlarA2 {
     /// Associates a set of attributes in the MPU_MAIR0 and MPU_MAIR1 fields
     #[inline(always)]
     pub fn write_attrindx(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ATTRINDX_MASK) | ((value << Self::ATTRINDX_OFFSET) & Self::ATTRINDX_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ATTRINDX_MASK) | ((value << Self::ATTRINDX_OFFSET) & Self::ATTRINDX_MASK)
+        });
     }
 
     /// **EN** `[0]` (RW)
@@ -33908,7 +34463,8 @@ impl MpuRlarA2Val {
     #[inline(always)]
     pub const fn with_limit(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuRlarA2::LIMIT_MASK) | ((value << MpuRlarA2::LIMIT_OFFSET) & MpuRlarA2::LIMIT_MASK)
+            bits: (self.bits & !MpuRlarA2::LIMIT_MASK)
+                | ((value << MpuRlarA2::LIMIT_OFFSET) & MpuRlarA2::LIMIT_MASK),
         }
     }
 
@@ -33918,7 +34474,8 @@ impl MpuRlarA2Val {
     #[inline(always)]
     pub const fn with_attrindx(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuRlarA2::ATTRINDX_MASK) | ((value << MpuRlarA2::ATTRINDX_OFFSET) & MpuRlarA2::ATTRINDX_MASK)
+            bits: (self.bits & !MpuRlarA2::ATTRINDX_MASK)
+                | ((value << MpuRlarA2::ATTRINDX_OFFSET) & MpuRlarA2::ATTRINDX_MASK),
         }
     }
 
@@ -33932,7 +34489,7 @@ impl MpuRlarA2Val {
                 self.bits | MpuRlarA2::EN_MASK
             } else {
                 self.bits & !MpuRlarA2::EN_MASK
-            }
+            },
         }
     }
 }
@@ -34051,7 +34608,9 @@ impl MpuRbarA3 {
     /// Contains bits [31:5] of the lower inclusive limit of the selected MPU memory region. This value is zero extended to provide the base address to be checked against
     #[inline(always)]
     pub fn write_base(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BASE_MASK) | ((value << Self::BASE_OFFSET) & Self::BASE_MASK)
+        });
     }
 
     /// **SH** `[4:3]` (RW)
@@ -34067,7 +34626,8 @@ impl MpuRbarA3 {
     /// Defines the Shareability domain of this region for Normal memory
     #[inline(always)]
     pub fn write_sh(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SH_MASK) | ((value << Self::SH_OFFSET) & Self::SH_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::SH_MASK) | ((value << Self::SH_OFFSET) & Self::SH_MASK));
     }
 
     /// **AP** `[2:1]` (RW)
@@ -34083,7 +34643,8 @@ impl MpuRbarA3 {
     /// Defines the access permissions for this region
     #[inline(always)]
     pub fn write_ap(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::AP_MASK) | ((value << Self::AP_OFFSET) & Self::AP_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::AP_MASK) | ((value << Self::AP_OFFSET) & Self::AP_MASK));
     }
 
     /// **XN** `[0]` (RW)
@@ -34173,7 +34734,8 @@ impl MpuRbarA3Val {
     #[inline(always)]
     pub const fn with_base(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuRbarA3::BASE_MASK) | ((value << MpuRbarA3::BASE_OFFSET) & MpuRbarA3::BASE_MASK)
+            bits: (self.bits & !MpuRbarA3::BASE_MASK)
+                | ((value << MpuRbarA3::BASE_OFFSET) & MpuRbarA3::BASE_MASK),
         }
     }
 
@@ -34183,7 +34745,8 @@ impl MpuRbarA3Val {
     #[inline(always)]
     pub const fn with_sh(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuRbarA3::SH_MASK) | ((value << MpuRbarA3::SH_OFFSET) & MpuRbarA3::SH_MASK)
+            bits: (self.bits & !MpuRbarA3::SH_MASK)
+                | ((value << MpuRbarA3::SH_OFFSET) & MpuRbarA3::SH_MASK),
         }
     }
 
@@ -34193,7 +34756,8 @@ impl MpuRbarA3Val {
     #[inline(always)]
     pub const fn with_ap(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuRbarA3::AP_MASK) | ((value << MpuRbarA3::AP_OFFSET) & MpuRbarA3::AP_MASK)
+            bits: (self.bits & !MpuRbarA3::AP_MASK)
+                | ((value << MpuRbarA3::AP_OFFSET) & MpuRbarA3::AP_MASK),
         }
     }
 
@@ -34207,7 +34771,7 @@ impl MpuRbarA3Val {
                 self.bits | MpuRbarA3::XN_MASK
             } else {
                 self.bits & !MpuRbarA3::XN_MASK
-            }
+            },
         }
     }
 }
@@ -34314,7 +34878,9 @@ impl MpuRlarA3 {
     /// Contains bits [31:5] of the upper inclusive limit of the selected MPU memory region. This value is postfixed with 0x1F to provide the limit address to be checked against
     #[inline(always)]
     pub fn write_limit(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LIMIT_MASK) | ((value << Self::LIMIT_OFFSET) & Self::LIMIT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LIMIT_MASK) | ((value << Self::LIMIT_OFFSET) & Self::LIMIT_MASK)
+        });
     }
 
     /// **ATTRINDX** `[3:1]` (RW)
@@ -34330,7 +34896,9 @@ impl MpuRlarA3 {
     /// Associates a set of attributes in the MPU_MAIR0 and MPU_MAIR1 fields
     #[inline(always)]
     pub fn write_attrindx(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ATTRINDX_MASK) | ((value << Self::ATTRINDX_OFFSET) & Self::ATTRINDX_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ATTRINDX_MASK) | ((value << Self::ATTRINDX_OFFSET) & Self::ATTRINDX_MASK)
+        });
     }
 
     /// **EN** `[0]` (RW)
@@ -34412,7 +34980,8 @@ impl MpuRlarA3Val {
     #[inline(always)]
     pub const fn with_limit(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuRlarA3::LIMIT_MASK) | ((value << MpuRlarA3::LIMIT_OFFSET) & MpuRlarA3::LIMIT_MASK)
+            bits: (self.bits & !MpuRlarA3::LIMIT_MASK)
+                | ((value << MpuRlarA3::LIMIT_OFFSET) & MpuRlarA3::LIMIT_MASK),
         }
     }
 
@@ -34422,7 +34991,8 @@ impl MpuRlarA3Val {
     #[inline(always)]
     pub const fn with_attrindx(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuRlarA3::ATTRINDX_MASK) | ((value << MpuRlarA3::ATTRINDX_OFFSET) & MpuRlarA3::ATTRINDX_MASK)
+            bits: (self.bits & !MpuRlarA3::ATTRINDX_MASK)
+                | ((value << MpuRlarA3::ATTRINDX_OFFSET) & MpuRlarA3::ATTRINDX_MASK),
         }
     }
 
@@ -34436,7 +35006,7 @@ impl MpuRlarA3Val {
                 self.bits | MpuRlarA3::EN_MASK
             } else {
                 self.bits & !MpuRlarA3::EN_MASK
-            }
+            },
         }
     }
 }
@@ -34554,7 +35124,9 @@ impl MpuMair0 {
     /// Memory attribute encoding for MPU regions with an AttrIndex of 3
     #[inline(always)]
     pub fn write_attr3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ATTR3_MASK) | ((value << Self::ATTR3_OFFSET) & Self::ATTR3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ATTR3_MASK) | ((value << Self::ATTR3_OFFSET) & Self::ATTR3_MASK)
+        });
     }
 
     /// **ATTR2** `[23:16]` (RW)
@@ -34570,7 +35142,9 @@ impl MpuMair0 {
     /// Memory attribute encoding for MPU regions with an AttrIndex of 2
     #[inline(always)]
     pub fn write_attr2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ATTR2_MASK) | ((value << Self::ATTR2_OFFSET) & Self::ATTR2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ATTR2_MASK) | ((value << Self::ATTR2_OFFSET) & Self::ATTR2_MASK)
+        });
     }
 
     /// **ATTR1** `[15:8]` (RW)
@@ -34586,7 +35160,9 @@ impl MpuMair0 {
     /// Memory attribute encoding for MPU regions with an AttrIndex of 1
     #[inline(always)]
     pub fn write_attr1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ATTR1_MASK) | ((value << Self::ATTR1_OFFSET) & Self::ATTR1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ATTR1_MASK) | ((value << Self::ATTR1_OFFSET) & Self::ATTR1_MASK)
+        });
     }
 
     /// **ATTR0** `[7:0]` (RW)
@@ -34602,7 +35178,9 @@ impl MpuMair0 {
     /// Memory attribute encoding for MPU regions with an AttrIndex of 0
     #[inline(always)]
     pub fn write_attr0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ATTR0_MASK) | ((value << Self::ATTR0_OFFSET) & Self::ATTR0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ATTR0_MASK) | ((value << Self::ATTR0_OFFSET) & Self::ATTR0_MASK)
+        });
     }
 }
 
@@ -34672,7 +35250,8 @@ impl MpuMair0Val {
     #[inline(always)]
     pub const fn with_attr3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuMair0::ATTR3_MASK) | ((value << MpuMair0::ATTR3_OFFSET) & MpuMair0::ATTR3_MASK)
+            bits: (self.bits & !MpuMair0::ATTR3_MASK)
+                | ((value << MpuMair0::ATTR3_OFFSET) & MpuMair0::ATTR3_MASK),
         }
     }
 
@@ -34682,7 +35261,8 @@ impl MpuMair0Val {
     #[inline(always)]
     pub const fn with_attr2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuMair0::ATTR2_MASK) | ((value << MpuMair0::ATTR2_OFFSET) & MpuMair0::ATTR2_MASK)
+            bits: (self.bits & !MpuMair0::ATTR2_MASK)
+                | ((value << MpuMair0::ATTR2_OFFSET) & MpuMair0::ATTR2_MASK),
         }
     }
 
@@ -34692,7 +35272,8 @@ impl MpuMair0Val {
     #[inline(always)]
     pub const fn with_attr1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuMair0::ATTR1_MASK) | ((value << MpuMair0::ATTR1_OFFSET) & MpuMair0::ATTR1_MASK)
+            bits: (self.bits & !MpuMair0::ATTR1_MASK)
+                | ((value << MpuMair0::ATTR1_OFFSET) & MpuMair0::ATTR1_MASK),
         }
     }
 
@@ -34702,7 +35283,8 @@ impl MpuMair0Val {
     #[inline(always)]
     pub const fn with_attr0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuMair0::ATTR0_MASK) | ((value << MpuMair0::ATTR0_OFFSET) & MpuMair0::ATTR0_MASK)
+            bits: (self.bits & !MpuMair0::ATTR0_MASK)
+                | ((value << MpuMair0::ATTR0_OFFSET) & MpuMair0::ATTR0_MASK),
         }
     }
 }
@@ -34820,7 +35402,9 @@ impl MpuMair1 {
     /// Memory attribute encoding for MPU regions with an AttrIndex of 7
     #[inline(always)]
     pub fn write_attr7(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ATTR7_MASK) | ((value << Self::ATTR7_OFFSET) & Self::ATTR7_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ATTR7_MASK) | ((value << Self::ATTR7_OFFSET) & Self::ATTR7_MASK)
+        });
     }
 
     /// **ATTR6** `[23:16]` (RW)
@@ -34836,7 +35420,9 @@ impl MpuMair1 {
     /// Memory attribute encoding for MPU regions with an AttrIndex of 6
     #[inline(always)]
     pub fn write_attr6(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ATTR6_MASK) | ((value << Self::ATTR6_OFFSET) & Self::ATTR6_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ATTR6_MASK) | ((value << Self::ATTR6_OFFSET) & Self::ATTR6_MASK)
+        });
     }
 
     /// **ATTR5** `[15:8]` (RW)
@@ -34852,7 +35438,9 @@ impl MpuMair1 {
     /// Memory attribute encoding for MPU regions with an AttrIndex of 5
     #[inline(always)]
     pub fn write_attr5(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ATTR5_MASK) | ((value << Self::ATTR5_OFFSET) & Self::ATTR5_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ATTR5_MASK) | ((value << Self::ATTR5_OFFSET) & Self::ATTR5_MASK)
+        });
     }
 
     /// **ATTR4** `[7:0]` (RW)
@@ -34868,7 +35456,9 @@ impl MpuMair1 {
     /// Memory attribute encoding for MPU regions with an AttrIndex of 4
     #[inline(always)]
     pub fn write_attr4(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ATTR4_MASK) | ((value << Self::ATTR4_OFFSET) & Self::ATTR4_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ATTR4_MASK) | ((value << Self::ATTR4_OFFSET) & Self::ATTR4_MASK)
+        });
     }
 }
 
@@ -34938,7 +35528,8 @@ impl MpuMair1Val {
     #[inline(always)]
     pub const fn with_attr7(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuMair1::ATTR7_MASK) | ((value << MpuMair1::ATTR7_OFFSET) & MpuMair1::ATTR7_MASK)
+            bits: (self.bits & !MpuMair1::ATTR7_MASK)
+                | ((value << MpuMair1::ATTR7_OFFSET) & MpuMair1::ATTR7_MASK),
         }
     }
 
@@ -34948,7 +35539,8 @@ impl MpuMair1Val {
     #[inline(always)]
     pub const fn with_attr6(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuMair1::ATTR6_MASK) | ((value << MpuMair1::ATTR6_OFFSET) & MpuMair1::ATTR6_MASK)
+            bits: (self.bits & !MpuMair1::ATTR6_MASK)
+                | ((value << MpuMair1::ATTR6_OFFSET) & MpuMair1::ATTR6_MASK),
         }
     }
 
@@ -34958,7 +35550,8 @@ impl MpuMair1Val {
     #[inline(always)]
     pub const fn with_attr5(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuMair1::ATTR5_MASK) | ((value << MpuMair1::ATTR5_OFFSET) & MpuMair1::ATTR5_MASK)
+            bits: (self.bits & !MpuMair1::ATTR5_MASK)
+                | ((value << MpuMair1::ATTR5_OFFSET) & MpuMair1::ATTR5_MASK),
         }
     }
 
@@ -34968,7 +35561,8 @@ impl MpuMair1Val {
     #[inline(always)]
     pub const fn with_attr4(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !MpuMair1::ATTR4_MASK) | ((value << MpuMair1::ATTR4_OFFSET) & MpuMair1::ATTR4_MASK)
+            bits: (self.bits & !MpuMair1::ATTR4_MASK)
+                | ((value << MpuMair1::ATTR4_OFFSET) & MpuMair1::ATTR4_MASK),
         }
     }
 }
@@ -35146,7 +35740,7 @@ impl SauCtrlVal {
                 self.bits | SauCtrl::ALLNS_MASK
             } else {
                 self.bits & !SauCtrl::ALLNS_MASK
-            }
+            },
         }
     }
 
@@ -35160,7 +35754,7 @@ impl SauCtrlVal {
                 self.bits | SauCtrl::ENABLE_MASK
             } else {
                 self.bits & !SauCtrl::ENABLE_MASK
-            }
+            },
         }
     }
 }
@@ -35340,7 +35934,9 @@ impl SauRnr {
     /// Indicates the SAU region accessed by SAU_RBAR and SAU_RLAR
     #[inline(always)]
     pub fn write_region(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::REGION_MASK) | ((value << Self::REGION_OFFSET) & Self::REGION_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::REGION_MASK) | ((value << Self::REGION_OFFSET) & Self::REGION_MASK)
+        });
     }
 }
 
@@ -35386,7 +35982,8 @@ impl SauRnrVal {
     #[inline(always)]
     pub const fn with_region(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SauRnr::REGION_MASK) | ((value << SauRnr::REGION_OFFSET) & SauRnr::REGION_MASK)
+            bits: (self.bits & !SauRnr::REGION_MASK)
+                | ((value << SauRnr::REGION_OFFSET) & SauRnr::REGION_MASK),
         }
     }
 }
@@ -35468,7 +36065,9 @@ impl SauRbar {
     /// Holds bits [31:5] of the base address for the selected SAU region
     #[inline(always)]
     pub fn write_baddr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BADDR_MASK) | ((value << Self::BADDR_OFFSET) & Self::BADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BADDR_MASK) | ((value << Self::BADDR_OFFSET) & Self::BADDR_MASK)
+        });
     }
 }
 
@@ -35514,7 +36113,8 @@ impl SauRbarVal {
     #[inline(always)]
     pub const fn with_baddr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SauRbar::BADDR_MASK) | ((value << SauRbar::BADDR_OFFSET) & SauRbar::BADDR_MASK)
+            bits: (self.bits & !SauRbar::BADDR_MASK)
+                | ((value << SauRbar::BADDR_OFFSET) & SauRbar::BADDR_MASK),
         }
     }
 }
@@ -35622,7 +36222,9 @@ impl SauRlar {
     /// Holds bits [31:5] of the limit address for the selected SAU region
     #[inline(always)]
     pub fn write_laddr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LADDR_MASK) | ((value << Self::LADDR_OFFSET) & Self::LADDR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LADDR_MASK) | ((value << Self::LADDR_OFFSET) & Self::LADDR_MASK)
+        });
     }
 
     /// **NSC** `[1]` (RW)
@@ -35724,7 +36326,8 @@ impl SauRlarVal {
     #[inline(always)]
     pub const fn with_laddr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !SauRlar::LADDR_MASK) | ((value << SauRlar::LADDR_OFFSET) & SauRlar::LADDR_MASK)
+            bits: (self.bits & !SauRlar::LADDR_MASK)
+                | ((value << SauRlar::LADDR_OFFSET) & SauRlar::LADDR_MASK),
         }
     }
 
@@ -35738,7 +36341,7 @@ impl SauRlarVal {
                 self.bits | SauRlar::NSC_MASK
             } else {
                 self.bits & !SauRlar::NSC_MASK
-            }
+            },
         }
     }
 
@@ -35752,7 +36355,7 @@ impl SauRlarVal {
                 self.bits | SauRlar::ENABLE_MASK
             } else {
                 self.bits & !SauRlar::ENABLE_MASK
-            }
+            },
         }
     }
 }
@@ -36176,7 +36779,7 @@ impl SfsrVal {
                 self.bits | Sfsr::LSERR_MASK
             } else {
                 self.bits & !Sfsr::LSERR_MASK
-            }
+            },
         }
     }
 
@@ -36190,7 +36793,7 @@ impl SfsrVal {
                 self.bits | Sfsr::SFARVALID_MASK
             } else {
                 self.bits & !Sfsr::SFARVALID_MASK
-            }
+            },
         }
     }
 
@@ -36204,7 +36807,7 @@ impl SfsrVal {
                 self.bits | Sfsr::LSPERR_MASK
             } else {
                 self.bits & !Sfsr::LSPERR_MASK
-            }
+            },
         }
     }
 
@@ -36218,7 +36821,7 @@ impl SfsrVal {
                 self.bits | Sfsr::INVTRAN_MASK
             } else {
                 self.bits & !Sfsr::INVTRAN_MASK
-            }
+            },
         }
     }
 
@@ -36232,7 +36835,7 @@ impl SfsrVal {
                 self.bits | Sfsr::AUVIOL_MASK
             } else {
                 self.bits & !Sfsr::AUVIOL_MASK
-            }
+            },
         }
     }
 
@@ -36246,7 +36849,7 @@ impl SfsrVal {
                 self.bits | Sfsr::INVER_MASK
             } else {
                 self.bits & !Sfsr::INVER_MASK
-            }
+            },
         }
     }
 
@@ -36260,7 +36863,7 @@ impl SfsrVal {
                 self.bits | Sfsr::INVIS_MASK
             } else {
                 self.bits & !Sfsr::INVIS_MASK
-            }
+            },
         }
     }
 
@@ -36274,7 +36877,7 @@ impl SfsrVal {
                 self.bits | Sfsr::INVEP_MASK
             } else {
                 self.bits & !Sfsr::INVEP_MASK
-            }
+            },
         }
     }
 }
@@ -36356,7 +36959,9 @@ impl Sfar {
     /// The address of an access that caused a attribution unit violation. This field is only valid when SFSR.SFARVALID is set. This allows the actual flip flops associated with this register to be shared with other fault address registers. If an implementation chooses to share the storage in this way, care must be taken to not leak Secure address information to the Non-secure state. One way of achieving this is to share the SFAR register with the MMFAR_S register, which is not accessible to the Non-secure state
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK)
+        });
     }
 }
 
@@ -36402,7 +37007,8 @@ impl SfarVal {
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sfar::ADDRESS_MASK) | ((value << Sfar::ADDRESS_OFFSET) & Sfar::ADDRESS_MASK)
+            bits: (self.bits & !Sfar::ADDRESS_MASK)
+                | ((value << Sfar::ADDRESS_OFFSET) & Sfar::ADDRESS_MASK),
         }
     }
 }
@@ -36935,7 +37541,7 @@ impl DhcsrVal {
                 self.bits | Dhcsr::C_SNAPSTALL_MASK
             } else {
                 self.bits & !Dhcsr::C_SNAPSTALL_MASK
-            }
+            },
         }
     }
 
@@ -36949,7 +37555,7 @@ impl DhcsrVal {
                 self.bits | Dhcsr::C_MASKINTS_MASK
             } else {
                 self.bits & !Dhcsr::C_MASKINTS_MASK
-            }
+            },
         }
     }
 
@@ -36963,7 +37569,7 @@ impl DhcsrVal {
                 self.bits | Dhcsr::C_STEP_MASK
             } else {
                 self.bits & !Dhcsr::C_STEP_MASK
-            }
+            },
         }
     }
 
@@ -36977,7 +37583,7 @@ impl DhcsrVal {
                 self.bits | Dhcsr::C_HALT_MASK
             } else {
                 self.bits & !Dhcsr::C_HALT_MASK
-            }
+            },
         }
     }
 
@@ -36991,7 +37597,7 @@ impl DhcsrVal {
                 self.bits | Dhcsr::C_DEBUGEN_MASK
             } else {
                 self.bits & !Dhcsr::C_DEBUGEN_MASK
-            }
+            },
         }
     }
 }
@@ -37106,7 +37712,9 @@ impl Dcrsr {
     /// Specifies the general-purpose register, special-purpose register, or FP register to transfer
     #[inline(always)]
     pub fn write_regsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::REGSEL_MASK) | ((value << Self::REGSEL_OFFSET) & Self::REGSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::REGSEL_MASK) | ((value << Self::REGSEL_OFFSET) & Self::REGSEL_MASK)
+        });
     }
 }
 
@@ -37164,7 +37772,7 @@ impl DcrsrVal {
                 self.bits | Dcrsr::REGWNR_MASK
             } else {
                 self.bits & !Dcrsr::REGWNR_MASK
-            }
+            },
         }
     }
 
@@ -37174,7 +37782,8 @@ impl DcrsrVal {
     #[inline(always)]
     pub const fn with_regsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Dcrsr::REGSEL_MASK) | ((value << Dcrsr::REGSEL_OFFSET) & Dcrsr::REGSEL_MASK)
+            bits: (self.bits & !Dcrsr::REGSEL_MASK)
+                | ((value << Dcrsr::REGSEL_OFFSET) & Dcrsr::REGSEL_MASK),
         }
     }
 }
@@ -37256,7 +37865,9 @@ impl Dcrdr {
     /// Provides debug access for reading and writing the general-purpose registers, special-purpose registers, and Floating-point Extension registers
     #[inline(always)]
     pub fn write_dbgtmp(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DBGTMP_MASK) | ((value << Self::DBGTMP_OFFSET) & Self::DBGTMP_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DBGTMP_MASK) | ((value << Self::DBGTMP_OFFSET) & Self::DBGTMP_MASK)
+        });
     }
 }
 
@@ -37302,7 +37913,8 @@ impl DcrdrVal {
     #[inline(always)]
     pub const fn with_dbgtmp(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Dcrdr::DBGTMP_MASK) | ((value << Dcrdr::DBGTMP_OFFSET) & Dcrdr::DBGTMP_MASK)
+            bits: (self.bits & !Dcrdr::DBGTMP_MASK)
+                | ((value << Dcrdr::DBGTMP_OFFSET) & Dcrdr::DBGTMP_MASK),
         }
     }
 }
@@ -38001,7 +38613,7 @@ impl DemcrVal {
                 self.bits | Demcr::TRCENA_MASK
             } else {
                 self.bits & !Demcr::TRCENA_MASK
-            }
+            },
         }
     }
 
@@ -38015,7 +38627,7 @@ impl DemcrVal {
                 self.bits | Demcr::MON_REQ_MASK
             } else {
                 self.bits & !Demcr::MON_REQ_MASK
-            }
+            },
         }
     }
 
@@ -38029,7 +38641,7 @@ impl DemcrVal {
                 self.bits | Demcr::MON_STEP_MASK
             } else {
                 self.bits & !Demcr::MON_STEP_MASK
-            }
+            },
         }
     }
 
@@ -38043,7 +38655,7 @@ impl DemcrVal {
                 self.bits | Demcr::MON_PEND_MASK
             } else {
                 self.bits & !Demcr::MON_PEND_MASK
-            }
+            },
         }
     }
 
@@ -38057,7 +38669,7 @@ impl DemcrVal {
                 self.bits | Demcr::MON_EN_MASK
             } else {
                 self.bits & !Demcr::MON_EN_MASK
-            }
+            },
         }
     }
 
@@ -38071,7 +38683,7 @@ impl DemcrVal {
                 self.bits | Demcr::VC_SFERR_MASK
             } else {
                 self.bits & !Demcr::VC_SFERR_MASK
-            }
+            },
         }
     }
 
@@ -38085,7 +38697,7 @@ impl DemcrVal {
                 self.bits | Demcr::VC_HARDERR_MASK
             } else {
                 self.bits & !Demcr::VC_HARDERR_MASK
-            }
+            },
         }
     }
 
@@ -38099,7 +38711,7 @@ impl DemcrVal {
                 self.bits | Demcr::VC_INTERR_MASK
             } else {
                 self.bits & !Demcr::VC_INTERR_MASK
-            }
+            },
         }
     }
 
@@ -38113,7 +38725,7 @@ impl DemcrVal {
                 self.bits | Demcr::VC_BUSERR_MASK
             } else {
                 self.bits & !Demcr::VC_BUSERR_MASK
-            }
+            },
         }
     }
 
@@ -38127,7 +38739,7 @@ impl DemcrVal {
                 self.bits | Demcr::VC_STATERR_MASK
             } else {
                 self.bits & !Demcr::VC_STATERR_MASK
-            }
+            },
         }
     }
 
@@ -38141,7 +38753,7 @@ impl DemcrVal {
                 self.bits | Demcr::VC_CHKERR_MASK
             } else {
                 self.bits & !Demcr::VC_CHKERR_MASK
-            }
+            },
         }
     }
 
@@ -38155,7 +38767,7 @@ impl DemcrVal {
                 self.bits | Demcr::VC_NOCPERR_MASK
             } else {
                 self.bits & !Demcr::VC_NOCPERR_MASK
-            }
+            },
         }
     }
 
@@ -38169,7 +38781,7 @@ impl DemcrVal {
                 self.bits | Demcr::VC_MMERR_MASK
             } else {
                 self.bits & !Demcr::VC_MMERR_MASK
-            }
+            },
         }
     }
 
@@ -38183,7 +38795,7 @@ impl DemcrVal {
                 self.bits | Demcr::VC_CORERESET_MASK
             } else {
                 self.bits & !Demcr::VC_CORERESET_MASK
-            }
+            },
         }
     }
 }
@@ -38443,7 +39055,7 @@ impl DscsrVal {
                 self.bits | Dscsr::CDSKEY_MASK
             } else {
                 self.bits & !Dscsr::CDSKEY_MASK
-            }
+            },
         }
     }
 
@@ -38457,7 +39069,7 @@ impl DscsrVal {
                 self.bits | Dscsr::CDS_MASK
             } else {
                 self.bits & !Dscsr::CDS_MASK
-            }
+            },
         }
     }
 
@@ -38471,7 +39083,7 @@ impl DscsrVal {
                 self.bits | Dscsr::SBRSEL_MASK
             } else {
                 self.bits & !Dscsr::SBRSEL_MASK
-            }
+            },
         }
     }
 
@@ -38485,7 +39097,7 @@ impl DscsrVal {
                 self.bits | Dscsr::SBRSELEN_MASK
             } else {
                 self.bits & !Dscsr::SBRSELEN_MASK
-            }
+            },
         }
     }
 }
@@ -38567,7 +39179,9 @@ impl Stir {
     /// Indicates the interrupt to be pended. The value written is (ExceptionNumber - 16)
     #[inline(always)]
     pub fn write_intid(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INTID_MASK) | ((value << Self::INTID_OFFSET) & Self::INTID_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INTID_MASK) | ((value << Self::INTID_OFFSET) & Self::INTID_MASK)
+        });
     }
 }
 
@@ -38613,7 +39227,8 @@ impl StirVal {
     #[inline(always)]
     pub const fn with_intid(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Stir::INTID_MASK) | ((value << Stir::INTID_OFFSET) & Stir::INTID_MASK)
+            bits: (self.bits & !Stir::INTID_MASK)
+                | ((value << Stir::INTID_OFFSET) & Stir::INTID_MASK),
         }
     }
 }
@@ -39406,7 +40021,7 @@ impl FpccrVal {
                 self.bits | Fpccr::ASPEN_MASK
             } else {
                 self.bits & !Fpccr::ASPEN_MASK
-            }
+            },
         }
     }
 
@@ -39420,7 +40035,7 @@ impl FpccrVal {
                 self.bits | Fpccr::LSPEN_MASK
             } else {
                 self.bits & !Fpccr::LSPEN_MASK
-            }
+            },
         }
     }
 
@@ -39434,7 +40049,7 @@ impl FpccrVal {
                 self.bits | Fpccr::LSPENS_MASK
             } else {
                 self.bits & !Fpccr::LSPENS_MASK
-            }
+            },
         }
     }
 
@@ -39448,7 +40063,7 @@ impl FpccrVal {
                 self.bits | Fpccr::CLRONRET_MASK
             } else {
                 self.bits & !Fpccr::CLRONRET_MASK
-            }
+            },
         }
     }
 
@@ -39462,7 +40077,7 @@ impl FpccrVal {
                 self.bits | Fpccr::CLRONRETS_MASK
             } else {
                 self.bits & !Fpccr::CLRONRETS_MASK
-            }
+            },
         }
     }
 
@@ -39476,7 +40091,7 @@ impl FpccrVal {
                 self.bits | Fpccr::TS_MASK
             } else {
                 self.bits & !Fpccr::TS_MASK
-            }
+            },
         }
     }
 
@@ -39490,7 +40105,7 @@ impl FpccrVal {
                 self.bits | Fpccr::UFRDY_MASK
             } else {
                 self.bits & !Fpccr::UFRDY_MASK
-            }
+            },
         }
     }
 
@@ -39504,7 +40119,7 @@ impl FpccrVal {
                 self.bits | Fpccr::SPLIMVIOL_MASK
             } else {
                 self.bits & !Fpccr::SPLIMVIOL_MASK
-            }
+            },
         }
     }
 
@@ -39518,7 +40133,7 @@ impl FpccrVal {
                 self.bits | Fpccr::MONRDY_MASK
             } else {
                 self.bits & !Fpccr::MONRDY_MASK
-            }
+            },
         }
     }
 
@@ -39532,7 +40147,7 @@ impl FpccrVal {
                 self.bits | Fpccr::SFRDY_MASK
             } else {
                 self.bits & !Fpccr::SFRDY_MASK
-            }
+            },
         }
     }
 
@@ -39546,7 +40161,7 @@ impl FpccrVal {
                 self.bits | Fpccr::BFRDY_MASK
             } else {
                 self.bits & !Fpccr::BFRDY_MASK
-            }
+            },
         }
     }
 
@@ -39560,7 +40175,7 @@ impl FpccrVal {
                 self.bits | Fpccr::MMRDY_MASK
             } else {
                 self.bits & !Fpccr::MMRDY_MASK
-            }
+            },
         }
     }
 
@@ -39574,7 +40189,7 @@ impl FpccrVal {
                 self.bits | Fpccr::HFRDY_MASK
             } else {
                 self.bits & !Fpccr::HFRDY_MASK
-            }
+            },
         }
     }
 
@@ -39588,7 +40203,7 @@ impl FpccrVal {
                 self.bits | Fpccr::THREAD_MASK
             } else {
                 self.bits & !Fpccr::THREAD_MASK
-            }
+            },
         }
     }
 
@@ -39602,7 +40217,7 @@ impl FpccrVal {
                 self.bits | Fpccr::S_MASK
             } else {
                 self.bits & !Fpccr::S_MASK
-            }
+            },
         }
     }
 
@@ -39616,7 +40231,7 @@ impl FpccrVal {
                 self.bits | Fpccr::USER_MASK
             } else {
                 self.bits & !Fpccr::USER_MASK
-            }
+            },
         }
     }
 
@@ -39630,7 +40245,7 @@ impl FpccrVal {
                 self.bits | Fpccr::LSPACT_MASK
             } else {
                 self.bits & !Fpccr::LSPACT_MASK
-            }
+            },
         }
     }
 }
@@ -39712,7 +40327,9 @@ impl Fpcar {
     /// The location of the unpopulated floating-point register space allocated on an exception stack frame
     #[inline(always)]
     pub fn write_address(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ADDRESS_MASK) | ((value << Self::ADDRESS_OFFSET) & Self::ADDRESS_MASK)
+        });
     }
 }
 
@@ -39758,7 +40375,8 @@ impl FpcarVal {
     #[inline(always)]
     pub const fn with_address(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Fpcar::ADDRESS_MASK) | ((value << Fpcar::ADDRESS_OFFSET) & Fpcar::ADDRESS_MASK)
+            bits: (self.bits & !Fpcar::ADDRESS_MASK)
+                | ((value << Fpcar::ADDRESS_OFFSET) & Fpcar::ADDRESS_MASK),
         }
     }
 }
@@ -39939,7 +40557,9 @@ impl Fpdscr {
     /// Default value for FPSCR.RMode
     #[inline(always)]
     pub fn write_rmode(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RMODE_MASK) | ((value << Self::RMODE_OFFSET) & Self::RMODE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RMODE_MASK) | ((value << Self::RMODE_OFFSET) & Self::RMODE_MASK)
+        });
     }
 }
 
@@ -40013,7 +40633,7 @@ impl FpdscrVal {
                 self.bits | Fpdscr::AHP_MASK
             } else {
                 self.bits & !Fpdscr::AHP_MASK
-            }
+            },
         }
     }
 
@@ -40027,7 +40647,7 @@ impl FpdscrVal {
                 self.bits | Fpdscr::DN_MASK
             } else {
                 self.bits & !Fpdscr::DN_MASK
-            }
+            },
         }
     }
 
@@ -40041,7 +40661,7 @@ impl FpdscrVal {
                 self.bits | Fpdscr::FZ_MASK
             } else {
                 self.bits & !Fpdscr::FZ_MASK
-            }
+            },
         }
     }
 
@@ -40051,7 +40671,8 @@ impl FpdscrVal {
     #[inline(always)]
     pub const fn with_rmode(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Fpdscr::RMODE_MASK) | ((value << Fpdscr::RMODE_OFFSET) & Fpdscr::RMODE_MASK)
+            bits: (self.bits & !Fpdscr::RMODE_MASK)
+                | ((value << Fpdscr::RMODE_OFFSET) & Fpdscr::RMODE_MASK),
         }
     }
 }
@@ -41105,7 +41726,9 @@ impl Dpidr5 {
     /// Write **DPIDR5** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_dpidr5(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DPIDR5_MASK) | ((value << Self::DPIDR5_OFFSET) & Self::DPIDR5_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DPIDR5_MASK) | ((value << Self::DPIDR5_OFFSET) & Self::DPIDR5_MASK)
+        });
     }
 }
 
@@ -41147,7 +41770,8 @@ impl Dpidr5Val {
     #[inline(always)]
     pub const fn with_dpidr5(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Dpidr5::DPIDR5_MASK) | ((value << Dpidr5::DPIDR5_OFFSET) & Dpidr5::DPIDR5_MASK)
+            bits: (self.bits & !Dpidr5::DPIDR5_MASK)
+                | ((value << Dpidr5::DPIDR5_OFFSET) & Dpidr5::DPIDR5_MASK),
         }
     }
 }
@@ -41220,7 +41844,9 @@ impl Dpidr6 {
     /// Write **DPIDR6** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_dpidr6(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DPIDR6_MASK) | ((value << Self::DPIDR6_OFFSET) & Self::DPIDR6_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DPIDR6_MASK) | ((value << Self::DPIDR6_OFFSET) & Self::DPIDR6_MASK)
+        });
     }
 }
 
@@ -41262,7 +41888,8 @@ impl Dpidr6Val {
     #[inline(always)]
     pub const fn with_dpidr6(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Dpidr6::DPIDR6_MASK) | ((value << Dpidr6::DPIDR6_OFFSET) & Dpidr6::DPIDR6_MASK)
+            bits: (self.bits & !Dpidr6::DPIDR6_MASK)
+                | ((value << Dpidr6::DPIDR6_OFFSET) & Dpidr6::DPIDR6_MASK),
         }
     }
 }
@@ -41335,7 +41962,9 @@ impl Dpidr7 {
     /// Write **DPIDR7** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_dpidr7(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DPIDR7_MASK) | ((value << Self::DPIDR7_OFFSET) & Self::DPIDR7_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DPIDR7_MASK) | ((value << Self::DPIDR7_OFFSET) & Self::DPIDR7_MASK)
+        });
     }
 }
 
@@ -41377,7 +42006,8 @@ impl Dpidr7Val {
     #[inline(always)]
     pub const fn with_dpidr7(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Dpidr7::DPIDR7_MASK) | ((value << Dpidr7::DPIDR7_OFFSET) & Dpidr7::DPIDR7_MASK)
+            bits: (self.bits & !Dpidr7::DPIDR7_MASK)
+                | ((value << Dpidr7::DPIDR7_OFFSET) & Dpidr7::DPIDR7_MASK),
         }
     }
 }
@@ -42439,7 +43069,7 @@ impl TrcprgctlrVal {
                 self.bits | Trcprgctlr::EN_MASK
             } else {
                 self.bits & !Trcprgctlr::EN_MASK
-            }
+            },
         }
     }
 }
@@ -42741,7 +43371,9 @@ impl Trcconfigr {
     /// Conditional instruction tracing
     #[inline(always)]
     pub fn write_cond(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::COND_MASK) | ((value << Self::COND_OFFSET) & Self::COND_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::COND_MASK) | ((value << Self::COND_OFFSET) & Self::COND_MASK)
+        });
     }
 
     /// **CCI** `[4]` (RW)
@@ -42863,7 +43495,7 @@ impl TrcconfigrVal {
                 self.bits | Trcconfigr::RS_MASK
             } else {
                 self.bits & !Trcconfigr::RS_MASK
-            }
+            },
         }
     }
 
@@ -42877,7 +43509,7 @@ impl TrcconfigrVal {
                 self.bits | Trcconfigr::TS_MASK
             } else {
                 self.bits & !Trcconfigr::TS_MASK
-            }
+            },
         }
     }
 
@@ -42887,7 +43519,8 @@ impl TrcconfigrVal {
     #[inline(always)]
     pub const fn with_cond(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Trcconfigr::COND_MASK) | ((value << Trcconfigr::COND_OFFSET) & Trcconfigr::COND_MASK)
+            bits: (self.bits & !Trcconfigr::COND_MASK)
+                | ((value << Trcconfigr::COND_OFFSET) & Trcconfigr::COND_MASK),
         }
     }
 
@@ -42901,7 +43534,7 @@ impl TrcconfigrVal {
                 self.bits | Trcconfigr::CCI_MASK
             } else {
                 self.bits & !Trcconfigr::CCI_MASK
-            }
+            },
         }
     }
 
@@ -42915,7 +43548,7 @@ impl TrcconfigrVal {
                 self.bits | Trcconfigr::BB_MASK
             } else {
                 self.bits & !Trcconfigr::BB_MASK
-            }
+            },
         }
     }
 }
@@ -43055,7 +43688,9 @@ impl Trceventctl0r {
     /// Selects the resource number, based on the value of TYPE1: When TYPE1 is 0, selects a single selected resource from 0-15 defined by SEL1[2:0]. When TYPE1 is 1, selects a Boolean combined resource pair from 0-7 defined by SEL1[2:0]
     #[inline(always)]
     pub fn write_sel1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEL1_MASK) | ((value << Self::SEL1_OFFSET) & Self::SEL1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEL1_MASK) | ((value << Self::SEL1_OFFSET) & Self::SEL1_MASK)
+        });
     }
 
     /// **TYPE0** `[7]` (RW)
@@ -43091,7 +43726,9 @@ impl Trceventctl0r {
     /// Selects the resource number, based on the value of TYPE0: When TYPE1 is 0, selects a single selected resource from 0-15 defined by SEL0[2:0]. When TYPE1 is 1, selects a Boolean combined resource pair from 0-7 defined by SEL0[2:0]
     #[inline(always)]
     pub fn write_sel0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEL0_MASK) | ((value << Self::SEL0_OFFSET) & Self::SEL0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEL0_MASK) | ((value << Self::SEL0_OFFSET) & Self::SEL0_MASK)
+        });
     }
 }
 
@@ -43165,7 +43802,7 @@ impl Trceventctl0rVal {
                 self.bits | Trceventctl0r::TYPE1_MASK
             } else {
                 self.bits & !Trceventctl0r::TYPE1_MASK
-            }
+            },
         }
     }
 
@@ -43175,7 +43812,8 @@ impl Trceventctl0rVal {
     #[inline(always)]
     pub const fn with_sel1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Trceventctl0r::SEL1_MASK) | ((value << Trceventctl0r::SEL1_OFFSET) & Trceventctl0r::SEL1_MASK)
+            bits: (self.bits & !Trceventctl0r::SEL1_MASK)
+                | ((value << Trceventctl0r::SEL1_OFFSET) & Trceventctl0r::SEL1_MASK),
         }
     }
 
@@ -43189,7 +43827,7 @@ impl Trceventctl0rVal {
                 self.bits | Trceventctl0r::TYPE0_MASK
             } else {
                 self.bits & !Trceventctl0r::TYPE0_MASK
-            }
+            },
         }
     }
 
@@ -43199,7 +43837,8 @@ impl Trceventctl0rVal {
     #[inline(always)]
     pub const fn with_sel0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Trceventctl0r::SEL0_MASK) | ((value << Trceventctl0r::SEL0_OFFSET) & Trceventctl0r::SEL0_MASK)
+            bits: (self.bits & !Trceventctl0r::SEL0_MASK)
+                | ((value << Trceventctl0r::SEL0_OFFSET) & Trceventctl0r::SEL0_MASK),
         }
     }
 }
@@ -43459,7 +44098,7 @@ impl Trceventctl1rVal {
                 self.bits | Trceventctl1r::LPOVERRIDE_MASK
             } else {
                 self.bits & !Trceventctl1r::LPOVERRIDE_MASK
-            }
+            },
         }
     }
 
@@ -43473,7 +44112,7 @@ impl Trceventctl1rVal {
                 self.bits | Trceventctl1r::ATB_MASK
             } else {
                 self.bits & !Trceventctl1r::ATB_MASK
-            }
+            },
         }
     }
 
@@ -43487,7 +44126,7 @@ impl Trceventctl1rVal {
                 self.bits | Trceventctl1r::INSTEN1_MASK
             } else {
                 self.bits & !Trceventctl1r::INSTEN1_MASK
-            }
+            },
         }
     }
 
@@ -43501,7 +44140,7 @@ impl Trceventctl1rVal {
                 self.bits | Trceventctl1r::INSTEN0_MASK
             } else {
                 self.bits & !Trceventctl1r::INSTEN0_MASK
-            }
+            },
         }
     }
 }
@@ -43637,7 +44276,9 @@ impl Trcstallctlr {
     /// Threshold at which stalling becomes active. This provides four levels. This level can be varied to optimize the level of invasion caused by stalling, balanced against the risk of a FIFO overflow
     #[inline(always)]
     pub fn write_level(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::LEVEL_MASK) | ((value << Self::LEVEL_OFFSET) & Self::LEVEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::LEVEL_MASK) | ((value << Self::LEVEL_OFFSET) & Self::LEVEL_MASK)
+        });
     }
 }
 
@@ -43703,7 +44344,7 @@ impl TrcstallctlrVal {
                 self.bits | Trcstallctlr::ISTALL_MASK
             } else {
                 self.bits & !Trcstallctlr::ISTALL_MASK
-            }
+            },
         }
     }
 
@@ -43713,7 +44354,8 @@ impl TrcstallctlrVal {
     #[inline(always)]
     pub const fn with_level(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Trcstallctlr::LEVEL_MASK) | ((value << Trcstallctlr::LEVEL_OFFSET) & Trcstallctlr::LEVEL_MASK)
+            bits: (self.bits & !Trcstallctlr::LEVEL_MASK)
+                | ((value << Trcstallctlr::LEVEL_OFFSET) & Trcstallctlr::LEVEL_MASK),
         }
     }
 }
@@ -43828,7 +44470,9 @@ impl Trctsctlr {
     /// Selects the resource number, based on the value of TYPE0: When TYPE1 is 0, selects a single selected resource from 0-15 defined by SEL0[2:0]. When TYPE1 is 1, selects a Boolean combined resource pair from 0-7 defined by SEL0[2:0]
     #[inline(always)]
     pub fn write_sel0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEL0_MASK) | ((value << Self::SEL0_OFFSET) & Self::SEL0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEL0_MASK) | ((value << Self::SEL0_OFFSET) & Self::SEL0_MASK)
+        });
     }
 }
 
@@ -43886,7 +44530,7 @@ impl TrctsctlrVal {
                 self.bits | Trctsctlr::TYPE0_MASK
             } else {
                 self.bits & !Trctsctlr::TYPE0_MASK
-            }
+            },
         }
     }
 
@@ -43896,7 +44540,8 @@ impl TrctsctlrVal {
     #[inline(always)]
     pub const fn with_sel0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Trctsctlr::SEL0_MASK) | ((value << Trctsctlr::SEL0_OFFSET) & Trctsctlr::SEL0_MASK)
+            bits: (self.bits & !Trctsctlr::SEL0_MASK)
+                | ((value << Trctsctlr::SEL0_OFFSET) & Trctsctlr::SEL0_MASK),
         }
     }
 }
@@ -44076,7 +44721,9 @@ impl Trcccctlr {
     /// Instruction trace cycle count threshold
     #[inline(always)]
     pub fn write_threshold(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::THRESHOLD_MASK) | ((value << Self::THRESHOLD_OFFSET) & Self::THRESHOLD_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::THRESHOLD_MASK) | ((value << Self::THRESHOLD_OFFSET) & Self::THRESHOLD_MASK)
+        });
     }
 }
 
@@ -44122,7 +44769,8 @@ impl TrcccctlrVal {
     #[inline(always)]
     pub const fn with_threshold(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Trcccctlr::THRESHOLD_MASK) | ((value << Trcccctlr::THRESHOLD_OFFSET) & Trcccctlr::THRESHOLD_MASK)
+            bits: (self.bits & !Trcccctlr::THRESHOLD_MASK)
+                | ((value << Trcccctlr::THRESHOLD_OFFSET) & Trcccctlr::THRESHOLD_MASK),
         }
     }
 }
@@ -44402,7 +45050,9 @@ impl Trcvictlr {
     /// Selects the resource number, based on the value of TYPE0: When TYPE1 is 0, selects a single selected resource from 0-15 defined by SEL0[2:0]. When TYPE1 is 1, selects a Boolean combined resource pair from 0-7 defined by SEL0[2:0]
     #[inline(always)]
     pub fn write_sel0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEL0_MASK) | ((value << Self::SEL0_OFFSET) & Self::SEL0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEL0_MASK) | ((value << Self::SEL0_OFFSET) & Self::SEL0_MASK)
+        });
     }
 }
 
@@ -44500,7 +45150,7 @@ impl TrcvictlrVal {
                 self.bits | Trcvictlr::EXLEVEL_S3_MASK
             } else {
                 self.bits & !Trcvictlr::EXLEVEL_S3_MASK
-            }
+            },
         }
     }
 
@@ -44514,7 +45164,7 @@ impl TrcvictlrVal {
                 self.bits | Trcvictlr::EXLEVEL_S0_MASK
             } else {
                 self.bits & !Trcvictlr::EXLEVEL_S0_MASK
-            }
+            },
         }
     }
 
@@ -44528,7 +45178,7 @@ impl TrcvictlrVal {
                 self.bits | Trcvictlr::TRCERR_MASK
             } else {
                 self.bits & !Trcvictlr::TRCERR_MASK
-            }
+            },
         }
     }
 
@@ -44542,7 +45192,7 @@ impl TrcvictlrVal {
                 self.bits | Trcvictlr::TRCRESET_MASK
             } else {
                 self.bits & !Trcvictlr::TRCRESET_MASK
-            }
+            },
         }
     }
 
@@ -44556,7 +45206,7 @@ impl TrcvictlrVal {
                 self.bits | Trcvictlr::SSSTATUS_MASK
             } else {
                 self.bits & !Trcvictlr::SSSTATUS_MASK
-            }
+            },
         }
     }
 
@@ -44570,7 +45220,7 @@ impl TrcvictlrVal {
                 self.bits | Trcvictlr::TYPE0_MASK
             } else {
                 self.bits & !Trcvictlr::TYPE0_MASK
-            }
+            },
         }
     }
 
@@ -44580,7 +45230,8 @@ impl TrcvictlrVal {
     #[inline(always)]
     pub const fn with_sel0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Trcvictlr::SEL0_MASK) | ((value << Trcvictlr::SEL0_OFFSET) & Trcvictlr::SEL0_MASK)
+            bits: (self.bits & !Trcvictlr::SEL0_MASK)
+                | ((value << Trcvictlr::SEL0_OFFSET) & Trcvictlr::SEL0_MASK),
         }
     }
 }
@@ -44662,7 +45313,9 @@ impl Trccntrldvr0 {
     /// Defines the reload value for the counter. This value is loaded into the counter each time the reload event occurs
     #[inline(always)]
     pub fn write_value(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::VALUE_MASK) | ((value << Self::VALUE_OFFSET) & Self::VALUE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::VALUE_MASK) | ((value << Self::VALUE_OFFSET) & Self::VALUE_MASK)
+        });
     }
 }
 
@@ -44708,7 +45361,8 @@ impl Trccntrldvr0Val {
     #[inline(always)]
     pub const fn with_value(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Trccntrldvr0::VALUE_MASK) | ((value << Trccntrldvr0::VALUE_OFFSET) & Trccntrldvr0::VALUE_MASK)
+            bits: (self.bits & !Trccntrldvr0::VALUE_MASK)
+                | ((value << Trccntrldvr0::VALUE_OFFSET) & Trccntrldvr0::VALUE_MASK),
         }
     }
 }
@@ -47304,7 +47958,9 @@ impl Trcidr6 {
     /// Write **TRCIDR6** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_trcidr6(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TRCIDR6_MASK) | ((value << Self::TRCIDR6_OFFSET) & Self::TRCIDR6_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TRCIDR6_MASK) | ((value << Self::TRCIDR6_OFFSET) & Self::TRCIDR6_MASK)
+        });
     }
 }
 
@@ -47346,7 +48002,8 @@ impl Trcidr6Val {
     #[inline(always)]
     pub const fn with_trcidr6(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Trcidr6::TRCIDR6_MASK) | ((value << Trcidr6::TRCIDR6_OFFSET) & Trcidr6::TRCIDR6_MASK)
+            bits: (self.bits & !Trcidr6::TRCIDR6_MASK)
+                | ((value << Trcidr6::TRCIDR6_OFFSET) & Trcidr6::TRCIDR6_MASK),
         }
     }
 }
@@ -47419,7 +48076,9 @@ impl Trcidr7 {
     /// Write **TRCIDR7** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_trcidr7(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TRCIDR7_MASK) | ((value << Self::TRCIDR7_OFFSET) & Self::TRCIDR7_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TRCIDR7_MASK) | ((value << Self::TRCIDR7_OFFSET) & Self::TRCIDR7_MASK)
+        });
     }
 }
 
@@ -47461,7 +48120,8 @@ impl Trcidr7Val {
     #[inline(always)]
     pub const fn with_trcidr7(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Trcidr7::TRCIDR7_MASK) | ((value << Trcidr7::TRCIDR7_OFFSET) & Trcidr7::TRCIDR7_MASK)
+            bits: (self.bits & !Trcidr7::TRCIDR7_MASK)
+                | ((value << Trcidr7::TRCIDR7_OFFSET) & Trcidr7::TRCIDR7_MASK),
         }
     }
 }
@@ -47621,7 +48281,9 @@ impl Trcrsctlr2 {
     /// Selects a group of resource
     #[inline(always)]
     pub fn write_group(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::GROUP_MASK) | ((value << Self::GROUP_OFFSET) & Self::GROUP_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::GROUP_MASK) | ((value << Self::GROUP_OFFSET) & Self::GROUP_MASK)
+        });
     }
 
     /// **SELECT** `[7:0]` (RW)
@@ -47637,7 +48299,9 @@ impl Trcrsctlr2 {
     /// Selects one or more resources from the wanted group. One bit is provided per resource from the group
     #[inline(always)]
     pub fn write_select(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SELECT_MASK) | ((value << Self::SELECT_OFFSET) & Self::SELECT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SELECT_MASK) | ((value << Self::SELECT_OFFSET) & Self::SELECT_MASK)
+        });
     }
 }
 
@@ -47711,7 +48375,7 @@ impl Trcrsctlr2Val {
                 self.bits | Trcrsctlr2::PAIRINV_MASK
             } else {
                 self.bits & !Trcrsctlr2::PAIRINV_MASK
-            }
+            },
         }
     }
 
@@ -47725,7 +48389,7 @@ impl Trcrsctlr2Val {
                 self.bits | Trcrsctlr2::INV_MASK
             } else {
                 self.bits & !Trcrsctlr2::INV_MASK
-            }
+            },
         }
     }
 
@@ -47735,7 +48399,8 @@ impl Trcrsctlr2Val {
     #[inline(always)]
     pub const fn with_group(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Trcrsctlr2::GROUP_MASK) | ((value << Trcrsctlr2::GROUP_OFFSET) & Trcrsctlr2::GROUP_MASK)
+            bits: (self.bits & !Trcrsctlr2::GROUP_MASK)
+                | ((value << Trcrsctlr2::GROUP_OFFSET) & Trcrsctlr2::GROUP_MASK),
         }
     }
 
@@ -47745,7 +48410,8 @@ impl Trcrsctlr2Val {
     #[inline(always)]
     pub const fn with_select(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Trcrsctlr2::SELECT_MASK) | ((value << Trcrsctlr2::SELECT_OFFSET) & Trcrsctlr2::SELECT_MASK)
+            bits: (self.bits & !Trcrsctlr2::SELECT_MASK)
+                | ((value << Trcrsctlr2::SELECT_OFFSET) & Trcrsctlr2::SELECT_MASK),
         }
     }
 }
@@ -47905,7 +48571,9 @@ impl Trcrsctlr3 {
     /// Selects a group of resource
     #[inline(always)]
     pub fn write_group(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::GROUP_MASK) | ((value << Self::GROUP_OFFSET) & Self::GROUP_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::GROUP_MASK) | ((value << Self::GROUP_OFFSET) & Self::GROUP_MASK)
+        });
     }
 
     /// **SELECT** `[7:0]` (RW)
@@ -47921,7 +48589,9 @@ impl Trcrsctlr3 {
     /// Selects one or more resources from the wanted group. One bit is provided per resource from the group
     #[inline(always)]
     pub fn write_select(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SELECT_MASK) | ((value << Self::SELECT_OFFSET) & Self::SELECT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SELECT_MASK) | ((value << Self::SELECT_OFFSET) & Self::SELECT_MASK)
+        });
     }
 }
 
@@ -47995,7 +48665,7 @@ impl Trcrsctlr3Val {
                 self.bits | Trcrsctlr3::PAIRINV_MASK
             } else {
                 self.bits & !Trcrsctlr3::PAIRINV_MASK
-            }
+            },
         }
     }
 
@@ -48009,7 +48679,7 @@ impl Trcrsctlr3Val {
                 self.bits | Trcrsctlr3::INV_MASK
             } else {
                 self.bits & !Trcrsctlr3::INV_MASK
-            }
+            },
         }
     }
 
@@ -48019,7 +48689,8 @@ impl Trcrsctlr3Val {
     #[inline(always)]
     pub const fn with_group(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Trcrsctlr3::GROUP_MASK) | ((value << Trcrsctlr3::GROUP_OFFSET) & Trcrsctlr3::GROUP_MASK)
+            bits: (self.bits & !Trcrsctlr3::GROUP_MASK)
+                | ((value << Trcrsctlr3::GROUP_OFFSET) & Trcrsctlr3::GROUP_MASK),
         }
     }
 
@@ -48029,7 +48700,8 @@ impl Trcrsctlr3Val {
     #[inline(always)]
     pub const fn with_select(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Trcrsctlr3::SELECT_MASK) | ((value << Trcrsctlr3::SELECT_OFFSET) & Trcrsctlr3::SELECT_MASK)
+            bits: (self.bits & !Trcrsctlr3::SELECT_MASK)
+                | ((value << Trcrsctlr3::SELECT_OFFSET) & Trcrsctlr3::SELECT_MASK),
         }
     }
 }
@@ -48282,7 +48954,7 @@ impl TrcsscsrVal {
                 self.bits | Trcsscsr::STATUS_MASK
             } else {
                 self.bits & !Trcsscsr::STATUS_MASK
-            }
+            },
         }
     }
 }
@@ -48364,7 +49036,8 @@ impl Trcsspcicr {
     /// Selects one or more PE comparator inputs for Single-shot control. TRCIDR4.NUMPC defines the size of the PC field. 1 bit is provided for each implemented PE comparator input. For example, if bit[1] == 1 this selects PE comparator input 1 for Single-shot control
     #[inline(always)]
     pub fn write_pc(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PC_MASK) | ((value << Self::PC_OFFSET) & Self::PC_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::PC_MASK) | ((value << Self::PC_OFFSET) & Self::PC_MASK));
     }
 }
 
@@ -48410,7 +49083,8 @@ impl TrcsspcicrVal {
     #[inline(always)]
     pub const fn with_pc(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Trcsspcicr::PC_MASK) | ((value << Trcsspcicr::PC_OFFSET) & Trcsspcicr::PC_MASK)
+            bits: (self.bits & !Trcsspcicr::PC_MASK)
+                | ((value << Trcsspcicr::PC_OFFSET) & Trcsspcicr::PC_MASK),
         }
     }
 }
@@ -48547,7 +49221,7 @@ impl TrcpdcrVal {
                 self.bits | Trcpdcr::PU_MASK
             } else {
                 self.bits & !Trcpdcr::PU_MASK
-            }
+            },
         }
     }
 }
@@ -48786,7 +49460,8 @@ impl Trcitatbidr {
     /// Trace ID
     #[inline(always)]
     pub fn write_id(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ID_MASK) | ((value << Self::ID_OFFSET) & Self::ID_MASK));
+        self.value
+            .modify_bits(|r| (r & !Self::ID_MASK) | ((value << Self::ID_OFFSET) & Self::ID_MASK));
     }
 }
 
@@ -48832,7 +49507,8 @@ impl TrcitatbidrVal {
     #[inline(always)]
     pub const fn with_id(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Trcitatbidr::ID_MASK) | ((value << Trcitatbidr::ID_OFFSET) & Trcitatbidr::ID_MASK)
+            bits: (self.bits & !Trcitatbidr::ID_MASK)
+                | ((value << Trcitatbidr::ID_OFFSET) & Trcitatbidr::ID_MASK),
         }
     }
 }
@@ -49010,7 +49686,7 @@ impl TrcitiatbinrVal {
                 self.bits | Trcitiatbinr::AFVALIDM_MASK
             } else {
                 self.bits & !Trcitiatbinr::AFVALIDM_MASK
-            }
+            },
         }
     }
 
@@ -49024,7 +49700,7 @@ impl TrcitiatbinrVal {
                 self.bits | Trcitiatbinr::ATREADYM_MASK
             } else {
                 self.bits & !Trcitiatbinr::ATREADYM_MASK
-            }
+            },
         }
     }
 }
@@ -49202,7 +49878,7 @@ impl TrcitiatboutrVal {
                 self.bits | Trcitiatboutr::AFREADY_MASK
             } else {
                 self.bits & !Trcitiatboutr::AFREADY_MASK
-            }
+            },
         }
     }
 
@@ -49216,7 +49892,7 @@ impl TrcitiatboutrVal {
                 self.bits | Trcitiatboutr::ATVALID_MASK
             } else {
                 self.bits & !Trcitiatboutr::ATVALID_MASK
-            }
+            },
         }
     }
 }
@@ -49476,7 +50152,7 @@ impl TrcclaimsetVal {
                 self.bits | Trcclaimset::SET3_MASK
             } else {
                 self.bits & !Trcclaimset::SET3_MASK
-            }
+            },
         }
     }
 
@@ -49490,7 +50166,7 @@ impl TrcclaimsetVal {
                 self.bits | Trcclaimset::SET2_MASK
             } else {
                 self.bits & !Trcclaimset::SET2_MASK
-            }
+            },
         }
     }
 
@@ -49504,7 +50180,7 @@ impl TrcclaimsetVal {
                 self.bits | Trcclaimset::SET1_MASK
             } else {
                 self.bits & !Trcclaimset::SET1_MASK
-            }
+            },
         }
     }
 
@@ -49518,7 +50194,7 @@ impl TrcclaimsetVal {
                 self.bits | Trcclaimset::SET0_MASK
             } else {
                 self.bits & !Trcclaimset::SET0_MASK
-            }
+            },
         }
     }
 }
@@ -49778,7 +50454,7 @@ impl TrcclaimclrVal {
                 self.bits | Trcclaimclr::CLR3_MASK
             } else {
                 self.bits & !Trcclaimclr::CLR3_MASK
-            }
+            },
         }
     }
 
@@ -49792,7 +50468,7 @@ impl TrcclaimclrVal {
                 self.bits | Trcclaimclr::CLR2_MASK
             } else {
                 self.bits & !Trcclaimclr::CLR2_MASK
-            }
+            },
         }
     }
 
@@ -49806,7 +50482,7 @@ impl TrcclaimclrVal {
                 self.bits | Trcclaimclr::CLR1_MASK
             } else {
                 self.bits & !Trcclaimclr::CLR1_MASK
-            }
+            },
         }
     }
 
@@ -49820,7 +50496,7 @@ impl TrcclaimclrVal {
                 self.bits | Trcclaimclr::CLR0_MASK
             } else {
                 self.bits & !Trcclaimclr::CLR0_MASK
-            }
+            },
         }
     }
 }
@@ -50258,7 +50934,9 @@ impl Trcdevid {
     /// Write **TRCDEVID** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_trcdevid(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TRCDEVID_MASK) | ((value << Self::TRCDEVID_OFFSET) & Self::TRCDEVID_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TRCDEVID_MASK) | ((value << Self::TRCDEVID_OFFSET) & Self::TRCDEVID_MASK)
+        });
     }
 }
 
@@ -50300,7 +50978,8 @@ impl TrcdevidVal {
     #[inline(always)]
     pub const fn with_trcdevid(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Trcdevid::TRCDEVID_MASK) | ((value << Trcdevid::TRCDEVID_OFFSET) & Trcdevid::TRCDEVID_MASK)
+            bits: (self.bits & !Trcdevid::TRCDEVID_MASK)
+                | ((value << Trcdevid::TRCDEVID_OFFSET) & Trcdevid::TRCDEVID_MASK),
         }
     }
 }
@@ -50625,7 +51304,9 @@ impl Trcpidr5 {
     /// Write **TRCPIDR5** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_trcpidr5(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TRCPIDR5_MASK) | ((value << Self::TRCPIDR5_OFFSET) & Self::TRCPIDR5_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TRCPIDR5_MASK) | ((value << Self::TRCPIDR5_OFFSET) & Self::TRCPIDR5_MASK)
+        });
     }
 }
 
@@ -50667,7 +51348,8 @@ impl Trcpidr5Val {
     #[inline(always)]
     pub const fn with_trcpidr5(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Trcpidr5::TRCPIDR5_MASK) | ((value << Trcpidr5::TRCPIDR5_OFFSET) & Trcpidr5::TRCPIDR5_MASK)
+            bits: (self.bits & !Trcpidr5::TRCPIDR5_MASK)
+                | ((value << Trcpidr5::TRCPIDR5_OFFSET) & Trcpidr5::TRCPIDR5_MASK),
         }
     }
 }
@@ -50740,7 +51422,9 @@ impl Trcpidr6 {
     /// Write **TRCPIDR6** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_trcpidr6(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TRCPIDR6_MASK) | ((value << Self::TRCPIDR6_OFFSET) & Self::TRCPIDR6_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TRCPIDR6_MASK) | ((value << Self::TRCPIDR6_OFFSET) & Self::TRCPIDR6_MASK)
+        });
     }
 }
 
@@ -50782,7 +51466,8 @@ impl Trcpidr6Val {
     #[inline(always)]
     pub const fn with_trcpidr6(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Trcpidr6::TRCPIDR6_MASK) | ((value << Trcpidr6::TRCPIDR6_OFFSET) & Trcpidr6::TRCPIDR6_MASK)
+            bits: (self.bits & !Trcpidr6::TRCPIDR6_MASK)
+                | ((value << Trcpidr6::TRCPIDR6_OFFSET) & Trcpidr6::TRCPIDR6_MASK),
         }
     }
 }
@@ -50855,7 +51540,9 @@ impl Trcpidr7 {
     /// Write **TRCPIDR7** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_trcpidr7(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TRCPIDR7_MASK) | ((value << Self::TRCPIDR7_OFFSET) & Self::TRCPIDR7_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TRCPIDR7_MASK) | ((value << Self::TRCPIDR7_OFFSET) & Self::TRCPIDR7_MASK)
+        });
     }
 }
 
@@ -50897,7 +51584,8 @@ impl Trcpidr7Val {
     #[inline(always)]
     pub const fn with_trcpidr7(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Trcpidr7::TRCPIDR7_MASK) | ((value << Trcpidr7::TRCPIDR7_OFFSET) & Trcpidr7::TRCPIDR7_MASK)
+            bits: (self.bits & !Trcpidr7::TRCPIDR7_MASK)
+                | ((value << Trcpidr7::TRCPIDR7_OFFSET) & Trcpidr7::TRCPIDR7_MASK),
         }
     }
 }
@@ -51959,7 +52647,7 @@ impl CticontrolVal {
                 self.bits | Cticontrol::GLBEN_MASK
             } else {
                 self.bits & !Cticontrol::GLBEN_MASK
-            }
+            },
         }
     }
 }
@@ -52041,7 +52729,9 @@ impl Ctiintack {
     /// Acknowledges the corresponding ctitrigout output. There is one bit of the register for each ctitrigout output. When a 1 is written to a bit in this register, the corresponding ctitrigout is acknowledged, causing it to be cleared.
     #[inline(always)]
     pub fn write_intack(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::INTACK_MASK) | ((value << Self::INTACK_OFFSET) & Self::INTACK_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::INTACK_MASK) | ((value << Self::INTACK_OFFSET) & Self::INTACK_MASK)
+        });
     }
 }
 
@@ -52087,7 +52777,8 @@ impl CtiintackVal {
     #[inline(always)]
     pub const fn with_intack(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ctiintack::INTACK_MASK) | ((value << Ctiintack::INTACK_OFFSET) & Ctiintack::INTACK_MASK)
+            bits: (self.bits & !Ctiintack::INTACK_MASK)
+                | ((value << Ctiintack::INTACK_OFFSET) & Ctiintack::INTACK_MASK),
         }
     }
 }
@@ -52169,7 +52860,9 @@ impl Ctiappset {
     /// Setting a bit HIGH generates a channel event for the selected channel. There is one bit of the register for each channel
     #[inline(always)]
     pub fn write_appset(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::APPSET_MASK) | ((value << Self::APPSET_OFFSET) & Self::APPSET_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::APPSET_MASK) | ((value << Self::APPSET_OFFSET) & Self::APPSET_MASK)
+        });
     }
 }
 
@@ -52215,7 +52908,8 @@ impl CtiappsetVal {
     #[inline(always)]
     pub const fn with_appset(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ctiappset::APPSET_MASK) | ((value << Ctiappset::APPSET_OFFSET) & Ctiappset::APPSET_MASK)
+            bits: (self.bits & !Ctiappset::APPSET_MASK)
+                | ((value << Ctiappset::APPSET_OFFSET) & Ctiappset::APPSET_MASK),
         }
     }
 }
@@ -52297,7 +52991,9 @@ impl Ctiappclear {
     /// Sets the corresponding bits in the CTIAPPSET to 0. There is one bit of the register for each channel.
     #[inline(always)]
     pub fn write_appclear(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::APPCLEAR_MASK) | ((value << Self::APPCLEAR_OFFSET) & Self::APPCLEAR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::APPCLEAR_MASK) | ((value << Self::APPCLEAR_OFFSET) & Self::APPCLEAR_MASK)
+        });
     }
 }
 
@@ -52343,7 +53039,8 @@ impl CtiappclearVal {
     #[inline(always)]
     pub const fn with_appclear(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ctiappclear::APPCLEAR_MASK) | ((value << Ctiappclear::APPCLEAR_OFFSET) & Ctiappclear::APPCLEAR_MASK)
+            bits: (self.bits & !Ctiappclear::APPCLEAR_MASK)
+                | ((value << Ctiappclear::APPCLEAR_OFFSET) & Ctiappclear::APPCLEAR_MASK),
         }
     }
 }
@@ -52425,7 +53122,9 @@ impl Ctiapppulse {
     /// Setting a bit HIGH generates a channel event pulse for the selected channel. There is one bit of the register for each channel.
     #[inline(always)]
     pub fn write_appulse(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::APPULSE_MASK) | ((value << Self::APPULSE_OFFSET) & Self::APPULSE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::APPULSE_MASK) | ((value << Self::APPULSE_OFFSET) & Self::APPULSE_MASK)
+        });
     }
 }
 
@@ -52471,7 +53170,8 @@ impl CtiapppulseVal {
     #[inline(always)]
     pub const fn with_appulse(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ctiapppulse::APPULSE_MASK) | ((value << Ctiapppulse::APPULSE_OFFSET) & Ctiapppulse::APPULSE_MASK)
+            bits: (self.bits & !Ctiapppulse::APPULSE_MASK)
+                | ((value << Ctiapppulse::APPULSE_OFFSET) & Ctiapppulse::APPULSE_MASK),
         }
     }
 }
@@ -52553,7 +53253,9 @@ impl Ctiinen0 {
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub fn write_triginen(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TRIGINEN_MASK) | ((value << Self::TRIGINEN_OFFSET) & Self::TRIGINEN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TRIGINEN_MASK) | ((value << Self::TRIGINEN_OFFSET) & Self::TRIGINEN_MASK)
+        });
     }
 }
 
@@ -52599,7 +53301,8 @@ impl Ctiinen0Val {
     #[inline(always)]
     pub const fn with_triginen(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ctiinen0::TRIGINEN_MASK) | ((value << Ctiinen0::TRIGINEN_OFFSET) & Ctiinen0::TRIGINEN_MASK)
+            bits: (self.bits & !Ctiinen0::TRIGINEN_MASK)
+                | ((value << Ctiinen0::TRIGINEN_OFFSET) & Ctiinen0::TRIGINEN_MASK),
         }
     }
 }
@@ -52681,7 +53384,9 @@ impl Ctiinen1 {
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub fn write_triginen(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TRIGINEN_MASK) | ((value << Self::TRIGINEN_OFFSET) & Self::TRIGINEN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TRIGINEN_MASK) | ((value << Self::TRIGINEN_OFFSET) & Self::TRIGINEN_MASK)
+        });
     }
 }
 
@@ -52727,7 +53432,8 @@ impl Ctiinen1Val {
     #[inline(always)]
     pub const fn with_triginen(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ctiinen1::TRIGINEN_MASK) | ((value << Ctiinen1::TRIGINEN_OFFSET) & Ctiinen1::TRIGINEN_MASK)
+            bits: (self.bits & !Ctiinen1::TRIGINEN_MASK)
+                | ((value << Ctiinen1::TRIGINEN_OFFSET) & Ctiinen1::TRIGINEN_MASK),
         }
     }
 }
@@ -52809,7 +53515,9 @@ impl Ctiinen2 {
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub fn write_triginen(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TRIGINEN_MASK) | ((value << Self::TRIGINEN_OFFSET) & Self::TRIGINEN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TRIGINEN_MASK) | ((value << Self::TRIGINEN_OFFSET) & Self::TRIGINEN_MASK)
+        });
     }
 }
 
@@ -52855,7 +53563,8 @@ impl Ctiinen2Val {
     #[inline(always)]
     pub const fn with_triginen(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ctiinen2::TRIGINEN_MASK) | ((value << Ctiinen2::TRIGINEN_OFFSET) & Ctiinen2::TRIGINEN_MASK)
+            bits: (self.bits & !Ctiinen2::TRIGINEN_MASK)
+                | ((value << Ctiinen2::TRIGINEN_OFFSET) & Ctiinen2::TRIGINEN_MASK),
         }
     }
 }
@@ -52937,7 +53646,9 @@ impl Ctiinen3 {
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub fn write_triginen(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TRIGINEN_MASK) | ((value << Self::TRIGINEN_OFFSET) & Self::TRIGINEN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TRIGINEN_MASK) | ((value << Self::TRIGINEN_OFFSET) & Self::TRIGINEN_MASK)
+        });
     }
 }
 
@@ -52983,7 +53694,8 @@ impl Ctiinen3Val {
     #[inline(always)]
     pub const fn with_triginen(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ctiinen3::TRIGINEN_MASK) | ((value << Ctiinen3::TRIGINEN_OFFSET) & Ctiinen3::TRIGINEN_MASK)
+            bits: (self.bits & !Ctiinen3::TRIGINEN_MASK)
+                | ((value << Ctiinen3::TRIGINEN_OFFSET) & Ctiinen3::TRIGINEN_MASK),
         }
     }
 }
@@ -53065,7 +53777,9 @@ impl Ctiinen4 {
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub fn write_triginen(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TRIGINEN_MASK) | ((value << Self::TRIGINEN_OFFSET) & Self::TRIGINEN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TRIGINEN_MASK) | ((value << Self::TRIGINEN_OFFSET) & Self::TRIGINEN_MASK)
+        });
     }
 }
 
@@ -53111,7 +53825,8 @@ impl Ctiinen4Val {
     #[inline(always)]
     pub const fn with_triginen(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ctiinen4::TRIGINEN_MASK) | ((value << Ctiinen4::TRIGINEN_OFFSET) & Ctiinen4::TRIGINEN_MASK)
+            bits: (self.bits & !Ctiinen4::TRIGINEN_MASK)
+                | ((value << Ctiinen4::TRIGINEN_OFFSET) & Ctiinen4::TRIGINEN_MASK),
         }
     }
 }
@@ -53193,7 +53908,9 @@ impl Ctiinen5 {
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub fn write_triginen(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TRIGINEN_MASK) | ((value << Self::TRIGINEN_OFFSET) & Self::TRIGINEN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TRIGINEN_MASK) | ((value << Self::TRIGINEN_OFFSET) & Self::TRIGINEN_MASK)
+        });
     }
 }
 
@@ -53239,7 +53956,8 @@ impl Ctiinen5Val {
     #[inline(always)]
     pub const fn with_triginen(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ctiinen5::TRIGINEN_MASK) | ((value << Ctiinen5::TRIGINEN_OFFSET) & Ctiinen5::TRIGINEN_MASK)
+            bits: (self.bits & !Ctiinen5::TRIGINEN_MASK)
+                | ((value << Ctiinen5::TRIGINEN_OFFSET) & Ctiinen5::TRIGINEN_MASK),
         }
     }
 }
@@ -53321,7 +54039,9 @@ impl Ctiinen6 {
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub fn write_triginen(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TRIGINEN_MASK) | ((value << Self::TRIGINEN_OFFSET) & Self::TRIGINEN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TRIGINEN_MASK) | ((value << Self::TRIGINEN_OFFSET) & Self::TRIGINEN_MASK)
+        });
     }
 }
 
@@ -53367,7 +54087,8 @@ impl Ctiinen6Val {
     #[inline(always)]
     pub const fn with_triginen(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ctiinen6::TRIGINEN_MASK) | ((value << Ctiinen6::TRIGINEN_OFFSET) & Ctiinen6::TRIGINEN_MASK)
+            bits: (self.bits & !Ctiinen6::TRIGINEN_MASK)
+                | ((value << Ctiinen6::TRIGINEN_OFFSET) & Ctiinen6::TRIGINEN_MASK),
         }
     }
 }
@@ -53449,7 +54170,9 @@ impl Ctiinen7 {
     /// Enables a cross trigger event to the corresponding channel when a ctitrigin input is activated. There is one bit of the field for each of the four channels
     #[inline(always)]
     pub fn write_triginen(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TRIGINEN_MASK) | ((value << Self::TRIGINEN_OFFSET) & Self::TRIGINEN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TRIGINEN_MASK) | ((value << Self::TRIGINEN_OFFSET) & Self::TRIGINEN_MASK)
+        });
     }
 }
 
@@ -53495,7 +54218,8 @@ impl Ctiinen7Val {
     #[inline(always)]
     pub const fn with_triginen(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ctiinen7::TRIGINEN_MASK) | ((value << Ctiinen7::TRIGINEN_OFFSET) & Ctiinen7::TRIGINEN_MASK)
+            bits: (self.bits & !Ctiinen7::TRIGINEN_MASK)
+                | ((value << Ctiinen7::TRIGINEN_OFFSET) & Ctiinen7::TRIGINEN_MASK),
         }
     }
 }
@@ -53577,7 +54301,9 @@ impl Ctiouten0 {
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub fn write_trigouten(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TRIGOUTEN_MASK) | ((value << Self::TRIGOUTEN_OFFSET) & Self::TRIGOUTEN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TRIGOUTEN_MASK) | ((value << Self::TRIGOUTEN_OFFSET) & Self::TRIGOUTEN_MASK)
+        });
     }
 }
 
@@ -53623,7 +54349,8 @@ impl Ctiouten0Val {
     #[inline(always)]
     pub const fn with_trigouten(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ctiouten0::TRIGOUTEN_MASK) | ((value << Ctiouten0::TRIGOUTEN_OFFSET) & Ctiouten0::TRIGOUTEN_MASK)
+            bits: (self.bits & !Ctiouten0::TRIGOUTEN_MASK)
+                | ((value << Ctiouten0::TRIGOUTEN_OFFSET) & Ctiouten0::TRIGOUTEN_MASK),
         }
     }
 }
@@ -53705,7 +54432,9 @@ impl Ctiouten1 {
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub fn write_trigouten(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TRIGOUTEN_MASK) | ((value << Self::TRIGOUTEN_OFFSET) & Self::TRIGOUTEN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TRIGOUTEN_MASK) | ((value << Self::TRIGOUTEN_OFFSET) & Self::TRIGOUTEN_MASK)
+        });
     }
 }
 
@@ -53751,7 +54480,8 @@ impl Ctiouten1Val {
     #[inline(always)]
     pub const fn with_trigouten(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ctiouten1::TRIGOUTEN_MASK) | ((value << Ctiouten1::TRIGOUTEN_OFFSET) & Ctiouten1::TRIGOUTEN_MASK)
+            bits: (self.bits & !Ctiouten1::TRIGOUTEN_MASK)
+                | ((value << Ctiouten1::TRIGOUTEN_OFFSET) & Ctiouten1::TRIGOUTEN_MASK),
         }
     }
 }
@@ -53833,7 +54563,9 @@ impl Ctiouten2 {
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub fn write_trigouten(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TRIGOUTEN_MASK) | ((value << Self::TRIGOUTEN_OFFSET) & Self::TRIGOUTEN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TRIGOUTEN_MASK) | ((value << Self::TRIGOUTEN_OFFSET) & Self::TRIGOUTEN_MASK)
+        });
     }
 }
 
@@ -53879,7 +54611,8 @@ impl Ctiouten2Val {
     #[inline(always)]
     pub const fn with_trigouten(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ctiouten2::TRIGOUTEN_MASK) | ((value << Ctiouten2::TRIGOUTEN_OFFSET) & Ctiouten2::TRIGOUTEN_MASK)
+            bits: (self.bits & !Ctiouten2::TRIGOUTEN_MASK)
+                | ((value << Ctiouten2::TRIGOUTEN_OFFSET) & Ctiouten2::TRIGOUTEN_MASK),
         }
     }
 }
@@ -53961,7 +54694,9 @@ impl Ctiouten3 {
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub fn write_trigouten(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TRIGOUTEN_MASK) | ((value << Self::TRIGOUTEN_OFFSET) & Self::TRIGOUTEN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TRIGOUTEN_MASK) | ((value << Self::TRIGOUTEN_OFFSET) & Self::TRIGOUTEN_MASK)
+        });
     }
 }
 
@@ -54007,7 +54742,8 @@ impl Ctiouten3Val {
     #[inline(always)]
     pub const fn with_trigouten(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ctiouten3::TRIGOUTEN_MASK) | ((value << Ctiouten3::TRIGOUTEN_OFFSET) & Ctiouten3::TRIGOUTEN_MASK)
+            bits: (self.bits & !Ctiouten3::TRIGOUTEN_MASK)
+                | ((value << Ctiouten3::TRIGOUTEN_OFFSET) & Ctiouten3::TRIGOUTEN_MASK),
         }
     }
 }
@@ -54089,7 +54825,9 @@ impl Ctiouten4 {
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub fn write_trigouten(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TRIGOUTEN_MASK) | ((value << Self::TRIGOUTEN_OFFSET) & Self::TRIGOUTEN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TRIGOUTEN_MASK) | ((value << Self::TRIGOUTEN_OFFSET) & Self::TRIGOUTEN_MASK)
+        });
     }
 }
 
@@ -54135,7 +54873,8 @@ impl Ctiouten4Val {
     #[inline(always)]
     pub const fn with_trigouten(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ctiouten4::TRIGOUTEN_MASK) | ((value << Ctiouten4::TRIGOUTEN_OFFSET) & Ctiouten4::TRIGOUTEN_MASK)
+            bits: (self.bits & !Ctiouten4::TRIGOUTEN_MASK)
+                | ((value << Ctiouten4::TRIGOUTEN_OFFSET) & Ctiouten4::TRIGOUTEN_MASK),
         }
     }
 }
@@ -54217,7 +54956,9 @@ impl Ctiouten5 {
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub fn write_trigouten(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TRIGOUTEN_MASK) | ((value << Self::TRIGOUTEN_OFFSET) & Self::TRIGOUTEN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TRIGOUTEN_MASK) | ((value << Self::TRIGOUTEN_OFFSET) & Self::TRIGOUTEN_MASK)
+        });
     }
 }
 
@@ -54263,7 +55004,8 @@ impl Ctiouten5Val {
     #[inline(always)]
     pub const fn with_trigouten(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ctiouten5::TRIGOUTEN_MASK) | ((value << Ctiouten5::TRIGOUTEN_OFFSET) & Ctiouten5::TRIGOUTEN_MASK)
+            bits: (self.bits & !Ctiouten5::TRIGOUTEN_MASK)
+                | ((value << Ctiouten5::TRIGOUTEN_OFFSET) & Ctiouten5::TRIGOUTEN_MASK),
         }
     }
 }
@@ -54345,7 +55087,9 @@ impl Ctiouten6 {
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub fn write_trigouten(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TRIGOUTEN_MASK) | ((value << Self::TRIGOUTEN_OFFSET) & Self::TRIGOUTEN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TRIGOUTEN_MASK) | ((value << Self::TRIGOUTEN_OFFSET) & Self::TRIGOUTEN_MASK)
+        });
     }
 }
 
@@ -54391,7 +55135,8 @@ impl Ctiouten6Val {
     #[inline(always)]
     pub const fn with_trigouten(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ctiouten6::TRIGOUTEN_MASK) | ((value << Ctiouten6::TRIGOUTEN_OFFSET) & Ctiouten6::TRIGOUTEN_MASK)
+            bits: (self.bits & !Ctiouten6::TRIGOUTEN_MASK)
+                | ((value << Ctiouten6::TRIGOUTEN_OFFSET) & Ctiouten6::TRIGOUTEN_MASK),
         }
     }
 }
@@ -54473,7 +55218,9 @@ impl Ctiouten7 {
     /// Enables a cross trigger event to ctitrigout when the corresponding channel is activated. There is one bit of the field for each of the four channels.
     #[inline(always)]
     pub fn write_trigouten(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TRIGOUTEN_MASK) | ((value << Self::TRIGOUTEN_OFFSET) & Self::TRIGOUTEN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TRIGOUTEN_MASK) | ((value << Self::TRIGOUTEN_OFFSET) & Self::TRIGOUTEN_MASK)
+        });
     }
 }
 
@@ -54519,7 +55266,8 @@ impl Ctiouten7Val {
     #[inline(always)]
     pub const fn with_trigouten(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ctiouten7::TRIGOUTEN_MASK) | ((value << Ctiouten7::TRIGOUTEN_OFFSET) & Ctiouten7::TRIGOUTEN_MASK)
+            bits: (self.bits & !Ctiouten7::TRIGOUTEN_MASK)
+                | ((value << Ctiouten7::TRIGOUTEN_OFFSET) & Ctiouten7::TRIGOUTEN_MASK),
         }
     }
 }
@@ -55073,7 +55821,7 @@ impl CtigateVal {
                 self.bits | Ctigate::CTIGATEEN3_MASK
             } else {
                 self.bits & !Ctigate::CTIGATEEN3_MASK
-            }
+            },
         }
     }
 
@@ -55087,7 +55835,7 @@ impl CtigateVal {
                 self.bits | Ctigate::CTIGATEEN2_MASK
             } else {
                 self.bits & !Ctigate::CTIGATEEN2_MASK
-            }
+            },
         }
     }
 
@@ -55101,7 +55849,7 @@ impl CtigateVal {
                 self.bits | Ctigate::CTIGATEEN1_MASK
             } else {
                 self.bits & !Ctigate::CTIGATEEN1_MASK
-            }
+            },
         }
     }
 
@@ -55115,7 +55863,7 @@ impl CtigateVal {
                 self.bits | Ctigate::CTIGATEEN0_MASK
             } else {
                 self.bits & !Ctigate::CTIGATEEN0_MASK
-            }
+            },
         }
     }
 }
@@ -55188,7 +55936,9 @@ impl Asicctl {
     /// Write **ASICCTL** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_asicctl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ASICCTL_MASK) | ((value << Self::ASICCTL_OFFSET) & Self::ASICCTL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ASICCTL_MASK) | ((value << Self::ASICCTL_OFFSET) & Self::ASICCTL_MASK)
+        });
     }
 }
 
@@ -55230,7 +55980,8 @@ impl AsicctlVal {
     #[inline(always)]
     pub const fn with_asicctl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Asicctl::ASICCTL_MASK) | ((value << Asicctl::ASICCTL_OFFSET) & Asicctl::ASICCTL_MASK)
+            bits: (self.bits & !Asicctl::ASICCTL_MASK)
+                | ((value << Asicctl::ASICCTL_OFFSET) & Asicctl::ASICCTL_MASK),
         }
     }
 }
@@ -55312,7 +56063,9 @@ impl Itchout {
     /// Sets the value of the ctichout outputs
     #[inline(always)]
     pub fn write_ctchout(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CTCHOUT_MASK) | ((value << Self::CTCHOUT_OFFSET) & Self::CTCHOUT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CTCHOUT_MASK) | ((value << Self::CTCHOUT_OFFSET) & Self::CTCHOUT_MASK)
+        });
     }
 }
 
@@ -55358,7 +56111,8 @@ impl ItchoutVal {
     #[inline(always)]
     pub const fn with_ctchout(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Itchout::CTCHOUT_MASK) | ((value << Itchout::CTCHOUT_OFFSET) & Itchout::CTCHOUT_MASK)
+            bits: (self.bits & !Itchout::CTCHOUT_MASK)
+                | ((value << Itchout::CTCHOUT_OFFSET) & Itchout::CTCHOUT_MASK),
         }
     }
 }
@@ -55440,7 +56194,9 @@ impl Ittrigout {
     /// Sets the value of the ctitrigout outputs
     #[inline(always)]
     pub fn write_cttrigout(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CTTRIGOUT_MASK) | ((value << Self::CTTRIGOUT_OFFSET) & Self::CTTRIGOUT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CTTRIGOUT_MASK) | ((value << Self::CTTRIGOUT_OFFSET) & Self::CTTRIGOUT_MASK)
+        });
     }
 }
 
@@ -55486,7 +56242,8 @@ impl IttrigoutVal {
     #[inline(always)]
     pub const fn with_cttrigout(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ittrigout::CTTRIGOUT_MASK) | ((value << Ittrigout::CTTRIGOUT_OFFSET) & Ittrigout::CTTRIGOUT_MASK)
+            bits: (self.bits & !Ittrigout::CTTRIGOUT_MASK)
+                | ((value << Ittrigout::CTTRIGOUT_OFFSET) & Ittrigout::CTTRIGOUT_MASK),
         }
     }
 }
@@ -55721,7 +56478,7 @@ impl ItctrlVal {
                 self.bits | Itctrl::IME_MASK
             } else {
                 self.bits & !Itctrl::IME_MASK
-            }
+            },
         }
     }
 }
@@ -56383,7 +57140,9 @@ impl Pidr5 {
     /// Write **PIDR5** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_pidr5(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PIDR5_MASK) | ((value << Self::PIDR5_OFFSET) & Self::PIDR5_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PIDR5_MASK) | ((value << Self::PIDR5_OFFSET) & Self::PIDR5_MASK)
+        });
     }
 }
 
@@ -56425,7 +57184,8 @@ impl Pidr5Val {
     #[inline(always)]
     pub const fn with_pidr5(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Pidr5::PIDR5_MASK) | ((value << Pidr5::PIDR5_OFFSET) & Pidr5::PIDR5_MASK)
+            bits: (self.bits & !Pidr5::PIDR5_MASK)
+                | ((value << Pidr5::PIDR5_OFFSET) & Pidr5::PIDR5_MASK),
         }
     }
 }
@@ -56498,7 +57258,9 @@ impl Pidr6 {
     /// Write **PIDR6** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_pidr6(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PIDR6_MASK) | ((value << Self::PIDR6_OFFSET) & Self::PIDR6_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PIDR6_MASK) | ((value << Self::PIDR6_OFFSET) & Self::PIDR6_MASK)
+        });
     }
 }
 
@@ -56540,7 +57302,8 @@ impl Pidr6Val {
     #[inline(always)]
     pub const fn with_pidr6(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Pidr6::PIDR6_MASK) | ((value << Pidr6::PIDR6_OFFSET) & Pidr6::PIDR6_MASK)
+            bits: (self.bits & !Pidr6::PIDR6_MASK)
+                | ((value << Pidr6::PIDR6_OFFSET) & Pidr6::PIDR6_MASK),
         }
     }
 }
@@ -56613,7 +57376,9 @@ impl Pidr7 {
     /// Write **PIDR7** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_pidr7(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PIDR7_MASK) | ((value << Self::PIDR7_OFFSET) & Self::PIDR7_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PIDR7_MASK) | ((value << Self::PIDR7_OFFSET) & Self::PIDR7_MASK)
+        });
     }
 }
 
@@ -56655,7 +57420,8 @@ impl Pidr7Val {
     #[inline(always)]
     pub const fn with_pidr7(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Pidr7::PIDR7_MASK) | ((value << Pidr7::PIDR7_OFFSET) & Pidr7::PIDR7_MASK)
+            bits: (self.bits & !Pidr7::PIDR7_MASK)
+                | ((value << Pidr7::PIDR7_OFFSET) & Pidr7::PIDR7_MASK),
         }
     }
 }
@@ -58629,4 +59395,3 @@ pub struct RegisterBlock {
     /// CoreSight Component ID3
     pub cidr3: Cidr3,
 }
-

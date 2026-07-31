@@ -439,7 +439,9 @@ impl IcCon {
     /// Note: This field is not applicable when IC_ULTRA_FAST_MODE=1
     #[inline(always)]
     pub fn write_speed(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SPEED_MASK) | ((value << Self::SPEED_OFFSET) & Self::SPEED_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SPEED_MASK) | ((value << Self::SPEED_OFFSET) & Self::SPEED_MASK)
+        });
     }
 
     /// **MASTER_MODE** `[0]` (RW)
@@ -595,7 +597,7 @@ impl IcConVal {
                 self.bits | IcCon::RX_FIFO_FULL_HLD_CTRL_MASK
             } else {
                 self.bits & !IcCon::RX_FIFO_FULL_HLD_CTRL_MASK
-            }
+            },
         }
     }
 
@@ -610,7 +612,7 @@ impl IcConVal {
                 self.bits | IcCon::TX_EMPTY_CTRL_MASK
             } else {
                 self.bits & !IcCon::TX_EMPTY_CTRL_MASK
-            }
+            },
         }
     }
 
@@ -625,7 +627,7 @@ impl IcConVal {
                 self.bits | IcCon::STOP_DET_IFADDRESSED_MASK
             } else {
                 self.bits & !IcCon::STOP_DET_IFADDRESSED_MASK
-            }
+            },
         }
     }
 
@@ -641,7 +643,7 @@ impl IcConVal {
                 self.bits | IcCon::IC_SLAVE_DISABLE_MASK
             } else {
                 self.bits & !IcCon::IC_SLAVE_DISABLE_MASK
-            }
+            },
         }
     }
 
@@ -656,7 +658,7 @@ impl IcConVal {
                 self.bits | IcCon::IC_RESTART_EN_MASK
             } else {
                 self.bits & !IcCon::IC_RESTART_EN_MASK
-            }
+            },
         }
     }
 
@@ -670,7 +672,7 @@ impl IcConVal {
                 self.bits | IcCon::IC_10BITADDR_MASTER_MASK
             } else {
                 self.bits & !IcCon::IC_10BITADDR_MASTER_MASK
-            }
+            },
         }
     }
 
@@ -684,7 +686,7 @@ impl IcConVal {
                 self.bits | IcCon::IC_10BITADDR_SLAVE_MASK
             } else {
                 self.bits & !IcCon::IC_10BITADDR_SLAVE_MASK
-            }
+            },
         }
     }
 
@@ -699,7 +701,8 @@ impl IcConVal {
     #[inline(always)]
     pub const fn with_speed(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !IcCon::SPEED_MASK) | ((value << IcCon::SPEED_OFFSET) & IcCon::SPEED_MASK)
+            bits: (self.bits & !IcCon::SPEED_MASK)
+                | ((value << IcCon::SPEED_OFFSET) & IcCon::SPEED_MASK),
         }
     }
 
@@ -714,7 +717,7 @@ impl IcConVal {
                 self.bits | IcCon::MASTER_MODE_MASK
             } else {
                 self.bits & !IcCon::MASTER_MODE_MASK
-            }
+            },
         }
     }
 }
@@ -884,7 +887,9 @@ impl IcTar {
     /// If the IC_TAR and IC_SAR are the same, loopback exists but the FIFOs are shared between master and slave, so full loopback is not feasible. Only one direction loopback mode is supported (simplex), not duplex. A master cannot transmit to itself; it can transmit to only a slave.
     #[inline(always)]
     pub fn write_ic_tar(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IC_TAR_MASK) | ((value << Self::IC_TAR_OFFSET) & Self::IC_TAR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IC_TAR_MASK) | ((value << Self::IC_TAR_OFFSET) & Self::IC_TAR_MASK)
+        });
     }
 }
 
@@ -951,7 +956,7 @@ impl IcTarVal {
                 self.bits | IcTar::SPECIAL_MASK
             } else {
                 self.bits & !IcTar::SPECIAL_MASK
-            }
+            },
         }
     }
 
@@ -965,7 +970,7 @@ impl IcTarVal {
                 self.bits | IcTar::GC_OR_START_MASK
             } else {
                 self.bits & !IcTar::GC_OR_START_MASK
-            }
+            },
         }
     }
 
@@ -976,7 +981,8 @@ impl IcTarVal {
     #[inline(always)]
     pub const fn with_ic_tar(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !IcTar::IC_TAR_MASK) | ((value << IcTar::IC_TAR_OFFSET) & IcTar::IC_TAR_MASK)
+            bits: (self.bits & !IcTar::IC_TAR_MASK)
+                | ((value << IcTar::IC_TAR_OFFSET) & IcTar::IC_TAR_MASK),
         }
     }
 }
@@ -1066,7 +1072,9 @@ impl IcSar {
     /// Note: The default values cannot be any of the reserved address locations: that is, 0x00 to 0x07, or 0x78 to 0x7f. The correct operation of the device is not guaranteed if you program the IC_SAR or IC_TAR to a reserved value. Refer to <<table_I2C_firstbyte_bit_defs>> for a complete list of these reserved values.
     #[inline(always)]
     pub fn write_ic_sar(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IC_SAR_MASK) | ((value << Self::IC_SAR_OFFSET) & Self::IC_SAR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IC_SAR_MASK) | ((value << Self::IC_SAR_OFFSET) & Self::IC_SAR_MASK)
+        });
     }
 }
 
@@ -1116,7 +1124,8 @@ impl IcSarVal {
     #[inline(always)]
     pub const fn with_ic_sar(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !IcSar::IC_SAR_MASK) | ((value << IcSar::IC_SAR_OFFSET) & IcSar::IC_SAR_MASK)
+            bits: (self.bits & !IcSar::IC_SAR_MASK)
+                | ((value << IcSar::IC_SAR_OFFSET) & IcSar::IC_SAR_MASK),
         }
     }
 }
@@ -1356,7 +1365,9 @@ impl IcDataCmd {
     /// Reset value: 0x0
     #[inline(always)]
     pub fn write_dat(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DAT_MASK) | ((value << Self::DAT_OFFSET) & Self::DAT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DAT_MASK) | ((value << Self::DAT_OFFSET) & Self::DAT_MASK)
+        });
     }
 }
 
@@ -1423,7 +1434,7 @@ impl IcDataCmdVal {
                 self.bits | IcDataCmd::RESTART_MASK
             } else {
                 self.bits & !IcDataCmd::RESTART_MASK
-            }
+            },
         }
     }
 
@@ -1438,7 +1449,7 @@ impl IcDataCmdVal {
                 self.bits | IcDataCmd::STOP_MASK
             } else {
                 self.bits & !IcDataCmd::STOP_MASK
-            }
+            },
         }
     }
 
@@ -1455,7 +1466,7 @@ impl IcDataCmdVal {
                 self.bits | IcDataCmd::CMD_MASK
             } else {
                 self.bits & !IcDataCmd::CMD_MASK
-            }
+            },
         }
     }
 
@@ -1466,7 +1477,8 @@ impl IcDataCmdVal {
     #[inline(always)]
     pub const fn with_dat(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !IcDataCmd::DAT_MASK) | ((value << IcDataCmd::DAT_OFFSET) & IcDataCmd::DAT_MASK)
+            bits: (self.bits & !IcDataCmd::DAT_MASK)
+                | ((value << IcDataCmd::DAT_OFFSET) & IcDataCmd::DAT_MASK),
         }
     }
 }
@@ -1560,7 +1572,10 @@ impl IcSsSclHcnt {
     /// NOTE: This register must not be programmed to a value higher than 65525, because DW_apb_i2c uses a 16-bit counter to flag an I2C bus idle condition when this counter reaches a value of IC_SS_SCL_HCNT + 10.
     #[inline(always)]
     pub fn write_ic_ss_scl_hcnt(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IC_SS_SCL_HCNT_MASK) | ((value << Self::IC_SS_SCL_HCNT_OFFSET) & Self::IC_SS_SCL_HCNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IC_SS_SCL_HCNT_MASK)
+                | ((value << Self::IC_SS_SCL_HCNT_OFFSET) & Self::IC_SS_SCL_HCNT_MASK)
+        });
     }
 }
 
@@ -1612,7 +1627,9 @@ impl IcSsSclHcntVal {
     #[inline(always)]
     pub const fn with_ic_ss_scl_hcnt(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !IcSsSclHcnt::IC_SS_SCL_HCNT_MASK) | ((value << IcSsSclHcnt::IC_SS_SCL_HCNT_OFFSET) & IcSsSclHcnt::IC_SS_SCL_HCNT_MASK)
+            bits: (self.bits & !IcSsSclHcnt::IC_SS_SCL_HCNT_MASK)
+                | ((value << IcSsSclHcnt::IC_SS_SCL_HCNT_OFFSET)
+                    & IcSsSclHcnt::IC_SS_SCL_HCNT_MASK),
         }
     }
 }
@@ -1702,7 +1719,10 @@ impl IcSsSclLcnt {
     /// The minimum valid value is 8; hardware prevents values less than this being written, and if attempted, results in 8 being set. For designs with APB_DATA_WIDTH = 8, the order of programming is important to ensure the correct operation of DW_apb_i2c. The lower byte must be programmed first, and then the upper byte is programmed.
     #[inline(always)]
     pub fn write_ic_ss_scl_lcnt(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IC_SS_SCL_LCNT_MASK) | ((value << Self::IC_SS_SCL_LCNT_OFFSET) & Self::IC_SS_SCL_LCNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IC_SS_SCL_LCNT_MASK)
+                | ((value << Self::IC_SS_SCL_LCNT_OFFSET) & Self::IC_SS_SCL_LCNT_MASK)
+        });
     }
 }
 
@@ -1752,7 +1772,9 @@ impl IcSsSclLcntVal {
     #[inline(always)]
     pub const fn with_ic_ss_scl_lcnt(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !IcSsSclLcnt::IC_SS_SCL_LCNT_MASK) | ((value << IcSsSclLcnt::IC_SS_SCL_LCNT_OFFSET) & IcSsSclLcnt::IC_SS_SCL_LCNT_MASK)
+            bits: (self.bits & !IcSsSclLcnt::IC_SS_SCL_LCNT_MASK)
+                | ((value << IcSsSclLcnt::IC_SS_SCL_LCNT_OFFSET)
+                    & IcSsSclLcnt::IC_SS_SCL_LCNT_MASK),
         }
     }
 }
@@ -1842,7 +1864,10 @@ impl IcFsSclHcnt {
     /// The minimum valid value is 6; hardware prevents values less than this being written, and if attempted results in 6 being set. For designs with APB_DATA_WIDTH == 8 the order of programming is important to ensure the correct operation of the DW_apb_i2c. The lower byte must be programmed first. Then the upper byte is programmed.
     #[inline(always)]
     pub fn write_ic_fs_scl_hcnt(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IC_FS_SCL_HCNT_MASK) | ((value << Self::IC_FS_SCL_HCNT_OFFSET) & Self::IC_FS_SCL_HCNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IC_FS_SCL_HCNT_MASK)
+                | ((value << Self::IC_FS_SCL_HCNT_OFFSET) & Self::IC_FS_SCL_HCNT_MASK)
+        });
     }
 }
 
@@ -1892,7 +1917,9 @@ impl IcFsSclHcntVal {
     #[inline(always)]
     pub const fn with_ic_fs_scl_hcnt(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !IcFsSclHcnt::IC_FS_SCL_HCNT_MASK) | ((value << IcFsSclHcnt::IC_FS_SCL_HCNT_OFFSET) & IcFsSclHcnt::IC_FS_SCL_HCNT_MASK)
+            bits: (self.bits & !IcFsSclHcnt::IC_FS_SCL_HCNT_MASK)
+                | ((value << IcFsSclHcnt::IC_FS_SCL_HCNT_OFFSET)
+                    & IcFsSclHcnt::IC_FS_SCL_HCNT_MASK),
         }
     }
 }
@@ -1986,7 +2013,10 @@ impl IcFsSclLcnt {
     /// The minimum valid value is 8; hardware prevents values less than this being written, and if attempted results in 8 being set. For designs with APB_DATA_WIDTH = 8 the order of programming is important to ensure the correct operation of the DW_apb_i2c. The lower byte must be programmed first. Then the upper byte is programmed. If the value is less than 8 then the count value gets changed to 8.
     #[inline(always)]
     pub fn write_ic_fs_scl_lcnt(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IC_FS_SCL_LCNT_MASK) | ((value << Self::IC_FS_SCL_LCNT_OFFSET) & Self::IC_FS_SCL_LCNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IC_FS_SCL_LCNT_MASK)
+                | ((value << Self::IC_FS_SCL_LCNT_OFFSET) & Self::IC_FS_SCL_LCNT_MASK)
+        });
     }
 }
 
@@ -2038,7 +2068,9 @@ impl IcFsSclLcntVal {
     #[inline(always)]
     pub const fn with_ic_fs_scl_lcnt(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !IcFsSclLcnt::IC_FS_SCL_LCNT_MASK) | ((value << IcFsSclLcnt::IC_FS_SCL_LCNT_OFFSET) & IcFsSclLcnt::IC_FS_SCL_LCNT_MASK)
+            bits: (self.bits & !IcFsSclLcnt::IC_FS_SCL_LCNT_MASK)
+                | ((value << IcFsSclLcnt::IC_FS_SCL_LCNT_OFFSET)
+                    & IcFsSclLcnt::IC_FS_SCL_LCNT_MASK),
         }
     }
 }
@@ -3429,7 +3461,7 @@ impl IcIntrMaskVal {
                 self.bits | IcIntrMask::M_RESTART_DET_MASK
             } else {
                 self.bits & !IcIntrMask::M_RESTART_DET_MASK
-            }
+            },
         }
     }
 
@@ -3444,7 +3476,7 @@ impl IcIntrMaskVal {
                 self.bits | IcIntrMask::M_GEN_CALL_MASK
             } else {
                 self.bits & !IcIntrMask::M_GEN_CALL_MASK
-            }
+            },
         }
     }
 
@@ -3459,7 +3491,7 @@ impl IcIntrMaskVal {
                 self.bits | IcIntrMask::M_START_DET_MASK
             } else {
                 self.bits & !IcIntrMask::M_START_DET_MASK
-            }
+            },
         }
     }
 
@@ -3474,7 +3506,7 @@ impl IcIntrMaskVal {
                 self.bits | IcIntrMask::M_STOP_DET_MASK
             } else {
                 self.bits & !IcIntrMask::M_STOP_DET_MASK
-            }
+            },
         }
     }
 
@@ -3489,7 +3521,7 @@ impl IcIntrMaskVal {
                 self.bits | IcIntrMask::M_ACTIVITY_MASK
             } else {
                 self.bits & !IcIntrMask::M_ACTIVITY_MASK
-            }
+            },
         }
     }
 
@@ -3504,7 +3536,7 @@ impl IcIntrMaskVal {
                 self.bits | IcIntrMask::M_RX_DONE_MASK
             } else {
                 self.bits & !IcIntrMask::M_RX_DONE_MASK
-            }
+            },
         }
     }
 
@@ -3519,7 +3551,7 @@ impl IcIntrMaskVal {
                 self.bits | IcIntrMask::M_TX_ABRT_MASK
             } else {
                 self.bits & !IcIntrMask::M_TX_ABRT_MASK
-            }
+            },
         }
     }
 
@@ -3534,7 +3566,7 @@ impl IcIntrMaskVal {
                 self.bits | IcIntrMask::M_RD_REQ_MASK
             } else {
                 self.bits & !IcIntrMask::M_RD_REQ_MASK
-            }
+            },
         }
     }
 
@@ -3549,7 +3581,7 @@ impl IcIntrMaskVal {
                 self.bits | IcIntrMask::M_TX_EMPTY_MASK
             } else {
                 self.bits & !IcIntrMask::M_TX_EMPTY_MASK
-            }
+            },
         }
     }
 
@@ -3564,7 +3596,7 @@ impl IcIntrMaskVal {
                 self.bits | IcIntrMask::M_TX_OVER_MASK
             } else {
                 self.bits & !IcIntrMask::M_TX_OVER_MASK
-            }
+            },
         }
     }
 
@@ -3579,7 +3611,7 @@ impl IcIntrMaskVal {
                 self.bits | IcIntrMask::M_RX_FULL_MASK
             } else {
                 self.bits & !IcIntrMask::M_RX_FULL_MASK
-            }
+            },
         }
     }
 
@@ -3594,7 +3626,7 @@ impl IcIntrMaskVal {
                 self.bits | IcIntrMask::M_RX_OVER_MASK
             } else {
                 self.bits & !IcIntrMask::M_RX_OVER_MASK
-            }
+            },
         }
     }
 
@@ -3609,7 +3641,7 @@ impl IcIntrMaskVal {
                 self.bits | IcIntrMask::M_RX_UNDER_MASK
             } else {
                 self.bits & !IcIntrMask::M_RX_UNDER_MASK
-            }
+            },
         }
     }
 }
@@ -4311,7 +4343,9 @@ impl IcRxTl {
     /// Controls the level of entries (or above) that triggers the RX_FULL interrupt (bit 2 in IC_RAW_INTR_STAT register). The valid range is 0-255, with the additional restriction that hardware does not allow this value to be set to a value larger than the depth of the buffer. If an attempt is made to do that, the actual value set will be the maximum depth of the buffer. A value of 0 sets the threshold for 1 entry, and a value of 255 sets the threshold for 256 entries.
     #[inline(always)]
     pub fn write_rx_tl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RX_TL_MASK) | ((value << Self::RX_TL_OFFSET) & Self::RX_TL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RX_TL_MASK) | ((value << Self::RX_TL_OFFSET) & Self::RX_TL_MASK)
+        });
     }
 }
 
@@ -4359,7 +4393,8 @@ impl IcRxTlVal {
     #[inline(always)]
     pub const fn with_rx_tl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !IcRxTl::RX_TL_MASK) | ((value << IcRxTl::RX_TL_OFFSET) & IcRxTl::RX_TL_MASK)
+            bits: (self.bits & !IcRxTl::RX_TL_MASK)
+                | ((value << IcRxTl::RX_TL_OFFSET) & IcRxTl::RX_TL_MASK),
         }
     }
 }
@@ -4445,7 +4480,9 @@ impl IcTxTl {
     /// Controls the level of entries (or below) that trigger the TX_EMPTY interrupt (bit 4 in IC_RAW_INTR_STAT register). The valid range is 0-255, with the additional restriction that it may not be set to value larger than the depth of the buffer. If an attempt is made to do that, the actual value set will be the maximum depth of the buffer. A value of 0 sets the threshold for 0 entries, and a value of 255 sets the threshold for 255 entries.
     #[inline(always)]
     pub fn write_tx_tl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TX_TL_MASK) | ((value << Self::TX_TL_OFFSET) & Self::TX_TL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TX_TL_MASK) | ((value << Self::TX_TL_OFFSET) & Self::TX_TL_MASK)
+        });
     }
 }
 
@@ -4493,7 +4530,8 @@ impl IcTxTlVal {
     #[inline(always)]
     pub const fn with_tx_tl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !IcTxTl::TX_TL_MASK) | ((value << IcTxTl::TX_TL_OFFSET) & IcTxTl::TX_TL_MASK)
+            bits: (self.bits & !IcTxTl::TX_TL_MASK)
+                | ((value << IcTxTl::TX_TL_OFFSET) & IcTxTl::TX_TL_MASK),
         }
     }
 }
@@ -5889,7 +5927,7 @@ impl IcEnableVal {
                 self.bits | IcEnable::TX_CMD_BLOCK_MASK
             } else {
                 self.bits & !IcEnable::TX_CMD_BLOCK_MASK
-            }
+            },
         }
     }
 
@@ -5905,7 +5943,7 @@ impl IcEnableVal {
                 self.bits | IcEnable::ABORT_MASK
             } else {
                 self.bits & !IcEnable::ABORT_MASK
-            }
+            },
         }
     }
 
@@ -5922,7 +5960,7 @@ impl IcEnableVal {
                 self.bits | IcEnable::ENABLE_MASK
             } else {
                 self.bits & !IcEnable::ENABLE_MASK
-            }
+            },
         }
     }
 }
@@ -6566,7 +6604,10 @@ impl IcSdaHold {
     /// Reset value: IC_DEFAULT_SDA_HOLD[23:16].
     #[inline(always)]
     pub fn write_ic_sda_rx_hold(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IC_SDA_RX_HOLD_MASK) | ((value << Self::IC_SDA_RX_HOLD_OFFSET) & Self::IC_SDA_RX_HOLD_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IC_SDA_RX_HOLD_MASK)
+                | ((value << Self::IC_SDA_RX_HOLD_OFFSET) & Self::IC_SDA_RX_HOLD_MASK)
+        });
     }
 
     /// **IC_SDA_TX_HOLD** `[15:0]` (RW)
@@ -6584,7 +6625,10 @@ impl IcSdaHold {
     /// Reset value: IC_DEFAULT_SDA_HOLD[15:0].
     #[inline(always)]
     pub fn write_ic_sda_tx_hold(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IC_SDA_TX_HOLD_MASK) | ((value << Self::IC_SDA_TX_HOLD_OFFSET) & Self::IC_SDA_TX_HOLD_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IC_SDA_TX_HOLD_MASK)
+                | ((value << Self::IC_SDA_TX_HOLD_OFFSET) & Self::IC_SDA_TX_HOLD_MASK)
+        });
     }
 }
 
@@ -6641,7 +6685,8 @@ impl IcSdaHoldVal {
     #[inline(always)]
     pub const fn with_ic_sda_rx_hold(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !IcSdaHold::IC_SDA_RX_HOLD_MASK) | ((value << IcSdaHold::IC_SDA_RX_HOLD_OFFSET) & IcSdaHold::IC_SDA_RX_HOLD_MASK)
+            bits: (self.bits & !IcSdaHold::IC_SDA_RX_HOLD_MASK)
+                | ((value << IcSdaHold::IC_SDA_RX_HOLD_OFFSET) & IcSdaHold::IC_SDA_RX_HOLD_MASK),
         }
     }
 
@@ -6652,7 +6697,8 @@ impl IcSdaHoldVal {
     #[inline(always)]
     pub const fn with_ic_sda_tx_hold(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !IcSdaHold::IC_SDA_TX_HOLD_MASK) | ((value << IcSdaHold::IC_SDA_TX_HOLD_OFFSET) & IcSdaHold::IC_SDA_TX_HOLD_MASK)
+            bits: (self.bits & !IcSdaHold::IC_SDA_TX_HOLD_MASK)
+                | ((value << IcSdaHold::IC_SDA_TX_HOLD_OFFSET) & IcSdaHold::IC_SDA_TX_HOLD_MASK),
         }
     }
 }
@@ -7677,7 +7723,7 @@ impl IcSlvDataNackOnlyVal {
                 self.bits | IcSlvDataNackOnly::NACK_MASK
             } else {
                 self.bits & !IcSlvDataNackOnly::NACK_MASK
-            }
+            },
         }
     }
 }
@@ -7872,7 +7918,7 @@ impl IcDmaCrVal {
                 self.bits | IcDmaCr::TDMAE_MASK
             } else {
                 self.bits & !IcDmaCr::TDMAE_MASK
-            }
+            },
         }
     }
 
@@ -7886,7 +7932,7 @@ impl IcDmaCrVal {
                 self.bits | IcDmaCr::RDMAE_MASK
             } else {
                 self.bits & !IcDmaCr::RDMAE_MASK
-            }
+            },
         }
     }
 }
@@ -7972,7 +8018,9 @@ impl IcDmaTdlr {
     /// Reset value: 0x0
     #[inline(always)]
     pub fn write_dmatdl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DMATDL_MASK) | ((value << Self::DMATDL_OFFSET) & Self::DMATDL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DMATDL_MASK) | ((value << Self::DMATDL_OFFSET) & Self::DMATDL_MASK)
+        });
     }
 }
 
@@ -8020,7 +8068,8 @@ impl IcDmaTdlrVal {
     #[inline(always)]
     pub const fn with_dmatdl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !IcDmaTdlr::DMATDL_MASK) | ((value << IcDmaTdlr::DMATDL_OFFSET) & IcDmaTdlr::DMATDL_MASK)
+            bits: (self.bits & !IcDmaTdlr::DMATDL_MASK)
+                | ((value << IcDmaTdlr::DMATDL_OFFSET) & IcDmaTdlr::DMATDL_MASK),
         }
     }
 }
@@ -8106,7 +8155,9 @@ impl IcDmaRdlr {
     /// Reset value: 0x0
     #[inline(always)]
     pub fn write_dmardl(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DMARDL_MASK) | ((value << Self::DMARDL_OFFSET) & Self::DMARDL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DMARDL_MASK) | ((value << Self::DMARDL_OFFSET) & Self::DMARDL_MASK)
+        });
     }
 }
 
@@ -8154,7 +8205,8 @@ impl IcDmaRdlrVal {
     #[inline(always)]
     pub const fn with_dmardl(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !IcDmaRdlr::DMARDL_MASK) | ((value << IcDmaRdlr::DMARDL_OFFSET) & IcDmaRdlr::DMARDL_MASK)
+            bits: (self.bits & !IcDmaRdlr::DMARDL_MASK)
+                | ((value << IcDmaRdlr::DMARDL_OFFSET) & IcDmaRdlr::DMARDL_MASK),
         }
     }
 }
@@ -8239,7 +8291,9 @@ impl IcSdaSetup {
     /// SDA Setup. It is recommended that if the required delay is 1000ns, then for an ic_clk frequency of 10 MHz, IC_SDA_SETUP should be programmed to a value of 11. IC_SDA_SETUP must be programmed with a minimum value of 2.
     #[inline(always)]
     pub fn write_sda_setup(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SDA_SETUP_MASK) | ((value << Self::SDA_SETUP_OFFSET) & Self::SDA_SETUP_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SDA_SETUP_MASK) | ((value << Self::SDA_SETUP_OFFSET) & Self::SDA_SETUP_MASK)
+        });
     }
 }
 
@@ -8285,7 +8339,8 @@ impl IcSdaSetupVal {
     #[inline(always)]
     pub const fn with_sda_setup(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !IcSdaSetup::SDA_SETUP_MASK) | ((value << IcSdaSetup::SDA_SETUP_OFFSET) & IcSdaSetup::SDA_SETUP_MASK)
+            bits: (self.bits & !IcSdaSetup::SDA_SETUP_MASK)
+                | ((value << IcSdaSetup::SDA_SETUP_OFFSET) & IcSdaSetup::SDA_SETUP_MASK),
         }
     }
 }
@@ -8432,7 +8487,7 @@ impl IcAckGeneralCallVal {
                 self.bits | IcAckGeneralCall::ACK_GEN_CALL_MASK
             } else {
                 self.bits & !IcAckGeneralCall::ACK_GEN_CALL_MASK
-            }
+            },
         }
     }
 }
@@ -8752,7 +8807,10 @@ impl IcFsSpklen {
     /// This register must be set before any I2C bus transaction can take place to ensure stable operation. This register sets the duration, measured in ic_clk cycles, of the longest spike in the SCL or SDA lines that will be filtered out by the spike suppression logic. This register can be written only when the I2C interface is disabled which corresponds to the IC_ENABLE[0] register being set to 0. Writes at other times have no effect. The minimum valid value is 1; hardware prevents values less than this being written, and if attempted results in 1 being set. or more information, refer to 'Spike Suppression'.
     #[inline(always)]
     pub fn write_ic_fs_spklen(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::IC_FS_SPKLEN_MASK) | ((value << Self::IC_FS_SPKLEN_OFFSET) & Self::IC_FS_SPKLEN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::IC_FS_SPKLEN_MASK)
+                | ((value << Self::IC_FS_SPKLEN_OFFSET) & Self::IC_FS_SPKLEN_MASK)
+        });
     }
 }
 
@@ -8798,7 +8856,8 @@ impl IcFsSpklenVal {
     #[inline(always)]
     pub const fn with_ic_fs_spklen(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !IcFsSpklen::IC_FS_SPKLEN_MASK) | ((value << IcFsSpklen::IC_FS_SPKLEN_OFFSET) & IcFsSpklen::IC_FS_SPKLEN_MASK)
+            bits: (self.bits & !IcFsSpklen::IC_FS_SPKLEN_MASK)
+                | ((value << IcFsSpklen::IC_FS_SPKLEN_OFFSET) & IcFsSpklen::IC_FS_SPKLEN_MASK),
         }
     }
 }
@@ -9583,4 +9642,3 @@ pub struct RegisterBlock {
     /// I2C Component Type Register
     pub ic_comp_type: IcCompType,
 }
-

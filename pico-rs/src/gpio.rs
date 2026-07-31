@@ -2088,8 +2088,13 @@ pub const GPIO_PIN_MAX: u32 = 47;
 // [`Pin<N>`] remains the safe API for configuration; these functions are
 // for efficient runtime-indexed data access.
 
+/// Assert that `pin` is within the valid GPIO range for the selected chip.
+///
+/// Compile-time free in release builds (`debug_assert!`). Shared by the `gpio`
+/// (SIO) and `gpioc` (coprocessor) function families so both paths validate
+/// pin numbers identically.
 #[inline(always)]
-fn assert_pin(pin: u32) {
+pub(crate) fn assert_pin(pin: u32) {
     debug_assert!(pin <= GPIO_PIN_MAX);
 }
 

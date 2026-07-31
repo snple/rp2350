@@ -107,7 +107,9 @@ impl Sspcr0 {
     /// Serial clock rate. The value SCR is used to generate the transmit and receive bit rate of the PrimeCell SSP. The bit rate is: F SSPCLK CPSDVSR x (1+SCR) where CPSDVSR is an even value from 2-254, programmed through the SSPCPSR register and SCR is a value from 0-255.
     #[inline(always)]
     pub fn write_scr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SCR_MASK) | ((value << Self::SCR_OFFSET) & Self::SCR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SCR_MASK) | ((value << Self::SCR_OFFSET) & Self::SCR_MASK)
+        });
     }
 
     /// **SPH** `[7]` (RW)
@@ -163,7 +165,9 @@ impl Sspcr0 {
     /// Frame format: 00 Motorola SPI frame format. 01 TI synchronous serial frame format. 10 National Microwire frame format. 11 Reserved, undefined operation.
     #[inline(always)]
     pub fn write_frf(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FRF_MASK) | ((value << Self::FRF_OFFSET) & Self::FRF_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FRF_MASK) | ((value << Self::FRF_OFFSET) & Self::FRF_MASK)
+        });
     }
 
     /// **DSS** `[3:0]` (RW)
@@ -179,7 +183,9 @@ impl Sspcr0 {
     /// Data Size Select: 0000 Reserved, undefined operation. 0001 Reserved, undefined operation. 0010 Reserved, undefined operation. 0011 4-bit data. 0100 5-bit data. 0101 6-bit data. 0110 7-bit data. 0111 8-bit data. 1000 9-bit data. 1001 10-bit data. 1010 11-bit data. 1011 12-bit data. 1100 13-bit data. 1101 14-bit data. 1110 15-bit data. 1111 16-bit data.
     #[inline(always)]
     pub fn write_dss(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DSS_MASK) | ((value << Self::DSS_OFFSET) & Self::DSS_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DSS_MASK) | ((value << Self::DSS_OFFSET) & Self::DSS_MASK)
+        });
     }
 }
 
@@ -257,7 +263,8 @@ impl Sspcr0Val {
     #[inline(always)]
     pub const fn with_scr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sspcr0::SCR_MASK) | ((value << Sspcr0::SCR_OFFSET) & Sspcr0::SCR_MASK)
+            bits: (self.bits & !Sspcr0::SCR_MASK)
+                | ((value << Sspcr0::SCR_OFFSET) & Sspcr0::SCR_MASK),
         }
     }
 
@@ -271,7 +278,7 @@ impl Sspcr0Val {
                 self.bits | Sspcr0::SPH_MASK
             } else {
                 self.bits & !Sspcr0::SPH_MASK
-            }
+            },
         }
     }
 
@@ -285,7 +292,7 @@ impl Sspcr0Val {
                 self.bits | Sspcr0::SPO_MASK
             } else {
                 self.bits & !Sspcr0::SPO_MASK
-            }
+            },
         }
     }
 
@@ -295,7 +302,8 @@ impl Sspcr0Val {
     #[inline(always)]
     pub const fn with_frf(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sspcr0::FRF_MASK) | ((value << Sspcr0::FRF_OFFSET) & Sspcr0::FRF_MASK)
+            bits: (self.bits & !Sspcr0::FRF_MASK)
+                | ((value << Sspcr0::FRF_OFFSET) & Sspcr0::FRF_MASK),
         }
     }
 
@@ -305,7 +313,8 @@ impl Sspcr0Val {
     #[inline(always)]
     pub const fn with_dss(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sspcr0::DSS_MASK) | ((value << Sspcr0::DSS_OFFSET) & Sspcr0::DSS_MASK)
+            bits: (self.bits & !Sspcr0::DSS_MASK)
+                | ((value << Sspcr0::DSS_OFFSET) & Sspcr0::DSS_MASK),
         }
     }
 }
@@ -565,7 +574,7 @@ impl Sspcr1Val {
                 self.bits | Sspcr1::SOD_MASK
             } else {
                 self.bits & !Sspcr1::SOD_MASK
-            }
+            },
         }
     }
 
@@ -579,7 +588,7 @@ impl Sspcr1Val {
                 self.bits | Sspcr1::MS_MASK
             } else {
                 self.bits & !Sspcr1::MS_MASK
-            }
+            },
         }
     }
 
@@ -593,7 +602,7 @@ impl Sspcr1Val {
                 self.bits | Sspcr1::SSE_MASK
             } else {
                 self.bits & !Sspcr1::SSE_MASK
-            }
+            },
         }
     }
 
@@ -607,7 +616,7 @@ impl Sspcr1Val {
                 self.bits | Sspcr1::LBM_MASK
             } else {
                 self.bits & !Sspcr1::LBM_MASK
-            }
+            },
         }
     }
 }
@@ -688,7 +697,9 @@ impl Sspdr {
     /// Transmit/Receive FIFO: Read Receive FIFO. Write Transmit FIFO. You must right-justify data when the PrimeCell SSP is programmed for a data size that is less than 16 bits. Unused bits at the top are ignored by transmit logic. The receive logic automatically right-justifies.
     #[inline(always)]
     pub fn write_data(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DATA_MASK) | ((value << Self::DATA_OFFSET) & Self::DATA_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DATA_MASK) | ((value << Self::DATA_OFFSET) & Self::DATA_MASK)
+        });
     }
 }
 
@@ -728,7 +739,8 @@ impl SspdrVal {
     #[inline(always)]
     pub const fn with_data(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sspdr::DATA_MASK) | ((value << Sspdr::DATA_OFFSET) & Sspdr::DATA_MASK)
+            bits: (self.bits & !Sspdr::DATA_MASK)
+                | ((value << Sspdr::DATA_OFFSET) & Sspdr::DATA_MASK),
         }
     }
 }
@@ -1025,7 +1037,9 @@ impl Sspcpsr {
     /// Clock prescale divisor. Must be an even number from 2-254, depending on the frequency of SSPCLK. The least significant bit always returns zero on reads.
     #[inline(always)]
     pub fn write_cpsdvsr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::CPSDVSR_MASK) | ((value << Self::CPSDVSR_OFFSET) & Self::CPSDVSR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::CPSDVSR_MASK) | ((value << Self::CPSDVSR_OFFSET) & Self::CPSDVSR_MASK)
+        });
     }
 }
 
@@ -1071,7 +1085,8 @@ impl SspcpsrVal {
     #[inline(always)]
     pub const fn with_cpsdvsr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Sspcpsr::CPSDVSR_MASK) | ((value << Sspcpsr::CPSDVSR_OFFSET) & Sspcpsr::CPSDVSR_MASK)
+            bits: (self.bits & !Sspcpsr::CPSDVSR_MASK)
+                | ((value << Sspcpsr::CPSDVSR_OFFSET) & Sspcpsr::CPSDVSR_MASK),
         }
     }
 }
@@ -1331,7 +1346,7 @@ impl SspimscVal {
                 self.bits | Sspimsc::TXIM_MASK
             } else {
                 self.bits & !Sspimsc::TXIM_MASK
-            }
+            },
         }
     }
 
@@ -1345,7 +1360,7 @@ impl SspimscVal {
                 self.bits | Sspimsc::RXIM_MASK
             } else {
                 self.bits & !Sspimsc::RXIM_MASK
-            }
+            },
         }
     }
 
@@ -1359,7 +1374,7 @@ impl SspimscVal {
                 self.bits | Sspimsc::RTIM_MASK
             } else {
                 self.bits & !Sspimsc::RTIM_MASK
-            }
+            },
         }
     }
 
@@ -1373,7 +1388,7 @@ impl SspimscVal {
                 self.bits | Sspimsc::RORIM_MASK
             } else {
                 self.bits & !Sspimsc::RORIM_MASK
-            }
+            },
         }
     }
 }
@@ -1923,7 +1938,7 @@ impl SspicrVal {
                 self.bits | Sspicr::RTIC_MASK
             } else {
                 self.bits & !Sspicr::RTIC_MASK
-            }
+            },
         }
     }
 
@@ -1937,7 +1952,7 @@ impl SspicrVal {
                 self.bits | Sspicr::RORIC_MASK
             } else {
                 self.bits & !Sspicr::RORIC_MASK
-            }
+            },
         }
     }
 }
@@ -2115,7 +2130,7 @@ impl SspdmacrVal {
                 self.bits | Sspdmacr::TXDMAE_MASK
             } else {
                 self.bits & !Sspdmacr::TXDMAE_MASK
-            }
+            },
         }
     }
 
@@ -2129,7 +2144,7 @@ impl SspdmacrVal {
                 self.bits | Sspdmacr::RXDMAE_MASK
             } else {
                 self.bits & !Sspdmacr::RXDMAE_MASK
-            }
+            },
         }
     }
 }
@@ -3059,4 +3074,3 @@ pub struct RegisterBlock {
     /// PrimeCell identification registers, SSPPCellID0-3 on page 3-16
     pub ssppcellid3: Ssppcellid3,
 }
-

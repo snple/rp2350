@@ -141,7 +141,9 @@ impl Uartdr {
     /// Receive (read) data character. Transmit (write) data character.
     #[inline(always)]
     pub fn write_data(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DATA_MASK) | ((value << Self::DATA_OFFSET) & Self::DATA_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DATA_MASK) | ((value << Self::DATA_OFFSET) & Self::DATA_MASK)
+        });
     }
 }
 
@@ -219,7 +221,8 @@ impl UartdrVal {
     #[inline(always)]
     pub const fn with_data(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Uartdr::DATA_MASK) | ((value << Uartdr::DATA_OFFSET) & Uartdr::DATA_MASK)
+            bits: (self.bits & !Uartdr::DATA_MASK)
+                | ((value << Uartdr::DATA_OFFSET) & Uartdr::DATA_MASK),
         }
     }
 }
@@ -479,7 +482,7 @@ impl UartrsrVal {
                 self.bits | Uartrsr::OE_MASK
             } else {
                 self.bits & !Uartrsr::OE_MASK
-            }
+            },
         }
     }
 
@@ -493,7 +496,7 @@ impl UartrsrVal {
                 self.bits | Uartrsr::BE_MASK
             } else {
                 self.bits & !Uartrsr::BE_MASK
-            }
+            },
         }
     }
 
@@ -507,7 +510,7 @@ impl UartrsrVal {
                 self.bits | Uartrsr::PE_MASK
             } else {
                 self.bits & !Uartrsr::PE_MASK
-            }
+            },
         }
     }
 
@@ -521,7 +524,7 @@ impl UartrsrVal {
                 self.bits | Uartrsr::FE_MASK
             } else {
                 self.bits & !Uartrsr::FE_MASK
-            }
+            },
         }
     }
 }
@@ -934,7 +937,9 @@ impl Uartilpr {
     /// 8-bit low-power divisor value. These bits are cleared to 0 at reset.
     #[inline(always)]
     pub fn write_ilpdvsr(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ILPDVSR_MASK) | ((value << Self::ILPDVSR_OFFSET) & Self::ILPDVSR_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ILPDVSR_MASK) | ((value << Self::ILPDVSR_OFFSET) & Self::ILPDVSR_MASK)
+        });
     }
 }
 
@@ -980,7 +985,8 @@ impl UartilprVal {
     #[inline(always)]
     pub const fn with_ilpdvsr(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Uartilpr::ILPDVSR_MASK) | ((value << Uartilpr::ILPDVSR_OFFSET) & Uartilpr::ILPDVSR_MASK)
+            bits: (self.bits & !Uartilpr::ILPDVSR_MASK)
+                | ((value << Uartilpr::ILPDVSR_OFFSET) & Uartilpr::ILPDVSR_MASK),
         }
     }
 }
@@ -1062,7 +1068,10 @@ impl Uartibrd {
     /// The integer baud rate divisor. These bits are cleared to 0 on reset.
     #[inline(always)]
     pub fn write_baud_divint(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BAUD_DIVINT_MASK) | ((value << Self::BAUD_DIVINT_OFFSET) & Self::BAUD_DIVINT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BAUD_DIVINT_MASK)
+                | ((value << Self::BAUD_DIVINT_OFFSET) & Self::BAUD_DIVINT_MASK)
+        });
     }
 }
 
@@ -1108,7 +1117,8 @@ impl UartibrdVal {
     #[inline(always)]
     pub const fn with_baud_divint(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Uartibrd::BAUD_DIVINT_MASK) | ((value << Uartibrd::BAUD_DIVINT_OFFSET) & Uartibrd::BAUD_DIVINT_MASK)
+            bits: (self.bits & !Uartibrd::BAUD_DIVINT_MASK)
+                | ((value << Uartibrd::BAUD_DIVINT_OFFSET) & Uartibrd::BAUD_DIVINT_MASK),
         }
     }
 }
@@ -1190,7 +1200,10 @@ impl Uartfbrd {
     /// The fractional baud rate divisor. These bits are cleared to 0 on reset.
     #[inline(always)]
     pub fn write_baud_divfrac(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::BAUD_DIVFRAC_MASK) | ((value << Self::BAUD_DIVFRAC_OFFSET) & Self::BAUD_DIVFRAC_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::BAUD_DIVFRAC_MASK)
+                | ((value << Self::BAUD_DIVFRAC_OFFSET) & Self::BAUD_DIVFRAC_MASK)
+        });
     }
 }
 
@@ -1236,7 +1249,8 @@ impl UartfbrdVal {
     #[inline(always)]
     pub const fn with_baud_divfrac(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Uartfbrd::BAUD_DIVFRAC_MASK) | ((value << Uartfbrd::BAUD_DIVFRAC_OFFSET) & Uartfbrd::BAUD_DIVFRAC_MASK)
+            bits: (self.bits & !Uartfbrd::BAUD_DIVFRAC_MASK)
+                | ((value << Uartfbrd::BAUD_DIVFRAC_OFFSET) & Uartfbrd::BAUD_DIVFRAC_MASK),
         }
     }
 }
@@ -1416,7 +1430,9 @@ impl UartlcrH {
     /// Word length. These bits indicate the number of data bits transmitted or received in a frame as follows: b11 = 8 bits b10 = 7 bits b01 = 6 bits b00 = 5 bits.
     #[inline(always)]
     pub fn write_wlen(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::WLEN_MASK) | ((value << Self::WLEN_OFFSET) & Self::WLEN_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::WLEN_MASK) | ((value << Self::WLEN_OFFSET) & Self::WLEN_MASK)
+        });
     }
 
     /// **FEN** `[4]` (RW)
@@ -1614,7 +1630,7 @@ impl UartlcrHVal {
                 self.bits | UartlcrH::SPS_MASK
             } else {
                 self.bits & !UartlcrH::SPS_MASK
-            }
+            },
         }
     }
 
@@ -1624,7 +1640,8 @@ impl UartlcrHVal {
     #[inline(always)]
     pub const fn with_wlen(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !UartlcrH::WLEN_MASK) | ((value << UartlcrH::WLEN_OFFSET) & UartlcrH::WLEN_MASK)
+            bits: (self.bits & !UartlcrH::WLEN_MASK)
+                | ((value << UartlcrH::WLEN_OFFSET) & UartlcrH::WLEN_MASK),
         }
     }
 
@@ -1638,7 +1655,7 @@ impl UartlcrHVal {
                 self.bits | UartlcrH::FEN_MASK
             } else {
                 self.bits & !UartlcrH::FEN_MASK
-            }
+            },
         }
     }
 
@@ -1652,7 +1669,7 @@ impl UartlcrHVal {
                 self.bits | UartlcrH::STP2_MASK
             } else {
                 self.bits & !UartlcrH::STP2_MASK
-            }
+            },
         }
     }
 
@@ -1666,7 +1683,7 @@ impl UartlcrHVal {
                 self.bits | UartlcrH::EPS_MASK
             } else {
                 self.bits & !UartlcrH::EPS_MASK
-            }
+            },
         }
     }
 
@@ -1680,7 +1697,7 @@ impl UartlcrHVal {
                 self.bits | UartlcrH::PEN_MASK
             } else {
                 self.bits & !UartlcrH::PEN_MASK
-            }
+            },
         }
     }
 
@@ -1694,7 +1711,7 @@ impl UartlcrHVal {
                 self.bits | UartlcrH::BRK_MASK
             } else {
                 self.bits & !UartlcrH::BRK_MASK
-            }
+            },
         }
     }
 }
@@ -2282,7 +2299,7 @@ impl UartcrVal {
                 self.bits | Uartcr::CTSEN_MASK
             } else {
                 self.bits & !Uartcr::CTSEN_MASK
-            }
+            },
         }
     }
 
@@ -2296,7 +2313,7 @@ impl UartcrVal {
                 self.bits | Uartcr::RTSEN_MASK
             } else {
                 self.bits & !Uartcr::RTSEN_MASK
-            }
+            },
         }
     }
 
@@ -2310,7 +2327,7 @@ impl UartcrVal {
                 self.bits | Uartcr::OUT2_MASK
             } else {
                 self.bits & !Uartcr::OUT2_MASK
-            }
+            },
         }
     }
 
@@ -2324,7 +2341,7 @@ impl UartcrVal {
                 self.bits | Uartcr::OUT1_MASK
             } else {
                 self.bits & !Uartcr::OUT1_MASK
-            }
+            },
         }
     }
 
@@ -2338,7 +2355,7 @@ impl UartcrVal {
                 self.bits | Uartcr::RTS_MASK
             } else {
                 self.bits & !Uartcr::RTS_MASK
-            }
+            },
         }
     }
 
@@ -2352,7 +2369,7 @@ impl UartcrVal {
                 self.bits | Uartcr::DTR_MASK
             } else {
                 self.bits & !Uartcr::DTR_MASK
-            }
+            },
         }
     }
 
@@ -2366,7 +2383,7 @@ impl UartcrVal {
                 self.bits | Uartcr::RXE_MASK
             } else {
                 self.bits & !Uartcr::RXE_MASK
-            }
+            },
         }
     }
 
@@ -2380,7 +2397,7 @@ impl UartcrVal {
                 self.bits | Uartcr::TXE_MASK
             } else {
                 self.bits & !Uartcr::TXE_MASK
-            }
+            },
         }
     }
 
@@ -2394,7 +2411,7 @@ impl UartcrVal {
                 self.bits | Uartcr::LBE_MASK
             } else {
                 self.bits & !Uartcr::LBE_MASK
-            }
+            },
         }
     }
 
@@ -2408,7 +2425,7 @@ impl UartcrVal {
                 self.bits | Uartcr::SIRLP_MASK
             } else {
                 self.bits & !Uartcr::SIRLP_MASK
-            }
+            },
         }
     }
 
@@ -2422,7 +2439,7 @@ impl UartcrVal {
                 self.bits | Uartcr::SIREN_MASK
             } else {
                 self.bits & !Uartcr::SIREN_MASK
-            }
+            },
         }
     }
 
@@ -2436,7 +2453,7 @@ impl UartcrVal {
                 self.bits | Uartcr::UARTEN_MASK
             } else {
                 self.bits & !Uartcr::UARTEN_MASK
-            }
+            },
         }
     }
 }
@@ -2530,7 +2547,9 @@ impl Uartifls {
     /// Receive interrupt FIFO level select. The trigger points for the receive interrupt are as follows: b000 = Receive FIFO becomes >= 1 / 8 full b001 = Receive FIFO becomes >= 1 / 4 full b010 = Receive FIFO becomes >= 1 / 2 full b011 = Receive FIFO becomes >= 3 / 4 full b100 = Receive FIFO becomes >= 7 / 8 full b101-b111 = reserved.
     #[inline(always)]
     pub fn write_rxiflsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::RXIFLSEL_MASK) | ((value << Self::RXIFLSEL_OFFSET) & Self::RXIFLSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::RXIFLSEL_MASK) | ((value << Self::RXIFLSEL_OFFSET) & Self::RXIFLSEL_MASK)
+        });
     }
 
     /// **TXIFLSEL** `[2:0]` (RW)
@@ -2546,7 +2565,9 @@ impl Uartifls {
     /// Transmit interrupt FIFO level select. The trigger points for the transmit interrupt are as follows: b000 = Transmit FIFO becomes <= 1 / 8 full b001 = Transmit FIFO becomes <= 1 / 4 full b010 = Transmit FIFO becomes <= 1 / 2 full b011 = Transmit FIFO becomes <= 3 / 4 full b100 = Transmit FIFO becomes <= 7 / 8 full b101-b111 = reserved.
     #[inline(always)]
     pub fn write_txiflsel(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::TXIFLSEL_MASK) | ((value << Self::TXIFLSEL_OFFSET) & Self::TXIFLSEL_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::TXIFLSEL_MASK) | ((value << Self::TXIFLSEL_OFFSET) & Self::TXIFLSEL_MASK)
+        });
     }
 }
 
@@ -2600,7 +2621,8 @@ impl UartiflsVal {
     #[inline(always)]
     pub const fn with_rxiflsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Uartifls::RXIFLSEL_MASK) | ((value << Uartifls::RXIFLSEL_OFFSET) & Uartifls::RXIFLSEL_MASK)
+            bits: (self.bits & !Uartifls::RXIFLSEL_MASK)
+                | ((value << Uartifls::RXIFLSEL_OFFSET) & Uartifls::RXIFLSEL_MASK),
         }
     }
 
@@ -2610,7 +2632,8 @@ impl UartiflsVal {
     #[inline(always)]
     pub const fn with_txiflsel(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Uartifls::TXIFLSEL_MASK) | ((value << Uartifls::TXIFLSEL_OFFSET) & Uartifls::TXIFLSEL_MASK)
+            bits: (self.bits & !Uartifls::TXIFLSEL_MASK)
+                | ((value << Uartifls::TXIFLSEL_OFFSET) & Uartifls::TXIFLSEL_MASK),
         }
     }
 }
@@ -3157,7 +3180,7 @@ impl UartimscVal {
                 self.bits | Uartimsc::OEIM_MASK
             } else {
                 self.bits & !Uartimsc::OEIM_MASK
-            }
+            },
         }
     }
 
@@ -3171,7 +3194,7 @@ impl UartimscVal {
                 self.bits | Uartimsc::BEIM_MASK
             } else {
                 self.bits & !Uartimsc::BEIM_MASK
-            }
+            },
         }
     }
 
@@ -3185,7 +3208,7 @@ impl UartimscVal {
                 self.bits | Uartimsc::PEIM_MASK
             } else {
                 self.bits & !Uartimsc::PEIM_MASK
-            }
+            },
         }
     }
 
@@ -3199,7 +3222,7 @@ impl UartimscVal {
                 self.bits | Uartimsc::FEIM_MASK
             } else {
                 self.bits & !Uartimsc::FEIM_MASK
-            }
+            },
         }
     }
 
@@ -3213,7 +3236,7 @@ impl UartimscVal {
                 self.bits | Uartimsc::RTIM_MASK
             } else {
                 self.bits & !Uartimsc::RTIM_MASK
-            }
+            },
         }
     }
 
@@ -3227,7 +3250,7 @@ impl UartimscVal {
                 self.bits | Uartimsc::TXIM_MASK
             } else {
                 self.bits & !Uartimsc::TXIM_MASK
-            }
+            },
         }
     }
 
@@ -3241,7 +3264,7 @@ impl UartimscVal {
                 self.bits | Uartimsc::RXIM_MASK
             } else {
                 self.bits & !Uartimsc::RXIM_MASK
-            }
+            },
         }
     }
 
@@ -3255,7 +3278,7 @@ impl UartimscVal {
                 self.bits | Uartimsc::DSRMIM_MASK
             } else {
                 self.bits & !Uartimsc::DSRMIM_MASK
-            }
+            },
         }
     }
 
@@ -3269,7 +3292,7 @@ impl UartimscVal {
                 self.bits | Uartimsc::DCDMIM_MASK
             } else {
                 self.bits & !Uartimsc::DCDMIM_MASK
-            }
+            },
         }
     }
 
@@ -3283,7 +3306,7 @@ impl UartimscVal {
                 self.bits | Uartimsc::CTSMIM_MASK
             } else {
                 self.bits & !Uartimsc::CTSMIM_MASK
-            }
+            },
         }
     }
 
@@ -3297,7 +3320,7 @@ impl UartimscVal {
                 self.bits | Uartimsc::RIMIM_MASK
             } else {
                 self.bits & !Uartimsc::RIMIM_MASK
-            }
+            },
         }
     }
 }
@@ -4622,7 +4645,7 @@ impl UarticrVal {
                 self.bits | Uarticr::OEIC_MASK
             } else {
                 self.bits & !Uarticr::OEIC_MASK
-            }
+            },
         }
     }
 
@@ -4636,7 +4659,7 @@ impl UarticrVal {
                 self.bits | Uarticr::BEIC_MASK
             } else {
                 self.bits & !Uarticr::BEIC_MASK
-            }
+            },
         }
     }
 
@@ -4650,7 +4673,7 @@ impl UarticrVal {
                 self.bits | Uarticr::PEIC_MASK
             } else {
                 self.bits & !Uarticr::PEIC_MASK
-            }
+            },
         }
     }
 
@@ -4664,7 +4687,7 @@ impl UarticrVal {
                 self.bits | Uarticr::FEIC_MASK
             } else {
                 self.bits & !Uarticr::FEIC_MASK
-            }
+            },
         }
     }
 
@@ -4678,7 +4701,7 @@ impl UarticrVal {
                 self.bits | Uarticr::RTIC_MASK
             } else {
                 self.bits & !Uarticr::RTIC_MASK
-            }
+            },
         }
     }
 
@@ -4692,7 +4715,7 @@ impl UarticrVal {
                 self.bits | Uarticr::TXIC_MASK
             } else {
                 self.bits & !Uarticr::TXIC_MASK
-            }
+            },
         }
     }
 
@@ -4706,7 +4729,7 @@ impl UarticrVal {
                 self.bits | Uarticr::RXIC_MASK
             } else {
                 self.bits & !Uarticr::RXIC_MASK
-            }
+            },
         }
     }
 
@@ -4720,7 +4743,7 @@ impl UarticrVal {
                 self.bits | Uarticr::DSRMIC_MASK
             } else {
                 self.bits & !Uarticr::DSRMIC_MASK
-            }
+            },
         }
     }
 
@@ -4734,7 +4757,7 @@ impl UarticrVal {
                 self.bits | Uarticr::DCDMIC_MASK
             } else {
                 self.bits & !Uarticr::DCDMIC_MASK
-            }
+            },
         }
     }
 
@@ -4748,7 +4771,7 @@ impl UarticrVal {
                 self.bits | Uarticr::CTSMIC_MASK
             } else {
                 self.bits & !Uarticr::CTSMIC_MASK
-            }
+            },
         }
     }
 
@@ -4762,7 +4785,7 @@ impl UarticrVal {
                 self.bits | Uarticr::RIMIC_MASK
             } else {
                 self.bits & !Uarticr::RIMIC_MASK
-            }
+            },
         }
     }
 }
@@ -4981,7 +5004,7 @@ impl UartdmacrVal {
                 self.bits | Uartdmacr::DMAONERR_MASK
             } else {
                 self.bits & !Uartdmacr::DMAONERR_MASK
-            }
+            },
         }
     }
 
@@ -4995,7 +5018,7 @@ impl UartdmacrVal {
                 self.bits | Uartdmacr::TXDMAE_MASK
             } else {
                 self.bits & !Uartdmacr::TXDMAE_MASK
-            }
+            },
         }
     }
 
@@ -5009,7 +5032,7 @@ impl UartdmacrVal {
                 self.bits | Uartdmacr::RXDMAE_MASK
             } else {
                 self.bits & !Uartdmacr::RXDMAE_MASK
-            }
+            },
         }
     }
 }
@@ -5953,4 +5976,3 @@ pub struct RegisterBlock {
     /// UARTPCellID3 Register
     pub uartpcellid3: Uartpcellid3,
 }
-

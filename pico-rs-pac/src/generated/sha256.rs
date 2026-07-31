@@ -170,7 +170,9 @@ impl Csr {
     /// The SHA-256 core's DREQ logic requests one entire block of data at once, since there is no FIFO, and data goes straight into the core's message schedule and digest hardware. Therefore, when transferring data with DMA, CSR_DMA_SIZE must be configured in advance so that the correct number of transfers can be requested per block.
     #[inline(always)]
     pub fn write_dma_size(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DMA_SIZE_MASK) | ((value << Self::DMA_SIZE_OFFSET) & Self::DMA_SIZE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DMA_SIZE_MASK) | ((value << Self::DMA_SIZE_OFFSET) & Self::DMA_SIZE_MASK)
+        });
     }
 
     /// **ERR_WDATA_NOT_RDY** `[4]` (RW)
@@ -309,7 +311,7 @@ impl CsrVal {
                 self.bits | Csr::BSWAP_MASK
             } else {
                 self.bits & !Csr::BSWAP_MASK
-            }
+            },
         }
     }
 
@@ -320,7 +322,8 @@ impl CsrVal {
     #[inline(always)]
     pub const fn with_dma_size(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Csr::DMA_SIZE_MASK) | ((value << Csr::DMA_SIZE_OFFSET) & Csr::DMA_SIZE_MASK)
+            bits: (self.bits & !Csr::DMA_SIZE_MASK)
+                | ((value << Csr::DMA_SIZE_OFFSET) & Csr::DMA_SIZE_MASK),
         }
     }
 
@@ -334,7 +337,7 @@ impl CsrVal {
                 self.bits | Csr::ERR_WDATA_NOT_RDY_MASK
             } else {
                 self.bits & !Csr::ERR_WDATA_NOT_RDY_MASK
-            }
+            },
         }
     }
 
@@ -350,7 +353,7 @@ impl CsrVal {
                 self.bits | Csr::START_MASK
             } else {
                 self.bits & !Csr::START_MASK
-            }
+            },
         }
     }
 }
@@ -433,7 +436,8 @@ impl Wdata {
     /// This register supports word, halfword and byte writes, so that DMA from non-word-aligned buffers can be supported. The total amount of data per block remains the same (16 words, 32 halfwords or 64 bytes) and byte/halfword transfers must not be mixed within a block.
     #[inline(always)]
     pub fn write_wdata(&self, value: u32) {
-        self.value.write_bits((value << Self::WDATA_OFFSET) & Self::WDATA_MASK);
+        self.value
+            .write_bits((value << Self::WDATA_OFFSET) & Self::WDATA_MASK);
     }
 }
 
@@ -474,7 +478,8 @@ impl WdataVal {
     #[inline(always)]
     pub const fn with_wdata(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Wdata::WDATA_MASK) | ((value << Wdata::WDATA_OFFSET) & Wdata::WDATA_MASK)
+            bits: (self.bits & !Wdata::WDATA_MASK)
+                | ((value << Wdata::WDATA_OFFSET) & Wdata::WDATA_MASK),
         }
     }
 }
@@ -1239,4 +1244,3 @@ pub struct RegisterBlock {
     /// 256-bit checksum result. Contents are undefined when CSR_SUM_VLD is 0.
     pub sum7: Sum7,
 }
-

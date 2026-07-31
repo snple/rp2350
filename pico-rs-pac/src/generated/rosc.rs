@@ -103,7 +103,9 @@ impl Ctrl {
     /// The 12-bit code is intended to give some protection against accidental writes. An invalid setting will enable the oscillator.
     #[inline(always)]
     pub fn write_enable(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::ENABLE_MASK) | ((value << Self::ENABLE_OFFSET) & Self::ENABLE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::ENABLE_MASK) | ((value << Self::ENABLE_OFFSET) & Self::ENABLE_MASK)
+        });
     }
 
     /// **FREQ_RANGE** `[11:0]` (RW)
@@ -133,7 +135,10 @@ impl Ctrl {
     /// Note: the values here are gray coded which is why HIGH comes before TOOHIGH
     #[inline(always)]
     pub fn write_freq_range(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::FREQ_RANGE_MASK) | ((value << Self::FREQ_RANGE_OFFSET) & Self::FREQ_RANGE_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::FREQ_RANGE_MASK)
+                | ((value << Self::FREQ_RANGE_OFFSET) & Self::FREQ_RANGE_MASK)
+        });
     }
 }
 
@@ -198,7 +203,8 @@ impl CtrlVal {
     #[inline(always)]
     pub const fn with_enable(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ctrl::ENABLE_MASK) | ((value << Ctrl::ENABLE_OFFSET) & Ctrl::ENABLE_MASK)
+            bits: (self.bits & !Ctrl::ENABLE_MASK)
+                | ((value << Ctrl::ENABLE_OFFSET) & Ctrl::ENABLE_MASK),
         }
     }
 
@@ -215,7 +221,8 @@ impl CtrlVal {
     #[inline(always)]
     pub const fn with_freq_range(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Ctrl::FREQ_RANGE_MASK) | ((value << Ctrl::FREQ_RANGE_OFFSET) & Ctrl::FREQ_RANGE_MASK)
+            bits: (self.bits & !Ctrl::FREQ_RANGE_MASK)
+                | ((value << Ctrl::FREQ_RANGE_OFFSET) & Ctrl::FREQ_RANGE_MASK),
         }
     }
 }
@@ -384,7 +391,9 @@ impl Freqa {
     /// Any other value in this field will set all drive strengths to 0
     #[inline(always)]
     pub fn write_passwd(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PASSWD_MASK) | ((value << Self::PASSWD_OFFSET) & Self::PASSWD_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PASSWD_MASK) | ((value << Self::PASSWD_OFFSET) & Self::PASSWD_MASK)
+        });
     }
 
     /// **DS3** `[14:12]` (RW)
@@ -400,7 +409,9 @@ impl Freqa {
     /// Stage 3 drive strength
     #[inline(always)]
     pub fn write_ds3(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DS3_MASK) | ((value << Self::DS3_OFFSET) & Self::DS3_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DS3_MASK) | ((value << Self::DS3_OFFSET) & Self::DS3_MASK)
+        });
     }
 
     /// **DS2** `[10:8]` (RW)
@@ -416,7 +427,9 @@ impl Freqa {
     /// Stage 2 drive strength
     #[inline(always)]
     pub fn write_ds2(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DS2_MASK) | ((value << Self::DS2_OFFSET) & Self::DS2_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DS2_MASK) | ((value << Self::DS2_OFFSET) & Self::DS2_MASK)
+        });
     }
 
     /// **DS1_RANDOM** `[7]` (RW)
@@ -452,7 +465,9 @@ impl Freqa {
     /// Stage 1 drive strength
     #[inline(always)]
     pub fn write_ds1(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DS1_MASK) | ((value << Self::DS1_OFFSET) & Self::DS1_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DS1_MASK) | ((value << Self::DS1_OFFSET) & Self::DS1_MASK)
+        });
     }
 
     /// **DS0_RANDOM** `[3]` (RW)
@@ -488,7 +503,9 @@ impl Freqa {
     /// Stage 0 drive strength
     #[inline(always)]
     pub fn write_ds0(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DS0_MASK) | ((value << Self::DS0_OFFSET) & Self::DS0_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DS0_MASK) | ((value << Self::DS0_OFFSET) & Self::DS0_MASK)
+        });
     }
 }
 
@@ -584,7 +601,8 @@ impl FreqaVal {
     #[inline(always)]
     pub const fn with_passwd(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Freqa::PASSWD_MASK) | ((value << Freqa::PASSWD_OFFSET) & Freqa::PASSWD_MASK)
+            bits: (self.bits & !Freqa::PASSWD_MASK)
+                | ((value << Freqa::PASSWD_OFFSET) & Freqa::PASSWD_MASK),
         }
     }
 
@@ -594,7 +612,7 @@ impl FreqaVal {
     #[inline(always)]
     pub const fn with_ds3(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Freqa::DS3_MASK) | ((value << Freqa::DS3_OFFSET) & Freqa::DS3_MASK)
+            bits: (self.bits & !Freqa::DS3_MASK) | ((value << Freqa::DS3_OFFSET) & Freqa::DS3_MASK),
         }
     }
 
@@ -604,7 +622,7 @@ impl FreqaVal {
     #[inline(always)]
     pub const fn with_ds2(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Freqa::DS2_MASK) | ((value << Freqa::DS2_OFFSET) & Freqa::DS2_MASK)
+            bits: (self.bits & !Freqa::DS2_MASK) | ((value << Freqa::DS2_OFFSET) & Freqa::DS2_MASK),
         }
     }
 
@@ -618,7 +636,7 @@ impl FreqaVal {
                 self.bits | Freqa::DS1_RANDOM_MASK
             } else {
                 self.bits & !Freqa::DS1_RANDOM_MASK
-            }
+            },
         }
     }
 
@@ -628,7 +646,7 @@ impl FreqaVal {
     #[inline(always)]
     pub const fn with_ds1(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Freqa::DS1_MASK) | ((value << Freqa::DS1_OFFSET) & Freqa::DS1_MASK)
+            bits: (self.bits & !Freqa::DS1_MASK) | ((value << Freqa::DS1_OFFSET) & Freqa::DS1_MASK),
         }
     }
 
@@ -642,7 +660,7 @@ impl FreqaVal {
                 self.bits | Freqa::DS0_RANDOM_MASK
             } else {
                 self.bits & !Freqa::DS0_RANDOM_MASK
-            }
+            },
         }
     }
 
@@ -652,7 +670,7 @@ impl FreqaVal {
     #[inline(always)]
     pub const fn with_ds0(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Freqa::DS0_MASK) | ((value << Freqa::DS0_OFFSET) & Freqa::DS0_MASK)
+            bits: (self.bits & !Freqa::DS0_MASK) | ((value << Freqa::DS0_OFFSET) & Freqa::DS0_MASK),
         }
     }
 }
@@ -788,7 +806,9 @@ impl Freqb {
     /// Any other value in this field will set all drive strengths to 0
     #[inline(always)]
     pub fn write_passwd(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PASSWD_MASK) | ((value << Self::PASSWD_OFFSET) & Self::PASSWD_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PASSWD_MASK) | ((value << Self::PASSWD_OFFSET) & Self::PASSWD_MASK)
+        });
     }
 
     /// **DS7** `[14:12]` (RW)
@@ -804,7 +824,9 @@ impl Freqb {
     /// Stage 7 drive strength
     #[inline(always)]
     pub fn write_ds7(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DS7_MASK) | ((value << Self::DS7_OFFSET) & Self::DS7_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DS7_MASK) | ((value << Self::DS7_OFFSET) & Self::DS7_MASK)
+        });
     }
 
     /// **DS6** `[10:8]` (RW)
@@ -820,7 +842,9 @@ impl Freqb {
     /// Stage 6 drive strength
     #[inline(always)]
     pub fn write_ds6(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DS6_MASK) | ((value << Self::DS6_OFFSET) & Self::DS6_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DS6_MASK) | ((value << Self::DS6_OFFSET) & Self::DS6_MASK)
+        });
     }
 
     /// **DS5** `[6:4]` (RW)
@@ -836,7 +860,9 @@ impl Freqb {
     /// Stage 5 drive strength
     #[inline(always)]
     pub fn write_ds5(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DS5_MASK) | ((value << Self::DS5_OFFSET) & Self::DS5_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DS5_MASK) | ((value << Self::DS5_OFFSET) & Self::DS5_MASK)
+        });
     }
 
     /// **DS4** `[2:0]` (RW)
@@ -852,7 +878,9 @@ impl Freqb {
     /// Stage 4 drive strength
     #[inline(always)]
     pub fn write_ds4(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DS4_MASK) | ((value << Self::DS4_OFFSET) & Self::DS4_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DS4_MASK) | ((value << Self::DS4_OFFSET) & Self::DS4_MASK)
+        });
     }
 }
 
@@ -932,7 +960,8 @@ impl FreqbVal {
     #[inline(always)]
     pub const fn with_passwd(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Freqb::PASSWD_MASK) | ((value << Freqb::PASSWD_OFFSET) & Freqb::PASSWD_MASK)
+            bits: (self.bits & !Freqb::PASSWD_MASK)
+                | ((value << Freqb::PASSWD_OFFSET) & Freqb::PASSWD_MASK),
         }
     }
 
@@ -942,7 +971,7 @@ impl FreqbVal {
     #[inline(always)]
     pub const fn with_ds7(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Freqb::DS7_MASK) | ((value << Freqb::DS7_OFFSET) & Freqb::DS7_MASK)
+            bits: (self.bits & !Freqb::DS7_MASK) | ((value << Freqb::DS7_OFFSET) & Freqb::DS7_MASK),
         }
     }
 
@@ -952,7 +981,7 @@ impl FreqbVal {
     #[inline(always)]
     pub const fn with_ds6(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Freqb::DS6_MASK) | ((value << Freqb::DS6_OFFSET) & Freqb::DS6_MASK)
+            bits: (self.bits & !Freqb::DS6_MASK) | ((value << Freqb::DS6_OFFSET) & Freqb::DS6_MASK),
         }
     }
 
@@ -962,7 +991,7 @@ impl FreqbVal {
     #[inline(always)]
     pub const fn with_ds5(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Freqb::DS5_MASK) | ((value << Freqb::DS5_OFFSET) & Freqb::DS5_MASK)
+            bits: (self.bits & !Freqb::DS5_MASK) | ((value << Freqb::DS5_OFFSET) & Freqb::DS5_MASK),
         }
     }
 
@@ -972,7 +1001,7 @@ impl FreqbVal {
     #[inline(always)]
     pub const fn with_ds4(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Freqb::DS4_MASK) | ((value << Freqb::DS4_OFFSET) & Freqb::DS4_MASK)
+            bits: (self.bits & !Freqb::DS4_MASK) | ((value << Freqb::DS4_OFFSET) & Freqb::DS4_MASK),
         }
     }
 }
@@ -1045,7 +1074,9 @@ impl Random {
     /// Write **SEED** `[31:0]` (RW)
     #[inline(always)]
     pub fn write_seed(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SEED_MASK) | ((value << Self::SEED_OFFSET) & Self::SEED_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SEED_MASK) | ((value << Self::SEED_OFFSET) & Self::SEED_MASK)
+        });
     }
 }
 
@@ -1087,7 +1118,8 @@ impl RandomVal {
     #[inline(always)]
     pub const fn with_seed(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Random::SEED_MASK) | ((value << Random::SEED_OFFSET) & Random::SEED_MASK)
+            bits: (self.bits & !Random::SEED_MASK)
+                | ((value << Random::SEED_OFFSET) & Random::SEED_MASK),
         }
     }
 }
@@ -1184,7 +1216,9 @@ impl Dormant {
     /// Warning: setup the irq before selecting dormant mode
     #[inline(always)]
     pub fn write_dormant(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DORMANT_MASK) | ((value << Self::DORMANT_OFFSET) & Self::DORMANT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DORMANT_MASK) | ((value << Self::DORMANT_OFFSET) & Self::DORMANT_MASK)
+        });
     }
 }
 
@@ -1230,7 +1264,8 @@ impl DormantVal {
     #[inline(always)]
     pub const fn with_dormant(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Dormant::DORMANT_MASK) | ((value << Dormant::DORMANT_OFFSET) & Dormant::DORMANT_MASK)
+            bits: (self.bits & !Dormant::DORMANT_MASK)
+                | ((value << Dormant::DORMANT_OFFSET) & Dormant::DORMANT_MASK),
         }
     }
 }
@@ -1329,7 +1364,9 @@ impl Div {
     /// this register resets to div=32
     #[inline(always)]
     pub fn write_div(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::DIV_MASK) | ((value << Self::DIV_OFFSET) & Self::DIV_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::DIV_MASK) | ((value << Self::DIV_OFFSET) & Self::DIV_MASK)
+        });
     }
 }
 
@@ -1377,7 +1414,7 @@ impl DivVal {
     #[inline(always)]
     pub const fn with_div(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Div::DIV_MASK) | ((value << Div::DIV_OFFSET) & Div::DIV_MASK)
+            bits: (self.bits & !Div::DIV_MASK) | ((value << Div::DIV_OFFSET) & Div::DIV_MASK),
         }
     }
 }
@@ -1509,7 +1546,9 @@ impl Phase {
     /// any other value enables the output with shift=0
     #[inline(always)]
     pub fn write_passwd(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::PASSWD_MASK) | ((value << Self::PASSWD_OFFSET) & Self::PASSWD_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::PASSWD_MASK) | ((value << Self::PASSWD_OFFSET) & Self::PASSWD_MASK)
+        });
     }
 
     /// **ENABLE** `[3]` (RW)
@@ -1571,7 +1610,9 @@ impl Phase {
     /// must be set to 0 before setting div=1
     #[inline(always)]
     pub fn write_shift(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::SHIFT_MASK) | ((value << Self::SHIFT_OFFSET) & Self::SHIFT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::SHIFT_MASK) | ((value << Self::SHIFT_OFFSET) & Self::SHIFT_MASK)
+        });
     }
 }
 
@@ -1647,7 +1688,8 @@ impl PhaseVal {
     #[inline(always)]
     pub const fn with_passwd(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Phase::PASSWD_MASK) | ((value << Phase::PASSWD_OFFSET) & Phase::PASSWD_MASK)
+            bits: (self.bits & !Phase::PASSWD_MASK)
+                | ((value << Phase::PASSWD_OFFSET) & Phase::PASSWD_MASK),
         }
     }
 
@@ -1662,7 +1704,7 @@ impl PhaseVal {
                 self.bits | Phase::ENABLE_MASK
             } else {
                 self.bits & !Phase::ENABLE_MASK
-            }
+            },
         }
     }
 
@@ -1677,7 +1719,7 @@ impl PhaseVal {
                 self.bits | Phase::FLIP_MASK
             } else {
                 self.bits & !Phase::FLIP_MASK
-            }
+            },
         }
     }
 
@@ -1689,7 +1731,8 @@ impl PhaseVal {
     #[inline(always)]
     pub const fn with_shift(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Phase::SHIFT_MASK) | ((value << Phase::SHIFT_OFFSET) & Phase::SHIFT_MASK)
+            bits: (self.bits & !Phase::SHIFT_MASK)
+                | ((value << Phase::SHIFT_OFFSET) & Phase::SHIFT_MASK),
         }
     }
 }
@@ -1921,7 +1964,7 @@ impl StatusVal {
                 self.bits | Status::BADWRITE_MASK
             } else {
                 self.bits & !Status::BADWRITE_MASK
-            }
+            },
         }
     }
 }
@@ -2086,7 +2129,9 @@ impl Count {
     /// Write **COUNT** `[15:0]` (RW)
     #[inline(always)]
     pub fn write_count(&self, value: u32) {
-        self.value.modify_bits(|r| (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK));
+        self.value.modify_bits(|r| {
+            (r & !Self::COUNT_MASK) | ((value << Self::COUNT_OFFSET) & Self::COUNT_MASK)
+        });
     }
 }
 
@@ -2128,7 +2173,8 @@ impl CountVal {
     #[inline(always)]
     pub const fn with_count(self, value: u32) -> Self {
         Self {
-            bits: (self.bits & !Count::COUNT_MASK) | ((value << Count::COUNT_OFFSET) & Count::COUNT_MASK)
+            bits: (self.bits & !Count::COUNT_MASK)
+                | ((value << Count::COUNT_OFFSET) & Count::COUNT_MASK),
         }
     }
 }
@@ -2202,4 +2248,3 @@ pub struct RegisterBlock {
     /// Can be used for short software pauses when setting up time sensitive hardware.
     pub count: Count,
 }
-
