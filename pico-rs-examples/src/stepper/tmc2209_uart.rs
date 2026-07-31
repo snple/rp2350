@@ -122,7 +122,7 @@ fn main() -> ! {
 
         // 读取 IOIN 验证芯片
         match tmc.read_ioin(&timer) {
-            Some(ioin) => {
+            Ok(ioin) => {
                 let ver = ioin.version();
                 if ver == 0x21 {
                     info!("  IOIN={:#010x}  version={:#04x} ✓", u32::from(ioin), ver);
@@ -144,7 +144,7 @@ fn main() -> ! {
                     continue;
                 }
             }
-            None => {
+            Err(_) => {
                 warn!("  No response!");
                 fail += 1;
                 continue;
@@ -154,9 +154,9 @@ fn main() -> ! {
         timer.delay_ms(5);
 
         // 清除并读 GSTAT
-        tmc.clear_gstat(&timer);
+        let _ = tmc.clear_gstat(&timer);
         timer.delay_ms(5);
-        if let Some(gstat) = tmc.read_gstat(&timer) {
+        if let Ok(gstat) = tmc.read_gstat(&timer) {
             info!(
                 "  GSTAT={:#04x}  reset={}  drv_err={}  uv_cp={}",
                 u32::from(gstat),
@@ -167,7 +167,7 @@ fn main() -> ! {
         }
 
         // 写 GCONF: multistep_filt + pdn_disable
-        tmc.write_gconf(
+        let _ = tmc.write_gconf(
             &Gconf::new()
                 .with_multistep_filt(true)
                 .with_pdn_disable(true),
@@ -176,7 +176,7 @@ fn main() -> ! {
         timer.delay_ms(5);
 
         // 读回 GCONF
-        if let Some(gconf) = tmc.read_gconf(&timer) {
+        if let Ok(gconf) = tmc.read_gconf(&timer) {
             info!(
                 "  GCONF={:#06x}  pdn_dis={}  multistep={}  shaft={}  spread={}",
                 u32::from(gconf),
@@ -188,7 +188,7 @@ fn main() -> ! {
         }
 
         // 读 IHOLD_IRUN
-        if let Some(ihold_irun) = tmc.read_ihold_irun(&timer) {
+        if let Ok(ihold_irun) = tmc.read_ihold_irun(&timer) {
             info!(
                 "  IHOLD_IRUN={:#08x}  ihold={}  irun={}  iholddelay={}",
                 u32::from(ihold_irun),
@@ -199,7 +199,7 @@ fn main() -> ! {
         }
 
         // 读 CHOPCONF
-        if let Some(chopconf) = tmc.read_chopconf(&timer) {
+        if let Ok(chopconf) = tmc.read_chopconf(&timer) {
             let mres_str = match chopconf.mres() {
                 0 => "256",
                 1 => "128",
@@ -224,7 +224,7 @@ fn main() -> ! {
         }
 
         // 读 PWMCONF
-        if let Some(pwmconf) = tmc.read_pwmconf(&timer) {
+        if let Ok(pwmconf) = tmc.read_pwmconf(&timer) {
             info!(
                 "  PWMCONF={:#08x}  ofs={}  grad={}  freq={}  autoscale={}  autograd={}  lim={}  reg={}",
                 u32::from(pwmconf),
@@ -239,7 +239,7 @@ fn main() -> ! {
         }
 
         // 读 DRV_STATUS
-        if let Some(drv) = tmc.read_drv_status(&timer) {
+        if let Ok(drv) = tmc.read_drv_status(&timer) {
             info!(
                 "  DRV_STATUS={:#08x}  stst={}  cs_actual={}  olA={}  olB={}  otpw={}  ot={}  s2ga={}  s2gb={}",
                 u32::from(drv),
@@ -255,12 +255,12 @@ fn main() -> ! {
         }
 
         // 读 SG_RESULT
-        if let Some(sg) = tmc.read_sg_result(&timer) {
+        if let Ok(sg) = tmc.read_sg_result(&timer) {
             info!("  SG_RESULT={}", sg);
         }
 
         // 读 TSTEP
-        if let Some(tstep) = tmc.read_reg(REG_TSTEP, &timer)
+        if let Ok(tstep) = tmc.read_reg(REG_TSTEP, &timer)
             && tstep != 0xFFFFF
         {
             info!("  TSTEP={} (speed indicator)", tstep & 0xFFFFF);
@@ -268,10 +268,10 @@ fn main() -> ! {
 
         // 读 IFCNT
         match tmc.read_ifcnt(&timer) {
-            Some(ifcnt) => {
+            Ok(ifcnt) => {
                 info!("  IFCNT={}", ifcnt);
             }
-            None => {
+            Err(_) => {
                 warn!("  IFCNT read failed!");
             }
         }

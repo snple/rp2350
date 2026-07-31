@@ -232,8 +232,8 @@ fn main() -> ! {
     let tmc = Tmc2209::new(&uart, TMC_SLAVE_ADDR);
 
     match tmc.read_ioin(&timer) {
-        Some(v) => info!("Chip addr={:#x} ver={:#04x} ✓", TMC_SLAVE_ADDR, v.version()),
-        None => {
+        Ok(v) => info!("Chip addr={:#x} ver={:#04x} ✓", TMC_SLAVE_ADDR, v.version()),
+        Err(_) => {
             warn!("TMC2209 not responding — halt");
             loop {
                 pico_rs_rt::asm::wfi();
@@ -243,16 +243,16 @@ fn main() -> ! {
 
     // SGTHRS: 堵转检测阈值。80 = 中等灵敏度，正常加减速不误触发。
     // 如果仍误触发则继续提高；如果真堵转不触发则降低。
-    tmc.configure(&timer, MICROSTEPPING, RUN_CURRENT, HOLD_CURRENT, 10, 80);
+    let _ = tmc.configure(&timer, MICROSTEPPING, RUN_CURRENT, HOLD_CURRENT, 10, 80);
     // 关闭 VACTUAL 模式 — 防止上次 UART 控速残留导致电机自转
-    tmc.stop_vactual(&timer);
+    let _ = tmc.stop_vactual(&timer);
     info!(
         "Configured: 1/{} μstep, IRUN={}, IHOLD={}",
         MICROSTEPPING, RUN_CURRENT, HOLD_CURRENT
     );
 
     // --- 回读确认关键配置 ---
-    if let Some(c) = tmc.read_chopconf(&timer) {
+    if let Ok(c) = tmc.read_chopconf(&timer) {
         info!(
             "CHOPCONF: mres={} toff={} intpol={}",
             c.mres(),
@@ -260,7 +260,7 @@ fn main() -> ! {
             c.intpol()
         );
     }
-    if let Some(sg) = tmc.read_sg_threshold(&timer) {
+    if let Ok(sg) = tmc.read_sg_threshold(&timer) {
         info!("SGTHRS={} (stall if SG_RESULT ≤ {})", sg, sg * 2);
     }
 
@@ -280,7 +280,7 @@ fn main() -> ! {
     AXIS.wait_done();
     timer.delay_ms(50);
 
-    if let Some(drv) = tmc.read_drv_status(&timer) {
+    if let Ok(drv) = tmc.read_drv_status(&timer) {
         let s2g = drv.s2ga() || drv.s2gb();
         let ol = drv.ola() || drv.olb();
         let ot = drv.ot() || drv.otpw() || drv.t120();
@@ -359,7 +359,7 @@ fn main() -> ! {
         // --- TMC2209 诊断 ---
         let sg = tmc.read_sg_result(&timer).unwrap_or(0);
         let stalled = AXIS.stall_occurred();
-        if let Some(drv) = tmc.read_drv_status(&timer) {
+        if let Ok(drv) = tmc.read_drv_status(&timer) {
             let ot = drv.ot() || drv.otpw();
             info!(
                 "[lap {}] done  pos={}  sg={} cs={} stealth={} stst={} {}{}",

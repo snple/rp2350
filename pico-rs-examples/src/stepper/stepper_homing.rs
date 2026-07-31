@@ -238,12 +238,12 @@ fn main() -> ! {
 
     // 读取 IOIN 寄存器验证通信：如果成功则打印芯片版本号
     match tmc.read_ioin(&timer) {
-        Some(v) => info!(
+        Ok(v) => info!(
             "TMC2209 addr={:#x} ver={:#04x} ✓",
             TMC_SLAVE_ADDR,
             v.version()
         ),
-        None => {
+        Err(_) => {
             // 通信失败：可能地址不对、接线错误或芯片未上电
             warn!("TMC2209 not responding — halt");
             loop {
@@ -259,7 +259,7 @@ fn main() -> ! {
     //   - 保持电流 2 (≈0.0625A RMS)
     //   - 保持延迟 10 (约 2^10 = 1024 个时钟后降至 IHOLD)
     //   - StallGuard 阈值 80
-    tmc.configure(
+    let _ = tmc.configure(
         &timer,
         MICROSTEPPING,
         RUN_CURRENT,
@@ -273,10 +273,10 @@ fn main() -> ! {
     );
 
     // 禁用 TCOOL 阈值 (设为最大值)，防止运动过程中意外触发 CoolStep
-    tmc.set_tcool_threshold(0xFFFFF, &timer);
+    let _ = tmc.set_tcool_threshold(0xFFFFF, &timer);
 
     // 停止任何残留的 VACTUAL 速度模式，确保处于位置模式
-    tmc.stop_vactual(&timer);
+    let _ = tmc.stop_vactual(&timer);
 
     // 启用 TIMER0 中断 (alarm 0 用于步进脉冲时序)
     unsafe {

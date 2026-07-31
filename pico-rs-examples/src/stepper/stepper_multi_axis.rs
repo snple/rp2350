@@ -266,8 +266,8 @@ macro_rules! tmc_init {
         let tmc = Tmc2209::new($uart, $addr);
 
         match tmc.read_ioin($timer) {
-            Some(v) => info!("[{}] addr={:#x} ver={:#04x} ✓", $label, $addr, v.version()),
-            None => {
+            Ok(v) => info!("[{}] addr={:#x} ver={:#04x} ✓", $label, $addr, v.version()),
+            Err(_) => {
                 warn!("[{}] TMC2209 not responding — halt", $label);
                 loop {
                     pico_rs_rt::asm::wfi();
@@ -275,7 +275,7 @@ macro_rules! tmc_init {
             }
         }
 
-        tmc.configure(
+        let _ = tmc.configure(
             $timer,
             MICROSTEPPING,
             RUN_CURRENT,
@@ -283,8 +283,8 @@ macro_rules! tmc_init {
             IHOLD_DELAY,
             SG_THRESHOLD,
         );
-        tmc.set_tcool_threshold(0xFFFFF, $timer);
-        tmc.stop_vactual($timer);
+        let _ = tmc.set_tcool_threshold(0xFFFFF, $timer);
+        let _ = tmc.stop_vactual($timer);
         info!(
             "[{}] configured: 1/{} μstep, IRUN={}, IHOLD={}, SGTHRS={}",
             $label, MICROSTEPPING, RUN_CURRENT, HOLD_CURRENT, SG_THRESHOLD

@@ -123,8 +123,8 @@ fn main() -> ! {
     let tmc = Tmc2209::new(&uart, TMC_SLAVE_ADDR);
 
     match tmc.read_ioin(&timer) {
-        Some(v) => info!("Chip addr={:#x} ver={:#04x} ✓", TMC_SLAVE_ADDR, v.version()),
-        None => {
+        Ok(v) => info!("Chip addr={:#x} ver={:#04x} ✓", TMC_SLAVE_ADDR, v.version()),
+        Err(_) => {
             warn!("TMC2209 not responding — halt");
             loop {
                 pico_rs_rt::asm::wfi();
@@ -132,7 +132,7 @@ fn main() -> ! {
         }
     }
 
-    tmc.configure(
+    let _ = tmc.configure(
         &timer,
         MICROSTEPPING,
         RUN_CURRENT,
@@ -150,7 +150,7 @@ fn main() -> ! {
 
     // VACTUAL 模式下 TSTEP 不会从 STEP 引脚更新，必须设 TCOOLTHRS=max
     // 否则 DIAG 输出条件 TSTEP < TCOOLTHRS 永远不成立。
-    tmc.set_tcool_threshold(0xFFFFF, &timer);
+    let _ = tmc.set_tcool_threshold(0xFFFFF, &timer);
     unsafe {
         interrupt::enable(Interrupt::IO_IRQ_BANK0);
     }
@@ -167,19 +167,19 @@ fn main() -> ! {
     // 快速诊断：采样 SG_RESULT 辅助调阈值 (1s，短行程)
     // ======================================================================
     info!("Diag: quick SG_RESULT sample...");
-    tmc.set_vactual(vactual, &timer);
+    let _ = tmc.set_vactual(vactual, &timer);
     timer.delay_ms(100);
 
     let mut sg_min: u16 = 65535;
     let mut sg_max: u16 = 0;
     for _ in 0..5 {
-        if let Some(sg) = tmc.read_sg_result(&timer) {
+        if let Ok(sg) = tmc.read_sg_result(&timer) {
             sg_min = sg_min.min(sg);
             sg_max = sg_max.max(sg);
         }
         timer.delay_ms(200);
     }
-    tmc.stop_vactual(&timer);
+    let _ = tmc.stop_vactual(&timer);
     timer.delay_ms(100);
 
     // SGTHRS 应设得比正常最小值低一些：建议 = sg_min × 0.3 ~ 0.5
@@ -218,7 +218,7 @@ fn main() -> ! {
         let vel = if forward { vactual } else { -vactual };
 
         info!("[lap {}] {} VACTUAL={} ...", lap, dir_str, vel);
-        tmc.set_vactual(vel, &timer);
+        let _ = tmc.set_vactual(vel, &timer);
 
         // 等待堵转
         while !STALL_FLAG.swap(false, Ordering::Relaxed) {
@@ -226,16 +226,16 @@ fn main() -> ! {
         }
 
         // 立即停止，然后反向低速退离末端
-        tmc.stop_vactual(&timer);
+        let _ = tmc.stop_vactual(&timer);
         timer.delay_ms(50);
 
         info!("[lap {}] STALL! — stop + back off {} ms", lap, BACKOFF_MS);
 
         let back_vel = if forward { -vactual_back } else { vactual_back };
-        tmc.set_vactual(back_vel, &timer);
+        let _ = tmc.set_vactual(back_vel, &timer);
         timer.delay_ms(BACKOFF_MS);
 
-        tmc.stop_vactual(&timer);
+        let _ = tmc.stop_vactual(&timer);
         timer.delay_ms(STALL_PAUSE_MS);
 
         forward = !forward;

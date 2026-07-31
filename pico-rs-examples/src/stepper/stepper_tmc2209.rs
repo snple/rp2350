@@ -300,7 +300,7 @@ fn main() -> ! {
 
     // 验证芯片能通信
     let ioin_init = tmc.read_ioin(&timer);
-    if ioin_init.is_none() {
+    if ioin_init.is_err() {
         warn!("Cannot communicate with TMC2209 — check UART wiring and PDN_UART pull-up!");
         info!("Halting.");
         loop {
@@ -315,24 +315,24 @@ fn main() -> ! {
     unsafe { gpio::set_high(PIN_ENABLE) };
     timer.delay_ms(2);
     match tmc.read_ioin(&timer) {
-        Some(v) => info!(
+        Ok(v) => info!(
             "  ENN=HIGH (GP{} high) → IOIN.ENN={} (expect true) {}",
             PIN_ENABLE,
             v.enn(),
             if v.enn() { "✓" } else { "✗" }
         ),
-        None => warn!("  read failed"),
+        Err(_) => warn!("  read failed"),
     }
     unsafe { gpio::set_low(PIN_ENABLE) };
     timer.delay_ms(2);
     match tmc.read_ioin(&timer) {
-        Some(v) => info!(
+        Ok(v) => info!(
             "  ENN=LOW  (GP{} low)  → IOIN.ENN={} (expect false) {}",
             PIN_ENABLE,
             v.enn(),
             if !v.enn() { "✓" } else { "✗" }
         ),
-        None => warn!("  read failed"),
+        Err(_) => warn!("  read failed"),
     }
 
     // --- 测试 DIR (GPxx) ---
@@ -340,24 +340,24 @@ fn main() -> ! {
     unsafe { gpio::set_high(PIN_DIR) };
     timer.delay_ms(2);
     match tmc.read_ioin(&timer) {
-        Some(v) => info!(
+        Ok(v) => info!(
             "  DIR=HIGH (GP{} high) → IOIN.DIR={} (expect true) {}",
             PIN_DIR,
             v.dir(),
             if v.dir() { "✓" } else { "✗" }
         ),
-        None => warn!("  read failed"),
+        Err(_) => warn!("  read failed"),
     }
     unsafe { gpio::set_low(PIN_DIR) };
     timer.delay_ms(2);
     match tmc.read_ioin(&timer) {
-        Some(v) => info!(
+        Ok(v) => info!(
             "  DIR=LOW  (GP{} low)  → IOIN.DIR={} (expect false) {}",
             PIN_DIR,
             v.dir(),
             if !v.dir() { "✓" } else { "✗" }
         ),
-        None => warn!("  read failed"),
+        Err(_) => warn!("  read failed"),
     }
 
     // --- 测试 STEP (GPxx) ---
@@ -365,24 +365,24 @@ fn main() -> ! {
     unsafe { gpio::set_high(PIN_STEP) };
     timer.delay_ms(2);
     match tmc.read_ioin(&timer) {
-        Some(v) => info!(
+        Ok(v) => info!(
             "  STEP=HIGH (GP{} high) → IOIN.STEP={} (expect true) {}",
             PIN_STEP,
             v.step(),
             if v.step() { "✓" } else { "✗" }
         ),
-        None => warn!("  read failed"),
+        Err(_) => warn!("  read failed"),
     }
     unsafe { gpio::set_low(PIN_STEP) };
     timer.delay_ms(2);
     match tmc.read_ioin(&timer) {
-        Some(v) => info!(
+        Ok(v) => info!(
             "  STEP=LOW  (GP{} low)  → IOIN.STEP={} (expect false) {}",
             PIN_STEP,
             v.step(),
             if !v.step() { "✓" } else { "✗" }
         ),
-        None => warn!("  read failed"),
+        Err(_) => warn!("  read failed"),
     }
 
     // --- 测试 INDEX (GPxx, TMC2209 输出 → Pico 输入) ---
@@ -420,7 +420,7 @@ fn main() -> ! {
 
     // 1.1 验证通信 — 读取芯片版本和引脚状态
     match tmc.read_ioin(&timer) {
-        Some(ioin) => {
+        Ok(ioin) => {
             let ver = ioin.version();
             info!(
                 "IOIN={:#010x}  version={:#04x} {}  ENN={}  MS1={}  MS2={}  STEP={}  DIR={}",
@@ -434,7 +434,7 @@ fn main() -> ! {
                 ioin.dir()
             );
         }
-        None => {
+        Err(_) => {
             warn!("Failed to read TMC2209 — check UART wiring and PDN_UART pull-up!");
         }
     }
@@ -442,9 +442,9 @@ fn main() -> ! {
     timer.delay_ms(10);
 
     // 1.2 清除错误标志
-    tmc.clear_gstat(&timer);
+    tmc.clear_gstat(&timer).ok();
     timer.delay_ms(10);
-    if let Some(gstat) = tmc.read_gstat(&timer) {
+    if let Ok(gstat) = tmc.read_gstat(&timer) {
         info!(
             "GSTAT={:#04x}  reset={}  drv_err={}  uv_cp={}",
             u32::from(gstat),
@@ -466,10 +466,10 @@ fn main() -> ! {
         .with_multistep_filt(true)
         .with_internal_rsense(false)
         .with_i_scale_analog(false);
-    tmc.write_gconf(&gconf_val, &timer);
+    tmc.write_gconf(&gconf_val, &timer).ok();
     timer.delay_ms(5);
     match tmc.read_gconf(&timer) {
-        Some(v) => info!(
+        Ok(v) => info!(
             "GCONF write→read: {:#06x}  pdn_dis={}  mstep_reg={}  multistep={}  int_rsense={}  i_scale_analog={}",
             u32::from(v),
             v.pdn_disable(),
@@ -478,17 +478,17 @@ fn main() -> ! {
             v.internal_rsense(),
             v.i_scale_analog()
         ),
-        None => warn!("GCONF readback FAILED"),
+        Err(_) => warn!("GCONF readback FAILED"),
     }
 
     // --- 诊断: 先读默认值 ---
     match tmc.read_reg(REG_IHOLD_IRUN, &timer) {
-        Some(v) => info!("IHOLD_IRUN default (pre-write): {:#010x}", v),
-        None => warn!("IHOLD_IRUN default read FAILED"),
+        Ok(v) => info!("IHOLD_IRUN default (pre-write): {:#010x}", v),
+        Err(_) => warn!("IHOLD_IRUN default read FAILED"),
     }
     match tmc.read_reg(REG_TPOWERDOWN, &timer) {
-        Some(v) => info!("TPOWERDOWN default (pre-write): {}", v),
-        None => warn!("TPOWERDOWN default read FAILED"),
+        Ok(v) => info!("TPOWERDOWN default (pre-write): {}", v),
+        Err(_) => warn!("TPOWERDOWN default read FAILED"),
     }
 
     // IHOLD_IRUN — 直接写 raw register，不通过 helper
@@ -498,10 +498,10 @@ fn main() -> ! {
         "Writing IHOLD_IRUN = {:#010x} (IHOLD={} IRUN={} DELAY={})",
         ihold_irun_val, HOLD_CURRENT, RUN_CURRENT, IHOLD_DELAY
     );
-    tmc.write_reg(REG_IHOLD_IRUN, ihold_irun_val, &timer);
+    tmc.write_reg(REG_IHOLD_IRUN, ihold_irun_val, &timer).ok();
     timer.delay_ms(5);
     match tmc.read_reg(REG_IHOLD_IRUN, &timer) {
-        Some(v) => {
+        Ok(v) => {
             let ir = IholdIr::from(v);
             info!(
                 "IHOLD_IRUN write→read: {:#010x}  IHOLD={}  IRUN={}  DELAY={} {}",
@@ -516,83 +516,83 @@ fn main() -> ! {
                 }
             );
         }
-        None => warn!("IHOLD_IRUN readback FAILED"),
+        Err(_) => warn!("IHOLD_IRUN readback FAILED"),
     }
 
     // TPOWERDOWN
-    tmc.write_reg(REG_TPOWERDOWN, 20, &timer);
+    tmc.write_reg(REG_TPOWERDOWN, 20, &timer).ok();
     timer.delay_ms(5);
     match tmc.read_reg(REG_TPOWERDOWN, &timer) {
-        Some(v) => info!(
+        Ok(v) => info!(
             "TPOWERDOWN write→read: {} (expect 20) {}",
             v,
             if v == 20 { "✓" } else { "✗" }
         ),
-        None => warn!("TPOWERDOWN readback FAILED"),
+        Err(_) => warn!("TPOWERDOWN readback FAILED"),
     }
 
     // CHOPCONF — 低电流优化: TOFF=4 延长关断时间, TBL=2 延长消隐
     //   HSTRT=5 / HEND=3 标准回差避免方向不对称
     let mres = microstepping_to_mres(MICROSTEPPING);
     let chopconf_val: u32 = 4 | (5 << 4) | (3 << 7) | (2 << 15) | (mres << 24) | (1 << 28);
-    tmc.write_reg(REG_CHOPCONF, chopconf_val, &timer);
+    tmc.write_reg(REG_CHOPCONF, chopconf_val, &timer).ok();
     timer.delay_ms(5);
     match tmc.read_reg(REG_CHOPCONF, &timer) {
-        Some(v) => info!(
+        Ok(v) => info!(
             "CHOPCONF write→read: {:#010x}  TOFF={}  MRES={} {}",
             v,
             v & 0xF,
             (v >> 24) & 0xF,
             if v == chopconf_val { "✓" } else { "✗" }
         ),
-        None => warn!("CHOPCONF readback FAILED"),
+        Err(_) => warn!("CHOPCONF readback FAILED"),
     }
 
     // PWMCONF — PWM_OFS=30 匹配低电流 (原 36 对 ~300mA 偏高)
     let pwmconf_val: u32 = 30 | (14 << 8) | (1 << 18) | (1 << 19) | (8 << 24) | (12 << 28);
-    tmc.write_reg(REG_PWMCONF, pwmconf_val, &timer);
+    tmc.write_reg(REG_PWMCONF, pwmconf_val, &timer).ok();
     timer.delay_ms(5);
     match tmc.read_reg(REG_PWMCONF, &timer) {
-        Some(v) => info!(
+        Ok(v) => info!(
             "PWMCONF write→read: {:#010x} {}",
             v,
             if v == pwmconf_val { "✓" } else { "✗" }
         ),
-        None => warn!("PWMCONF readback FAILED"),
+        Err(_) => warn!("PWMCONF readback FAILED"),
     }
 
     // SGTHRS
-    tmc.write_reg(REG_SGTHRS, SG_THRESHOLD, &timer);
+    tmc.write_reg(REG_SGTHRS, SG_THRESHOLD, &timer).ok();
     timer.delay_ms(5);
     match tmc.read_reg(REG_SGTHRS, &timer) {
-        Some(v) => info!(
+        Ok(v) => info!(
             "SGTHRS write→read: {} (expect {}) {}",
             v,
             SG_THRESHOLD,
             if v == SG_THRESHOLD { "✓" } else { "✗" }
         ),
-        None => warn!("SGTHRS readback FAILED"),
+        Err(_) => warn!("SGTHRS readback FAILED"),
     }
 
     // TCOOLTHRS
-    tmc.write_reg(REG_TCOOLTHRS, 0xFFFFF, &timer);
+    tmc.write_reg(REG_TCOOLTHRS, 0xFFFFF, &timer).ok();
     timer.delay_ms(10);
     match tmc.read_reg(REG_TCOOLTHRS, &timer) {
-        Some(v) => info!(
+        Ok(v) => info!(
             "TCOOLTHRS write→read: {:#x} (expect 0xFFFFF) {}",
             v,
             if v == 0xFFFFF { "✓" } else { "✗" }
         ),
-        None => warn!("TCOOLTHRS readback FAILED"),
+        Err(_) => warn!("TCOOLTHRS readback FAILED"),
     }
 
     // VACTUAL=0 — 关闭 UART 速度控制模式，确保 STEP/DIR 正常
-    tmc.stop_vactual(&timer);
+    tmc.stop_vactual(&timer).ok();
     timer.delay_ms(10);
 
     // 最终校验: 再次读取 IHOLD_IRUN
     match tmc.read_reg(REG_IHOLD_IRUN, &timer) {
-        Some(v) => {
+        Ok(v) => {
             let ir = IholdIr::from(v);
             info!(
                 "IHOLD_IRUN final: {:#010x}  IHOLD={}  IRUN={}  DELAY={}",
@@ -602,9 +602,9 @@ fn main() -> ! {
                 ir.iholddelay()
             );
         }
-        None => warn!("IHOLD_IRUN final readback FAILED"),
+        Err(_) => warn!("IHOLD_IRUN final readback FAILED"),
     }
-    if let Some(ifcnt) = tmc.read_ifcnt(&timer) {
+    if let Ok(ifcnt) = tmc.read_ifcnt(&timer) {
         info!("IFCNT = {}", ifcnt);
     }
 
@@ -629,7 +629,7 @@ fn main() -> ! {
     timer.delay_ms(10);
 
     // 回读 IOIN 确认 ENN 引脚状态
-    if let Some(ioin) = tmc.read_ioin(&timer) {
+    if let Ok(ioin) = tmc.read_ioin(&timer) {
         info!(
             "Motor enabled: IOIN ENN={} (expect 0) {}",
             ioin.enn(),
@@ -641,7 +641,7 @@ fn main() -> ! {
         );
     }
     // 再读 GSTAT 确认无驱动错误
-    if let Some(gstat) = tmc.read_gstat(&timer)
+    if let Ok(gstat) = tmc.read_gstat(&timer)
         && gstat.drv_err()
     {
         warn!("DRV_ERR flag set — possible over-temperature or short circuit!");
@@ -669,14 +669,14 @@ fn main() -> ! {
     // --- Demo 3: 动态降电流 ---
     info!("=== Demo 3: Dynamic current reduction ===");
     info!("Reducing to IRUN=2 (~195mA)");
-    tmc.set_run_current(2, 1, &timer);
+    tmc.set_run_current(2, 1, &timer).ok();
     timer.delay_ms(50);
 
     start_move(steps_per_rev / 2, Direction::Forward);
     wait_done();
 
     info!("Restoring IRUN={} (~325mA)", RUN_CURRENT);
-    tmc.set_run_current(RUN_CURRENT, HOLD_CURRENT, &timer);
+    tmc.set_run_current(RUN_CURRENT, HOLD_CURRENT, &timer).ok();
     timer.delay_ms(50);
 
     start_move(steps_per_rev / 2, Direction::Reverse);
@@ -691,10 +691,10 @@ fn main() -> ! {
     for i in 0..6u32 {
         timer.delay_ms(500);
 
-        if let Some(sg) = tmc.read_sg_result(&timer) {
+        if let Ok(sg) = tmc.read_sg_result(&timer) {
             info!("[{}] SG_RESULT = {}", i, sg);
         }
-        if let Some(status) = tmc.read_drv_status(&timer) {
+        if let Ok(status) = tmc.read_drv_status(&timer) {
             info!(
                 "[{}] DRV_STATUS: cs={} stst={} ola={} olb={} otpw={} ot={}",
                 i,
@@ -720,7 +720,7 @@ fn main() -> ! {
     info!("=== Demo 5: Stall detection (DIAG interrupt) ===");
     info!("Block the motor shaft to trigger a stall!");
 
-    tmc.set_sg_threshold(HOMING_SG_THRESHOLD, &timer);
+    let _ = tmc.set_sg_threshold(HOMING_SG_THRESHOLD, &timer);
     timer.delay_ms(50);
 
     start_continuous(Direction::Forward, HOMING_SPEED_HZ);
@@ -729,7 +729,7 @@ fn main() -> ! {
     while !AXIS.stall_occurred() && timeout < 20 {
         timer.delay_ms(500);
         timeout += 1;
-        if let Some(sg) = tmc.read_sg_result(&timer) {
+        if let Ok(sg) = tmc.read_sg_result(&timer) {
             info!("[stall] SG_RESULT = {}", sg);
         }
     }
@@ -747,14 +747,14 @@ fn main() -> ! {
         info!("Demo 5 timeout — no stall in 10s");
     }
 
-    tmc.set_sg_threshold(SG_THRESHOLD, &timer);
+    let _ = tmc.set_sg_threshold(SG_THRESHOLD, &timer);
     timer.delay_ms(1000);
 
     // --- Demo 6: 无传感器回零 (利用 DIAG + 限位检测) ---
     info!("=== Demo 6: Sensorless homing ===");
     info!("Motor moves toward endstop until stall detected...");
 
-    tmc.set_sg_threshold(HOMING_SG_THRESHOLD, &timer);
+    let _ = tmc.set_sg_threshold(HOMING_SG_THRESHOLD, &timer);
     timer.delay_ms(50);
 
     AXIS.probe_endstop(&timer, Direction::Reverse, HOMING_SPEED_HZ);
@@ -773,12 +773,12 @@ fn main() -> ! {
         AXIS.stop();
     }
 
-    tmc.set_sg_threshold(SG_THRESHOLD, &timer);
+    let _ = tmc.set_sg_threshold(SG_THRESHOLD, &timer);
     timer.delay_ms(1000);
 
     // --- Demo 7: 寄存器转储 ---
     info!("=== Demo 7: Register dump ===");
-    if let Some(gconf) = tmc.read_gconf(&timer) {
+    if let Ok(gconf) = tmc.read_gconf(&timer) {
         info!(
             "  GCONF      = {:#06x}  pdn_dis={}  int_rsense={}  multistep={}",
             u32::from(gconf),
@@ -787,20 +787,20 @@ fn main() -> ! {
             gconf.multistep_filt()
         );
     }
-    if let Some(ioin) = tmc.read_ioin(&timer) {
+    if let Ok(ioin) = tmc.read_ioin(&timer) {
         info!(
             "  IOIN       = {:#010x}  version={:#04x}",
             u32::from(ioin),
             ioin.version()
         );
     }
-    if let Some(chopconf) = tmc.read_chopconf(&timer) {
+    if let Ok(chopconf) = tmc.read_chopconf(&timer) {
         info!("  CHOPCONF   = {:#010x}", u32::from(chopconf));
     }
-    if let Some(pwmconf) = tmc.read_pwmconf(&timer) {
+    if let Ok(pwmconf) = tmc.read_pwmconf(&timer) {
         info!("  PWMCONF    = {:#010x}", u32::from(pwmconf));
     }
-    if let Some(drv) = tmc.read_drv_status(&timer) {
+    if let Ok(drv) = tmc.read_drv_status(&timer) {
         info!("  DRV_STATUS = {:#010x}", u32::from(drv));
     }
     timer.delay_ms(1000);

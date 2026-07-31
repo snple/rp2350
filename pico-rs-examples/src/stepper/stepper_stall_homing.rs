@@ -254,8 +254,8 @@ fn main() -> ! {
     let tmc = Tmc2209::new(&uart, TMC_SLAVE_ADDR);
 
     match tmc.read_ioin(&timer) {
-        Some(v) => info!("Chip addr={:#x} ver={:#04x} ✓", TMC_SLAVE_ADDR, v.version()),
-        None => {
+        Ok(v) => info!("Chip addr={:#x} ver={:#04x} ✓", TMC_SLAVE_ADDR, v.version()),
+        Err(_) => {
             warn!("TMC2209 not responding — halt");
             loop {
                 pico_rs_rt::asm::wfi();
@@ -263,7 +263,7 @@ fn main() -> ! {
         }
     }
 
-    tmc.configure(
+    let _ = tmc.configure(
         &timer,
         MICROSTEPPING,
         RUN_CURRENT,
@@ -276,15 +276,15 @@ fn main() -> ! {
         MICROSTEPPING, RUN_CURRENT, HOLD_CURRENT, SG_THRESHOLD,
     );
 
-    if let Some(sg) = tmc.read_sg_threshold(&timer) {
+    if let Ok(sg) = tmc.read_sg_threshold(&timer) {
         info!("SGTHRS readback={} (stall if SG_RESULT ≤ {})", sg, sg * 2);
     }
 
     // 16 微步下 TSTEP=250 > TCOOLTHRS=100，DIAG 被禁用。设 max 使其全速激活。
-    tmc.set_tcool_threshold(0xFFFFF, &timer);
+    let _ = tmc.set_tcool_threshold(0xFFFFF, &timer);
 
     // 关闭 VACTUAL 模式 — 防止上次 UART 控速残留导致电机自转
-    tmc.stop_vactual(&timer);
+    let _ = tmc.stop_vactual(&timer);
 
     // --- 中断 ---
     unsafe {
@@ -326,7 +326,7 @@ fn main() -> ! {
     let mut sg_min: u16 = 65535;
     let mut sg_max: u16 = 0;
     for _ in 0..5 {
-        if let Some(sg) = tmc.read_sg_result(&timer) {
+        if let Ok(sg) = tmc.read_sg_result(&timer) {
             sg_min = sg_min.min(sg);
             sg_max = sg_max.max(sg);
         }
@@ -351,7 +351,7 @@ fn main() -> ! {
 
     let mut stall_sg: u16 = 65535;
     for _ in 0..10 {
-        if let Some(sg) = tmc.read_sg_result(&timer) {
+        if let Ok(sg) = tmc.read_sg_result(&timer) {
             stall_sg = stall_sg.min(sg);
             if sg <= SG_THRESHOLD as u16 * 2 {
                 info!("  SG={}  ≤  {}  ← 堵转触发!", sg, SG_THRESHOLD as u16 * 2);

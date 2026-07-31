@@ -60,6 +60,24 @@ use pico_rs::delay::DelayUs;
 use pico_rs::uart::UartBus;
 
 // ============================================================================
+// 错误类型
+// ============================================================================
+
+/// TMC2209 UART 通信错误。
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+pub enum TmcError {
+    /// UART 写/刷失败
+    Write,
+    /// 回显排出或读回复超时
+    Timeout,
+    /// CRC 校验失败
+    Crc,
+    /// 回复帧头不符 (期望 SYNC=0x05, master=0xFF)
+    BadHeader,
+}
+
+// ============================================================================
 // 数据类型
 // ============================================================================
 
@@ -988,7 +1006,7 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
     /// - `reg`: 寄存器地址 (0x00–0x7F)
     /// - `value`: 32 位寄存器值
     /// - `delay`: 实现 [`DelayUs`] 的延时源 (用于回显排出超时)
-    pub fn write_reg(&self, reg: u8, value: u32, delay: &impl DelayUs) {
+    pub fn write_reg(&self, reg: u8, value: u32, delay: &impl DelayUs) -> Result<(), TmcError> {
         let mut datagram = [0u8; WRITE_DATAGRAM_LEN];
         datagram[0] = TMC_SYNC;
         datagram[1] = self.slave_addr;
@@ -999,11 +1017,11 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
         datagram[6] = value as u8;
         datagram[7] = calc_crc8(&datagram[..7]);
 
-        let _ = self.uart.write(&datagram);
-        let _ = self.uart.flush();
+        self.uart.write(&datagram).map_err(|_| TmcError::Write)?;
+        self.uart.flush().map_err(|_| TmcError::Write)?;
 
         // 丢弃回显 (单线半双工: TX 发出的字节会被 RX 收到)
-        self.drain_bytes(WRITE_DATAGRAM_LEN, delay, BYTE_TIMEOUT_US);
+        self.drain_bytes(WRITE_DATAGRAM_LEN, delay, BYTE_TIMEOUT_US)
     }
 
     /// 读取 TMC2209 寄存器。
@@ -1019,7 +1037,7 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
     ///
     /// - `Some(value)`: 读取成功，返回 32 位寄存器值
     /// - `None`: 通信失败 (CRC 错误 / 超时 / 帧头不符)
-    pub fn read_reg(&self, reg: u8, delay: &impl DelayUs) -> Option<u32> {
+    pub fn read_reg(&self, reg: u8, delay: &impl DelayUs) -> Result<u32, TmcError> {
         // 构造读请求
         let mut request = [0u8; READ_REQUEST_LEN];
         request[0] = TMC_SYNC;
@@ -1027,11 +1045,11 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
         request[2] = reg;
         request[3] = calc_crc8(&request[..3]);
 
-        let _ = self.uart.write(&request);
-        let _ = self.uart.flush();
+        self.uart.write(&request).map_err(|_| TmcError::Write)?;
+        self.uart.flush().map_err(|_| TmcError::Write)?;
 
         // 丢弃 4 字节回显
-        self.drain_bytes(READ_REQUEST_LEN, delay, BYTE_TIMEOUT_US);
+        self.drain_bytes(READ_REQUEST_LEN, delay, BYTE_TIMEOUT_US)?;
 
         // 等待 TMC2209 回复 (~75μs 典型延迟)
         delay.delay_us(REPLY_DELAY_US);
@@ -1039,7 +1057,7 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
         // 接收 8 字节回复
         let mut reply = [0u8; REPLY_DATAGRAM_LEN];
         for slot in reply.iter_mut() {
-            *slot = self.read_byte_timeout(delay, BYTE_TIMEOUT_US)?;
+            *slot = self.read_byte_timeout(delay, BYTE_TIMEOUT_US).ok_or(TmcError::Timeout)?;
         }
 
         // CRC 校验
@@ -1051,7 +1069,7 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
                 crc,
                 reply[7]
             );
-            return None;
+            return Err(TmcError::Crc);
         }
 
         // 帧头校验
@@ -1062,7 +1080,7 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
                 reply[0],
                 reply[1]
             );
-            return None;
+            return Err(TmcError::BadHeader);
         }
 
         let value = (reply[3] as u32) << 24
@@ -1070,7 +1088,7 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
             | (reply[5] as u32) << 8
             | (reply[6] as u32);
 
-        Some(value)
+        Ok(value)
     }
 
     // ========================================================================
@@ -1078,51 +1096,51 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
     // ========================================================================
 
     /// 读取 IOIN 寄存器 (类型化)。
-    pub fn read_ioin(&self, delay: &impl DelayUs) -> Option<Ioin> {
+    pub fn read_ioin(&self, delay: &impl DelayUs) -> Result<Ioin, TmcError> {
         self.read_reg(REG_IOIN, delay).map(Ioin::from)
     }
 
     /// 读取 GCONF 寄存器 (类型化)。
-    pub fn read_gconf(&self, delay: &impl DelayUs) -> Option<Gconf> {
+    pub fn read_gconf(&self, delay: &impl DelayUs) -> Result<Gconf, TmcError> {
         self.read_reg(REG_GCONF, delay).map(Gconf::from)
     }
 
     /// 写入 GCONF 寄存器。
-    pub fn write_gconf(&self, gconf: &Gconf, delay: &impl DelayUs) {
-        self.write_reg(REG_GCONF, (*gconf).into(), delay);
+    pub fn write_gconf(&self, gconf: &Gconf, delay: &impl DelayUs) -> Result<(), TmcError> {
+        self.write_reg(REG_GCONF, (*gconf).into(), delay)
     }
 
     /// 读取 GSTAT 寄存器 (类型化，读后自动清除)。
-    pub fn read_gstat(&self, delay: &impl DelayUs) -> Option<Gstat> {
+    pub fn read_gstat(&self, delay: &impl DelayUs) -> Result<Gstat, TmcError> {
         self.read_reg(REG_GSTAT, delay).map(Gstat::from)
     }
 
     /// 读取 IFCNT 寄存器 (接口写入计数)。
     ///
     /// 每成功执行一次 UART 写入，该计数器 +1。
-    pub fn read_ifcnt(&self, delay: &impl DelayUs) -> Option<u8> {
+    pub fn read_ifcnt(&self, delay: &impl DelayUs) -> Result<u8, TmcError> {
         self.read_reg(REG_IFCNT, delay).map(|v| v as u8)
     }
 
     /// 读取 CHOPCONF 寄存器 (类型化)。
-    pub fn read_chopconf(&self, delay: &impl DelayUs) -> Option<Chopconf> {
+    pub fn read_chopconf(&self, delay: &impl DelayUs) -> Result<Chopconf, TmcError> {
         self.read_reg(REG_CHOPCONF, delay).map(Chopconf::from)
     }
 
     /// 读取 PWMCONF 寄存器 (类型化)。
-    pub fn read_pwmconf(&self, delay: &impl DelayUs) -> Option<Pwmconf> {
+    pub fn read_pwmconf(&self, delay: &impl DelayUs) -> Result<Pwmconf, TmcError> {
         self.read_reg(REG_PWMCONF, delay).map(Pwmconf::from)
     }
 
     /// 读取 DRV_STATUS 寄存器 (类型化)。
-    pub fn read_drv_status(&self, delay: &impl DelayUs) -> Option<DrvStatus> {
+    pub fn read_drv_status(&self, delay: &impl DelayUs) -> Result<DrvStatus, TmcError> {
         self.read_reg(REG_DRV_STATUS, delay).map(DrvStatus::from)
     }
 
     /// 读取 SG_RESULT 寄存器 (StallGuard 结果，0–510)。
     ///
     /// 仅在电机运动时有效。~510 = 空载，接近 0 = 堵转。
-    pub fn read_sg_result(&self, delay: &impl DelayUs) -> Option<u16> {
+    pub fn read_sg_result(&self, delay: &impl DelayUs) -> Result<u16, TmcError> {
         self.read_reg(REG_SG_RESULT, delay)
             .map(|v| (v & 0x3FF) as u16)
     }
@@ -1131,7 +1149,7 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
     ///
     /// 堵转判定条件: `SG_RESULT ≤ SGTHRS × 2`。
     /// 设为 0 禁用堵转检测。
-    pub fn read_sg_threshold(&self, delay: &impl DelayUs) -> Option<u16> {
+    pub fn read_sg_threshold(&self, delay: &impl DelayUs) -> Result<u16, TmcError> {
         self.read_reg(REG_SGTHRS, delay).map(|v| v as u16)
     }
 
@@ -1166,51 +1184,51 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
     /// 已正确设置（[`configure`] 已包含），堵转时 DIAG 自动拉低。
     pub fn is_stalled(&self, delay: &impl DelayUs) -> bool {
         let sg_result = match self.read_sg_result(delay) {
-            Some(v) => v,
-            None => return false,
+            Ok(v) => v,
+            Err(_) => return false,
         };
         let sg_threshold = match self.read_sg_threshold(delay) {
-            Some(v) => v,
-            None => return false,
+            Ok(v) => v,
+            Err(_) => return false,
         };
         sg_result <= sg_threshold.saturating_mul(2)
     }
 
     /// 读取 IHOLD_IRUN 寄存器 (类型化)。
-    pub fn read_ihold_irun(&self, delay: &impl DelayUs) -> Option<IholdIr> {
+    pub fn read_ihold_irun(&self, delay: &impl DelayUs) -> Result<IholdIr, TmcError> {
         self.read_reg(REG_IHOLD_IRUN, delay).map(IholdIr::from)
     }
 
     /// 写入 IHOLD_IRUN 寄存器。
-    pub fn write_ihold_irun(&self, val: &IholdIr, delay: &impl DelayUs) {
-        self.write_reg(REG_IHOLD_IRUN, (*val).into(), delay);
+    pub fn write_ihold_irun(&self, val: &IholdIr, delay: &impl DelayUs) -> Result<(), TmcError> {
+        self.write_reg(REG_IHOLD_IRUN, (*val).into(), delay)
     }
 
     /// 写入 CHOPCONF 寄存器。
-    pub fn write_chopconf(&self, val: &Chopconf, delay: &impl DelayUs) {
-        self.write_reg(REG_CHOPCONF, (*val).into(), delay);
+    pub fn write_chopconf(&self, val: &Chopconf, delay: &impl DelayUs) -> Result<(), TmcError> {
+        self.write_reg(REG_CHOPCONF, (*val).into(), delay)
     }
 
     /// 写入 PWMCONF 寄存器。
-    pub fn write_pwmconf(&self, val: &Pwmconf, delay: &impl DelayUs) {
-        self.write_reg(REG_PWMCONF, (*val).into(), delay);
+    pub fn write_pwmconf(&self, val: &Pwmconf, delay: &impl DelayUs) -> Result<(), TmcError> {
+        self.write_reg(REG_PWMCONF, (*val).into(), delay)
     }
 
     /// 读取 TSTEP 寄存器 (步进间隔，只读)。
     ///
     /// 值越小 = 速度越快。溢出或静止时为 `2^20 - 1`。
     /// 以 1/f_CLK 为单位，始终对应 1/256 微步。
-    pub fn read_tstep(&self, delay: &impl DelayUs) -> Option<Tstep> {
+    pub fn read_tstep(&self, delay: &impl DelayUs) -> Result<Tstep, TmcError> {
         self.read_reg(REG_TSTEP, delay).map(Tstep::from)
     }
 
     /// 读取 PWM_SCALE 寄存器 (自动调幅结果，只读)。
-    pub fn read_pwm_scale(&self, delay: &impl DelayUs) -> Option<PwmScale> {
+    pub fn read_pwm_scale(&self, delay: &impl DelayUs) -> Result<PwmScale, TmcError> {
         self.read_reg(REG_PWM_SCALE, delay).map(PwmScale::from)
     }
 
     /// 读取 PWM_AUTO 寄存器 (自动梯度/偏移值，只读)。
-    pub fn read_pwm_auto(&self, delay: &impl DelayUs) -> Option<PwmAuto> {
+    pub fn read_pwm_auto(&self, delay: &impl DelayUs) -> Result<PwmAuto, TmcError> {
         self.read_reg(REG_PWM_AUTO, delay).map(PwmAuto::from)
     }
 
@@ -1218,56 +1236,56 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
     ///
     /// 返回当前电机在电气周期内的微步位置 (0–1023)。
     /// 可用于替代编码器做位置反馈。
-    pub fn read_mscnt(&self, delay: &impl DelayUs) -> Option<Mscnt> {
+    pub fn read_mscnt(&self, delay: &impl DelayUs) -> Result<Mscnt, TmcError> {
         self.read_reg(REG_MSCNT, delay).map(Mscnt::from)
     }
 
     /// 读取 MSCURACT 寄存器 (A/B 相微步电流，只读)。
-    pub fn read_mscuract(&self, delay: &impl DelayUs) -> Option<Mscuract> {
+    pub fn read_mscuract(&self, delay: &impl DelayUs) -> Result<Mscuract, TmcError> {
         self.read_reg(REG_MSCURACT, delay).map(Mscuract::from)
     }
 
     /// 读取 COOLCONF 寄存器 (CoolStep 配置，类型化)。
-    pub fn read_coolconf(&self, delay: &impl DelayUs) -> Option<Coolconf> {
+    pub fn read_coolconf(&self, delay: &impl DelayUs) -> Result<Coolconf, TmcError> {
         self.read_reg(REG_COOLCONF, delay).map(Coolconf::from)
     }
 
     /// 写入 COOLCONF 寄存器。
-    pub fn write_coolconf(&self, val: &Coolconf, delay: &impl DelayUs) {
-        self.write_reg(REG_COOLCONF, (*val).into(), delay);
+    pub fn write_coolconf(&self, val: &Coolconf, delay: &impl DelayUs) -> Result<(), TmcError> {
+        self.write_reg(REG_COOLCONF, (*val).into(), delay)
     }
 
     /// 读取 FACTORY_CONF 寄存器 (类型化)。
-    pub fn read_factory_conf(&self, delay: &impl DelayUs) -> Option<FactoryConf> {
+    pub fn read_factory_conf(&self, delay: &impl DelayUs) -> Result<FactoryConf, TmcError> {
         self.read_reg(REG_FACTORY_CONF, delay)
             .map(FactoryConf::from)
     }
 
     /// 读取 OTP_READ 寄存器 (类型化)。
-    pub fn read_otp(&self, delay: &impl DelayUs) -> Option<OtpRead> {
+    pub fn read_otp(&self, delay: &impl DelayUs) -> Result<OtpRead, TmcError> {
         self.read_reg(REG_OTP_READ, delay).map(OtpRead::from)
     }
 
     /// 读取 IFCNT (类型化)。
-    pub fn read_ifcnt_typed(&self, delay: &impl DelayUs) -> Option<Ifcnt> {
+    pub fn read_ifcnt_typed(&self, delay: &impl DelayUs) -> Result<Ifcnt, TmcError> {
         self.read_reg(REG_IFCNT, delay).map(Ifcnt::from)
     }
 
     /// 清除 GSTAT 错误标志。
     ///
     /// 写入 `0x07` 清除 reset、drv_err、uv_cp 三个标志位。
-    pub fn clear_gstat(&self, delay: &impl DelayUs) {
-        self.write_reg(REG_GSTAT, 0x07, delay);
+    pub fn clear_gstat(&self, delay: &impl DelayUs) -> Result<(), TmcError> {
+        self.write_reg(REG_GSTAT, 0x07, delay)
     }
 
     /// 清除驱动错误标志 (GSTAT.drv_err)。
     ///
     /// GSTAT 是 R+WC 寄存器，写入 bit 为 1 以清除对应标志。
     /// 仅在驱动错误条件已消除时才能成功清除。
-    pub fn clear_drv_err(&self, delay: &impl DelayUs) {
+    pub fn clear_drv_err(&self, delay: &impl DelayUs) -> Result<(), TmcError> {
         let mut gstat = Gstat::default();
         gstat.set_drv_err(true);
-        self.write_reg(REG_GSTAT, gstat.into(), delay);
+        self.write_reg(REG_GSTAT, gstat.into(), delay)
     }
 
     // ========================================================================
@@ -1309,9 +1327,9 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
         hold_current: u8,
         ihold_delay: u8,
         sg_threshold: u32,
-    ) {
+    ) -> Result<(), TmcError> {
         // 步骤 1: 清除 GSTAT
-        self.clear_gstat(delay);
+        self.clear_gstat(delay)?;
         delay.delay_ms(10);
 
         // 步骤 2: GCONF — StealthChop + UART 模式 + 寄存器微步
@@ -1319,7 +1337,7 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
         gconf.set_pdn_disable(true); // UART 通信必须
         gconf.set_mstep_reg_select(true); // 微步由 CHOPCONF.mres 控制
         gconf.set_multistep_filt(true); // STEP 脉冲滤波
-        self.write_gconf(&gconf, delay);
+        self.write_gconf(&gconf, delay)?;
         delay.delay_ms(10);
 
         // 步骤 3: IHOLD_IRUN — 电流设置
@@ -1327,11 +1345,11 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
         ihold_irun.set_ihold(hold_current);
         ihold_irun.set_irun(run_current);
         ihold_irun.set_iholddelay(ihold_delay);
-        self.write_ihold_irun(&ihold_irun, delay);
+        self.write_ihold_irun(&ihold_irun, delay)?;
         delay.delay_ms(10);
 
         // 步骤 4: TPOWERDOWN
-        self.write_reg(REG_TPOWERDOWN, 20, delay);
+        self.write_reg(REG_TPOWERDOWN, 20, delay)?;
         delay.delay_ms(10);
 
         // 步骤 5: CHOPCONF — 斩波器 + 微步配置
@@ -1342,7 +1360,7 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
         chopconf.set_tbl(1); // 24 clocks blanking
         chopconf.set_mres(microstepping_to_mres(microstepping) as u8);
         chopconf.set_intpol(true);
-        self.write_chopconf(&chopconf, delay);
+        self.write_chopconf(&chopconf, delay)?;
         delay.delay_ms(10);
 
         // 步骤 6: PWMCONF — StealthChop 自动调谐
@@ -1354,18 +1372,20 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
         pwmconf.set_pwm_autograd(true);
         pwmconf.set_pwm_reg(8);
         pwmconf.set_pwm_lim(12);
-        self.write_pwmconf(&pwmconf, delay);
+        self.write_pwmconf(&pwmconf, delay)?;
         delay.delay_ms(10);
 
         // 步骤 7: SGTHRS
-        self.set_sg_threshold(sg_threshold, delay);
+        self.set_sg_threshold(sg_threshold, delay)?;
         delay.delay_ms(10);
 
         // 步骤 8: TCOOLTHRS — 只在 ≥~500 Hz 时激活 StallGuard
         // 避免 StealthChop 刚起步电流自整定未稳定时误判堵转。
         // TSTEP = fCLK / (speed_hz × 256)，设 TCOOLTHRS=100 → 激活速度 ≈ 470 Hz。
-        self.write_reg(REG_TCOOLTHRS, 100, delay);
+        self.write_reg(REG_TCOOLTHRS, 100, delay)?;
         delay.delay_ms(10);
+
+        Ok(())
     }
 
     /// 动态修改运行/保持电流。
@@ -1376,12 +1396,12 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
     ///
     /// - `run_current`: 运行电流 IRUN (0–31)
     /// - `hold_current`: 保持电流 IHOLD (0–31)
-    pub fn set_run_current(&self, run_current: u8, hold_current: u8, delay: &impl DelayUs) {
+    pub fn set_run_current(&self, run_current: u8, hold_current: u8, delay: &impl DelayUs) -> Result<(), TmcError> {
         let mut ihold_irun = IholdIr::default();
         ihold_irun.set_ihold(hold_current);
         ihold_irun.set_irun(run_current);
         ihold_irun.set_iholddelay(IHOLD_DELAY_DEFAULT);
-        self.write_ihold_irun(&ihold_irun, delay);
+        self.write_ihold_irun(&ihold_irun, delay)
     }
 
     /// 动态修改 StallGuard 堵转阈值。
@@ -1389,16 +1409,16 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
     /// - 值越大越灵敏 (越容易触发堵转)
     /// - 设为 0 禁用堵转检测
     /// - 触发条件: `SG_RESULT ≤ threshold × 2`
-    pub fn set_sg_threshold(&self, threshold: u32, delay: &impl DelayUs) {
-        self.write_reg(REG_SGTHRS, threshold, delay);
+    pub fn set_sg_threshold(&self, threshold: u32, delay: &impl DelayUs) -> Result<(), TmcError> {
+        self.write_reg(REG_SGTHRS, threshold, delay)
     }
 
     /// 设置 CoolStep / StallGuard 激活的速度阈值。
     ///
     /// StallGuard 激活条件: `TSTEP ≤ tcool_thrs`。
     /// 设为最大值 (`0xFFFFF`) 表示任何速度下都激活。
-    pub fn set_tcool_threshold(&self, tcool_thrs: u32, delay: &impl DelayUs) {
-        self.write_reg(REG_TCOOLTHRS, tcool_thrs, delay);
+    pub fn set_tcool_threshold(&self, tcool_thrs: u32, delay: &impl DelayUs) -> Result<(), TmcError> {
+        self.write_reg(REG_TCOOLTHRS, tcool_thrs, delay)
     }
 
     /// 设置停止后电流降低延时。
@@ -1408,8 +1428,8 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
     /// - `time`: 延时值 (0 = 禁用掉电)
     ///
     /// 单位: 约 2^18 个内部时钟周期 (~2.6 ms/单位 @ 12 MHz 内部时钟)。
-    pub fn set_power_down_delay(&self, time: u32, delay: &impl DelayUs) {
-        self.write_reg(REG_TPOWERDOWN, time, delay);
+    pub fn set_power_down_delay(&self, time: u32, delay: &impl DelayUs) -> Result<(), TmcError> {
+        self.write_reg(REG_TPOWERDOWN, time, delay)
     }
 
     // ========================================================================
@@ -1445,14 +1465,14 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
         seup: u8,
         sedn: u8,
         seimin: bool,
-    ) {
+    ) -> Result<(), TmcError> {
         let mut coolconf = Coolconf::default();
         coolconf.set_semin(semin);
         coolconf.set_semax(semax);
         coolconf.set_seup(seup);
         coolconf.set_sedn(sedn);
         coolconf.set_seimin(seimin);
-        self.write_coolconf(&coolconf, delay);
+        self.write_coolconf(&coolconf, delay)
     }
 
     // ========================================================================
@@ -1476,14 +1496,14 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
     /// // 10000 微步/秒 = 约 VACTUAL 13986
     /// tmc.set_vactual(13986, &delay);
     /// ```
-    pub fn set_vactual(&self, velocity: i32, delay: &impl DelayUs) {
+    pub fn set_vactual(&self, velocity: i32, delay: &impl DelayUs) -> Result<(), TmcError> {
         let val = Vactual::new().with_velocity(velocity);
-        self.write_reg(REG_VACTUAL, val.into(), delay);
+        self.write_reg(REG_VACTUAL, val.into(), delay)
     }
 
     /// 停止 UART 速度模式，回到 STEP 引脚控制。
-    pub fn stop_vactual(&self, delay: &impl DelayUs) {
-        self.write_reg(REG_VACTUAL, 0, delay);
+    pub fn stop_vactual(&self, delay: &impl DelayUs) -> Result<(), TmcError> {
+        self.write_reg(REG_VACTUAL, 0, delay)
     }
 
     // ========================================================================
@@ -1493,19 +1513,18 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
     /// 设置电机静止时的行为 (PWMCONF.freewheel)。
     ///
     /// 仅在 IHOLD=0 时生效。可选择续流或被动制动。
-    pub fn set_standstill_mode(&self, mode: StandstillMode, delay: &impl DelayUs) {
-        if let Some(mut pwm) = self.read_pwmconf(delay) {
-            pwm.set_freewheel(mode.to_bits());
-            self.write_pwmconf(&pwm, delay);
-        }
+    pub fn set_standstill_mode(&self, mode: StandstillMode, delay: &impl DelayUs) -> Result<(), TmcError> {
+        let mut pwm = self.read_pwmconf(delay)?;
+        pwm.set_freewheel(mode.to_bits());
+        self.write_pwmconf(&pwm, delay)
     }
 
     /// 设置 StealthChop 切换到 SpreadCycle 的速度阈值。
     ///
     /// 当电机速度快于此阈值 (`TSTEP < TPWMTHRS`) 时自动切换到 SpreadCycle。
     /// 设为 0 则全程使用 StealthChop。
-    pub fn set_tpwmthrs(&self, threshold: u32, delay: &impl DelayUs) {
-        self.write_reg(REG_TPWMTHRS, threshold & 0xFFFFF, delay);
+    pub fn set_tpwmthrs(&self, threshold: u32, delay: &impl DelayUs) -> Result<(), TmcError> {
+        self.write_reg(REG_TPWMTHRS, threshold & 0xFFFFF, delay)
     }
 
     /// 设置 SLAVECONF 的 send_delay。
@@ -1518,16 +1537,16 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
     /// | 2–3 | 3×8  |
     /// | …   | …     |
     /// | 14–15 | 15×8 |
-    pub fn set_send_delay(&self, delay_val: u8, delay: &impl DelayUs) {
+    pub fn set_send_delay(&self, delay_val: u8, delay: &impl DelayUs) -> Result<(), TmcError> {
         let val = Slaveconf::default().with_send_delay(delay_val);
-        self.write_reg(REG_SLAVECONF, val.into(), delay);
+        self.write_reg(REG_SLAVECONF, val.into(), delay)
     }
 
     /// 芯片版本号提取。
     ///
     /// 读取 IOIN 寄存器并提取 VERSION 字段。
     /// TMC2209 的版本号为 `0x21`。
-    pub fn read_version(&self, delay: &impl DelayUs) -> Option<u8> {
+    pub fn read_version(&self, delay: &impl DelayUs) -> Result<u8, TmcError> {
         self.read_ioin(delay).map(|ioin| ioin.version())
     }
 
@@ -1535,7 +1554,7 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
     ///
     /// 读取 IOIN 并检查版本号是否为 `0x21` (TMC2209)。
     pub fn verify_chip(&self, delay: &impl DelayUs) -> bool {
-        self.read_version(delay) == Some(0x21)
+        self.read_version(delay) == Ok(0x21)
     }
 
     // ========================================================================
@@ -1574,7 +1593,7 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
     /// 使用 `read_raw` 忽略帧错误：电阻网络下回显可能带有
     /// 虚假的 framing error，若用 `read_available` 会提前退出导致
     /// 回显残留并污染后续 TMC2209 回复帧。
-    fn drain_bytes(&self, count: usize, delay: &impl DelayUs, timeout_us: u32) {
+    fn drain_bytes(&self, count: usize, delay: &impl DelayUs, timeout_us: u32) -> Result<(), TmcError> {
         let mut buf = [0u8; 8];
         let mut drained = 0;
         let mut remaining = timeout_us;
@@ -1586,6 +1605,11 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
                 delay.delay_us(POLL_INTERVAL_US);
                 remaining = remaining.saturating_sub(POLL_INTERVAL_US);
             }
+        }
+        if drained < count {
+            Err(TmcError::Timeout)
+        } else {
+            Ok(())
         }
     }
 }
