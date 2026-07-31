@@ -204,11 +204,14 @@ impl Eppb {
     /// Wait for WIC enable to be acknowledged
     ///
     /// Blocks until WIC mode is ready after requesting WIC sleep.
+    ///
+    /// # Panics
+    ///
+    /// Panics if WIC is not acknowledged within
+    /// [`crate::spin::SPIN_TIMEOUT`] iterations.
     #[inline]
     pub fn wait_wicenack(&self) {
-        while !self.is_wicenack() {
-            pico_rs_rt::asm::nop();
-        }
+        crate::spin::spin_wait("WIC enable acknowledgement", || self.is_wicenack());
     }
 
     /// Prepare for WIC sleep

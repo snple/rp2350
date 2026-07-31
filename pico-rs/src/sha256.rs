@@ -187,20 +187,26 @@ impl Sha256 {
     // Data Writing
     // ========================================================================
 
-    /// Wait until the core is ready to accept data
+    /// Wait until the core is ready to accept data.
+    ///
+    /// # Panics
+    ///
+    /// Panics if the hardware does not become ready within
+    /// [`crate::spin::SPIN_TIMEOUT`] iterations.
     #[inline]
     pub fn wait_ready(&self) {
-        while !self.is_wdata_ready() {
-            core::hint::spin_loop();
-        }
+        crate::spin::spin_wait("SHA-256 data ready", || self.is_wdata_ready());
     }
 
-    /// Wait until the checksum is valid
+    /// Wait until the checksum is valid.
+    ///
+    /// # Panics
+    ///
+    /// Panics if the checksum is not computed within
+    /// [`crate::spin::SPIN_TIMEOUT`] iterations.
     #[inline]
     pub fn wait_sum_valid(&self) {
-        while !self.is_sum_valid() {
-            core::hint::spin_loop();
-        }
+        crate::spin::spin_wait("SHA-256 sum valid", || self.is_sum_valid());
     }
 
     /// Write a single 32-bit word of data

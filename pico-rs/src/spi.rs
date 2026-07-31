@@ -569,9 +569,7 @@ macro_rules! impl_spi {
                 /// Write a single word to the TX FIFO (blocking)
                 #[inline]
                 pub fn write_word(&self, word: u16) {
-                    while !self.spi.sspsr.tnf() {
-                        core::hint::spin_loop();
-                    }
+                    crate::spin::spin_wait("SPI TX FIFO space", || self.spi.sspsr.tnf());
                     self.spi.sspdr.write_data(word as u32);
                 }
 
@@ -684,9 +682,7 @@ macro_rules! impl_spi {
                 /// Flush - wait for all transfers to complete
                 #[inline]
                 pub fn flush(&self) {
-                    while self.spi.sspsr.bsy() {
-                        core::hint::spin_loop();
-                    }
+                    crate::spin::spin_wait("SPI idle", || !self.spi.sspsr.bsy());
                 }
 
                 // ================================================================
@@ -1150,9 +1146,7 @@ macro_rules! impl_spi {
                 /// Write a single word to the TX FIFO (blocking)
                 #[inline]
                 pub fn write_word(&self, word: u16) {
-                    while !self.spi.sspsr.tnf() {
-                        core::hint::spin_loop();
-                    }
+                    crate::spin::spin_wait("SPI TX FIFO space", || self.spi.sspsr.tnf());
                     self.spi.sspdr.write_data(word as u32);
                 }
 
@@ -1244,9 +1238,7 @@ macro_rules! impl_spi {
                 /// Flush - wait for all transfers to complete
                 #[inline]
                 pub fn flush(&self) {
-                    while self.spi.sspsr.bsy() {
-                        core::hint::spin_loop();
-                    }
+                    crate::spin::spin_wait("SPI idle", || !self.spi.sspsr.bsy());
                 }
 
                 /// Enable DMA for transmit
@@ -1780,9 +1772,7 @@ macro_rules! impl_spi {
                 /// Write a single word to the TX FIFO (blocking)
                 #[inline]
                 pub fn write_word(&self, word: u16) {
-                    while !self.spi.sspsr.tnf() {
-                        core::hint::spin_loop();
-                    }
+                    crate::spin::spin_wait("SPI TX FIFO space", || self.spi.sspsr.tnf());
                     self.spi.sspdr.write_data(word as u32);
                 }
 
@@ -1874,9 +1864,7 @@ macro_rules! impl_spi {
                 /// Flush - wait for all transfers to complete
                 #[inline]
                 pub fn flush(&self) {
-                    while self.spi.sspsr.bsy() {
-                        core::hint::spin_loop();
-                    }
+                    crate::spin::spin_wait("SPI idle", || !self.spi.sspsr.bsy());
                 }
 
                 // ================================================================

@@ -107,6 +107,7 @@ pub mod reset;
 pub mod sha256;
 pub mod sio;
 pub mod spi;
+mod spin;
 pub mod startup;
 pub mod syscfg;
 pub mod sysinfo;

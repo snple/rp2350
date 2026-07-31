@@ -46,6 +46,8 @@ pub enum Error {
     CrngtError,
     /// Autocorrelation test failed
     AutocorrError,
+    /// Timed out waiting for entropy
+    Timeout,
 }
 
 /// TRNG peripheral wrapper
@@ -76,10 +78,10 @@ impl Trng {
         // Reset the TRNG
         trng.trng_sw_reset.write_bits(1);
 
-        // Wait for reset to complete
-        while trng.trng_sw_reset.read_bits() != 0 {
-            core::hint::spin_loop();
-        }
+        // Wait for reset to complete (bounded)
+        crate::spin::spin_wait("TRNG software reset", || {
+            trng.trng_sw_reset.read_bits() == 0
+        });
 
         // Configure ROSC sample rate (default is fine for most uses)
         // sample_cnt1 controls the number of clock cycles between samples
@@ -120,6 +122,7 @@ impl Trng {
 
     /// Wait for entropy to be ready
     fn wait_for_entropy(&self) -> Result<(), Error> {
+        let mut spins = 0u32;
         loop {
             // Check for errors
             if self.regs().rng_isr.vn_err() {
@@ -140,6 +143,10 @@ impl Trng {
             }
 
             core::hint::spin_loop();
+            spins += 1;
+            if spins >= crate::spin::SPIN_TIMEOUT {
+                return Err(Error::Timeout);
+            }
         }
     }
 

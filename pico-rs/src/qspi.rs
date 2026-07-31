@@ -340,11 +340,14 @@ impl Qspi {
     }
 
     /// Wait until the QMI is no longer busy.
+    ///
+    /// # Panics
+    ///
+    /// Panics if the QMI stays busy within [`crate::spin::SPIN_TIMEOUT`]
+    /// iterations.
     #[inline]
     pub fn wait_idle(&self) {
-        while self.qmi.direct_csr.busy() {
-            core::hint::spin_loop();
-        }
+        crate::spin::spin_wait("QMI idle", || !self.qmi.direct_csr.busy());
     }
 
     // ========================================================================
@@ -512,9 +515,7 @@ impl Qspi {
     /// * `nopush` - If true, inhibit RX FIFO push (useful for command bytes)
     pub fn direct_write_blocking(&self, data: u8, nopush: bool) {
         // Wait for TX FIFO space
-        while self.qmi.direct_csr.txfull() {
-            core::hint::spin_loop();
-        }
+        crate::spin::spin_wait("QMI TX FIFO space", || !self.qmi.direct_csr.txfull());
         let val = DirectTxVal::reset_val()
             .with_data(data as u32)
             .with_iwidth(BusWidth::Single as u32)
@@ -531,9 +532,7 @@ impl Qspi {
     /// * `width` - Bus width (Single/Dual/Quad)
     /// * `nopush` - If true, inhibit RX FIFO push
     pub fn direct_write_width_blocking(&self, data: u8, width: BusWidth, nopush: bool) {
-        while self.qmi.direct_csr.txfull() {
-            core::hint::spin_loop();
-        }
+        crate::spin::spin_wait("QMI TX FIFO space", || !self.qmi.direct_csr.txfull());
         let val = DirectTxVal::reset_val()
             .with_data(data as u32)
             .with_iwidth(width as u32)
@@ -550,9 +549,7 @@ impl Qspi {
     /// * `width` - Bus width
     /// * `nopush` - If true, inhibit RX FIFO push
     pub fn direct_write16_blocking(&self, data: u16, width: BusWidth, nopush: bool) {
-        while self.qmi.direct_csr.txfull() {
-            core::hint::spin_loop();
-        }
+        crate::spin::spin_wait("QMI TX FIFO space", || !self.qmi.direct_csr.txfull());
         let val = DirectTxVal::reset_val()
             .with_data(data as u32)
             .with_iwidth(width as u32)
@@ -568,9 +565,7 @@ impl Qspi {
     /// then reads the received byte.
     pub fn direct_read_blocking(&self) -> u8 {
         // Send dummy byte to generate clock (OE=false for read)
-        while self.qmi.direct_csr.txfull() {
-            core::hint::spin_loop();
-        }
+        crate::spin::spin_wait("QMI TX FIFO space", || !self.qmi.direct_csr.txfull());
         let val = DirectTxVal::reset_val()
             .with_data(0)
             .with_iwidth(BusWidth::Single as u32)
@@ -579,9 +574,7 @@ impl Qspi {
         self.qmi.direct_tx.write_val(val);
 
         // Wait for RX data
-        while self.qmi.direct_csr.rxempty() {
-            core::hint::spin_loop();
-        }
+        crate::spin::spin_wait("QMI RX data", || !self.qmi.direct_csr.rxempty());
         self.qmi.direct_rx.direct_rx() as u8
     }
 
@@ -591,9 +584,7 @@ impl Qspi {
     ///
     /// * `width` - Bus width for the read transfer
     pub fn direct_read_width_blocking(&self, width: BusWidth) -> u8 {
-        while self.qmi.direct_csr.txfull() {
-            core::hint::spin_loop();
-        }
+        crate::spin::spin_wait("QMI TX FIFO space", || !self.qmi.direct_csr.txfull());
         let val = DirectTxVal::reset_val()
             .with_data(0)
             .with_iwidth(width as u32)
@@ -601,9 +592,7 @@ impl Qspi {
             .with_nopush(false);
         self.qmi.direct_tx.write_val(val);
 
-        while self.qmi.direct_csr.rxempty() {
-            core::hint::spin_loop();
-        }
+        crate::spin::spin_wait("QMI RX data", || !self.qmi.direct_csr.rxempty());
         self.qmi.direct_rx.direct_rx() as u8
     }
 
@@ -634,9 +623,7 @@ impl Qspi {
         let len = rx.len().min(tx.len());
         for i in 0..len {
             // Write with OE enabled, don't inhibit RX push
-            while self.qmi.direct_csr.txfull() {
-                core::hint::spin_loop();
-            }
+            crate::spin::spin_wait("QMI TX FIFO space", || !self.qmi.direct_csr.txfull());
             let val = DirectTxVal::reset_val()
                 .with_data(tx[i] as u32)
                 .with_iwidth(BusWidth::Single as u32)
@@ -645,9 +632,7 @@ impl Qspi {
             self.qmi.direct_tx.write_val(val);
 
             // Read response
-            while self.qmi.direct_csr.rxempty() {
-                core::hint::spin_loop();
-            }
+            crate::spin::spin_wait("QMI RX data", || !self.qmi.direct_csr.rxempty());
             rx[i] = self.qmi.direct_rx.direct_rx() as u8;
         }
     }

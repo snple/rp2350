@@ -629,12 +629,15 @@ macro_rules! impl_uart {
                     !self.is_tx_full()
                 }
 
-                /// Wait for transmission to complete
+                /// Wait for transmission to complete.
+                ///
+                /// # Panics
+                ///
+                /// Panics if the transmitter does not drain within
+                /// [`crate::spin::SPIN_TIMEOUT`] iterations.
                 pub fn flush(&self) {
-                    // Wait for TX FIFO to empty
-                    while !self.uart.uartfr.txfe() {}
-                    // Wait for not busy
-                    while self.uart.uartfr.busy() {}
+                    crate::spin::spin_wait("UART TX FIFO empty", || self.uart.uartfr.txfe());
+                    crate::spin::spin_wait("UART not busy", || !self.uart.uartfr.busy());
                 }
 
                 /// Clear all errors
@@ -1280,10 +1283,15 @@ macro_rules! impl_uart {
                     self.uart.uartfr.cts()
                 }
 
-                /// Wait for transmission to complete
+                /// Wait for transmission to complete.
+                ///
+                /// # Panics
+                ///
+                /// Panics if the transmitter does not drain within
+                /// [`crate::spin::SPIN_TIMEOUT`] iterations.
                 pub fn flush(&self) {
-                    while !self.uart.uartfr.txfe() {}
-                    while self.uart.uartfr.busy() {}
+                    crate::spin::spin_wait("UART TX FIFO empty", || self.uart.uartfr.txfe());
+                    crate::spin::spin_wait("UART not busy", || !self.uart.uartfr.busy());
                 }
 
                 /// Get the current baud rate by reading hardware registers

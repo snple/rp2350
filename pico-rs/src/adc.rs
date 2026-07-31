@@ -290,10 +290,8 @@ impl Adc {
         // Enable ADC
         adc.cs.set_en();
 
-        // Wait for ADC to be ready
-        while !adc.cs.ready() {
-            core::hint::spin_loop();
-        }
+        // Wait for ADC to be ready (bounded)
+        crate::spin::spin_wait("ADC ready", || adc.cs.ready());
 
         Self { adc }
     }
@@ -351,10 +349,8 @@ impl Adc {
         // Start conversion
         self.adc.cs.trigger_start_once();
 
-        // Wait for completion
-        while !self.adc.cs.ready() {
-            core::hint::spin_loop();
-        }
+        // Wait for completion (bounded)
+        crate::spin::spin_wait("ADC conversion ready", || self.adc.cs.ready());
 
         self.adc.result.result() as u16
     }
@@ -656,10 +652,8 @@ impl Adc {
 
     /// Drain the FIFO, discarding all contents.
     pub fn fifo_drain(&mut self) {
-        // Wait for any in-progress conversion
-        while !self.is_ready() {
-            core::hint::spin_loop();
-        }
+        // Wait for any in-progress conversion (bounded)
+        crate::spin::spin_wait("ADC idle", || self.is_ready());
         // Drain the FIFO
         while !self.fifo_is_empty() {
             let _ = self.adc.fifo.val();

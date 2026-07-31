@@ -332,10 +332,8 @@ macro_rules! impl_pll {
                 let power_on_mask = (1 << 0) | (1 << 5); // PD | VCOPD
                 self.pll.pwr.clr_bits(power_on_mask);
 
-                // Wait for VCO to lock
-                while !self.is_locked() {
-                    pico_rs_rt::asm::nop();
-                }
+                // Wait for VCO to lock (bounded)
+                crate::spin::spin_wait("PLL lock", || self.is_locked());
 
                 // Configure post dividers
                 self.set_postdiv(postdiv1, postdiv2);

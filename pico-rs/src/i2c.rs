@@ -503,25 +503,19 @@ macro_rules! impl_i2c {
                     for (i, &byte) in data.iter().enumerate() {
                         let last = i == data.len() - 1;
 
-                        // Wait for TX FIFO not full
-                        while !self.i2c.ic_status.tfnf() {
-                            self.check_abort()?;
-                        }
+                        // Wait for TX FIFO not full (bounded)
+                        self.wait_cond(|| self.i2c.ic_status.tfnf())?;
 
                         // Write data command
                         let cmd = (byte as u32) | if last { IcDataCmd::STOP } else { 0 };
                         self.i2c.ic_data_cmd.write_bits(cmd);
                     }
 
-                    // Wait for TX FIFO to empty
-                    while !self.i2c.ic_status.tfe() {
-                        self.check_abort()?;
-                    }
+                    // Wait for TX FIFO to empty (bounded)
+                    self.wait_cond(|| self.i2c.ic_status.tfe())?;
 
-                    // Wait for not busy
-                    while self.i2c.ic_status.mst_activity() {
-                        self.check_abort()?;
-                    }
+                    // Wait for not busy (bounded)
+                    self.wait_cond(|| !self.i2c.ic_status.mst_activity())?;
 
                     Ok(())
                 }
@@ -559,7 +553,12 @@ macro_rules! impl_i2c {
                             rx_idx += 1;
                         }
 
-                        self.check_abort()?;
+                        // Wait (bounded) for RX data or TX FIFO space so the
+                        // loop can make progress.
+                        self.wait_cond(|| {
+                            self.i2c.ic_status.rfne()
+                                || (tx_idx < len && self.i2c.ic_status.tfnf())
+                        })?;
                     }
 
                     Ok(())
@@ -587,9 +586,7 @@ macro_rules! impl_i2c {
 
                     // Write phase (no STOP)
                     for &byte in write_data {
-                        while !self.i2c.ic_status.tfnf() {
-                            self.check_abort()?;
-                        }
+                        self.wait_cond(|| self.i2c.ic_status.tfnf())?;
                         self.i2c.ic_data_cmd.write_dat(byte as u32);
                     }
 
@@ -613,7 +610,12 @@ macro_rules! impl_i2c {
                             rx_idx += 1;
                         }
 
-                        self.check_abort()?;
+                        // Wait (bounded) for RX data or TX FIFO space so the
+                        // loop can make progress.
+                        self.wait_cond(|| {
+                            self.i2c.ic_status.rfne()
+                                || (tx_idx < len && self.i2c.ic_status.tfnf())
+                        })?;
                     }
 
                     Ok(())
@@ -637,6 +639,23 @@ macro_rules! impl_i2c {
                             return Err(Error::ArbitrationLoss);
                         }
                         return Err(Error::Abort);
+                    }
+                    Ok(())
+                }
+
+                /// Spin (bounded) until `cond` is true, checking for I2C abort
+                /// each iteration. Returns [`Error::Timeout`] if the hardware
+                /// does not make progress within
+                /// [`crate::spin::SPIN_TIMEOUT`] iterations.
+                fn wait_cond(&self, cond: impl Fn() -> bool) -> Result<(), Error> {
+                    let mut spins = 0u32;
+                    while !cond() {
+                        self.check_abort()?;
+                        core::hint::spin_loop();
+                        spins += 1;
+                        if spins >= crate::spin::SPIN_TIMEOUT {
+                            return Err(Error::Timeout);
+                        }
                     }
                     Ok(())
                 }

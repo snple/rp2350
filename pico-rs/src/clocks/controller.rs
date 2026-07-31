@@ -180,9 +180,9 @@ impl Clocks {
     #[inline]
     pub fn configure_ref_src(&mut self, src: ClkRefSrc, src_freq: u32) {
         self.clocks.clk_ref_ctrl.write_src(src as u32);
-        while (self.clocks.clk_ref_selected.clk_ref_selected() & (1 << src as u32)) == 0 {
-            core::hint::spin_loop();
-        }
+        crate::spin::spin_wait("clk_ref source selected", || {
+            self.clocks.clk_ref_selected.clk_ref_selected() & (1 << src as u32) != 0
+        });
         self.ref_src = src;
         self.frequencies.ref_clk = src_freq;
     }
@@ -197,17 +197,16 @@ impl Clocks {
     pub fn configure_ref_aux(&mut self, auxsrc: ClkRefAuxSrc, src_freq: u32) {
         // Step 1: briefly switch to ROSC to avoid glitches while changing aux
         self.clocks.clk_ref_ctrl.write_src(ClkRefSrc::Rosc as u32);
-        while (self.clocks.clk_ref_selected.clk_ref_selected() & 1) == 0 {
-            core::hint::spin_loop();
-        }
+        crate::spin::spin_wait("clk_ref switched to ROSC", || {
+            self.clocks.clk_ref_selected.clk_ref_selected() & 1 != 0
+        });
 
         // Step 2: set auxiliary source and switch the main mux to AUX
         self.clocks.clk_ref_ctrl.write_auxsrc(auxsrc as u32);
         self.clocks.clk_ref_ctrl.write_src(ClkRefSrc::Aux as u32);
-        while (self.clocks.clk_ref_selected.clk_ref_selected() & (1 << ClkRefSrc::Aux as u32)) == 0
-        {
-            core::hint::spin_loop();
-        }
+        crate::spin::spin_wait("clk_ref switched to AUX", || {
+            self.clocks.clk_ref_selected.clk_ref_selected() & (1 << ClkRefSrc::Aux as u32) != 0
+        });
 
         self.ref_src = ClkRefSrc::Aux;
         self.frequencies.ref_clk = src_freq;
@@ -264,9 +263,9 @@ impl Clocks {
     #[inline]
     pub fn configure_sys_from_ref(&mut self) {
         self.clocks.clk_sys_ctrl.clr_src();
-        while (self.clocks.clk_sys_selected.clk_sys_selected() & 1) == 0 {
-            core::hint::spin_loop();
-        }
+        crate::spin::spin_wait("clk_sys switched to ref", || {
+            self.clocks.clk_sys_selected.clk_sys_selected() & 1 != 0
+        });
         self.frequencies.sys_clk = self.frequencies.ref_clk;
     }
 
@@ -295,16 +294,16 @@ impl Clocks {
 
         // Switch away from AUX first to avoid glitches while changing aux mux
         self.clocks.clk_sys_ctrl.clr_src();
-        while (self.clocks.clk_sys_selected.clk_sys_selected() & 1) == 0 {
-            core::hint::spin_loop();
-        }
+        crate::spin::spin_wait("clk_sys switched to ref", || {
+            self.clocks.clk_sys_selected.clk_sys_selected() & 1 != 0
+        });
 
         // Select auxiliary source then switch the glitchless mux to AUX
         self.clocks.clk_sys_ctrl.write_auxsrc(auxsrc as u32);
         self.clocks.clk_sys_ctrl.set_src();
-        while (self.clocks.clk_sys_selected.clk_sys_selected() & 2) == 0 {
-            core::hint::spin_loop();
-        }
+        crate::spin::spin_wait("clk_sys switched to AUX", || {
+            self.clocks.clk_sys_selected.clk_sys_selected() & 2 != 0
+        });
 
         // Apply the final divider now that the source is stable
         self.clocks.clk_sys_div.write_int((div >> 16) & 0xffff);
@@ -658,10 +657,10 @@ impl Clocks {
     /// # Returns
     /// Measured frequency in kHz.
     pub fn frequency_count_khz(&self, src: FcSrc) -> u32 {
-        // Wait for any in-progress measurement to finish
-        while self.clocks.fc0_status.running() {
-            core::hint::spin_loop();
-        }
+        // Wait for any in-progress measurement to finish (bounded)
+        crate::spin::spin_wait("frequency counter idle", || {
+            !self.clocks.fc0_status.running()
+        });
 
         self.clocks
             .fc0_ref_khz
@@ -677,9 +676,7 @@ impl Clocks {
         // Writing the source register starts the measurement
         self.clocks.fc0_src.write_fc0_src(src as u32);
 
-        while !self.clocks.fc0_status.done() {
-            core::hint::spin_loop();
-        }
+        crate::spin::spin_wait("frequency counter done", || self.clocks.fc0_status.done());
 
         self.clocks.fc0_result.khz()
     }

@@ -240,19 +240,19 @@ impl Powman {
             .vreg_ctrl
             .write_bits(POWMAN_PASSWORD | pico_rs_pac::powman::VregCtrl::UNLOCK);
 
-        // Wait for any prior update to finish
-        while self.powman.vreg.read_bits() & pico_rs_pac::powman::Vreg::UPDATE_IN_PROGRESS != 0 {
-            core::hint::spin_loop();
-        }
+        // Wait for any prior update to finish (bounded)
+        crate::spin::spin_wait("prior VREG update", || {
+            self.powman.vreg.read_bits() & pico_rs_pac::powman::Vreg::UPDATE_IN_PROGRESS == 0
+        });
 
         // Write new voltage with password
         let vsel = (voltage as u32) << pico_rs_pac::powman::Vreg::VSEL_OFFSET;
         self.powman.vreg.write_bits(POWMAN_PASSWORD | vsel);
 
-        // Wait for update to complete
-        while self.powman.vreg.read_bits() & pico_rs_pac::powman::Vreg::UPDATE_IN_PROGRESS != 0 {
-            core::hint::spin_loop();
-        }
+        // Wait for update to complete (bounded)
+        crate::spin::spin_wait("VREG update", || {
+            self.powman.vreg.read_bits() & pico_rs_pac::powman::Vreg::UPDATE_IN_PROGRESS == 0
+        });
     }
 
     /// Get the current core voltage setting.
@@ -277,9 +277,9 @@ impl Powman {
 
     /// Wait for voltage regulator to stabilize
     pub fn wait_vreg_stable(&self) {
-        while !self.is_vreg_ok() || self.is_vreg_starting() {
-            core::hint::spin_loop();
-        }
+        crate::spin::spin_wait("VREG stable", || {
+            self.is_vreg_ok() && !self.is_vreg_starting()
+        });
     }
 
     /// Set high-temperature protection threshold
@@ -367,11 +367,11 @@ impl Powman {
 
         if was_running {
             self.timer_start();
-            // Wait for source to be active
+            // Wait for source to be active (bounded)
             const USING_LPOSC: u32 = 1 << 5; // POWMAN_TIMER_USING_LPOSC
-            while (self.powman.timer.read_bits() & USING_LPOSC) == 0 {
-                core::hint::spin_loop();
-            }
+            crate::spin::spin_wait("LPOSC tick source active", || {
+                self.powman.timer.read_bits() & USING_LPOSC != 0
+            });
         }
     }
 
@@ -404,11 +404,11 @@ impl Powman {
 
         if was_running {
             self.timer_start();
-            // Wait for source to be active
+            // Wait for source to be active (bounded)
             const USING_XOSC: u32 = 1 << 4; // POWMAN_TIMER_USING_XOSC
-            while (self.powman.timer.read_bits() & USING_XOSC) == 0 {
-                core::hint::spin_loop();
-            }
+            crate::spin::spin_wait("XOSC tick source active", || {
+                self.powman.timer.read_bits() & USING_XOSC != 0
+            });
         }
     }
 

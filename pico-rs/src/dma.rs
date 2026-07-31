@@ -877,22 +877,28 @@ macro_rules! impl_channel {
                 }
 
                 /// Spin-wait until this channel's transfer completes.
+                ///
+                /// # Panics
+                ///
+                /// Panics if the transfer does not complete within
+                /// [`crate::spin::SPIN_TIMEOUT`] iterations.
                 #[inline]
                 pub fn wait(&self) -> &Self {
-                    while self.is_busy() {
-                        core::hint::spin_loop();
-                    }
+                    crate::spin::spin_wait("DMA transfer complete", || !self.is_busy());
                     self
                 }
 
                 /// Abort this channel's in-progress transfer.
+                ///
+                /// # Panics
+                ///
+                /// Panics if the abort does not take effect within
+                /// [`crate::spin::SPIN_TIMEOUT`] iterations.
                 #[inline]
                 pub fn abort(&self) -> &Self {
                     dma_regs().chan_abort.write_chan_abort(1 << $n);
-                    // Wait for abort to take effect
-                    while self.is_busy() {
-                        core::hint::spin_loop();
-                    }
+                    // Wait for abort to take effect (bounded)
+                    crate::spin::spin_wait("DMA abort", || !self.is_busy());
                     self
                 }
 

@@ -37,6 +37,15 @@ pub const XOSC_HZ: u32 = 12_000_000;
 /// Startup delay multiplier (1 = normal, increase for noisy environments)
 pub const STARTUP_DELAY_MULTIPLIER: u32 = 1;
 
+/// Generous spin bound for XOSC stabilization waits.
+///
+/// The hardware asserts STABLE after `startup_delay` XOSC cycles, which scales
+/// with [`STARTUP_DELAY_MULTIPLIER`] and the crystal frequency, so the default
+/// [`crate::spin::SPIN_TIMEOUT`] could false-trigger on a raised multiplier.
+/// This bound (~2 s at the boot-time 12 MHz clock) covers any realistic
+/// startup delay while still guarding against a dead oscillator.
+const XOSC_STABLE_TIMEOUT_SPINS: u32 = 8_000_000;
+
 /// Crystal oscillator frequency range selection
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
@@ -120,10 +129,12 @@ impl Xosc {
         const ENABLE_VALUE: u32 = 0xFAB; // "ENABLE" magic value
         xosc.ctrl.write_enable(ENABLE_VALUE);
 
-        // Wait for XOSC to stabilize
-        while !xosc.status.stable() {
-            core::hint::spin_loop();
-        }
+        // Wait for XOSC to stabilize (bounded, generous for raised startup delay)
+        crate::spin::spin_wait_max(
+            "XOSC stable",
+            || xosc.status.stable(),
+            XOSC_STABLE_TIMEOUT_SPINS,
+        );
 
         Self { xosc }
     }
@@ -179,11 +190,16 @@ impl Xosc {
     }
 
     /// Wait for the XOSC to become stable
+    ///
+    /// # Panics
+    ///
+    /// Panics if the oscillator does not stabilize within
+    /// [`XOSC_STABLE_TIMEOUT_SPINS`] iterations (a generous bound that scales
+    /// past the default [`crate::spin::SPIN_TIMEOUT`] to allow for a raised
+    /// [`STARTUP_DELAY_MULTIPLIER`]).
     #[inline]
     pub fn wait_stable(&self) {
-        while !self.stable() {
-            core::hint::spin_loop();
-        }
+        crate::spin::spin_wait_max("XOSC stable", || self.stable(), XOSC_STABLE_TIMEOUT_SPINS);
     }
 
     /// Enable the crystal oscillator
@@ -201,10 +217,8 @@ impl Xosc {
     pub fn disable(&self) {
         self.xosc.ctrl.write_enable(Ctrl::ENABLE_DISABLE);
 
-        // Wait for stable to go away
-        while self.stable() {
-            core::hint::spin_loop();
-        }
+        // Wait for stable to go away (bounded)
+        crate::spin::spin_wait("XOSC disable", || !self.stable());
     }
 
     /// Enter dormant mode

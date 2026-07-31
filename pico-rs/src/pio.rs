@@ -603,9 +603,7 @@ macro_rules! impl_state_machine {
             /// Execute an instruction and wait for completion
             pub fn exec_wait_blocking(&self, instr: u16) -> &Self {
                 self.exec(instr);
-                while self.is_exec_stalled() {
-                    core::hint::spin_loop();
-                }
+                crate::spin::spin_wait("PIO instruction execute", || !self.is_exec_stalled());
                 self
             }
 
@@ -657,9 +655,7 @@ macro_rules! impl_state_machine {
 
             /// Write to TX FIFO (blocking)
             pub fn tx_fifo_write(&self, data: u32) {
-                while self.tx_fifo_is_full() {
-                    core::hint::spin_loop();
-                }
+                crate::spin::spin_wait("PIO TX FIFO space", || !self.tx_fifo_is_full());
                 self.pio.[<txf $sm_index>].write_bits(data);
             }
 
