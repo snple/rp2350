@@ -35,28 +35,30 @@ pub use sau::SAU;
 pub use scb::SCB;
 pub use syst::SYST;
 
-/// Per-core guard: index 0 = Core0，index 1 = Core1。
+/// Per-core guard: index 0 = Core0, index 1 = Core1.
 ///
-/// SIO CPUID 寄存器（偏移 0，位于 SIO 基址 0xD000_0000）在哪个核心
-/// 上读取就返回该核心的编号（0 或 1），因此可直接用它做索引。
+/// The SIO CPUID register (offset 0, at SIO base 0xD000_0000) returns the
+/// number of the core it is read from (0 or 1), so it can be used directly
+/// as an index.
 static TAKEN: [AtomicBool; 2] = [AtomicBool::new(false), AtomicBool::new(false)];
 
-/// 读取当前执行核心的编号（0 = Core0，1 = Core1）。
+/// Read the number of the currently executing core (0 = Core0, 1 = Core1).
 ///
-/// 直接读取 SIO CPUID 寄存器（地址 0xD000_0000，只读，无副作用）。
-/// 该寄存器在 RP2350 Secure/Non-Secure 两种映射下地址相同。
+/// Reads the SIO CPUID register (address 0xD000_0000, read-only, no side
+/// effects). The address is identical in both Secure and Non-Secure mappings
+/// on RP2350.
 #[inline(always)]
 fn core_id() -> usize {
-    // SIO base = 0xD000_0000，CPUID 在偏移 0 处，返回值为 0 或 1。
-    // SAFETY: 该地址在 RP2350 上始终有效，且此为只读寄存器。
+    // SIO base = 0xD000_0000, CPUID is at offset 0, returns 0 or 1.
+    // SAFETY: this address is always valid on RP2350 and the access is read-only.
     unsafe { core::ptr::read_volatile(0xD000_0000usize as *const u32) as usize }
 }
 
 /// Core Peripherals container
 ///
-/// 每个核心各持有独立的 PPB（Private Peripheral Bus），因此本结构体
-/// 的 singleton 是**按核心**独立跟踪的：Core0 和 Core1 可以各自
-/// 调用 [`Peripherals::take()`] 一次，互不干扰。
+/// Each core has its own PPB (Private Peripheral Bus), so this struct's
+/// singleton is tracked **per core**: Core0 and Core1 can each call
+/// [`Peripherals::take()`] once, independently of each other.
 ///
 /// Use `Peripherals::take()` to get ownership.
 #[allow(non_snake_case)]
@@ -78,15 +80,16 @@ pub struct Peripherals {
 impl Peripherals {
     /// Take the core peripherals singleton for the **calling core**.
     ///
-    /// 由于 RP2350 每个 Cortex-M33 核心拥有独立的 PPB，Core0 和 Core1
-    /// 可以各自成功调用本方法一次。同一核心的第二次调用将返回 `None`。
+    /// Since each RP2350 Cortex-M33 core has its own PPB, Core0 and Core1
+    /// can each call this method successfully once. A second call from the
+    /// same core returns `None`.
     ///
     /// Returns `Some(Peripherals)` on the first call per core, `None` on subsequent calls.
     ///
     /// # Example
     ///
     /// ```ignore
-    /// // Core0 和 Core1 均可独立执行：
+    /// // Both Core0 and Core1 can do this independently:
     /// let peripherals = Peripherals::take().unwrap();
     /// peripherals.SYST.set_reload(1000);
     /// ```

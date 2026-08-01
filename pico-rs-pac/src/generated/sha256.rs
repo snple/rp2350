@@ -510,11 +510,11 @@ impl Wdata {
 /// - **SUM0** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Sum0 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Sum0 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -599,11 +599,11 @@ impl Sum0 {
 /// - **SUM1** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Sum1 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Sum1 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -688,11 +688,11 @@ impl Sum1 {
 /// - **SUM2** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Sum2 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Sum2 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -777,11 +777,11 @@ impl Sum2 {
 /// - **SUM3** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Sum3 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Sum3 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -866,11 +866,11 @@ impl Sum3 {
 /// - **SUM4** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Sum4 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Sum4 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -955,11 +955,11 @@ impl Sum4 {
 /// - **SUM5** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Sum5 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Sum5 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1044,11 +1044,11 @@ impl Sum5 {
 /// - **SUM6** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Sum6 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Sum6 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1133,11 +1133,11 @@ impl Sum6 {
 /// - **SUM7** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Sum7 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Sum7 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

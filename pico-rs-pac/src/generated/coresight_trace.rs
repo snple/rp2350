@@ -228,11 +228,11 @@ impl CtrlStatus {
 ///   The data captured into the FIFO is the full 32-bit TRACEDATA bus output by the TPIU. Note that the TPIU is a DDR output at half of clk_sys, therefore this interface can capture the full 32-bit TPIU DDR output bandwidth as it samples once per active edge of the TPIU output clock.
 #[repr(transparent)]
 pub struct TraceCaptureFifo {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for TraceCaptureFifo {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

@@ -1,8 +1,9 @@
 //! Delay abstraction trait
 //!
-//! 提供统一的 [`DelayUs`] trait，由 [`crate::systick::SysTick`]、
-//! [`crate::systick::Delay`]、[`crate::timer::Timer0`] 和
-//! [`crate::timer::Timer1`] 共同实现，使上层代码可以对延时来源保持无感知。
+//! Provides a unified [`DelayUs`] trait implemented by
+//! [`crate::systick::SysTick`], [`crate::systick::Delay`],
+//! [`crate::timer::Timer0`] and [`crate::timer::Timer1`], so upper-layer code
+//! stays agnostic to the delay source.
 //!
 //! # Example
 //!
@@ -19,12 +20,13 @@
 //! blink(&timer);
 //! ```
 
-/// 统一的微秒级延时 trait
+/// Unified microsecond delay trait
 ///
-/// 该 trait 由 [`crate::systick::SysTick`]、[`crate::systick::Delay`]、
-/// [`crate::timer::Timer0`] 和 [`crate::timer::Timer1`] 实现。
+/// Implemented by [`crate::systick::SysTick`], [`crate::systick::Delay`],
+/// [`crate::timer::Timer0`] and [`crate::timer::Timer1`].
 ///
-/// 上层代码可通过泛型或动态分发（`&dyn DelayUs`）与具体延时实现解耦：
+/// Upper-layer code can decouple from a concrete delay implementation via
+/// generics or dynamic dispatch (`&dyn DelayUs`):
 ///
 /// ```ignore
 /// fn wait(delay: &impl DelayUs) {
@@ -32,20 +34,22 @@
 /// }
 /// ```
 pub trait DelayUs {
-    /// 延时指定微秒数（忙等待）
+    /// Delay for the given number of microseconds (busy-wait)
     fn delay_us(&self, us: u32);
 
-    /// 延时指定毫秒数
+    /// Delay for the given number of milliseconds
     ///
-    /// 默认实现调用 `delay_us(ms * 1_000)`，可按需覆盖以提高效率。
+    /// The default implementation calls `delay_us(ms * 1_000)`; override it
+    /// for better efficiency if needed.
     #[inline]
     fn delay_ms(&self, ms: u32) {
         self.delay_us(ms.saturating_mul(1_000));
     }
 
-    /// 延时指定秒数
+    /// Delay for the given number of seconds
     ///
-    /// 默认实现循环调用 `delay_ms(1_000)`，避免 `ms * 1_000` 溢出。
+    /// The default implementation loops calling `delay_ms(1_000)` to avoid
+    /// overflow of `ms * 1_000`.
     #[inline]
     fn delay_secs(&self, secs: u32) {
         for _ in 0..secs {

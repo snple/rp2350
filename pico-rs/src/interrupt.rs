@@ -13,17 +13,19 @@
 //!
 //! **Key implications:**
 //!
-//! - `enable()` / `disable()` / `set_priority()` etc. only affect the **calling core**。
-//! - 中断在哪个核心触发，取决于哪个核心的 NVIC 启用了该中断。
-//! - 如果两个核心启用相同 IRQ，则两个核心都会收到（电平触发时先应答者获胜）。
-//! - 要将中断独占路由到某一核心，只需在该核心上启用，另一个核心上不启用即可。
+//! - `enable()` / `disable()` / `set_priority()` etc. only affect the **calling core**.
+//! - Which core receives an interrupt depends on which core's NVIC enabled it.
+//! - If both cores enable the same IRQ, both receive it (for level-triggered
+//!   interrupts, the first to acknowledge wins).
+//! - To route an interrupt exclusively to one core, enable it only on that
+//!   core and leave it disabled on the other.
 //!
-//! ## 推荐的双核中断模式
+//! ## Recommended Dual-Core Interrupt Pattern
 //!
-//! 每个核心在自己的初始化代码中配置自己的 NVIC：
+//! Each core configures its own NVIC in its own initialization code:
 //!
 //! ```ignore
-//! // Core 0 main — 处理 USB 和 UART
+//! // Core 0 main — handles USB and UART
 //! #[main]
 //! fn main() -> ! {
 //!     unsafe {
@@ -33,7 +35,7 @@
 //!     // launch Core 1...
 //! }
 //!
-//! // Core 1 entry — 处理 DMA 和 PIO
+//! // Core 1 entry — handles DMA and PIO
 //! fn core1_main() -> ! {
 //!     unsafe {
 //!         interrupt::enable(Interrupt::DMA_IRQ_0);
@@ -43,37 +45,40 @@
 //! }
 //! ```
 //!
-//! ## 跨核触发中断
+//! ## Cross-Core Interrupt Triggering
 //!
-//! 无需远程操作另一个核心的 NVIC。要触发另一个核心的中断，使用硬件机制：
+//! There is no need to remotely poke another core's NVIC. To trigger an
+//! interrupt on the other core, use the hardware mechanisms:
 //!
-//! - **Doorbell**（`SIO_IRQ_BELL`）：8 bit 标志位，写入即触发对方核心中断
-//! - **FIFO**（`SIO_IRQ_FIFO`）：发送数据同时触发对方核心中断
-//! - **Spare IRQ**：6 个软件中断，用 `pend()` 触发当前核心
+//! - **Doorbell** (`SIO_IRQ_BELL`): 8-bit flag bits; writing one triggers the
+//!   other core's interrupt
+//! - **FIFO** (`SIO_IRQ_FIFO`): sending data also triggers the other core's interrupt
+//! - **Spare IRQ**: 6 software interrupts, triggered on the current core via `pend()`
 //!
 //! ```ignore
 //! use pico_rs::multicore::Doorbell;
 //!
-//! // Core 0: 通知 Core 1 有工作要处理
+//! // Core 0: notify Core 1 that there is work to do
 //! Doorbell::new().signal(0);
 //!
-//! // Core 1: 在 SIO_IRQ_BELL handler 中处理
+//! // Core 1: handle in the SIO_IRQ_BELL handler
 //! #[unsafe(no_mangle)]
 //! fn SIO_IRQ_BELL() {
 //!     let db = Doorbell::new();
 //!     db.clear_local(1);
-//!     // 处理来自 Core 0 的请求...
+//!     // handle requests from Core 0...
 //! }
 //! ```
 //!
-//! ## 优先级系统（RP2350）
+//! ## Priority System (RP2350)
 //!
-//! RP2350 的 Cortex-M33 在每个 8-bit IPR 寄存器字段的**高 4 位**实现优先级，
-//! 共提供 **16 个有效级别**。数字越小优先级越高。
+//! RP2350's Cortex-M33 implements priority in the **high 4 bits** of each
+//! 8-bit IPR register field, providing **16 effective levels**. Lower numbers
+//! mean higher priority.
 //!
-//! | 级别 | 8-bit 写入值 | 十六进制 |
+//! | Level | 8-bit write value | Hex |
 //! |------|-------------|---------|
-//! |  0   |   0         | 0x00    | ← 最高优先级（复位后所有中断的默认值）
+//! |  0   |   0         | 0x00    | ← highest priority (reset default for all interrupts)
 //! |  1   |  16         | 0x10    |
 //! |  2   |  32         | 0x20    |
 //! |  3   |  48         | 0x30    |
@@ -81,65 +86,71 @@
 //! |  5   |  80         | 0x50    |
 //! |  6   |  96         | 0x60    |
 //! |  7   | 112         | 0x70    |
-//! |  8   | 128         | 0x80    | ← 常用中间值
+//! |  8   | 128         | 0x80    | ← common mid-range value
 //! |  9   | 144         | 0x90    |
 //! | 10   | 160         | 0xA0    |
 //! | 11   | 176         | 0xB0    |
 //! | 12   | 192         | 0xC0    |
 //! | 13   | 208         | 0xD0    |
 //! | 14   | 224         | 0xE0    |
-//! | 15   | 240         | 0xF0    | ← 最低优先级
+//! | 15   | 240         | 0xF0    | ← lowest priority
 //!
-//! **重要细节：**
-//! - 写入不对齐的值（如 100）硬件会自动截断为 `value & 0xF0`（即 96）。
-//!   建议始终使用 16 的倍数，以避免歧义。
-//! - 复位后所有中断优先级寄存器为 **0x00**（最高优先级）。
-//! - **`set_priority()` 必须在 `enable()` 之前调用**，否则中断的第一次触发
-//!   仍以优先级 0（最高）运行。
+//! **Important details:**
+//! - Writing a non-aligned value (e.g. 100) is silently truncated by the
+//!   hardware to `value & 0xF0` (i.e. 96). Always use multiples of 16 to
+//!   avoid ambiguity.
+//! - After reset, all interrupt priority registers are **0x00** (highest).
+//! - **`set_priority()` must be called before `enable()`**, otherwise the
+//!   first trigger of the interrupt still runs at priority 0 (highest).
 //!
-//! ## 抢占行为
+//! ## Preemption Behavior
 //!
-//! Cortex-M33 默认 PRIGROUP=0（AIRCR 寄存器），表示所有 4 个优先级位都用于
-//! **抢占优先级**，无子优先级位。效果：
+//! Cortex-M33 defaults to PRIGROUP=0 (AIRCR register), meaning all 4 priority
+//! bits are used for **preemption priority**, with no sub-priority bits.
+//! Effects:
 //!
-//! - 优先级数值更小的中断可以**抢占**正在运行的更大数值中断。
-//! - 同等优先级的中断**不能相互抢占**（等待当前 ISR 返回后才处理）。
+//! - An interrupt with a numerically smaller priority can **preempt** a
+//!   running interrupt with a larger value.
+//! - Interrupts of equal priority **cannot preempt each other** (they are
+//!   handled only after the current ISR returns).
 //!
 //! ```ignore
-//! // 典型优先级分配示例：
-//! // USBCTRL_IRQ  → 0   (最高，确保 USB 总线及时响应)
-//! // DMA_IRQ_0    → 32  (高，数据流)
-//! // TIMER0_IRQ_0 → 64  (中)
-//! // SPARE_IRQ_0  → 128 (低，应用层事件处理)
-//! // SysTick 优先级通过 SCB 的 SHPR3 寄存器单独配置，范围相同
+//! // Typical priority assignment example:
+//! // USBCTRL_IRQ  → 0   (highest, ensures timely USB bus response)
+//! // DMA_IRQ_0    → 32  (high, data streaming)
+//! // TIMER0_IRQ_0 → 64  (medium)
+//! // SPARE_IRQ_0  → 128 (low, application event handling)
+//! // SysTick priority is configured separately via SCB's SHPR3 register, same range
 //!
 //! interrupt::set_priority(Interrupt::USBCTRL_IRQ, 0);
 //! interrupt::set_priority(Interrupt::SPARE_IRQ_0, 128);
-//! // 设置优先级之后再 enable，保证第一次触发就以正确优先级运行
+//! // set the priority before enabling so the first trigger runs at the right priority
 //! unsafe {
 //!     interrupt::enable(Interrupt::USBCTRL_IRQ);
 //!     interrupt::enable(Interrupt::SPARE_IRQ_0);
 //! }
 //! ```
 //!
-//! ## 使用 `#[bind]` 宏绑定中断
+//! ## Binding Interrupts with the `#[bind]` Macro
 //!
-//! `bind` 宏将一个函数绑定到指定的中断向量，生成 `#[no_mangle]` 的 ISR 入口：
+//! The `bind` macro binds a function to the specified interrupt vector,
+//! generating a `#[no_mangle]` ISR entry point:
 //!
 //! ```ignore
 //! use pico_rs::bind;
 //!
 //! #[bind(SPARE_IRQ_0)]
 //! fn event_handler() {
-//!     // 处理应用层事件
+//!     // handle application events
 //! }
 //! ```
 //!
-//! **优先级必须在 `enable()` 之前单独设置**（不在宏内处理）：
+//! **Priority must be set separately before `enable()`** (the macro does not
+//! handle it):
 //!
 //! ```ignore
-//! interrupt::set_priority(Interrupt::SPARE_IRQ_0, 128); // 先设优先级
-//! unsafe { interrupt::enable(Interrupt::SPARE_IRQ_0); } // 再 enable
+//! interrupt::set_priority(Interrupt::SPARE_IRQ_0, 128); // set priority first
+//! unsafe { interrupt::enable(Interrupt::SPARE_IRQ_0); } // then enable
 //! ```
 //!
 //! ## Features
@@ -155,8 +166,8 @@
 //! use pico_rs::pac::Interrupt as IrqNum;
 //!
 //! // Enable a specific interrupt (on the current core)
-//! // 必须先设置优先级，再 enable，否则第一次触发以优先级 0 运行
-//! interrupt::set_priority(IrqNum::TIMER0_IRQ_0, 64); // 优先级级别 4
+//! // must set priority before enabling, otherwise the first trigger runs at priority 0
+//! interrupt::set_priority(IrqNum::TIMER0_IRQ_0, 64); // priority level 4
 //! unsafe { interrupt::enable(IrqNum::TIMER0_IRQ_0); }
 //!
 //! // Run code in a critical section (all interrupts disabled)
@@ -258,12 +269,13 @@ pub fn unpend(interrupt: Interrupt) {
 
 /// Set the priority of an interrupt in the **current core's** NVIC
 ///
-/// RP2350 Cortex-M33 实现了 **4 位优先级**（高 4 位有效），共 16 个级别。
-/// 数字越小优先级越高。写入值会被截断为 `value & 0xF0`，**请使用 16 的倍数**。
+/// RP2350's Cortex-M33 implements **4-bit priority** (the high 4 bits are
+/// effective), giving 16 levels total. Lower numbers mean higher priority.
+/// The written value is truncated to `value & 0xF0`, so **use multiples of 16**.
 ///
-/// | 8-bit 值 | 级别 | 说明 |
+/// | 8-bit value | Level | Description |
 /// |---------|------|------|
-/// |   0     |  0   | 最高优先级（复位默认值）|
+/// |   0     |  0   | highest priority (reset default) |
 /// |  16     |  1   | |
 /// |  32     |  2   | |
 /// |  48     |  3   | |
@@ -271,15 +283,16 @@ pub fn unpend(interrupt: Interrupt) {
 /// |  80     |  5   | |
 /// |  96     |  6   | |
 /// | 112     |  7   | |
-/// | 128     |  8   | 常用中间值 |
+/// | 128     |  8   | common mid-range value |
 /// | 144..224|9..14 | |
-/// | 240     | 15   | 最低优先级 |
+/// | 240     | 15   | lowest priority |
 ///
-/// **必须在 `enable()` 之前调用**，否则中断的第一次触发以复位默认值（0）运行。
+/// **Must be called before `enable()`**, otherwise the interrupt's first
+/// trigger runs at the reset default (0).
 ///
 /// # Arguments
-/// * `interrupt` - 要配置的中断
-/// * `priority`  - 优先级值，使用 16 的倍数（0 = 最高，240 = 最低）
+/// * `interrupt` - the interrupt to configure
+/// * `priority`  - priority value, use multiples of 16 (0 = highest, 240 = lowest)
 ///
 /// # Safety
 /// This function accesses the NVIC registers of the current core. The caller must ensure
@@ -291,8 +304,8 @@ pub fn unpend(interrupt: Interrupt) {
 /// ```ignore
 /// use pico_rs::interrupt::{self, Interrupt};
 ///
-/// // 先设优先级，再 enable
-/// interrupt::set_priority(Interrupt::SPARE_IRQ_0, 128); // 级别 8
+/// // set priority first, then enable
+/// interrupt::set_priority(Interrupt::SPARE_IRQ_0, 128); // level 8
 /// unsafe { interrupt::enable(Interrupt::SPARE_IRQ_0); }
 /// ```
 #[inline]
@@ -649,9 +662,10 @@ impl Drop for InterruptGuard {
 // Processor ID Detection
 // ============================================================================
 
-/// 获取当前执行核心的 ID
+/// Get the ID of the currently executing core
 ///
-/// 在中断处理程序中可用来确定当前代码在哪个核心上运行。
+/// Useful in interrupt handlers to determine which core the current code is
+/// running on.
 #[inline]
 pub fn current_core() -> crate::multicore::CoreId {
     crate::multicore::core_id()
@@ -768,8 +782,9 @@ pub fn free<F, R>(f: F) -> R
 where
     F: FnOnce(CriticalSection) -> R,
 {
-    // 直接调用本模块的底层实现，与 critical_section::Impl（当启用时）
-    // 共享同一套 CS_NESTING 计数器和 spinlock-31，两条路径完全一致，不会死锁。
+    // Call the low-level implementation directly; it shares the same
+    // CS_NESTING counters and spinlock-31 with critical_section::Impl (when
+    // enabled), so both paths are fully coherent and deadlock-free.
     let primask = cs_acquire();
     let result = f(unsafe { CriticalSection::new() });
     unsafe { cs_release(primask) };
@@ -784,12 +799,13 @@ where
 // registers the same acquire/release pair as the `critical_section::Impl`.
 // ============================================================================
 
-/// 每个核的临界区嵌套计数器（索引为核 ID 0/1）
+/// Per-core critical-section nesting counter (indexed by core ID 0/1)
 pub(crate) static CS_NESTING: [AtomicU8; 2] = [AtomicU8::new(0), AtomicU8::new(0)];
 
 #[inline]
 fn cs_spinlock_acquire() {
-    // 读 SIO spinlock-31：返回非零表示获取成功（硬件保证原子性）
+    // Read SIO spinlock-31: a non-zero return means acquisition succeeded
+    // (the hardware guarantees atomicity)
     while unsafe { &*crate::sio::REGS }.spinlock31.spinlock31() == 0 {
         core::hint::spin_loop();
     }
@@ -797,20 +813,22 @@ fn cs_spinlock_acquire() {
 
 #[inline]
 fn cs_spinlock_release() {
-    // 写任意值释放 spinlock-31
+    // Write any value to release spinlock-31
     unsafe { &*crate::sio::REGS }.spinlock31.write_spinlock31(1);
 }
 
-/// 进入临界区：禁用本核中断 + 获取 spinlock-31（支持嵌套）
+/// Enter a critical section: disable the local core's interrupts and acquire
+/// spinlock-31 (nesting supported)
 ///
-/// 返回调用前的 PRIMASK 原始值，供 [`cs_release`] 恢复。
+/// Returns the PRIMASK value before the call, for [`cs_release`] to restore.
 #[inline]
 pub(crate) fn cs_acquire() -> u32 {
-    // 1. 保存当前中断状态
+    // 1. Save the current interrupt state
     let primask = pico_rs_rt::register::primask::read_raw();
-    // 2. 禁用本核中断
+    // 2. Disable the local core's interrupts
     pico_rs_rt::interrupt::disable();
-    // 3. 更新嵌套计数器，只有从 0 变为 1 时才真正获取 spinlock-31
+    // 3. Update the nesting counter; only acquire spinlock-31 when it goes
+    //    0 → 1
     let core = unsafe { &*crate::sio::REGS }.cpuid.cpuid() as usize;
     let prev = CS_NESTING[core].fetch_add(1, Ordering::Acquire);
     if prev == 0 {
@@ -819,18 +837,20 @@ pub(crate) fn cs_acquire() -> u32 {
     primask
 }
 
-/// 退出临界区：释放 spinlock-31 + 恢复中断状态（支持嵌套）
+/// Exit a critical section: release spinlock-31 and restore interrupt state
+/// (nesting supported)
 ///
 /// # Safety
-/// `primask` 必须是对应 [`cs_acquire`] 调用返回的值。
+/// `primask` must be the value returned by the matching [`cs_acquire`] call.
 #[inline]
 pub(crate) unsafe fn cs_release(primask: u32) {
-    // 1. 更新嵌套计数器，只有从 1 变为 0 时才真正释放 spinlock-31
+    // 1. Update the nesting counter; only release spinlock-31 when it goes
+    //    1 → 0
     let core = unsafe { &*crate::sio::REGS }.cpuid.cpuid() as usize;
     let prev = CS_NESTING[core].fetch_sub(1, Ordering::Release);
     if prev == 1 {
         cs_spinlock_release();
     }
-    // 2. 恢复之前的中断状态
+    // 2. Restore the previous interrupt state
     unsafe { pico_rs_rt::register::primask::write_raw(primask) };
 }

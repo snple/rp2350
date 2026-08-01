@@ -30,11 +30,11 @@ pub const BASE: u32 = 0x40030000;
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct UsbphyDpStatus {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for UsbphyDpStatus {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -565,11 +565,11 @@ impl UsbphyDpCtrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct UsbphyDmStatus {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for UsbphyDmStatus {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1100,11 +1100,11 @@ impl UsbphyDmCtrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct GpioQspiSclkStatus {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for GpioQspiSclkStatus {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1639,11 +1639,11 @@ impl GpioQspiSclkCtrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct GpioQspiSsStatus {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for GpioQspiSsStatus {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2178,11 +2178,11 @@ impl GpioQspiSsCtrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct GpioQspiSd0Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for GpioQspiSd0Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2715,11 +2715,11 @@ impl GpioQspiSd0Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct GpioQspiSd1Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for GpioQspiSd1Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3252,11 +3252,11 @@ impl GpioQspiSd1Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct GpioQspiSd2Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for GpioQspiSd2Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3791,11 +3791,11 @@ impl GpioQspiSd2Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct GpioQspiSd3Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for GpioQspiSd3Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4330,11 +4330,11 @@ impl GpioQspiSd3Ctrl {
 /// - **USBPHY_DP** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc0Secure {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryProc0Secure {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4558,11 +4558,11 @@ impl IrqsummaryProc0Secure {
 /// - **USBPHY_DP** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc0Nonsecure {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryProc0Nonsecure {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4786,11 +4786,11 @@ impl IrqsummaryProc0Nonsecure {
 /// - **USBPHY_DP** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc1Secure {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryProc1Secure {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5014,11 +5014,11 @@ impl IrqsummaryProc1Secure {
 /// - **USBPHY_DP** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc1Nonsecure {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryProc1Nonsecure {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5242,11 +5242,11 @@ impl IrqsummaryProc1Nonsecure {
 /// - **USBPHY_DP** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryDormantWakeSecure {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryDormantWakeSecure {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5470,11 +5470,11 @@ impl IrqsummaryDormantWakeSecure {
 /// - **USBPHY_DP** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryDormantWakeNonsecure {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryDormantWakeNonsecure {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9834,11 +9834,11 @@ impl Proc0Intf {
 /// - **USBPHY_DP_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc0Ints {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Ints {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13524,11 +13524,11 @@ impl Proc1Intf {
 /// - **USBPHY_DP_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc1Ints {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Ints {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -17214,11 +17214,11 @@ impl DormantWakeIntf {
 /// - **USBPHY_DP_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct DormantWakeInts {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for DormantWakeInts {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

@@ -30,11 +30,11 @@ pub const BASE: u32 = 0x40028000;
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio0Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio0Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -581,11 +581,11 @@ impl Gpio0Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio1Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio1Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1132,11 +1132,11 @@ impl Gpio1Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio2Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio2Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1685,11 +1685,11 @@ impl Gpio2Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio3Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio3Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2238,11 +2238,11 @@ impl Gpio3Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio4Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio4Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2787,11 +2787,11 @@ impl Gpio4Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio5Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio5Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3336,11 +3336,11 @@ impl Gpio5Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio6Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio6Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3885,11 +3885,11 @@ impl Gpio6Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio7Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio7Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4434,11 +4434,11 @@ impl Gpio7Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio8Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio8Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4983,11 +4983,11 @@ impl Gpio8Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio9Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio9Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5530,11 +5530,11 @@ impl Gpio9Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio10Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio10Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6079,11 +6079,11 @@ impl Gpio10Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio11Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio11Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6628,11 +6628,11 @@ impl Gpio11Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio12Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio12Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7179,11 +7179,11 @@ impl Gpio12Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio13Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio13Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7730,11 +7730,11 @@ impl Gpio13Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio14Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio14Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8283,11 +8283,11 @@ impl Gpio14Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio15Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio15Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8836,11 +8836,11 @@ impl Gpio15Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio16Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio16Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9385,11 +9385,11 @@ impl Gpio16Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio17Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio17Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9934,11 +9934,11 @@ impl Gpio17Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio18Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio18Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -10485,11 +10485,11 @@ impl Gpio18Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio19Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio19Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11038,11 +11038,11 @@ impl Gpio19Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio20Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio20Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11587,11 +11587,11 @@ impl Gpio20Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio21Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio21Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12136,11 +12136,11 @@ impl Gpio21Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio22Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio22Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -12687,11 +12687,11 @@ impl Gpio22Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio23Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio23Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13238,11 +13238,11 @@ impl Gpio23Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio24Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio24Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13787,11 +13787,11 @@ impl Gpio24Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio25Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio25Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -14336,11 +14336,11 @@ impl Gpio25Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio26Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio26Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -14885,11 +14885,11 @@ impl Gpio26Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio27Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio27Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15434,11 +15434,11 @@ impl Gpio27Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio28Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio28Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15981,11 +15981,11 @@ impl Gpio28Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio29Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio29Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -16528,11 +16528,11 @@ impl Gpio29Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio30Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio30Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -17077,11 +17077,11 @@ impl Gpio30Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio31Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio31Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -17626,11 +17626,11 @@ impl Gpio31Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio32Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio32Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -18173,11 +18173,11 @@ impl Gpio32Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio33Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio33Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -18720,11 +18720,11 @@ impl Gpio33Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio34Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio34Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -19269,11 +19269,11 @@ impl Gpio34Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio35Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio35Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -19818,11 +19818,11 @@ impl Gpio35Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio36Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio36Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -20365,11 +20365,11 @@ impl Gpio36Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio37Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio37Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -20912,11 +20912,11 @@ impl Gpio37Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio38Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio38Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -21461,11 +21461,11 @@ impl Gpio38Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio39Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio39Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -22010,11 +22010,11 @@ impl Gpio39Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio40Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio40Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -22557,11 +22557,11 @@ impl Gpio40Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio41Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio41Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -23104,11 +23104,11 @@ impl Gpio41Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio42Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio42Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -23653,11 +23653,11 @@ impl Gpio42Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio43Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio43Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -24202,11 +24202,11 @@ impl Gpio43Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio44Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio44Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -24749,11 +24749,11 @@ impl Gpio44Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio45Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio45Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -25296,11 +25296,11 @@ impl Gpio45Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio46Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio46Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -25845,11 +25845,11 @@ impl Gpio46Ctrl {
 ///   output signal to pad after register override is applied
 #[repr(transparent)]
 pub struct Gpio47Status {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Gpio47Status {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -26444,11 +26444,11 @@ impl Gpio47Ctrl {
 /// - **GPIO0** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc0Secure0 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryProc0Secure0 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -27120,11 +27120,11 @@ impl IrqsummaryProc0Secure0 {
 /// - **GPIO32** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc0Secure1 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryProc0Secure1 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -27540,11 +27540,11 @@ impl IrqsummaryProc0Secure1 {
 /// - **GPIO0** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc0Nonsecure0 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryProc0Nonsecure0 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -28216,11 +28216,11 @@ impl IrqsummaryProc0Nonsecure0 {
 /// - **GPIO32** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc0Nonsecure1 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryProc0Nonsecure1 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -28636,11 +28636,11 @@ impl IrqsummaryProc0Nonsecure1 {
 /// - **GPIO0** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc1Secure0 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryProc1Secure0 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -29312,11 +29312,11 @@ impl IrqsummaryProc1Secure0 {
 /// - **GPIO32** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc1Secure1 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryProc1Secure1 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -29732,11 +29732,11 @@ impl IrqsummaryProc1Secure1 {
 /// - **GPIO0** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc1Nonsecure0 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryProc1Nonsecure0 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -30408,11 +30408,11 @@ impl IrqsummaryProc1Nonsecure0 {
 /// - **GPIO32** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryProc1Nonsecure1 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryProc1Nonsecure1 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -30828,11 +30828,11 @@ impl IrqsummaryProc1Nonsecure1 {
 /// - **GPIO0** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryDormantWakeSecure0 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryDormantWakeSecure0 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -31504,11 +31504,11 @@ impl IrqsummaryDormantWakeSecure0 {
 /// - **GPIO32** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryDormantWakeSecure1 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryDormantWakeSecure1 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -31924,11 +31924,11 @@ impl IrqsummaryDormantWakeSecure1 {
 /// - **GPIO0** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryDormantWakeNonsecure0 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryDormantWakeNonsecure0 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -32600,11 +32600,11 @@ impl IrqsummaryDormantWakeNonsecure0 {
 /// - **GPIO32** `[0]` (RO)
 #[repr(transparent)]
 pub struct IrqsummaryDormantWakeNonsecure1 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IrqsummaryDormantWakeNonsecure1 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -57538,11 +57538,11 @@ impl Proc0Intf5 {
 /// - **GPIO0_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc0Ints0 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Ints0 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -58248,11 +58248,11 @@ impl Proc0Ints0 {
 /// - **GPIO8_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc0Ints1 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Ints1 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -58958,11 +58958,11 @@ impl Proc0Ints1 {
 /// - **GPIO16_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc0Ints2 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Ints2 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -59668,11 +59668,11 @@ impl Proc0Ints2 {
 /// - **GPIO24_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc0Ints3 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Ints3 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -60378,11 +60378,11 @@ impl Proc0Ints3 {
 /// - **GPIO32_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc0Ints4 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Ints4 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -61088,11 +61088,11 @@ impl Proc0Ints4 {
 /// - **GPIO40_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc0Ints5 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Ints5 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -79678,11 +79678,11 @@ impl Proc1Intf5 {
 /// - **GPIO0_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc1Ints0 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Ints0 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -80388,11 +80388,11 @@ impl Proc1Ints0 {
 /// - **GPIO8_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc1Ints1 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Ints1 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -81098,11 +81098,11 @@ impl Proc1Ints1 {
 /// - **GPIO16_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc1Ints2 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Ints2 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -81808,11 +81808,11 @@ impl Proc1Ints2 {
 /// - **GPIO24_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc1Ints3 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Ints3 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -82518,11 +82518,11 @@ impl Proc1Ints3 {
 /// - **GPIO32_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc1Ints4 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Ints4 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -83228,11 +83228,11 @@ impl Proc1Ints4 {
 /// - **GPIO40_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Proc1Ints5 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Ints5 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -101818,11 +101818,11 @@ impl DormantWakeIntf5 {
 /// - **GPIO0_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct DormantWakeInts0 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for DormantWakeInts0 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -102528,11 +102528,11 @@ impl DormantWakeInts0 {
 /// - **GPIO8_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct DormantWakeInts1 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for DormantWakeInts1 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -103238,11 +103238,11 @@ impl DormantWakeInts1 {
 /// - **GPIO16_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct DormantWakeInts2 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for DormantWakeInts2 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -103948,11 +103948,11 @@ impl DormantWakeInts2 {
 /// - **GPIO24_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct DormantWakeInts3 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for DormantWakeInts3 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -104658,11 +104658,11 @@ impl DormantWakeInts3 {
 /// - **GPIO32_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct DormantWakeInts4 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for DormantWakeInts4 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -105368,11 +105368,11 @@ impl DormantWakeInts4 {
 /// - **GPIO40_LEVEL_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct DormantWakeInts5 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for DormantWakeInts5 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

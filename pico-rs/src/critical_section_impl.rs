@@ -1,13 +1,16 @@
-//! `critical-section` crate 实现注册
+//! `critical-section` crate implementation registration
 //!
-//! 这是一个瘦包装模块，仅将 `interrupt` 模块中的 `cs_acquire` / `cs_release`
-//! 注册为 `critical-section` crate 的实现。
+//! This is a thin wrapper module that registers `cs_acquire` / `cs_release`
+//! from the `interrupt` module as the implementation for the `critical-section`
+//! crate.
 //!
-//! 核心逻辑（spinlock-31、嵌套计数器）位于 [`crate::interrupt`] 中，
-//! 供 `interrupt::free` 直接调用，保证两条路径共享同一套状态。
+//! The core logic (spinlock-31, nesting counter) lives in [`crate::interrupt`]
+//! and is called directly by `interrupt::free`, so both paths share the same
+//! state.
 //!
-//! 此模块通过 `critical-section-impl` feature 按需启用（默认开启）。
-//! 若另一个 crate 已注册了实现，可在依赖中关闭该 feature 避免冲突：
+//! This module is enabled on demand via the `critical-section-impl` feature
+//! (on by default). If another crate has already registered an implementation,
+//! disable the feature in your dependencies to avoid a conflict:
 //!
 //! ```toml
 //! [dependencies]

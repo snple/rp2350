@@ -4954,11 +4954,11 @@ impl SofWr {
 /// - **COUNT** `[10:0]` (RO)
 #[repr(transparent)]
 pub struct SofRd {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for SofRd {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9194,11 +9194,11 @@ impl BuffStatus {
 /// - **EP0_IN** `[0]` (RO)
 #[repr(transparent)]
 pub struct BuffCpuShouldHandle {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for BuffCpuShouldHandle {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -18500,11 +18500,11 @@ impl LinestateTuning {
 ///   Host: raised when a device is connected or disconnected (i.e. when SIE_STATUS.SPEED changes). Cleared by writing to SIE_STATUS.SPEED
 #[repr(transparent)]
 pub struct Intr {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Intr {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -22070,11 +22070,11 @@ impl Intf {
 ///   Host: raised when a device is connected or disconnected (i.e. when SIE_STATUS.SPEED changes). Cleared by writing to SIE_STATUS.SPEED
 #[repr(transparent)]
 pub struct Ints {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Ints {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -22742,11 +22742,11 @@ impl Ints {
 /// - **SOF_TIMESTAMP_RAW** `[20:0]` (RO)
 #[repr(transparent)]
 pub struct SofTimestampRaw {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for SofTimestampRaw {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -22832,11 +22832,11 @@ impl SofTimestampRaw {
 /// - **SOF_TIMESTAMP_LAST** `[20:0]` (RO)
 #[repr(transparent)]
 pub struct SofTimestampLast {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for SofTimestampLast {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -22924,11 +22924,11 @@ impl SofTimestampLast {
 /// - **STATE** `[4:0]` (RO)
 #[repr(transparent)]
 pub struct SmState {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for SmState {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

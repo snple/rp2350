@@ -1,25 +1,26 @@
-//! 事件队列
+//! Event queue
 //!
-//! 提供中断与主循环之间的通信机制。
+//! Provides a communication mechanism between interrupts and the main loop.
 //!
-//! ## 设计特点
+//! ## Design Features
 //!
-//! - **无锁 SPSC 队列**: 单生产者(中断)单消费者(主循环)
-//! - **泛型支持**: 可自定义事件类型
-//! - **零拷贝**: 事件直接存储在队列中
+//! - **Lock-free SPSC queue**: single producer (interrupt) / single consumer
+//!   (main loop)
+//! - **Generic support**: custom event types are supported
+//! - **Zero-copy**: events are stored directly in the queue
 //!
-//! ## 使用示例
+//! ## Usage Example
 //!
-//! ### 基础用法
+//! ### Basic usage
 //!
 //! ```ignore
 //! use pico_rs::kit::task::{Event, EventQueue};
 //!
-//! // 定义事件 ID
+//! // define event IDs
 //! const EVT_BUTTON: u16 = 1;
 //! const EVT_TIMER: u16 = 2;
 //!
-//! // 全局事件队列
+//! // global event queue
 //! static EVENTS: EventQueue = EventQueue::new();
 //!
 //! fn main() -> ! {
@@ -35,14 +36,14 @@
 //!     }
 //! }
 //!
-//! // 在中断中发送事件
+//! // send an event from an interrupt
 //! #[unsafe(no_mangle)]
 //! fn GPIO_IRQ() {
 //!     EVENTS.push(Event::new(EVT_BUTTON, 0));
 //! }
 //! ```
 //!
-//! ### 自定义事件类型
+//! ### Custom event types
 //!
 //! ```ignore
 //! use pico_rs::kit::task::GenericQueue;
@@ -64,36 +65,36 @@ use core::sync::atomic::{AtomicUsize, Ordering};
 use crate::interrupt;
 
 // ============================================================================
-// 简单事件 (u32)
+// Simple event (u32)
 // ============================================================================
 
-/// 事件：包含 ID 和数据的简单消息
+/// An event: a simple message containing an ID and data
 ///
-/// 内存布局：`[id: u16][data: u16]`，共 4 字节
+/// Memory layout: `[id: u16][data: u16]`, 4 bytes total
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(C)]
 #[derive(Default)]
 pub struct Event {
-    /// 事件类型 ID
+    /// Event type ID
     pub id: u16,
-    /// 事件附带数据
+    /// Data attached to the event
     pub data: u16,
 }
 
 impl Event {
-    /// 创建新事件
+    /// Create a new event
     #[inline]
     pub const fn new(id: u16, data: u16) -> Self {
         Self { id, data }
     }
 
-    /// 仅带 ID 的事件（data = 0）
+    /// Create an event with only an ID (data = 0)
     #[inline]
     pub const fn id_only(id: u16) -> Self {
         Self { id, data: 0 }
     }
 
-    /// 从 u32 解码
+    /// Decode from a u32
     #[inline]
     pub const fn from_raw(raw: u32) -> Self {
         Self {
@@ -102,7 +103,7 @@ impl Event {
         }
     }
 
-    /// 编码为 u32
+    /// Encode as a u32
     #[inline]
     pub const fn to_raw(self) -> u32 {
         ((self.id as u32) << 16) | (self.data as u32)
@@ -110,29 +111,29 @@ impl Event {
 }
 
 // ============================================================================
-// 固定大小事件队列
+// Fixed-size event queue
 // ============================================================================
 
-/// 默认队列大小
+/// Default queue size
 pub const DEFAULT_QUEUE_SIZE: usize = 16;
 
-/// 无锁单生产者单消费者事件队列
+/// Lock-free single-producer single-consumer event queue
 ///
-/// 这是一个环形缓冲区，专为中断 -> 主循环的事件传递设计。
+/// This is a ring buffer designed for interrupt → main-loop event delivery.
 ///
-/// **重要**：这是 SPSC 队列，只能有一个生产者和一个消费者。
-/// 如果需要多生产者，请在 push 时使用 critical section。
+/// **Important**: this is an SPSC queue — there can be only one producer and
+/// one consumer. For multiple producers, use a critical section around `push`.
 pub struct EventQueue<const N: usize = DEFAULT_QUEUE_SIZE> {
     buffer: UnsafeCell<[u32; N]>,
-    head: AtomicUsize, // 消费者读取位置
-    tail: AtomicUsize, // 生产者写入位置
+    head: AtomicUsize, // consumer read position
+    tail: AtomicUsize, // producer write position
 }
 
-// Safety: 单生产者单消费者模式，通过原子操作保证安全
+// Safety: single-producer single-consumer pattern, guaranteed by atomic ops
 unsafe impl<const N: usize> Sync for EventQueue<N> {}
 
 impl<const N: usize> EventQueue<N> {
-    /// 编译时检查 N 是 2 的幂
+    /// Compile-time check that N is a power of 2
     const MASK: usize = {
         assert!(
             N > 0 && (N & (N - 1)) == 0,
@@ -141,7 +142,7 @@ impl<const N: usize> EventQueue<N> {
         N - 1
     };
 
-    /// 创建新的事件队列
+    /// Create a new event queue
     pub const fn new() -> Self {
         Self {
             buffer: UnsafeCell::new([0; N]),
@@ -150,57 +151,57 @@ impl<const N: usize> EventQueue<N> {
         }
     }
 
-    /// 推入事件（从中断或生产者调用）
+    /// Push an event (call from an interrupt or the producer)
     ///
-    /// 返回 `true` 表示成功，`false` 表示队列已满
+    /// Returns `true` on success, `false` if the queue is full
     #[inline]
     pub fn push(&self, event: Event) -> bool {
         let tail = self.tail.load(Ordering::Relaxed);
         let next_tail = (tail + 1) & Self::MASK;
 
-        // 检查队列是否满
+        // check whether the queue is full
         if next_tail == self.head.load(Ordering::Acquire) {
             return false;
         }
 
-        // 写入数据
+        // write the data
         unsafe {
             (*self.buffer.get())[tail] = event.to_raw();
         }
 
-        // 发布写入
+        // publish the write
         self.tail.store(next_tail, Ordering::Release);
         true
     }
 
-    /// 弹出事件（从主循环或消费者调用）
+    /// Pop an event (call from the main loop or the consumer)
     ///
-    /// 返回 `Some(event)` 如果有事件，`None` 如果队列为空
+    /// Returns `Some(event)` if there is an event, `None` if the queue is empty
     #[inline]
     pub fn pop(&self) -> Option<Event> {
         let head = self.head.load(Ordering::Relaxed);
 
-        // 检查队列是否空
+        // check whether the queue is empty
         if head == self.tail.load(Ordering::Acquire) {
             return None;
         }
 
-        // 读取数据
+        // read the data
         let raw = unsafe { (*self.buffer.get())[head] };
 
-        // 更新读取位置
+        // update the read position
         self.head.store((head + 1) & Self::MASK, Ordering::Release);
 
         Some(Event::from_raw(raw))
     }
 
-    /// 检查队列是否为空
+    /// Check whether the queue is empty
     #[inline]
     pub fn is_empty(&self) -> bool {
         self.head.load(Ordering::Relaxed) == self.tail.load(Ordering::Relaxed)
     }
 
-    /// 获取队列中的事件数量
+    /// Get the number of events in the queue
     #[inline]
     pub fn len(&self) -> usize {
         let head = self.head.load(Ordering::Relaxed);
@@ -208,30 +209,31 @@ impl<const N: usize> EventQueue<N> {
         (tail.wrapping_sub(head)) & Self::MASK
     }
 
-    /// 获取队列容量
+    /// Get the queue capacity
     #[inline]
     pub const fn capacity(&self) -> usize {
-        N - 1 // 环形缓冲区实际可用空间是 N-1
+        N - 1 // ring buffer actual usable space is N-1
     }
 
-    /// 清空队列
+    /// Clear the queue
     #[inline]
     pub fn clear(&self) {
-        // 直接将 head 设置为 tail 即可
+        // simply set head to tail
         let tail = self.tail.load(Ordering::Relaxed);
         self.head.store(tail, Ordering::Release);
     }
 
-    /// 尝试推入事件，如果队列满则覆盖最旧的事件
+    /// Try to push an event; if the queue is full, overwrite the oldest event
     ///
-    /// **警告**: 这个操作不是原子的，仅应在禁用中断时使用
+    /// **Warning**: this operation is not atomic — use only with interrupts
+    /// disabled
     #[inline]
     pub fn push_overwrite(&self, event: Event) {
         let tail = self.tail.load(Ordering::Relaxed);
         let next_tail = (tail + 1) & Self::MASK;
         let head = self.head.load(Ordering::Relaxed);
 
-        // 如果满了，丢弃最旧的
+        // if full, discard the oldest
         if next_tail == head {
             self.head.store((head + 1) & Self::MASK, Ordering::Relaxed);
         }
@@ -250,12 +252,12 @@ impl<const N: usize> Default for EventQueue<N> {
 }
 
 // ============================================================================
-// 泛型队列（支持自定义事件类型）
+// Generic queue (supports custom event types)
 // ============================================================================
 
-/// 泛型无锁 SPSC 队列
+/// Generic lock-free SPSC queue
 ///
-/// 允许使用自定义事件类型，而不仅仅是 `Event`。
+/// Allows custom event types instead of just `Event`.
 pub struct GenericQueue<T: Copy, const N: usize> {
     buffer: UnsafeCell<[MaybeUninit<T>; N]>,
     head: AtomicUsize,
@@ -273,9 +275,9 @@ impl<T: Copy, const N: usize> GenericQueue<T, N> {
         N - 1
     };
 
-    /// 创建新的泛型队列
+    /// Create a new generic queue
     ///
-    /// 注意：由于 MaybeUninit，这是 const 安全的
+    /// Note: const-safe thanks to MaybeUninit
     pub const fn new() -> Self {
         Self {
             buffer: UnsafeCell::new(unsafe { MaybeUninit::uninit().assume_init() }),
@@ -284,7 +286,7 @@ impl<T: Copy, const N: usize> GenericQueue<T, N> {
         }
     }
 
-    /// 推入元素
+    /// Push an element
     #[inline]
     pub fn push(&self, item: T) -> bool {
         let tail = self.tail.load(Ordering::Relaxed);
@@ -302,7 +304,7 @@ impl<T: Copy, const N: usize> GenericQueue<T, N> {
         true
     }
 
-    /// 弹出元素
+    /// Pop an element
     #[inline]
     pub fn pop(&self) -> Option<T> {
         let head = self.head.load(Ordering::Relaxed);
@@ -317,13 +319,13 @@ impl<T: Copy, const N: usize> GenericQueue<T, N> {
         Some(item)
     }
 
-    /// 检查是否为空
+    /// Check whether the queue is empty
     #[inline]
     pub fn is_empty(&self) -> bool {
         self.head.load(Ordering::Relaxed) == self.tail.load(Ordering::Relaxed)
     }
 
-    /// 获取元素数量
+    /// Get the number of elements
     #[inline]
     pub fn len(&self) -> usize {
         let head = self.head.load(Ordering::Relaxed);
@@ -331,7 +333,7 @@ impl<T: Copy, const N: usize> GenericQueue<T, N> {
         (tail.wrapping_sub(head)) & Self::MASK
     }
 
-    /// 清空队列
+    /// Clear the queue
     #[inline]
     pub fn clear(&self) {
         let tail = self.tail.load(Ordering::Relaxed);
@@ -346,10 +348,10 @@ impl<T: Copy, const N: usize> Default for GenericQueue<T, N> {
 }
 
 // ============================================================================
-// 事件 ID 定义宏
+// Event ID definition macro
 // ============================================================================
 
-/// 定义事件 ID 常量
+/// Define event ID constants
 ///
 /// ```ignore
 /// define_events! {
@@ -369,51 +371,52 @@ macro_rules! define_events {
 }
 
 // ============================================================================
-// 多生产者支持
+// Multi-producer support
 // ============================================================================
 mod mpsc {
     use super::*;
 
-    /// 多生产者单消费者事件队列
+    /// Multi-producer single-consumer event queue
     ///
-    /// 通过 critical section 保护 push 操作，允许多个中断同时推入事件。
+    /// Protects `push` with a critical section, allowing multiple interrupts
+    /// to push events concurrently.
     pub struct MpscQueue<const N: usize = DEFAULT_QUEUE_SIZE> {
         inner: EventQueue<N>,
     }
 
     impl<const N: usize> MpscQueue<N> {
-        /// 创建新队列
+        /// Create a new queue
         pub const fn new() -> Self {
             Self {
                 inner: EventQueue::new(),
             }
         }
 
-        /// 推入事件（中断安全）
+        /// Push an event (interrupt-safe)
         #[inline]
         pub fn push(&self, event: Event) -> bool {
             interrupt::free(|_| self.inner.push(event))
         }
 
-        /// 弹出事件
+        /// Pop an event
         #[inline]
         pub fn pop(&self) -> Option<Event> {
             self.inner.pop()
         }
 
-        /// 检查是否为空
+        /// Check whether the queue is empty
         #[inline]
         pub fn is_empty(&self) -> bool {
             self.inner.is_empty()
         }
 
-        /// 获取事件数量
+        /// Get the number of events
         #[inline]
         pub fn len(&self) -> usize {
             self.inner.len()
         }
 
-        /// 清空队列
+        /// Clear the queue
         #[inline]
         pub fn clear(&self) {
             interrupt::free(|_| self.inner.clear())

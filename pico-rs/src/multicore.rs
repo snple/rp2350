@@ -57,19 +57,19 @@ use crate::Steal;
 // Core ID
 // ============================================================================
 
-/// RP2350 核心标识
+/// RP2350 core identifier
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[repr(u32)]
 pub enum CoreId {
-    /// Core 0 (默认启动核心)
+    /// Core 0 (default boot core)
     Core0 = 0,
-    /// Core 1 (需要手动启动)
+    /// Core 1 (must be started manually)
     Core1 = 1,
 }
 
 impl CoreId {
-    /// 从原始值转换，非 0/1 时返回 `None`
+    /// Convert from a raw value; returns `None` for anything other than 0/1
     #[inline]
     pub const fn from_raw(val: u32) -> Option<Self> {
         match val {
@@ -79,13 +79,13 @@ impl CoreId {
         }
     }
 
-    /// 转为 `usize`，适用于数组索引
+    /// Convert to `usize`, suitable for array indexing
     #[inline]
     pub const fn as_index(self) -> usize {
         self as usize
     }
 
-    /// 返回另一个核心
+    /// Return the other core
     #[inline]
     pub const fn other(self) -> Self {
         match self {
@@ -150,7 +150,7 @@ impl<const N: usize> Default for Stack<N> {
 // Core Identification
 // ============================================================================
 
-/// 获取当前核心的 ID
+/// Get the ID of the current core
 #[inline]
 pub fn core_id() -> CoreId {
     match unsafe { &*crate::sio::REGS }.cpuid.cpuid() {
@@ -159,13 +159,13 @@ pub fn core_id() -> CoreId {
     }
 }
 
-/// 当前是否在 Core 0 上运行
+/// Whether the current core is Core 0
 #[inline]
 pub fn is_core0() -> bool {
     core_id() == CoreId::Core0
 }
 
-/// 当前是否在 Core 1 上运行
+/// Whether the current core is Core 1
 #[inline]
 pub fn is_core1() -> bool {
     core_id() == CoreId::Core1

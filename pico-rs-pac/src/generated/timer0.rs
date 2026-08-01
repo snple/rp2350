@@ -207,11 +207,11 @@ impl Timelw {
 /// - **TIMEHR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Timehr {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Timehr {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -296,11 +296,11 @@ impl Timehr {
 /// - **TIMELR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Timelr {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Timelr {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -975,11 +975,11 @@ impl Armed {
 /// - **TIMERAWH** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Timerawh {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Timerawh {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1064,11 +1064,11 @@ impl Timerawh {
 /// - **TIMERAWL** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Timerawl {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Timerawl {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2507,11 +2507,11 @@ impl Intf {
 /// - **ALARM_0** `[0]` (RO)
 #[repr(transparent)]
 pub struct Ints {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Ints {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

@@ -13259,11 +13259,11 @@ impl SbpiWdata3 {
 /// - **SBPI_RDATA_0** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct SbpiRdata0 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for SbpiRdata0 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13348,11 +13348,11 @@ impl SbpiRdata0 {
 /// - **SBPI_RDATA_1** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct SbpiRdata1 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for SbpiRdata1 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13437,11 +13437,11 @@ impl SbpiRdata1 {
 /// - **SBPI_RDATA_2** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct SbpiRdata2 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for SbpiRdata2 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13526,11 +13526,11 @@ impl SbpiRdata2 {
 /// - **SBPI_RDATA_3** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct SbpiRdata3 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for SbpiRdata3 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15059,11 +15059,11 @@ impl CrtKeyW3 {
 /// - **SECURE_BOOT_ENABLE** `[0]` (RO)
 #[repr(transparent)]
 pub struct Critical {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Critical {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15275,11 +15275,11 @@ impl Critical {
 /// - **KEY_VALID** `[7:0]` (RO)
 #[repr(transparent)]
 pub struct KeyValid {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for KeyValid {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -16336,11 +16336,11 @@ impl Archsel {
 ///   Current architecture for core 0. Updated on processor warm reset.
 #[repr(transparent)]
 pub struct ArchselStatus {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for ArchselStatus {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -17574,11 +17574,11 @@ impl Intf {
 /// - **SBPI_FLAG_N** `[0]` (RO)
 #[repr(transparent)]
 pub struct Ints {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Ints {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

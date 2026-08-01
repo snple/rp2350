@@ -25,11 +25,11 @@ pub const BASE: u32 = 0x40008000;
 ///   Indication that proc0 has halted
 #[repr(transparent)]
 pub struct ProcConfig {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for ProcConfig {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

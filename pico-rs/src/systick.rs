@@ -367,7 +367,7 @@ impl Delay {
 // ============================================================================
 
 impl crate::delay::DelayUs for SysTick {
-    /// 忙等待延时（微秒），委托给 `SysTick::delay_us`
+    /// Busy-wait delay in microseconds, delegating to `SysTick::delay_us`
     #[inline]
     fn delay_us(&self, us: u32) {
         SysTick::delay_us(self, us);
@@ -375,7 +375,7 @@ impl crate::delay::DelayUs for SysTick {
 }
 
 impl crate::delay::DelayUs for Delay {
-    /// 忙等待延时（微秒），委托给 `Delay::delay_us`
+    /// Busy-wait delay in microseconds, delegating to `Delay::delay_us`
     #[inline]
     fn delay_us(&self, us: u32) {
         Delay::delay_us(self, us);

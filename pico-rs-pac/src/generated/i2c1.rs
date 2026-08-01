@@ -2177,11 +2177,11 @@ impl IcFsSclLcnt {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcIntrStat {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IcIntrStat {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3751,11 +3751,11 @@ impl IcIntrMask {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcRawIntrStat {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IcRawIntrStat {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4577,11 +4577,11 @@ impl IcTxTl {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcClrIntr {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IcClrIntr {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4680,11 +4680,11 @@ impl IcClrIntr {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcClrRxUnder {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IcClrRxUnder {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4783,11 +4783,11 @@ impl IcClrRxUnder {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcClrRxOver {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IcClrRxOver {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4886,11 +4886,11 @@ impl IcClrRxOver {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcClrTxOver {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IcClrTxOver {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -4989,11 +4989,11 @@ impl IcClrTxOver {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcClrRdReq {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IcClrRdReq {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5092,11 +5092,11 @@ impl IcClrRdReq {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcClrTxAbrt {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IcClrTxAbrt {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5195,11 +5195,11 @@ impl IcClrTxAbrt {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcClrRxDone {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IcClrRxDone {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5298,11 +5298,11 @@ impl IcClrRxDone {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcClrActivity {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IcClrActivity {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5401,11 +5401,11 @@ impl IcClrActivity {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcClrStopDet {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IcClrStopDet {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5504,11 +5504,11 @@ impl IcClrStopDet {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcClrStartDet {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IcClrStartDet {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5607,11 +5607,11 @@ impl IcClrStartDet {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcClrGenCall {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IcClrGenCall {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6032,11 +6032,11 @@ impl IcEnable {
 ///   I2C Activity Status. Reset value: 0x0
 #[repr(transparent)]
 pub struct IcStatus {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IcStatus {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6341,11 +6341,11 @@ impl IcStatus {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcTxflr {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IcTxflr {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6443,11 +6443,11 @@ impl IcTxflr {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcRxflr {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IcRxflr {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -6849,11 +6849,11 @@ impl IcSdaHold {
 ///   Role of DW_apb_i2c: Master-Transmitter or Master-Receiver
 #[repr(transparent)]
 pub struct IcTxAbrtSource {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IcTxAbrtSource {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8557,11 +8557,11 @@ impl IcAckGeneralCall {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcEnableStatus {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IcEnableStatus {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8903,11 +8903,11 @@ impl IcFsSpklen {
 ///   Reset value: 0x0
 #[repr(transparent)]
 pub struct IcClrRestartDet {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IcClrRestartDet {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9034,11 +9034,11 @@ impl IcClrRestartDet {
 ///   APB data bus width is 32 bits
 #[repr(transparent)]
 pub struct IcCompParam1 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IcCompParam1 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9302,11 +9302,11 @@ impl IcCompParam1 {
 /// - **IC_COMP_VERSION** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct IcCompVersion {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IcCompVersion {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9393,11 +9393,11 @@ impl IcCompVersion {
 ///   Designware Component Type number = 0x44_57_01_40. This assigned unique hex value is constant and is derived from the two ASCII letters 'DW' followed by a 16-bit unsigned number.
 #[repr(transparent)]
 pub struct IcCompType {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for IcCompType {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

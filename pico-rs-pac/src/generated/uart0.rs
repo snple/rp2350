@@ -601,11 +601,11 @@ impl Uartrsr {
 ///   Clear to send. This bit is the complement of the UART clear to send, nUARTCTS, modem status input. That is, the bit is 1 when nUARTCTS is LOW.
 #[repr(transparent)]
 pub struct Uartfr {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Uartfr {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3405,11 +3405,11 @@ impl Uartimsc {
 ///   nUARTRI modem interrupt status. Returns the raw interrupt state of the UARTRIINTR interrupt.
 #[repr(transparent)]
 pub struct Uartris {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Uartris {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3794,11 +3794,11 @@ impl Uartris {
 ///   nUARTRI modem masked interrupt status. Returns the masked interrupt state of the UARTRIINTR interrupt.
 #[repr(transparent)]
 pub struct Uartmis {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Uartmis {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5077,11 +5077,11 @@ impl Uartdmacr {
 ///   These bits read back as 0x11
 #[repr(transparent)]
 pub struct Uartperiphid0 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Uartperiphid0 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5179,11 +5179,11 @@ impl Uartperiphid0 {
 ///   These bits read back as 0x0
 #[repr(transparent)]
 pub struct Uartperiphid1 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Uartperiphid1 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5305,11 +5305,11 @@ impl Uartperiphid1 {
 ///   These bits read back as 0x4
 #[repr(transparent)]
 pub struct Uartperiphid2 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Uartperiphid2 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5427,11 +5427,11 @@ impl Uartperiphid2 {
 ///   These bits read back as 0x00
 #[repr(transparent)]
 pub struct Uartperiphid3 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Uartperiphid3 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5525,11 +5525,11 @@ impl Uartperiphid3 {
 ///   These bits read back as 0x0D
 #[repr(transparent)]
 pub struct Uartpcellid0 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Uartpcellid0 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5623,11 +5623,11 @@ impl Uartpcellid0 {
 ///   These bits read back as 0xF0
 #[repr(transparent)]
 pub struct Uartpcellid1 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Uartpcellid1 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5721,11 +5721,11 @@ impl Uartpcellid1 {
 ///   These bits read back as 0x05
 #[repr(transparent)]
 pub struct Uartpcellid2 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Uartpcellid2 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -5819,11 +5819,11 @@ impl Uartpcellid2 {
 ///   These bits read back as 0xB1
 #[repr(transparent)]
 pub struct Uartpcellid3 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Uartpcellid3 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

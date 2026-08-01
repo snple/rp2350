@@ -313,11 +313,11 @@ impl Proc0Cycles {
 ///   Count down timer: the remaining number clk_tick cycles before the next tick is generated.
 #[repr(transparent)]
 pub struct Proc0Count {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Proc0Count {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -698,11 +698,11 @@ impl Proc1Cycles {
 ///   Count down timer: the remaining number clk_tick cycles before the next tick is generated.
 #[repr(transparent)]
 pub struct Proc1Count {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Proc1Count {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1084,11 +1084,11 @@ impl Timer0Cycles {
 ///   Count down timer: the remaining number clk_tick cycles before the next tick is generated.
 #[repr(transparent)]
 pub struct Timer0Count {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Timer0Count {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1470,11 +1470,11 @@ impl Timer1Cycles {
 ///   Count down timer: the remaining number clk_tick cycles before the next tick is generated.
 #[repr(transparent)]
 pub struct Timer1Count {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Timer1Count {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1856,11 +1856,11 @@ impl WatchdogCycles {
 ///   Count down timer: the remaining number clk_tick cycles before the next tick is generated.
 #[repr(transparent)]
 pub struct WatchdogCount {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for WatchdogCount {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2241,11 +2241,11 @@ impl RiscvCycles {
 ///   Count down timer: the remaining number clk_tick cycles before the next tick is generated.
 #[repr(transparent)]
 pub struct RiscvCount {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for RiscvCount {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

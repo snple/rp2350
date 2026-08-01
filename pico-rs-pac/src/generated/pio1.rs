@@ -448,11 +448,11 @@ impl Ctrl {
 ///   State machine RX FIFO is full
 #[repr(transparent)]
 pub struct Fstat {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Fstat {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -908,11 +908,11 @@ impl Fdebug {
 /// - **TX0** `[3:0]` (RO)
 #[repr(transparent)]
 pub struct Flevel {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Flevel {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1483,11 +1483,11 @@ impl Txf3 {
 /// - **RXF0** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Rxf0 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Rxf0 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1565,11 +1565,11 @@ impl Rxf0 {
 /// - **RXF1** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Rxf1 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Rxf1 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1647,11 +1647,11 @@ impl Rxf1 {
 /// - **RXF2** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Rxf2 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Rxf2 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1729,11 +1729,11 @@ impl Rxf2 {
 /// - **RXF3** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Rxf3 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Rxf3 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2147,11 +2147,11 @@ impl InputSyncBypass {
 /// - **DBG_PADOUT** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct DbgPadout {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for DbgPadout {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2236,11 +2236,11 @@ impl DbgPadout {
 /// - **DBG_PADOE** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct DbgPadoe {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for DbgPadoe {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2342,11 +2342,11 @@ impl DbgPadoe {
 ///   this depth.
 #[repr(transparent)]
 pub struct DbgCfginfo {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for DbgCfginfo {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -7101,11 +7101,11 @@ impl Sm0Shiftctrl {
 /// - **SM0_ADDR** `[4:0]` (RO)
 #[repr(transparent)]
 pub struct Sm0Addr {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Sm0Addr {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -9330,11 +9330,11 @@ impl Sm1Shiftctrl {
 /// - **SM1_ADDR** `[4:0]` (RO)
 #[repr(transparent)]
 pub struct Sm1Addr {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Sm1Addr {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11559,11 +11559,11 @@ impl Sm2Shiftctrl {
 /// - **SM2_ADDR** `[4:0]` (RO)
 #[repr(transparent)]
 pub struct Sm2Addr {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Sm2Addr {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13788,11 +13788,11 @@ impl Sm3Shiftctrl {
 /// - **SM3_ADDR** `[4:0]` (RO)
 #[repr(transparent)]
 pub struct Sm3Addr {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Sm3Addr {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -16477,11 +16477,11 @@ impl Gpiobase {
 /// - **SM0_RXNEMPTY** `[0]` (RO)
 #[repr(transparent)]
 pub struct Intr {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Intr {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -18439,11 +18439,11 @@ impl Irq0Intf {
 /// - **SM0_RXNEMPTY** `[0]` (RO)
 #[repr(transparent)]
 pub struct Irq0Ints {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Irq0Ints {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -20401,11 +20401,11 @@ impl Irq1Intf {
 /// - **SM0_RXNEMPTY** `[0]` (RO)
 #[repr(transparent)]
 pub struct Irq1Ints {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Irq1Ints {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

@@ -797,11 +797,11 @@ impl Ctrl {
 ///   When 1, indicates the XIP streaming FIFO is completely empty.
 #[repr(transparent)]
 pub struct Stat {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Stat {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1533,11 +1533,11 @@ impl StreamCtr {
 ///   the DMA to bus stalls caused by other XIP traffic.
 #[repr(transparent)]
 pub struct StreamFifo {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for StreamFifo {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

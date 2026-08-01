@@ -3612,11 +3612,11 @@ impl Wdsel {
 /// - **PROC_COLD** `[0]` (RO)
 #[repr(transparent)]
 pub struct Done {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Done {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

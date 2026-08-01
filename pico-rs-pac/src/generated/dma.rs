@@ -54903,11 +54903,11 @@ impl SniffData {
 ///   Current Transfer-Data-FIFO fill level
 #[repr(transparent)]
 pub struct FifoLevels {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for FifoLevels {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -55184,11 +55184,11 @@ impl ChanAbort {
 /// - **N_CHANNELS** `[4:0]` (RO)
 #[repr(transparent)]
 pub struct NChannels {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for NChannels {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -64868,11 +64868,11 @@ impl Ch0DbgCtdreq {
 /// - **CH0_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch0DbgTcr {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Ch0DbgTcr {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -65077,11 +65077,11 @@ impl Ch1DbgCtdreq {
 /// - **CH1_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch1DbgTcr {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Ch1DbgTcr {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -65286,11 +65286,11 @@ impl Ch2DbgCtdreq {
 /// - **CH2_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch2DbgTcr {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Ch2DbgTcr {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -65495,11 +65495,11 @@ impl Ch3DbgCtdreq {
 /// - **CH3_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch3DbgTcr {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Ch3DbgTcr {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -65704,11 +65704,11 @@ impl Ch4DbgCtdreq {
 /// - **CH4_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch4DbgTcr {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Ch4DbgTcr {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -65913,11 +65913,11 @@ impl Ch5DbgCtdreq {
 /// - **CH5_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch5DbgTcr {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Ch5DbgTcr {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -66122,11 +66122,11 @@ impl Ch6DbgCtdreq {
 /// - **CH6_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch6DbgTcr {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Ch6DbgTcr {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -66331,11 +66331,11 @@ impl Ch7DbgCtdreq {
 /// - **CH7_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch7DbgTcr {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Ch7DbgTcr {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -66540,11 +66540,11 @@ impl Ch8DbgCtdreq {
 /// - **CH8_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch8DbgTcr {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Ch8DbgTcr {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -66749,11 +66749,11 @@ impl Ch9DbgCtdreq {
 /// - **CH9_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch9DbgTcr {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Ch9DbgTcr {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -66958,11 +66958,11 @@ impl Ch10DbgCtdreq {
 /// - **CH10_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch10DbgTcr {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Ch10DbgTcr {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -67167,11 +67167,11 @@ impl Ch11DbgCtdreq {
 /// - **CH11_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch11DbgTcr {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Ch11DbgTcr {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -67376,11 +67376,11 @@ impl Ch12DbgCtdreq {
 /// - **CH12_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch12DbgTcr {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Ch12DbgTcr {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -67585,11 +67585,11 @@ impl Ch13DbgCtdreq {
 /// - **CH13_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch13DbgTcr {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Ch13DbgTcr {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -67794,11 +67794,11 @@ impl Ch14DbgCtdreq {
 /// - **CH14_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch14DbgTcr {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Ch14DbgTcr {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -68003,11 +68003,11 @@ impl Ch15DbgCtdreq {
 /// - **CH15_DBG_TCR** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct Ch15DbgTcr {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Ch15DbgTcr {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

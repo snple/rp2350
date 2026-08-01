@@ -480,11 +480,11 @@ impl Load {
 /// - **TIMER** `[0]` (RO)
 #[repr(transparent)]
 pub struct Reason {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Reason {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

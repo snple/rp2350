@@ -24,11 +24,11 @@ pub const BASE: u32 = 0x40000000;
 /// - **STOP_BIT** `[0]` (RO)
 #[repr(transparent)]
 pub struct ChipId {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for ChipId {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -163,11 +163,11 @@ impl ChipId {
 /// - **PACKAGE_SEL** `[0]` (RO)
 #[repr(transparent)]
 pub struct PackageSel {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for PackageSel {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -261,11 +261,11 @@ impl PackageSel {
 /// - **FPGA** `[0]` (RO)
 #[repr(transparent)]
 pub struct Platform {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Platform {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -422,11 +422,11 @@ impl Platform {
 /// - **GITREF_RP2350** `[31:0]` (RO)
 #[repr(transparent)]
 pub struct GitrefRp2350 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for GitrefRp2350 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

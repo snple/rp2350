@@ -14221,11 +14221,11 @@ impl Irq0Intf {
 /// - **CH0** `[0]` (RO)
 #[repr(transparent)]
 pub struct Irq0Ints {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Irq0Ints {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -15751,11 +15751,11 @@ impl Irq1Intf {
 /// - **CH0** `[0]` (RO)
 #[repr(transparent)]
 pub struct Irq1Ints {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Irq1Ints {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

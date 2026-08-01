@@ -593,11 +593,11 @@ impl VregCtrl {
 ///   0=startup complete, 1=starting up
 #[repr(transparent)]
 pub struct VregSts {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for VregSts {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8087,11 +8087,11 @@ impl SetTime15to0 {
 ///   For reading bits 63:32 of the timer. When reading all 64 bits it is possible for the LOWER count to rollover during the read. It is recommended to read UPPER, then LOWER, then re-read UPPER and, if it has changed, re-read LOWER.
 #[repr(transparent)]
 pub struct ReadTimeUpper {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for ReadTimeUpper {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -8183,11 +8183,11 @@ impl ReadTimeUpper {
 ///   For reading bits 31:0 of the timer.
 #[repr(transparent)]
 pub struct ReadTimeLower {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for ReadTimeLower {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11023,11 +11023,11 @@ impl Pwrup3 {
 /// - **CURRENT_PWRUP_REQ** `[6:0]` (RO)
 #[repr(transparent)]
 pub struct CurrentPwrupReq {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for CurrentPwrupReq {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -11120,11 +11120,11 @@ impl CurrentPwrupReq {
 /// - **LAST_SWCORE_PWRUP** `[6:0]` (RO)
 #[repr(transparent)]
 pub struct LastSwcorePwrup {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for LastSwcorePwrup {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -13880,11 +13880,11 @@ impl Intf {
 /// - **VREG_OUTPUT_LOW** `[0]` (RO)
 #[repr(transparent)]
 pub struct Ints {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Ints {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

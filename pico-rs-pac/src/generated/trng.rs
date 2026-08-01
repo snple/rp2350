@@ -367,11 +367,11 @@ impl RngImr {
 ///   1'b1 indicates that 192 bits have been collected in the RNG, and are ready to be read.
 #[repr(transparent)]
 pub struct RngIsr {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for RngIsr {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1059,11 +1059,11 @@ impl TrngConfig {
 ///   1'b1 indicates that collection of bits in the RNG is completed, and data can be read from EHR_DATA register.
 #[repr(transparent)]
 pub struct TrngValid {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for TrngValid {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1182,11 +1182,11 @@ impl TrngValid {
 ///   Bits [31:0] of Entropy Holding Register (EHR) - RNG output register
 #[repr(transparent)]
 pub struct EhrData0 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for EhrData0 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1280,11 +1280,11 @@ impl EhrData0 {
 ///   Bits [63:32] of Entropy Holding Register (EHR) - RNG output register
 #[repr(transparent)]
 pub struct EhrData1 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for EhrData1 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1378,11 +1378,11 @@ impl EhrData1 {
 ///   Bits [95:64] of Entropy Holding Register (EHR) - RNG output register
 #[repr(transparent)]
 pub struct EhrData2 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for EhrData2 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1476,11 +1476,11 @@ impl EhrData2 {
 ///   Bits [127:96] of Entropy Holding Register (EHR) - RNG output register
 #[repr(transparent)]
 pub struct EhrData3 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for EhrData3 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1574,11 +1574,11 @@ impl EhrData3 {
 ///   Bits [159:128] of Entropy Holding Register (EHR) - RNG output register
 #[repr(transparent)]
 pub struct EhrData4 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for EhrData4 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -1672,11 +1672,11 @@ impl EhrData4 {
 ///   Bits [191:160] of Entropy Holding Register (EHR) - RNG output register
 #[repr(transparent)]
 pub struct EhrData5 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for EhrData5 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -2891,11 +2891,11 @@ impl RngDebugEnInput {
 ///   Reflects rng_busy status.
 #[repr(transparent)]
 pub struct TrngBusy {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for TrngBusy {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3211,11 +3211,11 @@ impl RstBitsCounter {
 ///   * 1'b1 - 192-bit EHR. *1'b0 - 128-bit EHR
 #[repr(transparent)]
 pub struct RngVersion {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for RngVersion {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3513,11 +3513,11 @@ impl RngVersion {
 ///   Reflects the results of RNG BIST counter.
 #[repr(transparent)]
 pub struct RngBistCntr0 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for RngBistCntr0 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3639,11 +3639,11 @@ impl RngBistCntr0 {
 ///   Reflects the results of RNG BIST counter.
 #[repr(transparent)]
 pub struct RngBistCntr1 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for RngBistCntr1 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
@@ -3765,11 +3765,11 @@ impl RngBistCntr1 {
 ///   Reflects the results of RNG BIST counter.
 #[repr(transparent)]
 pub struct RngBistCntr2 {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for RngBistCntr2 {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value

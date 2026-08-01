@@ -714,8 +714,20 @@ fn write_register_struct(out: &mut String, reg: &Register, supports_atomic: bool
         }
     }
 
-    // Use AtomicCell for peripherals that support atomic aliases, VolatileCell otherwise
-    let cell_type = if supports_atomic {
+    // Use AtomicCell only for registers that can actually be atomically
+    // modified via the hardware SET/CLR/XOR aliases. Two conditions:
+    //
+    //   1. The peripheral must sit in the atomic-alias address range
+    //      (APB 0x40000000-0x401fffff / AHB 0x50000000-0x50ffffff).
+    //   2. The register must be writable (read-write or write-only). The
+    //      alias ops are read-modify-write, and the generator emits
+    //      `set_bits`/`clr_bits`/`xor_bits` accessors for them.
+    //
+    // Read-only registers therefore use VolatileCell and do **not** expose
+    // `set_bits`/`clr_bits`/`xor_bits` at all — closing the type-system hole
+    // where a read-only register could previously be "atomically written".
+    let writable = !matches!(reg.access, Access::ReadOnly);
+    let cell_type = if supports_atomic && writable {
         "crate::common::AtomicCell<u32>"
     } else {
         "crate::common::VolatileCell<u32>"

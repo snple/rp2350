@@ -29,11 +29,11 @@ pub const BASE: u32 = 0x40160000;
 ///   Indicates the platform is an ASIC
 #[repr(transparent)]
 pub struct Platform {
-    value: crate::common::AtomicCell<u32>,
+    value: crate::common::VolatileCell<u32>,
 }
 
 impl core::ops::Deref for Platform {
-    type Target = crate::common::AtomicCell<u32>;
+    type Target = crate::common::VolatileCell<u32>;
     #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.value
