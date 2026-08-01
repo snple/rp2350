@@ -677,10 +677,13 @@ macro_rules! impl_state_machine {
             }
 
             /// Read from RX FIFO (blocking)
+            ///
+            /// # Panics
+            ///
+            /// Panics if no RX data arrives within
+            /// [`crate::spin::SPIN_TIMEOUT`] iterations.
             pub fn rx_fifo_read(&self) -> u32 {
-                while self.rx_fifo_is_empty() {
-                    core::hint::spin_loop();
-                }
+                crate::spin::spin_wait("PIO RX FIFO data", || !self.rx_fifo_is_empty());
                 self.pio.[<rxf $sm_index>].read_bits()
             }
 
@@ -712,6 +715,12 @@ macro_rules! impl_state_machine {
             /// Drain the TX FIFO
             ///
             /// Consumes all TX FIFO entries. Disturbs OSR contents.
+            ///
+            /// # Panics
+            ///
+            /// Panics if the FIFO does not drain within
+            /// [`crate::spin::SPIN_TIMEOUT`] iterations (e.g. a stuck state
+            /// machine that never accepts a new word).
             pub fn drain_tx_fifo(&self) {
                 let autopull = self.pio.[<sm $sm_index _shiftctrl>].autopull();
                 let instr = if autopull {
@@ -719,9 +728,13 @@ macro_rules! impl_state_machine {
                 } else {
                     encode_pull(false, false)
                 };
-                while !self.tx_fifo_is_empty() {
+                crate::spin::spin_wait("PIO TX FIFO drain", || {
+                    if self.tx_fifo_is_empty() {
+                        return true;
+                    }
                     self.exec(instr);
-                }
+                    false
+                });
             }
 
             // ================================================================

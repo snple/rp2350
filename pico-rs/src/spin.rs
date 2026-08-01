@@ -9,8 +9,9 @@
 //! [`spin_wait`] panics on timeout — a hang-guard for waits the hardware is
 //! guaranteed to satisfy once configured. [`try_spin_wait`] reports failure as
 //! a `bool` for callers that want to recover instead of aborting, and
-//! [`spin_wait_max`] accepts a custom bound for waits whose duration is
-//! legitimately variable (e.g. XOSC startup delay).
+//! [`spin_wait_max`] / [`try_spin_wait_max`] accept a custom bound per call
+//! site for waits whose duration is legitimately variable (e.g. XOSC startup
+//! delay), or whose timeout should be recoverable.
 
 /// Default maximum spin iterations for [`spin_wait`].
 ///
@@ -19,6 +20,9 @@
 /// at 150 MHz but several times longer at the boot-time 12 MHz clock. It is
 /// sized to sit far above any legitimate hardware settle time while still
 /// bounding a stuck peripheral.
+///
+/// Call sites that need a different bound should use [`spin_wait_max`] or
+/// [`try_spin_wait_max`] instead of relying on this default.
 pub(crate) const SPIN_TIMEOUT: u32 = 1_000_000;
 
 /// Spin until `cond()` returns `true`, panicking after [`SPIN_TIMEOUT`]
@@ -41,15 +45,25 @@ pub(crate) fn spin_wait(what: &str, mut cond: impl FnMut() -> bool) {
 /// [`SPIN_TIMEOUT`] iterations without panicking.
 ///
 /// Use this when the caller wants to handle a stuck wait (report an error,
-/// retry, or fall back) instead of aborting the whole program.
-///
-/// Currently no internal call site needs recoverable behavior (waits that
-/// should be recoverable, such as I2C/TRNG, return `Result` through their own
-/// paths), so this is kept available for callers without a current user.
-#[allow(dead_code)]
+/// retry, or fall back) instead of aborting the whole program. For example,
+/// SPI `transfer`/`read` and UART blocking reads use this to return
+/// `Error::Timeout` on a stuck peripheral.
 #[inline(always)]
 pub(crate) fn try_spin_wait(mut cond: impl FnMut() -> bool) -> bool {
     spin_wait_max_bool(&mut cond, SPIN_TIMEOUT)
+}
+
+/// Spin until `cond()` returns `true` or `max` iterations elapse, returning
+/// `false` on timeout without panicking.
+///
+/// Combine the recoverable semantics of [`try_spin_wait`] with a per-call-site
+/// bound, for waits that must both be recoverable and legitimately take longer
+/// than [`SPIN_TIMEOUT`]. Currently no internal call site needs a custom bound,
+/// so it is kept available for callers without a current user.
+#[allow(dead_code)]
+#[inline(always)]
+pub(crate) fn try_spin_wait_max(mut cond: impl FnMut() -> bool, max: u32) -> bool {
+    spin_wait_max_bool(&mut cond, max)
 }
 
 /// Spin until `cond()` returns `true` or `max` iterations elapse, panicking on

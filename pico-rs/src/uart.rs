@@ -139,6 +139,8 @@ pub enum Error {
     FramingError,
     /// Break condition detected
     BreakError,
+    /// Timeout waiting for data / TX FIFO space
+    Timeout,
 }
 
 /// Abstract UART bus trait for driver implementations.
@@ -487,16 +489,28 @@ macro_rules! impl_uart {
                 // ================================================================
 
                 /// Write a single byte (blocking)
+                ///
+                /// # Panics
+                ///
+                /// Panics if the TX FIFO stays full beyond
+                /// [`crate::spin::SPIN_TIMEOUT`] iterations.
                 pub fn write_byte(&self, byte: u8) {
-                    // Wait for TX FIFO to have space
-                    while self.uart.uartfr.txff() {}
+                    crate::spin::spin_wait("UART TX FIFO space", || !self.uart.uartfr.txff());
                     self.uart.uartdr.write_data(byte as u32);
                 }
 
                 /// Write multiple bytes (blocking)
                 pub fn write(&self, data: &[u8]) {
-                    for &byte in data {
-                        self.write_byte(byte);
+                    // Fill the TX FIFO in bursts (up to 32 entries) to reduce
+                    // status-register polling per byte.
+                    let mut i = 0;
+                    while i < data.len() {
+                        crate::spin::spin_wait("UART TX FIFO space", || !self.uart.uartfr.txff());
+                        // Write as many bytes as the FIFO currently accepts.
+                        while i < data.len() && !self.uart.uartfr.txff() {
+                            self.uart.uartdr.write_data(data[i] as u32);
+                            i += 1;
+                        }
                     }
                 }
 
@@ -518,22 +532,27 @@ macro_rules! impl_uart {
 
                 /// Read a single byte with error information
                 ///
-                /// Returns the byte and any associated error
+                /// Returns the byte and any associated error.
+                ///
+                /// The UARTDR register is read **once** as a snapshot so that the
+                /// returned data byte and its error flags belong to the *same*
+                /// FIFO entry (reading DR pops the FIFO and clears the flags, so
+                /// separate accessor reads would observe the *next* entry).
                 pub fn read_byte_with_error(&self) -> Option<Result<u8, (u8, Error)>> {
                     if self.uart.uartfr.rxfe() {
                         return None;
                     }
 
-                    let byte = self.uart.uartdr.data() as u8;
+                    let v = self.uart.uartdr.read_val();
+                    let byte = v.data() as u8;
 
-                    // Check error bits using accessor methods
-                    if self.uart.uartdr.oe() {
+                    if v.oe() {
                         Some(Err((byte, Error::Overrun)))
-                    } else if self.uart.uartdr.be() {
+                    } else if v.be() {
                         Some(Err((byte, Error::BreakError)))
-                    } else if self.uart.uartdr.pe() {
+                    } else if v.pe() {
                         Some(Err((byte, Error::ParityError)))
-                    } else if self.uart.uartdr.fe() {
+                    } else if v.fe() {
                         Some(Err((byte, Error::FramingError)))
                     } else {
                         Some(Ok(byte))
@@ -541,19 +560,33 @@ macro_rules! impl_uart {
                 }
 
                 /// Read a single byte (blocking)
+                ///
+                /// # Panics
+                ///
+                /// Panics if no data arrives within
+                /// [`crate::spin::SPIN_TIMEOUT`] iterations.
                 pub fn read_byte_blocking(&self) -> u8 {
-                    loop {
-                        if let Some(byte) = self.read_byte() {
-                            return byte;
-                        }
-                    }
+                    crate::spin::spin_wait("UART RX data", || !self.uart.uartfr.rxfe());
+                    self.uart.uartdr.data() as u8
                 }
 
                 /// Read multiple bytes (blocking)
-                pub fn read(&self, buffer: &mut [u8]) {
+                ///
+                /// Returns [`Error::Timeout`] if no data arrives within
+                /// [`crate::spin::SPIN_TIMEOUT`] iterations, or a frame/parity/
+                /// overrun error reported by the hardware.
+                pub fn read(&self, buffer: &mut [u8]) -> Result<(), Error> {
                     for slot in buffer.iter_mut() {
-                        *slot = self.read_byte_blocking();
+                        if !crate::spin::try_spin_wait(|| !self.uart.uartfr.rxfe()) {
+                            return Err(Error::Timeout);
+                        }
+                        match self.read_byte_with_error() {
+                            Some(Ok(byte)) => *slot = byte,
+                            Some(Err((_, err))) => return Err(err),
+                            None => unreachable!(),
+                        }
                     }
+                    Ok(())
                 }
 
                 /// Read available bytes into buffer (non-blocking)
@@ -950,15 +983,17 @@ macro_rules! impl_uart {
                 #[inline]
                 fn read(&self, buffer: &mut [u8]) -> Result<(), Self::Error> {
                     for slot in buffer.iter_mut() {
-                        loop {
-                            match self.read_byte_with_error() {
-                                Some(Ok(byte)) => {
-                                    *slot = byte;
-                                    break;
-                                }
-                                Some(Err((_, err))) => return Err(err),
-                                None => {}
+                        // Wait (bounded) for a byte so a silent peer cannot hang
+                        // the caller forever.
+                        if !crate::spin::try_spin_wait(|| !self.uart.uartfr.rxfe()) {
+                            return Err(Error::Timeout);
+                        }
+                        match self.read_byte_with_error() {
+                            Some(Ok(byte)) => {
+                                *slot = byte;
                             }
+                            Some(Err((_, err))) => return Err(err),
+                            None => unreachable!(),
                         }
                     }
 
@@ -1197,15 +1232,28 @@ macro_rules! impl_uart {
                 }
 
                 /// Write a single byte (blocking)
+                ///
+                /// # Panics
+                ///
+                /// Panics if the TX FIFO stays full beyond
+                /// [`crate::spin::SPIN_TIMEOUT`] iterations.
                 pub fn write_byte(&self, byte: u8) {
-                    while self.uart.uartfr.txff() {}
+                    crate::spin::spin_wait("UART TX FIFO space", || !self.uart.uartfr.txff());
                     self.uart.uartdr.write_data(byte as u32);
                 }
 
                 /// Write multiple bytes (blocking)
                 pub fn write(&self, data: &[u8]) {
-                    for &byte in data {
-                        self.write_byte(byte);
+                    // Fill the TX FIFO in bursts (up to 32 entries) to reduce
+                    // status-register polling per byte.
+                    let mut i = 0;
+                    while i < data.len() {
+                        crate::spin::spin_wait("UART TX FIFO space", || !self.uart.uartfr.txff());
+                        // Write as many bytes as the FIFO currently accepts.
+                        while i < data.len() && !self.uart.uartfr.txff() {
+                            self.uart.uartdr.write_data(data[i] as u32);
+                            i += 1;
+                        }
                     }
                 }
 
@@ -1220,20 +1268,26 @@ macro_rules! impl_uart {
                 /// Read a single byte with error information.
                 ///
                 /// Returns the byte and any associated error.
+                ///
+                /// The UARTDR register is read **once** as a snapshot so that the
+                /// returned data byte and its error flags belong to the *same*
+                /// FIFO entry (reading DR pops the FIFO and clears the flags, so
+                /// separate accessor reads would observe the *next* entry).
                 pub fn read_byte_with_error(&self) -> Option<Result<u8, (u8, Error)>> {
                     if self.uart.uartfr.rxfe() {
                         return None;
                     }
 
-                    let byte = self.uart.uartdr.data() as u8;
+                    let v = self.uart.uartdr.read_val();
+                    let byte = v.data() as u8;
 
-                    if self.uart.uartdr.oe() {
+                    if v.oe() {
                         Some(Err((byte, Error::Overrun)))
-                    } else if self.uart.uartdr.be() {
+                    } else if v.be() {
                         Some(Err((byte, Error::BreakError)))
-                    } else if self.uart.uartdr.pe() {
+                    } else if v.pe() {
                         Some(Err((byte, Error::ParityError)))
-                    } else if self.uart.uartdr.fe() {
+                    } else if v.fe() {
                         Some(Err((byte, Error::FramingError)))
                     } else {
                         Some(Ok(byte))
@@ -1241,12 +1295,14 @@ macro_rules! impl_uart {
                 }
 
                 /// Read a single byte (blocking)
+                ///
+                /// # Panics
+                ///
+                /// Panics if no data arrives within
+                /// [`crate::spin::SPIN_TIMEOUT`] iterations.
                 pub fn read_byte_blocking(&self) -> u8 {
-                    loop {
-                        if let Some(byte) = self.read_byte() {
-                            return byte;
-                        }
-                    }
+                    crate::spin::spin_wait("UART RX data", || !self.uart.uartfr.rxfe());
+                    self.uart.uartdr.data() as u8
                 }
 
                 /// Read available bytes into buffer (non-blocking)
@@ -1341,15 +1397,17 @@ macro_rules! impl_uart {
                 #[inline]
                 fn read(&self, buffer: &mut [u8]) -> Result<(), Self::Error> {
                     for slot in buffer.iter_mut() {
-                        loop {
-                            match self.read_byte_with_error() {
-                                Some(Ok(byte)) => {
-                                    *slot = byte;
-                                    break;
-                                }
-                                Some(Err((_, err))) => return Err(err),
-                                None => {}
+                        // Wait (bounded) for a byte so a silent peer cannot hang
+                        // the caller forever.
+                        if !crate::spin::try_spin_wait(|| !self.uart.uartfr.rxfe()) {
+                            return Err(Error::Timeout);
+                        }
+                        match self.read_byte_with_error() {
+                            Some(Ok(byte)) => {
+                                *slot = byte;
                             }
+                            Some(Err((_, err))) => return Err(err),
+                            None => unreachable!(),
                         }
                     }
                     Ok(())

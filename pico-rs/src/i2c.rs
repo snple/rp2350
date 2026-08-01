@@ -463,8 +463,19 @@ macro_rules! impl_i2c {
                 }
 
                 /// Set the target address for master mode transactions.
+                ///
+                /// This is a no-op when the requested address (and 10-bit flag)
+                /// already matches the hardware, so repeated calls from
+                /// consecutive transactions don't pay the disable → configure →
+                /// enable cost on every bus access.
                 #[inline]
                 pub fn set_target_addr(&self, addr: u16, addr_10bit: bool) {
+                    if self.i2c.ic_tar.ic_tar() == addr as u32
+                        && self.i2c.ic_con.ic_10bitaddr_master() == addr_10bit
+                    {
+                        return;
+                    }
+
                     // Disable to change address
                     self.i2c.ic_enable.clr_enable();
 

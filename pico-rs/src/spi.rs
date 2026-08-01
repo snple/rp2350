@@ -593,18 +593,29 @@ macro_rules! impl_spi {
                 }
 
                 /// Read a single word from the RX FIFO (blocking)
+                ///
+                /// # Panics
+                ///
+                /// Panics if no RX data arrives within
+                /// [`crate::spin::SPIN_TIMEOUT`] iterations.
                 #[inline]
                 pub fn read_word(&self) -> u16 {
-                    while !self.spi.sspsr.rne() {
-                        core::hint::spin_loop();
-                    }
+                    crate::spin::spin_wait("SPI RX data", || self.spi.sspsr.rne());
                     self.spi.sspdr.data() as u16
                 }
 
                 /// Write multiple bytes (8-bit mode)
                 pub fn write(&self, data: &[u8]) {
-                    for &byte in data {
-                        self.write_word(byte as u16);
+                    // Fill the TX FIFO in bursts (up to 8 entries) to reduce
+                    // status-register polling per word.
+                    let mut i = 0;
+                    while i < data.len() {
+                        crate::spin::spin_wait("SPI TX FIFO space", || self.spi.sspsr.tnf());
+                        // Write as many words as the FIFO currently accepts.
+                        while i < data.len() && self.spi.sspsr.tnf() {
+                            self.spi.sspdr.write_data(data[i] as u32);
+                            i += 1;
+                        }
                     }
                     // Wait for completion and drain RX FIFO
                     self.flush();
@@ -613,8 +624,16 @@ macro_rules! impl_spi {
 
                 /// Write multiple 16-bit words
                 pub fn write_words(&self, data: &[u16]) {
-                    for &word in data {
-                        self.write_word(word);
+                    // Fill the TX FIFO in bursts (up to 8 entries) to reduce
+                    // status-register polling per word.
+                    let mut i = 0;
+                    while i < data.len() {
+                        crate::spin::spin_wait("SPI TX FIFO space", || self.spi.sspsr.tnf());
+                        // Write as many words as the FIFO currently accepts.
+                        while i < data.len() && self.spi.sspsr.tnf() {
+                            self.spi.sspdr.write_data(data[i] as u32);
+                            i += 1;
+                        }
                     }
                     // Wait for completion and drain RX FIFO
                     self.flush();
@@ -1195,11 +1214,14 @@ macro_rules! impl_spi {
                 }
 
                 /// Read a single word from the RX FIFO (blocking)
+                ///
+                /// # Panics
+                ///
+                /// Panics if no RX data arrives within
+                /// [`crate::spin::SPIN_TIMEOUT`] iterations.
                 #[inline]
                 pub fn read_word(&self) -> u16 {
-                    while !self.spi.sspsr.rne() {
-                        core::hint::spin_loop();
-                    }
+                    crate::spin::spin_wait("SPI RX data", || self.spi.sspsr.rne());
                     self.spi.sspdr.data() as u16
                 }
 
@@ -1215,8 +1237,16 @@ macro_rules! impl_spi {
 
                 /// Write multiple bytes (8-bit mode)
                 pub fn write(&self, data: &[u8]) {
-                    for &byte in data {
-                        self.write_word(byte as u16);
+                    // Fill the TX FIFO in bursts (up to 8 entries) to reduce
+                    // status-register polling per word.
+                    let mut i = 0;
+                    while i < data.len() {
+                        crate::spin::spin_wait("SPI TX FIFO space", || self.spi.sspsr.tnf());
+                        // Write as many words as the FIFO currently accepts.
+                        while i < data.len() && self.spi.sspsr.tnf() {
+                            self.spi.sspdr.write_data(data[i] as u32);
+                            i += 1;
+                        }
                     }
                     self.flush();
                     while self.try_read_word().is_some() {}
@@ -1848,11 +1878,14 @@ macro_rules! impl_spi {
                 }
 
                 /// Read a single word from the RX FIFO (blocking)
+                ///
+                /// # Panics
+                ///
+                /// Panics if no RX data arrives within
+                /// [`crate::spin::SPIN_TIMEOUT`] iterations.
                 #[inline]
                 pub fn read_word(&self) -> u16 {
-                    while !self.spi.sspsr.rne() {
-                        core::hint::spin_loop();
-                    }
+                    crate::spin::spin_wait("SPI RX data", || self.spi.sspsr.rne());
                     self.spi.sspdr.data() as u16
                 }
 
@@ -1868,8 +1901,16 @@ macro_rules! impl_spi {
 
                 /// Write multiple bytes (8-bit mode)
                 pub fn write(&self, data: &[u8]) {
-                    for &byte in data {
-                        self.write_word(byte as u16);
+                    // Fill the TX FIFO in bursts (up to 8 entries) to reduce
+                    // status-register polling per word.
+                    let mut i = 0;
+                    while i < data.len() {
+                        crate::spin::spin_wait("SPI TX FIFO space", || self.spi.sspsr.tnf());
+                        // Write as many words as the FIFO currently accepts.
+                        while i < data.len() && self.spi.sspsr.tnf() {
+                            self.spi.sspdr.write_data(data[i] as u32);
+                            i += 1;
+                        }
                     }
                     self.flush();
                     while self.try_read_word().is_some() {}
