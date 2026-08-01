@@ -84,10 +84,16 @@ SECTIONS
         KEEP(*(.vector_table.interrupts));
     } > FLASH
 
-    PROVIDE(_stext = ADDR(.vector_table) + SIZEOF(.vector_table));
-
-    /* Code Section */
-    .text _stext :
+    /* Code Section.
+     *
+     * `.start_block` / binary-info sections are inserted between the vector
+     * table and `.text` via `INSERT AFTER`, and their size is not guaranteed
+     * to be a multiple of 8. Letting the linker place `.text` (with
+     * `ALIGN(8)`) after those inserted sections keeps code addresses 8-byte
+     * aligned, satisfying the Cortex-M33 alignment requirement and silencing
+     * the linker warning.
+     */
+    .text : ALIGN(8)
     {
         __stext = .;
         *(.text .text.*);

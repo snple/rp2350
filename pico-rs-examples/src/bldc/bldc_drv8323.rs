@@ -736,7 +736,7 @@ impl<'a, SPI: SpiBus> Drv8323<'a, SPI> {
         let tx = frame.to_be_bytes();
         let mut rx = [0u8; 2];
         self.cs.set_low();
-        self.spi.transfer(&mut rx, &tx);
+        self.spi.transfer(&mut rx, &tx).expect("DRV8323 SPI read");
         self.cs.set_high();
         let raw = u16::from_be_bytes(rx);
         raw & 0x7FF // 只取低 11 位 (寄存器数据)
@@ -748,7 +748,9 @@ impl<'a, SPI: SpiBus> Drv8323<'a, SPI> {
         let tx = frame.to_be_bytes();
         let mut rx = [0u8; 2];
         self.cs.set_low();
-        self.spi.transfer(&mut rx, &tx);
+        self.spi
+            .transfer(&mut rx, &tx)
+            .expect("DRV8323 SPI read w/ fault");
         self.cs.set_high();
         let raw = u16::from_be_bytes(rx);
         let fault = (raw & 0x8000) != 0;

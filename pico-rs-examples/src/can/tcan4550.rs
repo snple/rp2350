@@ -238,7 +238,7 @@ fn spi_read_word(spi: &impl SpiBus, cs: &Pin<5>, addr: u16) -> u32 {
 
     cs.set_low();
     spi.write(&header);
-    spi.read(&mut rx);
+    spi.read(&mut rx).expect("TCAN4550 SPI read");
     cs.set_high();
 
     u32::from_be_bytes(rx)
@@ -270,7 +270,7 @@ fn spi_read_words(spi: &impl SpiBus, cs: &Pin<5>, addr: u16, buf: &mut [u32]) {
     spi.write(&header);
     for word in buf.iter_mut() {
         let mut rx = [0u8; 4];
-        spi.read(&mut rx);
+        spi.read(&mut rx).expect("TCAN4550 SPI read words");
         *word = u32::from_be_bytes(rx);
     }
     cs.set_high();

@@ -211,7 +211,7 @@ fn main() -> ! {
         let mut rx_buf = [0u8; 4];
 
         cs.set_low();
-        spi.read(&mut rx_buf); // 读取 4 字节 (同时发送 0x00 作为时钟驱动)
+        spi.read(&mut rx_buf).expect("SPI read"); // 读取 4 字节 (同时发送 0x00 作为时钟驱动)
         cs.set_high();
 
         info!(
@@ -236,7 +236,7 @@ fn main() -> ! {
         let mut rx_buf = [0u8; 8];
 
         cs.set_low();
-        spi.transfer(&mut rx_buf, &tx_data); // 同时发送 tx_data 并接收到 rx_buf
+        spi.transfer(&mut rx_buf, &tx_data).expect("SPI transfer"); // 同时发送 tx_data 并接收到 rx_buf
         cs.set_high();
 
         info!(
@@ -279,7 +279,7 @@ fn main() -> ! {
 
         cs.set_low();
         spi.write(&cmd); // 发送命令
-        spi.read(&mut response); // 读取 3 字节回复
+        spi.read(&mut response).expect("SPI read response"); // 读取 3 字节回复
         cs.set_high();
 
         info!(
@@ -382,7 +382,7 @@ fn main() -> ! {
         let mut rx = [0u8; 4];
 
         cs.set_low();
-        spi.transfer(&mut rx, &tx);
+        spi.transfer(&mut rx, &tx).expect("SPI transfer loopback");
         cs.set_high();
 
         info!(

@@ -192,15 +192,22 @@ pub trait SpiBus {
     fn write(&self, data: &[u8]);
 
     /// Read multiple bytes from the SPI bus by sending dummy bytes (8-bit mode).
-    fn read(&self, data: &mut [u8]);
+    ///
+    /// Returns [`Error::Timeout`] if the peripheral fails to make progress
+    /// (e.g. a missing/stuck slave holding the clock or FIFOs idle).
+    fn read(&self, data: &mut [u8]) -> Result<(), Error>;
 
     /// Full-duplex transfer: write and read simultaneously (8-bit mode).
     ///
     /// The transfer length is `min(read.len(), write.len())`.
-    fn transfer(&self, read: &mut [u8], write: &[u8]);
+    ///
+    /// Returns [`Error::Timeout`] if the peripheral fails to make progress.
+    fn transfer(&self, read: &mut [u8], write: &[u8]) -> Result<(), Error>;
 
     /// Full-duplex transfer in-place: the same buffer is used for TX and RX.
-    fn transfer_in_place(&self, data: &mut [u8]);
+    ///
+    /// Returns [`Error::Timeout`] if the peripheral fails to make progress.
+    fn transfer_in_place(&self, data: &mut [u8]) -> Result<(), Error>;
 
     /// Block until all pending transfers are complete.
     fn flush(&self);
@@ -617,12 +624,24 @@ macro_rules! impl_spi {
                 /// Transfer data (write and read simultaneously)
                 ///
                 /// For each byte written, one byte is read.
-                pub fn transfer(&self, read: &mut [u8], write: &[u8]) {
+                ///
+                /// Returns [`Error::Timeout`] if the peripheral fails to make
+                /// progress (e.g. a stuck slave holding the clock).
+                pub fn transfer(&self, read: &mut [u8], write: &[u8]) -> Result<(), Error> {
                     let len = read.len().min(write.len());
                     let mut tx_idx = 0;
                     let mut rx_idx = 0;
 
                     while rx_idx < len {
+                        // Wait until there is either TX FIFO space or RX data
+                        // (i.e. the transfer is making progress).
+                        if !crate::spin::try_spin_wait(|| {
+                            (tx_idx < len && self.spi.sspsr.tnf())
+                                || (rx_idx < tx_idx && self.spi.sspsr.rne())
+                        }) {
+                            return Err(Error::Timeout);
+                        }
+
                         // Fill TX FIFO
                         while tx_idx < len && self.spi.sspsr.tnf() {
                             self.spi.sspdr.write_data(write[tx_idx] as u32);
@@ -635,15 +654,27 @@ macro_rules! impl_spi {
                             rx_idx += 1;
                         }
                     }
+                    Ok(())
                 }
 
                 /// Transfer data in-place (same buffer for read and write)
-                pub fn transfer_in_place(&self, data: &mut [u8]) {
+                ///
+                /// Returns [`Error::Timeout`] if the peripheral fails to make
+                /// progress.
+                pub fn transfer_in_place(&self, data: &mut [u8]) -> Result<(), Error> {
                     let mut tx_idx = 0;
                     let mut rx_idx = 0;
                     let len = data.len();
 
                     while rx_idx < len {
+                        // Wait for progress: TX FIFO space or RX data.
+                        if !crate::spin::try_spin_wait(|| {
+                            (tx_idx < len && self.spi.sspsr.tnf())
+                                || (rx_idx < tx_idx && self.spi.sspsr.rne())
+                        }) {
+                            return Err(Error::Timeout);
+                        }
+
                         // Fill TX FIFO
                         while tx_idx < len && self.spi.sspsr.tnf() {
                             self.spi.sspdr.write_data(data[tx_idx] as u32);
@@ -656,15 +687,27 @@ macro_rules! impl_spi {
                             rx_idx += 1;
                         }
                     }
+                    Ok(())
                 }
 
                 /// Read data by writing dummy bytes
-                pub fn read(&self, data: &mut [u8]) {
+                ///
+                /// Returns [`Error::Timeout`] if the peripheral fails to make
+                /// progress.
+                pub fn read(&self, data: &mut [u8]) -> Result<(), Error> {
                     let mut tx_idx = 0;
                     let mut rx_idx = 0;
                     let len = data.len();
 
                     while rx_idx < len {
+                        // Wait for progress: TX FIFO space or RX data.
+                        if !crate::spin::try_spin_wait(|| {
+                            (tx_idx < len && self.spi.sspsr.tnf())
+                                || (rx_idx < tx_idx && self.spi.sspsr.rne())
+                        }) {
+                            return Err(Error::Timeout);
+                        }
+
                         // Fill TX FIFO with dummy bytes
                         while tx_idx < len && self.spi.sspsr.tnf() {
                             self.spi.sspdr.write_data(0);
@@ -677,6 +720,7 @@ macro_rules! impl_spi {
                             rx_idx += 1;
                         }
                     }
+                    Ok(())
                 }
 
                 /// Flush - wait for all transfers to complete
@@ -854,18 +898,18 @@ macro_rules! impl_spi {
                 }
 
                 #[inline]
-                fn read(&self, data: &mut [u8]) {
-                    Self::read(self, data);
+                fn read(&self, data: &mut [u8]) -> Result<(), Error> {
+                    Self::read(self, data)
                 }
 
                 #[inline]
-                fn transfer(&self, read: &mut [u8], write: &[u8]) {
-                    Self::transfer(self, read, write);
+                fn transfer(&self, read: &mut [u8], write: &[u8]) -> Result<(), Error> {
+                    Self::transfer(self, read, write)
                 }
 
                 #[inline]
-                fn transfer_in_place(&self, data: &mut [u8]) {
-                    Self::transfer_in_place(self, data);
+                fn transfer_in_place(&self, data: &mut [u8]) -> Result<(), Error> {
+                    Self::transfer_in_place(self, data)
                 }
 
                 #[inline]
@@ -1179,12 +1223,20 @@ macro_rules! impl_spi {
                 }
 
                 /// Transfer data (write and read simultaneously)
-                pub fn transfer(&self, read: &mut [u8], write: &[u8]) {
+                pub fn transfer(&self, read: &mut [u8], write: &[u8]) -> Result<(), Error> {
                     let len = read.len().min(write.len());
                     let mut tx_idx = 0;
                     let mut rx_idx = 0;
 
                     while rx_idx < len {
+                        // Wait for progress: TX FIFO space or RX data.
+                        if !crate::spin::try_spin_wait(|| {
+                            (tx_idx < len && self.spi.sspsr.tnf())
+                                || (rx_idx < tx_idx && self.spi.sspsr.rne())
+                        }) {
+                            return Err(Error::Timeout);
+                        }
+
                         while tx_idx < len && self.spi.sspsr.tnf() {
                             self.spi.sspdr.write_data(write[tx_idx] as u32);
                             tx_idx += 1;
@@ -1195,15 +1247,24 @@ macro_rules! impl_spi {
                             rx_idx += 1;
                         }
                     }
+                    Ok(())
                 }
 
                 /// Transfer data in-place
-                pub fn transfer_in_place(&self, data: &mut [u8]) {
+                pub fn transfer_in_place(&self, data: &mut [u8]) -> Result<(), Error> {
                     let mut tx_idx = 0;
                     let mut rx_idx = 0;
                     let len = data.len();
 
                     while rx_idx < len {
+                        // Wait for progress: TX FIFO space or RX data.
+                        if !crate::spin::try_spin_wait(|| {
+                            (tx_idx < len && self.spi.sspsr.tnf())
+                                || (rx_idx < tx_idx && self.spi.sspsr.rne())
+                        }) {
+                            return Err(Error::Timeout);
+                        }
+
                         while tx_idx < len && self.spi.sspsr.tnf() {
                             self.spi.sspdr.write_data(data[tx_idx] as u32);
                             tx_idx += 1;
@@ -1214,15 +1275,24 @@ macro_rules! impl_spi {
                             rx_idx += 1;
                         }
                     }
+                    Ok(())
                 }
 
                 /// Read data by writing dummy bytes
-                pub fn read(&self, data: &mut [u8]) {
+                pub fn read(&self, data: &mut [u8]) -> Result<(), Error> {
                     let mut tx_idx = 0;
                     let mut rx_idx = 0;
                     let len = data.len();
 
                     while rx_idx < len {
+                        // Wait for progress: TX FIFO space or RX data.
+                        if !crate::spin::try_spin_wait(|| {
+                            (tx_idx < len && self.spi.sspsr.tnf())
+                                || (rx_idx < tx_idx && self.spi.sspsr.rne())
+                        }) {
+                            return Err(Error::Timeout);
+                        }
+
                         while tx_idx < len && self.spi.sspsr.tnf() {
                             self.spi.sspdr.write_data(0);
                             tx_idx += 1;
@@ -1233,6 +1303,7 @@ macro_rules! impl_spi {
                             rx_idx += 1;
                         }
                     }
+                    Ok(())
                 }
 
                 /// Flush - wait for all transfers to complete
@@ -1436,18 +1507,18 @@ macro_rules! impl_spi {
                 }
 
                 #[inline]
-                fn read(&self, data: &mut [u8]) {
-                    Self::read(self, data);
+                fn read(&self, data: &mut [u8]) -> Result<(), Error> {
+                    Self::read(self, data)
                 }
 
                 #[inline]
-                fn transfer(&self, read: &mut [u8], write: &[u8]) {
-                    Self::transfer(self, read, write);
+                fn transfer(&self, read: &mut [u8], write: &[u8]) -> Result<(), Error> {
+                    Self::transfer(self, read, write)
                 }
 
                 #[inline]
-                fn transfer_in_place(&self, data: &mut [u8]) {
-                    Self::transfer_in_place(self, data);
+                fn transfer_in_place(&self, data: &mut [u8]) -> Result<(), Error> {
+                    Self::transfer_in_place(self, data)
                 }
 
                 #[inline]
@@ -1805,12 +1876,20 @@ macro_rules! impl_spi {
                 }
 
                 /// Transfer data (write and read simultaneously)
-                pub fn transfer(&self, read: &mut [u8], write: &[u8]) {
+                pub fn transfer(&self, read: &mut [u8], write: &[u8]) -> Result<(), Error> {
                     let len = read.len().min(write.len());
                     let mut tx_idx = 0;
                     let mut rx_idx = 0;
 
                     while rx_idx < len {
+                        // Wait for progress: TX FIFO space or RX data.
+                        if !crate::spin::try_spin_wait(|| {
+                            (tx_idx < len && self.spi.sspsr.tnf())
+                                || (rx_idx < tx_idx && self.spi.sspsr.rne())
+                        }) {
+                            return Err(Error::Timeout);
+                        }
+
                         while tx_idx < len && self.spi.sspsr.tnf() {
                             self.spi.sspdr.write_data(write[tx_idx] as u32);
                             tx_idx += 1;
@@ -1821,15 +1900,24 @@ macro_rules! impl_spi {
                             rx_idx += 1;
                         }
                     }
+                    Ok(())
                 }
 
                 /// Transfer data in-place
-                pub fn transfer_in_place(&self, data: &mut [u8]) {
+                pub fn transfer_in_place(&self, data: &mut [u8]) -> Result<(), Error> {
                     let mut tx_idx = 0;
                     let mut rx_idx = 0;
                     let len = data.len();
 
                     while rx_idx < len {
+                        // Wait for progress: TX FIFO space or RX data.
+                        if !crate::spin::try_spin_wait(|| {
+                            (tx_idx < len && self.spi.sspsr.tnf())
+                                || (rx_idx < tx_idx && self.spi.sspsr.rne())
+                        }) {
+                            return Err(Error::Timeout);
+                        }
+
                         while tx_idx < len && self.spi.sspsr.tnf() {
                             self.spi.sspdr.write_data(data[tx_idx] as u32);
                             tx_idx += 1;
@@ -1840,15 +1928,24 @@ macro_rules! impl_spi {
                             rx_idx += 1;
                         }
                     }
+                    Ok(())
                 }
 
                 /// Read data by writing dummy bytes
-                pub fn read(&self, data: &mut [u8]) {
+                pub fn read(&self, data: &mut [u8]) -> Result<(), Error> {
                     let mut tx_idx = 0;
                     let mut rx_idx = 0;
                     let len = data.len();
 
                     while rx_idx < len {
+                        // Wait for progress: TX FIFO space or RX data.
+                        if !crate::spin::try_spin_wait(|| {
+                            (tx_idx < len && self.spi.sspsr.tnf())
+                                || (rx_idx < tx_idx && self.spi.sspsr.rne())
+                        }) {
+                            return Err(Error::Timeout);
+                        }
+
                         while tx_idx < len && self.spi.sspsr.tnf() {
                             self.spi.sspdr.write_data(0);
                             tx_idx += 1;
@@ -1859,6 +1956,7 @@ macro_rules! impl_spi {
                             rx_idx += 1;
                         }
                     }
+                    Ok(())
                 }
 
                 /// Flush - wait for all transfers to complete
@@ -2069,18 +2167,18 @@ macro_rules! impl_spi {
                 }
 
                 #[inline]
-                fn read(&self, data: &mut [u8]) {
-                    Self::read(self, data);
+                fn read(&self, data: &mut [u8]) -> Result<(), Error> {
+                    Self::read(self, data)
                 }
 
                 #[inline]
-                fn transfer(&self, read: &mut [u8], write: &[u8]) {
-                    Self::transfer(self, read, write);
+                fn transfer(&self, read: &mut [u8], write: &[u8]) -> Result<(), Error> {
+                    Self::transfer(self, read, write)
                 }
 
                 #[inline]
-                fn transfer_in_place(&self, data: &mut [u8]) {
-                    Self::transfer_in_place(self, data);
+                fn transfer_in_place(&self, data: &mut [u8]) -> Result<(), Error> {
+                    Self::transfer_in_place(self, data)
                 }
 
                 #[inline]
