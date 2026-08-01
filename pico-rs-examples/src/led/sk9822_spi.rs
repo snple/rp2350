@@ -33,9 +33,8 @@ use pico_rs::clocks::ClockBuilder;
 use pico_rs::gpio::{ErasedPin, Pins};
 use pico_rs::main;
 use pico_rs::pac::Peripherals;
-use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 use pico_rs::spi::{Mode, Spi0};
-use pico_rs::systick::Delay;
+use pico_rs_examples::common::led::hsv_to_rgb;
 
 // Configuration
 // ============================================================================
@@ -75,33 +74,6 @@ impl Pixel {
     /// Encode the 4-byte LED frame: [0xE0 | brightness] [B] [G] [R]
     const fn to_bytes(self) -> [u8; 4] {
         [0xE0 | (self.brightness & 0x1F), self.b, self.g, self.r]
-    }
-}
-
-// ============================================================================
-// Color Helper
-// ============================================================================
-
-/// Simple HSV to RGB conversion (all values 0-255).
-fn hsv_to_rgb(h: u8, s: u8, v: u8) -> (u8, u8, u8) {
-    if s == 0 {
-        return (v, v, v);
-    }
-
-    let region = h / 43;
-    let remainder = (h as u16 - region as u16 * 43) * 6;
-
-    let p = ((v as u16 * (255 - s as u16)) >> 8) as u8;
-    let q = ((v as u16 * (255 - ((s as u16 * remainder) >> 8))) >> 8) as u8;
-    let t = ((v as u16 * (255 - ((s as u16 * (255 - remainder)) >> 8))) >> 8) as u8;
-
-    match region {
-        0 => (v, t, p),
-        1 => (q, v, p),
-        2 => (p, v, t),
-        3 => (p, q, v),
-        4 => (t, p, v),
-        _ => (v, p, q),
     }
 }
 
@@ -148,8 +120,7 @@ fn main() -> ! {
     let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
     let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
-    let core = CorePeripherals::take().unwrap();
-    let delay = Delay::init(core.SYST, clocks.sys_freq());
+    let delay = pico_rs_examples::common::board::init_delay(&clocks);
 
     // Initialize SPI0 (TX-only, no MISO needed)
     let mut spi = Spi0::init(

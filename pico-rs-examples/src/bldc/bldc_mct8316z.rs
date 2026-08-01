@@ -464,7 +464,6 @@ use pico_rs::gpio::Pins;
 use pico_rs::i2c::{I2c0, I2cBus};
 use pico_rs::main;
 use pico_rs::pac::Peripherals;
-use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 use pico_rs::timer::Timer0; // ============================================================================
 // 配置参数
 // ============================================================================
@@ -1161,9 +1160,8 @@ fn main() -> ! {
 
     let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
-    // SysTick delay
-    let core = CorePeripherals::take().unwrap();
-    let delay = Delay::init(core.SYST, clocks.sys_freq());
+    // SysTick delay (matches actual system clock)
+    let delay = pico_rs_examples::common::board::init_delay(&clocks);
 
     // ------------------------------------------------------------------
     // I2C0 初始化 — GP4 (SDA), GP5 (SCL), 400 kHz

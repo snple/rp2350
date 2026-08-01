@@ -49,7 +49,7 @@
 //! # 运行
 //!
 //! ```bash
-//! cargo run --bin tcan4550
+//! cargo run --bin tcan4550 --target thumbv8m.main-none-eabihf
 //! ```
 
 #![no_std]

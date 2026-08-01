@@ -330,13 +330,11 @@
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::Delay;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::gpio::Pins;
 use pico_rs::i2c::{I2c0, I2cBus};
 use pico_rs::main;
 use pico_rs::pac::Peripherals;
-use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 use pico_rs::timer::Timer0; // ============================================================================
 // TC358870XBG 寄存器地址定义
 // ============================================================================
@@ -1193,13 +1191,12 @@ fn main() -> ! {
     // 1. RP2350 外设初始化
     // ------------------------------------------------------------------
     let dp = Peripherals::take().unwrap();
-    let core = CorePeripherals::take().unwrap();
 
     let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
     info!("系统时钟: {} MHz", clocks.sys_freq() / 1_000_000);
 
     let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
-    let delay = Delay::init(core.SYST, clocks.sys_freq());
+    let delay = pico_rs_examples::common::board::init_delay(&clocks);
     let _timer = Timer0::init(dp.TIMER0);
 
     // ------------------------------------------------------------------

@@ -46,9 +46,8 @@
 #![no_std]
 #![no_main]
 
-use pico_rs_drivers::stepper::AxisPins;
 use pico_rs_drivers::stepper::Direction;
-use pico_rs_drivers::stepper::tmc2209::{AxisConfig, AxisState, TmcPins};
+use pico_rs_drivers::stepper::tmc2209::{AxisConfig, AxisState};
 use pico_rs_drivers::tmc2209::Tmc2209;
 
 use defmt::*;
@@ -57,7 +56,6 @@ use defmt_rtt as _;
 use pico_rs::Steal;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::gpio::{self};
-use pico_rs::gpioc;
 use pico_rs::interrupt;
 use pico_rs::main;
 use pico_rs::pac::{Interrupt, Peripherals};
@@ -124,77 +122,10 @@ const M4_ADDR: u8 = 0x03;
 // Pin trait 实现 — 零开销编译期单态化
 // ============================================================================
 
-struct Mot1Pins;
-
-impl AxisPins for Mot1Pins {
-    #[inline]
-    fn set_step(high: bool) {
-        unsafe { gpioc::set(M1_STEP, high) };
-    }
-    #[inline]
-    fn set_dir(high: bool) {
-        unsafe { gpioc::set(M1_DIR, high) };
-    }
-}
-
-impl TmcPins for Mot1Pins {
-    #[inline]
-    fn diag() -> bool {
-        unsafe { gpioc::get(M1_DIAG) }
-    }
-    #[inline]
-    fn index() -> bool {
-        unsafe { gpioc::get(M1_INDEX) }
-    }
-}
-
-struct Mot2Pins;
-
-impl AxisPins for Mot2Pins {
-    #[inline]
-    fn set_step(high: bool) {
-        unsafe { gpioc::set(M2_STEP, high) };
-    }
-    #[inline]
-    fn set_dir(high: bool) {
-        unsafe { gpioc::set(M2_DIR, high) };
-    }
-}
-
-impl TmcPins for Mot2Pins {
-    #[inline]
-    fn diag() -> bool {
-        unsafe { gpioc::get(M2_DIAG) }
-    }
-    #[inline]
-    fn index() -> bool {
-        unsafe { gpioc::get(M2_INDEX) }
-    }
-}
-
-struct Mot3Pins;
-
-impl AxisPins for Mot3Pins {
-    #[inline]
-    fn set_step(high: bool) {
-        unsafe { gpioc::set(M3_STEP, high) };
-    }
-    #[inline]
-    fn set_dir(high: bool) {
-        unsafe { gpioc::set(M3_DIR, high) };
-    }
-}
-
-impl TmcPins for Mot3Pins {
-    #[inline]
-    fn diag() -> bool {
-        unsafe { gpioc::get(M3_DIAG) }
-    }
-    #[inline]
-    fn index() -> bool {
-        unsafe { gpioc::get(M3_INDEX) }
-    }
-}
+// 引脚桥接 — 复用共享 const-generic 实现 (零开销编译期单态化)
+type Mot1Pins = pico_rs_examples::common::stepper::GpiocTmcPins<M1_STEP, M1_DIR, M1_DIAG, M1_INDEX>;
+type Mot2Pins = pico_rs_examples::common::stepper::GpiocTmcPins<M2_STEP, M2_DIR, M2_DIAG, M2_INDEX>;
+type Mot3Pins = pico_rs_examples::common::stepper::GpiocTmcPins<M3_STEP, M3_DIR, M3_DIAG, M3_INDEX>;
 
 // ============================================================================
 // 全局步进轴实例 — 三个独立 AxisState，各用不同 Timer0 alarm

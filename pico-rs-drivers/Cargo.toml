@@ -9,9 +9,16 @@ repository.workspace = true
 [dependencies]
 bitfield-struct.workspace = true
 defmt = { workspace = true, optional = true }
+# The chip variant is chosen by the top-level crate (e.g. pico-rs-examples);
+# the workspace-level `pico-rs` dependency already has `default-features = false`
+# so its default `rp2350a` is never pulled into the graph unconditionally.
 pico-rs.workspace = true
 pico-rs-rt.workspace = true
 
 [features]
-default = ["defmt"]
+default = ["defmt", "rp2350a"]
 defmt = ["dep:defmt"]
+# RP2350 chip variant selection (mutually exclusive) — forwarded to pico-rs
+# so that a single consistent variant is enabled across the whole graph.
+rp2350a = ["pico-rs/rp2350a"]
+rp2350b = ["pico-rs/rp2350b"]

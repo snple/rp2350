@@ -79,7 +79,7 @@
 //! # 3. 编译运行
 //!
 //! ```bash
-//! cargo run --bin fan_control --target thumbv8m.main-none-eabihf
+//! cargo run --bin pwm_fan_control --target thumbv8m.main-none-eabihf
 //! ```
 //!
 //! 连接串口终端 (115200 baud) 观察输出。

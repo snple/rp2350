@@ -201,7 +201,7 @@
 #![no_std]
 #![no_main]
 
-use pico_rs_drivers::stepper::{AxisConfig, AxisPins, AxisState, Direction};
+use pico_rs_drivers::stepper::{AxisConfig, AxisState, Direction};
 
 use defmt::*;
 use defmt_rtt as _;
@@ -285,24 +285,8 @@ const PIN_SLEEP: u32 = 9;
 // Pin trait 实现 — 零开销编译期单态化
 // ============================================================================
 
-/// A4988 引脚桥接，实现 STEP/DIR 的 GPIO 操作。
-struct MotPins;
-
-impl AxisPins for MotPins {
-    #[inline]
-    fn set_step(high: bool) {
-        unsafe {
-            gpio::set(PIN_STEP, high);
-        }
-    }
-
-    #[inline]
-    fn set_dir(high: bool) {
-        unsafe {
-            gpio::set(PIN_DIR, high);
-        }
-    }
-}
+/// A4988 引脚桥接 — 复用共享 const-generic 实现 (SIO MMIO 路径)。
+type MotPins = pico_rs_examples::common::stepper::GpioStepperPins<PIN_STEP, PIN_DIR>;
 
 // ============================================================================
 // 全局共享状态

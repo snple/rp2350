@@ -10,14 +10,12 @@
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::Delay;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::gpio::Pins;
 use pico_rs::main;
 use pico_rs::pac::Peripherals;
 use pico_rs::pio;
 use pico_rs::pio_asm;
-use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 
 const LED_PIN: u8 = 25;
 
@@ -102,8 +100,7 @@ fn main() -> ! {
     }
 
     // Keep running
-    let core = CorePeripherals::take().unwrap();
-    let delay = Delay::init(core.SYST, clocks.sys_freq());
+    let delay = pico_rs_examples::common::board::init_delay(&clocks);
     loop {
         delay.delay_ms(5000);
         info!("Running...");

@@ -26,7 +26,6 @@ use pico_rs::clocks::ClockBuilder;
 use pico_rs::gpio::Pins;
 use pico_rs::main;
 use pico_rs::pac::Peripherals;
-use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 
 use pico_rs_usb::UsbBusAllocator;
 use pico_rs_usb::class::hid::{HidClass, KeyboardReport, modifier};
@@ -84,7 +83,6 @@ fn main() -> ! {
 
     // Take peripherals
     let dp = Peripherals::take().unwrap();
-    let cp = CorePeripherals::take().unwrap();
 
     // Initialize clocks using the convenient API (150 MHz sys, 48 MHz USB)
     let clocks = ClockBuilder::new()
@@ -130,7 +128,7 @@ fn main() -> ! {
     usb_dev.bus().connect();
     info!("USB connected, waiting for enumeration...");
 
-    let mut delay = Delay::init(cp.SYST, clocks.sys_freq());
+    let mut delay = pico_rs_examples::common::board::init_delay(&clocks);
     let mut button_prev = true; // Pull-up, so high when not pressed
     let mut configured = false;
 

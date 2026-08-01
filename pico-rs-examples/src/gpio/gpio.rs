@@ -10,7 +10,7 @@
 //! - Pull resistor configuration
 //! - Drive strength and slew rate
 //!
-//! Run with: cargo run --release --bin gpio_example
+//! Run with: cargo run --release --bin gpio
 
 #![no_std]
 #![no_main]

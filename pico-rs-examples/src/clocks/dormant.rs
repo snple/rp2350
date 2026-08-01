@@ -18,12 +18,10 @@
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::Delay;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::gpio::{EdgeLevel, Pins};
 use pico_rs::main;
 use pico_rs::pac::Peripherals;
-use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 
 #[main]
 fn main() -> ! {
@@ -46,9 +44,8 @@ fn main() -> ! {
     // Configure button to wake from dormant on falling edge
     button.set_dormant_wake(EdgeLevel::EdgeLow);
 
-    // Initialize delay
-    let core = CorePeripherals::take().unwrap();
-    let delay = Delay::init(core.SYST, clocks.sys_freq());
+    // Initialize delay (matches actual system clock)
+    let delay = pico_rs_examples::common::board::init_delay(&clocks);
 
     let mut wake_count: u32 = 0;
 

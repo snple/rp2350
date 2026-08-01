@@ -6,7 +6,7 @@
 //! - Using hardware spinlocks
 //! - Using the interpolator for hardware-accelerated math
 //!
-//! Run with: cargo run --release --bin sio_example
+//! Run with: cargo run --release --bin sio
 
 #![no_std]
 #![no_main]

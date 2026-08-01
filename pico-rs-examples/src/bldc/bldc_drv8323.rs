@@ -1200,8 +1200,16 @@ fn main() -> ! {
     // ADC — 采样 DRV8323 CSA 输出 (SO_A → GP26, SO_B → GP27)
     // ------------------------------------------------------------------
     let adc = Adc::init(dp.ADC);
-    let adc_ia = pins.pin::<26>().into_adc_input();
-    let adc_ib = pins.pin::<27>().into_adc_input();
+    #[cfg(not(feature = "rp2350b"))]
+    let (adc_ia, adc_ib) = (
+        pins.pin::<26>().into_adc_input(),
+        pins.pin::<27>().into_adc_input(),
+    );
+    #[cfg(feature = "rp2350b")]
+    let (adc_ia, adc_ib) = (
+        pins.pin::<40>().into_adc_input(),
+        pins.pin::<41>().into_adc_input(),
+    );
     info!(
         "ADC initialized: SO_A=Ch{}, SO_B=Ch{}",
         adc_ia.channel(),

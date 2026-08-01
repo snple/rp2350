@@ -52,8 +52,6 @@ use pico_rs::clocks::ClockBuilder;
 use pico_rs::gpio::Pins;
 use pico_rs::main;
 use pico_rs::pac::Peripherals;
-use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
-use pico_rs::systick::Delay;
 
 ///
 /// RP2350 在本 HAL 中的常用高性能配置就是 150 MHz。
@@ -103,13 +101,9 @@ fn main() -> ! {
     let mut led = pins.pin::<25>();
     led.into_output();
 
-    // SysTick 属于 Cortex-M 内核外设，不在 PAC 的 `Peripherals` 里，
-    // 所以需要单独从核心外设获取。
-    let core_peripherals = CorePeripherals::take().unwrap();
-
     // Delay 依赖“当前真实的系统主频”。
     // 这里使用 clocks.sys_freq() 而不是硬编码常量，避免以后修改 builder 配置后忘记同步。
-    let delay = Delay::init(core_peripherals.SYST, clocks.sys_freq());
+    let delay = pico_rs_examples::common::board::init_delay(&clocks);
     info!("Delay initialized with {} Hz", clocks.sys_freq());
     info!(
         "SysTick ticks_per_us: {} (expected {})",

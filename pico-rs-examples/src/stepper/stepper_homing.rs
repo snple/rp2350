@@ -19,9 +19,8 @@
 #![no_std]
 #![no_main]
 
-use pico_rs_drivers::stepper::AxisPins;
 use pico_rs_drivers::stepper::Direction;
-use pico_rs_drivers::stepper::tmc2209::{AxisConfig, AxisState, TmcPins};
+use pico_rs_drivers::stepper::tmc2209::{AxisConfig, AxisState};
 use pico_rs_drivers::tmc2209::Tmc2209;
 
 use defmt::*;
@@ -30,7 +29,6 @@ use defmt_rtt as _;
 use pico_rs::Steal;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::gpio::{self};
-use pico_rs::gpioc;
 use pico_rs::interrupt;
 use pico_rs::main;
 use pico_rs::pac::{Interrupt, Peripherals};
@@ -124,30 +122,9 @@ const PIN_INDEX: u32 = 10;
 // 在 StallGuard 模式下用于指示堵转 (低电平 = 堵转)。
 const PIN_DIAG: u32 = 11;
 
-// 引脚操作类型（ZST），编译期单态化零开销。
-struct Pins;
-
-impl AxisPins for Pins {
-    #[inline]
-    fn set_step(high: bool) {
-        unsafe { gpioc::set(PIN_STEP, high) };
-    }
-    #[inline]
-    fn set_dir(high: bool) {
-        unsafe { gpioc::set(PIN_DIR, high) };
-    }
-}
-
-impl TmcPins for Pins {
-    #[inline]
-    fn diag() -> bool {
-        unsafe { gpioc::get(PIN_DIAG) }
-    }
-    #[inline]
-    fn index() -> bool {
-        unsafe { gpioc::get(PIN_INDEX) }
-    }
-}
+// 引脚桥接 — 复用共享 const-generic 实现 (零开销编译期单态化)
+// STEP/DIR/DIAG/INDEX 引脚桥接 (GPIOC 协处理器路径)。
+type Pins = pico_rs_examples::common::stepper::GpiocTmcPins<PIN_STEP, PIN_DIR, PIN_DIAG, PIN_INDEX>;
 
 // ============================================================================
 // 全局步进轴实例

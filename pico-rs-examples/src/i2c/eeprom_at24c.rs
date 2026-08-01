@@ -278,7 +278,6 @@ use pico_rs::gpio::Pins;
 use pico_rs::i2c::{Error, I2c1, I2cBus};
 use pico_rs::main;
 use pico_rs::pac::Peripherals;
-use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 
 /// EEPROM I2C 设备地址
 /// A2=A1=A0=GND → 0b1010_000 = 0x50
@@ -486,9 +485,8 @@ fn main() -> ! {
     );
     info!("I2C1: 400000 Hz (GP2=SDA, GP3=SCL)");
 
-    // 初始化 SysTick 延时（用于 ACK 轮询等待）
-    let core = CorePeripherals::take().unwrap();
-    let delay = Delay::init(core.SYST, clocks.sys_freq());
+    // 初始化 SysTick 延时（用于 ACK 轮询等待），匹配实际系统时钟
+    let delay = pico_rs_examples::common::board::init_delay(&clocks);
 
     // ------------------------------------------------------------------
     // 2. EEPROM 在线检测

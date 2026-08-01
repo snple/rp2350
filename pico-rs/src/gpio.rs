@@ -1300,7 +1300,7 @@ macro_rules! impl_pin {
                 ///   concurrently reconfigured from another context.
                 #[inline]
                 pub const unsafe fn steal() -> crate::Steal<Self> {
-                    crate::Steal(Self { _marker: core::marker::PhantomData<*const ()> })
+                    crate::Steal(Self { _marker: core::marker::PhantomData })
                 }
 
                 #[inline(always)]

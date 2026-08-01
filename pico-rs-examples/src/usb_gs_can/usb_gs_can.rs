@@ -37,12 +37,10 @@
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::Delay;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::gpio::Pins;
 use pico_rs::main;
 use pico_rs::pac::Peripherals;
-use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 
 use pico_rs_usb::UsbBusAllocator;
 use pico_rs_usb::class::gs_usb::{GsHostFrame, GsUsbClass, gs_can_mode};
@@ -108,7 +106,6 @@ fn main() -> ! {
 
     // Take peripherals
     let dp = Peripherals::take().unwrap();
-    let cp = CorePeripherals::take().unwrap();
 
     // Clocks: 150 MHz sys, 48 MHz USB
     let clocks = ClockBuilder::new()
@@ -152,7 +149,7 @@ fn main() -> ! {
     can_init();
 
     #[allow(unused_mut)]
-    let mut delay = Delay::init(cp.SYST, clocks.sys_freq());
+    let mut delay = pico_rs_examples::common::board::init_delay(&clocks);
     let mut configured = false;
     let mut echo_id: u32 = 0;
     let mut led_toggle_count: u32 = 0;

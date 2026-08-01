@@ -15,7 +15,6 @@ use pico_rs::gpio::Pins;
 use pico_rs::i2c::{Error, I2c0, I2cBus};
 use pico_rs::main;
 use pico_rs::pac::Peripherals;
-use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 
 #[main]
 fn main() -> ! {
@@ -35,11 +34,8 @@ fn main() -> ! {
     // Initialize I2C0 on GPIO 4 (SDA) and GPIO 5 (SCL)
     let i2c = I2c0::init(dp.I2C0, pins.pin::<4>(), pins.pin::<5>(), 400_000, &clocks);
 
-    // Take core peripherals (NVIC, SCB, SYST, MPU, FPU, SAU)
-    let core_peripherals = CorePeripherals::take().unwrap();
-
-    // Initialize SysTick-based delay
-    let delay = Delay::init(core_peripherals.SYST, clocks.sys_freq());
+    // Initialize SysTick-based delay (matches actual system clock)
+    let delay = pico_rs_examples::common::board::init_delay(&clocks);
 
     loop {
         match sht30_read(&i2c, &delay) {

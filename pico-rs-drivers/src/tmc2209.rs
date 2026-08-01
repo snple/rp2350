@@ -46,7 +46,7 @@
 //! let tmc = Tmc2209::new(uart, 0x00);
 //!
 //! // 读取芯片版本
-//! if let Some(ioin) = tmc.read_reg(REG_IOIN, &delay) {
+//! if let Ok(ioin) = tmc.read_reg(REG_IOIN, &delay) {
 //!     let version = (ioin >> 24) & 0xFF;
 //!     // TMC2209 version = 0x21
 //! }
@@ -889,19 +889,6 @@ const POLL_INTERVAL_US: u32 = 10;
 /// 默认 IHOLDDELAY 值 (电流过渡延时)
 const IHOLD_DELAY_DEFAULT: u8 = 10;
 
-/// 微步细分值与 MRES 编码的映射表
-const MRES_TABLE: [(u32, u32); 9] = [
-    (256, 0),
-    (128, 1),
-    (64, 2),
-    (32, 3),
-    (16, 4),
-    (8, 5),
-    (4, 6),
-    (2, 7),
-    (1, 8),
-];
-
 // ============================================================================
 // CRC8
 // ============================================================================
@@ -1643,6 +1630,8 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
 /// 支持的微步值: 1, 2, 4, 8, 16, 32, 64, 128, 256。
 /// 不支持的输入会回退为全步 (MRES=8)。
 ///
+/// 底层复用 [`MicroStepResolution`] 的换算逻辑，避免两处编码表漂移。
+///
 /// | 微步 | MRES |
 /// |------|------|
 /// | 256  | 0    |
@@ -1656,12 +1645,11 @@ impl<'a, U: UartBus> Tmc2209<'a, U> {
 /// | 1    | 8    |
 #[inline]
 pub fn microstepping_to_mres(microstepping: u32) -> u32 {
-    for &(ms, mres) in &MRES_TABLE {
-        if ms == microstepping {
-            return mres;
-        }
+    if microstepping.is_power_of_two() && microstepping <= 256 {
+        MicroStepResolution::from_microsteps(microstepping).to_mres()
+    } else {
+        8 // 默认全步
     }
-    8 // 默认全步
 }
 
 /// 解析微步细分数，返回人类可读的字符串描述。

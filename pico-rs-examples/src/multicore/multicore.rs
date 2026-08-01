@@ -11,7 +11,7 @@
 //! - Core 1 doubles the numbers and sends them back
 //! - Spinlocks protect access to a shared counter
 //!
-//! Run with: cargo run --release --bin multicore_example
+//! Run with: cargo run --release --bin multicore
 
 #![no_std]
 #![no_main]
@@ -20,12 +20,10 @@ use core::sync::atomic::{AtomicU32, Ordering};
 
 use defmt::*;
 use defmt_rtt as _;
-use pico_rs::Delay;
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::main;
 use pico_rs::multicore::{self, Fifo, Multicore, Stack};
 use pico_rs::pac::Peripherals;
-use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
 use pico_rs::sio::Spinlock;
 
 static mut CORE1_STACK: Stack<4096> = Stack::new();
@@ -91,9 +89,8 @@ fn main() -> ! {
     // Initialize clocks (150 MHz sys by default)
     let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
 
-    // Initialize delay
-    let core = CorePeripherals::take().unwrap();
-    let delay = Delay::init(core.SYST, clocks.sys_freq());
+    // Initialize delay (matches actual system clock)
+    let delay = pico_rs_examples::common::board::init_delay(&clocks);
 
     // Print Core 0 info
     let core_id = multicore::core_id();

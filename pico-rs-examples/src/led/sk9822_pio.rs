@@ -42,8 +42,7 @@ use pico_rs::pac::Peripherals;
 use pico_rs::pio;
 use pico_rs::pio::{FifoJoin, Pio0};
 use pico_rs::pio_asm;
-use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
-use pico_rs::systick::Delay;
+use pico_rs_examples::common::led::hsv_to_rgb;
 
 // Configuration
 // ============================================================================
@@ -92,33 +91,6 @@ impl Pixel {
             | (self.b as u32) << 16
             | (self.g as u32) << 8
             | (self.r as u32)
-    }
-}
-
-// ============================================================================
-// Color Helper
-// ============================================================================
-
-/// Simple HSV to RGB conversion (all values 0-255).
-fn hsv_to_rgb(h: u8, s: u8, v: u8) -> (u8, u8, u8) {
-    if s == 0 {
-        return (v, v, v);
-    }
-
-    let region = h / 43;
-    let remainder = (h as u16 - region as u16 * 43) * 6;
-
-    let p = ((v as u16 * (255 - s as u16)) >> 8) as u8;
-    let q = ((v as u16 * (255 - ((s as u16 * remainder) >> 8))) >> 8) as u8;
-    let t = ((v as u16 * (255 - ((s as u16 * (255 - remainder)) >> 8))) >> 8) as u8;
-
-    match region {
-        0 => (v, t, p),
-        1 => (q, v, p),
-        2 => (p, v, t),
-        3 => (p, q, v),
-        4 => (t, p, v),
-        _ => (v, p, q),
     }
 }
 
@@ -213,8 +185,7 @@ fn main() -> ! {
     let clocks = ClockBuilder::new().build(dp.CLOCKS, dp.XOSC, dp.PLL_SYS, dp.PLL_USB);
     let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
-    let core = CorePeripherals::take().unwrap();
-    let delay = Delay::init(core.SYST, clocks.sys_freq());
+    let delay = pico_rs_examples::common::board::init_delay(&clocks);
 
     // Take PIO0 and claim CLK + DATA pins
     let mut pio0 = pio::Pio0::init(dp.PIO0);

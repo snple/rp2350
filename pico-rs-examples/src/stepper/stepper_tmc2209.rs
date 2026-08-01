@@ -43,8 +43,8 @@
 #![no_std]
 #![no_main]
 
-use pico_rs_drivers::stepper::tmc2209::{AxisConfig, AxisState, TmcPins};
-use pico_rs_drivers::stepper::{AxisPins, Direction};
+use pico_rs_drivers::stepper::Direction;
+use pico_rs_drivers::stepper::tmc2209::{AxisConfig, AxisState};
 use pico_rs_drivers::tmc2209::{
     Gconf, IholdIr, REG_CHOPCONF, REG_IHOLD_IRUN, REG_PWMCONF, REG_SGTHRS, REG_TCOOLTHRS,
     REG_TPOWERDOWN, Tmc2209, microstepping_to_mres,
@@ -145,39 +145,12 @@ const PIN_DIAG: u32 = 11; // GP11 → DIAG
 // const PIN_DIAG: u8 = 15; // GP15 → DIAG
 
 // ============================================================================
-// Pin trait 实现 — 零开销编译期单态化
+// 引脚桥接 — 复用共享 const-generic 实现 (零开销编译期单态化)
 // ============================================================================
 
-/// TMC2209 引脚桥接，实现 STEP/DIR/DIAG/INDEX 的 GPIO 操作。
-struct MotPins;
-
-impl AxisPins for MotPins {
-    #[inline]
-    fn set_step(high: bool) {
-        unsafe {
-            gpio::set(PIN_STEP, high);
-        }
-    }
-
-    #[inline]
-    fn set_dir(high: bool) {
-        unsafe {
-            gpio::set(PIN_DIR, high);
-        }
-    }
-}
-
-impl TmcPins for MotPins {
-    #[inline]
-    fn diag() -> bool {
-        unsafe { gpio::get(PIN_DIAG) }
-    }
-
-    #[inline]
-    fn index() -> bool {
-        unsafe { gpio::get(PIN_INDEX) }
-    }
-}
+/// STEP/DIR/DIAG/INDEX 引脚桥接 (SIO MMIO 路径)。
+type MotPins =
+    pico_rs_examples::common::stepper::GpioTmcPins<PIN_STEP, PIN_DIR, PIN_DIAG, PIN_INDEX>;
 
 // ============================================================================
 // 步进轴状态

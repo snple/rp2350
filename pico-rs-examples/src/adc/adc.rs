@@ -13,16 +13,11 @@
 use defmt::*;
 use defmt_rtt as _;
 
-use pico_rs::Delay;
 use pico_rs::adc::{Adc, AdcPin};
 use pico_rs::clocks::ClockBuilder;
 use pico_rs::gpio::Pins;
 use pico_rs::main;
 use pico_rs::pac::Peripherals;
-use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
-
-/// At boot, RP2350 runs from ROSC at approximately 12 MHz
-const CLOCK_FREQ_HZ: u32 = 150_000_000; // After PLL init, 150 MHz
 
 #[main]
 fn main() -> ! {
@@ -46,11 +41,8 @@ fn main() -> ! {
     // Initialize GPIO pins
     let pins = Pins::init(dp.IO_BANK0, dp.PADS_BANK0);
 
-    // Take core peripherals
-    let core_peripherals = CorePeripherals::take().unwrap();
-
-    // Initialize SysTick-based delay
-    let delay = Delay::init(core_peripherals.SYST, CLOCK_FREQ_HZ);
+    // Initialize SysTick-based delay (matches actual system clock)
+    let delay = pico_rs_examples::common::board::init_delay(&clocks);
 
     info!("Initializing ADC...");
 
@@ -60,11 +52,11 @@ fn main() -> ! {
 
     // Configure pin for ADC - this consumes the pin!
     // The pin cannot be used for other purposes while AdcInput exists.
-    let input0 = pins.pin::<26>().into_adc_input();
-    info!(
-        "Configured GPIO 26 as ADC input (channel {})",
-        input0.channel()
-    );
+    #[cfg(not(feature = "rp2350b"))]
+    let input0 = pins.pin::<26>().into_adc_input(); // RP2350A: GPIO 26 = ch 0
+    #[cfg(feature = "rp2350b")]
+    let input0 = pins.pin::<40>().into_adc_input(); // RP2350B: GPIO 40 = ch 0
+    info!("Configured ADC input on channel {}", input0.channel());
 
     // Trying to use pins.pin::<26>() again would be a compile error:
     // pins.pin::<26>().into_output();  // ERROR: use of moved value

@@ -32,11 +32,14 @@ bitfield-struct = "0.13"
 enumflags2 = "0.7"
 
 # Local crates
-pico-rs = { path = "pico-rs" }
+# pico-rs and pico-rs-drivers default to no features at the workspace level;
+# each consumer (drivers/examples) explicitly forwards the chip variant and
+# other features it needs so `rp2350a` and `rp2350b` can never both be enabled.
+pico-rs = { path = "pico-rs", default-features = false }
 pico-rs-rt = { path = "pico-rs-rt" }
 pico-rs-pac = { path = "pico-rs-pac" }
 pico-rs-macro = { path = "pico-rs-macro" }
-pico-rs-drivers = { path = "pico-rs-drivers" }
+pico-rs-drivers = { path = "pico-rs-drivers", default-features = false }
 pico-rs-usb = { path = "pico-rs-usb" }
 
 critical-section = { version = "1.2", features = ["restore-state-u32"]}

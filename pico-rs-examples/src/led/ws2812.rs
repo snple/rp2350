@@ -33,8 +33,7 @@ use pico_rs::pac::Peripherals;
 use pico_rs::pio;
 use pico_rs::pio::{FifoJoin, Pio0};
 use pico_rs::pio_asm;
-use pico_rs::rt::peripheral::Peripherals as CorePeripherals;
-use pico_rs::systick::Delay;
+use pico_rs_examples::common::led::{hsv_to_rgb, urgb_u32, ws2812_clkdiv};
 
 // Configuration
 // ============================================================================
@@ -49,57 +48,8 @@ const NUM_LEDS: usize = 8;
 const WS2812_FREQ_HZ: u32 = 800_000;
 
 // ============================================================================
-// Color Helpers
-// ============================================================================
-
-/// Pack RGB into the GRB 32-bit word expected by the PIO program.
-///
-/// The PIO program shifts out MSB first. We put GRB in the upper 24 bits
-/// so that autopull with 24-bit threshold works correctly after a left shift.
-#[inline]
-const fn urgb_u32(r: u8, g: u8, b: u8) -> u32 {
-    ((g as u32) << 24) | ((r as u32) << 16) | ((b as u32) << 8)
-}
-
-/// Simple HSV to RGB conversion (all values 0-255).
-fn hsv_to_rgb(h: u8, s: u8, v: u8) -> (u8, u8, u8) {
-    if s == 0 {
-        return (v, v, v);
-    }
-
-    let region = h / 43;
-    let remainder = (h as u16 - region as u16 * 43) * 6;
-
-    let p = ((v as u16 * (255 - s as u16)) >> 8) as u8;
-    let q = ((v as u16 * (255 - ((s as u16 * remainder) >> 8))) >> 8) as u8;
-    let t = ((v as u16 * (255 - ((s as u16 * (255 - remainder)) >> 8))) >> 8) as u8;
-
-    match region {
-        0 => (v, t, p),
-        1 => (q, v, p),
-        2 => (p, v, t),
-        3 => (p, q, v),
-        4 => (t, p, v),
-        _ => (v, p, q),
-    }
-}
-
-// ============================================================================
 // WS2812 PIO Driver
 // ============================================================================
-
-/// Compute the PIO clock divider for the desired WS2812 frequency.
-///
-/// The PIO program uses 10 cycles per bit (T1 + T2 + T3 = 2 + 5 + 3).
-/// `clk_div = sys_clk / (ws2812_freq * cycles_per_bit)`
-fn ws2812_clkdiv(sys_clk: u32) -> (u16, u8) {
-    // cycles_per_bit = 10
-    let target = sys_clk / (WS2812_FREQ_HZ * 10);
-    let frac_256 = ((sys_clk as u64 * 256) / (WS2812_FREQ_HZ as u64 * 10)) as u32;
-    let int_div = target as u16;
-    let frac_div = (frac_256 & 0xFF) as u8;
-    (int_div, frac_div)
-}
 
 /// Initialize PIO0/SM0 for WS2812 output on `WS2812_PIN`.
 ///
@@ -142,7 +92,7 @@ fn ws2812_pio_init(pio0: &mut Pio0, sys_clk: u32) {
         .install_program(&program)
         .expect("WS2812: PIO program install failed");
 
-    let (int_div, frac_div) = ws2812_clkdiv(sys_clk);
+    let (int_div, frac_div) = ws2812_clkdiv(sys_clk, WS2812_FREQ_HZ);
 
     info!(
         "WS2812: clkdiv int={} frac={}, offset={}",
@@ -197,9 +147,8 @@ fn main() -> ! {
     // Initialize the WS2812 PIO driver
     ws2812_pio_init(&mut pio0, clocks.sys_freq());
 
-    // Delay source
-    let core = CorePeripherals::take().unwrap();
-    let delay = Delay::init(core.SYST, clocks.sys_freq());
+    // Delay source (matches actual system clock)
+    let delay = pico_rs_examples::common::board::init_delay(&clocks);
 
     info!("WS2812: {} LEDs on GPIO {}", NUM_LEDS, WS2812_PIN);
 
