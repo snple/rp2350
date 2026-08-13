@@ -299,7 +299,7 @@ pub(super) unsafe fn output_enable64_clr(mask: u64) {
 
 #[inline(always)]
 pub(super) unsafe fn output_enable64_get() -> u64 {
-    gpioc_read64!(4, 4)
+    gpioc_read64!(0, 4)
 }
 
 // ============================================================================

@@ -534,41 +534,20 @@ pub enum Mode {
 /// PWM slice with type-safe pin ownership.
 ///
 /// Obtained from [`Pwm::slice()`] in an unconfigured state
-/// (`Slice<N, ErasedPin, ErasedPin>`). Call builder methods like
+/// (`Slice<'_, N, ErasedPin, ErasedPin>`). Call builder methods like
 /// [`output_a()`](Slice::output_a) to configure the slice and bind
 /// GPIO pins.
 ///
 /// The const parameter `N` identifies which hardware PWM slice
 /// (0–7 on RP2350A, 0–11 on RP2350B) this instance controls.
 ///
-/// # ISR Usage
-///
-/// In interrupt context, a `Slice` can be created directly
-/// via `unsafe { Slice::<N, ErasedPin, ErasedPin>::new() }` without going
-/// through [`Pwm`].
-pub struct Slice<const N: u8, A = ErasedPin, B = ErasedPin> {
-    pwm: rp2350_pac::PWM,
+/// A `Slice` borrows the [`Pwm`] controller and can therefore never
+/// outlive it.
+pub struct Slice<'a, const N: u8, A = ErasedPin, B = ErasedPin> {
+    pwm: &'a rp2350_pac::PWM,
     _pin_a: A,
     _pin_b: B,
     mode: Mode,
-}
-
-impl<const N: u8, A, B> Slice<N, A, B> {
-    /// Obtain a PWM slice handle without going through [`Pwm`].
-    ///
-    /// # Safety
-    ///
-    /// The caller must ensure the PWM peripheral has been initialised
-    /// (i.e. taken out of reset) before using the returned handle.
-    #[inline]
-    pub const unsafe fn steal() -> crate::Steal<Slice<N, ErasedPin, ErasedPin>> {
-        crate::Steal(Slice {
-            pwm: unsafe { rp2350_pac::PWM::steal() },
-            _pin_a: ErasedPin,
-            _pin_b: ErasedPin,
-            mode: Mode::OutputA,
-        })
-    }
 }
 
 // ============================================================================
@@ -607,6 +586,19 @@ impl Pwm {
         Self { pwm }
     }
 
+    /// Obtain a Pwm handle without ownership checks.
+    ///
+    /// # Safety
+    ///
+    /// The caller must ensure [`Pwm::init()`] has been called first
+    /// and that no data races occur.
+    #[inline]
+    pub unsafe fn steal() -> crate::Steal<Self> {
+        crate::Steal(Self {
+            pwm: unsafe { rp2350_pac::PWM::steal() },
+        })
+    }
+
     /// Obtain an unconfigured [`Slice`] for PWM slice `N`.
     ///
     /// Call builder methods like [`output_a()`](Slice::output_a)
@@ -621,7 +613,7 @@ impl Pwm {
     ///
     /// Compile-time error if `N` is out of range.
     #[inline]
-    pub fn slice<const N: u8>(&self) -> Slice<N> {
+    pub fn slice<const N: u8>(&self) -> Slice<'_, N> {
         #[cfg(not(feature = "rp2350b"))]
         const {
             assert!(N < 8, "PWM slice number must be 0-7 (RP2350A)")
@@ -632,7 +624,7 @@ impl Pwm {
         };
 
         Slice {
-            pwm: unsafe { rp2350_pac::PWM::steal() },
+            pwm: &self.pwm,
             _pin_a: ErasedPin,
             _pin_b: ErasedPin,
             mode: Mode::OutputA,
@@ -806,7 +798,7 @@ macro_rules! impl_pwm_slice {
             // Slice<N, ErasedPin, ErasedPin> builder methods
             // ================================================================
 
-            impl Slice<$slice_num, ErasedPin, ErasedPin> {
+            impl<'a> Slice<'a, $slice_num, ErasedPin, ErasedPin> {
                 #[doc = concat!("Create PWM slice ", $slice_num, " with output on channel A only.")]
                 ///
                 /// Consumes this unconfigured slice. The pin is configured
@@ -815,7 +807,7 @@ macro_rules! impl_pwm_slice {
                 /// # Arguments
                 ///
                 /// * `pin_a` - Channel A pin (must be for this slice)
-                pub fn output_a<A: PwmAPin>(self, mut pin_a: A) -> Slice<$slice_num, A, ErasedPin> {
+                pub fn output_a<A: PwmAPin>(self, mut pin_a: A) -> Slice<'a, $slice_num, A, ErasedPin> {
                     // Verify the pin is for this slice
                     assert_eq!(A::PWM_SLICE, $slice_num, "Pin must be for PWM slice {}", $slice_num);
 
@@ -824,7 +816,7 @@ macro_rules! impl_pwm_slice {
 
                     // Initialize via direct register access (avoids const-generic
                     // method resolution ambiguity)
-                    let pwm = unsafe { rp2350_pac::PWM::steal() };
+                    let pwm = self.pwm;
                     pwm.[<ch $slice_num _csr>].clr_en();
                     pwm.[<ch $slice_num _top>].write_bits(0xfffe);
                     pwm.[<ch $slice_num _div>].write_bits(1u32 << 4);
@@ -849,7 +841,7 @@ macro_rules! impl_pwm_slice {
                 ///
                 /// * `pin_a` - Channel A pin
                 /// * `pin_b` - Channel B pin
-                pub fn output_ab<A: PwmAPin, B: PwmBPin>(self, mut pin_a: A, mut pin_b: B) -> Slice<$slice_num, A, B> {
+                pub fn output_ab<A: PwmAPin, B: PwmBPin>(self, mut pin_a: A, mut pin_b: B) -> Slice<'a, $slice_num, A, B> {
                     // Verify pins are for this slice
                     assert_eq!(A::PWM_SLICE, $slice_num, "Pin A must be for PWM slice {}", $slice_num);
                     assert_eq!(B::PWM_SLICE, $slice_num, "Pin B must be for PWM slice {}", $slice_num);
@@ -859,7 +851,7 @@ macro_rules! impl_pwm_slice {
                     PwmBPin::configure_pwm_b(&mut pin_b);
 
                     // Initialize via direct register access
-                    let pwm = unsafe { rp2350_pac::PWM::steal() };
+                    let pwm = self.pwm;
                     pwm.[<ch $slice_num _csr>].clr_en();
                     pwm.[<ch $slice_num _top>].write_bits(0xfffe);
                     pwm.[<ch $slice_num _div>].write_bits(1u32 << 4);
@@ -899,7 +891,7 @@ macro_rules! impl_pwm_slice {
                 ///
                 /// * `pin_b` - Channel B pin for input
                 /// * `mode` - Input mode (GatedByB, RisingEdge, FallingEdge)
-                pub fn input<B: PwmBPin>(self, mut pin_b: B, mode: InputMode) -> Slice<$slice_num, ErasedPin, B> {
+                pub fn input<B: PwmBPin>(self, mut pin_b: B, mode: InputMode) -> Slice<'a, $slice_num, ErasedPin, B> {
                     // Verify pin is for this slice
                     assert_eq!(B::PWM_SLICE, $slice_num, "Pin B must be for PWM slice {}", $slice_num);
 
@@ -907,7 +899,7 @@ macro_rules! impl_pwm_slice {
                     PwmBPin::configure_pwm_b(&mut pin_b);
 
                     // Initialize for input via direct register access
-                    let pwm = unsafe { rp2350_pac::PWM::steal() };
+                    let pwm = self.pwm;
                     pwm.[<ch $slice_num _csr>].clr_en();
                     pwm.[<ch $slice_num _top>].write_bits(0xfffe);
                     pwm.[<ch $slice_num _div>].write_bits(1u32 << 4);
@@ -946,7 +938,7 @@ macro_rules! impl_pwm_slice {
                     mut pin_a: A,
                     mut pin_b: B,
                     mode: InputMode,
-                ) -> Slice<$slice_num, A, B> {
+                ) -> Slice<'a, $slice_num, A, B> {
                     // Verify pins are for this slice
                     assert_eq!(A::PWM_SLICE, $slice_num, "Pin A must be for PWM slice {}", $slice_num);
                     assert_eq!(B::PWM_SLICE, $slice_num, "Pin B must be for PWM slice {}", $slice_num);
@@ -956,7 +948,7 @@ macro_rules! impl_pwm_slice {
                     PwmBPin::configure_pwm_b(&mut pin_b);
 
                     // Initialize via direct register access
-                    let pwm = unsafe { rp2350_pac::PWM::steal() };
+                    let pwm = self.pwm;
                     pwm.[<ch $slice_num _csr>].clr_en();
                     pwm.[<ch $slice_num _top>].write_bits(0xfffe);
                     pwm.[<ch $slice_num _div>].write_bits(1u32 << 4);
@@ -978,7 +970,7 @@ macro_rules! impl_pwm_slice {
             // Slice<N, A, B> register-access methods
             // ================================================================
 
-            impl<A, B> Slice<$slice_num, A, B> {
+            impl<'a, A, B> Slice<'a, $slice_num, A, B> {
                 /// PWM slice number.
                 pub const SLICE: u8 = $slice_num;
 
@@ -988,7 +980,7 @@ macro_rules! impl_pwm_slice {
                 /// Direct register access can bypass the HAL's safety guarantees.
                 #[inline]
                 pub unsafe fn regs(&self) -> &rp2350_pac::pwm::RegisterBlock {
-                    &self.pwm
+                    &*self.pwm
                 }
 
                 // ============================================================
@@ -1665,6 +1657,9 @@ pub const fn gpio_to_channel(gpio: u8) -> u8 {
 /// # Returns
 /// Tuple of (int_divider, frac_divider) for the DIV register
 pub const fn calc_divider(sys_clock: u32, target_freq: u32, wrap: u16) -> (u8, u8) {
+    if target_freq == 0 {
+        return (0xff, 0xf);
+    }
     let div_16 = ((sys_clock as u64) << 4) / ((target_freq as u64) * ((wrap as u64) + 1));
     let div_16 = if div_16 > 0xfff { 0xfff } else { div_16 as u32 };
     let int_part = ((div_16 >> 4) & 0xff) as u8;
@@ -1698,6 +1693,9 @@ pub const fn calc_divider_phase_correct(sys_clock: u32, target_freq: u32, wrap: 
         wrap != 0,
         "phase-correct PWM requires a non-zero wrap value"
     );
+    if target_freq == 0 {
+        return (0xff, 0xf);
+    }
     let div_16 = ((sys_clock as u64) << 4) / ((target_freq as u64) * (wrap as u64) * 2);
     let div_16 = if div_16 > 0xfff { 0xfff } else { div_16 as u32 };
     let int_part = ((div_16 >> 4) & 0xff) as u8;
@@ -1784,7 +1782,15 @@ pub const fn calc_phase_correct_frequency(
 /// Frequency in Hz
 #[inline]
 pub const fn calc_input_frequency(edge_count: u16, gate_time_us: u32) -> u32 {
-    (edge_count as u32) * 1_000_000 / gate_time_us
+    if gate_time_us == 0 {
+        return 0;
+    }
+    let freq = (edge_count as u64) * 1_000_000 / gate_time_us as u64;
+    if freq > u32::MAX as u64 {
+        u32::MAX
+    } else {
+        freq as u32
+    }
 }
 
 /// Calculate duty cycle from a gated HIGH-time count.
@@ -1819,10 +1825,10 @@ pub const fn calc_input_frequency(edge_count: u16, gate_time_us: u32) -> u32 {
 pub const fn calc_duty_cycle(high_count: u16, sys_clk: u32, divider: u8, gate_time_us: u32) -> u8 {
     let div = if divider == 0 { 1 } else { divider as u32 };
     let ticks_per_us = sys_clk / 1_000_000 / div;
-    let total_ticks = ticks_per_us * gate_time_us;
+    let total_ticks = (ticks_per_us as u64) * (gate_time_us as u64);
     if total_ticks == 0 {
         return 0;
     }
-    let duty = (high_count as u32) * 100 / total_ticks;
+    let duty = (high_count as u64) * 100 / total_ticks;
     if duty > 100 { 100 } else { duty as u8 }
 }

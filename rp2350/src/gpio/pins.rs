@@ -55,8 +55,8 @@
 //! // Compile error: Pin<3> does not implement I2c0SdaPin!
 //! // let i2c = I2c0::init(dp.I2C0, pins.pin::<3>(), pins.pin::<5>(), 400_000, sys_clk);
 //!
-//! // Compile error: pins.pin::<4>() already moved!
-//! // pins.pin::<4>().into_output();
+//! // Note: the `Pin<4>` value returned above was moved into `I2c0::init`.
+//! // `pins.pin::<4>()` itself can be called again to obtain a fresh token.
 //! ```
 
 use super::{Function, Pin};

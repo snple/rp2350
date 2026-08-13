@@ -82,9 +82,8 @@
 //!
 //! # Availability
 //!
-//! Only available on RP2350 (Cortex-M33). RP2040 (Cortex-M0+) does not have
-//! a GPIO coprocessor. This module is conditionally compiled only for ARM targets
-//! (`#[cfg(target_arch = "arm")]`).
+//! Available on all RP2350 variants (Cortex-M33). The GPIO coprocessor is an
+//! RP2350-specific feature and is not present on RP2040 (Cortex-M0+).
 
 mod imp;
 

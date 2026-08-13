@@ -2764,6 +2764,7 @@ pub unsafe fn in64() -> u64 {
 /// See the [module-level safety contract](self).
 #[inline]
 pub unsafe fn in_pin_lo(pin: u32) -> bool {
+    assert_pin(pin);
     unsafe { (mask_input_low() & (1 << pin)) != 0 }
 }
 
@@ -2773,5 +2774,6 @@ pub unsafe fn in_pin_lo(pin: u32) -> bool {
 /// See the [module-level safety contract](self).
 #[inline]
 pub unsafe fn in_pin_hi(pin: u32) -> bool {
-    unsafe { (mask_input_hi() & (1 << pin)) != 0 }
+    assert_pin(pin);
+    unsafe { (mask_input_hi() & (1 << (pin - 32))) != 0 }
 }

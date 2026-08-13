@@ -655,7 +655,6 @@ macro_rules! bi_string_value {
 
 // Re-export macros at module level
 pub use bi_int_value as int_value;
-pub use bi_rp2350_board as rp2350_board;
 pub use bi_pin_range_with_func as pin_range_with_func;
 pub use bi_pin_with_func as pin_with_func;
 pub use bi_pin_with_name as pin_with_name;
@@ -666,4 +665,5 @@ pub use bi_program_feature as program_feature;
 pub use bi_program_name as program_name;
 pub use bi_program_url as program_url;
 pub use bi_program_version as program_version;
+pub use bi_rp2350_board as rp2350_board;
 pub use bi_string_value as string_value;

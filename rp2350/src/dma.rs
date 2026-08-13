@@ -26,8 +26,8 @@
 //!
 //! # Builder Pattern
 //!
-//! Every channel setter returns `&Self`, enabling fluent configuration
-//! chains that read naturally and are hard to misconfigure:
+//! A [`Channel`] is a zero-sized `Copy` handle. Every setter returns `Self`,
+//! so configuration can be chained fluently *or* stored in a variable:
 //!
 //! ```ignore
 //! ch.set_data_size(DataSize::Word)
@@ -45,6 +45,17 @@
 //! - **Memory-to-Memory**: Use [`TreqSel::Permanent`] for maximum throughput
 //! - **Memory-to-Peripheral (TX)**: Paced by peripheral DREQ (e.g. UART TX FIFO)
 //! - **Peripheral-to-Memory (RX)**: Paced by peripheral DREQ (e.g. UART RX FIFO)
+//!
+//! # Ownership & completion
+//!
+//! [`Dma`] owns the DMA peripheral; [`Channel`] handles are borrowed from it
+//! (`dma.channel::<0>()`) and can never outlive the controller.
+//!
+//! [`Channel::wait`] blocks until the channel's `BUSY` flag goes high (the
+//! transfer has started) and then low (it has finished). For a **paced**
+//! (DREQ) transfer this also waits for the pacing peripheral to start; if it
+//! never does, `wait()` blocks forever. Use interrupts
+//! ([`Dma::enable_irq0`]) for paced transfers that must not block.
 //!
 //! # Example — Memory-to-Memory
 //!
@@ -88,8 +99,6 @@
 //! .trigger()
 //! .wait();
 //! ```
-
-use core::marker::PhantomData;
 
 use paste::paste;
 use rp2350_pac::DMA;
@@ -248,7 +257,7 @@ pub enum TreqSel {
     Permanent = 63,
 }
 
-/// Transfer count mode (upper 4 bits of TRANS_COUNT register).
+/// Transfer count mode (`MODE` field, bits `[31:28]` of `TRANS_COUNT`).
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[repr(u32)]
@@ -326,19 +335,22 @@ impl Dma {
 
     /// Obtain a handle to DMA channel `N` (0–15).
     ///
-    /// The returned [`Channel`] is a zero-sized type that accesses the
-    /// hardware registers directly. Multiple channels can coexist
+    /// The returned [`Channel`] is a zero-sized handle borrowed from `self`,
+    /// so it can never outlive the controller. Multiple channels can coexist
     /// simultaneously.
     ///
     /// # Panics
     ///
     /// Compile-time error if `N >= 16`.
     #[inline]
-    pub const fn channel<const N: u8>(&self) -> Channel<N> {
-        const { assert!(N < 16, "DMA channel number must be 0-15") };
-        Channel {
-            _marker: PhantomData,
-        }
+    pub const fn channel<const N: u8>(&self) -> Channel<'_, N> {
+        const {
+            assert!(
+                (N as usize) < NUM_CHANNELS,
+                "DMA channel number must be 0-15"
+            )
+        };
+        Channel { dma: &self.dma }
     }
 
     // ========================================================================
@@ -360,19 +372,19 @@ impl Dma {
     // Multi-channel Operations
     // ========================================================================
 
-    /// Trigger multiple channels simultaneously.
+    /// Trigger several channels at once.
     ///
     /// Each set bit in `mask` triggers the corresponding channel.
     #[inline]
-    pub fn multi_trigger(&self, mask: u16) {
+    pub fn trigger_channels(&self, mask: u16) {
         self.regs()
             .multi_chan_trigger
             .write_multi_chan_trigger(mask as u32);
     }
 
-    /// Abort transfers on channels indicated by `mask`.
+    /// Abort transfers on the channels indicated by `mask`.
     #[inline]
-    pub fn abort(&self, mask: u16) {
+    pub fn abort_channels(&self, mask: u16) {
         self.regs().chan_abort.write_chan_abort(mask as u32);
     }
 
@@ -450,7 +462,7 @@ impl Dma {
     ///
     /// The timer fires at rate: `sys_clk × numerator / denominator`.
     /// Timer index must be 0–3.
-    pub fn set_timer(&mut self, index: u8, numerator: u16, denominator: u16) {
+    pub fn set_timer(&self, index: u8, numerator: u16, denominator: u16) {
         let val = ((numerator as u32) << 16) | (denominator as u32);
         let regs = self.regs();
         match index {
@@ -468,7 +480,7 @@ impl Dma {
 
     /// Enable or disable the sniff hardware block.
     #[inline]
-    pub fn sniff_enable(&mut self, enable: bool) {
+    pub fn sniff_enable(&self, enable: bool) {
         if enable {
             self.regs().sniff_ctrl.set_en();
         } else {
@@ -478,13 +490,13 @@ impl Dma {
 
     /// Set which channel the sniff hardware monitors.
     #[inline]
-    pub fn sniff_set_channel(&mut self, channel: u8) {
+    pub fn sniff_set_channel(&self, channel: u8) {
         self.regs().sniff_ctrl.write_dmach(channel as u32 & 0xF);
     }
 
     /// Set the sniff calculation type.
     #[inline]
-    pub fn sniff_set_calc(&mut self, calc: SniffCalc) {
+    pub fn sniff_set_calc(&self, calc: SniffCalc) {
         self.regs().sniff_ctrl.write_calc(calc as u32);
     }
 
@@ -496,13 +508,13 @@ impl Dma {
 
     /// Write a seed value into the sniff accumulator.
     #[inline]
-    pub fn sniff_set_data(&mut self, seed: u32) {
+    pub fn sniff_set_data(&self, seed: u32) {
         self.regs().sniff_data.write_sniff_data(seed);
     }
 
     /// Enable or disable byte-swap on sniff input data.
     #[inline]
-    pub fn sniff_set_bswap(&mut self, enable: bool) {
+    pub fn sniff_set_bswap(&self, enable: bool) {
         if enable {
             self.regs().sniff_ctrl.set_bswap();
         } else {
@@ -512,7 +524,7 @@ impl Dma {
 
     /// Enable or disable bit inversion on sniff output.
     #[inline]
-    pub fn sniff_set_out_inv(&mut self, enable: bool) {
+    pub fn sniff_set_out_inv(&self, enable: bool) {
         if enable {
             self.regs().sniff_ctrl.set_out_inv();
         } else {
@@ -522,7 +534,7 @@ impl Dma {
 
     /// Enable or disable bit reversal on sniff output.
     #[inline]
-    pub fn sniff_set_out_rev(&mut self, enable: bool) {
+    pub fn sniff_set_out_rev(&self, enable: bool) {
         if enable {
             self.regs().sniff_ctrl.set_out_rev();
         } else {
@@ -559,14 +571,15 @@ impl Dma {
 
 /// A single DMA channel, parameterised by channel number `N` (0–15).
 ///
-/// This is a zero-sized handle that provides type-safe, per-channel operations.
-/// All setter methods return `&Self` for builder-pattern chaining.
+/// A zero-sized, `Copy` handle borrowed from the owning [`Dma`] controller;
+/// it can never outlive it. All setter methods return `Self` for builder
+/// chaining.
 ///
 /// # Example
 ///
 /// ```ignore
-/// dma.channel::<0>()
-///     .disable()
+/// let ch = dma.channel::<0>();
+/// ch.disable()
 ///     .set_data_size(DataSize::Word)
 ///     .set_treq_sel(TreqSel::Permanent)
 ///     .set_incr_read(true)
@@ -576,14 +589,17 @@ impl Dma {
 ///     .trigger()
 ///     .wait();
 /// ```
-pub struct Channel<const N: u8> {
-    _marker: PhantomData<()>,
+#[derive(Clone, Copy)]
+pub struct Channel<'a, const N: u8> {
+    dma: &'a DMA,
 }
 
-/// Internal helper — shared register-block accessor.
-#[inline(always)]
-fn dma_regs() -> rp2350_pac::DMA {
-    unsafe { DMA::steal() }
+impl<'a, const N: u8> Channel<'a, N> {
+    /// Access the shared DMA register block.
+    #[inline(always)]
+    fn regs(&self) -> &'a rp2350_pac::dma::RegisterBlock {
+        self.dma
+    }
 }
 
 // Generate per-channel implementations for all 16 channels.
@@ -592,43 +608,43 @@ fn dma_regs() -> rp2350_pac::DMA {
 macro_rules! impl_channel {
     ($n:literal) => {
         paste! {
-            impl Channel<$n> {
+            impl<'a> Channel<'a, $n> {
                 // ============================================================
                 // Address Registers
                 // ============================================================
 
                 /// Set the source (read) address for this channel.
                 #[inline]
-                pub fn set_read_addr(&self, addr: u32) -> &Self {
-                    dma_regs().[<ch $n _read_addr>].[<write_ch $n _read_addr>](addr);
-                    self
+                pub fn set_read_addr(&self, addr: u32) -> Self {
+                    self.regs().[<ch $n _read_addr>].[<write_ch $n _read_addr>](addr);
+                    *self
                 }
 
                 /// Get the current source (read) address.
                 #[inline]
                 pub fn read_addr(&self) -> u32 {
-                    dma_regs().[<ch $n _read_addr>].[<ch $n _read_addr>]()
+                    self.regs().[<ch $n _read_addr>].[<ch $n _read_addr>]()
                 }
 
                 /// Set the destination (write) address for this channel.
                 #[inline]
-                pub fn set_write_addr(&self, addr: u32) -> &Self {
-                    dma_regs().[<ch $n _write_addr>].[<write_ch $n _write_addr>](addr);
-                    self
+                pub fn set_write_addr(&self, addr: u32) -> Self {
+                    self.regs().[<ch $n _write_addr>].[<write_ch $n _write_addr>](addr);
+                    *self
                 }
 
                 /// Get the current destination (write) address.
                 #[inline]
                 pub fn write_addr(&self) -> u32 {
-                    dma_regs().[<ch $n _write_addr>].[<ch $n _write_addr>]()
+                    self.regs().[<ch $n _write_addr>].[<ch $n _write_addr>]()
                 }
 
                 /// Set both read and write addresses in one call.
                 #[inline]
-                pub fn set_addrs(&self, read: u32, write: u32) -> &Self {
+                pub fn set_addrs(&self, read: u32, write: u32) -> Self {
                     self.set_read_addr(read);
                     self.set_write_addr(write);
-                    self
+                    *self
                 }
 
                 // ============================================================
@@ -637,22 +653,22 @@ macro_rules! impl_channel {
 
                 /// Set the transfer count (number of data elements).
                 #[inline]
-                pub fn set_trans_count(&self, count: u32) -> &Self {
-                    dma_regs().[<ch $n _trans_count>].write_count(count);
-                    self
+                pub fn set_trans_count(&self, count: u32) -> Self {
+                    self.regs().[<ch $n _trans_count>].write_count(count);
+                    *self
                 }
 
                 /// Set the transfer count mode (normal, trigger-self, endless).
                 #[inline]
-                pub fn set_trans_count_mode(&self, mode: TransCountMode) -> &Self {
-                    dma_regs().[<ch $n _trans_count>].write_mode(mode as u32);
-                    self
+                pub fn set_trans_count_mode(&self, mode: TransCountMode) -> Self {
+                    self.regs().[<ch $n _trans_count>].write_mode(mode as u32);
+                    *self
                 }
 
                 /// Get the remaining transfer count.
                 #[inline]
                 pub fn trans_count(&self) -> u32 {
-                    dma_regs().[<ch $n _trans_count>].count()
+                    self.regs().[<ch $n _trans_count>].count()
                 }
 
                 // ============================================================
@@ -661,67 +677,67 @@ macro_rules! impl_channel {
 
                 /// Enable (start) this channel.
                 #[inline]
-                pub fn enable(&self) -> &Self {
-                    dma_regs().[<ch $n _ctrl_trig>].set_en();
-                    self
+                pub fn enable(&self) -> Self {
+                    self.regs().[<ch $n _ctrl_trig>].set_en();
+                    *self
                 }
 
                 /// Disable this channel.
                 #[inline]
-                pub fn disable(&self) -> &Self {
-                    dma_regs().[<ch $n _ctrl_trig>].clr_en();
-                    self
+                pub fn disable(&self) -> Self {
+                    self.regs().[<ch $n _ctrl_trig>].clr_en();
+                    *self
                 }
 
                 /// Check whether this channel is currently transferring data.
                 #[inline]
                 pub fn is_busy(&self) -> bool {
-                    dma_regs().[<ch $n _ctrl_trig>].busy()
+                    self.regs().[<ch $n _ctrl_trig>].busy()
                 }
 
                 /// Set the transfer data-element size.
                 #[inline]
-                pub fn set_data_size(&self, size: DataSize) -> &Self {
-                    dma_regs().[<ch $n _ctrl_trig>].write_data_size(size as u32);
-                    self
+                pub fn set_data_size(&self, size: DataSize) -> Self {
+                    self.regs().[<ch $n _ctrl_trig>].write_data_size(size as u32);
+                    *self
                 }
 
                 /// Set the DREQ pacing source.
                 #[inline]
-                pub fn set_treq_sel(&self, treq: TreqSel) -> &Self {
-                    dma_regs().[<ch $n _ctrl_trig>].write_treq_sel(treq as u32);
-                    self
+                pub fn set_treq_sel(&self, treq: TreqSel) -> Self {
+                    self.regs().[<ch $n _ctrl_trig>].write_treq_sel(treq as u32);
+                    *self
                 }
 
                 /// Enable or disable read-address increment.
                 #[inline]
-                pub fn set_incr_read(&self, incr: bool) -> &Self {
+                pub fn set_incr_read(&self, incr: bool) -> Self {
                     if incr {
-                        dma_regs().[<ch $n _ctrl_trig>].set_incr_read();
+                        self.regs().[<ch $n _ctrl_trig>].set_incr_read();
                     } else {
-                        dma_regs().[<ch $n _ctrl_trig>].clr_incr_read();
+                        self.regs().[<ch $n _ctrl_trig>].clr_incr_read();
                     }
-                    self
+                    *self
                 }
 
                 /// Enable or disable write-address increment.
                 #[inline]
-                pub fn set_incr_write(&self, incr: bool) -> &Self {
+                pub fn set_incr_write(&self, incr: bool) -> Self {
                     if incr {
-                        dma_regs().[<ch $n _ctrl_trig>].set_incr_write();
+                        self.regs().[<ch $n _ctrl_trig>].set_incr_write();
                     } else {
-                        dma_regs().[<ch $n _ctrl_trig>].clr_incr_write();
+                        self.regs().[<ch $n _ctrl_trig>].clr_incr_write();
                     }
-                    self
+                    *self
                 }
 
                 /// Set the chain-to channel (triggers channel `ch` on completion).
                 ///
                 /// Set to this channel's own number (`N`) to disable chaining.
                 #[inline]
-                pub fn set_chain_to(&self, ch: u8) -> &Self {
-                    dma_regs().[<ch $n _ctrl_trig>].write_chain_to(ch as u32 & 0xF);
-                    self
+                pub fn set_chain_to(&self, ch: u8) -> Self {
+                    self.regs().[<ch $n _ctrl_trig>].write_chain_to(ch as u32 & 0xF);
+                    *self
                 }
 
                 /// Set the ring-buffer wrap side (read or write).
@@ -729,67 +745,67 @@ macro_rules! impl_channel {
                 /// * `false` — ring wraps the read address
                 /// * `true` — ring wraps the write address
                 #[inline]
-                pub fn set_ring_sel(&self, write_side: bool) -> &Self {
+                pub fn set_ring_sel(&self, write_side: bool) -> Self {
                     if write_side {
-                        dma_regs().[<ch $n _ctrl_trig>].set_ring_sel();
+                        self.regs().[<ch $n _ctrl_trig>].set_ring_sel();
                     } else {
-                        dma_regs().[<ch $n _ctrl_trig>].clr_ring_sel();
+                        self.regs().[<ch $n _ctrl_trig>].clr_ring_sel();
                     }
-                    self
+                    *self
                 }
 
                 /// Set the ring-buffer size as log₂(bytes). 0 disables the ring.
                 #[inline]
-                pub fn set_ring_size(&self, log2_bytes: u8) -> &Self {
-                    dma_regs().[<ch $n _ctrl_trig>]
+                pub fn set_ring_size(&self, log2_bytes: u8) -> Self {
+                    self.regs().[<ch $n _ctrl_trig>]
                         .write_ring_size(log2_bytes as u32 & 0xF);
-                    self
+                    *self
                 }
 
                 /// Enable or disable high-priority scheduling.
                 #[inline]
-                pub fn set_high_priority(&self, high: bool) -> &Self {
+                pub fn set_high_priority(&self, high: bool) -> Self {
                     if high {
-                        dma_regs().[<ch $n _ctrl_trig>].set_high_priority();
+                        self.regs().[<ch $n _ctrl_trig>].set_high_priority();
                     } else {
-                        dma_regs().[<ch $n _ctrl_trig>].clr_high_priority();
+                        self.regs().[<ch $n _ctrl_trig>].clr_high_priority();
                     }
-                    self
+                    *self
                 }
 
                 /// Enable or disable byte-swap on transfer data.
                 #[inline]
-                pub fn set_bswap(&self, enable: bool) -> &Self {
+                pub fn set_bswap(&self, enable: bool) -> Self {
                     if enable {
-                        dma_regs().[<ch $n _ctrl_trig>].set_bswap();
+                        self.regs().[<ch $n _ctrl_trig>].set_bswap();
                     } else {
-                        dma_regs().[<ch $n _ctrl_trig>].clr_bswap();
+                        self.regs().[<ch $n _ctrl_trig>].clr_bswap();
                     }
-                    self
+                    *self
                 }
 
                 /// Enable or disable IRQ quiet mode.
                 ///
                 /// When quiet, the channel does not raise an interrupt on completion.
                 #[inline]
-                pub fn set_irq_quiet(&self, quiet: bool) -> &Self {
+                pub fn set_irq_quiet(&self, quiet: bool) -> Self {
                     if quiet {
-                        dma_regs().[<ch $n _ctrl_trig>].set_irq_quiet();
+                        self.regs().[<ch $n _ctrl_trig>].set_irq_quiet();
                     } else {
-                        dma_regs().[<ch $n _ctrl_trig>].clr_irq_quiet();
+                        self.regs().[<ch $n _ctrl_trig>].clr_irq_quiet();
                     }
-                    self
+                    *self
                 }
 
                 /// Enable or disable sniff hardware on this channel.
                 #[inline]
-                pub fn set_sniff_en(&self, enable: bool) -> &Self {
+                pub fn set_sniff_en(&self, enable: bool) -> Self {
                     if enable {
-                        dma_regs().[<ch $n _ctrl_trig>].set_sniff_en();
+                        self.regs().[<ch $n _ctrl_trig>].set_sniff_en();
                     } else {
-                        dma_regs().[<ch $n _ctrl_trig>].clr_sniff_en();
+                        self.regs().[<ch $n _ctrl_trig>].clr_sniff_en();
                     }
-                    self
+                    *self
                 }
 
                 // ============================================================
@@ -798,34 +814,34 @@ macro_rules! impl_channel {
 
                 /// Check for a read-bus error.
                 #[inline]
-                pub fn read_error(&self) -> bool {
-                    dma_regs().[<ch $n _ctrl_trig>].read_error()
+                pub fn has_read_error(&self) -> bool {
+                    self.regs().[<ch $n _ctrl_trig>].read_error()
                 }
 
                 /// Check for a write-bus error.
                 #[inline]
-                pub fn write_error(&self) -> bool {
-                    dma_regs().[<ch $n _ctrl_trig>].write_error()
+                pub fn has_write_error(&self) -> bool {
+                    self.regs().[<ch $n _ctrl_trig>].write_error()
                 }
 
                 /// Clear the read-bus error flag (write-1-to-clear).
                 #[inline]
-                pub fn clear_read_error(&self) -> &Self {
-                    dma_regs().[<ch $n _ctrl_trig>].set_read_error();
-                    self
+                pub fn clear_read_error(&self) -> Self {
+                    self.regs().[<ch $n _ctrl_trig>].set_read_error();
+                    *self
                 }
 
                 /// Clear the write-bus error flag (write-1-to-clear).
                 #[inline]
-                pub fn clear_write_error(&self) -> &Self {
-                    dma_regs().[<ch $n _ctrl_trig>].set_write_error();
-                    self
+                pub fn clear_write_error(&self) -> Self {
+                    self.regs().[<ch $n _ctrl_trig>].set_write_error();
+                    *self
                 }
 
-                /// Check for an AHB bus error.
+                /// Check for an AHB bus error (logical OR of read/write errors).
                 #[inline]
-                pub fn ahb_error(&self) -> bool {
-                    dma_regs().[<ch $n _ctrl_trig>].ahb_error()
+                pub fn has_ahb_error(&self) -> bool {
+                    self.regs().[<ch $n _ctrl_trig>].ahb_error()
                 }
 
                 // ============================================================
@@ -837,10 +853,10 @@ macro_rules! impl_channel {
                 /// Writing here sets the transfer count **and** triggers
                 /// the channel to start.
                 #[inline]
-                pub fn write_trans_count_trig(&self, count: u32) -> &Self {
-                    dma_regs().[<ch $n _al1_trans_count_trig>]
+                pub fn write_trans_count_trig(&self, count: u32) -> Self {
+                    self.regs().[<ch $n _al1_trans_count_trig>]
                         .[<write_ch $n _al1_trans_count_trig>](count);
-                    self
+                    *self
                 }
 
                 /// Write to the Alias-3 READ_ADDR_TRIG register.
@@ -848,10 +864,10 @@ macro_rules! impl_channel {
                 /// Writing here sets the read address **and** triggers
                 /// the channel to start.
                 #[inline]
-                pub fn write_read_addr_trig(&self, addr: u32) -> &Self {
-                    dma_regs().[<ch $n _al3_read_addr_trig>]
+                pub fn write_read_addr_trig(&self, addr: u32) -> Self {
+                    self.regs().[<ch $n _al3_read_addr_trig>]
                         .[<write_ch $n _al3_read_addr_trig>](addr);
-                    self
+                    *self
                 }
 
                 /// Write to the Alias-2 WRITE_ADDR_TRIG register.
@@ -859,10 +875,10 @@ macro_rules! impl_channel {
                 /// Writing here sets the write address **and** triggers
                 /// the channel to start.
                 #[inline]
-                pub fn write_write_addr_trig(&self, addr: u32) -> &Self {
-                    dma_regs().[<ch $n _al2_write_addr_trig>]
+                pub fn write_write_addr_trig(&self, addr: u32) -> Self {
+                    self.regs().[<ch $n _al2_write_addr_trig>]
                         .[<write_ch $n _al2_write_addr_trig>](addr);
-                    self
+                    *self
                 }
 
                 // ============================================================
@@ -871,21 +887,28 @@ macro_rules! impl_channel {
 
                 /// Start (trigger) this channel by setting the EN bit.
                 #[inline]
-                pub fn trigger(&self) -> &Self {
-                    dma_regs().[<ch $n _ctrl_trig>].set_en();
-                    self
+                pub fn trigger(&self) -> Self {
+                    self.regs().[<ch $n _ctrl_trig>].set_en();
+                    *self
                 }
 
-                /// Spin-wait until this channel's transfer completes.
+                /// Block until this channel's transfer completes.
                 ///
-                /// # Panics
-                ///
-                /// Panics if the transfer does not complete within
-                /// [`crate::spin::SPIN_TIMEOUT`] iterations.
+                /// Waits for `BUSY` to go high (the transfer has started) and
+                /// then low (it has finished). For a **paced** (DREQ) transfer,
+                /// the first phase blocks until the pacing peripheral starts the
+                /// transfer — if it never does, this blocks forever. Use
+                /// interrupts ([`Dma::enable_irq0`]) for paced transfers that
+                /// must not block.
                 #[inline]
-                pub fn wait(&self) -> &Self {
-                    crate::spin::spin_wait("DMA transfer complete", || !self.is_busy());
-                    self
+                pub fn wait(&self) -> Self {
+                    while !self.is_busy() {
+                        core::hint::spin_loop();
+                    }
+                    while self.is_busy() {
+                        core::hint::spin_loop();
+                    }
+                    *self
                 }
 
                 /// Abort this channel's in-progress transfer.
@@ -895,11 +918,11 @@ macro_rules! impl_channel {
                 /// Panics if the abort does not take effect within
                 /// [`crate::spin::SPIN_TIMEOUT`] iterations.
                 #[inline]
-                pub fn abort(&self) -> &Self {
-                    dma_regs().chan_abort.write_chan_abort(1 << $n);
+                pub fn abort(&self) -> Self {
+                    self.regs().chan_abort.write_chan_abort(1 << $n);
                     // Wait for abort to take effect (bounded)
                     crate::spin::spin_wait("DMA abort", || !self.is_busy());
-                    self
+                    *self
                 }
 
                 // ============================================================
@@ -909,8 +932,9 @@ macro_rules! impl_channel {
                 /// Set up a memory-to-memory transfer.
                 ///
                 /// Configures the channel for an unpaced transfer with both
-                /// address pointers incrementing. Does **not** start the
-                /// transfer — chain `.trigger()` to begin.
+                /// address pointers incrementing, and clears any leftover
+                /// ring-buffer / byte-swap / endless-mode state. Does **not**
+                /// start the transfer — chain `.trigger()` to begin.
                 ///
                 /// ```ignore
                 /// ch.mem_to_mem(src, dst, 4, DataSize::Word)
@@ -923,13 +947,18 @@ macro_rules! impl_channel {
                     dst: u32,
                     count: u32,
                     data_size: DataSize,
-                ) -> &Self {
+                ) -> Self {
                     self.disable()
                         .set_data_size(data_size)
                         .set_treq_sel(TreqSel::Permanent)
                         .set_incr_read(true)
                         .set_incr_write(true)
                         .set_chain_to($n)
+                        .set_trans_count_mode(TransCountMode::Normal)
+                        .set_ring_size(0)
+                        .set_bswap(false)
+                        .set_high_priority(false)
+                        .set_sniff_en(false)
                         .set_irq_quiet(false)
                         .set_addrs(src, dst)
                         .set_trans_count(count)
@@ -937,8 +966,9 @@ macro_rules! impl_channel {
 
                 /// Set up a memory-to-peripheral (TX) transfer.
                 ///
-                /// Read pointer increments through source buffer;
-                /// write pointer is fixed at the peripheral data register.
+                /// Read pointer increments through source buffer; write pointer
+                /// is fixed at the peripheral data register. Clears any leftover
+                /// ring-buffer / byte-swap / endless-mode state.
                 ///
                 /// ```ignore
                 /// ch.mem_to_periph(
@@ -958,13 +988,18 @@ macro_rules! impl_channel {
                     count: u32,
                     treq: TreqSel,
                     data_size: DataSize,
-                ) -> &Self {
+                ) -> Self {
                     self.disable()
                         .set_data_size(data_size)
                         .set_treq_sel(treq)
                         .set_incr_read(true)
                         .set_incr_write(false)
                         .set_chain_to($n)
+                        .set_trans_count_mode(TransCountMode::Normal)
+                        .set_ring_size(0)
+                        .set_bswap(false)
+                        .set_high_priority(false)
+                        .set_sniff_en(false)
                         .set_irq_quiet(false)
                         .set_addrs(src, periph_addr)
                         .set_trans_count(count)
@@ -972,8 +1007,9 @@ macro_rules! impl_channel {
 
                 /// Set up a peripheral-to-memory (RX) transfer.
                 ///
-                /// Read pointer is fixed at the peripheral data register;
-                /// write pointer increments through destination buffer.
+                /// Read pointer is fixed at the peripheral data register; write
+                /// pointer increments through destination buffer. Clears any
+                /// leftover ring-buffer / byte-swap / endless-mode state.
                 ///
                 /// ```ignore
                 /// ch.periph_to_mem(
@@ -993,13 +1029,18 @@ macro_rules! impl_channel {
                     count: u32,
                     treq: TreqSel,
                     data_size: DataSize,
-                ) -> &Self {
+                ) -> Self {
                     self.disable()
                         .set_data_size(data_size)
                         .set_treq_sel(treq)
                         .set_incr_read(false)
                         .set_incr_write(true)
                         .set_chain_to($n)
+                        .set_trans_count_mode(TransCountMode::Normal)
+                        .set_ring_size(0)
+                        .set_bswap(false)
+                        .set_high_priority(false)
+                        .set_sniff_en(false)
                         .set_irq_quiet(false)
                         .set_addrs(periph_addr, dst)
                         .set_trans_count(count)

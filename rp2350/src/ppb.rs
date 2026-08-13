@@ -79,15 +79,13 @@ impl Cpacr {
     /// Enable coprocessor 0 (GPIO) with full access on the current core.
     #[inline]
     pub fn enable_cp0() {
-        Self::regs()
-            .modify_bits(|r| r | (Self::FULL_ACCESS << rp2350_pac::ppb::Cpacr::CP0_OFFSET));
+        Self::regs().modify_bits(|r| r | (Self::FULL_ACCESS << rp2350_pac::ppb::Cpacr::CP0_OFFSET));
     }
 
     /// Enable coprocessor 4 (double-precision float) on the current core.
     #[inline]
     pub fn enable_cp4() {
-        Self::regs()
-            .modify_bits(|r| r | (Self::FULL_ACCESS << rp2350_pac::ppb::Cpacr::CP4_OFFSET));
+        Self::regs().modify_bits(|r| r | (Self::FULL_ACCESS << rp2350_pac::ppb::Cpacr::CP4_OFFSET));
     }
 
     /// Enable CP10 (VFP floating-point) with full access on the current core.

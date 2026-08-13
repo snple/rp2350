@@ -347,6 +347,9 @@ macro_rules! impl_uart {
                 ///
                 /// Returns the actual baud rate achieved.
                 fn configure_baudrate(&mut self, baudrate: u32, peri_clk: u32) -> u32 {
+                    if baudrate == 0 {
+                        return 0;
+                    }
                     // Baud rate divider = peri_clk / (16 * baudrate)
                     // We use a fixed-point calculation with 6 fractional bits
                     // BRD = (64 * peri_clk) / (16 * baudrate) = (4 * peri_clk) / baudrate
@@ -474,6 +477,29 @@ macro_rules! impl_uart {
                     self.uart.uartcr.rxe()
                 }
 
+                /// Enable or disable hardware flow control (CTS/RTS).
+                ///
+                /// Has no effect unless CTS/RTS pins are connected. The
+                /// `WithFlowControl` variant calls this during initialization.
+                pub fn set_flow_control(&self, cts: bool, rts: bool) {
+                    if cts {
+                        self.uart.uartcr.set_ctsen();
+                    } else {
+                        self.uart.uartcr.clr_ctsen();
+                    }
+                    if rts {
+                        self.uart.uartcr.set_rtsen();
+                    } else {
+                        self.uart.uartcr.clr_rtsen();
+                    }
+                }
+
+                /// Check if CTS is asserted (remote device ready to receive).
+                #[inline]
+                pub fn is_cts_asserted(&self) -> bool {
+                    self.uart.uartfr.cts()
+                }
+
                 /// Set FIFO trigger levels
                 ///
                 /// # Arguments
@@ -488,24 +514,27 @@ macro_rules! impl_uart {
                 // Data Transfer
                 // ================================================================
 
-                /// Write a single byte (blocking)
+                /// Write a single byte (blocking).
                 ///
-                /// # Panics
-                ///
-                /// Panics if the TX FIFO stays full beyond
-                /// [`crate::spin::SPIN_TIMEOUT`] iterations.
+                /// Blocks until the TX FIFO has room for the byte.
                 pub fn write_byte(&self, byte: u8) {
-                    crate::spin::spin_wait("UART TX FIFO space", || !self.uart.uartfr.txff());
+                    while self.uart.uartfr.txff() {
+                        core::hint::spin_loop();
+                    }
                     self.uart.uartdr.write_data(byte as u32);
                 }
 
-                /// Write multiple bytes (blocking)
+                /// Write multiple bytes (blocking).
+                ///
+                /// Blocks until every byte has been pushed to the TX FIFO.
                 pub fn write(&self, data: &[u8]) {
                     // Fill the TX FIFO in bursts (up to 32 entries) to reduce
                     // status-register polling per byte.
                     let mut i = 0;
                     while i < data.len() {
-                        crate::spin::spin_wait("UART TX FIFO space", || !self.uart.uartfr.txff());
+                        while self.uart.uartfr.txff() {
+                            core::hint::spin_loop();
+                        }
                         // Write as many bytes as the FIFO currently accepts.
                         while i < data.len() && !self.uart.uartfr.txff() {
                             self.uart.uartdr.write_data(data[i] as u32);
@@ -559,14 +588,13 @@ macro_rules! impl_uart {
                     }
                 }
 
-                /// Read a single byte (blocking)
+                /// Read a single byte (blocking).
                 ///
-                /// # Panics
-                ///
-                /// Panics if no data arrives within
-                /// [`crate::spin::SPIN_TIMEOUT`] iterations.
+                /// Blocks until a byte arrives in the RX FIFO.
                 pub fn read_byte_blocking(&self) -> u8 {
-                    crate::spin::spin_wait("UART RX data", || !self.uart.uartfr.rxfe());
+                    while self.uart.uartfr.rxfe() {
+                        core::hint::spin_loop();
+                    }
                     self.uart.uartdr.data() as u8
                 }
 
@@ -664,22 +692,26 @@ macro_rules! impl_uart {
 
                 /// Wait for transmission to complete.
                 ///
-                /// # Panics
-                ///
-                /// Panics if the transmitter does not drain within
-                /// [`crate::spin::SPIN_TIMEOUT`] iterations.
+                /// Blocks until the TX FIFO is empty and the shift register has
+                /// finished transmitting.
                 pub fn flush(&self) {
-                    crate::spin::spin_wait("UART TX FIFO empty", || self.uart.uartfr.txfe());
-                    crate::spin::spin_wait("UART not busy", || !self.uart.uartfr.busy());
+                    while !self.uart.uartfr.txfe() {
+                        core::hint::spin_loop();
+                    }
+                    while self.uart.uartfr.busy() {
+                        core::hint::spin_loop();
+                    }
                 }
 
-                /// Clear all errors
+                /// Clear all receive error flags.
+                ///
+                /// The UART error flags (OE/BE/PE/FE) are write-1-to-clear:
+                /// writing 1 to the bit clears the corresponding error.
                 pub fn clear_errors(&self) {
-                    // Clear all error flags using PAC methods
-                    self.uart.uartrsr.clr_oe();
-                    self.uart.uartrsr.clr_be();
-                    self.uart.uartrsr.clr_pe();
-                    self.uart.uartrsr.clr_fe();
+                    self.uart.uartrsr.set_oe();
+                    self.uart.uartrsr.set_be();
+                    self.uart.uartrsr.set_pe();
+                    self.uart.uartrsr.set_fe();
                 }
 
                 /// Get the current baud rate by reading hardware registers
@@ -982,22 +1014,7 @@ macro_rules! impl_uart {
 
                 #[inline]
                 fn read(&self, buffer: &mut [u8]) -> Result<(), Self::Error> {
-                    for slot in buffer.iter_mut() {
-                        // Wait (bounded) for a byte so a silent peer cannot hang
-                        // the caller forever.
-                        if !crate::spin::try_spin_wait(|| !self.uart.uartfr.rxfe()) {
-                            return Err(Error::Timeout);
-                        }
-                        match self.read_byte_with_error() {
-                            Some(Ok(byte)) => {
-                                *slot = byte;
-                            }
-                            Some(Err((_, err))) => return Err(err),
-                            None => unreachable!(),
-                        }
-                    }
-
-                    Ok(())
+                    self.read(buffer)
                 }
 
                 #[inline]
@@ -1036,7 +1053,9 @@ macro_rules! impl_uart {
 
             /// UART peripheral wrapper with hardware flow control (CTS/RTS).
             ///
-            /// This struct owns the UART peripheral and all four pins (TX, RX, CTS, RTS).
+            /// Wraps a plain [`$UartName`] and adds CTS/RTS pin ownership. The full
+            /// base UART API is available through `Deref`; this wrapper only adds
+            /// flow-control setup.
             #[doc = concat!("# UART", $uart_num, " with Flow Control")]
             pub struct [<$UartName WithFlowControl>]<TX, RX, CTS, RTS>
             where
@@ -1045,9 +1064,7 @@ macro_rules! impl_uart {
                 CTS: $CtsPin,
                 RTS: $RtsPin,
             {
-                uart: $UartType,
-                _tx: TX,
-                _rx: RX,
+                inner: $UartName<TX, RX>,
                 _cts: CTS,
                 _rts: RTS,
             }
@@ -1075,9 +1092,11 @@ macro_rules! impl_uart {
                     crate::gpio::pins::ErasedPin,
                 >> {
                     crate::Steal([<$UartName WithFlowControl>] {
-                        uart: unsafe { <$UartType>::steal() },
-                        _tx: crate::gpio::pins::ErasedPin,
-                        _rx: crate::gpio::pins::ErasedPin,
+                        inner: $UartName {
+                            uart: unsafe { <$UartType>::steal() },
+                            _tx: crate::gpio::pins::ErasedPin,
+                            _rx: crate::gpio::pins::ErasedPin,
+                        },
                         _cts: crate::gpio::pins::ErasedPin,
                         _rts: crate::gpio::pins::ErasedPin,
                     })
@@ -1090,7 +1109,7 @@ macro_rules! impl_uart {
                 /// The caller must ensure operations do not conflict with the HAL state.
                 #[inline]
                 pub unsafe fn regs(&self) -> &rp2350_pac::$uart_mod::RegisterBlock {
-                    &self.uart
+                    &self.inner.uart
                 }
 
                 /// Initialize UART with hardware flow control.
@@ -1106,263 +1125,58 @@ macro_rules! impl_uart {
                 /// * `peri_clk` - Peripheral clock frequency in Hz
                 pub fn init(
                     uart: $UartType,
-                    mut tx: TX,
-                    mut rx: RX,
+                    tx: TX,
+                    rx: RX,
                     mut cts: CTS,
                     mut rts: RTS,
                     baudrate: u32,
                     peri_clk: u32,
                 ) -> Self {
-                    // Configure pins for UART function
-                    tx.[<configure_uart $uart_num _tx>]();
-                    rx.[<configure_uart $uart_num _rx>]();
+                    let inner = $UartName::init(uart, tx, rx, baudrate, peri_clk);
+
+                    // Configure CTS/RTS pins and enable flow control.
                     cts.[<configure_uart $uart_num _cts>]();
                     rts.[<configure_uart $uart_num _rts>]();
+                    inner.set_flow_control(true, true);
 
-                    // Reset peripheral to ensure clean register state
-                    <$UartType as Resettable>::init();
-
-                    let mut uart_dev = Self {
-                        uart,
-                        _tx: tx,
-                        _rx: rx,
+                    Self {
+                        inner,
                         _cts: cts,
                         _rts: rts,
-                    };
-
-                    // Set baud rate
-                    uart_dev.configure_baudrate(baudrate, peri_clk);
-
-                    // Set default format: 8 data bits, 1 stop bit, no parity
-                    uart_dev.set_format(DataBits::Eight, StopBits::One, Parity::None);
-
-                    // Enable hardware flow control
-                    uart_dev.uart.uartcr.set_ctsen();
-                    uart_dev.uart.uartcr.set_rtsen();
-
-                    // Enable UART, TX, and RX
-                    uart_dev.uart.uartcr.set_uarten();
-                    uart_dev.uart.uartcr.set_txe();
-                    uart_dev.uart.uartcr.set_rxe();
-
-                    // Enable FIFOs
-                    uart_dev.uart.uartlcr_h.set_fen();
-
-                    // Set TX and RX FIFO trigger levels to 1/2
-                    uart_dev.uart.uartifls.write_txiflsel(2);
-                    uart_dev.uart.uartifls.write_rxiflsel(2);
-
-                    uart_dev
+                    }
                 }
 
                 /// Release the UART peripheral and all pins.
                 #[inline]
                 pub fn release(self) -> ($UartType, TX, RX, CTS, RTS) {
-                    (self.uart, self._tx, self._rx, self._cts, self._rts)
+                    let (uart, tx, rx) = self.inner.release();
+                    (uart, tx, rx, self._cts, self._rts)
                 }
+            }
 
-                /// Configure the UART baud rate (internal helper)
-                ///
-                /// Returns the actual baud rate achieved.
-                fn configure_baudrate(&mut self, baudrate: u32, peri_clk: u32) -> u32 {
-                    let baud_div_fixed = (4 * peri_clk as u64) / baudrate as u64;
-                    let ibrd = (baud_div_fixed >> 6) as u32;
-                    let fbrd = (baud_div_fixed & 0x3f) as u32;
+            impl<TX, RX, CTS, RTS> core::ops::Deref for [<$UartName WithFlowControl>]<TX, RX, CTS, RTS>
+            where
+                TX: $TxPin,
+                RX: $RxPin,
+                CTS: $CtsPin,
+                RTS: $RtsPin,
+            {
+                type Target = $UartName<TX, RX>;
 
-                    self.uart.uartibrd.write_baud_divint(ibrd);
-                    self.uart.uartfbrd.write_baud_divfrac(fbrd);
-
-                    let lcr = self.uart.uartlcr_h.read_bits();
-                    self.uart.uartlcr_h.write_bits(lcr);
-
-                    let divisor = 64 * ibrd as u64 + fbrd as u64;
-                    if divisor == 0 { 0 } else { (4 * peri_clk as u64 / divisor) as u32 }
+                fn deref(&self) -> &Self::Target {
+                    &self.inner
                 }
+            }
 
-                /// Set the UART baud rate
-                ///
-                /// Flushes any pending transmission, disables the UART, updates the
-                /// baud rate registers, and re-enables the UART.
-                pub fn set_baudrate(&mut self, baudrate: u32, peri_clk: u32) -> u32 {
-                    self.flush();
-                    self.uart.uartcr.clr_uarten();
-                    let actual = self.configure_baudrate(baudrate, peri_clk);
-                    self.uart.uartcr.set_uarten();
-                    actual
-                }
-
-                /// Set the data format
-                pub fn set_format(&mut self, data_bits: DataBits, stop_bits: StopBits, parity: Parity) {
-                    self.uart.uartlcr_h.write_wlen(data_bits as u32);
-
-                    if stop_bits == StopBits::Two {
-                        self.uart.uartlcr_h.set_stp2();
-                    } else {
-                        self.uart.uartlcr_h.clr_stp2();
-                    }
-
-                    match parity {
-                        Parity::None => {
-                            self.uart.uartlcr_h.clr_pen();
-                            self.uart.uartlcr_h.clr_eps();
-                        }
-                        Parity::Even => {
-                            self.uart.uartlcr_h.set_pen();
-                            self.uart.uartlcr_h.set_eps();
-                        }
-                        Parity::Odd => {
-                            self.uart.uartlcr_h.set_pen();
-                            self.uart.uartlcr_h.clr_eps();
-                        }
-                    }
-                }
-
-                /// Enable/disable flow control
-                pub fn set_flow_control(&mut self, cts: bool, rts: bool) {
-                    if cts {
-                        self.uart.uartcr.set_ctsen();
-                    } else {
-                        self.uart.uartcr.clr_ctsen();
-                    }
-                    if rts {
-                        self.uart.uartcr.set_rtsen();
-                    } else {
-                        self.uart.uartcr.clr_rtsen();
-                    }
-                }
-
-                /// Write a single byte (blocking)
-                ///
-                /// # Panics
-                ///
-                /// Panics if the TX FIFO stays full beyond
-                /// [`crate::spin::SPIN_TIMEOUT`] iterations.
-                pub fn write_byte(&self, byte: u8) {
-                    crate::spin::spin_wait("UART TX FIFO space", || !self.uart.uartfr.txff());
-                    self.uart.uartdr.write_data(byte as u32);
-                }
-
-                /// Write multiple bytes (blocking)
-                pub fn write(&self, data: &[u8]) {
-                    // Fill the TX FIFO in bursts (up to 32 entries) to reduce
-                    // status-register polling per byte.
-                    let mut i = 0;
-                    while i < data.len() {
-                        crate::spin::spin_wait("UART TX FIFO space", || !self.uart.uartfr.txff());
-                        // Write as many bytes as the FIFO currently accepts.
-                        while i < data.len() && !self.uart.uartfr.txff() {
-                            self.uart.uartdr.write_data(data[i] as u32);
-                            i += 1;
-                        }
-                    }
-                }
-
-                /// Read a single byte (non-blocking)
-                pub fn read_byte(&self) -> Option<u8> {
-                    if self.uart.uartfr.rxfe() {
-                        return None;
-                    }
-                    Some(self.uart.uartdr.data() as u8)
-                }
-
-                /// Read a single byte with error information.
-                ///
-                /// Returns the byte and any associated error.
-                ///
-                /// The UARTDR register is read **once** as a snapshot so that the
-                /// returned data byte and its error flags belong to the *same*
-                /// FIFO entry (reading DR pops the FIFO and clears the flags, so
-                /// separate accessor reads would observe the *next* entry).
-                pub fn read_byte_with_error(&self) -> Option<Result<u8, (u8, Error)>> {
-                    if self.uart.uartfr.rxfe() {
-                        return None;
-                    }
-
-                    let v = self.uart.uartdr.read_val();
-                    let byte = v.data() as u8;
-
-                    if v.oe() {
-                        Some(Err((byte, Error::Overrun)))
-                    } else if v.be() {
-                        Some(Err((byte, Error::BreakError)))
-                    } else if v.pe() {
-                        Some(Err((byte, Error::ParityError)))
-                    } else if v.fe() {
-                        Some(Err((byte, Error::FramingError)))
-                    } else {
-                        Some(Ok(byte))
-                    }
-                }
-
-                /// Read a single byte (blocking)
-                ///
-                /// # Panics
-                ///
-                /// Panics if no data arrives within
-                /// [`crate::spin::SPIN_TIMEOUT`] iterations.
-                pub fn read_byte_blocking(&self) -> u8 {
-                    crate::spin::spin_wait("UART RX data", || !self.uart.uartfr.rxfe());
-                    self.uart.uartdr.data() as u8
-                }
-
-                /// Read available bytes into buffer (non-blocking)
-                ///
-                /// Returns the number of bytes read
-                pub fn read_raw(&self, buffer: &mut [u8]) -> usize {
-                    let mut count = 0;
-                    for slot in buffer.iter_mut() {
-                        if let Some(byte) = self.read_byte() {
-                            *slot = byte;
-                            count += 1;
-                        } else {
-                            break;
-                        }
-                    }
-                    count
-                }
-
-                /// Check if TX FIFO is full
-                #[inline]
-                pub fn is_tx_full(&self) -> bool {
-                    self.uart.uartfr.txff()
-                }
-
-                /// Check if RX FIFO is empty
-                #[inline]
-                pub fn is_rx_empty(&self) -> bool {
-                    self.uart.uartfr.rxfe()
-                }
-
-                /// Check if CTS is asserted (remote device ready to receive)
-                #[inline]
-                pub fn is_cts_asserted(&self) -> bool {
-                    self.uart.uartfr.cts()
-                }
-
-                /// Wait for transmission to complete.
-                ///
-                /// # Panics
-                ///
-                /// Panics if the transmitter does not drain within
-                /// [`crate::spin::SPIN_TIMEOUT`] iterations.
-                pub fn flush(&self) {
-                    crate::spin::spin_wait("UART TX FIFO empty", || self.uart.uartfr.txfe());
-                    crate::spin::spin_wait("UART not busy", || !self.uart.uartfr.busy());
-                }
-
-                /// Get the current baud rate by reading hardware registers
-                ///
-                /// # Arguments
-                /// * `peri_clk` - Peripheral clock frequency in Hz
-                #[inline]
-                pub fn baudrate(&self, peri_clk: u32) -> u32 {
-                    let ibrd = self.uart.uartibrd.baud_divint() as u64;
-                    let fbrd = self.uart.uartfbrd.baud_divfrac() as u64;
-                    let divisor = 64 * ibrd + fbrd;
-                    if divisor == 0 {
-                        return 0;
-                    }
-                    (4 * peri_clk as u64 / divisor) as u32
+            impl<TX, RX, CTS, RTS> core::ops::DerefMut for [<$UartName WithFlowControl>]<TX, RX, CTS, RTS>
+            where
+                TX: $TxPin,
+                RX: $RxPin,
+                CTS: $CtsPin,
+                RTS: $RtsPin,
+            {
+                fn deref_mut(&mut self) -> &mut Self::Target {
+                    &mut self.inner
                 }
             }
 
@@ -1374,7 +1188,7 @@ macro_rules! impl_uart {
                 RTS: $RtsPin,
             {
                 fn write_str(&mut self, s: &str) -> core::fmt::Result {
-                    self.write(s.as_bytes());
+                    self.inner.write(s.as_bytes());
                     Ok(())
                 }
             }
@@ -1390,56 +1204,27 @@ macro_rules! impl_uart {
 
                 #[inline]
                 fn write(&self, data: &[u8]) -> Result<(), Self::Error> {
-                    self.write(data);
-                    Ok(())
+                    UartBus::write(&self.inner, data)
                 }
 
                 #[inline]
                 fn read(&self, buffer: &mut [u8]) -> Result<(), Self::Error> {
-                    for slot in buffer.iter_mut() {
-                        // Wait (bounded) for a byte so a silent peer cannot hang
-                        // the caller forever.
-                        if !crate::spin::try_spin_wait(|| !self.uart.uartfr.rxfe()) {
-                            return Err(Error::Timeout);
-                        }
-                        match self.read_byte_with_error() {
-                            Some(Ok(byte)) => {
-                                *slot = byte;
-                            }
-                            Some(Err((_, err))) => return Err(err),
-                            None => unreachable!(),
-                        }
-                    }
-                    Ok(())
+                    UartBus::read(&self.inner, buffer)
                 }
 
                 #[inline]
                 fn read_available(&self, buffer: &mut [u8]) -> Result<usize, Self::Error> {
-                    let mut count = 0;
-
-                    for slot in buffer.iter_mut() {
-                        match self.read_byte_with_error() {
-                            Some(Ok(byte)) => {
-                                *slot = byte;
-                                count += 1;
-                            }
-                            Some(Err((_, err))) => return Err(err),
-                            None => break,
-                        }
-                    }
-
-                    Ok(count)
+                    UartBus::read_available(&self.inner, buffer)
                 }
 
                 #[inline]
                 fn read_raw(&self, buffer: &mut [u8]) -> usize {
-                    self.read_raw(buffer)
+                    UartBus::read_raw(&self.inner, buffer)
                 }
 
                 #[inline]
                 fn flush(&self) -> Result<(), Self::Error> {
-                    self.flush();
-                    Ok(())
+                    UartBus::flush(&self.inner)
                 }
             }
         }

@@ -653,9 +653,13 @@ macro_rules! impl_state_machine {
                 self.pio.flevel.[<rx $sm_index>]() as u8
             }
 
-            /// Write to TX FIFO (blocking)
+            /// Write to TX FIFO (blocking).
+            ///
+            /// Blocks until the state machine has pulled data out of the FIFO.
             pub fn tx_fifo_write(&self, data: u32) {
-                crate::spin::spin_wait("PIO TX FIFO space", || !self.tx_fifo_is_full());
+                while self.tx_fifo_is_full() {
+                    core::hint::spin_loop();
+                }
                 self.pio.[<txf $sm_index>].write_bits(data);
             }
 
@@ -676,14 +680,13 @@ macro_rules! impl_state_machine {
                 self.pio.[<txf $sm_index>].write_bits(data);
             }
 
-            /// Read from RX FIFO (blocking)
+            /// Read from RX FIFO (blocking).
             ///
-            /// # Panics
-            ///
-            /// Panics if no RX data arrives within
-            /// [`crate::spin::SPIN_TIMEOUT`] iterations.
+            /// Blocks until the state machine has pushed data into the FIFO.
             pub fn rx_fifo_read(&self) -> u32 {
-                crate::spin::spin_wait("PIO RX FIFO data", || !self.rx_fifo_is_empty());
+                while self.rx_fifo_is_empty() {
+                    core::hint::spin_loop();
+                }
                 self.pio.[<rxf $sm_index>].read_bits()
             }
 
@@ -746,10 +749,13 @@ macro_rules! impl_state_machine {
             /// Requires FJOIN\_RX\_GET to be set (see [`FifoJoin::PutGet2`]/[`FifoJoin::PutGet3`]).
             /// `index`: 0-3
             pub fn putget_read(&self, index: u8) -> u32 {
-                assert!(index < 4, "PUTGET index must be 0-3");
-                let base = self.pio as *const _ as usize;
-                let offset = 0x128 + ($sm_index as usize * 0x10) + (index as usize * 4);
-                unsafe { core::ptr::read_volatile((base + offset) as *const u32) }
+                match index {
+                    0 => self.pio.[<rxf $sm_index _putget0>].[<rxf $sm_index _putget0>](),
+                    1 => self.pio.[<rxf $sm_index _putget1>].[<rxf $sm_index _putget1>](),
+                    2 => self.pio.[<rxf $sm_index _putget2>].[<rxf $sm_index _putget2>](),
+                    3 => self.pio.[<rxf $sm_index _putget3>].[<rxf $sm_index _putget3>](),
+                    _ => panic!("PUTGET index must be 0-3"),
+                }
             }
 
             /// (RP2350) Write directly to FIFO entry via PUTGET register
@@ -757,10 +763,13 @@ macro_rules! impl_state_machine {
             /// Requires FJOIN\_RX\_PUT to be set (see [`FifoJoin::PutGet1`]/[`FifoJoin::PutGet3`]).
             /// `index`: 0-3
             pub fn putget_write(&self, index: u8, data: u32) {
-                assert!(index < 4, "PUTGET index must be 0-3");
-                let base = self.pio as *const _ as usize;
-                let offset = 0x128 + ($sm_index as usize * 0x10) + (index as usize * 4);
-                unsafe { core::ptr::write_volatile((base + offset) as *mut u32, data) }
+                match index {
+                    0 => self.pio.[<rxf $sm_index _putget0>].[<write_rxf $sm_index _putget0>](data),
+                    1 => self.pio.[<rxf $sm_index _putget1>].[<write_rxf $sm_index _putget1>](data),
+                    2 => self.pio.[<rxf $sm_index _putget2>].[<write_rxf $sm_index _putget2>](data),
+                    3 => self.pio.[<rxf $sm_index _putget3>].[<write_rxf $sm_index _putget3>](data),
+                    _ => panic!("PUTGET index must be 0-3"),
+                }
             }
 
             // ================================================================
@@ -981,7 +990,12 @@ macro_rules! impl_pio_block {
                     }
 
                     let length = instructions.len() as u8;
-                    let program_mask = (1u32 << length) - 1;
+                    // `1u32 << 32` is UB; a full 32-instruction program uses all bits.
+                    let program_mask = if length >= 32 {
+                        u32::MAX
+                    } else {
+                        (1u32 << length) - 1
+                    };
 
                     let offset = if let Some(orig) = program.origin {
                         if orig as usize + instructions.len() > PIO_INSTRUCTION_COUNT {
@@ -1029,7 +1043,11 @@ macro_rules! impl_pio_block {
 
                 /// Uninstall a program, freeing its instruction memory
                 pub fn uninstall_program(&mut self, program: InstalledProgram) {
-                    let program_mask = (1u32 << program.length) - 1;
+                    let program_mask = if program.length >= 32 {
+                        u32::MAX
+                    } else {
+                        (1u32 << program.length) - 1
+                    };
                     self.used_instruction_space &= !(program_mask << program.offset);
                 }
 
@@ -1213,9 +1231,12 @@ pub const fn encode_sideset(bit_count: u8, value: u8) -> u16 {
 }
 
 /// Encode sideset value (optional mode, sets enable bit)
+///
+/// In optional mode bit 12 is the enable flag and the side-set value occupies
+/// the bits immediately below it.
 #[inline]
 pub const fn encode_sideset_opt(bit_count: u8, value: u8) -> u16 {
-    0x1000 | ((value as u16) << (13 - bit_count))
+    0x1000 | ((value as u16) << (12 - bit_count))
 }
 
 // --- JMP (opcode 000) ---

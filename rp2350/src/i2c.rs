@@ -264,61 +264,6 @@ macro_rules! impl_i2c {
                     i2c_dev
                 }
 
-                /// Initialize I2C in master mode with 10-bit target addressing.
-                ///
-                /// Same as [`init()`](Self::init) but configures the master to use
-                /// 10-bit addressing for the target device. The target address is
-                /// set via [`set_target_addr()`](Self::set_target_addr) later.
-                ///
-                /// # Arguments
-                ///
-                /// * `i2c` - The I2C peripheral from PAC
-                /// * `sda` - SDA pin (must implement the appropriate SDA trait)
-                /// * `scl` - SCL pin (must implement the appropriate SCL trait)
-                /// * `baudrate` - Desired baudrate in Hz (e.g., 100_000 for 100 kHz)
-                /// * `clocks` - System clocks
-                pub fn init_10bit(i2c: $I2cType, mut sda: SDA, mut scl: SCL, baudrate: u32, clocks: &Clocks) -> Self {
-                    // Configure pins for I2C function (includes pull-up)
-                    sda.[<configure_i2c $i2c_num _sda>]();
-                    scl.[<configure_i2c $i2c_num _scl>]();
-
-                    // Reset peripheral to ensure clean register state
-                    <$I2cType as Resettable>::init();
-
-                    let mut i2c_dev = Self {
-                        i2c,
-                        _sda: sda,
-                        _scl: scl,
-                    };
-
-                    // Disable I2C to configure
-                    i2c_dev.i2c.ic_enable.clr_enable();
-
-                    // Disable all interrupts and clear pending
-                    i2c_dev.i2c.ic_intr_mask.write_bits(0);
-                    let _ = i2c_dev.i2c.ic_clr_intr.read_bits();
-
-                    // Configure as master with 10-bit addressing
-                    i2c_dev.i2c.ic_con.write_bits(0);
-                    i2c_dev.i2c.ic_con.set_master_mode();
-                    i2c_dev.i2c.ic_con.set_ic_restart_en();
-                    i2c_dev.i2c.ic_con.set_ic_slave_disable();
-                    i2c_dev.i2c.ic_con.set_ic_10bitaddr_master();
-                    i2c_dev.i2c.ic_con.set_tx_empty_ctrl();
-
-                    // Set baudrate (also configures speed mode in IC_CON)
-                    i2c_dev.configure_baudrate(baudrate, clocks.sys_freq());
-
-                    // Set FIFO thresholds
-                    i2c_dev.i2c.ic_tx_tl.write_tx_tl(0);
-                    i2c_dev.i2c.ic_rx_tl.write_rx_tl(0);
-
-                    // Enable I2C
-                    i2c_dev.i2c.ic_enable.set_enable();
-
-                    i2c_dev
-                }
-
                 /// Obtain a pin-erased I2C handle without ownership.
                 ///
                 /// Returns `$I2cName<ErasedPin, ErasedPin>` — a handle that can access
@@ -499,27 +444,35 @@ macro_rules! impl_i2c {
 
                 /// Write data to an I2C device (master mode).
                 ///
+                /// Writing an empty slice performs an **address probe**: it issues
+                /// START + address + STOP and reports whether a device acknowledged
+                /// its address (see [`Error::NoAcknowledge`]).
+                ///
                 /// # Arguments
                 /// * `addr` - 7-bit I2C address
                 /// * `data` - Data bytes to write
                 pub fn write(&self, addr: u8, data: &[u8]) -> Result<(), Error> {
                     use rp2350_pac::$i2c_mod::IcDataCmd;
 
-                    if data.is_empty() {
-                        return Ok(());
-                    }
-
                     self.set_target_addr(addr as u16, false);
 
-                    for (i, &byte) in data.iter().enumerate() {
-                        let last = i == data.len() - 1;
-
-                        // Wait for TX FIFO not full (bounded)
+                    if data.is_empty() {
+                        // Address probe: send a single zero byte with STOP. If the
+                        // target NACKs its address, the wait below reports it via
+                        // `check_abort`.
                         self.wait_cond(|| self.i2c.ic_status.tfnf())?;
+                        self.i2c.ic_data_cmd.write_bits(IcDataCmd::STOP);
+                    } else {
+                        for (i, &byte) in data.iter().enumerate() {
+                            let last = i == data.len() - 1;
 
-                        // Write data command
-                        let cmd = (byte as u32) | if last { IcDataCmd::STOP } else { 0 };
-                        self.i2c.ic_data_cmd.write_bits(cmd);
+                            // Wait for TX FIFO not full (bounded)
+                            self.wait_cond(|| self.i2c.ic_status.tfnf())?;
+
+                            // Write data command
+                            let cmd = (byte as u32) | if last { IcDataCmd::STOP } else { 0 };
+                            self.i2c.ic_data_cmd.write_bits(cmd);
+                        }
                     }
 
                     // Wait for TX FIFO to empty (bounded)
@@ -572,6 +525,10 @@ macro_rules! impl_i2c {
                         })?;
                     }
 
+                    // Wait for the STOP to finish and the bus to idle, so a
+                    // back-to-back transaction cannot race it.
+                    self.wait_cond(|| !self.i2c.ic_status.mst_activity())?;
+
                     Ok(())
                 }
 
@@ -593,9 +550,15 @@ macro_rules! impl_i2c {
                         return Ok(());
                     }
 
+                    // A write with no read phase is just a plain write; delegate
+                    // so the transaction is terminated with a STOP.
+                    if read_buffer.is_empty() {
+                        return self.write(addr, write_data);
+                    }
+
                     self.set_target_addr(addr as u16, false);
 
-                    // Write phase (no STOP)
+                    // Write phase (no STOP — a repeated START follows)
                     for &byte in write_data {
                         self.wait_cond(|| self.i2c.ic_status.tfnf())?;
                         self.i2c.ic_data_cmd.write_dat(byte as u32);
@@ -628,6 +591,9 @@ macro_rules! impl_i2c {
                                 || (tx_idx < len && self.i2c.ic_status.tfnf())
                         })?;
                     }
+
+                    // Wait for the STOP to finish and the bus to idle.
+                    self.wait_cond(|| !self.i2c.ic_status.mst_activity())?;
 
                     Ok(())
                 }
@@ -695,10 +661,10 @@ macro_rules! impl_i2c {
                     self.i2c.ic_status.rfne()
                 }
 
-                /// Check if I2C is busy.
+                /// Check if this master is actively transferring data.
                 #[inline]
                 pub fn is_busy(&self) -> bool {
-                    self.i2c.ic_status.activity()
+                    self.i2c.ic_status.mst_activity()
                 }
 
                 /// Get the current baudrate by reading hardware registers.
@@ -1124,7 +1090,25 @@ macro_rules! impl_i2c_slave {
                 ///     150_000_000,  // System clock
                 /// );
                 /// ```
-                pub fn init(i2c: $I2cType, mut sda: SDA, mut scl: SCL, addr: u8, sys_clk: u32) -> Self {
+                pub fn init(i2c: $I2cType, sda: SDA, scl: SCL, addr: u8, sys_clk: u32) -> Self {
+                    Self::init_impl(i2c, sda, scl, addr as u16, false, sys_clk)
+                }
+
+                /// Initialize I2C in slave mode with 10-bit address.
+                ///
+                /// # Arguments
+                ///
+                /// * `i2c` - The I2C peripheral from PAC
+                /// * `sda` - SDA pin (must implement the appropriate SDA trait)
+                /// * `scl` - SCL pin (must implement the appropriate SCL trait)
+                /// * `addr` - 10-bit slave address
+                /// * `sys_clk` - System clock frequency in Hz
+                pub fn init_10bit(i2c: $I2cType, sda: SDA, scl: SCL, addr: u16, sys_clk: u32) -> Self {
+                    Self::init_impl(i2c, sda, scl, addr, true, sys_clk)
+                }
+
+                /// Shared slave-mode initialization.
+                fn init_impl(i2c: $I2cType, mut sda: SDA, mut scl: SCL, addr: u16, addr_10bit: bool, sys_clk: u32) -> Self {
                     // Configure pins for I2C function
                     sda.[<configure_i2c $i2c_num _sda>]();
                     scl.[<configure_i2c $i2c_num _scl>]();
@@ -1148,6 +1132,9 @@ macro_rules! impl_i2c_slave {
                     // Configure as slave: clear all, then set required bits
                     i2c_dev.i2c.ic_con.write_bits(0);
                     i2c_dev.i2c.ic_con.write_speed(Speed::Fast as u32);
+                    if addr_10bit {
+                        i2c_dev.i2c.ic_con.set_ic_10bitaddr_slave();
+                    }
                     i2c_dev.i2c.ic_con.set_stop_det_ifaddressed();
                     i2c_dev.i2c.ic_con.set_rx_fifo_full_hld_ctrl();
                     i2c_dev.i2c.ic_con.set_tx_empty_ctrl();
@@ -1160,61 +1147,6 @@ macro_rules! impl_i2c_slave {
                     i2c_dev.i2c.ic_rx_tl.write_rx_tl(0);
 
                     // Configure timing for slave (use sensible defaults)
-                    let sda_hold = (sys_clk / 1_000_000 / 3).max(1);
-                    i2c_dev.i2c.ic_sda_hold.write_ic_sda_tx_hold(sda_hold);
-
-                    // Enable I2C
-                    i2c_dev.i2c.ic_enable.set_enable();
-
-                    i2c_dev
-                }
-
-                /// Initialize I2C in slave mode with 10-bit address.
-                ///
-                /// # Arguments
-                ///
-                /// * `i2c` - The I2C peripheral from PAC
-                /// * `sda` - SDA pin (must implement the appropriate SDA trait)
-                /// * `scl` - SCL pin (must implement the appropriate SCL trait)
-                /// * `addr` - 10-bit slave address
-                /// * `sys_clk` - System clock frequency in Hz
-                pub fn init_10bit(i2c: $I2cType, mut sda: SDA, mut scl: SCL, addr: u16, sys_clk: u32) -> Self {
-                    // Configure pins for I2C function
-                    sda.[<configure_i2c $i2c_num _sda>]();
-                    scl.[<configure_i2c $i2c_num _scl>]();
-
-                    // Reset peripheral to ensure clean register state
-                    <$I2cType as Resettable>::init();
-
-                    let i2c_dev = Self {
-                        i2c,
-                        _sda: sda,
-                        _scl: scl,
-                    };
-
-                    // Disable I2C to configure
-                    i2c_dev.i2c.ic_enable.clr_enable();
-
-                    // Disable all interrupts and clear pending
-                    i2c_dev.i2c.ic_intr_mask.write_bits(0);
-                    let _ = i2c_dev.i2c.ic_clr_intr.read_bits();
-
-                    // Configure as slave with 10-bit addressing
-                    i2c_dev.i2c.ic_con.write_bits(0);
-                    i2c_dev.i2c.ic_con.write_speed(Speed::Fast as u32);
-                    i2c_dev.i2c.ic_con.set_ic_10bitaddr_slave();
-                    i2c_dev.i2c.ic_con.set_stop_det_ifaddressed();
-                    i2c_dev.i2c.ic_con.set_rx_fifo_full_hld_ctrl();
-                    i2c_dev.i2c.ic_con.set_tx_empty_ctrl();
-
-                    // Set slave address
-                    i2c_dev.i2c.ic_sar.write_ic_sar(addr as u32);
-
-                    // Set FIFO thresholds
-                    i2c_dev.i2c.ic_tx_tl.write_tx_tl(0);
-                    i2c_dev.i2c.ic_rx_tl.write_rx_tl(0);
-
-                    // Configure timing for slave
                     let sda_hold = (sys_clk / 1_000_000 / 3).max(1);
                     i2c_dev.i2c.ic_sda_hold.write_ic_sda_tx_hold(sda_hold);
 
@@ -1766,20 +1698,6 @@ impl_i2c!(I2c1, 1, rp2350_pac::I2C1, i2c1, I2c1SdaPin, I2c1SclPin);
 // Generate I2C0Slave and I2C1Slave
 // ============================================================================
 
-impl_i2c_slave!(
-    I2c0Slave,
-    0,
-    rp2350_pac::I2C0,
-    i2c0,
-    I2c0SdaPin,
-    I2c0SclPin
-);
+impl_i2c_slave!(I2c0Slave, 0, rp2350_pac::I2C0, i2c0, I2c0SdaPin, I2c0SclPin);
 
-impl_i2c_slave!(
-    I2c1Slave,
-    1,
-    rp2350_pac::I2C1,
-    i2c1,
-    I2c1SdaPin,
-    I2c1SclPin
-);
+impl_i2c_slave!(I2c1Slave, 1, rp2350_pac::I2C1, i2c1, I2c1SdaPin, I2c1SclPin);
