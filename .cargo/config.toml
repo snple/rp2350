@@ -1,4 +1,4 @@
-# Workspace-wide Cargo configuration for pico-rs.
+# Workspace-wide Cargo configuration for rp2350.
 #
 # `cargo xtask <command>` now works from any directory in the workspace
 # (the alias was previously only available from inside `xtask/`).
@@ -10,7 +10,7 @@ xtask = "run --package xtask --"
 # workspace when it is built for `thumbv8m.main-none-eabihf`.
 #
 # * `--nmagic` turns off page alignment of sections (saves flash space)
-# * `-Tlink.x` uses pico-rs-rt's linker script (provided via its build script)
+# * `-Tlink.x` uses rp2350-rt's linker script (provided via its build script)
 # * `-Tdefmt.x` is required for defmt-rtt
 # * `target-cpu=cortex-m33` targets the RP2350's M33 core
 #

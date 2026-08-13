@@ -1,0 +1,34 @@
+[package]
+name = "rp2350"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Hardware Abstraction Layer for RP2350 microcontrollers"
+readme = "README.md"
+repository.workspace = true
+keywords = ["rp2350", "rp2350", "hal", "embedded", "arm"]
+categories = ["embedded", "hardware-support", "no-std"]
+
+[dependencies]
+defmt = { workspace = true, optional = true }
+paste.workspace = true
+rp2350-macro.workspace = true
+rp2350-rt.workspace = true
+rp2350-pac.workspace = true
+critical-section.workspace = true
+
+[features]
+default = ["defmt", "rp2350a", "critical-section-impl", "panic-handler"]
+defmt = ["dep:defmt"]
+# RP2350 chip variant selection (mutually exclusive)
+rp2350a = []  # RP2350A: 30 GPIO pins (0-29), default
+rp2350b = []  # RP2350B: 48 GPIO pins (0-47)
+# Register this crate as the critical-section implementation provider.
+critical-section-impl = []
+panic-handler = []
+# Copy .text and .rodata to RAM at startup so all code runs from RAM.
+run-from-ram = ["rp2350-rt/run-from-ram"]
+
+[package.metadata.docs.rs]
+features = ["defmt"]
+targets = ["thumbv8m.main-none-eabihf"]

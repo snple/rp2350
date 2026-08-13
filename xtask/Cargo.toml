@@ -3,7 +3,7 @@ name = "xtask"
 version = "0.1.0"
 edition = "2024"
 license = "MIT OR Apache-2.0"
-description = "Build automation tasks for pico-rs"
+description = "Build automation tasks for rp2350"
 
 # Don't publish this crate
 publish = false

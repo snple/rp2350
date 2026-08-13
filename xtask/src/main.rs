@@ -1,4 +1,4 @@
-//! Build automation tasks for pico-rs
+//! Build automation tasks for rp2350
 //!
 //! Run with `cargo xtask <command>`
 //!
@@ -16,7 +16,7 @@ use std::process::Command;
 
 #[derive(Parser)]
 #[command(name = "xtask")]
-#[command(about = "Build automation tasks for pico-rs")]
+#[command(about = "Build automation tasks for rp2350")]
 struct Cli {
     #[command(subcommand)]
     command: Commands,
@@ -30,7 +30,7 @@ enum Commands {
         #[arg(short, long)]
         svd: Option<PathBuf>,
 
-        /// Output directory (default: pico-rs-pac/src/generated)
+        /// Output directory (default: rp2350-pac/src/generated)
         #[arg(short, long)]
         output: Option<PathBuf>,
 
@@ -81,7 +81,7 @@ fn gen_pac(
     let root = workspace_root();
 
     let svd_path = svd.unwrap_or_else(|| root.join("RP2350.svd"));
-    let output_path = output.unwrap_or_else(|| root.join("pico-rs-pac/src/generated"));
+    let output_path = output.unwrap_or_else(|| root.join("rp2350-pac/src/generated"));
 
     println!("Generating PAC from: {}", svd_path.display());
     println!("Output directory: {}", output_path.display());
@@ -116,13 +116,13 @@ fn gen_pac(
         .args([
             "build",
             "-p",
-            "pico-rs-pac",
+            "rp2350-pac",
             "--target",
             "thumbv8m.main-none-eabihf",
         ])
         .current_dir(&root)
         .status()
-        .context("Failed to build pico-rs-pac")?;
+        .context("Failed to build rp2350-pac")?;
 
     if !status.success() {
         anyhow::bail!("PAC compilation failed");
@@ -136,7 +136,7 @@ fn gen_pac(
 /// Generate the PAC into a temporary directory and compare it against the
 /// checked-in `output_path`, without writing anything. Fails if they differ.
 fn check_generated(device: &types::SvdDevice, output_path: &Path) -> Result<()> {
-    let tmp = std::env::temp_dir().join(format!("pico-rs-pac-check-{}", std::process::id()));
+    let tmp = std::env::temp_dir().join(format!("rp2350-pac-check-{}", std::process::id()));
 
     // Clean up any stale temp dir from a previous run.
     let _ = std::fs::remove_dir_all(&tmp);

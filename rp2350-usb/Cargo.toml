@@ -1,0 +1,17 @@
+[package]
+name = "rp2350-usb"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "USB Device Stack for RP2350 microcontrollers"
+repository.workspace = true
+readme = "README.md"
+
+[dependencies]
+defmt = { workspace = true, optional = true }
+rp2350-pac.workspace = true
+rp2350-rt.workspace = true
+
+[features]
+default = ["defmt"]
+defmt = ["dep:defmt"]

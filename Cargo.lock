@@ -219,70 +219,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "57c0d7b74b563b49d38dae00a0c37d4d6de9b432382b2892f0574ddcae73fd0a"
 
 [[package]]
-name = "pico-rs"
-version = "0.1.0"
-dependencies = [
- "critical-section",
- "defmt",
- "paste",
- "pico-rs-macro",
- "pico-rs-pac",
- "pico-rs-rt",
-]
-
-[[package]]
-name = "pico-rs-drivers"
-version = "0.1.0"
-dependencies = [
- "bitfield-struct",
- "defmt",
- "pico-rs",
- "pico-rs-rt",
-]
-
-[[package]]
-name = "pico-rs-examples"
-version = "0.1.0"
-dependencies = [
- "defmt",
- "defmt-rtt",
- "pico-rs",
- "pico-rs-drivers",
- "pico-rs-rt",
- "pico-rs-usb",
-]
-
-[[package]]
-name = "pico-rs-macro"
-version = "0.1.0"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 3.0.3",
-]
-
-[[package]]
-name = "pico-rs-pac"
-version = "0.1.0"
-dependencies = [
- "enumflags2",
- "pico-rs-rt",
-]
-
-[[package]]
-name = "pico-rs-rt"
-version = "0.1.0"
-
-[[package]]
-name = "pico-rs-usb"
-version = "0.1.0"
-dependencies = [
- "defmt",
- "pico-rs-pac",
- "pico-rs-rt",
-]
-
-[[package]]
 name = "proc-macro2"
 version = "1.0.106"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -307,6 +243,70 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f1964b10c76125c36f8afe190065a4bf9a87bf324842c05701330bba9f1cacbb"
 dependencies = [
  "memchr",
+]
+
+[[package]]
+name = "rp2350"
+version = "0.1.0"
+dependencies = [
+ "critical-section",
+ "defmt",
+ "paste",
+ "rp2350-macro",
+ "rp2350-pac",
+ "rp2350-rt",
+]
+
+[[package]]
+name = "rp2350-drivers"
+version = "0.1.0"
+dependencies = [
+ "bitfield-struct",
+ "defmt",
+ "rp2350",
+ "rp2350-rt",
+]
+
+[[package]]
+name = "rp2350-examples"
+version = "0.1.0"
+dependencies = [
+ "defmt",
+ "defmt-rtt",
+ "rp2350",
+ "rp2350-drivers",
+ "rp2350-rt",
+ "rp2350-usb",
+]
+
+[[package]]
+name = "rp2350-macro"
+version = "0.1.0"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 3.0.3",
+]
+
+[[package]]
+name = "rp2350-pac"
+version = "0.1.0"
+dependencies = [
+ "enumflags2",
+ "rp2350-rt",
+]
+
+[[package]]
+name = "rp2350-rt"
+version = "0.1.0"
+
+[[package]]
+name = "rp2350-usb"
+version = "0.1.0"
+dependencies = [
+ "defmt",
+ "rp2350-pac",
+ "rp2350-rt",
 ]
 
 [[package]]

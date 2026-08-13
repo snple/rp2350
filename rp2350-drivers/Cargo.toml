@@ -1,0 +1,24 @@
+[package]
+name = "rp2350-drivers"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Driver collection for RP2350 microcontrollers"
+repository.workspace = true
+
+[dependencies]
+bitfield-struct.workspace = true
+defmt = { workspace = true, optional = true }
+# The chip variant is chosen by the top-level crate (e.g. rp2350-examples);
+# the workspace-level `rp2350` dependency already has `default-features = false`
+# so its default `rp2350a` is never pulled into the graph unconditionally.
+rp2350.workspace = true
+rp2350-rt.workspace = true
+
+[features]
+default = ["defmt", "rp2350a"]
+defmt = ["dep:defmt"]
+# RP2350 chip variant selection (mutually exclusive) — forwarded to rp2350
+# so that a single consistent variant is enabled across the whole graph.
+rp2350a = ["rp2350/rp2350a"]
+rp2350b = ["rp2350/rp2350b"]

@@ -40,14 +40,14 @@ jobs:
         run: cargo build --workspace --target thumbv8m.main-none-eabihf --exclude xtask
 
       - name: Build drivers without default features
-        # rp2350a is required: pico-rs needs exactly one chip variant enabled,
+        # rp2350a is required: rp2350 needs exactly one chip variant enabled,
         # and --no-default-features alone would leave it without one.
-        run: cargo build -p pico-rs-drivers --no-default-features --features rp2350a --target thumbv8m.main-none-eabihf
+        run: cargo build -p rp2350-drivers --no-default-features --features rp2350a --target thumbv8m.main-none-eabihf
 
       - name: Build examples for RP2350B
-        # Switch chip variant: drop pico-rs's default rp2350a, keep the other
+        # Switch chip variant: drop rp2350's default rp2350a, keep the other
         # features (defmt / critical-section-impl / panic-handler) explicit.
-        run: cargo build -p pico-rs-examples --no-default-features --features rp2350b,defmt,critical-section-impl,panic-handler --target thumbv8m.main-none-eabihf
+        run: cargo build -p rp2350-examples --no-default-features --features rp2350b,defmt,critical-section-impl,panic-handler --target thumbv8m.main-none-eabihf
 
       - name: Clippy (embedded)
         run: cargo clippy --workspace --target thumbv8m.main-none-eabihf --exclude xtask -- -D warnings
