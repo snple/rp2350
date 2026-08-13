@@ -24,7 +24,7 @@ use super::rosc;
 use super::types::{
     ClkAdcAuxSrc, ClkHstxAuxSrc, ClkPeriAuxSrc, ClkRefSrc, ClkSysAuxSrc, ClkUsbAuxSrc,
 };
-use super::xosc::Xosc;
+use super::xosc::{XOSC_HZ, Xosc};
 use crate::reset::Resettable;
 
 // ============================================================================
@@ -153,9 +153,12 @@ impl ClockBuilder {
     /// Set the crystal oscillator frequency in Hz (default: 12 MHz)
     ///
     /// # Note
-    /// The built-in [`PllConfig`] presets assume a 12 MHz crystal.
-    /// Supplying a different frequency here requires using a custom PLL
-    /// configuration — currently only supported for 12 MHz crystals.
+    /// The built-in [`PllConfig`] presets assume a 12 MHz crystal. [`build`]
+    /// panics for any other value; use the low-level [`Clocks`] API with a
+    /// custom PLL configuration instead.
+    ///
+    /// [`build`]: Self::build
+    /// [`Clocks`]: super::controller::Clocks
     pub const fn xosc_freq(mut self, freq: u32) -> Self {
         self.xosc_freq = freq;
         self
@@ -172,6 +175,11 @@ impl ClockBuilder {
     /// The choice also governs dormant-mode behaviour:
     /// - `Xosc` → XOSC sleeps during dormant, ROSC keeps clk_ref alive
     /// - `Rosc` → ROSC sleeps during dormant, XOSC keeps clk_ref alive
+    ///
+    /// # Panics
+    /// [`build`](Self::build) panics if `src` is [`ClkRefSrc::Aux`] — use
+    /// [`Clocks::configure_ref_aux`](super::controller::Clocks::configure_ref_aux)
+    /// for auxiliary sources.
     pub const fn ref_src(mut self, src: ClkRefSrc) -> Self {
         self.ref_src = src;
         self
@@ -317,9 +325,21 @@ impl ClockBuilder {
     /// ```
     ///
     /// # Panics
-    /// Panics if `sys_freq` is not one of the supported values (48, 125, 133,
-    /// 150 MHz).
+    /// Panics if:
+    /// - `xosc_freq` is not 12 MHz (the built-in PLL presets assume 12 MHz), or
+    /// - `ref_src` is [`ClkRefSrc::Aux`] (use the low-level `Clocks` API), or
+    /// - `sys_freq` is not one of the supported values (48, 125, 133, 150 MHz), or
+    /// - `peri_src` is a source whose frequency cannot be derived and
+    ///   `peri_freq` was not set.
     pub fn build(self, clocks: CLOCKS, xosc: XOSC, pll_sys: PLL_SYS, pll_usb: PLL_USB) -> Clocks {
+        // The PLL presets are derived for a 12 MHz crystal; supporting other
+        // crystals would require computing PLL parameters on the fly.
+        assert_eq!(
+            self.xosc_freq, XOSC_HZ,
+            "ClockBuilder supports only a 12 MHz crystal (got {} Hz); use the low-level Clocks API for other crystals",
+            self.xosc_freq
+        );
+
         // ====================================================================
         // Step 1 — Start XOSC
         // ====================================================================
@@ -335,7 +355,10 @@ impl ClockBuilder {
             ClkRefSrc::Xosc => self.xosc_freq,
             ClkRefSrc::Rosc => rosc::ROSC_HZ,
             ClkRefSrc::Lposc => lposc::LPOSC_HZ,
-            ClkRefSrc::Aux => self.xosc_freq, // caller-supplied; assume XOSC frequency
+            ClkRefSrc::Aux => panic!(
+                "ClockBuilder does not support an auxiliary clk_ref source; \
+                 use Clocks::configure_ref_aux for that"
+            ),
         };
         clocks.configure_ref_src(self.ref_src, ref_freq);
 
@@ -397,7 +420,17 @@ impl ClockBuilder {
         let peri_freq = match self.peri_src {
             ClkPeriAuxSrc::ClkSys => actual_sys_freq,
             ClkPeriAuxSrc::PllUsb => 48_000_000,
-            _ => self.peri_freq.unwrap_or(actual_sys_freq),
+            ClkPeriAuxSrc::PllSys => {
+                assert!(
+                    use_pll_sys,
+                    "peri_src(PllSys) requires a system frequency above 48 MHz (PLL_SYS is not configured)"
+                );
+                self.sys_freq
+            }
+            // Rosc / Xosc / GpIn0 / GpIn1 — caller must supply the frequency.
+            _ => self.peri_freq.expect(
+                "peri_freq() must be set when CLK_PERI is not sourced from ClkSys/PllSys/PllUsb",
+            ),
         };
         clocks.configure_peri(self.peri_src, peri_freq);
 

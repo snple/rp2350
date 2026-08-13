@@ -90,6 +90,8 @@ impl FrequencyRange {
 /// Crystal Oscillator (XOSC) peripheral wrapper
 pub struct Xosc {
     xosc: XOSC,
+    /// Crystal frequency the oscillator was initialised with (Hz).
+    freq_hz: u32,
 }
 
 impl Xosc {
@@ -136,7 +138,7 @@ impl Xosc {
             XOSC_STABLE_TIMEOUT_SPINS,
         );
 
-        Self { xosc }
+        Self { xosc, freq_hz }
     }
 
     /// Obtain an Xosc handle without ownership checks.
@@ -149,7 +151,14 @@ impl Xosc {
     pub unsafe fn steal() -> Steal<Self> {
         Steal(Self {
             xosc: unsafe { XOSC::steal() },
+            freq_hz: XOSC_HZ,
         })
+    }
+
+    /// The crystal frequency this oscillator was initialised with (Hz).
+    #[inline]
+    pub fn freq_hz(&self) -> u32 {
+        self.freq_hz
     }
 
     /// Get reference to the underlying register block
@@ -208,14 +217,16 @@ impl Xosc {
     /// the oscillator is ready for use.
     #[inline]
     pub fn enable(&self) {
-        self.xosc.ctrl.write_enable(Ctrl::ENABLE_ENABLE);
+        // write_enable shifts the value by ENABLE_OFFSET internally, so the
+        // un-shifted `_VAL` constant must be passed here.
+        self.xosc.ctrl.write_enable(Ctrl::ENABLE_ENABLE_VAL);
     }
 
     /// Disable the crystal oscillator
     ///
     /// Warning: Make sure no clocks are depending on XOSC before disabling!
     pub fn disable(&self) {
-        self.xosc.ctrl.write_enable(Ctrl::ENABLE_DISABLE);
+        self.xosc.ctrl.write_enable(Ctrl::ENABLE_DISABLE_VAL);
 
         // Wait for stable to go away (bounded)
         crate::spin::spin_wait("XOSC disable", || !self.stable());

@@ -25,45 +25,47 @@
 // Clock Identifiers
 // ============================================================================
 
-/// Number of configurable clocks in the system
-pub const CLK_COUNT: usize = 10;
-
-/// Clock identifiers for all configurable clocks in the system
+/// Number of core clock generators tracked by [`Clocks`].
 ///
-/// The clocks are organized by their position in the clock tree:
+/// The four GPIO clock outputs are tracked separately via [`GpOutId`].
+pub const CLK_COUNT: usize = 6;
+
+/// Identifiers for the six core clock generators.
+///
+/// The clocks are organised by their position in the clock tree:
 /// - Layer 0: Clock sources (XOSC, ROSC, PLLs) — not in this enum
 /// - Layer 1: Reference and System clocks ([`ClockId::Ref`], [`ClockId::Sys`])
-/// - Layer 2: Peripheral clocks ([`ClockId::Peri`], [`ClockId::Usb`], [`ClockId::Adc`], [`ClockId::Hstx`])
-/// - Output: GPIO clock outputs ([`ClockId::GpOut0`] – [`ClockId::GpOut3`])
+/// - Layer 2: Peripheral clocks ([`ClockId::Peri`], [`ClockId::Usb`],
+///   [`ClockId::Adc`], [`ClockId::Hstx`])
+///
+/// GPIO clock outputs are handled by the separate [`GpOutId`] enum.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[repr(usize)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum ClockId {
-    // === GPIO Clock Outputs ===
-    /// General purpose clock output 0
-    GpOut0 = 0,
-    /// General purpose clock output 1
-    GpOut1 = 1,
-    /// General purpose clock output 2
-    GpOut2 = 2,
-    /// General purpose clock output 3
-    GpOut3 = 3,
-
-    // === Layer 1: Core System Clocks ===
     /// Reference clock — stable clock for system clock mux and watchdog
-    Ref = 4,
+    Ref = 0,
     /// System clock — main clock for CPU and most peripherals
-    Sys = 5,
-
-    // === Layer 2: Peripheral Clocks ===
+    Sys = 1,
     /// Peripheral clock (UART, SPI, I2C, etc.)
-    Peri = 6,
+    Peri = 2,
     /// High-speed TX clock (DVI / HSTX peripheral)
-    Hstx = 7,
+    Hstx = 3,
     /// USB clock — MUST be exactly 48 MHz
-    Usb = 8,
+    Usb = 4,
     /// ADC clock — MUST be exactly 48 MHz
-    Adc = 9,
+    Adc = 5,
+}
+
+impl ClockId {
+    /// Number of core clock generators.
+    pub const COUNT: usize = CLK_COUNT;
+
+    /// Index of this clock into the internal frequency table.
+    #[inline]
+    pub const fn index(self) -> usize {
+        self as usize
+    }
 }
 
 // ============================================================================
@@ -91,6 +93,14 @@ pub enum GpOutId {
     GpOut2 = 2,
     /// GPIO clock output 3
     GpOut3 = 3,
+}
+
+impl GpOutId {
+    /// Index of this output into the internal GPOUT frequency table.
+    #[inline]
+    pub const fn index(self) -> usize {
+        self as usize
+    }
 }
 
 // ============================================================================

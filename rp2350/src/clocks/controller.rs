@@ -6,13 +6,14 @@
 //! # Initialization
 //!
 //! Use [`ClockBuilder`] for typical initialization. Constructing `Clocks`
-//! directly via [`Clocks::new`] is the lower-level path for custom setups.
+//! directly via [`Clocks::init`] is the lower-level path for custom setups.
 //!
 //! [`ClockBuilder`]: super::builder::ClockBuilder
 
 use rp2350_pac::{PLL_SYS, PLL_USB};
 
 use super::gate::ClkPeripheral;
+use super::lposc;
 use super::pll::{PllConfig, PllSys, PllUsb};
 use super::rosc::{self, Rosc};
 use super::types::{
@@ -22,29 +23,39 @@ use super::types::{
 use super::xosc::{self, Xosc};
 use crate::reset::Resettable;
 
-// ============================================================================
-// Clock Frequency Tracking
-// ============================================================================
+/// Number of GPIO clock outputs.
+const GPOUT_COUNT: usize = 4;
 
-/// Internal record of configured clock frequencies (Hz)
+/// Bind the CTRL/DIV register pair for a given GPOUT id.
 ///
-/// Updated by every `configure_*` call so callers can query frequencies
-/// without reading hardware registers.
-#[derive(Clone, Copy, Default)]
-pub(super) struct ClockFreqs {
-    // GPIO clock outputs
-    pub gpout0: u32,
-    pub gpout1: u32,
-    pub gpout2: u32,
-    pub gpout3: u32,
-    // Layer 1: core clocks
-    pub ref_clk: u32,
-    pub sys_clk: u32,
-    // Layer 2: peripheral clocks
-    pub peri_clk: u32,
-    pub hstx_clk: u32,
-    pub usb_clk: u32,
-    pub adc_clk: u32,
+/// The four GPOUT register types are structurally identical but generated as
+/// distinct types, so a macro is the simplest way to share the configuration
+/// code between all four.
+macro_rules! each_gpout {
+    ($clocks:expr, $id:expr, |$ctrl:ident, $div:ident| $body:expr) => {
+        match $id {
+            GpOutId::GpOut0 => {
+                let $ctrl = &$clocks.clk_gpout0_ctrl;
+                let $div = &$clocks.clk_gpout0_div;
+                $body
+            }
+            GpOutId::GpOut1 => {
+                let $ctrl = &$clocks.clk_gpout1_ctrl;
+                let $div = &$clocks.clk_gpout1_div;
+                $body
+            }
+            GpOutId::GpOut2 => {
+                let $ctrl = &$clocks.clk_gpout2_ctrl;
+                let $div = &$clocks.clk_gpout2_div;
+                $body
+            }
+            GpOutId::GpOut3 => {
+                let $ctrl = &$clocks.clk_gpout3_ctrl;
+                let $div = &$clocks.clk_gpout3_div;
+                $body
+            }
+        }
+    };
 }
 
 // ============================================================================
@@ -91,9 +102,16 @@ pub(super) struct ClockFreqs {
 pub struct Clocks {
     pub(super) clocks: rp2350_pac::CLOCKS,
     pub(super) xosc: Xosc,
-    pub(super) frequencies: ClockFreqs,
+    /// Tracked output frequencies (Hz), indexed by [`ClockId`].
+    pub(super) freqs: [u32; ClockId::COUNT],
+    /// Tracked GPOUT output frequencies (Hz), indexed by [`GpOutId`].
+    pub(super) gpout_freqs: [u32; GPOUT_COUNT],
+    /// Frequency of the source feeding clk_ref, before the ref divider.
+    pub(super) ref_src_freq: u32,
     /// Current reference clock source — drives dormant mode logic
     pub(super) ref_src: ClkRefSrc,
+    /// Auxiliary source last selected for clk_ref (used to restore after dormant)
+    pub(super) ref_aux: ClkRefAuxSrc,
     /// Saved PLL_SYS configuration for dormant wake restoration
     pub(super) pll_sys_config: Option<PllConfig>,
     /// Saved PLL_USB configuration for dormant wake restoration
@@ -119,8 +137,11 @@ impl Clocks {
         Self {
             clocks,
             xosc,
-            frequencies: ClockFreqs::default(),
+            freqs: [0; ClockId::COUNT],
+            gpout_freqs: [0; GPOUT_COUNT],
+            ref_src_freq: 0,
             ref_src: ClkRefSrc::Rosc, // hardware default at boot
+            ref_aux: ClkRefAuxSrc::PllUsb,
             pll_sys_config: None,
             pll_usb_config: None,
         }
@@ -177,14 +198,25 @@ impl Clocks {
     /// # Arguments
     /// * `src`      — Glitchless source to select
     /// * `src_freq` — Frequency of that source in Hz (used for tracking only)
+    ///
+    /// # Panics
+    /// Panics (debug builds) if `src` is [`ClkRefSrc::Aux`]; auxiliary sources
+    /// must be configured via [`configure_ref_aux`](Self::configure_ref_aux),
+    /// which also selects the auxiliary mux.
     #[inline]
     pub fn configure_ref_src(&mut self, src: ClkRefSrc, src_freq: u32) {
+        debug_assert_ne!(
+            src,
+            ClkRefSrc::Aux,
+            "use Clocks::configure_ref_aux for auxiliary clk_ref sources"
+        );
         self.clocks.clk_ref_ctrl.write_src(src as u32);
         crate::spin::spin_wait("clk_ref source selected", || {
             self.clocks.clk_ref_selected.clk_ref_selected() & (1 << src as u32) != 0
         });
         self.ref_src = src;
-        self.frequencies.ref_clk = src_freq;
+        self.ref_src_freq = src_freq;
+        self.set_freq(ClockId::Ref, apply_ref_div(&self.clocks, src_freq));
     }
 
     /// Configure the reference clock through the auxiliary mux
@@ -209,7 +241,9 @@ impl Clocks {
         });
 
         self.ref_src = ClkRefSrc::Aux;
-        self.frequencies.ref_clk = src_freq;
+        self.ref_aux = auxsrc;
+        self.ref_src_freq = src_freq;
+        self.set_freq(ClockId::Ref, apply_ref_div(&self.clocks, src_freq));
     }
 
     /// Set the reference clock integer divider
@@ -218,20 +252,18 @@ impl Clocks {
     /// * `int_div` — Integer divisor (1–255; writing 0 divides by 256)
     ///
     /// # Note
-    /// This also updates the tracked `ref_clk` frequency to `prev / int_div`.
-    /// Call before any dependent clocks are configured.
+    /// This also updates the tracked `ref_clk` frequency. Call before any
+    /// dependent clocks are configured.
     #[inline]
     pub fn set_ref_div(&mut self, int_div: u8) {
         self.clocks.clk_ref_div.write_int(int_div as u32);
-        if int_div != 0 {
-            self.frequencies.ref_clk /= int_div as u32;
-        }
+        self.set_freq(ClockId::Ref, apply_ref_div(&self.clocks, self.ref_src_freq));
     }
 
     /// Current reference clock frequency in Hz
     #[inline]
     pub fn ref_freq(&self) -> u32 {
-        self.frequencies.ref_clk
+        self.freq(ClockId::Ref)
     }
 
     // ========================================================================
@@ -266,7 +298,7 @@ impl Clocks {
         crate::spin::spin_wait("clk_sys switched to ref", || {
             self.clocks.clk_sys_selected.clk_sys_selected() & 1 != 0
         });
-        self.frequencies.sys_clk = self.frequencies.ref_clk;
+        self.set_freq(ClockId::Sys, self.ref_freq());
     }
 
     /// Configure the system clock from an auxiliary source with optional division
@@ -278,14 +310,11 @@ impl Clocks {
     /// * `src_freq`    — Frequency of the selected source in Hz
     /// * `target_freq` — Desired `clk_sys` frequency in Hz (≤ `src_freq`)
     pub fn configure_sys_aux(&mut self, auxsrc: ClkSysAuxSrc, src_freq: u32, target_freq: u32) {
-        // Compute 16.16 fixed-point divider: 1.0 minimum (no multiplication)
-        let div = if src_freq > target_freq {
-            (((src_freq as u64) << 16) / target_freq as u64) as u32
-        } else {
-            1 << 16
-        };
+        // 16.16 fixed-point divider, clamped to a minimum of 1.0.
+        let div = div_16_16(src_freq, target_freq);
 
-        // If the new divisor is larger, set it first to prevent momentary overspeed
+        // If the new divisor is larger, set it first while still on clk_ref to
+        // avoid a momentary over-frequency when the faster source is selected.
         let current_div = (self.clocks.clk_sys_div.int() << 16) | self.clocks.clk_sys_div.frac();
         if div > current_div {
             self.clocks.clk_sys_div.write_int((div >> 16) & 0xffff);
@@ -309,11 +338,13 @@ impl Clocks {
         self.clocks.clk_sys_div.write_int((div >> 16) & 0xffff);
         self.clocks.clk_sys_div.write_frac(div & 0xffff);
 
-        // Track actual frequency: src_freq × 65536 / div
-        self.frequencies.sys_clk = (((src_freq as u64) << 16) / div as u64) as u32;
+        self.set_freq(ClockId::Sys, actual_freq_16_16(src_freq, div));
     }
 
     /// Set the system clock 16.16 fractional divider directly
+    ///
+    /// Raw escape hatch: the tracked `clk_sys` frequency is **not** updated.
+    /// Call [`set_freq`](Self::set_freq) afterwards if you use this.
     #[inline]
     pub fn set_sys_div(&mut self, int_div: u16, frac_div: u16) {
         self.clocks.clk_sys_div.write_int(int_div as u32);
@@ -323,16 +354,7 @@ impl Clocks {
     /// Current system clock frequency in Hz
     #[inline]
     pub fn sys_freq(&self) -> u32 {
-        self.frequencies.sys_clk
-    }
-
-    /// Override the tracked system clock frequency
-    ///
-    /// Only needed when the hardware was configured through means other than
-    /// this HAL (e.g. directly via `regs()`).
-    #[inline]
-    pub fn set_sys_freq(&mut self, freq: u32) {
-        self.frequencies.sys_clk = freq;
+        self.freq(ClockId::Sys)
     }
 
     // ========================================================================
@@ -366,17 +388,16 @@ impl Clocks {
     /// * `src_freq` — Frequency of that source in Hz
     pub fn configure_peri(&mut self, auxsrc: ClkPeriAuxSrc, src_freq: u32) {
         self.clocks.clk_peri_ctrl.clr_enable();
-        // Brief pause for ENABLE de-assertion to propagate (~3 clk_peri cycles)
-        cortex_m_delay(3);
+        propagate_disable();
         self.clocks.clk_peri_ctrl.write_auxsrc(auxsrc as u32);
         self.clocks.clk_peri_ctrl.set_enable();
-        self.frequencies.peri_clk = src_freq;
+        self.set_freq(ClockId::Peri, src_freq);
     }
 
     /// Current peripheral clock frequency in Hz
     #[inline]
     pub fn peri_freq(&self) -> u32 {
-        self.frequencies.peri_clk
+        self.freq(ClockId::Peri)
     }
 
     // -------------------------------------------------------------------------
@@ -395,18 +416,18 @@ impl Clocks {
     /// * `target_freq` — Desired USB clock frequency in Hz (must equal 48 MHz)
     pub fn configure_usb(&mut self, auxsrc: ClkUsbAuxSrc, src_freq: u32, target_freq: u32) {
         self.clocks.clk_usb_ctrl.clr_enable();
-        cortex_m_delay(3);
+        propagate_disable();
         self.clocks.clk_usb_ctrl.write_auxsrc(auxsrc as u32);
-        let div = src_freq.div_ceil(target_freq); // ceiling division
-        self.clocks.clk_usb_div.write_int(div.max(1));
+        let div = src_freq.div_ceil(target_freq).max(1);
+        self.clocks.clk_usb_div.write_int(div);
         self.clocks.clk_usb_ctrl.set_enable();
-        self.frequencies.usb_clk = src_freq / div.max(1);
+        self.set_freq(ClockId::Usb, src_freq / div);
     }
 
     /// Current USB clock frequency in Hz
     #[inline]
     pub fn usb_freq(&self) -> u32 {
-        self.frequencies.usb_clk
+        self.freq(ClockId::Usb)
     }
 
     // -------------------------------------------------------------------------
@@ -423,18 +444,18 @@ impl Clocks {
     /// * `target_freq` — Desired ADC clock frequency in Hz (must equal 48 MHz)
     pub fn configure_adc(&mut self, auxsrc: ClkAdcAuxSrc, src_freq: u32, target_freq: u32) {
         self.clocks.clk_adc_ctrl.clr_enable();
-        cortex_m_delay(3);
+        propagate_disable();
         self.clocks.clk_adc_ctrl.write_auxsrc(auxsrc as u32);
-        let div = src_freq.div_ceil(target_freq); // ceiling division
-        self.clocks.clk_adc_div.write_int(div.max(1));
+        let div = src_freq.div_ceil(target_freq).max(1);
+        self.clocks.clk_adc_div.write_int(div);
         self.clocks.clk_adc_ctrl.set_enable();
-        self.frequencies.adc_clk = src_freq / div.max(1);
+        self.set_freq(ClockId::Adc, src_freq / div);
     }
 
     /// Current ADC clock frequency in Hz
     #[inline]
     pub fn adc_freq(&self) -> u32 {
-        self.frequencies.adc_clk
+        self.freq(ClockId::Adc)
     }
 
     // -------------------------------------------------------------------------
@@ -449,23 +470,24 @@ impl Clocks {
     /// * `target_freq` — Desired HSTX clock frequency in Hz (≤ `src_freq`)
     pub fn configure_hstx(&mut self, auxsrc: ClkHstxAuxSrc, src_freq: u32, target_freq: u32) {
         self.clocks.clk_hstx_ctrl.clr_enable();
-        cortex_m_delay(3);
+        propagate_disable();
         self.clocks.clk_hstx_ctrl.write_auxsrc(auxsrc as u32);
         // CLK_HSTX has an integer-only divider (no fractional bits)
         let div = if src_freq > target_freq {
-            src_freq.div_ceil(target_freq) // ceiling integer division
+            src_freq.div_ceil(target_freq)
         } else {
             1
         };
-        self.clocks.clk_hstx_div.write_int(div.max(1));
+        let div = div.max(1);
+        self.clocks.clk_hstx_div.write_int(div);
         self.clocks.clk_hstx_ctrl.set_enable();
-        self.frequencies.hstx_clk = src_freq / div.max(1);
+        self.set_freq(ClockId::Hstx, src_freq / div);
     }
 
     /// Current HSTX clock frequency in Hz
     #[inline]
     pub fn hstx_freq(&self) -> u32 {
-        self.frequencies.hstx_clk
+        self.freq(ClockId::Hstx)
     }
 
     // ========================================================================
@@ -497,148 +519,51 @@ impl Clocks {
         src_freq: u32,
         target_freq: u32,
     ) {
-        let div = if src_freq > target_freq {
-            (((src_freq as u64) << 16) / target_freq as u64) as u32
-        } else {
-            1 << 16
-        };
-        let actual_freq = (((src_freq as u64) << 16) / div as u64) as u32;
-        let aux = auxsrc as u32;
+        let div = div_16_16(src_freq, target_freq);
         let int_part = (div >> 16) & 0xffff;
         let frac_part = div & 0xffff;
+        let aux = auxsrc as u32;
 
-        // All four GPOUT have identical register layouts; just vary by instance.
-        match id {
-            GpOutId::GpOut0 => {
-                self.clocks.clk_gpout0_ctrl.clr_enable();
-                self.clocks.clk_gpout0_ctrl.write_auxsrc(aux);
-                self.clocks.clk_gpout0_div.write_int(int_part);
-                self.clocks.clk_gpout0_div.write_frac(frac_part);
-                self.clocks.clk_gpout0_ctrl.set_enable();
-                self.frequencies.gpout0 = actual_freq;
-            }
-            GpOutId::GpOut1 => {
-                self.clocks.clk_gpout1_ctrl.clr_enable();
-                self.clocks.clk_gpout1_ctrl.write_auxsrc(aux);
-                self.clocks.clk_gpout1_div.write_int(int_part);
-                self.clocks.clk_gpout1_div.write_frac(frac_part);
-                self.clocks.clk_gpout1_ctrl.set_enable();
-                self.frequencies.gpout1 = actual_freq;
-            }
-            GpOutId::GpOut2 => {
-                self.clocks.clk_gpout2_ctrl.clr_enable();
-                self.clocks.clk_gpout2_ctrl.write_auxsrc(aux);
-                self.clocks.clk_gpout2_div.write_int(int_part);
-                self.clocks.clk_gpout2_div.write_frac(frac_part);
-                self.clocks.clk_gpout2_ctrl.set_enable();
-                self.frequencies.gpout2 = actual_freq;
-            }
-            GpOutId::GpOut3 => {
-                self.clocks.clk_gpout3_ctrl.clr_enable();
-                self.clocks.clk_gpout3_ctrl.write_auxsrc(aux);
-                self.clocks.clk_gpout3_div.write_int(int_part);
-                self.clocks.clk_gpout3_div.write_frac(frac_part);
-                self.clocks.clk_gpout3_ctrl.set_enable();
-                self.frequencies.gpout3 = actual_freq;
-            }
-        }
+        each_gpout!(self.clocks, id, |ctrl, divreg| {
+            ctrl.clr_enable();
+            ctrl.write_auxsrc(aux);
+            divreg.write_int(int_part);
+            divreg.write_frac(frac_part);
+            ctrl.set_enable();
+        });
+
+        self.gpout_freqs[id.index()] = actual_freq_16_16(src_freq, div);
     }
 
     /// Disable a GPIO clock output
     #[inline]
     pub fn disable_gpout(&mut self, id: GpOutId) {
-        match id {
-            GpOutId::GpOut0 => {
-                self.clocks.clk_gpout0_ctrl.clr_enable();
-                self.frequencies.gpout0 = 0;
-            }
-            GpOutId::GpOut1 => {
-                self.clocks.clk_gpout1_ctrl.clr_enable();
-                self.frequencies.gpout1 = 0;
-            }
-            GpOutId::GpOut2 => {
-                self.clocks.clk_gpout2_ctrl.clr_enable();
-                self.frequencies.gpout2 = 0;
-            }
-            GpOutId::GpOut3 => {
-                self.clocks.clk_gpout3_ctrl.clr_enable();
-                self.frequencies.gpout3 = 0;
-            }
-        }
+        each_gpout!(self.clocks, id, |ctrl, _div| ctrl.clr_enable());
+        self.gpout_freqs[id.index()] = 0;
     }
 
-    // ========================================================================
-    // Clock Control — Start / Stop
-    // ========================================================================
-
-    /// Disable a clock generator
-    ///
-    /// `Ref` and `Sys` cannot be stopped (they have no ENABLE bit).
-    pub fn stop_clock(&mut self, clock: ClockId) {
-        match clock {
-            ClockId::GpOut0 => self.disable_gpout(GpOutId::GpOut0),
-            ClockId::GpOut1 => self.disable_gpout(GpOutId::GpOut1),
-            ClockId::GpOut2 => self.disable_gpout(GpOutId::GpOut2),
-            ClockId::GpOut3 => self.disable_gpout(GpOutId::GpOut3),
-            ClockId::Peri => {
-                self.clocks.clk_peri_ctrl.clr_enable();
-                self.frequencies.peri_clk = 0;
-            }
-            ClockId::Hstx => {
-                self.clocks.clk_hstx_ctrl.clr_enable();
-                self.frequencies.hstx_clk = 0;
-            }
-            ClockId::Usb => {
-                self.clocks.clk_usb_ctrl.clr_enable();
-                self.frequencies.usb_clk = 0;
-            }
-            ClockId::Adc => {
-                self.clocks.clk_adc_ctrl.clr_enable();
-                self.frequencies.adc_clk = 0;
-            }
-            // Ref and Sys have no ENABLE bit — no-op
-            ClockId::Ref | ClockId::Sys => {}
-        }
+    /// Current frequency of a GPIO clock output in Hz
+    #[inline]
+    pub fn gpout_freq(&self, id: GpOutId) -> u32 {
+        self.gpout_freqs[id.index()]
     }
 
     // ========================================================================
     // Frequency Query and Tracking
     // ========================================================================
 
-    /// Current frequency of a clock generator in Hz
+    /// Current frequency of a core clock generator in Hz
     #[inline]
     pub fn freq(&self, clock: ClockId) -> u32 {
-        match clock {
-            ClockId::GpOut0 => self.frequencies.gpout0,
-            ClockId::GpOut1 => self.frequencies.gpout1,
-            ClockId::GpOut2 => self.frequencies.gpout2,
-            ClockId::GpOut3 => self.frequencies.gpout3,
-            ClockId::Ref => self.frequencies.ref_clk,
-            ClockId::Sys => self.frequencies.sys_clk,
-            ClockId::Peri => self.frequencies.peri_clk,
-            ClockId::Hstx => self.frequencies.hstx_clk,
-            ClockId::Usb => self.frequencies.usb_clk,
-            ClockId::Adc => self.frequencies.adc_clk,
-        }
+        self.freqs[clock.index()]
     }
 
-    /// Override the tracked frequency for a clock generator
+    /// Override the tracked frequency for a core clock generator
     ///
     /// Useful when the hardware was configured outside this HAL.
     #[inline]
     pub fn set_freq(&mut self, clock: ClockId, freq: u32) {
-        match clock {
-            ClockId::GpOut0 => self.frequencies.gpout0 = freq,
-            ClockId::GpOut1 => self.frequencies.gpout1 = freq,
-            ClockId::GpOut2 => self.frequencies.gpout2 = freq,
-            ClockId::GpOut3 => self.frequencies.gpout3 = freq,
-            ClockId::Ref => self.frequencies.ref_clk = freq,
-            ClockId::Sys => self.frequencies.sys_clk = freq,
-            ClockId::Peri => self.frequencies.peri_clk = freq,
-            ClockId::Hstx => self.frequencies.hstx_clk = freq,
-            ClockId::Usb => self.frequencies.usb_clk = freq,
-            ClockId::Adc => self.frequencies.adc_clk = freq,
-        }
+        self.freqs[clock.index()] = freq;
     }
 
     // ========================================================================
@@ -664,7 +589,7 @@ impl Clocks {
 
         self.clocks
             .fc0_ref_khz
-            .write_fc0_ref_khz(self.frequencies.ref_clk / 1000);
+            .write_fc0_ref_khz(self.ref_freq() / 1000);
 
         // Measurement window: 2^10 clk_ref cycles ≈ 1 ms at 12 MHz
         self.clocks.fc0_interval.write_fc0_interval(10);
@@ -1088,36 +1013,41 @@ impl Clocks {
     /// This function does not panic, but incorrect behaviour will result if
     /// no wake-up source is configured — the system will sleep indefinitely.
     pub fn dormant(&mut self) {
-        let saved_sys_freq = self.frequencies.sys_clk;
+        let saved_sys_freq = self.sys_freq();
+        let saved_ref = self.ref_src;
+        let saved_ref_freq = self.ref_src_freq;
 
-        match self.ref_src {
-            // XOSC is the reference — put XOSC to sleep, keep ROSC running
-            ClkRefSrc::Xosc | ClkRefSrc::Aux | ClkRefSrc::Lposc => {
-                self.configure_sys_from_ref();
-                self.configure_ref_src(ClkRefSrc::Rosc, rosc::ROSC_HZ);
-                self.power_down_plls();
-                // XOSC enters dormant — CPU halts here until wake interrupt
-                self.xosc.dormant();
-                // === execution resumes after wake ===
-                // XOSC.dormant() already waited for XOSC to re-stabilise
-                self.configure_ref_src(ClkRefSrc::Xosc, xosc::XOSC_HZ);
-                self.restore_plls();
-                self.restore_sys_clk(saved_sys_freq);
-            }
-            // ROSC is the reference — put ROSC to sleep, use XOSC as backup
+        // Move clk_sys to clk_ref, then move clk_ref onto the oscillator that
+        // stays awake during dormant so the primary oscillator can sleep.
+        match saved_ref {
+            // clk_ref = ROSC → ROSC sleeps; XOSC keeps clk_ref alive.
             ClkRefSrc::Rosc => {
                 self.configure_sys_from_ref();
                 self.configure_ref_src(ClkRefSrc::Xosc, xosc::XOSC_HZ);
                 self.power_down_plls();
-                // ROSC enters dormant — CPU halts here until wake interrupt
-                // Safety: clk_ref has been moved to XOSC so ROSC is idle
+                // Safety: clk_ref has been moved to XOSC so ROSC is idle.
                 unsafe { Rosc::steal().dormant() };
-                // === execution resumes after wake ===
+            }
+            // clk_ref = XOSC/LPOSC/AUX → XOSC sleeps; ROSC keeps clk_ref alive.
+            _ => {
+                self.configure_sys_from_ref();
                 self.configure_ref_src(ClkRefSrc::Rosc, rosc::ROSC_HZ);
-                self.restore_plls();
-                self.restore_sys_clk(saved_sys_freq);
+                self.power_down_plls();
+                // XOSC enters dormant — CPU halts here until the wake interrupt.
+                self.xosc.dormant();
             }
         }
+
+        // Execution resumes after the wake interrupt. Restore PLLs first (an
+        // AUX clk_ref may depend on them), then clk_ref, then clk_sys.
+        self.restore_plls();
+        match saved_ref {
+            ClkRefSrc::Rosc => self.configure_ref_src(ClkRefSrc::Rosc, rosc::ROSC_HZ),
+            ClkRefSrc::Xosc => self.configure_ref_src(ClkRefSrc::Xosc, xosc::XOSC_HZ),
+            ClkRefSrc::Lposc => self.configure_ref_src(ClkRefSrc::Lposc, lposc::LPOSC_HZ),
+            ClkRefSrc::Aux => self.configure_ref_aux(self.ref_aux, saved_ref_freq),
+        }
+        self.restore_sys_clk(saved_sys_freq);
     }
 
     /// Restore clk_sys using the same PLL source that was active before dormant
@@ -1175,16 +1105,39 @@ impl Clocks {
 }
 
 // ============================================================================
-// Internal utility
+// Internal utilities
 // ============================================================================
 
-/// Burn a small number of CPU cycles to let a peripheral register propagate.
-///
-/// Used after clearing an ENABLE bit before switching a clock source, giving
-/// the hardware ~N clk_sys cycles to de-assert the enable.
+/// Apply the hardware clk_ref divider to a source frequency.
+fn apply_ref_div(clocks: &rp2350_pac::CLOCKS, src_freq: u32) -> u32 {
+    let int = clocks.clk_ref_div.int();
+    // A value of 0 divides by 256 per the datasheet.
+    let div = if int == 0 { 256 } else { int };
+    src_freq / div
+}
+
+/// Compute the 16.16 fixed-point divisor needed to reach `target` from `src`,
+/// clamped to a minimum of 1.0.
+#[inline]
+fn div_16_16(src: u32, target: u32) -> u32 {
+    if src > target {
+        ((src as u64 * 0x1_0000) / target as u64) as u32
+    } else {
+        0x1_0000
+    }
+}
+
+/// Actual frequency produced by a 16.16 divisor applied to a source frequency.
+#[inline]
+fn actual_freq_16_16(src: u32, div: u32) -> u32 {
+    ((src as u64 * 0x1_0000) / div as u64) as u32
+}
+
+/// Burn a few CPU cycles so a CLK_*_CTRL.ENABLE de-assertion can propagate
+/// before the source is changed.
 #[inline(always)]
-fn cortex_m_delay(cycles: u32) {
-    for _ in 0..cycles {
+fn propagate_disable() {
+    for _ in 0..4 {
         core::hint::spin_loop();
     }
 }
