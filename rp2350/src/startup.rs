@@ -20,7 +20,7 @@ use core::sync::atomic::{Ordering, compiler_fence};
 pub unsafe fn init() {
     crate::sio::release_all_spinlocks();
 
-    crate::ppb::Cpacr::enable_cp();
+    crate::ppb::Cpacr::enable_defaults();
 
     compiler_fence(Ordering::SeqCst);
 }

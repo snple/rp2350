@@ -1,25 +1,30 @@
 //! QSPI (Quad SPI) HAL for RP2350
 //!
-//! This module provides a safe interface for the RP2350 QMI (QSPI Memory Interface) peripheral.
-//! The QMI provides both a memory-mapped interface (XIP) and a direct serial mode for
-//! programming, configuration, and control of external SPI/DSPI/QSPI flash or PSRAM devices.
+//! Driver for the QMI (QSPI Memory Interface) peripheral, which provides both
+//! a memory-mapped interface (XIP) and a direct serial mode for external
+//! SPI/DSPI/QSPI flash or PSRAM devices.
 //!
 //! # Architecture
 //!
-//! The QMI peripheral has two operating modes:
+//! The QMI has two operating modes:
 //!
-//! - **Memory-mapped mode (XIP)**: Automatically translates AHB bus accesses to SPI flash
-//!   read/write commands. Supports two chip selects (CS0n, CS1n) with independent configurations.
-//! - **Direct mode**: Software-controlled raw SPI transfers via TX/RX FIFOs. Used for
-//!   flash programming, erasing, status register access, and other non-memory-mapped operations.
+//! - **Memory-mapped (XIP)**: automatically translates AHB bus accesses into
+//!   SPI flash read/write commands. Two chip selects (CS0n/CS1n) with
+//!   independent timing, format and command configuration.
+//! - **Direct**: software-driven raw SPI frames via TX/RX FIFOs, for flash
+//!   programming, erasing, status register access, and other non-memory-mapped
+//!   operations.
+//!
+//! XIP configuration lives on [`Qspi`]; direct-mode operations live on the
+//! [`Direct`] handle returned by [`Qspi::direct`].
 //!
 //! # Features
 //!
-//! - Single / Dual / Quad SPI bus widths
-//! - Two independent chip selects (CS0n, CS1n) for flash/PSRAM
-//! - Configurable clock divider per memory window
+//! - Single / Dual / Quad bus widths
+//! - Two independent chip selects (CS0n, CS1n)
+//! - Configurable clock divisor per memory window
 //! - Configurable read/write transfer formats with independent phase widths
-//! - Command prefix, address, suffix, dummy, and data phases
+//! - Command prefix, address, suffix, dummy and data phases
 //! - Direct mode for raw SPI command/response
 //! - Double Transfer Rate (DTR) support
 //! - DMA support for direct mode
@@ -27,69 +32,108 @@
 //!
 //! # QSPI Pin Mapping
 //!
-//! The QSPI interface uses dedicated pins (not from GPIO bank0):
-//! - QSPI_SCLK: Serial clock
-//! - QSPI_CSn0: Chip select 0 (active low)
-//! - QSPI_CSn1: Chip select 1 (active low) — if a second device is connected
-//! - QSPI_SD0: Serial data 0 (MOSI in single SPI mode)
-//! - QSPI_SD1: Serial data 1 (MISO in single SPI mode)
-//! - QSPI_SD2: Serial data 2 (active in quad mode)
-//! - QSPI_SD3: Serial data 3 (active in quad mode)
+//! The QSPI interface uses dedicated pins (not from GPIO bank 0):
 //!
-//! # Example (Direct mode — read flash JEDEC ID)
+//! - QSPI_SCLK — serial clock
+//! - QSPI_CSn0 — chip select 0 (active low)
+//! - QSPI_CSn1 — chip select 1 (active low), if a second device is connected
+//! - QSPI_SD0..SD3 — serial data (SD0 = MOSI, SD1 = MISO in single mode)
+//!
+//! # Example — direct mode: read flash JEDEC ID
 //!
 //! ```ignore
-//! use rp2350::qspi::Qspi;
+//! use rp2350::qspi::{Qspi, Window};
 //! use rp2350::Peripherals;
 //!
 //! let dp = Peripherals::take().unwrap();
-//! let mut qspi = Qspi::init(dp.QMI);
+//! let qspi = Qspi::init(dp.QMI);
 //!
-//! // Enter direct mode and select CS0
-//! qspi.enable_direct_mode();
-//! qspi.assert_cs0();
-//!
-//! // Send JEDEC ID command (0x9F) and read 3 bytes
-//! qspi.direct_write_blocking(0x9F, false);
-//! let mfr = qspi.direct_read_blocking();  // Manufacturer ID
-//! let id1 = qspi.direct_read_blocking();  // Device ID (MSB)
-//! let id2 = qspi.direct_read_blocking();  // Device ID (LSB)
-//!
-//! qspi.deassert_cs0();
-//! qspi.disable_direct_mode();
+//! let direct = qspi.direct();
+//! direct.enable();
+//! let (mfr, typ, cap) = direct.read_jedec_id(Window::M0);
+//! direct.disable();
 //! ```
 //!
-//! # Example (Configure XIP quad read for flash on CS0)
+//! # Example — configure XIP quad read on CS0
 //!
 //! ```ignore
-//! use rp2350::qspi::{Qspi, BusWidth};
+//! use rp2350::qspi::{BusWidth, Format, Qspi, Window};
+//! use rp2350::Peripherals;
 //!
 //! let dp = Peripherals::take().unwrap();
-//! let mut qspi = Qspi::init(dp.QMI);
+//! let qspi = Qspi::init(dp.QMI);
 //!
-//! // Configure memory window 0 for quad read (0x6B) at higher speed
 //! qspi.set_clkdiv(Window::M0, 2);
-//! qspi.configure_read_format(Window::M0, ReadFormat {
-//!     prefix_width: BusWidth::Single,
-//!     addr_width: BusWidth::Single,
-//!     suffix_width: BusWidth::Single,
-//!     dummy_width: BusWidth::Single,
+//! qspi.configure_read_format(Window::M0, Format {
 //!     data_width: BusWidth::Quad,
-//!     prefix_len: true,      // 8-bit command prefix
-//!     suffix_len: 0,         // No suffix
-//!     dummy_len: 2,          // 8 dummy bits
-//!     dtr: false,
+//!     dummy_len: 2, // 8 dummy bits
+//!     ..Format::default()
 //! });
 //! qspi.set_read_command(Window::M0, 0x6B, 0x00);
 //!
-//! // Now XIP flash reads from 0x10000000 will use quad output
+//! // XIP reads from 0x1000_0000 now use quad output.
 //! ```
 
 use crate::Steal;
-
 use rp2350_pac::QMI;
 
-use rp2350_pac::qmi::DirectTxVal;
+pub use rp2350_pac::qmi::DirectTxVal;
+
+/// Run `$body` with `reg` bound to the window's register (`m0_*` or `m1_*`).
+///
+/// The PAC generates a distinct register type per window (`M0Timing` vs
+/// `M1Timing`, ...) with identical method surfaces, so this macro emits the
+/// body twice — once per window — instead of duplicating the match arms.
+macro_rules! with_window {
+    ($qmi:expr, $window:expr, $m0:ident, $m1:ident, $reg:ident, $body:block) => {
+        match $window {
+            Window::M0 => {
+                let $reg = &$qmi.$m0;
+                $body
+            }
+            Window::M1 => {
+                let $reg = &$qmi.$m1;
+                $body
+            }
+        }
+    };
+}
+
+/// Write a [`Format`] into a read/write format register.
+///
+/// `Mx_RFMT` and `Mx_WFMT` share the same field layout and accessor names.
+macro_rules! write_format_reg {
+    ($reg:expr, $fmt:expr) => {{
+        let f = $fmt;
+        $reg.write_prefix_width(f.prefix_width as u32);
+        $reg.write_addr_width(f.addr_width as u32);
+        $reg.write_suffix_width(f.suffix_width as u32);
+        $reg.write_dummy_width(f.dummy_width as u32);
+        $reg.write_data_width(f.data_width as u32);
+        if f.prefix_len {
+            $reg.set_prefix_len();
+        } else {
+            $reg.clr_prefix_len();
+        }
+        $reg.write_suffix_len(f.suffix_len);
+        $reg.write_dummy_len(f.dummy_len);
+        if f.dtr {
+            $reg.set_dtr();
+        } else {
+            $reg.clr_dtr();
+        }
+    }};
+}
+
+/// Write a translation window's `size` then `base`.
+///
+/// `base` is written last because the translation is latched when it changes.
+macro_rules! write_atrans {
+    ($reg:expr, $base:expr, $size:expr) => {{
+        $reg.write_size($size);
+        $reg.write_base($base);
+    }};
+}
 
 // ============================================================================
 // Types
@@ -133,51 +177,26 @@ pub enum PageBreak {
     Bytes4096 = 3,
 }
 
-/// Read transfer format configuration
+/// Transfer format for a memory window (read or write).
 ///
-/// Configures the bus width of each phase and the length/presence of
-/// command prefix, suffix, and dummy phases for memory-mapped reads.
+/// Configures the bus width of each phase and the length/presence of the
+/// command prefix, suffix and dummy phases. The same shape is used for both
+/// read ([`Qspi::configure_read_format`]) and write
+/// ([`Qspi::configure_write_format`]) transfers.
 #[derive(Clone, Copy, Debug)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
-pub struct ReadFormat {
-    /// Width for command prefix phase
+pub struct Format {
+    /// Width of the command prefix phase
     pub prefix_width: BusWidth,
-    /// Width for address phase (24-bit address)
+    /// Width of the address phase (always 24 bits)
     pub addr_width: BusWidth,
-    /// Width for command suffix phase
+    /// Width of the post-address command suffix phase
     pub suffix_width: BusWidth,
-    /// Width for dummy/turnaround phase
+    /// Width of the dummy/turnaround phase
     pub dummy_width: BusWidth,
-    /// Width for data phase
+    /// Width of the data phase
     pub data_width: BusWidth,
-    /// Enable 8-bit command prefix (true = 8 bits, false = none)
-    pub prefix_len: bool,
-    /// Suffix length: 0 = none, 2 = 8 bits
-    pub suffix_len: u32,
-    /// Dummy phase length in units of 4 bits (0-7): 0=none, 1=4b, 2=8b, …, 7=28b
-    pub dummy_len: u32,
-    /// Enable double transfer rate
-    pub dtr: bool,
-}
-
-/// Write transfer format configuration
-///
-/// Configures the bus width of each phase and the length/presence of
-/// command prefix, suffix, and dummy phases for memory-mapped writes.
-#[derive(Clone, Copy, Debug)]
-#[cfg_attr(feature = "defmt", derive(defmt::Format))]
-pub struct WriteFormat {
-    /// Width for command prefix phase
-    pub prefix_width: BusWidth,
-    /// Width for address phase (24-bit address)
-    pub addr_width: BusWidth,
-    /// Width for command suffix phase
-    pub suffix_width: BusWidth,
-    /// Width for dummy/turnaround phase
-    pub dummy_width: BusWidth,
-    /// Width for data phase
-    pub data_width: BusWidth,
-    /// Enable 8-bit command prefix (true = 8 bits, false = none)
+    /// Emit an 8-bit command prefix (true) or none (false)
     pub prefix_len: bool,
     /// Suffix length: 0 = none, 2 = 8 bits
     pub suffix_len: u32,
@@ -185,6 +204,23 @@ pub struct WriteFormat {
     pub dummy_len: u32,
     /// Enable double transfer rate
     pub dtr: bool,
+}
+
+impl Default for Format {
+    /// Hardware reset value — a basic `0x03` single-width serial read.
+    fn default() -> Self {
+        Self {
+            prefix_width: BusWidth::Single,
+            addr_width: BusWidth::Single,
+            suffix_width: BusWidth::Single,
+            dummy_width: BusWidth::Single,
+            data_width: BusWidth::Single,
+            prefix_len: true,
+            suffix_len: 0,
+            dummy_len: 0,
+            dtr: false,
+        }
+    }
 }
 
 /// Timing configuration for a memory window
@@ -210,7 +246,7 @@ pub struct TimingConfig {
 }
 
 impl Default for TimingConfig {
-    /// Reset default: clkdiv=4, rxdelay=0, cooldown=1
+    /// Hardware reset value (`0x4000_0004`): clkdiv=4, cooldown=1.
     fn default() -> Self {
         Self {
             clkdiv: 4,
@@ -225,15 +261,15 @@ impl Default for TimingConfig {
     }
 }
 
-/// QSPI error types
+/// Direct-mode transfer error.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum Error {
-    /// TX FIFO full when trying to write
+    /// The TX FIFO stayed full — no space to push a frame within the timeout.
     TxFull,
-    /// RX FIFO empty when trying to read
+    /// The RX FIFO stayed empty — no data to pop within the timeout.
     RxEmpty,
-    /// Busy timeout
+    /// The QMI stayed busy within the timeout.
     Busy,
 }
 
@@ -243,27 +279,18 @@ pub enum Error {
 
 /// QMI (QSPI Memory Interface) peripheral wrapper.
 ///
-/// Provides safe access to the RP2350's QSPI controller for both
-/// memory-mapped (XIP) and direct serial mode operations.
+/// Owns the QMI peripheral and provides the memory-mapped (XIP) configuration
+/// interface. For direct serial mode, obtain a [`Direct`] handle with
+/// [`Qspi::direct`].
 ///
-/// The QSPI controller uses dedicated QSPI pins (SCLK, CSn, SD0-SD3) that
-/// are separate from the GPIO bank0 pins, so no pin ownership management
-/// is needed.
+/// The QSPI controller uses dedicated QSPI pins (SCLK, CSn, SD0-SD3) separate
+/// from GPIO bank 0, so no pin ownership management is needed.
 pub struct Qspi {
     qmi: QMI,
 }
 
 impl Qspi {
-    /// Initialize the QSPI driver.
-    ///
-    /// Takes ownership of the QMI peripheral. The QSPI pins are dedicated
-    /// and don't need to be configured separately.
-    ///
-    /// # Arguments
-    ///
-    /// * `qmi` - The QMI peripheral from PAC
-    ///
-    /// # Example
+    /// Initialize the QSPI driver, taking ownership of the QMI peripheral.
     ///
     /// ```ignore
     /// let dp = Peripherals::take().unwrap();
@@ -277,8 +304,8 @@ impl Qspi {
     ///
     /// # Safety
     ///
-    /// The caller must ensure the peripheral has been initialised
-    /// and that no data races occur.
+    /// The caller must ensure the peripheral has been initialised and that no
+    /// data races occur.
     #[inline]
     pub unsafe fn steal() -> Steal<Self> {
         Steal(Self::init(unsafe { QMI::steal() }))
@@ -290,46 +317,291 @@ impl Qspi {
         self.qmi
     }
 
-    /// Get reference to the underlying register block.
+    /// Get a reference to the underlying register block.
     ///
     /// # Safety
+    ///
     /// Direct register access can bypass the HAL's safety guarantees.
     #[inline]
     pub unsafe fn regs(&self) -> &rp2350_pac::qmi::RegisterBlock {
         &self.qmi
     }
 
+    /// Borrow a direct-mode handle.
+    #[inline]
+    pub fn direct(&self) -> Direct<'_> {
+        Direct { qmi: &self.qmi }
+    }
+
     // ========================================================================
-    // Direct Mode — Control
+    // Memory-mapped (XIP) — timing
+    // ========================================================================
+
+    /// Set the clock divisor for a memory window.
+    ///
+    /// Divisors 1..255 are encoded directly; 0 encodes 256. This is the only
+    /// timing parameter that may be changed while the QMI is actively
+    /// accessing memory.
+    #[inline]
+    pub fn set_clkdiv(&self, window: Window, div: u8) {
+        with_window!(self.qmi, window, m0_timing, m1_timing, reg, {
+            reg.write_clkdiv(div as u32);
+        });
+    }
+
+    /// Get the clock divisor for a memory window.
+    #[inline]
+    pub fn clkdiv(&self, window: Window) -> u8 {
+        with_window!(self.qmi, window, m0_timing, m1_timing, reg, {
+            reg.clkdiv() as u8
+        })
+    }
+
+    /// Apply a complete timing configuration to a memory window.
+    ///
+    /// All fields other than `clkdiv` must only be changed while the QMI is
+    /// idle.
+    pub fn configure_timing(&self, window: Window, cfg: TimingConfig) {
+        with_window!(self.qmi, window, m0_timing, m1_timing, reg, {
+            reg.write_clkdiv(cfg.clkdiv as u32);
+            reg.write_rxdelay(cfg.rxdelay as u32);
+            reg.write_min_deselect(cfg.min_deselect as u32);
+            reg.write_max_select(cfg.max_select as u32);
+            reg.write_select_hold(cfg.select_hold as u32);
+            if cfg.select_setup {
+                reg.set_select_setup();
+            } else {
+                reg.clr_select_setup();
+            }
+            reg.write_pagebreak(cfg.pagebreak as u32);
+            reg.write_cooldown(cfg.cooldown as u32);
+        });
+    }
+
+    // ========================================================================
+    // Memory-mapped (XIP) — transfer formats and commands
+    // ========================================================================
+
+    /// Configure the read transfer format for a memory window.
+    pub fn configure_read_format(&self, window: Window, fmt: Format) {
+        with_window!(self.qmi, window, m0_rfmt, m1_rfmt, reg, {
+            write_format_reg!(reg, fmt);
+        });
+    }
+
+    /// Configure the write transfer format for a memory window.
+    ///
+    /// XIP memory is read-only by default; writes must be enabled via the
+    /// `XIP_CTRL` `WRITABLE_M0`/`WRITABLE_M1` bits.
+    pub fn configure_write_format(&self, window: Window, fmt: Format) {
+        with_window!(self.qmi, window, m0_wfmt, m1_wfmt, reg, {
+            write_format_reg!(reg, fmt);
+        });
+    }
+
+    /// Set the read command prefix and suffix bytes for a memory window.
+    ///
+    /// * `prefix` — command byte (e.g. `0x03` standard read, `0x6B` quad read)
+    /// * `suffix` — suffix byte (e.g. `0xA0` for continuous read mode)
+    pub fn set_read_command(&self, window: Window, prefix: u8, suffix: u8) {
+        with_window!(self.qmi, window, m0_rcmd, m1_rcmd, reg, {
+            reg.write_prefix(prefix as u32);
+            reg.write_suffix(suffix as u32);
+        });
+    }
+
+    /// Set the write command prefix and suffix bytes for a memory window.
+    ///
+    /// * `prefix` — command byte (e.g. `0x02` page program, `0x32` quad program)
+    /// * `suffix` — suffix byte
+    pub fn set_write_command(&self, window: Window, prefix: u8, suffix: u8) {
+        with_window!(self.qmi, window, m0_wcmd, m1_wcmd, reg, {
+            reg.write_prefix(prefix as u32);
+            reg.write_suffix(suffix as u32);
+        });
+    }
+
+    // ========================================================================
+    // Memory-mapped (XIP) — address translation
+    // ========================================================================
+
+    /// Set the address translation for one of the eight 4 MiB XIP windows.
+    ///
+    /// * `window` — translation window index (0-7)
+    /// * `base` — physical base address, in 4 KiB units (12-bit)
+    /// * `size` — aperture size, in 4 KiB units
+    ///
+    /// `size` is written before `base` because the translation is latched when
+    /// `base` changes. A cache flush is required after changing translation.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `window >= 8`.
+    pub fn set_address_translation(&self, window: u8, base: u32, size: u32) {
+        assert!(
+            window < 8,
+            "address translation window must be 0-7, got {window}"
+        );
+        match window {
+            0 => write_atrans!(&self.qmi.atrans0, base, size),
+            1 => write_atrans!(&self.qmi.atrans1, base, size),
+            2 => write_atrans!(&self.qmi.atrans2, base, size),
+            3 => write_atrans!(&self.qmi.atrans3, base, size),
+            4 => write_atrans!(&self.qmi.atrans4, base, size),
+            5 => write_atrans!(&self.qmi.atrans5, base, size),
+            6 => write_atrans!(&self.qmi.atrans6, base, size),
+            _ => write_atrans!(&self.qmi.atrans7, base, size),
+        }
+    }
+
+    // ========================================================================
+    // High-level configuration presets
+    // ========================================================================
+
+    /// Standard SPI read (`0x03`): single-width, no dummy, no suffix.
+    pub fn configure_standard_read(&self, window: Window, clkdiv: u8) {
+        self.set_clkdiv(window, clkdiv);
+        self.configure_read_format(window, Format::default());
+        self.set_read_command(window, 0x03, 0x00);
+    }
+
+    /// Fast read (`0x0B`): single-width, 8 dummy bits.
+    pub fn configure_fast_read(&self, window: Window, clkdiv: u8) {
+        self.set_clkdiv(window, clkdiv);
+        self.configure_read_format(
+            window,
+            Format {
+                dummy_len: 2, // 8 dummy bits
+                ..Format::default()
+            },
+        );
+        self.set_read_command(window, 0x0B, 0x00);
+    }
+
+    /// Dual output read (`0x3B`): single command/address, dual data, 8 dummy bits.
+    pub fn configure_dual_read(&self, window: Window, clkdiv: u8) {
+        self.set_clkdiv(window, clkdiv);
+        self.configure_read_format(
+            window,
+            Format {
+                data_width: BusWidth::Dual,
+                dummy_len: 2,
+                ..Format::default()
+            },
+        );
+        self.set_read_command(window, 0x3B, 0x00);
+    }
+
+    /// Quad output read (`0x6B`): single command/address, quad data, 8 dummy bits.
+    pub fn configure_quad_read(&self, window: Window, clkdiv: u8) {
+        self.set_clkdiv(window, clkdiv);
+        self.configure_read_format(
+            window,
+            Format {
+                data_width: BusWidth::Quad,
+                dummy_len: 2,
+                ..Format::default()
+            },
+        );
+        self.set_read_command(window, 0x6B, 0x00);
+    }
+
+    /// Quad I/O read (`0xEB`): single command, quad address and data, 8-bit
+    /// continuous-read suffix, 4 dummy bits.
+    pub fn configure_quad_io_read(&self, window: Window, clkdiv: u8) {
+        self.set_clkdiv(window, clkdiv);
+        self.configure_read_format(
+            window,
+            Format {
+                addr_width: BusWidth::Quad,
+                suffix_width: BusWidth::Quad,
+                dummy_width: BusWidth::Quad,
+                data_width: BusWidth::Quad,
+                suffix_len: 2, // 8-bit suffix
+                dummy_len: 1,  // 4 dummy bits (1 quad cycle)
+                ..Format::default()
+            },
+        );
+        self.set_read_command(window, 0xEB, 0xA0);
+    }
+
+    /// Standard page program (`0x02`): single-width write.
+    pub fn configure_standard_write(&self, window: Window) {
+        self.configure_write_format(window, Format::default());
+        self.set_write_command(window, 0x02, 0x00);
+    }
+
+    /// Quad page program (`0x32`): single command/address, quad data.
+    pub fn configure_quad_write(&self, window: Window) {
+        self.configure_write_format(
+            window,
+            Format {
+                data_width: BusWidth::Quad,
+                ..Format::default()
+            },
+        );
+        self.set_write_command(window, 0x32, 0x00);
+    }
+}
+
+// ============================================================================
+// Direct mode
+// ============================================================================
+
+/// Direct serial mode handle.
+///
+/// Obtained from [`Qspi::direct`]. In direct mode, software controls the chip
+/// select lines and performs raw SPI frames through the TX/RX FIFOs.
+/// Memory-mapped (XIP) accesses fault while direct mode is enabled.
+///
+/// All methods take `&self` and may be called from interrupt context.
+pub struct Direct<'a> {
+    qmi: &'a QMI,
+}
+
+impl Direct<'_> {
+    /// DREQ selection for transmitting data via DMA in direct mode.
+    pub const TX_DREQ: crate::dma::TreqSel = crate::dma::TreqSel::XipQmiTx;
+
+    /// DREQ selection for receiving data via DMA in direct mode.
+    pub const RX_DREQ: crate::dma::TreqSel = crate::dma::TreqSel::XipQmiRx;
+
+    /// Address of the direct TX FIFO register, for DMA.
+    #[inline]
+    pub fn tx_address(&self) -> u32 {
+        core::ptr::addr_of!(self.qmi.direct_tx) as u32
+    }
+
+    /// Address of the direct RX FIFO register, for DMA.
+    #[inline]
+    pub fn rx_address(&self) -> u32 {
+        core::ptr::addr_of!(self.qmi.direct_rx) as u32
+    }
+
+    // ========================================================================
+    // Mode control
     // ========================================================================
 
     /// Enable direct serial mode.
     ///
-    /// In direct mode, software controls chip select lines and performs
-    /// raw SPI transfers via the TX/RX FIFOs. Memory-mapped (XIP) accesses
-    /// will generate bus errors while direct mode is enabled.
-    ///
-    /// # Important
-    ///
-    /// Before asserting chip select, poll [`is_busy()`](Self::is_busy) to
-    /// ensure no memory-mapped transfer is still in progress.
+    /// Poll [`is_busy`](Self::is_busy) before asserting a chip select to make
+    /// sure no memory-mapped transfer is still in progress.
     #[inline]
-    pub fn enable_direct_mode(&self) {
+    pub fn enable(&self) {
         self.qmi.direct_csr.set_en();
     }
 
-    /// Disable direct serial mode.
+    /// Disable direct serial mode, returning to memory-mapped (XIP) mode.
     ///
-    /// Returns to memory-mapped (XIP) mode. Ensure all direct transfers
-    /// are complete and chip selects are deasserted before calling this.
+    /// Ensure all transfers are complete and chip selects are deasserted first.
     #[inline]
-    pub fn disable_direct_mode(&self) {
+    pub fn disable(&self) {
         self.qmi.direct_csr.clr_en();
     }
 
     /// Check if direct mode is enabled.
     #[inline]
-    pub fn is_direct_mode(&self) -> bool {
+    pub fn is_enabled(&self) -> bool {
         self.qmi.direct_csr.en()
     }
 
@@ -350,885 +622,372 @@ impl Qspi {
         crate::spin::spin_wait("QMI idle", || !self.qmi.direct_csr.busy());
     }
 
-    // ========================================================================
-    // Direct Mode — Chip Select
-    // ========================================================================
-
-    /// Assert CS0n (drive low) manually.
-    ///
-    /// This applies even when direct mode is disabled.
+    /// Wait until the QMI is idle, returning [`Error::Busy`] on timeout.
     #[inline]
-    pub fn assert_cs0(&self) {
-        self.qmi.direct_csr.set_assert_cs0n();
-    }
-
-    /// Deassert CS0n (release high) manually.
-    #[inline]
-    pub fn deassert_cs0(&self) {
-        self.qmi.direct_csr.clr_assert_cs0n();
-    }
-
-    /// Assert CS1n (drive low) manually.
-    #[inline]
-    pub fn assert_cs1(&self) {
-        self.qmi.direct_csr.set_assert_cs1n();
-    }
-
-    /// Deassert CS1n (release high) manually.
-    #[inline]
-    pub fn deassert_cs1(&self) {
-        self.qmi.direct_csr.clr_assert_cs1n();
-    }
-
-    /// Enable automatic CS0n assertion whenever BUSY is set.
-    #[inline]
-    pub fn enable_auto_cs0(&self) {
-        self.qmi.direct_csr.set_auto_cs0n();
-    }
-
-    /// Disable automatic CS0n assertion.
-    #[inline]
-    pub fn disable_auto_cs0(&self) {
-        self.qmi.direct_csr.clr_auto_cs0n();
-    }
-
-    /// Enable automatic CS1n assertion whenever BUSY is set.
-    #[inline]
-    pub fn enable_auto_cs1(&self) {
-        self.qmi.direct_csr.set_auto_cs1n();
-    }
-
-    /// Disable automatic CS1n assertion.
-    #[inline]
-    pub fn disable_auto_cs1(&self) {
-        self.qmi.direct_csr.clr_auto_cs1n();
+    pub fn try_wait_idle(&self) -> Result<(), Error> {
+        if crate::spin::try_spin_wait(|| !self.qmi.direct_csr.busy()) {
+            Ok(())
+        } else {
+            Err(Error::Busy)
+        }
     }
 
     // ========================================================================
-    // Direct Mode — Clock
+    // Chip select
     // ========================================================================
 
-    /// Set the direct mode clock divisor.
-    ///
-    /// Divisors 1..255 are encoded directly.
-    /// A divisor of 256 is encoded as 0.
+    /// Drive a chip select low (`asserted = true`) or release it high.
     #[inline]
-    pub fn set_direct_clkdiv(&self, div: u8) {
+    pub fn select(&self, cs: Window, asserted: bool) {
+        match cs {
+            Window::M0 => {
+                if asserted {
+                    self.qmi.direct_csr.set_assert_cs0n();
+                } else {
+                    self.qmi.direct_csr.clr_assert_cs0n();
+                }
+            }
+            Window::M1 => {
+                if asserted {
+                    self.qmi.direct_csr.set_assert_cs1n();
+                } else {
+                    self.qmi.direct_csr.clr_assert_cs1n();
+                }
+            }
+        }
+    }
+
+    /// Enable or disable automatic chip select assertion whenever BUSY is set.
+    #[inline]
+    pub fn set_auto_cs(&self, cs: Window, enabled: bool) {
+        match cs {
+            Window::M0 => {
+                if enabled {
+                    self.qmi.direct_csr.set_auto_cs0n();
+                } else {
+                    self.qmi.direct_csr.clr_auto_cs0n();
+                }
+            }
+            Window::M1 => {
+                if enabled {
+                    self.qmi.direct_csr.set_auto_cs1n();
+                } else {
+                    self.qmi.direct_csr.clr_auto_cs1n();
+                }
+            }
+        }
+    }
+
+    // ========================================================================
+    // Clock
+    // ========================================================================
+
+    /// Set the direct mode clock divisor (1-255; 0 encodes 256).
+    #[inline]
+    pub fn set_clkdiv(&self, div: u8) {
         self.qmi.direct_csr.write_clkdiv(div as u32);
     }
 
     /// Get the direct mode clock divisor.
     #[inline]
-    pub fn direct_clkdiv(&self) -> u8 {
+    pub fn clkdiv(&self) -> u8 {
         self.qmi.direct_csr.clkdiv() as u8
     }
 
     /// Set the direct mode RX sample delay (0-3 half-cycles).
     #[inline]
-    pub fn set_direct_rxdelay(&self, delay: u8) {
+    pub fn set_rxdelay(&self, delay: u8) {
         self.qmi.direct_csr.write_rxdelay((delay & 0x3) as u32);
     }
 
     // ========================================================================
-    // Direct Mode — FIFO Status
+    // FIFO status
     // ========================================================================
 
-    /// Check if the direct TX FIFO is full.
+    /// Check if the TX FIFO is full.
     #[inline]
-    pub fn is_direct_tx_full(&self) -> bool {
+    pub fn tx_full(&self) -> bool {
         self.qmi.direct_csr.txfull()
     }
 
-    /// Check if the direct TX FIFO is empty.
+    /// Check if the TX FIFO is empty.
     #[inline]
-    pub fn is_direct_tx_empty(&self) -> bool {
+    pub fn tx_empty(&self) -> bool {
         self.qmi.direct_csr.txempty()
     }
 
-    /// Check if the direct RX FIFO is full.
+    /// Check if the RX FIFO is full.
     #[inline]
-    pub fn is_direct_rx_full(&self) -> bool {
+    pub fn rx_full(&self) -> bool {
         self.qmi.direct_csr.rxfull()
     }
 
-    /// Check if the direct RX FIFO is empty.
+    /// Check if the RX FIFO is empty.
     #[inline]
-    pub fn is_direct_rx_empty(&self) -> bool {
+    pub fn rx_empty(&self) -> bool {
         self.qmi.direct_csr.rxempty()
     }
 
-    /// Get the current TX FIFO level (0-4).
+    /// Current TX FIFO level (0-4).
     #[inline]
-    pub fn direct_tx_level(&self) -> u32 {
+    pub fn tx_level(&self) -> u32 {
         self.qmi.direct_csr.txlevel()
     }
 
-    /// Get the current RX FIFO level (0-4).
+    /// Current RX FIFO level (0-4).
     #[inline]
-    pub fn direct_rx_level(&self) -> u32 {
+    pub fn rx_level(&self) -> u32 {
         self.qmi.direct_csr.rxlevel()
     }
 
     // ========================================================================
-    // Direct Mode — Data Transfer (raw register writes)
+    // Raw FIFO access
     // ========================================================================
 
-    /// Push a raw value to the direct TX FIFO.
-    ///
-    /// The value encodes data, bus width, output enable, and NOPUSH flags.
-    /// Use the `DirectTxVal` builder for convenient construction:
-    ///
-    /// ```ignore
-    /// use rp2350_pac::qmi::DirectTxVal;
-    ///
-    /// qspi.direct_tx_raw(
-    ///     DirectTxVal::reset_val()
-    ///         .with_data(0x9F)
-    ///         .with_iwidth(0)   // Single
-    ///         .with_oe(true)    // Output enable
-    ///         .with_nopush(true) // Don't push RX for this byte
-    /// );
-    /// ```
+    /// Push a raw [`DirectTxVal`] to the TX FIFO.
     #[inline]
-    pub fn direct_tx_raw(&self, val: DirectTxVal) {
+    pub fn tx_raw(&self, val: DirectTxVal) {
         self.qmi.direct_tx.write_val(val);
     }
 
-    /// Pop a raw 16-bit word from the direct RX FIFO.
+    /// Pop a raw 16-bit word from the RX FIFO.
     #[inline]
-    pub fn direct_rx_raw(&self) -> u16 {
+    pub fn rx_raw(&self) -> u16 {
         self.qmi.direct_rx.direct_rx() as u16
     }
 
     // ========================================================================
-    // Direct Mode — Convenient Transfer Methods
+    // Transfers
     // ========================================================================
 
-    /// Write a single byte in direct mode (single-width SPI, blocking).
-    ///
-    /// Pushes one byte to TX FIFO with output enabled. Waits if TX FIFO is full.
-    /// The `nopush` flag controls whether a corresponding RX FIFO entry is generated.
-    ///
-    /// # Arguments
-    ///
-    /// * `data` - Byte to transmit
-    /// * `nopush` - If true, inhibit RX FIFO push (useful for command bytes)
-    pub fn direct_write_blocking(&self, data: u8, nopush: bool) {
-        // Wait for TX FIFO space
-        crate::spin::spin_wait("QMI TX FIFO space", || !self.qmi.direct_csr.txfull());
-        let val = DirectTxVal::reset_val()
-            .with_data(data as u32)
-            .with_iwidth(BusWidth::Single as u32)
-            .with_oe(true)
-            .with_nopush(nopush);
-        self.qmi.direct_tx.write_val(val);
+    /// Push one frame into the TX FIFO, blocking until there is space.
+    fn push(&self, data: u32, width: BusWidth, oe: bool, no_push: bool, d16: bool) {
+        if !crate::spin::try_spin_wait(|| !self.qmi.direct_csr.txfull()) {
+            panic!("timed out waiting for QMI TX FIFO space");
+        }
+        self.write_frame(data, width, oe, no_push, d16);
     }
 
-    /// Write a single byte in direct mode with specified bus width (blocking).
-    ///
-    /// # Arguments
-    ///
-    /// * `data` - Byte to transmit
-    /// * `width` - Bus width (Single/Dual/Quad)
-    /// * `nopush` - If true, inhibit RX FIFO push
-    pub fn direct_write_width_blocking(&self, data: u8, width: BusWidth, nopush: bool) {
-        crate::spin::spin_wait("QMI TX FIFO space", || !self.qmi.direct_csr.txfull());
+    /// Push one frame into the TX FIFO, returning [`Error::TxFull`] on timeout.
+    fn try_push(
+        &self,
+        data: u32,
+        width: BusWidth,
+        oe: bool,
+        no_push: bool,
+        d16: bool,
+    ) -> Result<(), Error> {
+        if !crate::spin::try_spin_wait(|| !self.qmi.direct_csr.txfull()) {
+            return Err(Error::TxFull);
+        }
+        self.write_frame(data, width, oe, no_push, d16);
+        Ok(())
+    }
+
+    /// Write a frame to the TX FIFO without waiting for space.
+    fn write_frame(&self, data: u32, width: BusWidth, oe: bool, no_push: bool, d16: bool) {
         let val = DirectTxVal::reset_val()
-            .with_data(data as u32)
+            .with_data(data)
             .with_iwidth(width as u32)
-            .with_oe(true)
-            .with_nopush(nopush);
+            .with_oe(oe)
+            .with_nopush(no_push)
+            .with_dwidth(d16);
         self.qmi.direct_tx.write_val(val);
     }
 
-    /// Write a 16-bit word in direct mode (blocking).
+    /// Transmit one byte (blocking).
     ///
-    /// # Arguments
-    ///
-    /// * `data` - 16-bit word to transmit
-    /// * `width` - Bus width
-    /// * `nopush` - If true, inhibit RX FIFO push
-    pub fn direct_write16_blocking(&self, data: u16, width: BusWidth, nopush: bool) {
-        crate::spin::spin_wait("QMI TX FIFO space", || !self.qmi.direct_csr.txfull());
-        let val = DirectTxVal::reset_val()
-            .with_data(data as u32)
-            .with_iwidth(width as u32)
-            .with_oe(true)
-            .with_dwidth(true) // 16-bit mode
-            .with_nopush(nopush);
-        self.qmi.direct_tx.write_val(val);
+    /// Set `no_push` to suppress the corresponding RX FIFO entry — useful for
+    /// command bytes.
+    pub fn write_byte(&self, data: u8, width: BusWidth, no_push: bool) {
+        self.push(data as u32, width, true, no_push, false);
     }
 
-    /// Read a single byte from direct mode RX FIFO (blocking).
-    ///
-    /// Sends a dummy byte (0x00) with output disabled to clock in data,
-    /// then reads the received byte.
-    pub fn direct_read_blocking(&self) -> u8 {
-        // Send dummy byte to generate clock (OE=false for read)
-        crate::spin::spin_wait("QMI TX FIFO space", || !self.qmi.direct_csr.txfull());
-        let val = DirectTxVal::reset_val()
-            .with_data(0)
-            .with_iwidth(BusWidth::Single as u32)
-            .with_oe(false)
-            .with_nopush(false);
-        self.qmi.direct_tx.write_val(val);
+    /// Transmit one 16-bit word (blocking).
+    pub fn write16(&self, data: u16, width: BusWidth, no_push: bool) {
+        self.push(data as u32, width, true, no_push, true);
+    }
 
-        // Wait for RX data
+    /// Receive one byte (blocking): clocks in data with a dummy frame and
+    /// returns the received byte.
+    pub fn read_byte(&self, width: BusWidth) -> u8 {
+        self.push(0, width, false, false, false);
         crate::spin::spin_wait("QMI RX data", || !self.qmi.direct_csr.rxempty());
         self.qmi.direct_rx.direct_rx() as u8
     }
 
-    /// Read a single byte with specified bus width from direct mode (blocking).
-    ///
-    /// # Arguments
-    ///
-    /// * `width` - Bus width for the read transfer
-    pub fn direct_read_width_blocking(&self, width: BusWidth) -> u8 {
-        crate::spin::spin_wait("QMI TX FIFO space", || !self.qmi.direct_csr.txfull());
-        let val = DirectTxVal::reset_val()
-            .with_data(0)
-            .with_iwidth(width as u32)
-            .with_oe(false)
-            .with_nopush(false);
-        self.qmi.direct_tx.write_val(val);
-
-        crate::spin::spin_wait("QMI RX data", || !self.qmi.direct_csr.rxempty());
-        self.qmi.direct_rx.direct_rx() as u8
-    }
-
-    /// Write multiple bytes in direct mode (single-width, blocking).
-    ///
-    /// All bytes are sent with output enabled and NOPUSH set (RX FIFO entries suppressed).
-    pub fn direct_write(&self, data: &[u8]) {
+    /// Transmit a byte slice in single width (blocking).
+    pub fn write(&self, data: &[u8]) {
         for &byte in data {
-            self.direct_write_blocking(byte, true);
+            self.write_byte(byte, BusWidth::Single, true);
         }
         self.wait_idle();
     }
 
-    /// Read multiple bytes in direct mode (single-width, blocking).
-    ///
-    /// Sends dummy bytes and collects received data from RX FIFO.
-    pub fn direct_read(&self, buf: &mut [u8]) {
+    /// Receive bytes in single width (blocking).
+    pub fn read(&self, buf: &mut [u8]) {
         for slot in buf.iter_mut() {
-            *slot = self.direct_read_blocking();
+            *slot = self.read_byte(BusWidth::Single);
         }
     }
 
-    /// Perform a full-duplex direct mode transfer (single-width, blocking).
+    /// Full-duplex transfer in single width (blocking).
     ///
-    /// Writes data from `tx` and simultaneously reads into `rx`.
-    /// Both buffers should be the same length; the shorter length is used.
-    pub fn direct_transfer(&self, rx: &mut [u8], tx: &[u8]) {
+    /// Writes `tx` while simultaneously reading into `rx`; the shorter length
+    /// is used.
+    pub fn transfer(&self, rx: &mut [u8], tx: &[u8]) {
         let len = rx.len().min(tx.len());
         for i in 0..len {
-            // Write with OE enabled, don't inhibit RX push
-            crate::spin::spin_wait("QMI TX FIFO space", || !self.qmi.direct_csr.txfull());
-            let val = DirectTxVal::reset_val()
-                .with_data(tx[i] as u32)
-                .with_iwidth(BusWidth::Single as u32)
-                .with_oe(true)
-                .with_nopush(false);
-            self.qmi.direct_tx.write_val(val);
-
-            // Read response
+            self.push(tx[i] as u32, BusWidth::Single, true, false, false);
             crate::spin::spin_wait("QMI RX data", || !self.qmi.direct_csr.rxempty());
             rx[i] = self.qmi.direct_rx.direct_rx() as u8;
         }
     }
 
-    /// Drain (discard) all data from the direct RX FIFO.
+    /// Discard all data in the RX FIFO.
     #[inline]
-    pub fn drain_direct_rx(&self) {
+    pub fn drain_rx(&self) {
         while !self.qmi.direct_csr.rxempty() {
             let _ = self.qmi.direct_rx.direct_rx();
         }
     }
 
-    // ========================================================================
-    // Direct Mode — Common Flash Commands
-    // ========================================================================
+    /// Transmit one byte, returning [`Error::TxFull`] on timeout.
+    pub fn try_write_byte(&self, data: u8, width: BusWidth, no_push: bool) -> Result<(), Error> {
+        self.try_push(data as u32, width, true, no_push, false)
+    }
 
-    /// Send a simple command with no response data (e.g., Write Enable, Chip Erase).
+    /// Transmit one 16-bit word, returning [`Error::TxFull`] on timeout.
+    pub fn try_write16(&self, data: u16, width: BusWidth, no_push: bool) -> Result<(), Error> {
+        self.try_push(data as u32, width, true, no_push, true)
+    }
+
+    /// Receive one byte, returning an error on timeout.
+    pub fn try_read_byte(&self, width: BusWidth) -> Result<u8, Error> {
+        self.try_push(0, width, false, false, false)?;
+        if !crate::spin::try_spin_wait(|| !self.qmi.direct_csr.rxempty()) {
+            return Err(Error::RxEmpty);
+        }
+        Ok(self.qmi.direct_rx.direct_rx() as u8)
+    }
+
+    /// Transmit a byte slice in single width, returning an error on timeout.
+    pub fn try_write(&self, data: &[u8]) -> Result<(), Error> {
+        for &byte in data {
+            self.try_write_byte(byte, BusWidth::Single, true)?;
+        }
+        self.try_wait_idle()
+    }
+
+    /// Receive bytes in single width, returning an error on timeout.
+    pub fn try_read(&self, buf: &mut [u8]) -> Result<(), Error> {
+        for slot in buf.iter_mut() {
+            *slot = self.try_read_byte(BusWidth::Single)?;
+        }
+        Ok(())
+    }
+
+    /// Full-duplex transfer in single width, returning an error on timeout.
     ///
-    /// Asserts CS0, sends the command byte, waits for completion, deasserts CS0.
-    pub fn flash_command_cs0(&self, cmd: u8) {
-        self.assert_cs0();
-        self.direct_write_blocking(cmd, true);
-        self.wait_idle();
-        self.deassert_cs0();
+    /// Writes `tx` while simultaneously reading into `rx`; the shorter length
+    /// is used.
+    pub fn try_transfer(&self, rx: &mut [u8], tx: &[u8]) -> Result<(), Error> {
+        let len = rx.len().min(tx.len());
+        for i in 0..len {
+            self.try_push(tx[i] as u32, BusWidth::Single, true, false, false)?;
+            if !crate::spin::try_spin_wait(|| !self.qmi.direct_csr.rxempty()) {
+                return Err(Error::RxEmpty);
+            }
+            rx[i] = self.qmi.direct_rx.direct_rx() as u8;
+        }
+        Ok(())
     }
 
-    /// Send a simple command on CS1.
-    pub fn flash_command_cs1(&self, cmd: u8) {
-        self.assert_cs1();
-        self.direct_write_blocking(cmd, true);
+    // ========================================================================
+    // Common flash commands
+    // ========================================================================
+
+    /// Send a simple command with no response (e.g. Write Enable, Chip Erase).
+    pub fn command(&self, cs: Window, cmd: u8) {
+        self.select(cs, true);
+        self.write_byte(cmd, BusWidth::Single, true);
         self.wait_idle();
-        self.deassert_cs1();
+        self.select(cs, false);
     }
 
-    /// Read flash status register (command 0x05) on CS0.
-    pub fn flash_read_status_cs0(&self) -> u8 {
-        self.assert_cs0();
-        self.direct_write_blocking(0x05, true);
-        let status = self.direct_read_blocking();
+    /// Send a simple command with no response, returning an error on timeout.
+    pub fn try_command(&self, cs: Window, cmd: u8) -> Result<(), Error> {
+        self.select(cs, true);
+        self.try_write_byte(cmd, BusWidth::Single, true)?;
+        self.try_wait_idle()?;
+        self.select(cs, false);
+        Ok(())
+    }
+
+    /// Read the flash status register (`0x05`).
+    pub fn read_status(&self, cs: Window) -> u8 {
+        self.select(cs, true);
+        self.write_byte(0x05, BusWidth::Single, true);
+        let status = self.read_byte(BusWidth::Single);
         self.wait_idle();
-        self.deassert_cs0();
+        self.select(cs, false);
         status
     }
 
-    /// Read flash status register (command 0x05) on CS1.
-    pub fn flash_read_status_cs1(&self) -> u8 {
-        self.assert_cs1();
-        self.direct_write_blocking(0x05, true);
-        let status = self.direct_read_blocking();
-        self.wait_idle();
-        self.deassert_cs1();
-        status
+    /// Read the flash status register (`0x05`), returning an error on timeout.
+    pub fn try_read_status(&self, cs: Window) -> Result<u8, Error> {
+        self.select(cs, true);
+        self.try_write_byte(0x05, BusWidth::Single, true)?;
+        let status = self.try_read_byte(BusWidth::Single)?;
+        self.try_wait_idle()?;
+        self.select(cs, false);
+        Ok(status)
     }
 
-    /// Wait until flash WIP (Write-In-Progress) bit clears on CS0.
+    /// Wait until the flash WIP (Write-In-Progress) bit clears.
     ///
-    /// Reads status register 1 (command 0x05) repeatedly until bit 0 is clear.
-    pub fn flash_wait_ready_cs0(&self) {
-        loop {
-            let st = self.flash_read_status_cs0();
-            if st & 0x01 == 0 {
-                break;
+    /// # Panics
+    ///
+    /// Panics if the bit does not clear within [`crate::spin::SPIN_TIMEOUT`]
+    /// polls.
+    pub fn wait_ready(&self, cs: Window) {
+        self.try_wait_ready(cs)
+            .unwrap_or_else(|_| panic!("timed out waiting for flash to be ready"));
+    }
+
+    /// Wait until the flash WIP bit clears, returning [`Error::Busy`] if it
+    /// does not clear within [`crate::spin::SPIN_TIMEOUT`] polls.
+    pub fn try_wait_ready(&self, cs: Window) -> Result<(), Error> {
+        for _ in 0..crate::spin::SPIN_TIMEOUT {
+            if self.try_read_status(cs)? & 0x01 == 0 {
+                return Ok(());
             }
             core::hint::spin_loop();
         }
+        Err(Error::Busy)
     }
 
-    /// Wait until flash WIP bit clears on CS1.
-    pub fn flash_wait_ready_cs1(&self) {
-        loop {
-            let st = self.flash_read_status_cs1();
-            if st & 0x01 == 0 {
-                break;
-            }
-            core::hint::spin_loop();
-        }
-    }
-
-    /// Read JEDEC ID (command 0x9F) on CS0. Returns (manufacturer, mem_type, capacity).
-    pub fn flash_read_jedec_id_cs0(&self) -> (u8, u8, u8) {
-        self.assert_cs0();
-        self.direct_write_blocking(0x9F, true);
-        let mfr = self.direct_read_blocking();
-        let typ = self.direct_read_blocking();
-        let cap = self.direct_read_blocking();
+    /// Read the JEDEC ID (`0x9F`), returning (manufacturer, type, capacity).
+    pub fn read_jedec_id(&self, cs: Window) -> (u8, u8, u8) {
+        self.select(cs, true);
+        self.write_byte(0x9F, BusWidth::Single, true);
+        let mfr = self.read_byte(BusWidth::Single);
+        let typ = self.read_byte(BusWidth::Single);
+        let cap = self.read_byte(BusWidth::Single);
         self.wait_idle();
-        self.deassert_cs0();
+        self.select(cs, false);
         (mfr, typ, cap)
     }
 
-    // ========================================================================
-    // Memory-mapped Mode — Timing Configuration
-    // ========================================================================
-
-    /// Set the clock divisor for a memory window.
-    ///
-    /// Divisors 1..255 are encoded directly. 0 encodes 256.
-    /// Can be changed on-the-fly even during active memory access.
-    #[inline]
-    pub fn set_clkdiv(&self, window: Window, div: u8) {
-        match window {
-            Window::M0 => self.qmi.m0_timing.write_clkdiv(div as u32),
-            Window::M1 => self.qmi.m1_timing.write_clkdiv(div as u32),
-        }
-    }
-
-    /// Get the clock divisor for a memory window.
-    #[inline]
-    pub fn clkdiv(&self, window: Window) -> u8 {
-        match window {
-            Window::M0 => self.qmi.m0_timing.clkdiv() as u8,
-            Window::M1 => self.qmi.m1_timing.clkdiv() as u8,
-        }
-    }
-
-    /// Set the RX sample delay for a memory window.
-    ///
-    /// In units of one half system clock cycle (0-7).
-    #[inline]
-    pub fn set_rxdelay(&self, window: Window, delay: u8) {
-        match window {
-            Window::M0 => self.qmi.m0_timing.write_rxdelay((delay & 0x7) as u32),
-            Window::M1 => self.qmi.m1_timing.write_rxdelay((delay & 0x7) as u32),
-        }
-    }
-
-    /// Set the minimum CS deselect time in system clock cycles (0-31).
-    #[inline]
-    pub fn set_min_deselect(&self, window: Window, cycles: u8) {
-        match window {
-            Window::M0 => self
-                .qmi
-                .m0_timing
-                .write_min_deselect((cycles & 0x1F) as u32),
-            Window::M1 => self
-                .qmi
-                .m1_timing
-                .write_min_deselect((cycles & 0x1F) as u32),
-        }
-    }
-
-    /// Set the maximum CS assertion duration in 64-cycle units (0=unlimited).
-    #[inline]
-    pub fn set_max_select(&self, window: Window, val: u8) {
-        match window {
-            Window::M0 => self.qmi.m0_timing.write_max_select((val & 0x3F) as u32),
-            Window::M1 => self.qmi.m1_timing.write_max_select((val & 0x3F) as u32),
-        }
-    }
-
-    /// Set CS hold time (0-3 additional system clock cycles).
-    #[inline]
-    pub fn set_select_hold(&self, window: Window, hold: u8) {
-        match window {
-            Window::M0 => self.qmi.m0_timing.write_select_hold((hold & 0x3) as u32),
-            Window::M1 => self.qmi.m1_timing.write_select_hold((hold & 0x3) as u32),
-        }
-    }
-
-    /// Set CS setup time (add one extra cycle before first SCK).
-    #[inline]
-    pub fn set_select_setup(&self, window: Window, enable: bool) {
-        match window {
-            Window::M0 => {
-                if enable {
-                    self.qmi.m0_timing.set_select_setup();
-                } else {
-                    self.qmi.m0_timing.clr_select_setup();
-                }
-            }
-            Window::M1 => {
-                if enable {
-                    self.qmi.m1_timing.set_select_setup();
-                } else {
-                    self.qmi.m1_timing.clr_select_setup();
-                }
-            }
-        }
-    }
-
-    /// Set page break mode for a memory window.
-    #[inline]
-    pub fn set_pagebreak(&self, window: Window, pb: PageBreak) {
-        match window {
-            Window::M0 => self.qmi.m0_timing.write_pagebreak(pb as u32),
-            Window::M1 => self.qmi.m1_timing.write_pagebreak(pb as u32),
-        }
-    }
-
-    /// Set cooldown period (0-3, in 64 system clock cycle units).
-    #[inline]
-    pub fn set_cooldown(&self, window: Window, cooldown: u8) {
-        match window {
-            Window::M0 => self.qmi.m0_timing.write_cooldown((cooldown & 0x3) as u32),
-            Window::M1 => self.qmi.m1_timing.write_cooldown((cooldown & 0x3) as u32),
-        }
-    }
-
-    /// Apply a complete timing configuration to a memory window.
-    pub fn configure_timing(&self, window: Window, cfg: &TimingConfig) {
-        match window {
-            Window::M0 => {
-                self.qmi.m0_timing.write_val(
-                    rp2350_pac::qmi::M0TimingVal::reset_val()
-                        .with_clkdiv(cfg.clkdiv as u32)
-                        .with_rxdelay(cfg.rxdelay as u32)
-                        .with_min_deselect(cfg.min_deselect as u32)
-                        .with_max_select(cfg.max_select as u32)
-                        .with_select_hold(cfg.select_hold as u32)
-                        .with_select_setup(cfg.select_setup)
-                        .with_pagebreak(cfg.pagebreak as u32)
-                        .with_cooldown(cfg.cooldown as u32),
-                );
-            }
-            Window::M1 => {
-                self.qmi.m1_timing.write_val(
-                    rp2350_pac::qmi::M1TimingVal::reset_val()
-                        .with_clkdiv(cfg.clkdiv as u32)
-                        .with_rxdelay(cfg.rxdelay as u32)
-                        .with_min_deselect(cfg.min_deselect as u32)
-                        .with_max_select(cfg.max_select as u32)
-                        .with_select_hold(cfg.select_hold as u32)
-                        .with_select_setup(cfg.select_setup)
-                        .with_pagebreak(cfg.pagebreak as u32)
-                        .with_cooldown(cfg.cooldown as u32),
-                );
-            }
-        }
-    }
-
-    // ========================================================================
-    // Memory-mapped Mode — Read Format
-    // ========================================================================
-
-    /// Configure the read transfer format for a memory window.
-    ///
-    /// This controls how memory-mapped read accesses are translated into
-    /// SPI flash read commands, including bus widths for each phase.
-    pub fn configure_read_format(&self, window: Window, fmt: ReadFormat) {
-        match window {
-            Window::M0 => {
-                self.qmi.m0_rfmt.write_val(
-                    rp2350_pac::qmi::M0RfmtVal::reset_val()
-                        .with_prefix_width(fmt.prefix_width as u32)
-                        .with_addr_width(fmt.addr_width as u32)
-                        .with_suffix_width(fmt.suffix_width as u32)
-                        .with_dummy_width(fmt.dummy_width as u32)
-                        .with_data_width(fmt.data_width as u32)
-                        .with_prefix_len(fmt.prefix_len)
-                        .with_suffix_len(fmt.suffix_len)
-                        .with_dummy_len(fmt.dummy_len)
-                        .with_dtr(fmt.dtr),
-                );
-            }
-            Window::M1 => {
-                self.qmi.m1_rfmt.write_val(
-                    rp2350_pac::qmi::M1RfmtVal::reset_val()
-                        .with_prefix_width(fmt.prefix_width as u32)
-                        .with_addr_width(fmt.addr_width as u32)
-                        .with_suffix_width(fmt.suffix_width as u32)
-                        .with_dummy_width(fmt.dummy_width as u32)
-                        .with_data_width(fmt.data_width as u32)
-                        .with_prefix_len(fmt.prefix_len)
-                        .with_suffix_len(fmt.suffix_len)
-                        .with_dummy_len(fmt.dummy_len)
-                        .with_dtr(fmt.dtr),
-                );
-            }
-        }
-    }
-
-    /// Set the read command prefix and suffix bytes for a memory window.
-    ///
-    /// # Arguments
-    ///
-    /// * `window` - Memory window (M0 or M1)
-    /// * `prefix` - Command byte (e.g., 0x03 for standard read, 0x6B for quad output read)
-    /// * `suffix` - Suffix byte (e.g., 0xA0 for continuous read mode)
-    pub fn set_read_command(&self, window: Window, prefix: u8, suffix: u8) {
-        match window {
-            Window::M0 => {
-                self.qmi.m0_rcmd.write_val(
-                    rp2350_pac::qmi::M0RcmdVal::reset_val()
-                        .with_prefix(prefix as u32)
-                        .with_suffix(suffix as u32),
-                );
-            }
-            Window::M1 => {
-                self.qmi.m1_rcmd.write_val(
-                    rp2350_pac::qmi::M1RcmdVal::reset_val()
-                        .with_prefix(prefix as u32)
-                        .with_suffix(suffix as u32),
-                );
-            }
-        }
-    }
-
-    // ========================================================================
-    // Memory-mapped Mode — Write Format
-    // ========================================================================
-
-    /// Configure the write transfer format for a memory window.
-    ///
-    /// Note: XIP memory is read-only by default. Writes must be enabled
-    /// via XIP_CTRL WRITABLE_M0 / WRITABLE_M1 bits.
-    pub fn configure_write_format(&self, window: Window, fmt: WriteFormat) {
-        match window {
-            Window::M0 => {
-                self.qmi.m0_wfmt.write_val(
-                    rp2350_pac::qmi::M0WfmtVal::reset_val()
-                        .with_prefix_width(fmt.prefix_width as u32)
-                        .with_addr_width(fmt.addr_width as u32)
-                        .with_suffix_width(fmt.suffix_width as u32)
-                        .with_dummy_width(fmt.dummy_width as u32)
-                        .with_data_width(fmt.data_width as u32)
-                        .with_prefix_len(fmt.prefix_len)
-                        .with_suffix_len(fmt.suffix_len)
-                        .with_dummy_len(fmt.dummy_len)
-                        .with_dtr(fmt.dtr),
-                );
-            }
-            Window::M1 => {
-                self.qmi.m1_wfmt.write_val(
-                    rp2350_pac::qmi::M1WfmtVal::reset_val()
-                        .with_prefix_width(fmt.prefix_width as u32)
-                        .with_addr_width(fmt.addr_width as u32)
-                        .with_suffix_width(fmt.suffix_width as u32)
-                        .with_dummy_width(fmt.dummy_width as u32)
-                        .with_data_width(fmt.data_width as u32)
-                        .with_prefix_len(fmt.prefix_len)
-                        .with_suffix_len(fmt.suffix_len)
-                        .with_dummy_len(fmt.dummy_len)
-                        .with_dtr(fmt.dtr),
-                );
-            }
-        }
-    }
-
-    /// Set the write command prefix and suffix bytes for a memory window.
-    ///
-    /// # Arguments
-    ///
-    /// * `window` - Memory window (M0 or M1)
-    /// * `prefix` - Command byte (e.g., 0x02 for page program, 0x32 for quad page program)
-    /// * `suffix` - Suffix byte
-    pub fn set_write_command(&self, window: Window, prefix: u8, suffix: u8) {
-        match window {
-            Window::M0 => {
-                self.qmi.m0_wcmd.write_val(
-                    rp2350_pac::qmi::M0WcmdVal::reset_val()
-                        .with_prefix(prefix as u32)
-                        .with_suffix(suffix as u32),
-                );
-            }
-            Window::M1 => {
-                self.qmi.m1_wcmd.write_val(
-                    rp2350_pac::qmi::M1WcmdVal::reset_val()
-                        .with_prefix(prefix as u32)
-                        .with_suffix(suffix as u32),
-                );
-            }
-        }
-    }
-
-    // ========================================================================
-    // Memory-mapped Mode — Address Translation
-    // ========================================================================
-
-    /// Set address translation offset for a 4 MiB window.
-    ///
-    /// There are 8 translation windows (0-7), each covering a 4 MiB region
-    /// of XIP virtual address space. The `offset` is added to the virtual
-    /// address to produce the physical flash address.
-    ///
-    /// At reset, all windows are identity-mapped (offset = window_base).
-    ///
-    /// # Arguments
-    ///
-    /// * `window` - Translation window index (0-7)
-    /// * `base` - Physical base address (in 4 KiB units, 12-bit)
-    /// * `size` - Window size override (in 4 KiB units, 12-bit)
-    ///
-    /// # Note
-    ///
-    /// A cache flush is required after changing address translation.
-    pub fn set_address_translation(&self, window_idx: u8, base: u32, size: u32) {
-        match window_idx {
-            0 => {
-                self.qmi.atrans0.write_base(base);
-                self.qmi.atrans0.write_size(size);
-            }
-            1 => {
-                self.qmi.atrans1.write_base(base);
-                self.qmi.atrans1.write_size(size);
-            }
-            2 => {
-                self.qmi.atrans2.write_base(base);
-                self.qmi.atrans2.write_size(size);
-            }
-            3 => {
-                self.qmi.atrans3.write_base(base);
-                self.qmi.atrans3.write_size(size);
-            }
-            4 => {
-                self.qmi.atrans4.write_base(base);
-                self.qmi.atrans4.write_size(size);
-            }
-            5 => {
-                self.qmi.atrans5.write_base(base);
-                self.qmi.atrans5.write_size(size);
-            }
-            6 => {
-                self.qmi.atrans6.write_base(base);
-                self.qmi.atrans6.write_size(size);
-            }
-            7 => {
-                self.qmi.atrans7.write_base(base);
-                self.qmi.atrans7.write_size(size);
-            }
-            _ => {} // Silently ignore invalid indices
-        }
-    }
-
-    // ========================================================================
-    // DMA Support
-    // ========================================================================
-
-    /// DREQ selection for transmitting data via DMA in direct mode.
-    pub const TX_DREQ: crate::dma::TreqSel = crate::dma::TreqSel::XipQmiTx;
-
-    /// DREQ selection for receiving data via DMA in direct mode.
-    pub const RX_DREQ: crate::dma::TreqSel = crate::dma::TreqSel::XipQmiRx;
-
-    /// Get the direct TX FIFO register address for DMA.
-    #[inline]
-    pub fn direct_tx_address(&self) -> u32 {
-        QMI::PTR as u32 + 0x04 // DIRECT_TX offset
-    }
-
-    /// Get the direct RX FIFO register address for DMA.
-    #[inline]
-    pub fn direct_rx_address(&self) -> u32 {
-        QMI::PTR as u32 + 0x08 // DIRECT_RX offset
-    }
-
-    // ========================================================================
-    // High-level Configuration Presets
-    // ========================================================================
-
-    /// Configure a memory window for standard SPI read (command 0x03).
-    ///
-    /// This is the default after reset: single-width serial read, 8-bit command prefix,
-    /// no dummy cycles, no suffix.
-    pub fn configure_standard_read(&self, window: Window, clkdiv: u8) {
-        self.set_clkdiv(window, clkdiv);
-        self.configure_read_format(
-            window,
-            ReadFormat {
-                prefix_width: BusWidth::Single,
-                addr_width: BusWidth::Single,
-                suffix_width: BusWidth::Single,
-                dummy_width: BusWidth::Single,
-                data_width: BusWidth::Single,
-                prefix_len: true,
-                suffix_len: 0,
-                dummy_len: 0,
-                dtr: false,
-            },
-        );
-        self.set_read_command(window, 0x03, 0x00);
-    }
-
-    /// Configure a memory window for fast read (command 0x0B).
-    ///
-    /// Single-width serial fast read with 8 dummy bits.
-    pub fn configure_fast_read(&self, window: Window, clkdiv: u8) {
-        self.set_clkdiv(window, clkdiv);
-        self.configure_read_format(
-            window,
-            ReadFormat {
-                prefix_width: BusWidth::Single,
-                addr_width: BusWidth::Single,
-                suffix_width: BusWidth::Single,
-                dummy_width: BusWidth::Single,
-                data_width: BusWidth::Single,
-                prefix_len: true,
-                suffix_len: 0,
-                dummy_len: 2, // 8 dummy bits = 2 x 4
-                dtr: false,
-            },
-        );
-        self.set_read_command(window, 0x0B, 0x00);
-    }
-
-    /// Configure a memory window for dual output read (command 0x3B).
-    ///
-    /// Command and address in single-width, data in dual-width, 8 dummy bits.
-    pub fn configure_dual_read(&self, window: Window, clkdiv: u8) {
-        self.set_clkdiv(window, clkdiv);
-        self.configure_read_format(
-            window,
-            ReadFormat {
-                prefix_width: BusWidth::Single,
-                addr_width: BusWidth::Single,
-                suffix_width: BusWidth::Single,
-                dummy_width: BusWidth::Single,
-                data_width: BusWidth::Dual,
-                prefix_len: true,
-                suffix_len: 0,
-                dummy_len: 2, // 8 dummy bits
-                dtr: false,
-            },
-        );
-        self.set_read_command(window, 0x3B, 0x00);
-    }
-
-    /// Configure a memory window for quad output read (command 0x6B).
-    ///
-    /// Command and address in single-width, data in quad-width, 8 dummy bits.
-    pub fn configure_quad_read(&self, window: Window, clkdiv: u8) {
-        self.set_clkdiv(window, clkdiv);
-        self.configure_read_format(
-            window,
-            ReadFormat {
-                prefix_width: BusWidth::Single,
-                addr_width: BusWidth::Single,
-                suffix_width: BusWidth::Single,
-                dummy_width: BusWidth::Single,
-                data_width: BusWidth::Quad,
-                prefix_len: true,
-                suffix_len: 0,
-                dummy_len: 2, // 8 dummy bits
-                dtr: false,
-            },
-        );
-        self.set_read_command(window, 0x6B, 0x00);
-    }
-
-    /// Configure a memory window for quad I/O read (command 0xEB).
-    ///
-    /// Command in single-width, address in quad-width, data in quad-width.
-    /// Uses continuous read mode suffix (0xA0) and 4 dummy cycles (= 2 x 4 bits in quad).
-    pub fn configure_quad_io_read(&self, window: Window, clkdiv: u8) {
-        self.set_clkdiv(window, clkdiv);
-        self.configure_read_format(
-            window,
-            ReadFormat {
-                prefix_width: BusWidth::Single,
-                addr_width: BusWidth::Quad,
-                suffix_width: BusWidth::Quad,
-                dummy_width: BusWidth::Quad,
-                data_width: BusWidth::Quad,
-                prefix_len: true,
-                suffix_len: 2, // 8-bit suffix
-                dummy_len: 1,  // 4 dummy bits (1 quad cycle)
-                dtr: false,
-            },
-        );
-        self.set_read_command(window, 0xEB, 0xA0);
-    }
-
-    /// Configure a memory window for standard page program (command 0x02).
-    pub fn configure_standard_write(&self, window: Window) {
-        self.configure_write_format(
-            window,
-            WriteFormat {
-                prefix_width: BusWidth::Single,
-                addr_width: BusWidth::Single,
-                suffix_width: BusWidth::Single,
-                dummy_width: BusWidth::Single,
-                data_width: BusWidth::Single,
-                prefix_len: true,
-                suffix_len: 0,
-                dummy_len: 0,
-                dtr: false,
-            },
-        );
-        self.set_write_command(window, 0x02, 0x00);
-    }
-
-    /// Configure a memory window for quad page program (command 0x32).
-    pub fn configure_quad_write(&self, window: Window) {
-        self.configure_write_format(
-            window,
-            WriteFormat {
-                prefix_width: BusWidth::Single,
-                addr_width: BusWidth::Single,
-                suffix_width: BusWidth::Single,
-                dummy_width: BusWidth::Single,
-                data_width: BusWidth::Quad,
-                prefix_len: true,
-                suffix_len: 0,
-                dummy_len: 0,
-                dtr: false,
-            },
-        );
-        self.set_write_command(window, 0x32, 0x00);
+    /// Read the JEDEC ID (`0x9F`), returning an error on timeout.
+    pub fn try_read_jedec_id(&self, cs: Window) -> Result<(u8, u8, u8), Error> {
+        self.select(cs, true);
+        self.try_write_byte(0x9F, BusWidth::Single, true)?;
+        let mfr = self.try_read_byte(BusWidth::Single)?;
+        let typ = self.try_read_byte(BusWidth::Single)?;
+        let cap = self.try_read_byte(BusWidth::Single)?;
+        self.try_wait_idle()?;
+        self.select(cs, false);
+        Ok((mfr, typ, cap))
     }
 }

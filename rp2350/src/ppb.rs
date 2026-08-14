@@ -4,29 +4,27 @@
 //! SCB (System Control), NVIC, SysTick, MPU, SAU, DWT, FPB, and ITM.
 //!
 //! Most of these are already covered by the PAC; this module adds
-//! convenient HAL wrappers for commonly-needed operations.
+//! convenient HAL wrappers for two commonly-needed register blocks:
 //!
-//! **Each core has its own independent PPB.**  When running dual-core,
-//! both Core 0 and Core 1 must call these functions separately (or use
-//! [`Cpacr::init_per_core_defaults()`] which is the standard way).
+//! - **CPACR** ([`Cpacr`]) — coprocessor access control (GPIO coprocessor,
+//!   DCP, FPU).
+//! - **ACTLR** ([`Actlr`]) — cross-core atomics, dual-issue, FP/ATB tuning.
 //!
-//! ## Features
-//!
-//! - Coprocessor Access Control (CPACR) — enable GPIO coprocessor, FPU, etc.
-//!
-//! ## Example — typical dual-core startup
+//! **Each core has its own independent PPB.** When running dual-core, both
+//! Core 0 and Core 1 must configure these registers separately:
 //!
 //! ```ignore
-//! use rp2350::ppb::Cpacr;
+//! use rp2350::ppb::{Access, Actlr, Coproc, Cpacr};
 //!
-//! // Core 0: called automatically in startup::init()
-//! Cpacr::init_per_core_defaults();  // enables CP0, CP4, CP10
+//! // Per-core coprocessor defaults — called on Core 0 by startup::init();
+//! // call it again from the Core 1 entry point.
+//! Cpacr::enable_defaults(); // CP0 (GPIO), CP4 (DCP), CP10+CP11 (FPU)
 //!
-//! // Core 1: call in its entry point
-//! fn core1_main() -> ! {
-//!     Cpacr::init_per_core_defaults();
-//!     // ... application code ...
-//! }
+//! // Fine-grained control is also available.
+//! Cpacr::set_access(Coproc::Cp7, Access::Full);
+//!
+//! // Cross-core exclusive access (Core 1).
+//! Actlr::enable_crosscore_atomics();
 //! ```
 //!
 //! ## Secure / Non-secure
@@ -36,9 +34,7 @@
 
 use crate::pac::PPB as PpbPac;
 
-/// Coprocessor Access Control Register (CPACR).
-///
-/// Each ARM coprocessor (CP0-CP11) has a 2-bit access field:
+/// Coprocessor access level, as encoded in the 2-bit CPACR fields.
 ///
 /// | Value | Meaning                  |
 /// |-------|--------------------------|
@@ -46,25 +42,54 @@ use crate::pac::PPB as PpbPac;
 /// | `0b01`| Privileged access only   |
 /// | `0b10`| Reserved                 |
 /// | `0b11`| Full access              |
+#[repr(u32)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+pub enum Access {
+    /// Access denied (default)
+    Denied = 0,
+    /// Privileged access only
+    Privileged = 1,
+    /// Full (unprivileged) access
+    Full = 3,
+}
+
+/// ARM coprocessor number for CPACR access control.
 ///
-/// On RP2350:
-/// - **CP0** — GPIO coprocessor instructions (`set_gpio`, `clr_gpio`, `xor_gpio`)
-/// - **CP4** — Double-precision float (reserved on RP2350, enabled by default)
-/// - **CP7** — Redundancy Coprocessor (RCP, managed by bootrom)
-/// - **CP10/CP11** — VFP floating-point unit
+/// Each variant maps to the corresponding 2-bit field in CPACR
+/// (field `CPn` lives at bits `2*n+1..2*n`).
 ///
-/// # Per-core note
+/// On RP2350 the ones that matter are:
+/// - [`Coproc::Cp0`] — GPIO coprocessor (`set_gpio`, `clr_gpio`, `xor_gpio`)
+/// - [`Coproc::Cp4`] — DCP (double-precision co-processor)
+/// - [`Coproc::Cp7`] — Redundancy Coprocessor (RCP, managed by bootrom)
+/// - [`Coproc::Cp10`] / [`Coproc::Cp11`] — VFP floating-point unit
+///   (must be programmed identically)
+#[repr(u8)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+pub enum Coproc {
+    Cp0 = 0,
+    Cp1 = 1,
+    Cp2 = 2,
+    Cp3 = 3,
+    Cp4 = 4,
+    Cp5 = 5,
+    Cp6 = 6,
+    Cp7 = 7,
+    Cp8 = 8,
+    Cp9 = 9,
+    Cp10 = 10,
+    Cp11 = 11,
+}
+
+/// Coprocessor Access Control Register (CPACR).
 ///
-/// CPACR is core-local — each core's PPB has its own CPACR register.
-/// Call [`init_per_core_defaults()`](Self::init_per_core_defaults) in each
-/// core's entry point, or use the individual `enable_cp*()` methods for
-/// fine-grained control.
+/// CPACR is core-local: each core's PPB has its own register, so every
+/// method here applies to the **current** core only.
 pub struct Cpacr;
 
 impl Cpacr {
-    /// Full access value for a coprocessor field (0b11)
-    const FULL_ACCESS: u32 = 0b11;
-
     /// Get a raw reference to the CPACR register.
     #[inline]
     fn regs() -> &'static rp2350_pac::ppb::Cpacr {
@@ -72,69 +97,58 @@ impl Cpacr {
         unsafe { &(*PpbPac::PTR).cpacr }
     }
 
-    // ========================================================================
-    // Individual coprocessor enable/disable
-    // ========================================================================
-
-    /// Enable coprocessor 0 (GPIO) with full access on the current core.
+    /// Read the current access level for `cp`.
     #[inline]
-    pub fn enable_cp0() {
-        Self::regs().modify_bits(|r| r | (Self::FULL_ACCESS << rp2350_pac::ppb::Cpacr::CP0_OFFSET));
+    pub fn access(cp: Coproc) -> Access {
+        let field = (Self::regs().read_bits() >> (cp as u32 * 2)) & 0b11;
+        match field {
+            0 => Access::Denied,
+            1 => Access::Privileged,
+            _ => Access::Full,
+        }
     }
 
-    /// Enable coprocessor 4 (double-precision float) on the current core.
+    /// Set the access level for `cp` on the current core.
     #[inline]
-    pub fn enable_cp4() {
-        Self::regs().modify_bits(|r| r | (Self::FULL_ACCESS << rp2350_pac::ppb::Cpacr::CP4_OFFSET));
-    }
-
-    /// Enable CP10 (VFP floating-point) with full access on the current core.
-    #[inline]
-    pub fn enable_cp10() {
-        Self::regs()
-            .modify_bits(|r| r | (Self::FULL_ACCESS << rp2350_pac::ppb::Cpacr::CP10_OFFSET));
-    }
-
-    /// Set the access level for any coprocessor (0-11).
-    ///
-    /// # Safety
-    ///
-    /// `cp` must be 0-11.  `access` should be `0b11` for full access
-    /// or `0b01` for privileged-only; other values are reserved.
-    #[inline]
-    pub unsafe fn set(cp: u8, access: u32) {
-        debug_assert!(cp <= 11, "coprocessor {} out of range", cp);
-        debug_assert!(access <= 3, "invalid access level {}", access);
+    pub fn set_access(cp: Coproc, access: Access) {
         let offset = cp as u32 * 2;
-        Self::regs().modify_bits(|r| (r & !(3 << offset)) | (access << offset));
+        Self::regs().modify_bits(|r| (r & !(0b11 << offset)) | ((access as u32) << offset));
     }
 
-    // ========================================================================
-    // Per-core defaults (pico-sdk-compatible)
-    // ========================================================================
+    /// Grant full access to `cp` on the current core.
+    #[inline]
+    pub fn enable(cp: Coproc) {
+        Self::set_access(cp, Access::Full);
+    }
 
-    /// Apply the standard per-core coprocessor defaults for the current core.
+    /// Deny access to `cp` on the current core.
+    #[inline]
+    pub fn disable(cp: Coproc) {
+        Self::set_access(cp, Access::Denied);
+    }
+
+    /// Apply the standard per-core coprocessor defaults.
     ///
     /// This mirrors pico-sdk's `runtime_init_per_core_enable_coprocessors()`:
     ///
-    /// | Coprocessor | Condition      |
-    /// |-------------|----------------|
-    /// | CP10 (VFP)  | Always enabled |
-    /// | CP4  (dbl)  | Always enabled |
-    /// | CP0  (GPIO) | Always enabled |
+    /// | Coprocessor | Purpose                   |
+    /// |-------------|---------------------------|
+    /// | CP10 + CP11 | VFP floating-point unit   |
+    /// | CP4         | DCP (double co-processor) |
+    /// | CP0         | GPIO coprocessor          |
     ///
-    /// Call this once per core during startup.  This is what
-    /// [`startup::init()`](crate::startup::init) calls on Core 0.
+    /// CP10 and CP11 must be programmed identically (CP11 mirrors CP10), so
+    /// both are enabled together.
+    ///
+    /// Call this once per core during startup. On Core 0 it is called by
+    /// [`startup::init()`](crate::startup::init); Core 1 must call it from
+    /// its own entry point.
     #[inline]
-    pub fn enable_cp() {
-        // CP10 (VFP float) — always enabled, same as pico-sdk
-        Self::enable_cp10();
-
-        // CP4 — gated by feature flag
-        Self::enable_cp4();
-
-        // CP0 — gated by feature flag
-        Self::enable_cp0();
+    pub fn enable_defaults() {
+        Self::enable(Coproc::Cp10);
+        Self::enable(Coproc::Cp11);
+        Self::enable(Coproc::Cp4);
+        Self::enable(Coproc::Cp0);
     }
 }
 
