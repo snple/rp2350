@@ -65,6 +65,7 @@ use core::f32;
 use core::f64;
 
 use crate::Steal;
+use paste::paste;
 
 // ============================================================================
 // Dcp handle
@@ -1243,7 +1244,6 @@ impl Dcp {
 ///
 /// There is no dedicated "less-than" bit; LT is implied by C=0 (and V=0).
 /// There is no dedicated "greater-than" bit; GT is C=1 and Z=0 (and V=0).
-#[allow(dead_code)]
 mod cmp_bits {
     /// Set if either operand is NaN (unordered).  Bit 28 = APSR V.
     pub(crate) const NAN: u32 = 1 << 28;
@@ -1253,91 +1253,55 @@ mod cmp_bits {
     pub(crate) const EQUAL: u32 = 1 << 30;
 }
 
-impl Dcp {
-    /// Test if `a == b` (false if either is NaN).
-    #[inline]
-    pub fn fcmp_eq(&self, a: f32, b: f32) -> bool {
-        let r = self.fcmp(a, b);
-        (r & cmp_bits::EQUAL) != 0 && (r & cmp_bits::NAN) == 0
-    }
+macro_rules! impl_cmp {
+    ($prefix:ident, $raw:ident, $ty:ty) => {
+        paste! {
+            impl Dcp {
+                #[doc = concat!("Test if `a == b` (false if either is NaN) for ", stringify!($ty), ".")]
+                #[inline]
+                pub fn [<$prefix cmp_eq>](&self, a: $ty, b: $ty) -> bool {
+                    let r = self.$raw(a, b);
+                    (r & cmp_bits::EQUAL) != 0 && (r & cmp_bits::NAN) == 0
+                }
 
-    /// Test if `a < b` (false if either is NaN).
-    #[inline]
-    pub fn fcmp_lt(&self, a: f32, b: f32) -> bool {
-        let r = self.fcmp(a, b);
-        // LT = not GE and not NaN
-        (r & cmp_bits::GE) == 0 && (r & cmp_bits::NAN) == 0
-    }
+                #[doc = concat!("Test if `a < b` (false if either is NaN) for ", stringify!($ty), ".")]
+                #[inline]
+                pub fn [<$prefix cmp_lt>](&self, a: $ty, b: $ty) -> bool {
+                    let r = self.$raw(a, b);
+                    (r & cmp_bits::GE) == 0 && (r & cmp_bits::NAN) == 0
+                }
 
-    /// Test if `a <= b` (false if either is NaN).
-    #[inline]
-    pub fn fcmp_le(&self, a: f32, b: f32) -> bool {
-        let r = self.fcmp(a, b);
-        // LE = not GT = not (GE && !EQ) = !GE || EQ, excluding NaN
-        ((r & cmp_bits::GE) == 0 || (r & cmp_bits::EQUAL) != 0) && (r & cmp_bits::NAN) == 0
-    }
+                #[doc = concat!("Test if `a <= b` (false if either is NaN) for ", stringify!($ty), ".")]
+                #[inline]
+                pub fn [<$prefix cmp_le>](&self, a: $ty, b: $ty) -> bool {
+                    let r = self.$raw(a, b);
+                    ((r & cmp_bits::GE) == 0 || (r & cmp_bits::EQUAL) != 0) && (r & cmp_bits::NAN) == 0
+                }
 
-    /// Test if `a > b` (false if either is NaN).
-    #[inline]
-    pub fn fcmp_gt(&self, a: f32, b: f32) -> bool {
-        let r = self.fcmp(a, b);
-        // GT = GE && !EQ && !NaN
-        (r & cmp_bits::GE) != 0 && (r & cmp_bits::EQUAL) == 0 && (r & cmp_bits::NAN) == 0
-    }
+                #[doc = concat!("Test if `a > b` (false if either is NaN) for ", stringify!($ty), ".")]
+                #[inline]
+                pub fn [<$prefix cmp_gt>](&self, a: $ty, b: $ty) -> bool {
+                    let r = self.$raw(a, b);
+                    (r & cmp_bits::GE) != 0 && (r & cmp_bits::EQUAL) == 0 && (r & cmp_bits::NAN) == 0
+                }
 
-    /// Test if `a >= b` (false if either is NaN).
-    #[inline]
-    pub fn fcmp_ge(&self, a: f32, b: f32) -> bool {
-        let r = self.fcmp(a, b);
-        (r & cmp_bits::GE) != 0 && (r & cmp_bits::NAN) == 0
-    }
+                #[doc = concat!("Test if `a >= b` (false if either is NaN) for ", stringify!($ty), ".")]
+                #[inline]
+                pub fn [<$prefix cmp_ge>](&self, a: $ty, b: $ty) -> bool {
+                    let r = self.$raw(a, b);
+                    (r & cmp_bits::GE) != 0 && (r & cmp_bits::NAN) == 0
+                }
 
-    /// Test if either operand is NaN.
-    #[inline]
-    pub fn fcmp_unordered(&self, a: f32, b: f32) -> bool {
-        let r = self.fcmp(a, b);
-        (r & cmp_bits::NAN) != 0
-    }
-
-    /// Test if `a == b` (false if either is NaN).
-    #[inline]
-    pub fn dcmp_eq(&self, a: f64, b: f64) -> bool {
-        let r = self.dcmp(a, b);
-        (r & cmp_bits::EQUAL) != 0 && (r & cmp_bits::NAN) == 0
-    }
-
-    /// Test if `a < b` (false if either is NaN).
-    #[inline]
-    pub fn dcmp_lt(&self, a: f64, b: f64) -> bool {
-        let r = self.dcmp(a, b);
-        (r & cmp_bits::GE) == 0 && (r & cmp_bits::NAN) == 0
-    }
-
-    /// Test if `a <= b` (false if either is NaN).
-    #[inline]
-    pub fn dcmp_le(&self, a: f64, b: f64) -> bool {
-        let r = self.dcmp(a, b);
-        ((r & cmp_bits::GE) == 0 || (r & cmp_bits::EQUAL) != 0) && (r & cmp_bits::NAN) == 0
-    }
-
-    /// Test if `a > b` (false if either is NaN).
-    #[inline]
-    pub fn dcmp_gt(&self, a: f64, b: f64) -> bool {
-        let r = self.dcmp(a, b);
-        (r & cmp_bits::GE) != 0 && (r & cmp_bits::EQUAL) == 0 && (r & cmp_bits::NAN) == 0
-    }
-
-    /// Test if `a >= b` (false if either is NaN).
-    #[inline]
-    pub fn dcmp_ge(&self, a: f64, b: f64) -> bool {
-        let r = self.dcmp(a, b);
-        (r & cmp_bits::GE) != 0 && (r & cmp_bits::NAN) == 0
-    }
-
-    /// Test if either operand is NaN.
-    #[inline]
-    pub fn dcmp_unordered(&self, a: f64, b: f64) -> bool {
-        let r = self.dcmp(a, b);
-        (r & cmp_bits::NAN) != 0
-    }
+                #[doc = concat!("Test if either operand is NaN for ", stringify!($ty), ".")]
+                #[inline]
+                pub fn [<$prefix cmp_unordered>](&self, a: $ty, b: $ty) -> bool {
+                    let r = self.$raw(a, b);
+                    (r & cmp_bits::NAN) != 0
+                }
+            }
+        }
+    };
 }
+
+impl_cmp!(f, fcmp, f32);
+impl_cmp!(d, dcmp, f64);

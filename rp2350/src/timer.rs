@@ -35,6 +35,22 @@ use crate::reset::Resettable;
 /// Number of alarms per timer
 pub const ALARM_COUNT: usize = 4;
 
+/// Dispatch on an alarm number (0-3).
+///
+/// Panics if `alarm >= 4`; the caller does not need a separate bounds check.
+macro_rules! alarm_match {
+    ($alarm:expr; $a0:expr, $a1:expr, $a2:expr, $a3:expr $(,)?) => {{
+        assert!($alarm < ALARM_COUNT as u8, "Alarm must be 0-3");
+        match $alarm {
+            0 => $a0,
+            1 => $a1,
+            2 => $a2,
+            3 => $a3,
+            _ => unreachable!(),
+        }
+    }};
+}
+
 /// Abstract monotonic timer trait for driver implementations.
 ///
 /// This keeps drivers decoupled from concrete timer types when they only need
@@ -278,44 +294,25 @@ macro_rules! impl_timer {
             /// * `time` - Time in microseconds when alarm should fire (low 32 bits)
             #[inline]
             pub fn set_alarm(&self, alarm: u8, time: u32) {
-                assert!(alarm < 4, "Alarm must be 0-3");
-                match alarm {
-                    0 => self.timer.alarm0.write_alarm0(time),
-                    1 => self.timer.alarm1.write_alarm1(time),
-                    2 => self.timer.alarm2.write_alarm2(time),
-                    3 => self.timer.alarm3.write_alarm3(time),
-                    _ => unreachable!(),
-                }
+                alarm_match!(alarm;
+                    self.timer.alarm0.write_alarm0(time),
+                    self.timer.alarm1.write_alarm1(time),
+                    self.timer.alarm2.write_alarm2(time),
+                    self.timer.alarm3.write_alarm3(time),
+                );
             }
 
-            /// Set an alarm with race-condition protection
+            /// Set an alarm with race-condition protection.
             ///
-            /// RP2350 timer alarms fire on exact match: when `TIMERAWL == ALARM`.
-            /// If the target time has already passed by the time the alarm register
-            /// is written, the alarm will never fire (it would take ~71 minutes for
-            /// the 32-bit counter to wrap around and match again).
+            /// Alarms fire on exact 32-bit match, so writing an already-past
+            /// target would otherwise never fire until the ~71-minute wrap.
+            /// This method detects that case and forces the interrupt instead.
             ///
-            /// This method writes the alarm and then immediately checks whether the
-            /// target was missed:
-            /// - If the target is still in the future → normal, hardware will fire.
-            /// - If the target is in the past and the alarm is still armed →
-            ///   disarms the stale alarm and forces an interrupt via INTF.
-            ///
-            /// **Note**: The corresponding ISR must clear both INTR and INTF at
-            /// entry to prevent infinite re-entry from the forced interrupt:
+            /// The ISR must clear both INTR and INTF on entry:
             /// ```ignore
             /// timer.clear_alarm_interrupt(n);
             /// timer.clear_forced_alarm_interrupt(n);
             /// ```
-            ///
-            /// The "past vs future" check uses unsigned wrapping subtraction:
-            /// `now.wrapping_sub(target) < 0x8000_0000` is true when `target` is
-            /// in the past half of the 32-bit number circle (within ~35 minutes).
-            /// This is safe for any interval shorter than ~35 minutes.
-            ///
-            /// # Arguments
-            /// * `alarm` - Alarm number (0-3)
-            /// * `time`  - Target time in microseconds (low 32 bits)
             #[inline]
             pub fn set_alarm_safe(&self, alarm: u8, time: u32) {
                 self.set_alarm(alarm, time);
@@ -363,27 +360,23 @@ macro_rules! impl_timer {
             /// Enable interrupt for an alarm
             #[inline]
             pub fn enable_alarm_interrupt(&self, alarm: u8) {
-                assert!(alarm < 4, "Alarm must be 0-3");
-                match alarm {
-                    0 => self.timer.inte.set_alarm_0(),
-                    1 => self.timer.inte.set_alarm_1(),
-                    2 => self.timer.inte.set_alarm_2(),
-                    3 => self.timer.inte.set_alarm_3(),
-                    _ => unreachable!(),
-                }
+                alarm_match!(alarm;
+                    self.timer.inte.set_alarm_0(),
+                    self.timer.inte.set_alarm_1(),
+                    self.timer.inte.set_alarm_2(),
+                    self.timer.inte.set_alarm_3(),
+                );
             }
 
             /// Disable interrupt for an alarm
             #[inline]
             pub fn disable_alarm_interrupt(&self, alarm: u8) {
-                assert!(alarm < 4, "Alarm must be 0-3");
-                match alarm {
-                    0 => self.timer.inte.clr_alarm_0(),
-                    1 => self.timer.inte.clr_alarm_1(),
-                    2 => self.timer.inte.clr_alarm_2(),
-                    3 => self.timer.inte.clr_alarm_3(),
-                    _ => unreachable!(),
-                }
+                alarm_match!(alarm;
+                    self.timer.inte.clr_alarm_0(),
+                    self.timer.inte.clr_alarm_1(),
+                    self.timer.inte.clr_alarm_2(),
+                    self.timer.inte.clr_alarm_3(),
+                );
             }
 
             /// Enable all alarm interrupts
@@ -407,40 +400,34 @@ macro_rules! impl_timer {
             /// Check if an alarm interrupt is enabled
             #[inline]
             pub fn is_alarm_interrupt_enabled(&self, alarm: u8) -> bool {
-                assert!(alarm < 4, "Alarm must be 0-3");
-                match alarm {
-                    0 => self.timer.inte.alarm_0(),
-                    1 => self.timer.inte.alarm_1(),
-                    2 => self.timer.inte.alarm_2(),
-                    3 => self.timer.inte.alarm_3(),
-                    _ => unreachable!(),
-                }
+                alarm_match!(alarm;
+                    self.timer.inte.alarm_0(),
+                    self.timer.inte.alarm_1(),
+                    self.timer.inte.alarm_2(),
+                    self.timer.inte.alarm_3(),
+                )
             }
 
             /// Check if an alarm interrupt is pending (raw, before masking)
             #[inline]
             pub fn alarm_interrupt_raw(&self, alarm: u8) -> bool {
-                assert!(alarm < 4, "Alarm must be 0-3");
-                match alarm {
-                    0 => self.timer.intr.alarm_0(),
-                    1 => self.timer.intr.alarm_1(),
-                    2 => self.timer.intr.alarm_2(),
-                    3 => self.timer.intr.alarm_3(),
-                    _ => unreachable!(),
-                }
+                alarm_match!(alarm;
+                    self.timer.intr.alarm_0(),
+                    self.timer.intr.alarm_1(),
+                    self.timer.intr.alarm_2(),
+                    self.timer.intr.alarm_3(),
+                )
             }
 
             /// Check if an alarm interrupt is pending (after masking)
             #[inline]
             pub fn alarm_interrupt_status(&self, alarm: u8) -> bool {
-                assert!(alarm < 4, "Alarm must be 0-3");
-                match alarm {
-                    0 => self.timer.ints.alarm_0(),
-                    1 => self.timer.ints.alarm_1(),
-                    2 => self.timer.ints.alarm_2(),
-                    3 => self.timer.ints.alarm_3(),
-                    _ => unreachable!(),
-                }
+                alarm_match!(alarm;
+                    self.timer.ints.alarm_0(),
+                    self.timer.ints.alarm_1(),
+                    self.timer.ints.alarm_2(),
+                    self.timer.ints.alarm_3(),
+                )
             }
 
             /// Clear an alarm interrupt (write 1 to clear)
@@ -465,27 +452,23 @@ macro_rules! impl_timer {
             /// Force an alarm interrupt (for testing)
             #[inline]
             pub fn force_alarm_interrupt(&self, alarm: u8) {
-                assert!(alarm < 4, "Alarm must be 0-3");
-                match alarm {
-                    0 => self.timer.intf.set_alarm_0(),
-                    1 => self.timer.intf.set_alarm_1(),
-                    2 => self.timer.intf.set_alarm_2(),
-                    3 => self.timer.intf.set_alarm_3(),
-                    _ => unreachable!(),
-                }
+                alarm_match!(alarm;
+                    self.timer.intf.set_alarm_0(),
+                    self.timer.intf.set_alarm_1(),
+                    self.timer.intf.set_alarm_2(),
+                    self.timer.intf.set_alarm_3(),
+                );
             }
 
             /// Clear forced alarm interrupt
             #[inline]
             pub fn clear_forced_alarm_interrupt(&self, alarm: u8) {
-                assert!(alarm < 4, "Alarm must be 0-3");
-                match alarm {
-                    0 => self.timer.intf.clr_alarm_0(),
-                    1 => self.timer.intf.clr_alarm_1(),
-                    2 => self.timer.intf.clr_alarm_2(),
-                    3 => self.timer.intf.clr_alarm_3(),
-                    _ => unreachable!(),
-                }
+                alarm_match!(alarm;
+                    self.timer.intf.clr_alarm_0(),
+                    self.timer.intf.clr_alarm_1(),
+                    self.timer.intf.clr_alarm_2(),
+                    self.timer.intf.clr_alarm_3(),
+                );
             }
 
             // ========================================================================

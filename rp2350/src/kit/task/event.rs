@@ -117,131 +117,75 @@ impl Event {
 /// Default queue size
 pub const DEFAULT_QUEUE_SIZE: usize = 16;
 
-/// Lock-free single-producer single-consumer event queue
+/// Lock-free single-producer single-consumer event queue.
 ///
-/// This is a ring buffer designed for interrupt → main-loop event delivery.
+/// Thin wrapper over [`GenericQueue`] storing raw `u32` encodings of [`Event`].
 ///
 /// **Important**: this is an SPSC queue — there can be only one producer and
-/// one consumer. For multiple producers, use a critical section around `push`.
+/// one consumer. For multiple producers, use [`MpscQueue`].
 pub struct EventQueue<const N: usize = DEFAULT_QUEUE_SIZE> {
-    buffer: UnsafeCell<[u32; N]>,
-    head: AtomicUsize, // consumer read position
-    tail: AtomicUsize, // producer write position
+    inner: GenericQueue<u32, N>,
 }
 
-// Safety: single-producer single-consumer pattern, guaranteed by atomic ops
+// Safety: single-producer single-consumer pattern, guaranteed by atomic ops.
 unsafe impl<const N: usize> Sync for EventQueue<N> {}
 
 impl<const N: usize> EventQueue<N> {
-    /// Compile-time check that N is a power of 2
-    const MASK: usize = {
-        assert!(
-            N > 0 && (N & (N - 1)) == 0,
-            "Queue size must be a power of 2"
-        );
-        N - 1
-    };
-
     /// Create a new event queue
     pub const fn new() -> Self {
         Self {
-            buffer: UnsafeCell::new([0; N]),
-            head: AtomicUsize::new(0),
-            tail: AtomicUsize::new(0),
+            inner: GenericQueue::new(),
         }
     }
 
-    /// Push an event (call from an interrupt or the producer)
+    /// Push an event (call from an interrupt or the producer).
     ///
-    /// Returns `true` on success, `false` if the queue is full
+    /// Returns `true` on success, `false` if the queue is full.
     #[inline]
     pub fn push(&self, event: Event) -> bool {
-        let tail = self.tail.load(Ordering::Relaxed);
-        let next_tail = (tail + 1) & Self::MASK;
-
-        // check whether the queue is full
-        if next_tail == self.head.load(Ordering::Acquire) {
-            return false;
-        }
-
-        // write the data
-        unsafe {
-            (*self.buffer.get())[tail] = event.to_raw();
-        }
-
-        // publish the write
-        self.tail.store(next_tail, Ordering::Release);
-        true
+        self.inner.push(event.to_raw())
     }
 
-    /// Pop an event (call from the main loop or the consumer)
+    /// Pop an event (call from the main loop or the consumer).
     ///
-    /// Returns `Some(event)` if there is an event, `None` if the queue is empty
+    /// Returns `Some(event)` if there is an event, `None` if the queue is empty.
     #[inline]
     pub fn pop(&self) -> Option<Event> {
-        let head = self.head.load(Ordering::Relaxed);
-
-        // check whether the queue is empty
-        if head == self.tail.load(Ordering::Acquire) {
-            return None;
-        }
-
-        // read the data
-        let raw = unsafe { (*self.buffer.get())[head] };
-
-        // update the read position
-        self.head.store((head + 1) & Self::MASK, Ordering::Release);
-
-        Some(Event::from_raw(raw))
+        self.inner.pop().map(Event::from_raw)
     }
 
     /// Check whether the queue is empty
     #[inline]
     pub fn is_empty(&self) -> bool {
-        self.head.load(Ordering::Relaxed) == self.tail.load(Ordering::Relaxed)
+        self.inner.is_empty()
     }
 
     /// Get the number of events in the queue
     #[inline]
     pub fn len(&self) -> usize {
-        let head = self.head.load(Ordering::Relaxed);
-        let tail = self.tail.load(Ordering::Relaxed);
-        (tail.wrapping_sub(head)) & Self::MASK
+        self.inner.len()
     }
 
-    /// Get the queue capacity
+    /// Get the queue capacity (one slot is always kept free to distinguish
+    /// empty from full).
     #[inline]
     pub const fn capacity(&self) -> usize {
-        N - 1 // ring buffer actual usable space is N-1
+        N - 1
     }
 
     /// Clear the queue
     #[inline]
     pub fn clear(&self) {
-        // simply set head to tail
-        let tail = self.tail.load(Ordering::Relaxed);
-        self.head.store(tail, Ordering::Release);
+        self.inner.clear()
     }
 
-    /// Try to push an event; if the queue is full, overwrite the oldest event
+    /// Try to push an event; if the queue is full, overwrite the oldest event.
     ///
     /// **Warning**: this operation is not atomic — use only with interrupts
-    /// disabled
+    /// disabled.
     #[inline]
     pub fn push_overwrite(&self, event: Event) {
-        let tail = self.tail.load(Ordering::Relaxed);
-        let next_tail = (tail + 1) & Self::MASK;
-        let head = self.head.load(Ordering::Relaxed);
-
-        // if full, discard the oldest
-        if next_tail == head {
-            self.head.store((head + 1) & Self::MASK, Ordering::Relaxed);
-        }
-
-        unsafe {
-            (*self.buffer.get())[tail] = event.to_raw();
-        }
-        self.tail.store(next_tail, Ordering::Release);
+        self.inner.push_overwrite(event.to_raw())
     }
 }
 
@@ -280,7 +224,7 @@ impl<T: Copy, const N: usize> GenericQueue<T, N> {
     /// Note: const-safe thanks to MaybeUninit
     pub const fn new() -> Self {
         Self {
-            buffer: UnsafeCell::new(unsafe { MaybeUninit::uninit().assume_init() }),
+            buffer: UnsafeCell::new([MaybeUninit::uninit(); N]),
             head: AtomicUsize::new(0),
             tail: AtomicUsize::new(0),
         }
@@ -338,6 +282,26 @@ impl<T: Copy, const N: usize> GenericQueue<T, N> {
     pub fn clear(&self) {
         let tail = self.tail.load(Ordering::Relaxed);
         self.head.store(tail, Ordering::Release);
+    }
+
+    /// Push an element; if the queue is full, overwrite the oldest element.
+    ///
+    /// **Warning**: this operation is not atomic — use only with interrupts
+    /// disabled.
+    #[inline]
+    pub fn push_overwrite(&self, item: T) {
+        let tail = self.tail.load(Ordering::Relaxed);
+        let next_tail = (tail + 1) & Self::MASK;
+        let head = self.head.load(Ordering::Relaxed);
+
+        if next_tail == head {
+            self.head.store((head + 1) & Self::MASK, Ordering::Relaxed);
+        }
+
+        unsafe {
+            (*self.buffer.get())[tail].write(item);
+        }
+        self.tail.store(next_tail, Ordering::Release);
     }
 }
 

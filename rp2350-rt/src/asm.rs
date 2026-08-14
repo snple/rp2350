@@ -146,6 +146,9 @@ pub fn isb() {
 /// may vary with cache and memory conditions.
 #[inline(always)]
 pub fn delay(cycles: u32) {
+    if cycles == 0 {
+        return;
+    }
     // Each loop iteration: subs (1 cycle) + bne (1-3 cycles)
     // On Cortex-M33, this is approximately 3-4 cycles per iteration
     unsafe {

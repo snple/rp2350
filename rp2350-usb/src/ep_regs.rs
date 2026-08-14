@@ -316,6 +316,276 @@ impl_ep_control!(Ep15OutControl);
 // Endpoint access by number
 // ============================================================================
 
+/// Bind the buffer-control register for a given endpoint address.
+///
+/// The 32 EP0–EP15 buffer-control register types are generated as distinct
+/// PAC types, so a macro is the simplest way to share the same operation
+/// across all of them.
+macro_rules! buffer_control_match {
+    ($dpram:expr, $ep_addr:expr, |$reg:ident| $body:expr) => {{
+        match ($ep_addr.number(), $ep_addr.is_in()) {
+            (0, true) => {
+                let $reg = &$dpram.ep0_in_buffer_control;
+                $body
+            }
+            (0, false) => {
+                let $reg = &$dpram.ep0_out_buffer_control;
+                $body
+            }
+            (1, true) => {
+                let $reg = &$dpram.ep1_in_buffer_control;
+                $body
+            }
+            (1, false) => {
+                let $reg = &$dpram.ep1_out_buffer_control;
+                $body
+            }
+            (2, true) => {
+                let $reg = &$dpram.ep2_in_buffer_control;
+                $body
+            }
+            (2, false) => {
+                let $reg = &$dpram.ep2_out_buffer_control;
+                $body
+            }
+            (3, true) => {
+                let $reg = &$dpram.ep3_in_buffer_control;
+                $body
+            }
+            (3, false) => {
+                let $reg = &$dpram.ep3_out_buffer_control;
+                $body
+            }
+            (4, true) => {
+                let $reg = &$dpram.ep4_in_buffer_control;
+                $body
+            }
+            (4, false) => {
+                let $reg = &$dpram.ep4_out_buffer_control;
+                $body
+            }
+            (5, true) => {
+                let $reg = &$dpram.ep5_in_buffer_control;
+                $body
+            }
+            (5, false) => {
+                let $reg = &$dpram.ep5_out_buffer_control;
+                $body
+            }
+            (6, true) => {
+                let $reg = &$dpram.ep6_in_buffer_control;
+                $body
+            }
+            (6, false) => {
+                let $reg = &$dpram.ep6_out_buffer_control;
+                $body
+            }
+            (7, true) => {
+                let $reg = &$dpram.ep7_in_buffer_control;
+                $body
+            }
+            (7, false) => {
+                let $reg = &$dpram.ep7_out_buffer_control;
+                $body
+            }
+            (8, true) => {
+                let $reg = &$dpram.ep8_in_buffer_control;
+                $body
+            }
+            (8, false) => {
+                let $reg = &$dpram.ep8_out_buffer_control;
+                $body
+            }
+            (9, true) => {
+                let $reg = &$dpram.ep9_in_buffer_control;
+                $body
+            }
+            (9, false) => {
+                let $reg = &$dpram.ep9_out_buffer_control;
+                $body
+            }
+            (10, true) => {
+                let $reg = &$dpram.ep10_in_buffer_control;
+                $body
+            }
+            (10, false) => {
+                let $reg = &$dpram.ep10_out_buffer_control;
+                $body
+            }
+            (11, true) => {
+                let $reg = &$dpram.ep11_in_buffer_control;
+                $body
+            }
+            (11, false) => {
+                let $reg = &$dpram.ep11_out_buffer_control;
+                $body
+            }
+            (12, true) => {
+                let $reg = &$dpram.ep12_in_buffer_control;
+                $body
+            }
+            (12, false) => {
+                let $reg = &$dpram.ep12_out_buffer_control;
+                $body
+            }
+            (13, true) => {
+                let $reg = &$dpram.ep13_in_buffer_control;
+                $body
+            }
+            (13, false) => {
+                let $reg = &$dpram.ep13_out_buffer_control;
+                $body
+            }
+            (14, true) => {
+                let $reg = &$dpram.ep14_in_buffer_control;
+                $body
+            }
+            (14, false) => {
+                let $reg = &$dpram.ep14_out_buffer_control;
+                $body
+            }
+            (15, true) => {
+                let $reg = &$dpram.ep15_in_buffer_control;
+                $body
+            }
+            (15, false) => {
+                let $reg = &$dpram.ep15_out_buffer_control;
+                $body
+            }
+            _ => panic!("invalid endpoint address"),
+        }
+    }};
+}
+
+/// Bind the endpoint-control register for a given endpoint address (EP1–EP15).
+macro_rules! endpoint_control_match {
+    ($dpram:expr, $ep_addr:expr, |$reg:ident| $body:expr) => {{
+        match ($ep_addr.number(), $ep_addr.is_in()) {
+            (1, true) => {
+                let $reg = &$dpram.ep1_in_control;
+                $body
+            }
+            (1, false) => {
+                let $reg = &$dpram.ep1_out_control;
+                $body
+            }
+            (2, true) => {
+                let $reg = &$dpram.ep2_in_control;
+                $body
+            }
+            (2, false) => {
+                let $reg = &$dpram.ep2_out_control;
+                $body
+            }
+            (3, true) => {
+                let $reg = &$dpram.ep3_in_control;
+                $body
+            }
+            (3, false) => {
+                let $reg = &$dpram.ep3_out_control;
+                $body
+            }
+            (4, true) => {
+                let $reg = &$dpram.ep4_in_control;
+                $body
+            }
+            (4, false) => {
+                let $reg = &$dpram.ep4_out_control;
+                $body
+            }
+            (5, true) => {
+                let $reg = &$dpram.ep5_in_control;
+                $body
+            }
+            (5, false) => {
+                let $reg = &$dpram.ep5_out_control;
+                $body
+            }
+            (6, true) => {
+                let $reg = &$dpram.ep6_in_control;
+                $body
+            }
+            (6, false) => {
+                let $reg = &$dpram.ep6_out_control;
+                $body
+            }
+            (7, true) => {
+                let $reg = &$dpram.ep7_in_control;
+                $body
+            }
+            (7, false) => {
+                let $reg = &$dpram.ep7_out_control;
+                $body
+            }
+            (8, true) => {
+                let $reg = &$dpram.ep8_in_control;
+                $body
+            }
+            (8, false) => {
+                let $reg = &$dpram.ep8_out_control;
+                $body
+            }
+            (9, true) => {
+                let $reg = &$dpram.ep9_in_control;
+                $body
+            }
+            (9, false) => {
+                let $reg = &$dpram.ep9_out_control;
+                $body
+            }
+            (10, true) => {
+                let $reg = &$dpram.ep10_in_control;
+                $body
+            }
+            (10, false) => {
+                let $reg = &$dpram.ep10_out_control;
+                $body
+            }
+            (11, true) => {
+                let $reg = &$dpram.ep11_in_control;
+                $body
+            }
+            (11, false) => {
+                let $reg = &$dpram.ep11_out_control;
+                $body
+            }
+            (12, true) => {
+                let $reg = &$dpram.ep12_in_control;
+                $body
+            }
+            (12, false) => {
+                let $reg = &$dpram.ep12_out_control;
+                $body
+            }
+            (13, true) => {
+                let $reg = &$dpram.ep13_in_control;
+                $body
+            }
+            (13, false) => {
+                let $reg = &$dpram.ep13_out_control;
+                $body
+            }
+            (14, true) => {
+                let $reg = &$dpram.ep14_in_control;
+                $body
+            }
+            (14, false) => {
+                let $reg = &$dpram.ep14_out_control;
+                $body
+            }
+            (15, true) => {
+                let $reg = &$dpram.ep15_in_control;
+                $body
+            }
+            (15, false) => {
+                let $reg = &$dpram.ep15_out_control;
+                $body
+            }
+            _ => panic!("invalid endpoint address"),
+        }
+    }};
+}
+
 /// Access buffer control register by endpoint address
 ///
 /// This provides dynamic access to buffer control registers based on endpoint number/direction.
@@ -331,212 +601,27 @@ impl<'a> BufferControlAccess<'a> {
 
     /// Write buffer control with errata handling for any endpoint
     pub fn write_with_errata(&self, ep_addr: EndpointAddress, val: u32) {
-        let ep_num = ep_addr.number();
-        let is_in = ep_addr.is_in();
-
-        match (ep_num, is_in) {
-            (0, true) => self.dpram.ep0_in_buffer_control.write_with_errata(val),
-            (0, false) => self.dpram.ep0_out_buffer_control.write_with_errata(val),
-            (1, true) => self.dpram.ep1_in_buffer_control.write_with_errata(val),
-            (1, false) => self.dpram.ep1_out_buffer_control.write_with_errata(val),
-            (2, true) => self.dpram.ep2_in_buffer_control.write_with_errata(val),
-            (2, false) => self.dpram.ep2_out_buffer_control.write_with_errata(val),
-            (3, true) => self.dpram.ep3_in_buffer_control.write_with_errata(val),
-            (3, false) => self.dpram.ep3_out_buffer_control.write_with_errata(val),
-            (4, true) => self.dpram.ep4_in_buffer_control.write_with_errata(val),
-            (4, false) => self.dpram.ep4_out_buffer_control.write_with_errata(val),
-            (5, true) => self.dpram.ep5_in_buffer_control.write_with_errata(val),
-            (5, false) => self.dpram.ep5_out_buffer_control.write_with_errata(val),
-            (6, true) => self.dpram.ep6_in_buffer_control.write_with_errata(val),
-            (6, false) => self.dpram.ep6_out_buffer_control.write_with_errata(val),
-            (7, true) => self.dpram.ep7_in_buffer_control.write_with_errata(val),
-            (7, false) => self.dpram.ep7_out_buffer_control.write_with_errata(val),
-            (8, true) => self.dpram.ep8_in_buffer_control.write_with_errata(val),
-            (8, false) => self.dpram.ep8_out_buffer_control.write_with_errata(val),
-            (9, true) => self.dpram.ep9_in_buffer_control.write_with_errata(val),
-            (9, false) => self.dpram.ep9_out_buffer_control.write_with_errata(val),
-            (10, true) => self.dpram.ep10_in_buffer_control.write_with_errata(val),
-            (10, false) => self.dpram.ep10_out_buffer_control.write_with_errata(val),
-            (11, true) => self.dpram.ep11_in_buffer_control.write_with_errata(val),
-            (11, false) => self.dpram.ep11_out_buffer_control.write_with_errata(val),
-            (12, true) => self.dpram.ep12_in_buffer_control.write_with_errata(val),
-            (12, false) => self.dpram.ep12_out_buffer_control.write_with_errata(val),
-            (13, true) => self.dpram.ep13_in_buffer_control.write_with_errata(val),
-            (13, false) => self.dpram.ep13_out_buffer_control.write_with_errata(val),
-            (14, true) => self.dpram.ep14_in_buffer_control.write_with_errata(val),
-            (14, false) => self.dpram.ep14_out_buffer_control.write_with_errata(val),
-            (15, true) => self.dpram.ep15_in_buffer_control.write_with_errata(val),
-            (15, false) => self.dpram.ep15_out_buffer_control.write_with_errata(val),
-            _ => panic!("Invalid endpoint number"),
-        }
+        buffer_control_match!(self.dpram, ep_addr, |reg| reg.write_with_errata(val));
     }
 
     /// Read buffer control for any endpoint
     pub fn read(&self, ep_addr: EndpointAddress) -> u32 {
-        let ep_num = ep_addr.number();
-        let is_in = ep_addr.is_in();
-
-        match (ep_num, is_in) {
-            (0, true) => self.dpram.ep0_in_buffer_control.read_raw(),
-            (0, false) => self.dpram.ep0_out_buffer_control.read_raw(),
-            (1, true) => self.dpram.ep1_in_buffer_control.read_raw(),
-            (1, false) => self.dpram.ep1_out_buffer_control.read_raw(),
-            (2, true) => self.dpram.ep2_in_buffer_control.read_raw(),
-            (2, false) => self.dpram.ep2_out_buffer_control.read_raw(),
-            (3, true) => self.dpram.ep3_in_buffer_control.read_raw(),
-            (3, false) => self.dpram.ep3_out_buffer_control.read_raw(),
-            (4, true) => self.dpram.ep4_in_buffer_control.read_raw(),
-            (4, false) => self.dpram.ep4_out_buffer_control.read_raw(),
-            (5, true) => self.dpram.ep5_in_buffer_control.read_raw(),
-            (5, false) => self.dpram.ep5_out_buffer_control.read_raw(),
-            (6, true) => self.dpram.ep6_in_buffer_control.read_raw(),
-            (6, false) => self.dpram.ep6_out_buffer_control.read_raw(),
-            (7, true) => self.dpram.ep7_in_buffer_control.read_raw(),
-            (7, false) => self.dpram.ep7_out_buffer_control.read_raw(),
-            (8, true) => self.dpram.ep8_in_buffer_control.read_raw(),
-            (8, false) => self.dpram.ep8_out_buffer_control.read_raw(),
-            (9, true) => self.dpram.ep9_in_buffer_control.read_raw(),
-            (9, false) => self.dpram.ep9_out_buffer_control.read_raw(),
-            (10, true) => self.dpram.ep10_in_buffer_control.read_raw(),
-            (10, false) => self.dpram.ep10_out_buffer_control.read_raw(),
-            (11, true) => self.dpram.ep11_in_buffer_control.read_raw(),
-            (11, false) => self.dpram.ep11_out_buffer_control.read_raw(),
-            (12, true) => self.dpram.ep12_in_buffer_control.read_raw(),
-            (12, false) => self.dpram.ep12_out_buffer_control.read_raw(),
-            (13, true) => self.dpram.ep13_in_buffer_control.read_raw(),
-            (13, false) => self.dpram.ep13_out_buffer_control.read_raw(),
-            (14, true) => self.dpram.ep14_in_buffer_control.read_raw(),
-            (14, false) => self.dpram.ep14_out_buffer_control.read_raw(),
-            (15, true) => self.dpram.ep15_in_buffer_control.read_raw(),
-            (15, false) => self.dpram.ep15_out_buffer_control.read_raw(),
-            _ => panic!("Invalid endpoint number"),
-        }
+        buffer_control_match!(self.dpram, ep_addr, |reg| reg.read_raw())
     }
 
     /// Set stall for any endpoint
     pub fn set_stall(&self, ep_addr: EndpointAddress) {
-        let ep_num = ep_addr.number();
-        let is_in = ep_addr.is_in();
-
-        match (ep_num, is_in) {
-            (0, true) => self.dpram.ep0_in_buffer_control.set_stall(),
-            (0, false) => self.dpram.ep0_out_buffer_control.set_stall(),
-            (1, true) => self.dpram.ep1_in_buffer_control.set_stall(),
-            (1, false) => self.dpram.ep1_out_buffer_control.set_stall(),
-            (2, true) => self.dpram.ep2_in_buffer_control.set_stall(),
-            (2, false) => self.dpram.ep2_out_buffer_control.set_stall(),
-            (3, true) => self.dpram.ep3_in_buffer_control.set_stall(),
-            (3, false) => self.dpram.ep3_out_buffer_control.set_stall(),
-            (4, true) => self.dpram.ep4_in_buffer_control.set_stall(),
-            (4, false) => self.dpram.ep4_out_buffer_control.set_stall(),
-            (5, true) => self.dpram.ep5_in_buffer_control.set_stall(),
-            (5, false) => self.dpram.ep5_out_buffer_control.set_stall(),
-            (6, true) => self.dpram.ep6_in_buffer_control.set_stall(),
-            (6, false) => self.dpram.ep6_out_buffer_control.set_stall(),
-            (7, true) => self.dpram.ep7_in_buffer_control.set_stall(),
-            (7, false) => self.dpram.ep7_out_buffer_control.set_stall(),
-            (8, true) => self.dpram.ep8_in_buffer_control.set_stall(),
-            (8, false) => self.dpram.ep8_out_buffer_control.set_stall(),
-            (9, true) => self.dpram.ep9_in_buffer_control.set_stall(),
-            (9, false) => self.dpram.ep9_out_buffer_control.set_stall(),
-            (10, true) => self.dpram.ep10_in_buffer_control.set_stall(),
-            (10, false) => self.dpram.ep10_out_buffer_control.set_stall(),
-            (11, true) => self.dpram.ep11_in_buffer_control.set_stall(),
-            (11, false) => self.dpram.ep11_out_buffer_control.set_stall(),
-            (12, true) => self.dpram.ep12_in_buffer_control.set_stall(),
-            (12, false) => self.dpram.ep12_out_buffer_control.set_stall(),
-            (13, true) => self.dpram.ep13_in_buffer_control.set_stall(),
-            (13, false) => self.dpram.ep13_out_buffer_control.set_stall(),
-            (14, true) => self.dpram.ep14_in_buffer_control.set_stall(),
-            (14, false) => self.dpram.ep14_out_buffer_control.set_stall(),
-            (15, true) => self.dpram.ep15_in_buffer_control.set_stall(),
-            (15, false) => self.dpram.ep15_out_buffer_control.set_stall(),
-            _ => panic!("Invalid endpoint number"),
-        }
+        buffer_control_match!(self.dpram, ep_addr, |reg| reg.set_stall());
     }
 
     /// Clear stall for any endpoint
     pub fn clear_stall(&self, ep_addr: EndpointAddress) {
-        let ep_num = ep_addr.number();
-        let is_in = ep_addr.is_in();
-
-        match (ep_num, is_in) {
-            (0, true) => self.dpram.ep0_in_buffer_control.clear_stall(),
-            (0, false) => self.dpram.ep0_out_buffer_control.clear_stall(),
-            (1, true) => self.dpram.ep1_in_buffer_control.clear_stall(),
-            (1, false) => self.dpram.ep1_out_buffer_control.clear_stall(),
-            (2, true) => self.dpram.ep2_in_buffer_control.clear_stall(),
-            (2, false) => self.dpram.ep2_out_buffer_control.clear_stall(),
-            (3, true) => self.dpram.ep3_in_buffer_control.clear_stall(),
-            (3, false) => self.dpram.ep3_out_buffer_control.clear_stall(),
-            (4, true) => self.dpram.ep4_in_buffer_control.clear_stall(),
-            (4, false) => self.dpram.ep4_out_buffer_control.clear_stall(),
-            (5, true) => self.dpram.ep5_in_buffer_control.clear_stall(),
-            (5, false) => self.dpram.ep5_out_buffer_control.clear_stall(),
-            (6, true) => self.dpram.ep6_in_buffer_control.clear_stall(),
-            (6, false) => self.dpram.ep6_out_buffer_control.clear_stall(),
-            (7, true) => self.dpram.ep7_in_buffer_control.clear_stall(),
-            (7, false) => self.dpram.ep7_out_buffer_control.clear_stall(),
-            (8, true) => self.dpram.ep8_in_buffer_control.clear_stall(),
-            (8, false) => self.dpram.ep8_out_buffer_control.clear_stall(),
-            (9, true) => self.dpram.ep9_in_buffer_control.clear_stall(),
-            (9, false) => self.dpram.ep9_out_buffer_control.clear_stall(),
-            (10, true) => self.dpram.ep10_in_buffer_control.clear_stall(),
-            (10, false) => self.dpram.ep10_out_buffer_control.clear_stall(),
-            (11, true) => self.dpram.ep11_in_buffer_control.clear_stall(),
-            (11, false) => self.dpram.ep11_out_buffer_control.clear_stall(),
-            (12, true) => self.dpram.ep12_in_buffer_control.clear_stall(),
-            (12, false) => self.dpram.ep12_out_buffer_control.clear_stall(),
-            (13, true) => self.dpram.ep13_in_buffer_control.clear_stall(),
-            (13, false) => self.dpram.ep13_out_buffer_control.clear_stall(),
-            (14, true) => self.dpram.ep14_in_buffer_control.clear_stall(),
-            (14, false) => self.dpram.ep14_out_buffer_control.clear_stall(),
-            (15, true) => self.dpram.ep15_in_buffer_control.clear_stall(),
-            (15, false) => self.dpram.ep15_out_buffer_control.clear_stall(),
-            _ => panic!("Invalid endpoint number"),
-        }
+        buffer_control_match!(self.dpram, ep_addr, |reg| reg.clear_stall());
     }
 
     /// Check if endpoint is stalled
     pub fn is_stalled(&self, ep_addr: EndpointAddress) -> bool {
-        let ep_num = ep_addr.number();
-        let is_in = ep_addr.is_in();
-
-        match (ep_num, is_in) {
-            (0, true) => self.dpram.ep0_in_buffer_control.is_stalled(),
-            (0, false) => self.dpram.ep0_out_buffer_control.is_stalled(),
-            (1, true) => self.dpram.ep1_in_buffer_control.is_stalled(),
-            (1, false) => self.dpram.ep1_out_buffer_control.is_stalled(),
-            (2, true) => self.dpram.ep2_in_buffer_control.is_stalled(),
-            (2, false) => self.dpram.ep2_out_buffer_control.is_stalled(),
-            (3, true) => self.dpram.ep3_in_buffer_control.is_stalled(),
-            (3, false) => self.dpram.ep3_out_buffer_control.is_stalled(),
-            (4, true) => self.dpram.ep4_in_buffer_control.is_stalled(),
-            (4, false) => self.dpram.ep4_out_buffer_control.is_stalled(),
-            (5, true) => self.dpram.ep5_in_buffer_control.is_stalled(),
-            (5, false) => self.dpram.ep5_out_buffer_control.is_stalled(),
-            (6, true) => self.dpram.ep6_in_buffer_control.is_stalled(),
-            (6, false) => self.dpram.ep6_out_buffer_control.is_stalled(),
-            (7, true) => self.dpram.ep7_in_buffer_control.is_stalled(),
-            (7, false) => self.dpram.ep7_out_buffer_control.is_stalled(),
-            (8, true) => self.dpram.ep8_in_buffer_control.is_stalled(),
-            (8, false) => self.dpram.ep8_out_buffer_control.is_stalled(),
-            (9, true) => self.dpram.ep9_in_buffer_control.is_stalled(),
-            (9, false) => self.dpram.ep9_out_buffer_control.is_stalled(),
-            (10, true) => self.dpram.ep10_in_buffer_control.is_stalled(),
-            (10, false) => self.dpram.ep10_out_buffer_control.is_stalled(),
-            (11, true) => self.dpram.ep11_in_buffer_control.is_stalled(),
-            (11, false) => self.dpram.ep11_out_buffer_control.is_stalled(),
-            (12, true) => self.dpram.ep12_in_buffer_control.is_stalled(),
-            (12, false) => self.dpram.ep12_out_buffer_control.is_stalled(),
-            (13, true) => self.dpram.ep13_in_buffer_control.is_stalled(),
-            (13, false) => self.dpram.ep13_out_buffer_control.is_stalled(),
-            (14, true) => self.dpram.ep14_in_buffer_control.is_stalled(),
-            (14, false) => self.dpram.ep14_out_buffer_control.is_stalled(),
-            (15, true) => self.dpram.ep15_in_buffer_control.is_stalled(),
-            (15, false) => self.dpram.ep15_out_buffer_control.is_stalled(),
-            _ => panic!("Invalid endpoint number"),
-        }
+        buffer_control_match!(self.dpram, ep_addr, |reg| reg.is_stalled())
     }
 }
 
@@ -553,108 +638,19 @@ impl<'a> EndpointControlAccess<'a> {
 
     /// Configure an endpoint (EP1-EP15)
     pub fn configure(&self, ep_addr: EndpointAddress, ep_type: EndpointType, buffer_offset: u16) {
-        let ep_num = ep_addr.number();
-        let is_in = ep_addr.is_in();
-
-        if ep_num == 0 {
+        if ep_addr.number() == 0 {
             // EP0 doesn't have control registers
             return;
         }
-
-        match (ep_num, is_in) {
-            (1, true) => self.dpram.ep1_in_control.configure(ep_type, buffer_offset),
-            (1, false) => self.dpram.ep1_out_control.configure(ep_type, buffer_offset),
-            (2, true) => self.dpram.ep2_in_control.configure(ep_type, buffer_offset),
-            (2, false) => self.dpram.ep2_out_control.configure(ep_type, buffer_offset),
-            (3, true) => self.dpram.ep3_in_control.configure(ep_type, buffer_offset),
-            (3, false) => self.dpram.ep3_out_control.configure(ep_type, buffer_offset),
-            (4, true) => self.dpram.ep4_in_control.configure(ep_type, buffer_offset),
-            (4, false) => self.dpram.ep4_out_control.configure(ep_type, buffer_offset),
-            (5, true) => self.dpram.ep5_in_control.configure(ep_type, buffer_offset),
-            (5, false) => self.dpram.ep5_out_control.configure(ep_type, buffer_offset),
-            (6, true) => self.dpram.ep6_in_control.configure(ep_type, buffer_offset),
-            (6, false) => self.dpram.ep6_out_control.configure(ep_type, buffer_offset),
-            (7, true) => self.dpram.ep7_in_control.configure(ep_type, buffer_offset),
-            (7, false) => self.dpram.ep7_out_control.configure(ep_type, buffer_offset),
-            (8, true) => self.dpram.ep8_in_control.configure(ep_type, buffer_offset),
-            (8, false) => self.dpram.ep8_out_control.configure(ep_type, buffer_offset),
-            (9, true) => self.dpram.ep9_in_control.configure(ep_type, buffer_offset),
-            (9, false) => self.dpram.ep9_out_control.configure(ep_type, buffer_offset),
-            (10, true) => self.dpram.ep10_in_control.configure(ep_type, buffer_offset),
-            (10, false) => self
-                .dpram
-                .ep10_out_control
-                .configure(ep_type, buffer_offset),
-            (11, true) => self.dpram.ep11_in_control.configure(ep_type, buffer_offset),
-            (11, false) => self
-                .dpram
-                .ep11_out_control
-                .configure(ep_type, buffer_offset),
-            (12, true) => self.dpram.ep12_in_control.configure(ep_type, buffer_offset),
-            (12, false) => self
-                .dpram
-                .ep12_out_control
-                .configure(ep_type, buffer_offset),
-            (13, true) => self.dpram.ep13_in_control.configure(ep_type, buffer_offset),
-            (13, false) => self
-                .dpram
-                .ep13_out_control
-                .configure(ep_type, buffer_offset),
-            (14, true) => self.dpram.ep14_in_control.configure(ep_type, buffer_offset),
-            (14, false) => self
-                .dpram
-                .ep14_out_control
-                .configure(ep_type, buffer_offset),
-            (15, true) => self.dpram.ep15_in_control.configure(ep_type, buffer_offset),
-            (15, false) => self
-                .dpram
-                .ep15_out_control
-                .configure(ep_type, buffer_offset),
-            _ => panic!("Invalid endpoint number"),
-        }
+        endpoint_control_match!(self.dpram, ep_addr, |reg| reg
+            .configure(ep_type, buffer_offset));
     }
 
     /// Disable an endpoint (EP1-EP15)
     pub fn disable(&self, ep_addr: EndpointAddress) {
-        let ep_num = ep_addr.number();
-        let is_in = ep_addr.is_in();
-
-        if ep_num == 0 {
+        if ep_addr.number() == 0 {
             return;
         }
-
-        match (ep_num, is_in) {
-            (1, true) => self.dpram.ep1_in_control.disable(),
-            (1, false) => self.dpram.ep1_out_control.disable(),
-            (2, true) => self.dpram.ep2_in_control.disable(),
-            (2, false) => self.dpram.ep2_out_control.disable(),
-            (3, true) => self.dpram.ep3_in_control.disable(),
-            (3, false) => self.dpram.ep3_out_control.disable(),
-            (4, true) => self.dpram.ep4_in_control.disable(),
-            (4, false) => self.dpram.ep4_out_control.disable(),
-            (5, true) => self.dpram.ep5_in_control.disable(),
-            (5, false) => self.dpram.ep5_out_control.disable(),
-            (6, true) => self.dpram.ep6_in_control.disable(),
-            (6, false) => self.dpram.ep6_out_control.disable(),
-            (7, true) => self.dpram.ep7_in_control.disable(),
-            (7, false) => self.dpram.ep7_out_control.disable(),
-            (8, true) => self.dpram.ep8_in_control.disable(),
-            (8, false) => self.dpram.ep8_out_control.disable(),
-            (9, true) => self.dpram.ep9_in_control.disable(),
-            (9, false) => self.dpram.ep9_out_control.disable(),
-            (10, true) => self.dpram.ep10_in_control.disable(),
-            (10, false) => self.dpram.ep10_out_control.disable(),
-            (11, true) => self.dpram.ep11_in_control.disable(),
-            (11, false) => self.dpram.ep11_out_control.disable(),
-            (12, true) => self.dpram.ep12_in_control.disable(),
-            (12, false) => self.dpram.ep12_out_control.disable(),
-            (13, true) => self.dpram.ep13_in_control.disable(),
-            (13, false) => self.dpram.ep13_out_control.disable(),
-            (14, true) => self.dpram.ep14_in_control.disable(),
-            (14, false) => self.dpram.ep14_out_control.disable(),
-            (15, true) => self.dpram.ep15_in_control.disable(),
-            (15, false) => self.dpram.ep15_out_control.disable(),
-            _ => panic!("Invalid endpoint number"),
-        }
+        endpoint_control_match!(self.dpram, ep_addr, |reg| reg.disable());
     }
 }

@@ -16,7 +16,7 @@
 //! use rp2350_usb::class::gs_usb::GsUsbClass;
 //! use rp2350_usb::rp2350::Rp2350Bus;
 //!
-//! let alloc = UsbBusAllocator::new(Rp2350Bus::new());
+//! let alloc = UsbBusAllocator::new(unsafe { Rp2350Bus::steal() });
 //! let mut gs_usb = GsUsbClass::new(&alloc);
 //! let mut dev = UsbDeviceBuilder::new(&alloc, 0x1D50, 0x606F)
 //!     .product("candleLight RP2350")

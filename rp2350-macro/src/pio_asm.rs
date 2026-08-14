@@ -948,7 +948,9 @@ fn encode_mov_instr(args: &[&str]) -> Result<u16, String> {
 
     let dest = parse_mov_dest(dest_str)?;
 
-    // Check for operation prefix on source: ~, ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,, ::
+    // Parse an optional operation prefix on the source: `~x` (invert) or
+    // `::x` (bit-reverse).  The operator may also be a separate token,
+    // e.g. `mov x, :: y`.
     let source_idx = 1;
     let source_str = args.get(source_idx).ok_or("MOV requires source")?;
 

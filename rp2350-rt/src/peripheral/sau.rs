@@ -18,10 +18,7 @@
 
 use core::marker::PhantomData;
 
-use super::{VolatileCell, peripheral};
-
-/// SAU base address
-const SAU_BASE: u32 = 0xE000_EDD0;
+use super::{SAU_BASE, VolatileCell, peripheral};
 
 /// SAU Register Block
 #[repr(C)]

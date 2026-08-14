@@ -7,25 +7,16 @@
 //!
 //! ```ignore
 //! use rp2350::sha256::Sha256;
-//! use rp2350_pac::SHA256;
 //!
-//! // Obtain the SHA256 peripheral from the PAC
-//! let sha_peripheral = unsafe { SHA256::steal() };
-//! let mut sha = Sha256::init(sha_peripheral);
+//! let dp = rp2350_pac::Peripherals::take().unwrap();
+//! let mut sha = Sha256::init(dp.SHA256);
 //!
-//! // Or steal after init (unsafe — caller guarantees init happened)
-//! let sha = unsafe { Sha256::steal() };
-//!
-//! // Start a new hash computation
-//! sha.start();
-//!
-//! // Write data (must be 64-byte blocks until final)
+//! // `hash()` handles block splitting and padding automatically.
 //! let data = b"Hello, World!";
-//! let hash = sha.hash(data);
+//! let digest = sha.hash(data);
 //!
-//! // Print the hash
-//! for byte in hash.iter() {
-//!     print!("{:02x}", byte);
+//! for byte in digest {
+//!     // ...
 //! }
 //! ```
 
@@ -346,11 +337,13 @@ impl Sha256 {
         self.read_hash_blocking()
     }
 
-    /// Compute SHA-256 hash of the given data (without allocating)
+    /// Compute the SHA-256 hash, consuming and returning `self`.
     ///
-    /// Same as `hash()` but takes ownership of self and returns it.
+    /// Unlike [`hash`](Self::hash), this takes ownership of the peripheral and
+    /// returns it alongside the digest — useful when the caller cannot hold a
+    /// mutable borrow across the call.
     #[inline]
-    pub fn hash_into(mut self, data: &[u8]) -> ([u8; DIGEST_SIZE], Self) {
+    pub fn hash_owned(mut self, data: &[u8]) -> ([u8; DIGEST_SIZE], Self) {
         let hash = self.hash(data);
         (hash, self)
     }

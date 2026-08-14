@@ -9,7 +9,7 @@
 //! use rp2350::reset::Resettable;
 //!
 //! // Standard init: reset + unreset (guarantees clean register state)
-//! rp2350_pac::SPI0::reset_init();
+//! rp2350_pac::SPI0::init();
 //!
 //! // Unreset only (peripheral already in reset at first boot)
 //! rp2350_pac::UART0::unreset();

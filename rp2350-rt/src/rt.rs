@@ -142,7 +142,7 @@ pub unsafe extern "C" fn Reset() -> ! {
             dst = inout(reg) dst,
             end = in(reg) end,
             tmp = out(reg) _,
-            options(nomem, nostack, preserves_flags),
+            options(nostack),
         );
         // 'src' and 'dst' are consumed by the asm loop; silence unused-assign
         _ = src;
@@ -158,7 +158,7 @@ pub unsafe extern "C" fn Reset() -> ! {
             dst = in(reg) &raw const __stext,
             s = out(reg) first_src,
             d = out(reg) first_dst,
-            options(nomem, nostack, preserves_flags),
+            options(nostack, preserves_flags),
         );
         if first_src != first_dst {
             loop {

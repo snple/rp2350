@@ -65,7 +65,7 @@ pub mod fpccr {
     pub const MONRDY: u32 = 1 << 8;
     /// Secure exception was active when lazy state preservation was activated
     pub const SFRDY: u32 = 1 << 7;
-    /// Lazy state preservation for secure context
+    /// Secure stack pointer limit violation
     pub const SPLIMVIOL: u32 = 1 << 9;
     /// Uses Thread stack for context save
     pub const UFRDY: u32 = 1 << 10;

@@ -55,7 +55,7 @@ pub unsafe fn enable() {
 /// Check if interrupts are currently enabled
 #[inline(always)]
 pub fn is_enabled() -> bool {
-    primask::read().is_active()
+    primask::read().interrupts_enabled()
 }
 
 // =============================================================================

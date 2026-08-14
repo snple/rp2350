@@ -3,7 +3,7 @@
 //! # Usage
 //!
 //! ```ignore
-//! let alloc = UsbBusAllocator::new(Rp2350Bus::new());
+//! let alloc = UsbBusAllocator::new(unsafe { Rp2350Bus::steal() });
 //! // … allocate endpoints via alloc …
 //! let mut dev = UsbDeviceBuilder::new(&alloc, 0x1234, 0x5678).build();
 //! ```
@@ -88,7 +88,7 @@ impl EpAllocator {
 ///
 /// # Construction
 ///
-/// Use [`Rp2350Bus::new()`] (const fn) then pass it to [`UsbBusAllocator::new`].
+/// Use [`Rp2350Bus::steal()`] then pass it to [`UsbBusAllocator::new`].
 pub struct Rp2350Bus {
     usb: &'static rp2350_pac::usb::RegisterBlock,
     dpram: &'static rp2350_pac::usb_dpram::RegisterBlock,

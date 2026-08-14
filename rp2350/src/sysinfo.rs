@@ -13,7 +13,7 @@
 //! ## Example
 //!
 //! ```ignore
-//! use rp2350::sysinfo::Sysinfo;
+//! use rp2350::sysinfo::{Platform, Sysinfo};
 //! use rp2350_pac::SYSINFO;
 //!
 //! let sysinfo_pac = unsafe { SYSINFO::steal() };
@@ -25,13 +25,41 @@
 //! let revision = sysinfo.revision();
 //!
 //! // Check platform
-//! if sysinfo.is_asic() {
+//! if sysinfo.platform() == Some(Platform::Asic) {
 //!     // Running on real hardware
 //! }
 //! ```
 
 use crate::Steal;
-use crate::reset::Resettable;
+
+/// The package variant of this chip.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+pub enum Package {
+    /// RP2350A (QFN-60)
+    Rp2350a,
+    /// RP2350B (QFN-80)
+    Rp2350b,
+}
+
+/// The environment the code is running on.
+///
+/// Post-production chips always report [`Platform::Asic`]; the simulation
+/// variants are only meaningful during pre-production development.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+pub enum Platform {
+    /// Real silicon.
+    Asic,
+    /// FPGA build.
+    Fpga,
+    /// HDL (RTL) simulation.
+    HdlSim,
+    /// Batch simulation.
+    BatchSim,
+    /// Gate-level simulation.
+    GateSim,
+}
 
 /// SYSINFO peripheral wrapper
 ///
@@ -42,16 +70,16 @@ pub struct Sysinfo {
 }
 
 impl Sysinfo {
-    /// Initialize the SYSINFO peripheral.
+    /// Take ownership of the SYSINFO peripheral.
     ///
-    /// Takes ownership of the [`rp2350_pac::SYSINFO`] register block, resets
-    /// the peripheral, and brings it out of reset.
+    /// SYSINFO is a read-only peripheral: its registers are hard-wired and
+    /// there is no meaningful reset to perform, so this only transfers
+    /// ownership of the [`rp2350_pac::SYSINFO`] register block.
     ///
     /// # Arguments
     /// * `sysinfo` - The SYSINFO peripheral from PAC
+    #[inline]
     pub fn init(sysinfo: rp2350_pac::SYSINFO) -> Self {
-        // Reset then unreset to guarantee clean register state
-        <rp2350_pac::SYSINFO as Resettable>::init();
         Self { sysinfo }
     }
 
@@ -116,38 +144,50 @@ impl Sysinfo {
     // Package Selection
     // ========================================================================
 
-    /// Get the raw package selection register value
+    /// Get the package variant of this chip.
+    ///
+    /// `PACKAGE_SEL[0]` is `0` for RP2350A (QFN-60) and `1` for
+    /// RP2350B (QFN-80).
     #[inline]
-    pub fn package_sel(&self) -> u32 {
-        self.sysinfo.package_sel.read_bits()
+    pub fn package(&self) -> Package {
+        if self.sysinfo.package_sel.package_sel() {
+            Package::Rp2350b
+        } else {
+            Package::Rp2350a
+        }
     }
 
     // ========================================================================
     // Platform
     // ========================================================================
 
-    /// Get the raw platform register value
+    /// Get the environment this code is running on.
+    ///
+    /// Returns `None` if the `PLATFORM` register holds no known value (all
+    /// five platform bits clear); use [`Sysinfo::platform_raw`] to inspect
+    /// the raw bits in that case.
     #[inline]
-    pub fn platform(&self) -> u32 {
+    pub fn platform(&self) -> Option<Platform> {
+        let p = &self.sysinfo.platform;
+        if p.asic() {
+            Some(Platform::Asic)
+        } else if p.fpga() {
+            Some(Platform::Fpga)
+        } else if p.hdlsim() {
+            Some(Platform::HdlSim)
+        } else if p.batchsim() {
+            Some(Platform::BatchSim)
+        } else if p.gatesim() {
+            Some(Platform::GateSim)
+        } else {
+            None
+        }
+    }
+
+    /// Get the raw platform register value.
+    #[inline]
+    pub fn platform_raw(&self) -> u32 {
         self.sysinfo.platform.read_bits()
-    }
-
-    /// Check if running on an ASIC (real chip)
-    #[inline]
-    pub fn is_asic(&self) -> bool {
-        self.sysinfo.platform.asic()
-    }
-
-    /// Check if running on an FPGA
-    #[inline]
-    pub fn is_fpga(&self) -> bool {
-        self.sysinfo.platform.fpga()
-    }
-
-    /// Check if running in HDL simulation
-    #[inline]
-    pub fn is_hdl_sim(&self) -> bool {
-        self.sysinfo.platform.hdlsim()
     }
 
     // ========================================================================

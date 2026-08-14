@@ -97,19 +97,31 @@ impl Eppb {
         self.eppb.nmi_mask0.write_nmi_mask0(mask);
     }
 
-    /// Enable NMI for a specific IRQ (0-31)
+    /// Enable NMI for a specific IRQ (0-51).
+    ///
+    /// IRQ 0-31 map to `NMI_MASK0`, IRQ 32-51 map to `NMI_MASK1`.
+    ///
+    /// # Panics
+    /// Panics if `irq > 51`.
     #[inline]
-    pub fn enable_nmi_irq0_31(&self, irq: u8) {
-        if irq < 32 {
-            self.eppb.nmi_mask0.modify_bits(|r| r | (1 << irq));
+    pub fn enable_nmi(&self, irq: u8) {
+        match irq {
+            0..=31 => self.eppb.nmi_mask0.modify_bits(|r| r | (1 << irq)),
+            32..=51 => self.eppb.nmi_mask1.modify_bits(|r| r | (1 << (irq - 32))),
+            _ => panic!("invalid IRQ for NMI: {irq}"),
         }
     }
 
-    /// Disable NMI for a specific IRQ (0-31)
+    /// Disable NMI for a specific IRQ (0-51).
+    ///
+    /// # Panics
+    /// Panics if `irq > 51`.
     #[inline]
-    pub fn disable_nmi_irq0_31(&self, irq: u8) {
-        if irq < 32 {
-            self.eppb.nmi_mask0.modify_bits(|r| r & !(1 << irq));
+    pub fn disable_nmi(&self, irq: u8) {
+        match irq {
+            0..=31 => self.eppb.nmi_mask0.modify_bits(|r| r & !(1 << irq)),
+            32..=51 => self.eppb.nmi_mask1.modify_bits(|r| r & !(1 << (irq - 32))),
+            _ => panic!("invalid IRQ for NMI: {irq}"),
         }
     }
 
@@ -125,22 +137,6 @@ impl Eppb {
     #[inline]
     pub fn set_nmi_mask1(&self, mask: u32) {
         self.eppb.nmi_mask1.write_nmi_mask1(mask & 0x000F_FFFF);
-    }
-
-    /// Enable NMI for a specific IRQ (32-51)
-    #[inline]
-    pub fn enable_nmi_irq32_51(&self, irq: u8) {
-        if (32..52).contains(&irq) {
-            self.eppb.nmi_mask1.modify_bits(|r| r | (1 << (irq - 32)));
-        }
-    }
-
-    /// Disable NMI for a specific IRQ (32-51)
-    #[inline]
-    pub fn disable_nmi_irq32_51(&self, irq: u8) {
-        if (32..52).contains(&irq) {
-            self.eppb.nmi_mask1.modify_bits(|r| r & !(1 << (irq - 32)));
-        }
     }
 
     // ========================================================================

@@ -18,10 +18,7 @@
 
 use core::marker::PhantomData;
 
-use super::{VolatileCell, peripheral};
-
-/// MPU base address
-const MPU_BASE: u32 = 0xE000_ED90;
+use super::{MPU_BASE, VolatileCell, peripheral};
 
 /// MPU Register Block (ARMv8-M)
 #[repr(C)]

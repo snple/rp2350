@@ -96,14 +96,6 @@ impl Interp0 {
     pub unsafe fn steal() -> Steal<Interp0> {
         Steal(Interp0::init())
     }
-    #[inline]
-    pub fn lane0(&self) -> Lane {
-        Lane { idx: 0 }
-    }
-    #[inline]
-    pub fn lane1(&self) -> Lane {
-        Lane { idx: 1 }
-    }
 }
 
 impl Interp1 {
@@ -126,14 +118,6 @@ impl Interp1 {
     #[inline]
     pub unsafe fn steal() -> Steal<Interp1> {
         Steal(Interp1::init())
-    }
-    #[inline]
-    pub fn lane0(&self) -> Lane {
-        Lane { idx: 0 }
-    }
-    #[inline]
-    pub fn lane1(&self) -> Lane {
-        Lane { idx: 1 }
     }
 }
 
@@ -360,6 +344,24 @@ macro_rules! with_interp_reg {
 
 /// Operations common to both INTERP0 and INTERP1.
 pub trait InterpOps: InterpIndex {
+    /// Access lane 0 of this interpolator.
+    #[inline]
+    fn lane0(&self) -> Lane {
+        Lane {
+            interp: Self::index(),
+            lane: 0,
+        }
+    }
+
+    /// Access lane 1 of this interpolator.
+    #[inline]
+    fn lane1(&self) -> Lane {
+        Lane {
+            interp: Self::index(),
+            lane: 1,
+        }
+    }
+
     /// Set the accumulator for a lane (0 or 1).
     #[inline]
     fn set_accumulator(&self, lane: usize, value: u32) {
@@ -491,43 +493,50 @@ pub struct State {
 
 /// Accessor for a single lane of an interpolator.
 pub struct Lane {
-    idx: usize,
+    interp: usize,
+    lane: usize,
 }
 
 impl Lane {
+    /// Get this lane's index (0 or 1).
     #[inline]
     pub fn index(&self) -> usize {
-        self.idx
+        self.lane
     }
 
-    /// Apply configuration to this lane on the given interpolator.
+    /// Apply configuration to this lane.
     ///
     /// # Panics
     ///
     /// Panics if BLEND is set on a non-INTERP0 lane 0, or CLAMP is set on a
     /// non-INTERP1 lane 0.
     #[inline]
-    pub fn configure<I: InterpIndex>(&self, _interp: &I, config: &Config) {
-        let idx = I::index();
+    pub fn configure(&self, config: &Config) {
         if config.ctrl & rp2350_pac::sio::Interp0CtrlLane0::BLEND != 0 {
             assert!(
-                idx == 0 && self.idx == 0,
+                self.interp == 0 && self.lane == 0,
                 "BLEND only valid on INTERP0 lane 0"
             );
         }
         if config.ctrl & rp2350_pac::sio::Interp1CtrlLane0::CLAMP != 0 {
             assert!(
-                idx == 1 && self.idx == 0,
+                self.interp == 1 && self.lane == 0,
                 "CLAMP only valid on INTERP1 lane 0"
             );
         }
-        with_interp_reg!(idx, self.idx, ctrl, reg, reg.write_bits(config.ctrl));
+        with_interp_reg!(
+            self.interp,
+            self.lane,
+            ctrl,
+            reg,
+            reg.write_bits(config.ctrl)
+        );
     }
 
     /// Read the current control register value.
     #[inline]
-    pub fn read_ctrl<I: InterpIndex>(&self, _interp: &I) -> u32 {
-        with_interp_reg!(I::index(), self.idx, ctrl, reg, reg.read_bits())
+    pub fn read_ctrl(&self) -> u32 {
+        with_interp_reg!(self.interp, self.lane, ctrl, reg, reg.read_bits())
     }
 }
 

@@ -315,7 +315,10 @@ impl Fifo {
     #[inline]
     pub fn try_read(&self) -> Option<u32> {
         if self.is_read_ready() {
-            Some(self.sio.fifo_rd.read_bits())
+            let value = self.sio.fifo_rd.read_bits();
+            // Reading frees a slot — wake a writer blocked in `write()`.
+            rp2350_rt::asm::sev();
+            Some(value)
         } else {
             None
         }
@@ -345,7 +348,10 @@ impl Fifo {
         while !self.is_read_ready() {
             rp2350_rt::asm::wfe();
         }
-        self.sio.fifo_rd.read_bits()
+        let value = self.sio.fifo_rd.read_bits();
+        // Reading frees a slot — wake a writer blocked in `write()`.
+        rp2350_rt::asm::sev();
+        value
     }
 
     // ========================================================================
@@ -358,6 +364,8 @@ impl Fifo {
         while self.is_read_ready() {
             let _ = self.sio.fifo_rd.read_bits();
         }
+        // Draining frees slots — wake a writer blocked in `write()`.
+        rp2350_rt::asm::sev();
     }
 }
 
@@ -497,6 +505,8 @@ impl Doorbell {
     #[inline]
     pub fn set_remote(&self, mask: u8) {
         self.sio.doorbell_out_set.write_bits(mask as u32);
+        // Wake a core blocked in `wait()` even if its bell IRQ is disabled.
+        rp2350_rt::asm::sev();
     }
 
     /// De-assert doorbell bits that were previously posted to the other core
@@ -596,7 +606,7 @@ impl Doorbell {
     ///
     /// After this returns, the doorbell bit is cleared and ready for the
     /// next signal.  For non-blocking polling, use
-    /// [`pending()`](Self::pending) + [`clear_local()`](Self::clear_local).
+    /// [`is_pending()`](Self::is_pending) + [`clear_local()`](Self::clear_local).
     ///
     /// # Panics
     ///

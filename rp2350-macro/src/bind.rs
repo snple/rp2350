@@ -103,6 +103,18 @@ pub fn bind_impl(args: TokenStream, input: TokenStream) -> TokenStream {
     let fn_vis = &f.vis;
     let fn_attrs = &f.attrs;
 
+    // The ISR is invoked by hardware with no arguments.  Reject anything else
+    // here — the previous implementation silently dropped the signature, which
+    // produced confusing "cannot find value" errors inside the body.
+    if !f.sig.inputs.is_empty() {
+        return syn::Error::new_spanned(
+            &f.sig,
+            "#[bind] handler must have signature `fn()` (no arguments)",
+        )
+        .to_compile_error()
+        .into();
+    }
+
     let irq_name_str = irq_name.to_string();
 
     // Validate the interrupt name against the known RP2350 interrupt set.
@@ -118,10 +130,13 @@ pub fn bind_impl(args: TokenStream, input: TokenStream) -> TokenStream {
         .into();
     }
 
+    // The function itself is the ISR (no trampoline), so `#[ramfunc]` keeps the
+    // whole interrupt path in RAM.  The vector table stores handlers as
+    // `unsafe extern "C" fn()`, hence the C ABI.
     quote! {
         #[unsafe(export_name = #irq_name_str)]
         #(#fn_attrs)*
-        #fn_vis fn #user_fn_name() #fn_body
+        #fn_vis unsafe extern "C" fn #user_fn_name() #fn_body
     }
     .into()
 }

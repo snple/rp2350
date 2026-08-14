@@ -294,21 +294,23 @@ impl<'a> DescriptorWriter<'a> {
     ///
     /// Call this from the device layer when responding to GET_DESCRIPTOR(String).
     pub fn write_string(buf: &mut [u8], s: &str) -> UsbResult<usize> {
-        let header_len = 2;
-        let max_chars = (buf.len().saturating_sub(header_len)) / 2;
-        let mut len = 0usize;
-        for (i, c) in s.chars().take(max_chars).enumerate() {
-            let cp = c as u32;
-            let unit = if cp <= 0xFFFF { cp as u16 } else { 0xFFFD };
-            let off = header_len + i * 2;
-            buf[off] = unit as u8;
-            buf[off + 1] = (unit >> 8) as u8;
-            len = off + 2;
-        }
-        let total = header_len + len;
-        if total > buf.len() {
+        if buf.len() < 2 {
             return Err(UsbError::BufferOverflow);
         }
+        let max_chars = (buf.len() - 2) / 2;
+        let mut n = 0usize;
+        for c in s.chars().take(max_chars) {
+            // Non-BMP code points are replaced with U+FFFD (replacement char).
+            let unit = if (c as u32) <= 0xFFFF {
+                c as u16
+            } else {
+                0xFFFD
+            };
+            buf[2 + n * 2] = unit as u8;
+            buf[3 + n * 2] = (unit >> 8) as u8;
+            n += 1;
+        }
+        let total = 2 + n * 2;
         buf[0] = total as u8;
         buf[1] = descriptor_type::STRING;
         Ok(total)

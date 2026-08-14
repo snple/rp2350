@@ -47,9 +47,12 @@
 //! wd.reboot(100);
 //! ```
 
+use core::cell::Cell;
+
 use crate::Steal;
+use paste::paste;
+use rp2350_pac::PSM;
 use rp2350_pac::psm::Wdsel;
-use rp2350_pac::{PSM, WATCHDOG};
 
 /// Magic value indicating a non-reboot watchdog reset
 const WATCHDOG_NON_REBOOT_MAGIC: u32 = 0x6ab73121;
@@ -110,6 +113,8 @@ pub enum ResetReason {
 /// Owns the PAC WATCHDOG peripheral to enforce proper ownership semantics.
 pub struct Watchdog {
     watchdog: rp2350_pac::WATCHDOG,
+    /// Last timeout written via [`Watchdog::start`] or [`Watchdog::feed_with`].
+    load_value: Cell<u32>,
 }
 
 impl Watchdog {
@@ -119,7 +124,10 @@ impl Watchdog {
     /// * `watchdog` - The WATCHDOG peripheral from PAC
     #[inline]
     pub fn init(watchdog: rp2350_pac::WATCHDOG) -> Self {
-        Self { watchdog }
+        Self {
+            watchdog,
+            load_value: Cell::new(0),
+        }
     }
 
     /// Obtain a Watchdog handle without ownership checks.
@@ -153,31 +161,33 @@ impl Watchdog {
     // Watchdog Control
     // ========================================================================
 
-    /// Start the watchdog with the specified timeout in microseconds
+    /// Start the watchdog with the specified timeout in microseconds.
     ///
-    /// The watchdog will reset the system if not fed within the timeout period.
-    /// Maximum timeout is approximately 8.3 seconds (0x7FFFFF µs).
+    /// The watchdog resets the system if not fed within the timeout period.
+    /// The timeout is clamped to the 24-bit maximum (`0xFFFFFF` µs ≈ 16.7 s).
     ///
     /// # Arguments
-    /// * `timeout_us` - Timeout in microseconds (max 0x7FFFFF = ~8.3s)
-    pub fn start(&mut self, timeout_us: u32) {
-        self.watchdog.load.write_load(timeout_us);
+    /// * `timeout_us` - Timeout in microseconds
+    pub fn start(&self, timeout_us: u32) {
+        self.load_value.set(timeout_us.min(WATCHDOG_LOAD_MAX));
+        self.watchdog.load.write_load(self.load_value.get());
         self.watchdog.ctrl.set_enable();
     }
 
-    /// Feed (reload) the watchdog to prevent reset
+    /// Feed (reload) the watchdog to prevent reset.
     ///
-    /// This should be called regularly within the timeout period.
+    /// Reloads with the timeout value last set via [`Watchdog::start`] or
+    /// [`Watchdog::feed_with`]. Call regularly within the timeout period.
     #[inline]
     pub fn feed(&self) {
-        let time = self.watchdog.ctrl.time();
-        self.watchdog.load.write_load(time);
+        self.watchdog.load.write_load(self.load_value.get());
     }
 
-    /// Feed the watchdog with a specific timeout value
+    /// Feed the watchdog and set a new timeout value.
     #[inline]
     pub fn feed_with(&self, timeout_us: u32) {
-        self.watchdog.load.write_load(timeout_us);
+        self.load_value.set(timeout_us.min(WATCHDOG_LOAD_MAX));
+        self.watchdog.load.write_load(self.load_value.get());
     }
 
     /// Disable the watchdog
@@ -206,7 +216,7 @@ impl Watchdog {
 
     /// Trigger an immediate watchdog reset
     #[inline]
-    pub fn force_reset(&mut self) {
+    pub fn force_reset(&self) {
         self.watchdog.ctrl.trigger_trigger();
     }
 
@@ -216,7 +226,7 @@ impl Watchdog {
 
     /// Pause watchdog when processor 0 is in debug mode
     #[inline]
-    pub fn pause_on_debug0(&mut self, pause: bool) {
+    pub fn pause_on_debug0(&self, pause: bool) {
         if pause {
             self.watchdog.ctrl.set_pause_dbg0();
         } else {
@@ -226,7 +236,7 @@ impl Watchdog {
 
     /// Pause watchdog when processor 1 is in debug mode
     #[inline]
-    pub fn pause_on_debug1(&mut self, pause: bool) {
+    pub fn pause_on_debug1(&self, pause: bool) {
         if pause {
             self.watchdog.ctrl.set_pause_dbg1();
         } else {
@@ -236,7 +246,7 @@ impl Watchdog {
 
     /// Pause watchdog when JTAG is accessing the bus fabric
     #[inline]
-    pub fn pause_on_jtag(&mut self, pause: bool) {
+    pub fn pause_on_jtag(&self, pause: bool) {
         if pause {
             self.watchdog.ctrl.set_pause_jtag();
         } else {
@@ -245,14 +255,14 @@ impl Watchdog {
     }
 
     /// Enable all debug pausing (convenience method)
-    pub fn enable_debug_pause(&mut self) {
+    pub fn enable_debug_pause(&self) {
         self.pause_on_debug0(true);
         self.pause_on_debug1(true);
         self.pause_on_jtag(true);
     }
 
     /// Disable all debug pausing (convenience method)
-    pub fn disable_debug_pause(&mut self) {
+    pub fn disable_debug_pause(&self) {
         self.pause_on_debug0(false);
         self.pause_on_debug1(false);
         self.pause_on_jtag(false);
@@ -264,16 +274,16 @@ impl Watchdog {
 
     /// Get the reason for the last reset
     pub fn reset_reason(&self) -> ResetReason {
-        let reason = self.watchdog.reason.read_bits();
+        let reason = &self.watchdog.reason;
 
-        if reason == 0 {
-            ResetReason::PowerOn
-        } else if (reason & 0x01) != 0 {
+        if reason.timer() {
             ResetReason::WatchdogTimeout
-        } else if (reason & 0x02) != 0 {
+        } else if reason.force() {
             ResetReason::WatchdogForce
+        } else if reason.read_bits() == 0 {
+            ResetReason::PowerOn
         } else {
-            ResetReason::Unknown(reason)
+            ResetReason::Unknown(reason.read_bits())
         }
     }
 
@@ -300,7 +310,7 @@ impl Watchdog {
     /// Distinguishes between a reset from the regular watchdog timer
     /// versus a reboot initiated by `reboot()` or `reboot_to_address()`.
     #[inline]
-    pub fn enable_caused_reboot(&mut self) -> bool {
+    pub fn enable_caused_reboot(&self) -> bool {
         self.watchdog.reason.read_bits() != 0
             && self.watchdog.scratch4.read_bits() == WATCHDOG_NON_REBOOT_MAGIC
     }
@@ -313,6 +323,7 @@ impl Watchdog {
     ///
     /// Scratch registers persist through soft resets.
     pub fn read_scratch(&self, index: usize) -> u32 {
+        assert!(index < 8, "scratch index must be 0-7");
         match index {
             0 => self.watchdog.scratch0.read_bits(),
             1 => self.watchdog.scratch1.read_bits(),
@@ -322,14 +333,15 @@ impl Watchdog {
             5 => self.watchdog.scratch5.read_bits(),
             6 => self.watchdog.scratch6.read_bits(),
             7 => self.watchdog.scratch7.read_bits(),
-            _ => 0,
+            _ => unreachable!(),
         }
     }
 
     /// Write a scratch register (0-7)
     ///
     /// Scratch registers persist through soft resets.
-    pub fn write_scratch(&mut self, index: usize, value: u32) {
+    pub fn write_scratch(&self, index: usize, value: u32) {
+        assert!(index < 8, "scratch index must be 0-7");
         match index {
             0 => self.watchdog.scratch0.write_bits(value),
             1 => self.watchdog.scratch1.write_bits(value),
@@ -339,105 +351,12 @@ impl Watchdog {
             5 => self.watchdog.scratch5.write_bits(value),
             6 => self.watchdog.scratch6.write_bits(value),
             7 => self.watchdog.scratch7.write_bits(value),
-            _ => {}
+            _ => unreachable!(),
         }
     }
 
-    /// Read scratch register 0
-    #[inline]
-    pub fn scratch0(&self) -> u32 {
-        self.watchdog.scratch0.read_bits()
-    }
-
-    /// Write scratch register 0
-    #[inline]
-    pub fn set_scratch0(&mut self, value: u32) {
-        self.watchdog.scratch0.write_bits(value);
-    }
-
-    /// Read scratch register 1
-    #[inline]
-    pub fn scratch1(&self) -> u32 {
-        self.watchdog.scratch1.read_bits()
-    }
-
-    /// Write scratch register 1
-    #[inline]
-    pub fn set_scratch1(&mut self, value: u32) {
-        self.watchdog.scratch1.write_bits(value);
-    }
-
-    /// Read scratch register 2
-    #[inline]
-    pub fn scratch2(&self) -> u32 {
-        self.watchdog.scratch2.read_bits()
-    }
-
-    /// Write scratch register 2
-    #[inline]
-    pub fn set_scratch2(&mut self, value: u32) {
-        self.watchdog.scratch2.write_bits(value);
-    }
-
-    /// Read scratch register 3
-    #[inline]
-    pub fn scratch3(&self) -> u32 {
-        self.watchdog.scratch3.read_bits()
-    }
-
-    /// Write scratch register 3
-    #[inline]
-    pub fn set_scratch3(&mut self, value: u32) {
-        self.watchdog.scratch3.write_bits(value);
-    }
-
-    /// Read scratch register 4
-    #[inline]
-    pub fn scratch4(&self) -> u32 {
-        self.watchdog.scratch4.read_bits()
-    }
-
-    /// Write scratch register 4
-    #[inline]
-    pub fn set_scratch4(&mut self, value: u32) {
-        self.watchdog.scratch4.write_bits(value);
-    }
-
-    /// Read scratch register 5
-    #[inline]
-    pub fn scratch5(&self) -> u32 {
-        self.watchdog.scratch5.read_bits()
-    }
-
-    /// Write scratch register 5
-    #[inline]
-    pub fn set_scratch5(&mut self, value: u32) {
-        self.watchdog.scratch5.write_bits(value);
-    }
-
-    /// Read scratch register 6
-    #[inline]
-    pub fn scratch6(&self) -> u32 {
-        self.watchdog.scratch6.read_bits()
-    }
-
-    /// Write scratch register 6
-    #[inline]
-    pub fn set_scratch6(&mut self, value: u32) {
-        self.watchdog.scratch6.write_bits(value);
-    }
-
-    /// Read scratch register 7
-    #[inline]
-    pub fn scratch7(&self) -> u32 {
-        self.watchdog.scratch7.read_bits()
-    }
-
-    /// Write scratch register 7
-    #[inline]
-    pub fn set_scratch7(&mut self, value: u32) {
-        self.watchdog.scratch7.write_bits(value);
-    }
+    // Per-register accessors (`scratch0`..`scratch7`, `set_scratch0`..`set_scratch7`)
+    // are generated by `impl_scratch!` below.
 
     // ========================================================================
     // Watchdog-based Enable/Reboot
@@ -541,6 +460,30 @@ impl Watchdog {
     }
 }
 
+macro_rules! impl_scratch {
+    ($($n:literal),+ $(,)?) => {
+        paste! {
+            $(
+                impl Watchdog {
+                    #[doc = concat!("Read scratch register ", $n, ".")]
+                    #[inline]
+                    pub fn [<scratch $n>](&self) -> u32 {
+                        self.watchdog.[<scratch $n>].read_bits()
+                    }
+
+                    #[doc = concat!("Write scratch register ", $n, ".")]
+                    #[inline]
+                    pub fn [<set_scratch $n>](&self, value: u32) {
+                        self.watchdog.[<scratch $n>].write_bits(value);
+                    }
+                }
+            )+
+        }
+    };
+}
+
+impl_scratch!(0, 1, 2, 3, 4, 5, 6, 7);
+
 // ============================================================================
 // Module-level Convenience Functions
 // ============================================================================
@@ -565,28 +508,7 @@ impl Watchdog {
 /// watchdog::reboot(10);
 /// ```
 pub fn reboot(delay_ms: u32) -> ! {
-    let watchdog = unsafe { WATCHDOG::steal() };
-    let psm = unsafe { PSM::steal() };
-
-    watchdog.scratch4.write_bits(0);
-    watchdog.ctrl.clr_enable();
-    psm.wdsel.set_bits(PSM_WDSEL_RESET_BITS);
-
-    watchdog.ctrl.clr_pause_dbg0();
-    watchdog.ctrl.clr_pause_dbg1();
-    watchdog.ctrl.clr_pause_jtag();
-
-    if delay_ms == 0 {
-        watchdog.ctrl.trigger_trigger();
-    } else {
-        let load_value = (delay_ms.saturating_mul(1000)).min(WATCHDOG_LOAD_MAX);
-        watchdog.load.write_load(load_value);
-        watchdog.ctrl.set_enable();
-    }
-
-    loop {
-        rp2350_rt::asm::wfi();
-    }
+    unsafe { Watchdog::steal() }.reboot(delay_ms)
 }
 
 /// Perform a full system reboot to a specific address (module-level convenience)
@@ -602,47 +524,17 @@ pub fn reboot(delay_ms: u32) -> ! {
 /// a valid stack region. Invalid values cause undefined behaviour
 /// after reset.
 pub unsafe fn reboot_to_address(pc: u32, sp: u32, delay_ms: u32) -> ! {
-    let watchdog = unsafe { WATCHDOG::steal() };
-    let psm = unsafe { PSM::steal() };
-
-    watchdog.ctrl.clr_enable();
-
-    let pc_thumb = pc | 1;
-    watchdog.scratch4.write_bits(WATCHDOG_REBOOT_MAGIC);
-    watchdog
-        .scratch5
-        .write_bits(pc_thumb ^ (WATCHDOG_REBOOT_MAGIC.wrapping_neg()));
-    watchdog.scratch6.write_bits(sp);
-    watchdog.scratch7.write_bits(pc_thumb);
-
-    psm.wdsel.set_bits(PSM_WDSEL_RESET_BITS);
-    watchdog.ctrl.clr_pause_dbg0();
-    watchdog.ctrl.clr_pause_dbg1();
-    watchdog.ctrl.clr_pause_jtag();
-
-    if delay_ms == 0 {
-        watchdog.ctrl.trigger_trigger();
-    } else {
-        let load_value = (delay_ms.saturating_mul(1000)).min(WATCHDOG_LOAD_MAX);
-        watchdog.load.write_load(load_value);
-        watchdog.ctrl.set_enable();
-    }
-
-    loop {
-        rp2350_rt::asm::wfi();
-    }
+    unsafe { Watchdog::steal().reboot_to_address(pc, sp, delay_ms) }
 }
 
 /// Check if the last reset was caused by the watchdog (module-level convenience)
 #[inline]
 pub fn caused_reboot() -> bool {
-    let watchdog = unsafe { WATCHDOG::steal() };
-    watchdog.reason.read_bits() != 0
+    unsafe { Watchdog::steal() }.caused_reboot()
 }
 
 /// Check if the last reset was caused by `enable_watchdog()` (module-level convenience)
 #[inline]
 pub fn enable_caused_reboot() -> bool {
-    let watchdog = unsafe { WATCHDOG::steal() };
-    watchdog.reason.read_bits() != 0 && watchdog.scratch4.read_bits() == WATCHDOG_NON_REBOOT_MAGIC
+    unsafe { Watchdog::steal() }.enable_caused_reboot()
 }

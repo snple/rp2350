@@ -104,7 +104,7 @@ pub const BI_PINS_ENCODING_MULTI: u32 = 2;
 pub const BI_PINS_ENCODING_RANGE: u32 = 1;
 
 /// Core binary info structure
-#[repr(C)]
+#[repr(C, packed)]
 #[derive(Clone, Copy)]
 pub struct BinaryInfoCore {
     pub info_type: u16,
@@ -112,7 +112,7 @@ pub struct BinaryInfoCore {
 }
 
 /// Binary info with ID and integer value
-#[repr(C)]
+#[repr(C, packed)]
 #[derive(Clone, Copy)]
 pub struct BinaryInfoIdAndInt {
     pub core: BinaryInfoCore,
@@ -121,7 +121,7 @@ pub struct BinaryInfoIdAndInt {
 }
 
 /// Binary info with ID and string value
-#[repr(C)]
+#[repr(C, packed)]
 #[derive(Clone, Copy)]
 pub struct BinaryInfoIdAndString {
     pub core: BinaryInfoCore,
@@ -134,7 +134,7 @@ unsafe impl Sync for BinaryInfoIdAndString {}
 unsafe impl Send for BinaryInfoIdAndString {}
 
 /// Binary info for pins with function (32-bit encoding)
-#[repr(C)]
+#[repr(C, packed)]
 #[derive(Clone, Copy)]
 pub struct BinaryInfoPinsWithFunc {
     pub core: BinaryInfoCore,
@@ -143,7 +143,7 @@ pub struct BinaryInfoPinsWithFunc {
 }
 
 /// Binary info for pins with name (32-bit mask)
-#[repr(C)]
+#[repr(C, packed)]
 #[derive(Clone, Copy)]
 pub struct BinaryInfoPinsWithName {
     pub core: BinaryInfoCore,
@@ -156,7 +156,7 @@ unsafe impl Sync for BinaryInfoPinsWithName {}
 unsafe impl Send for BinaryInfoPinsWithName {}
 
 /// Binary info for pins with function (64-bit encoding for RP2350B)
-#[repr(C)]
+#[repr(C, packed)]
 #[derive(Clone, Copy)]
 pub struct BinaryInfoPins64WithFunc {
     pub core: BinaryInfoCore,
@@ -164,7 +164,7 @@ pub struct BinaryInfoPins64WithFunc {
 }
 
 /// Binary info for pins with name (64-bit mask for RP2350B)
-#[repr(C)]
+#[repr(C, packed)]
 #[derive(Clone, Copy)]
 pub struct BinaryInfoPins64WithName {
     pub core: BinaryInfoCore,
@@ -303,6 +303,25 @@ pub const fn encode_pin_range_with_func_64(plo: u32, phi: u32, func: GpioFunc) -
 // Macros for declaring binary info
 // ============================================================================
 
+/// Internal helper: declare a `BinaryInfoIdAndString` entry.
+#[doc(hidden)]
+#[macro_export]
+macro_rules! __bi_id_and_string {
+    ($name:ident, $id:expr, $value:expr) => {
+        #[unsafe(link_section = ".bi_entries")]
+        #[used]
+        static $name: $crate::binary_info::BinaryInfoIdAndString =
+            $crate::binary_info::BinaryInfoIdAndString {
+                core: $crate::binary_info::BinaryInfoCore {
+                    info_type: $crate::binary_info::BinaryInfoType::IdAndString as u16,
+                    tag: $crate::binary_info::TAG_RASPBERRY_PI,
+                },
+                id: $id,
+                value: $value,
+            };
+    };
+}
+
 /// Declare a program name
 ///
 /// # Example
@@ -312,17 +331,11 @@ pub const fn encode_pin_range_with_func_64(plo: u32, phi: u32, func: GpioFunc) -
 #[macro_export]
 macro_rules! bi_program_name {
     ($name:literal) => {
-        #[unsafe(link_section = ".bi_entries")]
-        #[used]
-        static _BI_PROGRAM_NAME: $crate::binary_info::BinaryInfoIdAndString =
-            $crate::binary_info::BinaryInfoIdAndString {
-                core: $crate::binary_info::BinaryInfoCore {
-                    info_type: $crate::binary_info::BinaryInfoType::IdAndString as u16,
-                    tag: $crate::binary_info::TAG_RASPBERRY_PI,
-                },
-                id: $crate::binary_info::ID_RP_PROGRAM_NAME,
-                value: concat!($name, "\0").as_ptr(),
-            };
+        $crate::__bi_id_and_string!(
+            _BI_PROGRAM_NAME,
+            $crate::binary_info::ID_RP_PROGRAM_NAME,
+            concat!($name, "\0").as_ptr()
+        );
     };
 }
 
@@ -335,17 +348,11 @@ macro_rules! bi_program_name {
 #[macro_export]
 macro_rules! bi_program_version {
     ($version:literal) => {
-        #[unsafe(link_section = ".bi_entries")]
-        #[used]
-        static _BI_PROGRAM_VERSION: $crate::binary_info::BinaryInfoIdAndString =
-            $crate::binary_info::BinaryInfoIdAndString {
-                core: $crate::binary_info::BinaryInfoCore {
-                    info_type: $crate::binary_info::BinaryInfoType::IdAndString as u16,
-                    tag: $crate::binary_info::TAG_RASPBERRY_PI,
-                },
-                id: $crate::binary_info::ID_RP_PROGRAM_VERSION_STRING,
-                value: concat!($version, "\0").as_ptr(),
-            };
+        $crate::__bi_id_and_string!(
+            _BI_PROGRAM_VERSION,
+            $crate::binary_info::ID_RP_PROGRAM_VERSION_STRING,
+            concat!($version, "\0").as_ptr()
+        );
     };
 }
 
@@ -358,17 +365,11 @@ macro_rules! bi_program_version {
 #[macro_export]
 macro_rules! bi_program_description {
     ($desc:literal) => {
-        #[unsafe(link_section = ".bi_entries")]
-        #[used]
-        static _BI_PROGRAM_DESCRIPTION: $crate::binary_info::BinaryInfoIdAndString =
-            $crate::binary_info::BinaryInfoIdAndString {
-                core: $crate::binary_info::BinaryInfoCore {
-                    info_type: $crate::binary_info::BinaryInfoType::IdAndString as u16,
-                    tag: $crate::binary_info::TAG_RASPBERRY_PI,
-                },
-                id: $crate::binary_info::ID_RP_PROGRAM_DESCRIPTION,
-                value: concat!($desc, "\0").as_ptr(),
-            };
+        $crate::__bi_id_and_string!(
+            _BI_PROGRAM_DESCRIPTION,
+            $crate::binary_info::ID_RP_PROGRAM_DESCRIPTION,
+            concat!($desc, "\0").as_ptr()
+        );
     };
 }
 
@@ -381,17 +382,11 @@ macro_rules! bi_program_description {
 #[macro_export]
 macro_rules! bi_program_url {
     ($url:literal) => {
-        #[unsafe(link_section = ".bi_entries")]
-        #[used]
-        static _BI_PROGRAM_URL: $crate::binary_info::BinaryInfoIdAndString =
-            $crate::binary_info::BinaryInfoIdAndString {
-                core: $crate::binary_info::BinaryInfoCore {
-                    info_type: $crate::binary_info::BinaryInfoType::IdAndString as u16,
-                    tag: $crate::binary_info::TAG_RASPBERRY_PI,
-                },
-                id: $crate::binary_info::ID_RP_PROGRAM_URL,
-                value: concat!($url, "\0").as_ptr(),
-            };
+        $crate::__bi_id_and_string!(
+            _BI_PROGRAM_URL,
+            $crate::binary_info::ID_RP_PROGRAM_URL,
+            concat!($url, "\0").as_ptr()
+        );
     };
 }
 
@@ -404,17 +399,11 @@ macro_rules! bi_program_url {
 #[macro_export]
 macro_rules! bi_program_build_date {
     ($date:literal) => {
-        #[unsafe(link_section = ".bi_entries")]
-        #[used]
-        static _BI_PROGRAM_BUILD_DATE: $crate::binary_info::BinaryInfoIdAndString =
-            $crate::binary_info::BinaryInfoIdAndString {
-                core: $crate::binary_info::BinaryInfoCore {
-                    info_type: $crate::binary_info::BinaryInfoType::IdAndString as u16,
-                    tag: $crate::binary_info::TAG_RASPBERRY_PI,
-                },
-                id: $crate::binary_info::ID_RP_PROGRAM_BUILD_DATE_STRING,
-                value: concat!($date, "\0").as_ptr(),
-            };
+        $crate::__bi_id_and_string!(
+            _BI_PROGRAM_BUILD_DATE,
+            $crate::binary_info::ID_RP_PROGRAM_BUILD_DATE_STRING,
+            concat!($date, "\0").as_ptr()
+        );
     };
 }
 
@@ -431,17 +420,11 @@ macro_rules! bi_program_build_date {
 macro_rules! bi_program_feature {
     ($feature:literal) => {
         $crate::paste::paste! {
-            #[unsafe(link_section = ".bi_entries")]
-            #[used]
-            static [<_BI_PROGRAM_FEATURE_ $feature:snake:upper>]: $crate::binary_info::BinaryInfoIdAndString =
-                $crate::binary_info::BinaryInfoIdAndString {
-                    core: $crate::binary_info::BinaryInfoCore {
-                        info_type: $crate::binary_info::BinaryInfoType::IdAndString as u16,
-                        tag: $crate::binary_info::TAG_RASPBERRY_PI,
-                    },
-                    id: $crate::binary_info::ID_RP_PROGRAM_FEATURE,
-                    value: concat!($feature, "\0").as_ptr(),
-                };
+            $crate::__bi_id_and_string!(
+                [<_BI_PROGRAM_FEATURE_ $feature:snake:upper>],
+                $crate::binary_info::ID_RP_PROGRAM_FEATURE,
+                concat!($feature, "\0").as_ptr()
+            );
         }
     };
 }
@@ -456,17 +439,11 @@ macro_rules! bi_program_feature {
 macro_rules! bi_program_build_attribute {
     ($attr:literal) => {
         $crate::paste::paste! {
-            #[unsafe(link_section = ".bi_entries")]
-            #[used]
-            static [<_BI_BUILD_ATTR_ $attr:snake:upper>]: $crate::binary_info::BinaryInfoIdAndString =
-                $crate::binary_info::BinaryInfoIdAndString {
-                    core: $crate::binary_info::BinaryInfoCore {
-                        info_type: $crate::binary_info::BinaryInfoType::IdAndString as u16,
-                        tag: $crate::binary_info::TAG_RASPBERRY_PI,
-                    },
-                    id: $crate::binary_info::ID_RP_PROGRAM_BUILD_ATTRIBUTE,
-                    value: concat!($attr, "\0").as_ptr(),
-                };
+            $crate::__bi_id_and_string!(
+                [<_BI_BUILD_ATTR_ $attr:snake:upper>],
+                $crate::binary_info::ID_RP_PROGRAM_BUILD_ATTRIBUTE,
+                concat!($attr, "\0").as_ptr()
+            );
         }
     };
 }
@@ -480,17 +457,11 @@ macro_rules! bi_program_build_attribute {
 #[macro_export]
 macro_rules! bi_rp2350_board {
     ($board:literal) => {
-        #[unsafe(link_section = ".bi_entries")]
-        #[used]
-        static _BI_PICO_BOARD: $crate::binary_info::BinaryInfoIdAndString =
-            $crate::binary_info::BinaryInfoIdAndString {
-                core: $crate::binary_info::BinaryInfoCore {
-                    info_type: $crate::binary_info::BinaryInfoType::IdAndString as u16,
-                    tag: $crate::binary_info::TAG_RASPBERRY_PI,
-                },
-                id: $crate::binary_info::ID_RP_PICO_BOARD,
-                value: concat!($board, "\0").as_ptr(),
-            };
+        $crate::__bi_id_and_string!(
+            _BI_PICO_BOARD,
+            $crate::binary_info::ID_RP_PICO_BOARD,
+            concat!($board, "\0").as_ptr()
+        );
     };
 }
 

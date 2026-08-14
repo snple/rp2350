@@ -40,8 +40,12 @@ impl Duration {
     }
 
     /// Create a duration from a frequency in Hz (period = 1/freq)
+    ///
+    /// # Panics
+    /// Panics if `hz == 0`.
     #[inline]
     pub const fn from_hz(hz: u32) -> Self {
+        assert!(hz > 0, "frequency must be non-zero");
         Self {
             micros: 1_000_000 / hz as u64,
         }
@@ -66,8 +70,12 @@ impl Duration {
     }
 
     /// Get the duration as ticks for a given frequency
+    ///
+    /// # Panics
+    /// Panics if `freq_hz == 0`.
     #[inline]
     pub const fn as_ticks(&self, freq_hz: u32) -> u64 {
+        assert!(freq_hz > 0, "frequency must be non-zero");
         self.micros * freq_hz as u64 / 1_000_000
     }
 

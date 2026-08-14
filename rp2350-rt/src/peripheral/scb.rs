@@ -17,6 +17,8 @@ use super::{SCB_BASE, VolatileCell, peripheral};
 /// SCB Register Block
 #[repr(C)]
 pub struct RegisterBlock {
+    /// CPUID Base Register (read-only)
+    pub cpuid: VolatileCell<u32>,
     /// Interrupt Control and State Register
     pub icsr: VolatileCell<u32>,
     /// Vector Table Offset Register
@@ -250,15 +252,4 @@ impl SCB {
             (*Self::PTR).icsr.write_bits(ICSR_PENDSTCLR);
         }
     }
-}
-
-/// FPU access mode
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub enum FpuAccessMode {
-    /// FPU access disabled
-    Disabled,
-    /// FPU access for privileged code only
-    Privileged,
-    /// FPU access for all code
-    Full,
 }

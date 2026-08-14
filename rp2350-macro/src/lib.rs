@@ -53,7 +53,7 @@ mod ramfunc;
 /// }
 /// ```
 ///
-/// To supply your own image definition (e.g. `ImageDefWithVersion` or RISC-V),
+/// To supply your own image definition (e.g. `ImageDefWithVersion`),
 /// opt out of automatic generation:
 ///
 /// ```ignore
@@ -62,7 +62,7 @@ mod ramfunc;
 /// #[unsafe(link_section = ".start_block")]
 /// #[used]
 /// pub static IMAGE_DEF: ImageDefWithVersion =
-///     ImageDefWithVersion::exe_with_version(1, 0, 0);
+///     ImageDefWithVersion::exe_with_version(1, 0);
 ///
 /// #[main(no_image_def)]
 /// fn main() -> ! {

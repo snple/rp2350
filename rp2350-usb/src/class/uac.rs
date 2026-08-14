@@ -15,7 +15,7 @@
 //!
 //! static RATES_48K: [u32; 1] = [48000];
 //!
-//! let alloc = UsbBusAllocator::new(Rp2350Bus::new());
+//! let alloc = UsbBusAllocator::new(unsafe { Rp2350Bus::steal() });
 //! let mut audio = AudioClassBuilder::new()
 //!     .input(
 //!         StreamConfig::new_discrete(

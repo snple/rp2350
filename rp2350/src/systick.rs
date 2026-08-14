@@ -40,8 +40,6 @@ pub struct SysTick {
     syst: SYST,
     /// Clock frequency in Hz
     freq_hz: u32,
-    /// Ticks per microsecond
-    ticks_per_us: u32,
 }
 
 impl SysTick {
@@ -62,7 +60,7 @@ impl SysTick {
     /// let systick = SysTick::init(cp.SYST, 150_000_000);
     /// ```
     pub fn init(mut syst: SYST, freq_hz: u32) -> Self {
-        let ticks_per_us = freq_hz / 1_000_000;
+        assert!(freq_hz > 0, "SysTick clock frequency must be non-zero");
 
         // Configure SysTick
         syst.disable_counter();
@@ -72,11 +70,7 @@ impl SysTick {
         syst.set_reload(SYSTICK_MAX_RELOAD);
         syst.enable_counter();
 
-        Self {
-            syst,
-            freq_hz,
-            ticks_per_us,
-        }
+        Self { syst, freq_hz }
     }
 
     /// Obtain a SysTick handle without re-initializing.
@@ -94,7 +88,6 @@ impl SysTick {
         Steal(Self {
             syst: unsafe { SYST::steal() },
             freq_hz: 0,
-            ticks_per_us: 0,
         })
     }
 
@@ -104,10 +97,13 @@ impl SysTick {
         self.freq_hz
     }
 
-    /// Get the ticks per microsecond
+    /// Get the (truncated) number of ticks per microsecond.
+    ///
+    /// Note: the delay implementation computes ticks in 64-bit arithmetic and
+    /// is more accurate than this truncated value.
     #[inline]
     pub fn ticks_per_us(&self) -> u32 {
-        self.ticks_per_us
+        self.freq_hz / 1_000_000
     }
 
     /// Read the current counter value (counts down from reload value)
@@ -129,9 +125,9 @@ impl SysTick {
         self.syst.has_wrapped()
     }
 
-    /// Get the calibration value (if available)
+    /// Get the calibration value in ticks per 10 ms (if available).
     #[inline]
-    pub fn calibration(&self) -> Option<u32> {
+    pub fn ticks_per_10ms(&self) -> Option<u32> {
         SYST::ticks_per_10ms()
     }
 
@@ -183,73 +179,65 @@ impl SysTick {
         self.syst.set_reload(value.min(SYSTICK_MAX_RELOAD));
     }
 
-    /// Delay for a duration
+    /// Delay for a duration (busy-wait).
     pub fn delay(&self, duration: Duration) {
-        let total_us = duration.as_micros();
-        if total_us == 0 {
-            return;
-        }
+        assert!(
+            self.freq_hz > 0,
+            "SysTick was stolen without a clock frequency; delay is unavailable"
+        );
 
-        // If the handle was obtained via `steal()`, no tick rate was configured
-        // (`ticks_per_us == 0`). Delay cannot be computed, so return early
-        // instead of dividing by zero.
-        if self.ticks_per_us == 0 {
-            return;
-        }
-
-        // For very long delays, break into chunks
-        let max_delay_us = (SYSTICK_MAX_RELOAD / self.ticks_per_us) as u64;
-
-        let mut remaining_us = total_us;
+        let mut remaining_us = duration.as_micros();
         while remaining_us > 0 {
-            let chunk_us = remaining_us.min(max_delay_us) as u32;
-            self.delay_us_internal(chunk_us);
-            remaining_us -= chunk_us as u64;
+            // Longest delay that fits in one 24-bit reload cycle.
+            let chunk_us = remaining_us.min(self.max_chunk_us());
+            self.delay_us_internal(chunk_us as u32);
+            remaining_us -= chunk_us;
         }
     }
 
-    /// Delay for a number of milliseconds
+    /// Delay for a number of milliseconds.
     #[inline]
     pub fn delay_ms(&self, ms: u32) {
         self.delay(Duration::from_millis(ms as u64));
     }
 
-    /// Delay for a number of microseconds
+    /// Delay for a number of microseconds.
     #[inline]
     pub fn delay_us(&self, us: u32) {
-        if us == 0 {
-            return;
-        }
-        self.delay_us_internal(us);
+        self.delay(Duration::from_micros(us as u64));
     }
 
-    /// Internal delay implementation for up to max reload ticks
+    /// Longest single-shot delay (in microseconds) that fits in one reload
+    /// cycle at the configured clock rate.
+    #[inline]
+    fn max_chunk_us(&self) -> u64 {
+        SYSTICK_MAX_RELOAD as u64 * 1_000_000 / self.freq_hz as u64
+    }
+
+    /// Busy-wait for up to one reload cycle.
     fn delay_us_internal(&self, us: u32) {
-        let ticks = us.saturating_mul(self.ticks_per_us);
+        // Round up so we never return early.
+        let ticks = (us as u64 * self.freq_hz as u64).div_ceil(1_000_000);
+        let ticks = ticks.min(SYSTICK_MAX_RELOAD as u64) as u32;
         if ticks == 0 {
             return;
         }
 
-        // Clamp to max reload value
-        let ticks = ticks.min(SYSTICK_MAX_RELOAD);
-
         let reload = SYST::reload();
 
-        // Read start value and track previous value for wrap detection
+        // Track the previous counter value to detect wraps.
         let mut last = SYST::current();
         let mut elapsed: u32 = 0;
 
-        // Since SysTick counts down, we accumulate elapsed ticks
-        // by detecting when the counter wraps (current > last means wrap occurred)
         loop {
             let current = SYST::current();
 
-            // Calculate ticks since last read, handling wrap-around
+            // SysTick counts down; accumulate the ticks that passed since the
+            // previous read. `current > last` means the counter wrapped:
+            // last -> 0 -> reload -> current.
             let delta = if current <= last {
-                // Normal case: counter decreased
                 last - current
             } else {
-                // Wrap occurred: last -> 0 -> reload -> current
                 last + (reload - current) + 1
             };
 
@@ -260,7 +248,7 @@ impl SysTick {
                 break;
             }
 
-            // Small yield to prevent tight spinning
+            // Yield to prevent tight spinning.
             rp2350_rt::asm::nop();
         }
     }
@@ -359,10 +347,6 @@ impl Delay {
 }
 
 // ============================================================================
-// Busy-wait delay using simple counter loop
-// ============================================================================
-
-// ============================================================================
 // DelayUs trait implementations
 // ============================================================================
 
@@ -380,29 +364,4 @@ impl crate::delay::DelayUs for Delay {
     fn delay_us(&self, us: u32) {
         Delay::delay_us(self, us);
     }
-}
-
-// ============================================================================
-// Busy-wait delay using simple counter loop
-// ============================================================================
-
-/// Busy-wait delay using simple counter loop (less accurate but always works)
-///
-/// Useful when SysTick is not yet configured or for very short delays.
-#[inline]
-pub fn delay_cycles(cycles: u32) {
-    for _ in 0..cycles {
-        rp2350_rt::asm::nop();
-    }
-}
-
-/// Approximate delay in microseconds using cycle counting
-///
-/// This is a rough estimate and depends on the CPU clock frequency.
-/// For accurate timing, use SysTick instead.
-#[inline]
-pub fn delay_us_approx(us: u32, cpu_freq_mhz: u32) {
-    // Rough estimate: ~3 cycles per loop iteration
-    let cycles = us.saturating_mul(cpu_freq_mhz) / 3;
-    delay_cycles(cycles);
 }

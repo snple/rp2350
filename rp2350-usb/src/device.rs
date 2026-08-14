@@ -616,11 +616,13 @@ impl<'a, B: UsbBus> UsbDevice<'a, B> {
 /// # Example
 ///
 /// ```ignore
-/// use rp2350_usb::prelude::*;
+/// use rp2350_usb::{UsbBusAllocator, UsbDeviceBuilder};
+/// use rp2350_usb::class::cdc_acm::CdcAcm;
+/// use rp2350_usb::rp2350::Rp2350Bus;
 ///
-/// let alloc = UsbBusAllocator::new(Rp2350Bus::new());
+/// let alloc = UsbBusAllocator::new(unsafe { Rp2350Bus::steal() });
 /// let mut serial = CdcAcm::new(&alloc);
-/// let mut usb_dev = UsbDevice::builder(&alloc, 0x1234, 0x5678)
+/// let mut usb_dev = UsbDeviceBuilder::new(&alloc, 0x1234, 0x5678)
 ///     .product("My Device")
 ///     .manufacturer("My Company")
 ///     .serial_number("001")

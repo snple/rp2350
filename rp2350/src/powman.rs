@@ -320,8 +320,8 @@ impl Powman {
     /// # Arguments
     /// * `vsel` - Voltage threshold (0-31). Higher = higher threshold.
     pub fn set_bod_threshold(&self, vsel: u8) {
-        let vsel = vsel.min(31) as u32;
-        self.powman.bod.write_vsel(vsel);
+        assert!(vsel <= 31, "BOD threshold must be 0-31, got {}", vsel);
+        self.powman.bod.write_vsel(vsel as u32);
     }
 
     // ========================================================================
@@ -422,7 +422,10 @@ impl Powman {
             20 => 1,
             14 => 2,
             22 => 3,
-            _ => return, // Invalid GPIO
+            other => panic!(
+                "invalid 1kHz GPIO source {} (must be 12, 14, 20, or 22)",
+                other
+            ),
         };
 
         let was_running = self.timer_is_running();
@@ -590,60 +593,58 @@ impl Powman {
         mode: WakeupMode,
         direction: WakeupDirection,
     ) {
-        if wakeup_num > 3 {
-            return;
-        }
+        assert!(wakeup_num < 4, "wakeup_num must be 0-3, got {}", wakeup_num);
 
-        // Calculate pwrup register value
+        // PWRUP register layout (RP2350 datasheet):
+        //   SOURCE[5:0] = GPIO number, ENABLE[6], DIRECTION[7], MODE[8],
+        //   STATUS[9] = write 1 to clear a latched edge detect, RAW_STATUS[10] = RO
+        const ENABLE: u32 = 1 << 6;
+        const DIRECTION: u32 = 1 << 7;
+        const MODE: u32 = 1 << 8;
+        const STATUS: u32 = 1 << 9;
+
         let mode_bits = match mode {
-            WakeupMode::Level => 0 << 4,
-            WakeupMode::Edge => 1 << 4,
+            WakeupMode::Level => 0,
+            WakeupMode::Edge => MODE,
         };
         let direction_bits = match direction {
             WakeupDirection::Low => 0,
-            WakeupDirection::High => 1 << 6,
+            WakeupDirection::High => DIRECTION,
         };
-        let source_bits = (gpio as u32) << 8;
-        let value = mode_bits | direction_bits | source_bits;
+        let value = mode_bits | direction_bits | ((gpio as u32) & 0x3F);
 
-        // Access the pwrup register based on wakeup_num
+        macro_rules! configure {
+            ($reg:ident) => {{
+                // Write source/mode/direction while keeping the source disabled.
+                self.powman.$reg.write_bits(POWMAN_PASSWORD | value);
+                // Clear any latched edge-detect (write 1 to STATUS).
+                self.powman.$reg.set_bits(POWMAN_PASSWORD | STATUS);
+                // Enable the wakeup source.
+                self.powman.$reg.set_bits(POWMAN_PASSWORD | ENABLE);
+            }};
+        }
+
         match wakeup_num {
-            0 => {
-                self.powman.pwrup0.write_bits(POWMAN_PASSWORD | value);
-                self.powman.pwrup0.clr_bits(POWMAN_PASSWORD | (1 << 7)); // Clear STATUS
-                self.powman.pwrup0.set_bits(POWMAN_PASSWORD | 1); // Set ENABLE
-            }
-            1 => {
-                self.powman.pwrup1.write_bits(POWMAN_PASSWORD | value);
-                self.powman.pwrup1.clr_bits(POWMAN_PASSWORD | (1 << 7));
-                self.powman.pwrup1.set_bits(POWMAN_PASSWORD | 1);
-            }
-            2 => {
-                self.powman.pwrup2.write_bits(POWMAN_PASSWORD | value);
-                self.powman.pwrup2.clr_bits(POWMAN_PASSWORD | (1 << 7));
-                self.powman.pwrup2.set_bits(POWMAN_PASSWORD | 1);
-            }
-            3 => {
-                self.powman.pwrup3.write_bits(POWMAN_PASSWORD | value);
-                self.powman.pwrup3.clr_bits(POWMAN_PASSWORD | (1 << 7));
-                self.powman.pwrup3.set_bits(POWMAN_PASSWORD | 1);
-            }
+            0 => configure!(pwrup0),
+            1 => configure!(pwrup1),
+            2 => configure!(pwrup2),
+            3 => configure!(pwrup3),
             _ => {}
         }
     }
 
     /// Disable GPIO wakeup
     pub fn disable_gpio_wakeup(&self, wakeup_num: u8) {
-        if wakeup_num > 3 {
-            return;
-        }
+        assert!(wakeup_num < 4, "wakeup_num must be 0-3, got {}", wakeup_num);
 
-        // Access the pwrup register based on wakeup_num
+        const ENABLE: u32 = 1 << 6;
+
+        // Clearing ENABLE also clears a pending wakeup event.
         match wakeup_num {
-            0 => self.powman.pwrup0.clr_bits(POWMAN_PASSWORD | 1), // Clear ENABLE
-            1 => self.powman.pwrup1.clr_bits(POWMAN_PASSWORD | 1),
-            2 => self.powman.pwrup2.clr_bits(POWMAN_PASSWORD | 1),
-            3 => self.powman.pwrup3.clr_bits(POWMAN_PASSWORD | 1),
+            0 => self.powman.pwrup0.clr_bits(POWMAN_PASSWORD | ENABLE),
+            1 => self.powman.pwrup1.clr_bits(POWMAN_PASSWORD | ENABLE),
+            2 => self.powman.pwrup2.clr_bits(POWMAN_PASSWORD | ENABLE),
+            3 => self.powman.pwrup3.clr_bits(POWMAN_PASSWORD | ENABLE),
             _ => {}
         }
     }
@@ -663,8 +664,7 @@ impl Powman {
     /// Get current power state
     pub fn power_state(&self) -> PowerState {
         // State register shows which domains are OFF (inverted)
-
-        !self.powman.state.read_bits() & 0xF
+        (!self.powman.state.read_bits()) & 0xF
     }
 
     /// Check if a power domain is on
@@ -690,6 +690,7 @@ impl Powman {
     ///
     /// Note: Scratch registers 0-7 are available
     pub fn write_scratch(&self, index: u8, value: u32) {
+        assert!(index < 8, "scratch index must be 0-7, got {}", index);
         match index {
             0 => self.powman.scratch0.write_bits(value),
             1 => self.powman.scratch1.write_bits(value),
@@ -699,12 +700,13 @@ impl Powman {
             5 => self.powman.scratch5.write_bits(value),
             6 => self.powman.scratch6.write_bits(value),
             7 => self.powman.scratch7.write_bits(value),
-            _ => {}
+            _ => unreachable!(),
         }
     }
 
     /// Read from scratch register
     pub fn read_scratch(&self, index: u8) -> u32 {
+        assert!(index < 8, "scratch index must be 0-7, got {}", index);
         match index {
             0 => self.powman.scratch0.read_bits(),
             1 => self.powman.scratch1.read_bits(),
@@ -714,7 +716,7 @@ impl Powman {
             5 => self.powman.scratch5.read_bits(),
             6 => self.powman.scratch6.read_bits(),
             7 => self.powman.scratch7.read_bits(),
-            _ => 0,
+            _ => unreachable!(),
         }
     }
 
@@ -985,9 +987,8 @@ impl AonTimer {
     // ========================================================================
 
     /// Set the current time
-    pub fn set_time(&self, ts: &Timespec) -> bool {
+    pub fn set_time(&self, ts: &Timespec) {
         self.powman.timer_set_ms(ts.to_ms());
-        true
     }
 
     /// Get the current time

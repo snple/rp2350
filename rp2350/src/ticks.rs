@@ -40,6 +40,7 @@
 
 use crate::Steal;
 use crate::clocks::Clocks;
+use paste::paste;
 
 /// TICKS peripheral wrapper
 ///
@@ -62,10 +63,15 @@ impl Ticks {
     /// * `clocks` - Reference to the initialized clock system
     #[inline]
     pub fn init(ticks: rp2350_pac::TICKS, clocks: &Clocks) -> Self {
-        let cycles_per_tick = (clocks.ref_freq() / 1_000_000) as u16;
+        let cycles_per_tick = clocks.ref_freq() / 1_000_000;
+        assert!(
+            (1..=0x1FF).contains(&cycles_per_tick),
+            "clk_ref of {} Hz is out of range for a 1µs tick",
+            clocks.ref_freq()
+        );
         Self {
             ticks,
-            cycles_per_tick,
+            cycles_per_tick: cycles_per_tick as u16,
         }
     }
 
@@ -108,279 +114,80 @@ impl Ticks {
         self.ticks
     }
 
-    // ========================================================================
-    // PROC0
-    // ========================================================================
-
-    /// Enable PROC0 tick generator
-    #[inline]
-    pub fn enable_proc0(&mut self) {
-        self.ticks.proc0_ctrl.set_enable();
-    }
-
-    /// Disable PROC0 tick generator
-    #[inline]
-    pub fn disable_proc0(&mut self) {
-        self.ticks.proc0_ctrl.clr_enable();
-    }
-
-    /// Check if PROC0 tick generator is running
-    #[inline]
-    pub fn proc0_running(&self) -> bool {
-        self.ticks.proc0_ctrl.running()
-    }
-
-    /// Check if PROC0 tick generator is enabled
-    #[inline]
-    pub fn proc0_enabled(&self) -> bool {
-        self.ticks.proc0_ctrl.enable()
-    }
-
-    /// Set PROC0 cycles per tick
-    #[inline]
-    pub fn set_proc0_cycles(&mut self, cycles: u16) {
-        self.ticks.proc0_cycles.write_proc0_cycles(cycles as u32);
-    }
-
-    /// Get PROC0 cycles per tick
-    #[inline]
-    pub fn proc0_cycles(&self) -> u16 {
-        self.ticks.proc0_cycles.proc0_cycles() as u16
-    }
-
-    /// Get PROC0 tick count
-    #[inline]
-    pub fn proc0_count(&self) -> u16 {
-        self.ticks.proc0_count.proc0_count() as u16
-    }
-
-    // ========================================================================
-    // PROC1
-    // ========================================================================
-
-    /// Enable PROC1 tick generator
-    #[inline]
-    pub fn enable_proc1(&mut self) {
-        self.ticks.proc1_ctrl.set_enable();
-    }
-
-    /// Disable PROC1 tick generator
-    #[inline]
-    pub fn disable_proc1(&mut self) {
-        self.ticks.proc1_ctrl.clr_enable();
-    }
-
-    /// Check if PROC1 tick generator is running
-    #[inline]
-    pub fn proc1_running(&self) -> bool {
-        self.ticks.proc1_ctrl.running()
-    }
-
-    /// Check if PROC1 tick generator is enabled
-    #[inline]
-    pub fn proc1_enabled(&self) -> bool {
-        self.ticks.proc1_ctrl.enable()
-    }
-
-    /// Set PROC1 cycles per tick
-    #[inline]
-    pub fn set_proc1_cycles(&mut self, cycles: u16) {
-        self.ticks.proc1_cycles.write_proc1_cycles(cycles as u32);
-    }
-
-    /// Get PROC1 cycles per tick
-    #[inline]
-    pub fn proc1_cycles(&self) -> u16 {
-        self.ticks.proc1_cycles.proc1_cycles() as u16
-    }
-
-    /// Get PROC1 tick count
-    #[inline]
-    pub fn proc1_count(&self) -> u16 {
-        self.ticks.proc1_count.proc1_count() as u16
-    }
-
-    // ========================================================================
-    // TIMER0
-    // ========================================================================
-
-    /// Enable TIMER0 tick generator
-    #[inline]
-    pub fn enable_timer0(&mut self) {
-        self.ticks.timer0_ctrl.set_enable();
-    }
-
-    /// Disable TIMER0 tick generator
-    #[inline]
-    pub fn disable_timer0(&mut self) {
-        self.ticks.timer0_ctrl.clr_enable();
-    }
-
-    /// Check if TIMER0 tick generator is running
-    #[inline]
-    pub fn timer0_running(&self) -> bool {
-        self.ticks.timer0_ctrl.running()
-    }
-
-    /// Check if TIMER0 tick generator is enabled
-    #[inline]
-    pub fn timer0_enabled(&self) -> bool {
-        self.ticks.timer0_ctrl.enable()
-    }
-
-    /// Set TIMER0 cycles per tick
-    #[inline]
-    pub fn set_timer0_cycles(&mut self, cycles: u16) {
-        self.ticks.timer0_cycles.write_timer0_cycles(cycles as u32);
-    }
-
-    /// Get TIMER0 cycles per tick
-    #[inline]
-    pub fn timer0_cycles(&self) -> u16 {
-        self.ticks.timer0_cycles.timer0_cycles() as u16
-    }
-
-    /// Get TIMER0 tick count
-    #[inline]
-    pub fn timer0_count(&self) -> u16 {
-        self.ticks.timer0_count.timer0_count() as u16
-    }
-
-    // ========================================================================
-    // TIMER1
-    // ========================================================================
-
-    /// Enable TIMER1 tick generator
-    #[inline]
-    pub fn enable_timer1(&mut self) {
-        self.ticks.timer1_ctrl.set_enable();
-    }
-
-    /// Disable TIMER1 tick generator
-    #[inline]
-    pub fn disable_timer1(&mut self) {
-        self.ticks.timer1_ctrl.clr_enable();
-    }
-
-    /// Check if TIMER1 tick generator is running
-    #[inline]
-    pub fn timer1_running(&self) -> bool {
-        self.ticks.timer1_ctrl.running()
-    }
-
-    /// Check if TIMER1 tick generator is enabled
-    #[inline]
-    pub fn timer1_enabled(&self) -> bool {
-        self.ticks.timer1_ctrl.enable()
-    }
-
-    /// Set TIMER1 cycles per tick
-    #[inline]
-    pub fn set_timer1_cycles(&mut self, cycles: u16) {
-        self.ticks.timer1_cycles.write_timer1_cycles(cycles as u32);
-    }
-
-    /// Get TIMER1 cycles per tick
-    #[inline]
-    pub fn timer1_cycles(&self) -> u16 {
-        self.ticks.timer1_cycles.timer1_cycles() as u16
-    }
-
-    /// Get TIMER1 tick count
-    #[inline]
-    pub fn timer1_count(&self) -> u16 {
-        self.ticks.timer1_count.timer1_count() as u16
-    }
-
-    // ========================================================================
-    // WATCHDOG
-    // ========================================================================
-
-    /// Enable WATCHDOG tick generator
-    #[inline]
-    pub fn enable_watchdog(&mut self) {
-        self.ticks.watchdog_ctrl.set_enable();
-    }
-
-    /// Disable WATCHDOG tick generator
-    #[inline]
-    pub fn disable_watchdog(&mut self) {
-        self.ticks.watchdog_ctrl.clr_enable();
-    }
-
-    /// Check if WATCHDOG tick generator is running
-    #[inline]
-    pub fn watchdog_running(&self) -> bool {
-        self.ticks.watchdog_ctrl.running()
-    }
-
-    /// Check if WATCHDOG tick generator is enabled
-    #[inline]
-    pub fn watchdog_enabled(&self) -> bool {
-        self.ticks.watchdog_ctrl.enable()
-    }
-
-    /// Set WATCHDOG cycles per tick
-    #[inline]
-    pub fn set_watchdog_cycles(&mut self, cycles: u16) {
-        self.ticks
-            .watchdog_cycles
-            .write_watchdog_cycles(cycles as u32);
-    }
-
-    /// Get WATCHDOG cycles per tick
-    #[inline]
-    pub fn watchdog_cycles(&self) -> u16 {
-        self.ticks.watchdog_cycles.watchdog_cycles() as u16
-    }
-
-    /// Get WATCHDOG tick count
-    #[inline]
-    pub fn watchdog_count(&self) -> u16 {
-        self.ticks.watchdog_count.watchdog_count() as u16
-    }
-
-    // ========================================================================
-    // Per-Generator Init (disable → configure → enable)
-    // ========================================================================
-
-    /// Initialize PROC0 tick generator (disable, set cycles, enable)
-    #[inline]
-    pub fn init_proc0(&mut self) {
-        self.disable_proc0();
-        self.set_proc0_cycles(self.cycles_per_tick);
-        self.enable_proc0();
-    }
-
-    /// Initialize PROC1 tick generator (disable, set cycles, enable)
-    #[inline]
-    pub fn init_proc1(&mut self) {
-        self.disable_proc1();
-        self.set_proc1_cycles(self.cycles_per_tick);
-        self.enable_proc1();
-    }
-
-    /// Initialize TIMER0 tick generator (disable, set cycles, enable)
-    #[inline]
-    pub fn init_timer0(&mut self) {
-        self.disable_timer0();
-        self.set_timer0_cycles(self.cycles_per_tick);
-        self.enable_timer0();
-    }
-
-    /// Initialize TIMER1 tick generator (disable, set cycles, enable)
-    #[inline]
-    pub fn init_timer1(&mut self) {
-        self.disable_timer1();
-        self.set_timer1_cycles(self.cycles_per_tick);
-        self.enable_timer1();
-    }
-
-    /// Initialize WATCHDOG tick generator (disable, set cycles, enable)
-    #[inline]
-    pub fn init_watchdog(&mut self) {
-        self.disable_watchdog();
-        self.set_watchdog_cycles(self.cycles_per_tick);
-        self.enable_watchdog();
-    }
+    // Per-generator accessors are generated by `impl_tick_gen!` below.
 }
+
+// ============================================================================
+// Per-generator accessors
+// ============================================================================
+
+macro_rules! impl_tick_gen {
+    ($($name:ident => $prefix:ident),+ $(,)?) => {
+        paste! {
+            $(
+                impl Ticks {
+                    #[doc = concat!("Enable the ", stringify!($name), " tick generator.")]
+                    #[inline]
+                    pub fn [<enable_ $name>](&mut self) {
+                        self.ticks.[<$prefix _ctrl>].set_enable();
+                    }
+
+                    #[doc = concat!("Disable the ", stringify!($name), " tick generator.")]
+                    #[inline]
+                    pub fn [<disable_ $name>](&mut self) {
+                        self.ticks.[<$prefix _ctrl>].clr_enable();
+                    }
+
+                    #[doc = concat!("Check if the ", stringify!($name), " tick generator is running.")]
+                    #[inline]
+                    pub fn [<$name _running>](&self) -> bool {
+                        self.ticks.[<$prefix _ctrl>].running()
+                    }
+
+                    #[doc = concat!("Check if the ", stringify!($name), " tick generator is enabled.")]
+                    #[inline]
+                    pub fn [<$name _enabled>](&self) -> bool {
+                        self.ticks.[<$prefix _ctrl>].enable()
+                    }
+
+                    #[doc = concat!("Set the ", stringify!($name), " cycles per tick (9-bit, max 511).")]
+                    #[inline]
+                    pub fn [<set_ $name _cycles>](&mut self, cycles: u16) {
+                        assert!(cycles <= 0x1FF, "cycles per tick must fit in 9 bits");
+                        self.ticks.[<$prefix _cycles>].[<write_ $prefix _cycles>](cycles as u32);
+                    }
+
+                    #[doc = concat!("Get the ", stringify!($name), " cycles per tick.")]
+                    #[inline]
+                    pub fn [<$name _cycles>](&self) -> u16 {
+                        self.ticks.[<$prefix _cycles>].[<$prefix _cycles>]() as u16
+                    }
+
+                    #[doc = concat!("Get the ", stringify!($name), " tick count.")]
+                    #[inline]
+                    pub fn [<$name _count>](&self) -> u16 {
+                        self.ticks.[<$prefix _count>].[<$prefix _count>]() as u16
+                    }
+
+                    #[doc = concat!("Initialize the ", stringify!($name), " tick generator (disable, set cycles, enable).")]
+                    #[inline]
+                    pub fn [<init_ $name>](&mut self) {
+                        assert!(self.cycles_per_tick > 0, "no tick rate configured (was this handle stolen?)");
+                        self.[<disable_ $name>]();
+                        self.[<set_ $name _cycles>](self.cycles_per_tick);
+                        self.[<enable_ $name>]();
+                    }
+                }
+            )+
+        }
+    };
+}
+
+impl_tick_gen!(
+    proc0 => proc0,
+    proc1 => proc1,
+    timer0 => timer0,
+    timer1 => timer1,
+    watchdog => watchdog,
+    riscv => riscv,
+);

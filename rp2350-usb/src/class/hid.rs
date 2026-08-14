@@ -10,7 +10,7 @@
 //! use rp2350_usb::class::hid::{HidClass, HidConfig, KEYBOARD_REPORT_DESCRIPTOR, KeyboardReport};
 //! use rp2350_usb::rp2350::Rp2350Bus;
 //!
-//! let alloc = UsbBusAllocator::new(Rp2350Bus::new());
+//! let alloc = UsbBusAllocator::new(unsafe { Rp2350Bus::steal() });
 //! let mut kbd = HidClass::keyboard(&alloc);
 //! let mut dev = UsbDeviceBuilder::new(&alloc, 0x1234, 0x5678)
 //!     .product("Keyboard")

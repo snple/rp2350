@@ -28,13 +28,13 @@ impl Faultmask {
 
     /// Check if faults are enabled (FAULTMASK.FM = 0)
     #[inline(always)]
-    pub const fn is_active(self) -> bool {
+    pub const fn faults_enabled(self) -> bool {
         (self.bits & 1) == 0
     }
 
-    /// Check if faults are masked (FAULTMASK.FM = 1)
+    /// Check if faults are disabled (FAULTMASK.FM = 1)
     #[inline(always)]
-    pub const fn is_inactive(self) -> bool {
+    pub const fn faults_disabled(self) -> bool {
         (self.bits & 1) != 0
     }
 }

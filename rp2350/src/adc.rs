@@ -125,24 +125,6 @@ pub const ADC_MAX: u16 = 4095;
 pub const ADC_DREQ: u8 = 48;
 
 // ============================================================================
-// Error Types
-// ============================================================================
-
-/// ADC error types
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[cfg_attr(feature = "defmt", derive(defmt::Format))]
-pub enum Error {
-    /// Conversion error occurred
-    ConversionError,
-    /// FIFO overflow
-    FifoOverflow,
-    /// FIFO underflow
-    FifoUnderflow,
-    /// Invalid channel
-    InvalidChannel,
-}
-
-// ============================================================================
 // ADC Input (Type-Safe Pin Wrapper)
 // ============================================================================
 
@@ -651,10 +633,13 @@ impl Adc {
     }
 
     /// Drain the FIFO, discarding all contents.
+    ///
+    /// In free-running mode the FIFO is refilled continuously, so this can
+    /// never guarantee an empty FIFO — stop free-running
+    /// ([`Self::stop_free_running`]) first if you need a deterministic drain.
     pub fn fifo_drain(&mut self) {
-        // Wait for any in-progress conversion (bounded)
-        crate::spin::spin_wait("ADC idle", || self.is_ready());
-        // Drain the FIFO
+        // Drain the FIFO (no idle-wait: in free-running mode the ADC never goes
+        // idle, and the old spin_wait would time out).
         while !self.fifo_is_empty() {
             let _ = self.adc.fifo.val();
         }

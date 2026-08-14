@@ -32,6 +32,8 @@
 //! let trng = unsafe { Trng::steal() };
 //! ```
 
+use core::cell::Cell;
+
 use crate::Steal;
 use crate::reset::Resettable;
 use rp2350_pac::TRNG;
@@ -53,8 +55,16 @@ pub enum Error {
 /// TRNG peripheral wrapper
 ///
 /// Provides access to the True Random Number Generator.
+///
+/// The 192-bit entropy block returned by the hardware is buffered internally,
+/// so consecutive small reads (e.g. [`Trng::random_u32`]) do not wait for a
+/// fresh 192-bit block each time.
 pub struct Trng {
     trng: TRNG,
+    /// Buffered 192-bit entropy block (6 words).
+    buf: Cell<[u32; 6]>,
+    /// Number of words remaining in `buf` (0..=6).
+    remaining: Cell<usize>,
 }
 
 impl Trng {
@@ -93,7 +103,11 @@ impl Trng {
         // Unmask EHR valid interrupt (we poll, but it helps for checking)
         trng.rng_imr.clr_ehr_valid_int_mask();
 
-        Self { trng }
+        Self {
+            trng,
+            buf: Cell::new([0; 6]),
+            remaining: Cell::new(0),
+        }
     }
 
     /// Obtain a handle to the TRNG hardware peripheral without re-initializing.
@@ -107,6 +121,8 @@ impl Trng {
     pub unsafe fn steal() -> Steal<Self> {
         Steal(Self {
             trng: unsafe { TRNG::steal() },
+            buf: Cell::new([0; 6]),
+            remaining: Cell::new(0),
         })
     }
 
@@ -134,6 +150,7 @@ impl Trng {
                 return Err(Error::CrngtError);
             }
             if self.regs().rng_isr.autocorr_err() {
+                self.regs().rng_icr.set_autocorr_err();
                 return Err(Error::AutocorrError);
             }
 
@@ -156,10 +173,18 @@ impl Trng {
         self.regs().rng_isr.ehr_valid()
     }
 
-    /// Read the 192-bit entropy holding registers (6 x 32-bit words)
+    /// Read the 192-bit entropy holding registers (6 x 32-bit words).
     ///
-    /// This automatically clears the EHR valid flag.
+    /// This bypasses the internal buffer: it reads the hardware registers
+    /// directly and clears the EHR valid flag. Prefer [`Trng::random_u32`],
+    /// [`Trng::random_u64`] or [`Trng::fill_random`] for ordinary use.
     pub fn read_ehr(&self) -> Result<[u32; 6], Error> {
+        self.read_hw_ehr()
+    }
+
+    /// Read a fresh 192-bit entropy block from the hardware and clear the
+    /// EHR valid flag.
+    fn read_hw_ehr(&self) -> Result<[u32; 6], Error> {
         self.wait_for_entropy()?;
 
         let data = [
@@ -171,59 +196,70 @@ impl Trng {
             self.regs().ehr_data5.read_bits(),
         ];
 
-        // Clear the EHR valid flag to start collecting new entropy
+        // Clear the EHR valid flag to start collecting new entropy.
         self.regs().rng_icr.set_ehr_valid();
 
         Ok(data)
     }
 
+    /// Refill the internal buffer with a fresh 192-bit entropy block.
+    fn refill(&self) -> Result<(), Error> {
+        let data = self.read_hw_ehr()?;
+        self.buf.set(data);
+        self.remaining.set(6);
+        Ok(())
+    }
+
+    /// Take the next 32-bit entropy word, refilling the buffer when empty.
+    fn next_word(&self) -> Result<u32, Error> {
+        if self.remaining.get() == 0 {
+            self.refill()?;
+        }
+        let rem = self.remaining.get();
+        let word = self.buf.get()[6 - rem];
+        self.remaining.set(rem - 1);
+        Ok(word)
+    }
+
     /// Generate a random u32
     pub fn random_u32(&self) -> Result<u32, Error> {
-        let ehr = self.read_ehr()?;
-        Ok(ehr[0])
+        self.next_word()
     }
 
     /// Generate a random u64
     pub fn random_u64(&self) -> Result<u64, Error> {
-        let ehr = self.read_ehr()?;
-        Ok((ehr[0] as u64) | ((ehr[1] as u64) << 32))
+        let lo = self.next_word()?;
+        let hi = self.next_word()?;
+        Ok((lo as u64) | ((hi as u64) << 32))
     }
 
     /// Fill a buffer with random bytes
     pub fn fill_random(&self, buffer: &mut [u8]) -> Result<(), Error> {
         let mut offset = 0;
-
         while offset < buffer.len() {
-            let ehr = self.read_ehr()?;
-
-            for word in ehr.iter() {
-                let bytes = word.to_le_bytes();
-                for &byte in bytes.iter() {
-                    if offset >= buffer.len() {
-                        return Ok(());
-                    }
-                    buffer[offset] = byte;
-                    offset += 1;
-                }
-            }
+            let word = self.next_word()?;
+            let bytes = word.to_le_bytes();
+            let n = (buffer.len() - offset).min(4);
+            buffer[offset..offset + n].copy_from_slice(&bytes[..n]);
+            offset += n;
         }
-
         Ok(())
     }
 
-    /// Generate a random number in range [0, max)
+    /// Generate a uniformly distributed random number in `[0, max)`.
     ///
-    /// Uses rejection sampling for uniform distribution.
+    /// Uses Lemire's rejection sampling.
+    ///
+    /// # Panics
+    /// Panics if `max == 0`.
     pub fn random_range(&self, max: u32) -> Result<u32, Error> {
-        if max == 0 {
-            return Ok(0);
-        }
+        assert!(max > 0, "max must be non-zero");
 
-        let threshold = u32::MAX - (u32::MAX % max);
+        let threshold = max.wrapping_neg() % max;
 
         loop {
             let r = self.random_u32()?;
-            if r < threshold {
+            if r >= threshold {
                 return Ok(r % max);
             }
         }
@@ -254,9 +290,9 @@ impl Trng {
     /// Reset the TRNG
     pub fn reset(&self) {
         self.regs().trng_sw_reset.write_bits(1);
-        while self.regs().trng_sw_reset.read_bits() != 0 {
-            core::hint::spin_loop();
-        }
+        crate::spin::spin_wait("TRNG software reset", || {
+            self.regs().trng_sw_reset.read_bits() == 0
+        });
     }
 
     /// Reset the bits counter
@@ -281,11 +317,15 @@ impl Trng {
         self.regs().sample_cnt1.read_bits()
     }
 
-    /// Configure the TRNG ROSC length
+    /// Configure the TRNG ROSC length.
     ///
-    /// Selects the inverter chain length for the ring oscillator.
+    /// Selects the inverter chain length (0-3) for the ring oscillator.
+    ///
+    /// # Panics
+    /// Panics if `length > 3`.
     #[inline]
     pub fn set_rosc_length(&self, length: u8) {
+        assert!(length <= 3, "ROSC length must be 0-3");
         self.regs().trng_config.write_rnd_src_sel(length as u32);
     }
 

@@ -15,10 +15,10 @@ use rp2350::main;
 use rp2350::pac::Peripherals;
 use rp2350::rt::peripheral::Peripherals as CorePeripherals;
 
-/// At boot, RP2350 runs from ROSC at approximately 12 MHz
-const CLOCK_FREQ_HZ: u32 = 12_000_000;
+/// At boot, RP2350 runs from ROSC at approximately 150 MHz
+const CLOCK_FREQ_HZ: u32 = 150_000_000;
 
-const LED_PIN: u32 = 6;
+const LED_PIN: u32 = 25;
 
 #[main]
 fn main() -> ! {

@@ -9,7 +9,7 @@
 //! ## Example
 //!
 //! ```ignore
-//! use rp2350::syscfg::Syscfg;
+//! use rp2350::syscfg::{MemoryBank, Syscfg};
 //! use rp2350_pac::SYSCFG;
 //!
 //! let syscfg_pac = unsafe { SYSCFG::steal() };
@@ -21,10 +21,19 @@
 //! }
 //!
 //! // Put SRAM bank 5 into low power mode
-//! syscfg.set_sram_power_down(5, true);
+//! syscfg.set_memory_power_down(MemoryBank::Sram5, true);
 //! ```
 
-use rp2350_pac::syscfg::Mempowerdown;
+/// Write a single-bit bypass field based on a `bypass` flag.
+macro_rules! set_bypass {
+    ($reg:expr, $set:ident, $clr:ident, $bypass:expr) => {
+        if $bypass {
+            $reg.$set();
+        } else {
+            $reg.$clr();
+        }
+    };
+}
 
 use crate::Steal;
 use crate::reset::Resettable;
@@ -140,100 +149,93 @@ impl Syscfg {
     // GPIO Input Synchronizer Bypass
     // ========================================================================
 
-    /// Bypass the input synchronizer for a GPIO pin (0-31)
+    /// Bypass the input synchronizer for a GPIO pin.
+    ///
+    /// The synchronizer-bypass bits are scattered across two registers:
+    ///
+    /// | GPIO              | Register / field                    |
+    /// |-------------------|-------------------------------------|
+    /// | 0..=31            | `PROC_IN_SYNC_BYPASS.GPIO`         |
+    /// | 32..=47           | `PROC_IN_SYNC_BYPASS_HI.GPIO`      |
+    /// | 56 (USB D+)       | `PROC_IN_SYNC_BYPASS_HI.USB_DP`    |
+    /// | 57 (USB D-)       | `PROC_IN_SYNC_BYPASS_HI.USB_DM`    |
+    /// | 58 (QSPI SCK)     | `PROC_IN_SYNC_BYPASS_HI.QSPI_SCK`  |
+    /// | 59 (QSPI CSn)     | `PROC_IN_SYNC_BYPASS_HI.QSPI_CSN`  |
+    /// | 60..=63 (QSPI SD) | `PROC_IN_SYNC_BYPASS_HI.QSPI_SD`  |
+    ///
+    /// GPIO 48..=55 do not exist and will panic.
     ///
     /// # Warning
-    /// Bypassing the synchronizer can inject metastabilities into the processor.
-    /// Only use this if you need to save 2 cycles of input latency.
+    /// Bypassing the synchronizer can inject metastabilities into the
+    /// processor. Only use this to save two cycles of input latency.
     #[inline]
-    pub fn set_gpio_sync_bypass(&self, pin: u8, bypass: bool) {
-        if pin >= 32 {
-            return;
-        }
-        let mask = 1u32 << pin;
-        if bypass {
-            self.syscfg.proc_in_sync_bypass.set_bits(mask);
-        } else {
-            self.syscfg.proc_in_sync_bypass.clr_bits(mask);
-        }
-    }
-
-    /// Get the sync bypass state for a GPIO pin (0-31)
-    #[inline]
-    pub fn gpio_sync_bypass(&self, pin: u8) -> bool {
-        if pin >= 32 {
-            return false;
-        }
-        (self.syscfg.proc_in_sync_bypass.gpio() & (1u32 << pin)) != 0
-    }
-
-    /// Set sync bypass for multiple GPIO pins at once (0-31)
-    #[inline]
-    pub fn set_gpio_sync_bypass_mask(&self, mask: u32, bypass: bool) {
-        if bypass {
-            self.syscfg.proc_in_sync_bypass.set_bits(mask);
-        } else {
-            self.syscfg.proc_in_sync_bypass.clr_bits(mask);
-        }
-    }
-
-    /// Get the sync bypass mask for GPIO pins 0-31
-    #[inline]
-    pub fn gpio_sync_bypass_mask(&self) -> u32 {
-        self.syscfg.proc_in_sync_bypass.gpio()
-    }
-
-    /// Bypass the input synchronizer for a high GPIO pin (32-47)
-    #[inline]
-    pub fn set_gpio_hi_sync_bypass(&self, pin: u8, bypass: bool) {
-        if !(32..=47).contains(&pin) {
-            return;
-        }
-        let mask = 1u32 << (pin - 32);
-        if bypass {
-            self.syscfg.proc_in_sync_bypass_hi.set_bits(mask);
-        } else {
-            self.syscfg.proc_in_sync_bypass_hi.clr_bits(mask);
-        }
-    }
-
-    /// Bypass the input synchronizer for USB D+ pin
-    #[inline]
-    pub fn set_usb_dp_sync_bypass(&self, bypass: bool) {
-        if bypass {
-            self.syscfg.proc_in_sync_bypass_hi.set_usb_dp();
-        } else {
-            self.syscfg.proc_in_sync_bypass_hi.clr_usb_dp();
+    pub fn set_sync_bypass(&self, pin: u8, bypass: bool) {
+        match pin {
+            0..=31 => {
+                let bit = 1u32 << pin;
+                if bypass {
+                    self.syscfg.proc_in_sync_bypass.set_bits(bit);
+                } else {
+                    self.syscfg.proc_in_sync_bypass.clr_bits(bit);
+                }
+            }
+            32..=47 => {
+                let bit = 1u32 << (pin - 32);
+                if bypass {
+                    self.syscfg.proc_in_sync_bypass_hi.set_bits(bit);
+                } else {
+                    self.syscfg.proc_in_sync_bypass_hi.clr_bits(bit);
+                }
+            }
+            56 => set_bypass!(
+                self.syscfg.proc_in_sync_bypass_hi,
+                set_usb_dp,
+                clr_usb_dp,
+                bypass
+            ),
+            57 => set_bypass!(
+                self.syscfg.proc_in_sync_bypass_hi,
+                set_usb_dm,
+                clr_usb_dm,
+                bypass
+            ),
+            58 => set_bypass!(
+                self.syscfg.proc_in_sync_bypass_hi,
+                set_qspi_sck,
+                clr_qspi_sck,
+                bypass
+            ),
+            59 => set_bypass!(
+                self.syscfg.proc_in_sync_bypass_hi,
+                set_qspi_csn,
+                clr_qspi_csn,
+                bypass
+            ),
+            60..=63 => {
+                // QSPI SD0..SD3 occupy bits 28..31.
+                let bit = 1u32 << (28 + (pin - 60));
+                if bypass {
+                    self.syscfg.proc_in_sync_bypass_hi.set_bits(bit);
+                } else {
+                    self.syscfg.proc_in_sync_bypass_hi.clr_bits(bit);
+                }
+            }
+            _ => panic!("invalid GPIO pin for sync bypass: {pin}"),
         }
     }
 
-    /// Bypass the input synchronizer for USB D- pin
+    /// Get the sync bypass state for a GPIO pin.
     #[inline]
-    pub fn set_usb_dm_sync_bypass(&self, bypass: bool) {
-        if bypass {
-            self.syscfg.proc_in_sync_bypass_hi.set_usb_dm();
-        } else {
-            self.syscfg.proc_in_sync_bypass_hi.clr_usb_dm();
-        }
-    }
-
-    /// Bypass the input synchronizer for QSPI SCK pin
-    #[inline]
-    pub fn set_qspi_sck_sync_bypass(&self, bypass: bool) {
-        if bypass {
-            self.syscfg.proc_in_sync_bypass_hi.set_qspi_sck();
-        } else {
-            self.syscfg.proc_in_sync_bypass_hi.clr_qspi_sck();
-        }
-    }
-
-    /// Bypass the input synchronizer for QSPI CSn pin
-    #[inline]
-    pub fn set_qspi_csn_sync_bypass(&self, bypass: bool) {
-        if bypass {
-            self.syscfg.proc_in_sync_bypass_hi.set_qspi_csn();
-        } else {
-            self.syscfg.proc_in_sync_bypass_hi.clr_qspi_csn();
+    pub fn sync_bypass(&self, pin: u8) -> bool {
+        match pin {
+            0..=31 => (self.syscfg.proc_in_sync_bypass.gpio() & (1u32 << pin)) != 0,
+            32..=47 => (self.syscfg.proc_in_sync_bypass_hi.gpio() & (1u32 << (pin - 32))) != 0,
+            56 => self.syscfg.proc_in_sync_bypass_hi.usb_dp(),
+            57 => self.syscfg.proc_in_sync_bypass_hi.usb_dm(),
+            58 => self.syscfg.proc_in_sync_bypass_hi.qspi_sck(),
+            59 => self.syscfg.proc_in_sync_bypass_hi.qspi_csn(),
+            60..=63 => (self.syscfg.proc_in_sync_bypass_hi.qspi_sd() & (1u32 << (pin - 60))) != 0,
+            _ => panic!("invalid GPIO pin for sync bypass: {pin}"),
         }
     }
 
@@ -293,10 +295,10 @@ impl Syscfg {
     // Memory Power Control
     // ========================================================================
 
-    /// Set power-down state for a specific memory bank
+    /// Set the power-down state of a single memory bank.
     ///
-    /// When powered down, memories retain their contents but cannot be accessed.
-    /// Use with caution!
+    /// When powered down, memories retain their contents but cannot be
+    /// accessed. Use with caution!
     #[inline]
     pub fn set_memory_power_down(&self, bank: MemoryBank, power_down: bool) {
         if power_down {
@@ -306,34 +308,18 @@ impl Syscfg {
         }
     }
 
-    /// Get power-down state for a specific memory bank
+    /// Check whether a memory bank is powered down.
     #[inline]
     pub fn is_memory_powered_down(&self, bank: MemoryBank) -> bool {
         (self.syscfg.mempowerdown.read_bits() & bank.mask()) != 0
     }
 
-    /// Set power-down state for SRAM bank by index (0-9)
-    #[inline]
-    pub fn set_sram_power_down(&self, bank: u8, power_down: bool) {
-        if bank > 9 {
-            return;
-        }
-        let mask = 1u32 << bank;
-        if power_down {
-            self.syscfg.mempowerdown.set_bits(mask);
-        } else {
-            self.syscfg.mempowerdown.clr_bits(mask);
-        }
-    }
-
-    /// Set power-down state for multiple SRAM banks at once
+    /// Set the power-down state of multiple memory banks at once.
     ///
-    /// # Arguments
-    /// * `mask` - Bitmask of SRAM banks (bits 0-9 for SRAM0-9)
-    /// * `power_down` - True to power down, false to power up
+    /// `mask` is a bitmask over [`MemoryBank`] positions
+    /// (`1 << bank as u32`).
     #[inline]
-    pub fn set_sram_power_down_mask(&self, mask: u16, power_down: bool) {
-        let mask = (mask as u32) & 0x3FF; // Only bits 0-9 are SRAM
+    pub fn set_memory_power_down_mask(&self, mask: u32, power_down: bool) {
         if power_down {
             self.syscfg.mempowerdown.set_bits(mask);
         } else {
@@ -341,49 +327,7 @@ impl Syscfg {
         }
     }
 
-    /// Power down all SRAM banks
-    #[inline]
-    pub fn power_down_all_sram(&self) {
-        self.syscfg.mempowerdown.set_bits(0x3FF);
-    }
-
-    /// Power up all SRAM banks
-    #[inline]
-    pub fn power_up_all_sram(&self) {
-        self.syscfg.mempowerdown.clr_bits(0x3FF);
-    }
-
-    /// Set power-down state for USB memory
-    #[inline]
-    pub fn set_usb_memory_power_down(&self, power_down: bool) {
-        if power_down {
-            self.syscfg.mempowerdown.set_bits(Mempowerdown::USB);
-        } else {
-            self.syscfg.mempowerdown.clr_bits(Mempowerdown::USB);
-        }
-    }
-
-    /// Set power-down state for ROM
-    #[inline]
-    pub fn set_rom_power_down(&self, power_down: bool) {
-        if power_down {
-            self.syscfg.mempowerdown.set_bits(Mempowerdown::ROM);
-        } else {
-            self.syscfg.mempowerdown.clr_bits(Mempowerdown::ROM);
-        }
-    }
-
-    /// Set power-down state for Boot RAM
-    #[inline]
-    pub fn set_bootram_power_down(&self, power_down: bool) {
-        if power_down {
-            self.syscfg.mempowerdown.set_bits(Mempowerdown::BOOTRAM);
-        } else {
-            self.syscfg.mempowerdown.clr_bits(Mempowerdown::BOOTRAM);
-        }
-    }
-
-    /// Get the raw memory power-down register value
+    /// Get the raw memory power-down register value.
     #[inline]
     pub fn memory_power_down_mask(&self) -> u32 {
         self.syscfg.mempowerdown.read_bits()

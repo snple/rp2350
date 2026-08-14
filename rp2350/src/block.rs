@@ -11,8 +11,8 @@
 //!
 //! ## Manual Definition (Advanced)
 //!
-//! To use `ImageDefWithVersion` or a RISC-V image, opt out of automatic
-//! generation with `#[main(no_image_def)]` and define your own static:
+//! To use `ImageDefWithVersion`, opt out of automatic generation with
+//! `#[main(no_image_def)]` and define your own static:
 //!
 //! ```ignore
 //! use rp2350::block::ImageDefWithVersion;
@@ -21,7 +21,7 @@
 //! #[unsafe(link_section = ".start_block")]
 //! #[used]
 //! pub static IMAGE_DEF: ImageDefWithVersion =
-//!     ImageDefWithVersion::exe_with_version(1, 0, 0);
+//!     ImageDefWithVersion::exe_with_version(1, 0);
 //!
 //! #[main(no_image_def)]
 //! fn main() -> ! {
@@ -38,10 +38,7 @@
 //!
 //! ## Architecture Support
 //!
-//! Currently this module supports ARM Cortex-M33 images. RISC-V support
-//! can be added by using `ImageDef::riscv_exe()`.
-
-#![allow(dead_code)]
+//! Currently this module supports ARM Cortex-M33 images only.
 
 // ============================================================================
 // PICOBIN Constants
@@ -55,22 +52,17 @@ pub const BLOCK_MARKER_END: u32 = 0xab123579;
 
 // Block item type identifiers
 const ITEM_1BS_IMAGE_TYPE: u8 = 0x42;
-const ITEM_1BS_VECTOR_TABLE: u8 = 0x03;
-const ITEM_1BS_ENTRY_POINT: u8 = 0x44;
 const ITEM_1BS_VERSION: u8 = 0x48;
 const ITEM_2BS_LAST: u8 = 0xff;
 
 // Image type field values
 const IMAGE_TYPE_EXE: u16 = 0x0001;
-const IMAGE_TYPE_DATA: u16 = 0x0002;
 
 // Security mode (bits 4–5)
-const IMAGE_TYPE_EXE_SECURITY_NS: u16 = 0x0010;
 const IMAGE_TYPE_EXE_SECURITY_S: u16 = 0x0020;
 
 // CPU type (bits 8–10)
 const IMAGE_TYPE_EXE_CPU_ARM: u16 = 0x0000;
-const IMAGE_TYPE_EXE_CPU_RISCV: u16 = 0x0100;
 
 // Chip type (bits 12–14)
 const IMAGE_TYPE_EXE_CHIP_RP2350: u16 = 0x1000;
@@ -100,15 +92,6 @@ const fn item_2bs(size: u16, tag: u8) -> u32 {
 const fn image_type_arm() -> u32 {
     item_1bs(
         IMAGE_TYPE_EXE | IMAGE_TYPE_EXE_CHIP_RP2350 | IMAGE_TYPE_EXE_CPU_ARM | SECURITY,
-        1,
-        ITEM_1BS_IMAGE_TYPE,
-    )
-}
-
-/// Create the IMAGE_TYPE item for a RISC-V executable
-const fn image_type_riscv() -> u32 {
-    item_1bs(
-        IMAGE_TYPE_EXE | IMAGE_TYPE_EXE_CHIP_RP2350 | IMAGE_TYPE_EXE_CPU_RISCV | SECURITY,
         1,
         ITEM_1BS_IMAGE_TYPE,
     )
@@ -158,19 +141,6 @@ impl ImageDef {
             marker_end: BLOCK_MARKER_END,
         }
     }
-
-    /// Construct an Image Definition for a RISC-V executable.
-    ///
-    /// Images are always built in Secure mode (TrustZone-M enabled).
-    pub const fn riscv_exe() -> Self {
-        Self {
-            marker_start: BLOCK_MARKER_START,
-            image_type: image_type_riscv(),
-            length: item_2bs(1, ITEM_2BS_LAST),
-            offset: core::ptr::null(),
-            marker_end: BLOCK_MARKER_END,
-        }
-    }
 }
 
 // ============================================================================
@@ -187,14 +157,14 @@ impl ImageDef {
 /// #[link_section = ".start_block"]
 /// #[used]
 /// pub static IMAGE_DEF: ImageDefWithVersion =
-///     ImageDefWithVersion::exe_with_version(1, 0, 0);
+///     ImageDefWithVersion::exe_with_version(1, 0);
 /// ```
 #[repr(C)]
 pub struct ImageDefWithVersion {
     marker_start: u32,
     image_type: u32,
     version: u32,
-    version_data: [u32; 2],
+    version_data: [u32; 1],
     length: u32,
     offset: *const u32,
     marker_end: u32,
@@ -210,14 +180,13 @@ impl ImageDefWithVersion {
     /// # Arguments
     /// * `major` — Major version number (0–65535)
     /// * `minor` — Minor version number (0–65535)
-    /// * `rollback` — Rollback version (for OTP anti-rollback)
-    pub const fn exe_with_version(major: u16, minor: u16, rollback: u32) -> Self {
+    pub const fn exe_with_version(major: u16, minor: u16) -> Self {
         Self {
             marker_start: BLOCK_MARKER_START,
             image_type: image_type_arm(),
-            version: item_1bs(0, 3, ITEM_1BS_VERSION),
-            version_data: [((minor as u32) << 16) | (major as u32), rollback],
-            length: item_2bs(4, ITEM_2BS_LAST),
+            version: item_1bs(0, 2, ITEM_1BS_VERSION),
+            version_data: [((major as u32) << 16) | (minor as u32)],
+            length: item_2bs(3, ITEM_2BS_LAST),
             offset: core::ptr::null(),
             marker_end: BLOCK_MARKER_END,
         }

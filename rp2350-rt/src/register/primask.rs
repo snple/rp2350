@@ -27,13 +27,13 @@ impl Primask {
 
     /// Check if interrupts are enabled (PRIMASK.PM = 0)
     #[inline(always)]
-    pub const fn is_active(self) -> bool {
+    pub const fn interrupts_enabled(self) -> bool {
         (self.bits & 1) == 0
     }
 
     /// Check if interrupts are disabled (PRIMASK.PM = 1)
     #[inline(always)]
-    pub const fn is_inactive(self) -> bool {
+    pub const fn interrupts_disabled(self) -> bool {
         (self.bits & 1) != 0
     }
 }
