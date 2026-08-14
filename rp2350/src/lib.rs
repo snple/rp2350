@@ -97,6 +97,8 @@ pub mod i2c;
 pub mod interp;
 pub mod interrupt;
 pub mod multicore;
+pub mod otp;
+pub mod pads_qspi;
 pub mod pin;
 pub mod pio;
 pub mod powman;
@@ -118,6 +120,7 @@ pub mod timer;
 pub mod trng;
 pub mod uart;
 pub mod watchdog;
+pub mod xip;
 
 pub mod kit;
 
@@ -166,6 +169,8 @@ pub use eppb::Eppb;
 pub use gpio::Pins;
 pub use i2c::{I2c0, I2c0Slave, I2c1, I2c1Slave};
 pub use multicore::{Fifo, Multicore, Stack};
+pub use otp::Otp;
+pub use pads_qspi::PadsQspi;
 pub use powman::{AonTimer, Powman, Timespec};
 pub use pwm::Pwm;
 pub use sha256::Sha256;
@@ -179,6 +184,7 @@ pub use timer::{Timer0, Timer1};
 pub use trng::Trng;
 pub use uart::{Uart0, Uart1};
 pub use watchdog::Watchdog;
+pub use xip::Xip;
 
 #[cfg(feature = "defmt")]
 pub use defmt;
