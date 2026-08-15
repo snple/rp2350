@@ -11,7 +11,6 @@ xtask = "run --package xtask --"
 #
 # * `--nmagic` turns off page alignment of sections (saves flash space)
 # * `-Tlink.x` uses rp2350-rt's linker script (provided via its build script)
-# * `-Tdefmt.x` is required for defmt-rtt
 # * `target-cpu=cortex-m33` targets the RP2350's M33 core
 #
 # Each crate's own `.cargo/config.toml` selects `thumbv8m.main-none-eabihf`
@@ -24,6 +23,5 @@ xtask = "run --package xtask --"
 rustflags = [
     "-C", "link-arg=--nmagic",
     "-C", "link-arg=-Tlink.x",
-    "-C", "link-arg=-Tdefmt.x",
     "-C", "target-cpu=cortex-m33",
 ]
