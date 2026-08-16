@@ -97,9 +97,11 @@ impl Foo {
   `Deref<Target = RegisterBlock>` 和一个固定的 `PTR` 常量。
 - 因此**不能从 `&self` 里拷贝 ZST 给子句柄**；子句柄必须**借用** `&'a rp2350_pac::FOO`。
   控制器级 `steal()` 返回 `Steal<Self>`（自己拥有 ZST，无生命周期问题）。
-- **寄存器访问走 `AtomicCell<u32>` / `VolatileCell<u32>`**：
-  `set_bits` / `clr_bits` 使用硬件 SET/CLR 别名（+0x2000 / +0x3000），天然原子。
-  W1C（写 1 清）中断寄存器清中断用 `write_bits(mask)`，**别用 clr_bits**。
+- **寄存器访问走 `AtomicCell<u32>` / `VolatileCell<u32>`**（生成器按寄存器类型区分）：
+  - `AtomicCell`：**可写**（RW/WO）且在原子别名地址范围内的寄存器，有
+    `set_bits` / `clr_bits` / `xor_bits`（硬件 SET/CLR 别名 +0x1000/+0x2000/+0x3000，天然原子）。
+  - `VolatileCell`：**只读**（RO）寄存器，只有 `read_bits` / `write_bits`，不暴露原子写。
+  - W1C（写 1 清）中断寄存器清中断用 `write_bits(mask)`，**别用 clr_bits**。
 - 字段命名统一：`fn field()` 读、`fn write_field(v)` 写多位数、
   `fn set_field()` / `fn clr_field()` 操作单比特位。
 - **禁止裸指针 + 魔法数访问寄存器**：一律用 PAC 的命名寄存器/字段。
@@ -242,6 +244,24 @@ cargo clippy -p rp2350 --lib      # 勿用 --all-targets：no_std panic_handler 
 cargo check -p rp2350-examples --bins
 cargo fmt -p rp2350 -- --check
 ```
+
+生成代码漂移检查（改过 SVD / 生成器后）：
+
+```bash
+cargo xtask gen-pac --check
+```
+
+### 构建与工具链坑
+
+- **Rust 2024 edition**：`unsafe fn` 体内不是隐式 unsafe 块（`unsafe-op-in-unsafe-fn`）。
+  PAC 生成代码里 `Peripherals::steal` 的外层 `unsafe {}` 是必需的，勿移除。
+- **chip feature 互斥（rp2350a / rp2350b）**：Cargo feature 是**并集**语义，芯片选择权
+  要上移到**顶层二进制**（examples）；中间层（drivers）只透传、不自己选定。否则
+  `--features rp2350b` 会因 default 里的 rp2350a 冲突。
+- **MSRV = 1.88**（generator 用 let-chains）；`rust-toolchain.toml` = stable + `thumbv8m.main-none-eabihf` target。
+- **生成代码不要手改**：`rp2350-pac/src/generated/` 是 `cargo xtask gen-pac` 产物，
+  改动走 `xtask/src/generator.rs` 再重新生成（生成后已自动 `rustfmt`）。
+- `rt` 的 `link.x` `INCLUDE device.x`，`device.x` 由 PAC build.rs 提供（rt 未声明对 PAC 的依赖，隐式耦合）。
 
 ---
 
