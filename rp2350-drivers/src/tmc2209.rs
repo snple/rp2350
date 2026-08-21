@@ -57,7 +57,8 @@
 
 use bitfield_struct::bitfield;
 use rp2350::delay::DelayUs;
-use rp2350::uart::UartBus;
+
+use crate::bus::UartBus;
 
 // ============================================================================
 // 错误类型

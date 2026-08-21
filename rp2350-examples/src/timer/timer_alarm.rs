@@ -1,7 +1,7 @@
 //! # AlarmTimer Trait Example for RP2350
 //!
-//! 这个示例演示如何基于 [`rp2350::timer::AlarmTimer`] 和
-//! [`rp2350::timer::MonotonicTimer`] 编写“与具体计时器类型解耦”的 alarm 调度逻辑。
+//! 这个示例演示如何基于 [`rp2350_drivers::timer::AlarmTimer`] 和
+//! [`rp2350_drivers::timer::MonotonicTimer`] 编写“与具体计时器类型解耦”的 alarm 调度逻辑。
 //!
 //! 这里刻意把职责拆开：
 //!
@@ -35,7 +35,8 @@ use rp2350::interrupt::{self, Mutex};
 use rp2350::main;
 use rp2350::pac::{Interrupt, Peripherals};
 use rp2350::ticks::Ticks;
-use rp2350::timer::{AlarmTimer, MonotonicTimer, Timer0};
+use rp2350::timer::Timer0;
+use rp2350_drivers::timer::{AlarmTimer, MonotonicTimer};
 static TIMER: Mutex<RefCell<Option<Timer0>>> = Mutex::new(RefCell::new(None));
 static LED_STATE: AtomicBool = AtomicBool::new(false);
 static TICK_COUNT: Mutex<RefCell<u32>> = Mutex::new(RefCell::new(0));

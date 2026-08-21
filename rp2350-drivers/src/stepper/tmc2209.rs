@@ -26,9 +26,9 @@
 use core::marker::PhantomData;
 use core::sync::atomic::{AtomicBool, AtomicU32, Ordering};
 
+use crate::timer::{AlarmTimer, MonotonicTimer};
 #[cfg(feature = "defmt")]
 use defmt::debug;
-use rp2350::timer::{AlarmTimer, MonotonicTimer};
 
 use super::{AxisPins, Direction, MotionPhase, speed_to_interval_us};
 

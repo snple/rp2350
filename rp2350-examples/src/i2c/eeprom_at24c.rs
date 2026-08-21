@@ -274,8 +274,8 @@ use defmt_rtt as _;
 
 use rp2350::Delay;
 use rp2350::clocks::ClockBuilder;
-use rp2350::gpio::Pins;
-use rp2350::i2c::{Error, I2c1, I2cBus};
+use rp2350::gpio::{Pin, Pins};
+use rp2350::i2c::{Error, I2c1};
 use rp2350::main;
 use rp2350::pac::Peripherals;
 
@@ -316,7 +316,7 @@ const MAX_POLL_RETRIES: u32 = 200;
 /// # 返回
 /// - `Ok(retries)` — 写入完成，返回实际轮询次数（可用于性能调试）
 /// - `Err(())` — 超过最大重试次数：可能是写保护（WP=HIGH）或硬件故障
-fn eeprom_wait_ready<B: I2cBus>(i2c: &B, delay: &Delay) -> Result<u32, ()> {
+fn eeprom_wait_ready(i2c: &I2c1<Pin<2>, Pin<3>>, delay: &Delay) -> Result<u32, ()> {
     for retries in 0..MAX_POLL_RETRIES {
         // 发送零字节写操作，仅用于检测 ACK/NACK
         if i2c.write(EEPROM_ADDR, &[]).is_ok() {
@@ -340,7 +340,7 @@ fn eeprom_wait_ready<B: I2cBus>(i2c: &B, delay: &Delay) -> Result<u32, ()> {
 /// # 参数
 /// - `addr`: 16-bit 字节地址（AT24C256 有效范围 0x0000 ~ 0x7FFF）
 /// - `data`: 要写入的字节值
-fn eeprom_write_byte<B: I2cBus>(i2c: &B, addr: u16, data: u8) -> Result<(), B::Error> {
+fn eeprom_write_byte(i2c: &I2c1<Pin<2>, Pin<3>>, addr: u16, data: u8) -> Result<(), Error> {
     let buf = [
         (addr >> 8) as u8,   // 地址高字节（bit15~bit8）
         (addr & 0xFF) as u8, // 地址低字节（bit7~bit0）
@@ -362,7 +362,7 @@ fn eeprom_write_byte<B: I2cBus>(i2c: &B, addr: u16, data: u8) -> Result<(), B::E
 ///
 /// # I2C 时序
 /// `[DEVICE|W] [ADDR_H] [ADDR_L] [DATA_0] [DATA_1] ... [DATA_N]`
-fn eeprom_write_page<B: I2cBus>(i2c: &B, addr: u16, data: &[u8]) -> Result<(), B::Error> {
+fn eeprom_write_page(i2c: &I2c1<Pin<2>, Pin<3>>, addr: u16, data: &[u8]) -> Result<(), Error> {
     // 构造写缓冲区：[地址高字节, 地址低字节, 数据...]
     // 使用固定大小栈数组，避免在 no_std 环境下进行堆分配
     let mut buf = [0u8; 2 + PAGE_SIZE];
@@ -382,7 +382,7 @@ fn eeprom_write_page<B: I2cBus>(i2c: &B, addr: u16, data: &[u8]) -> Result<(), B
 ///
 /// # I2C 时序
 /// `[DEVICE|W] [ADDR_H] [ADDR_L] [RESTART] [DEVICE|R] [DATA] [NACK] [STOP]`
-fn eeprom_read_byte<B: I2cBus>(i2c: &B, addr: u16) -> Result<u8, B::Error> {
+fn eeprom_read_byte(i2c: &I2c1<Pin<2>, Pin<3>>, addr: u16) -> Result<u8, Error> {
     let addr_buf = [(addr >> 8) as u8, (addr & 0xFF) as u8];
     let mut buf = [0u8; 1];
     i2c.write_read(EEPROM_ADDR, &addr_buf, &mut buf)?;
@@ -398,7 +398,7 @@ fn eeprom_read_byte<B: I2cBus>(i2c: &B, addr: u16) -> Result<u8, B::Error> {
 ///
 /// # I2C 时序
 /// `[DEVICE|W] [ADDR_H] [ADDR_L] [RESTART] [DEVICE|R] [D0][ACK] [D1][ACK] ... [DN][NACK] [STOP]`
-fn eeprom_read_seq<B: I2cBus>(i2c: &B, addr: u16, buf: &mut [u8]) -> Result<(), B::Error> {
+fn eeprom_read_seq(i2c: &I2c1<Pin<2>, Pin<3>>, addr: u16, buf: &mut [u8]) -> Result<(), Error> {
     let addr_buf = [(addr >> 8) as u8, (addr & 0xFF) as u8];
     i2c.write_read(EEPROM_ADDR, &addr_buf, buf)
 }
@@ -420,8 +420,8 @@ fn eeprom_read_seq<B: I2cBus>(i2c: &B, addr: u16, buf: &mut [u8]) -> Result<(), 
 /// - `start_addr`: 写入起始地址
 /// - `data`: 待写入数据（任意长度）
 /// - `delay`: 延时驱动，用于 ACK 轮询间隔等待
-fn eeprom_write_any<B: I2cBus<Error = Error>>(
-    i2c: &B,
+fn eeprom_write_any(
+    i2c: &I2c1<Pin<2>, Pin<3>>,
     start_addr: u16,
     data: &[u8],
     delay: &Delay,

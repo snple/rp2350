@@ -19,7 +19,7 @@
 use core::marker::PhantomData;
 use core::sync::atomic::{AtomicBool, AtomicI32, AtomicU8, AtomicU32, Ordering};
 
-use rp2350::timer::{AlarmTimer, MonotonicTimer};
+use crate::timer::{AlarmTimer, MonotonicTimer};
 
 // ============================================================================
 // AxisPins trait

@@ -479,12 +479,12 @@ use defmt_rtt as _;
 
 use rp2350::adc::{Adc, AdcPin};
 use rp2350::clocks::ClockBuilder;
-use rp2350::gpio::Pins;
+use rp2350::gpio::{Pin, Pins};
 use rp2350::interrupt::{self, Mutex};
 use rp2350::main;
 use rp2350::pac::{Interrupt, Peripherals};
 use rp2350::pwm::Pwm;
-use rp2350::spi::{FrameFormat, Mode, Spi0, SpiBus};
+use rp2350::spi::{FrameFormat, Mode, Spi0};
 use rp2350::timer::Timer0; // ============================================================================
 // 配置参数
 // ============================================================================
@@ -701,14 +701,14 @@ mod csa_ctrl {
 /// DRV8323 SPI 帧格式为 16-bit:
 /// - 写: [0 | ADDR(4bit) | DATA(11bit)]
 /// - 读: [1 | ADDR(4bit) | x(11bit)]  →  SDO 返回 [FAULT | ADDR | DATA]
-struct Drv8323<'a, SPI: SpiBus> {
-    spi: &'a SPI,
+struct Drv8323<'a> {
+    spi: &'a Spi0<Pin<18>, Pin<19>, Pin<16>>,
     cs: rp2350::gpio::Pin<17>,
 }
 
-impl<'a, SPI: SpiBus> Drv8323<'a, SPI> {
+impl<'a> Drv8323<'a> {
     /// 创建 DRV8323 驱动实例
-    fn new(spi: &'a SPI, mut cs: rp2350::gpio::Pin<17>) -> Self {
+    fn new(spi: &'a Spi0<Pin<18>, Pin<19>, Pin<16>>, mut cs: rp2350::gpio::Pin<17>) -> Self {
         cs.into_output();
         cs.set_high(); // nSCS 空闲为高
         Self { spi, cs }

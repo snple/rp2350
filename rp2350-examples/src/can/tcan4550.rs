@@ -63,13 +63,16 @@ use rp2350::clocks::ClockBuilder;
 use rp2350::gpio::{Pin, Pins};
 use rp2350::main;
 use rp2350::pac::Peripherals;
-use rp2350::spi::{FrameFormat, Mode, Spi0, SpiBus};
+use rp2350::spi::{FrameFormat, Mode, Spi0};
 use rp2350::timer::Timer0; // ============================================================================
 // SPI 配置
 // ============================================================================
 
 /// TCAN4550 SPI 最大速率 18 MHz, 这里保守使用 2 MHz
 const SPI_BAUDRATE: u32 = 2_000_000;
+
+/// TCAN4550 使用的 SPI 具体类型（GP2=SCK, GP3=TX/MOSI, GP4=RX/MISO）
+type CanSpi = Spi0<Pin<2>, Pin<3>, Pin<4>>;
 
 // ============================================================================
 // TCAN4550 设备寄存器地址 (0x0000 - 0x0FFF)
@@ -226,7 +229,7 @@ const MODE_STANDBY: u32 = 0x00000040; // bit[6:5] = 0b10
 /// 协议:
 /// 1. 发送 32-bit header: [R/W=0][reserved][16-bit addr][8-bit word count=1]
 /// 2. 读取 32-bit 数据
-fn spi_read_word(spi: &impl SpiBus, cs: &Pin<5>, addr: u16) -> u32 {
+fn spi_read_word(spi: &CanSpi, cs: &Pin<5>, addr: u16) -> u32 {
     let header: [u8; 4] = [
         ((addr >> 8) as u8), // R/W=0 (read) | addr high
         (addr & 0xFF) as u8, // addr low
@@ -245,7 +248,7 @@ fn spi_read_word(spi: &impl SpiBus, cs: &Pin<5>, addr: u16) -> u32 {
 }
 
 /// SPI 写入操作: 向 TCAN4550 寄存器写入 32-bit 值
-fn spi_write_word(spi: &impl SpiBus, cs: &Pin<5>, addr: u16, data: u32) {
+fn spi_write_word(spi: &CanSpi, cs: &Pin<5>, addr: u16, data: u32) {
     let header: [u8; 4] = [
         0x61 | ((addr >> 8) as u8 & 0x1F), // R/W=1 (write, bit[7:5]=011) | addr high
         (addr & 0xFF) as u8,               // addr low
@@ -262,7 +265,7 @@ fn spi_write_word(spi: &impl SpiBus, cs: &Pin<5>, addr: u16, data: u32) {
 }
 
 /// SPI 读取多个连续 32-bit 字
-fn spi_read_words(spi: &impl SpiBus, cs: &Pin<5>, addr: u16, buf: &mut [u32]) {
+fn spi_read_words(spi: &CanSpi, cs: &Pin<5>, addr: u16, buf: &mut [u32]) {
     let count = buf.len() as u8;
     let header: [u8; 4] = [((addr >> 8) as u8), (addr & 0xFF) as u8, 0x00, count];
 
@@ -277,7 +280,7 @@ fn spi_read_words(spi: &impl SpiBus, cs: &Pin<5>, addr: u16, buf: &mut [u32]) {
 }
 
 /// SPI 写入多个连续 32-bit 字
-fn spi_write_words(spi: &impl SpiBus, cs: &Pin<5>, addr: u16, data: &[u32]) {
+fn spi_write_words(spi: &CanSpi, cs: &Pin<5>, addr: u16, data: &[u32]) {
     let count = data.len() as u8;
     let header: [u8; 4] = [
         0x61 | ((addr >> 8) as u8 & 0x1F),
@@ -299,7 +302,7 @@ fn spi_write_words(spi: &impl SpiBus, cs: &Pin<5>, addr: u16, data: &[u32]) {
 // ============================================================================
 
 /// 进入 MCAN 初始化模式 (CCCR.INIT=1, CCCR.CCE=1)
-fn mcan_enter_init(spi: &impl SpiBus, cs: &Pin<5>, timer: &Timer0) {
+fn mcan_enter_init(spi: &CanSpi, cs: &Pin<5>, timer: &Timer0) {
     // 请求初始化模式
     spi_write_word(spi, cs, MCAN_CCCR, CCCR_INIT);
     timer.delay_ms(1);
@@ -319,7 +322,7 @@ fn mcan_enter_init(spi: &impl SpiBus, cs: &Pin<5>, timer: &Timer0) {
 }
 
 /// 退出 MCAN 初始化模式, 进入正常操作
-fn mcan_exit_init(spi: &impl SpiBus, cs: &Pin<5>, timer: &Timer0) {
+fn mcan_exit_init(spi: &CanSpi, cs: &Pin<5>, timer: &Timer0) {
     // 清除 INIT 和 CCE, 进入正常模式
     spi_write_word(spi, cs, MCAN_CCCR, 0);
     timer.delay_ms(1);

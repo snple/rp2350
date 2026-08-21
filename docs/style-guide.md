@@ -18,7 +18,7 @@ rp2350/                # 工作区根
 ├── rp2350-rt/         # 运行时：reset handler、栈、FPU 初始化
 ├── rp2350-macro/      # 过程宏：#[main] #[exception] #[bind] pio_asm! ramfunc
 ├── rp2350-examples/   # 各外设的独立二进制示例
-├── rp2350-drivers/    # 设备驱动（TMC2209 等），只依赖 HAL 的 trait
+├── rp2350-drivers/    # 设备驱动（TMC2209 等），自带所需总线抽象（bus::UartBus）
 ├── rp2350-usb/        # USB 设备栈（独立 crate）
 ├── docs/              # 设计/使用说明（本文件、pwm.md）
 └── xtask/             # 构建辅助
@@ -140,15 +140,23 @@ impl Qspi {
 
 ## 5. 驱动 trait 模式（设备驱动解耦）
 
-`rp2350-drivers` 里的设备驱动（如 `tmc2209.rs`）**不依赖具体 HAL 类型**，
-只依赖 HAL 暴露的 trait：
+`rp2350` HAL **不内置** `I2cBus` / `SpiBus` / `UartBus` / `MonotonicTimer` /
+`AlarmTimer` 等抽象 trait：需要抽象时由调用者（driver crate 或最终应用）自行
+定义并实现，HAL 只提供具体外设类型。
 
-- `crate::i2c::I2cBus`：`write(addr, data)` / `read(addr, buffer)`，带 `type Error`。
-- `crate::spi::SpiBus`：类似。
-- `crate::uart::UartBus`：`write` / `read` / `read_available` / `read_raw` / `flush`。
-- `crate::delay::DelayUs`：`delay_us(us)`，用 `&impl DelayUs` 注入延时。
+`rp2350-drivers` 里的设备驱动（如 `tmc2209.rs`、`stepper`）不依赖具体 HAL 类型，
+而是依赖本 crate 定义或 HAL 暴露的抽象：
 
-这样驱动可以被任意实现这些 trait 的总线复用，也能在测试里用 mock 实现。
+- `crate::bus::UartBus`：`write` / `read` / `read_available` / `read_raw` / `flush`。
+  已在 `rp2350-drivers::bus` 为 RP2350 的 `Uart0` / `Uart1` 及其流控变体实现，
+  因此 `tmc2209` 等驱动开箱即用；需要 mock 或其他总线时由调用者自行实现。
+- `crate::timer::MonotonicTimer` / `crate::timer::AlarmTimer`：已在
+  `rp2350-drivers::timer` 为 `Timer0` / `Timer1`（含 `Steal` 句柄）实现，
+  供 `stepper` 等需要时间源 / alarm 调度的驱动使用。
+- `rp2350::delay::DelayUs`：`delay_us(us)`，用 `&impl DelayUs` 注入延时（由 HAL 提供）。
+
+其他需要 `I2C` / `SPI` 抽象的调用者，可参照 `rp2350-drivers::bus` 的模式
+自行定义 trait 并为具体类型实现。
 
 ---
 

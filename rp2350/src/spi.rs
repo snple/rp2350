@@ -166,53 +166,6 @@ pub enum Error {
     Timeout,
 }
 
-/// Abstract SPI bus trait for driver implementations.
-///
-/// This keeps drivers decoupled from concrete SPI types while preserving
-/// the HAL's type-safe pin ownership model. A driver only needs
-/// `impl SpiBus` instead of carrying the full generic parameters of
-/// [`Spi0`]/[`Spi1`].
-///
-/// # Example
-///
-/// ```ignore
-/// use rp2350::spi::SpiBus;
-///
-/// fn read_register(spi: &impl SpiBus, cs: &impl GpioPin, reg: u8) -> u8 {
-///     cs.set_low();
-///     spi.write(&[reg]);
-///     let mut buf = [0u8; 1];
-///     spi.read(&mut buf);
-///     cs.set_high();
-///     buf[0]
-/// }
-/// ```
-pub trait SpiBus {
-    /// Write multiple bytes to the SPI bus (8-bit mode).
-    fn write(&self, data: &[u8]);
-
-    /// Read multiple bytes from the SPI bus by sending dummy bytes (8-bit mode).
-    ///
-    /// Returns [`Error::Timeout`] if the peripheral fails to make progress
-    /// (e.g. a missing/stuck slave holding the clock or FIFOs idle).
-    fn read(&self, data: &mut [u8]) -> Result<(), Error>;
-
-    /// Full-duplex transfer: write and read simultaneously (8-bit mode).
-    ///
-    /// The transfer length is `min(read.len(), write.len())`.
-    ///
-    /// Returns [`Error::Timeout`] if the peripheral fails to make progress.
-    fn transfer(&self, read: &mut [u8], write: &[u8]) -> Result<(), Error>;
-
-    /// Full-duplex transfer in-place: the same buffer is used for TX and RX.
-    ///
-    /// Returns [`Error::Timeout`] if the peripheral fails to make progress.
-    fn transfer_in_place(&self, data: &mut [u8]) -> Result<(), Error>;
-
-    /// Block until all pending transfers are complete.
-    fn flush(&self);
-}
-
 // ============================================================================
 // Macro for generating SPI implementations
 // ============================================================================
@@ -908,38 +861,6 @@ macro_rules! impl_spi {
                 }
             }
 
-            impl<SCK, TX, RX> SpiBus for $SpiName<SCK, TX, RX>
-            where
-                SCK: $SckPin,
-                TX: $TxPin,
-                RX: $RxPin,
-            {
-                #[inline]
-                fn write(&self, data: &[u8]) {
-                    Self::write(self, data);
-                }
-
-                #[inline]
-                fn read(&self, data: &mut [u8]) -> Result<(), Error> {
-                    Self::read(self, data)
-                }
-
-                #[inline]
-                fn transfer(&self, read: &mut [u8], write: &[u8]) -> Result<(), Error> {
-                    Self::transfer(self, read, write)
-                }
-
-                #[inline]
-                fn transfer_in_place(&self, data: &mut [u8]) -> Result<(), Error> {
-                    Self::transfer_in_place(self, data)
-                }
-
-                #[inline]
-                fn flush(&self) {
-                    Self::flush(self);
-                }
-            }
-
             // ================================================================
             // SPI master with hardware chip select
             // ================================================================
@@ -1089,39 +1010,6 @@ macro_rules! impl_spi {
             {
                 fn deref_mut(&mut self) -> &mut Self::Target {
                     &mut self.inner
-                }
-            }
-
-            impl<SCK, TX, RX, CSN> SpiBus for [<$SpiName WithCs>]<SCK, TX, RX, CSN>
-            where
-                SCK: $SckPin,
-                TX: $TxPin,
-                RX: $RxPin,
-                CSN: $CsnPin,
-            {
-                #[inline]
-                fn write(&self, data: &[u8]) {
-                    SpiBus::write(&self.inner, data);
-                }
-
-                #[inline]
-                fn read(&self, data: &mut [u8]) -> Result<(), Error> {
-                    SpiBus::read(&self.inner, data)
-                }
-
-                #[inline]
-                fn transfer(&self, read: &mut [u8], write: &[u8]) -> Result<(), Error> {
-                    SpiBus::transfer(&self.inner, read, write)
-                }
-
-                #[inline]
-                fn transfer_in_place(&self, data: &mut [u8]) -> Result<(), Error> {
-                    SpiBus::transfer_in_place(&self.inner, data)
-                }
-
-                #[inline]
-                fn flush(&self) {
-                    SpiBus::flush(&self.inner);
                 }
             }
 
@@ -1766,38 +1654,6 @@ macro_rules! impl_spi {
                 }
             }
 
-            impl<SCK, TX, RX, CSN> SpiBus for [<$SpiName Slave>]<SCK, TX, RX, CSN>
-            where
-                SCK: $SckPin,
-                TX: $TxPin,
-                RX: $RxPin,
-                CSN: $CsnPin,
-            {
-                #[inline]
-                fn write(&self, data: &[u8]) {
-                    Self::write(self, data);
-                }
-
-                #[inline]
-                fn read(&self, data: &mut [u8]) -> Result<(), Error> {
-                    Self::read(self, data)
-                }
-
-                #[inline]
-                fn transfer(&self, read: &mut [u8], write: &[u8]) -> Result<(), Error> {
-                    Self::transfer(self, read, write)
-                }
-
-                #[inline]
-                fn transfer_in_place(&self, data: &mut [u8]) -> Result<(), Error> {
-                    Self::transfer_in_place(self, data)
-                }
-
-                #[inline]
-                fn flush(&self) {
-                    Self::flush(self);
-                }
-            }
         }
     };
 }

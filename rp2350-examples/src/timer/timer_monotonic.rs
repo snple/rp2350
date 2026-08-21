@@ -1,6 +1,6 @@
 //! # MonotonicTimer Trait Example for RP2350
 //!
-//! 这个示例演示如何基于 [`rp2350::timer::MonotonicTimer`] 编写“与具体硬件计时器类型解耦”的代码。
+//! 这个示例演示如何基于 [`rp2350_drivers::timer::MonotonicTimer`] 编写“与具体硬件计时器类型解耦”的代码。
 //!
 //! 和直接把函数参数写成 `&Timer0` 相比，依赖 trait 有两个实际好处：
 //!
@@ -29,7 +29,8 @@ use rp2350::gpio::Pins;
 use rp2350::main;
 use rp2350::pac::Peripherals;
 use rp2350::ticks::Ticks;
-use rp2350::timer::{MonotonicTimer, Timer0};
+use rp2350::timer::Timer0;
+use rp2350_drivers::timer::MonotonicTimer;
 const BLINK_INTERVAL_US: u64 = 500_000;
 const REPORT_INTERVAL_US: u64 = 2_000_000;
 

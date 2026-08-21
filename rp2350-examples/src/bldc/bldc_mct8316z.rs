@@ -460,8 +460,8 @@ use defmt_rtt as _;
 
 use rp2350::Delay;
 use rp2350::clocks::ClockBuilder;
-use rp2350::gpio::Pins;
-use rp2350::i2c::{I2c0, I2cBus};
+use rp2350::gpio::{Pin, Pins};
+use rp2350::i2c::I2c0;
 use rp2350::main;
 use rp2350::pac::Peripherals;
 use rp2350::timer::Timer0; // ============================================================================
@@ -791,14 +791,14 @@ mod dev_status {
 ///
 /// I2C 写: [REG_ADDR] + [DATA_MSB] + [DATA_MID] + [DATA_LSB]
 /// I2C 读: Write [REG_ADDR] + Repeated Start + Read [3 bytes]
-struct Mct8316z<'a, I2C: I2cBus> {
-    i2c: &'a I2C,
+struct Mct8316z<'a> {
+    i2c: &'a I2c0<Pin<4>, Pin<5>>,
     addr: u8,
 }
 
-impl<'a, I2C: I2cBus> Mct8316z<'a, I2C> {
+impl<'a> Mct8316z<'a> {
     /// 创建 MCT8316Z 驱动实例
-    fn new(i2c: &'a I2C, addr: u8) -> Self {
+    fn new(i2c: &'a I2c0<Pin<4>, Pin<5>>, addr: u8) -> Self {
         Self { i2c, addr }
     }
 
@@ -1321,10 +1321,8 @@ fn main() -> ! {
         {
             info!(
                 "State: {} → {} ({})",
-                Mct8316z::<I2c0<rp2350::gpio::Pin<4>, rp2350::gpio::Pin<5>>>::state_name(
-                    last_state
-                ),
-                Mct8316z::<I2c0<rp2350::gpio::Pin<4>, rp2350::gpio::Pin<5>>>::state_name(state),
+                Mct8316z::state_name(last_state),
+                Mct8316z::state_name(state),
                 state
             );
             last_state = state;
@@ -1340,7 +1338,7 @@ fn main() -> ! {
             let bus_current = dev_stat & 0xFFFF;
             info!(
                 "DEV_STATUS: state={} bus_current_raw={} nFAULT={}",
-                Mct8316z::<I2c0<rp2350::gpio::Pin<4>, rp2350::gpio::Pin<5>>>::state_name(state),
+                Mct8316z::state_name(state),
                 bus_current,
                 nfault.get()
             );

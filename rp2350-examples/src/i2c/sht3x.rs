@@ -11,8 +11,8 @@ use defmt_rtt as _;
 
 use rp2350::Delay;
 use rp2350::clocks::ClockBuilder;
-use rp2350::gpio::Pins;
-use rp2350::i2c::{Error, I2c0, I2cBus};
+use rp2350::gpio::{Pin, Pins};
+use rp2350::i2c::{Error, I2c0};
 use rp2350::main;
 use rp2350::pac::Peripherals;
 
@@ -54,10 +54,7 @@ fn main() -> ! {
 const SHT30_ADDR: u8 = 0x44;
 const SHT30_CMD_MEAS_HIGHREP: [u8; 2] = [0x24, 0x00];
 
-fn sht30_read<B>(i2c: &B, delay: &Delay) -> Result<(i32, i32), Error>
-where
-    B: I2cBus<Error = Error>,
-{
+fn sht30_read(i2c: &I2c0<Pin<4>, Pin<5>>, delay: &Delay) -> Result<(i32, i32), Error> {
     let mut buf = [0u8; 6];
 
     i2c.write(SHT30_ADDR, &SHT30_CMD_MEAS_HIGHREP)?;

@@ -143,39 +143,6 @@ pub enum Error {
     Timeout,
 }
 
-/// Abstract UART bus trait for driver implementations.
-///
-/// This keeps drivers decoupled from concrete UART types while preserving
-/// the HAL error type.
-pub trait UartBus {
-    /// Error type returned by the bus.
-    type Error;
-
-    /// Write bytes to the UART.
-    fn write(&self, data: &[u8]) -> Result<(), Self::Error>;
-
-    /// Read bytes from the UART, blocking until the buffer is full.
-    fn read(&self, buffer: &mut [u8]) -> Result<(), Self::Error>;
-
-    /// Read all currently available bytes without blocking.
-    ///
-    /// May return an error if a framing/parity/overrun error is detected
-    /// on any byte.  For raw byte access that ignores error flags (useful
-    /// for half-duplex echo draining), use [`read_raw`](UartBus::read_raw).
-    fn read_available(&self, buffer: &mut [u8]) -> Result<usize, Self::Error>;
-
-    /// Read available bytes **without error checking**.
-    ///
-    /// Unlike [`read_available`](UartBus::read_available), this method returns
-    /// the raw data bytes and ignores framing / parity / overrun flags.
-    /// Essential for single-wire half-duplex buses where the echo may carry
-    /// spurious framing errors due to resistor-network level contention.
-    fn read_raw(&self, buffer: &mut [u8]) -> usize;
-
-    /// Block until all pending transfers are complete.
-    fn flush(&self) -> Result<(), Self::Error>;
-}
-
 // ============================================================================
 // Macro for generating UART implementations
 // ============================================================================
@@ -999,54 +966,6 @@ macro_rules! impl_uart {
                 }
             }
 
-            impl<TX, RX> UartBus for $UartName<TX, RX>
-            where
-                TX: $TxPin,
-                RX: $RxPin,
-            {
-                type Error = Error;
-
-                #[inline]
-                fn write(&self, data: &[u8]) -> Result<(), Self::Error> {
-                    self.write(data);
-                    Ok(())
-                }
-
-                #[inline]
-                fn read(&self, buffer: &mut [u8]) -> Result<(), Self::Error> {
-                    self.read(buffer)
-                }
-
-                #[inline]
-                fn read_available(&self, buffer: &mut [u8]) -> Result<usize, Self::Error> {
-                    let mut count = 0;
-
-                    for slot in buffer.iter_mut() {
-                        match self.read_byte_with_error() {
-                            Some(Ok(byte)) => {
-                                *slot = byte;
-                                count += 1;
-                            }
-                            Some(Err((_, err))) => return Err(err),
-                            None => break,
-                        }
-                    }
-
-                    Ok(count)
-                }
-
-                #[inline]
-                fn read_raw(&self, buffer: &mut [u8]) -> usize {
-                    self.read_raw(buffer)
-                }
-
-                #[inline]
-                fn flush(&self) -> Result<(), Self::Error> {
-                    self.flush();
-                    Ok(())
-                }
-            }
-
             // ================================================================
             // UART with hardware flow control
             // ================================================================
@@ -1193,40 +1112,6 @@ macro_rules! impl_uart {
                 }
             }
 
-            impl<TX, RX, CTS, RTS> UartBus for [<$UartName WithFlowControl>]<TX, RX, CTS, RTS>
-            where
-                TX: $TxPin,
-                RX: $RxPin,
-                CTS: $CtsPin,
-                RTS: $RtsPin,
-            {
-                type Error = Error;
-
-                #[inline]
-                fn write(&self, data: &[u8]) -> Result<(), Self::Error> {
-                    UartBus::write(&self.inner, data)
-                }
-
-                #[inline]
-                fn read(&self, buffer: &mut [u8]) -> Result<(), Self::Error> {
-                    UartBus::read(&self.inner, buffer)
-                }
-
-                #[inline]
-                fn read_available(&self, buffer: &mut [u8]) -> Result<usize, Self::Error> {
-                    UartBus::read_available(&self.inner, buffer)
-                }
-
-                #[inline]
-                fn read_raw(&self, buffer: &mut [u8]) -> usize {
-                    UartBus::read_raw(&self.inner, buffer)
-                }
-
-                #[inline]
-                fn flush(&self) -> Result<(), Self::Error> {
-                    UartBus::flush(&self.inner)
-                }
-            }
         }
     };
 }
