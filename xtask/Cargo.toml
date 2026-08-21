@@ -9,7 +9,7 @@ description = "Build automation tasks for rp2350"
 publish = false
 
 [dependencies]
-clap = { version = "4.5", features = ["derive"] }
+clap = { version = "4.6", features = ["derive"] }
 anyhow = "1.0"
 heck = "0.5"
 roxmltree = "0.21"
