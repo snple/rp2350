@@ -534,17 +534,26 @@ pub enum Mode {
 /// PWM slice with type-safe pin ownership.
 ///
 /// Obtained from [`Pwm::slice()`] in an unconfigured state
-/// (`Slice<'_, N, ErasedPin, ErasedPin>`). Call builder methods like
+/// (`Slice<N, ErasedPin, ErasedPin>`). Call builder methods like
 /// [`output_a()`](Slice::output_a) to configure the slice and bind
 /// GPIO pins.
 ///
 /// The const parameter `N` identifies which hardware PWM slice
 /// (0–7 on RP2350A, 0–11 on RP2350B) this instance controls.
 ///
-/// A `Slice` borrows the [`Pwm`] controller and can therefore never
-/// outlive it.
-pub struct Slice<'a, const N: u8, A = ErasedPin, B = ErasedPin> {
-    pwm: &'a rp2350_pac::PWM,
+/// A `Slice` is a self-contained handle: it owns a zero-cost PAC peripheral
+/// token (`rp2350_pac::PWM`) rather than borrowing the [`Pwm`] controller, so
+/// it can outlive the `Pwm` instance and be freely stored, moved across cores,
+/// or used from interrupt context. Obtain one with [`Pwm::slice()`], or bypass
+/// ownership entirely with [`Slice::steal()`].
+///
+/// # Safety
+///
+/// Owning the PAC token does not imply the PWM has been initialised. The
+/// caller must ensure [`Pwm::init()`] (or equivalent setup) has run before
+/// the slice registers are used, and that no data races occur.
+pub struct Slice<const N: u8, A = ErasedPin, B = ErasedPin> {
+    pwm: rp2350_pac::PWM,
     _pin_a: A,
     _pin_b: B,
     mode: Mode,
@@ -613,7 +622,7 @@ impl Pwm {
     ///
     /// Compile-time error if `N` is out of range.
     #[inline]
-    pub fn slice<const N: u8>(&self) -> Slice<'_, N> {
+    pub fn slice<const N: u8>(&self) -> Slice<N> {
         #[cfg(not(feature = "rp2350b"))]
         const {
             assert!(N < 8, "PWM slice number must be 0-7 (RP2350A)")
@@ -624,7 +633,9 @@ impl Pwm {
         };
 
         Slice {
-            pwm: &self.pwm,
+            // `&self` prevents moving the controller's token; a fresh
+            // zero-cost PAC token referencing the same registers is equivalent.
+            pwm: unsafe { rp2350_pac::PWM::steal() },
             _pin_a: ErasedPin,
             _pin_b: ErasedPin,
             mode: Mode::OutputA,
@@ -798,7 +809,7 @@ macro_rules! impl_pwm_slice {
             // Slice<N, ErasedPin, ErasedPin> builder methods
             // ================================================================
 
-            impl<'a> Slice<'a, $slice_num, ErasedPin, ErasedPin> {
+            impl Slice<$slice_num, ErasedPin, ErasedPin> {
                 #[doc = concat!("Create PWM slice ", $slice_num, " with output on channel A only.")]
                 ///
                 /// Consumes this unconfigured slice. The pin is configured
@@ -807,7 +818,7 @@ macro_rules! impl_pwm_slice {
                 /// # Arguments
                 ///
                 /// * `pin_a` - Channel A pin (must be for this slice)
-                pub fn output_a<A: PwmAPin>(self, mut pin_a: A) -> Slice<'a, $slice_num, A, ErasedPin> {
+                pub fn output_a<A: PwmAPin>(self, mut pin_a: A) -> Slice<$slice_num, A, ErasedPin> {
                     // Verify the pin is for this slice
                     assert_eq!(A::PWM_SLICE, $slice_num, "Pin must be for PWM slice {}", $slice_num);
 
@@ -841,7 +852,7 @@ macro_rules! impl_pwm_slice {
                 ///
                 /// * `pin_a` - Channel A pin
                 /// * `pin_b` - Channel B pin
-                pub fn output_ab<A: PwmAPin, B: PwmBPin>(self, mut pin_a: A, mut pin_b: B) -> Slice<'a, $slice_num, A, B> {
+                pub fn output_ab<A: PwmAPin, B: PwmBPin>(self, mut pin_a: A, mut pin_b: B) -> Slice<$slice_num, A, B> {
                     // Verify pins are for this slice
                     assert_eq!(A::PWM_SLICE, $slice_num, "Pin A must be for PWM slice {}", $slice_num);
                     assert_eq!(B::PWM_SLICE, $slice_num, "Pin B must be for PWM slice {}", $slice_num);
@@ -891,7 +902,7 @@ macro_rules! impl_pwm_slice {
                 ///
                 /// * `pin_b` - Channel B pin for input
                 /// * `mode` - Input mode (GatedByB, RisingEdge, FallingEdge)
-                pub fn input<B: PwmBPin>(self, mut pin_b: B, mode: InputMode) -> Slice<'a, $slice_num, ErasedPin, B> {
+                pub fn input<B: PwmBPin>(self, mut pin_b: B, mode: InputMode) -> Slice<$slice_num, ErasedPin, B> {
                     // Verify pin is for this slice
                     assert_eq!(B::PWM_SLICE, $slice_num, "Pin B must be for PWM slice {}", $slice_num);
 
@@ -938,7 +949,7 @@ macro_rules! impl_pwm_slice {
                     mut pin_a: A,
                     mut pin_b: B,
                     mode: InputMode,
-                ) -> Slice<'a, $slice_num, A, B> {
+                ) -> Slice<$slice_num, A, B> {
                     // Verify pins are for this slice
                     assert_eq!(A::PWM_SLICE, $slice_num, "Pin A must be for PWM slice {}", $slice_num);
                     assert_eq!(B::PWM_SLICE, $slice_num, "Pin B must be for PWM slice {}", $slice_num);
@@ -964,13 +975,42 @@ macro_rules! impl_pwm_slice {
                         mode: Mode::OutputAWithInput,
                     }
                 }
+
+                /// Obtain a PWM slice handle without ownership checks.
+                ///
+                /// This is useful in interrupt or driver context where the
+                /// [`Pwm`] controller (and its [`Pwm::slice()`] accessor) is not
+                /// reachable. The returned handle is bound to `ErasedPin`s, so
+                /// only `&self` register operations (e.g.
+                /// [`set_duty_a`](Slice::set_duty_a),
+                /// [`clear_interrupt`](Slice::clear_interrupt),
+                /// [`counter`](Slice::counter)) are available through the
+                /// [`Steal`](crate::Steal) wrapper.
+                ///
+                /// # Safety
+                ///
+                /// The caller must ensure:
+                /// - The PWM subsystem has been initialised (e.g. via
+                ///   [`Pwm::init()`]) or the slice registers are otherwise in
+                ///   a known state.
+                /// - No data races occur — i.e. the same slice is not
+                ///   concurrently reconfigured from another context.
+                #[inline]
+                pub unsafe fn steal() -> crate::Steal<Slice<$slice_num, ErasedPin, ErasedPin>> {
+                    crate::Steal(Slice {
+                        pwm: unsafe { rp2350_pac::PWM::steal() },
+                        _pin_a: ErasedPin,
+                        _pin_b: ErasedPin,
+                        mode: Mode::OutputA,
+                    })
+                }
             }
 
             // ================================================================
             // Slice<N, A, B> register-access methods
             // ================================================================
 
-            impl<'a, A, B> Slice<'a, $slice_num, A, B> {
+            impl<A, B> Slice<$slice_num, A, B> {
                 /// PWM slice number.
                 pub const SLICE: u8 = $slice_num;
 
