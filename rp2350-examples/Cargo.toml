@@ -141,10 +141,6 @@ name = "i2c_scan"
 path = "src/i2c/i2c_scan.rs"
 
 [[bin]]
-name = "tc358870xbg"
-path = "src/i2c/tc358870xbg.rs"
-
-[[bin]]
 name = "ws2812"
 path = "src/led/ws2812.rs"
 
