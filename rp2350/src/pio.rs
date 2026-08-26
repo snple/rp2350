@@ -45,7 +45,7 @@
 //!     .init(installed.offset);
 //! ```
 
-use paste::paste;
+use pastey::paste;
 
 pub use rp2350_macro::pio_asm;
 

@@ -27,7 +27,7 @@
 //! ```
 
 use crate::Steal;
-use paste::paste;
+use pastey::paste;
 use rp2350_pac::BUSCTRL;
 
 /// Performance counter event selection.

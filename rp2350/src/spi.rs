@@ -109,7 +109,7 @@
 //! spi.write_word(0x42);
 //! ```
 
-use paste::paste;
+use pastey::paste;
 
 use crate::gpio::{
     Spi0CsnPin, Spi0RxPin, Spi0SckPin, Spi0TxPin, Spi1CsnPin, Spi1RxPin, Spi1SckPin, Spi1TxPin,

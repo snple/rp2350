@@ -100,7 +100,7 @@
 //! .wait();
 //! ```
 
-use paste::paste;
+use pastey::paste;
 use rp2350_pac::DMA;
 
 use crate::Steal;

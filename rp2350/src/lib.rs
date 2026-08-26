@@ -154,9 +154,9 @@ pub use rp2350_macro::ramfunc;
 // Re-export ExceptionFrame from rp2350-rt for use with HardFault handler
 pub use rp2350_rt::ExceptionFrame;
 
-// Re-export paste for use in macros
+// Re-export pastey for use in macros
 #[doc(hidden)]
-pub use paste;
+pub use pastey;
 
 // Re-export commonly used types
 pub use accessctrl::Accessctrl;

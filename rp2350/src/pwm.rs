@@ -440,7 +440,7 @@
 //! let freq_hz = calc_input_frequency(edges, 100_000);
 //! ```
 
-use paste::paste;
+use pastey::paste;
 
 use crate::gpio::pins::{ErasedPin, PwmAPin, PwmBPin};
 use crate::reset::Resettable;

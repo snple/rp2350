@@ -11,7 +11,7 @@ categories = ["embedded", "hardware-support", "no-std"]
 
 [dependencies]
 defmt = { workspace = true, optional = true }
-paste.workspace = true
+pastey.workspace = true
 rp2350-macro.workspace = true
 rp2350-rt.workspace = true
 rp2350-pac.workspace = true

@@ -78,7 +78,7 @@
 //! i2c.write(&[0x01, 0x02, 0x03]).unwrap();
 //! ```
 
-use paste::paste;
+use pastey::paste;
 
 use crate::clocks::Clocks;
 use crate::gpio::{I2c0SclPin, I2c0SdaPin, I2c1SclPin, I2c1SdaPin};
