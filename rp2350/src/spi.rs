@@ -352,8 +352,10 @@ macro_rules! impl_spi {
 
                     // CPSDVSR must be even, 2-254
                     for cpsdvsr in (2u32..=254).step_by(2) {
-                        // SCR can be 0-255
-                        let scr = peri_clk / (cpsdvsr * baudrate);
+                        // SCR can be 0-255.
+                        // Divide stepwise to avoid u32 overflow of (cpsdvsr * baudrate)
+                        // at high baudrates; floor(floor(a/b)/c) == floor(a/(b*c)).
+                        let scr = (peri_clk / cpsdvsr) / baudrate;
                         let scr = if scr > 0 { scr - 1 } else { 0 };
 
                         if scr > 255 {
