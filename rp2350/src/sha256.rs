@@ -227,7 +227,7 @@ impl Sha256 {
             "SHA-256 block must be exactly 64 bytes"
         );
 
-        for chunk in block.chunks_exact(4) {
+        for chunk in block.as_chunks::<4>().0 {
             let word = u32::from_le_bytes([chunk[0], chunk[1], chunk[2], chunk[3]]);
             self.write_word_blocking(word);
         }
