@@ -28,7 +28,8 @@ use rp2350::main;
 use rp2350::pac::Peripherals;
 
 use rp2350_usb::UsbBusAllocator;
-use rp2350_usb::class::hid::{HidClass, KeyboardReport, modifier};
+use rp2350_usb::class::hid::HidClass;
+use rp2350_usb::class::hid::keyboard::{Keyboard, KeyboardReport, modifier};
 use rp2350_usb::device::UsbDeviceBuilder;
 use rp2350_usb::rp2350::Rp2350Bus;
 
@@ -41,8 +42,13 @@ mod keycode {
     pub const SPACE: u8 = 0x2C;
 }
 
+/// Send one keyboard report, dropping it if the host is not ready yet.
+fn send(hid: &HidClass<'_, Rp2350Bus, Keyboard>, report: &KeyboardReport) {
+    let _ = hid.send_input(&report.to_bytes());
+}
+
 /// Type a string by sending individual key reports
-fn type_string(hid: &HidClass<Rp2350Bus>, text: &str, delay: &mut Delay) {
+fn type_string(hid: &HidClass<'_, Rp2350Bus, Keyboard>, text: &str, delay: &mut Delay) {
     for ch in text.chars() {
         let (kc, shift) = char_to_keycode(ch);
         if kc != 0 {
@@ -52,11 +58,11 @@ fn type_string(hid: &HidClass<Rp2350Bus>, text: &str, delay: &mut Delay) {
             if shift {
                 report.modifiers = modifier::LEFT_SHIFT;
             }
-            let _ = hid.send_keyboard_report(&report);
+            send(hid, &report);
             delay.delay_ms(10);
 
             // Key up
-            let _ = hid.send_keyboard_report(&KeyboardReport::default());
+            send(hid, &KeyboardReport::default());
             delay.delay_ms(10);
         }
     }
@@ -111,7 +117,7 @@ fn main() -> ! {
     info!("USB bus allocator created");
 
     // Create HID keyboard class
-    let mut hid = HidClass::keyboard(&alloc);
+    let mut hid = HidClass::new(&alloc, Keyboard::new());
     info!("HID keyboard class created");
 
     // Build USB device (also freezes the allocator and enables the peripheral)

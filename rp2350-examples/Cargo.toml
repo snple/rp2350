@@ -293,6 +293,10 @@ name = "usb_hid_keyboard"
 path = "src/usb_hid/usb_hid_keyboard.rs"
 
 [[bin]]
+name = "usb_hid_power"
+path = "src/usb_hid/usb_hid_power.rs"
+
+[[bin]]
 name = "bldc_drv8323"
 path = "src/bldc/bldc_drv8323.rs"
 

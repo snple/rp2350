@@ -1,26 +1,28 @@
 # rp2350-usb
 
-USB Device Stack for RP2350 microcontrollers (Raspberry Pi Pico 2).
+USB device stack for RP2350 microcontrollers (Raspberry Pi Pico 2).  It contains
+a full-speed USB 2.0 device driver for the on-chip USB peripheral, the device
+state machine including the standard control transfers, and a class layer with
+CDC ACM, HID (keyboard, mouse, power device), GS_USB and UAC 1.0.
 
-## Features
+`no_std`, no allocator, no dependencies beyond `rp2350-pac` / `rp2350-rt`.  The
+`defmt` feature (on by default) adds logging.
 
-- Builder-pattern API for device configuration
-- USB device classes:
-  - **CDC ACM** — virtual serial port
-  - **HID** — keyboard / mouse / custom HID
-  - **GS_USB** — CAN bus adapter (candleLight protocol)
-  - **UAC 1.0** — USB audio (speaker / microphone)
-- Zero external dependencies beyond `rp2350-pac` / `rp2350-rt`
-- Optional `defmt` logging
+## Layout
 
-## Architecture
+| Module | Contents |
+|--------|----------|
+| `bus` | `UsbBus` (hardware abstraction) and `UsbBusAllocator`, which hands out interfaces, endpoints and string indices |
+| `rp2350` | `Rp2350Bus`, the RP2350 implementation of `UsbBus` |
+| `device` | `UsbDeviceBuilder` / `UsbDevice` — device state machine, descriptor serving, control-transfer dispatch |
+| `control` | `ControlPipe` (EP0 state machine) and the `ControlIn` / `ControlOut` handles classes answer requests with |
+| `descriptor` | `DescriptorWriter`, used by the device and by classes to emit descriptors |
+| `endpoint` | `Endpoint`, `EndpointAddress`, `EndpointType`, direction markers |
+| `class` | `UsbClass` trait and the class implementations |
 
-- **Bus layer** (`UsbBus` + `UsbBusAllocator`) — hardware abstraction. Classes
-  allocate endpoints / interfaces / strings through the allocator before it is
-  frozen.
-- **Device layer** (`UsbDevice` / `UsbDeviceBuilder`) — device state machine and
-  standard control-transfer handling.
-- **Class layer** (`UsbClass`) — CDC ACM, HID, GS_USB, UAC.
+A class allocates everything it needs from the `UsbBusAllocator` in its
+constructor.  Building the device freezes the allocator and enables the
+peripheral, so all classes must be created first.
 
 ## Quick start
 
@@ -32,10 +34,10 @@ use rp2350_usb::rp2350::Rp2350Bus;
 // 1. Wrap the hardware driver.
 let alloc = UsbBusAllocator::new(unsafe { Rp2350Bus::steal() });
 
-// 2. Create classes (allocates endpoints / interfaces / strings).
+// 2. Create classes — this allocates their endpoints, interfaces and strings.
 let mut serial = CdcAcm::new(&alloc);
 
-// 3. Build the device — freezes the allocator and enables the peripheral.
+// 3. Build the device: freezes the allocator and enables the peripheral.
 let mut usb_dev = UsbDeviceBuilder::new(&alloc, 0x2E8A, 0x000A)
     .manufacturer("Raspberry Pi")
     .product("Pico USB Serial")
@@ -43,83 +45,390 @@ let mut usb_dev = UsbDeviceBuilder::new(&alloc, 0x2E8A, 0x000A)
     .composite_with_iads()
     .build();
 
-// 4. Connect the D+ pull-up.
+// 4. Connect the D+ pull-up to signal presence to the host.
 usb_dev.bus().connect();
 
 loop {
-    // Drive the state machine at least every 10 ms.
-    if usb_dev.poll(&mut [&mut serial]) {
-        let mut buf = [0u8; 64];
-        if let Ok(n) = serial.read(&mut buf) {
-            let _ = serial.write(&buf[..n]);
-        }
+    // Drives the state machine.  Call at least every 10 ms.
+    usb_dev.poll(&mut [&mut serial]);
+
+    let mut buf = [0u8; 64];
+    if let Ok(n) = serial.read(&mut buf) {
+        let _ = serial.write(&buf[..n]);
     }
 }
 ```
 
-## USB classes
+`poll` returns `true` when a class may have data to read or write, so the body of
+the loop can also be guarded with `if usb_dev.poll(&mut [&mut serial]) { … }`.
 
-| Class | Path |
-|-------|------|
-| CDC ACM | `rp2350_usb::class::cdc_acm::CdcAcm` |
-| HID | `rp2350_usb::class::hid::{HidClass, HidConfig, KeyboardReport, …}` |
-| GS_USB | `rp2350_usb::class::gs_usb::GsUsbClass` |
-| UAC 1.0 | `rp2350_usb::class::uac::AudioClassBuilder` |
+## CDC ACM
 
-## Builder
+`CdcAcm::new(&alloc)` allocates two interfaces (control and data), an interrupt
+IN endpoint for notifications and two bulk endpoints, and ties the interfaces
+together with an IAD — build the device with `.composite_with_iads()`.
 
 ```rust
-let mut usb_dev = UsbDeviceBuilder::new(&alloc, 0x1234, 0x5678) // VID, PID
+use rp2350_usb::UsbError;
+use rp2350_usb::class::cdc_acm::CdcAcm;
+
+let mut serial = CdcAcm::new(&alloc);
+
+// Read: WouldBlock when nothing arrived, InvalidState before configuration.
+let mut buf = [0u8; 64];
+match serial.read(&mut buf) {
+    Ok(n) => { /* n bytes received */ }
+    Err(UsbError::WouldBlock) => {}
+    Err(e) => { /* … */ }
+}
+
+// Write: sends up to one bulk packet, WouldBlock until the host collected it.
+let _ = serial.write(b"hello\r\n");
+```
+
+Line coding (`Set Line Coding`) is decoded and stored; the host's control line
+state is exposed as well:
+
+| Method | Meaning |
+|--------|---------|
+| `port_open()` | configured by the host and DTR asserted |
+| `dtr()`, `rts()` | raw control line state |
+| `configured()` | host sent `Set Configuration` |
+| `line_coding()` | `LineCoding { baud_rate, stop_bits, parity, data_bits }` as requested by the host |
+
+A host sends `Set Line Coding` to configure an abstract UART; the values are not
+applied to any hardware here, so the application has to interpret them.
+
+## HID
+
+`hid` is split in two halves:
+
+- `HidClass` is the USB side.  It owns the interface, an interrupt IN endpoint
+  for input reports and — when the function asks for one — an interrupt OUT
+  endpoint, writes the interface/HID/endpoint descriptors, serves the report
+  descriptor for `Get Descriptor (HID Report)` and answers `Get/Set Report`,
+  `Get/Set Idle` and `Get/Set Protocol`.
+- `HidDevice` is the HID side: the report descriptor, endpoint geometry and the
+  reports the function exchanges with the host.
+
+The class owns the function, so its state is reached through `device_mut()`.
+
+```rust
+use rp2350_usb::class::hid::HidClass;
+use rp2350_usb::class::hid::keyboard::{Keyboard, KeyboardReport};
+
+let mut kbd = HidClass::new(&alloc, Keyboard::new());
+
+loop {
+    usb_dev.poll(&mut [&mut kbd]);
+
+    let report = KeyboardReport { keys: [0x04, 0, 0, 0, 0, 0], ..Default::default() };
+    let _ = kbd.send_input(&report.to_bytes());   // WouldBlock if the host is slow
+
+    let leds = kbd.device().leds();               // LED report the host sent
+}
+```
+
+`send_input` takes the raw report — the report ID first when the descriptor uses
+report IDs.  Reports that a device queues internally (see `power::PowerDevice`)
+are pushed by `HidClass::flush`, which `poll` also calls.
+
+Ready-made functions:
+
+| Function | Reports |
+|----------|---------|
+| `keyboard::Keyboard` | boot keyboard: 8-byte input, 1-byte LED output |
+| `mouse::Mouse` | boot mouse: 4-byte input |
+| `custom::CustomHid` | caller-supplied report descriptor, host reports buffered for reading |
+| `power::PowerDevice` | HID Power Device, see below |
+
+`custom::CustomHid` covers the "my own descriptor" case:
+
+```rust
+use rp2350_usb::class::hid::{HidClass, HidSpec, custom::CustomHid};
+
+let spec = HidSpec::new(MY_REPORT_DESCRIPTOR, 8)   // descriptor, IN endpoint size
+    .out_report_size(8)                            // allocate an interrupt OUT endpoint
+    .report_ids(true)                              // descriptor declares report IDs
+    .poll_interval_ms(8);
+
+let mut hid = HidClass::new(&alloc, CustomHid::new(spec));
+hid.send_input(&[0x01, 0x00]);
+
+let mut buf = [0u8; 8];
+if let Some(len) = hid.device_mut().read_report(&mut buf) {
+    // a report the host wrote, report ID first
+}
+```
+
+Writing a new function means implementing `HidDevice`: `spec()` plus whichever
+report hooks are needed (`get_report`, `set_report`, `output_report`) and
+lifecycle hooks (`configure`, `deconfigure`, `reset`, `poll`).  Everything the
+function does not override is a no-op, and unanswered requests are stalled by the
+device layer.  `HidSpec` carries the report descriptor, the endpoint sizes and
+the values that cannot be derived from the descriptor itself: subclass, protocol
+and whether reports carry an ID byte.  Note that `Set Report` passes the report
+ID in `wValue` while an interrupt OUT packet carries it as its first byte; the
+class normalises both into `(report_id, data)`.
+
+## HID Power Device
+
+`power::PowerDevice` implements the *USB Usage Tables for HID Power Devices*
+(Power Device page `0x84`, Battery System page `0x85`).  It is a UPS or a power
+supply that reports status, measurements, battery state, configuration and
+switch controls:
+
+| Report ID | Type | Direction | Payload |
+|-----------|------|-----------|---------|
+| 1 | Input | device → host | `PowerStatus` present + changed flags |
+| 2 | Input | device → host | `PowerMeasures` voltage, current, frequency, load, temperature |
+| 3 | Input | device → host | `BatteryState` battery flags, state of charge, runtime |
+| 4 | Feature | both | `PowerConfig` nominal values and transfer thresholds |
+| 5 | Output | host → device | `PowerControls` switch on / off / toggle / audible alarm |
+
+The application owns the measurements and pushes them; the device re-sends an
+input report only when its contents changed, and retries reports the endpoint
+could not take yet.
+
+```rust
+use rp2350_usb::class::hid::HidClass;
+use rp2350_usb::class::hid::power::{
+    BatteryState, BatteryStatus, PowerConfig, PowerControls, PowerDevice, PowerMeasures,
+    PowerStatus,
+};
+
+let mut power = HidClass::new(&alloc, PowerDevice::ups());   // or ::power_supply()
+
+power.device_mut().set_config(PowerConfig {
+    voltage_cv: 23_000,
+    current_ca: 650,
+    frequency_hz: 50,
+    low_voltage_transfer_cv: 19_000,
+    high_voltage_transfer_cv: 25_000,
+    delay_before_shutdown_s: 30,
+    temperature_k: 320,
+});
+
+loop {
+    usb_dev.poll(&mut [&mut power]);
+
+    power.device_mut().set_status(
+        PowerStatus::PRESENT | PowerStatus::GOOD | PowerStatus::USED,
+        PowerStatus::NONE,
+    );
+    power.device_mut().set_measures(PowerMeasures {
+        voltage_cv: 23_000,
+        current_ca: 150,
+        frequency_hz: 50,
+        percent_load: 35,
+        temperature_k: 300,
+    });
+    power.device_mut().set_battery(BatteryState {
+        status: BatteryStatus::AC_PRESENT | BatteryStatus::BATTERY_PRESENT,
+        ..Default::default()
+    });
+
+    if let Some(controls) = power.device_mut().take_controls() {
+        // host wrote output report 5
+    }
+    if let Some(config) = power.device_mut().take_config_write() {
+        // host wrote feature report 4; apply it, then publish it with set_config
+    }
+}
+```
+
+`set_status` takes the changed flags as well — `PowerStatus::diff` computes them
+against the previous value, which reports each change once and clears the flags
+again on the following report.  Values follow the specification's unit table
+(centivolts, centiamps, hertz, percent, kelvin, minutes for runtime) and are
+clamped to the logical range declared in the descriptor.  A feature read returns
+what `set_config` published, i.e. what the device actually applied, not what the
+host asked for.
+
+## GS_USB
+
+`GsUsbClass::new(&alloc)` is a vendor-specific (class `0xFF`) CAN adapter
+speaking the candleLight protocol, so the Linux `gs_usb` driver binds to it
+directly.
+
+```rust
+use rp2350_usb::class::gs_usb::{GsDeviceConfig, GsHostFrame, GsUsbClass};
+
+let mut can = GsUsbClass::new(&alloc);
+can.set_device_config(GsDeviceConfig { icount: 1, ..Default::default() });
+
+loop {
+    usb_dev.poll(&mut [&mut can]);
+
+    match can.try_recv() {
+        Ok(Some(frame)) => { /* host → CAN: transmit frame */ }
+        Ok(None) => {}
+        Err(_) => {}
+    }
+
+    let frame = GsHostFrame { can_id: 0x123, can_dlc: 8, ..Default::default() };
+    let _ = can.try_send(&frame);          // CAN → host
+}
+```
+
+The host's CAN setup arrives through control requests and is readable as
+`can.mode()`, `can.mode_flags()`, `can.bit_timing()`; `set_bt_const` advertises
+what the firmware supports.  The Linux driver binds to `0x1D50:0x606F`
+(candleLight); while bringing firmware up, use another VID/PID so the driver does
+not probe the device before it handles every request.
+
+## UAC 1.0
+
+`AudioClassBuilder` builds a UAC 1.0 function with an input and/or an output
+stream: S16le or S24le samples, discrete or continuous rates, mono or
+multi-channel.  Audio uses isochronous endpoints, so the device has to be built
+with `.composite_with_iads()`.
+
+```rust
+use rp2350_usb::class::uac::{AudioClassBuilder, Format, StreamConfig, TerminalType};
+
+static RATES_48K: [u32; 1] = [48_000];
+
+let mut audio = AudioClassBuilder::new()
+    .output(
+        StreamConfig::new_discrete(Format::S16le, 2, &RATES_48K, TerminalType::OutSpeaker).unwrap(),
+    )
+    .input(
+        StreamConfig::new_discrete(Format::S16le, 1, &RATES_48K, TerminalType::InMicrophone).unwrap(),
+    )
+    .build(&alloc);
+
+let mut dev = UsbDeviceBuilder::new(&alloc, 0x1209, 0x1561)
+    .product("USB Audio")
+    .composite_with_iads()
+    .build();
+
+loop {
+    dev.poll(&mut [&mut audio]);
+
+    // Playback: PCM from the host, one packed frame (1 ms) per call.
+    let mut buf = [0u8; 192];
+    if let Ok(n) = audio.read(&mut buf) {
+        // write the samples to a DAC
+    }
+
+    // Capture: PCM to the host; WouldBlock until the previous packet is taken.
+    let pcm = [0u8; 192];
+    let _ = audio.write(&pcm);
+}
+```
+
+The host only streams while the corresponding alternate setting is selected:
+`input_active()` / `output_active()` report that, `input_alt_setting()` /
+`output_alt_setting()` return the current setting, and `is_configured()` reports
+whether the device is configured at all.
+
+## Device builder
+
+```rust
+let mut usb_dev = UsbDeviceBuilder::new(&alloc, 0x1234, 0x5678)   // VID, PID
     .device_release(0x0100)          // bcdDevice
+    .usb_rev(0x0200)                 // bcdUSB, default USB 2.0
+    .device_class(0)                 // 0 = class defined at interface level
+    .max_packet_size_0(64)           // EP0 packet size: 8, 16, 32 or 64
     .manufacturer("Company")
     .product("Product")
     .serial_number("SN001")
     .self_powered(false)
     .supports_remote_wakeup(false)
-    .max_power_ma(100)               // stored as mA/2 per USB spec
-    .composite_with_iads()           // multi-interface composite devices
+    .max_power_ma(100)               // stored as mA/2 per USB spec, capped at 500 mA
+    .composite_with_iads()           // device class 0xEF, subclass 0x02, protocol 0x01
     .build();
 ```
+
+String descriptors are only served when the corresponding string was set;
+`composite_with_iads()` is needed for classes that span several interfaces
+(CDC ACM, UAC) and harmless otherwise.
 
 ## Device state
 
 ```rust
 match usb_dev.state() {
-    DeviceState::Default => { /* reset, no address */ }
+    DeviceState::Default   => { /* reset, no address */ }
     DeviceState::Addressed => { /* address assigned, not configured */ }
     DeviceState::Configured => { /* ready for data */ }
-    DeviceState::Suspend => { /* bus suspended */ }
-}
-
-if usb_dev.is_configured() {
-    // ready
+    DeviceState::Suspend   => { /* bus suspended */ }
 }
 ```
 
-## Endpoint types
+`is_configured()` is the shorthand for the `Configured` state,
+`remote_wakeup_enabled()` reports whether the host armed remote wake-up, and
+`force_reset()` disconnects and re-enumerates on buses that support it.
+Suspend and resume are handled by `poll`; classes see configure/deconfigure and
+reset through their `UsbClass` hooks.
 
-Control, Bulk, Interrupt and Isochronous endpoints (full-speed).
+## Endpoints
+
+```rust
+use rp2350_usb::{In, Out};
+
+let iface = alloc.interface();                    // allocate an interface number
+let str_idx = alloc.string();                     // allocate a string index
+let ep_in = alloc.interrupt::<In>(16, 10);        // 16-byte interrupt IN, 10 ms poll
+let ep_out = alloc.bulk::<Out>(64);               // 64-byte bulk OUT
+```
+
+`control`, `bulk`, `interrupt` and `isochronous` are generic over the direction
+(`In` / `Out`); `interrupt` and `isochronous` also take the polling interval and
+the isochronous synchronisation/usage attributes (`EndpointType`,
+`IsoSynchronization`, `IsoUsage`).  Limits: 16 endpoints, 64-byte packets for
+control and bulk/interrupt, 4 KiB of DPRAM, which the driver allocates in
+64-byte chunks.  Filling DPRAM or running out of endpoints fails the allocation
+with `EndpointMemoryOverflow` / `EndpointOverflow`.
 
 ## Errors
 
 Fallible operations return `UsbResult<T>`:
 
-```rust
-match serial.write(data) {
-    Ok(n) => { /* wrote n bytes */ }
-    Err(UsbError::WouldBlock) => { /* retry later */ }
-    Err(UsbError::InvalidEndpoint) => { /* endpoint not allocated */ }
-    Err(e) => { /* … */ }
-}
+| Variant | Meaning |
+|---------|---------|
+| `WouldBlock` | No data available, or the previous packet has not been collected yet — retry later |
+| `InvalidState` | Called before the host configured the device, or in another invalid state |
+| `InvalidEndpoint` | The endpoint address was not allocated |
+| `EndpointOverflow` | No free endpoint of the requested type |
+| `EndpointMemoryOverflow` | DPRAM exhausted |
+| `BufferOverflow` | Buffer too small for the data |
+| `ParseError` | A SETUP packet or descriptor could not be parsed |
+| `Unsupported` | The bus does not implement the operation |
+
+## Features
+
+| Feature | Effect |
+|---------|--------|
+| `defmt` (default) | `defmt::Format` impls and debug logging through `rp2350`'s `defmt` |
+
+The chip variant (`rp2350a` / `rp2350b`) is selected on the `rp2350` crate; see
+the workspace root.
+
+## Examples
+
+The `rp2350-examples` package has one binary per example.  Each has a `.cargo`
+configuration with the `probe-rs` runner, so from `rp2350-examples/`:
+
+```console
+$ cargo run --release --bin usb_hid_power
 ```
+
+| Binary | Shows |
+|--------|-------|
+| `usb_cdc_acm` | CDC serial port that echoes received bytes and prints a line every second |
+| `usb_cdc_acm_interrupt` | The same, driven from `USBCTRL_IRQ` with the main loop parked in `wfi` |
+| `usb_hid_keyboard` | HID boot keyboard that types "Hello!" on a button press |
+| `usb_hid_power` | HID Power Device (UPS) with simulated mains failure and the on-chip temperature sensor |
+| `usb_gs_can` | GS_USB CAN adapter that echoes received frames back, with stubs where a CAN driver goes |
+| `usb_audio_speaker` | UAC 1.0 speaker receiving 48 kHz stereo PCM |
 
 ## VID / PID
 
 - pid.codes: `0x1209:0x0001` (free for open-source projects)
 - Your own registered VID/PID for production
 
-
-**Note**: Using someone else's VID/PID is against USB specifications.
+Using someone else's VID/PID is against USB specifications.
 
 ## License
 

@@ -295,7 +295,11 @@ pub const GAMEPAD_REPORT_DESCRIPTOR: &[u8] = &[
 使用方式：
 
 ```rust
-let gamepad = HidClass::new(&alloc, HidConfig::custom(GAMEPAD_REPORT_DESCRIPTOR, 3));
+use rp2350_usb::class::hid::{HidClass, HidSpec, custom::CustomHid};
+
+// 报告描述符 + 端点大小；out_report_size 非 0 才会分配中断 OUT 端点
+let spec = HidSpec::new(GAMEPAD_REPORT_DESCRIPTOR, 3);
+let gamepad = HidClass::new(&alloc, CustomHid::new(spec));
 ```
 
 ---

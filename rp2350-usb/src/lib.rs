@@ -47,7 +47,8 @@ pub use class::UsbClass;
 pub use descriptor::DescriptorWriter;
 pub use device::{DeviceInfo, DeviceState, UsbDevice, UsbDeviceBuilder};
 pub use endpoint::{
-    Direction, EndpointAddress, EndpointIn, EndpointOut, EndpointType, IsoSynchronization, IsoUsage,
+    Direction, EndpointAddress, EndpointIn, EndpointOut, EndpointType, In, IsoSynchronization,
+    IsoUsage, Out,
 };
 pub use error::{UsbError, UsbResult};
 pub use rp2350::Rp2350Bus;
