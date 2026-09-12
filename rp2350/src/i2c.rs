@@ -458,6 +458,12 @@ macro_rules! impl_i2c {
                     // Wait for not busy (bounded)
                     self.wait_cond(|| !self.i2c.ic_status.mst_activity())?;
 
+                    // Both waits above return immediately when their condition
+                    // already holds, so an abort (e.g. an address NACK) that
+                    // ended the transfer would go unnoticed. Check the abort
+                    // status explicitly before reporting success.
+                    self.check_abort()?;
+
                     Ok(())
                 }
 
@@ -505,6 +511,10 @@ macro_rules! impl_i2c {
                     // Wait for the STOP to finish and the bus to idle, so a
                     // back-to-back transaction cannot race it.
                     self.wait_cond(|| !self.i2c.ic_status.mst_activity())?;
+
+                    // A NACK on the address byte or on the last received byte
+                    // is only reported through the abort status.
+                    self.check_abort()?;
 
                     Ok(())
                 }
@@ -571,6 +581,10 @@ macro_rules! impl_i2c {
 
                     // Wait for the STOP to finish and the bus to idle.
                     self.wait_cond(|| !self.i2c.ic_status.mst_activity())?;
+
+                    // Both waits above can succeed without ever evaluating a
+                    // condition, so check the abort status explicitly.
+                    self.check_abort()?;
 
                     Ok(())
                 }
