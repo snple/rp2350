@@ -3,7 +3,7 @@
 USB device stack for RP2350 microcontrollers (Raspberry Pi Pico 2).  It contains
 a full-speed USB 2.0 device driver for the on-chip USB peripheral, the device
 state machine including the standard control transfers, and a class layer with
-CDC ACM, HID (keyboard, mouse, power device), GS_USB and UAC 1.0.
+CDC ACM, HID (keyboard, mouse, power device), GS_USB, i2c-tiny-usb and UAC 1.0.
 
 `no_std`, no allocator, no dependencies beyond `rp2350-pac` / `rp2350-rt`.  The
 `defmt` feature (on by default) adds logging.
@@ -277,6 +277,61 @@ what the firmware supports.  The Linux driver binds to `0x1D50:0x606F`
 (candleLight); while bringing firmware up, use another VID/PID so the driver does
 not probe the device before it handles every request.
 
+## i2c-tiny-usb
+
+`i2c_tiny_usb::I2cTinyUsb` bridges a plain I2C master to USB, speaking the
+protocol of Till Harbaum's i2c-tiny-usb adapter: the Linux `i2c-tiny-usb` driver
+binds to the donated `0x0403:0xC631` pair and the bus turns up as an ordinary
+`/dev/i2c-N` adapter.  Everything travels over control transfers, so the
+interface declares no endpoints at all.
+
+The bus is supplied by implementing `I2cBus`, which the class maps the host's
+`i2c_msg` flags onto: one message becomes `write` or `read`, a write followed by
+a read becomes `write_read` (repeated start), which is what SMBus emulation —
+and therefore `i2cdetect`, `i2cget` and `i2cdump` — needs.  `Set Delay` is
+forwarded as a bit delay, 10 µs being the driver's default of 100 kHz.
+
+```rust
+use rp2350_usb::class::i2c_tiny_usb::{I2cBus, I2cError, I2cTinyUsb};
+
+impl I2cBus for HalI2c {
+    fn write(&mut self, address: u8, data: &[u8]) -> Result<(), I2cError> {
+        self.i2c.write(address, data).map_err(|_| I2cError::NoAcknowledge)
+    }
+    fn read(&mut self, address: u8, data: &mut [u8]) -> Result<(), I2cError> {
+        self.i2c.read(address, data).map_err(|_| I2cError::NoAcknowledge)
+    }
+    fn write_read(&mut self, address: u8, data: &[u8], buffer: &mut [u8]) -> Result<(), I2cError> {
+        self.i2c.write_read(address, data, buffer).map_err(|_| I2cError::NoAcknowledge)
+    }
+}
+
+let mut adapter = I2cTinyUsb::new(&alloc, hal_i2c);
+
+let mut dev = UsbDeviceBuilder::new(&alloc, 0x0403, 0xC631)
+    .device_release(0x0100)
+    .product("i2c-tiny-usb")
+    .build();
+
+loop {
+    dev.poll(&mut [&mut adapter]);
+
+    // Optional: the class counts what the host did.
+    if adapter.failures() > 0 {
+        // a device did not answer, which the host saw as -EREMOTEIO
+    }
+}
+```
+
+A hardware peripheral cannot pause in the middle of a transaction, so a message
+without `I2C_IO_END` is buffered (up to 16 bytes) and replayed with the message
+that ends it.  Reads must be the last message of a transaction, 10-bit addresses
+and SMBus block reads are not supported, and those requests are stalled rather
+than mistranslated — `func::DEFAULT` advertises only what works.  The class
+answers vendor requests for any interface index, because the protocol carries the
+I2C address in `wIndex`, so it is meant to be the only vendor-specific function in
+the device.
+
 ## UAC 1.0
 
 `AudioClassBuilder` builds a UAC 1.0 function with an input and/or an output
@@ -421,6 +476,7 @@ $ cargo run --release --bin usb_hid_power
 | `usb_hid_keyboard` | HID boot keyboard that types "Hello!" on a button press |
 | `usb_hid_power` | HID Power Device (UPS) with simulated mains failure and the on-chip temperature sensor |
 | `usb_gs_can` | GS_USB CAN adapter that echoes received frames back, with stubs where a CAN driver goes |
+| `usb_i2c_tiny` | i2c-tiny-usb adapter on I2C0 (GP4/GP5), usable with `i2cdetect` and friends |
 | `usb_audio_speaker` | UAC 1.0 speaker receiving 48 kHz stereo PCM |
 
 ## VID / PID

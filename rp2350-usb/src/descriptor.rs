@@ -34,6 +34,8 @@ pub mod class_code {
     pub const HID: u8 = 0x03;
     pub const MISC: u8 = 0xEF;
     pub const NONE: u8 = 0x00;
+    /// Vendor-specific interface/device class.
+    pub const VENDOR: u8 = 0xFF;
 }
 
 pub mod cdc_subclass {
