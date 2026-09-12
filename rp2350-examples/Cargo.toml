@@ -65,6 +65,10 @@ name = "reset"
 path = "src/reset.rs"
 
 [[bin]]
+name = "reboot"
+path = "src/reboot.rs"
+
+[[bin]]
 name = "sio"
 path = "src/sio.rs"
 
