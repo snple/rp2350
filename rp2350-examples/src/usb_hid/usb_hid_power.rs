@@ -1,8 +1,10 @@
 //! # USB HID Power Device (UPS) example
 //!
-//! Presents the Pico 2 as a USB HID Power Device — a UPS with a battery — the
-//! kind of device a host exposes under `/sys/class/power_supply` or that
-//! `usbhid-dump` / `hidapi` can read.
+//! Presents the Pico 2 as a USB HID Power Device — a UPS with a battery. Linux
+//! ships no generic driver for the class, so the device shows up as a plain HID
+//! interface (`/dev/hidrawN`) and the host side is userspace: a raw read of that
+//! node for the input reports, `hidapi` for the feature and output reports, or
+//! NUT's `usbhid-ups` to drive it as a real UPS.
 //!
 //! ## Hardware
 //! - Raspberry Pi Pico 2 (RP2350) and a USB cable
@@ -32,16 +34,64 @@
 //! `power.device_mut()`; the device itself queues the input reports and pushes
 //! them when the endpoint is free.
 //!
-//! ## Testing
+//! ## Reading it from Linux
+//!
+//! `hid-generic` binds and creates a hidraw node, which `dmesg` names:
 //!
 //! ```text
-//! $ lsusb -d 2e8a:000d -v          # HID report descriptor and interface
-//! $ usbhid-dump -m 2e8a:000d       # stream the input reports
+//! $ lsusb -d 2e8a:000d
+//! Bus 001 Device 025: ID 2e8a:000d Raspberry Pi Pico HID UPS
+//! $ sudo dmesg | grep -i "Pico HID UPS"
+//! hid-generic 0003:2E8A:000D.0001: hiddev5,hidraw11: USB HID v1.11 Device [Raspberry Pi Pico HID UPS] ...
 //! ```
 //!
-//! With `hidapi` installed, feature report 4 (13 bytes) can be read and
-//! written from the host; the configuration the host writes is echoed back on
-//! the next read because the example applies it with `set_config`.
+//! The node is root-only, so either read it with `sudo` or add a udev rule for
+//! the group you are in:
+//!
+//! ```text
+//! # /etc/udev/rules.d/99-pico-ups.rules
+//! KERNEL=="hidraw*", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="000d", MODE="0660", GROUP="plugdev"
+//! ```
+//!
+//! Reading the node streams the input reports, each prefixed with its report
+//! ID, with the application's values shown for reference:
+//!
+//! ```text
+//! 01 <present:3> <changed:3>                          status flags, then the ones that changed
+//! 02 <voltage:2> <current:2> <Hz:1> <load%:1> <K:2>    23000 cV, 1.50 A, 50 Hz, 35 %, ~300 K
+//! 03 <flags:1> <changed:1> <charge%:1> <runtime:2>    battery flags, charge, minutes to empty
+//! ```
+//!
+//! (The 16-bit fields are little-endian: `23000` cV is `d8 59`, so a full
+//! report 2 on mains with the load on is `02 d8 59 96 00 32 23 2c 01`.) Feature
+//! reports need the `HIDIOCGFEATURE` / `HIDIOCSFEATURE` ioctls rather than
+//! plain read/write, so reach for a library that has them — `hidapi`, from
+//! `sudo apt install python3-hid`:
+//!
+//! ```python
+//! import hid
+//! d = hid.device()
+//! d.open(0x2e8a, 0x000d)
+//! print(bytes(d.get_feature_report(4, 14)).hex(" "))   # feature report 4, 13 bytes
+//! d.write(b"\x05\x02")                                  # output report 5: switch the load off
+//! ```
+//!
+//! NUT (`sudo apt install nut`, `MODE=standalone` in `/etc/nut/nut.conf`) drives
+//! the same reports through its `usbhid-ups` driver, with the device described in
+//! `/etc/nut/ups.conf`:
+//!
+//! ```text
+//! [pico]
+//!     driver = usbhid-ups
+//!     port = auto
+//!     vendorid = 2e8a
+//!     productid = 000d
+//! ```
+//!
+//! `sudo usbhid-ups -DD -a pico -x explore` shows whether it recognises the
+//! device and which usages it maps, and `upsc pico` reports the result as a
+//! normal UPS (`battery.charge`, `ups.load`, `ups.status`). NUT claims the
+//! interface through libusb, so hidraw stops delivering reports while it runs.
 
 #![no_std]
 #![no_main]
