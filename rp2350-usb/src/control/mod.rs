@@ -43,8 +43,12 @@ enum State {
         offset: usize,
         len: usize,
     },
-    /// Data OUT complete, waiting for accept/reject.
-    CompleteOut,
+    /// Data OUT complete, waiting for accept/reject.  `len` is the number of
+    /// bytes the host actually sent, which is zero for the zero-length OUT
+    /// transfers some requests use.
+    CompleteOut {
+        len: usize,
+    },
     Error,
 }
 
@@ -87,13 +91,16 @@ impl ControlPipe {
 
     /// Returns `true` when waiting for a class or device to call `accept_*` / `reject`.
     pub fn waiting_for_response(&self) -> bool {
-        matches!(self.state, State::CompleteIn(_) | State::CompleteOut)
+        matches!(self.state, State::CompleteIn(_) | State::CompleteOut { .. })
     }
 
     /// Data received during the OUT data stage.
+    ///
+    /// Empty for a zero-length OUT transfer, which several requests use (an
+    /// SMBus quick command, for example).
     pub fn data(&self) -> &[u8] {
         match self.state {
-            State::CompleteOut => &self.buf,
+            State::CompleteOut { len } => &self.buf[..len],
             State::DataOut { offset, .. } => &self.buf[..offset],
             _ => &[],
         }
@@ -137,7 +144,7 @@ impl ControlPipe {
                 };
                 None
             } else {
-                self.state = State::CompleteOut;
+                self.state = State::CompleteOut { len: 0 };
                 Some(req)
             }
         } else {
@@ -164,7 +171,9 @@ impl ControlPipe {
                 };
                 *offset += n;
                 if *offset >= len {
-                    self.state = State::CompleteOut;
+                    // `offset` is how much the host actually sent, which is
+                    // what the class has to see rather than the staging buffer.
+                    self.state = State::CompleteOut { len: *offset };
                     return Ok(Some(req));
                 }
                 Ok(None)
@@ -256,7 +265,7 @@ impl ControlPipe {
     /// Accept a control OUT request (send ZLP status IN).
     pub fn accept_out<B: UsbBus>(&mut self, bus: &B) -> UsbResult<()> {
         match self.state {
-            State::CompleteOut => {}
+            State::CompleteOut { .. } => {}
             _ => return Err(UsbError::InvalidState),
         }
         bus.write(EndpointAddress::EP0_IN, &[])?;
