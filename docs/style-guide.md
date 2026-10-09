@@ -16,6 +16,7 @@ rp2350/                # 工作区根
 ├── rp2350/            # HAL：本指南的主角（手写，面向用户）
 ├── rp2350-pac/        # 由 SVD 生成的 PAC（peripheral access crate，勿手改）
 ├── rp2350-rt/         # 运行时：reset handler、栈、FPU 初始化
+├── rp2350-boot2/      # 可选 boot2：#![no_std] 的 XIP 配置 blob + 拷到 RAM 执行的入口
 ├── rp2350-macro/      # 过程宏：#[main] #[exception] #[bind] pio_asm! ramfunc
 ├── rp2350-examples/   # 各外设的独立二进制示例
 ├── rp2350-drivers/    # 设备驱动（TMC2209 等），自带所需总线抽象（bus::UartBus）
@@ -29,6 +30,8 @@ rp2350/                # 工作区根
 - **PAC 只做寄存器**：`rp2350-pac` 由 SVD 生成，提供 `RegisterBlock`、字段常量、
   访问器和 `peripheral!` 宏注入的 ZST 外设类型。HAL 不复制这些，只做语义封装。
 - **rt 只做启动**：栈初始化、`.bss` 清零、MSPLIM、FPU（CP10+CP11）使能、然后调 `main`。
+- **boot2 只做 XIP 配置**：`rp2350-boot2` 里只有位置无关的汇编 blob、寄存器常量表和
+  「拷到 RAM 再调用」的入口；它不碰其它启动步骤，由 `rt` 在 `Reset` 早期调用（默认关闭）。
 - **macro 只做代码生成**：入口、异常/中断绑定、PIO 汇编、RAM 函数。
 - **HAL 是唯一的手写用户接口层**：每个 PAC 外设对应一个 `src/<name>.rs` 模块，
   在 `lib.rs` 里 `pub mod` 并 `pub use` 常用类型。

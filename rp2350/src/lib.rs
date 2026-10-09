@@ -8,6 +8,9 @@
 //! - `atomics` - Portable atomic operations
 //! - `defmt` - Defmt logging support
 //! - `panic-handler` - Built-in embedded panic handler for bare-metal targets
+//! - `boot2-w25q80` / `boot2-generic-03h` - Link the optional second stage boot
+//!   loader (XIP setup) and select the flash part; `boot2` is the bare switch
+//!   those features imply
 //!
 //! ## Panic And Logging
 //!

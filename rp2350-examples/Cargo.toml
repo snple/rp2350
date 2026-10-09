@@ -28,6 +28,13 @@ rp2350b = ["rp2350/rp2350b", "rp2350-drivers/rp2350b"]
 critical-section-impl = ["rp2350/critical-section-impl"]
 panic-handler = ["rp2350/panic-handler"]
 run-from-ram = ["rp2350/run-from-ram"]
+# Optional boot2 (XIP setup). Not in `default`: enable with
+# `cargo run --bin blink --features boot2-w25q80`, or
+# `--features boot2-generic-03h` for flash that does not support quad reads.
+# The `boot2-<part>` features imply the bare `boot2` switch.
+boot2 = ["rp2350/boot2"]
+boot2-w25q80 = ["rp2350/boot2-w25q80"]
+boot2-generic-03h = ["rp2350/boot2-generic-03h"]
 
 [dependencies]
 # The workspace-level `rp2350`/`rp2350-drivers` dependencies have

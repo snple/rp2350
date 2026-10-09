@@ -8,6 +8,7 @@ members = [
     "rp2350-drivers",
     "rp2350-usb",
     "rp2350-rt",
+    "rp2350-boot2",
     "rp2350-examples",
 ]
 
@@ -37,6 +38,9 @@ enumflags2 = "0.7"
 # other features it needs so `rp2350a` and `rp2350b` can never both be enabled.
 rp2350 = { path = "rp2350", default-features = false }
 rp2350-rt = { path = "rp2350-rt" }
+# No default features: the flash-chip variant is selected explicitly by the
+# consumer (`rp2350-rt`'s `boot2-w25q80` / `boot2-generic-03h` features).
+rp2350-boot2 = { path = "rp2350-boot2", default-features = false }
 rp2350-pac = { path = "rp2350-pac" }
 rp2350-macro = { path = "rp2350-macro" }
 rp2350-drivers = { path = "rp2350-drivers", default-features = false }

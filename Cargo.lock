@@ -258,6 +258,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "rp2350-boot2"
+version = "0.1.0"
+
+[[package]]
 name = "rp2350-drivers"
 version = "0.1.0"
 dependencies = [
@@ -299,6 +303,9 @@ dependencies = [
 [[package]]
 name = "rp2350-rt"
 version = "0.1.0"
+dependencies = [
+ "rp2350-boot2",
+]
 
 [[package]]
 name = "rp2350-usb"

@@ -187,6 +187,22 @@ pub unsafe extern "C" fn Reset() -> ! {
         core::arch::asm!("dsb sy", "isb sy", options(nomem, nostack, preserves_flags));
     }
 
+    // ── Optional boot2: XIP setup ─────────────────────────────────────
+    //
+    // On RP2350 the boot ROM does a best-effort XIP setup before entering the
+    // image; a linked boot2 replaces it with an aggressive one (higher
+    // interface clock, tuned RX delay, quad continuous reads). It must execute
+    // from RAM because it rewrites the timing registers that govern
+    // instruction fetch, so `init` copies it onto the stack first.
+    //
+    // Both variant features imply the `boot2` switch; they are mutually
+    // exclusive at the `rp2350-boot2` level, so only one blob can be linked.
+    //
+    // This sits after the run-from-ram copies above (so `init` is itself in RAM
+    // in that configuration) and before `.data`, which it must not need.
+    #[cfg(feature = "boot2")]
+    rp2350_boot2::init();
+
     // Call pre-init (safe now — .text is in RAM when run-from-ram is active)
     unsafe { __pre_init() };
 

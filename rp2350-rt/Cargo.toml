@@ -9,11 +9,41 @@ keywords = ["rp2350", "rp2350", "cortex-m33", "runtime", "embedded"]
 categories = ["embedded", "hardware-support", "no-std"]
 
 [dependencies]
+rp2350-boot2 = { workspace = true, optional = true }
 
 [features]
 default = ["rt"]
 rt = []
 run-from-ram = []
+# Second stage boot loader support (XIP setup). This feature is the switch: it
+# brings in `rp2350-boot2` and makes `Reset` call the blob. Selecting the flash
+# part is a separate feature (`boot2-<part>` below). On its own no variant is
+# selected, which `rp2350-boot2` rejects with a compile error rather than
+# linking an empty `.boot2`.
+boot2 = ["dep:rp2350-boot2"]
+
+# Flash part variants, mutually exclusive, each implying `boot2`. The extras a
+# variant needs (quad-enable programming, BINARY_INFO name) are part of the
+# variant's recipe — features are additive, so they cannot be turned off
+# individually.
+#
+# W25Q80-family quad-SPI flash, plus the parts the Pico SDK's boot2_w25q080.S
+# lists as compatible (W25Q16JV, AT25SF081, S25FL132K0). Uses EBh fast quad I/O
+# with continuous-read mode bits and programs the quad-enable bit via the status
+# registers.
+boot2-w25q80 = [
+    "boot2",
+    "rp2350-boot2/w25q80",
+    "rp2350-boot2/program-status-reg",
+    "rp2350-boot2/binary-info",
+]
+# Anything that answers a plain 03h serial read: slower, safest, and needs no
+# status register programming.
+boot2-generic-03h = [
+    "boot2",
+    "rp2350-boot2/generic-03h",
+    "rp2350-boot2/binary-info",
+]
 
 [build-dependencies]
 

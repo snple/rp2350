@@ -18,6 +18,10 @@
 //! ## Features
 //!
 //! - `rt` - Runtime support (startup code, vector table, linker script)
+//! - `boot2` - Call a linked `rp2350-boot2` blob from `Reset` to set the QMI up
+//!   for fast XIP; `boot2-w25q80` / `boot2-generic-03h` select the flash part
+//!   and imply it
+//! - `run-from-ram` - Copy `.text` and `.rodata` into RAM at startup
 //!
 //! ## Linker scripts and `device.x`
 //!
@@ -30,6 +34,11 @@
 //! script) must also depend on `rp2350-pac` so the linker can find `device.x`.
 //! In practice this happens automatically when you use the `rp2350` HAL, which
 //! depends on both crates.
+//!
+//! Both scripts also define the optional `.boot2` output section, bounded by the
+//! `__boot2_start__` / `__boot2_end__` symbols and asserted to fit in 256 bytes.
+//! It holds the XIP setup blob from `rp2350-boot2` and is empty unless the
+//! `boot2` feature is enabled.
 //!
 //! [`rp2350-pac`]: https://crates.io/crates/rp2350-pac
 //!

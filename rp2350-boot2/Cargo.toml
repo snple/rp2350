@@ -1,0 +1,28 @@
+[package]
+name = "rp2350-boot2"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "RP2350 second stage boot loader (XIP setup function)"
+keywords = ["rp2350", "boot2", "xip", "qmi", "no-std"]
+categories = ["embedded", "hardware-support", "no-std"]
+
+[dependencies]
+
+[features]
+# Flash chip variants, mutually exclusive. There is a default so that building
+# this crate on its own (IDE, `cargo doc`) works, and it is the variant that
+# works with any flash part; consumers select the variant explicitly with
+# `default-features = false` — `rp2350-rt` does.
+default = ["generic-03h"]
+w25q80 = []
+generic-03h = []
+# Include the status register (quad enable) programming path in the blob.
+program-status-reg = []
+# Emit a BINARY_INFO_ID_RP_BOOT2_NAME entry naming the linked variant.
+binary-info = []
+
+[package.metadata.docs.rs]
+features = ["program-status-reg", "binary-info"]
+targets = ["thumbv8m.main-none-eabihf"]

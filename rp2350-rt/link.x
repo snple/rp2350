@@ -116,6 +116,28 @@ SECTIONS
     } > FLASH
 
     /* ================================================================
+     * Boot2 XIP setup blob — optional, executed from RAM
+     * ================================================================
+     *
+     * Holds the <=256-byte second stage boot loader that
+     * `rp2350_boot2::init()` copies onto the stack and calls. The blob is
+     * position-independent and never executed in place, so it can live
+     * anywhere in flash; placing it after `.text` follows the Pico SDK and
+     * keeps it out of the first 4 KiB, which the boot ROM scans for the
+     * IMAGE_DEF block.
+     *
+     * Usage:
+     *   rp2350 = { features = ["boot2"] }
+     */
+    .boot2 : ALIGN(4)
+    {
+        __boot2_start__ = .;
+        KEEP(*(.boot2));
+        . = ALIGN(4);
+        __boot2_end__ = .;
+    } > FLASH
+
+    /* ================================================================
      * RAM Functions (.ramfunc) — code loaded into RAM at startup
      * ================================================================
      *
@@ -214,6 +236,9 @@ BUG(rp2350-rt): .text is not 4-byte aligned");
 
 ASSERT(__srodata % 4 == 0 && __erodata % 4 == 0, "
 BUG(rp2350-rt): .rodata is not 4-byte aligned");
+
+ASSERT(__boot2_end__ - __boot2_start__ <= 256, "
+ERROR(rp2350-rt): .boot2 exceeds 256 bytes and cannot be copied into RAM");
 
 ASSERT(__sramfunc % 4 == 0 && __eramfunc % 4 == 0, "
 BUG(rp2350-rt): .ramfunc is not 4-byte aligned");

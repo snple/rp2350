@@ -20,8 +20,41 @@ Raspberry Pi Pico 2 family.
 - `rp2350b`: target RP2350B with GPIO 0-47
 - `critical-section-impl`: register this crate as the `critical-section` provider
 - `panic-handler`: enable the built-in panic handler on `target_os = "none"`
+- `boot2`: bare switch for the optional second stage boot loader below, see the
+  section on flash boot
+- `boot2-w25q80`: link that boot loader for W25Q80-family quad flash
+- `boot2-generic-03h`: same, for flash that only supports `03h` serial reads
 
 Default features: `defmt`, `rp2350a`, `critical-section-impl`, `panic-handler`.
+
+### Flash boot and boot2
+
+RP2350 does not need a second stage boot loader to start. The boot ROM configures
+XIP well enough by itself and enters the image through the `IMAGE_DEF` boot block
+that `#[main]` emits. What the ROM does not do is make XIP fast.
+
+The `boot2-w25q80` feature links an optional 256-byte XIP setup function from
+`rp2350-boot2`. The reset handler copies it into RAM and calls it there before
+`.data` is initialised, because it rewrites the QMI timing registers that govern
+instruction fetch. It raises the interface clock, sets an RX sampling delay and
+switches the flash to quad continuous reads (`EBh` with mode bits) instead of
+single-bit `03h` reads. `boot2-generic-03h` does everything except the quad
+switch, for flash that cannot do it.
+
+The features are split in two layers: `boot2` is the bare switch (`rp2350-rt`
+then calls the blob from `Reset`), and each `boot2-<part>` feature selects the
+flash part, implying the switch. Feature names carry the part number, so further
+variants can be added later; enabling `boot2` without a part is a compile error
+rather than a silently empty `.boot2`.
+
+Both are off by default. Enable one per application:
+
+```toml
+rp2350 = { path = "../rp2350", features = ["boot2-w25q80"] }
+```
+
+See `docs/boot2.md` for what the blob does, the 256-byte limit and how to verify
+a build.
 
 ## Quick start
 

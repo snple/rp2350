@@ -90,6 +90,17 @@ SECTIONS
         __einit = .;
     } > FLASH
 
+    /* Boot2 XIP setup blob. Stays in FLASH even in a run-from-ram build: it is a
+     * flash/QMI setup function, and `rp2350_boot2::init()` copies it to RAM
+     * before calling it. See link.x for the long version. */
+    .boot2 : ALIGN(4)
+    {
+        __boot2_start__ = .;
+        KEEP(*(.boot2));
+        . = ALIGN(4);
+        __boot2_end__ = .;
+    } > FLASH
+
     /* ================================================================
      * RAM-loaded Sections (copied from FLASH at startup)
      * ================================================================ */
@@ -219,6 +230,9 @@ BUG(rp2350-rt): .rodata is not 4-byte aligned");
 
 ASSERT(__sirodata % 4 == 0, "
 BUG(rp2350-rt): LMA of .rodata is not 4-byte aligned");
+
+ASSERT(__boot2_end__ - __boot2_start__ <= 256, "
+ERROR(rp2350-rt): .boot2 exceeds 256 bytes and cannot be copied into RAM");
 
 ASSERT(__sramfunc % 4 == 0 && __eramfunc % 4 == 0, "
 BUG(rp2350-rt): .ramfunc is not 4-byte aligned");

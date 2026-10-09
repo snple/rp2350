@@ -28,6 +28,12 @@ critical-section-impl = []
 panic-handler = []
 # Copy .text and .rodata to RAM at startup so all code runs from RAM.
 run-from-ram = ["rp2350-rt/run-from-ram"]
+# Optional second stage boot loader (XIP setup). Off by default: RP2350 boots
+# without it, it only speeds up XIP. `boot2` is the bare switch, each
+# `boot2-<part>` feature selects the flash part and implies it.
+boot2 = ["rp2350-rt/boot2"]
+boot2-w25q80 = ["rp2350-rt/boot2-w25q80"]
+boot2-generic-03h = ["rp2350-rt/boot2-generic-03h"]
 
 [package.metadata.docs.rs]
 features = ["defmt"]
