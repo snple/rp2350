@@ -65,7 +65,7 @@ use core::f32;
 use core::f64;
 
 use crate::Steal;
-use paste::paste;
+use pastey::paste;
 
 // ============================================================================
 // Dcp handle

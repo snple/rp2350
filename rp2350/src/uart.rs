@@ -82,7 +82,7 @@
 //! );
 //! ```
 
-use paste::paste;
+use pastey::paste;
 
 use crate::gpio::{
     Uart0CtsPin, Uart0RtsPin, Uart0RxPin, Uart0TxPin, Uart1CtsPin, Uart1RtsPin, Uart1RxPin,

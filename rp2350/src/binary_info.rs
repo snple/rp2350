@@ -419,7 +419,7 @@ macro_rules! bi_program_build_date {
 #[macro_export]
 macro_rules! bi_program_feature {
     ($feature:literal) => {
-        $crate::paste::paste! {
+        $crate::pastey::paste! {
             $crate::__bi_id_and_string!(
                 [<_BI_PROGRAM_FEATURE_ $feature:snake:upper>],
                 $crate::binary_info::ID_RP_PROGRAM_FEATURE,
@@ -438,7 +438,7 @@ macro_rules! bi_program_feature {
 #[macro_export]
 macro_rules! bi_program_build_attribute {
     ($attr:literal) => {
-        $crate::paste::paste! {
+        $crate::pastey::paste! {
             $crate::__bi_id_and_string!(
                 [<_BI_BUILD_ATTR_ $attr:snake:upper>],
                 $crate::binary_info::ID_RP_PROGRAM_BUILD_ATTRIBUTE,
@@ -475,7 +475,7 @@ macro_rules! bi_rp2350_board {
 #[macro_export]
 macro_rules! bi_pin_with_func {
     ($pin:literal, $func:ident) => {
-        $crate::paste::paste! {
+        $crate::pastey::paste! {
             #[unsafe(link_section = ".bi_entries")]
             #[used]
             static [<_BI_PIN_ $pin _ $func:upper>]: $crate::binary_info::BinaryInfoPinsWithFunc =
@@ -492,7 +492,7 @@ macro_rules! bi_pin_with_func {
         }
     };
     ($p0:literal, $p1:literal, $func:ident) => {
-        $crate::paste::paste! {
+        $crate::pastey::paste! {
             #[unsafe(link_section = ".bi_entries")]
             #[used]
             static [<_BI_PINS_ $p0 _ $p1 _ $func:upper>]: $crate::binary_info::BinaryInfoPinsWithFunc =
@@ -520,7 +520,7 @@ macro_rules! bi_pin_with_func {
 #[macro_export]
 macro_rules! bi_pin_range_with_func {
     ($plo:literal, $phi:literal, $func:ident) => {
-        $crate::paste::paste! {
+        $crate::pastey::paste! {
             #[unsafe(link_section = ".bi_entries")]
             #[used]
             static [<_BI_PINS_ $plo _TO_ $phi _ $func>]: $crate::binary_info::BinaryInfoPinsWithFunc =
@@ -549,7 +549,7 @@ macro_rules! bi_pin_range_with_func {
 #[macro_export]
 macro_rules! bi_pin_with_name {
     ($pin:literal, $name:literal) => {
-        $crate::paste::paste! {
+        $crate::pastey::paste! {
             #[unsafe(link_section = ".bi_entries")]
             #[used]
             static [<_BI_PIN_ $pin _NAME>]: $crate::binary_info::BinaryInfoPinsWithName =

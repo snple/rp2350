@@ -50,7 +50,7 @@
 use core::cell::Cell;
 
 use crate::Steal;
-use paste::paste;
+use pastey::paste;
 use rp2350_pac::PSM;
 use rp2350_pac::psm::Wdsel;
 

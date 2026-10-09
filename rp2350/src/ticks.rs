@@ -40,7 +40,7 @@
 
 use crate::Steal;
 use crate::clocks::Clocks;
-use paste::paste;
+use pastey::paste;
 
 /// TICKS peripheral wrapper
 ///

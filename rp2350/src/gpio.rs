@@ -261,7 +261,7 @@
 
 #![allow(clippy::identity_op)]
 
-use paste::paste;
+use pastey::paste;
 use rp2350_pac::sio::RegisterBlock as SioRegisterBlock;
 use rp2350_pac::{IO_BANK0, PADS_BANK0};
 
