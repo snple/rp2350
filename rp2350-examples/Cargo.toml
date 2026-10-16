@@ -347,3 +347,7 @@ path = "src/tag_bus/tag_bus.rs"
 [[bin]]
 name = "st7789"
 path = "src/st7789/st7789.rs"
+
+[[bin]]
+name = "tps92201"
+path = "src/led/tps92201.rs"
