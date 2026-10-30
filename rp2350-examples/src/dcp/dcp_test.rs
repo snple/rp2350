@@ -6,9 +6,6 @@
 #![no_std]
 #![no_main]
 
-use core::f32;
-use core::f64;
-
 use defmt::*;
 use defmt_rtt as _;
 
@@ -167,13 +164,13 @@ fn test_f32_arithmetic(dcp: &Dcp) {
 fn test_f32_sqrt(dcp: &Dcp) {
     info!("--- f32 Sqrt ---");
     check_f32("fsqrt 4", dcp.fsqrt(4.0), 2.0);
-    check_f32("fsqrt 2", dcp.fsqrt(2.0), f32::consts::SQRT_2);
+    check_f32("fsqrt 2", dcp.fsqrt(2.0), core::f32::consts::SQRT_2);
     check_f32("fsqrt 0", dcp.fsqrt(0.0), 0.0);
     check_f32_approx("fsqrt_fast 4", dcp.fsqrt_fast(4.0), 2.0, 0.01);
     check_f32_approx(
         "fsqrt_fast 2",
         dcp.fsqrt_fast(2.0),
-        f32::consts::SQRT_2,
+        core::f32::consts::SQRT_2,
         0.01,
     );
 }
@@ -270,13 +267,13 @@ fn test_f64_arithmetic(dcp: &Dcp) {
 fn test_f64_sqrt(dcp: &Dcp) {
     info!("--- f64 Sqrt ---");
     check_f64("dsqrt 4", dcp.dsqrt(4.0), 2.0);
-    check_f64("dsqrt 2", dcp.dsqrt(2.0), f64::consts::SQRT_2);
+    check_f64("dsqrt 2", dcp.dsqrt(2.0), core::f64::consts::SQRT_2);
     check_f64("dsqrt 0", dcp.dsqrt(0.0), 0.0);
     check_f64_approx("dsqrt_fast 4", dcp.dsqrt_fast(4.0), 2.0, 0.01);
     check_f64_approx(
         "dsqrt_fast 2",
         dcp.dsqrt_fast(2.0),
-        f64::consts::SQRT_2,
+        core::f64::consts::SQRT_2,
         0.01,
     );
 }
@@ -326,7 +323,7 @@ fn test_conversions_between(dcp: &Dcp) {
     check_u32("i2d2i", dcp.double2int(dcp.int2double(v)) as u32, v as u32);
     let uv: u32 = 3_000_000_000;
     check_u32("u2d2u", dcp.double2uint(dcp.uint2double(uv)), uv);
-    let pi = f64::consts::PI;
+    let pi = core::f64::consts::PI;
     let pi_f32 = dcp.double2float(pi);
     let pi_back = dcp.float2double(pi_f32);
     info!(
