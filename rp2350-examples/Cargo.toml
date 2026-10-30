@@ -236,6 +236,10 @@ name = "pwm_fan_control"
 path = "src/pwm/fan_control.rs"
 
 [[bin]]
+name = "pwm_servo"
+path = "src/pwm/pwm_servo.rs"
+
+[[bin]]
 name = "stepper_a4988"
 path = "src/stepper/stepper_a4988.rs"
 
@@ -298,6 +302,14 @@ path = "src/usb_cdc/usb_cdc_acm.rs"
 [[bin]]
 name = "usb_cdc_acm_interrupt"
 path = "src/usb_cdc/usb_cdc_acm_interrupt.rs"
+
+[[bin]]
+name = "usb_servo"
+path = "src/usb_cdc/usb_servo.rs"
+
+[[bin]]
+name = "usb_servo_irq"
+path = "src/usb_cdc/usb_servo_irq.rs"
 
 [[bin]]
 name = "usb_hid_keyboard"
