@@ -21,7 +21,7 @@ rp2350/                # 工作区根
 ├── rp2350-examples/   # 各外设的独立二进制示例
 ├── rp2350-drivers/    # 设备驱动（TMC2209 等），自带所需总线抽象（bus::UartBus）
 ├── rp2350-usb/        # USB 设备栈（独立 crate）
-├── docs/              # 设计/使用说明（本文件、pwm.md）
+├── docs/              # 设计/使用说明（本文件、pwm.md、usb_servo_protocol.md）
 └── xtask/             # 构建辅助
 ```
 
