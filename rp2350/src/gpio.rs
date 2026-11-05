@@ -98,20 +98,23 @@
 //!
 //! Each GPIO pin can be assigned to different peripheral functions:
 //!
-//! | funcsel | Function | Description                              |
-//! |---------|----------|------------------------------------------|
-//! | 0       | JTAG     | Debug interface                          |
-//! | 1       | SPI      | Serial Peripheral Interface              |
-//! | 2       | UART     | Serial communication                     |
-//! | 3       | I2C      | Inter-Integrated Circuit                 |
-//! | 4       | PWM      | Pulse Width Modulation                   |
-//! | 5       | SIO      | Software I/O (direct CPU control)        |
-//! | 6       | PIO0     | Programmable I/O block 0                 |
-//! | 7       | PIO1     | Programmable I/O block 1                 |
-//! | 8       | PIO2     | Programmable I/O block 2                 |
-//! | 9       | XIP      | Execute-in-place (QSPI)                  |
-//! | 10      | USB      | USB controller                           |
-//! | 31      | NULL     | Disabled (high impedance)                |
+//! | funcsel | Function    | Description                              |
+//! |---------|-------------|------------------------------------------|
+//! | 0       | HSTX        | GPIO 12-19 (JTAG on GPIO 0-3, unimplemented) |
+//! | 1       | SPI         | Serial Peripheral Interface              |
+//! | 2       | UART        | Serial communication                     |
+//! | 3       | I2C         | Inter-Integrated Circuit                 |
+//! | 4       | PWM         | Pulse Width Modulation                   |
+//! | 5       | SIO         | Software I/O (direct CPU control)        |
+//! | 6       | PIO0        | Programmable I/O block 0                 |
+//! | 7       | PIO1        | Programmable I/O block 1                 |
+//! | 8       | PIO2        | Programmable I/O block 2                 |
+//! | 9       | GPCK        | Clock in/out on GPIO 12-15, 20-25        |
+//! | 10      | USB muxing  | VBUS detect/enable, overcurrent detect   |
+//! | 11      | UART aux    | Alternate UART mapping (`UART_AUX`)      |
+//! | 31      | NULL        | Disabled (high impedance)                |
+//!
+//! See [`crate::pin`] for the per-pin function tables.
 //!
 //! # Usage Examples
 //!
@@ -277,6 +280,15 @@ use crate::reset::{self, Resettable};
 /// The function is selected by writing to the `funcsel` field of the
 /// pin's control register (`GPIOx_CTRL`).
 ///
+/// Most values select the same peripheral on every pin, but `0`, `9` and `10`
+/// are pin-specific: the same `funcsel` selects different signals depending on
+/// the pin (see each variant, and [`crate::pin`] for the per-pin tables).
+///
+/// Only the signals this HAL drives are modelled. Signals that share a
+/// `funcsel` but are not implemented (JTAG on GPIO 0-3, XIP CS1 on
+/// GPIO 0/8/19/47, CoreSight trace on GPIO 1-5) are listed in the variant
+/// documentation for completeness.
+///
 /// # Example
 ///
 /// ```ignore
@@ -290,8 +302,10 @@ use crate::reset::{self, Resettable};
 #[repr(u32)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum Function {
-    /// JTAG debug interface (pin-specific)
-    Jtag = 0,
+    /// HSTX high-speed serial transmitter (`hstx_0` … `hstx_7`) —
+    /// **GPIO 12-19 only**; on GPIO 0-3 `funcsel` 0 selects JTAG instead,
+    /// which is not implemented here
+    Hstx = 0,
     /// SPI peripheral (pin-specific for RX/TX/SCK/CS)
     Spi = 1,
     /// UART peripheral (pin-specific for TX/RX/CTS/RTS)
@@ -308,10 +322,20 @@ pub enum Function {
     Pio1 = 7,
     /// PIO2 - Programmable I/O block 2 (RP2350 only)
     Pio2 = 8,
-    /// XIP - Execute-in-place for QSPI (pin-specific)
-    Xip = 9,
-    /// USB controller (pin-specific)
+    /// General-purpose clock input/output (`clocks_gpin` / `clocks_gpout`) —
+    /// **GPIO 12-15 and 20-25 only**; the same `funcsel` selects XIP CS1
+    /// (GPIO 0/8/19/47) or CoreSight trace (GPIO 1-5) on other pins, neither
+    /// of which is implemented here
+    Gpck = 9,
+    /// USB muxing control signals (VBUS detect/enable or overcurrent detect) —
+    /// available on every pin, the signal depends on the pin
     Usb = 10,
+    /// Alternate UART mapping (`UART_AUX`) on GPIO 2/3, 6/7, 10/11, 14/15,
+    /// 18/19, 22/23, 26/27, 30/31, 34/35, 38/39, 42/43 and 46/47
+    ///
+    /// The UART instance and signal depend on the pin; funcsel 2 keeps the
+    /// flow-control signals on these pins.
+    UartAux = 11,
     /// NULL - Disabled, pin is high-impedance
     Null = 31,
 }

@@ -8,20 +8,66 @@
 //! Each GPIO pin's function is controlled by the `funcsel` field in
 //! `IO_BANK0.GPIOx_CTRL`:
 //!
-//! | funcsel | Function | Notes                              |
-//! |---------|----------|------------------------------------|
-//! | 0       | JTAG     | Pins 24-25 only (SWCLK / SWDIO)   |
-//! | 1       | SPI      | Instance and signal depend on pin  |
-//! | 2       | UART     | Instance and signal depend on pin  |
-//! | 3       | I2C      | Instance and signal depend on pin  |
-//! | 4       | PWM      | Slice and channel depend on pin    |
-//! | 5       | SIO      | All pins — direct CPU I/O          |
-//! | 6       | PIO0     | All pins                           |
-//! | 7       | PIO1     | All pins                           |
-//! | 8       | PIO2     | All pins                           |
-//! | 9       | XIP/Clk  | Varies                             |
-//! | 10      | USB      | Varies                             |
-//! | 31      | NULL     | All pins — disabled / hi-Z         |
+//! | funcsel | Function    | Notes                                             |
+//! |---------|-------------|---------------------------------------------------|
+//! | 0       | HSTX        | GPIO 12-19 only                                   |
+//! | 1       | SPI         | Instance and signal depend on pin                 |
+//! | 2       | UART        | Instance and signal depend on pin                 |
+//! | 3       | I2C         | Instance and signal depend on pin                 |
+//! | 4       | PWM         | Slice and channel depend on pin                   |
+//! | 5       | SIO         | All pins — direct CPU I/O                         |
+//! | 6       | PIO0        | All pins                                          |
+//! | 7       | PIO1        | All pins                                          |
+//! | 8       | PIO2        | All pins                                          |
+//! | 9       | GPCK        | Clock in/out, GPIO 12-15 and 20-25                |
+//! | 10      | USB muxing  | All pins — VBUS detect/enable or overcurrent      |
+//! | 11      | UART aux    | Alternate UART mapping on selected pins           |
+//! | 31      | NULL        | All pins — disabled / hi-Z                        |
+//!
+//! ## funcsel 0 (HSTX)
+//!
+//! HSTX0-7 (`hstx_0` … `hstx_7`) are only available on GPIO 12-19. On
+//! GPIO 0-3 the same funcsel selects JTAG (TCK/TMS/TDI/TDO), which this HAL
+//! does not provide.
+//!
+//! ## funcsel 9 (general-purpose clock)
+//!
+//! Clock I/O (`clocks_gpin` / `clocks_gpout`) is available on GPIO 12-15 and
+//! 20-25:
+//!
+//! | GPIO    | Signal      |
+//! |---------|-------------|
+//! | 12, 20  | Clock in 0  |
+//! | 13, 21  | Clock out 0 |
+//! | 14, 22  | Clock in 1  |
+//! | 15, 23  | Clock out 1 |
+//! | 24      | Clock out 2 |
+//! | 25      | Clock out 3 |
+//!
+//! The same funcsel selects XIP CS1 (GPIO 0/8/19/47) or CoreSight trace
+//! (GPIO 1-5) on other pins; neither is provided by this HAL.
+//!
+//! ## funcsel 11 (UART Aux)
+//!
+//! Pins where `GPIO & 0x2 != 0` expose the UART data signals at funcsel 11
+//! instead of funcsel 2 (funcsel 2 keeps the flow-control signals there):
+//!
+//! | GPIO  | funcsel 11          |
+//! |-------|---------------------|
+//! | 2/3   | UART0 TX / RX       |
+//! | 6/7   | UART1 TX / RX       |
+//! | 10/11 | UART1 TX / RX       |
+//! | 14/15 | UART0 TX / RX       |
+//! | 18/19 | UART0 TX / RX       |
+//! | 22/23 | UART1 TX / RX       |
+//! | 26/27 | UART1 TX / RX       |
+//! | 30/31 | UART0 TX / RX       |
+//! | 34/35 | UART0 TX / RX       |
+//! | 38/39 | UART1 TX / RX       |
+//! | 42/43 | UART1 TX / RX       |
+//! | 46/47 | UART0 TX / RX       |
+//!
+//! GPIO 30-47 are only available on the RP2350B.
 //!
 //! # RP2350A Pin Function Table (GPIO 0–29)
 //!
