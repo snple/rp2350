@@ -23,6 +23,20 @@
 //!   and imply it
 //! - `run-from-ram` - Copy `.text` and `.rodata` into RAM at startup
 //!
+//! ## Startup sequence
+//!
+//! `Reset` (in `rt.rs`) runs, in order:
+//!
+//! 1. `run-from-ram`: copy `.text`, then `.rodata`, into RAM
+//! 2. copy `.ramfunc` into RAM, so `#[ramfunc]` code is callable from the
+//!    remaining steps as well as from fault handlers
+//! 3. `boot2`: run the linked XIP setup blob (copied onto the stack first)
+//! 4. call `__pre_init`
+//! 5. copy `.data` from flash
+//! 6. zero `.bss`
+//! 7. set `MSPLIM` and enable the FPU
+//! 8. call `main`
+//!
 //! ## Linker scripts and `device.x`
 //!
 //! This crate ships `link.x` / `link_ram.x`, which `INCLUDE device.x` for the

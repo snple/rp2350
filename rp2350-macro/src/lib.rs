@@ -206,12 +206,29 @@ pub fn pio_asm(input: TokenStream) -> TokenStream {
 ///
 /// ## Notes
 ///
+/// - `#[ramfunc]` implies `#[inline(never)]`.  An inlined copy is emitted into
+///   the caller's section, i.e. it runs from flash, silently defeating this
+///   attribute.  The macro therefore rejects
+///   `#[inline]` / `#[inline(always)]` and always keeps the function
+///   out-of-line.  To inline a helper into RAM code, leave the helper unmarked
+///   and call it only from other `#[ramfunc]` functions.
+/// - Only the code moves.  Anything the function reads from flash — string
+///   literals, `static`/`const` data, or calls into unmarked functions such as
+///   `defmt::info!` or `core::fmt` — still stalls or faults while flash is
+///   unavailable.  Keep `#[ramfunc]` functions free of flash accesses; note
+///   that a PC-relative literal pool inside `.ramfunc` holds *addresses*, so
+///   reading the data behind them is the part that reaches flash.
+/// - The section is copied once at startup, before `__pre_init` and before
+///   `#[main]`, so `#[ramfunc]` code is safe to use from pre-init code and from
+///   fault handlers.
 /// - RAM-resident code consumes both flash (for initial storage) and RAM
 ///   (for execution).  Use sparingly.
 /// - `#[ramfunc]` functions should be kept small — the entire `.ramfunc`
 ///   section is copied at startup.
-/// - `#[inline]` and `#[ramfunc]` can be combined; the inlined copy will
-///   also reside in RAM if the caller is `#[ramfunc]`-annotated.
+/// - RP2350's flash (`0x10xxxxxx`) is more than a `BL` (±16 MiB) away from
+///   RAM (`0x20xxxxxx`), so every call across the boundary goes through a
+///   linker-generated veneer in the caller's section.  That costs one extra
+///   branch per call.
 #[proc_macro_attribute]
 pub fn ramfunc(args: TokenStream, input: TokenStream) -> TokenStream {
     ramfunc::ramfunc_impl(args, input)

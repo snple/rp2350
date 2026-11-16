@@ -5,8 +5,8 @@
 
 /// Registers stacked (pushed into the stack) during an exception.
 ///
-/// This structure is used by the `HardFault` exception handler when using
-/// the trampoline mode. The hardware automatically pushes these registers
+/// This structure is used by `#[exception]` `HardFault` handlers, which receive
+/// a reference to the frame. The hardware automatically pushes these registers
 /// onto the stack when an exception occurs.
 #[derive(Clone, Copy, Debug)]
 #[repr(C)]
@@ -115,6 +115,27 @@ unsafe extern "C" {
     fn __pre_init();
 }
 
+/// Copies `[src, end)` into `[dst, ...)`, one word at a time.
+///
+/// Volatile because the destination looks dead to the compiler, and word-sized
+/// because every section bound here is asserted to be 4-byte aligned.
+///
+/// `#[inline(always)]` keeps the loop in `Reset` itself, which is the only code
+/// guaranteed to be executable this early in a `run-from-ram` build.
+#[inline(always)]
+unsafe fn copy_words(src: *const u32, dst: *mut u32, end: *mut u32) {
+    let mut src = src;
+    let mut dst = dst;
+
+    unsafe {
+        while dst < end {
+            core::ptr::write_volatile(dst, core::ptr::read_volatile(src));
+            src = src.offset(1);
+            dst = dst.offset(1);
+        }
+    }
+}
+
 /// Reset handler - called on power-on or reset
 #[doc(hidden)]
 #[unsafe(no_mangle)]
@@ -169,21 +190,36 @@ pub unsafe extern "C" fn Reset() -> ! {
 
     #[cfg(feature = "run-from-ram")]
     unsafe {
-        let mut src = &raw const __sirodata;
-        let mut dst = &raw mut __srodata;
-        let end = &raw mut __erodata;
-
-        while dst < end {
-            core::ptr::write_volatile(dst, core::ptr::read_volatile(src));
-            src = src.offset(1);
-            dst = dst.offset(1);
-        }
+        copy_words(
+            &raw const __sirodata,
+            &raw mut __srodata,
+            &raw mut __erodata,
+        );
 
         // I-cache / pipeline coherency: code is now in RAM.
         // Cortex-M33 has a modified Harvard architecture with unified bus
         // to RAM — DSB+ISB alone is sufficient to flush the pipeline and
         // make the newly written code visible to instruction fetch.
         // (RP2350's M33 has no I-cache, so ICIALLU is unnecessary.)
+        core::arch::asm!("dsb sy", "isb sy", options(nomem, nostack, preserves_flags));
+    }
+
+    // ── Copy .ramfunc section (code to run from RAM) ──────────────────
+    //
+    // Done before `rp2350_boot2::init()` and `__pre_init()` so that every
+    // piece of RAM-resident code is in place as early as possible: pre-init
+    // may call a `#[ramfunc]` helper, and a fault taken by the boot2 blob or
+    // by pre-init must be able to reach a `#[ramfunc]` fault handler.
+    // It needs neither `.data` nor `.bss`.
+    unsafe {
+        copy_words(
+            &raw const __siramfunc,
+            &raw mut __sramfunc,
+            &raw mut __eramfunc,
+        );
+
+        // Instruction coherency: ensure the newly-written code is visible to
+        // the instruction fetch unit before any #[ramfunc] is called.
         core::arch::asm!("dsb sy", "isb sy", options(nomem, nostack, preserves_flags));
     }
 
@@ -203,37 +239,12 @@ pub unsafe extern "C" fn Reset() -> ! {
     #[cfg(feature = "boot2")]
     rp2350_boot2::init();
 
-    // Call pre-init (safe now — .text is in RAM when run-from-ram is active)
+    // Call pre-init (safe now — .text and .ramfunc are in RAM where needed)
     unsafe { __pre_init() };
 
     // Initialize .data section (copy from flash to RAM)
     unsafe {
-        let mut src = &raw const __sidata;
-        let mut dst = &raw mut __sdata;
-        let end = &raw mut __edata;
-
-        while dst < end {
-            core::ptr::write_volatile(dst, core::ptr::read_volatile(src));
-            src = src.offset(1);
-            dst = dst.offset(1);
-        }
-    }
-
-    // Copy .ramfunc section (code to run from RAM)
-    unsafe {
-        let mut src = &raw const __siramfunc;
-        let mut dst = &raw mut __sramfunc;
-        let end = &raw mut __eramfunc;
-
-        while dst < end {
-            core::ptr::write_volatile(dst, core::ptr::read_volatile(src));
-            src = src.offset(1);
-            dst = dst.offset(1);
-        }
-
-        // Instruction cache coherency: ensure the newly-written code is visible
-        // to the instruction fetch unit before any #[ramfunc] is called.
-        core::arch::asm!("dsb sy", "isb sy", options(nomem, nostack, preserves_flags));
+        copy_words(&raw const __sidata, &raw mut __sdata, &raw mut __edata);
     }
 
     // Zero .bss section
