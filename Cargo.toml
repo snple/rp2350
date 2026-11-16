@@ -17,7 +17,7 @@ version = "0.1.0"
 edition = "2024"
 rust-version = "1.85"
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/snple/rp2350"
+repository = "https://github.com/snple/rp2350.git"
 
 [workspace.dependencies]
 # Logging
@@ -30,7 +30,6 @@ quote = "1.0"
 syn = { version = "3.0", features = ["full"] }
 pastey = "0.2"
 bitfield-struct = "0.13"
-enumflags2 = "0.7"
 
 # Local crates
 # rp2350 and rp2350-drivers default to no features at the workspace level;
