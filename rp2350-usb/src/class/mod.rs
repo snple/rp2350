@@ -4,6 +4,7 @@ pub mod cdc_acm;
 pub mod gs_usb;
 pub mod hid;
 pub mod i2c_tiny_usb;
+pub mod reset;
 pub mod uac;
 
 use crate::bus::{InterfaceNumber, StringIndex, UsbBus};
