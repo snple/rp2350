@@ -27,7 +27,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! rp2350 = { path = "../rp2350", features = ["boot2-w25q80"] }
+//! rp2350 = { version = "0.1", features = ["boot2-w25q80"] }
 //! ```
 //!
 //! Calling it manually (for instance from a `__pre_init` hook) works too, and is a

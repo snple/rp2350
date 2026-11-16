@@ -50,11 +50,11 @@ rather than a silently empty `.boot2`.
 Both are off by default. Enable one per application:
 
 ```toml
-rp2350 = { path = "../rp2350", features = ["boot2-w25q80"] }
+rp2350 = { version = "0.1", features = ["boot2-w25q80"] }
 ```
 
-See `docs/boot2.md` for what the blob does, the 256-byte limit and how to verify
-a build.
+See `docs/boot2.md` in the repository for what the blob does, the 256-byte limit
+and how to verify a build.
 
 ## Quick start
 
@@ -63,7 +63,7 @@ the workspace blink example, add `defmt-rtt` as well:
 
 ```toml
 [dependencies]
-rp2350 = { path = "../rp2350" }
+rp2350 = "0.1"
 defmt-rtt = "1.2"
 ```
 

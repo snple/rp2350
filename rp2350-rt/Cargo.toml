@@ -5,8 +5,10 @@ edition.workspace = true
 license.workspace = true
 repository.workspace = true
 description = "Runtime support for RP2350 Cortex-M33 microcontrollers"
-keywords = ["rp2350", "rp2350", "cortex-m33", "runtime", "embedded"]
+readme = "README.md"
+keywords = ["rp2350", "cortex-m33", "runtime", "embedded", "no-std"]
 categories = ["embedded", "hardware-support", "no-std"]
+exclude = [".cargo"]
 
 [dependencies]
 rp2350-boot2 = { workspace = true, optional = true }

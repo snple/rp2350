@@ -5,6 +5,7 @@ edition.workspace = true
 license.workspace = true
 repository.workspace = true
 description = "RP2350 second stage boot loader (XIP setup function)"
+readme = "README.md"
 keywords = ["rp2350", "boot2", "xip", "qmi", "no-std"]
 categories = ["embedded", "hardware-support", "no-std"]
 

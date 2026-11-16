@@ -5,9 +5,14 @@ edition.workspace = true
 license.workspace = true
 repository.workspace = true
 description = "Peripheral Access Crate for RP2350 (Raspberry Pi Pico 2)"
-keywords = ["rp2350", "rp2350", "pac", "embedded", "arm"]
+readme = "README.md"
+keywords = ["rp2350", "pac", "embedded", "cortex-m", "no-std"]
 categories = ["embedded", "hardware-support", "no-std"]
+exclude = [".cargo"]
 
 [dependencies]
 rp2350-rt.workspace = true
 enumflags2.workspace = true
+
+[package.metadata.docs.rs]
+targets = ["thumbv8m.main-none-eabihf"]

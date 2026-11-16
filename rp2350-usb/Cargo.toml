@@ -6,6 +6,8 @@ license.workspace = true
 description = "USB Device Stack for RP2350 microcontrollers"
 repository.workspace = true
 readme = "README.md"
+keywords = ["rp2350", "usb", "embedded", "no-std"]
+categories = ["embedded", "hardware-support", "no-std"]
 
 [dependencies]
 defmt = { workspace = true, optional = true }
@@ -15,3 +17,7 @@ rp2350-rt.workspace = true
 [features]
 default = ["defmt"]
 defmt = ["dep:defmt"]
+
+[package.metadata.docs.rs]
+features = ["defmt"]
+targets = ["thumbv8m.main-none-eabihf"]

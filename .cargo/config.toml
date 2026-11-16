@@ -19,7 +19,7 @@ xtask = "run --package xtask --"
 # member must keep building for the host, so the default target is not set
 # globally here).
 
-[target.thumbv8m.main-none-eabihf]
+[target."thumbv8m.main-none-eabihf"]
 rustflags = [
     "-C", "link-arg=--nmagic",
     "-C", "link-arg=-Tlink.x",

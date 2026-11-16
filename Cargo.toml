@@ -15,8 +15,9 @@ members = [
 [workspace.package]
 version = "0.1.0"
 edition = "2024"
+rust-version = "1.85"
 license = "MIT OR Apache-2.0"
-repository = "https://codeup.aliyun.com/63d3a3275a9c65204d960712/rp2350.git"
+repository = "https://github.com/snple/rp2350"
 
 [workspace.dependencies]
 # Logging
@@ -35,15 +36,19 @@ enumflags2 = "0.7"
 # rp2350 and rp2350-drivers default to no features at the workspace level;
 # each consumer (drivers/examples) explicitly forwards the chip variant and
 # other features it needs so `rp2350a` and `rp2350b` can never both be enabled.
-rp2350 = { path = "rp2350", default-features = false }
-rp2350-rt = { path = "rp2350-rt" }
+#
+# The `version` next to each `path` is required by `cargo publish`: it becomes
+# the crates.io requirement in the published manifest (the `path` is dropped),
+# so it must be bumped together with the release version.
+rp2350 = { version = "0.1.0", path = "rp2350", default-features = false }
+rp2350-rt = { version = "0.1.0", path = "rp2350-rt" }
 # No default features: the flash-chip variant is selected explicitly by the
 # consumer (`rp2350-rt`'s `boot2-w25q80` / `boot2-generic-03h` features).
-rp2350-boot2 = { path = "rp2350-boot2", default-features = false }
-rp2350-pac = { path = "rp2350-pac" }
-rp2350-macro = { path = "rp2350-macro" }
-rp2350-drivers = { path = "rp2350-drivers", default-features = false }
-rp2350-usb = { path = "rp2350-usb" }
+rp2350-boot2 = { version = "0.1.0", path = "rp2350-boot2", default-features = false }
+rp2350-pac = { version = "0.1.0", path = "rp2350-pac" }
+rp2350-macro = { version = "0.1.0", path = "rp2350-macro" }
+rp2350-drivers = { version = "0.1.0", path = "rp2350-drivers", default-features = false }
+rp2350-usb = { version = "0.1.0", path = "rp2350-usb" }
 
 critical-section = { version = "1.2", features = ["restore-state-u32"]}
 

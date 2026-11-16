@@ -4,7 +4,10 @@ version.workspace = true
 edition.workspace = true
 license.workspace = true
 description = "Driver collection for RP2350 microcontrollers"
+readme = "README.md"
 repository.workspace = true
+keywords = ["rp2350", "drivers", "embedded", "no-std"]
+categories = ["embedded", "hardware-support", "no-std"]
 
 [dependencies]
 bitfield-struct.workspace = true
@@ -22,3 +25,7 @@ defmt = ["dep:defmt"]
 # so that a single consistent variant is enabled across the whole graph.
 rp2350a = ["rp2350/rp2350a"]
 rp2350b = ["rp2350/rp2350b"]
+
+[package.metadata.docs.rs]
+features = ["defmt"]
+targets = ["thumbv8m.main-none-eabihf"]

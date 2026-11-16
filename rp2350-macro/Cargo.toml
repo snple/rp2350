@@ -4,8 +4,9 @@ version.workspace = true
 edition.workspace = true
 license.workspace = true
 description = "Procedural macros for rp2350"
+readme = "README.md"
 repository.workspace = true
-keywords = ["rp2350", "rp2350", "macro", "embedded"]
+keywords = ["rp2350", "macro", "embedded", "no-std", "proc-macro"]
 categories = ["embedded", "no-std"]
 
 [lib]

@@ -6,8 +6,11 @@ license.workspace = true
 description = "Hardware Abstraction Layer for RP2350 microcontrollers"
 readme = "README.md"
 repository.workspace = true
-keywords = ["rp2350", "rp2350", "hal", "embedded", "arm"]
+keywords = ["rp2350", "hal", "embedded", "cortex-m", "no-std"]
 categories = ["embedded", "hardware-support", "no-std"]
+# The crate-local `.cargo/config.toml` only picks the default build target for
+# this repository; it must not ship in the published package.
+exclude = [".cargo"]
 
 [dependencies]
 defmt = { workspace = true, optional = true }
