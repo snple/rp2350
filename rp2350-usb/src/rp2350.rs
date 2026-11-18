@@ -268,7 +268,7 @@ impl Rp2350Bus {
         self.dpram.ep0_out_buffer_control.write_bits(0);
 
         #[cfg(feature = "defmt")]
-        defmt::info!("USB: hardware initialised");
+        crate::log::info!("USB: hardware initialised");
     }
 
     /// Reset EP0 state (called on bus reset).
@@ -401,7 +401,7 @@ impl UsbBus for Rp2350Bus {
         self.ep_data_toggles[idx].store(false, Ordering::SeqCst);
 
         #[cfg(feature = "defmt")]
-        defmt::debug!(
+        crate::log::debug!(
             "USB: alloc_ep {} type={:?} off={:#x} size={}",
             ep_addr,
             ep_type,
@@ -433,13 +433,13 @@ impl UsbBus for Rp2350Bus {
         self.reset_non_ep0();
 
         #[cfg(feature = "defmt")]
-        defmt::info!("USB: reset");
+        crate::log::info!("USB: reset");
     }
 
     fn set_device_address(&self, addr: u8) {
         self.usb.addr_endp.write_address(addr as u32);
         #[cfg(feature = "defmt")]
-        defmt::debug!("USB: address = {}", addr);
+        crate::log::debug!("USB: address = {}", addr);
     }
 
     fn poll(&self) -> PollResult {
@@ -625,7 +625,7 @@ impl UsbBus for Rp2350Bus {
             }
 
             #[cfg(feature = "defmt")]
-            defmt::trace!("USB: SETUP {:02x}", &buf[..len]);
+            crate::log::trace!("USB: SETUP {:02x}", &buf[..len]);
 
             return Ok(len);
         }
@@ -737,11 +737,11 @@ impl UsbBus for Rp2350Bus {
 
     fn suspend(&self) {
         #[cfg(feature = "defmt")]
-        defmt::debug!("USB: suspend");
+        crate::log::debug!("USB: suspend");
     }
 
     fn resume(&self) {
         #[cfg(feature = "defmt")]
-        defmt::debug!("USB: resume");
+        crate::log::debug!("USB: resume");
     }
 }

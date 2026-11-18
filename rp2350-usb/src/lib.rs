@@ -27,6 +27,41 @@
 
 #![no_std]
 
+/// Logging facade.
+///
+/// With the `defmt` feature these are `defmt`'s own macros; without it they
+/// expand to nothing so the stack builds without the logging dependency.
+#[cfg(feature = "defmt")]
+pub mod log {
+    pub use defmt::*;
+}
+
+#[cfg(not(feature = "defmt"))]
+pub mod log {
+    #[macro_export]
+    macro_rules! trace {
+        ($($arg:tt)*) => {{ () }};
+    }
+    #[macro_export]
+    macro_rules! debug {
+        ($($arg:tt)*) => {{ () }};
+    }
+    #[macro_export]
+    macro_rules! info {
+        ($($arg:tt)*) => {{ () }};
+    }
+    #[macro_export]
+    macro_rules! warn {
+        ($($arg:tt)*) => {{ () }};
+    }
+    #[macro_export]
+    macro_rules! error {
+        ($($arg:tt)*) => {{ () }};
+    }
+
+    pub use crate::{debug, error, info, trace, warn};
+}
+
 // ── Modules ──────────────────────────────────────────────────────────────────
 
 pub mod bus;

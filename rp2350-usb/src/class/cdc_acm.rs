@@ -304,7 +304,7 @@ impl<B: UsbBus> UsbClass<B> for CdcAcm<'_, B> {
                 if let Some(lc) = LineCoding::from_bytes(xfer.data()) {
                     self.line_coding = lc;
                     #[cfg(feature = "defmt")]
-                    defmt::debug!("CDC: SET_LINE_CODING baud={}", lc.baud_rate);
+                    crate::log::debug!("CDC: SET_LINE_CODING baud={}", lc.baud_rate);
                 }
                 let _ = xfer.accept();
             }
@@ -313,7 +313,7 @@ impl<B: UsbBus> UsbClass<B> for CdcAcm<'_, B> {
                 self.dtr = value & 0x01 != 0;
                 self.rts = value & 0x02 != 0;
                 #[cfg(feature = "defmt")]
-                defmt::debug!("CDC: control line state dtr={} rts={}", self.dtr, self.rts);
+                crate::log::debug!("CDC: control line state dtr={} rts={}", self.dtr, self.rts);
                 let _ = xfer.accept();
             }
             req::SEND_BREAK => {

@@ -217,7 +217,7 @@ impl<'a, B: UsbBus> UsbDevice<'a, B> {
             cls.reset();
         }
         #[cfg(feature = "defmt")]
-        defmt::info!("USB: reset");
+        crate::log::info!("USB: reset");
     }
 
     fn handle_data(
@@ -242,7 +242,7 @@ impl<'a, B: UsbBus> UsbDevice<'a, B> {
                     Ok(None) => {}
                     Err(_e) => {
                         #[cfg(feature = "defmt")]
-                        defmt::warn!("EP0 OUT error: {:?}", _e);
+                        crate::log::warn!("EP0 OUT error: {:?}", _e);
                     }
                 }
             } else if ep_in_complete & 1 != 0 {
@@ -258,7 +258,7 @@ impl<'a, B: UsbBus> UsbDevice<'a, B> {
                     Ok(false) => {}
                     Err(_e) => {
                         #[cfg(feature = "defmt")]
-                        defmt::warn!("EP0 IN-complete error: {:?}", _e);
+                        crate::log::warn!("EP0 IN-complete error: {:?}", _e);
                     }
                 }
             }
@@ -428,7 +428,7 @@ impl<'a, B: UsbBus> UsbDevice<'a, B> {
                 let xfer = ControlOut::new(&mut self.control, self.bus, &req);
                 let _ = xfer.accept();
                 #[cfg(feature = "defmt")]
-                defmt::debug!("USB: SET_ADDRESS {}", req.value as u8);
+                crate::log::debug!("USB: SET_ADDRESS {}", req.value as u8);
             }
             (Recipient::Device, StandardRequest::SET_CONFIGURATION, _) => {
                 let config = req.value as u8;
@@ -446,7 +446,7 @@ impl<'a, B: UsbBus> UsbDevice<'a, B> {
                             cls.configure();
                         }
                         #[cfg(feature = "defmt")]
-                        defmt::info!("USB: configured");
+                        crate::log::info!("USB: configured");
                     }
                     _ => {
                         let xfer = ControlOut::new(&mut self.control, self.bus, &req);

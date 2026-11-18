@@ -205,6 +205,7 @@ impl core::fmt::Debug for EndpointAddress {
 }
 
 #[cfg(feature = "defmt")]
+#[cfg(feature = "defmt")]
 impl defmt::Format for EndpointAddress {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
