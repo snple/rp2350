@@ -7,8 +7,9 @@
 
 use core::sync::atomic::{AtomicBool, Ordering};
 
-use defmt::info;
+#[cfg(feature = "defmt")]
 use defmt_rtt as _;
+use rp2350_examples::log::info;
 
 use rp2350::bind;
 use rp2350::gpio::Pins;

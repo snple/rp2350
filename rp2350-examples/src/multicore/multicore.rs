@@ -18,13 +18,14 @@
 
 use core::sync::atomic::{AtomicU32, Ordering};
 
-use defmt::*;
+#[cfg(feature = "defmt")]
 use defmt_rtt as _;
 use rp2350::clocks::ClockBuilder;
 use rp2350::main;
 use rp2350::multicore::{self, Fifo, Multicore, Stack};
 use rp2350::pac::Peripherals;
 use rp2350::sio::Spinlock;
+use rp2350_examples::log::*;
 
 static mut CORE1_STACK: Stack<4096> = Stack::new();
 

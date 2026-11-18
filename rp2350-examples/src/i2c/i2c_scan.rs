@@ -153,8 +153,9 @@
 #![no_std]
 #![no_main]
 
-use defmt::*;
+#[cfg(feature = "defmt")]
 use defmt_rtt as _;
+use rp2350_examples::log::*;
 
 use rp2350::clocks::ClockBuilder;
 use rp2350::gpio::Pins;
@@ -386,6 +387,7 @@ impl ScanRowResult {
     }
 }
 
+#[cfg(feature = "defmt")]
 impl defmt::Format for ScanRowResult {
     fn format(&self, fmt: defmt::Formatter) {
         for i in 0..self.count as usize {

@@ -15,13 +15,14 @@
 #![no_std]
 #![no_main]
 
-use defmt::*;
+#[cfg(feature = "defmt")]
 use defmt_rtt as _;
 use rp2350::Delay;
 use rp2350::gpio::{self, DriveStrength, Pin, Pins, Pull, SlewRate};
 use rp2350::main;
 use rp2350::pac::Peripherals;
 use rp2350::rt::peripheral::Peripherals as CorePeripherals;
+use rp2350_examples::log::*;
 
 const CLOCK_FREQ_HZ: u32 = 12_000_000;
 

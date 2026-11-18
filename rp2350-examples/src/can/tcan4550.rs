@@ -56,8 +56,9 @@
 #![no_main]
 #![allow(dead_code)] // 寄存器定义预留给扩展使用
 
-use defmt::*;
+#[cfg(feature = "defmt")]
 use defmt_rtt as _;
+use rp2350_examples::log::*;
 
 use rp2350::clocks::ClockBuilder;
 use rp2350::gpio::{Pin, Pins};

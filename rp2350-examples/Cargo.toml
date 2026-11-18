@@ -20,7 +20,13 @@ path = "src/lib.rs"
 # are re-declared here so the chip variant can be switched without enabling
 # two mutually-exclusive chip features at once.
 default = ["defmt", "rp2350a", "critical-section-impl", "panic-handler"]
-defmt = ["rp2350/defmt", "rp2350-drivers/defmt"]
+defmt = [
+    "dep:defmt",
+    "dep:defmt-rtt",
+    "rp2350/defmt",
+    "rp2350-drivers/defmt",
+    "rp2350-usb/defmt",
+]
 # RP2350 chip variant selection (mutually exclusive). Forwarded to every
 # dependency that itself depends on rp2350 so only one variant is enabled.
 rp2350a = ["rp2350/rp2350a", "rp2350-drivers/rp2350a"]
@@ -44,8 +50,8 @@ rp2350.workspace = true
 rp2350-drivers.workspace = true
 rp2350-usb.workspace = true
 rp2350-rt.workspace = true
-defmt.workspace = true
-defmt-rtt.workspace = true
+defmt = { workspace = true, optional = true }
+defmt-rtt = { workspace = true, optional = true }
 
 [[bin]]
 name = "blink"

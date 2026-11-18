@@ -13,7 +13,7 @@
 use core::cell::RefCell;
 use core::sync::atomic::{AtomicBool, Ordering};
 
-use defmt::*;
+#[cfg(feature = "defmt")]
 use defmt_rtt as _;
 use rp2350::clocks::ClockBuilder;
 use rp2350::gpio::Pins;
@@ -22,6 +22,7 @@ use rp2350::main;
 use rp2350::pac::{Interrupt, Peripherals};
 use rp2350::ticks::Ticks;
 use rp2350::timer::Timer0;
+use rp2350_examples::log::*;
 
 static TIMER: Mutex<RefCell<Option<Timer0>>> = Mutex::new(RefCell::new(None));
 static LED_STATE: AtomicBool = AtomicBool::new(false);

@@ -129,8 +129,9 @@
 
 use core::fmt::Write as _;
 
-use defmt::*;
+#[cfg(feature = "defmt")]
 use defmt_rtt as _;
+use rp2350_examples::log::*;
 
 use rp2350::SysTick;
 use rp2350::clocks::ClockBuilder;

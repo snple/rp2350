@@ -175,8 +175,9 @@
 #![no_std]
 #![no_main]
 
-use defmt::info;
+#[cfg(feature = "defmt")]
 use defmt_rtt as _;
+use rp2350_examples::log::info;
 
 use rp2350::clocks::ClockBuilder;
 use rp2350::gpio::Pins;

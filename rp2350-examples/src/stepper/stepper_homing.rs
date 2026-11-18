@@ -23,8 +23,9 @@ use rp2350_drivers::stepper::Direction;
 use rp2350_drivers::stepper::tmc2209::{AxisConfig, AxisState};
 use rp2350_drivers::tmc2209::Tmc2209;
 
-use defmt::*;
+#[cfg(feature = "defmt")]
 use defmt_rtt as _;
+use rp2350_examples::log::*;
 
 use rp2350::Steal;
 use rp2350::clocks::ClockBuilder;

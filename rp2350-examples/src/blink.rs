@@ -6,8 +6,9 @@
 #![no_std]
 #![no_main]
 
-use defmt::*;
+#[cfg(feature = "defmt")]
 use defmt_rtt as _;
+use rp2350_examples::log::*;
 
 use rp2350::Delay;
 use rp2350::gpio::Pins;

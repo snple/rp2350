@@ -405,8 +405,9 @@
 use core::cell::RefCell;
 use core::sync::atomic::{AtomicBool, AtomicU32, Ordering};
 
-use defmt::*;
+#[cfg(feature = "defmt")]
 use defmt_rtt as _;
+use rp2350_examples::log::*;
 
 use rp2350::adc::{Adc, AdcPin};
 use rp2350::clocks::ClockBuilder;
