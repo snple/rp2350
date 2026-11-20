@@ -10,15 +10,21 @@ CDC ACM, HID (keyboard, mouse, power device), GS_USB, i2c-tiny-usb and UAC 1.0.
 
 ## Layout
 
+The MCU-independent stack lives in the shared
+[`usb-stack`](../../usb-stack) crate (also used by `ch32x035-usb`) and is
+re-exported here, so `rp2350_usb::bus::…`, `rp2350_usb::class::…`, … keep
+working. This crate adds the RP2350 peripheral driver and the RP2350-specific
+classes.
+
 | Module | Contents |
 |--------|----------|
-| `bus` | `UsbBus` (hardware abstraction) and `UsbBusAllocator`, which hands out interfaces, endpoints and string indices |
+| `bus` | `UsbBus` (hardware abstraction) and `UsbBusAllocator`, which hands out interfaces, endpoints and string indices *(shared)* |
 | `rp2350` | `Rp2350Bus`, the RP2350 implementation of `UsbBus` |
-| `device` | `UsbDeviceBuilder` / `UsbDevice` — device state machine, descriptor serving, control-transfer dispatch |
-| `control` | `ControlPipe` (EP0 state machine) and the `ControlIn` / `ControlOut` handles classes answer requests with |
-| `descriptor` | `DescriptorWriter`, used by the device and by classes to emit descriptors |
-| `endpoint` | `Endpoint`, `EndpointAddress`, `EndpointType`, direction markers |
-| `class` | `UsbClass` trait and the class implementations |
+| `device` | `UsbDeviceBuilder` / `UsbDevice` — device state machine, descriptor serving, control-transfer dispatch *(shared)* |
+| `control` | `ControlPipe` (EP0 state machine) and the `ControlIn` / `ControlOut` handles classes answer requests with *(shared)* |
+| `descriptor` | `DescriptorWriter`, used by the device and by classes to emit descriptors *(shared)* |
+| `endpoint` | `Endpoint`, `EndpointAddress`, `EndpointType`, direction markers *(shared)* |
+| `class` | `UsbClass` trait, CDC-ACM, HID (incl. power device), GS_USB, i2c-tiny-usb and UAC *(shared)* plus the RP2350 `reset` interface *(this crate)* |
 
 A class allocates everything it needs from the `UsbBusAllocator` in its
 constructor.  Building the device freezes the allocator and enables the

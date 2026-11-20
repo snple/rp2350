@@ -27,77 +27,36 @@
 
 #![no_std]
 
-/// Logging facade.
-///
-/// With the `defmt` feature these are `defmt`'s own macros; without it they
-/// expand to nothing so the stack builds without the logging dependency.
-#[cfg(feature = "defmt")]
-pub mod log {
-    pub use defmt::*;
-}
+/// Logging facade (re-exported from [`usb_stack`]).
+pub use usb_stack::log;
 
-#[cfg(not(feature = "defmt"))]
-pub mod log {
-    #[macro_export]
-    macro_rules! trace {
-        ($($arg:tt)*) => {{ () }};
-    }
-    #[macro_export]
-    macro_rules! debug {
-        ($($arg:tt)*) => {{ () }};
-    }
-    #[macro_export]
-    macro_rules! info {
-        ($($arg:tt)*) => {{ () }};
-    }
-    #[macro_export]
-    macro_rules! warn {
-        ($($arg:tt)*) => {{ () }};
-    }
-    #[macro_export]
-    macro_rules! error {
-        ($($arg:tt)*) => {{ () }};
-    }
+// ── Shared stack ──────────────────────────────────────────────────────────────
+//
+// Everything that is MCU-independent lives in `usb-stack`; it is re-exported
+// here so `rp2350_usb::class::…`, `rp2350_usb::bus::…`, … keep working.
 
-    pub use crate::{debug, error, info, trace, warn};
-}
+pub use usb_stack::{bus, control, descriptor, device, endpoint, error};
 
-// ── Modules ──────────────────────────────────────────────────────────────────
-
-pub mod bus;
+// Local module: re-exports the shared classes and adds the RP2350-only ones.
 pub mod class;
-pub mod control;
-pub mod descriptor;
-pub mod device;
+
+pub use usb_stack::{
+    BULK_MAX_PACKET_SIZE, CONTROL_MAX_PACKET_SIZE, DescriptorWriter, DeviceInfo, DeviceState,
+    Direction, EndpointAddress, EndpointIn, EndpointOut, EndpointType, In, InterfaceNumber,
+    IsoSynchronization, IsoUsage, Out, PollResult, StringIndex, UsbBus, UsbBusAllocator, UsbClass,
+    UsbDevice, UsbDeviceBuilder, UsbError, UsbResult,
+};
+
+// ── RP2350 implementation ─────────────────────────────────────────────────────
+
 pub mod dpram;
-pub mod endpoint;
 pub mod ep_regs;
-pub mod error;
 pub mod rp2350;
 
-// ── Re-exports ────────────────────────────────────────────────────────────────
-
-pub use bus::{InterfaceNumber, PollResult, StringIndex, UsbBus, UsbBusAllocator};
-pub use class::UsbClass;
-pub use descriptor::DescriptorWriter;
-pub use device::{DeviceInfo, DeviceState, UsbDevice, UsbDeviceBuilder};
-pub use endpoint::{
-    Direction, EndpointAddress, EndpointIn, EndpointOut, EndpointType, In, IsoSynchronization,
-    IsoUsage, Out,
-};
-pub use error::{UsbError, UsbResult};
 pub use rp2350::Rp2350Bus;
 
-// ── Crate-level constants ─────────────────────────────────────────────────────
-
-/// Maximum number of endpoints (EP0–EP15, IN and OUT).
+/// Number of endpoints supported by the RP2350 USB controller (EP0–EP15).
 pub const MAX_ENDPOINTS: usize = 16;
-
-/// Maximum packet size for EP0 (full-speed USB 2.0).
-pub const CONTROL_MAX_PACKET_SIZE: u16 = 64;
-
-/// Maximum packet size for bulk/interrupt endpoints (full-speed).
-pub const BULK_MAX_PACKET_SIZE: u16 = 64;
 
 /// USB DPRAM size in bytes.
 pub const DPRAM_SIZE: usize = 4096;

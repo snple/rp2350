@@ -288,11 +288,12 @@ dependencies = [
 
 [[package]]
 name = "rp2350-usb"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "defmt",
  "rp2350-pac",
  "rp2350-rt",
+ "usb-stack",
 ]
 
 [[package]]
@@ -348,6 +349,15 @@ name = "unicode-ident"
 version = "1.0.26"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d245f478577f809a851594d02313b640fb437e0bb33866753cff937863096954"
+
+[[package]]
+name = "usb-stack"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b8a3567087def2e49f446bd144db2d02c2f61c1ad12bde58fdd0f93aedf38b9d"
+dependencies = [
+ "defmt",
+]
 
 [[package]]
 name = "utf8parse"

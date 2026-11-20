@@ -88,7 +88,8 @@ impl EpAllocator {
 ///
 /// # Construction
 ///
-/// Use [`Rp2350Bus::steal()`] then pass it to [`UsbBusAllocator::new`].
+/// Use [`Rp2350Bus::steal()`](Rp2350Bus::steal) then pass it to
+/// [`UsbBusAllocator`](crate::UsbBusAllocator) via `new`.
 pub struct Rp2350Bus {
     usb: &'static rp2350_pac::usb::RegisterBlock,
     dpram: &'static rp2350_pac::usb_dpram::RegisterBlock,
@@ -116,7 +117,7 @@ impl Rp2350Bus {
     /// Create a new (uninitialised) RP2350 USB bus.
     ///
     /// Initialisation happens inside [`UsbBus::enable`], which is called by
-    /// [`UsbBusAllocator::freeze`].
+    /// `UsbBusAllocator::freeze`.
     ///
     /// # Safety
     /// - Caller must ensure this is only called once (e.g. by only calling from `main()`).

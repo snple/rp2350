@@ -1,6 +1,6 @@
 [package]
 name = "rp2350-usb"
-version.workspace = true
+version = "0.1.1"
 edition.workspace = true
 license.workspace = true
 description = "USB Device Stack for RP2350 microcontrollers"
@@ -11,12 +11,13 @@ categories = ["embedded", "hardware-support", "no-std"]
 
 [dependencies]
 defmt = { workspace = true, optional = true }
+usb-stack.workspace = true
 rp2350-pac.workspace = true
 rp2350-rt.workspace = true
 
 [features]
 default = ["defmt"]
-defmt = ["dep:defmt"]
+defmt = ["dep:defmt", "usb-stack/defmt"]
 
 [package.metadata.docs.rs]
 features = ["defmt"]

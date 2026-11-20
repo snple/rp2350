@@ -31,7 +31,7 @@
 | [`rp2350-rt`](rp2350-rt/) | **运行时**：`Reset`、向量表、`link.x` / `link_ram.x`、核心寄存器与指令封装 |
 | [`rp2350-boot2`](rp2350-boot2/) | **可选 boot2**：位置无关的 XIP 配置 blob（≤ 256 字节），拷到 RAM 执行 |
 | [`rp2350-macro`](rp2350-macro/) | **过程宏**：`#[main]`、`#[exception]`、`#[bind]`、`#[ramfunc]`、`pio_asm!` |
-| [`rp2350-usb`](rp2350-usb/) | **USB 设备栈**：设备状态机、控制传输、描述符、类实现 |
+| [`rp2350-usb`](rp2350-usb/) | **USB 设备栈**：设备状态机、控制传输、描述符、类实现（通用核心在仓库外的 [`usb-stack`](../usb-stack/)） |
 | [`rp2350-drivers`](rp2350-drivers/) | **设备驱动**：TMC2209、步进轴、`MonotonicTimer` / `UartBus` 抽象 |
 | [`rp2350-examples`](rp2350-examples/) | 各外设的独立二进制示例 |
 | [`xtask`](xtask/) | 构建辅助（`cargo xtask gen-pac`） |
