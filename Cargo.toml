@@ -47,9 +47,9 @@ rp2350-boot2 = { version = "0.1.0", path = "rp2350-boot2", default-features = fa
 rp2350-pac = { version = "0.1.0", path = "rp2350-pac" }
 rp2350-macro = { version = "0.1.0", path = "rp2350-macro" }
 rp2350-drivers = { version = "0.1.0", path = "rp2350-drivers", default-features = false }
-rp2350-usb = { version = "0.1.1", path = "rp2350-usb", default-features = false }
+rp2350-usb = { version = "0.2.0", path = "rp2350-usb", default-features = false }
 
-usb-stack = { version = "0.1.0", default-features = false }
+usb-stack = { version = "0.2.0", default-features = false }
 
 critical-section = { version = "1.2", features = ["restore-state-u32"]}
 

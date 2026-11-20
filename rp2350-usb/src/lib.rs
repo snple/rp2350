@@ -34,18 +34,25 @@ pub use usb_stack::log;
 //
 // Everything that is MCU-independent lives in `usb-stack`; it is re-exported
 // here so `rp2350_usb::class::…`, `rp2350_usb::bus::…`, … keep working.
+//
+// The pieces both directions of `usb-stack` need (`endpoint`, `descriptor`,
+// `request`) sit at its crate root; the device stack lives under `device`.
 
-pub use usb_stack::{bus, control, descriptor, device, endpoint, error};
+pub use usb_stack::{descriptor, endpoint, request};
+
+pub use usb_stack::device;
+pub use usb_stack::device::{bus, control, error};
 
 // Local module: re-exports the shared classes and adds the RP2350-only ones.
 pub mod class;
 
-pub use usb_stack::{
-    BULK_MAX_PACKET_SIZE, CONTROL_MAX_PACKET_SIZE, DescriptorWriter, DeviceInfo, DeviceState,
-    Direction, EndpointAddress, EndpointIn, EndpointOut, EndpointType, In, InterfaceNumber,
-    IsoSynchronization, IsoUsage, Out, PollResult, StringIndex, UsbBus, UsbBusAllocator, UsbClass,
-    UsbDevice, UsbDeviceBuilder, UsbError, UsbResult,
+pub use usb_stack::device::{
+    DescriptorWriter, DeviceInfo, DeviceState, Direction, Endpoint, EndpointAddress, EndpointIn,
+    EndpointOut, EndpointType, In, InterfaceNumber, IsoSynchronization, IsoUsage, Out, PollResult,
+    StringIndex, UsbBus, UsbBusAllocator, UsbClass, UsbDevice, UsbDeviceBuilder, UsbError,
+    UsbResult,
 };
+pub use usb_stack::{BULK_MAX_PACKET_SIZE, CONTROL_MAX_PACKET_SIZE};
 
 // ── RP2350 implementation ─────────────────────────────────────────────────────
 

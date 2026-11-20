@@ -4,6 +4,6 @@
 //! [`i2c_tiny_usb`], [`uac`]) live in the shared [`usb_stack`] crate; the
 //! `reset` interface below is RP2350-specific.
 
-pub use usb_stack::class::*;
+pub use usb_stack::device::class::*;
 
 pub mod reset;

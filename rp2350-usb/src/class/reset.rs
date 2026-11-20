@@ -22,9 +22,10 @@
 
 use crate::bus::{InterfaceNumber, StringIndex, UsbBus, UsbBusAllocator};
 use crate::class::UsbClass;
-use crate::control::{ControlOut, Recipient, RequestType};
-use crate::descriptor::DescriptorWriter;
+use crate::device::control::ControlOut;
+use crate::device::descriptor::DescriptorWriter;
 use crate::error::UsbResult;
+use crate::request::{Recipient, RequestType};
 
 /// `bInterfaceSubClass` of the reset interface.
 pub const RESET_INTERFACE_SUBCLASS: u8 = 0x00;
