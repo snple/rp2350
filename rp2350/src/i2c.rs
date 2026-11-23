@@ -500,6 +500,13 @@ macro_rules! impl_i2c {
                             rx_idx += 1;
                         }
 
+                        // All bytes received: nothing left to wait for. (The
+                        // condition below can never become true once the last
+                        // byte has been popped, so checking it would hang.)
+                        if rx_idx == len {
+                            break;
+                        }
+
                         // Wait (bounded) for RX data or TX FIFO space so the
                         // loop can make progress.
                         self.wait_cond(|| {
@@ -548,7 +555,10 @@ macro_rules! impl_i2c {
                     // Write phase (no STOP — a repeated START follows)
                     for &byte in write_data {
                         self.wait_cond(|| self.i2c.ic_status.tfnf())?;
-                        self.i2c.ic_data_cmd.write_dat(byte as u32);
+                        // IC_DATA_CMD is a side-effecting register: reading it
+                        // pops the RX FIFO, so write the byte without a
+                        // read-modify-write.
+                        self.i2c.ic_data_cmd.write_bits(byte as u32);
                     }
 
                     // Read phase
@@ -569,6 +579,13 @@ macro_rules! impl_i2c {
                         while rx_idx < len && self.i2c.ic_status.rfne() {
                             read_buffer[rx_idx] = self.i2c.ic_data_cmd.dat() as u8;
                             rx_idx += 1;
+                        }
+
+                        // All bytes received: nothing left to wait for. (The
+                        // condition below can never become true once the last
+                        // byte has been popped, so checking it would hang.)
+                        if rx_idx == len {
+                            break;
                         }
 
                         // Wait (bounded) for RX data or TX FIFO space so the
@@ -1230,8 +1247,9 @@ macro_rules! impl_i2c_slave {
                             }
                         }
 
-                        // Write data
-                        self.i2c.ic_data_cmd.write_dat(byte as u32);
+                        // Write data. IC_DATA_CMD is side-effecting (a read pops
+                        // the RX FIFO), so avoid a read-modify-write.
+                        self.i2c.ic_data_cmd.write_bits(byte as u32);
                     }
 
                     // Clear read request flag
