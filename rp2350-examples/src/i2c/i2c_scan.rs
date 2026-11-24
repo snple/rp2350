@@ -390,11 +390,11 @@ impl ScanRowResult {
 #[cfg(feature = "defmt")]
 impl defmt::Format for ScanRowResult {
     fn format(&self, fmt: defmt::Formatter) {
-        for i in 0..self.count as usize {
+        for (i, entry) in self.entries.iter().take(self.count as usize).enumerate() {
             if i > 0 {
                 defmt::write!(fmt, " ");
             }
-            match self.entries[i] {
+            match *entry {
                 ScanEntry::Empty => defmt::write!(fmt, "--"),
                 ScanEntry::Found(addr) => defmt::write!(fmt, "{:02x}", addr),
                 ScanEntry::Reserved => defmt::write!(fmt, "--"),
