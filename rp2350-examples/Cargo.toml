@@ -190,6 +190,10 @@ name = "spi_master"
 path = "src/spi/spi_master.rs"
 
 [[bin]]
+name = "spi_slave_loopback"
+path = "src/spi/spi_slave_loopback.rs"
+
+[[bin]]
 name = "uart_dma"
 path = "src/dma/uart_dma.rs"
 
@@ -212,6 +216,10 @@ path = "src/i2c/sht3x.rs"
 [[bin]]
 name = "eeprom_at24c"
 path = "src/i2c/eeprom_at24c.rs"
+
+[[bin]]
+name = "i2c_hw_loopback"
+path = "src/i2c/i2c_hw_loopback.rs"
 
 [[bin]]
 name = "pio_blink"
@@ -300,6 +308,10 @@ path = "src/trng/trng.rs"
 [[bin]]
 name = "uart_echo"
 path = "src/uart/uart_echo.rs"
+
+[[bin]]
+name = "uart_aux_loopback"
+path = "src/uart/uart_aux_loopback.rs"
 
 [[bin]]
 name = "usb_cdc_acm"
