@@ -163,7 +163,9 @@ macro_rules! impl_i2c_pins {
 
 /// Marker trait for pins that can be used as UART0 TX.
 ///
-/// Valid pins: 0, 12, 16, 28 (RP2350A)
+/// Primary pins (funcsel 2): 0, 12, 16, 28 (RP2350A)
+///
+/// Alternate pins (funcsel 11, `UART_AUX`): 2, 14, 18 (RP2350A)
 pub trait Uart0TxPin {
     /// Configure this pin for UART0 TX function
     fn configure_uart0_tx(&mut self);
@@ -171,7 +173,9 @@ pub trait Uart0TxPin {
 
 /// Marker trait for pins that can be used as UART0 RX.
 ///
-/// Valid pins: 1, 13, 17, 29 (RP2350A)
+/// Primary pins (funcsel 2): 1, 13, 17, 29 (RP2350A)
+///
+/// Alternate pins (funcsel 11, `UART_AUX`): 3, 15, 19 (RP2350A)
 pub trait Uart0RxPin {
     /// Configure this pin for UART0 RX function
     fn configure_uart0_rx(&mut self);
@@ -195,7 +199,9 @@ pub trait Uart0RtsPin {
 
 /// Marker trait for pins that can be used as UART1 TX.
 ///
-/// Valid pins: 4, 8, 20, 24 (RP2350A)
+/// Primary pins (funcsel 2): 4, 8, 20, 24 (RP2350A)
+///
+/// Alternate pins (funcsel 11, `UART_AUX`): 6, 10, 22, 26 (RP2350A)
 pub trait Uart1TxPin {
     /// Configure this pin for UART1 TX function
     fn configure_uart1_tx(&mut self);
@@ -203,7 +209,9 @@ pub trait Uart1TxPin {
 
 /// Marker trait for pins that can be used as UART1 RX.
 ///
-/// Valid pins: 5, 9, 21, 25 (RP2350A)
+/// Primary pins (funcsel 2): 5, 9, 21, 25 (RP2350A)
+///
+/// Alternate pins (funcsel 11, `UART_AUX`): 7, 11, 23, 27 (RP2350A)
 pub trait Uart1RxPin {
     /// Configure this pin for UART1 RX function
     fn configure_uart1_rx(&mut self);
@@ -311,6 +319,52 @@ macro_rules! impl_uart_pins {
                 fn configure_uart1_rts(&mut self) {
                     self.init_pad();
                     self.set_function(Function::Uart);
+                }
+            }
+        )+
+    };
+    // Alternate UART data pins. On these pins funcsel 2 selects the
+    // flow-control signals, so the data signals move to funcsel 11.
+    (aux_uart0_tx: $($n:literal),+ $(,)?) => {
+        $(
+            impl Uart0TxPin for Pin<$n> {
+                #[inline]
+                fn configure_uart0_tx(&mut self) {
+                    self.init_pad();
+                    self.set_function(Function::UartAux);
+                }
+            }
+        )+
+    };
+    (aux_uart0_rx: $($n:literal),+ $(,)?) => {
+        $(
+            impl Uart0RxPin for Pin<$n> {
+                #[inline]
+                fn configure_uart0_rx(&mut self) {
+                    self.init_pad();
+                    self.set_function(Function::UartAux);
+                }
+            }
+        )+
+    };
+    (aux_uart1_tx: $($n:literal),+ $(,)?) => {
+        $(
+            impl Uart1TxPin for Pin<$n> {
+                #[inline]
+                fn configure_uart1_tx(&mut self) {
+                    self.init_pad();
+                    self.set_function(Function::UartAux);
+                }
+            }
+        )+
+    };
+    (aux_uart1_rx: $($n:literal),+ $(,)?) => {
+        $(
+            impl Uart1RxPin for Pin<$n> {
+                #[inline]
+                fn configure_uart1_rx(&mut self) {
+                    self.init_pad();
+                    self.set_function(Function::UartAux);
                 }
             }
         )+
@@ -608,12 +662,18 @@ impl_uart_pins!(uart0_tx: 0, 12, 16, 28);
 impl_uart_pins!(uart0_rx: 1, 13, 17, 29);
 impl_uart_pins!(uart0_cts: 2, 14, 18);
 impl_uart_pins!(uart0_rts: 3, 15, 19);
+// UART0 alternate data pins (funcsel 11)
+impl_uart_pins!(aux_uart0_tx: 2, 14, 18);
+impl_uart_pins!(aux_uart0_rx: 3, 15, 19);
 
 // UART1 pins (RP2350A)
 impl_uart_pins!(uart1_tx: 4, 8, 20, 24);
 impl_uart_pins!(uart1_rx: 5, 9, 21, 25);
 impl_uart_pins!(uart1_cts: 6, 10, 22, 26);
 impl_uart_pins!(uart1_rts: 7, 11, 23, 27);
+// UART1 alternate data pins (funcsel 11)
+impl_uart_pins!(aux_uart1_tx: 6, 10, 22, 26);
+impl_uart_pins!(aux_uart1_rx: 7, 11, 23, 27);
 
 // SPI0 pins (RP2350A)
 impl_spi_pins!(spi0_rx: 0, 4, 16, 20);

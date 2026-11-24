@@ -15,15 +15,18 @@
 //!
 //! # GPIO Mapping
 //!
+//! Primary pins use funcsel 2; the alternate (`UART_AUX`, funcsel 11) data
+//! pins are useful when the primary pins are already in use.
+//!
 //! UART0:
-//! - TX: GPIO 0, 12, 16, 28
-//! - RX: GPIO 1, 13, 17, 29
+//! - TX: GPIO 0, 12, 16, 28; alternate GPIO 2, 14, 18
+//! - RX: GPIO 1, 13, 17, 29; alternate GPIO 3, 15, 19
 //! - CTS: GPIO 2, 14, 18
 //! - RTS: GPIO 3, 15, 19
 //!
 //! UART1:
-//! - TX: GPIO 4, 8, 20, 24
-//! - RX: GPIO 5, 9, 21, 25
+//! - TX: GPIO 4, 8, 20, 24; alternate GPIO 6, 10, 22, 26
+//! - RX: GPIO 5, 9, 21, 25; alternate GPIO 7, 11, 23, 27
 //! - CTS: GPIO 6, 10, 22, 26
 //! - RTS: GPIO 7, 11, 23, 27
 //!
