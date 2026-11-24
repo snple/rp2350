@@ -491,7 +491,9 @@ macro_rules! impl_uart {
                     while self.uart.uartfr.txff() {
                         core::hint::spin_loop();
                     }
-                    self.uart.uartdr.write_data(byte as u32);
+                    // Write UARTDR directly: reading it pops the RX FIFO, so a
+                    // read-modify-write would silently discard received bytes.
+                    self.uart.uartdr.write_bits(byte as u32);
                 }
 
                 /// Write multiple bytes (blocking).
@@ -507,7 +509,7 @@ macro_rules! impl_uart {
                         }
                         // Write as many bytes as the FIFO currently accepts.
                         while i < data.len() && !self.uart.uartfr.txff() {
-                            self.uart.uartdr.write_data(data[i] as u32);
+                            self.uart.uartdr.write_bits(data[i] as u32);
                             i += 1;
                         }
                     }
@@ -610,7 +612,7 @@ macro_rules! impl_uart {
                     if self.uart.uartfr.txff() {
                         return false;
                     }
-                    self.uart.uartdr.write_data(byte as u32);
+                    self.uart.uartdr.write_bits(byte as u32);
                     true
                 }
 

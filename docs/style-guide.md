@@ -280,6 +280,9 @@ cargo xtask gen-pac --check
 
 - **有界自旋误用于「硬件必然完成」的等待** → 该用无界 `while`；反之可能卡死的等待要加 hang-guard。
 - **W1C 寄存器写反方向**（该 `write_bits` 却用 `clr_bits`）。
+- **副作用寄存器用读-改-写访问**：`I2C.IC_DATA_CMD`、`SPI.SSPDR`、`UART.UARTDR` 的读取会弹出 RX FIFO，
+  必须用 `write_bits` 直接写数据，不能用 PAC 生成的多位字段写入（`write_dat` /
+  `write_data` 内部是 `modify_bits`，会先读寄存器）。
 - **除零**（分频/计算路径）。**位移错误**（如 PIO 13 写成 12）。
 - **`1u32 << 32` 是 UB**。
 - **空数据不碰总线**；**事务必须等硬件完成**再返回。

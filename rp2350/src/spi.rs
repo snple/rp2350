@@ -524,7 +524,10 @@ macro_rules! impl_spi {
                 #[inline]
                 pub fn try_write_word(&self, word: u16) -> bool {
                     if self.spi.sspsr.tnf() {
-                        self.spi.sspdr.write_data(word as u32);
+                        // SSPDR is a side-effecting FIFO port: reading it pops the
+                        // RX FIFO, so use write_bits instead of the generated
+                        // read-modify-write field writer.
+                        self.spi.sspdr.write_bits(word as u32);
                         true
                     } else {
                         false
@@ -535,7 +538,7 @@ macro_rules! impl_spi {
                 #[inline]
                 pub fn write_word(&self, word: u16) {
                     crate::spin::spin_wait("SPI TX FIFO space", || self.spi.sspsr.tnf());
-                    self.spi.sspdr.write_data(word as u32);
+                    self.spi.sspdr.write_bits(word as u32);
                 }
 
                 /// Read a single word from the RX FIFO (non-blocking)
@@ -571,7 +574,7 @@ macro_rules! impl_spi {
                         crate::spin::spin_wait("SPI TX FIFO space", || self.spi.sspsr.tnf());
                         // Write as many words as the FIFO currently accepts.
                         while i < data.len() && self.spi.sspsr.tnf() {
-                            self.spi.sspdr.write_data(data[i] as u32);
+                            self.spi.sspdr.write_bits(data[i] as u32);
                             i += 1;
                         }
                     }
@@ -589,7 +592,7 @@ macro_rules! impl_spi {
                         crate::spin::spin_wait("SPI TX FIFO space", || self.spi.sspsr.tnf());
                         // Write as many words as the FIFO currently accepts.
                         while i < data.len() && self.spi.sspsr.tnf() {
-                            self.spi.sspdr.write_data(data[i] as u32);
+                            self.spi.sspdr.write_bits(data[i] as u32);
                             i += 1;
                         }
                     }
@@ -621,7 +624,7 @@ macro_rules! impl_spi {
 
                         // Fill TX FIFO
                         while tx_idx < len && self.spi.sspsr.tnf() {
-                            self.spi.sspdr.write_data(write[tx_idx] as u32);
+                            self.spi.sspdr.write_bits(write[tx_idx] as u32);
                             tx_idx += 1;
                         }
 
@@ -654,7 +657,7 @@ macro_rules! impl_spi {
 
                         // Fill TX FIFO
                         while tx_idx < len && self.spi.sspsr.tnf() {
-                            self.spi.sspdr.write_data(data[tx_idx] as u32);
+                            self.spi.sspdr.write_bits(data[tx_idx] as u32);
                             tx_idx += 1;
                         }
 
@@ -687,7 +690,7 @@ macro_rules! impl_spi {
 
                         // Fill TX FIFO with dummy bytes
                         while tx_idx < len && self.spi.sspsr.tnf() {
-                            self.spi.sspdr.write_data(0);
+                            self.spi.sspdr.write_bits(0);
                             tx_idx += 1;
                         }
 
@@ -1335,7 +1338,7 @@ macro_rules! impl_spi {
                 #[inline]
                 pub fn write_word(&self, word: u16) {
                     crate::spin::spin_wait("SPI TX FIFO space", || self.spi.sspsr.tnf());
-                    self.spi.sspdr.write_data(word as u32);
+                    self.spi.sspdr.write_bits(word as u32);
                 }
 
                 /// Read a single word from the RX FIFO (blocking)
@@ -1369,7 +1372,7 @@ macro_rules! impl_spi {
                         crate::spin::spin_wait("SPI TX FIFO space", || self.spi.sspsr.tnf());
                         // Write as many words as the FIFO currently accepts.
                         while i < data.len() && self.spi.sspsr.tnf() {
-                            self.spi.sspdr.write_data(data[i] as u32);
+                            self.spi.sspdr.write_bits(data[i] as u32);
                             i += 1;
                         }
                     }
@@ -1393,7 +1396,7 @@ macro_rules! impl_spi {
                         }
 
                         while tx_idx < len && self.spi.sspsr.tnf() {
-                            self.spi.sspdr.write_data(write[tx_idx] as u32);
+                            self.spi.sspdr.write_bits(write[tx_idx] as u32);
                             tx_idx += 1;
                         }
 
@@ -1421,7 +1424,7 @@ macro_rules! impl_spi {
                         }
 
                         while tx_idx < len && self.spi.sspsr.tnf() {
-                            self.spi.sspdr.write_data(data[tx_idx] as u32);
+                            self.spi.sspdr.write_bits(data[tx_idx] as u32);
                             tx_idx += 1;
                         }
 
@@ -1449,7 +1452,7 @@ macro_rules! impl_spi {
                         }
 
                         while tx_idx < len && self.spi.sspsr.tnf() {
-                            self.spi.sspdr.write_data(0);
+                            self.spi.sspdr.write_bits(0);
                             tx_idx += 1;
                         }
 
