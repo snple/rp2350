@@ -39,7 +39,7 @@ bitfield-struct = "0.13"
 # The `version` next to each `path` is required by `cargo publish`: it becomes
 # the crates.io requirement in the published manifest (the `path` is dropped),
 # so it must be bumped together with the release version.
-rp2350 = { version = "0.1.0", path = "rp2350", default-features = false }
+rp2350 = { version = "0.1.1", path = "rp2350", default-features = false }
 rp2350-rt = { version = "0.1.0", path = "rp2350-rt" }
 # No default features: the flash-chip variant is selected explicitly by the
 # consumer (`rp2350-rt`'s `boot2-w25q80` / `boot2-generic-03h` features).
